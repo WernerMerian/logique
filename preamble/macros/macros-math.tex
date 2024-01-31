@@ -1,0 +1,129 @@
+% file: macros-math.tex
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%
+%----- COMMANDES -----%
+%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- NOUVEAUX SYMBOLS -----%
+
+\newcommand{\powerset}{\mathcal{P}} % ensemble des parties
+\newcommand{\partialto}{\rightharpoonup} % fonction partielle
+\newcommand{\defeq}{\overset{{\normalfont\text{déf}}}{=}} % égalité définitionnelle
+\newcommand{\symdiff}{\triangle} % différence symétrique
+
+
+%----- PROBLEMES ALGORITHMIQUES -----%
+
+\newcommand{\problemStatement}[3]{
+	\begin{center}
+		\begin{tabularx}{.8\linewidth}{lX}
+			\toprule
+			\multicolumn{2}{c}{#1}\\
+			\midrule
+			\bfseries Instance:  & #2\\
+			\bfseries Sortie: & #3\\
+			\bottomrule
+		\end{tabularx}
+	\end{center}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- OPERATEURS MATHÉMATIQUES -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- FONCTIONS -----%
+
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\im}{Im}
+\DeclareMathOperator{\dom}{Dom}
+
+
+%----- THÉORIE DES MODÈLES -----%
+
+\DeclareMathOperator{\Const}{Const}
+\DeclareMathOperator{\Fun}{Fun}
+\DeclareMathOperator{\Rel}{Rel}
+\DeclareMathOperator{\ar}{ar}
+
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\VL}{VL}
+\DeclareMathOperator{\Term}{Term}
+
+\DeclareMathOperator{\Struct}{Struct}
+\DeclareMathOperator{\Val}{Val}
+
+
+%----- THÉORIE DES ENSEMBLES -----%
+
+\DeclareMathOperator{\Card}{Card}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- LaTeX HACKS -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- REDIMENSIONNE LES PARENTHÈSES AUTOURS UNDERBRACE/UNDERBRACKET/UNDERARROW -----%
+
+%% good formating for underbrace/overbrace when used inside parenthesis
+
+\newcommand{\underbracein}[2]{\vphantom{#1}\smash{\underbrace{#1}_{#2}}}
+\newcommand{\underbraceinclap}[2]{\vphantom{#1}\smash{\underbrace{#1}_{\mathclap{#2}}}}
+\newcommand{\underbraceout}[2]{\vphantom{\underbrace{#1}_{#2}}}
+
+\newcommand{\overbracein}[2]{\vphantom{#1}\smash{\overbrace{#1}_{#2}}}
+\newcommand{\overbraceinclap}[2]{\vphantom{#1}\smash{\overbrace{#1}_{\mathclap{#2}}}}
+\newcommand{\overbraceout}[2]{\vphantom{\overbrace{#1}_{#2}}}
+
+%% good formating for underbracket/overbracket when used inside parenthesis
+
+\newcommand{\underbracketin}[2]{\vphantom{#1}\smash{\underbracket[.6pt][3pt]{#1}_{#2}}}
+\newcommand{\underbracketinclap}[2]{\vphantom{#1}\smash{\underbracket[.6pt][3pt]{#1}_{\mathclap{#2}}}}
+\newcommand{\underbracketout}[2]{\vphantom{\underbracket[.6pt][3pt]{#1}_{#2}}}
+
+\newcommand{\overbracketin}[2]{\vphantom{#1}\smash{\overbracket[.6pt][3pt]{#1}_{#2}}}
+\newcommand{\overbracketinclap}[2]{\vphantom{#1}\smash{\overbracket[.6pt][3pt]{#1}_{\mathclap{#2}}}}
+\newcommand{\overbracketout}[2]{\vphantom{\overbracket[.6pt][3pt]{#1}_{#2}}}
+
+%% arrows above and under equation pointing a particular index in a list
+%% see: https://tex.stackexchange.com/questions/513452/up-arrow-under-a-sequence
+
+\newcommand{\underarrowin}[2]{\vphantom{#1}\smash{\underset{\substack{\uparrow\\#2}}{#1}}}
+\newcommand{\underarrowinclap}[2]{\vphantom{#1}\smash{\underset{\mathclap{\substack{\uparrow\\#2}}}{#1}}}
+\newcommand{\underarrowout}[2]{\vphantom{\underset{\substack{\uparrow\\#2}}{#1}}}
+
+\newcommand{\overarrowin}[2]{\vphantom{#1}\smash{\underset{\substack{#2\\\downarrow}}{#1}}}
+\newcommand{\overarrowinclap}[2]{\vphantom{#1}\smash{\underset{\mathclap{\substack{#2\\\downarrow}}}{#1}}}
+\newcommand{\overarrowout}[2]{\vphantom{\underset{\substack{#2\\\downarrow}}{#1}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- FORMATAGE DES ÉQUATIONS -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- ÉTIQUETTES -----%
+
+\makeatletter
+\newcommand{\leqnomode}{\tagsleft@true\let\veqno\@@leqno}
+\newcommand{\reqnomode}{\tagsleft@false\let\veqno\@@eqno}
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- ENVIRONMENTS -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- HACKS -----%
+
+\NewEnviron{centerwide}{
+	\par
+	\noindent
+	\makebox[\textwidth]{\parbox{1.3\textwidth}{\BODY}}
+}
+\NewEnviron{centerwideequation}{\[\makebox[\displaywidth]{$\displaystyle\BODY$}\]}

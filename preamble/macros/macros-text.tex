@@ -1,0 +1,161 @@
+% file: macros-text.tex
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- MISE EN FORME DES CARACTÈRES -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- TYPOGRAPHIE -----%
+
+%% expressions particulières
+\newcommand{\emphexpr}[1]{\emph{#1}}       % pour signaler que l'on est en train d'utiliser une expression particulière qui va avoir un sens précis plus tard
+\newcommand{\guiexpr}[1]{«~#1~»}           % pour signaler une expression qui utilise un terme qui n'est pas (ou pas encore) défini pour ce contexte précis, il faut donc comprendre ce terme avec son sens commun (autrement dit le sens que lui attribut l'imaginaire collectif)
+\newcommand{\impexpr}[1]{\ul{#1}}   % pour les mots ou expressions importantes qu'il est nécessaire de "souligner" (par exemple une négation de quelque chose)
+
+%% noms propres
+\newcommand{\name}[1]{\textsc{#1}}         % pour les noms de famille (selon la typographie française)
+
+%% univers de la rédaction et de l'imprimerie
+\newcommand{\worktitle}[1]{\emph{#1}}      % pour les titres d'oeuvres
+\newcommand{\journalname}[1]{\emph{#1}}    % pour les noms de journeaux, revues, collections et séries de livres
+\newcommand{\seminarname}[1]{\emph{#1}}    % pour les noms de séminaires
+
+%% expressions se référent à des organismes publics ou privés
+\newcommand{\institutename}[1]{\emph{#1}}  % pour les noms d'institutions
+\newcommand{\toolname}[1]{\emph{#1}}       % pour les noms propres d'outils (mécaniques, informatiques, logistiques ...)
+
+%% chiffres romains
+\newcommand{\romannumerals}[1]{\textsc{#1}} % pour les chiffres romains
+\newcommand{\romannumeralscapital}[1]{\MakeUppercase{#1}} % pour les chiffres romains en capitale
+
+%% siècles et millénaires
+\newcommand{\century}[1]{%
+	\ifthenelse{\equal{\detokenize{#1}}{\detokenize{i}}}%
+	{\romannumerals{#1}\textsuperscript{er}}%
+	{\romannumerals{#1}\textsuperscript{e}}%
+} % pour les siècles
+\newcommand{\millennium}[1]{%
+	\ifthenelse{\equal{\detokenize{#1}}{\detokenize{i}}}%
+	{\romancapitalnumerals{#1}\textsuperscript{er}}%
+	{\romancapitalnumerals{#1}\textsuperscript{e}}%
+} % pour les millénaires
+
+%% ordinaux genrés
+\newcommand{\ordinalnumeralmale}[1]{%
+	\ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}%
+	{#1\textsuperscript{er}}%
+	{%
+		\ifthenelse{\equal{\detokenize{#1}}{\detokenize{2}}}%
+		{#1\textsuperscript{nd}}%
+		{#1\textsuperscript{ème}}%
+	}%
+} % pour les nombres ordinaux ou encore les adjectifs numéraux ordinaux accordés au masculin
+\newcommand{\ordinalnumeralfeminin}[1]{%
+	\ifthenelse{\equal{\detokenize{#1}}{\detokenize{1}}}%
+	{#1\textsuperscript{ère}}%
+	{%
+		\ifthenelse{\equal{\detokenize{#1}}{\detokenize{2}}}%
+		{#1\textsuperscript{nde}}%
+		{#1\textsuperscript{ème}}%
+	}%
+} % pour les nombres ordinaux ou encore les adjectifs numéraux ordinaux accordés au feminin
+
+
+%----- LANGUES ÉTRANGÈRES -----%
+
+\newcommand{\foreignexpr}[1]{\textit{#1}} % pour du texte dans une autre langue que le français (y compris les patois)
+\newcommand{\latinexpr}[1]{\textit{#1}} % pour du texte en latin
+
+
+%----- COMPUTER MODERN -----%
+
+% utile en particulier pour les espaces visibles
+
+\newcommand{\cmrseries}{\fontfamily{cmr}\selectfont}
+\newcommand{\textcmr}[1]{{\cmrseries#1}}
+\newcommand{\visiblespace}{\text{\textcmr{\textvisiblespace}}}
+
+
+%----- CURSIVE FRANÇAISE -----%
+
+\newcommand{\frcseries}{\fontfamily{frc}\selectfont}
+\newcommand{\textfrc}[1]{{\frcseries#1}}
+
+
+%----- MATHEMATIQUE -----%
+
+\newcommand{\defexpr}[1]{{\normalfont\textit{#1}}} % pour signaler que l'on est en train de définir une expression au sens mathématique
+
+\newcommand{\vrai}{{\normalfont\texttt{Vrai}}}
+\newcommand{\faux}{{\normalfont\texttt{Faux}}}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- MISE EN FORME DES PARAGRAPHES -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- APARTE -----%
+
+\newcommand{\newaparteenvironment}[2]{%
+	\newenvironment{#1}{%
+		\begin{quote}%
+			\footnotesize%
+			$\triangleright$ \textbf{#2}\quad%
+			\itshape%
+		}{%
+		\end{quote}%
+	}%
+}
+
+\newaparteenvironment{goal}{Objectif}
+\newaparteenvironment{anecdote}{Anecdote}
+
+
+%----- HACKS -----%
+
+%% pour restaurer l'indentiation de base du document, et donc pas exemple verticallement centrer une figure qui est dans un itemize/enumerate/description avec le centre de la page
+\makeatletter
+\newenvironment{normalindent}{
+	\@parboxrestore
+	\begin{adjustwidth}{}{\leftmargin}
+	}{
+	\end{adjustwidth}
+}
+\makeatother
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- TABLES ET FIGURES -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- FIGURES -----%
+
+%% pour include une image à l'intérieur d'une ligne de texte 
+\newcommand{\includeinlinegraphics}[2]{
+	\begingroup
+	\setbox0=\hbox{\includegraphics[#1]{#2}}
+	\parbox{\wd0}{\box0}
+	\endgroup
+}
+
+
+%----- HACKS -----%
+
+\newcommand{\includewidegraphics}[2]{
+	\makebox[\textwidth][c]{
+		\includegraphics[#1]{#2}
+	}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%
+%----- HYPERLINKS -----%
+%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- FOOTNOTES -----%
+
+%\newcommand{\samefootnote}[1]{\textsuperscript{\hyperref[#1]{\ref{#1}}}}

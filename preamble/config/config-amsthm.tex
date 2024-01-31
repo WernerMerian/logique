@@ -1,0 +1,89 @@
+% file: config-amsthm.tex
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- DEFINITION LIKE -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheoremstyle{mydefinitionstyle} % Name
+{}          % Space above
+{}          % Space below
+{}          % Body font
+{}          % Indent amount
+{\bfseries} % Theorem head font
+{.}         % Punctuation after theorem head
+{ }         % Space after theorem head, ' ', or \newline
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{mydefinitionstyle}
+
+\newtheorem{definition}{Définition}[subsection]
+\newtheorem{notation}[definition]{Notation}
+\newtheorem{remark}[definition]{Remarque}
+\newtheorem{exercise}[definition]{Exercice}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- THEOREM LIKE -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newtheoremstyle{mytheoremstyle} % Name
+{}          % Space above
+{}          % Space below
+{\slshape}  % Body font
+{}          % Indent amount
+{\bfseries} % Theorem head font
+{.}         % Punctuation after theorem head
+{ }         % Space after theorem head, ' ', or \newline
+{\thmname{#1}\thmnumber{ #2}\thmnote{ (#3)}} % Theorem head spec (can be left empty, meaning `normal')
+
+\theoremstyle{mytheoremstyle}
+
+\newtheorem{property}[definition]{Propriété}
+\newtheorem{proposition}[definition]{Proposition}
+\newtheorem{claim}[definition]{Fait}
+\newtheorem{lemma}[definition]{Lemme}
+\newtheorem{theorem}[definition]{Théorème}
+\newtheorem{corollary}[definition]{Corollaire}
+\newtheorem{axiom}[definition]{Axiome}
+\newtheorem{conjecture}[definition]{Conjecture}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- EXAMPLE LIKE -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\makeatletter
+\newcommand{\newexample}[2]{%
+	\newenvironment{#1}[1][]{%
+		\par%
+		\def \param{##1}%
+		\normalfont \topsep6\p@\@plus6\p@\relax%
+		\trivlist%
+		\item \relax%
+		{%
+			\itshape%
+			#2%
+			\ifx\param\empty%
+				\relax%
+			\else%
+				\ (\param)%
+			\fi%
+			\@addpunct{.}
+		}%
+		\hspace%
+		\labelsep%
+		\ignorespaces%
+	}{%
+		\endtrivlist\@endpefalse
+	}
+}
+\makeatother
+
+\newexample{example}{Exemple}
+\newexample{solution}{Solution}
+\newexample{question}{Question}
+\newexample{answer}{Réponse}

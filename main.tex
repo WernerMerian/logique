@@ -1,5 +1,168 @@
-\documentclass{article}
+% file: main.tex
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- DOCUMENT CLASS -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[11pt, a4paper, french]{book}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- CONFIGURATION -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{./preamble/usepackage.tex}
+
+\input{./preamble/macros/macros-text.tex}
+\input{./preamble/macros/macros-math.tex}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%
+%----- DOCUMENT -----%
+%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{document}
-	a
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%----- COVERMATTER -----%
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\pagestyle{empty}
+	
+	
+	%----- PAGE DE COUVERTURE -----%
+	
+	\renewcommand{\thepage}{Cover 1}
+	
+	\input{./content/covermatter/cover-page.tex}
+	
+	\makecover
+	\clearpage
+	
+	
+	%----- PAGE DE GARDE -----%
+	
+	\renewcommand{\thepage}{Cover 2}
+	
+	\null
+	\cleardoublepage
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	%----- FRONTMATTER -----%
+	%%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\frontmatter
+	
+	
+	%----- PAGE DE TITRE -----%
+	
+	\input{./content/frontmatter/title-page.tex}
+	
+	\renewcommand*{\thefootnote}{\fnsymbol{footnote}}
+	
+	\maketitle
+	\clearpage
+	
+	\renewcommand*{\thefootnote}{\arabic{footnote}}
+	
+	
+	%----- PAGE D'ÉDITION -----%
+	
+	\input{./content/frontmatter/edition-page.tex}
+	
+	\makeedition
+	\clearpage
+	
+	
+	%----- EPIGRAPHE -----%
+	
+	\cleardoublepage
+	
+	\input{./content/frontmatter/epigraphe-page.tex}
+	
+	\makeepigraphe
+	\cleardoublepage
+	
+	
+	%----- TABLE DES MATIÈRES -----%
+	
+	\pagestyle{fancy}
+	
+	\dominitoc
+	%\dominilof
+	%\dominilot
+	
+	\tableofcontents
+	%\listoffigures
+	%\listoftables
+	
+	
+	%----- INTRODUCTION GÉNÉRALE -----%
+	
+	\input{./content/frontmatter/general-introduction.tex}
+	
+	
+	%----- GLOSSAIRE -----%
+	
+	\glsaddall
+	\printglossaries
+	\mtcaddchapter
+	
+	
+	%----- SOMMAIRE -----%
+	
+	\input{./content/frontmatter/summary.tex}
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%
+	%----- MAINMATTER -----%
+	%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\mainmatter
+	
+	
+	%----- PARTIE PRINCIPALE -----%
+	
+	\part{Préliminaires}
+	
+	\input{./content/mainmatter/induction.tex}
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%%
+	%----- BACKMATTER -----%
+	%%%%%%%%%%%%%%%%%%%%%%%%
+	
+	\backmatter
+	
+	%----- ANNEXES -----%
+	
+	
+	
+	
+	%%%%%%%%%%%%%%%%%%%%%%%
+	%----- ENDMATTER -----%
+	%%%%%%%%%%%%%%%%%%%%%%%
+	
+	%----- RÉFÉRENCES -----%
+	
+	\printbibliography[%
+	heading = bibintoc,%
+	title   = {Références},%
+	]
+	
+	
+	%----- INDEX -----%
+	
+	\printindex
+	
+	
+	
 \end{document}

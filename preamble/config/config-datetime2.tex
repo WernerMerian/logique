@@ -1,0 +1,30 @@
+% file: config-datetime2.tex
+
+
+
+\newcommand*{\DTMfrenchfulltimesep}{\,}%
+
+\newcommand*{\DTMfrenchfullhourstring}{h}%
+\newcommand*{\DTMfrenchfullminstring}{min}%
+\newcommand*{\DTMfrenchfullsecstring}{s}%
+
+\DTMnewtimestyle{frenchfull}%
+{%
+	\renewcommand*\DTMdisplaytime[3]{%
+		\number##1%
+		\DTMfrenchfulltimesep%
+		\DTMfrenchfullhourstring%
+		\DTMfrenchfulltimesep%
+		\DTMtwodigits{##2}%
+		\DTMfrenchfulltimesep%
+		\DTMfrenchfullminstring%
+		\DTMfrenchfulltimesep
+		\DTMtwodigits{##3}%
+		\DTMfrenchfulltimesep%
+		\DTMfrenchfullsecstring%
+	}%
+}%
+
+\AtBeginDocument{%
+	\DTMsettimestyle{frenchfull}%
+}%

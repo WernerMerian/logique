@@ -1,11 +1,8 @@
 # logique
 
-Auteurs : Leclercq Titouan et Merian Werner
+Auteurs : Titouan Leclercq et Werner Mérian
 
-Nous cherchons dans ce projet à construire un cours de logique à la fois complet
-et accessible, se basant sur les cours que nous avons pu avoir lors de notre
-scolarité à l'\'Ecole Normale Supérieure de Lyon et au master Logique, Mathé-
-matiques, Fondements de l'Informatique.
+Nous cherchons dans ce projet à construire un cours de logique à la fois complet et accessible, se basant sur les cours que nous avons pu avoir lors de notre scolarité à l'École Normale Supérieure de Lyon et au Laster de Logique Mathématiques et des Fondements de l'Informatique (LMFI).
 
 L'ordre des chapitres est le suivant :
 
