@@ -34,5 +34,5 @@ mrproper: clean
 
 # SPECIAL BUILT-IN RULES
 
-.PHONY: $(OUTPUT) clean mrproper
+.PHONY: all clean mrproper
 
