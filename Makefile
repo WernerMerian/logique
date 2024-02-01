@@ -6,7 +6,9 @@ INPUT=$(MAIN).tex
 PACKAGES_DIR=./config/packages
 
 BUILD_DIR=./build
-OUTPUT=logique.pdf
+OUTPUT=$(MAIN).pdf
+
+PROJECT=logique
 
 MINTED_DIR=./_minted-main
 INKSCAPE_DIR=./svg-inkscape
@@ -20,7 +22,7 @@ $(OUTPUT):
 	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(INPUT)
 	makeglossaries -d $(BUILD_DIR) $(MAIN)
 	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(INPUT)
-	cp $(BUILD_DIR)/$(OUTPUT) ./
+	cp $(BUILD_DIR)/$(OUTPUT) ./$(PROJECT).pdf
 
 
 # CLEANING
@@ -36,5 +38,5 @@ mrproper: clean
 
 # SPECIAL BUILT-IN RULES
 
-.PHONY: all clean mrproper
+.PHONY: all $(OUTPUT) clean mrproper
 
