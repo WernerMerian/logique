@@ -22,7 +22,7 @@ $(OUTPUT):
 	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(INPUT)
 	makeglossaries -d $(BUILD_DIR) $(MAIN)
 	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(INPUT)
-	cp $(BUILD_DIR)/$(OUTPUT) ./$(PROJECT).pdf
+	cp $(BUILD_DIR)/$(OUTPUT) $(PROJECT).pdf
 
 
 # CLEANING
@@ -31,7 +31,7 @@ clean:
 	$(RM) -r $(BUILD_DIR) $(MINTED_DIR) $(INKSCAPE_DIR)
 
 mrproper: clean
-	$(RM) $(OUTPUT)
+	$(RM) $(PROJECT).pdf
 	find . -name "*.log" -type f -delete
 	find . -name "*~" -type f -delete
 
