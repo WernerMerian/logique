@@ -1,6 +1,8 @@
-# logique
+# Cours de logique
 
 Auteurs : Titouan Leclercq et Werner Mérian
+
+## Présentation du projet
 
 Nous cherchons dans ce projet à construire un cours de logique à la fois complet et accessible, se basant sur les cours que nous avons pu avoir lors de notre scolarité à l'École Normale Supérieure de Lyon et au Laster de Logique Mathématiques et des Fondements de l'Informatique (LMFI).
 
@@ -43,3 +45,15 @@ V. Théorie de la démonstration
 12. Déduction naturelle
 
 13. Lambda-calcul
+
+
+## Protocole de compilation
+
+```bash
+$ make
+```
+
+
+## License
+
+This work ©2024 by Titouan Leclercq and Werner Mérian is licensed under [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
