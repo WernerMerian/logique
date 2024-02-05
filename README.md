@@ -4,7 +4,7 @@ Auteurs : Titouan Leclercq et Werner Mérian
 
 ## Présentation du projet
 
-Nous cherchons dans ce projet à construire un cours de logique à la fois complet et accessible, se basant sur les cours que nous avons pu avoir lors de notre scolarité à l'École Normale Supérieure de Lyon et au Laster de Logique Mathématiques et des Fondements de l'Informatique (LMFI).
+Nous cherchons dans ce projet à construire un cours de logique à la fois complet et accessible, se basant sur les cours que nous avons pu avoir lors de notre scolarité à l'École Normale Supérieure de Lyon et au Master de Logique Mathématiques et des Fondements de l'Informatique (LMFI).
 
 L'ordre des chapitres est le suivant :
 
