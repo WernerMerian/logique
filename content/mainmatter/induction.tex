@@ -201,25 +201,185 @@ pour aller d'un coin à l'autre du carré sont égaux.
   coïncider avec chaque $f_n$ sur $X_n$.
 \end{proof}
 
+\begin{remark}
+  Pour une signature $(C,\alpha)$ et un ensemble associé $X$, chaque $c\in C$
+  peut maintenant s'interpréter comme une fonction $c : X^{\alpha(c)}\to X$. Nous
+  confondrons dorénavant le constructeur et la fonction associée, et écrirons
+  donc sans distinction $(c,x_1,\ldots,x_p)$ et $c(x_1,\ldots,x_p)$ pour un
+  constructeur $c \in C$.
+\end{remark}
+
 Cet outil nous permet maintenant de définir des fonctions dont le domaine est
 un ensemble inductif en utilisant sa structure.
 
-Donnons un premier exemple de fonction récursive : la fonction $d :n\mapsto 2n$,
-définie de $\mathbb N$ dans $\mathbb N$. En effet, on peut la décrire par
-\begin{itemize}
-\item $d(0) = 0$
-\item $d(S\;n) = S\;S\;d(n)$
-\end{itemize}
-nous donnant alors une définition de $d$ grâce au théorème précédent.
+\begin{example}
+  Donnons un premier exemple de fonction récursive : la fonction
+  $d :n\mapsto 2n$, définie de $\mathbb N$ dans $\mathbb N$. En effet, on peut
+  la décrire par
+  \begin{itemize}
+  \item $d(0) = 0$
+  \item $d(S\;n) = S\;S\;d(n)$
+  \end{itemize}
+  nous donnant alors une définition de $d$ grâce au théorème précédent.
+\end{example}
 
-Un exemple à la fois d'ensemble inductif et de fonction récursive est le
-suivant. Soit $A$ un ensemble quelconque, on définit la signature des listes sur
-$A$ par la grammaire suivante :
-$$l ::= \mathrm{nil}\mid \mathrm{cons}(a,l)$$
-où $a\in A$. L'ensemble $\mathrm{List}\;A$ est alors l'ensemble inductif
-associé. On définit alors la fonction $|-|$, ou $l$, donnant la longueur d'une
-liste :
-\begin{itemize}
-\item $|\mathrm{nil}| = 0$
-\item $|\mathrm{cons}(a,l)| = 1 + |l|$
-\end{itemize}
+\begin{example}
+  Un exemple à la fois d'ensemble inductif et de fonction récursive est le
+  suivant. Soit $A$ un ensemble quelconque, on définit la signature des listes
+  sur $A$ par la grammaire suivante :
+  $$\ell ::= \mathrm{nil}\mid \mathrm{cons}(a,\ell)$$
+  où $a\in A$. L'ensemble $\mathrm{List}(A)$ est alors l'ensemble inductif
+  associé. On définit alors la fonction $|-|$ donnant la longueur d'une
+  liste :
+  \begin{itemize}
+  \item $|\mathrm{nil}| = 0$
+  \item $|\mathrm{cons}(a,\ell)| = 1 + |\ell|$
+  \end{itemize}
+\end{example}
+
+\begin{exercise}
+  Soit $A$ un ensemble. Donner une signature définissant l'ensemble
+  $\mathrm{BinTree}(A)$ des arbres
+  binaires étiquetés par $A$, constitué d'un objet arbre vide et d'un
+  constructeur binaire $\mathrm{node}$ prenant en argument un élément $a$ de $A$
+  et deux arbres $g$ et $d$ et retournant un nouvel arbre binaire, d'étiquette
+  $a$ et dont les deux sous-arbres sont $g$ et $d$.
+
+  Définir une fonction $h : \mathrm{BinTree}(A) \to \mathbb N$ donnant la
+  hauteur d'un arbre, c'est-à-dire la longueur du plus long chemin entre la
+  racine de l'arbre (la première étiquette) et une feuile (un arbre vide qui est
+  sous-arbre). On prend comme convention que $h(\mathrm{nil}) = 0$.
+
+  Définir une fonction $|-| : \mathrm{BinTree}(A) \to \mathbb N$ donnant le
+  nombre d'étiquettes d'un arbre.
+\end{exercise}
+
+\begin{exercise}
+  En utilisant la structure inductive de $\mathbb N$, définir la fonction
+  $+ : \mathbb N \times \mathbb N \to \mathbb N$. On pourra pour cela définir
+  la fonction $n \mapsto (m \mapsto n + m)$ et faire une fonction récursive sur
+  l'argument $n$.
+\end{exercise}
+
+Un procédé similaire est celui d'induction. Là où la récursion nous permet de
+définir une fonction depuis un ensemble inductif, l'induction va nous permettre
+de faire une preuve sur un ensemble inductif. Il s'agit donc, au lieu de donner
+une fonction $X \to Y$, de donner un prédicat $P \subseteq X$ et de montrer que
+$P = X$.
+
+\begin{theorem}[Principe d'induction]
+  Soit $(C,\alpha)$ une signature et $X$ l'ensemble inductif associé. Soit
+  $P\subseteq X$ un prédicat sur $X$. Si pour tous $c\in C$ et
+  $x_1,\ldots,x_p\in X^{\alpha(c)}$, la propriété
+  $$x_1\in P \text{ et } x_2\in P \text{ et }\ldots \text{ et }x_p\in P \implies
+  c(x_1,\ldots,x_p)\in P$$ est vérifiée,
+  alors $P = X$.
+\end{theorem}
+
+\begin{proof}
+  Pour prouver ce résultat, il suffit de montrer que pour tout $n\in\mathbb N$,
+  $X_n \subseteq P$ pour $(X_n)$ la suite d'ensembles construisant $X$. En
+  effectuant une récurrences sur $n$ :
+  \begin{itemize}
+  \item Si $n = 0$, alors $\varnothing \subseteq P$.
+  \item Supposons que $X_n \subseteq P$ pour $n \in \mathbb N$. Soit
+    $x \in X_{n+1}$. Par définition de $X_{n+1}$, on trouve $c \in C$ et
+    $x_1,\ldots,x_p \in X_n$ tels que $x = c(x_1,\ldots,x_p)$. Par hypothèse
+    de récurrence, on en déduit que pour tout $i\in\{1,\ldots,p\}$, $x_i\in P$.
+    Il vient donc, avec l'hypothèse du théorème sur $P$, que
+    $c(x_1,\ldots,x_p)\in P$.
+
+    On en conclus que $P\subseteq X_{n+1}$.
+  \end{itemize}
+
+  Ainsi, par récurrence, pour tout $n\in \mathbb N$, $X_n \subseteq P$.
+  Cela montre alors que
+  $$\bigcup_{n \in \mathbb N} X_n \subseteq P$$
+  ce qu'il fallait démontrer.
+\end{proof}
+
+On peut affiner ce résultat en distinguant deux sortes de constructeurs : d'un
+côté les constructeurs d'arité $0$, qui sont des constantes, et de l'autre les
+constructeurs d'arité supérieure à $1$. Le théorème précédent nous dit que pour
+prouver une proposition $P$ sur un ensemble inductif, il suffit de prouver qu'il
+contient les constantes et qu'il est stable par chaque constructeur. On remarque
+que dans le cas de $\mathbb N$, engendré par $0$ et $S$, ce principe nous dit
+qu'une partie $P$ contenant $0$ et telle que
+$\forall n\in\mathbb N, n\in P \implies n+1\in P$ est exactement $\mathbb N$ :
+c'est le principe de récurrence.
+
+Ainsi, puisque nous prouvons le principe d'induction à partir du principe de
+récurrence, et puisque le principe de récurrence est un cas particulier du
+principe d'induction, les deux sont logiquement équivalents. L'induction,
+cependant, est conceptuellement plus intéressante puisqu'elle peut s'utiliser
+dans plus de cas.
+
+\begin{exercise}
+  On considère $\mathbb N$ comme un ensemble inductif, et la fonction $d$
+  définie dans un exemple précédent. Montrer que pour tout $n \in \mathbb N$,
+  $d(n)$ est pair. On prendra comme définition de pair le prédicat
+  $\mathrm{pair}(n) \defeq \exists m\in\mathbb N, n = 2 \times m$.
+\end{exercise}
+
+\begin{exercise}
+  Soit un ensemble $A$. On définit
+  $\oplus : \mathrm{List}(A) \times \mathrm{List}(A)\to \mathrm{List}(A)$ par
+  induction sur le premier argument:
+  \begin{itemize}
+  \item Pour tout $\ell\in \mathrm{List}(A)$, $\mathrm{nil} \oplus \ell = \ell$.
+  \item Pour tous $\ell,\ell'\in\mathrm{List}(A), a\in A$,
+    $\mathrm{cons}(a,\ell) \oplus \ell' = \mathrm{cons}(a,\ell \oplus \ell')$.
+  \end{itemize}
+
+  Montrer que
+  $$\forall \ell,\ell'\in \mathrm{List}(A), |\ell\oplus \ell'|=|\ell|+|\ell'|$$
+\end{exercise}
+
+\section{Relation inductive}
+
+\subsection{Construction d'une relation inductive}
+
+Une façon de considérer les ensembles inductif est, étant donnée une signature,
+de prendre le plus petit ensemble stable par les constructeurs de cette
+signature. Le problème, pour faire cela, est que nous n'avons d'ensemble sur
+lequelle travailler a priori. C'est pourquoi la construction précédente
+définissait chaque ensemble intermédiaire pour en prendre l'union. Au contraire,
+pour définir les relations inductives, nous avons un ensemble ambiant et nous
+pouvons donc travailler sur la notion de plus petit ensemble stable. Pour
+pouvoir mieux appréhender les relations inductives, nous allons directement
+introduire les règles d'inférence.
+
+\begin{definition}[Règle d'inférence]
+  On appelle règle d'inférence une présentation de la forme suivante:
+  \begin{prooftree}
+    \AxiomC{$P_1$}
+    \AxiomC{$P_2$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$P_n$}
+    \QuaternaryInfC{$P$}
+  \end{prooftree}
+  Où $P_1,\ldots,P_n$ sont appelées les prémisses de la règle, et $P$ est
+  appelée la conclusion de la règle. On dit que la règle est juste si, lorsque
+  toutes les prémisses de la règle sont vérifiées, alors la conclusion est aussi
+  vérifiée.
+
+  Une règle peut contenir plusieurs paramètres, par exemple
+  \begin{prooftree}
+    \AxiomC{$a = b$}
+    \AxiomC{$P(a)$}
+    \BinaryInfC{$P(b)$}
+  \end{prooftree}
+  auquel cas la règle est juste lorsqu'elle est juste pour chaque instance
+  possible de ces paramètres. Dans l'exemple, on suppose que $a$ et $b$ sont
+  quantifiés sur un certain ensemble $A$, et la règle est donc juste lorsque
+  $\forall a,b\in A, ((a = b) \text{ et } P(a)) \implies P(b)$.
+\end{definition}
+
+Rappelons la définition d'une relation.
+
+\begin{definition}[Relation]
+  Soit $X$ un ensemble. On appelle relation sur $X$ une partie $R\subseteq X^n$
+  où $n\in\mathbb N$ est appelé l'arité de la relation $R$.
+\end{definition}
+
+Une relation 
