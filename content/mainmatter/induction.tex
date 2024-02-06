@@ -4,4 +4,222 @@
 
 \minitoc
 
-\lipsum
+L'un des outils fondamentaux en logique est l'induction. Intuitivement, elle
+peut se voir comme une généralisation du principe de récurrence. Nous allons
+cependant adopter un formalisme différent de celui utilisé pour faire une simple
+récurrence. Les objets principaux sur lesquels nous utiliserons l'induction sont
+les ensembles inductifs et les relations inductives, que nous présenterons. Ces
+deux objets sont associés à des formalismes différents : le premier aux
+grammaire en forme de Backus-Naur, et le deuxième aux points fixes et à la
+théorie des treillis. Comme la théorie des treillis sera étudiée plus tard dans
+cette partie préliminaire, nous ne traiterons qu'un cas restreint suffisant pour
+le travail sur l'induction.
+
+\section{Ensemble inductif}
+
+\subsection{Construction d'un ensemble inductif}
+
+Au niveau intuitif, les ensembles finis semblent avoir une réalité plus
+robuste que les ensembles infinis. Il est en effet très facile de se convaincre
+à partir de règles simples qu'il existe un ensemble à $3$ éléments, ou à $n$
+éléments pour $n$ aussi grand que l'on veut (bien que se convaincre qu'il existe
+un ensemble à $300!$ éléments semble légèrement plus long). Cette robustesse
+découle du fait qu'on peut explicitement les construire, et cette possibilité
+n'existe que pour un ensemble fini. Pourtant, l'ensemble $\mathbb N$ tend aussi
+à être plus facilement accepté qu'un ensmeble tel que $\mathbb R / \mathbb Q$.
+Un point essentiel qui rend le premier ensemble logiquement plus simple que le
+deuxième est qu'il est facile à engendrer : l'ensemble $\mathbb N$ est constitué
+de l'élément $0$ et de l'opération $S$ définie par $n \mapsto n + 1$, et tout
+autre élément de $\mathbb N$ peut être construit à partir de ces deux éléments.
+Sa structure est donc fondamentalement simple, et peut être décrite en des
+termes finis.
+
+C'est exactement cette idée de structure générée par des termes finis qui est
+formalisée par les ensembles inductifs. Un ensemble inductif va être un ensemble
+obtenu par une liste de générateurs, chaque générateur ayant une arité (un
+nombre d'objets qu'il prend en entrée). Dans cette définition d'ensemble
+inductif, l'exemple canonique est bien sûr $\mathbb N$ lui-même, qu'on peut
+définir par :
+\begin{itemize}
+\item un constructeur sans argument, $0$
+\item un constructeur à un argument, $S$
+\end{itemize}
+
+Avant de donner la définition d'ensemble inductif, nous allons donner un
+formalisme pour parler des constructeurs.
+
+\begin{definition}[Signature]
+  Une signature est un couple $C,\alpha$ tel que $\alpha : C \to \mathbb N$.
+  On appelle $C$ l'ensemble des constructeurs et, pour $c \in C$, $\alpha(c)$
+  est appelé l'arité de $c$.
+\end{definition}
+
+Une signature sera généralement donnée sous forme dite de Backus-Naur. Cette
+présentation se décompose de la façon suivante :
+$$a,b,\ldots ::= \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots$$
+où $a,b,\ldots$ représentent les éléments que les constructeurs définissent,
+et où chaque cas est la définition d'un nouveau constructeur (ou d'une famille
+de constructeurs). Par exemple pour le cas de $\mathbb N$, nous avons :
+$$n ::= 0 \mid S\;n$$
+Il est fréquent d'employer des variables qui seront quantifiées hors de la
+définition à proprement parler, comme
+$$l ::= \mathrm{nil} \mid \mathrm{cons}(a,l)$$
+où $a \in A$ et $A$ est certain ensemble fixé au préalable. Cette définition
+doit se lire comme l'ensemble $(\{\mathrm{nil}\} \cup A,\alpha)$ où $\alpha$
+est défini par :
+$$
+\begin{array}{rcccl}
+  \alpha &:& C & \longrightarrow & \mathbb N\\
+  & & \mathrm{nil} & \longmapsto & 0 \\
+  & & a (\in A) & \longmapsto & 1
+\end{array}
+$$
+
+Voyons maintenant comment associer à une signature un ensemble généré par les
+constructeurs donnés dans la signature. L'ensemble généré doit être un ensemble
+$X$ contenant, pour chaque $x_1,\ldots,x_n \in X$ et $c \in C$ d'arité $n$,
+l'objet $c(x_1,\ldots,x_n)$, et ne doit contenir que les objets de cette forme.
+Nous procédons alors par le bas : un premier ensemble est construit par
+l'ensemble $C_0 = \{ c \in C \mid \alpha(c) = 0\}$, puis l'ensemble $C_1$ est
+construit par $C_1 = C_0 \cup \{ c(x_1,\ldots,x_n) \mid c \in C, x_1,\ldots,
+x_n \in C_0, \alpha(c) = n\}$ et ainsi de suite. Comme $c$ est simplement un
+élément dans notre cas, écrire $c(x_1,\ldots,x_n)$ n'a pas de sens, c'est
+pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
+
+\begin{definition}[Ensemble inductif sur une signature]
+  Soit $(C,\alpha)$ une signature, on définit la suite d'ensembles
+  $(X_i)_{i\in\mathbb N}$ par :
+  \begin{itemize}
+  \item $X_0 = \varnothing$
+  \item $X_{n+1} = \{ (c,x_1,\ldots,x_p) \mid c\in C, (x_1,\ldots,x_p)\in (X_n)^p,
+    \alpha(c) = p \}$
+  \end{itemize}
+
+  L'ensemble inductif engendré par $(C,\alpha)$ est alors l'ensemble
+  $$X = \bigcup_{n\in \mathbb N} X_n$$
+\end{definition}
+
+La définition donnée n'est pas exactement celle décrite plus haut, mais la
+proposition suivante assure que l'union finale génère bien le même ensemble
+avec les deux méthodes.
+
+\begin{proposition}
+  Soit $(C,\alpha)$ une signature, $X$ l'ensemble inductif engendré par cette
+  signature et $(X_n)$ la suite précédemment construite. Alors
+  $$\forall n,m \in \mathbb N, n \leq m \implies X_n \subseteq X_m$$
+\end{proposition}
+
+\begin{proof}
+  On procède par récurrence sur $n$ :
+  \begin{itemize}
+  \item comme $X_0 = \varnothing$, il est évident que
+    $\varnothing \subseteq X_m$ pour tout $m \in\mathbb N$.
+  \item supposons que $X_n \subseteq X_m$ pour tout $m \geq n$. Alors
+    $$X_{n+1} = \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
+    \alpha(c) = p\}$$
+    mais par inclusion, comme $(x_1,\ldots,x_p)\in (X_n)^p$, on en déduit que
+    $(x_1,\ldots,x_p)$ est aussi dans $(X_m)^p$, pour tout $m \geq n$. Ainsi
+    $(c,x_1,\ldots,x_p) \in X_{m+1}$ pour tout $m \geq n$, donc
+    $X_{n+1}\subseteq X_m$ pour tout $m \geq n+1$.
+  \end{itemize}
+\end{proof}
+
+\subsection{Récursion et induction}
+
+Maintenant qu'une construction a été donnée d'un ensemble inductif, il faut
+vérifier que le comportement que l'on a décrit est en accord avec le
+comportement réel de l'ensemble que l'on a construit. Nous avons dit que
+l'ensemble engendré par $(C,\alpha)$ doit contenir exactement les éléments de
+la forme $c(x_1,\ldots,x_n)$ où $x_i \in X$ pour tout $i\in\{1,\ldots,n\}$, mais
+une autre façon de penser le fait que l'ensemble ne contient que des
+applications de constructeurs est le fait qu'une fonction partant d'un ensemble
+inductif est exactement spécifiée par son comportement sur les constructeurs.
+De telle fonctions sont appelées récursives, car elles peuvent faire appel à
+elles-mêmes pour s'appliquer sur les arguments d'un constructeurs, comme nous le
+verrons en pratique. Nous verrons ensuite que ce principe de définition
+récursive peut se modifier pour donner le principe d'induction, un analogue à
+la preuve par récurrence pour un ensemble inductif quelconque.
+
+\begin{theorem}[Propriété universelle des ensembles inductifs]
+  Soit $(C,\alpha)$ une signature, et $X$ l'ensemble associé à cette signature.
+  Soit un ensemble $Y$ quelconque.
+  Soit une famille de fonctions $\{f_c\}_{c\in C}$ telles que pour tout $c\in C$,
+  $f_c : Y^{\alpha(c)} \to Y$ (avec la convention que $Y^0 = \{*\}$ est un
+  singleton quelconque). Alors il existe une unique fonction $f : X \to Y$
+  telle que
+  $$\forall c\in C, \forall (x_1,\ldots,x_p)\in X^{\alpha(c)},
+  f((c,x_1,\ldots,x_p)) = f_c (f(x_1),\ldots,f(x_p))$$
+\end{theorem}
+
+On peut représenter l'équation précédente par le diagramme suivant, où l'égalité
+signifie que le diagramme commute, c'est-à-dire que les deux chemins possibles
+pour aller d'un coin à l'autre du carré sont égaux.
+
+\begin{center}
+  \begin{tikzcd}
+    X^{\alpha(c)} \ar[r,"f^{\alpha(c)}"]\ar[d,"c"] & Y^{\alpha(c)} \ar[d,"f_c"] \\
+    X \ar[r,"f"] & Y
+  \end{tikzcd}
+\end{center}
+
+\begin{proof}
+  Soit $(X_n)$ la suite d'ensemble construite précédemment pour définir $X$. On
+  va prouver par récurrence sur $n$ la proposition suivante :
+  $$\forall n\in \mathbb N, \exists ! f : X_n \to Y, \forall c \in C,
+  \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)}, f((c,x_1,\ldots,x_p))
+  = f_c(f_n(x_1),\ldots,f_n(x_p))$$
+  \begin{itemize}
+  \item Si $n = 0$, il existe une unique fonction $f_0 : \varnothing \to Y$ et
+    elle vérifie la propriété par vacuité.
+  \item Soit $n \in \mathbb N$. Supposons qu'il existe une unique fonction
+    $f_n : X_n \to Y$ telle que
+    $$\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)},
+    f((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))$$
+    On définit alors
+    $$\begin{array}{rcccl}
+      f_{n+1} &:& X_{n+1} &\longrightarrow & Y \\
+      & & (c,x_1,\ldots,x_p) & \longmapsto & f_c(f_n(x_1),\ldots,f_n(x_p))
+    \end{array}$$
+    On remarque que cette fonction vérifie bien la propriété. De plus, si une
+    autre fonction $g$ vérifie la propriété, alors pour $x\in X_{n+1}$, on trouve
+    $c\in C$ et $x_1,\ldots,x_p \in X_n$ tels que $x = (c,x_1,\ldots,x_p)$, on a
+    alors
+    \begin{align*}
+      f_{n+1}(x) &= f((c,x_1,\ldots,x_p)) \\
+      &= f_c(f_n(x_1),\ldots,f_n(x_n)) \\
+      &= g((c,x_1,\ldots,x_p))\\
+      &= g (x)
+    \end{align*}
+    Donc pour tout $x\in X_{n+1}$, $f_{n+1} = g(x)$, ce qui signifie que
+    $f_{n+1} = g$, d'où l'unicité de $f_{n+1}$.
+  \end{itemize}
+
+  Soit $x \in X$, par définition on trouve $n\in \mathbb N$ tel que $x \in X_n$,
+  et on peut donc définir $f(x) = f_n(x)$. Pour montrer que la fonction est
+  unique, il suffit de remarquer que toute fonction $X \to Y$ vérifiant les
+  prémisses du théorème induit une fonction sur chaque $X_n$, et doit donc
+  coïncider avec chaque $f_n$ sur $X_n$.
+\end{proof}
+
+Cet outil nous permet maintenant de définir des fonctions dont le domaine est
+un ensemble inductif en utilisant sa structure.
+
+Donnons un premier exemple de fonction récursive : la fonction $d :n\mapsto 2n$,
+définie de $\mathbb N$ dans $\mathbb N$. En effet, on peut la décrire par
+\begin{itemize}
+\item $d(0) = 0$
+\item $d(S\;n) = S\;S\;d(n)$
+\end{itemize}
+nous donnant alors une définition de $d$ grâce au théorème précédent.
+
+Un exemple à la fois d'ensemble inductif et de fonction récursive est le
+suivant. Soit $A$ un ensemble quelconque, on définit la signature des listes sur
+$A$ par la grammaire suivante :
+$$l ::= \mathrm{nil}\mid \mathrm{cons}(a,l)$$
+où $a\in A$. L'ensemble $\mathrm{List}\;A$ est alors l'ensemble inductif
+associé. On définit alors la fonction $|-|$, ou $l$, donnant la longueur d'une
+liste :
+\begin{itemize}
+\item $|\mathrm{nil}| = 0$
+\item $|\mathrm{cons}(a,l)| = 1 + |l|$
+\end{itemize}
