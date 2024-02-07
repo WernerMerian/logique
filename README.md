@@ -53,7 +53,7 @@ Dépendances :
 
 - [ ] TeX live
 - [ ] latexmk
-- [ ] le package python `Pygments`, voir: [https://pygments.org/](https://pygments.org/). Ce package python est requis par le package LaTeX `minted`, pour la coloration syntaxique notamment.)
+- [ ] le package python `Pygments`, voir: [https://pygments.org/](https://pygments.org/). Ce package python est requis par le package LaTeX `minted`, pour la coloration syntaxique notamment.
 
 Compilation : lancer la commande suivante
 
