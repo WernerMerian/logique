@@ -73,7 +73,7 @@ de constructeurs). Par exemple pour le cas de $\mathbb N$, nous avons :
 $$n ::= 0 \mid S\;n$$
 Il est fréquent d'employer des variables qui seront quantifiées hors de la
 définition à proprement parler, comme
-$$l ::= \mathrm{nil} \mid \mathrm{cons}(a,l)$$
+$$\ell ::= \mathrm{nil} \mid \mathrm{cons}(a,\ell)$$
 où $a \in A$ et $A$ est certain ensemble fixé au préalable. Cette définition
 doit se lire comme l'ensemble $(\{\mathrm{nil}\} \cup A,\alpha)$ où $\alpha$
 est défini par :
@@ -131,6 +131,28 @@ avec les deux méthodes.
     $(x_1,\ldots,x_p)$ est aussi dans $(X_m)^p$, pour tout $m \geq n$. Ainsi
     $(c,x_1,\ldots,x_p) \in X_{m+1}$ pour tout $m \geq n$, donc
     $X_{n+1}\subseteq X_m$ pour tout $m \geq n+1$.
+  \end{itemize}
+\end{proof}
+
+Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
+
+\begin{lemma}[Lecture unique]
+  Soit une signature $(C,\alpha)$ et l'ensemble $X$ engendré par cette
+  signature. Alors pour tout élément $x \in X$, il existe $c\in C$ et
+  $x_1,\ldots,x_p \in X$ (possiblement une famille vide si $\alpha(c) = 0$)
+  telle que $p = \alpha(c)$ et $x = (c,x_1,\ldots,x_p)$.
+\end{lemma}
+
+\begin{proof}
+  Soit $(X_n)$ la suite d'ensemble définie précédemment telle que $X$ en est
+  l'union. Si $x\in X$, alors on trouve $n \in \mathbb N$ tel que $x\in X_n$.
+  Par disjonction de cas sur ce $n$, on prouve le résultat :
+  \begin{itemize}
+  \item si $n = 0$ alors l'hypothèse $x \in X_0$ signifie qu'on a
+    $x\in \varnothing$ : par absurdité de la prémisse, la conclusion est vraie.
+  \item si $n = m+1$, alors $x\in X_n$ signifie que
+    $x \in \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
+    \alpha(c) = p\}$ d'où le résultat par définition.
   \end{itemize}
 \end{proof}
 
@@ -646,7 +668,7 @@ syntaxiquement prouver la correspondance avec la règle.
   sur $R$ est exactement $R$.
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{exo:pair_list}
   Avec les définitions précédentes, montrer que la règle
   \begin{prooftree}
     \AxiomC{$\mathrm{pair}(\ell)$}
@@ -666,3 +688,33 @@ syntaxiquement prouver la correspondance avec la règle.
   au principe de récursion pour les ensembles inductifs, permettant de définir
   une fonction $R \to Y$ pour un ensemble $Y$ quelconque.
 \end{exercise}
+
+Enfin, donnons le lemme d'inversion, que l'on peut voir comme un affaiblissement
+de l'induction sur une relation, pour une seule étape.
+
+\begin{theorem}[Inversion]
+  Soient des règles $\mathrm r_1,\ldots,\mathrm r_n$, un ensemble $E$ et $R$ la
+  relation définie sur $R$ par ces règles. Si $R(x_1,\ldots,x_p)$ pour un tuple
+  $(x_1,\ldots,x_p)\in E$, alors il existe $i\in\{1,\ldots,n\}$ et des instances
+  $P_1,\ldots,P_k$ des prémisses de $\mathrm r_i$ tels que
+  \begin{prooftree}
+    \AxiomC{$P_1$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$P_k$}
+    \RightLabel{$\mathrm r_i$}
+    \TrinaryInfC{$R(x_1,\ldots,x_p)$}
+  \end{prooftree}
+  est vérifiée.
+\end{theorem}
+
+\begin{proof}
+  Pour prouver ce résultat, il suffit de le prouver par induction sur la
+  relation $R$. Mais alors, pour chaque cas de la règle à vérifier, le résultat
+  est vrai par hypothèse.
+\end{proof}
+
+Ce résultat permet de travailler par disjonction de cas lorsque l'on étudie une
+relation inductive. On peut l'assimiler au lemme de lecture unique. Par exemple,
+il permet de dire à partir de $\mathrm{pair}(\ell)$ que $\ell$ est soit la liste
+vide, soit $\mathrm{cons}(a,\mathrm{cons}(b,\ell))$ pour deux éléments
+$a,b\in A$, en prenant les conventions de l'exercice \ref{exo:pair_list}.
