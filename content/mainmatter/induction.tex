@@ -14,6 +14,17 @@ théorie des treillis. Comme la théorie des treillis sera étudiée plus tard d
 cette partie préliminaire, nous ne traiterons qu'un cas restreint suffisant pour
 le travail sur l'induction.
 
+L'objectif de ce chapitre est de donner une justification mathématique aux
+procédés qui seront utilisés par la suite, et d'offrir un modèle mathématique
+derrière le formalisme introduit, pour le lecteur qui en aurait besoin. Le point
+essentiel est avant tout de comprendre comment fonctionne une preuve par
+induction et comment utiliser les objets inductifs, puisqu'ils seront utilisés
+sans arrêt par la suite. Cependant, les justifications mathématiques données
+sont partielles : tous les cas ne se ramènent pas à ceux traités de façon
+évidente. Le lecteur le plus prudent devra trouver comment adapter le formalisme
+donné dans ce chapitre aux multiples variantes qui seront utilisées sans le dire
+par la suite.
+
 \section{Ensemble inductif}
 
 \subsection{Construction d'un ensemble inductif}
@@ -348,6 +359,15 @@ pouvons donc travailler sur la notion de plus petit ensemble stable. Pour
 pouvoir mieux appréhender les relations inductives, nous allons directement
 introduire les règles d'inférence.
 
+Rappelons la définition d'une relation.
+
+\begin{definition}[Relation]
+  Soit $X$ un ensemble. On appelle relation sur $X$ une partie $R\subseteq X^n$
+  où $n\in\mathbb N$ est appelé l'arité de la relation $R$.
+\end{definition}
+
+Une règle d'inférence, elle, va relier des relations.
+
 \begin{definition}[Règle d'inférence]
   On appelle règle d'inférence une présentation de la forme suivante:
   \begin{prooftree}
@@ -355,6 +375,7 @@ introduire les règles d'inférence.
     \AxiomC{$P_2$}
     \AxiomC{$\cdots$}
     \AxiomC{$P_n$}
+    \RightLabel{r}
     \QuaternaryInfC{$P$}
   \end{prooftree}
   Où $P_1,\ldots,P_n$ sont appelées les prémisses de la règle, et $P$ est
@@ -372,13 +393,276 @@ introduire les règles d'inférence.
   possible de ces paramètres. Dans l'exemple, on suppose que $a$ et $b$ sont
   quantifiés sur un certain ensemble $A$, et la règle est donc juste lorsque
   $\forall a,b\in A, ((a = b) \text{ et } P(a)) \implies P(b)$.
+
+  \'Etant donnée une règle r comme précédemment avec un paramètre $X$ non
+  spécifié, on notera $R\models \mathrm{r}$ si la règle r est juste en prenant
+  $R$ pour le paramètre $X$. De même, on notera
+  $R,x_1,\ldots,x_n\models \mathrm{r}$ dans le cas où l'ont remplace plusieurs
+  paramètres.
 \end{definition}
 
-Rappelons la définition d'une relation.
+Ainsi, à une règle de la forme
+\begin{prooftree}
+  \AxiomC{$P_1$}
+  \AxiomC{$P_2$}
+  \AxiomC{$\cdots$}
+  \AxiomC{$P_n$}
+  \RightLabel{r}
+  \QuaternaryInfC{$P$}
+\end{prooftree}
+avec un paramètre $R$ fixé d'arité $n\in\mathbb N$ et sur un ensemble $E$, on
+peut associer une fonction
+$$\begin{array}{rcccl}
+  r &:& \mathcal P(E^n) & \longrightarrow & \mathcal P(E^n) \\
+  & & R & \longmapsto & R \cup
+  \{ (x_1,\ldots,x_n) \in E^n\mid R,x_1,\ldots,x_n\models \mathrm {r}\}
+\end{array}$$
+où tous les paramètres n'apparaissant pas dans la conclusion sont quantifiés de
+façon existentielle.
 
-\begin{definition}[Relation]
-  Soit $X$ un ensemble. On appelle relation sur $X$ une partie $R\subseteq X^n$
-  où $n\in\mathbb N$ est appelé l'arité de la relation $R$.
+\begin{example}
+  Prenons la règle
+  \begin{prooftree}
+    \AxiomC{$x = y$}
+    \RightLabel{refl}
+    \UnaryInfC{$R(x,y)$}
+  \end{prooftree}
+  exprimant que la règle $R$ est réflexive. La fonction $\mathrm{refl}$ est
+  alors $R \mapsto R \cup \{(x,x)\mid x \in E\}$.
+
+  Dans ce genre de cas, on écrira de façon plus compacte la règle par
+  \begin{prooftree}
+    \AxiomC{}
+    \UnaryInfC{$R(x,x)$}
+  \end{prooftree}
+\end{example}
+
+\begin{example}
+  La règle précédente n'utilisait pas $R$ dans ses prémisses, un exemple
+  l'utilisant est la règle exprimant la transivité :
+  \begin{prooftree}
+    \AxiomC{$R(x,y)$}
+    \AxiomC{$R(y,z)$}
+    \RightLabel{trans}
+    \BinaryInfC{$R(x,z)$}
+  \end{prooftree}
+  Dans ce cas, l'image de $R$ par $\mathrm{trans}$ est l'ensemble
+  $R \cup \{ (x,z) \in E^2\mid \exists z \in E, R(x,y)\text{ et } R(y,z)\}$.
+\end{example}
+
+Supposons maintenant que nous ayons une relation $R$ et une règle $\mathrm r$,
+$R$ ne vérifiant pas forcément $\mathrm r$. Nous cherchons alors à construire à
+partir de $R$ une relation vérifiant $\mathrm r$. Une remarque essentielle : si
+$R$ vérifie $\mathrm r$, alors $R$ est un point fixe de la fonction $r$
+associée. On va ainsi chercher à créer un point fixe de la fonction associée.
+Pour cela, nous allons donner un théorème essentiel en logique : le théorème de
+Knaster-Tarski.
+
+\begin{theorem}[Knaster-Tarski (faible)]
+  Soit un ensemble $E$ quelconque, et une fonction
+  $f : \mathcal P(E) \to \mathcal P(E)$ croissante pour $\subseteq$,
+  c'est-à-dire telle que
+  $$\forall A,B\in\mathcal P(E), A\subseteq B \implies f(A)\subseteq f(B)$$
+  Alors il existe un plus petit point fixe de $f$ pour $\subseteq$, ou de façon
+  équivalente il existe un élément $A\in \mathcal P(E)$ tel que $f(A)=A$ et tel
+  que pour tous $B\in\mathcal P(E)$ tel que $f(B)=B$, $A\subseteq B$.
+\end{theorem}
+\begin{proof}
+  Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
+  $$\mathrm{prefix}(f) = \{ A \in \mathcal P(E)\mid f(A)\subseteq A\}$$
+  Soit $\alpha = \bigcap \mathrm{prefix}(f)$, montrons que $\alpha$ est dans
+  $\mathrm{prefix}(f)$ :
+
+  Pour cela, il suffit de montrer que $f(\alpha)\subseteq \alpha$, mais comme
+  $\alpha$ est une intersection, il suffit de montrer que pour tout
+  $A\in\mathrm{prefix}(f), f(\alpha)\subseteq A$. Pour montrer cela, on
+  remarque par transitivité de $\subseteq$ qu'il suffit de montrer que
+  $f(\alpha)\subseteq f(A)$ pour tout $A\in \mathrm{prefix}(f)$, mais cela est
+  direct en utilisant le fait que $f$ est croissante et que pour tout
+  $A\in \mathrm{prefix}(f)$, $\alpha \subseteq A$. Ainsi
+  $f(\alpha)\subseteq \alpha$.
+
+  De plus, comme $f(\alpha)\subseteq \alpha$, on en déduit par croissance de
+  $f$ que $f(f(\alpha))\subseteq f(\alpha)$, c'est-à-dire que $f(\alpha)$ est
+  lui aussi un élément de $\mathrm{prefix}(f)$ : comme $\alpha$ en est une
+  borne inférieure, cela signifie que $\alpha \subseteq f(\alpha)$, d'où en
+  utilisant l'inclusion précédente, $f(\alpha) = \alpha$.
+
+  De plus, si $B$ est un point fixe de $f$, alors $f(B)\subseteq B$ donc par
+  définition de $\alpha$, $\alpha \subseteq B$.
+\end{proof}
+
+\begin{exercise}
+  Soit $E$ un ensemble quelconque et $f : \mathcal P(E) \to \mathcal P(E)$ une
+  fonction croissante pour l'inclusion, et $A \in \mathcal P(A)$. Montrer que
+  l'on peut étendre le théorème pour trouver un plus petit point fixe $\alpha$
+  tel que $A\subseteq \alpha$.
+\end{exercise}
+
+\begin{exercise}
+  Soit $E$ un ensemble quelconque, et $f : \mathcal P(E) \to \mathcal P(E)$ une
+  fonction croissante pour l'inclusion. On définit
+  $g_f : \mathcal P(E) \to \mathcal P(E)$ par $X \mapsto X \cup f(X)$. Montrer
+  que $g_f$ est croissante pour l'inclusion.
+\end{exercise}
+
+Des deux exercises précédents, on peut déduire le résultat suivant :
+
+\begin{corollary}[Définition d'une relation inductive]
+  Soit une règle $\mathrm r$ sur un ensemble $E$ et une relation $R$. Alors il
+  existe une plus petite relation $R_r$ contenant $R$ et stable par $r$. On dit
+  alors que cette relation $R_r$ est la relation définie par $r$ sur $R$. Si
+  $R = \varnothing$, on dira seulement que la relation est définie par $r$.
+\end{corollary}
+
+Cela nous permet alors de définir le principe d'induction sur les relations,
+qui est très proche de celui sur les ensembles inductifs.
+
+\begin{theorem}[Induction sur une relation]
+  Soit $E$ un ensemble, $R$ une relation $n$-aire sur $E$ et $r$ une règle
+  d'inférence incluant comme paramètre $R$. Soit $P \subseteq \mathcal P(E^n)$
+  un prédicat d'arité $n$ sur $E$. Supposons que $R\subseteq P$ et que
+  $P\models \mathrm r$. Alors $R'\subseteq P$.
+\end{theorem}
+
+\begin{proof}
+  Il suffit de remarquer que $P$ est un point fixe de $r$ puisque
+  $P\models \mathrm r$. Ainsi, comme $P$ est un point fixe de $r$ contenant
+  $R$, on en déduit que $P$ contient le plus petit point fixe de $r$ contenant
+  $R$, qui est exactement $R'$.
+\end{proof}
+
+Ce résultat est essentiel pour prouver beaucoup de résultats : étant donnée une
+relation $R$ construite par induction, pour montrer un résultat de la forme
+$\forall x_1,\ldots,x_n\in E, R(x_1,\ldots,x_n)\implies P(x_1,\ldots,x_n)$ pour
+un certain prédicat $P$, il suffit de montrer que ce prédicat est stable par
+la règle le définissant.
+
+\begin{exercise}
+  Soient désormais $n$ règles $\mathrm r_1,\ldots,\mathrm r_n$ incluant toutes
+  un paramètre $R$ d'arité $p$. Montrer qu'on peut leur associer une fonction
+  $r_{1,\ldots,n} : \mathcal P(E^p) \to \mathcal P(E^p)$ croissante. En déduire
+  un analogue des propositions précédentes pour un nombre fini de règles.
+\end{exercise}
+
+\begin{remark}
+  La plupart des relations inductives que nous construirons utilisent plusieurs
+  règles, mais l'idée de la construction pour une seule règle suffit. L'exercice
+  précédent sert principalement pour justifier au lecteur le plus dubitatif que
+  le procédé fonctionne effectivement aussi pour plusieurs règles.
+\end{remark}
+
+\begin{exercise}
+  Soit une relation $R$ et une règle $\mathrm r$. Montrer que la relation $R'$
+  définie par $\mathrm r$ sur $R$ est la même que la relation $R''$ définie
+  par la règle $\mathrm r$ et la règle
+  \begin{prooftree}
+    \AxiomC{$R(x_1,\ldots,x_n)$}
+    \UnaryInfC{$R''(x_1,\ldots,x_n)$}
+  \end{prooftree}
+\end{exercise}
+
+\begin{remark}
+  On définira dorénavant des relations inductives seulement par des règles.
+\end{remark}
+
+\begin{exercise}
+  Soit $A$ un ensemble quelconque. On définit sur $\mathrm{List}(A)$ le prédicat
+  $\mathrm{pair}$ par induction avec les règles suivantes :
+  \begin{center}
+    \begin{prooftree}
+      \AxiomC{}
+      \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
+    \end{prooftree}
+    \begin{prooftree}
+      \AxiomC{$\mathrm{pair}(\ell)$}
+      \UnaryInfC{$\mathrm{pair}(\mathrm{cons}(a,\mathrm{cons}(b,\ell)))$}
+    \end{prooftree}
+  \end{center}
+  Montrer l'assertion suivante :
+  $$\forall \ell \in \mathrm{List}(A), \mathrm{pair}(\ell) \implies
+  \mathrm{pair}(|\ell|)$$
+  avec le prédicat $\mathrm{pair}$ sur les entiers défini précédemment.
+\end{exercise}
+
+\subsection{Dérivation d'arbre}
+
+Une autre utilité de ce formalisme des règles d'inférences est de permettre de
+définir une dérivation, qui est une preuve purement syntaxique qu'une certaine
+relation est vérifiée.
+
+\begin{definition}[Dérivation]
+  Soit une relation $R$ définie par des règles $r_1,\ldots,r_n$. Une dérivation
+  de $R(x_1,\ldots,x_p)$ est un arbre dont la racine est $R(x_1,\ldots,x_p)$ et
+  tel que chaque n\oe ud de l'arbre est une règle parmi $r_1,\ldots,r_n$ et
+  contient autant de sous-arbres que l'arité de la règle présente.
 \end{definition}
 
-Une relation 
+\begin{example}
+  Soit $A = \{0\}$, dérivons $\mathrm{pair}([0,0,0,0])$ où $[0,0,0,0]$ est une
+  abréviation pour
+  $\mathrm{cons}(0,\mathrm{cons}(0,\mathrm{cons}(0,\mathrm{cons}(0,
+  \mathrm{nil}))))$ :
+  \begin{prooftree}
+    \AxiomC{}
+    \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
+    \UnaryInfC{$\mathrm{pair}([0,0])$}
+    \UnaryInfC{$\mathrm{pari}([0,0,0,0])$}
+  \end{prooftree}
+\end{example}
+
+Par construction, comme une relation définie par des règles vérifie ces règles,
+et étant donnée la définition de \og vérifier une règle\fg{}, il ne fait aucun
+doute que si l'on peut dériver $R(x_1,\ldots,x_n)$, alors $R(x_1,\ldots,x_n)$
+est vraie.
+
+En logique, nous formalisons les preuves mathématiques comme de tels arbres, car
+leur structure simple permet de facilité l'étude du langage mathématique. Si,
+dans la réalité, on n'écrit pas une preuve comme une dérivation (nous le
+verrons, cette pratique est beaucoup trop laborieuse), il est communément admis
+qu'une preuve satisfaisante permet de savoir écrire un tel arbre mentalement.
+
+\'Etudions maintenant la notion de règle admissible et dérivable, correspondant
+respectivement à une règle vérifiée par une relation et à une règle dont on peut
+syntaxiquement prouver la correspondance avec la règle.
+
+\begin{definition}[Règle admissible]
+  Une règle $\mathrm r$ est admissible pour une relation $R$ si
+  $R\models \mathrm r$. La règle est admissible pour un ensemble de règles
+  $\mathrm r_1,\ldots,\mathrm r_n$ si la relation définie par ces règles vérifie
+  la règle $\mathrm r$.
+\end{definition}
+
+\begin{definition}[Règle dérivable]
+  Soit $R$ une relation définie par les règles $\mathrm r_1,\ldots,\mathrm r_n$,
+  une règle $\mathrm r$ est dérivable s'il existe une dérivation de la
+  conclusion de $\mathrm r$ utilisant les règles
+  $\mathrm r_1,\ldots,\mathrm r_n$ et les prémisses de $\mathrm r$.
+\end{definition}
+
+\begin{exercise}
+  Montrer qu'une règle dérivable est admissible et que si une règle est
+  admissible pour une relation $R$, alors la relation définie par cette règle
+  sur $R$ est exactement $R$.
+\end{exercise}
+
+\begin{exercise}
+  Avec les définitions précédentes, montrer que la règle
+  \begin{prooftree}
+    \AxiomC{$\mathrm{pair}(\ell)$}
+    \UnaryInfC{$\mathrm{pair}([a,b,c,d]\oplus \ell)$}
+  \end{prooftree}
+  est dérivable. Montrer que la règle
+  \begin{prooftree}
+    \AxiomC{$\mathrm{pair}(\mathrm{cons}(a,\mathrm{cons}(b,\ell)))$}
+    \UnaryInfC{$\mathrm{pair}(\ell)$}
+  \end{prooftree}
+  est admissible. Est-elle dérivable ?
+\end{exercise}
+
+\begin{exercise}
+  \'Etant donnée une relation $R$ inductive sur un ensemble $E$ définie par
+  des règles $\mathrm r_1,\ldots,\mathrm r_n$, donner une construction analogue
+  au principe de récursion pour les ensembles inductifs, permettant de définir
+  une fonction $R \to Y$ pour un ensemble $Y$ quelconque.
+\end{exercise}
