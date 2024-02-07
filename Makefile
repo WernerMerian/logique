@@ -1,14 +1,14 @@
 # IO
 
+PROJECT=logique
 MAIN=main
-INPUT=$(MAIN).tex
+
+TEX_INPUT=$(MAIN).tex
+PDF_OUTPUT=$(MAIN).pdf
 
 PACKAGES_DIR=./config/packages
 
 BUILD_DIR=./build
-OUTPUT=$(MAIN).pdf
-
-PROJECT=logique
 
 MINTED_DIR=./_minted-main
 INKSCAPE_DIR=./svg-inkscape
@@ -16,14 +16,11 @@ INKSCAPE_DIR=./svg-inkscape
 
 # GLOBAL RULES
 
-all: $(OUTPUT)
+all: pdf
 
-$(OUTPUT):
-	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(INPUT)
-	makeglossaries -d $(BUILD_DIR) $(MAIN)
-	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(INPUT)
-	cp $(BUILD_DIR)/$(OUTPUT) $(PROJECT).pdf
-
+pdf:
+	latexmk -pdf -outdir=$(BUILD_DIR) -shell-escape $(TEX_INPUT)
+	cp $(BUILD_DIR)/$(PDF_OUTPUT) $(PROJECT).pdf
 
 # CLEANING
 
@@ -38,5 +35,4 @@ mrproper: clean
 
 # SPECIAL BUILT-IN RULES
 
-.PHONY: all $(OUTPUT) clean mrproper
-
+.PHONY: all pdf clean mrproper
