@@ -66,24 +66,24 @@ formalisme pour parler des constructeurs.
 
 Une signature sera généralement donnée sous forme dite de Backus-Naur. Cette
 présentation se décompose de la façon suivante :
-$$a,b,\ldots ::= \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots$$
+\[a,b,\ldots ::= \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots\]
 où $a,b,\ldots$ représentent les éléments que les constructeurs définissent,
 et où chaque cas est la définition d'un nouveau constructeur (ou d'une famille
 de constructeurs). Par exemple pour le cas de $\mathbb N$, nous avons :
-$$n ::= 0 \mid S\;n$$
+\[n ::= 0 \mid S\;n\]
 Il est fréquent d'employer des variables qui seront quantifiées hors de la
 définition à proprement parler, comme
-$$\ell ::= \mathrm{nil} \mid \mathrm{cons}(a,\ell)$$
+\[\ell ::= \nil \mid \cons(a,\ell)\]
 où $a \in A$ et $A$ est certain ensemble fixé au préalable. Cette définition
-doit se lire comme l'ensemble $(\{\mathrm{nil}\} \cup A,\alpha)$ où $\alpha$
+doit se lire comme l'ensemble $(\{\nil\} \cup A,\alpha)$ où $\alpha$
 est défini par :
-$$
+\[
 \begin{array}{rcccl}
   \alpha &:& C & \longrightarrow & \mathbb N\\
   & & \mathrm{nil} & \longmapsto & 0 \\
   & & a (\in A) & \longmapsto & 1
 \end{array}
-$$
+\]
 
 Voyons maintenant comment associer à une signature un ensemble généré par les
 constructeurs donnés dans la signature. L'ensemble généré doit être un ensemble
@@ -106,7 +106,7 @@ pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
   \end{itemize}
 
   L'ensemble inductif engendré par $(C,\alpha)$ est alors l'ensemble
-  $$X = \bigcup_{n\in \mathbb N} X_n$$
+  \[X = \bigcup_{n\in \mathbb N} X_n\]
 \end{definition}
 
 La définition donnée n'est pas exactement celle décrite plus haut, mais la
@@ -116,7 +116,7 @@ avec les deux méthodes.
 \begin{proposition}
   Soit $(C,\alpha)$ une signature, $X$ l'ensemble inductif engendré par cette
   signature et $(X_n)$ la suite précédemment construite. Alors
-  $$\forall n,m \in \mathbb N, n \leq m \implies X_n \subseteq X_m$$
+  \[\forall n,m \in \mathbb N, n \leq m \implies X_n \subseteq X_m\]
 \end{proposition}
 
 \begin{proof}
@@ -125,8 +125,8 @@ avec les deux méthodes.
   \item comme $X_0 = \varnothing$, il est évident que
     $\varnothing \subseteq X_m$ pour tout $m \in\mathbb N$.
   \item supposons que $X_n \subseteq X_m$ pour tout $m \geq n$. Alors
-    $$X_{n+1} = \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
-    \alpha(c) = p\}$$
+    \[X_{n+1} = \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
+    \alpha(c) = p\}\]
     mais par inclusion, comme $(x_1,\ldots,x_p)\in (X_n)^p$, on en déduit que
     $(x_1,\ldots,x_p)$ est aussi dans $(X_m)^p$, pour tout $m \geq n$. Ainsi
     $(c,x_1,\ldots,x_p) \in X_{m+1}$ pour tout $m \geq n$, donc
@@ -179,8 +179,8 @@ la preuve par récurrence pour un ensemble inductif quelconque.
   $f_c : Y^{\alpha(c)} \to Y$ (avec la convention que $Y^0 = \{*\}$ est un
   singleton quelconque). Alors il existe une unique fonction $f : X \to Y$
   telle que
-  $$\forall c\in C, \forall (x_1,\ldots,x_p)\in X^{\alpha(c)},
-  f((c,x_1,\ldots,x_p)) = f_c (f(x_1),\ldots,f(x_p))$$
+  \[\forall c\in C, \forall (x_1,\ldots,x_p)\in X^{\alpha(c)},
+  f((c,x_1,\ldots,x_p)) = f_c (f(x_1),\ldots,f(x_p))\]
 \end{theorem}
 
 On peut représenter l'équation précédente par le diagramme suivant, où l'égalité
@@ -197,21 +197,21 @@ pour aller d'un coin à l'autre du carré sont égaux.
 \begin{proof}
   Soit $(X_n)$ la suite d'ensemble construite précédemment pour définir $X$. On
   va prouver par récurrence sur $n$ la proposition suivante :
-  $$\forall n\in \mathbb N, \exists ! f : X_n \to Y, \forall c \in C,
+  \[\forall n\in \mathbb N, \exists ! f : X_n \to Y, \forall c \in C,
   \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)}, f((c,x_1,\ldots,x_p))
-  = f_c(f_n(x_1),\ldots,f_n(x_p))$$
+  = f_c(f_n(x_1),\ldots,f_n(x_p))\]
   \begin{itemize}
   \item Si $n = 0$, il existe une unique fonction $f_0 : \varnothing \to Y$ et
     elle vérifie la propriété par vacuité.
   \item Soit $n \in \mathbb N$. Supposons qu'il existe une unique fonction
     $f_n : X_n \to Y$ telle que
-    $$\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)},
-    f((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))$$
+    \[\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)},
+    f((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))\]
     On définit alors
-    $$\begin{array}{rcccl}
+    \[\begin{array}{rcccl}
       f_{n+1} &:& X_{n+1} &\longrightarrow & Y \\
       & & (c,x_1,\ldots,x_p) & \longmapsto & f_c(f_n(x_1),\ldots,f_n(x_p))
-    \end{array}$$
+    \end{array}\]
     On remarque que cette fonction vérifie bien la propriété. De plus, si une
     autre fonction $g$ vérifie la propriété, alors pour $x\in X_{n+1}$, on trouve
     $c\in C$ et $x_1,\ldots,x_p \in X_n$ tels que $x = (c,x_1,\ldots,x_p)$, on a
@@ -259,13 +259,13 @@ un ensemble inductif en utilisant sa structure.
   Un exemple à la fois d'ensemble inductif et de fonction récursive est le
   suivant. Soit $A$ un ensemble quelconque, on définit la signature des listes
   sur $A$ par la grammaire suivante :
-  $$\ell ::= \mathrm{nil}\mid \mathrm{cons}(a,\ell)$$
-  où $a\in A$. L'ensemble $\mathrm{List}(A)$ est alors l'ensemble inductif
+  \[\ell ::= \nil\mid \cons(a,\ell)\]
+  où $a\in A$. L'ensemble $\List(A)$ est alors l'ensemble inductif
   associé. On définit alors la fonction $|-|$ donnant la longueur d'une
   liste :
   \begin{itemize}
-  \item $|\mathrm{nil}| = 0$
-  \item $|\mathrm{cons}(a,\ell)| = 1 + |\ell|$
+  \item $|\nil| = 0$
+  \item $|\cons(a,\ell)| = 1 + |\ell|$
   \end{itemize}
 \end{example}
 
@@ -303,8 +303,8 @@ $P = X$.
   Soit $(C,\alpha)$ une signature et $X$ l'ensemble inductif associé. Soit
   $P\subseteq X$ un prédicat sur $X$. Si pour tous $c\in C$ et
   $x_1,\ldots,x_p\in X^{\alpha(c)}$, la propriété
-  $$x_1\in P \text{ et } x_2\in P \text{ et }\ldots \text{ et }x_p\in P \implies
-  c(x_1,\ldots,x_p)\in P$$ est vérifiée,
+  \[x_1\in P \text{ et } x_2\in P \text{ et }\ldots \text{ et }x_p\in P \implies
+  c(x_1,\ldots,x_p)\in P\] est vérifiée,
   alors $P = X$.
 \end{theorem}
 
@@ -326,7 +326,7 @@ $P = X$.
 
   Ainsi, par récurrence, pour tout $n\in \mathbb N$, $X_n \subseteq P$.
   Cela montre alors que
-  $$\bigcup_{n \in \mathbb N} X_n \subseteq P$$
+  \[\bigcup_{n \in \mathbb N} X_n \subseteq P\]
   ce qu'il fallait démontrer.
 \end{proof}
 
@@ -364,7 +364,7 @@ dans plus de cas.
   \end{itemize}
 
   Montrer que
-  $$\forall \ell,\ell'\in \mathrm{List}(A), |\ell\oplus \ell'|=|\ell|+|\ell'|$$
+  \[\forall \ell,\ell'\in \mathrm{List}(A), |\ell\oplus \ell'|=|\ell|+|\ell'|\]
 \end{exercise}
 
 \section{Relation inductive}
@@ -434,11 +434,11 @@ Ainsi, à une règle de la forme
 \end{prooftree}
 avec un paramètre $R$ fixé d'arité $n\in\mathbb N$ et sur un ensemble $E$, on
 peut associer une fonction
-$$\begin{array}{rcccl}
+\[\begin{array}{rcccl}
   r &:& \mathcal P(E^n) & \longrightarrow & \mathcal P(E^n) \\
   & & R & \longmapsto & R \cup
   \{ (x_1,\ldots,x_n) \in E^n\mid R,x_1,\ldots,x_n\models \mathrm {r}\}
-\end{array}$$
+\end{array}\]
 où tous les paramètres n'apparaissant pas dans la conclusion sont quantifiés de
 façon existentielle.
 
@@ -484,14 +484,14 @@ Knaster-Tarski.
   Soit un ensemble $E$ quelconque, et une fonction
   $f : \mathcal P(E) \to \mathcal P(E)$ croissante pour $\subseteq$,
   c'est-à-dire telle que
-  $$\forall A,B\in\mathcal P(E), A\subseteq B \implies f(A)\subseteq f(B)$$
+  \[\forall A,B\in\mathcal P(E), A\subseteq B \implies f(A)\subseteq f(B)\]
   Alors il existe un plus petit point fixe de $f$ pour $\subseteq$, ou de façon
   équivalente il existe un élément $A\in \mathcal P(E)$ tel que $f(A)=A$ et tel
   que pour tous $B\in\mathcal P(E)$ tel que $f(B)=B$, $A\subseteq B$.
 \end{theorem}
 \begin{proof}
   Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
-  $$\mathrm{prefix}(f) = \{ A \in \mathcal P(E)\mid f(A)\subseteq A\}$$
+  \[\mathrm{prefix}(f) = \{ A \in \mathcal P(E)\mid f(A)\subseteq A\}\]
   Soit $\alpha = \bigcap \mathrm{prefix}(f)$, montrons que $\alpha$ est dans
   $\mathrm{prefix}(f)$ :
 
@@ -592,18 +592,17 @@ la règle le définissant.
   Soit $A$ un ensemble quelconque. On définit sur $\mathrm{List}(A)$ le prédicat
   $\mathrm{pair}$ par induction avec les règles suivantes :
   \begin{center}
-    \begin{prooftree}
-      \AxiomC{}
-      \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
-    \end{prooftree}
-    \begin{prooftree}
-      \AxiomC{$\mathrm{pair}(\ell)$}
-      \UnaryInfC{$\mathrm{pair}(\mathrm{cons}(a,\mathrm{cons}(b,\ell)))$}
-    \end{prooftree}
+    \AxiomC{}
+    \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\mathrm{pair}(\ell)$}
+    \UnaryInfC{$\mathrm{pair}(\mathrm{cons}(a,\mathrm{cons}(b,\ell)))$}
+    \DisplayProof
   \end{center}
   Montrer l'assertion suivante :
-  $$\forall \ell \in \mathrm{List}(A), \mathrm{pair}(\ell) \implies
-  \mathrm{pair}(|\ell|)$$
+  \[\forall \ell \in \mathrm{List}(A), \mathrm{pair}(\ell) \implies
+  \mathrm{pair}(|\ell|)\]
   avec le prédicat $\mathrm{pair}$ sur les entiers défini précédemment.
 \end{exercise}
 
