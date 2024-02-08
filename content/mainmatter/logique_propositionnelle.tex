@@ -1,0 +1,442 @@
+\chapter{Logique propositionnelle}
+\label{chp.logprop}
+
+\lettrine{P}{our} commencer l'étude de la logique, nous allons étudier sa forme
+la plus élémentaire : la logique propositionnelle. Lorsque l'on écrit une phrase
+mathématique, disons par exemple
+\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \text{ or }
+(\exists m \in \mathbb N, n = 2 \times m + 1)\]
+on peut séparer plusieurs parties :
+\begin{itemize}
+\item les quantificateurs.
+\item les connecteurs logiques, comme \og et\fg{}, \og ou\fg{} ou \og non\fg{}.
+\item les propositions atomiques, comme $n = 2 \times m$ ci-dessus.
+\end{itemize}
+
+La logique propositionnelle est une simplification de cette grammaire, dans
+laquelle les propositions atomiques sont remplacées par de simple variables,
+pouvant prendre la valeur $\mathrm{Vrai}$ ou $\mathrm{Faux}$, et où l'on
+supprime les quantificateurs. L'étude de la logique propositionnelle, beaucoup
+plus simple que le calcul des prédicats, permet de donner une première idée des
+propriétés qui nous intéressent dans la logique.
+
+\section{Définitions}
+
+Fixons tout d'abord un ensemble $\Var$ dénombrable de variables
+propositionnelles. Nous allons construire l'ensemble des propositions comme un
+ensemble inductif, en ajoutant les connecteurs logiques usuels.
+
+\begin{definition}[Propositions]
+  On définit l'ensemble $\mathrm{Prop}$ des propositions du calcul
+  propositionnel par la grammaire suivante :
+  \[P,Q ::= x \mid \top \mid \bot \mid \lnot P \mid P \lor Q \mid P \land Q
+  \mid P \to Q\]
+  où $x\in \Var$ est une variable propositionnelle.
+\end{definition}
+
+Le sens des différents symboles est le suivant :
+\begin{itemize}
+\item $\top$ représente la proposition vraie.
+\item $\bot$ représente la proposition fausse.
+\item $\lnot$ représente la négation logique.
+\item $\lor$ représente la disjonction logique.
+\item $\land$ représente la conjonction logique.
+\item $\to$ représente l'implication logique.
+\end{itemize}
+
+Par convention, nous donnons l'ordre de priorité (du plus prioritaire au moins
+prioritaire) suivant : $\lnot > \land > \lor > \to$. Cette convention évite ainsi
+d'écrire certaines parenthèses. De plus, comme $\land$ et $\lor$ seront montrés
+associatifs, nous ne parenthèserons pas $P\lor Q\lor R$ par exemple. Pour $\to$,
+nous associons à droite, c'est-à-dire que $P\to Q\to R$ signifie
+$P\to (Q \to R)$. Par exemple la proposition
+\[(P \to Q)\land (R \to Q) \to P\lor R \to Q\] doit se lire
+\[((P \to Q) \land (R \to Q)) \to ((P \lor R) \to Q)\]
+
+L'objectif d'une proposition est bien sûr de lui attribuer une valeur de vérité.
+Evidemment, la valeur de vérite d'une proposition dépend de celle des variables.
+Par exemple, $(x\lor \lnot y) \land z$ n'aura pas la même valeur de vérité
+suivant si $z$ est vrai ou faux.
+
+Pour manipuler les variables d'une propositions, il est important de définir
+l'ensemble des variables impliquées dans la construction d'une proposition.
+
+\begin{definition}[Variables libres]
+  Par induction sur la structure inductive de $\Prop$, on définit pour
+  $P$ l'ensemble $\VL(P)$ des variables libres de $P$ :
+  \begin{itemize}
+  \item si $P = x$ et $x\in\Var$, alors $\VL(P) = \{x\}$.
+  \item si $P = \lnot Q$ alors $\VL(P) = \VL(Q)$.
+  \item si $P = Q \lor R$ ou $P = Q \land R$ ou $P = Q \to R$,
+    alors $\VL(P) = \VL(Q)\cup\VL(R)$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  La dénomination de variable \og libre\fg{} prendra son sens dans le prochain
+  chapitre. L'intérêt de définir $\VL$ et non juste l'ensemble des variables est
+  d'ignorer les variables muettes, mais dans le calcul propositionnel aucune
+  variable n'est muette.
+\end{remark}
+
+Une attribution de valeurs de vérité aux variables propositionnelles est appelée
+un environnement. On utilisera l'ensemble $\{0,1\}$ pour signifier
+$\{\mathrm{Faux},\mathrm{Vrai}\}$.
+
+\begin{definition}[Environnement]
+  Un environnement est une fonction partielle $\rho : \Var \to \{0,1\}$
+  dont le domaine (l'ensemble des valeurs $x\in \Var$ sur lesquelles
+  $\rho$ est défini) est fini.
+\end{definition}
+
+Un environnement permet ensuite de définir la notion de valuation, qui est la
+valeur de vérité d'une proposition dans un environnement donné. On considère
+
+\begin{definition}[Valuation]
+  Soit $\rho$ un environnement. On définit par induction sur $\mathrm{Prop}$
+  la fonction partielle $\Val_\rho : \Prop \to \{0,1\}$ :
+  \begin{itemize}
+  \item pour $x\in \Var$, si $x\in \dom(\rho)$ alors
+    $\Val_\rho (x)= \rho(x)$, si $x\notin \dom(\rho)$ alors
+    $\Val_\rho (x)$ n'est pas défini.
+  \item soit $P$ une proposition, alors
+    $\Val_\rho(\lnot P) = 1 - \Val_\rho(P)$.
+  \item soient $P$ et $Q$ deux propositions, alors
+    $\Val_\rho(P\lor Q)=\max(\Val_\rho(P),\Val_\rho(Q))$
+  \item soient $P$ et $Q$ deux propositions, alors
+    $\Val_\rho(P\land Q)=\min(\Val_\rho(P),\Val_\rho(Q))$
+  \item soient $P$ et $Q$ deux propositions, alors
+    $\Val_\rho(P\to Q) = \max(1 - \Val_\rho(P),\Val_\rho(Q))$
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Soit $\rho$ un environnement et $P$ une proposition, montrer que
+  $\Val_\rho(P)$ est définie si et seulement si
+  $\VL(P)\subseteq \dom(\rho)$.
+\end{exercise}
+
+\begin{exercise}\label{exo:val_VL}
+  Soit $P$ une proposition. Soient $\rho$ et $\rho'$ deux environnements tels
+  que $\rho_{|\;\VL(P)}=\rho'_{|\;\VL(P)}$. Montrer que
+  $\Val_\rho(P)=\Val_{\rho'}(P)$.
+\end{exercise}
+
+On peut donc définir la relation de vérité, dans un environnement donné, pour
+une proposition.
+
+\begin{definition}[Satisfaction]
+  Soit $\rho$ un environnement et $P\in\Prop$. On définir la relation
+  $\rho\models P$ par $$(\rho\models P) \defeq (\Val_\rho(P) = 1)$$
+  On dit alors que $\rho$ satisfait $P$.
+
+  Si pour tout environnement $\rho$ tel que $\VL(P)\subseteq\dom(\rho)$,
+  $\rho\models P$, alors on dit que $P$ est une tautologie, et on le note
+  $\models P$. Si aucun environnement ne satisfait $P$, on dit alors que $P$ est
+  une antilogie.
+\end{definition}
+
+\begin{exercise}
+  Montrer que $P$ est une antilogie si et seulement si $\lnot P$ est une
+  tautologie. En déduire que $P$ est une tautologie si et seulement si $\lnot P$
+  est une antilogie.
+\end{exercise}
+
+Donnons un premier outil pour traiter des vérités du calcul des propositions :
+les tables de vérité.
+
+\begin{definition}[Table de vérité]
+  Une table de vérité pour une proposition $P$ de variables libres
+  $x_1,\ldots,x_n$ est un tableau contenant $2^n$ lignes et $n+1$ colonnes, où
+  chaque ligne énumère un environnement différent, où la
+  \ordinalnumeralfeminin{$i$} colonne représente la valeur des environnement en
+  $x_i$ et où la dernière colonne représente la valuation de $P$ pour
+  l'environnement donné.
+\end{definition}
+
+\begin{example}
+  Voici une table de vérité pour l'expression
+  $\lnot (x_0 \lor x_1)\to \lnot x_0 \land \lnot x_1$ :
+\end{example}
+
+Une table de vérité permet de vérifier qu'une proposition est bien une tautologie
+puisque, grâce à l'exercice \ref{exo:val_VL}, nous savons que tout environnement
+$\rho$ contenant les variable libres d'une proposition $P$ donnée ne définit
+$\Val_\rho(P)$ que sur les variables libres listées dans la table de vérité.
+Ainsi, une proposition est une tautologie si et seulement si toute la dernière
+colonne est remplie de $1$.
+
+\begin{exercise}
+  Montrer que $\lnot x_0\land \lnot x_1 \implies \lnot (x_0\lor x_1)$ est une
+  tautologie.
+\end{exercise}
+
+La notion de tautologie peut être considérée comme la bonne notion de vérité
+dans le cadre du calcul propositionnel : une proposition vraie est une
+proposition qui s'évalue toujours en une formule vraie. Comme $\to$ sert à
+signifier l'implication logique, dire que $A \to B$ est une tautologie revient à
+dire que chaque fois que $A$ est vraie, $B$ l'est aussi. Ainsi, en notant
+$A \leftrightarrow B$ pour $(A \to B) \land (B \to A)$, dire que
+$A \leftrightarrow B$ est une tautologie revient à dire que $A$ et $B$ prennent
+toujours la même valeur de vérité. Cette relation est l'équivalence logique :
+elle traduit que deux propositions ont la même valeur.
+
+\begin{definition}[\'Equivalence logique]
+  Pour tous $P,Q\in\Prop$, on dit que $P$ et $Q$ sont logiquement équivalents,
+  ce que l'on écrit $P\equiv Q$, si $\models P \leftrightarrow Q$.
+\end{definition}
+
+Un affaiblissement est la relation de conséquence logique.
+
+\begin{definition}[Conséquence logique]
+  Pour tous $P,Q\in\Prop$, on dit que $Q$ est conséquence logique de $P$, ce que
+  l'on note $P\vDash Q$, si $\models P\to Q$.
+\end{definition}
+
+\begin{exercise}
+  Vérifier à l'aide de tables de vérités les équivalences suivantes (appelées
+  lois de De Morgan) :
+  \begin{align*}
+    \lnot\lnot x &\equiv x\\
+    \lnot (x \land y) &\equiv \lnot x \lor \lnot y\\
+    \lnot (x \lor y) &\equiv \lnot x \land \lnot y
+  \end{align*}
+\end{exercise}
+
+\section[Séquents propositionnels]{Calcul des séquents propositionnels et
+  complétude}
+
+Maintenant que nous avons défini une notion satisfaisante de vérité pour une
+proposition, il convient de se demander quels outils permettent de l'établir.
+Pour l'instant, pour prouver qu'une proposition est une tautologie, la seule
+façon de procéder est d'en construire la table de vérité. C'est une façon
+largement inefficace, puisqu'elle prend une taille exponentielle en le nombre de
+variables libres d'une proposition, et la preuve qu'une proposition est une
+tautologie est assez vide de sens : dans l'exercice précédent, il n'a été
+question que de calcul et pas de considérations logiques.
+
+\subsection{Calcul des séquents}
+
+Ce qui manque à notre système, c'est une syntaxe : un système simple qui va nous
+permettre de justifier des tautologies. Cette syntaxe se base sur la notion de
+séquent : un séquent est une paire de listes de propositions, que l'on écrira
+$\Gamma\vdash \Delta$, exprimant que $\bigwedge \Gamma \to \bigvee \Delta$ est
+une tautologie. L'intérêt de la relation $\vdash$ à définir est de donner un
+système facile de preuve : pour prouver que $P$ est une tautologie, il suffit
+de prouver $\nil\vdash \cons(P,\nil)$ en suivant les règles de base définissant
+$\vdash$.
+
+\begin{notation}
+  Dorénavant, pour utiliser des listes, nous écrirons $a, \ell$ pour signifie
+  $\cons(a,\ell)$ et nous n'écrirons pas $\nil$ lorsque le contexte permet
+  clairement de comprendre qu'il s'agit d'une liste. Par exemple, on confondra
+  la simple proposition $P$ et la liste $\cons(\nil,P)$. La notation
+  $\Gamma,\Delta$ correspond à la concaténation, qui serait notée avec les
+  conventions précédentes $\Gamma\oplus\Delta$.
+\end{notation}
+
+\begin{definition}[Calcul des séquents]
+  On définit la relation $\vdash \subseteq \List(\Prop)^2$ par les règles
+  suivantes:
+  \begin{center}
+    \AxiomC{$P \in \Gamma$}
+    \RightLabel{ax}
+    \UnaryInfC{$\Gamma\vdash P$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma,P\vdash \Delta$}
+    \AxiomC{$\Theta\vdash \Xi,P$}
+    \RightLabel{cut}
+    \BinaryInfC{$\Gamma,\Theta\vdash\Delta,\Xi$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,P,Q,\Gamma'\vdash \Delta$}
+    \RightLabel{le}
+    \UnaryInfC{$\Gamma,Q,P,\Gamma'\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \Delta,P,Q\Delta'$}
+    \RightLabel{re}
+    \UnaryInfC{$\Gamma\vdash \Delta,Q,P,\Delta'$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,P,P\vdash \Delta$}
+    \RightLabel{lc}
+    \UnaryInfC{$\Gamma,P\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \Delta,P,P$}
+    \RightLabel{rc}
+    \UnaryInfC{$\Gamma\vdash \Delta,P$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash \Delta$}
+    \RightLabel{lw}
+    \UnaryInfC{$\Gamma,P\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \Delta$}
+    \RightLabel{rw}
+    \UnaryInfC{$\Gamma\vdash \Delta,P$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash\Delta$}
+    \RightLabel{$\bot$}
+    \UnaryInfC{$\Gamma\vdash\Delta,\bot$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash\Delta$}
+    \RightLabel{$\top$}
+    \UnaryInfC{$\Gamma,\top\vdash\Delta$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash \Delta,P$}
+    \RightLabel{l$\lnot$}
+    \UnaryInfC{$\Gamma,\lnot P\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma,P\vdash \Delta$}
+    \RightLabel{r$\lnot$}
+    \UnaryInfC{$\Gamma\vdash \Delta,\lnot P$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,P\vdash \Delta$}
+    \AxiomC{$\Theta,Q\vdash \Xi$}
+    \RightLabel{l$\lor$}
+    \BinaryInfC{$\Gamma,\Theta,P\lor Q\vdash \Delta,\Xi$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \Delta,P$}
+    \RightLabel{r$\lor_1$}
+    \UnaryInfC{$\Gamma\vdash \Delta,P\lor Q$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdash \Delta,Q$}
+    \RightLabel{r$\lor_2$}
+    \UnaryInfC{$\Gamma\vdash \Delta,P\lor Q$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,P\vdash \Delta$}
+    \RightLabel{l$\land_1$}
+    \UnaryInfC{$\Gamma,P\land Q\vdash \Delta$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma,Q\vdash \Delta$}
+    \RightLabel{l$\land_2$}
+    \UnaryInfC{$\Gamma,P\land Q\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \Delta,P$}
+    \AxiomC{$\Theta\vdash \Xi,Q$}
+    \RightLabel{r$\land$}
+    \BinaryInfC{$\Gamma,\Theta\vdash \Delta,\Xi,P\land Q$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,Q\vdash \Delta$}
+    \AxiomC{$\Theta\vdash \Xi,P$}
+    \RightLabel{l$\to$}
+    \BinaryInfC{$\Gamma,\Theta,P\to Q\vdash \Delta,\Xi$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma,P\vdash \Delta$}
+    \RightLabel{r$\to_1$}
+    \UnaryInfC{$\Gamma\vdash \Delta,P\to Q$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdash \Delta,Q$}
+    \RightLabel{r$\to_2$}
+    \UnaryInfC{$\Gamma\vdash \Delta,P\to Q$}
+    \DisplayProof
+  \end{center}
+
+  On dit qu'une proposition $P$ est prouvable si $\vdash P$ est dérivable.
+\end{definition}
+
+L'objectif de la suite de cette section est de prouver que $\vdash$ définit en
+fait exactement les tautologies, au sens suivant : pour toutes propositions
+$P$ et $Q$, $P\vDash Q$ si et seulement si $P\vdash Q$ (ainsi, en prenant par
+exemple $P = \top$, on peut montrer que $\vDash P$ si et seulement si
+$\vdash P$).
+
+\subsection{Correction du calcul des séquents}
+
+La première étape, qui est la plus simple, est de montrer que le calcul des
+séquents est correct, c'est-à-dire que si l'on arrive à dériver
+$\Gamma\vdash\Delta$, alors $\bigwedge \Gamma\to\bigvee \Delta$ est une
+tautologie. La preuve est simplement une induction sur la relation $\vdash$.
+Comme c'est la première longue preuve par induction, nous allons la rédiger
+complètement, mais il est d'usage pour prouver une induction dont les cas se
+ressemblent de ne prouver que quelques cas les plus significatifs.
+
+\begin{theorem}[Correction du calcul des séquents]
+  Soient $\Gamma,\Delta\in\List(\Prop)$. Si $\Gamma\vdash\Delta$, alors
+  $\models \bigwedge \Gamma\to \bigvee \Delta$.
+\end{theorem}
+
+\begin{proof}
+  Il suffit de prouver le résultat par induction sur $\vdash$ :
+  \begin{itemize}
+  \item Si $P\in\Gamma$, alors pour tout environnement $\rho$ tel que
+    $\Val_\rho(\bigwedge\Gamma\to P)$ est défini, l'égalité devient
+    \begin{align*}
+      \Val_\rho(\bigwedge\Gamma\to P) &= \max(1 - \Val_\rho(\bigwedge\Gamma),
+      \Val_\rho(P))\\
+      &=\max(1 - \min_{P\in\Gamma}(\Val_\rho(P),\Val_\rho(P)))
+    \end{align*}
+    Si $\Val_\rho(P) = 0$ alors $\min_{P\in\Gamma}(\Val_\rho(P)) = 0$ puisque
+    $P\in\Gamma$, donc $\Val_\rho(\bigwedge\Gamma\to P) = 1$. Si $\Val_\rho(P)=1$
+    alors le maximum vaut $1$.
+  \item Supposons que $\models (\bigwedge\Gamma)\land P \to \bigvee\Delta$ et
+    que $\models \bigwedge \Theta \to (\bigvee \Xi) \lor P$. Soit $\rho$ un
+    environnement pour lequel les valuations sont bien définies. Par le calcul
+    suivant :
+    \begin{align*}
+      \Val_\rho(\bigwedge (\Gamma,\Theta)\to\bigvee(\Delta,\Xi)) =&
+      \max(1 - \Val_\rho(\bigwedge(\Gamma,\Theta)),
+      \Val_\rho(\bigvee(\Delta,\Xi)))\\
+      =& \max(1 - \min(\min_{P \in \Gamma}(\Val_\rho(P)),
+      \min_{P\in\Theta}(\Val_\rho(P))),\\
+      &\quad\max(\max_{P\in\Delta}(\Val_\rho(P)),
+      \max_{P\in\Xi}(\Val_\rho(P))))\\
+      =& \max(\max_{P\in \Gamma}(1-\Val_\rho(P)),\max_{P\in\Theta}(1-\Val_\rho(P)),\\
+      &\quad \max_{P\in\Delta}(\Val_\rho(P)),\max_{P\in\Xi}(\Val_\rho(P)))\\
+      =&\max(\max(\max_{P\in \Gamma}(1-\Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P))),
+      \\
+      &\quad \max(\max_{P\in\Theta}(1-\Val_\rho(P)),\max_{P\in\Xi}(\Val_\rho(P))))\\
+      =&\max(\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta),\Val_\rho(\bigwedge\Theta
+      \to\bigvee\Xi))
+    \end{align*}
+    On raisonne maintenant par cas suivant la valeur de $\Var_\rho(P)$. Si cette
+    valuation vaut $0$, alors comme
+    $\models \bigwedge \Theta\to (\bigvee\Xi) \lor P$ on en déduit que
+    $\Val_\rho(\bigwedge\Theta\to\bigvee\Xi) = 1$, auquel cas l'identité
+    précédente nous donne le résultat. Si la valuation vaut $1$, alors on
+    utilise le fait que $\models(\bigwedge\Gamma)\land P\to\bigvee \Delta$ pour
+    en déduire que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$.
+  \item Remarquons que les opérations $\min$ et $\max$ sont commutatives et
+    idempotentes, ce qui implique directement la validité des règles d'échange
+    (le et re) et de contraction (lc et rc).
+  \item Supposons que $\models\bigwedge\Gamma\to\bigvee\Delta$, alors pour tout
+    environnement $\rho$, comme
+    $\Val_\rho((\bigwedge\Gamma)\land P) \leq \Val_\rho(\bigwedge\Gamma)$, on
+    en déduit que
+    $1 - \Val_\rho(\bigwedge\Gamma) \leq 1 - \Val_\rho((\bigwedge\Gamma)\land P)$
+    d'où $\Val_\rho((\bigwedge\Gamma)\land P\to\bigvee\Delta) = 1$. Un
+    raisonnement similaire donne le résultat pour la règle rw.
+  \item Le résultat découle directement du fait que
+    $\Val_\rho(\bigvee\Delta) = \Val_\rho((\bigvee\Delta)\lor\bot)$.
+  \item De même, le résultat vient de l'égalité
+    $\Val_\rho(\bigwedge\Gamma) = \Val_\rho((\bigwedge\Gamma)\land\top)$.
+  \end{itemize}
+\end{proof}
+
+On en déduit donc, comme $\bigwedge P = P$ et $\bigvee Q = Q$, que
+$P\vdash Q \implies P \vDash Q$.
