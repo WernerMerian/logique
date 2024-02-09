@@ -116,7 +116,7 @@ valeur de vérité d'une proposition dans un environnement donné. On considère
   $\VL(P)\subseteq \dom(\rho)$.
 \end{exercise}
 
-\begin{exercise}\label{exo:val_VL}
+\begin{exercise}\label{exo.val.VL}
   Soit $P$ une proposition. Soient $\rho$ et $\rho'$ deux environnements tels
   que $\rho_{|\;\VL(P)}=\rho'_{|\;\VL(P)}$. Montrer que
   $\Val_\rho(P)=\Val_{\rho'}(P)$.
@@ -159,12 +159,12 @@ les tables de vérité.
   $\lnot (x_0 \lor x_1)\to \lnot x_0 \land \lnot x_1$ :
 \end{example}
 
-Une table de vérité permet de vérifier qu'une proposition est bien une tautologie
-puisque, grâce à l'exercice \ref{exo:val_VL}, nous savons que tout environnement
-$\rho$ contenant les variable libres d'une proposition $P$ donnée ne définit
-$\Val_\rho(P)$ que sur les variables libres listées dans la table de vérité.
-Ainsi, une proposition est une tautologie si et seulement si toute la dernière
-colonne est remplie de $1$.
+Une table de vérité permet de vérifier qu'une proposition est bien une
+tautologie puisque, grâce à l'\cref{exo.val.VL}, nous savons que tout
+environnement $\rho$ contenant les variable libres d'une proposition $P$ donnée
+ne définit $\Val_\rho(P)$ que sur les variables libres listées dans la table de
+vérité. Ainsi, une proposition est une tautologie si et seulement si toute la
+dernière colonne est remplie de $1$.
 
 \begin{exercise}
   Montrer que $\lnot x_0\land \lnot x_1 \implies \lnot (x_0\lor x_1)$ est une
@@ -256,7 +256,7 @@ $\vdash$.
     \UnaryInfC{$\Gamma,Q,P,\Gamma'\vdash \Delta$}
     \DisplayProof
     \qquad
-    \AxiomC{$\Gamma\vdash \Delta,P,Q\Delta'$}
+    \AxiomC{$\Gamma\vdash \Delta,P,Q,\Delta'$}
     \RightLabel{re}
     \UnaryInfC{$\Gamma\vdash \Delta,Q,P,\Delta'$}
     \DisplayProof
@@ -281,17 +281,6 @@ $\vdash$.
     \AxiomC{$\Gamma\vdash \Delta$}
     \RightLabel{rw}
     \UnaryInfC{$\Gamma\vdash \Delta,P$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash\Delta$}
-    \RightLabel{$\bot$}
-    \UnaryInfC{$\Gamma\vdash\Delta,\bot$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash\Delta$}
-    \RightLabel{$\top$}
-    \UnaryInfC{$\Gamma,\top\vdash\Delta$}
     \DisplayProof
 
     \vspace{0.5cm}
@@ -376,65 +365,120 @@ Comme c'est la première longue preuve par induction, nous allons la rédiger
 complètement, mais il est d'usage pour prouver une induction dont les cas se
 ressemblent de ne prouver que quelques cas les plus significatifs.
 
+Pour commencer, introduisons un lemme permettant de plus facilement travailler
+sur le résultat à prouver.
+
+\begin{lemma}
+  Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, on a
+  l'équivalence suivante :
+  \[ \Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1 \iff
+  \min_{P\in\Gamma}(\Val_\rho(P)) \leq \max_{P\in\Delta}(P)\]
+
+  De même, les deux conditions équivalentes sont aussi équivalentes au fait qu'il
+  existe $P\in\Gamma$ et $Q\in\Delta$ telles que $\Val_\rho(P)\leq\Val_\rho(Q)$.
+\end{lemma}
+
+\begin{proof}
+  Calculons d'abord $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta)$ :
+  \begin{align*}
+    \Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) =&
+    \max(1 - \Val_\rho(\bigwedge\Gamma), \Val_\rho(\bigvee\Delta))\\
+    =& \max(1 - \min_{P\in \Gamma}(\Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P)))\\
+    =& \max(\max_{P\in\Gamma}(1 - \Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P)))
+  \end{align*}
+  Ainsi, si $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$, on peut trouver
+  $P\in\Gamma$ tel que $\Val_\rho(P) = 0$ ou $P\in\Delta$ tel que $\Val_\rho(P)$.
+  Dans les deux cas, on en déduit que
+  $\min_{P\in\Gamma}(\Val_\rho(P)) \leq \max_{P\in\Delta}(\Val_\rho(P))$.
+
+  Inversement, si $\min_{P\in\Gamma}(\Val_\rho(P))\leq\max_{P\in\Delta}(\Val_\rho(P))$
+  alors on peut trouver $P\in\Gamma$ et $Q\in\Delta$ tels que
+  $\Val_\rho(P)\leq\Val_\rho(Q)$. Si $\Val_\rho(P) = 0$ alors par le calcul
+  précédent, on en déduit que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$.
+  Sinon, alors $\Val_\rho(Q) = 1$ par inégalité, et par le calcul précédent,
+  $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$.
+\end{proof}
+
+\begin{exercise}
+  Montrer l'équivalence au troisième énoncé.
+\end{exercise}
+
 \begin{theorem}[Correction du calcul des séquents]
   Soient $\Gamma,\Delta\in\List(\Prop)$. Si $\Gamma\vdash\Delta$, alors
   $\models \bigwedge \Gamma\to \bigvee \Delta$.
 \end{theorem}
 
 \begin{proof}
-  Il suffit de prouver le résultat par induction sur $\vdash$ :
+  Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, le résultat à
+  montrer est que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$ sachant que
+  $\Gamma\vdash \Delta$. Pour cela, on procède par induction sur $\vdash$, en
+  utilisant le lemme précédent pour remplacer l'égalité de la valuation par
+  l'existence de témoins d'une inégalité :
   \begin{itemize}
-  \item Si $P\in\Gamma$, alors pour tout environnement $\rho$ tel que
-    $\Val_\rho(\bigwedge\Gamma\to P)$ est défini, l'égalité devient
-    \begin{align*}
-      \Val_\rho(\bigwedge\Gamma\to P) &= \max(1 - \Val_\rho(\bigwedge\Gamma),
-      \Val_\rho(P))\\
-      &=\max(1 - \min_{P\in\Gamma}(\Val_\rho(P),\Val_\rho(P)))
-    \end{align*}
-    Si $\Val_\rho(P) = 0$ alors $\min_{P\in\Gamma}(\Val_\rho(P)) = 0$ puisque
-    $P\in\Gamma$, donc $\Val_\rho(\bigwedge\Gamma\to P) = 1$. Si $\Val_\rho(P)=1$
-    alors le maximum vaut $1$.
-  \item Supposons que $\models (\bigwedge\Gamma)\land P \to \bigvee\Delta$ et
-    que $\models \bigwedge \Theta \to (\bigvee \Xi) \lor P$. Soit $\rho$ un
-    environnement pour lequel les valuations sont bien définies. Par le calcul
-    suivant :
-    \begin{align*}
-      \Val_\rho(\bigwedge (\Gamma,\Theta)\to\bigvee(\Delta,\Xi)) =&
-      \max(1 - \Val_\rho(\bigwedge(\Gamma,\Theta)),
-      \Val_\rho(\bigvee(\Delta,\Xi)))\\
-      =& \max(1 - \min(\min_{P \in \Gamma}(\Val_\rho(P)),
-      \min_{P\in\Theta}(\Val_\rho(P))),\\
-      &\quad\max(\max_{P\in\Delta}(\Val_\rho(P)),
-      \max_{P\in\Xi}(\Val_\rho(P))))\\
-      =& \max(\max_{P\in \Gamma}(1-\Val_\rho(P)),\max_{P\in\Theta}(1-\Val_\rho(P)),\\
-      &\quad \max_{P\in\Delta}(\Val_\rho(P)),\max_{P\in\Xi}(\Val_\rho(P)))\\
-      =&\max(\max(\max_{P\in \Gamma}(1-\Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P))),
-      \\
-      &\quad \max(\max_{P\in\Theta}(1-\Val_\rho(P)),\max_{P\in\Xi}(\Val_\rho(P))))\\
-      =&\max(\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta),\Val_\rho(\bigwedge\Theta
-      \to\bigvee\Xi))
-    \end{align*}
-    On raisonne maintenant par cas suivant la valeur de $\Var_\rho(P)$. Si cette
-    valuation vaut $0$, alors comme
-    $\models \bigwedge \Theta\to (\bigvee\Xi) \lor P$ on en déduit que
-    $\Val_\rho(\bigwedge\Theta\to\bigvee\Xi) = 1$, auquel cas l'identité
-    précédente nous donne le résultat. Si la valuation vaut $1$, alors on
-    utilise le fait que $\models(\bigwedge\Gamma)\land P\to\bigvee \Delta$ pour
-    en déduire que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$.
-  \item Remarquons que les opérations $\min$ et $\max$ sont commutatives et
-    idempotentes, ce qui implique directement la validité des règles d'échange
-    (le et re) et de contraction (lc et rc).
-  \item Supposons que $\models\bigwedge\Gamma\to\bigvee\Delta$, alors pour tout
-    environnement $\rho$, comme
-    $\Val_\rho((\bigwedge\Gamma)\land P) \leq \Val_\rho(\bigwedge\Gamma)$, on
-    en déduit que
-    $1 - \Val_\rho(\bigwedge\Gamma) \leq 1 - \Val_\rho((\bigwedge\Gamma)\land P)$
-    d'où $\Val_\rho((\bigwedge\Gamma)\land P\to\bigvee\Delta) = 1$. Un
-    raisonnement similaire donne le résultat pour la règle rw.
-  \item Le résultat découle directement du fait que
-    $\Val_\rho(\bigvee\Delta) = \Val_\rho((\bigvee\Delta)\lor\bot)$.
-  \item De même, le résultat vient de l'égalité
-    $\Val_\rho(\bigwedge\Gamma) = \Val_\rho((\bigwedge\Gamma)\land\top)$.
+  \item Supposons que $P\in\Gamma$. Alors en choisissant $P$, on trouve
+    $P\in\Gamma$ et $Q\in\{P\}$ ($=P$) tels que $\Val_\rho(P) \leq\Val_\rho(Q)$.
+  \item Supposons qu'il existe $Q\in\Gamma$, $R\in\Delta$, $Q'\in\Theta$ et
+    $R'\in\Xi$ tels que
+    \begin{equation}\label{eq.prop.corr.1}
+      \Val_\rho(Q)\leq\Val_\rho(R)
+    \end{equation}
+    \begin{equation}\label{eq.prop.corr.2}
+      \Val_\rho(Q')\leq\Val_\rho(R')
+    \end{equation}
+    Fixons ces $Q,R,Q',R'$. Montrons qu'alors il existe $Q''\in\Gamma,\Theta$ et
+    $R''\in\Delta,\Xi$ tels que $\Val_\rho(Q'')\leq\Val_\rho(R'')$. Pour le
+    prouver, traitons les cas possibles pour la valeur de $\Val_\rho(P)$ :
+    \begin{itemize}
+    \item si $\Val_\rho(P) = 0$, alors en utilisant l'\cref{eq.prop.corr.2}, deux
+      cas sont possibles. Dans le cas où $R' = P$, cela signifie que
+      $\Val_\rho(Q') = 0$ et ainsi, en prenant $Q'' = Q'$ et $R''$ quelconque,
+      l'inégalité est vérifiée. Dans le cas où $R' \neq P$, il suffit de prendre
+      $Q'' = Q'$ et $R'' = R'$.
+    \item si $\Val_\rho(P) = 1$, alors en utilisant l'\cref{eq.prop.corr.1}, deux
+      cas sont possibles. Dans le cas où $Q = P$, cela signifie que
+      $\Val_\rho(R) = 1$ et ainsi, en prenant $R'' = R$ et $Q''$ quelconque,
+      l'inégalité est vérifiée. Dans le cas où $R'\neq P$, il suffit de prendre
+      $Q'' = Q$ et $R'' = R$.
+    \end{itemize}
+  \item Supposons qu'il existe $R\in\Gamma,P,Q,\Gamma'$ et $S\in\Delta$ tels que
+    $\Val_\rho(R) \leq \Val_\rho(S)$. Dans ce cas, $R\in\Gamma,Q,P\Gamma'$ et
+    $S\in\Delta$, et $R,S$ respectent l'inégalité voulue.
+  \item On procède comme dans le cas précédent.
+  \item Supposons qu'il existe $Q\in\Gamma,P,P$ et $R\in\Delta$ tels que
+    $\Val_\rho(Q)\leq\Val_\rho(R)$. Dans ce cas, $Q\in\Gamma,P$ et $R\in\Delta$,
+    donnant l'inégalité voulue.
+  \item On procède comme dans le cas précédent.
+  \item Comme précédemment, si l'on trouve $Q\in\Gamma$ alors $Q\in\Gamma,P$,
+    donc on peut réutiliser directement $Q$ pour prouver la propriété sur le
+    séquent du bas.
+  \item On procède comme dans le cas précédent.
+  \item Supposons qu'il existe $Q\in\Gamma$ et $R\in\Delta,P$ tels que
+    $\Val_\rho(Q)\leq\Val_\rho(R)$. Si $R \neq P$, il suffit de reprendre $Q$ et
+    $Q$ déjà définis. Suppsons maintenant que $R = P$. Distinguons les cas des
+    valeurs possibles de $\Val_\rho(P)$ :
+    \begin{itemize}
+    \item si $\Val_\rho(P) = 0$, alors $\Val_\rho(Q) = 0$, donc on peut prendre
+      n'importe quel autre formule dans $\Delta$ pour vérifier l'inégalité.
+    \item si $\Val_\rho(P) = 1$, alors on trouve
+      $Q' = \lnot P \in \Gamma,\lnot P$ et $R\in \Delta$ quelconque, on a alors
+      $\Val_\rho(\lnot P) = 0 \leq \Val_\rho(R)$.
+    \end{itemize}
+  \item On procède comme dans le cas précédent.
+  \item Supposons qu'il existe $R\in\Gamma,P$, $S\in\Delta$, $R'\in\Theta,P$ et
+    $S'\in\Xi$ tels que $\Val_\rho(R)\leq\Val_\rho(S)$ et
+    $\Val_\rho(R')\leq\Val_\rho(S')$. Si $R$ (respectivement $R'$) est choisie
+    comme étant différente de $P$ (respectivement $Q$), le résultat est direct
+    en reprenant $(R,S)$ (respectivement $R',S'$). Supposons donc maintenant que
+    $R = P$ et $R' = Q$. Dans ce cas,
+    $\Val_\rho(P\lor Q) = \max(\Val_\rho(P),\Val_\rho(Q)) \leq \max(\Val_\rho(S),
+    \Val_\rho(S'))$ d'où l'inégalité en choisissant $S$ ou $S'$ suivant lequel
+    a la plus grande valuation.
+  \item Les deux cas de $\mathrm r\lor_i$ pour $i\in\{1,2\}$ se traitent de façon
+    analogue, on ne traitera donc que le cas $i = 1$. Supposons donc qu'il existe
+    $Q\in\Gamma$ et $R\in\Delta,P$ tels que $\Val_\rho(Q)\leq\Val_\rho(R)$. Dans
+    le cas où $R\neq P$, le résultat est direct. Si $R = P$, alors comme
+    $\Val_\rho(P\lor Q) \geq \Val_\rho(P)$ et par transitivité de $\leq$, on en
+    déduit l'inégalité pour $Q' = Q$ et $R' = P\lor Q$.
   \end{itemize}
 \end{proof}
 
