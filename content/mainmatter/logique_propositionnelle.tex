@@ -217,6 +217,131 @@ variables libres d'une proposition, et la preuve qu'une proposition est une
 tautologie est assez vide de sens : dans l'exercice précédent, il n'a été
 question que de calcul et pas de considérations logiques.
 
+\subsection{Théorème de compacité}
+
+Cette sous-section se concentre sur un théorème important de la logique : le
+théorème de compacité. Son principe est de permettre de passer d'ensembles finis
+à des ensembles infinis. Si son utilité est relativement anecdotique dans le cas
+de la logique propositionnelle, il sera un élément essentiel en logique du
+premier ordre. Pour pouvoir établir ce théorème, nous devons tout d'abord
+généraliser la relation de satisfaction $\vDash$ au cas d'un ensemble infini de
+propositions.
+
+\begin{definition}[Environnement infini]
+  On définit l'ensemble $\mathcal E$ des environnement potentiellement infinis
+  comme l'ensemble des fonctions partielles $\Var \to \{0,1\}$. On définit la
+  fonction $\Val : (\mathcal E,\Prop)\to \{0,1\}$, pour tout $\rho\in\mathcal E$,
+  par :
+  \[\Val_\rho(P) = \Val_{\rho_{|\VL(P)}}(P)\]
+  où le deuxième $\Val$ correspond à la définition sur les environnements finis.
+
+  On définit $\rho\models P$ de façon analogue à précédemment :
+  \[\rho\models P \iff \Val_\rho(P) = 1\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que si $\rho$ est un environnement fini, alors $\Val_\rho$ est définie
+  de la même manière avec les deux définitions.
+\end{exercise}
+
+\begin{definition}[Satisfaction infinie]
+  Soit $\mathcal P$ un ensemble (potentiellement infini) de propositions et
+  $P\in\Prop$. On définit $\mathcal P\vDash P$ par
+  \[\forall \rho\in\mathcal E, (\forall Q \in\mathcal P, \rho\models Q)
+  \implies \rho\models P\]
+\end{definition}
+
+Le théorème de compacité possède plusieurs expressions différentes. Pour les
+donner, nous allons introduire le vocabulaire nécessaire sur les ensembles
+(potentiellement infinis) de propositions.
+
+\begin{definition}[Satisfiabilité]
+  On dit qu'un ensemble $\mathcal P\subseteq\Prop$ est satisfiable s'il existe
+  $\rho\in\mathcal E$ telle que $\forall P\in\mathcal P, \rho\models P$. On dit
+  qu'un ensemble $\mathcal P\subseteq\Prop$ est finiment satisfiable si toutes
+  ses parties finies sont satisfiables.
+\end{definition}
+
+\begin{definition}[Contradiction]
+  On dit qu'un ensemble $\mathcal P\subseteq\Prop$ est contradictoire s'il
+  n'existe pas d'environnement $\rho\in\mathcal E$ tel que
+  $\forall P \in\mathcal P, \rho\models P$. Un ensemble
+  $\mathcal P\subseteq \Prop$ est finiment contradictoire si l'une de ses parties
+  finies est contradictoire.
+\end{definition}
+
+Le théorème de compacité énonce alors l'équivalence entre la version finie et la
+version infinie des deux caractères, et de façon équivalence, l'équivalence de
+la relation $\vDash$ pour un ensemble infini et pour ses parties finies. Montrons
+d'abord que ces trois principes sont bien équivalents.
+
+\begin{proposition}
+  Les deux propriétés suivantes sont équivalentes :
+  \begin{enumerate}[label=(\roman*)]
+  \item\label{enum.compac.prop1} pour tout $\mathcal P\subseteq \Prop$,
+    $\mathcal P$ est satisfiable si et seulement s'il est finiment satisfiable.
+  \item\label{enum.compac.prop2} pour tout $\mathcal P\subseteq\Prop$,
+    $\mathcal P$ est contradictoire si et seulement s'il est finiment
+    contradictoire.
+  \item\label{enum.compac.prop3} pour tout $\mathcal P\subseteq\Prop$ et
+    $P\in\Prop$, $\mathcal P\vDash P$ si et seulement si pour tout
+    $Q\in\mathcal P$, $Q\vDash P$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  Pour commencer, remarquons qu'un ensemble satisfiable est finiment satisfiable
+  et qu'un ensemble finiment contradictoire est contradictoire, et que si pour
+  tout $Q\in\mathcal P, Q\vDash P$ alors $\mathcal P\vDash Q$ (une valuation
+  satisfaisant $\mathcal P$ satisfera tous les $Q\in\mathcal P$). Il nous suffit
+  donc de travailler sur un seul sens de l'équivalence à chaque fois. Nous allons
+  maintenant montrer
+  $\ref{enum.compac.prop1}\implies\ref{enum.compac.prop2}\implies
+  \ref{enum.compac.prop3}\implies\ref{enum.compac.prop1}$ :
+  \begin{itemize}
+  \item Supposons \ref{enum.compac.prop1} et montrons \ref{enum.compac.prop2}.
+    Soit $\mathcal P\subset \Prop$ contradictoire, montrons que $\mathcal P$
+    est finiment contradictoire. Par l'absurde, supposons que $\mathcal P$ n'est
+    pas finiment contradictoire : toute partie finie $F\subseteq \mathcal P$
+    possède donc une valuation $\rho_F$ telle que $\rho_F\models F$. Mais alors,
+    en utilisant \ref{enum.compac.prop1}, on en déduit qu'il existe une valuation
+    $\rho\models \mathcal P$. Pourtant $\mathcal P$ est contradictoire : c'est
+    une absurdité. Ainsi, par l'absurde, on en déduit que $\mathcal P$ est
+    finiment contradictoire. A FINIR
+  \item Supposons \ref{enum.compac.prop2} et montrons \ref{enum.compac.prop3}.
+    Soit $\mathcal P\subseteq\Prop, P\in\Prop$ tels que $\mathcal P\vDash P$.
+    Montrons que pour tout $Q\in\mathcal P,Q\vDash P$. Supposons par l'absurde
+    qu'il existe $Q\in\mathcal P$ tel que $Q\not\vDash P$. On trouve alors un
+    environnement $\rho$ tel que $\rho\models Q$ et $\rho\not\models P$.
+  \item Supposons \ref{enum.compac.prop3} et montrons \ref{enum.compac.prop1}.
+    Soit $\mathcal P\subseteq\Prop$ un ensemble finiment satisfiable, montrons
+    que $\mathcal P$ est satisfiable. Soit A FINIR
+  \end{itemize}
+\end{proof}
+
+Il ne nous reste plus qu'à prouver le résultat en lui-même.
+
+\begin{theorem}[Compacité de la logique propositionnelle]
+  Pour tout $\mathcal P\subseteq\Prop$, si $\mathcal P$ est finiment satisfiable
+  alors $\mathcal P$ est satisfiable.
+\end{theorem}
+
+\begin{proof}
+  Soit $\mathcal P\subseteq\Prop$ finiment satisfiable, prouvons que $\mathcal P$
+  est satisfiable. Pour construire une valuation satisfaisant $\mathcal P$
+  entièrement, nous allons construire une suite de valuations partielles,
+  $(\rho_n)_{n\in\mathbb N}$, telle que $(\rho_n)_{|\{0,\ldots,m\}}=\rho_m$ pour tous
+  $m\leq n$. Tout d'abord, comme $\mathcal P$ est dénombrable, on peut se donner
+  une énumération $\mathcal P = \{P_i\}_{i\in\mathbb N}$.
+  \begin{itemize}
+  \item $\rho_0$ est la fonction partielle nulle part définie.
+  \item Soit $n\in\mathbb N$. Supposons donnée $\rho_n$ et construisons alors
+    $\rho_{n+1}$. A FINIR
+  \end{itemize}
+
+  A FINIR
+\end{proof}
+
 \subsection{Calcul des séquents}
 
 Ce qui manque à notre système, c'est une syntaxe : un système simple qui va nous
