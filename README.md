@@ -67,3 +67,5 @@ Super-nickel ! Le pdf compilé apparaît dans le repertoire courant sous le nom 
 ## License
 
 Ce travail ©2024 réalisé Titouan Leclercq et Werner Mérian est sous licence [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+
+![](https://licensebuttons.net/l/by-sa/4.0/88x31.png)

@@ -25,7 +25,7 @@
 
   - [5.1. Gestion des blancs](#gestion-des-blancs)
 
-**[6. Ergonomie pour l'utilisateur](#ergonomie-pour-l-utilisateur)
+**[6. Ergonomie pour l'utilisateur](#ergonomie-pour-l-utilisateur)**
 
   - [6.1 La numérotation](#la-numerotation)
   - [6.2. Les liens](#les-liens)
