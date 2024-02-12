@@ -1,0 +1,326 @@
+\chapter{Formaliser les mathématiques}
+
+Pour commencer notre étude, nous allons étudier l'une des propriétés les plus
+connues de la théorie des ensembles : la capacité d'expression suffisante pour
+formaliser toutes les mathématiques usuelles. Ce chapitre se concentrera donc sur
+l'étude des axiomes de ZFC et de leur utilisation pour construire les objets
+mathémtiques que nous connaissons habituellement.
+
+Nous devons ici faire quelques éclaircissements d'ordre philosophique. Tout
+d'abord, sur la méta-théorie : nous considérons que l'univers ambiant dans lequel
+nous pratiquons les mathématiques est lui-même un modèle de la théorie ZFC. Plus
+précisément, en notant $\mathcal U$ l'objet mathématique qui sera la collection
+de tous les objets mathématiques, ZFC peut être vu comme une théorie donnant une
+approximation du comportement de $\mathcal U$.
+
+En particulier, $\mathcal U$ contient des collections, que nous appelons
+d'habitude ensembles, et si un objet $X$ apparait dans une collection $C$, on
+écrit $X\in C$. Cependant, les objets que nous manipulerons ne seront pas ces
+collections, et la relation $\in$ utilisée dans ZFC ne sera pas \og être un objet
+mathématique apparaissant dans cette collection intuitive\fg{} : nous utiliserons
+des outils purement formels pour étudier ZFC, et devons donc les distinguer des
+objets intuitifs associés. Aussi nous appellerons \og ensemble\fg{} un objet de
+la théorie ZFC, et \og collection\fg{} un ensemble au sens intuitif, dans
+$\mathcal U$. De même, les objets formels seront associés à la notion
+d'appartenance, et les collections à la notion d'occurrence.
+
+Remarquons cependant qu'un ensemble donne de fait naissance à une
+collection : l'ensemble $X$ définit la collection
+$\{ x \in\mathcal U\mid x \in X \}$.
+
+Enfin, nous traiterons régulièrement des classes. S'il est possible de ne se
+restreindre qu'aux ensembles pour l'étude de ZFC, nous verrons qu'il est bien
+plus pratique d'énoncer certaines constructions en terme de classes. Une classe
+est une collection qui ne peut pas être représentée par un ensemble (par exemple
+la classe des ensembles, \textit{cf}. le paradoxe de Russell), mais que l'on peut
+décrire par un prédicat. Ainsi, une classe peut se représenter par le prédicat
+lui correspondant. Si une classe $C$ est décrite par un prédicat $\varphi(x)$,
+alors $x\in C$ doit se lire comme une reformulation plus lisible de $\varphi(x)$.
+Un léger défaut vient avec cette approche : certains théorèmes, se référant aux
+classes, doivent se lire comme des schémas de théorèmes, c'est-à-dire des
+théorèmes paramétrés par le prédicat $\varphi$ définissant une classe.
+
+\section{Axiomes de ZFC}
+
+\subsection[Premiers axiomes]{Extensionalité, paire, union, ensemble des parties}
+
+Commençons par étudier la théorie ZFC en en listant les axiomes. Un premier point
+important est de définir le langage sur lequel nous travaillerons : nous
+utiliserons $\mathcal L_{\mathrm{ZF}} = \{ \in^2\}$. En effet, tous les énoncés
+seront écrits seulement à l'aide du symbole de relation binaire $\in$ et de la
+relation $=$, symbole logique déjà inclus dans tout langage.
+
+\begin{remark}
+  En réalité, nous le verrons, notre langage sera bien plus riche : nous
+  ajouterons des symboles de fonctions, de constantes, et diverses relations.
+  Cependant, tous ces ajouts doivent être considérés comme des aides à la lecture
+  : toute proposition formulée dans l'enrichissement que nous donnerons au fur
+  et à mesure doit pouvoir se formuler dans $\mathrm L_{\mathrm{ZF}}$, mais avec un
+  nombre possiblement bien plus grand de symboles.
+\end{remark}
+
+\begin{axiom}[Extensionalité]
+  L'axiome d'extensionalité exprime que deux ensembles sont égaux exactement
+  lorsqu'ils possèdent les mêmes éléments :
+  \[\forall x \forall y, \qquad x = y \iff (\forall z, z \in x\iff z \in y)\]
+\end{axiom}
+
+Cet axiome définit ce que signifie l'égalité dans le monde des ensembles. Cela
+permet directement de voir que l'ordre ou le nombre d'occurrences n'importent pas
+dans un ensemble, contrairement par exemple au cas des listes. C'est un axiome au
+statut particulier car il ne permet pas de construire de nouvel ensemble. Les
+autres axiomes, eux, donneront principalement de nouvelles méthodes pour, à
+partir d'ensembles déjà construits, définir de nouveaux ensembles.
+
+\begin{axiom}[Paire]\label{ax.ZF.pair}
+  L'axiome de la pair exprime que si deux ensembles $x$ et $y$ ont été
+  construits, alors l'ensemble $\{x,y\}$ peut être construit à partir d'eux :
+  \[\forall x \forall y \exists z, \qquad \forall a, a \in z \iff
+  a = x \lor a = y\]
+\end{axiom}
+
+\begin{exercise}
+  Montrer que pour tous ensembles $x,y$, il existe un unique ensemble $z$ tel que
+  décrit dans l'\cref{ax.ZF.pair}. Cela justifie donc la notation $\{x,y\}$
+  pour cet ensemble, puisqu'il n'y a pas d'ambigüité sur lequel il est.
+\end{exercise}
+
+En utilisant l'axiome de la paire, on peut ainsi construire des collections
+finies telles que $\{x,\{y,z\}\}$, mais on ne peut pas par exemple définir
+$\{x,y,z\}$ : il nous faut un axiome permettant d'accéder à l'intérieur d'un
+ensemble pour en construire un nouveau.
+
+\begin{axiom}[Union]
+  Pour tout ensemble $x$, on peut construire l'ensemble $\bigcup x$ contenant
+  les éléments des éléments de $x$ :
+  \[\forall x \exists y,\qquad \forall z, z\in y \iff
+  (\exists a, z \in a \land a \in x)\]
+\end{axiom}
+
+\begin{notation}
+  De la même façon qu'avec l'axiome de la paire, l'ensemble $y$ défini par
+  l'axiome est unique, on l'écrira donc $\bigcup x$.
+\end{notation}
+
+\begin{exercise}
+  Soient $x_1,\ldots,x_n$ des ensembles, montrer par récurrence qu'il existe
+  l'ensemble $\{x_1,\ldots,x_n\}$.
+\end{exercise}
+
+Enfin, l'axiome de l'ensemble des parties permet de considérer comme un ensemble
+la collection des parties d'un ensemble. En un sens, il permet de faire croître
+considérablement la taille de ce que l'on peut construire.
+
+\begin{notation}
+  On définit le prédicat binaire $\subseteq$, appelé l'inclusion, par
+  \[x \subseteq y \defeq \forall z, z \in x \implies z \in y\]
+\end{notation}
+
+\begin{axiom}[Ensemble des parties]
+  Pour tout ensemble $x$, il existe l'ensemble $\powerset (x)$ dont les éléments
+  sont exactement les ensembles inclus dans $x$ :
+  \[\forall x\exists y, \qquad \forall z, z \in y \iff z \subseteq x\]
+\end{axiom}
+
+\begin{notation}
+  Comme le $y$ défini plus haut est unique, on peut là encore lui donner une
+  notation, qui est bien sûr $\powerset(x)$.
+\end{notation}
+
+\subsection{Les schémas d'axiomes}
+
+Les axiomes précédemment donnés constituent les briques de base pour construire
+des ensembles, mais sont en général trop grossières. L'intérêt de la théorie des
+ensembles est de pouvoir construire des ensembles correspondant à des
+collections, ce qui manque pour l'instant à notre système. C'est pour cela que
+nous ajoutons l'axiome de compréhension : étant donnée une formule $\varphi$ et
+un ensemble $X$, on peut construire l'ensemble $\{x \in X\mid \varphi(x)\}$ des
+éléments de $x$ vérifiant $\varphi$.
+
+La restriction de la compréhension à des parties d'un ensemble s'explique par le
+paradoxe de Russell : si l'on pouvait construire un ensemble pour chaque
+formule, on pourrait construire $\{ x \mid x\notin x\}$, qui appartient à
+lui-même si et seulement s'il n'appartient pas à lui-même.
+
+Un autre problème doit être contourné, et il est la raison pour laquelle on parle
+de schéma d'axiomes et non d'axiome. Si l'on voulait définir le schéma avec ce
+qui a été dit, celui-ci commencerait moralement par $\forall \varphi$ : cela
+n'est pas une quantification du premier ordre, et il n'est donc pas possible de
+donner un axiome pour toutes les formules. A la place, on introduit un schéma
+d'axiomes, c'est-à-dire une infinité d'axiomes ayant tous la même forme et
+dépendant d'un paramètre que l'on quantifie sur les formules.
+
+\begin{axiom}[Schéma de compréhension]
+  Soit $\varphi(x_0,\ldots,x_n)$ une phrase mathématique à $n$ variables libres.
+  Alors pour tous ensembles $X$ et $a_1,\ldots,a_n$, il existe l'ensemble
+  $\{x\in X \mid \varphi(x,a_1,\ldots,a_n)\}$, ce qui s'écrit formellement
+  \[\forall X\forall a_1\;\cdots\;a_n\exists y,\qquad
+    \forall x, x \in y \iff (x\in X\land \varphi(x,a_1,\ldots,a_n))\]
+\end{axiom}
+
+\begin{notation}
+  On définit donc la notation $\{x\in X\mid \varphi(x,a_1,\ldots,a_n)\}$ pour
+  l'ensemble précédent.
+\end{notation}
+
+\begin{exercise}
+  Soit un ensemble $x$ non vide, montrer qu'il existe l'ensemble $\bigcap x$ des
+  éléments qui sont dans tous les éléments de $x$.
+\end{exercise}
+
+\begin{exercise}\label{exo.ZF.prod}
+  Soient $x$ et $y$ deux ensembles. On définit le couple $(x,y)$ par
+  \[(x,y) \defeq \{\{x,y\},\{x\}\}\]
+  Montrer que pour tous $x,y,x',y'$, $(x,y) = (x',y')$ si et seulement si
+  $x=x'$ et $y=y'$.
+
+  Construire un prédicat $\varphi(x,y,z)$ tel que $\varphi(x,y,z)$ est vrai
+  si et seulement si $z = (x,y)$. En déduire en considérant une partie bien
+  choisie de $\powerset (\powerset(x\cup y))$ que
+  \[x\times y \defeq \{(a,b)\mid a \in x, b \in y\}\]
+  est un ensemble bien défini.
+\end{exercise}
+
+Le second axiome, le schéma d'axiomes de remplacement, peut être vu comme une
+version plus forte de la compréhension. Plutôt que de s'intéresser à filtrer des
+éléments dans un ensemble plus gros, le but de ce schéma d'axiomes est de
+construire un ensemble par une fonction. Comme la notion de fonction n'est pas
+encore définie, nous utilisons à la place la notion de relation fonctionnelle.
+
+\begin{definition}[Relation fonctionnelle]
+  Une relation binaire est ici une formule à deux variables libres. On dit
+  qu'une relation $R(x,y)$ est fonctionnelle si pour chaque $x$, il existe au
+  plus un $y$ tel que $R(x,y)$. On écrira pour raccourcir
+  \[\Funct(R) \defeq \forall x\forall y\forall z, R(x,y)\land R(x,z)\implies
+  y = z\]
+
+  Pour une relation fonctionnelle $R(x,y)$, on définit la collection du domaine
+  de $R$ :
+  \[\dom(R)(x)\defeq \exists y. R(x,y)\]
+  et la collection de l'image de $R$ :
+  \[\im(R)(y)\defeq \exists x. R(x,y)\]
+\end{definition}
+
+\begin{axiom}[Schéma de remplacement]
+  Pour toute formule $R(x_0,\ldots,x_{n+1})$, pour tous ensembles
+  $X,a_1,\ldots,a_n$, l'ensemble image de $R(a_1,\ldots,a_n)$ par $X$ est aussi
+  un ensemble :
+  \[\Funct(R)\implies \forall X \forall a_1\;\cdots\;a_n\exists y,\qquad
+  \forall x, x \in y \iff (\exists z, z\in X \land R(a_1,\ldots,a_n,z,x))\]
+\end{axiom}
+
+\begin{exercise}
+  En remarquant qu'une relation fonctionnelle peut représenter une fonction
+  partielle, montrer que le schéma d'axiomes de compréhension peut se déduire du
+  schéma d'axiomes de remplacement.
+\end{exercise}
+
+\begin{exercise}
+  En réutilisant le prédicat $\varphi$ de l'\cref{exo.ZF.prod}, montrer grâce au
+  schéma d'axiomes de remplacement que pour tous ensembles $x,y$, l'ensemble
+  $x\times y$ est bien défini même sans l'axiome de l'ensemble des parties.
+\end{exercise}
+
+Donnons aussi l'axiome le plus évident.
+
+\begin{axiom}[Univers non vide]
+  Il existe un ensemble.
+\end{axiom}
+
+\begin{exercise}
+  Montrer que l'axiome précédent est équivalent à l'existe de l'ensemble vide
+  $\varnothing$ défini par \[\forall z, z\notin \varnothing\]
+  (où $x\notin y$ signifie $\lnot(x\in y)$) 
+\end{exercise}
+
+\subsection{L'axiome de l'infini et les entiers}
+
+Pour introduire l'axiome suivant, il nous faut d'abord motiver l'utilisation de
+ses éléments constitutifs. L'ensemble mathématique le plus élémentaire que l'on
+est amené à étudier est certainement $\mathbb N$, l'ensemble des entiers
+naturels. Une formalisation habituelle de cet ensemble demande en général les
+trois constituants suivant:
+\begin{itemize}
+\item l'élément $0$
+\item la fonction unaire $S$, correspondant à $n \mapsto n + 1$
+\item le principe de récurrence, que l'on peut encoder dans les ensembles par le
+  fait que si $F\subseteq\mathbb N$, $0 \in F$ et
+  $\forall n, n\in F \implies S\;n \in F$ alors $F = \mathbb N$.
+\end{itemize}
+
+Chercher à définir $\mathbb N$ dans ZFC nous demande donc de définir ces
+éléments. Un candidat naturel à $0$ est $\varnothing$ : les deux sont les objets
+nuls par excellence, et $\varnothing$ est le premier ensemble que l'on peut
+construire. La question de savoir ce qu'est $S\;x$ pour un ensemble $x$ est alors
+naturelle : pour cela, nous utilisons le codage de Von Neumann consistant à coder
+l'entier naturel $n$ par $\{0,\ldots,n-1\}$. En effet, cela nous offre une
+définition naturelle à la fonction $S$ :
+\[S\;x\defeq x\cup \{x\}\]
+
+Remarquons que l'on peut déjà construire tous les entiers que l'on souhaite :
+on peut construire $0$ et itérer la fonction $S$. Malheureusement, rien ne nous
+dit que la collection $\{S^n\;0\mid n \in \mathbb N\}$ est bien elle-même un
+ensemble (où le $\mathbb N$ apparaissant dans la définition est l'ensemble des
+entiers naturels de notre méta-théorie). Pour palier ce problème, et pour éviter
+d'utiliser notre méta-théorie explicitement, on va à la place définir $\mathbb N$
+comme le plus petit ensemble contenant $0$ et stable par la fonction $S$. Il nous
+reste à savoir qu'un ensemble contenant $0$ et stable par $S$ existe bien.
+
+\begin{axiom}[Infini]
+  Il existe un ensemble contenant $\varnothing$ et stable par $S$ :
+  \[\exists x, \qquad \varnothing \in x \land
+  \forall y, y \in x \implies S\;y\in x\]
+\end{axiom}
+
+\begin{remark}
+  On peut en fait se passer de l'axiome de l'ensemble vide en prenant l'axiome de
+  l'infini (et en adaptant sa définition pour ne pas appeler explicitement
+  l'ensemble vide).
+\end{remark}
+
+\begin{definition}[Entiers naturels]
+  Soit $X$ l'ensemble défini par l'axiome de l'infini. On définit alors
+  $\mathbb N$ comme
+  \[\mathbb N \defeq \{x\in X \mid \forall Y, Y\subseteq X\land
+  \varnothing \in Y \land (\forall a, a \in Y \implies S\;a\in Y) \implies
+  x\in Y\}\]
+\end{definition}
+
+On vérifie alors le principe de récurrence.
+
+\begin{theorem}[Récurrence]
+  Soit $F$ une partie de $\mathbb N$ telle que $\varnothing \in F$ et
+  $\forall n, n \in F \implies S\;n \in F$, alors $F = \mathbb N$.
+\end{theorem}
+
+\begin{proof}
+  Comme $F$ est une partie de $\mathbb N$, il nous suffit de montrer que
+  $\mathbb N \subseteq F$. Par transitivité de l'inclusion,
+  $F\subseteq X$ pour $X$ l'ensemble à partir duquel $\mathbb N$ a été défini.
+  On sait de plus que
+  \[x \in \mathbb N \implies \forall Y, Y\subseteq X \land
+  \varnothing \in Y \land (\forall a, a \in Y \implies S\;a \in Y) \implies
+  x\in Y\]
+  d'où, en spécialisant $Y$ en $F$, et sachant que $\varnothing\in F$ et
+  $\forall n, n \in F \implies S\;n \in F$, il vient que
+  \[x\in \mathbb N \implies x \in F\] ce qui est exactement
+  $\mathbb N\subseteq F$, d'où le résultat.
+\end{proof}
+
+\begin{notation}
+  A partir de maintenant, pour fluidifier l'écriture, on adoptera un style plus
+  laxiste sur l'écriture des propositions. Par exemple on se permettra d'écrire
+  $\forall x \in X, \psi$ pour $\forall x, x\in X \implies \psi$ et tous les
+  légers abus de notations du même genre.
+\end{notation}
+
+\begin{exercise}
+  Montrer que l'on peut définir des fonctions par récursion sur $\mathbb N$,
+  c'est-à-dire montrer que si l'on a un ensemble $X$, un élément $x_0\in X$ et
+  une fonction $f_S : \mathbb N \times X \to X$ alors il existe une unique
+  fonction $f : \mathbb N \to X$ telle que
+  \[\begin{cases}
+  f(0) = x_0\\
+  \forall n \in \mathbb N, f(S\;n) = f_S(n,f(n))
+  \end{cases}\]
+\end{exercise}
