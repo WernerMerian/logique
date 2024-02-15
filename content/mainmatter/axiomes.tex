@@ -107,6 +107,12 @@ ensemble pour en construire un nouveau.
   l'ensemble $\{x_1,\ldots,x_n\}$.
 \end{exercise}
 
+\begin{notation}
+  Etant donnée une famille $x_1,\ldots,x_n$ d'ensembles, on définit
+  $\displaystyle \bigcup_{i = 1}^n x_i$ comme $\bigcup\{x_1,\ldots,x_n\}$. En
+  particulier, $x \cup y$ est $\bigcup\{x,y\}$.
+\end{notation}
+
 Enfin, l'axiome de l'ensemble des parties permet de considérer comme un ensemble
 la collection des parties d'un ensemble. En un sens, il permet de faire croître
 considérablement la taille de ce que l'on peut construire.
@@ -168,6 +174,11 @@ dépendant d'un paramètre que l'on quantifie sur les formules.
   éléments qui sont dans tous les éléments de $x$.
 \end{exercise}
 
+\begin{notation}
+  On définit des notations pour l'intersection analogues à celles pour l'union :
+  $\displaystyle\bigcap_{i = 1}^n x_i$ et $x \cap y$.
+\end{notation}
+
 \begin{exercise}\label{exo.ZF.prod}
   Soient $x$ et $y$ deux ensembles. On définit le couple $(x,y)$ par
   \[(x,y) \defeq \{\{x,y\},\{x\}\}\]
@@ -215,7 +226,7 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
   schéma d'axiomes de remplacement.
 \end{exercise}
 
-\begin{exercise}
+\begin{exercise}\label{exo.ZF.prod2}
   En réutilisant le prédicat $\varphi$ de l'\cref{exo.ZF.prod}, montrer grâce au
   schéma d'axiomes de remplacement que pour tous ensembles $x,y$, l'ensemble
   $x\times y$ est bien défini même sans l'axiome de l'ensemble des parties.
@@ -314,6 +325,109 @@ On vérifie alors le principe de récurrence.
   légers abus de notations du même genre.
 \end{notation}
 
+\subsection{Axiome du choix et fonctions}
+
+Pour introduire l'axiome du choix, le mieux est de parler de ce qu'on voudrait
+faire mais ne peut pas faire sans lui. Prenons $X_1,\ldots,X_n$ des ensembles
+finis non vides. On peut prouver qu'il existe
+$(x_1,\ldots,x_n)\in X_1\times\cdots\times X_n$ (en codant le produit itéré et
+les tuples de taille arbitraire). Pour cela, il suffit de raisonner par
+récurrence sur $n$ : pour passer de l'étape $n$ à l'étape $n+1$ il suffit de
+remarquer que $X_{n+1}$ est non vide, et prendre alors un élément $x\in X_{n+1}$
+pour l'ajouter au tuple déjà construit.
+
+Le problème ici est que, si l'on peut obtenir ce résultat sur un nombre fini
+d'ensembles non vides, ce processus ne fonctionne plus lorsque l'on passe au cas
+infini. On ne peut pas faire une infinité de choix, puisque l'on n'utilise que
+des méthodes finies. C'est pourquoi l'axiome du choix existe : il permet de
+choisir dans des familles infinies d'ensembles non vides. Donnons d'abord la
+définition de cet axiome.
+
+\begin{axiom}[Choix]
+  Soit $X$ un ensemble dont les éléments sont non vides. Alors il existe un
+  ensemble $C$ tel que pour tout $x\in X$, $C\cap x$ est un singleton. \'Ecrit
+  formellement :
+  \[\forall X, (\forall x \in X, x \neq \varnothing) \implies
+  \exists C, \forall x \in X, \exists y, C \cap x = \{y\}\]
+\end{axiom}
+
+Il existe plusieurs reformulation naturelles de l'axiome du choix. Pour
+celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
+
+\begin{definition}[Fonction]
+  Soient $X,Y$ deux ensembles. Une fonction $f : X \to Y$ est une partie
+  $\Gamma_f\subseteq X \times X$ (appelée graphe de $f$)  telle que le prédicat
+  $(x,y)\in \Gamma$, défini pour $x\in X$ et $y\in Y$, est une relation
+  fonctionnelle. On désigne par $\dom(f)$ et $\im(f)$ les ensembles associés à la
+  relation fonctionnelle. On dit que $f$ est partielle si $\dom(f) \neq X$, et
+  totale si $\dom(f) = X$.
+
+  Pour deux ensembles $X,Y$, on note par $\Funct(X,Y)$ l'ensemble des fonctions
+  $f : X \to Y$ :
+  \[\Funct(X,Y) \defeq \{f : X \to Y\}\]
+\end{definition}
+
+\begin{exercise}
+  Soient $X$ et $Y$ deux ensembles. Montrer que $\Funct(X,Y)$ est bien un
+  ensemble.
+\end{exercise}
+
+\begin{remark}
+  Dire que $f$ est partielle, dans ce cadre, n'est pas bien défini. En effet, on
+  peut toujours prendre une fonction $f : X \to Y$ et l'étendre en
+  $f : S\;X \to Y$ : la fonction est la même mais cette propriété change. Pour
+  éviter cela, une fonction consistera souvent plutôt en un triplet
+  $(X,Y,\Gamma_f)$, mais nous nous concentrerons simplement sur $\Gamma_f$. Il y
+  a donc un abus de notation ici lorsque nous construirons par exemple une
+  fonction en construisant juste son graphe, mais celui-ci reste léger car on
+  connait toujours grâce au contexte les deux autres composantes de la fonction.
+\end{remark}
+
+\begin{notation}
+  Soit une fonction $f : X \to Y$. On s'autorise à ajouter $f$ comme symbole de
+  fonction dans notre langage, dont l'argument est un élément de $X$. Cela n'est
+  pas autorisé par défaut, et nous devons donc le coder dans notre langage
+  élémentaire (de la même manière que l'on convient qu'il est possible de
+  réécrire $x\cup y$ uniquement grâce à $\in$ et $=$). Pour cela, on définit la
+  traduction d'une phrase $\varphi$ faisant potentiellement intervenir
+  l'expression $f(x)$ en une phrase $\varphi'$ sans $f(x)$, par induction sur
+  la structure de $\varphi$ :
+  \begin{itemize}
+  \item si $\varphi = R(f(x))$ où $R$ est une proposition atomique (une relation
+    avec potentiellement d'autres termes que $f(x)$), alors
+    \[\varphi' = \forall y\in Y, (x,y)\in \Gamma_f \implies R(y)\]
+  \item si $\varphi = \lnot \psi$, alors $\varphi' = \lnot \psi'$.
+  \item si $\varphi = \psi \lor \chi$, alors $\varphi' = \psi'\lor \chi'$.
+  \item si $\varphi = \psi \land \chi$, alors $\varphi' = \psi'\land \chi'$.
+  \item si $\varphi = \exists a, \psi$, alors $\varphi' = \exists a, \psi'$.
+  \item si $\varphi = \forall a, \psi$, alors $\varphi' = \forall a, \psi'$.
+  \end{itemize}
+
+  On considère donc qu'introduire la notation $f(x)$ est une facilité d'écriture.
+\end{notation}
+
+\begin{remark}
+  Cet abus de notation est aussi possible dans le cas d'une relation
+  fonctionnelle qui n'est pas donnée par une fonction (au sens ensembliste).
+\end{remark}
+
+On définit de plus les notions d'injectivité, de surjectivité et de bijectivité.
+
+\begin{definition}[Injectivité, surjectivité, bijectivité]
+  Une fonction $f : A \to B$ est dite injective si chaque élément $b\in B$ a au
+  plus un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
+  \[\forall x,y\in A, f(x) = f(y)\implies x=y\]
+
+  Une fonction $f : A \to B$ est dite surjective si tout élément $b\in B$ a au
+  moins un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
+  \[\forall y\in B, \exists x \in A, f(x)=y\]
+
+  Une fonction $f : A \to B$ est dite bijective si elle est à la fois injective
+  et surjective.
+\end{definition}
+
+Donnons un exercice pour manipuler la notion de fonction et celle de récurrence.
+
 \begin{exercise}
   Montrer que l'on peut définir des fonctions par récursion sur $\mathbb N$,
   c'est-à-dire montrer que si l'on a un ensemble $X$, un élément $x_0\in X$ et
@@ -324,3 +438,304 @@ On vérifie alors le principe de récurrence.
   \forall n \in \mathbb N, f(S\;n) = f_S(n,f(n))
   \end{cases}\]
 \end{exercise}
+
+L'exercice suivant permet de définir des fonctions depuis un produit cartésien
+en considérant seulement ses projections.
+
+\begin{exercise}
+  Soient $X,Y,Z$ des ensembles. Montrer qu'il existe une bijection entre
+  $\Funct(X\times Y,Z)$ et $\Funct(X,\Funct(Y,Z))$ donnée par
+  $f\mapsto (x\mapsto y \mapsto f(x,y))$.
+\end{exercise}
+
+Donnons maintenant la deuxième formulation de l'axiome du choix.
+
+\begin{proposition}
+  L'axiome du choix est équivalent à la proposition suivante :
+  \[\forall x, \exists f : \powerset (x) \backslash \{\varnothing\} \to x,
+  \forall y \in \powerset(x)\backslash \{\varnothing\}, f(y)\in y\]
+\end{proposition}
+
+\begin{proof}
+  A faire.
+\end{proof}
+
+Une autre formulation importante nécessite la notion de produit, que l'on peut
+simplement considérer comme une généralisation de l'opération $\times$.
+
+\begin{definition}[Produit cartésien quelconque]
+  Soit $X$ un ensemble, on définit $\prod X$ par
+  \[\prod X \defeq \Big\{f : X \to \bigcup X \;\Big|\; \forall x \in X, f(x)\in
+  x\Big\}\]
+
+  Si $\{X_i\}_{i\in I}$ est une famille de fonctions (c'est-à-dire une fonction
+  $g : i \mapsto X_i$) alors on considère que
+  \[\prod_{i\in I} X_i \defeq \Big\{ f : I \to \bigcup_{i\in I} X_i\;\Big|\;
+  \forall i \in I, f(i) \in X_i\Big\}\]
+\end{definition}
+
+\begin{proposition}
+  L'axiome du choix est équivalent à la proposition suivante :
+  \[\forall x, (\forall y \in x, y \neq \varnothing) \implies
+  \prod x \neq \varnothing\]
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\subsection{Axiome de fondation}
+
+Le dernier axiome de ZFC est l'axiome de fondation. Selon les auteurs, il est ou
+non ajouté à ZFC : ici, nous considérerons que ZFC le contient. Cet axiome
+empêche l'existence de cycles d'appartenance, par exemple d'ensemble $x$ tel que
+$x\in x$. Formellement, l'axiome énonce que la relation $\in$ sur l'univers
+ensembliste $\mathcal U$ est bien fondée.
+
+\begin{axiom}[Fondation]
+  Pour tout ensemble $x$ non vide, il existe $y\in x$ tel que
+  $x\cap y = \varnothing$. Formellement, cela s'écrit :
+  \[\forall x, x\neq\varnothing \implies \exists y \in x, x\cap y = \varnothing\]
+\end{axiom}
+
+Si l'on voit un ensemble $x$ comme un arbre, où chaque n\oe ud est un ensemble et
+où l'on place une arête entre $x$ et $y$ si $x\in y$, alors l'axiome de fondation
+stipule que pour chaque ensemble, l'arbre ainsi construit n'a pas de branche
+infinie (ni de cycle).
+
+Remarquons que l'arbre que nous avons construit contient non seulement les
+éléments de $x$ mais aussi les éléments des éléments de $x$, et ainsi de suite.
+Cette idée nous permet d'introduire la notion d'ensemble transitif, qui est un
+ensemble tel que l'arbre ainsi généré ne contient que des éléments de l'ensemble
+(c'est-à-dire que tous les éléments des éléments de $x$ sont aussi éléments de
+$x$).
+
+\begin{definition}[Ensemble transitif]
+  Soit un ensemble $x$. On dit que $x$ est transitif si tout élément d'un élément
+  de $x$ est aussi élément de $x$. Formellement, cela s'écrit
+  \[\trans(x) \defeq \forall y\in x, \forall z \in y, z\in x\]
+\end{definition}
+
+Remarquons qu'étant donné un ensemble, on peut toujours ajouter ses éléments, les
+éléments de ses éléments et ainsi de suite pour obtenir à la fin un ensemble
+transitif.
+
+\begin{proposition}
+  Soit $x$ un ensemble. Alors il existe un plus petit ensemble $\trcl(x)$
+  transitif contenant $x$.
+\end{proposition}
+
+\begin{proof}
+  Pour construire $\trcl(x)$, on construit la suite d'ensembles
+  $(x_i)_{i\in\mathbb N}$ suivante :
+  \begin{itemize}
+  \item $x_0 = x$
+  \item $x_{i+1} = \bigcup x_i$
+  \end{itemize}
+  L'ensemble $\trcl(x)$ est alors $\displaystyle\bigcup_{n\in \mathbb N} x_n$.
+
+  Vérifions que $\trcl(x)$ est bien transitif et contient $x$. Comme
+  $x_O\subseteq \trcl(x)$ par définition de l'union, $\trcl(x)$ contient $x$.
+  Soient $y\in \trcl(x)$ et $z\in y$. Par définition, il existe $n\in \mathbb N$
+  tel que $y\in x_n$. Alors $z\in x_{n+1}$ puisque $z\in y \in x_n$ et
+  $x_{n+1}=\bigcup x_n$. Ainsi $z\in \trcl(x)$.
+
+  Soit un ensemble transitif $y$ contenant $x$. Alors par récurrence sur $n$,
+  $x_n\subseteq y$ :
+  \begin{itemize}
+  \item par hypothèse, $x\subseteq y$.
+  \item si $x_n\subseteq y$, alors soit $z\in x_{n+1}$, par définition on trouve
+    $a\in x_n$ tel que $z\in a \in x_n$, et comme $x_n\subseteq y$, $a\in y$.
+    Mais $y$ est transitif, donc $z\in y$ : on en déduit que $x_{n+1}\subseteq y$.
+  \end{itemize}
+  Par récurrence, on en déduit que $\forall n\in\mathbb N, x_n\subseteq y$,
+  d'où $\trcl(x)\subseteq y$.
+\end{proof}
+
+\begin{exercise}
+  Montrer qu'un ensemble $x$ est transitif si et seulement si la propriété
+  suivante est vérifiée :
+  \[\forall y\in x, y\subseteq x\]
+\end{exercise}
+
+Les deux propriétés de bonne fondation de $\in$ et de transitivité mènent au
+lemme d'effondrement de Mostowski. Celui-ci montre que toute classe munie d'une
+relation se comportant suffisamment comme la relation $\in$ peut en fait se
+simuler par une unique classe transitive bien fondée où la relation est
+directement $\in$.
+
+\begin{lemma}[Effondrement de Mostowski]
+  Soit $\mathcal M$ une classe et $R$ une relation vérifiant :
+  \begin{itemize}
+  \item $R$ définit des ensembles, c'est-à-dire que pour tout $x\in \mathcal M$,
+    la collection définie par $R^{-1}[x] = \{y\mid y R x\}$ est un ensemble.
+  \item $R$ est bien fondée, c'est-à-dire :
+    \[\forall X\subseteq \mathcal M, \exists x \in X, R^{-1}[x]\cap X =
+    \varnothing\]
+  \item $R$ est extensionnelle, c'est-à-dire :
+    \[\forall x,y\in \mathcal M, R^{-1}[x] = R^{-1}[y] \implies x = y\]
+  \end{itemize}
+
+  Alors il existe une unique classe $\mathcal N$ et un unique isomorphisme
+  $\phi : \mathcal M\to \mathcal N$ tels que
+  $(\mathcal M,R) \overset{\phi}{\cong} (\mathcal N,\in)$.
+\end{lemma}
+
+\begin{remark}
+  Nous n'avons pas formellement défini ce qu'est un isomorphisme entre classes.
+  Cette définition est assez naturelle : étant données deux classes $\mathcal M$
+  et $\mathcal N$ avec chacune une relation $R$ (respectivement $R'$), un
+  isomorphisme $\phi : (\mathcal M,R)\cong (\mathcal N,R')$ est une proposition
+  $\phi$ à deux variables libres telle que, pour une proposition $\psi$
+  définissant $\mathcal M$ et une proposition $\chi$ définissant $\mathcal N$,
+  les propositions suivantes peuvent être prouvées :
+  \begin{itemize}
+  \item $\forall x,\forall y,\forall z, \psi(x)\land \chi(y)\land\chi(z)\land
+    \phi(x,y)\land\phi(x,z) \implies y = z$
+  \item $\forall x,\psi(x)\implies \exists y, \chi(y)\land \phi(x,y)$
+  \item $\forall x,\forall y,\forall z, \psi(x)\land\psi(y)\land\chi(z)\land
+    \phi(x,z)\land\phi(y,z)\implies x = y$
+  \item $\forall y,\chi(y)\implies \exists x, \psi(x)\land \phi(x,y)$
+  \item $\forall x,\forall x',\forall y, \forall y', \psi(x)\land\psi(x')\land
+    \chi(y)\land\chi(y')\land\phi(x,y)\land\phi(x',y')\implies
+    (xR x'\iff yR' y')$
+  \end{itemize}
+
+  Cependant, nous allons simplement travailler sur les classes comme sur les
+  ensembles, puisque les manipulations syntaxiques correspondant à nous arguments
+  ensemblistes habituels sont les mêmes que celles que nous allons faire sur nos
+  classes. Remarquons simplement que ce lemme est, puisqu'il parle de classe,
+  un schéma de lemmes paramétré par les propositions définissant $\mathcal M$ et
+  $R$.
+\end{remark}
+
+\begin{proof}
+  Montrons d'abord que si $M_1$ et $M_2$ sont deux classes transitives et que
+  $\theta : M_1\to M_2$ est un isomorphisme pour la rleation $\in$, alors
+  $\theta$ est l'identité.
+
+  Par l'absurde, supposons que $\theta$ n'est pas l'identité. L'ensemble
+  $C = \{x\mid \theta(x)\neq x\}$ n'est donc pas vide. Par l'axiome de fondation,
+  on trouve un élément minimal $x\in C$, et soit $y = \theta(x)$. On peut alors
+  remarquer que par minimalité de $x$, pour tous $z\in x$, $\theta(z)=z$, et
+  comme $\theta$ est un isomorphisme on en déduit que $z\in y$. Ainsi
+  $x\subseteq y$. Il nous reste à montrer que $y\subseteq x$ : si $z\in y$, alors
+  $z\in M_2$ comme $M_2$ est une classe transitive, donc on trouve $a\in M_1$ tel
+  que $\theta(a)=z$, mais comme $\theta(a)\in \theta(x)$, on en déduit que
+  $a\in x$, et puisque $x$ est minimal dans $C$, $\theta(a)=a$, c'est-à-dire
+  $z = a$. Donc $y\subseteq x$. On a donc une absurdité étant donné que
+  $x = \theta(x)$ : ainsi $C$ est vide, donc $\theta$ est l'identité.
+
+  Reprenons maintenant notre classe $\mathcal M$. On définit alors la classe
+  $\mathcal N$ par l'image de la fonction $\theta$ définie comme suit :
+  \[\begin{array}{rcccl}
+  \theta & : & \mathcal M & \longrightarrow & \mathcal U\\
+  & & x & \longmapsto & \{\theta(y)\mid y \in R^{-1}[x]\}
+  \end{array}\]
+  c'est-à-dire que la relation $\theta$ est définie par la proposition
+  \[\theta(x,y) \defeq y = \{\theta(z)\mid z \in R^{-1}[x]\}\]
+  où l'on prouve par l'absurde que cette proposition vérifie les propriétés d'un
+  isomorphisme entre $(\mathcal M,R)$ et $(\mathcal N,\in)$, en utilisant un
+  principe analogue à la preuve précédente. La classe $\mathcal N$ est définie
+  par la proposition
+  \[y \in \mathcal N \defeq \exists x\in\mathcal M, \theta(x,y)\]
+
+  L'unicité découle alors du fait que s'il existe une autre telle classe
+  $\mathcal N'$, alors l'isomorphisme entre elle et $\mathcal N$ vérifie les
+  hypothèses du résultat intermédiaire, et est donc l'identité. D'où
+  $\mathcal N = \mathcal N'$.
+\end{proof}
+
+\section{Construction des autres ensembles de nombres}
+
+Nous avons construit $\mathbb N$ directement grâce à l'axiome de l'infini, mais
+celui-ci n'est pas le seul ensemble de nombres important à construire. Dans cette
+section, nous allons vois la construction de $\mathbb Z, \mathbb Q$ et
+$\mathbb R$, ainsi que leurs propriétés essentielles. Nous allons commencer notre
+étude par celle de $\mathbb N$, puisque nous avons simplement défini cet ensemble
+et le principe de récurrence.
+
+\subsection{Les entiers naturels}
+
+Rappelons les points essentiels à propos de $\mathbb N$ : cet ensemble contient
+$0$, une fonction $S$ unaire, et le principe de récurrence. De plus, on peut
+définir une fonction par récurrence. Nous pouvons donc définir les fonctions
+$+$ et $\times$.
+
+\begin{definition}[Addition, multiplication]
+  On définit la fonction $+ : \mathbb N \times \mathbb N \to \mathbb N$ et la
+  fonction $\times : \mathbb N \times \mathbb N \to \mathbb N$ par récurrence
+  sur leur premier argument :
+  \begin{itemize}
+  \item $\forall n \in \mathbb N, n + 0 = n$
+  \item $\forall n,m\in \mathbb N, n + (S\;m) = S(n + m)$
+  \item $\forall n \in \mathbb N, n \times 0 = 0$
+  \item $\forall n,m\in\mathbb N, n \times (S\;m) = n\times m + n$
+  \end{itemize}
+\end{definition}
+
+\begin{notation}
+  On définit $1 = S\;0$, $2 = S\;S\;0$ et ainsi de suite. Plutôt que $S\;n$, nous
+  utiliserons $n + 1$.
+\end{notation}
+
+\begin{property}
+  Les propriétés suivantes sont vérifiées :
+  \begin{itemize}
+  \item $0$ est un élément neutre pour $+$ : pour tout $n\in \mathbb N$,
+    $0 + n = n$ et $n + 0 = n$.
+  \item $+$ est commutatif : pour tous $n,m\in\mathbb N$, $n+m=m+n$.
+  \item $+$ est associatif : pour tous $n,m,p\in\mathbb N$,
+    $n+(m+p) = (n+m)+p$.
+  \item $+$ est régulier : pour tous $n,p,m\in\mathbb N$, si $n+m = n+p$ alors
+    $m=p$.
+  \item pour tous $n,m\in \mathbb N$, si $n + m = 0$ alors $n=0$ et $m = 0$.
+  \item $+$ distribue sur $\times$ : pour tous $n,m,p\in\mathbb N$,
+    $n\times(m+p) = n\times m + n \times p$ et
+    $(n+m)\times p = n\times p + m \times p$.
+  \item $1$ est un élément neutre pour $\times$.
+  \item $0$ est absorbant pour $\times$ : pour tout $n\in \mathbb N$,
+    $0\times n = 0$.
+  \item $\times$ est commutatif.
+  \item $\times$ est associatif.
+  \item La structure est intègre : pour tous $n,m\in \mathbb N$, si
+    $n\times m = 0$ alors $n = 0$ ou $m = 0$.
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+La relation $\leq$ est aussi définissable grâce à notre langage ensembliste.
+
+\begin{definition}[Inégalité]
+  On définit la relation $\leq\subseteq \mathbb N \times \mathbb N$ par :
+  \[n \leq m \defeq \exists k \in \mathbb N, m = n + k\]
+\end{definition}
+
+\begin{property}
+  La relation $\leq$ est une relation d'ordre.
+\end{property}
+
+\begin{proof}
+  Prouvons que la relation est réfléxive, antisymétrique et transitive :
+  \begin{itemize}
+  \item soit $n\in \mathbb N$, alors $n = n + 0$, d'où $n\leq n$.
+  \item soient $n,m\in \mathbb N$, supposons que $n \leq m$ et $m \leq n$. On
+    trouve alors $k,k'$ tels que $n = m + k$ et $m = n + k'$. En substituant
+    la deuxième inégalté dans la première, on obtient alors
+    \begin{align*}
+      n &= (n + k') + k\\
+      &= n + (k' + k)\\
+      n + 0 &= n + (k' + k)\\
+      0 &= k + k'\qquad\text{par régularité de }+\\
+    \end{align*}
+    d'où $0 = k$, donc $n = m$.
+  \item soient $n,m,p\in \mathbb N$ tels que $n\leq m$ et $m\leq p$. On trouve
+    donc $k,k'$ tels que $m = n + k$ et $p = m + k'$. Par substitution, on en
+    déduit que $p = (n + k) + k'$, et par transitivité $p = n + (k + k')$, d'où
+    $n \leq p$.
+  \end{itemize}
+  Ainsi, $\leq$ est une relation d'ordre.
+\end{proof}

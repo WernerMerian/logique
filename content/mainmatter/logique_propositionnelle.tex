@@ -284,18 +284,18 @@ d'abord que ces trois principes sont bien équivalents.
     $\mathcal P$ est contradictoire si et seulement s'il est finiment
     contradictoire.
   \item\label{enum.compac.prop3} pour tout $\mathcal P\subseteq\Prop$ et
-    $P\in\Prop$, $\mathcal P\vDash P$ si et seulement si pour tout
-    $Q\in\mathcal P$, $Q\vDash P$.
+    $P\in\Prop$, $\mathcal P\vDash P$ si et seulement s'il existe
+    $F\subfin \mathcal P$ tel que $F\vDash P$.
   \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-  Pour commencer, remarquons qu'un ensemble satisfiable est finiment satisfiable
-  et qu'un ensemble finiment contradictoire est contradictoire, et que si pour
-  tout $Q\in\mathcal P, Q\vDash P$ alors $\mathcal P\vDash Q$ (une valuation
-  satisfaisant $\mathcal P$ satisfera tous les $Q\in\mathcal P$). Il nous suffit
-  donc de travailler sur un seul sens de l'équivalence à chaque fois. Nous allons
-  maintenant montrer
+  Pour commencer, remarquons qu'un ensemble satisfiable est finiment satisfiable,
+  qu'un ensemble finiment contradictoire est contradictoire, et que s'il existe
+  $F\subfin \mathcal P$ tel que $F\vDash P$, alors pour tout environnement $\rho$
+  tel que $\rho\models \mathcal P$, on a en particulier $\rho\models F$ et donc
+  $\rho\models P$. Il nous suffit donc de travailler sur un seul sens de
+  l'équivalence à chaque fois. Nous allons maintenant montrer
   $\ref{enum.compac.prop1}\implies\ref{enum.compac.prop2}\implies
   \ref{enum.compac.prop3}\implies\ref{enum.compac.prop1}$ :
   \begin{itemize}
@@ -307,15 +307,25 @@ d'abord que ces trois principes sont bien équivalents.
     en utilisant \ref{enum.compac.prop1}, on en déduit qu'il existe une valuation
     $\rho\models \mathcal P$. Pourtant $\mathcal P$ est contradictoire : c'est
     une absurdité. Ainsi, par l'absurde, on en déduit que $\mathcal P$ est
-    finiment contradictoire. A FINIR
+    finiment contradictoire.
   \item Supposons \ref{enum.compac.prop2} et montrons \ref{enum.compac.prop3}.
-    Soit $\mathcal P\subseteq\Prop, P\in\Prop$ tels que $\mathcal P\vDash P$.
-    Montrons que pour tout $Q\in\mathcal P,Q\vDash P$. Supposons par l'absurde
-    qu'il existe $Q\in\mathcal P$ tel que $Q\not\vDash P$. On trouve alors un
-    environnement $\rho$ tel que $\rho\models Q$ et $\rho\not\models P$.
+    Soient $\mathcal P\subseteq\Prop, P\in\Prop$ tels que $\mathcal P\vDash P$.
+    Montrons qu'il existe $F\subfin\mathcal P$, tel que $F\vDash P$. Comme
+    $\mathcal P\vDash P$, on en déduit que $\mathcal P \cup \{\lnot P\}$ est
+    contradictoire. Ainsi, par \ref{enum.compac.prop2}, on trouve un ensemble
+    $F\subfin \mathcal P \cup \{\lnot P\}$ contradictoire. Si $F$ ne contient pas
+    $\lnot P$, alors $F\vDash P$ est vérifié par vacuité de la condition.
+    Si $F = F' \sqcup \{\lnot P\}$, alors pour tout $\rho$ tel que
+    $\rho\models F'$, $\rho\not\models \lnot P$ donc $\rho\models P$, d'où
+    $F'\vDash P$ et $F'\subfin \mathcal P$.
   \item Supposons \ref{enum.compac.prop3} et montrons \ref{enum.compac.prop1}.
     Soit $\mathcal P\subseteq\Prop$ un ensemble finiment satisfiable, montrons
-    que $\mathcal P$ est satisfiable. Soit A FINIR
+    que $\mathcal P$ est satisfiable. Par l'absurde, supposons que $\mathcal P$
+    n'est pas satisfiable. Cela signifie que $\mathcal P\vDash \bot$ : par
+    \ref{enum.compac.prop3} on trouve donc $F\subfin \mathcal P$ tel que
+    $F\vDash \bot$ : $F$ est donc contradictoire, ce qui contredit le fait que
+    $\mathcal P$ est finiment satisfiable. Par l'absurde, on en déduit que
+    $\mathcal P$ est satisfiable.
   \end{itemize}
 \end{proof}
 
