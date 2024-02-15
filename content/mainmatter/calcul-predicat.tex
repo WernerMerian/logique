@@ -1,0 +1,78 @@
+\chapter{Calcul des prédicats}
+\label{chp.logpred}
+
+\minitoc
+
+\lettrine{L}{e} premier but de la logique mathématique est de rendre compte du
+langage mathématique. A ce titre, la logique propositionnelle est clairement
+insuffisante, et nous l'avons déjà présentée comme une simplification du langage
+mathématique habituel. Dans ce chapitre, nous allons nous intéresser à la
+formalisation de ce langage mathématique habituel, qui est le calcul des
+prédicats de la logique du premier ordre. Le terme prédicat désigne le fait que
+nos propositions dépendent de termes, qui représentent des objets mathématiques.
+L'expression \og logique du premier ordre\fg{} désigne la capacité d'expression
+de nos propositions : celles-ci ne peuvent parler que des objets mathématiques
+désignés préalablement par l'univers de discours. Par contraste, la logique du
+deuxième ordre permet de parler, en plus de ces objets, des propositions
+elles-mêmes : on peut écrire par exemple $\forall P\in\Prop, P\to P$.
+
+Nous nous attarderons d'abord sur la définition, à partir d'une signature du
+premier ordre, des termes et des formules, ainsi que les notions syntaxiques de
+variables libres, liées et de substitution. Ensuite, nous introduirons les
+notions les plus élémentaires de la théorie des modèles, et la relation de
+satisfaction $\models$. Enfin, comme dans le chapitre précédent, nous allons
+définir une syntaxe pour le calcul des prédicats. La différence, cependant,
+est que nous prouverons le théorème de compacité à partir de la complétude.
+
+Ce chapitre peut être vu comme la base commune de la théorie de la démonstration
+et de la théorie des modèles. A ce titre, nous donnerons avant tout les
+définitions des concepts importants, mais n'allons pas nous attarder sur ceux-ci,
+puisque nous les reverrons dans des chapitres dédiés. En particulier nous allons
+donner un formalisme pour la syntaxe du calcul des prédicats et un seul, alors
+que la partie dédiée à la théorie de la démonstration donnera un résultat plus
+général sur toute une famille de systèmes de preuves, et présentera plusieurs
+formalismes.
+
+\section{Signatures, termes et formules}
+
+Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
+\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \lor
+(\exists m \in \mathbb N, n = 2 \times m + 1)\]
+Remarquons tout d'abord que l'on remplace \og ou\fg{} par le symboles $\lor$,
+maintenant que nous connaissons le formalisme de la logique propositionnelle.
+Il nous reste cependant plusieurs points à définir formellement : tout d'abord,
+la phrase précédente contient des termes, comme $2$ ou $n$. Ceux-ci sont d'une
+nature différente d'une variable propositionnelle par exemple, puisque dans le
+premier cas, les formules ne relient pas directement des termes, mais des
+relations entre termes. Nous devons donc tout d'abord construire un ensemble de
+termes, qui représenterons les objets dont les formules parleront. Cependant,
+comme nous cherchons en premier lieu à élaborer des phrases finies, nous
+cherchons aussi à limiter les symboles que nous utiliserons. Cela s'explique par
+le fait que pour lire une phrase, il est nécessaire de savoir à l'avance quels
+sont les symboles constitutifs de ce langage. En particulier, nous devons savoir
+ce que signifie chaque symbole.
+
+\begin{definition}[Signature]
+  Une signature, ou langage, du premier ordre, est un quadruplet $\mathcal L =
+  (\mathcal F,\mathcal R, \alpha,\beta)$ où $\alpha : \mathcal F \to \mathbb N$
+  et $\beta : \mathcal R \to \mathbb N$. On appelle les éléments de $\mathcal F$
+  les symboles de fonction et les éléments de $\mathcal R$ les symboles de
+  relation. Pour un symboles de fonction $f\in\mathcal F$, $\alpha(f)$ est appelé
+  l'arité de $f$, et de même $\beta(r)$ est l'arité de $r$ pour $r\in\mathcal R$.
+  Si $f\in\mathcal F$ est d'arité $0$, on dit que c'est une constante.
+\end{definition}
+
+\begin{example}
+  Un premier exemple de langage est le langage des groupes, qui est
+  \[\mathcal L_{\mathrm{Grp}} \defeq \{e^0,\times^2,((-)^{-1})^1\}\]
+  où l'on indique par un exposant l'arité d'un symbole, et où tous les symboles
+  sont des symboles de fonction. De même, comme on préfère la notation additive
+  pour les groupes abéliens, on peut aussi définir
+  \[\mathcal L_{\mathrm{Ab}} \defeq \{0^0,+^2,-^1\}\]
+\end{example}
+
+\begin{example}
+  Un autre exemple est le langage des anneaux :
+  \[\mathcal L_{\mathrm{Ring}}\defeq \{0^0,1^0,+^2,\times^2,-^1\}\]
+\end{example}
+

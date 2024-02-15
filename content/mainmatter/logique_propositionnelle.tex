@@ -6,7 +6,7 @@
 \lettrine{P}{our} commencer l'étude de la logique, nous allons étudier sa forme
 la plus élémentaire : la logique propositionnelle. Lorsque l'on écrit une phrase
 mathématique, disons par exemple
-\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \text{ or }
+\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \text{ ou }
 (\exists m \in \mathbb N, n = 2 \times m + 1)\]
 on peut séparer plusieurs parties :
 \begin{itemize}
@@ -421,6 +421,17 @@ $\vdash$.
     \DisplayProof
 
     \vspace{0.5cm}
+    \AxiomC{$\Gamma,\top\vdash \Delta$}
+    \RightLabel{$\top$}
+    \UnaryInfC{$\Gamma\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash\Delta,\bot$}
+    \RightLabel{$\bot$}
+    \UnaryInfC{$\Gamma\vdash \Delta$}
+    \DisplayProof
+
+    \vspace{0.5cm}
     \AxiomC{$\Gamma\vdash \Delta,P$}
     \RightLabel{l$\lnot$}
     \UnaryInfC{$\Gamma,\lnot P\vdash \Delta$}
@@ -621,3 +632,54 @@ sur le résultat à prouver.
 
 On en déduit donc, comme $\bigwedge P = P$ et $\bigvee Q = Q$, que
 $P\vdash Q \implies P \vDash Q$.
+
+\begin{remark}
+  En utilisant à la fois le théorème de compacité et le théorème de correction,
+  on en déduit que pour $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si l'on
+  trouve $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$, alors
+  $\mathcal P \vDash P$.
+
+  On peut donc définir la relation
+  $\vdash \subseteq \powerset(\Prop)\times \Prop$ par
+  \[\mathcal P\vdash P \defeq \exists \Gamma\in\List(\mathcal P),
+  \Gamma\vdash P\]
+  et les résultats précédents prouvent que $\vdash\subseteq\vDash$. Nous allons
+  maintenant montrer le sens réciproque : $\vDash\subseteq\vdash$. Ce résultat
+  s'appelle la complétude.
+\end{remark}
+
+\begin{theorem}[Complétude du calcul des séquents]
+  Pour tous $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si $\mathcal P\vDash P$
+  alors il existe $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$.
+\end{theorem}
+
+\begin{proof}
+  Tout d'abord, par théorème de compacité, il nous suffit de traiter le cas fini
+  : pour $\Gamma\in\List(\Prop)$, en prenant $F_\Gamma$ l'ensemble de formules
+  associé, si $F_\Gamma\vDash P$ alors $F\vdash P$.
+
+  On définit la relation $\vdash^*$ de façon analogue à $\vdash$ mais en ajoutant
+  la règle suivante :
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{Ax$^\dagger$}
+    \UnaryInfC{$x_1,\ldots,x_n\vdash^* y_1,\ldots,y_p$}
+  \end{prooftree}
+  où $x_1,\ldots,x_n,y_1,\ldots,y_n$ sont des variables propositionnelles.
+
+  On prouve maintenant que pour tous $\Gamma,\Delta\in\List(\Prop)$,
+  $\Gamma\vdash^*\Delta$. A FAIRE
+
+  Maintenant, prouvons que si $\Gamma\vdash^*\Delta$ et $\Gamma\not\vdash\Delta$,
+  alors $\Gamma\not\vDash\Delta$. On procède par induction sur $\vdash^*$.
+  A FAIRE
+
+  Ainsi, comme $\Gamma\vdash^*\Delta$ est toujours vérifié, on en déduit que
+  $\Gamma\not\vdash\Delta\implies\Gamma\not\vDash\Delta$, d'où par contraposée
+  $\Gamma\vDash\Delta\implies\Gamma\vdash\Delta$.
+\end{proof}
+
+Ainsi, nous avons un système syntaxique $\vdash$ permettant d'entièrement
+caractériser la relation $\vDash$, qui est une relation sémantique (elle relie
+les propositions par leur sens, là où $\vdash$ n'est qu'un système formel,
+encodable par exemple sur un ordinateur).
