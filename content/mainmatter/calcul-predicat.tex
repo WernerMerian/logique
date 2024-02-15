@@ -33,7 +33,11 @@ que la partie dédiée à la théorie de la démonstration donnera un résultat 
 général sur toute une famille de systèmes de preuves, et présentera plusieurs
 formalismes.
 
+On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
+
 \section{Signatures, termes et formules}
+
+\subsection{Définition des formules}
 
 Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
 \[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \lor
@@ -76,3 +80,339 @@ ce que signifie chaque symbole.
   \[\mathcal L_{\mathrm{Ring}}\defeq \{0^0,1^0,+^2,\times^2,-^1\}\]
 \end{example}
 
+\begin{example}
+  Un autre exemple classique de langage est celui de l'arithmétique :
+  \[\mathcal L_{\mathrm{Arith}}\defeq \{0^0, S^1, +^2,\times^2,\leq^2\}\]
+  où $\leq$ est un symbole de relation, et les autres symboles sont des symboles
+  de fonction.
+\end{example}
+
+L'exemple du langage de l'arithmétique permet de voir ce que nous entendons par
+termes : avec ce langage, nous avons envie de pouvoir écrire $0$ (qui est une
+constante) mais aussi $1$ défini par $S\;0$ ou $S\;S\;0$. De plus, il doit être
+possible d'écrire $(S\;S\;0) + (S\;0)$ par exemple : l'écriture est donc
+naturellement donnée comme un ensemble inductif, où les arités des symboles de
+fonction nous donnent les arités des constructeurs de l'ensemble.
+
+\begin{definition}[Termes]
+  Soit une signature
+  $\Sigma = (\mathcal F_\Sigma,\mathcal R_\Sigma, \alpha_\Sigma,\beta_\Sigma)$,
+  on définit $\Term(\Sigma)$ comme l'ensemble inductif engendré par
+  $\mathcal F_\Sigma\cup\Var$ où l'arité de $f\in\mathcal F_\Sigma$ est
+  $\alpha_\Sigma(f)$ et où l'arité de $x\in \Var$ est $0$. On peut représenter
+  cet ensemble par la grammaire suivante :
+  \[t,u ::= x \mid f(t_1,\ldots,t_{\alpha(f)})\]
+  où $x\in \Var$ et $f\in \mathcal F_\Sigma$.
+\end{definition}
+
+Ainsi, les termes écrits dans notre langage vont représenter les objets
+mathématiques sur lesquels porteront nos formules. Ces formules sont définies par
+induction, d'une façon analogue aux propositions de la logique propositionnelle.
+En l'absence de variables propositionnelles, les éléments atomiques des formules
+seront construits à partir des termes.
+
+\begin{definition}[Proposition atomique]
+  Soit une signature $\Sigma$. On définit l'ensemble $\Atom(\Sigma)$ des
+  propositions atomiques par
+  \begin{multline*}
+    \Atom(\Sigma) \defeq \{(r,t_1,\ldots,t_k)\mid r\in\mathcal R_\Sigma,
+    (t_1,\ldots,t_k) \in (\Term(\Sigma))^k, k = \beta_\Sigma(r)\}\\
+    \cup\{(``=",t,u)\mid t,u\in \Term(\Sigma)\}
+  \end{multline*}
+  où $=$ est un symbole n'appartenant pas à $\mathcal R_\Sigma$.
+\end{definition}
+
+\begin{remark}
+  L'égalité est une relation, mais celle-ci n'appartient pas formellement au
+  langage, car son comportement est donné par les règles logiques, de la même
+  façon que $\lor$ et $\land$ ont leur sens imposés. Certains auteurs considèrent
+  au contraire que $=$ doit être ajouté au langage, en tant que symbole de
+  relation binaire, et d'autres font la différence entre un langage égalitaire
+  (incluant le symbole $=$) et un langage non égalitaire. Notre choix est motivé
+  à la fois par la simplicité et par l'expressivité : l'égalité est clairement
+  utile pour formaliser les mathématiques et raisonner dessus, mais chercher à
+  préciser quand nous l'utilisons ne l'est pas, étant donné qu'elle sera toujours
+  présente.
+\end{remark}
+
+Nous pouvons maintenant définir l'ensemble des formules sur une signature donnée.
+
+\begin{definition}[Formules]
+  Soit une signature $\Sigma$. On définit l'ensemble $\Formula(\Sigma)$ par
+  la grammaire suivante :
+  \[\varphi,\psi ::= a\mid \top\mid\bot\mid\lnot\varphi\mid\varphi\lor\psi\mid
+  \varphi\land\psi\mid \varphi\to\psi\mid\forall x,\varphi\mid\exists x,\varphi\]
+  où $a\in \Atom(\Sigma)$ et $x\in \Var$.
+\end{definition}
+
+\subsection{Variables et termes}
+
+Maintenant que les formules sont définies, nous voulons définir les opérations
+basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
+élémentaires liées aux variables.
+
+\begin{definition}[Variable libre, formule close]
+  On définit la fonction qui étant donné un terme (respectivement une formule),
+  retourne l'ensemble des variables libres y apparaissant. La fonction $\VL$ est
+  définie par induction sur $\Term(\Sigma)$ (respectivement $\Formula(\Sigma)$)
+  par les équations suivantes :
+  \begin{itemize}
+  \item si $t = x\in Var$, alors $\VL(t) = \{x\}$.
+  \item si $t = f(t_1,\ldots,t_n)$ où $f\in \mathcal F_\Sigma$,
+    $t_1,\ldots,t_n\in\Term(\Sigma)$, alors
+    $\displaystyle\VL(t) =\bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varphi = r(t_1,\ldots,t_n)$ est une proposition atomique où
+    $r\in\mathcal R_\Sigma, t_1,\ldots,t_n\in\Term(\Sigma)$, alors
+    $\displaystyle\VL(\varphi) = \bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varphi = \top$, alors $\VL(\varphi) = \varnothing$.
+  \item si $\varphi = \bot$, alors $\VL(\varphi) = \varnothing$.
+  \item si $\varphi = \lnot \psi$, alors $\VL(\varphi) = \VL(\psi)$.
+  \item si $\varphi = \psi\lor\chi$, $\varphi = \psi\land \chi$ ou
+    $\varphi = \psi\to\chi$, alors $\VL(\varphi) = \VL(\psi)\cup\VL(\chi)$.
+  \item si $\varphi = \forall x, \psi$ ou $\varphi = \exists x, \psi$, alors
+    $\VL(\varphi) = \VL(\psi)\backslash\{x\}$.
+  \end{itemize}
+  On dit que $\varphi$ est une formule close si $\VL(\varphi) =\varnothing$.
+  On note par $\Clos(\Sigma)$ l'ensemble des formules closes sur la signature
+  $\Sigma$. De même, un terme $t$ est appelé un terme clos s'il n'a pas de
+  variables libres (c'est-à-dire s'il n'a pas de variable).
+\end{definition}
+
+\begin{remark}\label{rmk.alpha}
+  Une variable non libre est dite liée : les variables liées sont muettes, elles
+  n'ont pas d'importance en elle-même et seulement sur le quantificateur qui les
+  lie. On considère implicitement que si $\varphi$ et $\psi$ diffèrent seulement
+  en remplaçant la variable liée par un quantificateur et les variables que ce
+  quantificateur lie, alors $\varphi = \psi$. Par exemple, $\forall x, x = x$ et
+  $\forall y, y = y$ sont identifiées.
+\end{remark}
+
+Comme pour la logique propositionnelle, la valeur de vérité d'une formule va
+dépendre de la valeur associée aux variables libres. Cependant, pour l'instant,
+nous n'avons pas de système clair d'évaluation : nous verrons comment évaluer
+une formule quand nous aborderons la notion de modèle. Au niveau syntaxique,
+cependant, nous pouvons déjà introduire la substitution, que l'on peut voir comme
+une évaluation syntaxique : on remplace une variable libre par un terme.
+
+\begin{definition}[Substitution]
+  Soient une signature $\Sigma$, un terme $t\in \Term(\Sigma)$ et une variable
+  $x\in \Var$. On définit les deux fonctions
+  \[\begin{array}{rcccc}
+  -[t/x] &: & \Term(\Sigma) & \longrightarrow & \Term(\Sigma)\\
+  & & u & \longmapsto & u[t/x] \\
+  \\
+  -[t/x] &: & \Formula(\Sigma) & \longrightarrow & \Formula(\Sigma)\\
+  & & \varphi & \longmapsto & \varphi[t/x]
+  \end{array}\]
+  par induction sur la structure de $\Term(\Sigma)$ (respectivement sur la
+  structure de $\Formula(\Sigma)$) :
+  \begin{itemize}
+  \item si $u = x$, alors $u[t/x] = t$.
+  \item si $u = y\in Var$ avec $y \neq x$, alors $u[t/x] = y$.
+  \item si $u = f(u_1,\ldots,u_n)$, alors $u[t/x] = f(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varphi = r(u_1,\ldots,u_n)$, alors
+    $\varphi[t/x] = r(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varphi = \top$ alors $\varphi[t/x] = \top$.
+  \item si $\varphi = \bot$ alors $\varphi[t/x] = \bot$.
+  \item si $\varphi = \lnot \psi$ alors $\varphi[t/x] = \lnot \psi[t/x]$.
+  \item si $\varphi = \psi \lor \chi$ alors
+    $\varphi[t/x] = \psi[t/x]\lor\chi[t/x]$.
+  \item si $\varphi = \psi \land \chi$ alors
+    $\varphi[t/x] = \psi[t/x]\land\chi[t/x]$.
+  \item si $\varphi = \psi \to \chi$ alors
+    $\varphi[t/x] = \psi[t/x]\to\chi[t/x]$.
+  \item si $\varphi = \forall z, \psi$ où $z\notin \VL(t)$, alors
+    $\varphi[t/x] = \forall z, \psi[t/x]$.
+  \item si $\varphi = \exists z, \psi$ où $z\notin \VL(t)$, alors
+    $\varphi[t/x] = \exists z, \psi[t/x]$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  La condition de $z\notin\VL(t)$ dans les derniers cas peut toujours être
+  réalisée quitte à renommer la variable liée $z$ : puisque $\Var$ est infini
+  et que $\VL(t)$ est fini, on peut toujours trouver $a\notin\VL(t)$ et remplacer
+  $\forall z, \psi$ par $\forall a, \psi[a/z]$ en utilisant l'identification de
+  la \cref{rmk.alpha}.
+
+  Si l'on veut être parfaitement formel, il conviendrait de procéder dans l'autre
+  sens : on définit d'abord la substitution comme donnée précédemment, puis on
+  définit la relation $\varphi \equiv \psi$ engendrée par
+  $\forall x, \psi \equiv \forall y, \psi[y/x]$ et
+  $\exists x,\psi \equiv\exists y, \psi[y/x]$ dont on prouve qu'elle est une
+  relation d'équivalence, puis on définit le \og vrai\fg{} ensemble
+  $\Formula(\Sigma)$ par $\Formula(\Sigma)/ \equiv$ (cela n'est pas nécessaire
+  pour $\Term(\Sigma)$ puisque toute variable est libre, dans un terme), et que
+  la fonction $-[t/x]$ est bien définie sur ce quotient. Ce processus est
+  évidemment plus laborieux et n'apporte rien à la compréhension, c'est pourquoi
+  nous ne le détaillons pas ici.
+\end{remark}
+
+\begin{exercise}
+  Soit $x\in \Var$, $t\in\Term(\Sigma)$ et $\varphi\in\Clos(\Sigma)$ pour une
+  signature $\Sigma$ quelconque. Montrer que $\varphi[t/x] = \varphi$.
+\end{exercise}
+
+\begin{exercise}
+  Soient $t,u,v\in\Term(\Sigma)$ et $x,y\in\Var$, montrer que
+  \[t[u/x][v/y] = (t[v/y])[u[v/y]/x]\]
+\end{exercise}
+
+\subsection{Bases de théorie des modèles}
+
+Maintenant que nous avons défini la syntaxe élémentaire, nous allons lui donner
+un sens : une sémantique. Dans le cas de la logique propositionnelle, le sens
+d'une proposition était simple à définir, puisqu'il s'agissait d'une valeur de
+vérité en fonction des variables propositionnelles. Dans le cas de la logique du
+premier ordre, les propositions parlent d'objets, et il faut donc fixer un
+univers ambiant sur lequel porte le discours donné par les formules. Par exemple,
+en prenant le langage de l'arithmétique, le terme $S\;S\;0 + S\;S\;0$ et en
+considérant $0$ comme l'entier naturel $0$, $S$ comme la fonction
+$n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les entiers, le terme
+devient le terme $4$, mais on peut imaginer une autre interprétation de ce terme
+donnant par exemple $5$ ou tout autre nombre.
+
+Nous travaillons donc sur l'interprétation d'une formule en deux parties : tout
+d'abord, nous introduisons la notion de structure, qui offre une interprétation
+claire du langage dans lequel la formule est écrite, et c'est seulement à partir
+de cette interprétation que l'on peut évaluer une formule. Cela modifie notre
+notion de vérité : les formules closes prennent une plus grande importance que
+le reste des formules, mais il faut quantifier sur des structures en
+contrepartie.
+
+\begin{definition}[Structure]
+  Soit une signature $\Sigma$. On appelle $\Sigma$-structure (ou simplement
+  structure) $\mathcal M$ un triplet
+  $(|\mathcal M|,-^{\mathcal M}_\mathcal F,-^{\mathcal M}_\mathcal R)$
+  (on notera les deux $-^{\mathcal M}$, sans indice) où :
+  \begin{itemize}
+  \item $|\mathcal M|$ est un ensemble.
+  \item pour chaque $f\in \mathcal F_\Sigma$ d'arité $n$,
+    $f^{\mathcal M} : |\mathcal M|^n \to |\mathcal M|$.
+  \item pour chaque $r\in\mathcal R_\Sigma$ d'arité $n$,
+    $r^{\mathcal M} \subseteq |\mathcal M|^n$.
+  \end{itemize}
+
+  On identifie $|\mathcal M|^0 \to |\mathcal M|$ à $|\mathcal M|$ : un symbole
+  de constante est associé directement à un élément.
+\end{definition}
+
+\begin{example}
+  En reprenant les différents langages définis précédemments, on peut voir que,
+  par exemple, $(\mathbb Z,0,+,-)$ est une structure sur le langage des groupes.
+  C'est même, en incluant $1$ et $\times$, une structure sur le langage des
+  anneaux. De même, $(\mathbb N,0,n\mapsto n + 1,+,\times,\leq)$ est une
+  structure sur le langage de l'arithmétique.
+\end{example}
+
+Avec ces nouveaux exemples, on voit qu'il devient naturel d'interpréter dans la
+structure $(\mathbb N,0,n\mapsto n+1,+,\times,\leq)$ le terme $S\;S\;0 + S\;S\;0$
+par l'élément $4\in\mathbb N$. Nous pouvons donc généraliser ce résultat. Pour
+cela, on définit d'abord la notion d'environnement, puis de valuation étant donné
+un environnement.
+
+\begin{definition}[Environnement]
+  Soit une signature $\Sigma$ et une structure $\mathcal M$. Un environnement
+  $\rho$ est une fonction partielle $\rho : \Var\partialto |\mathcal M|$. On note
+  $\mathcal E$ l'ensemble des environnements. Etant donnés un élément
+  $m\in|\mathcal M$, une variable $x$ et un environnement $\rho$, on note
+  $\rho[x \mapsto m]$ l'environnement coïncidant avec $\rho$ sur
+  $\Var\backslash\{x\}$ et valant $m$ en $x$.
+\end{definition}
+
+\begin{definition}[Interprétation, valuation]
+  Soit une signature $\Sigma$, une structure $\mathcal M$ et un environnement
+  $\rho$. On définit par induction sur $t$ (respectivement $\varphi$), où
+  $\VL(t)\subseteq\dom(\rho)$ (respectivement $\VL(\varphi)\subseteq\dom(\rho)$)
+  les fonctions suivantes :
+  \[\begin{array}{rcccc}
+  -_\rho^\mathcal M & : & \Term(\Sigma) & \longrightarrow & |\mathcal M|\\
+  & & t & \longmapsto & t^{\mathcal M}_\rho\\
+  \\
+  \Val_\rho & : & \Formula(\Sigma) & \longrightarrow & \{0,1\}\\
+  & & \varphi & \longmapsto & \Val_\rho(\varphi)
+  \end{array}\]
+
+  \begin{itemize}
+  \item si $t = x \in \Var$, alors $t^\mathcal M_\rho = \rho(x)$.
+  \item si $t = f(t_1,\ldots,t_n)$, alors
+    $t_\rho^\mathcal M =
+    f^\mathcal M((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
+  \item si $\varphi = r(t_1,\ldots,t_n)$ alors
+    $\Val_\rho(\varphi) =
+    \chi_{r^\mathcal M}((t_1)^\mathcal M,\rho,\ldots,(t_n)^\mathcal M_\rho)$.
+  \item si $\varphi = \top$, alors $\Val_\rho(\varphi) = 1$.
+  \item si $\varphi = \bot$, alors $\Val_\rho(\varphi) = 0$.
+  \item si $\varphi = \lnot \psi$, alors
+    $\Val_\rho(\varphi) = 1 - \Val_\rho(\psi)$.
+  \item si $\varphi = \psi \lor \chi$, alors
+    $\Val_\rho(\varphi) = \max(\Val_\rho(\psi),\Val_\rho(\chi))$
+  \item si $\varphi = \psi \land \chi$, alors
+    $\Val_\rho(\varphi) = \min(\Val_\rho(\psi),\Val_\rho(\chi))$
+  \item si $\varphi = \psi \to \chi$, alors
+    $\Val_\rho(\varphi) = \max(1 - \Val_\rho(\psi),\Val_\rho(\chi))$
+  \item si $\varphi = \forall x, \psi$, alors
+    $\displaystyle\Val_\rho(\varphi) =
+    \min_{m \in |\mathcal M|}(\Val_{\rho[x\mapsto m]}(\psi))$
+  \item si $\varphi = \exists x, \psi$, alors
+    $\displaystyle\Val_\rho(\varphi) =
+    \max_{m \in |\mathcal M|}(\Val_{\rho[x\mapsto m]}(\psi))$
+  \end{itemize}
+  
+  Si $t$ est un terme clos, alors $t^{\mathcal M}$ est un élément de
+  $|\mathcal M|$. Si $\varphi$ est une formule close, alors $\Val(\varphi)$ est
+  un élément de $\{0,1\}$. Ces deux éléments sont obtenus en interprétant le
+  terme (respectivement la formule) dans le contexte vide, ou de façon
+  équivalente dans n'importe quel contexte.
+\end{definition}
+
+La notion de valuation permet de définir la relation de satisfaction, $\models$,
+d'une façon analogue à ce que nous avons fait pour la logique propositionnelle.
+
+\begin{definition}[Satisfaction]
+  Soit une signature $\Sigma$, une structure $\mathcal M$ et, une formule
+  $\varphi$ et un environnement $\rho$ tel que $\VL(\varphi)\subseteq\dom(\rho)$.
+  On définit $\mathcal M,\rho\models \varphi$ par
+  \[\mathcal M,\rho\models \varphi \defeq \Val_\rho(\varphi) = 1\]
+
+  Soit un ensemble $\mathcal F\subseteq\Formula(\Sigma)$ et un environnement
+  $\rho$ tel que $\forall \varphi\in\mathcal F, \VL(\varphi)\subseteq\dom(\rho)$.
+  On dit que $\mathcal M,\rho$ satisfont $\mathcal F$, ce que l'on écrit
+  $\mathcal M,\rho\models\mathcal F$, lorsque pour toute formule
+  $\varphi\in\mathcal F$, il est vrai que $\mathcal M,\rho\models \varphi$.
+
+  Dans le cas de formules closes, on écrira directement
+  $\mathcal M\models\varphi$ et $\mathcal M\models \mathcal F$.
+\end{definition}
+
+Cela permet alors de définir ce qu'est un modèle.
+
+\begin{definition}[Modèle]
+  Soit une signature $\Sigma$ et $\mathcal C\subseteq\Clos(\Sigma)$. On dit que
+  $\mathcal M$ est un modèle de $\mathcal C$ si $\mathcal M\models \mathcal C$.
+\end{definition}
+
+Un modèle ne se définit qu'avec un ensemble de formules closes. On pourrait
+imaginer une définition analogue avec une formule non close, mais faire cela
+signifie qu'au lieu de donner une structure, il faudrait donner une structure et
+un environnement en même temps. Le but des modèles est plutôt, ici, de construire
+une classe particulière de structure vérifiant certaines conditions que l'on peut
+exprimer au premier ordre.
+
+Un exemple simple est la formule
+\[\forall x,\forall y, x + y = y + x\]
+Les modèles de cette formule, sur le langage $\{+^2\}$, sont les magmas
+commutatifs (ensembles munis d'une loi de composition interne commutative) :
+l'intérêt ici est de pouvoir décrire parmi tous les magmas possibles ceux qui
+ont une lci commutative, et donc de le faire en quelque sorte uniformément parmi
+les structures, ce qui n'est pas le cas si les formules n'étaient pas closes.
+
+Cela mène naturellement à deux notions connexes : celle de théorie, et celle
+de conséquence logique. Une théorie permet de décrire des classes de modèles, et
+la conséquence logique permet de créer des liens entre les formules, de la même
+façon que nous avions $\vDash$ pour le calcul propositionnel.
+
+\begin{definition}[Théorie]
+  Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$, est
+  une partie $\mathcal T\subseteq\Clos(\Sigma)$.
+\end{definition}
