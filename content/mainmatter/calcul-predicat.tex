@@ -37,7 +37,7 @@ On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
 
 \section{Signatures, termes et formules}
 
-\subsection{Définition des formules}
+\subsection{Définition d'une signature}
 
 Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
 \[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \lor
@@ -94,6 +94,8 @@ possible d'écrire $(S\;S\;0) + (S\;0)$ par exemple : l'écriture est donc
 naturellement donnée comme un ensemble inductif, où les arités des symboles de
 fonction nous donnent les arités des constructeurs de l'ensemble.
 
+\subsection{Termes et formules}
+
 \begin{definition}[Termes]
   Soit une signature
   $\Sigma = (\mathcal F_\Sigma,\mathcal R_\Sigma, \alpha_\Sigma,\beta_\Sigma)$,
@@ -145,7 +147,7 @@ Nous pouvons maintenant définir l'ensemble des formules sur une signature donn�
   où $a\in \Atom(\Sigma)$ et $x\in \Var$.
 \end{definition}
 
-\subsection{Variables et termes}
+\subsection{Variables et substitution}
 
 Maintenant que les formules sont définies, nous voulons définir les opérations
 basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
@@ -258,7 +260,7 @@ une évaluation syntaxique : on remplace une variable libre par un terme.
   \[t[u/x][v/y] = (t[v/y])[u[v/y]/x]\]
 \end{exercise}
 
-\subsection{Bases de théorie des modèles}
+\section{Bases de théorie des modèles}
 
 Maintenant que nous avons défini la syntaxe élémentaire, nous allons lui donner
 un sens : une sémantique. Dans le cas de la logique propositionnelle, le sens
@@ -271,6 +273,8 @@ considérant $0$ comme l'entier naturel $0$, $S$ comme la fonction
 $n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les entiers, le terme
 devient le terme $4$, mais on peut imaginer une autre interprétation de ce terme
 donnant par exemple $5$ ou tout autre nombre.
+
+\subsection{Structure et interprétation}
 
 Nous travaillons donc sur l'interprétation d'une formule en deux parties : tout
 d'abord, nous introduisons la notion de structure, qui offre une interprétation
@@ -366,6 +370,8 @@ un environnement.
   équivalente dans n'importe quel contexte.
 \end{definition}
 
+\subsection{Satisfaction, modèle}
+
 La notion de valuation permet de définir la relation de satisfaction, $\models$,
 d'une façon analogue à ce que nous avons fait pour la logique propositionnelle.
 
@@ -407,6 +413,8 @@ l'intérêt ici est de pouvoir décrire parmi tous les magmas possibles ceux qui
 ont une lci commutative, et donc de le faire en quelque sorte uniformément parmi
 les structures, ce qui n'est pas le cas si les formules n'étaient pas closes.
 
+\subsection{Théories et conséquence logique}
+
 Cela mène naturellement à deux notions connexes : celle de théorie, et celle
 de conséquence logique. Une théorie permet de décrire des classes de modèles, et
 la conséquence logique permet de créer des liens entre les formules, de la même
@@ -416,3 +424,398 @@ façon que nous avions $\vDash$ pour le calcul propositionnel.
   Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$, est
   une partie $\mathcal T\subseteq\Clos(\Sigma)$.
 \end{definition}
+
+\begin{definition}[Conséquence logique, équivalence]
+  Soit un ensemble $\mathcal F \subseteq \Formula(\Sigma)$ et une formule
+  $F\in\Formula(\Sigma)$. On dit que $F$ est conséquence logique de $\mathcal F$,
+  ce que l'on écrit $\mathcal F \vDash F$, lorsque pour toute structure
+  $\mathcal M$, si $\mathcal M\models \mathcal F$ alors $\mathcal M\models F$.
+  Si deux formules $F$ et $G$ sont telles que $F\vDash G$ et $G\vDash F$, alors
+  $F$ et $G$ sont dites logiquement équivalentes, ce que l'on note $F\equiv G$.
+\end{definition}
+
+On peut relier ces deux notions par celle de théorie saturée.
+
+\begin{definition}[Théorie saturée, clôture par conséquence]
+  Soit une théorie $\mathcal T$ sur une signature $\Sigma$. On dit que
+  $\mathcal T$ est saturée si pour toute formule $A\in\Formula(\Sigma)$,
+  si $\mathcal T\vDash A$ alors $A\in \mathcal T$.
+
+  Pour une théorie $\mathcal T$, on définit sa clôture par conséquence, notée
+  $\vclose{\mathcal T}$, par
+  \[\vclose{\mathcal T} \defeq \{ A \in \Formula(\Sigma)
+  \mid \mathcal T \vDash A\}\]
+\end{definition}
+
+De plus, la conséquence logique permet directement de décrire une théorie
+\og fausse\fg{} : une telle théorie est une théorie dans laquelle la proposition
+fausse est considérée comme vraie. Au niveau des modèles, cela se traduit par le
+fait qu'il n'existe pas de modèle de la théorie, puisqu'un tel modèle associerait
+automatique à $\bot$ la valeur de vérité $0$.
+
+\begin{proposition}
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. Alors
+  $\mathcal T$ admet un modèle si et seulement si $\mathcal T \not\vDash \bot$.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $\mathcal T$ admette un modèle $\mathcal M$. Alors par définition
+  de $\Val$, $\Val(\bot) = 0$ donc $\mathcal M\not\models \bot$. On en déduit
+  que $\mathcal T\not\vDash\bot$.
+
+  Dans le sens réciproque et par contraposée, supposons que $\mathcal T$ n'admet
+  pas de modèle. Alors pour tout $\mathcal M$ tel que
+  $\mathcal M\models \mathcal T$, $\mathcal M\models \bot$, par vacuité de la
+  condition : on en déduit donc que $\mathcal T \vDash \bot$, donc que si
+  $\mathcal T \not\vDash\bot$, alors $\mathcal T$ a un modèle.
+\end{proof}
+
+\begin{definition}[Théorie cohérente, contradictoire]
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. On dit
+  que $\mathcal T$ est cohérente quand elle admet un modèle, et qu'elle est
+  contradictoire si elle n'admet pas de modèle. De façon équivalente,
+  $\mathcal T$ est cohérente si et seulement si elle n'est pas contradictoire,
+  et si et seulement si $\bot\notin\vclose{\mathcal T}$.
+\end{definition}
+
+On voit donc qu'une théorie ne doit pas pouvoir prouver trop de choses.
+Néanmoins, on peut vouloir une théorie la plus forte possible, qui reste malgré
+tout cohérente. Une telle théorie est une théorie complète : elle est une théorie
+dans laquelle si un énoncé est faux, alors sont contraire est vrai. Elle peut
+donc décider tout énoncé, et puisqu'elle est complète elle ne peut pas décider
+plus (sinon il serait possible de vérifier $A$ et $\lnot A$, ce qui est
+impossible).
+
+\begin{definition}[Théorie complète]
+  Une théorie $\mathcal T$ sur une signature $\Sigma$ est dite complète si pour
+  toute formule $A\in\Formula(\Sigma)$, soit $A\in \vclose{\mathcal T}$ soit
+  $\lnot A \in \vclose{\mathcal T}$.
+\end{definition}
+
+Donnons dès maintenant un résultat essentiel, dont on ne donnera la preuve que
+dans le prochain chapitre à propos des ensembles ordonnés, grâce à un résultat
+plus général à propos des algèbres de Boole.
+
+\begin{theorem}[Extension complète d'une théorie]
+  Soit une théorie $\mathcal T$ sur une signature $\Sigma$. Il existe une théorie
+  $\mathcal T'$ complète contenant $\mathcal T$.
+\end{theorem}
+
+\section[Syntaxe de preuves]{Système de démonstration du le calcul des prédicats}
+
+Nous avons défini la sémantique des formules à travers la notion de modèle. Pour
+suivre ce que nous avons fait dans le chapitre précédent, nous allons maintenant
+introduire un formalisme pour décrire mathématiquement des preuves en calcul des
+prédicats.
+
+Nous avons alors plusieurs choix, car plusieurs formalismes existent. Les trois
+principaux sont les sytèmes à la Hilbert, le calcul des séquents et la déduction
+naturelle. Nous avons eu un aperçu du calcul des séquents dans le chapitre
+précédent, et il pourrait être pertinent de continuer à l'utiliser, mais le choix
+fait ici est d'introduire un nouveau formalisme : celui de la déduction
+naturelle. Ce choix ce justifier par deux raisons principales :
+\begin{itemize}
+\item Tout d'abord, il permet d'aborder d'autres systèmes de preuves, puisque
+  nous avons déjà exploré le calcul des séquents. Cet argument est en même temps
+  un contre-argument, puisque cela signifie aussi que l'on peut trouver là une
+  occasion de réexplorer le calcul des séquents pour mieux le comprendre, c'est
+  donc seulement une raison mineure qui nous pousse à le choisir. De plus, le
+  formalisme des systèmes à la Hilbert ne sera pas exploré du tout dans cet
+  ouvrage, car s'il est très simple à définir, il possède peu de propriétés
+  intéressantes à explorer contrairement aux deux autres formalismes et n'a rien
+  de naturel à manipuler.
+\item La deuxième raison, plus importante, est que la déduction naturelle est en
+  quelque sorte le raisonnement le plus primitif d'un mathématicien. Chaque règle
+  exprime une règle loique tout à fait évidente à l'intuition, particulièrement
+  à celle du mathématicien, et on peut trouver une correspondance importante
+  entre une preuve utilisant la déduction naturelle et une preuve en langage
+  naturel (à la différence évidente que la première est illisible pour un profane
+  quand la deuxième est\ldots illisible aussi pour un profane, mais il y a moins
+  de profanes des mathématiques que de profanes de la déduction naturelle).
+\end{itemize}
+
+Il y a de nombreux avantages à définir une syntaxe pour nos preuves en calcul des
+prédicats. Le premier est évident : avoir, comme dans le chapitre précédent, un
+système efficace pour prouver des relations entre formules, ne passant pas par
+une interprétation et une quantification sur toutes les valuations (et ici, en
+plus : tous les modèles). Le deuxième, moins évident, sera plus lourd de
+conséquences : une syntaxe nous permet de voir l'ensemble de l'activité
+mathématique comme un processus finitaire. Nous n'avons le droit que d'employer
+des phrases finies en des textes finis pour étudier des objets potentiellement
+infinis. Si ce fait semble en premier lieu purement philosophique (et il est
+effectivement important, philosophiquement parlant) il mène aussi à une
+conséquence importante : le théorème de compacité. Ce théorème est un analogue
+au \cref{thm.compac.prop} dans le cas du calcul des prédicats. Simplement, au
+lieu de quantifier sur les valuations, nous quantifions sur les modèles, et
+puisque nous nous occupons en priorité des formules closes cela nous donne un
+énoncé parlant uniquement de modèles.
+
+\subsection{Déduction naturelle}
+
+Commençons par définir la relation $\vdash$ de conséquence syntaxique. Pour
+cela, comme pour le calcul des séquents, on va définir un système travaillant
+sur des listes (par nature finies) plutôt que sur des ensembles. Une différence
+importante : nous n'allons pas relier deux listes, mais une liste avec une
+proposition. Ainsi un séquent $\Gamma\vdash A$ signifie directement que, sous
+les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
+
+\begin{definition}[Déduction naturelle]
+  Soit une signature $\Sigma$. On définit la relation
+  $\vdash\subseteq \List(\Formula(\Sigma))\times \Formula(\Sigma)$ par induction
+  par les règles suivantes :
+  \begin{center}
+    \AxiomC{$A \in \Gamma$}
+    \RightLabel{Ax}
+    \UnaryInfC{$\Gamma\vdash A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{}
+    \RightLabel{$\top$}
+    \UnaryInfC{$\Gamma\vdash \top$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma,\lnot A\vdash \bot$}
+    \RightLabel{$\bot_\mathrm c$}
+    \UnaryInfC{$\Gamma\vdash A$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,A\vdash \bot$}
+    \RightLabel{$\lnot_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash \lnot A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \lnot A$}
+    \AxiomC{$\Gamma\vdash A$}
+    \RightLabel{$\lnot_\mathrm e$}
+    \BinaryInfC{$\Gamma\vdash \bot$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A$}
+    \RightLabel{$\lor_\mathrm i^\mathrm g$}
+    \UnaryInfC{$\Gamma\vdash A\lor B$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdash B$}
+    \RightLabel{$\lor_\mathrm i^\mathrm d$}
+    \UnaryInfC{$\Gamma\vdash A\lor B$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A\lor B$}
+    \AxiomC{$\Gamma,A\vdash C$}
+    \AxiomC{$\Gamma,B\vdash C$}
+    \RightLabel{$\lor_\mathrm e$}
+    \TrinaryInfC{$\Gamma\vdash C$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A$}
+    \AxiomC{$\Gamma\vdash B$}
+    \RightLabel{$\land_\mathrm i$}
+    \BinaryInfC{$\Gamma\vdash A\land B$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A\land B$}
+    \RightLabel{$\land_\mathrm e^\mathrm g$}
+    \UnaryInfC{$\Gamma\vdash A$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdash A\land B$}
+    \RightLabel{$\land_\mathrm e^\mathrm d$}
+    \UnaryInfC{$\Gamma\vdash B$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,A\vdash B$}
+    \RightLabel{$\to_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash A\to B$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A\to B$}
+    \AxiomC{$\Gamma\vdash A$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\Gamma\vdash B$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A[v/x]$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}
+    \UnaryInfC{$\Gamma\vdash \forall x, A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \forall x, A$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\Gamma\vdash A[t/x]$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A[t/x]$}
+    \RightLabel{$\exists_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash \exists x, A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \exists x, A$}
+    \AxiomC{$\Gamma, A[v/x]\vdash B$}
+    \RightLabel{$\exists_\mathrm e^\dagger$}
+    \BinaryInfC{$\Gamma\vdash B$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{}
+    \RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash t = t$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A[t/x]$}
+    \AxiomC{$\Gamma\vdash t = u$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\Gamma\vdash A[u/x]$}
+    \DisplayProof
+  \end{center}
+  Où $x,v\in \Var$ et où $t,u\in \Term(\Sigma)$.
+  
+  Les règles avec $^\dagger$ signifient que $v\notin\VL(\Gamma)\cup\VL(B)$, 
+\end{definition}
+
+\begin{exercise}[Sur la négation]
+  Montrer que l'on peut prouver les deux séquents suivants :
+  \[\vdash \lnot A \to (A \to \bot) \qquad \vdash (A \to \bot) \to \lnot A\]
+
+  Montrer de plus que $\lnot A \vDash A \to \bot$ et que
+  $A\to \bot\vDash \lnot A$.
+\end{exercise}
+
+On peut donc, sans perdre d'expressivité, redéfinir $\lnot$ comme l'opération
+$A \mapsto A \to \bot$. Cela nous permet alors de réduire le nombre de règles
+dans notre système.
+
+\begin{exercise}[Sur l'implication]
+  Montrer que l'équivalence suivante est prouvable~ :
+  \[A \to B \dashv\vdash \lnot A \lor B\]
+  où $A \dashv\vdash B$ signifie que $A\vdash B$ et $B\vdash A$.
+\end{exercise}
+
+\begin{exercise}[De Morgan]
+  Montrer que les lois de De Morgan sont dérivables :
+  \begin{itemize}
+  \item $\lnot (A \lor B) \dashv\vdash \lnot A \land \lnot B$
+  \item $\lnot (A \land B) \dashv\vdash \lnot A \lor \lnot B$
+  \item $\lnot (\exists x, A) \dashv\vdash \forall x, \lnot A$
+  \item $\lnot (\forall x, A) \dashv\vdash \exists x, \lnot A$
+  \item $\lnot\lnot A \dashv\vdash A$
+  \end{itemize}
+\end{exercise}
+
+\begin{exercise}[Tiers exclu et non contradiction]
+  Montrer les deux équivalences suivantes :
+  \begin{itemize}
+  \item $A \lor \lnot A \dashv\vdash \top$
+  \item $A \land \lnot A \dashv\vdash \bot$
+  \end{itemize}
+\end{exercise}
+
+\begin{remark}
+  A partir des exercices précédents, on peut être tenté de réduire l'ensemble
+  des formules et des règles à un fragment tel que les propositions atomiques,
+  $\lnot$, $\lor$ et $\exists$. En effet, toute formule est équivalent à une
+  formule écrite avec ce fragment : on peut donc imaginer que toute autre
+  formule est en fait une simple écriture plus lisible de cette constituée
+  uniquement du fragment restreint.
+
+  Nous n'emploierons pas cette méthode de restriction car, structurellement,
+  il n'est pas évident par exemple que $\lnot (\lnot A \lor \lnot B)$, qui
+  est code $A \land B$, s'utilise de la même façon au niveau des règles. Si l'on
+  sait que l'on peut se ramener en utilisant certaines règles de l'un à l'autre,
+  il faudrait travailler à montrer en plus que les règles à propos de $A\land B$
+  peut se dériver des règles de $\lnot$ et $\lor$ sur
+  $\lnot (\lnot A \lor \lnot B)$. Mais cela motive aussi un déroulement plus
+  lent des preuves par induction et des différents cas, qui s'ils sont
+  laborieux peuvent pour autant être instructifs pour une première lecture.
+
+  Le cas de $\lnot$ que l'on peut remplacer par $\to \bot$ est différent, car
+  les règles à propos de $\lnot$ sont exactement celle de $\to \bot$.
+\end{remark}
+
+\paragraph{A propos de la vacuité}
+Notre formalisme a un problème essentiel : on peut prouver la proposition
+$\forall x, A \implies \exists x, A$, qui est fausse dans le modèle vide. Deux
+façons permettent de régler cet écart entre la syntaxe et la sémantique :
+changer la syntaxe, ou changer la sémantique. Dans notre cas, nous changeons
+alors la sémantique en considérant que toute structure (et donc tout modèle)
+est non vide. Cette restriction n'est pas très limitante, puisque le modèle vide
+est inintéressant en général. Cependant, celle-ci parait particulièrement
+artificielle. Pour contrer cela, on peut à la place considérer des séquents
+enrichis de la forme $\Gamma\mid \Theta \vdash \varphi$ où $\Gamma$ va être un
+contexte de variables, $\Theta$ un contexte logique et $\varphi$ la conclusion.
+Dans ce formalisme, les règles avec $\dagger$ ont, plutôt qu'une restriction,
+une action sur le contexte des variables, avec par exemple
+\begin{prooftree}
+  \AxiomC{$\Gamma, v\mid \Theta\vdash \varphi[v/x]$}
+  \RightLabel{$\forall_\mathrm i$}
+  \UnaryInfC{$\Gamma\mid \Theta\vdash \forall x, \varphi$}
+\end{prooftree}
+où $\Gamma\mid\Theta\vdash \forall x, \varphi$ doit être une proposition bien
+typée, imposant ansi que $v\notin\VL(\Theta)$.
+
+Le fait de gérer les variables est bien plus naturel, étant donné qu'une preuve
+en langage naturel va toujours tenir compte des variables (en particulier, il
+semblerait incongru de mentionner une variable non déjà introduite dans le
+contexte), et dans un contexte avec plusieurs sortes, c'est-à-dire où les
+variables du premier ordre peuvent appartenir à différents ensembles, ce
+formalisme gagne en utilité. Dans notre cas, il parait trop lourd de devoir
+gérer les variables pour simplement pouvoir inclure le cas du modèle vide,
+c'est pourquoi nous préférons simplement modifier notre sémantique.
+
+Plutôt que de prouver directement des résultats, nous allons nous attarder sur
+le sens de chaque règle, pour montrer en quoi elles sont intuitives (et donc
+robustes au niveau de l'évidence qu'elles énoncent) et permettent de
+retranscrire n'importe quelle preuve (en particulier, toute preuve en langage
+naturel est virtuellement équivalente à un arbre de preuve en déduction
+naturelle).
+\begin{itemize}
+\item La règle Ax est surement la plus évidente : si $A$ est une hypothèse,
+  alors on peut en déduire $A$.
+\item La règle $\top$ dit simplement que $\top$ est toujours prouvable.
+\item La règle $\bot_\mathrm c$ dit que pour prouver $A$, on peut supposer
+  $\lnot A$ est aboutir à une contradiction : c'est le raisonnement par
+  l'absurde, d'où l'ince \og c\fg{} exprimant que cette règle est propre à la
+  logique classique (nous le verrons, remplacer cette règle par une autre plus
+  faible a des conséquences particulièrement intéressantes).
+\item La règle $\lnot_\mathrm i$ dit que pour prouver $\lnot A$, il suffit de
+  prouver que $A$ aboutit à une absurdité.
+\item La règle $\lnot_\mathrm e$ dit que prouver $A$ et $\lnot A$ en même temps
+  est une absurdité.
+\item Les règles $\lor_\mathrm i$ montrent que si on prouve $A$ (respectivement
+  $B$) alors on prouve $A\lor B$.
+\item La règle $\lor_\mathrm e$ montre que pour prouver $C$ à partir de
+  $A\lor B$, il suffit de montrer que $A\to C$ et $B\to C$ ou, comme nous
+  l'avons écrit, que l'on peut prouver $C$ à la fois sous l'hypothèse $A$ et
+  sous l'hypothèse $B$. C'est un raisonnement par disjonction de cas.
+\item La règle $\land_\mathrm i$ dit que pour prouver $A\land B$, il suffit de
+  prouver $A$ d'une part, et $B$ d'autre part.
+\item Les règles $\land_\mathrm e$ permettent d'affaiblir une preuve de
+  $A\land B$ en une preuve de $A$ (respectivement de $B$).
+\item La règle $\to_\mathrm i$ dit que prouver $A\to B$ signifie prouver $B$ en
+  ajoutant l'hypothèse $A$.
+\item La règle $\to_\mathrm e$ dit que si l'on a prouvé $A\to B$ et $A$, alors on
+  peut en déduire $B$. C'est la règle du \textit{modus ponens}.
+\item La règle $\forall_\mathrm i$ signifie que pour prouver $\forall x, A$, il
+  suffit de prouver $A$ pour une variable $v$ quelconque à la place de $x$. La
+  nécessité que $v\notin\VL(\Gamma)$ exprime que ce $v$ est quelconque : aucune
+  hypothèse n'est faite sur celui-ci.
+\item La règle $\forall_\mathrm e$ signifie qu'à partir d'une preuve de
+  $\forall x, A$ on peut instancier $x$ à un terme $t$ quelconque pour obtenir
+  une preuve de $A[t/x]$.
+\item La règle $\exists_\mathrm i$ permet de déduire une preuve de $\exists x,A$
+  à partir d'une preuve de $A[t/x]$, pour n'importe quel terme $t$.
+\item La règle $\exists_\mathrm e$ dit qu'à partir d'une proposition de la forme
+  $\exists x, A$, on peut déduire une proposition $B$ en ajoutant dans le
+  contexte $A[v/x]$, où $v$ est quelconque (ce qui se traduit par la condition
+  de $v\notin\VL(\Gamma)\cup\VL(B)$).
+\item La règle $=_\mathrm i$ est la réflexivité de l'égalité : un terme est
+  égal à lui-même.
+\item La règle $=_\mathrm e$, parfois appelée principe de Leibniz, exprime que
+  si deux termes $t$ et $u$ sont égaux, alors ils vérifient les mêmes formules.
+  On appelle aussi ce principe \og indiscernabilité des identités\fg{}.
+\end{itemize}
