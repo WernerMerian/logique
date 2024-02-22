@@ -1,0 +1,555 @@
+\chapter{Théorie des ensembles ordonnés}
+\label{chp.ordres}
+
+\minitoc
+
+\lettrine{D}{ans} ce chapitre, nous aborderons la théorie des ensembles ordonnés.
+Celle-ci est fortement liée à la logique, et permet entre autre de formaliser des
+structures logiques comme les algèbres de Boole ou les algèbres de Heyting. 
+
+Les ensembles ordonnés peuvent être vus comme des cas dégénérés de catégories. Si
+nous ne donnons pas dans cet ouvrage de rudiments de théorie des catégories,
+l'étudiant catégoricien pourra voir dans plusieurs définitions des éléments
+similaires à ce qu'il connait en théorie des catégories.
+
+Nous commencerons par définir les idées générales sur les ensembles ordonnés.
+Cette première partie introduira les notions élémentaires d'ordre, de borne
+supérieure, inférieure etc.
+Nous aborderons ensuite la théorie des treillis, des demi-treillis aux treillis
+complets. Ces structures peuvent être vues comme des structure particulièrement
+rudimentaires, nous verrons ensuite les structures liées à la logique que l'on
+peut définir dessus : les algèbres de Boole et les algèbres de Heyting.
+Cela motivera notre étude des filtres et ultrafiltres, dont le comportement dans
+une algèbre de Boole est fortement simplifiée, et nous aurons alors l'occasion
+de démontrer le théorème d'extension d'une théorie cohérente en une théorie
+complète. Enfin, nous verrons des notions plus restreintes liées aux ordres :
+la densité, la compatibilité, les chaînes et les antichaînes.
+
+\section{Ensembles ordonnés}
+
+Commençons par donner les définitions les plus élémentaires.
+
+\subsection{Définitions}
+
+\begin{definition}[Ensemble ordonné]
+  Un ensemble ordonné est un couple $(X,\leq)$ où $\leq$ est une relation binaire
+  sur $X$ vérifiant :
+  \begin{itemize}
+  \item $\leq$ est reflexive : pour tout $x\in X$, $x\leq x$.
+  \item $\leq$ est antisymétrique : si deux éléments $x,y\in X$ sont tels que
+    $x\leq y$ et $y\leq x$ alors $x = y$.
+  \item $\leq$ est transitive : si trois éléments $x,y,z\in X$ sont tels que
+    $x\leq y$ et $y\leq z$ alors $x\leq z$.
+  \end{itemize}
+
+  Un couple $(X,\leq)$ tel que $\leq$ est seulement réflexive et transitive est
+  appelé un ensemble pré-ordonné, et $\leq$ est appelé un pré-ordre sur $X$.
+\end{definition}
+
+\begin{example}[Ensemble des parties]
+  Soit $X$ un ensemble, l'ensemble $(\powerset(X),\subseteq)$ est un ensemble
+  ordonné.
+\end{example}
+
+La plupart des résultats que nous énoncerons pourront aussi bien se traduire sur
+des pré-ordres, en remplaçant en général $x = y$ par $x\leq y \land y \leq x$.
+En fait, un pré-ordre peut se ramener à un ordre par un quotient.
+
+\begin{property}
+  Soit $(X,\leq)$ un ensemble pré-ordonné, alors la relation
+  $\sim\subseteq X \times X$ définie par
+  \[x\sim y \defeq x\leq y \land y \leq x\]
+  est une relation d'équivalence, et $\leq$ induit un ordre sur $X/\sim$.
+\end{property}
+
+\begin{proof}
+  Vérifions que $\sim$ est une relation d'équivalence :
+  \begin{itemize}
+  \item $\sim$ est transitive : $x\leq x$ et $x\leq x$, donc $x\sim x$.
+  \item $\sim$ est symétrique : supposons que $x\sim y$, alors $x\leq y$ et
+    $y\leq x$, donc $y\leq x$ et $x\leq y$, donc $y\sim x$.
+  \item $\sim$ est réflexive : supposons que $x\sim y$ et $y\sim z$, alors
+    $x\leq y$ et $y\leq z$, donc $x\leq z$, et de même $z\leq y$ et $y\leq x$
+    donc $z\leq z$, ainsi $x\sim z$.
+  \end{itemize}
+
+  Pour vérifier que $\leq$ induit un ordre sur $X/\sim$, il suffit de vérifier
+  que si $x\sim x'$ et $y\sim y'$, alors $x\leq y$ si et seulement si $y\leq x$.
+
+  Si $x\leq y$ alors comme $x'\leq x$ et $y\leq y'$, on en déduit que $x'\leq y'$
+  et récuproquement, comme $x\leq x'$ et $y'\leq y$, il vient que
+  $x'\sim y'\implies x\sim y$.
+\end{proof}
+
+\begin{exercise}
+  Soit une signature $\Sigma$, montrer que la relation
+  $\vdash\subseteq\Formula(\Sigma)\times\Formula(\Sigma)$ définie comme
+  restriction de la relation $\vdash$ que nous avons vue précédemment, mais où
+  la liste de gauche ne contient qu'une proposition, est un pré-ordre.
+\end{exercise}
+
+\begin{remark}
+  La relation $\dashv\vdash$ s'écrit aussi $\equiv$, ce qui est cohérent avec
+  notre définition sémantique de $\equiv$, étant donné que l'on sait que
+  $\vdash$ et $\vDash$ coïncident.
+
+  L'ensemble ordonné construit par $\Formula(\Sigma)/\dashv\vdash$ est appelé
+  l'algèbre de Lindenbaum-Tarski. Nous la verrons plus en détail plus tard.
+\end{remark}
+
+Une autre définition possible d'un ensemble ordonné est ce que l'on appelle
+habituellement un ensemble strictement ordonné. Nous en donnons la définition et
+montrons que l'on peut faire correspondre à chaque ordre un ordre strict (et
+réciproquement).
+
+\begin{definition}[Ordre strict]
+  Un ensemble strictement ordonné est une paire $(X,<)$ où $<$ est une relation
+  binaire sur $X$ vérifiant :
+  \begin{itemize}
+  \item $<$ est antiréflexive : pour tout $x\in X, x\not< x$.
+  \item $<$ est transitive.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  On a une bijection entre les ensembles ordonnés et les ensembles strictement
+  ordonnés en associant à $(X,\leq)$ l'ensemble strictement ordonné $(X,<)$
+  défini par
+  \[x < y \defeq x \leq y \land x \neq y\]
+\end{proposition}
+
+\begin{proof}
+  On définit, dans l'autre sens, la relation $\leq$ à partir de $<$ par
+  \[x\leq y \defeq x < y \lor x = y\]
+  Le fait que $((x \leq y)\land x \neq y) \lor x = y$ est équivalent à $x\leq y$
+  et que $(x < y\lor x = y) \land x \neq y$ est équivalent à $x < y$ se vérifie
+  directement.
+
+  Montrons que $<$ défini à partir de $\leq$ est un ordre strict :
+  \begin{itemize}
+  \item par définition, $x < y\implies x \neq y$, donc $x\not< x$.
+  \item si $x < y$ et $y < z$, alors $x \leq z$ par transitivité de $\leq$.
+    Si $x = z$ alors $z < y$ par substitution de $x$ par $z$, donc par
+    transitivité $y < y$, ce qui est absurde. Donc $x \neq z$.
+  \end{itemize}
+
+  Montrons que $\leq$ défini à partir de $<$ est un ordre :
+  \begin{itemize}
+  \item par définition, si $x = y$ alors $x\leq y$.
+  \item si $x\leq y$ et $y\leq x$, alors soit $x = y$, soit $x < y$. Dans le
+    premier cas, on a le résultat voulu. Dans le deuxième cas, on utilise le
+    fait que $y\leq x$ pour en déduire que soit $y = x$, soit $y < x$. Encore
+    une fois, le cas $y = x$ est directement ce qu'il faut démontrer.
+    Si $y < x$, alors par transitivité avec $x < y$ on en déduit que $x < x$,
+    ce qui est absurde.
+  \item si $x \leq y$ et $y \leq z$, alors soit $x = y$, auquel cas on voit
+    directement que $x\leq z$, soit $x < y$. En utilisant le fait que $y \leq z$,
+    on en déduit que soit $y = z$, soit $y < z$. Dans le premier cas, il est
+    évident que $x \leq z$. Dans le deuxième cas, par transitivité, on en déduit
+    que $x < z$.
+  \end{itemize}
+\end{proof}
+
+On définira donc des propriétés indifféremment sur un ordre ou sur un ordre
+strict (si on dit qu'une propriété $P$ définie sur les ordres strictes est
+vérifiée pour un ordre $\leq$, cela signifie que $<$ vérifie $P$).
+
+Intéressons-nous d'abord aux éléments : comme un ordre est (sauf indication du
+contraire) partiel, deux éléments peuvent ne pas être mis en relation. Dans ces
+cas-là, deux notions distinctes apparaissent : la comparabilité et la
+compatibilité. Pour deux éléments, être comparable est une condition forte,
+mais parfois justement trop forte : la compatibilité signifie juste que deux
+éléments peuvent être rejoints.
+
+\begin{definition}[Comparabilité, compatibilité]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit que deux éléments $x$ et $y$ sont
+  comparables si $x\leq y$ ou $y\leq x$. Deux éléments $x$ et $y$ sont dits
+  compatibles s'il existe $z \in X$ tel que $z\leq x$ et $z\leq x$. Deux éléments
+  sont dits incompatibles s'ils ne sont pas compatibles.
+
+  Si tous les éléments de $X$ sont compatibles, on dit que $X$ est un ensemble
+  totalement ordonné.
+  Si tous les éléments de $X$ sont compatibles, on dit que $X$ est un ensemble
+  ordonné filtrant vers le bas.
+\end{definition}
+
+\begin{example}
+  Deux éléments de $\mathcal P(X)$ sont toujours compatibles en prenant comme
+  élément $z$ leur intersection. Pourtant, $\{x\}$ et $\{y\}$ pour $x\neq y$ ne
+  sont pas comparables.
+\end{example}
+
+\subsection{Dualité}
+
+Relevons dès maintenant un phénomène important en théorie des ordres, appelé la
+dualité : lorsque l'on a un ordre $\leq$, on peut définir la relation $\geq$
+par $y\geq x \iff x\leq y$, et cette relation est aussi une relation d'ordre,
+inversant quel élément est le plus grand et quel élément est le plus petit. Ainsi
+lorsque l'on définit une notion sur un ensemble ordonné $(X,\leq)$, une notion
+duale est directement définie en considérant l'objet dans $(X,\geq)$.
+
+Ce phénomène permet de simplifier beaucoup de preuves : si l'on veut prouver deux
+propositions $P$ et $Q$ où $Q$ est obtenue en remplaçant $\leq$ dans $P$ par
+$\geq$ (et toutes les définitions par leurs définitions duales), si les
+propriétés portent sur tous les ensembles ordonnés, alors prouver $P$ suffit à
+déduire $Q$, qui est une conséquence de $P$ pour l'ordre dual.
+
+Nous allons donc souvent écrire deux propositions pour une seule preuve, car la
+proposition duale est souvent aussi importante que la proposition de base.
+
+\subsection{Bornes et majorations}
+
+On peut voir la théorie des ordres sous deux primes : le prisme algébrique et le
+prisme analytique.
+
+Suivant le prisme algébrique, nous étudions des structures
+munies d'une relation (on peut voir cela comme de la théorie des modèles), et
+l'accent est alors mis sur les propositions du premier ordre. Par exemple,
+la comparabilité ou la compatibilité sont des notions algébriques. De même on
+peut parler de la borne supérieure de deux éléments, ou d'être le maximum entre
+$x$ et $y$, voire d'un ensemble fini d'éléments.
+
+Suivant le prisme analytique, nous nous intéressons aux parties de l'ensemble
+ordonné (potentiellement infinie). Nous parlons donc par exemple de la borne
+supérieure d'un ensemble quelconque. Les structures pour lesquelles on peut
+appliquer le point de vue analytique sont donc moins nombreuses, mais nous allons
+étudier les définitions basiques de ces principes de bornes supérieures, de
+majorant ou autre.
+
+\begin{definition}[Majorant, minorant]
+  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
+  dit que $x$ est un majorant de $F$ si
+  \[\forall y\in F, y \leq x\]
+  et que $x$ est un minorant de $F$ si
+  \[\forall y\in F, x \leq y\]
+
+  Par abus de notation, on écrira $F\leq x$ (respectivmeent $x\leq F$) pour dire
+  que $x$ est un majorant (respectivement un minorant) de $F$.
+\end{definition}
+
+\begin{definition}[Borne supérieure, borne inférieure]
+  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
+  dit que $x$ est la borne supérieure de $F$ si
+  \[F\leq x \land (\forall y, F\leq y \implies x \leq y)\]
+  et que $x$ est la borne inférieure de $F$ si
+  \[x\leq F \land (\forall y, x\leq F \implies y \leq x)\]
+\end{definition}
+
+\begin{proof}
+  Puisque nous avons dit \og la\fg{} il est nécessaire de montrer l'unicité de
+  la borne supérieure (l'unicité de la borne inférieure se prouver par dualité).
+
+  Supposons que $x,y$ sont des bornes supérieures de $F$. Comme $F\leq x$ et
+  $y$ est une borne supérieure, $y\leq x$. De même, comme $F\leq y$ et $x$ est
+  une borne supérieure, $x\leq y$. Donc $x = y$ par antisymétrie.
+\end{proof}
+
+\begin{notation}
+  Si la borne supérieure de $F$ existe, on la notera $\bigvee F$. Si la borne
+  inférieure de $F$ existe, on la notera $\bigwedge F$.
+\end{notation}
+
+\begin{exercise}
+  Soit $(X,\leq)$ un ensemble ordonné et $A\subseteq \powerset X$ une partie
+  telle que $\bigcup A$ admet une borne supérieure et tout élément de $A$ admet
+  une borne supérieure, montrer alors que
+  \[\bigvee (\bigcup A) =
+  \bigvee\Big(\Big\{ \bigvee a \;\Big|\; a \in A\Big\}\Big)\]
+\end{exercise}
+
+\begin{definition}[Maximum,minimum]
+  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$. On dit que $x$ est le
+  maximum de $F$ si $F\leq x$ et $x\in F$. On dit que $x$ est le minimum de $F$
+  si $x\leq F$ et $x\in F$.
+\end{definition}
+
+\begin{notation}
+  On notera $\max F$ et $\min F$ le maximum (respectivement le minimum) de $F$.
+\end{notation}
+
+\begin{property}
+  S'il existe, le maximum (respectivement le minimum) d'une partie est sa borne
+  supérieure (respectivement inférieure).
+\end{property}
+
+\begin{proof}
+  Si $x$ est un majorant de $F$, alors comme $\max F \in F$, on en déduit que
+  $\max F \leq x$, d'où le résultat.
+\end{proof}
+
+\begin{definition}[\'Elément maximal, minimal]
+  Soit un ensemble ordonné $(X,\leq)$ et une partie $F\subseteq X$. On dit que
+  $x \in F$ est un élément maximal (respectivement minimal) dans $F$ s'il
+  n'existe pas $y\in F$ tel que $x\leq y$ (respectivement tel que $y\leq x$).
+\end{definition}
+
+\begin{exercise}
+  Montrer que le maximum d'une partie en est un élément maximal de cette partie.
+\end{exercise}
+
+Une autre partie intéressant est l'étude de parties sur lesquelles l'ordre induit
+se comporte particulièrement bien. C'est ce que nous allons voir avec les
+chaînes, les antichaînes et les parties filtrantes.
+
+\begin{definition}[Chaîne, antichaîne]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit que $C\subseteq X$ est une chaîne
+  de $X$ si l'ensemble $(C,\leq)$ (avec l'ordre induit) est un ensemble
+  totalement ordonné. On dit que $A\subseteq X$ est une antichaîne de $X$ si
+  l'ensemble $(A,\leq)$ (avec l'ordre induit) ne possède pas deux éléments
+  comparables, c'est-à-dire si $(A,\leq)$ est l'ordre discret. On dit que
+  $A\subseteq X$ est une antichaîne forte de $X$ si pour tous $x,y\in A$, $x$ et
+  $y$ ne sont pas compatibles.
+\end{definition}
+
+Cela nous mène à la notion d'ensemble inductif, importante pour établir le lemme
+de Zorn, qui est une version de l'axiome du choix plus maniable. Nous prouverons
+ce résultat lorsque nous étudierons la théorie des ensembles, mais pouvons déjà
+en donner le résultat.
+
+\begin{definition}[Ensemble inductif]
+  Un ensemble ordonné $(X,\leq)$ est dit inductif si pour chaîne admet un
+  majorant.
+\end{definition}
+
+\begin{theorem}[Lemme de Zorn]
+  Si $(X,\leq)$ est un ensemble inductif et $x\in X$, alors il existe un élément
+  maximal $y \in X$ qui est supérieur à $x$.
+\end{theorem}
+
+\subsection{Ordre bien fondé et bon ordre}
+
+Nous donnons maintenant les notions d'ordre bien fondé et de bon ordre. Les bons
+ordres auront de l'importance pour la théorie des ensembles, et les ordres bien
+fondés sont utiles pour étendre le théorème d'induction.
+
+\begin{definition}[Ordre bien fondé]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit que $\leq$ est bien fondé si toute
+  partie $F\subseteq X$ non vide possède un élément minimal, c'est-à-dire si
+  \[\forall F \subseteq X, F\neq \varnothing \implies \exists x\in F,
+  \forall y\in F, y\leq x \implies x = y\]
+\end{definition}
+
+\begin{remark}
+  Une définition équivalente, sur les ordres stricts, est que $<$ est bien fondé
+  si :
+  \[\forall F \subseteq X, F\neq \varnothing \implies \exists x \in F,
+  \forall y \in F, y\nless x\]
+\end{remark}
+
+\begin{definition}[Bon ordre]
+  Un ensemble ordonné $(X,\leq)$ est un bon ordre lorsque toute partie
+  $F\subseteq X$ possède un minimum.
+\end{definition}
+
+Une première conséquence évidente est qu'un bon ordre est un ordre bien fondé.
+De plus, un bon ordre est total, puisque pour $x,y\in X$ il existe un minimum
+à $\{x,y\}$. Ceci caractérise en fait les bons ordres parmi les ordres bien
+fondés.
+
+\begin{proposition}
+  Si $(X,\leq)$ est un ordre bien fondé total, alors c'est un bon ordre.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $(X,\leq)$ est un ordre bien fondé total. Soit $F\subseteq X$,
+  comme $\leq$ est un ordre bien fondé, on trouve $m$ un élément minimal de $F$.
+  Soit $x\in F$, alors soit $x \leq m$ soit $m\leq x$. Dans le premier cas,
+  par minimalité de $m$, on en déduit que $m = x$, donc que $m\leq x$. Ainsi,
+  dans tous les cas, $m$ est un minorant de $F$ : $F$ admet donc un minimum.
+
+  Donc $(X,\leq)$ est un bon ordre.
+\end{proof}
+
+Nous avons vu que la notion de structure inductive nous offre le principe
+d'induction, qui dans le cas particulier de $\mathbb N$ correspond au principe de
+récurrence. Le principe de récurrence forte, lui, est de nature légèrement
+différente : il se base sur la notion d'ordre. Il dit que si pour tout
+$k\in\mathbb N$, on peut prouver
+\[(\forall i < k, P(i)) \implies P(k)\]
+alors on peut en déduire que $\forall n, P(n)$.
+
+Ce procédé peut se généraliser à un ensemble bien fondé : si l'on définit
+l'ensemble
+$x^{-1} = \{y \in X \mid y < x\}$, on veut montrer que $P(x)$ est vrai pour tout
+$x$ à partir du fait que $(\forall y \in x^{-1}, P(y)) \implies P(x)$.
+
+L'idée derrière cette démonstration est que pour un ordre bien fondé, on a un
+moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
+élément en s'appuyant sur le fait que $P$ est vérifié aux étapes précédentes.
+
+\begin{theorem}[Induction bien fondée]
+  Soit $(X,\leq)$ un ensemble ordonné bien fondé. Soit $P\subseteq X$ une partie
+  vérifiant
+  \[\forall x, (\forall y < x, y\in P) \implies x\in P\]
+  est égale à $P$.
+\end{theorem}
+
+\begin{proof}
+  Supposons que $P\neq X$. On trouve alors $x\in X \setminus P$ minimal pour $<$.
+  Comme $<$ est minimal dans
+  $X\setminus P$, on en déduit que pour tout $y < x$, $y \notin X\setminus P$,
+  c'est-à-dire $y\in X$. Par hypothèse, puisque $\forall y < x, y\in P$, on en
+  déduit que $x\in P$ : c'est absurde. Ainsi, par l'absurde, on a prouvé que
+  $X\setminus P = \varnothing$, donc que $P = X$.
+\end{proof}
+
+\begin{remark}
+  En construisant un ensemble inductif à partir d'une signature $(C,\alpha)$ en
+  prenant une suite d'ensembles $(X_i)_{i\in \mathbb N}$, on peut définir un ordre
+  canonique bien fondé, l'ordre de sous-terme, par récurrence sur $i$ :
+  \begin{itemize}
+  \item pour $X_0$, on a facilement un ordre bien fondé sur $\varnothing$.
+  \item supposons qu'on possède un ordre bien fondé sur $X_n$, alors on définit
+    notre ordre sur $X_{n+1}$ par $x_i < c(x_1,\ldots,x_n)$ pour tout
+    $i \in \{1,\ldots,n\}$, et en en prenant la clôture transitive.
+  \end{itemize}
+
+  Cet ordre, en particulier, permet de généraliser l'hypothèse d'induction de
+  notre définition d'ensemble inductif en une induction forte.
+\end{remark}
+
+\begin{exercise}
+  Montrer que l'ordre défini plus tôt est bien un ordre bien fondé.
+\end{exercise}
+
+\section{Treillis}
+
+Nous allons maintenant étudier le cas des treillis, qui sont des ensembles
+ordonnés munis de propriétés de clôture. Pour être exhaustif et situer exactement
+quelles conditions mènent à quels résultats, nous allons définir nos structures
+de la plus faible à la plus forte, en montrant tous les résultats que nous
+souhaitons avoir sur une structure avant de passer à la suivante.
+
+\subsection{Demi-treillis}
+
+Commençons par étudier les demi-treillis : ceux-ci sont des ensembles ordonnés
+avec une direction privilégiée, selon laquelle il existe toujours une borne
+supérieure pour un ensemble fini.
+
+\begin{definition}[Demi-treillis]
+  Un ensemble $(X,\leq)$ est un sup demi-treillis si toute partie $F\subfin X$
+  admet une borne supérieure $\bigvee F$. C'est un inf demi-treillis si toute
+  partie $F\subfin X$ admet une borne inférieure $\bigwedge F$.
+\end{definition}
+
+\begin{property}
+  De manière équivalent, un ensemble $(X,\leq)$ est un sup demi-treillis si et
+  seulement s'il admet un élément $\bot$ et une opération
+  $\lor : X \times X \to X$ tels que $\bot$ est un minorant de $X$ et
+  $x\lor y$ est la borne supérieure de $x$ et $y$.
+
+  C'est un inf demi-treillis si et seulement s'il admet un majorant $\top$ et
+  une opération $\land : X \times X \to X$ prenant la borne inférieure de deux
+  éléments.
+\end{property}
+
+\begin{proof}
+  Si $(X,\leq)$ est un sup demi-treillis, on trouve $\bot$ en prenant
+  $\bigvee\varnothing$ et $x\lor y$ en prenant $\bigvee\{x,y\}$.
+
+  Réciproquement, montrons par récurrence sur le cardinal de $F\subfin X$ qu'il
+  existe une borne supérieure à $F$ :
+  \begin{itemize}
+  \item si $F = \varnothing$, alors $\bigvee F = \bot$.
+  \item si $F = F' \cup \{x\}$ et $\bigvee F'$ existe, alors
+    $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F \lor x$
+    donc $\bigvee F$ existe.
+  \end{itemize}
+\end{proof}
+
+Cela nous donne une caractérisation plus algébrique d'un demi-treillis : c'est un
+ensemble muni d'opérations. Cependant, ces opérations ont encore des définitions
+trop proche de la théorie des ordres. Nous allons voir que l'on peut transformer
+cette définition en une définition purement algébrique.
+
+\begin{definition}[Monoïde commutatif idempotent]
+  Un ensemble $X$ muni d'une opération $\cdot$ et d'un élément $e$ est un monoïde
+  idempotent commutatif si les propriétés suivantes sont vérifiées :
+  \begin{itemize}
+  \item $\forall x\in X, x\cdot e = e \cdot x = x$
+  \item $\forall x,y,z\in X, x \cdot (y \cdot z) = (x \cdot y) \cdot z$
+  \item $\forall x,y\in X, x\cdot y = y \cdot x$
+  \item $\forall x\in X, x\cdot x = x$
+  \end{itemize}
+
+  On définit sur un monoïde commutatif idempotent $(X,\cdot,e)$ les relations
+  $\leq_\lor$ et $\leq_\land$ par
+  \begin{align*}
+    x \leq_\lor y &\defeq x \cdot y = y \\
+    x \leq_\land y &\defeq x \cdot y = x
+  \end{align*}
+\end{definition}
+
+\begin{proposition}
+  L'ensemble $(X,\bot,\lor)$ est un sup demi-treillis pour $\leq_\lor$ si et
+  seulement si $(X,\bot,\lor)$ est un monoïde commutatif idempotent.
+
+  L'ensemble $(X,\top,\land)$ est inf demi-treillis pour $\leq_\land$ si et
+  seulement si $(X,\top,\land)$ est un monoïde commutatif idempotent.
+\end{proposition}
+
+\begin{proof}
+  Montrons d'abord que $\leq_\lor$ est bien un ordre pour un monoïde commutatif
+  idempotent :
+  \begin{itemize}
+  \item par idempotence, $x\lor x = x$ donc $x\leq_\lor x$.
+  \item si $x\leq_\lor y$ et $y\leq_\lor x$, alors $x\lor y = y$ et $y \lor x = x$
+    donc
+    \begin{align*}
+      x &= y \lor x \\
+      &= x \lor y \qquad\text{par commutativité}\\
+      &= y
+    \end{align*}
+  \item si $x\leq_\lor y$ et $y\leq_\lor z$, alors $x\lor y = y$ et $y \lor z = z$
+    donc
+    \begin{align*}
+      x\lor z &= x \lor (y \lor z) \\
+      &= (x \lor y) \lor z \\
+      &= y \lor z \\
+      &= z
+    \end{align*}
+  \end{itemize}
+
+  Supposons maintenant que $(X,\bot,\lor)$ est un sup demi-treillis, alors tout
+  d'abord $x\leq y$ si et seulement si $y = \bigvee\{x,y\}$, si et seulement si
+  $y = x \lor y$, d'où le fait que $\leq_\lor$ coïncide avec $\leq$. Montrons
+  maintenant que $(X,\bot,\lor)$ est un monoïde commutatif idempotent :
+  \begin{itemize}
+  \item $\bot$ est un élément neutre pour $\lor$ : pour tout $x\in X$,
+    $\bot\leq x$ donc $\bot \vee x = x$, et de même pour $x\vee\bot$.
+  \item $\lor$ est associatif :
+    $x\lor (y \lor z) = \bigvee\{x,y,z\} = (x\lor y)\lor z$.
+  \item $\lor$ est commutatif : $x\lor y = \bigvee\{x,y\}=y\lor x$.
+  \item $\lor$ est idempotent : $x\lor x = \bigvee\{x\}=x$.
+  \end{itemize}
+
+  Réciproquement, montrons que so $(X,\bot,\lor)$ est un monoïde commutatif
+  idempotent, alors $\bot$ est un minorant de $X$ pour $\leq_\lor$ et $\lor$ est
+  la borne supérieure de deux éléments pour $\leq_\lor$ :
+  \begin{itemize}
+  \item pour tout $x$, $\bot \lor x = x$ donc $\bot \leq_\lor x$.
+  \item pour tous $x,y$, $x\lor (x\lor y) = (x\lor x)\lor y = x\lor y$ donc
+    $x\lor y$ est un majorant de $x$ (de même on prouve que $x\lor y$ est un
+    majorant de $y$). Supposons que $z$ est un majorant de $\{x,y\}$ pour
+    $\leq_\lor$. Cela signifie que $x\lor z = z$ et $x\lor y = z$. Alors
+    $(x\lor y)\lor z = x\lor (y\lor z) = x\lor z = z$ donc
+    $x\lor y \leq_\lor z$, donc $x\lor y$ est inférieur à tout majorant de
+    $\{x,y\}$ : c'est la borne supérieure de $\{x,y\}$.
+  \end{itemize}
+\end{proof}
+
+Ainsi on parlera de sup demi-treillis (respectivement inf demi-treillis) en
+utilisant $\leq$ et les opérations $\bot,\lor$ (respectivement $\top,\land$) sans
+souci, puisque toutes les définitions nous donnent l'ensemble de ces notions.
+
+\subsection{Treillis}
+
+Un demi-treillis ne concerne qu'une direction entre le sup et l'inf. Un treillis,
+comme son nom l'indique, est une structure qui possède les propriétés des deux
+demi-treillis à la fois.
+
+\begin{definition}[Treillis]
+  Un ensemble ordonné $(X,\leq)$ est un treillis si toute partie finie
+  $F\subfin X$ possède à la fois une borne supérieure $\bigvee F$ et une borne
+  inférieure $\bigwedge F$.
+\end{definition}
