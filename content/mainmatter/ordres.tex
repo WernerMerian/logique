@@ -14,16 +14,14 @@ similaires à ce qu'il connait en théorie des catégories.
 
 Nous commencerons par définir les idées générales sur les ensembles ordonnés.
 Cette première partie introduira les notions élémentaires d'ordre, de borne
-supérieure, inférieure etc.
-Nous aborderons ensuite la théorie des treillis, des demi-treillis aux treillis
-complets. Ces structures peuvent être vues comme des structure particulièrement
-rudimentaires, nous verrons ensuite les structures liées à la logique que l'on
-peut définir dessus : les algèbres de Boole et les algèbres de Heyting.
+supérieure, inférieure, ainsi que les ordres bien fondés se reposant sur les
+éléments minimaux.
+Nous aborderons ensuite la théorie des treillis, en allant des demi-treillis aux
+algèbres de Boole et de Heyting.
 Cela motivera notre étude des filtres et ultrafiltres, dont le comportement dans
 une algèbre de Boole est fortement simplifiée, et nous aurons alors l'occasion
 de démontrer le théorème d'extension d'une théorie cohérente en une théorie
-complète. Enfin, nous verrons des notions plus restreintes liées aux ordres :
-la densité, la compatibilité, les chaînes et les antichaînes.
+complète.
 
 \section{Ensembles ordonnés}
 
@@ -307,11 +305,11 @@ ce résultat lorsque nous étudierons la théorie des ensembles, mais pouvons d�
 en donner le résultat.
 
 \begin{definition}[Ensemble inductif]
-  Un ensemble ordonné $(X,\leq)$ est dit inductif si pour chaîne admet un
+  Un ensemble ordonné $(X,\leq)$ est dit inductif si toute chaîne admet un
   majorant.
 \end{definition}
 
-\begin{theorem}[Lemme de Zorn]
+\begin{theorem}[Lemme de Zorn]\label{thm.Zorn}
   Si $(X,\leq)$ est un ensemble inductif et $x\in X$, alors il existe un élément
   maximal $y \in X$ qui est supérieur à $x$.
 \end{theorem}
@@ -749,6 +747,14 @@ Une algèbre de Boole peut ainsi se décrire grâce à cette notion de compléme
   $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des algèbres de Boole.
 \end{exercise}
 
+\begin{remark}
+  En particulier, pour $X = \{\varnothing\}$, on obtient une algèbre de Boole
+  de cardinal $2$, qui correspond en fait au corps $\mathbb Z/2\mathbb Z$.
+  On notera cette algèbre de Boole $B_2$, celle-ci a la particularité d'être
+  la plus petite algèbre de Boole non dégénérée (telle que $\bot \neq \top$) et
+  d'être la seule algèbre de Boole qui a une structure de corps.
+\end{remark}
+
 \begin{exercise}
   Montrer que les identités de De Morgan sont vérifiées :
   \[\lnot\lnot x = x \qquad \lnot (x \lor y) = \lnot x \land \lnot y
@@ -905,3 +911,466 @@ par $\lnot x = x \to \bot$, comme nous l'avons déjà fait.
   Montrer qu'une algèbre de Boole est en particulier une algèbre de Heyting, et
   que le complément d'un élément est en particulier son pseudo-complément.
 \end{exercise}
+
+\subsection{Treillis complet}
+
+Notre première définition d'un treillis peut paraître légèrement plus
+artificelle que sa caractérisation algébrique. En effet, dans la version
+algébrique, on peut voir un treillis comme un certain bimonoïde, que l'on peut
+ensuite étendre en l'existence d'une borne supérieure et d'une borne inférieure
+pour toute partie finie (en raisonnant juste par récurrence). A l'inverse,
+lorsque l'on part de la définition de treillis comme ensemble ordonné possédant
+toutes les bornes sur des parties finies, une question naît immédiatement :
+pourquoi ne pas autoriser des parties infinies ? C'est pour intégrer cette
+possibilité que nous introduisons la notion de treillis complet.
+
+\begin{definition}[Treillis complet]
+  Un treillis complet est un ensemble ordonné $(X,\leq)$ tel que toute partie
+  $Y\subseteq X$ possède à la fois une borne supérieure et une borne inférieure.
+\end{definition}
+
+Un treillis complet est, par définition, plus fort qu'un treillis. Dans la
+pratique, on trouve effectivement plusieurs treillis qui ne sont pas complets
+(le fait d'avoir deux notions n'est donc pas une distinction simplement formelle
+mais revêt une vraie différence conceptuelle). Remarquons aussi qu'un treillis
+complet peut se caractériser par l'existence d'une seule borne.
+
+\begin{property}
+  L'ensemble ordonné $(X,\leq)$ est un treillis complet si et seulement si toute
+  partie possède une borne supérieure.
+\end{property}
+
+\begin{proof}
+  Un sens est évident. Pour l'autre, supposons que toute partie de $X$ possède
+  une borne supérieure, et montrons alors qu'elle possède une borne inférieure.
+
+  Soit $Y\subseteq X$, on définit $Y\convcal$ par
+  \[Y\convcal \defeq \{x\in X \mid \forall y \in Y, x \leq y\}\]
+  et soit $y_0$ la borne supérieure de $Y\convcal$. Montrons que $y_0$ est la
+  borne inférieure de $Y$. Tout d'abord, si $y\in Y$, alors par définition,
+  $y$ est un majorant de $Y\convcal$, donc puisque $y_0$ est le plus petit
+  majorant, $y_0$ est un minorant de $Y$. De plus, si $y$ est un minorant
+  de $Y$, cela signifie que $y\in Y\convcal$, donc comme $y_0$ est un majorant de
+  $Y\convcal$, on en déduit que $y\leq y_0$. Ainsi $y_0$ est le plus grand
+  minorant de $Y$ : c'est la borne inférieure de $Y$.
+\end{proof}
+
+On peut maintenant prouver l'un des théorèmes importants que nous avons présenté
+dans le \cref{chp.induction} : le \cref{thm.ind.KT}, mais dans une version bien
+plus forte et générale.
+
+\begin{theorem}[Knaster-Tarski]
+  Soit $(X,\leq)$ un treillis complet et $f : X \to X$ une fonction croissante.
+  Alors l'ensemble
+  \[\fix(f) \defeq \{x\in X \mid f(x) = x\}\]
+  est un treillis complet pour l'ordre induit par $\leq$.
+\end{theorem}
+
+\begin{proof}
+  On définit tout d'abord l'ensemble des pré points fixes de $f$ :
+  \[\prefix(f) \defeq \{x\in X\mid f(x)\leq x\}\]
+  et on montre qu'il est un treillis complet pour $\leq$. Soit une partie
+  $Y\subseteq\prefix(f)$, montrons que $Y$ possède une borne inférieure. Nous
+  prenons pour candidat de la borne inférieure de $Y$ dans $\prefix(f)$, la
+  borne inférieure $\bigwedge Y$ dans $X$ : montrons donc que $\bigwedge Y$ est
+  bien un pré point fixe de $f$ (cela suffira à montrer qu'on a une borne
+  inférieure, puisque la borne inférieure dans $Y$ est aussi la borne inférieure
+  dans $\prefix(f)$, à partir du moment où la borne appartient effectivement à
+  $\prefix(f)$).
+
+  On montre que $f\big(\bigwedge Y\big) \leq \bigwedge Y$. Pour cela, il nous
+  suffit de montrer que $f\big(\bigwedge Y\big)$ est un minorant de $Y$, puisque
+  l'on sait que $\bigwedge Y$ est le plus grand minorant. Soit $y\in Y$, on
+  remarque que $\bigwedge Y \leq y$, donc $f\big(\bigwedge Y\big) \leq f(y)$,
+  mais comme par définition $f(y)\leq y$ et par transitivité, on en déduit que
+  $f\big(\bigwedge Y\big) \leq y$. Ainsi
+  $f\big(\bigwedge Y\big) \leq \bigwedge Y$.
+
+  On sait donc que toute partie de $\prefix(f)$ admet une borne inférieure. Par
+  la propriété précédente (son dual, plus précisément), $\prefix(f)$ est donc
+  un treillis complet pour $\leq$. On a donc un treillis complet
+  $(\prefix(f),\leq)$ et une fonction $f : \prefix(f) \to\prefix(f)$. En prenant
+  le dual, on obtient donc que $\postfix(\prefix(f))$ est un treillis complet.
+
+  Montrons maintenant que $\postfix(\prefix(f)) = \fix(f)$. Par définition,
+  \[\postfix(\prefix(f)) = \{x\in \{x\in X \mid f(x)\leq x\} \mid x \leq f(x)\}\]
+  ce qui correspond exactement à l'ensemble
+  $\{x\in X\mid (f(x) \leq x) \land (x \leq f(x))\}$. Comme $\leq$ est
+  transitif, cet ensemble est $\fix(f)$. Ainsi $\fix(f)$ est un treillis complet.
+\end{proof}
+
+\begin{remark}
+  On en déduit donc, en particulier, qu'il existe un plus petit et un plus grand
+  point fixe pour $f$. En rentrant un peu plus en détail dans la démonstration,
+  on peut vérifier que le plus petit point fixe est le plus petit pré point fixe,
+  et que le plus grand point fixe est le plus grand post point fixe.
+\end{remark}
+
+\begin{exercise}
+  Montrer que $(\powerset(X),\subseteq)$ est un treillis complet, pour tout
+  ensemble $X$. En déduire le \cref{thm.ind.KT}.
+\end{exercise}
+
+Enfin, donnons deux mots à propos des algèbre de Heyting complètes. On pourrait
+s'attendre à ce qu'un treillis complet $X$ suffise à modéliser ce qu'on attend
+d'une algèbre de Heyting complète, étant donné que pour tous $a,b$, l'ensemble
+\[\{x \in X \mid a \land x \leq b\}\]
+possède une borne inférieure. Ce qui bloque, cependant, est le caractère
+distributif : on ne sait pas si le treillis complet est distributif. A la place,
+une algèbre de Heyting complète va posséder une version complète de la
+distributivité.
+
+\begin{definition}[Algèbre de Heyting complète]
+  Un ensemble ordonné $(H,\leq)$ est une algèbre de Heyting complète si
+  $(H,\leq)$ est un treillis complet et s'il vérifie l'identité suivante, pour
+  toute partie $X\subseteq H$ et tout élément $y \in H$ :
+  \[\Bigg(\bigvee_{x\in X}x\Bigg) \land y = \bigvee_{x\in X}(x\land y)\]
+\end{definition}
+
+\section{Filtres}
+
+Enfin, présentons la notion de filtre, et la notion duale d'idéal. Nous allons
+détailler comment se comportent les filtres dans les structure de plus en plus
+fortes : demi-treillis, treillis et algèbre de Boole, puis nous verrons les
+ultrafiltres et le lemme de l'ultrafiltre.
+
+\subsection{Définitions et caractérisations}
+
+Commençons par définir ce qu'est un filtre.
+
+\begin{definition}[Filtre]
+  Soit $(X,\leq)$ un ensemble ordonné. Un filtre est une partie
+  $\mathcal F\subseteq X$ vérifiant :
+  \begin{itemize}
+  \item $\mathcal F$ est non vide : $\mathcal F \neq\varnothing$.
+  \item $\mathcal F$ est clos par le haut : pour tout $x\in \mathcal F$ et
+    $y\in X$, si $x\leq y$ alors $y\in \mathcal F$.
+  \item tous les éléments de $\mathcal F$ sont compatibles : pour tous
+    $x,y\in\mathcal F$, il existe $z\in\mathcal F$ tel que $z\leq x$ et
+    $z\leq y$.
+  \end{itemize}
+
+  Un filtre $\mathcal F$ est dit propre si $\mathcal F \neq X$.
+\end{definition}
+
+Un filtre peut donc être vu comme une description d'une notion de grandeur :
+un élément d'un filtre est vu comme un \og grand\fg élément. En plus de cela,
+cette notion de grandeur doit avoir une notion de compatibilité : deux grands
+éléments doivent avoir en commun un grand élément. La notion duale, qui peut donc
+être vue comme la spécification d'une notion de petitesse, est celle d'idéal.
+
+\begin{definition}[Idéal]
+  Soit $(X,\leq)$ un ensemble ordonné. Un idéal est une partie
+  $\mathcal I \subseteq X$ vérifiant :
+  \begin{itemize}
+  \item $\mathcal I$ est non vide : $\mathcal I \neq\varnothing$.
+  \item $\mathcal I$ est clos par le bas : pour tout $x\in \mathcal I$ et
+    $y\in X$, si $y\leq x$ alors $y\in \mathcal I$.
+  \item tous les éléments de $\mathcal I$ sont compatibles par le haut :
+    pour tous $x,y\in \mathcal I$, il existe $z\in \mathcal I$ tel que
+    $x\leq z$ et $y\leq z$.
+  \end{itemize}
+
+  Un idéal $\mathcal I$ est dit propre si $\mathcal I \neq X$.
+\end{definition}
+
+Nous ne travaillerons par sur les idéaux, mais donnons la définition car celle-ci
+reste importante.
+
+\begin{example}
+  Soit un ensemble $X$ et un élément $x\in X$. On peut définir le filtre
+  principal sur $\powerset(X)$ en $x$, $\mathcal F_x$, par
+  \[\mathcal F_x \defeq \{A\subseteq X\mid x \in A\}\]
+
+  On voit que $X\in \mathcal F_x$, que si $A\subseteq B$ et $x\in A$ alors
+  $x\in B$, et que si $x\in A$ et $x\in B$ alors $x\in A\cap B$. Ainsi l'ensemble
+  ordonné $\powerset(X)$ contient au moins autant de filtres que d'éléments dans
+  $X$.
+\end{example}
+
+On peut donner une première caractérisation des filtres, dans le cas d'un
+inf demi-treillis.
+
+\begin{property}
+  Soit $(X,\leq)$ un inf demi-treillis de majorant $\top$ et de borne inf
+  $\land$. Alors $\mathcal F\subseteq X$ est un filtre sur $X$ si et seulement si
+  les conditions suivantes sont vérifients :
+  \begin{itemize}
+  \item $\top \in X$.
+  \item $\mathcal F$ est clos par le haut.
+  \item si $x,y\in \mathcal F$, alors $x\land y\in \mathcal F$.
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Supposons que $\mathcal F$ vérifie les propriétés listées. Le fait d'être
+  clos par le haut est par définition. Comme $\top\in\mathcal F$,
+  $\mathcal F$ est non vide. Si $x,y\in\mathcal F$, alors il existe effectivement
+  $z\in \mathcal F$ tel que $z\leq x$ et $z\leq y$, en prenant $z = x\land y$.
+
+  Réciproquement, supposons que $\mathcal F$ est un filtre. Alors, puisqu'il
+  possède un élément, disons $x$, et que $x\leq \top$, on en déduit par clôture
+  par le haut que $\top\in\mathcal F$. Le fait que $\mathcal F$ est clos par le
+  haut est par hypothèse. Soient $x,y\in \mathcal F$, alors par hypothèse il
+  existe $z\in \mathcal F$ tel que $z\leq x$ et $z\leq y$. Par définition de la
+  borne supérieure, on a donc que $z\leq x\land y$, et par clôture par le haut
+  on en déduit que $x\land y \in \mathcal F$.
+\end{proof}
+
+Les inf demi-treillis permettent donc de mieux caractériser les treillis. En
+quelque sorte, puisqu'ils permettent de délimiter le fait de devenir plus petit,
+il est plus aisé d'y définir ce qui est grand (c'est-à-dire ce qui est arrive à
+rester grand quand on le rend plus petit). Les sup demi-treillis, eux, ne
+permettent pas de mieux définir un treillis, mais permettent de décrire ses
+propriétés.
+
+\begin{property}
+  Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F \subseteq X$ un filtre.
+  Alors $\mathcal F$ est propre si et seulement si $\bot\notin\mathcal F$.
+\end{property}
+
+\begin{proof}
+  Puisque $\mathcal F$ est clos par le haut, si $\bot\in\mathcal F$ alors tout
+  élément est dans $\mathcal F$, donc $\mathcal F$ n'est pas propre (et si
+  $\mathcal F$ n'est pas propre, alors il contient $\bot$).
+\end{proof}
+
+Les sup demi-treillis permettent de définir la propriété d'être premier :
+
+\begin{definition}[Filtre premier]
+  Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F$ un filtre sur $X$. On dit
+  que $\mathcal F$ est premier si pour tous $x,y\in X$, si
+  $x\lor y \in \mathcal F$ alors $x\in F$ ou $y\in F$.
+\end{definition}
+
+On peut voir une analogie ici avec un idéal dans un anneau : un idéal premier
+est un idéal tel que, lorsqu'on a un produit $a\times b$ dedans, celui-ci doit
+nécessairement provenir du produit par un élément de l'idéal. De la même façon,
+ici, on sait naturellement que si $x\in\mathcal F$ alors $x\lor y \in\mathcal F$,
+et la notion de primalité signifie que tout élément de la forme $x\lor y$ doit
+provenir d'un cas de ce type, où $x$ (ou $y$) était déjà dans $\mathcal F$.
+
+Pour synthétiser les différentes propriétés dans le cas d'un treillis : les
+filtres propres (qui sont les filres intéressants) sont les parties closes par
+le haut qui possède $\top$ mais pas $\bot$, et qui sont closes par intersection
+finie.
+
+Supposons maintenant qu'on possède une partie $X$ (non vide) qui n'est pas un
+filtre. Comment trouver un filtre correspondant naturellement à $X$ ?
+Premièrement, il nous faut d'abord clore $X$ par le haut : on prend l'ensemble
+des éléments supérieurs à au moins un élément de $X$. Il nous faut aussi nous
+assurer que pour tout $x,y$ dans notre filtre, un élément inférieur à $x$ et $y$
+soit dans le filtre. Le plus simple ici est de considérer un inf demi-treillis :
+on veut ajouter tous les $x\land y$, mais comme il est possible d'itérer ces
+bornes inférieures, il nous faut ajouter tous les $\bigwedge F$ pour
+$F\subfin X$. On obtient ainsi la construction suivante :
+
+\begin{definition}[Filtre engendré par une partie]
+  Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie non vide de
+  $X$. On définit alors
+  \[\filclose{Y} \defeq \{x\in X \mid \exists F\subfin Y, \bigwedge F \leq x\}\]
+\end{definition}
+
+\begin{proposition}
+  Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie non cide.
+  Alors $\filclose Y$ est un filtre sur $X$.
+\end{proposition}
+
+\begin{proof}
+  Tout d'abord, on remarque que $Y\subseteq \filclose Y$, donc $\filclose Y$ est
+  non vide. Soit $x\in \filclose Y$ et $y\in X$ tel que $x\leq y$. On trouve
+  $F\subfin Y$ tel que $\bigwedge F\leq x$, alors $\bigwedge F \leq y$ par
+  transitivité, donc $y\in \filclose F$. Soient $x$ et $y$ des éléments de
+  $\filclose Y$, on trouve $F$ et $F'$ des parties finies de $Y$ telles que
+  $\bigwedge F \leq x$ et $\bigwedge F' \leq y$. Alors
+  \[\bigwedge (F\cup F') = \Bigg(\bigwedge F\Bigg)\land\Bigg(\bigwedge F\Bigg)
+  \leq x\land y\]
+  donc $x\land y \in \filclose Y$. Ainsi $\filclose Y$ est un filtre.
+\end{proof}
+
+Par défaut, le filtre engendré par une partie peut tout à fait contenir tous
+les éléments. Prenons par exemple un ensemble $X$, une partie $Y$ et le filte
+engendré par $\{Y,X\setminus Y\}$ : il est évident que ce filtre n'est pas
+propre. Cependant, il existe une propriété assurant qu'un filtre engendré est
+propre, est qui est tout à fait naturelle : on veut que les $\bigwedge F$ soient
+tous différents de l'ensemble vide. Evidemment, cette propriété n'a d'intérêt que
+dans le cas d'un treillis.
+
+\begin{definition}[Propriété de l'intersection finie]
+  Soit $(X,\leq)$ un treillis et $Y\subseteq X$. On dit que $Y$ a la propriété
+  de l'intersection finie si
+  \[\forall F\subfin Y, \bigwedge F\neq \bot\]
+\end{definition}
+
+\begin{proposition}
+  Soit $(X,\leq)$ un treillis et $Y\subseteq X$ une partie non vide de $X$.
+  Alors $\filclose Y$ est un filtre propre si et seulement si $Y$ a la propriété
+  de l'intersection finie.
+\end{proposition}
+
+\begin{proof}
+  Par définition, $\bot\in \filclose Y$ si et seulement s'il existe $F\subfin Y$
+  tel que $\bigwedge F \leq \bot$, mais la condition que $\bigwedge F\leq \bot$
+  est équivalente à ce que $\bigwedge F = \bot$, étant donné que l'autre
+  inégalité est toujours vérifiée. Ainsi $\bot\in\filclose Y$ si et seulement
+  s'il existe $F\subfin Y$ tel que $\bigwedge F = \bot$, donc $\filclose Y$ est
+  propre si et seulement si $Y$ possède la propriété de l'intersection finie.
+\end{proof}
+
+\begin{exercise}
+  Soit $\Sigma$ une signature. On considère $\mathcal T\subseteq\Clos(\Sigma)$
+  une théorie. Montrer que $\mathcal T$ est cohérente (c'est-à-dire que
+  $\mathcal T\nvdash \bot$) si et seulement si $\mathcal T'$, la projection
+  de $\mathcal T$ dans $\mathcal L(\Sigma)$, a la propriété de l'intersection
+  finie.
+\end{exercise}
+
+\begin{exercise}
+  Soit $\Sigma$ une signature. Soit $\mathcal T\subseteq\Clos(\Sigma)$ une
+  théorie. Montrer que la projection de $\vclose{\mathcal T}$ dans
+  $\mathcal L(\Sigma)$ est le filtre engendré par la projection de $\mathcal T$
+  dans $\mathcal L(\Sigma)$.
+\end{exercise}
+
+\subsection{Ultrafiltre}\label{sbsct.ultrafiltre}
+
+On définit maintenant la notion d'ultrafiltre, qui est la notion duale de celle
+de filtre maximale, souvent rencontrée en algèbre.
+
+\begin{definition}[Ultrafiltre]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit qu'un filtre $\mathcal F$ est un
+  ultrafiltre s'il est un filtre propre maximal pour l'inclusion, c'est-à-dire si
+  pour tout autre filtre propre $\mathcal H$ de $X$, si
+  $\mathcal F \subseteq\mathcal H$ alors $\mathcal F = \mathcal H$.
+\end{definition}
+
+Dans le cas d'un treillis distributif, on a une coïncidence entre les
+ultrafiltres et les filtres premiers.
+
+\begin{proposition}
+  Soit $(X,\leq)$ un treillis distributif. Alors un filtre $\mathcal F$ est un
+  ultrafiltre si et seulement s'il est un filtre premier.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On a, de plus, une caractérisation encore meilleure dans le cas d'une algèbre de
+Boole.
+
+\begin{proposition}
+  Soit $(B,\leq)$ une algèbre de Boole. Un filtre $\mathcal F$ est un ultrafiltre
+  si et seulement si on a la propriété suivante, pour tout $x\in B$ :
+  \[x\in \mathcal F \iff \lnot x \notin \mathcal F\]
+\end{proposition}
+
+\begin{proof}
+  Si $\mathcal F$ est un filtre premier, alors comme $\top \in \mathcal F$ et
+  $\top = x \lor \lnot x$, on sait que soit $x$ soit $\lnot x$ est dans
+  $\mathcal F$. Comme par définition $\bot\notin\mathcal F$ et que
+  $x\land\lnot x = \bot$, on en déduit qu'un seul des deux est dans $\mathcal F$,
+  ce qui est le résultat qu'on veut démontrer.
+
+  Supposons maintenant que pour tout $x\in B$,
+  $x\in\mathcal F \iff \lnot x\notin \mathcal F$. Alors si
+  $x\lor y\in \mathcal F$, supposons que $x\notin \mathcal F$ et
+  $y\notin\mathcal F$. Alors $\lnot x \in \mathcal F$ et $\lnot y \in \mathcal F$
+  grâce à notre hypothèse (et au fait que $\lnot\lnot x = x$). Mais alors
+  $\lnot x \land \lnot y \in \mathcal F$, et $x\lor y \in \mathcal F$, donc
+  $\lnot (x\lor y)$ et $x\lor y$ sont dans $\mathcal F$ : $\mathcal F$ n'est donc
+  par propre. Par l'absurde, on en déduit que soit $x\in\mathcal F$, soit
+  $y\in\mathcal F$.
+\end{proof}
+
+Pour finir, nous allons démontrer le lemme de l'ultrafiltre, qui est une
+conséquence du lemme de Zorn. Il dit que tout filtre propre peut être étendu en
+un ultrafiltre.
+
+\begin{theorem}[Lemme de l'ultrafiltre]\label{thm.ultrafilter.lemma}
+  Soit $(X,\leq)$ un treillis. Soit $\mathcal F$ un filtre sur $X$. Alors il
+  existe un ultrafiltre $\mathcal U$ contenant $\mathcal F$.
+\end{theorem}
+
+\begin{proof}
+  On définit l'ensemble ordonné
+  \[\mathcal X \defeq \{\mathcal H \subseteq X\mid \mathcal H
+  \text{ est un filtre propre}\}\]
+  muni de l'inclusion ensembliste.
+
+  On veut appliquer le lemme de Zorn sur cet ensemble. Pour cela, on vérifie
+  que $\mathcal X$ est inductif.
+
+  Soit $\{\mathcal F_i\}_{i\in I}$ une chaîne d'éléments de $\mathcal X$, montrons
+  que $\mathcal F_0 = \displaystyle\bigcup_{i\in I} \mathcal F_i$ est un majorant
+  de cette chaîne. Il nous suffit pour cela de vérifier que $\mathcal F_0$ est
+  bien un filtre propre :
+  \begin{itemize}
+  \item soit $i\in I$, comme $\top \in \mathcal F_i$, on en déduit que
+    $\top \in \mathcal F_0$.
+  \item soit $x\in \mathcal F_0$ et $y\in X$ tel que $x\leq y$. Par définition
+    de $\mathcal F_0$, on trouve $i\in I$ tel que $x\in \mathcal F_i$, et comme
+    $\mathcal F_i$ est un filtre on en déduit que $y\in \mathcal F_i$, d'où
+    $y\in\mathcal F_0$.
+  \item soient $x,y\in \mathcal F_0$. On trouve $i,j\in I$ tels que
+    $x\in \mathcal F_i$ et $y\in \mathcal F_j$. Comme $\{\mathcal F_i\}$ est une
+    chaîne pour l'inclusion, alors soit $\mathcal F_i \subseteq \mathcal F_j$,
+    soit $\mathcal F_j\subseteq \mathcal F_i$. Sans perte de généralité, on
+    suppose donc que $\mathcal F_i\subseteq \mathcal F_j$, donc que
+    $x\in \mathcal F_j$. Comme $\mathcal F_j$ est un filtre, on en déduit que
+    $x\land y \in \mathcal F_j$, donc que $x\land y \in \mathcal F_0$.
+  \item supposons que $\bot\in \mathcal F_0$. Alors on trouve $i\in I$ tel que
+    $\bot\in \mathcal F_i$, mais comme tous les $\mathcal F_i$ sont supposés
+    propres, $\bot\notin\mathcal F_i$. Par contradiction, on en déduit que
+    $\mathcal F_0$ est propre.
+  \end{itemize}
+
+  On applique donc le \cref{thm.Zorn} : on trouve un élément maximal
+  $\mathcal H$ de $\mathcal X$ qui est supérieur à $\mathcal F$, c'est-à-dire
+  qui contient $\mathcal F$. Il ne nous reste qu'à vérifier que $\mathcal H$ est
+  bien un ultrafiltre : si $\mathcal G$ est un filtre propre contenant
+  $\mathcal H$, alors il contient $\mathcal F$, donc il appartient à
+  $\mathcal X$. Par maximalité de $\mathcal H$ dans $\mathcal X$, on en déduit
+  que $\mathcal H = \mathcal G$ : $\mathcal H$ est un ultrafiltre sur $X$
+  contenant $\mathcal F$.
+\end{proof}
+
+On peut maintenant montrer le \cref{thm.completion} :
+
+\begin{proof}
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ supposée
+  cohérente. On peut
+  définir l'algèbre de Lindenbaum-Tarski pour la sémantique :
+  \[\mathcal L(\Sigma) \defeq \Formula(\Sigma)/\equiv\]
+  (comme nous prouvons un résultat permettant la démonstration du théorème de
+  complétude, nous ne pouvons pas utiliser l'équivalence entre $\vdash$ et
+  $\vDash$, donc nous construisons cette fois-ci l'algèbre en utilisant la
+  relation $\vDash$ dès le début).
+
+  On laisse au lecteur le soin de vérifier que cet ensemble ordonné est bien
+  une algèbre de Boole avec les constructeurs induits par
+  $\top, \bot, \land, \lor, \lnot$.
+
+  La théorie $\mathcal T$ induit sur $\mathcal L(\Sigma)$ une partie vérifiant
+  la propriété d'intersection finie, et la théorie $\vclose{\mathcal T}$ est
+  ainsi un filtre propre : on peut donc grâce au \cref{thm.ultrafilter.lemma}
+  trouver un ultrafiltre $\mathcal S$ contenant $\vclose{\mathcal T}$.
+
+  Soit alors la théorie $\mathcal T' = \bigcup\mathcal S$, qui contient donc
+  toutes les formules appartenant à une classe d'équivalence de $\mathcal S$.
+  On remarque que $\mathcal T'$ est close par $\vDash$, donc puisque
+  $\overline\bot \notin\mathcal S$, cela signifie que $\bot\notin\mathcal T'$.
+  Il nous reste à vérifier que $\mathcal T'$ est complète : pour toute
+  formule $\varphi$, on sait que $\varphi\lor\lnot\varphi \in \mathcal T'$, donc
+  $\overline{\varphi}\lor\overline{\lnot\varphi}\in\mathcal S$, mais
+  comme $\mathcal S$ est un ultrafiltre, il est en particulier premier. On
+  en déduit que soit $\overline\varphi \in \mathcal S$, soit
+  $\overline{\lnot\varphi}\in \mathcal S$ : dans le premier cas,
+  $\varphi\in \mathcal T'$ et dans le deuxième cas,
+  $\lnot\varphi\in \mathcal T'$. Ainsi pour toute formule $\varphi$, soit
+  $\varphi\in \mathcal T'$ soit $\lnot\varphi\in \mathcal T'$ (c'est donc en
+  particulier encore le cas pour $\vclose{\mathcal T'} = \mathcal T'$).
+
+  Donc il existe une théorie complète $\mathcal T'$ qui contient la théorie
+  $\mathcal T$.
+\end{proof}
