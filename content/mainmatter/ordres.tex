@@ -542,6 +542,34 @@ Ainsi on parlera de sup demi-treillis (respectivement inf demi-treillis) en
 utilisant $\leq$ et les opérations $\bot,\lor$ (respectivement $\top,\land$) sans
 souci, puisque toutes les définitions nous donnent l'ensemble de ces notions.
 
+\begin{exercise}
+  Soit $\Sigma$ une signature, on rappelle que l'algèbre de Lindenbaum-Tarski
+  sur $\Sigma$, notée $\mathcal L(\Sigma)$, est l'ensemble quotient
+  $\Formula(\Sigma)/\dashv\vdash$ muni de l'ordre $\vdash$. Montrer que
+  cette structure est un inf demi-treillis et un sup demi-treillis où le majorant
+  est $\top$, le minorant $\bot$, la borne supérieure $\lor$ et la borne
+  inférieure $\land$.
+\end{exercise}
+
+\begin{exercise}
+  Soit un ensemble $X$, montrer que $(\powerset(X),\subseteq)$ est à la fois un
+  sup et un inf demi-treillis, où $X$, $\varnothing$, $\cup$ et $\cap$ sont
+  respectivement le majorant, le minorant, la borne supérieure et la borne
+  inférieure.
+\end{exercise}
+
+On peut aussi définir les morphismes de demi-treillis, qui sont des morphismes
+entre structures au sens attendu.
+
+\begin{definition}[Morphisme de demi-treillis]
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux sup demi-treillis (respectivement deux
+  inf demi-treillis). Un morphisme de sup demi-treillis (respectivement d'inf
+  demi-treillis) est une fonction $f : X \to Y$ croissante telle que
+  $f(\bot_X) = \bot_Y$ (respectivement $f(\top_X) = \top_Y$) et telle que pour
+  tous $x,y\in X$, $f(x\lor y) = f(x)\lor f(y)$ (respectivement telle que pour
+  tous $x,y\in X$, $f(x\land y) = f(x)\land f(y)$).
+\end{definition}
+
 \subsection{Treillis}
 
 Un demi-treillis ne concerne qu'une direction entre le sup et l'inf. Un treillis,
@@ -553,3 +581,327 @@ demi-treillis à la fois.
   $F\subfin X$ possède à la fois une borne supérieure $\bigvee F$ et une borne
   inférieure $\bigwedge F$.
 \end{definition}
+
+En théorie des ordres, il est direct de voir qu'être un treillis est équivalent
+à être à la fois un inf demi-treillis et un sup demi-treillis, mais cela n'est
+pas aussi évident algébriquement, car un inf demi-treillis est défini
+algébriquement par la relation $\leq_\land$ et un sup demi-treillis par la
+relation $\leq_\lor$ : il faut vérifier que ces deux relations coïncident.
+
+\begin{proposition}
+  Un bimonoïde $(X,\bot,\lor,\top,\land)$ est un treillis pour $\leq_\lor$
+  (respectivement pour $\lor_\land$) si et seulement si $(X,\bot,\lor)$ est un
+  inf demi-treillis, $(X,\top,\land)$ est un inf demi-treillis, $\leq_\lor$ et
+  $\leq_\land$ coïncident, cette dernière condition étant équivalente aux
+  deux identités d'absorption suivantes~ :
+  \begin{itemize}
+  \item $\forall x,y\in X, (x\lor y)\land x = x$
+  \item $\forall x,y\in X, (x\land y)\lor x = x$
+  \end{itemize}
+\end{proposition}
+
+\begin{proof}
+  Soit $(X,\bot,\lor,\top,\land)$ un bimonoïde commutatif idempotent. On
+  suppose de plus que $\leq_\lor = \leq_\land$, montrons les deux identités :
+  \begin{itemize}
+  \item Soient $x,y\in X$, comme $x\leq_\lor x\lor y$, on en déduit que
+    $x\leq_\land x\lor y$, c'est-à-dire que $x\land (x\lor y) = x$ d'où
+    l'égalité par commutativité de $\land$.
+  \item Soient $x,y\in X$, comme $x\land y\leq_\land x$, on en déduit que
+    $x\land y \leq_\lor x$, c'est-à-dire que $(x\land y)\lor x = x$.
+  \end{itemize}
+
+  Réciproquement, supposons vraies les identités. Montrons par double inclusion
+  que $\leq_\lor = \leq_\land$ :
+  \begin{itemize}
+  \item soient $x,y$ tels que $x\leq_\lor y$, alors $x\lor y = y$, montrons que
+    $x\land y = x$ :
+    \begin{align*}
+      x \land y &= x \land (x \lor y)\\
+      &= x
+    \end{align*}
+    par la première identité. Ainsi $x\leq_\land y$, donc
+    $\leq_\lor\subseteq\leq_\land$.
+  \item soient $x,y$ tels que $x\leq_\land y$, alors $x\land y = x$, montrons que
+    $x\lor y = y$ :
+    \begin{align*}
+      x \lor y &= (x\land y) \lor y\\
+      &= y
+    \end{align*}
+    par la deuxième identité. Ainsi $x\leq_\lor y$, donc
+    $\leq_\land\subseteq\leq_\lor$.
+  \end{itemize}
+  Donc $\leq_\lor = \leq_\land$.
+\end{proof}
+
+Cela nous donne donc une définition purement algébrique d'un treillis (en
+particulier, un treillis est un modèle d'une certaine théorie).
+
+\begin{definition}[Morphisme de treillis]
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, un morphisme de treillis entre
+  ces deux treillis est une fonction $f : X \to Y$ qui est à la fois un morphisme
+  de sup demi-treillis et un morphisme d'inf demi-treillis.
+\end{definition}
+
+\begin{exercise}
+  Soit une signature $\Sigma$, montrer que $\mathcal L(\Sigma)$ est un treillis.
+\end{exercise}
+
+\begin{exercise}
+  Soit un ensemble $X$, montrer que $\powerset (X)$ est un treillis.
+\end{exercise}
+
+\begin{exercise}
+  Soit une signature $\Sigma$. Soit $\mathcal M$ une structure sur $\Sigma$.
+  Montrer que la fonction
+  \[\begin{array}{ccccc}
+  \Phi & : & \mathcal L(\Sigma_{\mathrm ZF}) & \longrightarrow &
+  \powerset(\mathcal M)\\
+  & & \varphi(x) & \longmapsto &
+  \{x \in |\mathcal M| : \mathcal M\models \varphi(x)\}
+  \end{array}\]
+  est un morphisme de treillis.
+\end{exercise}
+
+Cependant, la partie sup et la partie inf d'un treillis n'interagissent pas
+suffisamment bien en général, c'est pourquoi il est nécessaire d'ajouter la
+distributivité de $\lor$ sur $\land$ et de $\land$ sur $\lor$, si l'on veut
+pouvoir l'utiliser.
+
+\begin{definition}[Treillis distributif]
+  Soit $(X,\leq)$ un treillis. On dit que c'est un treillis distributif si de
+  plus l'une des deux propositions équivalentes est vraie :
+  \begin{enumerate}[label=(\roman*)]
+  \item \label{enum.tr.distr1}
+    $\forall x,y,z\in X, x\land (y\lor z) = (x\land y)\lor (x\land z)$
+  \item \label{enum.tr.distr2}
+    $\forall x,y,z\in X, x\lor (y\land z) = (x\lor y)\land (x\lor z)$
+  \end{enumerate}
+\end{definition}
+
+\begin{proof}
+  Vérifions que ces deux propositions sont équivalentes. Par dualité, il nous
+  suffit de prouver que $\ref{enum.tr.distr1} \implies\ref{enum.tr.distr2}$.
+  On suppose donc \ref{enum.tr.distr1}. Soient $x,y,z\in X$, par un calcul :
+
+  A FAIRE
+
+  D'où l'équivalence.
+\end{proof}
+
+\begin{exercise}
+  Montrer que $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des treillis
+  distributifs.
+\end{exercise}
+
+\subsection{Algèbre de Boole}
+
+Nous voyons maintenant notre premier cas de structure logique décrite par un
+ensemble ordonné. Avec la structure de treillis, nous avons naturellement une
+structure permettant d'encoder la conjonction et la disjonction. Pour travailler
+sur la logique propositionnelle, il ne nous manque que la négation, l'implication
+pouvant se coder grâce à l'équivalence logique $a\to b \equiv \lnot a \lor b$.
+
+Nous souhaitons donc avoir, en plus de ce que nous avons déjà défini, une
+fonction $\lnot : X \to X$ permettant de jouer le rôle de la négation. En logique
+classique, qui est notre cadre de travail pour l'instant, deux propriétés
+en particulier décrivent le comportement de $\lnot$ : le tiers exclu et le
+principe de non contradiction, disant que $x\lor \lnot x$ est vraie et que
+$x\land \lnot x$ est fausse. La notion de \og vrai\fg et de \og faux\fg sont
+assez naturellement encodées par $\top$ et $\bot$, respectivement, d'où la
+définition suivante.
+
+\begin{definition}[Complément]
+  Soit un treillis $(X,\leq)$. On dit que $y$ est un complément de $x$ si
+  \[x\lor y = \top \qquad x \land y = \bot\]
+\end{definition}
+
+En fait, ceci suffit à caractériser la négation. En particulier, il n'y a qu'un
+complément par élément, pour un treillis distributif.
+
+\begin{proposition}
+  Soit $(X,\leq)$ un treillis distributif et $x\in X$. Alors s'il existe un
+  complément à $x$, celui-ci est unique.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $y,z$ soient deux compléments de $x$. Alors
+  \begin{align*}
+    y\lor z &= y\lor z\lor (z\land x)\\
+    &= z\lor ((y\lor z)\land (y\lor x))\\
+    &= z \lor ((y\lor z)\land \top)\\
+    &= z \lor (y\lor z)\\
+    &= z
+  \end{align*}
+  d'où $y\leq z$. En inversant le rôle de $y$ et $z$, on trouve aussi que
+  $y\leq z$, d'où $y = z$.
+\end{proof}
+
+Une algèbre de Boole peut ainsi se décrire grâce à cette notion de complément.
+
+\begin{definition}[Algèbre de Boole]
+  Une algèbre de Boole $(B,\leq)$ est un treillis distributif complémenté. Pour
+  un élément $x\in B$, on notera $\lnot x$ sont complément.
+\end{definition}
+
+\begin{exercise}
+  Soit une signature $\Sigma$ et un ensemble $X$. Montrer que
+  $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des algèbres de Boole.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que les identités de De Morgan sont vérifiées :
+  \[\lnot\lnot x = x \qquad \lnot (x \lor y) = \lnot x \land \lnot y
+  \qquad \lnot (x \land y) = \lnot x \lor \lnot y\]
+\end{exercise}
+
+\begin{exercise}
+  Montrer que si $B$ et $B'$ sont deux algèbres de Boole, alors un morphisme $f$
+  de treillis entre $B$ et $B'$ est en particulier un morphisme d'algèbre de
+  Boole, au sens où la propriété suivante est vérifiée :
+  \[\forall x \in B, f(\lnot x) = \lnot f(x)\]
+\end{exercise}
+
+L'exercice suivant donne une caractérisation purement algébrique d'une algèbre
+de Boole : on peut le voir comme un anneau idempotent.
+
+\begin{exercise}
+  Soit $(B,\leq)$ une algèbre de Boole. On définit $\oplus$ sur $B$ par
+  \[x\oplus y \defeq (x\lor y) \land (\lnot x \lor \lnot y)\]
+  Montrer que $(B,\bot,\top,\oplus,\land)$ est un anneau (où $\bot$ est le neutre
+  additif et $\top$ le neutre multiplicatif).
+
+  Réciproquement, soit $(A,0,1,+,\times)$ un anneau idempotent, c'est-à-dire
+  vérifiant
+  \[\forall x\in A, a\times a = a\]
+  montrer les propositions suivantes :
+  \begin{enumerate}[label=(\roman*)]
+  \item $A$ est un anneau de caractéristique $2$.
+  \item la relation $\leq_\land$ définie par
+    \[x\leq_\land y \defeq x\times y = x\]
+    est une relation d'ordre.
+  \item $(A,\leq_\land)$ est une algèbre de Boole, de majorant $1$, de minorant
+    $0$, où $\times$ est la borne inférieure et où la borne supérieure est
+    \[x\lor y \defeq x + y + x \times y\]
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Algèbre de Heyting}
+
+Pour nous intéresser aux algèbres de Heyting, il nous faut d'abord parler de la
+logique intuitionniste. Pour ne pas nous attarder sur les questions
+philosophiques qui sont à l'origine de l'essor des mathématiques intuitionnistes
+et constructives, nous nous contenterons de remarquer que c'est une logique plus
+faible, mais donnant de meilleurs résultats (les résultats sont plus durs à
+montrer mais apportent plus d'information).
+
+La logique intuitionniste naît d'une volonté de travailler sans le tiers exclu.
+D'un point de vue algorithmique, par exemple, ce principe peut être remis en
+question : comment pouvons-nous effectivement décider toute proposition ? Il
+est en effet difficile d'imaginer une machinerie finie qui pourrait décider,
+par exemple, si tel objet est infini. Ainsi une part des mathématiques n'a ni
+besoin, ni envie du principe du tiers exclu, qui est équivalent au raisonnement
+par l'absurde. Nous étudierons en détail cette logique lors de notre étude de la
+théorie de la démonstration, mais nous donnons ici la définition de la logique
+intuitionniste.
+
+\begin{definition}
+  Soit une signature $\Sigma$. On définit la relation de déduction syntaxique
+  $\vdNJ\subseteq\List(\Formula(\Sigma))\times\Formula(\Sigma)$ par les mêmes
+  règles que pour $\vdash$, à l'exception de $\bot_\mathrm c$ que l'on remplace
+  par la règle suivante :
+  \begin{prooftree}
+    \AxiomC{$\Gamma\vdNJ \bot$}
+    \RightLabel{$\bot_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdNJ A$}
+  \end{prooftree}
+  appelée communément principe d'explosion, ou bien par sa dénomination latine
+  \textit{ex falso quodlibet} (version raccourcie de
+  \textit{ex falso sequitur quodlibet}).
+\end{definition}
+
+\begin{exercise}
+  Soit la règle
+  \begin{center}
+    \AxiomC{}
+    \RightLabel{EDN}
+    \UnaryInfC{$\Gamma\vdash A\lor \lnot A$}
+    \DisplayProof
+  \end{center}
+  Montrer que celle-ci est équivalente à $\bot_\mathrm c$ modulo $\vdNJ$,
+  c'est-à-dire que si l'on considère $\vdNJ$ et qu'on rajoute l'une des deux
+  règles, alors la seconde est dérivable.
+\end{exercise}
+
+\begin{exercise}
+  Vérifier que dans le cas intuitionniste aussi, la relation $\vdNJ$ est une
+  relation de pré-ordre. On notera $\mathcal L_\mathrm i(\Sigma)$ l'algèbre de
+  Lindenbaum-Tarski intuitionniste associée à $\Sigma$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que $\mathcal L_\mathrm i(\Sigma)$ est un treillis distributif.
+\end{exercise}
+
+On peut alors se demander quelle est la différence entre ce que nous pouvons
+prouver en logique intuitionniste et ce que nous pouvons prouver en logique
+classique. La réponse est difficile à donner directement, mais un point important
+est que ce que l'on peut prouver en logique intuitionniste est constructif :
+par exemple, prouver qu'un objet existe signifie qu'on a effectivement exhibé un
+objet. En comparaison, on peut prouver grâce à l'absurde qu'un objet existe en
+prouvant simplement qu'il ne peut pas ne pas existe.
+
+Une conséquence de cet effet est que certaines tautologies ne sont plus valides,
+en particulier la tautologie
+\[\lnot(\forall x, \lnot A) \implies \exists x, A\]
+exprimant qu'à partir de l'impossibilité que tous les $x$ rejettent $A$, on peut
+extraire un certain $x$ acceptant $A$.
+
+De même, la tautologie
+\[\lnot (A \land B) \implies \lnot A \lor \lnot B\]
+car pour la prouver, il faudrait de façon uniforme décider si $\lnot A$ est vraie
+ou si $\lnot B$ est vraie. Comme cela dépend directement que la valeur de vérité
+de $A$ et de celle de $B$, il est impossible de conclure en logique
+intuitionniste. En échange, si l'on prouve $\vdNJ A \lor B$, cela signifie qu'on
+peut soit prouver $\vdNJ A$, soit prouver $\vdNJ B$.
+
+La question, maintenant, est de savoir s'il existe une structure similaire aux
+algèbre de Boole, mais dans laquelle la logique appliquée est la logique
+intuitionniste. C'est le cas des algèbres de Heyting, dont la définition repose
+avant tout sur celle de l'opération $\to$, d'où l'on dérive le sens de $\lnot$
+par $\lnot x = x \to \bot$, comme nous l'avons déjà fait.
+
+\begin{definition}[Pseudo-complément relatif]
+  Soit un treillis distributif $(X,\leq)$, et deux éléments $a,b\in X$. On dit
+  que $x$ est le pseudo-complément de $a$ relatif à $b$ si $x$ est la borne
+  supérieure de l'ensemble $\{x \in X \mid a \land x \leq b\}$. Si le
+  pseudo-complément de $a$ relatif à $b$ existe, on le note $a\to b$. On appelle
+  pseudo-complément de $a$ le pseudo complément de $a$ relatif à $\bot$, s'il
+  existe, et on le note alors $\lnot x$.
+\end{definition}
+
+\begin{definition}[Algèbre de Heyting]
+  Un treillis distributif $(X,\leq)$ est une algèbre de Heyting si tout élément
+  admet un pseudo-complément relatif à tout autre élément, c'est-à-dire si
+  pour tous $a,b\in X$, l'ensemble $\{x\in X \mid a \land x \leq b\}$ admet une
+  borne supérieure.
+\end{definition}
+
+\begin{remark}
+  Une inégalité par rapport à un pseudo-complément peut se réécrire par une
+  conjonction : $a\leq b \to c$ revient directement à $a\land b \leq c$ étant
+  donné que $b \to c$ est la borne supérieure des éléments $x$ tels que
+  $x\land b \leq c$. On peut donc formaliser le modus ponens : si l'on a
+  $a\leq b \to c$ et $a\leq b$, alors $a\land b \leq c$ et $a\land b = a$, donc
+  $a\leq c$.
+\end{remark}
+
+\begin{exercise}
+  Soit une signature $\Sigma$. Montrer que $\mathcal L_\mathrm i(\Sigma)$ est bien
+  une algèbre de Heyting.
+\end{exercise}
+
+\begin{exercise}
+  Montrer qu'une algèbre de Boole est en particulier une algèbre de Heyting, et
+  que le complément d'un élément est en particulier son pseudo-complément.
+\end{exercise}
