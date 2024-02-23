@@ -1238,10 +1238,19 @@ dans le cas d'un treillis.
   dans $\mathcal L(\Sigma)$.
 \end{exercise}
 
+\begin{exercise}
+  On se place maintenant sur un ensemble $X$ infini quelconque, et on considère
+  le filtre de Fréchet sur $X$~ :
+  \[\mathcal F_F \defeq \{Y\subseteq X \mid X \setminus Y\text{ est fini}\}\]
+
+  Montrer que le filtre de Fréchet est bien un filtre. Montrer que pour tout
+  $x \in X$, $\mathcal F_x$ ne contient pas $\mathcal F_F$.
+\end{exercise}
+
 \subsection{Ultrafiltre}\label{sbsct.ultrafiltre}
 
 On définit maintenant la notion d'ultrafiltre, qui est la notion duale de celle
-de filtre maximale, souvent rencontrée en algèbre.
+d'idéal maximal, souvent rencontrée en algèbre.
 
 \begin{definition}[Ultrafiltre]
   Soit $(X,\leq)$ un ensemble ordonné. On dit qu'un filtre $\mathcal F$ est un
@@ -1251,7 +1260,7 @@ de filtre maximale, souvent rencontrée en algèbre.
 \end{definition}
 
 \begin{remark}
-  L'inclusion entre filtre est aussi appelé \og finesse\fg : un filtre
+  L'inclusion entre filtres est aussi appelée \og finesse\fg : un filtre
   $\mathcal F$ est dit plus fin qu'un filtre $\mathcal H$ si
   $\mathcal F\supseteq\mathcal H$. L'idée derrière cette appellation est qu'un
   filtre plus gros va définir une notion de grandeur plus petite (puisque les
@@ -1259,44 +1268,83 @@ de filtre maximale, souvent rencontrée en algèbre.
   Un ultrafiltre est donc un filtre propre le plus fin possible.
 \end{remark}
 
-Dans le cas d'un treillis distributif, on a une coïncidence entre les
-ultrafiltres et les filtres premiers.
+Dans le cas d'un treillis distributif, un ultrafiltre est en particulier
+premier.
 
 \begin{proposition}
-  Soit $(X,\leq)$ un treillis distributif. Alors un filtre $\mathcal F$ est un
-  ultrafiltre si et seulement s'il est un filtre premier.
+  Soit $(X,\leq)$ un treillis distributif. Si un filtre $\mathcal F$ est un
+  ultrafiltre, alors c'est un filtre premier.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Supposons que $\mathcal F$ est un ultrafiltre, montrons que c'est alors un
+  filtre premier. Supposons par l'absurde qu'il existe $x,y\in X$ tels que
+  $x\lor y \in \mathcal F$, $x\notin\mathcal F$ et $y\notin\mathcal F$.
+  Montrons alors que soit $\mathcal F\cup\{x\}$ soit $\mathcal F\cup\{y\}$ a la
+  propriété de l'intersection finie.
+
+  Supposons qu'on trouve $F\subfin \mathcal F$ tel que
+  $\bigwedge F \land x =\bot$ et qu'on trouve $F'\subfin\mathcal F$ tel que
+  $\bigwedge F' \land y = \bot$. En prenant $G = F \cup F'$, on a donc
+  \[\bigwedge G \land x = \bot \qquad \bigwedge G \land y = \bot\]
+  donc $\big(\bigwedge G \land x\big)\lor\big(\bigwedge G\land y\big) = \bot$,
+  et en développant par distributivité on obtient donc
+  \[\Bigg(\bigwedge G \lor y\Bigg)\land\Bigg(\bigwedge G\lor \bigwedge G\Bigg)
+  \land \Bigg(x\lor \bigwedge G\Bigg)\land(x\lor y) = \bot\]
+  comme $\bigwedge G\in \mathcal F$, on en déduit que
+  $\bigwedge G \lor y \in \mathcal F$ et $\bigwedge G \lor x \in \mathcal F$,
+  et par hypothèse $x\lor y \in \mathcal F$. Ainsi, par stabilité de $\mathcal F$
+  par $\land$, et grâce à l'égalité, on en déduit que $\bot\in\mathcal F$, ce qui
+  contredit l'hypothèse que $\mathcal F$ est un ultrafiltre (donc propre).
+
+  On en déduit, sans perte de généralité, que $\mathcal F\cup\{x\}$ a la
+  propriété de l'intersection finie, ce qui signifie que
+  $\filclose{\mathcal F\cup\{x\}}$ est un filtre, contenant par définition
+  $\mathcal F$ : comme $\mathcal F$ est supposé maximal, on en déduit que
+  $x\in \mathcal F$. Ainsi $\mathcal F$ est premier.
 \end{proof}
 
 On a, de plus, une caractérisation encore meilleure dans le cas d'une algèbre de
 Boole.
 
 \begin{proposition}
-  Soit $(B,\leq)$ une algèbre de Boole. Un filtre $\mathcal F$ est un ultrafiltre
-  si et seulement si on a la propriété suivante, pour tout $x\in B$ :
-  \[x\in \mathcal F \iff \lnot x \notin \mathcal F\]
+  Soit $(B,\leq)$ une algèbre de Boole et $\mathcal F$ un filtre. Les conditions
+  suivantes sont équivalentes :
+  \begin{enumerate}[label=(\roman*)]
+  \item \label{enum.ultra.prim1} $\mathcal F$ est un ultrafiltre.
+  \item \label{enum.ultra.prim2} $\mathcal F$ est premier.
+  \item \label{enum.ultra.prim3} pour tout $x\in B$,
+    $x\in \mathcal F \iff \lnot x \notin\mathcal F$.
+  \end{enumerate}
 \end{proposition}
 
 \begin{proof}
+  On va montrer le cycle d'implications
+  $\ref{enum.ultra.prim1}
+  \implies\ref{enum.ultra.prim2}\implies\ref{enum.ultra.prim3}$
+  mais on a déjà prouvé la première implication. Il nous reste à montrer les
+  deux autres.
+  
   Si $\mathcal F$ est un filtre premier, alors comme $\top \in \mathcal F$ et
   $\top = x \lor \lnot x$, on sait que soit $x$ soit $\lnot x$ est dans
   $\mathcal F$. Comme par définition $\bot\notin\mathcal F$ et que
   $x\land\lnot x = \bot$, on en déduit qu'un seul des deux est dans $\mathcal F$,
   ce qui est le résultat qu'on veut démontrer.
 
-  Supposons maintenant que pour tout $x\in B$,
-  $x\in\mathcal F \iff \lnot x\notin \mathcal F$. Alors si
-  $x\lor y\in \mathcal F$, supposons que $x\notin \mathcal F$ et
-  $y\notin\mathcal F$. Alors $\lnot x \in \mathcal F$ et $\lnot y \in \mathcal F$
-  grâce à notre hypothèse (et au fait que $\lnot\lnot x = x$). Mais alors
-  $\lnot x \land \lnot y \in \mathcal F$, et $x\lor y \in \mathcal F$, donc
-  $\lnot (x\lor y)$ et $x\lor y$ sont dans $\mathcal F$ : $\mathcal F$ n'est donc
-  par propre. Par l'absurde, on en déduit que soit $x\in\mathcal F$, soit
-  $y\in\mathcal F$.
+  Si pour tout $x\in B$, $x\in\mathcal F\iff\lnot x\notin\mathcal F$ et
+  si $\mathcal H$ est tel que $\mathcal F\subseteq\mathcal F$ et $\mathcal H$
+  est un filtre propre, alors si l'inclusion est stricte, on trouve $x$ un
+  élément de $\mathcal H$ qui n'est pas dans $\mathcal F$. Mais par définition,
+  puisque $x\notin\mathcal F$, $\lnot x\in\mathcal F$, donc $x\in \mathcal H$ et
+  par inclusion $\lnot x \in \mathcal H$, donc $\bot\in \mathcal H$, ce qui
+  contredit le fait que $\mathcal H$ est propre. On en déduit que
+  $\mathcal H = \mathcal F$, et donc que $\mathcal F$ est un ultrafiltre.
 \end{proof}
+
+\begin{exercise}
+  Soit $X$ un ensemble et $x\in X$. Montrer que $\mathcal F_x$ est un
+  ultrafiltre dans l'algèbre de Boole $(\powerset(X),\subseteq)$.
+\end{exercise}
 
 Pour finir, nous allons démontrer le lemme de l'ultrafiltre, qui est une
 conséquence du lemme de Zorn. Il dit que tout filtre propre peut être étendu en
@@ -1388,6 +1436,23 @@ On peut maintenant montrer le \cref{thm.completion} :
 
   Donc il existe une théorie complète $\mathcal T'$ qui contient la théorie
   $\mathcal T$.
+\end{proof}
+
+On peut de plus étendre le filtre de Fréchet sur un ensemble en un ultrafiltre.
+
+\begin{proposition}
+  Soit $X$ un ensemble infini. Alors il existe un ultrafiltre $\mathcal U$ sur
+  $\powerset(X)$ qui est différent de tous les $\mathcal F_x$. On appelle un
+  ultrafiltre qui n'est pas principal un ultrafiltre libre.
+\end{proposition}
+
+\begin{proof}
+  On sait que le filtre de Fréchet sur $X$ n'est inclus dans aucun des
+  ultrafiltres $\mathcal F_x$, et d'après le lemme de l'ultrafiltre on peut
+  trouver un ultrafiltre $\mathcal U$ qui contient le filtre de Fréchet. Si
+  $\mathcal U = \mathcal F_x$ pour un certain $x\in X$, alors le filtre de
+  Fréchet serait inclus dans ce $\mathcal F_x$, donc $\mathcal U$ n'est pas
+  principal.
 \end{proof}
 
 \subsection{Filtre et morphisme}
