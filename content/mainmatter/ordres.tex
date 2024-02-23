@@ -1074,6 +1074,12 @@ cette notion de grandeur doit avoir une notion de compatibilité : deux grands
   Un idéal $\mathcal I$ est dit propre si $\mathcal I \neq X$.
 \end{definition}
 
+\begin{definition}
+  Soit une algèbre de Boole $(B,\leq)$. Montrer qu'une partie
+  $\mathcal I \subseteq B$ est un idéal de $B$ si et seulement si c'est un idéal
+  au sens algébrique de l'anneau associé $(B,\bot,\top,\oplus,\land)$.
+\end{definition}
+
 Nous ne travaillerons par sur les idéaux, mais donnons la définition car celle-ci
 reste importante.
 
@@ -1139,7 +1145,7 @@ Les sup demi-treillis permettent de définir la propriété d'être premier :
 
 \begin{definition}[Filtre premier]
   Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F$ un filtre sur $X$. On dit
-  que $\mathcal F$ est premier si pour tous $x,y\in X$, si
+  que $\mathcal F$ est premier s'il est propre et si pour tous $x,y\in X$, si
   $x\lor y \in \mathcal F$ alors $x\in F$ ou $y\in F$.
 \end{definition}
 
@@ -1244,6 +1250,15 @@ de filtre maximale, souvent rencontrée en algèbre.
   $\mathcal F \subseteq\mathcal H$ alors $\mathcal F = \mathcal H$.
 \end{definition}
 
+\begin{remark}
+  L'inclusion entre filtre est aussi appelé \og finesse\fg : un filtre
+  $\mathcal F$ est dit plus fin qu'un filtre $\mathcal H$ si
+  $\mathcal F\supseteq\mathcal H$. L'idée derrière cette appellation est qu'un
+  filtre plus gros va définir une notion de grandeur plus petite (puisque les
+  éléments que l'on peut ajouter à un filtre seront par définition plus petits).
+  Un ultrafiltre est donc un filtre propre le plus fin possible.
+\end{remark}
+
 Dans le cas d'un treillis distributif, on a une coïncidence entre les
 ultrafiltres et les filtres premiers.
 
@@ -1326,12 +1341,12 @@ un ultrafiltre.
   \end{itemize}
 
   On applique donc le \cref{thm.Zorn} : on trouve un élément maximal
-  $\mathcal H$ de $\mathcal X$ qui est supérieur à $\mathcal F$, c'est-à-dire
-  qui contient $\mathcal F$. Il ne nous reste qu'à vérifier que $\mathcal H$ est
+  $\mathcal U$ de $\mathcal X$ qui est supérieur à $\mathcal F$, c'est-à-dire
+  qui contient $\mathcal F$. Il ne nous reste qu'à vérifier que $\mathcal U$ est
   bien un ultrafiltre : si $\mathcal G$ est un filtre propre contenant
-  $\mathcal H$, alors il contient $\mathcal F$, donc il appartient à
-  $\mathcal X$. Par maximalité de $\mathcal H$ dans $\mathcal X$, on en déduit
-  que $\mathcal H = \mathcal G$ : $\mathcal H$ est un ultrafiltre sur $X$
+  $\mathcal U$, alors il contient $\mathcal F$, donc il appartient à
+  $\mathcal X$. Par maximalité de $\mathcal U$ dans $\mathcal X$, on en déduit
+  que $\mathcal U = \mathcal G$ : $\mathcal U$ est un ultrafiltre sur $X$
   contenant $\mathcal F$.
 \end{proof}
 
@@ -1374,3 +1389,167 @@ On peut maintenant montrer le \cref{thm.completion} :
   Donc il existe une théorie complète $\mathcal T'$ qui contient la théorie
   $\mathcal T$.
 \end{proof}
+
+\subsection{Filtre et morphisme}
+
+On définit en algèbre la notion de noyau d'une fonction comme l'ensemble des
+éléments envoyés sur $0$. Les filtres, eux, peuvent être vus comme le
+complémentaire d'un tel noyau : dans le cas d'une algèbre de Boole, c'est même
+littéralement le cas puisqu'un idéal sur une algèbre de Boole est le noyau d'un
+morphisme d'anneau.
+
+Nous allons donc voir comment des morphismes sur les différents treillis
+permettent de définir de nouveaux filtres.
+
+\begin{definition}[Rétrotirette d'un filtre]
+  Soient $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
+  sur $Y$ et $f : X \to Y$ une fonction croissante. On définit la rétrotirette de
+  $\mathcal F$ par $f$ comme :
+  \[\mathcal F_f \defeq \{f^{-1}(x)\mid x \in \mathcal F\}\]
+\end{definition}
+
+\begin{property}
+  Soit $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
+  sur $Y$ et $f$ un morphisme d'inf demi-treillis, alors $\mathcal F_f$ est un
+  filtre sur $X$.
+\end{property}
+
+\begin{proof}
+  On vérifie les propriétés d'un filtre :
+  \begin{itemize}
+  \item comme $f(\top_X) = \top_Y$ et $\top_Y \in \mathcal F$, on en déduit que
+    $\top_X\in\mathcal F_f$.
+  \item si $x\in \mathcal F_f$ et $y\in X$ tel que $x\leq y$, alors par
+    on sait que $f(x)\in\mathcal F$, donc par croissance $f(x)\leq f(y)$ et,
+    par clôture par le haut de $\mathcal F$, $f(y)\in \mathcal F$, donc
+    $y\in \mathcal F_f$.
+  \item si $x\in \mathcal F_f$ et $y\in\mathcal F_f$, alors $f(x)\in\mathcal F$
+    et $f(y)\in\mathcal F$, donc $f(x)\land f(y)\in\mathcal F$ et comme
+    $f$ est un morphisme, $f(x\land y)\in\mathcal F$. Donc
+    $x\land y\in\mathcal F_f$.
+  \end{itemize}
+\end{proof}
+
+Dans le cas d'un treillis, on peut aussi caractériser un filtre propre grâce à
+l'existence de $\bot$.
+
+\begin{property}
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\mathcal F$ un filtre propre
+  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $\mathcal F_f$ est
+  lui-même un filtre propre.
+\end{property}
+
+\begin{proof}
+  Nous avons déjà vérifié que $\mathcal F_f$ est un filtre. Il nous reste à
+  montrer que celui-ci est propre. Mais comme on sait que $f(\bot_X)=\bot_Y$
+  et que $\bot_Y\notin\mathcal F$, on en déduit que $\bot_X\notin\mathcal F_f$,
+  donc $\mathcal F_f$ est propre.
+\end{proof}
+
+Un morphisme de treillis préserve aussi le fait d'être premier.
+
+\begin{property}
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\mathcal F$ un filtre premier
+  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $\mathcal F_f$ est un
+  filtre premier.
+\end{property}
+
+\begin{proof}
+  Là encore, il nous suffit de montrer le caractère premier de $\mathcal F_f$.
+  Soient $x,y\in X$ tels que $x\lor y \in \mathcal F_f$, donc par définition
+  $f(x\lor y)\in \mathcal F$, mais comme $\mathcal F$ est premier et que
+  $f(x\lor y) = f(x)\lor f(y)$, on en déduit que $f(x)\in\mathcal F$ ou
+  $f(y)\in\mathcal F$, c'est-à-dire que $x\in\mathcal F_f$ ou que
+  $y\in\mathcal F_f$. Donc $\mathcal F_f$ est premier.
+\end{proof}
+
+Une conséquence directe est que si $\mathcal F$ est un filtre premier et que $X$
+est un treillis distributif, $\mathcal F_f$ est un ultrafiltre sur $X$.
+
+D'un point de vue plus algébrique, si $f : B \to B'$ est un morphisme entre
+algèbres de Boole, alors le quotient de $B$ par $\ker(f)$ nous donne encore une
+algèbre de Boole (en tant que quotient d'anneau), mais une propriété importante
+sur les anneaux est que le quotient par un idéal maximal donne un corps. Dans le
+cas de nos algèbres de Boole, le seul corps possible est $\mathbb Z/2\mathbb Z$,
+ce qui signifie qu'un ultrafiltre correspond exactement au complémentaire du
+noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
+
+\begin{proposition}
+  Soit $(B,\leq)$ une algèbre de Boole. Alors on a une bijection entre
+  $\Hom(B,\mathbb Z/2\mathbb Z)$, l'ensemble des morphismes de $B$ vers
+  $\mathbb Z/2\mathbb Z$, et l'ensemble $\Spec(B)$ des ultrafiltres sur $B$.
+\end{proposition}
+
+\begin{proof}
+  Soit $\mathcal U$ un ultrafiltre, on lui associe la fonction
+  \[\begin{array}{ccccc}
+  \chi_{\mathcal U} & : & B & \longrightarrow & \{\bot,\top\}\\
+  & & x &\longmapsto& \begin{cases}
+    \top\text{ si } x\in \mathcal U\\
+    \bot\text{ si } x\notin\mathcal U
+  \end{cases}
+  \end{array}\]
+
+  Vérifions qu'on a bien un morphisme de treillis :
+  \begin{itemize}
+  \item comme $\top\in\mathcal U$, $\chi_\mathcal U(\top) = \top$, de même
+    $\chi_\mathcal U(\bot) = \bot$.
+  \item pour montrer que
+    $\chi_\mathcal U(x\land y) = \chi_\mathcal U(x)\land\chi_\mathcal U(y)$, il
+    suffit de montrer que
+    \[x\land y \in \mathcal U \iff x\in\mathcal U \text{ et }y\in\mathcal U\]
+    Si $x\in \mathcal U$ et $y\in\mathcal U$, alors par compatibilité
+    $x\land y \in \mathcal U$. Si $x\land y \in \mathcal U$, alors par clôture
+    par le haut $x\in \mathcal U$ et $y\in \mathcal U$.
+  \item pour montrer que
+    $\chi_\mathcal U(x\lor y) = \chi_\mathcal U(x)\lor\chi_\mathcal U(y)$, il
+    suffit de montrer que
+    \[x\land y \in \mathcal U \iff x\in\mathcal U \text{ ou }y\in\mathcal U\]
+    Si $x\in \mathcal U$ (respectivement $y\in \mathcal U$) alors comme
+    $x\leq x\lor y$ (respectivement $y\leq x\lor y$) et par clôture par le haut,
+    $x\lor y \in \mathcal U$. Si $x\lor y \in \mathcal U$, alors comme un
+    ultrafiltre est premier, on en déduit que soit $x\in\mathcal U$, soit
+    $y\in \mathcal U$.
+  \end{itemize}
+
+  Dans l'autre sens, étant donné un morphisme $f : B \to \{\bot,\top\}$, on lui
+  associe
+  \[\mathcal U_f \defeq \{x\in B \mid f(x) = \top\}\]
+  On vérifie que $\mathcal U_f$ est un ultrafiltre :
+  \begin{itemize}
+  \item comme $f(\top_B) = \top$, $\top\in \mathcal U_f$.
+  \item si $x\leq y$ et $f(x)=\top$ alors $f(y)\geq \top$ donc $f(y)=\top$.
+  \item si $f(x) = \top$ et $f(y)=\top$ alors
+    $f(x)\land f(y) = \top\land\top =\top$, et comme $f(x)\land f(y)=f(x\land y)$
+    on en déduit que $x\land y \in \mathcal U_f$.
+  \item $f(\bot_B)=\bot\neq\top$ donc $f(\bot_B)\notin\mathcal U_f$.
+  \item si $x\lor y \in \mathcal U_f$ alors $f(x)\lor f(y) = \top$. Si
+    $f(x) = \bot$ et $f(y) = \bot$ alors $f(x)\lor f(y) \neq \top$, donc par
+    l'absurde on en déduit que $x\in \mathcal U_f$ ou $y\in \mathcal U_f$.
+  \end{itemize}
+
+  On vérifie aisément que $\mathcal U \mapsto \chi_\mathcal U$ et
+  $f\mapsto \mathcal U_f$ sont des fonctions réciproques l'une de l'autre.
+  On a donc notre bijection.
+\end{proof}
+
+\begin{exercise}
+  Soient $X,Y$ deux ensembles et $f : X \to Y$ une fonction. On définit la
+  fonction
+  \[\begin{array}{ccccc}
+  f^{-1} & : & \powerset(Y) & \longrightarrow & \powerset(X)\\
+  & & A & \longmapsto & \{x\in X \mid f(x) \in A\}
+  \end{array}\]
+
+  Montrer que cette fonction est un morphisme d'algèbre de Boole.
+\end{exercise}
+
+\begin{notation}
+  Pour une fonction $f : X \to Y$ entre deux ensembles et un filtre $\mathcal F$
+  sur $\powerset(X)$, on notera $\mathcal F_f$ la rétrotirette de $\mathcal F$
+  par $f^{-1}$. On n'a pas d'ambigüité car, par défaut, $f$ n'est pas un
+  morphisme d'algèbre de Boole entre les ensembles de parties.
+
+  Donnons une description rapide de $\mathcal F_f$ :
+  \[\mathcal F_f = \{A \in Y \mid f^{-1}(A) \in \mathcal F\}\]
+\end{notation}
