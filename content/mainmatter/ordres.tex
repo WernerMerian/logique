@@ -1,0 +1,1376 @@
+\chapter{Théorie des ensembles ordonnés}
+\label{chp.ordres}
+
+\minitoc
+
+\lettrine{D}{ans} ce chapitre, nous aborderons la théorie des ensembles ordonnés.
+Celle-ci est fortement liée à la logique, et permet entre autre de formaliser des
+structures logiques comme les algèbres de Boole ou les algèbres de Heyting. 
+
+Les ensembles ordonnés peuvent être vus comme des cas dégénérés de catégories. Si
+nous ne donnons pas dans cet ouvrage de rudiments de théorie des catégories,
+l'étudiant catégoricien pourra voir dans plusieurs définitions des éléments
+similaires à ce qu'il connait en théorie des catégories.
+
+Nous commencerons par définir les idées générales sur les ensembles ordonnés.
+Cette première partie introduira les notions élémentaires d'ordre, de borne
+supérieure, inférieure, ainsi que les ordres bien fondés se reposant sur les
+éléments minimaux.
+Nous aborderons ensuite la théorie des treillis, en allant des demi-treillis aux
+algèbres de Boole et de Heyting.
+Cela motivera notre étude des filtres et ultrafiltres, dont le comportement dans
+une algèbre de Boole est fortement simplifiée, et nous aurons alors l'occasion
+de démontrer le théorème d'extension d'une théorie cohérente en une théorie
+complète.
+
+\section{Ensembles ordonnés}
+
+Commençons par donner les définitions les plus élémentaires.
+
+\subsection{Définitions}
+
+\begin{definition}[Ensemble ordonné]
+  Un ensemble ordonné est un couple $(X,\leq)$ où $\leq$ est une relation binaire
+  sur $X$ vérifiant :
+  \begin{itemize}
+  \item $\leq$ est reflexive : pour tout $x\in X$, $x\leq x$.
+  \item $\leq$ est antisymétrique : si deux éléments $x,y\in X$ sont tels que
+    $x\leq y$ et $y\leq x$ alors $x = y$.
+  \item $\leq$ est transitive : si trois éléments $x,y,z\in X$ sont tels que
+    $x\leq y$ et $y\leq z$ alors $x\leq z$.
+  \end{itemize}
+
+  Un couple $(X,\leq)$ tel que $\leq$ est seulement réflexive et transitive est
+  appelé un ensemble pré-ordonné, et $\leq$ est appelé un pré-ordre sur $X$.
+\end{definition}
+
+\begin{example}[Ensemble des parties]
+  Soit $X$ un ensemble, l'ensemble $(\powerset(X),\subseteq)$ est un ensemble
+  ordonné.
+\end{example}
+
+La plupart des résultats que nous énoncerons pourront aussi bien se traduire sur
+des pré-ordres, en remplaçant en général $x = y$ par $x\leq y \land y \leq x$.
+En fait, un pré-ordre peut se ramener à un ordre par un quotient.
+
+\begin{property}
+  Soit $(X,\leq)$ un ensemble pré-ordonné, alors la relation
+  $\sim\subseteq X \times X$ définie par
+  \[x\sim y \defeq x\leq y \land y \leq x\]
+  est une relation d'équivalence, et $\leq$ induit un ordre sur $X/\sim$.
+\end{property}
+
+\begin{proof}
+  Vérifions que $\sim$ est une relation d'équivalence :
+  \begin{itemize}
+  \item $\sim$ est transitive : $x\leq x$ et $x\leq x$, donc $x\sim x$.
+  \item $\sim$ est symétrique : supposons que $x\sim y$, alors $x\leq y$ et
+    $y\leq x$, donc $y\leq x$ et $x\leq y$, donc $y\sim x$.
+  \item $\sim$ est réflexive : supposons que $x\sim y$ et $y\sim z$, alors
+    $x\leq y$ et $y\leq z$, donc $x\leq z$, et de même $z\leq y$ et $y\leq x$
+    donc $z\leq z$, ainsi $x\sim z$.
+  \end{itemize}
+
+  Pour vérifier que $\leq$ induit un ordre sur $X/\sim$, il suffit de vérifier
+  que si $x\sim x'$ et $y\sim y'$, alors $x\leq y$ si et seulement si $y\leq x$.
+
+  Si $x\leq y$ alors comme $x'\leq x$ et $y\leq y'$, on en déduit que $x'\leq y'$
+  et récuproquement, comme $x\leq x'$ et $y'\leq y$, il vient que
+  $x'\sim y'\implies x\sim y$.
+\end{proof}
+
+\begin{exercise}
+  Soit une signature $\Sigma$, montrer que la relation
+  $\vdash\subseteq\Formula(\Sigma)\times\Formula(\Sigma)$ définie comme
+  restriction de la relation $\vdash$ que nous avons vue précédemment, mais où
+  la liste de gauche ne contient qu'une proposition, est un pré-ordre.
+\end{exercise}
+
+\begin{remark}
+  La relation $\dashv\vdash$ s'écrit aussi $\equiv$, ce qui est cohérent avec
+  notre définition sémantique de $\equiv$, étant donné que l'on sait que
+  $\vdash$ et $\vDash$ coïncident.
+
+  L'ensemble ordonné construit par $\Formula(\Sigma)/\dashv\vdash$ est appelé
+  l'algèbre de Lindenbaum-Tarski. Nous la verrons plus en détail plus tard.
+\end{remark}
+
+Une autre définition possible d'un ensemble ordonné est ce que l'on appelle
+habituellement un ensemble strictement ordonné. Nous en donnons la définition et
+montrons que l'on peut faire correspondre à chaque ordre un ordre strict (et
+réciproquement).
+
+\begin{definition}[Ordre strict]
+  Un ensemble strictement ordonné est une paire $(X,<)$ où $<$ est une relation
+  binaire sur $X$ vérifiant :
+  \begin{itemize}
+  \item $<$ est antiréflexive : pour tout $x\in X, x\not< x$.
+  \item $<$ est transitive.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  On a une bijection entre les ensembles ordonnés et les ensembles strictement
+  ordonnés en associant à $(X,\leq)$ l'ensemble strictement ordonné $(X,<)$
+  défini par
+  \[x < y \defeq x \leq y \land x \neq y\]
+\end{proposition}
+
+\begin{proof}
+  On définit, dans l'autre sens, la relation $\leq$ à partir de $<$ par
+  \[x\leq y \defeq x < y \lor x = y\]
+  Le fait que $((x \leq y)\land x \neq y) \lor x = y$ est équivalent à $x\leq y$
+  et que $(x < y\lor x = y) \land x \neq y$ est équivalent à $x < y$ se vérifie
+  directement.
+
+  Montrons que $<$ défini à partir de $\leq$ est un ordre strict :
+  \begin{itemize}
+  \item par définition, $x < y\implies x \neq y$, donc $x\not< x$.
+  \item si $x < y$ et $y < z$, alors $x \leq z$ par transitivité de $\leq$.
+    Si $x = z$ alors $z < y$ par substitution de $x$ par $z$, donc par
+    transitivité $y < y$, ce qui est absurde. Donc $x \neq z$.
+  \end{itemize}
+
+  Montrons que $\leq$ défini à partir de $<$ est un ordre :
+  \begin{itemize}
+  \item par définition, si $x = y$ alors $x\leq y$.
+  \item si $x\leq y$ et $y\leq x$, alors soit $x = y$, soit $x < y$. Dans le
+    premier cas, on a le résultat voulu. Dans le deuxième cas, on utilise le
+    fait que $y\leq x$ pour en déduire que soit $y = x$, soit $y < x$. Encore
+    une fois, le cas $y = x$ est directement ce qu'il faut démontrer.
+    Si $y < x$, alors par transitivité avec $x < y$ on en déduit que $x < x$,
+    ce qui est absurde.
+  \item si $x \leq y$ et $y \leq z$, alors soit $x = y$, auquel cas on voit
+    directement que $x\leq z$, soit $x < y$. En utilisant le fait que $y \leq z$,
+    on en déduit que soit $y = z$, soit $y < z$. Dans le premier cas, il est
+    évident que $x \leq z$. Dans le deuxième cas, par transitivité, on en déduit
+    que $x < z$.
+  \end{itemize}
+\end{proof}
+
+On définira donc des propriétés indifféremment sur un ordre ou sur un ordre
+strict (si on dit qu'une propriété $P$ définie sur les ordres strictes est
+vérifiée pour un ordre $\leq$, cela signifie que $<$ vérifie $P$).
+
+Intéressons-nous d'abord aux éléments : comme un ordre est (sauf indication du
+contraire) partiel, deux éléments peuvent ne pas être mis en relation. Dans ces
+cas-là, deux notions distinctes apparaissent : la comparabilité et la
+compatibilité. Pour deux éléments, être comparable est une condition forte,
+mais parfois justement trop forte : la compatibilité signifie juste que deux
+éléments peuvent être rejoints.
+
+\begin{definition}[Comparabilité, compatibilité]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit que deux éléments $x$ et $y$ sont
+  comparables si $x\leq y$ ou $y\leq x$. Deux éléments $x$ et $y$ sont dits
+  compatibles s'il existe $z \in X$ tel que $z\leq x$ et $z\leq x$. Deux éléments
+  sont dits incompatibles s'ils ne sont pas compatibles.
+
+  Si tous les éléments de $X$ sont compatibles, on dit que $X$ est un ensemble
+  totalement ordonné.
+  Si tous les éléments de $X$ sont compatibles, on dit que $X$ est un ensemble
+  ordonné filtrant vers le bas.
+\end{definition}
+
+\begin{example}
+  Deux éléments de $\mathcal P(X)$ sont toujours compatibles en prenant comme
+  élément $z$ leur intersection. Pourtant, $\{x\}$ et $\{y\}$ pour $x\neq y$ ne
+  sont pas comparables.
+\end{example}
+
+\subsection{Dualité}
+
+Relevons dès maintenant un phénomène important en théorie des ordres, appelé la
+dualité : lorsque l'on a un ordre $\leq$, on peut définir la relation $\geq$
+par $y\geq x \iff x\leq y$, et cette relation est aussi une relation d'ordre,
+inversant quel élément est le plus grand et quel élément est le plus petit. Ainsi
+lorsque l'on définit une notion sur un ensemble ordonné $(X,\leq)$, une notion
+duale est directement définie en considérant l'objet dans $(X,\geq)$.
+
+Ce phénomène permet de simplifier beaucoup de preuves : si l'on veut prouver deux
+propositions $P$ et $Q$ où $Q$ est obtenue en remplaçant $\leq$ dans $P$ par
+$\geq$ (et toutes les définitions par leurs définitions duales), si les
+propriétés portent sur tous les ensembles ordonnés, alors prouver $P$ suffit à
+déduire $Q$, qui est une conséquence de $P$ pour l'ordre dual.
+
+Nous allons donc souvent écrire deux propositions pour une seule preuve, car la
+proposition duale est souvent aussi importante que la proposition de base.
+
+\subsection{Bornes et majorations}
+
+On peut voir la théorie des ordres sous deux primes : le prisme algébrique et le
+prisme analytique.
+
+Suivant le prisme algébrique, nous étudions des structures
+munies d'une relation (on peut voir cela comme de la théorie des modèles), et
+l'accent est alors mis sur les propositions du premier ordre. Par exemple,
+la comparabilité ou la compatibilité sont des notions algébriques. De même on
+peut parler de la borne supérieure de deux éléments, ou d'être le maximum entre
+$x$ et $y$, voire d'un ensemble fini d'éléments.
+
+Suivant le prisme analytique, nous nous intéressons aux parties de l'ensemble
+ordonné (potentiellement infinie). Nous parlons donc par exemple de la borne
+supérieure d'un ensemble quelconque. Les structures pour lesquelles on peut
+appliquer le point de vue analytique sont donc moins nombreuses, mais nous allons
+étudier les définitions basiques de ces principes de bornes supérieures, de
+majorant ou autre.
+
+\begin{definition}[Majorant, minorant]
+  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
+  dit que $x$ est un majorant de $F$ si
+  \[\forall y\in F, y \leq x\]
+  et que $x$ est un minorant de $F$ si
+  \[\forall y\in F, x \leq y\]
+
+  Par abus de notation, on écrira $F\leq x$ (respectivmeent $x\leq F$) pour dire
+  que $x$ est un majorant (respectivement un minorant) de $F$.
+\end{definition}
+
+\begin{definition}[Borne supérieure, borne inférieure]
+  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
+  dit que $x$ est la borne supérieure de $F$ si
+  \[F\leq x \land (\forall y, F\leq y \implies x \leq y)\]
+  et que $x$ est la borne inférieure de $F$ si
+  \[x\leq F \land (\forall y, x\leq F \implies y \leq x)\]
+\end{definition}
+
+\begin{proof}
+  Puisque nous avons dit \og la\fg{} il est nécessaire de montrer l'unicité de
+  la borne supérieure (l'unicité de la borne inférieure se prouver par dualité).
+
+  Supposons que $x,y$ sont des bornes supérieures de $F$. Comme $F\leq x$ et
+  $y$ est une borne supérieure, $y\leq x$. De même, comme $F\leq y$ et $x$ est
+  une borne supérieure, $x\leq y$. Donc $x = y$ par antisymétrie.
+\end{proof}
+
+\begin{notation}
+  Si la borne supérieure de $F$ existe, on la notera $\bigvee F$. Si la borne
+  inférieure de $F$ existe, on la notera $\bigwedge F$.
+\end{notation}
+
+\begin{exercise}
+  Soit $(X,\leq)$ un ensemble ordonné et $A\subseteq \powerset X$ une partie
+  telle que $\bigcup A$ admet une borne supérieure et tout élément de $A$ admet
+  une borne supérieure, montrer alors que
+  \[\bigvee (\bigcup A) =
+  \bigvee\Big(\Big\{ \bigvee a \;\Big|\; a \in A\Big\}\Big)\]
+\end{exercise}
+
+\begin{definition}[Maximum,minimum]
+  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$. On dit que $x$ est le
+  maximum de $F$ si $F\leq x$ et $x\in F$. On dit que $x$ est le minimum de $F$
+  si $x\leq F$ et $x\in F$.
+\end{definition}
+
+\begin{notation}
+  On notera $\max F$ et $\min F$ le maximum (respectivement le minimum) de $F$.
+\end{notation}
+
+\begin{property}
+  S'il existe, le maximum (respectivement le minimum) d'une partie est sa borne
+  supérieure (respectivement inférieure).
+\end{property}
+
+\begin{proof}
+  Si $x$ est un majorant de $F$, alors comme $\max F \in F$, on en déduit que
+  $\max F \leq x$, d'où le résultat.
+\end{proof}
+
+\begin{definition}[\'Elément maximal, minimal]
+  Soit un ensemble ordonné $(X,\leq)$ et une partie $F\subseteq X$. On dit que
+  $x \in F$ est un élément maximal (respectivement minimal) dans $F$ s'il
+  n'existe pas $y\in F$ tel que $x\leq y$ (respectivement tel que $y\leq x$).
+\end{definition}
+
+\begin{exercise}
+  Montrer que le maximum d'une partie en est un élément maximal de cette partie.
+\end{exercise}
+
+Une autre partie intéressant est l'étude de parties sur lesquelles l'ordre induit
+se comporte particulièrement bien. C'est ce que nous allons voir avec les
+chaînes, les antichaînes et les parties filtrantes.
+
+\begin{definition}[Chaîne, antichaîne]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit que $C\subseteq X$ est une chaîne
+  de $X$ si l'ensemble $(C,\leq)$ (avec l'ordre induit) est un ensemble
+  totalement ordonné. On dit que $A\subseteq X$ est une antichaîne de $X$ si
+  l'ensemble $(A,\leq)$ (avec l'ordre induit) ne possède pas deux éléments
+  comparables, c'est-à-dire si $(A,\leq)$ est l'ordre discret. On dit que
+  $A\subseteq X$ est une antichaîne forte de $X$ si pour tous $x,y\in A$, $x$ et
+  $y$ ne sont pas compatibles.
+\end{definition}
+
+Cela nous mène à la notion d'ensemble inductif, importante pour établir le lemme
+de Zorn, qui est une version de l'axiome du choix plus maniable. Nous prouverons
+ce résultat lorsque nous étudierons la théorie des ensembles, mais pouvons déjà
+en donner le résultat.
+
+\begin{definition}[Ensemble inductif]
+  Un ensemble ordonné $(X,\leq)$ est dit inductif si toute chaîne admet un
+  majorant.
+\end{definition}
+
+\begin{theorem}[Lemme de Zorn]\label{thm.Zorn}
+  Si $(X,\leq)$ est un ensemble inductif et $x\in X$, alors il existe un élément
+  maximal $y \in X$ qui est supérieur à $x$.
+\end{theorem}
+
+\subsection{Ordre bien fondé et bon ordre}
+
+Nous donnons maintenant les notions d'ordre bien fondé et de bon ordre. Les bons
+ordres auront de l'importance pour la théorie des ensembles, et les ordres bien
+fondés sont utiles pour étendre le théorème d'induction.
+
+\begin{definition}[Ordre bien fondé]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit que $\leq$ est bien fondé si toute
+  partie $F\subseteq X$ non vide possède un élément minimal, c'est-à-dire si
+  \[\forall F \subseteq X, F\neq \varnothing \implies \exists x\in F,
+  \forall y\in F, y\leq x \implies x = y\]
+\end{definition}
+
+\begin{remark}
+  Une définition équivalente, sur les ordres stricts, est que $<$ est bien fondé
+  si :
+  \[\forall F \subseteq X, F\neq \varnothing \implies \exists x \in F,
+  \forall y \in F, y\nless x\]
+\end{remark}
+
+\begin{definition}[Bon ordre]
+  Un ensemble ordonné $(X,\leq)$ est un bon ordre lorsque toute partie
+  $F\subseteq X$ possède un minimum.
+\end{definition}
+
+Une première conséquence évidente est qu'un bon ordre est un ordre bien fondé.
+De plus, un bon ordre est total, puisque pour $x,y\in X$ il existe un minimum
+à $\{x,y\}$. Ceci caractérise en fait les bons ordres parmi les ordres bien
+fondés.
+
+\begin{proposition}
+  Si $(X,\leq)$ est un ordre bien fondé total, alors c'est un bon ordre.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $(X,\leq)$ est un ordre bien fondé total. Soit $F\subseteq X$,
+  comme $\leq$ est un ordre bien fondé, on trouve $m$ un élément minimal de $F$.
+  Soit $x\in F$, alors soit $x \leq m$ soit $m\leq x$. Dans le premier cas,
+  par minimalité de $m$, on en déduit que $m = x$, donc que $m\leq x$. Ainsi,
+  dans tous les cas, $m$ est un minorant de $F$ : $F$ admet donc un minimum.
+
+  Donc $(X,\leq)$ est un bon ordre.
+\end{proof}
+
+Nous avons vu que la notion de structure inductive nous offre le principe
+d'induction, qui dans le cas particulier de $\mathbb N$ correspond au principe de
+récurrence. Le principe de récurrence forte, lui, est de nature légèrement
+différente : il se base sur la notion d'ordre. Il dit que si pour tout
+$k\in\mathbb N$, on peut prouver
+\[(\forall i < k, P(i)) \implies P(k)\]
+alors on peut en déduire que $\forall n, P(n)$.
+
+Ce procédé peut se généraliser à un ensemble bien fondé : si l'on définit
+l'ensemble
+$x^{-1} = \{y \in X \mid y < x\}$, on veut montrer que $P(x)$ est vrai pour tout
+$x$ à partir du fait que $(\forall y \in x^{-1}, P(y)) \implies P(x)$.
+
+L'idée derrière cette démonstration est que pour un ordre bien fondé, on a un
+moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
+élément en s'appuyant sur le fait que $P$ est vérifié aux étapes précédentes.
+
+\begin{theorem}[Induction bien fondée]
+  Soit $(X,\leq)$ un ensemble ordonné bien fondé. Soit $P\subseteq X$ une partie
+  vérifiant
+  \[\forall x, (\forall y < x, y\in P) \implies x\in P\]
+  est égale à $P$.
+\end{theorem}
+
+\begin{proof}
+  Supposons que $P\neq X$. On trouve alors $x\in X \setminus P$ minimal pour $<$.
+  Comme $<$ est minimal dans
+  $X\setminus P$, on en déduit que pour tout $y < x$, $y \notin X\setminus P$,
+  c'est-à-dire $y\in X$. Par hypothèse, puisque $\forall y < x, y\in P$, on en
+  déduit que $x\in P$ : c'est absurde. Ainsi, par l'absurde, on a prouvé que
+  $X\setminus P = \varnothing$, donc que $P = X$.
+\end{proof}
+
+\begin{remark}
+  En construisant un ensemble inductif à partir d'une signature $(C,\alpha)$ en
+  prenant une suite d'ensembles $(X_i)_{i\in \mathbb N}$, on peut définir un ordre
+  canonique bien fondé, l'ordre de sous-terme, par récurrence sur $i$ :
+  \begin{itemize}
+  \item pour $X_0$, on a facilement un ordre bien fondé sur $\varnothing$.
+  \item supposons qu'on possède un ordre bien fondé sur $X_n$, alors on définit
+    notre ordre sur $X_{n+1}$ par $x_i < c(x_1,\ldots,x_n)$ pour tout
+    $i \in \{1,\ldots,n\}$, et en en prenant la clôture transitive.
+  \end{itemize}
+
+  Cet ordre, en particulier, permet de généraliser l'hypothèse d'induction de
+  notre définition d'ensemble inductif en une induction forte.
+\end{remark}
+
+\begin{exercise}
+  Montrer que l'ordre défini plus tôt est bien un ordre bien fondé.
+\end{exercise}
+
+\section{Treillis}
+
+Nous allons maintenant étudier le cas des treillis, qui sont des ensembles
+ordonnés munis de propriétés de clôture. Pour être exhaustif et situer exactement
+quelles conditions mènent à quels résultats, nous allons définir nos structures
+de la plus faible à la plus forte, en montrant tous les résultats que nous
+souhaitons avoir sur une structure avant de passer à la suivante.
+
+\subsection{Demi-treillis}
+
+Commençons par étudier les demi-treillis : ceux-ci sont des ensembles ordonnés
+avec une direction privilégiée, selon laquelle il existe toujours une borne
+supérieure pour un ensemble fini.
+
+\begin{definition}[Demi-treillis]
+  Un ensemble $(X,\leq)$ est un sup demi-treillis si toute partie $F\subfin X$
+  admet une borne supérieure $\bigvee F$. C'est un inf demi-treillis si toute
+  partie $F\subfin X$ admet une borne inférieure $\bigwedge F$.
+\end{definition}
+
+\begin{property}
+  De manière équivalent, un ensemble $(X,\leq)$ est un sup demi-treillis si et
+  seulement s'il admet un élément $\bot$ et une opération
+  $\lor : X \times X \to X$ tels que $\bot$ est un minorant de $X$ et
+  $x\lor y$ est la borne supérieure de $x$ et $y$.
+
+  C'est un inf demi-treillis si et seulement s'il admet un majorant $\top$ et
+  une opération $\land : X \times X \to X$ prenant la borne inférieure de deux
+  éléments.
+\end{property}
+
+\begin{proof}
+  Si $(X,\leq)$ est un sup demi-treillis, on trouve $\bot$ en prenant
+  $\bigvee\varnothing$ et $x\lor y$ en prenant $\bigvee\{x,y\}$.
+
+  Réciproquement, montrons par récurrence sur le cardinal de $F\subfin X$ qu'il
+  existe une borne supérieure à $F$ :
+  \begin{itemize}
+  \item si $F = \varnothing$, alors $\bigvee F = \bot$.
+  \item si $F = F' \cup \{x\}$ et $\bigvee F'$ existe, alors
+    $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F \lor x$
+    donc $\bigvee F$ existe.
+  \end{itemize}
+\end{proof}
+
+Cela nous donne une caractérisation plus algébrique d'un demi-treillis : c'est un
+ensemble muni d'opérations. Cependant, ces opérations ont encore des définitions
+trop proche de la théorie des ordres. Nous allons voir que l'on peut transformer
+cette définition en une définition purement algébrique.
+
+\begin{definition}[Monoïde commutatif idempotent]
+  Un ensemble $X$ muni d'une opération $\cdot$ et d'un élément $e$ est un monoïde
+  idempotent commutatif si les propriétés suivantes sont vérifiées :
+  \begin{itemize}
+  \item $\forall x\in X, x\cdot e = e \cdot x = x$
+  \item $\forall x,y,z\in X, x \cdot (y \cdot z) = (x \cdot y) \cdot z$
+  \item $\forall x,y\in X, x\cdot y = y \cdot x$
+  \item $\forall x\in X, x\cdot x = x$
+  \end{itemize}
+
+  On définit sur un monoïde commutatif idempotent $(X,\cdot,e)$ les relations
+  $\leq_\lor$ et $\leq_\land$ par
+  \begin{align*}
+    x \leq_\lor y &\defeq x \cdot y = y \\
+    x \leq_\land y &\defeq x \cdot y = x
+  \end{align*}
+\end{definition}
+
+\begin{proposition}
+  L'ensemble $(X,\bot,\lor)$ est un sup demi-treillis pour $\leq_\lor$ si et
+  seulement si $(X,\bot,\lor)$ est un monoïde commutatif idempotent.
+
+  L'ensemble $(X,\top,\land)$ est inf demi-treillis pour $\leq_\land$ si et
+  seulement si $(X,\top,\land)$ est un monoïde commutatif idempotent.
+\end{proposition}
+
+\begin{proof}
+  Montrons d'abord que $\leq_\lor$ est bien un ordre pour un monoïde commutatif
+  idempotent :
+  \begin{itemize}
+  \item par idempotence, $x\lor x = x$ donc $x\leq_\lor x$.
+  \item si $x\leq_\lor y$ et $y\leq_\lor x$, alors $x\lor y = y$ et $y \lor x = x$
+    donc
+    \begin{align*}
+      x &= y \lor x \\
+      &= x \lor y \qquad\text{par commutativité}\\
+      &= y
+    \end{align*}
+  \item si $x\leq_\lor y$ et $y\leq_\lor z$, alors $x\lor y = y$ et $y \lor z = z$
+    donc
+    \begin{align*}
+      x\lor z &= x \lor (y \lor z) \\
+      &= (x \lor y) \lor z \\
+      &= y \lor z \\
+      &= z
+    \end{align*}
+  \end{itemize}
+
+  Supposons maintenant que $(X,\bot,\lor)$ est un sup demi-treillis, alors tout
+  d'abord $x\leq y$ si et seulement si $y = \bigvee\{x,y\}$, si et seulement si
+  $y = x \lor y$, d'où le fait que $\leq_\lor$ coïncide avec $\leq$. Montrons
+  maintenant que $(X,\bot,\lor)$ est un monoïde commutatif idempotent :
+  \begin{itemize}
+  \item $\bot$ est un élément neutre pour $\lor$ : pour tout $x\in X$,
+    $\bot\leq x$ donc $\bot \vee x = x$, et de même pour $x\vee\bot$.
+  \item $\lor$ est associatif :
+    $x\lor (y \lor z) = \bigvee\{x,y,z\} = (x\lor y)\lor z$.
+  \item $\lor$ est commutatif : $x\lor y = \bigvee\{x,y\}=y\lor x$.
+  \item $\lor$ est idempotent : $x\lor x = \bigvee\{x\}=x$.
+  \end{itemize}
+
+  Réciproquement, montrons que so $(X,\bot,\lor)$ est un monoïde commutatif
+  idempotent, alors $\bot$ est un minorant de $X$ pour $\leq_\lor$ et $\lor$ est
+  la borne supérieure de deux éléments pour $\leq_\lor$ :
+  \begin{itemize}
+  \item pour tout $x$, $\bot \lor x = x$ donc $\bot \leq_\lor x$.
+  \item pour tous $x,y$, $x\lor (x\lor y) = (x\lor x)\lor y = x\lor y$ donc
+    $x\lor y$ est un majorant de $x$ (de même on prouve que $x\lor y$ est un
+    majorant de $y$). Supposons que $z$ est un majorant de $\{x,y\}$ pour
+    $\leq_\lor$. Cela signifie que $x\lor z = z$ et $x\lor y = z$. Alors
+    $(x\lor y)\lor z = x\lor (y\lor z) = x\lor z = z$ donc
+    $x\lor y \leq_\lor z$, donc $x\lor y$ est inférieur à tout majorant de
+    $\{x,y\}$ : c'est la borne supérieure de $\{x,y\}$.
+  \end{itemize}
+\end{proof}
+
+Ainsi on parlera de sup demi-treillis (respectivement inf demi-treillis) en
+utilisant $\leq$ et les opérations $\bot,\lor$ (respectivement $\top,\land$) sans
+souci, puisque toutes les définitions nous donnent l'ensemble de ces notions.
+
+\begin{exercise}
+  Soit $\Sigma$ une signature, on rappelle que l'algèbre de Lindenbaum-Tarski
+  sur $\Sigma$, notée $\mathcal L(\Sigma)$, est l'ensemble quotient
+  $\Formula(\Sigma)/\dashv\vdash$ muni de l'ordre $\vdash$. Montrer que
+  cette structure est un inf demi-treillis et un sup demi-treillis où le majorant
+  est $\top$, le minorant $\bot$, la borne supérieure $\lor$ et la borne
+  inférieure $\land$.
+\end{exercise}
+
+\begin{exercise}
+  Soit un ensemble $X$, montrer que $(\powerset(X),\subseteq)$ est à la fois un
+  sup et un inf demi-treillis, où $X$, $\varnothing$, $\cup$ et $\cap$ sont
+  respectivement le majorant, le minorant, la borne supérieure et la borne
+  inférieure.
+\end{exercise}
+
+On peut aussi définir les morphismes de demi-treillis, qui sont des morphismes
+entre structures au sens attendu.
+
+\begin{definition}[Morphisme de demi-treillis]
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux sup demi-treillis (respectivement deux
+  inf demi-treillis). Un morphisme de sup demi-treillis (respectivement d'inf
+  demi-treillis) est une fonction $f : X \to Y$ croissante telle que
+  $f(\bot_X) = \bot_Y$ (respectivement $f(\top_X) = \top_Y$) et telle que pour
+  tous $x,y\in X$, $f(x\lor y) = f(x)\lor f(y)$ (respectivement telle que pour
+  tous $x,y\in X$, $f(x\land y) = f(x)\land f(y)$).
+\end{definition}
+
+\subsection{Treillis}
+
+Un demi-treillis ne concerne qu'une direction entre le sup et l'inf. Un treillis,
+comme son nom l'indique, est une structure qui possède les propriétés des deux
+demi-treillis à la fois.
+
+\begin{definition}[Treillis]
+  Un ensemble ordonné $(X,\leq)$ est un treillis si toute partie finie
+  $F\subfin X$ possède à la fois une borne supérieure $\bigvee F$ et une borne
+  inférieure $\bigwedge F$.
+\end{definition}
+
+En théorie des ordres, il est direct de voir qu'être un treillis est équivalent
+à être à la fois un inf demi-treillis et un sup demi-treillis, mais cela n'est
+pas aussi évident algébriquement, car un inf demi-treillis est défini
+algébriquement par la relation $\leq_\land$ et un sup demi-treillis par la
+relation $\leq_\lor$ : il faut vérifier que ces deux relations coïncident.
+
+\begin{proposition}
+  Un bimonoïde $(X,\bot,\lor,\top,\land)$ est un treillis pour $\leq_\lor$
+  (respectivement pour $\lor_\land$) si et seulement si $(X,\bot,\lor)$ est un
+  inf demi-treillis, $(X,\top,\land)$ est un inf demi-treillis, $\leq_\lor$ et
+  $\leq_\land$ coïncident, cette dernière condition étant équivalente aux
+  deux identités d'absorption suivantes~ :
+  \begin{itemize}
+  \item $\forall x,y\in X, (x\lor y)\land x = x$
+  \item $\forall x,y\in X, (x\land y)\lor x = x$
+  \end{itemize}
+\end{proposition}
+
+\begin{proof}
+  Soit $(X,\bot,\lor,\top,\land)$ un bimonoïde commutatif idempotent. On
+  suppose de plus que $\leq_\lor = \leq_\land$, montrons les deux identités :
+  \begin{itemize}
+  \item Soient $x,y\in X$, comme $x\leq_\lor x\lor y$, on en déduit que
+    $x\leq_\land x\lor y$, c'est-à-dire que $x\land (x\lor y) = x$ d'où
+    l'égalité par commutativité de $\land$.
+  \item Soient $x,y\in X$, comme $x\land y\leq_\land x$, on en déduit que
+    $x\land y \leq_\lor x$, c'est-à-dire que $(x\land y)\lor x = x$.
+  \end{itemize}
+
+  Réciproquement, supposons vraies les identités. Montrons par double inclusion
+  que $\leq_\lor = \leq_\land$ :
+  \begin{itemize}
+  \item soient $x,y$ tels que $x\leq_\lor y$, alors $x\lor y = y$, montrons que
+    $x\land y = x$ :
+    \begin{align*}
+      x \land y &= x \land (x \lor y)\\
+      &= x
+    \end{align*}
+    par la première identité. Ainsi $x\leq_\land y$, donc
+    $\leq_\lor\subseteq\leq_\land$.
+  \item soient $x,y$ tels que $x\leq_\land y$, alors $x\land y = x$, montrons que
+    $x\lor y = y$ :
+    \begin{align*}
+      x \lor y &= (x\land y) \lor y\\
+      &= y
+    \end{align*}
+    par la deuxième identité. Ainsi $x\leq_\lor y$, donc
+    $\leq_\land\subseteq\leq_\lor$.
+  \end{itemize}
+  Donc $\leq_\lor = \leq_\land$.
+\end{proof}
+
+Cela nous donne donc une définition purement algébrique d'un treillis (en
+particulier, un treillis est un modèle d'une certaine théorie).
+
+\begin{definition}[Morphisme de treillis]
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, un morphisme de treillis entre
+  ces deux treillis est une fonction $f : X \to Y$ qui est à la fois un morphisme
+  de sup demi-treillis et un morphisme d'inf demi-treillis.
+\end{definition}
+
+\begin{exercise}
+  Soit une signature $\Sigma$, montrer que $\mathcal L(\Sigma)$ est un treillis.
+\end{exercise}
+
+\begin{exercise}
+  Soit un ensemble $X$, montrer que $\powerset (X)$ est un treillis.
+\end{exercise}
+
+\begin{exercise}
+  Soit une signature $\Sigma$. Soit $\mathcal M$ une structure sur $\Sigma$.
+  Montrer que la fonction
+  \[\begin{array}{ccccc}
+  \Phi & : & \mathcal L(\Sigma_{\mathrm ZF}) & \longrightarrow &
+  \powerset(\mathcal M)\\
+  & & \varphi(x) & \longmapsto &
+  \{x \in |\mathcal M| : \mathcal M\models \varphi(x)\}
+  \end{array}\]
+  est un morphisme de treillis.
+\end{exercise}
+
+Cependant, la partie sup et la partie inf d'un treillis n'interagissent pas
+suffisamment bien en général, c'est pourquoi il est nécessaire d'ajouter la
+distributivité de $\lor$ sur $\land$ et de $\land$ sur $\lor$, si l'on veut
+pouvoir l'utiliser.
+
+\begin{definition}[Treillis distributif]
+  Soit $(X,\leq)$ un treillis. On dit que c'est un treillis distributif si de
+  plus l'une des deux propositions équivalentes est vraie :
+  \begin{enumerate}[label=(\roman*)]
+  \item \label{enum.tr.distr1}
+    $\forall x,y,z\in X, x\land (y\lor z) = (x\land y)\lor (x\land z)$
+  \item \label{enum.tr.distr2}
+    $\forall x,y,z\in X, x\lor (y\land z) = (x\lor y)\land (x\lor z)$
+  \end{enumerate}
+\end{definition}
+
+\begin{proof}
+  Vérifions que ces deux propositions sont équivalentes. Par dualité, il nous
+  suffit de prouver que $\ref{enum.tr.distr1} \implies\ref{enum.tr.distr2}$.
+  On suppose donc \ref{enum.tr.distr1}. Soient $x,y,z\in X$, par un calcul :
+
+  A FAIRE
+
+  D'où l'équivalence.
+\end{proof}
+
+\begin{exercise}
+  Montrer que $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des treillis
+  distributifs.
+\end{exercise}
+
+\subsection{Algèbre de Boole}
+
+Nous voyons maintenant notre premier cas de structure logique décrite par un
+ensemble ordonné. Avec la structure de treillis, nous avons naturellement une
+structure permettant d'encoder la conjonction et la disjonction. Pour travailler
+sur la logique propositionnelle, il ne nous manque que la négation, l'implication
+pouvant se coder grâce à l'équivalence logique $a\to b \equiv \lnot a \lor b$.
+
+Nous souhaitons donc avoir, en plus de ce que nous avons déjà défini, une
+fonction $\lnot : X \to X$ permettant de jouer le rôle de la négation. En logique
+classique, qui est notre cadre de travail pour l'instant, deux propriétés
+en particulier décrivent le comportement de $\lnot$ : le tiers exclu et le
+principe de non contradiction, disant que $x\lor \lnot x$ est vraie et que
+$x\land \lnot x$ est fausse. La notion de \og vrai\fg et de \og faux\fg sont
+assez naturellement encodées par $\top$ et $\bot$, respectivement, d'où la
+définition suivante.
+
+\begin{definition}[Complément]
+  Soit un treillis $(X,\leq)$. On dit que $y$ est un complément de $x$ si
+  \[x\lor y = \top \qquad x \land y = \bot\]
+\end{definition}
+
+En fait, ceci suffit à caractériser la négation. En particulier, il n'y a qu'un
+complément par élément, pour un treillis distributif.
+
+\begin{proposition}
+  Soit $(X,\leq)$ un treillis distributif et $x\in X$. Alors s'il existe un
+  complément à $x$, celui-ci est unique.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $y,z$ soient deux compléments de $x$. Alors
+  \begin{align*}
+    y\lor z &= y\lor z\lor (z\land x)\\
+    &= z\lor ((y\lor z)\land (y\lor x))\\
+    &= z \lor ((y\lor z)\land \top)\\
+    &= z \lor (y\lor z)\\
+    &= z
+  \end{align*}
+  d'où $y\leq z$. En inversant le rôle de $y$ et $z$, on trouve aussi que
+  $y\leq z$, d'où $y = z$.
+\end{proof}
+
+Une algèbre de Boole peut ainsi se décrire grâce à cette notion de complément.
+
+\begin{definition}[Algèbre de Boole]
+  Une algèbre de Boole $(B,\leq)$ est un treillis distributif complémenté. Pour
+  un élément $x\in B$, on notera $\lnot x$ sont complément.
+\end{definition}
+
+\begin{exercise}
+  Soit une signature $\Sigma$ et un ensemble $X$. Montrer que
+  $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des algèbres de Boole.
+\end{exercise}
+
+\begin{remark}
+  En particulier, pour $X = \{\varnothing\}$, on obtient une algèbre de Boole
+  de cardinal $2$, qui correspond en fait au corps $\mathbb Z/2\mathbb Z$.
+  On notera cette algèbre de Boole $B_2$, celle-ci a la particularité d'être
+  la plus petite algèbre de Boole non dégénérée (telle que $\bot \neq \top$) et
+  d'être la seule algèbre de Boole qui a une structure de corps.
+\end{remark}
+
+\begin{exercise}
+  Montrer que les identités de De Morgan sont vérifiées :
+  \[\lnot\lnot x = x \qquad \lnot (x \lor y) = \lnot x \land \lnot y
+  \qquad \lnot (x \land y) = \lnot x \lor \lnot y\]
+\end{exercise}
+
+\begin{exercise}
+  Montrer que si $B$ et $B'$ sont deux algèbres de Boole, alors un morphisme $f$
+  de treillis entre $B$ et $B'$ est en particulier un morphisme d'algèbre de
+  Boole, au sens où la propriété suivante est vérifiée :
+  \[\forall x \in B, f(\lnot x) = \lnot f(x)\]
+\end{exercise}
+
+L'exercice suivant donne une caractérisation purement algébrique d'une algèbre
+de Boole : on peut le voir comme un anneau idempotent.
+
+\begin{exercise}
+  Soit $(B,\leq)$ une algèbre de Boole. On définit $\oplus$ sur $B$ par
+  \[x\oplus y \defeq (x\lor y) \land (\lnot x \lor \lnot y)\]
+  Montrer que $(B,\bot,\top,\oplus,\land)$ est un anneau (où $\bot$ est le neutre
+  additif et $\top$ le neutre multiplicatif).
+
+  Réciproquement, soit $(A,0,1,+,\times)$ un anneau idempotent, c'est-à-dire
+  vérifiant
+  \[\forall x\in A, a\times a = a\]
+  montrer les propositions suivantes :
+  \begin{enumerate}[label=(\roman*)]
+  \item $A$ est un anneau de caractéristique $2$.
+  \item la relation $\leq_\land$ définie par
+    \[x\leq_\land y \defeq x\times y = x\]
+    est une relation d'ordre.
+  \item $(A,\leq_\land)$ est une algèbre de Boole, de majorant $1$, de minorant
+    $0$, où $\times$ est la borne inférieure et où la borne supérieure est
+    \[x\lor y \defeq x + y + x \times y\]
+  \end{enumerate}
+\end{exercise}
+
+\subsection{Algèbre de Heyting}
+
+Pour nous intéresser aux algèbres de Heyting, il nous faut d'abord parler de la
+logique intuitionniste. Pour ne pas nous attarder sur les questions
+philosophiques qui sont à l'origine de l'essor des mathématiques intuitionnistes
+et constructives, nous nous contenterons de remarquer que c'est une logique plus
+faible, mais donnant de meilleurs résultats (les résultats sont plus durs à
+montrer mais apportent plus d'information).
+
+La logique intuitionniste naît d'une volonté de travailler sans le tiers exclu.
+D'un point de vue algorithmique, par exemple, ce principe peut être remis en
+question : comment pouvons-nous effectivement décider toute proposition ? Il
+est en effet difficile d'imaginer une machinerie finie qui pourrait décider,
+par exemple, si tel objet est infini. Ainsi une part des mathématiques n'a ni
+besoin, ni envie du principe du tiers exclu, qui est équivalent au raisonnement
+par l'absurde. Nous étudierons en détail cette logique lors de notre étude de la
+théorie de la démonstration, mais nous donnons ici la définition de la logique
+intuitionniste.
+
+\begin{definition}
+  Soit une signature $\Sigma$. On définit la relation de déduction syntaxique
+  $\vdNJ\subseteq\List(\Formula(\Sigma))\times\Formula(\Sigma)$ par les mêmes
+  règles que pour $\vdash$, à l'exception de $\bot_\mathrm c$ que l'on remplace
+  par la règle suivante :
+  \begin{prooftree}
+    \AxiomC{$\Gamma\vdNJ \bot$}
+    \RightLabel{$\bot_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdNJ A$}
+  \end{prooftree}
+  appelée communément principe d'explosion, ou bien par sa dénomination latine
+  \textit{ex falso quodlibet} (version raccourcie de
+  \textit{ex falso sequitur quodlibet}).
+\end{definition}
+
+\begin{exercise}
+  Soit la règle
+  \begin{center}
+    \AxiomC{}
+    \RightLabel{EDN}
+    \UnaryInfC{$\Gamma\vdash A\lor \lnot A$}
+    \DisplayProof
+  \end{center}
+  Montrer que celle-ci est équivalente à $\bot_\mathrm c$ modulo $\vdNJ$,
+  c'est-à-dire que si l'on considère $\vdNJ$ et qu'on rajoute l'une des deux
+  règles, alors la seconde est dérivable.
+\end{exercise}
+
+\begin{exercise}
+  Vérifier que dans le cas intuitionniste aussi, la relation $\vdNJ$ est une
+  relation de pré-ordre. On notera $\mathcal L_\mathrm i(\Sigma)$ l'algèbre de
+  Lindenbaum-Tarski intuitionniste associée à $\Sigma$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que $\mathcal L_\mathrm i(\Sigma)$ est un treillis distributif.
+\end{exercise}
+
+On peut alors se demander quelle est la différence entre ce que nous pouvons
+prouver en logique intuitionniste et ce que nous pouvons prouver en logique
+classique. La réponse est difficile à donner directement, mais un point important
+est que ce que l'on peut prouver en logique intuitionniste est constructif :
+par exemple, prouver qu'un objet existe signifie qu'on a effectivement exhibé un
+objet. En comparaison, on peut prouver grâce à l'absurde qu'un objet existe en
+prouvant simplement qu'il ne peut pas ne pas existe.
+
+Une conséquence de cet effet est que certaines tautologies ne sont plus valides,
+en particulier la tautologie
+\[\lnot(\forall x, \lnot A) \implies \exists x, A\]
+exprimant qu'à partir de l'impossibilité que tous les $x$ rejettent $A$, on peut
+extraire un certain $x$ acceptant $A$.
+
+De même, la tautologie
+\[\lnot (A \land B) \implies \lnot A \lor \lnot B\]
+car pour la prouver, il faudrait de façon uniforme décider si $\lnot A$ est vraie
+ou si $\lnot B$ est vraie. Comme cela dépend directement que la valeur de vérité
+de $A$ et de celle de $B$, il est impossible de conclure en logique
+intuitionniste. En échange, si l'on prouve $\vdNJ A \lor B$, cela signifie qu'on
+peut soit prouver $\vdNJ A$, soit prouver $\vdNJ B$.
+
+La question, maintenant, est de savoir s'il existe une structure similaire aux
+algèbre de Boole, mais dans laquelle la logique appliquée est la logique
+intuitionniste. C'est le cas des algèbres de Heyting, dont la définition repose
+avant tout sur celle de l'opération $\to$, d'où l'on dérive le sens de $\lnot$
+par $\lnot x = x \to \bot$, comme nous l'avons déjà fait.
+
+\begin{definition}[Pseudo-complément relatif]
+  Soit un treillis distributif $(X,\leq)$, et deux éléments $a,b\in X$. On dit
+  que $x$ est le pseudo-complément de $a$ relatif à $b$ si $x$ est la borne
+  supérieure de l'ensemble $\{x \in X \mid a \land x \leq b\}$. Si le
+  pseudo-complément de $a$ relatif à $b$ existe, on le note $a\to b$. On appelle
+  pseudo-complément de $a$ le pseudo complément de $a$ relatif à $\bot$, s'il
+  existe, et on le note alors $\lnot x$.
+\end{definition}
+
+\begin{definition}[Algèbre de Heyting]
+  Un treillis distributif $(X,\leq)$ est une algèbre de Heyting si tout élément
+  admet un pseudo-complément relatif à tout autre élément, c'est-à-dire si
+  pour tous $a,b\in X$, l'ensemble $\{x\in X \mid a \land x \leq b\}$ admet une
+  borne supérieure.
+\end{definition}
+
+\begin{remark}
+  Une inégalité par rapport à un pseudo-complément peut se réécrire par une
+  conjonction : $a\leq b \to c$ revient directement à $a\land b \leq c$ étant
+  donné que $b \to c$ est la borne supérieure des éléments $x$ tels que
+  $x\land b \leq c$. On peut donc formaliser le modus ponens : si l'on a
+  $a\leq b \to c$ et $a\leq b$, alors $a\land b \leq c$ et $a\land b = a$, donc
+  $a\leq c$.
+\end{remark}
+
+\begin{exercise}
+  Soit une signature $\Sigma$. Montrer que $\mathcal L_\mathrm i(\Sigma)$ est bien
+  une algèbre de Heyting.
+\end{exercise}
+
+\begin{exercise}
+  Montrer qu'une algèbre de Boole est en particulier une algèbre de Heyting, et
+  que le complément d'un élément est en particulier son pseudo-complément.
+\end{exercise}
+
+\subsection{Treillis complet}
+
+Notre première définition d'un treillis peut paraître légèrement plus
+artificelle que sa caractérisation algébrique. En effet, dans la version
+algébrique, on peut voir un treillis comme un certain bimonoïde, que l'on peut
+ensuite étendre en l'existence d'une borne supérieure et d'une borne inférieure
+pour toute partie finie (en raisonnant juste par récurrence). A l'inverse,
+lorsque l'on part de la définition de treillis comme ensemble ordonné possédant
+toutes les bornes sur des parties finies, une question naît immédiatement :
+pourquoi ne pas autoriser des parties infinies ? C'est pour intégrer cette
+possibilité que nous introduisons la notion de treillis complet.
+
+\begin{definition}[Treillis complet]
+  Un treillis complet est un ensemble ordonné $(X,\leq)$ tel que toute partie
+  $Y\subseteq X$ possède à la fois une borne supérieure et une borne inférieure.
+\end{definition}
+
+Un treillis complet est, par définition, plus fort qu'un treillis. Dans la
+pratique, on trouve effectivement plusieurs treillis qui ne sont pas complets
+(le fait d'avoir deux notions n'est donc pas une distinction simplement formelle
+mais revêt une vraie différence conceptuelle). Remarquons aussi qu'un treillis
+complet peut se caractériser par l'existence d'une seule borne.
+
+\begin{property}
+  L'ensemble ordonné $(X,\leq)$ est un treillis complet si et seulement si toute
+  partie possède une borne supérieure.
+\end{property}
+
+\begin{proof}
+  Un sens est évident. Pour l'autre, supposons que toute partie de $X$ possède
+  une borne supérieure, et montrons alors qu'elle possède une borne inférieure.
+
+  Soit $Y\subseteq X$, on définit $Y\convcal$ par
+  \[Y\convcal \defeq \{x\in X \mid \forall y \in Y, x \leq y\}\]
+  et soit $y_0$ la borne supérieure de $Y\convcal$. Montrons que $y_0$ est la
+  borne inférieure de $Y$. Tout d'abord, si $y\in Y$, alors par définition,
+  $y$ est un majorant de $Y\convcal$, donc puisque $y_0$ est le plus petit
+  majorant, $y_0$ est un minorant de $Y$. De plus, si $y$ est un minorant
+  de $Y$, cela signifie que $y\in Y\convcal$, donc comme $y_0$ est un majorant de
+  $Y\convcal$, on en déduit que $y\leq y_0$. Ainsi $y_0$ est le plus grand
+  minorant de $Y$ : c'est la borne inférieure de $Y$.
+\end{proof}
+
+On peut maintenant prouver l'un des théorèmes importants que nous avons présenté
+dans le \cref{chp.induction} : le \cref{thm.ind.KT}, mais dans une version bien
+plus forte et générale.
+
+\begin{theorem}[Knaster-Tarski]
+  Soit $(X,\leq)$ un treillis complet et $f : X \to X$ une fonction croissante.
+  Alors l'ensemble
+  \[\fix(f) \defeq \{x\in X \mid f(x) = x\}\]
+  est un treillis complet pour l'ordre induit par $\leq$.
+\end{theorem}
+
+\begin{proof}
+  On définit tout d'abord l'ensemble des pré points fixes de $f$ :
+  \[\prefix(f) \defeq \{x\in X\mid f(x)\leq x\}\]
+  et on montre qu'il est un treillis complet pour $\leq$. Soit une partie
+  $Y\subseteq\prefix(f)$, montrons que $Y$ possède une borne inférieure. Nous
+  prenons pour candidat de la borne inférieure de $Y$ dans $\prefix(f)$, la
+  borne inférieure $\bigwedge Y$ dans $X$ : montrons donc que $\bigwedge Y$ est
+  bien un pré point fixe de $f$ (cela suffira à montrer qu'on a une borne
+  inférieure, puisque la borne inférieure dans $Y$ est aussi la borne inférieure
+  dans $\prefix(f)$, à partir du moment où la borne appartient effectivement à
+  $\prefix(f)$).
+
+  On montre que $f\big(\bigwedge Y\big) \leq \bigwedge Y$. Pour cela, il nous
+  suffit de montrer que $f\big(\bigwedge Y\big)$ est un minorant de $Y$, puisque
+  l'on sait que $\bigwedge Y$ est le plus grand minorant. Soit $y\in Y$, on
+  remarque que $\bigwedge Y \leq y$, donc $f\big(\bigwedge Y\big) \leq f(y)$,
+  mais comme par définition $f(y)\leq y$ et par transitivité, on en déduit que
+  $f\big(\bigwedge Y\big) \leq y$. Ainsi
+  $f\big(\bigwedge Y\big) \leq \bigwedge Y$.
+
+  On sait donc que toute partie de $\prefix(f)$ admet une borne inférieure. Par
+  la propriété précédente (son dual, plus précisément), $\prefix(f)$ est donc
+  un treillis complet pour $\leq$. On a donc un treillis complet
+  $(\prefix(f),\leq)$ et une fonction $f : \prefix(f) \to\prefix(f)$. En prenant
+  le dual, on obtient donc que $\postfix(\prefix(f))$ est un treillis complet.
+
+  Montrons maintenant que $\postfix(\prefix(f)) = \fix(f)$. Par définition,
+  \[\postfix(\prefix(f)) = \{x\in \{x\in X \mid f(x)\leq x\} \mid x \leq f(x)\}\]
+  ce qui correspond exactement à l'ensemble
+  $\{x\in X\mid (f(x) \leq x) \land (x \leq f(x))\}$. Comme $\leq$ est
+  transitif, cet ensemble est $\fix(f)$. Ainsi $\fix(f)$ est un treillis complet.
+\end{proof}
+
+\begin{remark}
+  On en déduit donc, en particulier, qu'il existe un plus petit et un plus grand
+  point fixe pour $f$. En rentrant un peu plus en détail dans la démonstration,
+  on peut vérifier que le plus petit point fixe est le plus petit pré point fixe,
+  et que le plus grand point fixe est le plus grand post point fixe.
+\end{remark}
+
+\begin{exercise}
+  Montrer que $(\powerset(X),\subseteq)$ est un treillis complet, pour tout
+  ensemble $X$. En déduire le \cref{thm.ind.KT}.
+\end{exercise}
+
+Enfin, donnons deux mots à propos des algèbre de Heyting complètes. On pourrait
+s'attendre à ce qu'un treillis complet $X$ suffise à modéliser ce qu'on attend
+d'une algèbre de Heyting complète, étant donné que pour tous $a,b$, l'ensemble
+\[\{x \in X \mid a \land x \leq b\}\]
+possède une borne inférieure. Ce qui bloque, cependant, est le caractère
+distributif : on ne sait pas si le treillis complet est distributif. A la place,
+une algèbre de Heyting complète va posséder une version complète de la
+distributivité.
+
+\begin{definition}[Algèbre de Heyting complète]
+  Un ensemble ordonné $(H,\leq)$ est une algèbre de Heyting complète si
+  $(H,\leq)$ est un treillis complet et s'il vérifie l'identité suivante, pour
+  toute partie $X\subseteq H$ et tout élément $y \in H$ :
+  \[\Bigg(\bigvee_{x\in X}x\Bigg) \land y = \bigvee_{x\in X}(x\land y)\]
+\end{definition}
+
+\section{Filtres}
+
+Enfin, présentons la notion de filtre, et la notion duale d'idéal. Nous allons
+détailler comment se comportent les filtres dans les structure de plus en plus
+fortes : demi-treillis, treillis et algèbre de Boole, puis nous verrons les
+ultrafiltres et le lemme de l'ultrafiltre.
+
+\subsection{Définitions et caractérisations}
+
+Commençons par définir ce qu'est un filtre.
+
+\begin{definition}[Filtre]
+  Soit $(X,\leq)$ un ensemble ordonné. Un filtre est une partie
+  $\mathcal F\subseteq X$ vérifiant :
+  \begin{itemize}
+  \item $\mathcal F$ est non vide : $\mathcal F \neq\varnothing$.
+  \item $\mathcal F$ est clos par le haut : pour tout $x\in \mathcal F$ et
+    $y\in X$, si $x\leq y$ alors $y\in \mathcal F$.
+  \item tous les éléments de $\mathcal F$ sont compatibles : pour tous
+    $x,y\in\mathcal F$, il existe $z\in\mathcal F$ tel que $z\leq x$ et
+    $z\leq y$.
+  \end{itemize}
+
+  Un filtre $\mathcal F$ est dit propre si $\mathcal F \neq X$.
+\end{definition}
+
+Un filtre peut donc être vu comme une description d'une notion de grandeur :
+un élément d'un filtre est vu comme un \og grand\fg élément. En plus de cela,
+cette notion de grandeur doit avoir une notion de compatibilité : deux grands
+éléments doivent avoir en commun un grand élément. La notion duale, qui peut donc
+être vue comme la spécification d'une notion de petitesse, est celle d'idéal.
+
+\begin{definition}[Idéal]
+  Soit $(X,\leq)$ un ensemble ordonné. Un idéal est une partie
+  $\mathcal I \subseteq X$ vérifiant :
+  \begin{itemize}
+  \item $\mathcal I$ est non vide : $\mathcal I \neq\varnothing$.
+  \item $\mathcal I$ est clos par le bas : pour tout $x\in \mathcal I$ et
+    $y\in X$, si $y\leq x$ alors $y\in \mathcal I$.
+  \item tous les éléments de $\mathcal I$ sont compatibles par le haut :
+    pour tous $x,y\in \mathcal I$, il existe $z\in \mathcal I$ tel que
+    $x\leq z$ et $y\leq z$.
+  \end{itemize}
+
+  Un idéal $\mathcal I$ est dit propre si $\mathcal I \neq X$.
+\end{definition}
+
+Nous ne travaillerons par sur les idéaux, mais donnons la définition car celle-ci
+reste importante.
+
+\begin{example}
+  Soit un ensemble $X$ et un élément $x\in X$. On peut définir le filtre
+  principal sur $\powerset(X)$ en $x$, $\mathcal F_x$, par
+  \[\mathcal F_x \defeq \{A\subseteq X\mid x \in A\}\]
+
+  On voit que $X\in \mathcal F_x$, que si $A\subseteq B$ et $x\in A$ alors
+  $x\in B$, et que si $x\in A$ et $x\in B$ alors $x\in A\cap B$. Ainsi l'ensemble
+  ordonné $\powerset(X)$ contient au moins autant de filtres que d'éléments dans
+  $X$.
+\end{example}
+
+On peut donner une première caractérisation des filtres, dans le cas d'un
+inf demi-treillis.
+
+\begin{property}
+  Soit $(X,\leq)$ un inf demi-treillis de majorant $\top$ et de borne inf
+  $\land$. Alors $\mathcal F\subseteq X$ est un filtre sur $X$ si et seulement si
+  les conditions suivantes sont vérifients :
+  \begin{itemize}
+  \item $\top \in X$.
+  \item $\mathcal F$ est clos par le haut.
+  \item si $x,y\in \mathcal F$, alors $x\land y\in \mathcal F$.
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Supposons que $\mathcal F$ vérifie les propriétés listées. Le fait d'être
+  clos par le haut est par définition. Comme $\top\in\mathcal F$,
+  $\mathcal F$ est non vide. Si $x,y\in\mathcal F$, alors il existe effectivement
+  $z\in \mathcal F$ tel que $z\leq x$ et $z\leq y$, en prenant $z = x\land y$.
+
+  Réciproquement, supposons que $\mathcal F$ est un filtre. Alors, puisqu'il
+  possède un élément, disons $x$, et que $x\leq \top$, on en déduit par clôture
+  par le haut que $\top\in\mathcal F$. Le fait que $\mathcal F$ est clos par le
+  haut est par hypothèse. Soient $x,y\in \mathcal F$, alors par hypothèse il
+  existe $z\in \mathcal F$ tel que $z\leq x$ et $z\leq y$. Par définition de la
+  borne supérieure, on a donc que $z\leq x\land y$, et par clôture par le haut
+  on en déduit que $x\land y \in \mathcal F$.
+\end{proof}
+
+Les inf demi-treillis permettent donc de mieux caractériser les treillis. En
+quelque sorte, puisqu'ils permettent de délimiter le fait de devenir plus petit,
+il est plus aisé d'y définir ce qui est grand (c'est-à-dire ce qui est arrive à
+rester grand quand on le rend plus petit). Les sup demi-treillis, eux, ne
+permettent pas de mieux définir un treillis, mais permettent de décrire ses
+propriétés.
+
+\begin{property}
+  Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F \subseteq X$ un filtre.
+  Alors $\mathcal F$ est propre si et seulement si $\bot\notin\mathcal F$.
+\end{property}
+
+\begin{proof}
+  Puisque $\mathcal F$ est clos par le haut, si $\bot\in\mathcal F$ alors tout
+  élément est dans $\mathcal F$, donc $\mathcal F$ n'est pas propre (et si
+  $\mathcal F$ n'est pas propre, alors il contient $\bot$).
+\end{proof}
+
+Les sup demi-treillis permettent de définir la propriété d'être premier :
+
+\begin{definition}[Filtre premier]
+  Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F$ un filtre sur $X$. On dit
+  que $\mathcal F$ est premier si pour tous $x,y\in X$, si
+  $x\lor y \in \mathcal F$ alors $x\in F$ ou $y\in F$.
+\end{definition}
+
+On peut voir une analogie ici avec un idéal dans un anneau : un idéal premier
+est un idéal tel que, lorsqu'on a un produit $a\times b$ dedans, celui-ci doit
+nécessairement provenir du produit par un élément de l'idéal. De la même façon,
+ici, on sait naturellement que si $x\in\mathcal F$ alors $x\lor y \in\mathcal F$,
+et la notion de primalité signifie que tout élément de la forme $x\lor y$ doit
+provenir d'un cas de ce type, où $x$ (ou $y$) était déjà dans $\mathcal F$.
+
+Pour synthétiser les différentes propriétés dans le cas d'un treillis : les
+filtres propres (qui sont les filres intéressants) sont les parties closes par
+le haut qui possède $\top$ mais pas $\bot$, et qui sont closes par intersection
+finie.
+
+Supposons maintenant qu'on possède une partie $X$ (non vide) qui n'est pas un
+filtre. Comment trouver un filtre correspondant naturellement à $X$ ?
+Premièrement, il nous faut d'abord clore $X$ par le haut : on prend l'ensemble
+des éléments supérieurs à au moins un élément de $X$. Il nous faut aussi nous
+assurer que pour tout $x,y$ dans notre filtre, un élément inférieur à $x$ et $y$
+soit dans le filtre. Le plus simple ici est de considérer un inf demi-treillis :
+on veut ajouter tous les $x\land y$, mais comme il est possible d'itérer ces
+bornes inférieures, il nous faut ajouter tous les $\bigwedge F$ pour
+$F\subfin X$. On obtient ainsi la construction suivante :
+
+\begin{definition}[Filtre engendré par une partie]
+  Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie non vide de
+  $X$. On définit alors
+  \[\filclose{Y} \defeq \{x\in X \mid \exists F\subfin Y, \bigwedge F \leq x\}\]
+\end{definition}
+
+\begin{proposition}
+  Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie non cide.
+  Alors $\filclose Y$ est un filtre sur $X$.
+\end{proposition}
+
+\begin{proof}
+  Tout d'abord, on remarque que $Y\subseteq \filclose Y$, donc $\filclose Y$ est
+  non vide. Soit $x\in \filclose Y$ et $y\in X$ tel que $x\leq y$. On trouve
+  $F\subfin Y$ tel que $\bigwedge F\leq x$, alors $\bigwedge F \leq y$ par
+  transitivité, donc $y\in \filclose F$. Soient $x$ et $y$ des éléments de
+  $\filclose Y$, on trouve $F$ et $F'$ des parties finies de $Y$ telles que
+  $\bigwedge F \leq x$ et $\bigwedge F' \leq y$. Alors
+  \[\bigwedge (F\cup F') = \Bigg(\bigwedge F\Bigg)\land\Bigg(\bigwedge F\Bigg)
+  \leq x\land y\]
+  donc $x\land y \in \filclose Y$. Ainsi $\filclose Y$ est un filtre.
+\end{proof}
+
+Par défaut, le filtre engendré par une partie peut tout à fait contenir tous
+les éléments. Prenons par exemple un ensemble $X$, une partie $Y$ et le filte
+engendré par $\{Y,X\setminus Y\}$ : il est évident que ce filtre n'est pas
+propre. Cependant, il existe une propriété assurant qu'un filtre engendré est
+propre, est qui est tout à fait naturelle : on veut que les $\bigwedge F$ soient
+tous différents de l'ensemble vide. Evidemment, cette propriété n'a d'intérêt que
+dans le cas d'un treillis.
+
+\begin{definition}[Propriété de l'intersection finie]
+  Soit $(X,\leq)$ un treillis et $Y\subseteq X$. On dit que $Y$ a la propriété
+  de l'intersection finie si
+  \[\forall F\subfin Y, \bigwedge F\neq \bot\]
+\end{definition}
+
+\begin{proposition}
+  Soit $(X,\leq)$ un treillis et $Y\subseteq X$ une partie non vide de $X$.
+  Alors $\filclose Y$ est un filtre propre si et seulement si $Y$ a la propriété
+  de l'intersection finie.
+\end{proposition}
+
+\begin{proof}
+  Par définition, $\bot\in \filclose Y$ si et seulement s'il existe $F\subfin Y$
+  tel que $\bigwedge F \leq \bot$, mais la condition que $\bigwedge F\leq \bot$
+  est équivalente à ce que $\bigwedge F = \bot$, étant donné que l'autre
+  inégalité est toujours vérifiée. Ainsi $\bot\in\filclose Y$ si et seulement
+  s'il existe $F\subfin Y$ tel que $\bigwedge F = \bot$, donc $\filclose Y$ est
+  propre si et seulement si $Y$ possède la propriété de l'intersection finie.
+\end{proof}
+
+\begin{exercise}
+  Soit $\Sigma$ une signature. On considère $\mathcal T\subseteq\Clos(\Sigma)$
+  une théorie. Montrer que $\mathcal T$ est cohérente (c'est-à-dire que
+  $\mathcal T\nvdash \bot$) si et seulement si $\mathcal T'$, la projection
+  de $\mathcal T$ dans $\mathcal L(\Sigma)$, a la propriété de l'intersection
+  finie.
+\end{exercise}
+
+\begin{exercise}
+  Soit $\Sigma$ une signature. Soit $\mathcal T\subseteq\Clos(\Sigma)$ une
+  théorie. Montrer que la projection de $\vclose{\mathcal T}$ dans
+  $\mathcal L(\Sigma)$ est le filtre engendré par la projection de $\mathcal T$
+  dans $\mathcal L(\Sigma)$.
+\end{exercise}
+
+\subsection{Ultrafiltre}\label{sbsct.ultrafiltre}
+
+On définit maintenant la notion d'ultrafiltre, qui est la notion duale de celle
+de filtre maximale, souvent rencontrée en algèbre.
+
+\begin{definition}[Ultrafiltre]
+  Soit $(X,\leq)$ un ensemble ordonné. On dit qu'un filtre $\mathcal F$ est un
+  ultrafiltre s'il est un filtre propre maximal pour l'inclusion, c'est-à-dire si
+  pour tout autre filtre propre $\mathcal H$ de $X$, si
+  $\mathcal F \subseteq\mathcal H$ alors $\mathcal F = \mathcal H$.
+\end{definition}
+
+Dans le cas d'un treillis distributif, on a une coïncidence entre les
+ultrafiltres et les filtres premiers.
+
+\begin{proposition}
+  Soit $(X,\leq)$ un treillis distributif. Alors un filtre $\mathcal F$ est un
+  ultrafiltre si et seulement s'il est un filtre premier.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On a, de plus, une caractérisation encore meilleure dans le cas d'une algèbre de
+Boole.
+
+\begin{proposition}
+  Soit $(B,\leq)$ une algèbre de Boole. Un filtre $\mathcal F$ est un ultrafiltre
+  si et seulement si on a la propriété suivante, pour tout $x\in B$ :
+  \[x\in \mathcal F \iff \lnot x \notin \mathcal F\]
+\end{proposition}
+
+\begin{proof}
+  Si $\mathcal F$ est un filtre premier, alors comme $\top \in \mathcal F$ et
+  $\top = x \lor \lnot x$, on sait que soit $x$ soit $\lnot x$ est dans
+  $\mathcal F$. Comme par définition $\bot\notin\mathcal F$ et que
+  $x\land\lnot x = \bot$, on en déduit qu'un seul des deux est dans $\mathcal F$,
+  ce qui est le résultat qu'on veut démontrer.
+
+  Supposons maintenant que pour tout $x\in B$,
+  $x\in\mathcal F \iff \lnot x\notin \mathcal F$. Alors si
+  $x\lor y\in \mathcal F$, supposons que $x\notin \mathcal F$ et
+  $y\notin\mathcal F$. Alors $\lnot x \in \mathcal F$ et $\lnot y \in \mathcal F$
+  grâce à notre hypothèse (et au fait que $\lnot\lnot x = x$). Mais alors
+  $\lnot x \land \lnot y \in \mathcal F$, et $x\lor y \in \mathcal F$, donc
+  $\lnot (x\lor y)$ et $x\lor y$ sont dans $\mathcal F$ : $\mathcal F$ n'est donc
+  par propre. Par l'absurde, on en déduit que soit $x\in\mathcal F$, soit
+  $y\in\mathcal F$.
+\end{proof}
+
+Pour finir, nous allons démontrer le lemme de l'ultrafiltre, qui est une
+conséquence du lemme de Zorn. Il dit que tout filtre propre peut être étendu en
+un ultrafiltre.
+
+\begin{theorem}[Lemme de l'ultrafiltre]\label{thm.ultrafilter.lemma}
+  Soit $(X,\leq)$ un treillis. Soit $\mathcal F$ un filtre sur $X$. Alors il
+  existe un ultrafiltre $\mathcal U$ contenant $\mathcal F$.
+\end{theorem}
+
+\begin{proof}
+  On définit l'ensemble ordonné
+  \[\mathcal X \defeq \{\mathcal H \subseteq X\mid \mathcal H
+  \text{ est un filtre propre}\}\]
+  muni de l'inclusion ensembliste.
+
+  On veut appliquer le lemme de Zorn sur cet ensemble. Pour cela, on vérifie
+  que $\mathcal X$ est inductif.
+
+  Soit $\{\mathcal F_i\}_{i\in I}$ une chaîne d'éléments de $\mathcal X$, montrons
+  que $\mathcal F_0 = \displaystyle\bigcup_{i\in I} \mathcal F_i$ est un majorant
+  de cette chaîne. Il nous suffit pour cela de vérifier que $\mathcal F_0$ est
+  bien un filtre propre :
+  \begin{itemize}
+  \item soit $i\in I$, comme $\top \in \mathcal F_i$, on en déduit que
+    $\top \in \mathcal F_0$.
+  \item soit $x\in \mathcal F_0$ et $y\in X$ tel que $x\leq y$. Par définition
+    de $\mathcal F_0$, on trouve $i\in I$ tel que $x\in \mathcal F_i$, et comme
+    $\mathcal F_i$ est un filtre on en déduit que $y\in \mathcal F_i$, d'où
+    $y\in\mathcal F_0$.
+  \item soient $x,y\in \mathcal F_0$. On trouve $i,j\in I$ tels que
+    $x\in \mathcal F_i$ et $y\in \mathcal F_j$. Comme $\{\mathcal F_i\}$ est une
+    chaîne pour l'inclusion, alors soit $\mathcal F_i \subseteq \mathcal F_j$,
+    soit $\mathcal F_j\subseteq \mathcal F_i$. Sans perte de généralité, on
+    suppose donc que $\mathcal F_i\subseteq \mathcal F_j$, donc que
+    $x\in \mathcal F_j$. Comme $\mathcal F_j$ est un filtre, on en déduit que
+    $x\land y \in \mathcal F_j$, donc que $x\land y \in \mathcal F_0$.
+  \item supposons que $\bot\in \mathcal F_0$. Alors on trouve $i\in I$ tel que
+    $\bot\in \mathcal F_i$, mais comme tous les $\mathcal F_i$ sont supposés
+    propres, $\bot\notin\mathcal F_i$. Par contradiction, on en déduit que
+    $\mathcal F_0$ est propre.
+  \end{itemize}
+
+  On applique donc le \cref{thm.Zorn} : on trouve un élément maximal
+  $\mathcal H$ de $\mathcal X$ qui est supérieur à $\mathcal F$, c'est-à-dire
+  qui contient $\mathcal F$. Il ne nous reste qu'à vérifier que $\mathcal H$ est
+  bien un ultrafiltre : si $\mathcal G$ est un filtre propre contenant
+  $\mathcal H$, alors il contient $\mathcal F$, donc il appartient à
+  $\mathcal X$. Par maximalité de $\mathcal H$ dans $\mathcal X$, on en déduit
+  que $\mathcal H = \mathcal G$ : $\mathcal H$ est un ultrafiltre sur $X$
+  contenant $\mathcal F$.
+\end{proof}
+
+On peut maintenant montrer le \cref{thm.completion} :
+
+\begin{proof}
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ supposée
+  cohérente. On peut
+  définir l'algèbre de Lindenbaum-Tarski pour la sémantique :
+  \[\mathcal L(\Sigma) \defeq \Formula(\Sigma)/\equiv\]
+  (comme nous prouvons un résultat permettant la démonstration du théorème de
+  complétude, nous ne pouvons pas utiliser l'équivalence entre $\vdash$ et
+  $\vDash$, donc nous construisons cette fois-ci l'algèbre en utilisant la
+  relation $\vDash$ dès le début).
+
+  On laisse au lecteur le soin de vérifier que cet ensemble ordonné est bien
+  une algèbre de Boole avec les constructeurs induits par
+  $\top, \bot, \land, \lor, \lnot$.
+
+  La théorie $\mathcal T$ induit sur $\mathcal L(\Sigma)$ une partie vérifiant
+  la propriété d'intersection finie, et la théorie $\vclose{\mathcal T}$ est
+  ainsi un filtre propre : on peut donc grâce au \cref{thm.ultrafilter.lemma}
+  trouver un ultrafiltre $\mathcal S$ contenant $\vclose{\mathcal T}$.
+
+  Soit alors la théorie $\mathcal T' = \bigcup\mathcal S$, qui contient donc
+  toutes les formules appartenant à une classe d'équivalence de $\mathcal S$.
+  On remarque que $\mathcal T'$ est close par $\vDash$, donc puisque
+  $\overline\bot \notin\mathcal S$, cela signifie que $\bot\notin\mathcal T'$.
+  Il nous reste à vérifier que $\mathcal T'$ est complète : pour toute
+  formule $\varphi$, on sait que $\varphi\lor\lnot\varphi \in \mathcal T'$, donc
+  $\overline{\varphi}\lor\overline{\lnot\varphi}\in\mathcal S$, mais
+  comme $\mathcal S$ est un ultrafiltre, il est en particulier premier. On
+  en déduit que soit $\overline\varphi \in \mathcal S$, soit
+  $\overline{\lnot\varphi}\in \mathcal S$ : dans le premier cas,
+  $\varphi\in \mathcal T'$ et dans le deuxième cas,
+  $\lnot\varphi\in \mathcal T'$. Ainsi pour toute formule $\varphi$, soit
+  $\varphi\in \mathcal T'$ soit $\lnot\varphi\in \mathcal T'$ (c'est donc en
+  particulier encore le cas pour $\vclose{\mathcal T'} = \mathcal T'$).
+
+  Donc il existe une théorie complète $\mathcal T'$ qui contient la théorie
+  $\mathcal T$.
+\end{proof}

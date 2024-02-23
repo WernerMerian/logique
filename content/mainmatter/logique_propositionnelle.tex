@@ -6,7 +6,7 @@
 \lettrine{P}{our} commencer l'étude de la logique, nous allons étudier sa forme
 la plus élémentaire : la logique propositionnelle. Lorsque l'on écrit une phrase
 mathématique, disons par exemple
-\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \text{ or }
+\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \text{ ou }
 (\exists m \in \mathbb N, n = 2 \times m + 1)\]
 on peut séparer plusieurs parties :
 \begin{itemize}
@@ -284,18 +284,18 @@ d'abord que ces trois principes sont bien équivalents.
     $\mathcal P$ est contradictoire si et seulement s'il est finiment
     contradictoire.
   \item\label{enum.compac.prop3} pour tout $\mathcal P\subseteq\Prop$ et
-    $P\in\Prop$, $\mathcal P\vDash P$ si et seulement si pour tout
-    $Q\in\mathcal P$, $Q\vDash P$.
+    $P\in\Prop$, $\mathcal P\vDash P$ si et seulement s'il existe
+    $F\subfin \mathcal P$ tel que $F\vDash P$.
   \end{enumerate}
 \end{proposition}
 
 \begin{proof}
-  Pour commencer, remarquons qu'un ensemble satisfiable est finiment satisfiable
-  et qu'un ensemble finiment contradictoire est contradictoire, et que si pour
-  tout $Q\in\mathcal P, Q\vDash P$ alors $\mathcal P\vDash Q$ (une valuation
-  satisfaisant $\mathcal P$ satisfera tous les $Q\in\mathcal P$). Il nous suffit
-  donc de travailler sur un seul sens de l'équivalence à chaque fois. Nous allons
-  maintenant montrer
+  Pour commencer, remarquons qu'un ensemble satisfiable est finiment satisfiable,
+  qu'un ensemble finiment contradictoire est contradictoire, et que s'il existe
+  $F\subfin \mathcal P$ tel que $F\vDash P$, alors pour tout environnement $\rho$
+  tel que $\rho\models \mathcal P$, on a en particulier $\rho\models F$ et donc
+  $\rho\models P$. Il nous suffit donc de travailler sur un seul sens de
+  l'équivalence à chaque fois. Nous allons maintenant montrer
   $\ref{enum.compac.prop1}\implies\ref{enum.compac.prop2}\implies
   \ref{enum.compac.prop3}\implies\ref{enum.compac.prop1}$ :
   \begin{itemize}
@@ -307,21 +307,31 @@ d'abord que ces trois principes sont bien équivalents.
     en utilisant \ref{enum.compac.prop1}, on en déduit qu'il existe une valuation
     $\rho\models \mathcal P$. Pourtant $\mathcal P$ est contradictoire : c'est
     une absurdité. Ainsi, par l'absurde, on en déduit que $\mathcal P$ est
-    finiment contradictoire. A FINIR
+    finiment contradictoire.
   \item Supposons \ref{enum.compac.prop2} et montrons \ref{enum.compac.prop3}.
-    Soit $\mathcal P\subseteq\Prop, P\in\Prop$ tels que $\mathcal P\vDash P$.
-    Montrons que pour tout $Q\in\mathcal P,Q\vDash P$. Supposons par l'absurde
-    qu'il existe $Q\in\mathcal P$ tel que $Q\not\vDash P$. On trouve alors un
-    environnement $\rho$ tel que $\rho\models Q$ et $\rho\not\models P$.
+    Soient $\mathcal P\subseteq\Prop, P\in\Prop$ tels que $\mathcal P\vDash P$.
+    Montrons qu'il existe $F\subfin\mathcal P$, tel que $F\vDash P$. Comme
+    $\mathcal P\vDash P$, on en déduit que $\mathcal P \cup \{\lnot P\}$ est
+    contradictoire. Ainsi, par \ref{enum.compac.prop2}, on trouve un ensemble
+    $F\subfin \mathcal P \cup \{\lnot P\}$ contradictoire. Si $F$ ne contient pas
+    $\lnot P$, alors $F\vDash P$ est vérifié par vacuité de la condition.
+    Si $F = F' \sqcup \{\lnot P\}$, alors pour tout $\rho$ tel que
+    $\rho\models F'$, $\rho\not\models \lnot P$ donc $\rho\models P$, d'où
+    $F'\vDash P$ et $F'\subfin \mathcal P$.
   \item Supposons \ref{enum.compac.prop3} et montrons \ref{enum.compac.prop1}.
     Soit $\mathcal P\subseteq\Prop$ un ensemble finiment satisfiable, montrons
-    que $\mathcal P$ est satisfiable. Soit A FINIR
+    que $\mathcal P$ est satisfiable. Par l'absurde, supposons que $\mathcal P$
+    n'est pas satisfiable. Cela signifie que $\mathcal P\vDash \bot$ : par
+    \ref{enum.compac.prop3} on trouve donc $F\subfin \mathcal P$ tel que
+    $F\vDash \bot$ : $F$ est donc contradictoire, ce qui contredit le fait que
+    $\mathcal P$ est finiment satisfiable. Par l'absurde, on en déduit que
+    $\mathcal P$ est satisfiable.
   \end{itemize}
 \end{proof}
 
 Il ne nous reste plus qu'à prouver le résultat en lui-même.
 
-\begin{theorem}[Compacité de la logique propositionnelle]
+\begin{theorem}[Compacité de la logique propositionnelle]\label{thm.compac.prop}
   Pour tout $\mathcal P\subseteq\Prop$, si $\mathcal P$ est finiment satisfiable
   alors $\mathcal P$ est satisfiable.
 \end{theorem}
@@ -408,6 +418,17 @@ $\vdash$.
     \AxiomC{$\Gamma\vdash \Delta$}
     \RightLabel{rw}
     \UnaryInfC{$\Gamma\vdash \Delta,P$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,\top\vdash \Delta$}
+    \RightLabel{$\top$}
+    \UnaryInfC{$\Gamma\vdash \Delta$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash\Delta,\bot$}
+    \RightLabel{$\bot$}
+    \UnaryInfC{$\Gamma\vdash \Delta$}
     \DisplayProof
 
     \vspace{0.5cm}
@@ -611,3 +632,55 @@ sur le résultat à prouver.
 
 On en déduit donc, comme $\bigwedge P = P$ et $\bigvee Q = Q$, que
 $P\vdash Q \implies P \vDash Q$.
+
+\begin{remark}
+  En utilisant à la fois le théorème de compacité et le théorème de correction,
+  on en déduit que pour $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si l'on
+  trouve $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$, alors
+  $\mathcal P \vDash P$.
+
+  On peut donc définir la relation
+  $\vdash \subseteq \powerset(\Prop)\times \Prop$ par
+  \[\mathcal P\vdash P \defeq \exists \Gamma\in\List(\mathcal P),
+  \Gamma\vdash P\]
+  et les résultats précédents prouvent que $\vdash\subseteq\vDash$. Nous allons
+  maintenant montrer le sens réciproque : $\vDash\subseteq\vdash$. Ce résultat
+  s'appelle la complétude.
+\end{remark}
+
+\begin{theorem}[Complétude du calcul des séquents]
+  Pour tous $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si $\mathcal P\vDash P$
+  alors il existe $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$.
+\end{theorem}
+
+\begin{proof}
+  Tout d'abord, par théorème de compacité, il nous suffit de traiter le cas fini
+  : pour $\Gamma\in\List(\Prop)$, en prenant $F_\Gamma$ l'ensemble de formules
+  associé, si $F_\Gamma\vDash P$ alors $F\vdash P$.
+
+  On définit la relation $\vdash^*$ de façon analogue à $\vdash$ mais en ajoutant
+  la règle suivante :
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{Ax$^\dagger$}
+    \UnaryInfC{$x_1,\ldots,x_n\vdash^* y_1,\ldots,y_p$}
+  \end{prooftree}
+  où $x_1,\ldots,x_n,y_1,\ldots,y_n$ sont des variables propositionnelles toutes
+  deux à deux distinctes.
+
+  On prouve maintenant que pour tous $\Gamma,\Delta\in\List(\Prop)$,
+  $\Gamma\vdash^*\Delta$. A FAIRE
+
+  Maintenant, prouvons que si $\Gamma\vdash^*\Delta$ et $\Gamma\not\vdash\Delta$,
+  alors $\Gamma\not\vDash\Delta$. On procède par induction sur $\vdash^*$.
+  A FAIRE
+
+  Ainsi, comme $\Gamma\vdash^*\Delta$ est toujours vérifié, on en déduit que
+  $\Gamma\not\vdash\Delta\implies\Gamma\not\vDash\Delta$, d'où par contraposée
+  $\Gamma\vDash\Delta\implies\Gamma\vdash\Delta$.
+\end{proof}
+
+Ainsi, nous avons un système syntaxique $\vdash$ permettant d'entièrement
+caractériser la relation $\vDash$, qui est une relation sémantique (elle relie
+les propositions par leur sens, là où $\vdash$ n'est qu'un système formel,
+encodable par exemple sur un ordinateur).

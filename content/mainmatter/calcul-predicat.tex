@@ -1,0 +1,1520 @@
+\chapter{Calcul des prédicats}
+\label{chp.logpred}
+
+\minitoc
+
+\lettrine{L}{e} premier but de la logique mathématique est de rendre compte du
+langage mathématique. A ce titre, la logique propositionnelle est clairement
+insuffisante, et nous l'avons déjà présentée comme une simplification du langage
+mathématique habituel. Dans ce chapitre, nous allons nous intéresser à la
+formalisation de ce langage mathématique habituel, qui est le calcul des
+prédicats de la logique du premier ordre. Le terme prédicat désigne le fait que
+nos propositions dépendent de termes, qui représentent des objets mathématiques.
+L'expression \og logique du premier ordre\fg{} désigne la capacité d'expression
+de nos propositions : celles-ci ne peuvent parler que des objets mathématiques
+désignés préalablement par l'univers de discours. Par contraste, la logique du
+deuxième ordre permet de parler, en plus de ces objets, des propositions
+elles-mêmes : on peut écrire par exemple $\forall P\in\Prop, P\to P$.
+
+Nous nous attarderons d'abord sur la définition, à partir d'une signature du
+premier ordre, des termes et des formules, ainsi que les notions syntaxiques de
+variables libres, liées et de substitution. Ensuite, nous introduirons les
+notions les plus élémentaires de la théorie des modèles, et la relation de
+satisfaction $\models$. Enfin, comme dans le chapitre précédent, nous allons
+définir une syntaxe pour le calcul des prédicats. La différence, cependant,
+est que nous prouverons le théorème de compacité à partir de la complétude.
+
+Ce chapitre peut être vu comme la base commune de la théorie de la démonstration
+et de la théorie des modèles. A ce titre, nous donnerons avant tout les
+définitions des concepts importants, mais n'allons pas nous attarder sur ceux-ci,
+puisque nous les reverrons dans des chapitres dédiés. En particulier nous allons
+donner un formalisme pour la syntaxe du calcul des prédicats et un seul, alors
+que la partie dédiée à la théorie de la démonstration donnera un résultat plus
+général sur toute une famille de systèmes de preuves, et présentera plusieurs
+formalismes.
+
+On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
+
+\section{Signatures, termes et formules}
+
+\subsection{Définition d'une signature}
+
+Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
+\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \lor
+(\exists m \in \mathbb N, n = 2 \times m + 1)\]
+Remarquons tout d'abord que l'on remplace \og ou\fg{} par le symboles $\lor$,
+maintenant que nous connaissons le formalisme de la logique propositionnelle.
+Il nous reste cependant plusieurs points à définir formellement : tout d'abord,
+la phrase précédente contient des termes, comme $2$ ou $n$. Ceux-ci sont d'une
+nature différente d'une variable propositionnelle par exemple, puisque dans le
+premier cas, les formules ne relient pas directement des termes, mais des
+relations entre termes. Nous devons donc tout d'abord construire un ensemble de
+termes, qui représenterons les objets dont les formules parleront. Cependant,
+comme nous cherchons en premier lieu à élaborer des phrases finies, nous
+cherchons aussi à limiter les symboles que nous utiliserons. Cela s'explique par
+le fait que pour lire une phrase, il est nécessaire de savoir à l'avance quels
+sont les symboles constitutifs de ce langage. En particulier, nous devons savoir
+ce que signifie chaque symbole.
+
+\begin{definition}[Signature]
+  Une signature, ou langage, du premier ordre, est un quadruplet $\mathcal L =
+  (\mathcal F,\mathcal R, \alpha,\beta)$ où $\alpha : \mathcal F \to \mathbb N$
+  et $\beta : \mathcal R \to \mathbb N$. On appelle les éléments de $\mathcal F$
+  les symboles de fonction et les éléments de $\mathcal R$ les symboles de
+  relation. Pour un symboles de fonction $f\in\mathcal F$, $\alpha(f)$ est appelé
+  l'arité de $f$, et de même $\beta(r)$ est l'arité de $r$ pour $r\in\mathcal R$.
+  Si $f\in\mathcal F$ est d'arité $0$, on dit que c'est une constante.
+\end{definition}
+
+\begin{example}
+  Un premier exemple de langage est le langage des groupes, qui est
+  \[\mathcal L_{\mathrm{Grp}} \defeq \{e^0,\times^2,((-)^{-1})^1\}\]
+  où l'on indique par un exposant l'arité d'un symbole, et où tous les symboles
+  sont des symboles de fonction. De même, comme on préfère la notation additive
+  pour les groupes abéliens, on peut aussi définir
+  \[\mathcal L_{\mathrm{Ab}} \defeq \{0^0,+^2,-^1\}\]
+\end{example}
+
+\begin{example}
+  Un autre exemple est le langage des anneaux :
+  \[\mathcal L_{\mathrm{Ring}}\defeq \{0^0,1^0,+^2,\times^2,-^1\}\]
+\end{example}
+
+\begin{example}
+  Un autre exemple classique de langage est celui de l'arithmétique :
+  \[\mathcal L_{\mathrm{Arith}}\defeq \{0^0, S^1, +^2,\times^2,\leq^2\}\]
+  où $\leq$ est un symbole de relation, et les autres symboles sont des symboles
+  de fonction.
+\end{example}
+
+L'exemple du langage de l'arithmétique permet de voir ce que nous entendons par
+termes : avec ce langage, nous avons envie de pouvoir écrire $0$ (qui est une
+constante) mais aussi $1$ défini par $S\;0$ ou $S\;S\;0$. De plus, il doit être
+possible d'écrire $(S\;S\;0) + (S\;0)$ par exemple : l'écriture est donc
+naturellement donnée comme un ensemble inductif, où les arités des symboles de
+fonction nous donnent les arités des constructeurs de l'ensemble.
+
+\subsection{Termes et formules}
+
+\begin{definition}[Termes]
+  Soit une signature
+  $\Sigma = (\mathcal F_\Sigma,\mathcal R_\Sigma, \alpha_\Sigma,\beta_\Sigma)$,
+  on définit $\Term(\Sigma)$ comme l'ensemble inductif engendré par
+  $\mathcal F_\Sigma\cup\Var$ où l'arité de $f\in\mathcal F_\Sigma$ est
+  $\alpha_\Sigma(f)$ et où l'arité de $x\in \Var$ est $0$. On peut représenter
+  cet ensemble par la grammaire suivante :
+  \[t,u ::= x \mid f(t_1,\ldots,t_{\alpha(f)})\]
+  où $x\in \Var$ et $f\in \mathcal F_\Sigma$.
+\end{definition}
+
+Ainsi, les termes écrits dans notre langage vont représenter les objets
+mathématiques sur lesquels porteront nos formules. Ces formules sont définies par
+induction, d'une façon analogue aux propositions de la logique propositionnelle.
+En l'absence de variables propositionnelles, les éléments atomiques des formules
+seront construits à partir des termes.
+
+\begin{definition}[Proposition atomique]
+  Soit une signature $\Sigma$. On définit l'ensemble $\Atom(\Sigma)$ des
+  propositions atomiques par
+  \begin{multline*}
+    \Atom(\Sigma) \defeq \{(r,t_1,\ldots,t_k)\mid r\in\mathcal R_\Sigma,
+    (t_1,\ldots,t_k) \in (\Term(\Sigma))^k, k = \beta_\Sigma(r)\}\\
+    \cup\{(``=",t,u)\mid t,u\in \Term(\Sigma)\}
+  \end{multline*}
+  où $=$ est un symbole n'appartenant pas à $\mathcal R_\Sigma$.
+\end{definition}
+
+\begin{remark}
+  L'égalité est une relation, mais celle-ci n'appartient pas formellement au
+  langage, car son comportement est donné par les règles logiques, de la même
+  façon que $\lor$ et $\land$ ont leur sens imposés. Certains auteurs considèrent
+  au contraire que $=$ doit être ajouté au langage, en tant que symbole de
+  relation binaire, et d'autres font la différence entre un langage égalitaire
+  (incluant le symbole $=$) et un langage non égalitaire. Notre choix est motivé
+  à la fois par la simplicité et par l'expressivité : l'égalité est clairement
+  utile pour formaliser les mathématiques et raisonner dessus, mais chercher à
+  préciser quand nous l'utilisons ne l'est pas, étant donné qu'elle sera toujours
+  présente.
+\end{remark}
+
+Nous pouvons maintenant définir l'ensemble des formules sur une signature donnée.
+
+\begin{definition}[Formules]
+  Soit une signature $\Sigma$. On définit l'ensemble $\Formula(\Sigma)$ par
+  la grammaire suivante :
+  \[\varphi,\psi ::= a\mid \top\mid\bot\mid\lnot\varphi\mid\varphi\lor\psi\mid
+  \varphi\land\psi\mid \varphi\to\psi\mid\forall x,\varphi\mid\exists x,\varphi\]
+  où $a\in \Atom(\Sigma)$ et $x\in \Var$.
+\end{definition}
+
+\subsection{Variables et substitution}
+
+Maintenant que les formules sont définies, nous voulons définir les opérations
+basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
+élémentaires liées aux variables.
+
+\begin{definition}[Variable libre, formule close]
+  On définit la fonction qui étant donné un terme (respectivement une formule),
+  retourne l'ensemble des variables libres y apparaissant. La fonction $\VL$ est
+  définie par induction sur $\Term(\Sigma)$ (respectivement $\Formula(\Sigma)$)
+  par les équations suivantes :
+  \begin{itemize}
+  \item si $t = x\in Var$, alors $\VL(t) = \{x\}$.
+  \item si $t = f(t_1,\ldots,t_n)$ où $f\in \mathcal F_\Sigma$,
+    $t_1,\ldots,t_n\in\Term(\Sigma)$, alors
+    $\displaystyle\VL(t) =\bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varphi = r(t_1,\ldots,t_n)$ est une proposition atomique où
+    $r\in\mathcal R_\Sigma, t_1,\ldots,t_n\in\Term(\Sigma)$, alors
+    $\displaystyle\VL(\varphi) = \bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varphi = \top$, alors $\VL(\varphi) = \varnothing$.
+  \item si $\varphi = \bot$, alors $\VL(\varphi) = \varnothing$.
+  \item si $\varphi = \lnot \psi$, alors $\VL(\varphi) = \VL(\psi)$.
+  \item si $\varphi = \psi\lor\chi$, $\varphi = \psi\land \chi$ ou
+    $\varphi = \psi\to\chi$, alors $\VL(\varphi) = \VL(\psi)\cup\VL(\chi)$.
+  \item si $\varphi = \forall x, \psi$ ou $\varphi = \exists x, \psi$, alors
+    $\VL(\varphi) = \VL(\psi)\backslash\{x\}$.
+  \end{itemize}
+  On dit que $\varphi$ est une formule close si $\VL(\varphi) =\varnothing$.
+  On note par $\Clos(\Sigma)$ l'ensemble des formules closes sur la signature
+  $\Sigma$. De même, un terme $t$ est appelé un terme clos s'il n'a pas de
+  variables libres (c'est-à-dire s'il n'a pas de variable).
+\end{definition}
+
+\begin{remark}\label{rmk.alpha}
+  Une variable non libre est dite liée : les variables liées sont muettes, elles
+  n'ont pas d'importance en elle-même et seulement sur le quantificateur qui les
+  lie. On considère implicitement que si $\varphi$ et $\psi$ diffèrent seulement
+  en remplaçant la variable liée par un quantificateur et les variables que ce
+  quantificateur lie, alors $\varphi = \psi$. Par exemple, $\forall x, x = x$ et
+  $\forall y, y = y$ sont identifiées.
+\end{remark}
+
+Comme pour la logique propositionnelle, la valeur de vérité d'une formule va
+dépendre de la valeur associée aux variables libres. Cependant, pour l'instant,
+nous n'avons pas de système clair d'évaluation : nous verrons comment évaluer
+une formule quand nous aborderons la notion de modèle. Au niveau syntaxique,
+cependant, nous pouvons déjà introduire la substitution, que l'on peut voir comme
+une évaluation syntaxique : on remplace une variable libre par un terme.
+
+\begin{definition}[Substitution]
+  Soient une signature $\Sigma$, un terme $t\in \Term(\Sigma)$ et une variable
+  $x\in \Var$. On définit les deux fonctions
+  \[\begin{array}{rcccc}
+  -[t/x] &: & \Term(\Sigma) & \longrightarrow & \Term(\Sigma)\\
+  & & u & \longmapsto & u[t/x] \\
+  \\
+  -[t/x] &: & \Formula(\Sigma) & \longrightarrow & \Formula(\Sigma)\\
+  & & \varphi & \longmapsto & \varphi[t/x]
+  \end{array}\]
+  par induction sur la structure de $\Term(\Sigma)$ (respectivement sur la
+  structure de $\Formula(\Sigma)$) :
+  \begin{itemize}
+  \item si $u = x$, alors $u[t/x] = t$.
+  \item si $u = y\in Var$ avec $y \neq x$, alors $u[t/x] = y$.
+  \item si $u = f(u_1,\ldots,u_n)$, alors $u[t/x] = f(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varphi = r(u_1,\ldots,u_n)$, alors
+    $\varphi[t/x] = r(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varphi = \top$ alors $\varphi[t/x] = \top$.
+  \item si $\varphi = \bot$ alors $\varphi[t/x] = \bot$.
+  \item si $\varphi = \lnot \psi$ alors $\varphi[t/x] = \lnot \psi[t/x]$.
+  \item si $\varphi = \psi \lor \chi$ alors
+    $\varphi[t/x] = \psi[t/x]\lor\chi[t/x]$.
+  \item si $\varphi = \psi \land \chi$ alors
+    $\varphi[t/x] = \psi[t/x]\land\chi[t/x]$.
+  \item si $\varphi = \psi \to \chi$ alors
+    $\varphi[t/x] = \psi[t/x]\to\chi[t/x]$.
+  \item si $\varphi = \forall z, \psi$ où $z\notin \VL(t)$, alors
+    $\varphi[t/x] = \forall z, \psi[t/x]$.
+  \item si $\varphi = \exists z, \psi$ où $z\notin \VL(t)$, alors
+    $\varphi[t/x] = \exists z, \psi[t/x]$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  La condition de $z\notin\VL(t)$ dans les derniers cas peut toujours être
+  réalisée quitte à renommer la variable liée $z$ : puisque $\Var$ est infini
+  et que $\VL(t)$ est fini, on peut toujours trouver $a\notin\VL(t)$ et remplacer
+  $\forall z, \psi$ par $\forall a, \psi[a/z]$ en utilisant l'identification de
+  la \cref{rmk.alpha}.
+
+  Si l'on veut être parfaitement formel, il conviendrait de procéder dans l'autre
+  sens : on définit d'abord la substitution comme donnée précédemment, puis on
+  définit la relation $\varphi \equiv \psi$ engendrée par
+  $\forall x, \psi \equiv \forall y, \psi[y/x]$ et
+  $\exists x,\psi \equiv\exists y, \psi[y/x]$ dont on prouve qu'elle est une
+  relation d'équivalence, puis on définit le \og vrai\fg{} ensemble
+  $\Formula(\Sigma)$ par $\Formula(\Sigma)/ \equiv$ (cela n'est pas nécessaire
+  pour $\Term(\Sigma)$ puisque toute variable est libre, dans un terme), et que
+  la fonction $-[t/x]$ est bien définie sur ce quotient. Ce processus est
+  évidemment plus laborieux et n'apporte rien à la compréhension, c'est pourquoi
+  nous ne le détaillons pas ici.
+\end{remark}
+
+\begin{exercise}
+  Soit $x\in \Var$, $t\in\Term(\Sigma)$ et $\varphi\in\Clos(\Sigma)$ pour une
+  signature $\Sigma$ quelconque. Montrer que $\varphi[t/x] = \varphi$.
+\end{exercise}
+
+\begin{exercise}
+  Soient $t,u,v\in\Term(\Sigma)$ et $x,y\in\Var$, montrer que
+  \[t[u/x][v/y] = (t[v/y])[u[v/y]/x]\]
+\end{exercise}
+
+\section{Bases de théorie des modèles}
+
+Maintenant que nous avons défini la syntaxe élémentaire, nous allons lui donner
+un sens : une sémantique. Dans le cas de la logique propositionnelle, le sens
+d'une proposition était simple à définir, puisqu'il s'agissait d'une valeur de
+vérité en fonction des variables propositionnelles. Dans le cas de la logique du
+premier ordre, les propositions parlent d'objets, et il faut donc fixer un
+univers ambiant sur lequel porte le discours donné par les formules. Par exemple,
+en prenant le langage de l'arithmétique, le terme $S\;S\;0 + S\;S\;0$ et en
+considérant $0$ comme l'entier naturel $0$, $S$ comme la fonction
+$n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les entiers, le terme
+devient le terme $4$, mais on peut imaginer une autre interprétation de ce terme
+donnant par exemple $5$ ou tout autre nombre.
+
+\subsection{Structure et interprétation}
+
+Nous travaillons donc sur l'interprétation d'une formule en deux parties : tout
+d'abord, nous introduisons la notion de structure, qui offre une interprétation
+claire du langage dans lequel la formule est écrite, et c'est seulement à partir
+de cette interprétation que l'on peut évaluer une formule. Cela modifie notre
+notion de vérité : les formules closes prennent une plus grande importance que
+le reste des formules, mais il faut quantifier sur des structures en
+contrepartie.
+
+\begin{definition}[Structure]
+  Soit une signature $\Sigma$. On appelle $\Sigma$-structure (ou simplement
+  structure) $\mathcal M$ un triplet
+  $(|\mathcal M|,-^{\mathcal M}_\mathcal F,-^{\mathcal M}_\mathcal R)$
+  (on notera les deux $-^{\mathcal M}$, sans indice) où :
+  \begin{itemize}
+  \item $|\mathcal M|$ est un ensemble.
+  \item pour chaque $f\in \mathcal F_\Sigma$ d'arité $n$,
+    $f^{\mathcal M} : |\mathcal M|^n \to |\mathcal M|$.
+  \item pour chaque $r\in\mathcal R_\Sigma$ d'arité $n$,
+    $r^{\mathcal M} \subseteq |\mathcal M|^n$.
+  \end{itemize}
+
+  On identifie $|\mathcal M|^0 \to |\mathcal M|$ à $|\mathcal M|$ : un symbole
+  de constante est associé directement à un élément.
+\end{definition}
+
+\begin{example}
+  En reprenant les différents langages définis précédemments, on peut voir que,
+  par exemple, $(\mathbb Z,0,+,-)$ est une structure sur le langage des groupes.
+  C'est même, en incluant $1$ et $\times$, une structure sur le langage des
+  anneaux. De même, $(\mathbb N,0,n\mapsto n + 1,+,\times,\leq)$ est une
+  structure sur le langage de l'arithmétique.
+\end{example}
+
+Avec ces nouveaux exemples, on voit qu'il devient naturel d'interpréter dans la
+structure $(\mathbb N,0,n\mapsto n+1,+,\times,\leq)$ le terme $S\;S\;0 + S\;S\;0$
+par l'élément $4\in\mathbb N$. Nous pouvons donc généraliser ce résultat. Pour
+cela, on définit d'abord la notion d'environnement, puis de valuation étant donné
+un environnement.
+
+\begin{definition}[Environnement]
+  Soit une signature $\Sigma$ et une structure $\mathcal M$. Un environnement
+  $\rho$ est une fonction partielle $\rho : \Var\partialto |\mathcal M|$. On note
+  $\mathcal E$ l'ensemble des environnements. Etant donnés un élément
+  $m\in|\mathcal M$, une variable $x$ et un environnement $\rho$, on note
+  $\rho[x \mapsto m]$ l'environnement coïncidant avec $\rho$ sur
+  $\Var\backslash\{x\}$ et valant $m$ en $x$.
+\end{definition}
+
+\begin{definition}[Interprétation, valuation]
+  Soit une signature $\Sigma$, une structure $\mathcal M$ et un environnement
+  $\rho$. On définit par induction sur $t$ (respectivement $\varphi$), où
+  $\VL(t)\subseteq\dom(\rho)$ (respectivement $\VL(\varphi)\subseteq\dom(\rho)$)
+  les fonctions suivantes :
+  \[\begin{array}{rcccc}
+  -_\rho^\mathcal M & : & \Term(\Sigma) & \longrightarrow & |\mathcal M|\\
+  & & t & \longmapsto & t^{\mathcal M}_\rho\\
+  \\
+  \Val_\rho & : & \Formula(\Sigma) & \longrightarrow & \{0,1\}\\
+  & & \varphi & \longmapsto & \Val_\rho(\varphi)
+  \end{array}\]
+
+  \begin{itemize}
+  \item si $t = x \in \Var$, alors $t^\mathcal M_\rho = \rho(x)$.
+  \item si $t = f(t_1,\ldots,t_n)$, alors
+    $t_\rho^\mathcal M =
+    f^\mathcal M((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
+  \item si $\varphi = r(t_1,\ldots,t_n)$ alors
+    $\Val_\rho(\varphi) =
+    \chi_{r^\mathcal M}((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
+    On interprète le symbole $=$ par la partie $\{(m,m)\mid m\in |\mathcal M|\}$.
+  \item si $\varphi = \top$, alors $\Val_\rho(\varphi) = 1$.
+  \item si $\varphi = \bot$, alors $\Val_\rho(\varphi) = 0$.
+  \item si $\varphi = \lnot \psi$, alors
+    $\Val_\rho(\varphi) = 1 - \Val_\rho(\psi)$.
+  \item si $\varphi = \psi \lor \chi$, alors
+    $\Val_\rho(\varphi) = \max(\Val_\rho(\psi),\Val_\rho(\chi))$
+  \item si $\varphi = \psi \land \chi$, alors
+    $\Val_\rho(\varphi) = \min(\Val_\rho(\psi),\Val_\rho(\chi))$
+  \item si $\varphi = \psi \to \chi$, alors
+    $\Val_\rho(\varphi) = \max(1 - \Val_\rho(\psi),\Val_\rho(\chi))$
+  \item si $\varphi = \forall x, \psi$, alors
+    $\displaystyle\Val_\rho(\varphi) =
+    \min_{m \in |\mathcal M|}(\Val_{\rho[x\mapsto m]}(\psi))$
+  \item si $\varphi = \exists x, \psi$, alors
+    $\displaystyle\Val_\rho(\varphi) =
+    \max_{m \in |\mathcal M|}(\Val_{\rho[x\mapsto m]}(\psi))$
+  \end{itemize}
+  
+  Si $t$ est un terme clos, alors $t^{\mathcal M}$ est un élément de
+  $|\mathcal M|$. Si $\varphi$ est une formule close, alors $\Val(\varphi)$ est
+  un élément de $\{0,1\}$. Ces deux éléments sont obtenus en interprétant le
+  terme (respectivement la formule) dans le contexte vide, ou de façon
+  équivalente dans n'importe quel contexte.
+\end{definition}
+
+Enfin, donnons un résultat statuant que la substitution et l'interprétation
+commutent.
+
+\begin{proposition}\label{prop.comm.subst.env}
+  Soit une signature $\Sigma$, une structure $\mathcal M$, un environnement
+  $\rho$, une variable $x$, deux termes $t,u$ et une formule $\varphi$. Alors on
+  a les deux égalités suivantes :
+  \[(t[u/x])_\rho^\mathcal M = t^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]} \qquad
+  \Val_\rho(\varphi[u/x]) = \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\varphi)\]
+\end{proposition}
+
+\begin{proof}
+  On montre la première égalité par induction sur $t$, et l'autre par induction
+  sur $\varphi$ :
+  \begin{itemize}
+  \item si $t = x$ alors $(t[u/x])_\rho^\mathcal M = u^\mathcal M_\rho$ d'où
+    l'égalité.
+  \item si $t = y$ où $y\in\Var$ et $y\neq x$, alors
+    $(t[u/x])_\rho^\mathcal M = \bot$ si $y\notin\dom(\rho)$, ce qui est aussi
+    la valeur de $y^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]}$, ou bien
+    $\rho(y)$, qui est là encore la même valeur pour l'autre partie de
+    l'équation.
+  \item si $t = f(t_1,\ldots,t_n)$ où pour tout $i\in\{1,\ldots,n\}$,
+    $(t_i[u/x])^\mathcal M_\rho = (t_i)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]}$, alors
+    \begin{align*}
+      (t[u/x])^\mathcal M_\rho &= f((t_1[u/x])^\mathcal M_\rho,\ldots,
+      (t_n[u/x])^\mathcal M_\rho)\\
+      &= f((t_1)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]},\ldots,
+      (t_n)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]})\\
+      &= t^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]}
+    \end{align*}
+  \item si $\varphi = \top$ ou $\varphi = \bot$, l'égalité est directe.
+  \item si $\varphi = r(t_1,\ldots,t_n)$ est une proposition atomique, alors
+    \begin{align*}
+      \Val_\rho(r(t_1,\ldots,t_n)[u/x])
+      &= \Val_\rho(r(t_1[u/x],\ldots,t_n[u/x]))\\
+      &= \chi_r((t_1[u/x])^\mathcal M_\rho,\ldots,(t_n[u/x])^\mathcal M_\rho)\\
+      &= \chi_r((t_1)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]},\ldots,
+      (t_n)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]})\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(r(t_1,\ldots,t_n))
+    \end{align*}
+  \item si $\varphi = \lnot \psi$, alors
+    \begin{align*}
+      \Val_\rho((\lnot \psi)[u/x]) &= \Val_\rho(\lnot (\psi[u/x]))\\
+      &= 1 - \Val_\rho(\psi[u/x])\\
+      &= 1 - \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi)\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\lnot\psi)\\
+    \end{align*}
+  \item si $\varphi = \psi \lor \chi$, alors
+    \begin{align*}
+      \Val_\rho((\psi \lor \chi)[u/x]) &= \Val_\rho(\psi[u/x] \lor \chi[u/x])\\
+      &= \max (\Val_\rho(\psi[u/x]),\Val_\rho(\chi[u/x]))\\
+      &= \max (\Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
+      \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\lor \chi)
+    \end{align*}
+  \item si $\varphi = \psi \land \chi$, alors
+    \begin{align*}
+      \Val_\rho((\psi \land \chi)[u/x]) &= \Val_\rho(\psi[u/x] \land \chi[u/x])\\
+      &= \min (\Val_\rho(\psi[u/x]),\Val_\rho(\chi[u/x]))\\
+      &= \min (\Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
+      \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\land \chi)
+    \end{align*}
+  \item si $\varphi = \forall y, \psi$ (sans perte de généralité,
+    $y\notin \VL(u)$), alors
+    \begin{align*}
+      \Val_\rho((\forall y,\psi)[u/x]) &= \Val_\rho(\forall y,\psi[u/x])\\
+      &= \min_{m\in|\mathcal M|}(\Val_{\rho[y \mapsto m]}(\psi[u/x]))\\
+      &= \min_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m]
+        [x\mapsto u^\mathcal M_{\rho[y\mapsto m]}]}(\psi))\\
+      &= \min_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m][x\mapsto u^\mathcal M_\rho]}(\psi))\\
+      &= \min_{m\in|\mathcal M|}(\Val_{\rho[x\mapsto u^\mathcal M_\rho][y\mapsto m]}(\psi))\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\forall y, \psi)
+    \end{align*}
+  \item si $\varphi = \exists y, \psi$ (sans perte de généralité,
+    $y\notin \VL(u)$), alors
+    \begin{align*}
+      \Val_\rho((\exists y,\psi)[u/x]) &= \Val_\rho(\exists y,\psi[u/x])\\
+      &= \max_{m\in|\mathcal M|}(\Val_{\rho[y \mapsto m]}(\psi[u/x]))\\
+      &= \max_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m]
+        [x\mapsto u^\mathcal M_{\rho[y\mapsto m]}]}(\psi))\\
+      &= \max_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m][x\mapsto u^\mathcal M_\rho]}(\psi))\\
+      &= \max_{m\in|\mathcal M|}(\Val_{\rho[x\mapsto u^\mathcal M_\rho][y\mapsto m]}(\psi))\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\exists y, \psi)
+    \end{align*}
+  \end{itemize}
+  D'où le résultat par induction.
+\end{proof}
+
+\subsection{Satisfaction, modèle}
+
+La notion de valuation permet de définir la relation de satisfaction, $\models$,
+d'une façon analogue à ce que nous avons fait pour la logique propositionnelle.
+
+\begin{definition}[Satisfaction]
+  Soit une signature $\Sigma$, une structure $\mathcal M$ et, une formule
+  $\varphi$ et un environnement $\rho$ tel que $\VL(\varphi)\subseteq\dom(\rho)$.
+  On définit $\mathcal M,\rho\models \varphi$ par
+  \[\mathcal M,\rho\models \varphi \defeq \Val_\rho(\varphi) = 1\]
+
+  Soit un ensemble $\mathcal F\subseteq\Formula(\Sigma)$ et un environnement
+  $\rho$ tel que $\forall \varphi\in\mathcal F, \VL(\varphi)\subseteq\dom(\rho)$.
+  On dit que $\mathcal M,\rho$ satisfont $\mathcal F$, ce que l'on écrit
+  $\mathcal M,\rho\models\mathcal F$, lorsque pour toute formule
+  $\varphi\in\mathcal F$, il est vrai que $\mathcal M,\rho\models \varphi$.
+
+  Dans le cas de formules closes, on écrira directement
+  $\mathcal M\models\varphi$ et $\mathcal M\models \mathcal F$.
+\end{definition}
+
+Cela permet alors de définir ce qu'est un modèle.
+
+\begin{definition}[Modèle]
+  Soit une signature $\Sigma$ et $\mathcal C\subseteq\Clos(\Sigma)$. On dit que
+  $\mathcal M$ est un modèle de $\mathcal C$ si $\mathcal M\models \mathcal C$.
+\end{definition}
+
+Un modèle ne se définit qu'avec un ensemble de formules closes. On pourrait
+imaginer une définition analogue avec une formule non close, mais faire cela
+signifie qu'au lieu de donner une structure, il faudrait donner une structure et
+un environnement en même temps. Le but des modèles est plutôt, ici, de construire
+une classe particulière de structure vérifiant certaines conditions que l'on peut
+exprimer au premier ordre.
+
+Un exemple simple est la formule
+\[\forall x,\forall y, x + y = y + x\]
+Les modèles de cette formule, sur le langage $\{+^2\}$, sont les magmas
+commutatifs (ensembles munis d'une loi de composition interne commutative) :
+l'intérêt ici est de pouvoir décrire parmi tous les magmas possibles ceux qui
+ont une lci commutative, et donc de le faire en quelque sorte uniformément parmi
+les structures, ce qui n'est pas le cas si les formules n'étaient pas closes.
+
+\subsection{Théories et conséquence logique}
+
+Cela mène naturellement à deux notions connexes : celle de théorie, et celle
+de conséquence logique. Une théorie permet de décrire des classes de modèles, et
+la conséquence logique permet de créer des liens entre les formules, de la même
+façon que nous avions $\vDash$ pour le calcul propositionnel.
+
+\begin{definition}[Théorie]
+  Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$, est
+  une partie $\mathcal T\subseteq\Clos(\Sigma)$.
+\end{definition}
+
+\begin{definition}[Conséquence logique, équivalence]
+  Soit un ensemble $\mathcal F \subseteq \Formula(\Sigma)$ et une formule
+  $F\in\Formula(\Sigma)$. On dit que $F$ est conséquence logique de $\mathcal F$,
+  ce que l'on écrit $\mathcal F \vDash F$, lorsque pour toute structure
+  $\mathcal M$, si $\mathcal M\models \mathcal F$ alors $\mathcal M\models F$.
+  Si deux formules $F$ et $G$ sont telles que $F\vDash G$ et $G\vDash F$, alors
+  $F$ et $G$ sont dites logiquement équivalentes, ce que l'on note $F\equiv G$.
+\end{definition}
+
+On peut relier ces deux notions par celle de théorie saturée.
+
+\begin{definition}[Théorie saturée, clôture par conséquence]
+  Soit une théorie $\mathcal T$ sur une signature $\Sigma$. On dit que
+  $\mathcal T$ est saturée si pour toute formule $A\in\Formula(\Sigma)$,
+  si $\mathcal T\vDash A$ alors $A\in \mathcal T$.
+
+  Pour une théorie $\mathcal T$, on définit sa clôture par conséquence, notée
+  $\vclose{\mathcal T}$, par
+  \[\vclose{\mathcal T} \defeq \{ A \in \Formula(\Sigma)
+  \mid \mathcal T \vDash A\}\]
+\end{definition}
+
+De plus, la conséquence logique permet directement de décrire une théorie
+\og fausse\fg{} : une telle théorie est une théorie dans laquelle la proposition
+fausse est considérée comme vraie. Au niveau des modèles, cela se traduit par le
+fait qu'il n'existe pas de modèle de la théorie, puisqu'un tel modèle associerait
+automatique à $\bot$ la valeur de vérité $0$.
+
+\begin{proposition}
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. Alors
+  $\mathcal T$ admet un modèle si et seulement si $\mathcal T \not\vDash \bot$.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $\mathcal T$ admette un modèle $\mathcal M$. Alors par définition
+  de $\Val$, $\Val(\bot) = 0$ donc $\mathcal M\not\models \bot$. On en déduit
+  que $\mathcal T\not\vDash\bot$.
+
+  Dans le sens réciproque et par contraposée, supposons que $\mathcal T$ n'admet
+  pas de modèle. Alors pour tout $\mathcal M$ tel que
+  $\mathcal M\models \mathcal T$, $\mathcal M\models \bot$, par vacuité de la
+  condition : on en déduit donc que $\mathcal T \vDash \bot$, donc que si
+  $\mathcal T \not\vDash\bot$, alors $\mathcal T$ a un modèle.
+\end{proof}
+
+\begin{definition}[Théorie cohérente, contradictoire]
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. On dit
+  que $\mathcal T$ est cohérente quand elle admet un modèle, et qu'elle est
+  contradictoire si elle n'admet pas de modèle. De façon équivalente,
+  $\mathcal T$ est cohérente si et seulement si elle n'est pas contradictoire,
+  et si et seulement si $\bot\notin\vclose{\mathcal T}$.
+\end{definition}
+
+On voit donc qu'une théorie ne doit pas pouvoir prouver trop de choses.
+Néanmoins, on peut vouloir une théorie la plus forte possible, qui reste malgré
+tout cohérente. Une telle théorie est une théorie complète : elle est une théorie
+dans laquelle si un énoncé est faux, alors sont contraire est vrai. Elle peut
+donc décider tout énoncé, et puisqu'elle est complète elle ne peut pas décider
+plus (sinon il serait possible de vérifier $A$ et $\lnot A$, ce qui est
+impossible).
+
+\begin{definition}[Théorie complète]
+  Une théorie $\mathcal T$ sur une signature $\Sigma$ est dite complète si pour
+  toute formule $A\in\Formula(\Sigma)$, soit $A\in \vclose{\mathcal T}$ soit
+  $\lnot A \in \vclose{\mathcal T}$.
+\end{definition}
+
+Donnons dès maintenant un résultat essentiel, dont on ne donnera la preuve que
+dans la \cref{sbsct.ultrafiltre}, en tant que corrolaire du
+\cref{thm.ultrafilter.lemma}.
+
+\begin{theorem}[Extension complète d'une théorie]\label{thm.completion}
+  Soit une théorie cohérente $\mathcal T$ sur une signature $\Sigma$. Il existe
+  une théorie $\mathcal T'$ complète contenant $\mathcal T$.
+\end{theorem}
+
+\subsection{Morphismes de modèles}
+
+Pour manipuler efficacement les modèles, il est utile de prendre du recul sur ce
+qui est manipulé, et d'adopter un point de vue plus algébrique. Pour cela, nous
+allons donner quelques propriétés basiques liées aux morphismes de modèles.
+
+En mathématiques, un morphisme est en toute généralité une application qui
+préserve la structure. C'est l'idée qui est formalisée dans la notion de
+morphisme entre structures : un morphisme commute avec les symboles de relation
+et de fonction.
+
+\begin{definition}[Morphisme de structures]
+  Soit une signature $\Sigma$ et deux structures $\mathcal M,\mathcal N$, un
+  morphisme $\varphi$ de $\mathcal M$ vers $\mathcal N$ est une application
+  \[\varphi : |\mathcal M|\longrightarrow |\mathcal N|\]
+  vérifiant les propositions suivantes :
+  \begin{itemize}
+  \item pour tout symbole de fonction $f$ d'arité $n$ et tout tuple
+    $(m_1,\ldots,m_n)\in|\mathcal M|^n$ :
+    \[\varphi(f^{\mathcal M}(m_1,\ldots,m_n))
+    = f^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
+  \item pour tout symbole de relatoin $r$ d'arité $n$ et tout tuple
+    $(m_1,\ldots,m_n)\in|\mathcal M|^n$ :
+    \[r^{\mathcal M}(m_1,\ldots,m_n) \implies
+    r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n)) \]
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour toute signature $\Sigma$ et toute structure $\mathcal M$ sur
+  $\Sigma$, la fonction $\id_{|\mathcal M|}$ induit un morphisme de $\mathcal M$
+  vers elle-même. On notera $\id_\mathcal M$ ce morphisme.
+\end{exercise}
+
+\begin{exercise}
+  Montre que l'opération $\circ$, de composition, s'étend en une opération sur
+  les morphismes de structures, c'est-à-dire que si $f$ et $g$ sont deux
+  morphismes tels que $\dom(g) = \im(f)$, alors $g\circ f$ est aussi un
+  morphisme.
+\end{exercise}
+
+Un renforcement de la notion de morphisme est celle de plongement : un plongement
+est un morphisme dont l'image est isomorphe au domaine, c'est-à-dire que non
+seulement le morphisme est injectif, mais il le comportement vis à vis des
+propositions peut s'étudier dans l'image uniquement en étudiant le modèle de
+départ.
+
+\begin{definition}[Plongement]
+  Un plongement d'une structure $\mathcal M$ vers une structure $\mathcal N$ est
+  un morphisme pour lequel la deuxième condition n'est plus une implication mais
+  une équivalence :
+  \[\forall(m_1,\ldots,m_n)\in|\mathcal M|^n,r^{\mathcal M}(m_1,\ldots,m_n) \iff
+  r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
+\end{definition}
+
+\begin{remark}
+  Puisque nous avons toujours la relation $=$ dont l'interprétation est l'égalité
+  dans son sens naturel, on en déduit qu'un plongement est injectif.
+\end{remark}
+
+Enfin, la notion d'isomorphisme est celle à laquelle on s'attend.
+
+\begin{definition}[Isomorphisme]
+  Un isomorphisme $\varphi : \mathcal M \cong \mathcal N$ est un morphisme de
+  $\mathcal M$ vers $\mathcal N$ tel qu'il existe un morphisme $\psi$ de
+  $\mathcal N$ vers $\mathcal M$ vérifiant
+  \[\begin{cases}
+  \varphi\circ \psi = \id_{\mathcal N}\\
+  \psi\circ\varphi = \id_{\mathcal M}
+  \end{cases}\]
+\end{definition}
+
+\begin{proposition}
+  Un morphisme $\varphi : \mathcal M \to \mathcal N$ est un isomorphisme si et
+  seulement si c'est un plongement surjectif.
+\end{proposition}
+
+\begin{proof}
+  Supposons que A FAIRE
+\end{proof}
+
+De plus, un ismorphisme préserve entièrement les formules.
+
+\begin{proposition}
+  Si $\varphi : \mathcal M \cong \mathcal N$ alors pour toute formule close $A$,
+  $\mathcal M\models A$ si et seulement si $\mathcal N\models A$.
+\end{proposition}
+
+\subsection{Agrandir des modèles}
+
+Pour conclure cette partie introductive à propos des modèles, nous allons définir
+la notion d'enrichissement.
+
+\begin{definition}[Enrichissement]
+  Soit deux signatures $\Sigma\subseteq\Sigma'$, c'est-à-dire telles que tout
+  symbole de $\Sigma$ est un symbole de $\Sigma'$ de même arité. Soit une
+  structure $\mathcal M'$ sur $\Sigma'$, alors on dit que $\mathcal M'$ est un
+  enrichissement d'une structure $\mathcal M$ sur $\Sigma$ si :
+  \begin{itemize}
+  \item pour tout symbole de fonction $f\in \Sigma$,
+    $f^{\mathcal M} = f^{\mathcal M'}$
+  \item pour tout symbole de fonction $r\in \Sigma$,
+    $r^{\mathcal M} = r^{\mathcal M'}$
+  \end{itemize}
+
+  On définit l'appauvrissement de $\mathcal M'$ sur $\Sigma$ comme l'unique
+  structure sur $\Sigma$ dont $\mathcal M'$ est l'enrichissement.
+\end{definition}
+
+\begin{remark}
+  On peut toujours appauvrir une strucutre, mais il n'est pas toujours possible
+  d'enrichir (ou du moins naturellement) une structure sur une extension de sa
+  signature.
+\end{remark}
+
+Par exemple, le langage des anneaux est un enrichissement du langage des groupes.
+On remarque qu'un anneau est toujours, en particulier, un groupe additif : nous
+allons généraliser ce résultat pour une structure sur un enrichissement.
+
+\begin{proposition}
+  Soit deux signatures $\Sigma\subseteq\Sigma'$ et $\mathcal M'$ une structure
+  sur $\Sigma'$, alors pour toute formule $A\in\Formula(\Sigma)$ et tout
+  environnement $\rho$, on a
+  \[\mathcal M,\rho\models A \iff \mathcal M',\rho\models A\]
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{corollary}
+  Soit deux signatures $\Sigma\subseteq\Sigma'$, une structure $\mathcal M'$
+  et une théorie $\mathcal T$ sur $\Sigma$. Alors si
+  $\mathcal M'\models \mathcal T$, alors en prenant l'appauvrissement
+  $\mathcal M$ de $\mathcal M'$ sur $\Sigma$, $\mathcal M\models \mathcal T$.
+\end{corollary}
+
+\section[Syntaxe de preuves]{Système de démonstration du calcul des prédicats}
+
+Nous avons défini la sémantique des formules à travers la notion de modèle. Pour
+suivre ce que nous avons fait dans le chapitre précédent, nous allons maintenant
+introduire un formalisme pour décrire mathématiquement des preuves en calcul des
+prédicats.
+
+Nous avons alors plusieurs choix, car plusieurs formalismes existent. Les trois
+principaux sont les sytèmes à la Hilbert, le calcul des séquents et la déduction
+naturelle. Nous avons eu un aperçu du calcul des séquents dans le chapitre
+précédent, et il pourrait être pertinent de continuer à l'utiliser, mais le choix
+fait ici est d'introduire un nouveau formalisme : celui de la déduction
+naturelle. Ce choix ce justifier par deux raisons principales :
+\begin{itemize}
+\item Tout d'abord, il permet d'aborder d'autres systèmes de preuves, puisque
+  nous avons déjà exploré le calcul des séquents. Cet argument est en même temps
+  un contre-argument, puisque cela signifie aussi que l'on peut trouver là une
+  occasion de réexplorer le calcul des séquents pour mieux le comprendre, c'est
+  donc seulement une raison mineure qui nous pousse à le choisir. De plus, le
+  formalisme des systèmes à la Hilbert ne sera pas exploré du tout dans cet
+  ouvrage, car s'il est très simple à définir, il possède peu de propriétés
+  intéressantes à explorer contrairement aux deux autres formalismes et n'a rien
+  de naturel à manipuler.
+\item La deuxième raison, plus importante, est que la déduction naturelle est en
+  quelque sorte le raisonnement le plus primitif d'un mathématicien. Chaque règle
+  exprime une règle loique tout à fait évidente à l'intuition, particulièrement
+  à celle du mathématicien, et on peut trouver une correspondance importante
+  entre une preuve utilisant la déduction naturelle et une preuve en langage
+  naturel (à la différence évidente que la première est illisible pour un profane
+  quand la deuxième est\ldots illisible aussi pour un profane, mais il y a moins
+  de profanes des mathématiques que de profanes de la déduction naturelle).
+\end{itemize}
+
+Il y a de nombreux avantages à définir une syntaxe pour nos preuves en calcul des
+prédicats. Le premier est évident : avoir, comme dans le chapitre précédent, un
+système efficace pour prouver des relations entre formules, ne passant pas par
+une interprétation et une quantification sur toutes les valuations (et ici, en
+plus : tous les modèles). Le deuxième, moins évident, sera plus lourd de
+conséquences : une syntaxe nous permet de voir l'ensemble de l'activité
+mathématique comme un processus finitaire. Nous n'avons le droit que d'employer
+des phrases finies en des textes finis pour étudier des objets potentiellement
+infinis. Si ce fait semble en premier lieu purement philosophique (et il est
+effectivement important, philosophiquement parlant) il mène aussi à une
+conséquence importante : le théorème de compacité. Ce théorème est un analogue
+au \cref{thm.compac.prop} dans le cas du calcul des prédicats. Simplement, au
+lieu de quantifier sur les valuations, nous quantifions sur les modèles, et
+puisque nous nous occupons en priorité des formules closes cela nous donne un
+énoncé parlant uniquement de modèles.
+
+\subsection{Déduction naturelle}
+
+Commençons par définir la relation $\vdash$ de conséquence syntaxique. Pour
+cela, comme pour le calcul des séquents, on va définir un système travaillant
+sur des listes (par nature finies) plutôt que sur des ensembles. Une différence
+importante : nous n'allons pas relier deux listes, mais une liste avec une
+proposition. Ainsi un séquent $\Gamma\vdash A$ signifie directement que, sous
+les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
+
+\begin{definition}[Déduction naturelle]
+  Soit une signature $\Sigma$. On définit la relation
+  $\vdash\subseteq \List(\Formula(\Sigma))\times \Formula(\Sigma)$ par induction
+  par les règles suivantes :
+  \begin{center}
+    \AxiomC{$A \in \Gamma$}
+    \RightLabel{Ax}
+    \UnaryInfC{$\Gamma\vdash A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{}
+    \RightLabel{$\top$}
+    \UnaryInfC{$\Gamma\vdash \top$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma,\lnot A\vdash \bot$}
+    \RightLabel{$\bot_\mathrm c$}
+    \UnaryInfC{$\Gamma\vdash A$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,A\vdash \bot$}
+    \RightLabel{$\lnot_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash \lnot A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \lnot A$}
+    \AxiomC{$\Gamma\vdash A$}
+    \RightLabel{$\lnot_\mathrm e$}
+    \BinaryInfC{$\Gamma\vdash \bot$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A$}
+    \RightLabel{$\lor_\mathrm i^\mathrm g$}
+    \UnaryInfC{$\Gamma\vdash A\lor B$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdash B$}
+    \RightLabel{$\lor_\mathrm i^\mathrm d$}
+    \UnaryInfC{$\Gamma\vdash A\lor B$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A\lor B$}
+    \AxiomC{$\Gamma,A\vdash C$}
+    \AxiomC{$\Gamma,B\vdash C$}
+    \RightLabel{$\lor_\mathrm e$}
+    \TrinaryInfC{$\Gamma\vdash C$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A$}
+    \AxiomC{$\Gamma\vdash B$}
+    \RightLabel{$\land_\mathrm i$}
+    \BinaryInfC{$\Gamma\vdash A\land B$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A\land B$}
+    \RightLabel{$\land_\mathrm e^\mathrm g$}
+    \UnaryInfC{$\Gamma\vdash A$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdash A\land B$}
+    \RightLabel{$\land_\mathrm e^\mathrm d$}
+    \UnaryInfC{$\Gamma\vdash B$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma,A\vdash B$}
+    \RightLabel{$\to_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash A\to B$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A\to B$}
+    \AxiomC{$\Gamma\vdash A$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\Gamma\vdash B$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A[v/x]$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}
+    \UnaryInfC{$\Gamma\vdash \forall x, A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \forall x, A$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\Gamma\vdash A[t/x]$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{$\Gamma\vdash A[t/x]$}
+    \RightLabel{$\exists_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash \exists x, A$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash \exists x, A$}
+    \AxiomC{$\Gamma, A[v/x]\vdash B$}
+    \RightLabel{$\exists_\mathrm e^\dagger$}
+    \BinaryInfC{$\Gamma\vdash B$}
+    \DisplayProof
+
+    \vspace{0.5cm}
+    \AxiomC{}
+    \RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash t = t$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma\vdash A[t/x]$}
+    \AxiomC{$\Gamma\vdash t = u$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\Gamma\vdash A[u/x]$}
+    \DisplayProof
+  \end{center}
+  Où $x,v\in \Var$ et où $t,u\in \Term(\Sigma)$.
+  
+  Les règles avec $^\dagger$ signifient que $v\notin\VL(\Gamma)\cup\VL(B)$.
+
+  De plus, on définit la relation
+  $\vdash\subseteq\powerset(\Formula(\Sigma))\times\Formula(\Sigma)$ par
+  $\mathcal F\vdash A$ si et seulement s'il existe $\Gamma\in\List(\mathcal F)$
+  tel que $\Gamma\vdash A$.
+\end{definition}
+
+\begin{exercise}[Sur la négation]
+  Montrer que l'on peut prouver les deux séquents suivants :
+  \[\vdash \lnot A \to (A \to \bot) \qquad \vdash (A \to \bot) \to \lnot A\]
+
+  Montrer de plus que $\lnot A \vDash A \to \bot$ et que
+  $A\to \bot\vDash \lnot A$.
+\end{exercise}
+
+On peut donc, sans perdre d'expressivité, redéfinir $\lnot$ comme l'opération
+$A \mapsto A \to \bot$. Cela nous permet alors de réduire le nombre de règles
+dans notre système.
+
+\begin{exercise}[Sur l'implication]
+  Montrer que l'équivalence suivante est prouvable~ :
+  \[A \to B \dashv\vdash \lnot A \lor B\]
+  où $A \dashv\vdash B$ signifie que $A\vdash B$ et $B\vdash A$.
+\end{exercise}
+
+\begin{exercise}[De Morgan]
+  Montrer que les lois de De Morgan sont dérivables :
+  \begin{itemize}
+  \item $\lnot (A \lor B) \dashv\vdash \lnot A \land \lnot B$
+  \item $\lnot (A \land B) \dashv\vdash \lnot A \lor \lnot B$
+  \item $\lnot (\exists x, A) \dashv\vdash \forall x, \lnot A$
+  \item $\lnot (\forall x, A) \dashv\vdash \exists x, \lnot A$
+  \item $\lnot\lnot A \dashv\vdash A$
+  \end{itemize}
+\end{exercise}
+
+\begin{exercise}[Tiers exclu et non contradiction]
+  Montrer les deux équivalences suivantes :
+  \begin{itemize}
+  \item $A \lor \lnot A \dashv\vdash \top$
+  \item $A \land \lnot A \dashv\vdash \bot$
+  \end{itemize}
+\end{exercise}
+
+\begin{remark}
+  A partir des exercices précédents, on peut être tenté de réduire l'ensemble
+  des formules et des règles à un fragment tel que les propositions atomiques,
+  $\lnot$, $\lor$ et $\exists$. En effet, toute formule est équivalent à une
+  formule écrite avec ce fragment : on peut donc imaginer que toute autre
+  formule est en fait une simple écriture plus lisible de cette constituée
+  uniquement du fragment restreint.
+
+  Nous n'emploierons pas cette méthode de restriction car, structurellement,
+  il n'est pas évident par exemple que $\lnot (\lnot A \lor \lnot B)$, qui
+  est code $A \land B$, s'utilise de la même façon au niveau des règles. Si l'on
+  sait que l'on peut se ramener en utilisant certaines règles de l'un à l'autre,
+  il faudrait travailler à montrer en plus que les règles à propos de $A\land B$
+  peut se dériver des règles de $\lnot$ et $\lor$ sur
+  $\lnot (\lnot A \lor \lnot B)$. Mais cela motive aussi un déroulement plus
+  lent des preuves par induction et des différents cas, qui s'ils sont
+  laborieux peuvent pour autant être instructifs pour une première lecture.
+
+  Le cas de $\lnot$ que l'on peut remplacer par $\to \bot$ est différent, car
+  les règles à propos de $\lnot$ sont exactement celle de $\to \bot$.
+\end{remark}
+
+\paragraph{A propos de la vacuité}
+Notre formalisme a un problème essentiel : on peut prouver la proposition
+$\forall x, A \implies \exists x, A$, qui est fausse dans le modèle vide. Deux
+façons permettent de régler cet écart entre la syntaxe et la sémantique :
+changer la syntaxe, ou changer la sémantique. Dans notre cas, nous changeons
+alors la sémantique en considérant que toute structure (et donc tout modèle)
+est non vide. Cette restriction n'est pas très limitante, puisque le modèle vide
+est inintéressant en général. Cependant, celle-ci parait particulièrement
+artificielle. Pour contrer cela, on peut à la place considérer des séquents
+enrichis de la forme $\Gamma\mid \Theta \vdash \varphi$ où $\Gamma$ va être un
+contexte de variables, $\Theta$ un contexte logique et $\varphi$ la conclusion.
+Dans ce formalisme, les règles avec $\dagger$ ont, plutôt qu'une restriction,
+une action sur le contexte des variables, avec par exemple
+\begin{prooftree}
+  \AxiomC{$\Gamma, v\mid \Theta\vdash \varphi[v/x]$}
+  \RightLabel{$\forall_\mathrm i$}
+  \UnaryInfC{$\Gamma\mid \Theta\vdash \forall x, \varphi$}
+\end{prooftree}
+où $\Gamma\mid\Theta\vdash \forall x, \varphi$ doit être une proposition bien
+typée, imposant ansi que $v\notin\VL(\Theta)$.
+
+Le fait de gérer les variables est bien plus naturel, étant donné qu'une preuve
+en langage naturel va toujours tenir compte des variables (en particulier, il
+semblerait incongru de mentionner une variable non déjà introduite dans le
+contexte), et dans un contexte avec plusieurs sortes, c'est-à-dire où les
+variables du premier ordre peuvent appartenir à différents ensembles, ce
+formalisme gagne en utilité. Dans notre cas, il parait trop lourd de devoir
+gérer les variables pour simplement pouvoir inclure le cas du modèle vide,
+c'est pourquoi nous préférons simplement modifier notre sémantique.
+
+Plutôt que de prouver directement des résultats, nous allons nous attarder sur
+le sens de chaque règle, pour montrer en quoi elles sont intuitives (et donc
+robustes au niveau de l'évidence qu'elles énoncent) et permettent de
+retranscrire n'importe quelle preuve (en particulier, toute preuve en langage
+naturel est virtuellement équivalente à un arbre de preuve en déduction
+naturelle).
+\begin{itemize}
+\item La règle Ax est surement la plus évidente : si $A$ est une hypothèse,
+  alors on peut en déduire $A$.
+\item La règle $\top$ dit simplement que $\top$ est toujours prouvable.
+\item La règle $\bot_\mathrm c$ dit que pour prouver $A$, on peut supposer
+  $\lnot A$ est aboutir à une contradiction : c'est le raisonnement par
+  l'absurde, d'où l'ince \og c\fg{} exprimant que cette règle est propre à la
+  logique classique (nous le verrons, remplacer cette règle par une autre plus
+  faible a des conséquences particulièrement intéressantes).
+\item La règle $\lnot_\mathrm i$ dit que pour prouver $\lnot A$, il suffit de
+  prouver que $A$ aboutit à une absurdité.
+\item La règle $\lnot_\mathrm e$ dit que prouver $A$ et $\lnot A$ en même temps
+  est une absurdité.
+\item Les règles $\lor_\mathrm i$ montrent que si on prouve $A$ (respectivement
+  $B$) alors on prouve $A\lor B$.
+\item La règle $\lor_\mathrm e$ montre que pour prouver $C$ à partir de
+  $A\lor B$, il suffit de montrer que $A\to C$ et $B\to C$ ou, comme nous
+  l'avons écrit, que l'on peut prouver $C$ à la fois sous l'hypothèse $A$ et
+  sous l'hypothèse $B$. C'est un raisonnement par disjonction de cas.
+\item La règle $\land_\mathrm i$ dit que pour prouver $A\land B$, il suffit de
+  prouver $A$ d'une part, et $B$ d'autre part.
+\item Les règles $\land_\mathrm e$ permettent d'affaiblir une preuve de
+  $A\land B$ en une preuve de $A$ (respectivement de $B$).
+\item La règle $\to_\mathrm i$ dit que prouver $A\to B$ signifie prouver $B$ en
+  ajoutant l'hypothèse $A$.
+\item La règle $\to_\mathrm e$ dit que si l'on a prouvé $A\to B$ et $A$, alors on
+  peut en déduire $B$. C'est la règle du \textit{modus ponens}.
+\item La règle $\forall_\mathrm i$ signifie que pour prouver $\forall x, A$, il
+  suffit de prouver $A$ pour une variable $v$ quelconque à la place de $x$. La
+  nécessité que $v\notin\VL(\Gamma)$ exprime que ce $v$ est quelconque : aucune
+  hypothèse n'est faite sur celui-ci.
+\item La règle $\forall_\mathrm e$ signifie qu'à partir d'une preuve de
+  $\forall x, A$ on peut instancier $x$ à un terme $t$ quelconque pour obtenir
+  une preuve de $A[t/x]$.
+\item La règle $\exists_\mathrm i$ permet de déduire une preuve de $\exists x,A$
+  à partir d'une preuve de $A[t/x]$, pour n'importe quel terme $t$.
+\item La règle $\exists_\mathrm e$ dit qu'à partir d'une proposition de la forme
+  $\exists x, A$, on peut déduire une proposition $B$ en ajoutant dans le
+  contexte $A[v/x]$, où $v$ est quelconque (ce qui se traduit par la condition
+  de $v\notin\VL(\Gamma)\cup\VL(B)$).
+\item La règle $=_\mathrm i$ est la réflexivité de l'égalité : un terme est
+  égal à lui-même.
+\item La règle $=_\mathrm e$, parfois appelée principe de Leibniz, exprime que
+  si deux termes $t$ et $u$ sont égaux, alors ils vérifient les mêmes formules.
+  On appelle aussi ce principe \og indiscernabilité des identités\fg{}.
+\end{itemize}
+
+\subsection[Théorème de complétude]{Complétude de la déduction naturelle}
+
+Nous allons maintenant montrer que $\vDash$ et $\vdash$ coïncident. Un sens est
+élémentaire : montrer que $\vdash \subseteq\vDash$, nous allons donc le traiter
+en premier. C'est la propriété qu'on appelle correction. Elle énonce que ce que
+notre syntaxe dérive est valide. L'autre direction, disans que tout ce qui est
+valide est dérivable, est très souvent plus techniques : ce fut le cas pour
+la logique propositionnelle, c'est encore le cas pour le calcul des prédicats.
+
+On appelle en général, par abus de langage, complétude du système la propriété
+que $\vdash = \vDash$, plutôt que simplement la propriété
+$\vDash\subseteq\vdash$. Il est en effet peu pratique de devoir citer deux
+théorèmes différents lorsque l'on parle de la correspondance des deux relations,
+c'est pourquoi on préfère englober les deux en un résultat, et comme le sens le
+plus technique est celui de complétude, c'est celui qu'on utilise pour nommer le
+théorème.
+
+Comme $\vdash$ est définie par induction, la preuve de correction est directement
+une induction sur sa structure. Remarquons cependant qu'il est nécessaire de
+pouvoir prendre en compte les variables, et donc d'introduire des environnements
+en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
+
+\begin{theorem}[Correction]
+  Soit une signature $\Sigma$, une liste $\Gamma\in\List(\Formula(\Sigma))$ et
+  une formule $A\in\Formula(\Sigma)$. Si $\Gamma\vdash A$ alors, en notant
+  $X_\Gamma$ l'ensemble des formules dans $\Gamma$, pour toute structure
+  $\mathcal M$, tout environnement $\rho$ sur $\mathcal M$, si
+  $\mathcal M,\rho\models X_\Gamma$ alors $\mathcal M,\rho\models A$.
+\end{theorem}
+
+\begin{proof}
+  Nous allons prouver ce résultat par induction sur $\Gamma\vdash A$, en
+  supposant introduits $\mathcal M$ et $\rho$ :
+  \begin{itemize}
+  \item Si $A\in \Gamma$, alors il est évident que $\mathcal M,\rho\models A$.
+  \item Peu importe les prémisses, $\mathcal M,\rho\models \top$.
+  \item Supposons qu'aucun modèle $\mathcal M$ et aucun environnement $\rho$ ne
+    sont tels que $\mathcal M,\rho\models X_\Gamma\cup\{\lnot A\}$. Alors si
+    $\mathcal M,\rho\models X_\gamma$, on ne peut pas avoir
+    $\mathcal M,\rho\models \lnot A$, donc $\Val_\rho(\lnot A) = 0$, donc
+    $\Val_\rho(A) = 1$, d'où $\mathcal M,\rho\models A$.
+  \item Supposons qu'aucun $(\mathcal M,\rho)$ ne vérifie que
+    $\mathcal M,\rho\models X_\Gamma\cup\{A\}$, alors si
+    $\mathcal M,\rho\models X_\Gamma$, $\Val_\rho(A) = 0$ donc
+    $\Val_\rho(\lnot A) = 1$, d'où $\mathcal M,\rho\models \lnot A$.
+  \item Supposons qu'un modèle de $\Gamma$ est un modèle à la fois de $A$ et de
+    $\lnot A$. Alors $\Val_\rho(A) = 1$ et $\Val_\rho(\lnot A) = 1$, mais
+    $\Val_\rho(\lnot A) = 1 - \Val_\rho(A)$, donc $0 = 1$ : c'est absurde, donc
+    il n'y a pas de modèle de $\Gamma$.
+  \item Supposons que si $\mathcal M,\rho\models X_\Gamma$ alors
+    $\mathcal M,\rho\models A$. Soit $\mathcal M,\rho\models X_\Gamma$, par
+    hypothèse $\Val_\rho(A) = 1$, donc $\Val_\rho(A\lor B) = \max(1,\Val_\rho(B))$,
+    donc $\mathcal M,\gamma\models A\lor B$.
+  \item L'argument précédent fonctionne exactement de la même manière.
+  \item A partir de maintenant, nous n'expliciterons plus les hypothèses
+    d'induction, ni ce que l'on cherche à prouver, pour gagner de la place.
+    Supposons que $\mathcal M,\rho\models X_\Gamma$. Alors par hypothèse
+    d'induction, $\mathcal M,\rho\models A\lor B$, donc
+    $\max(\Val_\rho(A),\Val_\rho(B)) = 1$ : on en déduit qu'au moins l'un des deux
+    entre $A$ et $B$ est tel que $\Val_\rho = 1$. Sans perte de généralité,
+    supposons que $\Val_\rho(A) = 1$. On sait donc que
+    $\mathcal M,\rho\models X_\Gamma\cup\{A\}$, donc par hypothèse d'induction
+    $\mathcal M,\rho\models C$.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors par hypothèse
+    d'induction $\Val_\rho(A) = 1$ et $\Val_\rho(B) = 1$, donc
+    $\Val_\rho(A\land B) = \min(1,1) = 1$, donc
+    $\mathcal M,\rho\models A\land B$.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors par hypothèse
+    d'induction $\Val_\rho(A\land B) = 1$, donc $\Val_\rho(A) = 1$ car cette
+    valeur est supérieure à $\Val_\rho(A\land B)$ : donc
+    $\mathcal M,\rho\models A$.
+  \item L'argument précédent fonctionne de la même manière.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$. On travaille par
+    disjonction de cas sur la valeur de $\Val_\rho(A)$ :
+    \begin{itemize}
+    \item si $\Val_\rho(A) = 0$ alors $\Val_\rho(A\to B) = 1$ donc
+      $\mathcal M,\rho\models A \to B$.
+    \item si $\Val_\rho(A) = 1$ alors $\mathcal M,\rho\models X_\Gamma\cup\{A\}$,
+      donc par hypothèse d'induction $\mathcal M,\rho\models B$, donc
+      $\Val_\rho(A\to B) = 1$, donc $\mathcal M,\rho\models A \to B$.
+    \end{itemize}
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$. On sait donc que
+    $\Val_\rho(A\to B) = 1$ et $\Val_\rho(A) = 1$. Ainsi,
+    $\min(0,\Val_\rho(B)) = 1$ : on en déduit que $\Val_\rho(B) = 1$, c'est-à-dire
+    que $\mathcal M,\rho\models B$.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$. On veut montrer que
+    $\Val_\rho(\forall x, A) = 1$. Pour cela, soit $m \in |\mathcal M|$ : on
+    remarque que, par hypothèse d'induction, $\mathcal M,\rho\models A[v/x]$
+    (ici on remarque un point important pour la question de la vacuité : on
+    suppose que $\rho$ est bien définie en $v$, ce qui peut se faire sans
+    perte de généralité si on a bien un élément dans le modèle), mais à ce
+    moment-là comme $v$ est libre dans $\Gamma$, on remarque que
+    $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$, soit
+    $\mathcal M,\rho[v\mapsto m]\models A[v/x]$, d'où
+    $\Val_{\rho[v\mapsto m]}(A[v/x]) = 1$, mais l'expression de gauche vaut
+    $\Val_{\rho[x\mapsto m]}(A)$. Comme cela fonctionne pour tout $m$, on en
+    déduit que $\Val_\rho(\forall x, A) = 1$.
+  \item Supposons que $\mathcal M, \rho\models X_\Gamma$, on sait donc que
+    $\mathcal M,\rho\models \forall x, A$, ce qui signifie en particulier que
+    pour tous, $m\in\mathcal M$, $\mathcal M,\rho[x\mapsto m]\models A$.
+    Mais alors, en considérant $m = t^\mathcal M_\rho$, on trouve que
+    $\Val_{\rho[x\mapsto t^\mathcal M_\rho]}(A) = 1$, mais l'expression de gauche
+    correpsond exactement à $\Val_\rho(A[t/x])$, donc
+    $\mathcal M,\rho\models A[t/x]$.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
+    $\mathcal M,\rho\models A[t/x]$, mais comme
+    $\Val_\rho(A[t/x])\leq\Val_\rho(\exists x,A)$ on en déduit que
+    $\Val_\rho(\exists x,A) = 1$, donc $\mathcal M,\rho\models \exists x,A$.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
+    $\mathcal M,\rho\models \exists x,A$, donc on peut trouver un élément
+    $m\in|\mathcal M|$ tel que $\Val_{\rho[x\mapsto m]}(A) = 1$. Alors, en
+    considérant $\rho[v\mapsto m]$, on a $\mathcal M,\rho \models X_\Gamma$, donc
+    $Val_{\rho[x\mapsto m][v\mapsto m]}(A) = 1$, ce qui revient à dire que
+    $\Val_{\rho[x\mapsto m]}(A[v/x]) = 1$, donc $\Val_{\rho[x\mapsto m]}(B) = 1$. Mais
+    on sait que $x\notin\VL(B)$, donc $\Val_\rho(B) = 1$ : ainsi,
+    $\mathcal M,\rho\models B$.
+  \item Pour tout modèle $\mathcal M$ et environnement $\rho$, on a forcément
+    $\Val_\rho(t=t) = 1$ puisque
+    $(t^\mathcal M_\rho,t^\mathcal M_\rho)\in\{(m,m)\mid m\in|\mathcal M|\}$.
+  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
+    $\mathcal M,\rho\models A[t/x]$ et $\mathcal M,\rho\models t = u$. On en
+    déduit que $\Val_\rho(t = u) = 1$, c'est-à-dire que
+    $t^\mathcal M_\rho = u^\mathcal M_\rho$, donc
+    $\Val_{\rho[x\mapsto t^\mathcal M_\rho]}(A) = \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(A)$,
+    et à partir du fait que $\mathcal M,\rho\models A[t/x]$ on en déduit donc
+    que $\mathcal M,\rho\models A[u/x]$.
+  \end{itemize}
+
+  Ainsi, par induction, si $\mathcal M,\rho\models X_\Gamma$, alors
+  $\mathcal M,\rho\models A$. En particulier, si $\mathcal M\models X_\Gamma$,
+  alors $\mathcal M\models A$, et si pour
+  $\mathcal F\subseteq \Formula(\Sigma)$, on a
+  $\mathcal M\models \mathcal F$ et $\mathcal F\vdash A$, cela implique donc que
+  $\mathcal M\models A$. Ainsi $\vdash\subseteq\vDash$.
+\end{proof}
+
+Il nous reste à prouver le sens réciproque. En réalité, le point critique pour
+la démonstration est celui de l'existence d'un modèle. Plutôt que de montrer
+réellement que $\vDash\subseteq\vdash$, nous allons montrer qu'une théorie
+consistante, c'est-à-dire une théorie $\mathcal T$ telle que
+$\mathcal T\not\vdash \bot$, possède un modèle. On va donc commencer par montrer
+que notre résultat suffira à prouver $\vDash\subseteq\vdash$.
+
+\begin{lemma}
+  Supposons que pour toute théorie $\mathcal T$ telle que
+  $\mathcal T\not\vdash\bot$, il existe une structure $\mathcal M$ telle que
+  $\mathcal M\models \mathcal T$. Alors $\vDash\subseteq\vdash$.
+\end{lemma}
+
+\begin{proof}
+  Supposons que $\mathcal F\vDash A$ pour $A\in\Formula(\Sigma)$ et
+  $\mathcal F\subseteq\Formula(\Sigma)$. On voit donc que
+  $\mathcal F\cup\{\lnot A\}$ n'a pas de modèle : par contraposée de notre
+  hypothèse, cela signifie que $\mathcal F,\lnot A\vdash \bot$. En appliquant
+  simplement $\bot_\mathrm c$, on en déduit que $\mathcal F\vdash A$. Ainsi
+  $\vDash\subseteq\vdash$.
+\end{proof}
+
+\begin{remark}
+  Nous avons défini une théorie comme un ensemble de formules closes, donc la
+  démonstration précédente n'est pas tout à fait exacte. Une façon de corriger
+  cela est d'enrichir le langage : pour chaque variable $x$ libre dans
+  $\mathcal F$ ou $A$, on ajoute un symbole de constante $c_x$, et on considère
+  ensuite la théorie où $x$ est remplacé par $c_x$. On a une correspondance entre
+  l'existence d'un modèle avec $x$ ou avec $c_x$, puisque notre théorie sans
+  $c_x$ pourra s'évaluer dans le modèle avec $x\mapsto c_x$.
+\end{remark}
+
+Il nous reste donc à démontrer qu'une théorie consistante admet bien un modèle.
+Cette construction est technique, c'est pourquoi on va commencer par donner
+l'idée de la preuve.
+
+L'idée principale est de construire un modèle syntaxique, c'est-à-dire un modèle
+dont les éléments sont exactement les termes du langage. Ceux-ci seront
+quotientés par l'égalité, c'est-à-dire que si $\mathcal T \vdash t = u$, alors
+les termes $t$ et $u$ seront identifiés. En construisant un tel modèle
+$\mathcal M$, on va chercher à ce que $\mathcal T \vdash \varphi$ si et
+seulement si $\mathcal M\vDash \varphi$ puisque ce que vérifie $\mathcal M$ est
+exactement ce que $\mathcal T$ peut prouver. On a alors besoin de deux
+caractéristiques essentielles :
+\begin{itemize}
+\item tout d'abord, $\mathcal T$ doit être complète. L'ensemble des énoncés vrais
+  dans un modèle est une théorie complète, puisqu'un énoncé est vrai dans un
+  modèle si et seulement si sa négation est fausse. Ainsi, si $\mathcal T$ n'est
+  pas complète, ça ne peut pas être la théorie d'un modèle. Moralement, on peut
+  voir ça comme le fait qu'au moment de construire un modèle, il faut faire des
+  choix parmi les propositions, car certains modèles de $\mathcal T$ peuvent
+  vérifier telle proposition ou telle autre, si $\mathcal T$ n'est pas complète.
+  Nous avons donc besoin d'étendre notre théorie en une théorie complète.
+\item ensuite, il reste un problème au niveau des quantifications. Supposons que
+  $\exists x,P$ soit vraie : on veut pouvoir exhiber un élément $m$ tel que
+  $P[m/x]$ est vrai, et nos éléments sont des termes. On en déduit donc qu'il
+  faut pour chaque proposition $P$ avoir un terme $t_P$ correspondant tel que
+  $\exists x, P \implies P[t_P/x]$. Cela n'est pas vrai \textit{a priori}, on va
+  donc chercher à élargir notre langage pour ajouter à chaque fois des constantes
+  témoignant pour une proposition $\exists x,P$ vraie qu'un terme correspond :
+  c'est ce que l'on appelle la méthode des témoins de Henkin.
+\item une fois cela fait, il ne nous restera plus qu'à appliquer la complétion
+  de la théorie enrichie par témoins de Henkin pour obtenir une théorie
+  $\overline{\mathcal T}$ contenant $\mathcal T$ et qui nous permettra de
+  construire un modèle.
+\end{itemize}
+
+On va donc définir la complétion par témoins de Henkin.
+
+\begin{definition}[Propriété de Henkin]
+  On dit qu'une théorie $\mathcal T$ sur une signature $\Sigma$ a la propriété de
+  Henkin si pour toute formule telle que $\mathcal T\vdash\exists x, P$, il
+  existe un terme $c_P\in\Term(\Sigma)$ tel que $\mathcal T\vdash P[c_P/x]$.
+\end{definition}
+
+Le point important de cette propriété est qu'elle peut être vérifiée, au prix
+d'une augmentation de la théorie et du langage. Il faut cependant vérifier,
+alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
+
+\begin{definition}[Clôture par témoins]
+  Soit $\Sigma$ une signature, et $\mathcal T$ une théorie sur $\Sigma$. On
+  construit de façon itérative la suite $\Sigma_n$ et $\mathcal T_n$ de
+  signatures et de théories, où $\mathcal T_n$ est une théorie sur $\Sigma_n$ :
+  \begin{itemize}
+  \item $\Sigma_0 = \Sigma$ et $\mathcal T_0 = \mathcal T$.
+  \item Si $\Sigma_n$ et $\mathcal T_n$ sont construits, on définit la signature
+    $\Sigma_{n+1}$ en ajoutant, pour chaque formule $F\in\Formula(\Sigma_n)$,
+    une constante $c_F$. On définit $\mathcal T_{n+1}$ en ajoutant à la théorie
+    $\mathcal T$ la famille de formules
+    $\{(\exists x,F)\to F[c_F/x]\}_{F\in\Formula(\Sigma_n)}$.
+  \end{itemize}
+  On définit alors
+  \[\hclose{\Sigma}\defeq \bigcup_{n\in\mathbb N}\Sigma_n
+  \qquad\hclose{\mathcal T} \defeq \bigcup_{n \in \mathbb N}\mathcal T_n\]
+  et $\hclose{\mathcal T}$ est une théorie sur $\hclose{\Sigma}$.
+\end{definition}
+
+\begin{property}
+  La théorie $\hclose{\mathcal T}$ a la propriété de Henkin.
+\end{property}
+
+\begin{proof}
+  Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où $F\in\hclose{\Sigma}$.
+  Remarquons que $F$ ne peut contenir qu'un nombre fini de symboles de fonctions
+  et de relations : on en déduit qu'il existe $n\in \mathbb N$ tel que
+  $F\in\Formula(\Sigma_n)$. Cela signifie donc que
+  $(\exists x,F)\to F[c_F/x] \in \mathcal T_{n+1}$. On en déduit
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{Ax}
+    \UnaryInfC{$\hclose{\mathcal T}\vdash (\exists x, F)\to F[c_F/x]$}
+    \AxiomC{$\hclose{\mathcal T}\vdash \exists x,F$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\hclose{\mathcal T}\vdash F[c_F/x]$}
+  \end{prooftree}
+\end{proof}
+
+De plus, cette construction est stable par extension (ce qui nous servira
+lorsque nous complèterons notre théorie).
+
+\begin{property}\label{prop.henkin.ext}
+  Si $\hclose{\mathcal T}\subseteq \mathcal S$ pour une certaine théorie
+  $\mathcal S$, alors $\mathcal S$ a la propriété de Henkin.
+\end{property}
+
+\begin{proof}
+  Comme $(\exists x,F)\to F[c_F/x]$ appartient à $\mathcal S$, l'arbre de preuve
+  précédent fonctionne encore en remplaçant $\hclose{\mathcal T}$ par
+  $\mathcal S$.
+\end{proof}
+
+Enfin, la clôture par témoins conserve la cohérence.
+
+\begin{property}
+  Si $\mathcal T\not\vdash \bot$, alors $\hclose{\mathcal T}\not\vdash\bot$.
+\end{property}
+
+\begin{proof}
+  On suppose que $\mathcal \not\vdash\bot$, on montre alors par récurrence que
+  $\mathcal T_n\not\vdash\bot$ :
+  \begin{itemize}
+  \item Comme $\mathcal T_0 =\mathcal T$, le résultat est direct.
+  \item Supposons que $\mathcal T_n\not\vdash\bot$, alors A FAIRE
+  \end{itemize}
+
+  Ainsi, $\mathcal T_n\not\vdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
+  notre preuve, car si $\hclose{\mathcal T}\vdash \bot$, alors il existe une
+  liste (finie) $\Gamma\in\List(\hclose{\mathcal T})$ telle que
+  $\Gamma\vdash\bot$, mais $\Gamma\in\List(\mathcal T_n)$ pour un certain $n$,
+  puisque cette liste est finie. Comme $\mathcal T_n\not\vdash\bot$, cela est
+  absurde. Ainsi $\hclose{\mathcal T}\not\vdash\bot$.
+\end{proof}
+
+En combinant les deux dernières propriété avec le \cref{thm.completion} nous
+obtenons une extension de $\mathcal T$ complète et vérifiant la propriété de
+Henkin.
+
+\begin{lemma}
+  Si $\mathcal T$ est une théorie sur $\Sigma$ telle que
+  $\mathcal T\not\vdash\bot$, alors il existe $\Sigma\subseteq\hclose{\Sigma}$ et
+  une théorie $\mathcal T\subseteq\mathcal T'$ complète et possédant la propriété
+  de Henkin.
+\end{lemma}
+
+\begin{proof}
+  On applique le \cref{thm.completion} à $\hclose{\mathcal T}$ : comme on sait
+  que $\hclose{\mathcal T}\not\vdash\bot$, on peut effectivement compléter cette
+  théorie. Avec la \cref{prop.henkin.ext}, on sait que cette complétion vérifie
+  aussi la propriété de Henkin.
+\end{proof}
+
+On fixe maintenant la théorie $\mathcal T'$ construite à partir de $\mathcal T$.
+On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
+
+\begin{definition}[Modèle syntaxique]
+  On définit le modèle syntaxique $\mathcal M_{\mathcal T'}$ par :
+  \begin{itemize}
+  \item $|\mathcal M_{\mathcal T'}|$ défini comme $\Term(\Sigma')/\equiv$ où
+    $\equiv$ est défini par
+    \[t\equiv u \defeq \mathcal T'\vdash t = u\]
+  \item pour chaque symbole de fonction $f\in\Sigma'$ d'arité $n$, on associe la
+    fonction
+    \[\begin{array}{ccccc}
+    f^{\mathcal T'} & : & |\mathcal M_{\mathcal T'}|^n & \longrightarrow &
+    |\mathcal M_{\mathcal T'}|\\
+    & & (\overline{t_1},\ldots,\overline{t_n}) & \longmapsto &
+    \overline{f(t_1,\ldots,t_n)}
+    \end{array}\]
+  \item pour chaque symbole de relation $r\in\Sigma'$ d'arité $n$, on définit la
+    relation $r^{\mathcal T'}$ par
+    \[r^{\mathcal T'}(\overline{t_1},\ldots,\overline{t_n}) \defeq
+    \mathcal T'\vdash r(t_1,\ldots,t_n)\]
+  \end{itemize}
+\end{definition}
+
+\begin{proof}
+  Pour que cette définition ait du sens, il convient de montrer que $\equiv$ est
+  une relation d'équivalence, et qu'elle est compatible avec les symboles de
+  fonction et d'équivalence (c'est-à-dire que nos définitions de
+  $f^{\mathcal T'}$ et $r^{\mathcal T'}$ ne dépendent pas du représentant choisi).
+
+  Montrons d'abord que $\equiv$ est une relation d'équivalence :
+  \begin{itemize}
+  \item Grâce à $=_\mathrm i$, on sait que $\mathcal T'\vdash t = t$ pour tout
+    $t\in \Term(\Sigma')$, donc $\equiv$ est réflexive.
+  \item Supposons que $t\equiv u$, c'est-à-dire que $\mathcal T'\vdash t = u$,
+    on peut alors construire l'arbre de preuve suivant :
+    \begin{prooftree}
+      \AxiomC{}
+      \RightLabel{$=_\mathrm i$}
+      \UnaryInfC{$\mathcal T' \vdash t = t$}
+      \AxiomC{$\mathcal T' \vdash t = u$}
+      \RightLabel{$=_\mathrm e$}
+      \BinaryInfC{$\mathcal T' \vdash u = t$}
+    \end{prooftree}
+    donc $u\equiv t$ ($t=t$ peut se lire comme $(x=t)[t/x]$).
+  \item Supposons que $t\equiv u$ et $u\equiv v$, montrons alors que
+    $t\equiv v$ :
+    \begin{prooftree}
+      \AxiomC{$\mathcal T'\vdash u = v$}
+      \AxiomC{}
+      \RightLabel{$=_\mathrm i$}
+      \UnaryInfC{$\mathcal T' \vdash t = t$}
+      \AxiomC{$\mathcal T' \vdash t = u$}
+      \RightLabel{$=_\mathrm e$}
+      \BinaryInfC{$\mathcal T' \vdash u = t$}
+      \RightLabel{$=_\mathrm e$}
+      \BinaryInfC{$\mathcal T'\vdash t = v$}
+    \end{prooftree}
+  \end{itemize}
+  Ainsi $\equiv$ est bien une relation d'équivalence.
+
+  Soit $f$ un symbole de fonction d'arité $n$. Pour simplifier la preuve, on
+  suppose que $f$ est d'arité $1$ (il suffit ensuite de faire une récurrence
+  sur $n$ pour généraliser la preuve que nous allons faire). Pour que $\equiv$
+  soit compatible avec $f$, il faut que l'image de $f$ ne dépende pas du choix
+  du représentant, c'est-à-dire que si $t\equiv u$ alors
+  $f^{\mathcal T'}(\overline t) = f^{\mathcal T'}(\overline u)$, c'est-à-dire que
+  $\mathcal T'\vdash f(t) = f(u)$, ce que l'on peut prouver par
+  \begin{prooftree}
+    \AxiomC{$\mathcal T'\vdash t = u$}
+    \AxiomC{}
+    \RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$\mathcal T' \vdash f(t) = f(t)$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\mathcal T'\vdash f(t) = f(u)$}
+  \end{prooftree}
+  donc $f^{\mathcal T'}$ est bien définie.
+
+  De même, pour une relation $r$ prise pour simplifier d'arité $1$, il convient
+  de montrer que si $t\equiv u$ alors
+  $r^{\mathcal T'}(\overline t)\to r^{\mathcal T'}(\overline u)$ (il faudrait une
+  équivalence, mais il suffit en fait de montrer l'implication puisque $\equiv$
+  a été montrée symétrique). L'arbre de preuve suivant nous le montre :
+  \begin{prooftree}
+    \AxiomC{$\mathcal T'\vdash t = u$}
+    \AxiomC{$\mathcal T'\vdash r(t)$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\mathcal T'\vdash r(u)$}
+  \end{prooftree}
+  donc $r^{\mathcal T'}$ est bien définie.
+\end{proof}
+
+On peut alors démontrer le lemme qui permettra de prouver le théorème de
+complétude.
+
+\begin{lemma}
+  Pour toute proposition $\varphi \in \Form(\Sigma')$, on a l'équivalence
+  suivante :
+  \[\mathcal T' \vdash \varphi \iff \mathcal M_{\mathcal T'}\models \varphi\]
+\end{lemma}
+
+\begin{proof}
+  On démontre ce résultat par induction sur la structure de $\varphi$ :
+  \begin{itemize}
+  \item si $\varphi$ est $\top$ ou $\bot$, le résultat est évident (en
+    particulier $\mathcal T'\not\vdash\bot$).
+  \item si $\varphi = r(t_1,\ldots,t_n)$ alors
+    $\mathcal T'\vdash r(t_1,\ldots,t_n)$ signifie exactement que
+    $r^{\mathcal T'}(\overline{t_1},\ldots,\overline{t_n})$, donc
+    $\mathcal M_{\mathcal T'}\models r(t_1,\ldots,t_n)$. Ce fait est une équivalence
+    puisqu'il provient de la définition même de $r^{\mathcal T'}$.
+  \item si $\varphi = \lnot \psi$, montrons que
+    $\mathcal T'\vdash\varphi\implies \mathcal M_{\mathcal T'}\models \varphi$.
+    Comme $\mathcal T'\vdash \lnot \psi$, on en déduit que
+    $\mathcal T'\not\vdash \psi$ (car $\mathcal T'\not\vdash\bot$), mais puisque
+    $\mathcal T'$ est une théorie complète, on en déduit que A FAIRE
+  \end{itemize}
+\end{proof}
+
+On peut maintenant prouver le théorème de complétude.
+
+\begin{theorem}[Complétude de la déduction naturelle]
+  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ telle que
+  $\mathcal T\not\vdash\bot$. Alors il existe un modèle
+  $\mathcal M\models \mathcal T$.
+\end{theorem}
+
+\begin{proof}
+  En reprenant notre modèle $\mathcal M_{\mathcal T'}$, on sait à partir du lemme
+  précédent que $\mathcal M_{\mathcal T'}\models \mathcal T'$ grâce à la règle
+  d'axiome. Comme $\mathcal T\subseteq\mathcal T'$, on en déduit donc que
+  $\mathcal M_{\mathcal T'}\models \mathcal T$.
+\end{proof}
+
+\begin{theorem}[Complétude, deuxième version]
+  Soit $\Sigma$ une signature. Alors les deux relations
+  $\vdash,\vDash\subseteq \powerset(\Formula(\Sigma))\times\Formula(\Sigma)$
+  coïncident.
+\end{theorem}
+
+On récupère en tant que conséquence un théorème essentiel de la théorie des
+modèles : le théorème de compacité.
+
+\begin{theorem}[Théorème de compacité]
+  Soit $\Sigma$ une signature, $\mathcal F \subseteq\Formula(\Sigma)$ et
+  $F\in\Formula(\Sigma)$, alors $\mathcal F\vDash F$ si et seulement s'il existe
+  $\mathcal A\subseteq_{\mathrm{fin}} \mathcal F$ tel que
+  $\mathcal A\vDash F$.
+\end{theorem}
+
+\begin{proof}
+  En effet, si $\mathcal F\vDash F$ alors $\mathcal F\vdash F$, d'où par
+  définition l'existence de $\Gamma\in\List(\mathcal F)$ tel que
+  $\Gamma\vdash A$. Il n'y a qu'un nombre fini de propositions dans $\Gamma$,
+  donc on peut trouver $\mathcal A\subseteq_{\mathrm{fin}}\mathcal F$ tel que
+  $\Gamma\in\List(\mathcal A)$ : on en déduit donc que $\mathcal A\vdash F$,
+  d'où par correction que $\mathcal A\vDash F$.
+\end{proof}
