@@ -1,0 +1,540 @@
+\chapter[Topologie]{Introduction à la topologie}
+\label{chp.topo}
+
+\minitoc
+
+Un des principes les plus fréquents, en mathématiques, est de se ramener à de la
+topologie. En algèbre, en analyse ou en géométrie, on peut décrire nos problèmes
+par de la topologie. En logique, des liens existent aussi avec la topologie, et
+nous avons donc besoin de bases en topologie pour les explorer.
+
+Cependant, cet ouvrage n'est pas un cours de topologie : nous n'allons donc pas
+entrer dans les détails de ce domaine. Nous conseillons donc au lecteur étranger
+à la topologie de chercher un cours plus complet. Nous allons par exemple
+considérer en premier lieu la topologie générale et les constructions à partir de
+filtres, pour ensuite traiter le cas des espaces métriques.
+
+Nous aurons trois objectifs principaux.
+Le premier est de définir un fragment suffisamment large de la topologie générale
+pour prouver le théorème de Tychonov grâce aux ultrafiltres.
+Le deuxième, qui peut être vu comme la suite du premier, est de montrer le
+théorème de dualité de Stone (dans une version n'utilisant pas le vocabulaire
+catégorique), qui permet de donner une lecture topologique du \cref{chp.ordres}.
+Le troisième nous fera quitter le monde de la topologie générale, pour préparer
+le terrain pour la théorie descriptive des ensembles, en définissant les notions
+élémentaires de topologie métrique.
+
+\section{Topologie générale et filtres}
+
+Pour commencer, donnons une présentation générique de la topologie : nous
+étudions des espaces topologiques, que l'ont peut décrire comme des ensembles
+(dont les éléments sont en général appelés \og points\fg{}) muni d'une notion de
+proximité. La notion la plus générale de proximité peut être donnée au choix
+par les ouverts, les fermés ou les voisinages, mais la convention est de définir
+une topologie par ses ouvertes. Donnons donc ces définitions et les objets les
+plus élémentaires qui y sont liés.
+
+\subsection{Définitions de topologie générale}
+
+La définition de topologie par les ouverts peut sembler \textit{ad hoc}, nous
+allons donc essayer de la motiver. L'objectif d'une topologie est de définir
+quels éléments sont proches et quels éléments sont éloignés les uns des autres.
+Si la notion naturelle pour décrire cela est celle de distance, on peut se
+demander si celle-ci est importante pour une étude topologique. En effet, le
+point important de la topologie est de pouvoir décrire ce qui est plus ou moins
+local, c'est-à-dire ce qui arrive \textbf{suffisamment proche}, et non proche de
+façon absolue.
+
+L'idée d'un ouvert dans une topologie est alors de donner une mesure fixée de
+proximité~ : deux points sont proches s'ils appartiennent à un ouvert, et ils
+sont d'autant plus proches qu'ils le restent pour des ouverts pris de plus en
+plus petits. Ainsi un phénomène local est un phénomène qui survient dans un
+certain ouvert.
+
+On voit déjà pourquoi la notion de filtre sera intéressante : on veut qu'une
+description soit de plus en plus précise à mesure qu'on affine nos ouverts,
+ce se rapproche du fait qu'on puisse affiner des filtres.
+
+Donnons donc la définition formelle d'une topologie grâce à ses ouverts.
+
+\begin{definition}[Espace topologique]
+  On appelle espace topologique une paire $(X,\Omega_X)$ où
+  $\Omega_X\subseteq\powerset(X)$ est une partie vérifiant :
+  \begin{itemize}
+  \item $\Omega_X$ est stable par intersection finie : si $F\subfin \Omega_X$
+    alors $\bigcap F \in \Omega_X$.
+  \item $\Omega_X$ est stable par union quelconque : si $Y\subseteq \Omega_X$
+    alors $\bigcup Y \in \Omega_X$.
+  \end{itemize}
+
+  En particulier, $X\in \Omega_X$ et $\varnothing\in \Omega_X$. On appelle ouvert
+  de $X$ un élément $O\in\Omega_X$.
+\end{definition}
+
+Si un ouvert représente une mesure de localité, le complémentaire d'un ouvert a
+un autre sens : il est une partie stable, mais nous en aurons une compréhension
+plus précise plus tard. Ces parties, complémentaires, d'ouverts, sont appelées
+les fermés.
+
+\begin{definition}[Fermé]
+  Soit $(X,\Omega_X)$ un espace topologique. On appelle fermé de $X$ une partie
+  $F\subseteq X$ telle que $X\setminus F \in \Omega_X$.
+\end{definition}
+
+\begin{remark}
+  La structure ordonnée $(\Omega_X,\subseteq)$ est en fait une algèbre de
+  Heyting complète. Remarquons que la borne inférieure d'une partie
+  $Y\subseteq\Omega_X$ n'est pas forcément l'intersection : elle est le plus
+  grand ouvert contenu dans $\bigcap Y$.
+
+  On peut établir une version plus générale de la topologie en étudiant les
+  algèbres de Heyting complètes, c'est ce que l'on appelle la topologie sans
+  points (\textit{pointfree topology} ou \textit{pointless topology}).
+\end{remark}
+
+On voit que décrire une topologie par ses ouverts ou par ses fermés est
+équivalent, puisqu'on peut retrouver l'un à partir de l'autre par l'opération
+$\mathcal T \mapsto \{X\setminus T \mid T \in \mathcal T\}$. Voyons enfin l'autre
+façon possible de décrire une topologie : par les voisinages.
+
+\begin{definition}[Voisinage]
+  Soit $(X,\Omega_X)$ un espace topologique et $x\in X$. On appelle ensemble des
+  voisinages de $x$ l'ensemble des parties de $X$ contenant un ouvert contenant
+  $x$~ :
+  \[\vois_x \defeq \{V \subseteq X \mid \exists U \in \Omega_X, x\in U \land
+  U\subseteq V\}\]
+\end{definition}
+
+Un voisinage est en particulier un filtre.
+
+\begin{property}
+  Soit $(X,\Omega_X)$ un espace topologique, alors pour tout $x\in X$, l'ensemble
+  $\vois_x$ est un filtre propre sur $(\powerset(X),\subseteq)$.
+\end{property}
+
+\begin{proof}
+  Il nous suffit de vérifier les hypothèses d'un filtre propre :
+  \begin{itemize}
+  \item puisque $X\in\Omega_X$ et $x\in X$, $X\in \vois_x$.
+  \item si $V\in \vois_x$ et $W$ est tel que $V\subseteq W$, alors on trouve
+    $U\in \Omega_X$ tel que $x\in U \subseteq V$, et par transitivité de
+    l'inclusion, $x\in U \subseteq W$, donc $W\in \vois_x$.
+  \item si $V\in \vois_x$ et $W\in \vois_x$ alors on trouve $U$ et $U'$ des
+    ouverts tels que $x\in U \subseteq V$ et $x\in U' \subseteq W$. Comme
+    $\Omega_X$ est stable par intersection finie, $U\cap U' \subseteq W$ donc
+    $x\in U\cap U' \subseteq V\cap W$, donc $V\cap W \in \vois_x$.
+  \item l'ensemble $\varnothing$ ne contient pas $x$, donc
+    $\varnothing\notin\vois_x$.
+  \end{itemize}
+
+  Ainsi $\vois_x$ est un filtre propre de $\powerset(X)$.
+\end{proof}
+
+On peut donc définir la notion de voisinage à partir des ouverts. Réciproquement,
+il est possible de retrouver l'ensemble des ouverts à partir des voisinages.
+
+\begin{proposition}
+  Soit $(X,\Omega_X)$ un espace topologique. Alors $U\in \Omega_X$ si et
+  seulement si pour tout $x\in U$, $U\in\vois_x$.
+\end{proposition}
+
+\begin{proof}
+  Si $U\in \Omega_X$, il est évident que pour tout $x\in U$ il existe un ouvert
+  ($U$ lui-même) inclus dans $U$ et contenant $x$. Réciproquement, supposons que
+  $U$ est un voisinage de tous ses points. Alors pour tout $x\in U$, on trouve
+  un ouvert $U_x\subseteq U$ contenant $x$. Comme les ouverts sont stables par
+  union quelconque, $\displaystyle\bigcup_{x\in U} U_x$ est encore un ouvert.
+  Mais comme $U_x\subseteq U$, on en déduit que $\bigcup U_x \subseteq U$, et
+  comme pour tout $x\in U, x\in U_x$, on en déduit que $U\subseteq\bigcup U_x$.
+  Il en vient que $U$ est un ouvert en tant qu'union d'ouverts.
+\end{proof}
+
+Pour définir plus facilement une topologie, il nous faut parler de la notion de
+base d'une topologie. Par défaut, une famille $\mathcal T\subseteq\powerset(X)$
+n'a pas de raison d'être une topologie, puisqu'il faut des propriétés de clôture
+à notre famille. Cependant, la clôture par union quelconque peut s'obtenir en
+considérant directement les unions d'éléments de la famille. Il nous reste à
+traiter le cas des intersections finies, mais on préfère exiger directement des
+famille de parties d'être stables par intersection finie.
+
+\begin{definition}[Base d'une topologie, topologie engendrée]
+  Soit un ensemble $X$. On dit qu'une partie $\mathcal B\subseteq\powerset(X)$
+  est une base de topologie si elle est close par intersection finie,
+  c'est-à-dire si pour toute partie $F\subfin\mathcal B$,
+  $\bigcap F \in\mathcal B$.
+
+  Si $\mathcal B\subseteq\powerset(X)$ est une base de topologie, alors on
+  appelle topologie engendrée par $\mathcal B$, que l'on note
+  $\Omega_{\mathcal B}$, l'ensemble
+  \[\Omega_{\mathcal B} \defeq \Bigg\{\bigcup_{B \in F} B\;\Bigg|\;
+  F\subseteq \mathcal B\Bigg\}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\Omega_{\mathcal B}$ est bien une topologie.
+\end{exercise}
+
+\begin{example}
+  Donnons des exemples de topologies :
+  \begin{itemize}
+  \item on dispose sur tout ensemble $X$ de la topologie discrète donnée par
+    $\powerset(X)$ tout entier.
+  \item on dispose sur tout ensemble $X$ de la topologie grossière donnée
+    par $\{\varnothing,X\}$.
+  \item sur $\mathbb R$, on dispose de la topologie engendrée par les intervalles
+    ouverts, c'est-à-dire de la forme $\{x \in \mathbb R \mid a < x < b\}$ où
+    $a,b\in\mathbb R$. C'est la topologie naturelle que l'on utilise sur
+    $\mathbb R$.
+  \item plus généralement, sur un ensemble ordonné $(X,\leq)$, on peut définir
+    la topologie de l'ordre comme la topologie engendrée par les intervalles
+    ouverts, de la forme $\{x\in X\mid a < x < b\}$ pour $a,b\in X$.
+    Remarquons que par exemple sur $\mathbb N$, la topologie de l'ordre coïncide
+    avec la topologie discrète.
+  \end{itemize}
+\end{example}
+
+Remarquons que tout fermé de $\mathbb R$ peut s'écrire comme intersection
+d'intervalles fermés, de la forme $\{x\in \mathbb R \mid a\leq  x \leq b\}$.
+
+Nous verrons plus tard une famille d'espaces topologiques, les espace métriques.
+
+\'Etant donnée une partie $Y\subseteq X$, qui n'est ni un ouvert ni un fermé,
+disons par exemple $\{x\in\mathbb R\mid 1 \leq x < 2\}$, peut-on lui associer
+un ouvert (respectivement un fermé) naturellement ? La réponse est oui, en
+considérant l'intérieur (respectivement l'adhérence).
+
+\begin{definition}[Intérieur]
+  Soit $(X,\Omega_X)$ un espace topologique et $Y\subseteq X$. On appelle
+  intérieur de $Y$, que l'on note $\inter Y$, le plus grand ouvert contenu dans
+  $Y$.
+\end{definition}
+
+\begin{definition}[Adhérence]
+  Soit $(X,\Omega_X)$ un espace topologique et $Y\subseteq X$. On appelle
+  adhérence de $X$, que l'on note $\adher Y$, le plus petit fermé contenant
+  $Y$.
+\end{definition}
+
+\begin{exercise}
+  On considère $\mathbb R$ muni de la topologie décrite plus haut. Montrer que
+  $\inter{\mathbb Q} = \varnothing$ et que $\adher{\mathbb Q} = \mathbb R$.
+\end{exercise}
+
+On peut aussi définir la notion de point intérieur et de point adhérent,
+correspondant naturellement au fait d'appartenir à l'intérieur (respectivement à
+l'adhérence), mais sous une forme plus intuitive.
+
+\begin{definition}[Point intérieur]
+  Soit $(X,\Omega_X)$ un espace topologique et $Y\subseteq X$. On dit qu'un
+  point $x$ est intérieur à $Y$ si $Y\in\vois_x$.
+\end{definition}
+
+\begin{definition}[Point adhérent]
+  Soit $(X,\Omega_X)$ un espace topologique et $Y\subseteq X$. On dit qu'un
+  point $x$ est adhérent à $Y$ si pour tout ouvert $U\in\Omega_X$, si
+  $Y\subseteq U$ alors $x\in U$.
+\end{definition}
+
+\begin{exercise}
+  Montrer qu'un point est intérieur à une partie si et seulement s'il est dans
+  son intérieur. Montrer qu'il est adhérent si et seulement s'il est dans son
+  adhérence.
+\end{exercise}
+
+Enfin, définissons la notion de continuité. On la présente pour l'instant comme
+une simple notion de morphisme associée à notre structure d'espace topologoque.
+Nous en verrons une interprétation grâce aux filtres.
+
+\begin{definition}[Fonction continue]
+  Soient $(X,\Omega_X)$ et $(Y,\Omega_Y)$ deux espaces topologiques. Une fonction
+  $f : X \to Y$ est dite continue sur pour tout $U\in\Omega_Y$, l'ensemble
+  $f^{-1}(U)$ est un ouvert de $X$.
+\end{definition}
+
+\begin{remark}
+  Si l'on considère un espace topologique comme l'algèbre de Heyting complète de
+  son ensemble d'ouverts, alors la définition que nous venons de donner signifie
+  que $f$ induit grâce à $f^{-1}$ un morphisme d'algèbres de Heyting complètes.
+  Cependant, il est important de voir que là où $f : X \to Y$,
+  $f^{-1} : \powerset(Y)\to\powerset(X)$, on a donc une inversion du sens entre
+  le point de vue algébrique par un ensemble ordonné et le point de vue
+  analytique comme un ensemble de points muni d'une topologie.
+\end{remark}
+
+\subsection{Filtres, limites, séparation}
+
+On aborde en général la notion de limite de façon métrique. La définition la plus
+souvent vue d'une limite est la suivante, pour une fonction $f$ admettant une
+limite en $a$ valant $b$ :
+\[\forall \varepsilon > 0, \exists \delta > 0, \forall x \in \mathbb R,
+|x - a| < \delta \implies |f(x) - b| < \varepsilon\]
+Si nous étudions cette formule en essayant de traduire ce qu'elle énonce au
+niveau topologique, on peut commencer par remplacer les inégalités en valeur
+absolue par l'appartenance à certains ouverts : au lieu de
+$|f(x) - b| < \varepsilon$, on peut dire que $f(x)$ appartient à un
+ouvert, qui est $(b-\varepsilon,b+\varepsilon)$. De même, plutôt que de dire
+que $|x - a| < \delta$, on peut dire que $x$ appartient à un certain ouvert.
+
+Puisqu'on quantifie sur n'importe quel $\varepsilon$, on peut de la même façon
+considérer qu'on quantifie sur tous les ouverts contenant $b$, sans perte de
+généralité sur les voisinages de $b$ : on voit alors apparaître un filtre.
+En effet, plutôt que de dire que $f(x)$ est dans tel ouvert autour de $b$,
+on peut dire que $x$ est dans la préimage de l'ouvert par $f$. On trouve donc,
+plutôt qu'une suite de quantificateurs quelconque, une considération de finnesse.
+En fait, on peut reformuler cette formule par la formule équivalente suivante~ :
+\[(\vois_a)_f \supseteq \vois_b\]
+c'est-à-dire que le filtre image de $\vois_a$ par $f$ est plus fin que le filtre
+$\vois_b$.
+
+Ainsi, la convergence est une notion particulièrement adaptée à une définition
+par les filtres. On va donc pouvoir tout d'abord définir la convergence d'un
+filtre.
+
+\begin{definition}[Convergence d'un filtre]
+  Soit un espace topologique $(X,\Omega_X)$ et un filtre $\mathcal F$, on
+  définit le fait que $\mathcal F$ converge vers $a\in X$ par~ :
+  \[\lim \mathcal F = a \defeq \mathcal F \supseteq \vois_a\]
+\end{definition}
+
+Le sens de cette définition est qu'un filtre converge vers $a$ lorsque les
+parties qu'il décrit permettent de se rapprocher autant que l'on veut de
+$a$.
+
+On peut maintenant facilement définir ce que signifie la convergence pour une
+fonction en un point.
+
+\begin{definition}[Convergence d'une fonction]
+  Soient $(X,\Omega_X),(Y,\Omega_Y)$ deux espaces topologiques et $f : X \to Y$.
+  On dit que $f$ converge vers $b\in Y$ en $a\in X$ (au sens des filtres) si
+  \[\lim_{\mathcal F \to a}f(\mathcal F) = b\defeq (\vois_a)_f \supseteq\vois_b\]
+\end{definition}
+
+Remarquons que comme tout voisinage de $a$ contient $a$, il est nécessaire que
+$f(a)\in\cap\vois_b$. On a donc envie de dire que $f(a)=b$, mais on n'a pas de
+raison de dire \textit{a priori} que les filtres d'un voisinage ne contiennent
+qu'un élément dans leur intersection. Prenons par exemple sur $\{a,b,c\}$ la
+topologie \textit{ad hoc} suivante :
+\[\{\{a,b\},\{c\},\{a,b,c\},\varnothing\}\]
+Les deux éléments $a$ et $b$ ne peuvent pas être distingués.
+
+Cela motive donc une nouvelle notion topologique : la séparation. Un axiome de
+séparation est un axiome assurant que pour $a\neq b$, on a bien
+$\vois_a\neq\vois_b$. De nombreux axiomes de séparation existent, mais nous ne
+verrons que le plus classique, qu'on appelle axiome de séparation $T_2$. Il est
+à la fois suffisamment puissant pour assurer un bon comportement à nos espaces,
+et suffisamment faible pour être vérifié par de nombreux espaces. La terminologie
+anglaise donne le nom \textit{Hausdorff} aux espaces vérifiant l'axiome $T_2$,
+mais comme nous n'utiliserons que cet axiome de séparation, nous parlerons
+simplement d'espace séparé.
+
+\begin{definition}[Espace séparé]
+  Soit $(X,\Omega_X)$ un espace topologique. On dit que cet espace est séparé
+  si pour tous $x,y\in X$, il existe une paire $(U_x,U_y)\in (\Omega_X)^2$ telle
+  que
+  \[\begin{cases}
+  x\in U_x\\
+  y\in U_y\\
+  U_x\cap U_y = \varnothing
+  \end{cases}\]
+\end{definition}
+
+Montrons qu'on a alors l'unicité de la limite.
+
+\begin{proposition}[Unicité de la limite]
+  Soit $\mathcal F$ un filtre propre sur un espace $(X,\Omega_X)$ séparé, alors
+  si $\mathcal F$ converge, il ne peut converger que vers un seul élément de $X$.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $a$ et $b$ sont deux limites possibles de $\mathcal F$. Par
+  séparation, on trouve $U_a$ et $U_b$ deux ouverts disjoints, contenant
+  respectivement $a$ et $b$. Comme $U_a$ et $U_b$ sont des ouverts, on en déduit
+  que $U_a\in\vois_a$ et $U_b\in\vois_b$. De plus, par convergence de
+  $\mathcal F$ vers $a$ et $b$, on en déduit que $U_a\in\mathcal F$ et
+  $U_b\in\mathcal F$, donc $U_a\cap U_b\in\mathcal F$, c'est-à-dire
+  $\varnothing\in\mathcal F$, ce qui contredit le fait que $\mathcal F$ est
+  un filtre propre.
+\end{proof}
+
+En particulier, si $f$ converge en un point $a$ et que son espace d'arrivée est
+un espace séparé, alors on a unicité du point vers lequel $f$ converge. Cela
+signifie aussi que si $f$ converge en un point $a$, ce point ne peut être que
+$f(a)$, puisque celui-ci est le seul à appartenir à $\bigcap (\vois_a)_f$.
+
+La notion de limite permet aussi de caractériser la continuité : une fonction
+est continue quand la limite commute avec l'application par $f$.
+
+\begin{property}
+  Soient deux espaces $(X,\Omega_X)$ et $(Y,\Omega_Y)$ sépérés, et une fonction
+  $f : X \to Y$. Alors $f$ est continue si et seulement si
+  \[\forall x \in X, \lim_{\mathcal F \to a} f(\mathcal F) = f(a)\]
+\end{property}
+
+\begin{proof}
+  Tout d'abord, supposons que $f$ est continue, montrons alors que
+  $(\vois_a)_f \supseteq \vois_{f(a)}$.
+
+  Soit $V\in\vois_{f(a)}$ et $U$ un ouvert contenant $f(a)$ contenu dans $V$
+  (donné par la définition du fait d'être un voisinage de $f(a)$).
+  Comme $f$ est continue, cela signifie que $f^{-1}(U)$ est aussi un ouvert. Or
+  $f^{-1}(U)\subseteq f^{-1}(V)$ et $a\in f^{-1}(U)$ puisque $a\in U$, donc
+  $f^{-1}(V)\in\vois_a$, ce qui signifie exactement que $V\in(\vois_a)_f$, d'où
+  l'inclusion.
+
+  Supposons maintenant que $(\vois_a)_f\supseteq \vois_{f(a)}$, et montrons que
+  $f$ est continue.
+
+  Soit $U$ un ouvert de $Y$, montrons que $f^{-1}(U)$ est un ouvert de $X$.
+  Comme $U$ est un ouvert, pour tout $x\in U$ on a $U\in\vois_x$. On en
+  déduit que pour tout $y\in f^{-1}(x)$, $U\in\vois_{f(y)}$ donc, par inclusion,
+  $U\in(\vois_y)_f$, c'est-à-dire que $f^{-1}(U)\in\vois_y$ pour tout
+  $y\in f^{-1}(U)$ (puisque c'est le cas pour tout $y\in f^{-1}(x)$ pour chaque
+  $x\in U$). On vient donc de montrer que $f^{-1}(U)$ est un voisinage de tous
+  ses éléments, ce qui par une caractérisation précédente signifie qu'il est un
+  ouvert. Donc la préimage d'un ouvert est un ouvert : $f$ est donc continue.
+\end{proof}
+
+\begin{exercise}
+  On dit qu'une suite $u : \mathbb N \to X$ converge lorsque le filtre image du
+  filtre de Fréchet sur $\mathbb N$ converge vers $X$. Montrer que cela revient à
+  vérifier la formule usuelle :
+  \[\exists x\in X,\forall V\in\vois_x, \exists n \in \mathbb N,
+  \forall m \geq n, u_m \in V\]
+\end{exercise}
+
+\subsection{Valeur d'adhérence, compacité}
+
+La notion de séparation permet de s'assurer qu'au plus une limite est possible,
+pour un filtre donné. Il est cependant possible qu'aucune limite n'existe~ : par
+exemple, si on considère dans $\mathbb R$ le filtre des parties contenant
+$\{1,2\}$, on ne peut trouver aucun filtre de voisinage dont il est plus fin.
+Cependant, on voudrait pouvoir dire de ce filtre qu'il converge partiellement
+vers $1$ et vers $2$, qui sont des limites plus faibles.
+
+C'est cette notion de limite plus faible qui est donnée par la définition de
+valeur d'adhérence. Une valeur d'adhérence d'un filtre est une valeur vers
+laquelle le filtre pourrait converger, s'il était plus fin. Dans notre exemple
+précédent, le filtre pourrait converger si l'on décidait de le rendre plus fin
+pour contenir $\{1\}$ ou $\{2\}$.
+
+\begin{definition}[Valeur d'adhérence d'un filtre]
+  Soit un espace topologique $(X,\Omega_X)$ et un filtre propre $\mathcal F$. On
+  dit que $x$ est une valeur d'adhérence de $\mathcal F$ s'il existe un filtre
+  propre $\mathcal H$ plus fin que $\mathcal F$ qui converge vers $x$.
+\end{definition}
+
+Même si l'espace est séparé, un filtre peut avoir plusieurs valeurs d'adhérence.
+Cependant, il est aussi possible qu'un filtre n'en possède aucune. Si on prend
+par exemple $\mathbb N$ avec la topologie discrète, le filtre de Fréchet n'a pas
+de valeur d'adhérence, puisqu'un filtre de voisinage serait un ultrafiltre
+principal, et que nous avons déjà prouvé que le filtre de Fréchet n'était contenu
+dans aucun ultrafiltre principal.
+
+Donnons une caractérisation simple des valeurs d'adhérence d'un filtre.
+
+\begin{proposition}\label{prop.carac.adh}
+  Soit un espace topologique $(X,\Omega_X)$ séparé et un filtre propre
+  $\mathcal F$. Un point $x$ est une valeur d'adhérence de $\mathcal F$ si et
+  seulement si $\displaystyle x\in \bigcap_{F\in\mathcal F} \adher F$.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $x$ est une valeur d'adhérence de $\mathcal F$. Alors on trouve
+  un filtre propre $\mathcal H$ plus fin que $\mathcal F$ contenant $\vois_x$.
+  On veut montrer que pour tout $F\in \mathcal F$, $x$ est adhérent à $F$. Soit
+  $F\in\mathcal F$ et $U$ un ouvert contenant $F$, montrons que $x\in U$. Soit
+  $V\in\mathcal H$ tel que $x\in V$, existant car $\vois_x\subseteq\mathcal H$.
+  Par inclusion, $F\in\mathcal H$ et donc $U\in\mathcal H$, donc
+  $U\cap V\in\mathcal H$. Comme $H$ est un filtre propre, $U\cap V$ est non vide.
+  De plus, ce procédé fonctionne pour tout $V\in \vois_x$, donc on en déduit que
+  $U\cap\bigcap \vois_x$ est non vide, mais $\bigcap \vois_x = \{x\}$ car
+  l'espace est séparé, donc $x\in U$. Ainsi $x$ est un point adhérent à $F$, donc
+  $x\in\adher F$.
+
+  Réciproquement, supposons que $x$ est adhérent à tous les éléments de
+  $\mathcal F$, montrons qu'alors il existe un filtre propre $\mathcal H$
+  contenant $\mathcal F$ et $\vois_x$. Pour cela, il nous suffit de montrer que
+  $\mathcal F\cup\vois_x$ a la propriété de l'intersection finie (le filtre
+  engendré sera alors un filtre propre vérifiant les conditions plus haut).
+
+  Comme $\mathcal F$ et $\vois_x$ sont des filtres, quitte à prendre
+  l'intersection des éléments, on peut considérer qu'on a un élément
+  $F\in\mathcal F$ et un élément $U\in\vois_x$, et il nous suffit alors de
+  montrer que $F\cap U \neq\varnothing$. Comme $x\in\adher F$, si
+  $F\cap U = \varnothing$, alors $F\subseteq (X\setminus U)$ et $X\setminus U$
+  est un fermé, donc $\adher F \subseteq (X\setminus U)$, donc
+  $x\in X\setminus U$, sauf que $x\in U$ par hypothèse, ce qui est
+  contradictoire. On en déduit donc que $F\cap U \neq\varnothing$, donc que
+  $\mathcal F\cup\vois_x$ a la propriété de l'intersection finie, d'où le
+  résultat.
+\end{proof}
+
+On peut alors se demander quand cet ensemble des valeurs d'adhérence est vide.
+C'est le cas par exemple du filtre de Fréchet sur $\mathbb N$ muni de la
+topologie discrète, et cela s'interprète par le fait que les parties du filtres
+vont à l'infini. D'une certaine manière, celles-ci sont des voisinages d'un
+point se situant lui-même à l'infini (mais qui n'est pas dans l'espace, menant
+à cette absence de valeur d'adhérence).
+
+On motive donc la notion d'espace compact comme un espace dans lequel un tel cas
+ne peut pas arriver. En reprenant le cas du filtre de Fréchet, on voit en
+particulier qu'on peut prendre l'ensemble des points
+$(\{n\})_{n\in\mathbb N}$ et en combiner une infinité à chaque fois pour
+pouvoir construire une suite de parties, toutes contenues les unes dans
+les autres, telle qu'il faut une infinité d'étapes pour vider les parties
+ainsi construites, mais qu'un nombre fini d'étapes laisse un nombre infini
+d'éléments.
+
+En inversant le processus et en cherchant à faire croître les segments
+initiaux $([0,n])_{n\in\mathbb N}$, on voit qu'il faut un nombre infini d'étapes
+pour pouvoir recouvrir tout $\mathbb N$~ : la compacité est précisément la
+négation de ce fait.
+
+\begin{definition}[Compacité]
+  Soit $(X,\Omega_X)$ un espace topologique. On dit que cet espace est compact si
+  pour toute partie $R\subseteq \Omega_X$, si $\bigcup R = X$ alors il existe
+  une partie finie $F\subfin R$ telle que $\bigcup F = X$.
+\end{definition}
+
+Cette propriété exprime que de toute recouvrement de $X$ par des ouverts, on peut
+extraire un recouvrement fini. En prenant, au lieu des ouverts, des fermés, cela
+nous donne qu'une famille infinie dont toute intersection finie est non vide est
+une famille dont l'intersection est non vide.
+
+\begin{property}
+  Un espace topologique $(X,\Omega_X)$ est compact si et seulement si pour tout
+  ensemble $S$ de fermés tel que pour tout $F\subfin R$,
+  $\bigcap F \neq\varnothing$,
+  on a $\bigcap S \neq\varnothing$.
+\end{property}
+
+\begin{proof}
+  A $S$ on associe la famille $R$ par
+  \[R \defeq \{X\setminus A\mid A \in S\}\]
+  en écrivant la contraposée de la proposition ci-dessus, on obtient :
+  \[\bigcap S =\varnothing\implies \exists F\subfin S, \bigcap F = \varnothing\]
+  d'où, en appliquant la fonction $A \mapsto X\setminus A$ :
+  \[\bigcup_{A \in S}(X\setminus A) = X\implies
+  \exists F\subfin S, \bigcup_{A\in F}(X\setminus A) = X\]
+  ce qui correspond exactement au fait que si $X = \bigcup R$ alors il existe
+  $F\subfin R$ tel que $\bigcup F = X$, où $R$ est un ensemble d'ouvert
+  (puisqu'un ensemble de complémentaires de fermés).
+\end{proof}
+
+Le fait que tout filtre admette une valeur d'adhérence est maintenant une
+conséquence directe.
+
+\begin{proposition}
+  Soit $(X,\Omega_X)$ un espace topologique compact séparé, alors tout filtre
+  $\mathcal F$ propre admet au moins une valeur d'adhérence.
+\end{proposition}
+
+\begin{proof}
+  En utilisant la \cref{prop.carac.adh}, on sait que
+  $\displaystyle\bigcap_{F\in\mathcal F}\adher F$ est
+  l'ensemble des valeurs d'adhérence. Chaque $\adher F$ est un fermé, et on
+  sait par définition d'un filtre propre que pour tout $A\subfin\mathcal F$,
+  $\displaystyle\bigcap_{F\in A}\adher F$ est non vide, puisqu'il contient au
+  moins $\bigcap A$ qui est non vide. Par compacité, on en déduit que l'ensemble
+  des valeur d'adhérence de $\mathcal F$ est non vide.
+\end{proof}
