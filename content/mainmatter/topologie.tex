@@ -828,7 +828,9 @@ version) qu'il est équivalent à l'axiome du choix.
   donc $U_i\cap F_i \neq\varnothing$. Donc pour tout $i\in I$,
   $x_i\in \adher{F_i}$.
 
-  A FAIRE
+  En remarquant que $\adher{\mathcal F_i} = \big(\adher{\mathcal F}\big)_i$,
+  il vient donc que $(x_i) \in \adher{\mathcal F}$, donc $\mathcal F$
+  converge, donc $\displaystyle\prod_{i\in I} X_i$ est compact.
 \end{proof}
 
 \section{Dualité de Stone}
@@ -904,3 +906,148 @@ maintenant les éléments suffisants pour définir ce qu'est un espace de Stone.
   est compact, séparé, et admet une base d'ouverts-fermés.
 \end{definition}
 
+\subsection{Spectre d'une algèbre de Boole}
+
+En algèbre, le spectre d'un anneau est l'ensemble de ses idéaux premiers. Dans
+le cas d'une algèbre de Boole, qui est un cas particulier d'anneau, on peut donc
+définir la notion de spectre, qui coïncide avec l'ensemble des idéaux maximaux
+(puisque dans une algèbre de Boole, premier et maximal sont confondus). On
+préfère ici traiter du cas des ultrafiltres, donc on définit le spectre comme
+l'ensemble des ultrafiltres, qui par dualité est équivalent.
+
+Le spectre d'un anneau peut être muni d'une topologie : la topologie de Zariski.
+Celle-ci est engendrée (en engendrant la topologie par une famille de fermés
+plutôt que par une famille d'ouverts) par les images des idéaux par la fonction
+\[I \mapsto \{P\mid P\text{ est un idéal premier de } A, I\subseteq P\}\]
+pour $A$ l'anneau considéré. Dans notre cas, on veut générer une topologie
+sur les ultrafiltres à partir des éléments de notre algèbre de Boole. Pour cela,
+on a une façon naturelle d'associer à un élément un filtre : pour un élément
+$x\in B$, on considère le filtre $\{ y \in B \mid x \leq y\}$ qui est le filtre
+engendré par $\{x\}$.
+
+La topologie du spectre d'une algèbre de Boole sera donc la topologie engendrée
+par les ensembles d'ultrafiltres contenant $x$. On commence par introduire la
+fonction construisant notre base de topologie, et on montre qu'elle se comporte
+correctement.
+
+\begin{definition}[Extension d'un élément]
+  Soit une algèbre de Boole $(B,\leq)$. On définit la fonction
+  \[\begin{array}{ccccc}
+  \ext & : & B & \longrightarrow & \powerset(\Spec(B))\\
+  & & x & \longmapsto & \{\mathcal U \in \Spec(B)\mid x \in \mathcal U\}
+  \end{array}\]
+\end{definition}
+
+\begin{property}
+  Soit une algèbre de Boole $(B,\leq)$. Pour tous $x,y\in B$, les propriétés
+  suivantes sont vérifiées :
+  \begin{itemize}
+  \item $\ext(\top) = \Spec(B)$
+  \item $\ext(\bot) = \varnothing$
+  \item $\ext(x\lor y) = \ext(x)\cup\ext(y)$
+  \item $\ext(x\land y) = \ext(x)\cap\ext(y)$
+  \item $\ext(\lnot x) = \Spec(B)\setminus\ext(x)$
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Ces propriétés découlent directement du fait que $\ext$ est un morphisme
+  d'algèbres de Boole, ce que l'on va prouver :
+  \begin{itemize}
+  \item tout filtre contient $\top$, donc $\ext(\top) = \Spec(B)$.
+  \item tout filtre propre (ce qu'est un filtre premier) ne contient pas $\bot$,
+    donc $\ext(\bot) = \varnothing$.
+  \item on montre que la condition $x\lor y \in \mathcal U$, pour un filtre
+    premier $\mathcal U$, est équivalente à $x\in\mathcal U$ ou
+    $y\in\mathcal U$ : un sens se déduit de la définition même d'être un filtre
+    premier, et l'autre sens se déduit du fait que $\mathcal U$ est clos par le
+    haut. Ainsi
+    \[\{\mathcal U\mid x\lor y \in \mathcal U\} =
+    \{\mathcal U \mid x\in\mathcal U \text{ ou } y\in\mathcal U\}\]
+  \item de même, on sait que pour un filtre, $x\land y \in \mathcal U$ est
+    équivalent à $x\in\mathcal U$ et $y\in\mathcal U$, d'où l'égalité.
+  \end{itemize}
+\end{proof}
+
+On sait donc, en particulier, que la famille $\{\ext(x)\mid x\in B\}$ est une
+base de topologie (puisque $B$ est un inf demi-treillis, on a la stabilité par
+intersection). On peut donc définir le spectre d'une algèbre de Boole.
+
+\begin{definition}[Spectre d'une algèbre de Boole]
+  Soit $(B,\leq)$ une algèbre de Boole. On définit le spectre de $B$ par
+  l'ensemble $\Spec(B)$ muni de la topologie engendrée par
+  $\{\ext(x)\mid x \in B\}$.
+\end{definition}
+
+Notre définition d'espace de Stone se justifie maintenant par le fait qu'un
+spectre est un tel espace.
+
+\begin{property}
+  Soit $(B,\leq)$ une algèbre de Boole. Alors le spectre de $B$ est un espace de
+  Stone.
+\end{property}
+
+\begin{proof}
+  On vérifie les axiomes d'un espace de Stone :
+  \begin{itemize}
+  \item $\{\ext(x)\mid x \in B\}$ est une base d'ouverts-fermés. Ce sont des
+    ouverts par définition de notre topologie, et comme
+    $\ext(\lnot x)=\Spec(B)\setminus\ext(x)$, ce sont aussi des fermés, d'où
+    $\ext(x)\in K\Omega_{\Spec(X)}$.
+  \item L'espace est séparé : soient $\mathcal U$ et $\mathcal V$ deux filtres
+    premiers sur $B$, différents. Comme ils sont maximaux, on peut trouver
+    $x\in \mathcal U\setminus \mathcal V$, mais alors $\ext(x)$ et
+    $\ext(\lnot x)$ forment deux ouverts disjoints tels que
+    $\mathcal U \in\ext(x)$ et $\mathcal V \in\ext(\lnot x)$
+    (car $y\notin\mathcal V$ donc $\lnot x \in \mathcal V$).
+  \item L'espace est compact : on veut montrer qu'une famille de fermés
+    $\mathcal F$ vérifiant la propriété d'intersection finie a une
+    intersection non vide. Comme la topologie est engendré par les $\ext(x)$,
+    on peut dire sans perte de généralité que
+    $\mathcal F = \{\ext(x_i)\mid i\in I\}$ avec $x_i \in B$ (quitte à
+    avoir plus d'éléments et à ce que le $\mathcal F$ original soit une
+    intersection d'éléments du nouveau $\mathcal F$). On définit maintenant le
+    filtre
+    \[\mathcal A_\mathcal F = \filclose{\{x_i\mid i \in I\}}\]
+    et on veut montrer que ce filtre est un filtre propre. Il nous suffit de
+    montrer que $\{x_i\mid i \in I\}$ a la propriété de l'intersection finie :
+    soit $F\subfin I$, on a alors l'identité
+    $\displaystyle\ext(\bigwedge_{i \in F} x_i) = \bigcap_{i \in F}\ext(x_i)$,
+    mais l'expression de droite est une intersection finie de fermés dans
+    $\mathcal F$ : c'est donc par hypothèse un ensemble non vide. On trouve
+    donc $\mathcal V \in \displaystyle\ext(\bigwedge_{i\in F} x_i)$, qui est un
+    ultrafiltre et ne contient donc pas $\bot$. On en déduit donc que
+    $\displaystyle\bigwedge_{i \in F} x_i \neq \bot$. Ainsi
+    $\mathcal A_\mathcal F$ est bien un filtre propre : on peut donc par le
+    lemme de l'ultrafiltre l'étendre en un ultrafiltre $\mathcal U_\mathcal F$
+    qui, comme $\mathcal A_\mathcal F$ contient tous les $x_i$, contient aussi
+    tous les $x_i$, c'est donc un élément de $\bigcap \ext(x_i)$, d'où
+    \[\bigcap \mathcal F \neq \varnothing\]
+    donc $\Spec(B)$ est compact.
+  \end{itemize}
+\end{proof}
+
+On dispose maintenant d'une fonction
+$(B,\leq) \mapsto (\Spec(B),\Omega_{\Spec(B)})$ et d'une fonction
+$(X,\Omega_X)\mapsto (K\Omega_X,\subseteq)$. On peut voir assez directement
+que ces fonctions ne sont pas inverses, puisque le spectre de l'algèbre des
+ouverts-fermés de $X$ est une partie de $\powerset(X)$, on veut donc que ces
+fonctions soient des inverses \og faible\fg~: appliquer une fonction puis
+l'autre nous donne deux structures isomorphes, même si potentiellement
+différentes.
+
+\subsection{Dualité de Stone}
+
+A FAIRE
+
+\section{Topologie métrique}
+
+Cette dernière section s'attardera sur la topologie métrique, qui est un cas
+particulier mais très fréquent de topologie (et ayant le bon goût de beaucoup
+mieux se comporter).
+
+Nous aborderons ici les notions d'espace métrique, de partie dense, d'espace
+séparable et d'espace complet, pour pouvoir définir les espaces polonais qui
+seront étudiés en théorie descriptive des ensembles.
+
+\subsection{Espace métrique}
