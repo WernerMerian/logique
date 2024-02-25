@@ -1062,16 +1062,114 @@ Il nous reste à vérifier que ces espaces sont isomorphes.
 \end{lemma}
 
 \begin{proof}
-  A FAIRE
+  On a montré que la fonction $\ext$ était un morphisme d'algèbres de Boole.
+  On montre donc que c'est une bijection~:
+  \begin{itemize}
+  \item $\ext$ est injective~: si $x\neq y$ alors soit $x < y$, soit
+    $y < x$, soit $x$ et $y$ sont incomparables. Dans les trois cas,
+    quitte à inverser $x$ et $y$, on voit que $\lnot x \land y \neq \bot$. On
+    sait donc que $\filclose{\{\lnot x,y\}}$ peut être étendu en un ultrafiltre,
+    qui est donc dans $\ext(y)$ et pas dans $\ext(x)$, donc
+    $\ext(x)\neq\ext(y)$.
+  \item $\ext$ est surjective~: soit $K$ un ouvert-fermé de $\Spec(B)$. Par
+    définition de $K$, on peut l'écrire l'union~:
+    \[K = \bigcup_{i \in I} \ext(x_i)\]
+    où $x_i \in B$ et $I$ est un ensemble quelconque. On sait que $\Spec(B)$
+    est compact, donc comme $K$ est fermé, il est aussi compact. On en déduit
+    qu'on peut trouver $F\subfin I$ tel que
+    \[K = \bigcup_{i \in F} \ext(x_i)\]
+    Mais alors $K = \ext(\bigvee x_i)$, donc $K$ est dans l'image de $\ext$.
+  \end{itemize}
+
+  On a donc un morphisme d'algèbres de Boole bijectif, c'est donc un
+  isomorphisme d'algèbres de Boole (en tant qu'isomorphisme d'anneaux).
 \end{proof}
 
 \begin{lemma}
-  Soit $(X,\Omega_X)$ un espace topologique, on a un homéomorphisme
+  Soit $(X,\Omega_X)$ un espace de Stone, on a un homéomorphisme
   \[(X,\Omega_X)\cong (\Spec(K\Omega_X),\Omega_{\Spec(K\Omega_X)})\]
 \end{lemma}
 
 \begin{proof}
-  A FAIRE
+  Le candidat pour cet homéomorphisme est la fonction
+  \[\begin{array}{ccccc}
+  \varphi & : & X & \longrightarrow & \Spec(K\Omega_X)\\
+  & & x & \longmapsto & \{K \in K\Omega_X\mid x \in K\}
+  \end{array}\]
+
+  On vérifie que cette fonction retourne bien un élément de l'espace d'arrivée,
+  pour tout $x\in X$~:
+  \begin{itemize}
+  \item $x\in X$ donc $X\in \varphi(x)$, de même $x\notin\varnothing$ donc
+    $\varnothing\notin\varphi(x)$.
+  \item si $K\subseteq K'$ et $x\in K$ alors $x\in K'$, donc $\varphi(x)$ est
+    clos par le haut.
+  \item si $K\cup K' \in \varphi(x)$, alors $x\in K$ ou $x\in K'$, par
+    définition de l'union, donc $K\in\varphi(x)$ ou $K'\in\varphi(x)$.
+  \item si $K\in\varphi(x)$ et $K'\in\varphi(x)$ alors $x\in K\cap K'$, donc
+    $K\cap K'\in\varphi(x)$.
+  \end{itemize}
+  Ainsi $\varphi(x)$ est bien un filtre premier sur $K\Omega_X$.
+
+  Vérifions maintenant que $\varphi$ est bijective~:
+  \begin{itemize}
+  \item si $x\neq y$, on peut trouver un ouvert-fermé contenant $x$ et pas $y$
+    (ce qui suffit à prouver que $\varphi(x)\neq\varphi(y)$). En effet, par
+    séparation, on trouver $U_x$ et $U_y$ deux ouverts disjoints, le premier
+    contenant $x$ et le second $y$. Comme $\Omega_X$ est un espace de Stone on
+    peut écrire $U_x$ comme union d'ouverts-fermés~: on trouve donc un
+    ouvert-fermé $K$ tel que $x\in K$ et comme $U_x\cap U_y=\varnothing$, on en
+    déduit que $y\notin K$, d'où le résultat.
+  \item $\varphi$ est surjective. Soit $\mathcal F$ un filtre premier sur
+    $K\Omega_X$. Comme l'espace est compact et séparé, on trouve un unique
+    $x$ dans l'adhérence de $\mathcal F$~: on en déduit que
+    \[x\in\bigcap_{K\in \mathcal F}\adher K\]
+    mais chaque $K$ est un fermé, donc $\adher K = K$, donc tous les éléments
+    de $\mathcal F$ contiennent $x$, donc $\mathcal F\subseteq \varphi(x)$.
+    Comme $\mathcal F$ est un ultrafiltre, on déduit de l'inclusion que
+    $\mathcal F = \varphi(x)$. Donc $\varphi$ est surjective.
+  \end{itemize}
+
+  Comme on sait que $\varphi$ est une fonction bijective, il nous suffit de
+  montrer que c'est une fonction continue et ouverte, c'est-à-dire telle que
+  l'image d'un ouvert est un ouvert. En effet, l'image réciproque de sa fonction
+  réciproque est exactement son image directe. Vérifions donc ces deux
+  conditions~:
+  \begin{itemize}
+  \item Soit $U$ un ouvert de $\Spec(K\Omega_X)$. Par hypothèse, on peut
+    l'écrire
+    \[U = \bigcup_{i\in I} \ext(K_i)\]
+    où $K_i\in K\Omega_X$ et $I$ est un ensemble quelconque. Il nous suffit
+    de montrer que $\varphi^{-1}(\ext(K_i))$ est un ouvert-fermé de $X$,
+    puisqu'on sait ($X$ étant un espace de Stone) qu'une telle union est alors
+    un ouvert.
+
+    Soit donc $K\in K\Omega_X$, montrons que $\varphi^{-1}(\ext(K))$ est un
+    ouvert-fermé. Par définition, $\ext(K)$ est
+    \[\ext(K) = \{\mathcal U \in \Spec(K\Omega_X)\mid K \in \mathcal U\}\]
+    mais comme $\varphi$ est surjectif, on peut trouver un ensemble
+    $K'\subseteq X$ tel que $\ext(K) = \varphi(K')$, donc tel que
+    $\varphi^{-1}(\ext(K)) = K'$. L'ensemble $K'$ est
+    \[K' \defeq \{x \mid K \in \varphi(x)\}\]
+    c'est-à-dire $\{x\in X\mid x\in K\}$, soit $K$, qui est par hypothèse
+    un ouvert-fermé.
+  \item Comme précédemment, on peut se ramener à montrer que l'image d'un
+    ouvert-fermé est un ouvert-fermé. Soit donc $K\in\Omega_X$, montrons que
+    $\varphi(K)$ est un ouvert-fermé de $\Spec(K\Omega_X)$. Par définition~:
+    \[\varphi(K) \defeq \{\{K \in K\Omega_X\mid x \in K\}\mid x \in K\}\]
+    Montrons que $\varphi(K) = \ext(K)$. Soit $\mathcal U \in \varphi(K)$,
+    par définition on trouve $x\in K$ tel que $\mathcal U = \varphi(x)$.
+    On a alors, comme $x\in K$, que $K\in \varphi(x)$, donc
+    $\mathcal U \in \ext(K)$. Réciproquement, soit $\mathcal U \in \ext(K)$.
+    On sait donc que $K\in \mathcal U$, et $\mathcal U$ converge vers un
+    unique élément $x$, donc (car $K$ est fermé) $x\in K$. On en déduit donc
+    que $\mathcal U \in\varphi(x)$, donc que $\mathcal U \in \varphi(K)$.
+
+    On en déduit donc que $\varphi(K) = \ext(K)$, ce qui signifie en particulier
+    que $\varphi(K)$ est un ouvert-fermé.
+  \end{itemize}
+
+  Ainsi $\varphi$ est un homéomorphisme.
 \end{proof}
 
 On peut donc énoncer une version faible du théorème de dualité de Stone.
@@ -1246,3 +1344,169 @@ métrique la définition plus pragmatique avec les quantificateurs :
 \[\lim_{n \to \infty} u_n = \ell \defeq \forall \varepsilon > 0,
 \exists n \in \mathbb N, \forall m > n, d(u_m,\ell) < \varepsilon\]
 
+On va donc montrer, dans un premier temps, que les notions déjà vues peuvent
+être caractérisées par des suites. Commençons par un exercice pour nous mettre
+en jambe (qui découle directement de ce la proposition précédente).
+
+\begin{exercise}
+  Soit un espace métrique $(X,d)$, $Y\subseteq X$ et $x\in X$. Montrer que
+  $x\in \adher Y$ si et seulement s'il existe une suite
+  $(x_n)\in Y^\mathbb N$ telle que $\lim x_n = x$.
+\end{exercise}
+
+Pour pouvoir généraliser la notion de valeur d'adhérence aux suites, on définit
+d'abord la notion de sous-suite.
+
+\begin{definition}[Sous-suite]
+  Soit un espace métrique $(X,d)$ et une suite $(x_n)\in X^\mathbb N$. On dit
+  que $(y_n)$ est une sous-suite, ou suite extraite, de $(x_n)$, s'il existe
+  $\varphi : \mathbb N \to \mathbb N$ une fonction strictement croissante
+  telle que
+  \[\forall n \in \mathbb N, y_n = x_{\varphi(n)}\]
+
+  On appelle la fonction $\varphi$ de cette définition l'extractrice de
+  $(y_n)$.
+\end{definition}
+
+On a vu qu'on pouvait faire converger un filtre vers une de ses valeurs
+d'adhérence en ajoutant des parties au filtre pour en faire un ultrafiltre.
+Le procédé d'extraction de sous-suite est assez analogue, en ce qu'il permet
+de choisir seulement quelques valeurs d'une suite pour se rapprocher d'une
+valeur plus qu'une autre. Ainsi, on peut faire converger une suite vers une
+valeur d'adhérence en en prenant une sous-suite bien choisie. C'est la
+définition que nous prendrons pour la valeur d'adhérence d'une suite.
+
+\begin{definition}[Valeur d'adhérence d'une suite]
+  Soit $(X,d)$ un espace métrique et $(x_n)\in X^\mathbb N$ une suite à
+  valeurs dans $\mathbb N$. On dit que $y$ est une valeur d'adhérence de
+  $(x_n)$ s'il existe une sous-suite $(y_n)$ telle que $\lim y_n = y$. On
+  note $\Adh(x_n)$ l'ensemble des valeurs d'adhérence de $x_n$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que l'ensemble des valeurs d'adhérence de $(x_n)$ peut s'écrire
+  comme~:
+  \[\Adh(x_n) = \bigcap_{n \in \mathbb N} \adher{\{u_k \mid k > n\}}\]
+\end{exercise}
+
+\begin{remark}
+  On voit une forme très proche de celle des valeurs d'adhérence d'un filtre.
+  L'ensemble $\{u_k \mid k > n\}$ joue le rôle d'un ensemble du filtre. En
+  fait, on peut associer à une suite le filtre des parties contenant un ouvert
+  contenant une infinité de valeurs de la suite. Ce point relie directement
+  les définitions avec les filtres et les définitions séquentielles.
+\end{remark}
+
+On peut maintenant caractériser la compacité dans un espace métrique grâce à des
+suites. On donnera la caractérisation sur les parties compactes, en prenant donc
+comme définition d'un espace compact un espace où l'ensemble entier est une
+partie compacte.
+
+\begin{theorem}[Bolzano-Weierstrass généralisé]
+  Soit $(X,d)$ un espace métrique. Alors une partie $K\subseteq X$ est compacte
+  si et seulement si toute suite à valeurs dans $K$ admet une valeur
+  d'adhérence.
+\end{theorem}
+
+\begin{proof}
+  Supposons que $K$ est compacte. Alors toute famille de fermés de $K$ ayant
+  la propriété d'intersection finie a une intersection finie. Soit
+  $(x_n)\in K^{\mathbb N}$. On peut définir
+  $\Adh(x_n)$ par une intersection de fermés par l'exercice précédent, et
+  la famille ainsi définie vérifie la propriété d'intersection finie~: si
+  $F\subfin \mathbb N$, alors on peut trouver $p > \max(F)$, et alors
+  \[\bigcap_{n \in F}\adher{\{u_k\mid k > n\}} \supseteq
+  \adher{\{u_k\mid k > p\}}\]
+  On déduit de la compacité que $\Adh(x_n)$ est non vide.
+
+  Supposons que toute suite à valeurs dans $K$ admet une valeur d'adhérence.
+  Soit $\mathcal F$ une famille de parties de $K$ ayant la propriété
+  d'intersection finie. A FAIRE
+\end{proof}
+
+On introduit maintenant une nouvelle notion, qui a du sens en topologie générale
+mais que l'on préfère introduire dans le cas métrique~: la densité.
+
+\begin{definition}[Densité]
+  Soit $(X,\Omega_X)$ un espace topologique. On dit qu'une partie
+  $Y\subseteq X$ est dense si $\adher Y = X$.
+\end{definition}
+
+La caractérisation séquentielle est directe, mais on l'écrit tout de même.
+
+\begin{property}
+  Soit $(X,d)$ un espace métrique. Une partie $Y\subseteq X$ est dense si et
+  seulement si pour tout $x\in X$ il existe une suite $(y_n)\in Y^\mathbb N$
+  telle que $\lim y_n = x$.
+\end{property}
+
+\begin{example}
+  L'exemple le plus évident de densité est le fait que $\mathbb Q$ est dense
+  dans $\mathbb R$ (en munissant $\mathbb R$ de la topologie usuelle, dont on
+  peut montrer qu'elle dérive de la métrique $(x,y)\mapsto |x-y|$).
+\end{example}
+
+On peut donc définir la notion de séparabilité, qui est une propriété disant
+qu'un espace n'a pas trop de points.
+
+\begin{definition}[Espace séparable]
+  Soit $(X,\Omega_X)$ un espace topologique. On dit que cet espace est
+  séparable s'il existe une partie $Y\subseteq X$ dense et dénombrable.
+\end{definition}
+
+Le fait d'être dénombrable se prête particulièrement bien au cas métrique,
+d'où le fait de l'introduire ici.
+
+\subsection{Complétude}
+
+Nous finissons ce chapitre sur l'introduction de la notion de complétude. Cette
+notion est purement métrique, et non topologique. On peut la motiver par une
+observation à propos de $\mathbb R$ et $\mathbb Q$~: dans le premier, une
+suite qui \og a l'air\fg de converger, converge bien~; dans le deuxième,
+une suite qui \og a l'air\fg de converger, peut n'avoir aucune limite car sa
+limite est un irrationnel.
+
+A partir de cette observation, on voit que $\mathbb R$ possède une propriété que
+$\mathbb Q$ ne vérifie pas. Cependant, cette observation ne suffit pas~: il faut
+encore décrire concrètement ce qu'est une suite ayant l'air de converger. Cette
+notion est celle des suites de Cauchy, dont l'écart entre les différentes
+valeurs tend vers $0$.
+
+\begin{definition}[Suite de Cauchy]
+  Soit $(X,d)$ un espace métrique. On dit qu'une suite $(x_n)\in X^\mathbb N$
+  est de Cauchy si elle vérifie la propriété suivante~:
+  \[\forall \varepsilon > 0, \exists n \in \mathbb N, \forall p,q > n,
+  d(x_p,x_q) < \varepsilon\]
+\end{definition}
+
+\begin{remark}
+  La notion de suite de Cauchy dépend de la métrique et pas seulement de la
+  topologie. On peut vérifier que la topologie induite par $\mathbb R$ sur
+  $(-1,1)$ et la topologie obtenue par un homéomorphisme tel que
+  $\mathrm{argth}$ sont les mêmes, mais les distances induites sont très
+  différentes. En particulier, une suite qui tend vers $-1$ est de Cauchy pour
+  la première métrique mais pas pour la deuxième.
+\end{remark}
+
+On peut alors introduire la notion d'espace complet.
+
+\begin{definition}[Espace complet]
+  Soit $(X,d)$ un espace métrique. On dit que c'est un espace complet si toute
+  suite de Cauchy converge dans $X$.
+\end{definition}
+
+On peut aussi définir la notion d'être métrisable (respectivement complètement
+métrisable), qui n'impose pas la métrique mais seulement son existence.
+
+\begin{definition}[Espace complètement métrisable]
+  Soit $(X,\Omega_X)$ un espace topologique. On dit qu'il est un espace
+  (complètement) métrisable s'il existe une distance $d$ engendrant la topologie
+  $\Omega_X$ (et telle que l'espace métrique est complet).
+\end{definition}
+
+Pour clore ce chapitre, on peut maintenant définir ce qu'est un espace polonais.
+
+\begin{definition}[Espace polonais]
+  Un espace polonais $(X,\Omega_X)$ est un espace topologique complètement
+  métrisable séparable.
+\end{definition}
