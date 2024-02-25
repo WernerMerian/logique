@@ -267,6 +267,22 @@ Nous en verrons une interprétation grâce aux filtres.
   analytique comme un ensemble de points muni d'une topologie.
 \end{remark}
 
+On définit alors la notion d'isomorphisme, dans le cas des espaces topologiques,
+comme une fonction continue admettant un inverse continu.
+
+\begin{definition}[Homéomorphisme]
+  Soient $(X,\Omega_X)$ et $(Y,\Omega_Y)$ deux espaces topologiques, une
+  fonction $f : X \to Y$ est appelée un homéomorphisme entre $X$ et $Y$ s'il
+  existe une fonction continue $g : Y \to X$ telle que $g\circ f = \id_X$ et
+  $f\circ g = \id_Y$.
+\end{definition}
+
+\begin{exercise}
+  Montrer qu'une fonction est un homéomorphisme si et seulement si elle est
+  une bijection continue dont la réciproque (en tant que fonction ensembliste)
+  est elle aussi continue.
+\end{exercise}
+
 \subsection{Filtres, limites, séparation}
 
 On aborde en général la notion de limite de façon métrique. La définition la
@@ -402,7 +418,7 @@ est continue quand la limite commute avec l'application par $f$.
   ouvert. Donc la préimage d'un ouvert est un ouvert : $f$ est donc continue.
 \end{proof}
 
-\begin{exercise}
+\begin{exercise}\label{exo.conv.suite}
   On dit qu'une suite $u : \mathbb N \to X$ converge lorsque le filtre image du
   filtre de Fréchet sur $\mathbb N$ converge vers $X$. Montrer que cela revient
   à vérifier la formule usuelle :
@@ -1038,7 +1054,40 @@ différentes.
 
 \subsection{Dualité de Stone}
 
-A FAIRE
+Il nous reste à vérifier que ces espaces sont isomorphes.
+
+\begin{lemma}
+  Soit $(B,\leq)$ une algèbre de Boole. On a un isomorphisme d'algèbres de Boole
+  \[(B,\leq) \cong (K\Omega_{\Spec(B)},\subseteq)\]
+\end{lemma}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{lemma}
+  Soit $(X,\Omega_X)$ un espace topologique, on a un homéomorphisme
+  \[(X,\Omega_X)\cong (\Spec(K\Omega_X),\Omega_{\Spec(K\Omega_X)})\]
+\end{lemma}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On peut donc énoncer une version faible du théorème de dualité de Stone.
+
+\begin{theorem}[Dualité de Stone]
+  On a une correspondance, bijective à isomorphisme près, entre les algèbres
+  de Boole et les espaces de Stone.
+\end{theorem}
+
+Le vraie théorème de dualité de Stone s'énonce sur les catégories, et ajoute le
+fait que ce quasi-isomorphisme (que l'on appelle équivalence dans le contexte
+catégorique) fait aussi correspondre les morphismes, mais dans les directions
+différentes : une fonction continue $X \to Y$ induit un morphisme d'algèbres de
+Boole $K\Omega_Y\to K\Omega_X$ (et réciproquement). Il est historiquement le
+premier exemple non trivial de dualité (équivalence entre deux catégories mais
+inversant le sens des flèches).
 
 \section{Topologie métrique}
 
@@ -1051,3 +1100,149 @@ séparable et d'espace complet, pour pouvoir définir les espaces polonais qui
 seront étudiés en théorie descriptive des ensembles.
 
 \subsection{Espace métrique}
+
+Dans un espace métrique, on s'éloigne de l'idée de la topologie générale de
+considérer des parties pour décrire la proximité, et on utilise une fonction
+donnant explicitement la distance entre deux points. On appelle une telle
+fonction, très naturellement, une distance.
+
+\begin{definition}[Distance]
+  Soit $X$ un ensemble. On appelle distance sur $X$ une fonction
+  $d : X \times X \to \mathbb R_+$ vérifiant les axiomes suivants :
+  \begin{itemize}
+  \item séparation : $\forall x,y\in X, d(x,y) =0 \implies x = y$
+  \item symétrie : $\forall x,y\in X, d(x,y)=d(y,x)$
+  \item inégalité triangulaire :
+    $\forall x,y,z\in X, d(x,z) \leq d(x,y)+d(y,z)$
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Espace métrique]
+  Un espace métrique est un couple $(X,d)$ où $X$ est un ensemble et $d$ est une
+  distance sur $X$.
+\end{definition}
+
+Un espace métrique a naturellement une topologie, ce qui est heureux vu le
+thème de notre chapitre.
+
+\begin{definition}[Boule, topologie métrique]
+  Soit $(X,d)$ un espace métrique. Pour $x\in X$ et $\varepsilon \geq 0$, on
+  définit la boule ouverte centrée en $x$ de rayon $\varepsilon$ par
+  \[B_\varepsilon(x) \defeq \{y\in X \mid d(x,y) < \varepsilon\}\]
+  On définit de façon analogue
+  \[\clB_\varepsilon(x)\defeq\{y\in X \mid d(x,y)\leq\varepsilon\}\]
+
+  On appelle topologie métrique de $(X,d)$ la topologie engendrée par la
+  famille
+  \[\{B_\varepsilon(x) \mid \varepsilon > 0, x \in X \}\]
+\end{definition}
+
+\begin{remark}
+  Dans ce cas-là, notre famille n'est pas une base de topologie : on peut ne
+  peut pas forcément obtenir $X$ comme une boule, et l'intersection de deux
+  boules n'est pas toujours une boule. On considère donc l'ensemble des
+  intersections finies d'union de boules.
+\end{remark}
+
+\begin{exercise}
+  Soit un ensemble $X$, montrer que la distance discrète
+  \[\begin{array}{ccccc}
+  d & : & X \times X & \longrightarrow & \mathbb R\\
+  & & (x,y) & \longmapsto &
+  \begin{cases}
+    0\text{ si } x = y\\
+    1\text{ sinon}
+  \end{cases}
+  \end{array}\]
+  est bien une distance. Montrer que la topologie métrique associée est la
+  topologie discrète sur $X$.
+\end{exercise}
+
+\begin{exercise}[Sur les espaces ultra-métriques]
+  Soit un ensemble $X$. On dit qu'une distance $d$ est ultramétrique lorsqu'elle
+  vérifie les hypothèses d'une distance à l'exception de la propriété suivante,
+  remplaçant l'inégalité triangulaire :
+  \[\forall x,y,z\in X, d(x,z)\leq \max(d(x,y),d(y,z))\]
+
+  Montrer qu'une distance ultramétrique est bien une distance. Montrer que pour
+  tous $x,y\in X$ et $\varepsilon > 0$, si
+  $B_\varepsilon(x)\cap B_\varepsilon(y)\neq\varnothing$ alors
+  $B_\varepsilon(x) = B_\varepsilon(y)$. Ainsi, dans un espace ultramétrique, tous
+  les points d'une boule ouverte en sont centre.
+\end{exercise}
+
+\begin{exercise}
+  Montrer qu'un espace métrique est séparé (on pourra prendre, pour deux points
+  $x\neq y$, deux boules de rayon $d(x,y)/3$).
+\end{exercise}
+
+\begin{remark}
+  Avec l'exemple de la distance discrète, on voit que dans le cas général,
+  $\clB_\varepsilon(x)$ n'est pas toujours l'adhérence de $B_\varepsilon(x)$ : en
+  prenant $\varepsilon = 1$, la boule ouverte est un singleton fermé mais la
+  boule fermée est l'espace tout entier.
+\end{remark}
+
+On peut généraliser la notion de distance pour établir la distance entre un
+élément et une partie (ou entre deux parties).
+
+\begin{definition}[Distance entre parties]
+  Soit $(X,d)$ un espace métrique, $Y\subseteq X$ et $x\in X$. On définit la
+  distance de $x$ à $Y$ par
+  \[d(x,Y)\defeq \inf_{y\in Y} d(x,y)\]
+  et la distance d'une partie $Y\subseteq X$ à une partie $Z\subseteq X$ par
+  \[d(Y,Z)\defeq \inf_{y\in Y, z \in Z} d(y,z)\]
+\end{definition}
+
+On en déduit une caractérisation de l'adhérence par les distances.
+
+\begin{proposition}
+  Soit $(X,d)$ un espace métrique et $Y\subseteq X$. Alors pour tout $x\in X$,
+  on a l'équivalence suivante :
+  \[x\in \adher Y \iff d(x,Y) = 0\]
+\end{proposition}
+
+\begin{proof}
+  Supposons que $x\in \adher(Y)$ et montrons que $d(x,Y) = 0$. Soit
+  $\varepsilon > 0$, on va montrer qu'il existe $y\in Y$ tel que
+  $d(x,y)< \varepsilon$ : par définition de $x\in \adher(Y)$, on peut trouver
+  un élément dans $B_\varepsilon(x)\cap Y$ (puisque l'intersection avec un
+  ouvert contenant $x$ est non vide), mais cet élément $y$ vérifie justement
+  $d(x,y) < \varepsilon$, d'où le résultat.
+
+  Réciproquement, supposons que $d(x,Y) = 0$. Soit $\varepsilon > 0$, on veut
+  montrer qu'il existe $y\in B_\varepsilon(x)\cap Y$. Comme on sait que
+  $\inf d(x,y) = 0$, on peut trouver $y\in Y$ tel que $d(x,y) <\varepsilon$,
+  et cet élément vérifie $y\in B_\varepsilon(x)\cap Y$, d'où le fait que
+  $x\in \adher Y$.
+\end{proof}
+
+\begin{exercise}
+  Trouver deux parties de $\mathbb R$ qui sont à une distance $0$ l'une de
+  l'autre et qui ont une intersection vide.
+\end{exercise}
+
+\subsection{Caractérisations séquentielles}
+
+Un intérêt des espaces métriques, outre le fait qu'ils sont souvent bien plus
+faciles à visualiser que des espaces topologiques quelconques, est que leur
+filtre de voisinages peut être engendré par un ensemble dénombrable. Pour le
+voir, il suffit de remarquer qu'on peut engendrer les voisinages d'un point
+$x$ par la famille des $B_{1/n}(x)$ pour $n \in \mathbb N^*$.
+
+La conséquence principale que nous voulons en tirer est la suivante : pour
+caractériser des comportements topologiques dans un espace métrique, il suffit
+de l'étudier pour des suites. Cette conséquence vient du fait que, pour
+caractériser une convergence, il suffit de rencontrer tous les voisinages d'un
+point. Pour ce faire, dans le cas général, on peut avoir besoin d'un nombre
+excessivement grand (et indénombrable) de points, ce qui empêche une suite
+d'atteindre la limite. Par contre, avec un filtre dont une base est
+dénombrable, il suffit de rencontrer chaque ensemble de cette base, ce qui peut
+se faire avec un nombre dénombrable de points.
+
+On a vu dans l'\cref{exo.conv.suite} qu'on pouvait définir la convergence
+d'une suite à l'aide de filtres. \'Evidemment, on utilisera dans le cas
+métrique la définition plus pragmatique avec les quantificateurs :
+\[\lim_{n \to \infty} u_n = \ell \defeq \forall \varepsilon > 0,
+\exists n \in \mathbb N, \forall m > n, d(u_m,\ell) < \varepsilon\]
+
