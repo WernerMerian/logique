@@ -34,7 +34,7 @@ debug: $(DEBUG_JOBNAME).pdf
 $(JOBNAME).pdf: $(BUILD_DIR)$(JOBNAME).pdf
 	cp $(BUILD_DIR)$(JOBNAME).pdf ./
 
-$(DEBUG_JOBNAME).pdf: debug
+$(DEBUG_JOBNAME).pdf: $(BUILD_DIR)$(DEBUG_JOBNAME).pdf
 	cp $(BUILD_DIR)$(DEBUG_JOBNAME).pdf ./
 
 $(BUILD_DIR)$(JOBNAME).pdf:
