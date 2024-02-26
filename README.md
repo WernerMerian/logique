@@ -10,19 +10,27 @@ L'ordre des chapitres est le suivant :
 
 I. Bases de la logique
 
-1. Ensemble inductif, preuves par induction, propositions
+1. Ensemble inductif, preuves par induction
 
-2. Logique du premier ordre, modèles, preuves
+2. Logique propositionnelle
+
+3. Logique du premier ordre, modèles, preuves
+
+4. Théorie des ensembles ordonnés, filtres
+
+5. Topologie générale, métrique, dualité de Stone
 
 II. Théorie des ensembles
 
-3. Les mathématiques et la théorie des ensembles
+6. La théorie ZFC et la formalisation des mathématiques
 
-4. Ordinaux
+7. Ordinaux, cardinaux et cofinalité
 
-5. Cardinaux
+8. Combinatoire sur les ordinaux : clubs, ensembles stationnaires
 
-6. Cofinalité
+9. Modèle de ZFC et absoluité
+
+10. L'univers constructible de Gödel : choix général et HCG
 
 III. Théorie des modèles
 
@@ -30,21 +38,25 @@ III. Théorie des modèles
 
 IV. Calculabilité
 
-7. Modèles de calcul
+11. Langage régulier et langage algébrique
 
-8. \'Enumérations et théorèmes de calculabilité
+12. Modèles de calcul : fonctions récursives, machines de Turing
 
-9. Codage des propositions, hiérarchie arithmétique
+13. Enumérations et théorèmes de calculabilité
 
-10. Théorèmes d'incomplétude de Gödel
+14. Codage des propositions, hiérarchie arithmétique
+
+15. Théorèmes d'incomplétude de Gödel
+
+16. Complexité
 
 V. Théorie de la démonstration
 
-11. Calcul des séquents
+17. Calcul des séquents
 
-12. Déduction naturelle
+18. Déduction naturelle
 
-13. Lambda-calcul
+19. Lambda-calcul
 
 
 ## Protocole de compilation
