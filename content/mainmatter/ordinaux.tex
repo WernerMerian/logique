@@ -1,0 +1,347 @@
+\chapter{Ordinaux, cardinaux, cofinalité}
+\label{chp.ordinaux}
+
+\minitoc
+
+Dans ce chapitre, on s'intéresse aux notions les plus incontournables de la
+théorie des ensembles que sont les ordinaux, les cardinaux et la cofinalité.
+Ces trois notions sont bâties l'une sur la suivante~: les cardinaux sont une
+famille spécifique d'ordinaux et la cofinalité désigne une fonction retournant
+des cardinaux.
+
+Moralement, les ordinaux forment une hiérarchie d'ensembles canoniques. La
+classe des ordinaux est une classe existant dans tout modèle de ZF, et se
+comporte particulièrement bien. Cette classe nous permet de comparer des bons
+ordres, mais nous verrons qu'elle revêt une importance plus particulière dans le
+cadre de la théorie des ensembles~: elle est une classe ordonnée arbitrairement
+grande, et permet donc de considérer des représentants pour des phénomènes
+ensemblistes arbitrairement grands. De plus, c'est une classe bien ordonnée,
+ce qui signifie qu'on a un principe de choix sur cette classe (si on a un
+ensemble de parties d'un bon ordre, on peut prendre le minimum de chaque partie
+dans l'ensemble), nous permettant en choisissant des minima d'obtenir un
+représentant canonique.
+
+Les cardinaux forment l'exemple le plus évident d'un tel procédé~: par défaut,
+on imagine un cardinal comme une classe d'équipotence, c'est-à-dire comme
+l'univers ensembliste $\mathcal U$ quotienté par la relation d'équivalence
+\[X\sim Y \defeq \exists f : X \to Y, \mathrm{bij}(f)\]
+Le souci, évidemment, est que ces classes ne sont pas des ensembles. Pour le
+cardinal $1$, on peut par exemple prendre n'importe quel ensemble $X$ et
+considérer $\{X\}$, montrant que tout l'univers $\mathcal U$ peut être injecté
+dans la classe des ensembles de cardinal $1$. La solution adoptée en théorie des
+ensembles est de choisir, pour chaque classe, un représentant canonique.
+Plutôt que de définir ces classes d'équipotence, on remarque que chaque classe
+rencontre la hiérarchie des ordinaux, et on prend alors l'ordinal minimum qui
+appartient à la classe. Il reste un souci dans cette définition~: est-on sûrs
+que la classe des cardinaux rencontre la hiérarchie des ordinaux~? Si l'on
+admet $\AxC$, c'est le cas, comme nous le verrons, mais on traitera dans ce
+chapitre plus en détail des implications de l'axiome du choix (on prouvera
+en particulier lemme de Zorn).
+
+Enfin, la cofinalité est une notion, différente de la cardinal, exprimant à quel
+point un ordinal (ou un cardinal) a besoin d'un grand nombre d'étapes pour être
+parcouru. L'idée de la cofinalité est assez technique et demande d'être
+manipulée pour être pleinement assimilée. Nous verrons ce que sont les cardinaux
+réguliers et singuliers, et étudierons quelques conséquences comme le théorème
+de König.
+
+\section{Ordinaux}
+
+Commençons par donner une présentation informelle motivant la définition des
+ordinaux.
+
+\subsection{Description des ordinaux}
+
+On rappelle qu'un bon ordre est un ordre tel que toute partie admet un minimum.
+La classe des bons ordres est ainsi la classe des ensembles ordonnés $(X,<)$
+où $<$ est un bon ordre sur $X$. On a par exemple $\{1\}$ et $\{2\}$ qui sont
+deux bons ordres (avec le seul ordre possible sur un seul élément)~: ils sont
+donc isomorphes, et représentent le même ordre, en ignorant l'étiquette des
+éléments ordonnés eux-mêmes.
+
+Dans le but de décrire efficacement la classe des bons ordres, il nous faut donc
+trouver un moyen de représenter canoniquement un ensemble bien ordonné. Tout
+d'abord, pour un ensemble $X$ quelconque, il peut exister un nombre considérable
+de bons ordres (souvent infini), il nous faut donc fixer la relation pour un
+ensemble donné. En repensant au lemme de Mostovski, on voit qu'on peut
+représenter certains ensembles munis de relation par un ensemble muni de la
+relation $\in$ et le besoin d'expliciter la relation est alors éliminé, puisque
+la relation $\in$ existe dans la théorie même.
+
+On souhaite donc représenter un ensemble bien ordonné $(X,<)$ par un ensemble
+$X'$ pour lequel le bon ordre est $\in$. Comme nous l'avons vu pour le lemme
+d'effondremment de Mostovski, un tel représentant existe bien et est unique si
+l'on choisit le représentant comme étant transitif. Ainsi tout ensemble bien
+ordonné est équivalent (on le montrera) à un unique ensemble transitif bien
+ordonné pour la relation $\in$. Telle est donc notre définition d'ordinal.
+
+\begin{definition}[Ordinal]
+  On dit qu'un ensemble $\alpha$ est un ordinal si~:
+  \begin{itemize}
+  \item $\alpha$ est transitif, c'est-à-dire que
+    $\forall x\in \alpha, \forall y \in x, y\in \alpha$
+  \item $\alpha$ est bien ordonné pour $\in$, c'est-à-dire que $\in$ est un
+    ordre sur $\alpha$~:
+    \[(\forall x\in \alpha, x\notin \alpha)\land (\forall x,y,z\in \alpha,
+    x\in y \land y \in z \implies x \in z)\]
+    et que toutes ses parties ont un minimum~:
+    \[\forall X\subseteq \alpha, \exists x \in \alpha, \forall y \in X,
+    (x=y \lor x \in y)\]
+  \end{itemize}
+
+  On note $\Ord$ la classe des ordinaux, qui peut donc être définir par la
+  conjonction des formules données ci-dessus.
+\end{definition}
+
+\begin{remark}
+  On peut aussi décrire le fait d'être un bon ordre par le fait d'être total
+  et d'être un ordre bien fondé. La propriété d'être bien fondée, en présence
+  de l'axiome de fondation, est automatiquement vérifiée~: un ordinal est alors
+  un ensemble transitif pour lequel la relation $\in$ est transitive et totale,
+  c'est-à-dire que $x\in y \lor x = y \lor x\ni y$. Même si l'axiome de
+  fondation simplifie les preuves, on décide de travailler pour l'instant dans
+  $\ZF - \AxF$, pour montrer que toute la construction des ordinaux est possible
+  avec peu d'axiomes.
+\end{remark}
+
+\begin{example}
+  Donnons quelques cas pratiques d'ordinaux~:
+  \begin{itemize}
+  \item $0$ est un ordinal.
+  \item Plus généralement, tout entier $n = \{0,\ldots,n-1\}$ est un ordinal.
+  \item $\omega$, qui est le nom qu'on utilise en théorie des ensembles pour
+    l'ensemble qu'on a décrété être $\mathbb N$, est aussi un ordinal. Les
+    différents axiomes du fait d'être un ordinal peuvent se prouver par
+    récurrence. C'est aussi le plus petit ordinal infini, puisque pour tout
+    $n\in \omega$, $n$ est fini (nous donnerons plus tard une définition d'être
+    un ordinal fini).
+  \end{itemize}
+\end{example}
+
+\begin{notation}
+  On désignera un ordinal par une lettre grecque du début de l'alphabet~:
+  $\alpha,\beta,\gamma,\delta,\ldots$
+\end{notation}
+
+On donne maintenant trois propriétés basiques sur les ordinaux~: $\Ord$ est
+stable par $S$, par intersection et l'inclusion entre ordinaux est équivalente
+à l'appartenance ou l'égalité.
+
+\begin{proposition}
+  Soit $\alpha$ un ordinal, alors $S\;\alpha = \alpha\cup\{\alpha\}$ est
+  aussi un ordinal.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{proposition}
+  Soient $\alpha$ et $\beta$ deux ordinaux. Alors $\alpha\cap \beta$ est aussi
+  un ordinal.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{proposition}
+  Soient $\alpha$ et $\beta$ deux ordinaux. On suppose que
+  $\alpha \subseteq \beta$, alors $\alpha \in \beta$ ou $\alpha = \beta$.
+\end{proposition}
+
+\begin{proof}
+  On suppose que $\alpha \subsetneq \beta$, montrons qu'alors
+  $\alpha \in \beta$. On sait donc que $\beta\setminus\alpha$ est une partie
+  non vide, soit $z = \min \beta\setminus\alpha$. On montre maintenant que
+  $z = \alpha$ par double inclusion.
+
+  Si $x\in \alpha$, alors $x\notin\beta\setminus\alpha$ donc $x\neq z$. Montrons
+  que $x\in z$. Supposons que $z\in x$. Alors, comme $\alpha$ est transitif,
+  $z\in \alpha$, mais $z\in\beta\setminus\alpha$, ce qui est absurde. Donc
+  $x\in z$, donc $\alpha\subseteq z$.
+
+  Si $x\in z$, alors $x\notin\beta\setminus\alpha$ (car $z$ est le minimum de
+  cet ensemble), donc $x\in\alpha$.
+
+  Donc $\alpha = z$ et $z\in \beta$, donc $\alpha \in \beta$.
+\end{proof}
+
+La classe $\Ord$ est elle-même bien ordonnée pour $\in$, ce que l'on prouve dans
+la proposition suivante.
+
+\begin{proposition}
+  Les propositions suivantes sont vraies~:
+  \begin{enumerate}
+  \item si $\alpha \in \beta \in \Ord$ alors $\alpha \in \Ord$.
+  \item si $X\subseteq \Ord$, alors $\bigcap X \in \Ord$.
+  \item $\Ord$ n'est pas un ensemble.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  On vérifie les différentes propositions~:
+  \begin{enumerate}
+  \item A FAIRE
+  \item A FAIRE
+  \item Supposons que $\Ord$ est un ensemble. Alors, par les propositions
+    précédentes, c'est un ordinal~: on en déduit que $\Ord\in\Ord$, or par
+    hypothèse, $\Ord\notin\Ord$.
+  \end{enumerate}
+\end{proof}
+
+\begin{notation}
+  Comme les ordinaux appartiennent à une classe elle-même ordonnée, on écrira
+  souvent $\alpha < \beta$ ou $\alpha \leq \beta$ plutôt que $\alpha \in \beta$
+  ou $\alpha \subseteq \beta$.
+\end{notation}
+
+\begin{property}
+  Soit $X\subseteq\Ord$ un ensemble, alors $\bigcup X \in \Ord$.
+\end{property}
+
+\begin{proof}
+  On vérifie les axiomes d'un ordinal~:
+  \begin{itemize}
+  \item si $x\in y\in \bigcup X$ alors on trouve $\alpha \in X$ tel que
+    $x\in y \in \alpha$, et comme $\alpha$ est transitif, $x\in \alpha$, donc
+    $x\in \bigcup X$.
+  \item si $x\in X$ alors on trouve $\alpha \in X$ tel que $x\in \alpha$, donc
+    comme $\alpha$ est un ordinal, $x\notin x$.
+  \item si $x\in y\in z$ sont trois éléments de $\bigcup X$, alors on trouve
+    $\alpha,\beta,\gamma\in X$ tels que $x\in \alpha,y\in \beta,z\in\gamma$.
+    Comme $\Ord$ est bien ordonnée, on trouve un maximum entre $\alpha$,
+    $\beta$ et $\gamma$, disons $\alpha$ quitte à renommer nos ordinaux.
+    Il vient donc que $x,y,z\in\alpha$, donc que $x\in z$ comme $\in$
+    est un ordre sur $\alpha$.
+  \item soit $Y\subseteq \bigcup X$ une partie non vide de $X$. On trouve par
+    hypothèse un élément $x\in Y$, et donc $\alpha \in X$ tel que $x\in\alpha$.
+    Alors $Y\cap \alpha$ a un plus petit élément, notons-le $m$. Montrons que
+    $m$ est un minorant de $Y$. Soit $y\in Y$, par hypothèse on trouve
+    $\beta\in X$ tel que $y\in \beta$. Comme $y\in \beta$, $y$ est un ordinal,
+    donc soit $y\subseteq \alpha$, soit $\alpha \in y$. Dans le premier cas,
+    si $y\in \alpha$ alors $y\in Y \cap \alpha$ donc $m \leq y$ par définition,
+    et si $y=\alpha$ alors $m\in Y \cap \alpha$ donc $m \leq \alpha$.
+    Supposons maintenant que $\alpha \in y$. Alors on sait que
+    $m\in \alpha\in y$, donc $m\in y$, d'où $m\leq y$.
+  \end{itemize}
+
+  $\bigcup X$ est donc un ordinal.
+\end{proof}
+
+Donnons maintenant un outil efficace pour prouver qu'un ensemble est un ordinal.
+
+\begin{proposition}
+  Soit $\alpha$ un ordinal et $Y\subseteq \alpha$ une partie close par le bas,
+  c'est-à-dire telle que si $x\in Y$, $y\in \alpha$ et $y\in x$ alors
+  $y\in \alpha$, alors $Y$ est un ordinal (on dit aussi que $Y$ est un segment
+  initial de $\alpha$).
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Comme nous l'avons dit, le lemme de Mostovski appliqué aux ordinaux nous
+permet de définir le représentant canonique d'un bon ordre.
+
+\begin{proposition}
+  Soit $(X,<)$ un bon ordre. Alors il existe un unique ordinal $\alpha$ et un
+  unique isomorphisme $\pi : (X,<)\cong (\alpha,\in)$.
+\end{proposition}
+
+\begin{proof}
+  On applique le lemme d'effondrement de Mostovski à $(X,<)$ qui est un ensemble
+  muni d'une relation bien fondée. On trouve donc un unique ensemble $\alpha$
+  transitif et un unique isomorphisme $\pi : (X,<) \cong (\alpha,\in)$. Comme
+  $(\alpha,\in)$ est isomorphe à $(X,<)$, on en déduit directement que c'est
+  un bon ordre. $\alpha$ est donc un ordinal, et tout autre ordinal isomorphe
+  à $\alpha$ est alpha lui-même puisque ce sont deux ensembles transitifs
+  bien fondés pour $\in$ (l'isomorphisme est donc l'identité).
+\end{proof}
+
+\begin{corollary}
+  Soient deux ordinaux $\alpha,\beta$ tels qu'on a une fonction strictement
+  croissante $f : \alpha \to \beta$ et une fonction strictement croissante
+  $g : \beta \to \alpha$, alors $\alpha = \beta$ et $f = g = \id_\alpha$.
+\end{corollary}
+
+\begin{definition}
+  Soit $(X,<)$ un bon ordre. On appelle type de $(X,<)$, souvent abrégé en
+  type de $X$, que l'on note $\type(X)$ l'unique ordinal $\alpha$ tel que
+  $(X,<)\cong (\alpha,\in)$.
+\end{definition}
+
+On a vu que la classe $\Ord$ contenait $\omega$, mais elle s'étend au-delà, déjà
+en considérant $S\;\omega$. De même, on peut considérer $\omega + \omega$, que
+l'on peut définir par
+\[\omega + \omega \defeq \bigcup_{n \in \omega} S^n\;\omega\]
+ou d'autres tels ordinaux toujours plus grands. Nous verrons plus tard
+l'arithmétique ordinale, permettant de donner un sens plus précis à des
+expressions telles que $\omega + \omega$, mais nous allons d'abord étudier les
+différentes sortes d'ordinaux existants.
+
+L'ordinal $0$ a un rôle particulier, puisqu'il est le plus petit ordinal
+existant. A part lui, les ordinaux sont de deux sortes~: les ordinaux
+successeurs et les ordinaux limites.
+
+\begin{definition}[Ordinal successeur]
+  Un ordinal $\alpha$ est dit successeur s'il existe $\beta \in \Ord$ tel que
+  $\alpha = S\;\beta$.
+\end{definition}
+
+\begin{definition}[Ordinal limite]
+  Un ordinal $\lambda$ est dit limite s'il est non nul et vérifie
+  $\lambda = \sup_{\beta < \lambda} \beta$.
+\end{definition}
+
+\begin{property}
+  Tout ordinal est soit $0$, soit un successeur, soit un ordinal limite, chaque
+  cas étant exclusif.
+\end{property}
+
+\begin{proof}
+  Le fait que $0$ n'est ni successeur ni limite découle de la définition.
+  Montrons qu'un ordinal ne peut être à la fois limite et successeur. Soit
+  $S\;\alpha$ un ordinal successeur, alors
+  \[\bigcup_{\beta < S\;\alpha} \beta =
+  \{\gamma \in \beta \mid \beta \in\alpha \cup \{\alpha\}\}\]
+  par transitivité, si $\gamma\in\beta\in\alpha$ alors $\gamma\in \alpha$, et
+  si $\beta \in\{\alpha\}$ alors $\gamma\in \alpha$ par définition. Dans l'autre
+  sens, si $\beta \in \alpha$ alors $\beta\in\alpha\in\{\alpha\}$. Donc
+  $\bigcup (S\;\alpha) = \alpha$. Ainsi un ordinal successeur ne peut pas être
+  limite.
+
+  Montrons que tout ordinal est soit $0$, soit un successeur, soit un ordinal
+  limite. Supposons qu'il existe $\alpha$ qui n'est aucun des trois. On définit
+  $\beta = \bigcup \alpha$. Comme $\alpha$ est transitif (c'est un ordinal),
+  $\beta \subseteq \alpha$, donc $\beta \in \alpha$ ou $\beta = \alpha$.
+  Si $\beta = \alpha$ alors $\alpha$ est limite, donc $\beta \in \alpha$.
+  Montrons que $\alpha = S\;\beta$. Pour ça, montrons que le seul élément de
+  $\alpha\setminus \beta$ est $\beta$. On sait que
+  $\beta \in \alpha \setminus\beta$ car $\beta\notin\beta$. Soit
+  $\gamma\in\alpha\setminus\beta$, montrons que $\gamma = \beta$.
+  Comme $\gamma\notin\beta$, $\gamma \geq \beta$, montrons que
+  $\gamma\leq\beta$. Comme $\gamma \in \alpha$, on en déduit que si
+  $\xi\in\gamma$ alors $\xi \in \alpha$, donc $\gamma\subseteq \beta$. Donc
+  $\gamma = \beta$, donc $\alpha = S\;\beta$.
+\end{proof}
+
+\subsection{Induction transfinie}
+
+La structure de $\Ord$ ressemble fortement à celle des entiers, mais avec
+l'ajout d'ordinaux limites. On s'attend donc à avoir un principe d'induction et
+de récursion proche de celui de nos ensembles inductifs du \cref{chp.induction}.
+C'est en effet le cas, et nous le donnerons sous deux formes~: avec l'induction
+de bon ordre et avec la distinction des sortes d'ordinaux.
+
+\begin{theorem}[Induction transfinie]
+  Soit $\varphi(x_0,\ldots,x_n,y)$ une formule dans le langage des ensembles.
+  On a alors la propriété
+  \begin{multline*}
+    \forall x_0,\ldots,x_n,(\forall \alpha\in\Ord,
+    (\forall \beta < \alpha, \varphi(x_0,\ldots,x_n,\beta))\implies
+    \varphi(x_0,\ldots,x_n,\alpha))\\
+    \implies \forall \alpha \in \Ord, \varphi(x_0,\ldots,x_n,\alpha)
+  \end{multline*}
+\end{theorem}
