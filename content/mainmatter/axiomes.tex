@@ -61,7 +61,7 @@ relation $=$, symbole logique déjà inclus dans tout langage.
   avec un nombre possiblement bien plus grand de symboles.
 \end{remark}
 
-\begin{axiom}[Extensionalité]
+\begin{axiom}[Extensionalité]\label{ax.ZF.ext}
   L'axiome d'extensionalité exprime que deux ensembles sont égaux exactement
   lorsqu'ils possèdent les mêmes éléments :
   \[\forall x \forall y, \qquad x = y \iff (\forall z, z \in x\iff z \in y)\]
@@ -93,7 +93,7 @@ finies telles que $\{x,\{y,z\}\}$, mais on ne peut pas par exemple définir
 $\{x,y,z\}$ : il nous faut un axiome permettant d'accéder à l'intérieur d'un
 ensemble pour en construire un nouveau.
 
-\begin{axiom}[Union]
+\begin{axiom}[Union]\label{ax.ZF.union}
   Pour tout ensemble $x$, on peut construire l'ensemble $\bigcup x$ contenant
   les éléments des éléments de $x$ :
   \[\forall x \exists y,\qquad \forall z, z\in y \iff
@@ -125,7 +125,7 @@ considérablement la taille de ce que l'on peut construire.
   \[x \subseteq y \defeq \forall z, z \in x \implies z \in y\]
 \end{notation}
 
-\begin{axiom}[Ensemble des parties]
+\begin{axiom}[Ensemble des parties]\label{ax.ZF.pow}
   Pour tout ensemble $x$, il existe l'ensemble $\powerset (x)$ dont les éléments
   sont exactement les ensembles inclus dans $x$ :
   \[\forall x\exists y, \qquad \forall z, z \in y \iff z \subseteq x\]
@@ -159,7 +159,7 @@ possible de donner un axiome pour toutes les formules. A la place, on introduit
 un schéma d'axiomes, c'est-à-dire une infinité d'axiomes ayant tous la même
 forme et dépendant d'un paramètre que l'on quantifie sur les formules.
 
-\begin{axiom}[Schéma de compréhension]
+\begin{axiom}[Schéma de compréhension]\label{ax.ZF.compre}
   Soit $\varphi(x_0,\ldots,x_n)$ une phrase mathématique à $n$ variables libres.
   Alors pour tous ensembles $X$ et $a_1,\ldots,a_n$, il existe l'ensemble
   $\{x\in X \mid \varphi(x,a_1,\ldots,a_n)\}$, ce qui s'écrit formellement
@@ -215,7 +215,7 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
   \[\im(R)(y)\defeq \exists x. R(x,y)\]
 \end{definition}
 
-\begin{axiom}[Schéma de remplacement]
+\begin{axiom}[Schéma de remplacement]\label{ax.ZF.repl}
   Pour toute formule $R(x_0,\ldots,x_{n+1})$, pour tous ensembles
   $X,a_1,\ldots,a_n$, l'ensemble image de $R(a_1,\ldots,a_n)$ par $X$ est aussi
   un ensemble :
@@ -237,7 +237,7 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
 
 Donnons aussi l'axiome le plus évident.
 
-\begin{axiom}[Univers non vide]
+\begin{axiom}[Univers non vide]\label{ax.ZF.nonEmpty}
   Il existe un ensemble.
 \end{axiom}
 
@@ -281,7 +281,7 @@ $\mathbb N$ comme le plus petit ensemble contenant $0$ et stable par la fonction
 $S$. Il nous reste à savoir qu'un ensemble contenant $0$ et stable par $S$
 existe bien.
 
-\begin{axiom}[Infini]
+\begin{axiom}[Infini]\label{ax.ZF.infini}
   Il existe un ensemble contenant $\varnothing$ et stable par $S$ :
   \[\exists x, \qquad \varnothing \in x \land
   \forall y, y \in x \implies S\;y\in x\]
@@ -347,12 +347,13 @@ des méthodes finies. C'est pourquoi l'axiome du choix existe : il permet de
 choisir dans des familles infinies d'ensembles non vides. Donnons d'abord la
 définition de cet axiome.
 
-\begin{axiom}[Choix]
+\begin{axiom}[Choix]\label{ax.ZF.AC}
   Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
   disjoints. Alors il existe un ensemble $C$ tel que pour tout $x\in X$,
   $C\cap x$ est un singleton. \'Ecrit formellement :
   \[
-  \forall X, \varnothing\notin X \land (\forall x,y \in X, x \cap y \neq
+  \forall X, \varnothing\neq X \land \varnothing\notin X \land
+  (\forall x,y \in X, x \cap y \neq
   \varnothing \implies x = y)
   \implies \exists C, \forall x \in X, \exists y, C \cap x = \{y\}
   \]
@@ -456,16 +457,54 @@ en considérant seulement ses projections.
   $f\mapsto (x\mapsto y \mapsto f(x,y))$.
 \end{exercise}
 
-Donnons maintenant la deuxième formulation de l'axiome du choix.
+Donnons maintenant deux nouvelles formulations de l'axiome du choix.
 
 \begin{proposition}
-  L'axiome du choix est équivalent à la proposition suivante :
-  \[\forall x, \exists f : \powerset (x) \backslash \{\varnothing\} \to x,
+  L'axiome du choix est équivalent à la proposition suivante~:
+  \[\forall x, \varnothing\neq x \land \varnothing\notin x \implies
+  \exists f : x \to \bigcup x, \forall y \in x, f(y) \in y\]
+\end{proposition}
+
+\begin{proof}
+  Supposons l'axiome du choix. On considère un ensemble $x$ dont tous les
+  éléments sont non vides. On définit alors l'ensemble
+  \[C_0\defeq \{\{(y,z)\mid z \in y\}\mid y \in x\}\]
+  Comme $x$ n'a pas d'élément vide, chaque élément de $C_0$ est non vide. De
+  plus, si $a \neq b \in C_0$, alors
+  $a = \{(a,y)\mid y \in a\}$ et $b = \{(b,y)\mid y \in b\}$, donc
+  $a\cap b = \varnothing$. On peut donc appliquer l'axiome du choix sur
+  $C_0$ pour trouver $C$ tel que pour tout $y\in x$,
+  \[\{(y,z)\mid z \in y\}\cap C = \{(y,f(y))\}\]
+  donc $C$ définit exactement une relation fonctionnelle $f$ (à $y$ on n'associe
+  qu'une seule image), et par définition de $C_0$ on sait que $f(y)\in y$.
+
+  Supposons qu'on possède une fonction de choix pour tout ensemble sans élément
+  vide. Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
+  disjoints. On peut alors trouver $f : X \to \bigcup X$ telle que $f(x)\in x$
+  pour tout $x\in X$. Soit alors $C = \im(f)$. Comme $f(x)\in x$ et tous les
+  éléments de $X$ sont deux à deux disjoints, on en déduit que $C\cap x$
+  contient au plus un élément, pour chaque $x\in X$. Comme de plus
+  $f(x) = x$, $C\cap x$ contient au moins un élément. Donc $C\cap x$ est un
+  singleton.
+\end{proof}
+
+\begin{proposition}
+  L'axiome du choix est équivalent à la proposition suivante~:
+  \[\forall x, x\neq\varnothing
+  \exists f : \powerset (x) \backslash \{\varnothing\} \to x,
   \forall y \in \powerset(x)\backslash \{\varnothing\}, f(y)\in y\]
 \end{proposition}
 
 \begin{proof}
-  A faire.
+  Cette formulation est un cas particulier de la formulation précédente, puisque
+  $powerset(x)\setminus\{\varnothing\}$ est non vide et ne contient que des
+  éléments non vides.
+
+  Réciproquement, supposons qu'on a $x$ non vide donc les éléments sont non
+  vides. On a alors
+  \[x\subseteq \powerset\bigg(\bigcup x\bigg)\setminus\{\varnothing\}\]
+  d'où le résultat en spécialisant une fonction de choix donnée par hypothèse
+  sur $x$.
 \end{proof}
 
 Une autre formulation importante nécessite la notion de produit, que l'on peut
@@ -484,12 +523,14 @@ simplement considérer comme une généralisation de l'opération $\times$.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante :
-  \[\forall x, (\forall y \in x, y \neq \varnothing) \implies
-  \prod x \neq \varnothing\]
+  \[\forall x, x\neq \varnothing \land (\forall y \in x, y \neq \varnothing)
+  \implies \prod x \neq \varnothing\]
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Par définition, $\prod X$ est non vide si et seulement si on a une fonction
+  $f : X \to \bigcup X$ telle que $\forall x \in X, f(x)\in x$. C'est un énoncé
+  précédent de l'axiome du choix.
 \end{proof}
 
 \subsection{Axiome de fondation}
@@ -500,7 +541,7 @@ empêche l'existence de cycles d'appartenance, par exemple d'ensemble $x$ tel qu
 $x\in x$. Formellement, l'axiome énonce que la relation $\in$ sur l'univers
 ensembliste $\mathcal U$ est bien fondée.
 
-\begin{axiom}[Fondation]
+\begin{axiom}[Fondation]\label{ax.ZF.AF}
   Pour tout ensemble $x$ non vide, il existe $y\in x$ tel que
   $x\cap y = \varnothing$. Formellement, cela s'écrit :
   \[\forall x, x\neq\varnothing \implies \exists y \in x, x\cap y =
@@ -637,24 +678,45 @@ directement $\in$.
   que $x = \theta(x)$ : ainsi $C$ est vide, donc $\theta$ est l'identité.
 
   Reprenons maintenant notre classe $\mathcal M$. On définit alors la classe
-  $\mathcal N$ par l'image de la fonction $\theta$ définie comme suit :
+  $\mathcal N$ par l'image de la fonction $\pi$ définie comme suit :
   \[\begin{array}{rcccl}
-  \theta & : & \mathcal M & \longrightarrow & \mathcal U\\
-  & & x & \longmapsto & \{\theta(y)\mid y \in R^{-1}[x]\}
+  \pi & : & \mathcal M & \longrightarrow & \mathcal U\\
+  & & x & \longmapsto & \{\pi(y)\mid y \in R^{-1}[x]\}
   \end{array}\]
-  c'est-à-dire que la relation $\theta$ est définie par la proposition
-  \[\theta(x,y) \defeq y = \{\theta(z)\mid z \in R^{-1}[x]\}\]
+  c'est-à-dire que la relation $\pi$ est définie par la proposition
+  \[\pi(x,y) \defeq y = \{\pi(z)\mid z \in R^{-1}[x]\}\]
   où l'on prouve par l'absurde que cette proposition vérifie les propriétés d'un
   isomorphisme entre $(\mathcal M,R)$ et $(\mathcal N,\in)$, en utilisant un
   principe analogue à la preuve précédente. La classe $\mathcal N$ est définie
   par la proposition
-  \[y \in \mathcal N \defeq \exists x\in\mathcal M, \theta(x,y)\]
+  \[y \in \mathcal N \defeq \exists x\in\mathcal M, \pi(x,y)\]
 
   L'unicité découle alors du fait que s'il existe une autre telle classe
   $\mathcal N'$, alors l'isomorphisme entre elle et $\mathcal N$ vérifie les
   hypothèses du résultat intermédiaire, et est donc l'identité. D'où
   $\mathcal N = \mathcal N'$.
 \end{proof}
+
+\subsection{Résumé~: les fragments de ZFC}
+
+Concluons cette section en redonnant les différents axiomes de ZFC. En fait,
+en enlevant les doublons, il nous suffit d'un petit fragment de ce que nous
+avons vu. Donnons d'abord les axiomes de ZF~:
+\begin{itemize}
+\item l'\cref{ax.ZF.ext} (extensionalité)
+\item l'\cref{ax.ZF.union} (réunion)
+\item l'\cref{ax.ZF.pow} (ensemble des parties)
+\item l'\cref{ax.ZF.repl} (schéma de remplacement)
+\item l'\cref{ax.ZF.infini} (infini)
+\item l'\cref{ax.ZF.AF} (fondation)
+\end{itemize}
+ZFC est alors obtenue comme $\ZF + \AxC$. On peut aussi définir
+$\ZF - \AxF$ par exemple. De plus, la théorie Z, de Zermelo, est la théorie
+contenant le schéma d'axiomes de compréhension mais pas de remplacement,
+ne contenant pas l'axiome de fondation et contenant l'axiome de la paire (et les
+axiomes d'extensionalité, de réunion, d'ensemble des parties et de l'infini).
+
+Dans la suite du chapitre, nous n'aurons besoin que de $\ZF - \AxF$.
 
 \section{Construction des autres ensembles de nombres}
 
