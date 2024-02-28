@@ -345,3 +345,230 @@ de bon ordre et avec la distinction des sortes d'ordinaux.
     \implies \forall \alpha \in \Ord, \varphi(x_0,\ldots,x_n,\alpha)
   \end{multline*}
 \end{theorem}
+
+\begin{proof}
+  Soient $x_0,\ldots,x_n$ des ensembles. Supposons que pour tout
+  $\alpha\in\Ord$, on a
+  \[(\forall \beta < \alpha, \varphi(x_0,\ldots,x_n,\beta))\implies
+  \varphi(x_0,\ldots,x_n,\alpha)\]
+  Supposons par l'absurde qu'il existe $\alpha \in \Ord$ tel que
+  $\lnot\varphi(x_0,\ldots,x_n,\alpha)$. On peut alors prendre un tel $\alpha$
+  minimal~: on en déduit donc que pour tout $\beta < \alpha$,
+  $\varphi(x_0,\ldots,x_n,\beta)$ est vraie, donc par hypothèse
+  $\varphi(x_0,\ldots,x_n,\alpha)$ est vraie aussi, ce qui est une
+  contradiction.
+\end{proof}
+
+Ce résultat est cependant souvent plus pratique à utiliser une fois combiné à la
+disjonction de cas sur ce qu'est un ordinal.
+
+\begin{proposition}[Induction transtfinie, variante]
+  Soit $\varphi(x_0,\ldots,x_n,y)$ une formule dans le langage des ensembles.
+  Soient $x_0,\ldots,x_n$ des ensembles. On suppose que~:
+  \begin{itemize}
+  \item $\varphi(x_0,\ldots,x_n,0)$ est vérifiée.
+  \item pour tout ordinal $\alpha$, si $\varphi(x_0,\ldots,x_n,\alpha)$ alors
+    $\varphi(x_0,\ldots,x_n,S\;\alpha)$.
+  \item pour tout ordinal limite $\lambda$, si
+    $\forall \beta < \lambda, \varphi(x_0,\ldots,x_n,\beta)$ alors
+    $\varphi(x_0,\ldots,x_n,\lambda)$.
+  \end{itemize}
+
+  Alors $\varphi(x_0,\ldots,x_n,\alpha)$ est vraie pour tout ordinal $\alpha$.
+\end{proposition}
+
+\begin{proof}
+  Par l'absurde, supposons que la classe
+  \[\{\alpha \in\Ord\mid \mathcal \lnot\varphi(x_0,\ldots,x_n,\alpha)\}\]
+  n'est pas vide. On trouve alors un minimum à cette classe, qu'on note
+  $\alpha$. On sait que $\alpha \neq 0$ d'après nos hypothèses. De plus, si
+  $\alpha$ est successeur, alors $\alpha = \beta$ et
+  $\varphi(x_0,\ldots,x_n,\beta)$ est vérifiée, donc par hypothèse
+  $\varphi(x_0,\ldots,x_n,\alpha)$, ce qui est absurde. Si $\alpha$ est limite,
+  alors pour tout $\beta < \alpha$, $\varphi(x_0,\ldots,x_n,\beta)$ est
+  vérifiée, d'où encore une absurdité.
+  Ainsi la classe est vide, donc tout ordinal vérifie la formule.
+\end{proof}
+
+Notre principe d'induction est donc généralisé à des ensembles bien plus grands
+que $\omega$. On va de même montrer un principe de récursion. Dans le cas des
+entiers, on peut définir une suite $u_n$ à un rang $n$ donné à partir de $n$ et
+de $u_{n-1}$. Pour un ordinal, on étend cette définition avec le cas d'un
+ordinal limite, pour lequel $f(\lambda)$ est définie à partie de $f(\beta)$ pour
+$\beta < \lambda$.
+
+Pour préciser ces notions, nous allons introduire un peu de vocabulaire.
+
+\begin{definition}[Fonction inductive pour une relation]
+  Soit $H(x,y)$ une relation fonctionnelle à deux variables libres. Soit
+  $\alpha$ un ordinal. On dit qu'une fonction $f : \alpha \to X$ est inductive
+  pour $H$ si pour tout $\beta < \alpha$, on a~:
+  \begin{itemize}
+  \item $f\restr\beta$ est dans le domaine de $H$.
+  \item $f(\beta) = H(f\restr{\beta})$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  On ne s'intéresse pas à l'ensemble d'arrivée de $f$, puisque par le schéma de
+  remplacement on peut toujours s'assurer que $f$ va dans $\im(f)$ qui est bien
+  un ensemble.
+\end{remark}
+
+\begin{example}
+  On va définir l'identité sur $\Ord$ par récursion. Pour cela, on définit
+  $H_{\id}$~:
+  \[H_{\id}(x,y) \defeq y = \{x(\alpha) \mid \alpha < x\}\]
+
+  On peut alors vérifier que $\id_\alpha$ est inductive pour $H_{\id}$~:
+  \begin{itemize}
+  \item $\id_{\alpha}\restr{\beta}$ est dans le domaine de $H_{\id}$ pour tout
+    $\beta < \alpha$.
+  \item pour $\beta < \alpha$,
+    $\id_\alpha(\beta) = \{\gamma\mid \gamma < \beta\}$ et
+    $H(f\restr{\beta}) = \{\id_\beta(\gamma)\mid \gamma < \beta\}$ d'où
+    l'égalité.
+  \end{itemize}
+\end{example}
+
+On peut alors utiliser une relation $H$ pour définir une fonction dont le
+domaine est $\Ord$~: l'image de $\alpha\in\Ord$ sera $H(f\restr{\alpha})$, pour
+obtenir une unique fonction $H$-inductive. Pour assurer le bon fonctionnement
+du procédé, on prouve d'abord qu'il existe au plus une fonction inductive pour
+$H$ dont le domaine est $\alpha$.
+
+\begin{lemma}
+  Soit $H$ une relation fonctionnelle et $\alpha$ un ordinal. Alors il existe
+  au plus une fonction $f : \alpha \to X$ qui est inductive pour $H$.
+\end{lemma}
+
+\begin{proof}
+  Supposons qu'il existe $f,g$ deux fonctions inductives pour $H$. Par
+  l'absurde,Supposons que $f\neq g$, soit alors $\beta$ l'ordinal minimal tel
+  que $f(\beta)\neq g(\beta)$. Comme $\beta$ est minimal, on en déduit que
+  $f\restr{\beta}=g\restr{\beta}$, donc par le fait que $f$ et $g$ sont
+  inductives pour $H$, il vient que $f(\beta) = g(\beta)$, ce qui est une
+  contradiction.
+\end{proof}
+
+On veut maintenant prouver qu'étant donnée une relation fonctionnelle $H$,
+il existe effectivement une fonction $H$-inductive de domaine $\alpha$.
+
+\begin{lemma}
+  Soit $H$ une relation fonctionnelle dont le domaine est stable, c'est-à-dire
+  que si $H(x,y)$ alors $y$ est lui-même dans le domaine. Pour tout
+  $\alpha \in \Ord$, il existe une fonction $f : \alpha \to X$ qui est inductive
+  pour $H$.
+\end{lemma}
+
+\begin{proof}
+  Par l'absurde, prenons un $\alpha$ minimal tel que $f : \alpha \to X$ n'est
+  pas définie (pour $f$ étant $H$-inductive). Comme $\alpha$ est minimal, on
+  sait que pour tout $\beta < \alpha$, il existe une fonction
+  $f_\beta :\beta\to X$ qui est inductive pour $H$. On définit alors
+  \[\begin{array}{ccccc}
+  f & : & \alpha & \longrightarrow & X\\
+  & & \beta & \longmapsto & H(f_\beta)
+  \end{array}\]
+  On remarque, comme chaque $f_\beta$ est $H$-inductive, et par unicité d'une
+  fonction $H$-inductive, que $f_\beta\restr{\gamma} = f_\gamma$ pour tous
+  $\gamma < \beta < \alpha$.
+
+  On vérifie que $f$ est bien inductive. Soit $\beta < \alpha$, alors~:
+  \begin{itemize}
+  \item $f\restr{\beta} = f_\beta$ est $f_\beta$ est inductive, donc elle
+    est dans le domaine de $H$.
+  \item $f(\beta) = H(f\restr{\beta}) = H(f_\beta)$ est vérifié par définition.
+  \end{itemize}
+
+  On en déduit donc qu'il existe une fonction $f : \alpha \to X$ inductive pour
+  $H$.
+\end{proof}
+
+On en déduit le théorème de récursion.
+
+\begin{theorem}[Principe de récursion transfinie]\label{thm.recurs.transf}
+  Soit $H$ une relation fonctionnelle telle que pour tout $x\in \dom(H)$,
+  $H(x)\in\dom(H)$. Il existe alors une unique fonction $f$ de $\Ord$ dans
+  $\im(H)$ telle que $f\restr{\alpha}$ est $H$-inductive pour tout $\alpha$.
+\end{theorem}
+
+\begin{proof}
+  On définit une fonction entre classes, ce qui est un abus de langage si l'on
+  considère une fonction comme un ensemble. Le sens de cette assertion est qu'il
+  existe un prédicat $\varphi$ fonctionnel dont le domaine est $\Ord$ et qui
+  vérifie l'hypothèse que l'on veut. Pour écrire ce prédicat, il nous suffit
+  d'utiliser la définition précédente~:
+  \[\varphi(x,y) \defeq \exists (f : x \to X),
+  \mathrm{ind}_H(f)\land H(f) = y\]
+
+  On a vérifié précédemment que la fonction définie de cette façon est bien
+  $H$-inductive, d'où l'existence.
+
+  L'unicité de la fonction est donnée par le fait qu'une fonction $f$ qui est
+  $H$-inductive de domaine $\alpha$ est unique, donc que $\varphi(\alpha)$ est
+  unique.
+\end{proof}
+
+Remarquons que si l'on a la fonction $f\restr{\alpha}$, alors on peut récupérer
+le $\alpha$ correspondant~:
+\[\alpha = \bigcup \dom(f\restr{\alpha})\]
+ce qui, pour construire une relation fonctionnelle $H$, signifie qu'on peut
+définir le rang auquel on est dans la construction de l'image par la fonction
+$H$-inductive associée en remplaçant $f\restr{\alpha}$ par l'argument de $H$.
+On va appeler $\alpha_x$ l'ordinal $\bigcup\dom(x)$.
+
+Comme on sait de plus qu'il existe une trichotomie sur les ordinaux suivant
+s'ils sont successeurs ou limites, en utilisant les formules
+\[\mathrm{estZero}(x) \defeq x = 0\qquad
+\mathrm{estSucc}(x)\defeq \exists y. x = S\;y \qquad
+\mathrm{estLimite}(x)\defeq x \neq 0 \land \bigcup x = x\]
+et l'astuce précédente permettant de récupérer le rang de l'argument, on peut
+donner une fonction $f : \Ord \to \mathcal U$ par trois données~:
+\begin{itemize}
+\item un ensemble $X_0$.
+\item une relation fonctionnelle $H_s$ qui, à chaque ensemble $X_\alpha$ associe
+  un nouvel ensemble $X_{S\;\alpha}$.
+\item une relation fonctionnelle $H_\ell$ qui, si on a déjà défini $X_\beta$ pour
+  tout $\beta < \lambda$ où $\lambda$ est un ordinal limite, construit un nouvel
+  ensemble $X_\lambda$.
+\end{itemize}
+
+Si on souhaite expliciter la formule, celle-ci est alors
+\begin{multline*}
+  H(x,y) \defeq (\mathrm{estZero}(\alpha_x)\land y = X_0)\lor
+  (\mathrm{estSucc}(\alpha_x)\land H_S(x(\alpha_x),y))\lor\\
+  (\mathrm{estLimite}(\alpha_x)\land H_\ell(x,y))
+\end{multline*}
+
+On peut aussi généraliser notre \cref{thm.recurs.transf} en permettant la
+définition de fonction $\Ord\times\Ord\to \mathcal U$. \'Etant donnée une
+relation fonctionnelle $H$, on peut définir une fonction
+$f : \Ord \to \mathcal U$ telle que $f\restr{\alpha}$ est une fonction. Soit
+maintenant un énoncé fonctionnel $H$ à deux paramètres, disons $x$ et $\alpha$.
+Pour tout $\alpha\in\Ord$, il est possible de définir la relation fonctionnelle
+$H$ en fixant $\alpha$, donnant alors une fonction
+$f_\alpha : \Ord \to \mathcal U$. On a donc ensuite, en prenant la fonction
+$\alpha \mapsto f_\alpha$, une fonction $g : \Ord\to(\Ord\to\mathcal U)$, que
+l'on peut réécrire en une fonction $g' : \Ord\times\Ord \to \mathcal U$. On
+évitera bien sûr de détailler tout ce processus lorsque l'on définira des
+fonctions par récursion transfinie, mais il est important de garder en tête que
+l'on peut effectivement faire cela, et ce de façon purement syntaxique (sans
+avoir recours à la notion de classe).
+
+On donne maintenant deux exemples classiques de fonctions définies par récursion
+transfinie~: l'addition et la multiplication.
+
+\begin{definition}[Addition ordinale]
+  On définit l'addition ordinal $\alpha + \beta$ par récursion sur $\beta$~:
+  \begin{itemize}
+  \item $\alpha + 0 = \alpha$
+  \item $\alpha + S\;\beta = S\;(\alpha + \beta)$
+  \item $\displaystyle\alpha+\lambda=\bigcup_{\beta < \lambda}(\alpha+\beta)$
+    si $\lambda$ est limite.
+  \end{itemize}
+\end{definition}
+
+\begin{notation}
+  A partir de maintenant, on écrira $\alpha + 1$ plutôt que $S\;\alpha$.
+\end{notation}
