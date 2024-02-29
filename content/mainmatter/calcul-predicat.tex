@@ -61,9 +61,10 @@ ce que signifie chaque symbole.
   (\mathcal F,\mathcal R, \alpha,\beta)$ où $\alpha : \mathcal F \to \mathbb N$
   et $\beta : \mathcal R \to \mathbb N$. On appelle les éléments de $\mathcal F$
   les symboles de fonction et les éléments de $\mathcal R$ les symboles de
-  relation. Pour un symboles de fonction $f\in\mathcal F$, $\alpha(f)$ est appelé
-  l'arité de $f$, et de même $\beta(r)$ est l'arité de $r$ pour $r\in\mathcal R$.
-  Si $f\in\mathcal F$ est d'arité $0$, on dit que c'est une constante.
+  relation. Pour un symboles de fonction $f\in\mathcal F$, $\alpha(f)$ est
+  appelée l'arité de $f$, et de même $\beta(r)$ est l'arité de $r$ pour
+  $r\in\mathcal R$. Si $f\in\mathcal F$ est d'arité $0$, on dit que c'est une
+  constante.
 \end{definition}
 
 \begin{example}
@@ -108,10 +109,10 @@ fonction nous donnent les arités des constructeurs de l'ensemble.
 \end{definition}
 
 Ainsi, les termes écrits dans notre langage vont représenter les objets
-mathématiques sur lesquels porteront nos formules. Ces formules sont définies par
-induction, d'une façon analogue aux propositions de la logique propositionnelle.
-En l'absence de variables propositionnelles, les éléments atomiques des formules
-seront construits à partir des termes.
+mathématiques sur lesquels porteront nos formules. Ces formules sont définies
+par induction, d'une façon analogue aux propositions de la logique
+propositionnelle. En l'absence de variables propositionnelles, les éléments
+atomiques des formules seront construits à partir des termes.
 
 \begin{definition}[Proposition atomique]
   Soit une signature $\Sigma$. On définit l'ensemble $\Atom(\Sigma)$ des
@@ -127,23 +128,25 @@ seront construits à partir des termes.
 \begin{remark}
   L'égalité est une relation, mais celle-ci n'appartient pas formellement au
   langage, car son comportement est donné par les règles logiques, de la même
-  façon que $\lor$ et $\land$ ont leur sens imposés. Certains auteurs considèrent
-  au contraire que $=$ doit être ajouté au langage, en tant que symbole de
-  relation binaire, et d'autres font la différence entre un langage égalitaire
-  (incluant le symbole $=$) et un langage non égalitaire. Notre choix est motivé
-  à la fois par la simplicité et par l'expressivité : l'égalité est clairement
-  utile pour formaliser les mathématiques et raisonner dessus, mais chercher à
-  préciser quand nous l'utilisons ne l'est pas, étant donné qu'elle sera toujours
-  présente.
+  façon que $\lor$ et $\land$ ont leur sens imposés. Certains auteurs
+  considèrent au contraire que $=$ doit être ajouté au langage, en tant que
+  symbole de relation binaire, et d'autres font la différence entre un langage
+  égalitaire (incluant le symbole $=$) et un langage non égalitaire. Notre choix
+  est motivé à la fois par la simplicité et par l'expressivité : l'égalité est
+  clairement utile pour formaliser les mathématiques et raisonner dessus, mais
+  chercher à préciser quand nous l'utilisons ne l'est pas, étant donné qu'elle
+  sera toujours présente.
 \end{remark}
 
-Nous pouvons maintenant définir l'ensemble des formules sur une signature donnée.
+Nous pouvons maintenant définir l'ensemble des formules sur une signature
+donnée.
 
 \begin{definition}[Formules]
   Soit une signature $\Sigma$. On définit l'ensemble $\Formula(\Sigma)$ par
   la grammaire suivante :
   \[\varphi,\psi ::= a\mid \top\mid\bot\mid\lnot\varphi\mid\varphi\lor\psi\mid
-  \varphi\land\psi\mid \varphi\to\psi\mid\forall x,\varphi\mid\exists x,\varphi\]
+  \varphi\land\psi\mid \varphi\to\psi\mid\forall x,\varphi\mid
+  \exists x,\varphi\]
   où $a\in \Atom(\Sigma)$ et $x\in \Var$.
 \end{definition}
 
@@ -193,8 +196,8 @@ Comme pour la logique propositionnelle, la valeur de vérité d'une formule va
 dépendre de la valeur associée aux variables libres. Cependant, pour l'instant,
 nous n'avons pas de système clair d'évaluation : nous verrons comment évaluer
 une formule quand nous aborderons la notion de modèle. Au niveau syntaxique,
-cependant, nous pouvons déjà introduire la substitution, que l'on peut voir comme
-une évaluation syntaxique : on remplace une variable libre par un terme.
+cependant, nous pouvons déjà introduire la substitution, que l'on peut voir
+comme une évaluation syntaxique : on remplace une variable libre par un terme.
 
 \begin{definition}[Substitution]
   Soient une signature $\Sigma$, un terme $t\in \Term(\Sigma)$ et une variable
@@ -211,7 +214,8 @@ une évaluation syntaxique : on remplace une variable libre par un terme.
   \begin{itemize}
   \item si $u = x$, alors $u[t/x] = t$.
   \item si $u = y\in Var$ avec $y \neq x$, alors $u[t/x] = y$.
-  \item si $u = f(u_1,\ldots,u_n)$, alors $u[t/x] = f(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $u = f(u_1,\ldots,u_n)$, alors
+    $u[t/x] = f(u_1[t/x],\ldots,u_n[t/x])$.
   \item si $\varphi = r(u_1,\ldots,u_n)$, alors
     $\varphi[t/x] = r(u_1[t/x],\ldots,u_n[t/x])$.
   \item si $\varphi = \top$ alors $\varphi[t/x] = \top$.
@@ -233,13 +237,13 @@ une évaluation syntaxique : on remplace une variable libre par un terme.
 \begin{remark}
   La condition de $z\notin\VL(t)$ dans les derniers cas peut toujours être
   réalisée quitte à renommer la variable liée $z$ : puisque $\Var$ est infini
-  et que $\VL(t)$ est fini, on peut toujours trouver $a\notin\VL(t)$ et remplacer
-  $\forall z, \psi$ par $\forall a, \psi[a/z]$ en utilisant l'identification de
-  la \cref{rmk.alpha}.
+  et que $\VL(t)$ est fini, on peut toujours trouver $a\notin\VL(t)$ et
+  remplacer $\forall z, \psi$ par $\forall a, \psi[a/z]$ en utilisant
+  l'identification de la \cref{rmk.alpha}.
 
-  Si l'on veut être parfaitement formel, il conviendrait de procéder dans l'autre
-  sens : on définit d'abord la substitution comme donnée précédemment, puis on
-  définit la relation $\varphi \equiv \psi$ engendrée par
+  Si l'on veut être parfaitement formel, il conviendrait de procéder dans
+  l'autre sens : on définit d'abord la substitution comme donnée précédemment,
+  puis on définit la relation $\varphi \equiv \psi$ engendrée par
   $\forall x, \psi \equiv \forall y, \psi[y/x]$ et
   $\exists x,\psi \equiv\exists y, \psi[y/x]$ dont on prouve qu'elle est une
   relation d'équivalence, puis on définit le \og vrai\fg{} ensemble
@@ -267,9 +271,9 @@ un sens : une sémantique. Dans le cas de la logique propositionnelle, le sens
 d'une proposition était simple à définir, puisqu'il s'agissait d'une valeur de
 vérité en fonction des variables propositionnelles. Dans le cas de la logique du
 premier ordre, les propositions parlent d'objets, et il faut donc fixer un
-univers ambiant sur lequel porte le discours donné par les formules. Par exemple,
-en prenant le langage de l'arithmétique, le terme $S\;S\;0 + S\;S\;0$ et en
-considérant $0$ comme l'entier naturel $0$, $S$ comme la fonction
+univers ambiant sur lequel porte le discours donné par les formules. Par
+exemple, en prenant le langage de l'arithmétique, le terme $S\;S\;0 + S\;S\;0$
+et en considérant $0$ comme l'entier naturel $0$, $S$ comme la fonction
 $n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les entiers, le terme
 devient le terme $4$, mais on peut imaginer une autre interprétation de ce terme
 donnant par exemple $5$ ou tout autre nombre.
@@ -310,15 +314,16 @@ contrepartie.
 \end{example}
 
 Avec ces nouveaux exemples, on voit qu'il devient naturel d'interpréter dans la
-structure $(\mathbb N,0,n\mapsto n+1,+,\times,\leq)$ le terme $S\;S\;0 + S\;S\;0$
+structure $(\mathbb N,0,n\mapsto n+1,+,\times,\leq)$ le terme
+$S\;S\;0 + S\;S\;0$
 par l'élément $4\in\mathbb N$. Nous pouvons donc généraliser ce résultat. Pour
-cela, on définit d'abord la notion d'environnement, puis de valuation étant donné
-un environnement.
+cela, on définit d'abord la notion d'environnement, puis de valuation étant
+donné un environnement.
 
 \begin{definition}[Environnement]
   Soit une signature $\Sigma$ et une structure $\mathcal M$. Un environnement
-  $\rho$ est une fonction partielle $\rho : \Var\partialto |\mathcal M|$. On note
-  $\mathcal E$ l'ensemble des environnements. Etant donnés un élément
+  $\rho$ est une fonction partielle $\rho : \Var\partialto |\mathcal M|$. On
+  note $\mathcal E$ l'ensemble des environnements. Etant donnés un élément
   $m\in|\mathcal M$, une variable $x$ et un environnement $\rho$, on note
   $\rho[x \mapsto m]$ l'environnement coïncidant avec $\rho$ sur
   $\Var\backslash\{x\}$ et valant $m$ en $x$.
@@ -345,7 +350,8 @@ un environnement.
   \item si $\varphi = r(t_1,\ldots,t_n)$ alors
     $\Val_\rho(\varphi) =
     \chi_{r^\mathcal M}((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
-    On interprète le symbole $=$ par la partie $\{(m,m)\mid m\in |\mathcal M|\}$.
+    On interprète le symbole $=$ par la partie
+    $\{(m,m)\mid m\in |\mathcal M|\}$.
   \item si $\varphi = \top$, alors $\Val_\rho(\varphi) = 1$.
   \item si $\varphi = \bot$, alors $\Val_\rho(\varphi) = 0$.
   \item si $\varphi = \lnot \psi$, alors
@@ -468,12 +474,14 @@ d'une façon analogue à ce que nous avons fait pour la logique propositionnelle
 
 \begin{definition}[Satisfaction]
   Soit une signature $\Sigma$, une structure $\mathcal M$ et, une formule
-  $\varphi$ et un environnement $\rho$ tel que $\VL(\varphi)\subseteq\dom(\rho)$.
+  $\varphi$ et un environnement $\rho$ tel que
+  $\VL(\varphi)\subseteq\dom(\rho)$.
   On définit $\mathcal M,\rho\models \varphi$ par
   \[\mathcal M,\rho\models \varphi \defeq \Val_\rho(\varphi) = 1\]
 
   Soit un ensemble $\mathcal F\subseteq\Formula(\Sigma)$ et un environnement
-  $\rho$ tel que $\forall \varphi\in\mathcal F, \VL(\varphi)\subseteq\dom(\rho)$.
+  $\rho$ tel que
+  $\forall \varphi\in\mathcal F, \VL(\varphi)\subseteq\dom(\rho)$.
   On dit que $\mathcal M,\rho$ satisfont $\mathcal F$, ce que l'on écrit
   $\mathcal M,\rho\models\mathcal F$, lorsque pour toute formule
   $\varphi\in\mathcal F$, il est vrai que $\mathcal M,\rho\models \varphi$.
@@ -492,9 +500,9 @@ Cela permet alors de définir ce qu'est un modèle.
 Un modèle ne se définit qu'avec un ensemble de formules closes. On pourrait
 imaginer une définition analogue avec une formule non close, mais faire cela
 signifie qu'au lieu de donner une structure, il faudrait donner une structure et
-un environnement en même temps. Le but des modèles est plutôt, ici, de construire
-une classe particulière de structure vérifiant certaines conditions que l'on peut
-exprimer au premier ordre.
+un environnement en même temps. Le but des modèles est plutôt, ici, de
+construire une classe particulière de structure vérifiant certaines conditions
+que l'on peut exprimer au premier ordre.
 
 Un exemple simple est la formule
 \[\forall x,\forall y, x + y = y + x\]
@@ -512,17 +520,18 @@ la conséquence logique permet de créer des liens entre les formules, de la mê
 façon que nous avions $\vDash$ pour le calcul propositionnel.
 
 \begin{definition}[Théorie]
-  Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$, est
-  une partie $\mathcal T\subseteq\Clos(\Sigma)$.
+  Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$,
+  est une partie $\mathcal T\subseteq\Clos(\Sigma)$.
 \end{definition}
 
 \begin{definition}[Conséquence logique, équivalence]
   Soit un ensemble $\mathcal F \subseteq \Formula(\Sigma)$ et une formule
-  $F\in\Formula(\Sigma)$. On dit que $F$ est conséquence logique de $\mathcal F$,
-  ce que l'on écrit $\mathcal F \vDash F$, lorsque pour toute structure
-  $\mathcal M$, si $\mathcal M\models \mathcal F$ alors $\mathcal M\models F$.
-  Si deux formules $F$ et $G$ sont telles que $F\vDash G$ et $G\vDash F$, alors
-  $F$ et $G$ sont dites logiquement équivalentes, ce que l'on note $F\equiv G$.
+  $F\in\Formula(\Sigma)$. On dit que $F$ est conséquence logique de
+  $\mathcal F$, ce que l'on écrit $\mathcal F \vDash F$, lorsque pour toute
+  structure $\mathcal M$, si $\mathcal M\models \mathcal F$ alors
+  $\mathcal M\models F$. Si deux formules $F$ et $G$ sont telles que
+  $F\vDash G$ et $G\vDash F$, alors $F$ et $G$ sont dites logiquement
+  équivalentes, ce que l'on note $F\equiv G$.
 \end{definition}
 
 On peut relier ces deux notions par celle de théorie saturée.
@@ -541,8 +550,8 @@ On peut relier ces deux notions par celle de théorie saturée.
 De plus, la conséquence logique permet directement de décrire une théorie
 \og fausse\fg{} : une telle théorie est une théorie dans laquelle la proposition
 fausse est considérée comme vraie. Au niveau des modèles, cela se traduit par le
-fait qu'il n'existe pas de modèle de la théorie, puisqu'un tel modèle associerait
-automatiquement à $\bot$ la valeur de vérité $0$.
+fait qu'il n'existe pas de modèle de la théorie, puisqu'un tel modèle
+associerait automatiquement à $\bot$ la valeur de vérité $0$.
 
 \begin{proposition}
   Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. Alors
@@ -550,9 +559,9 @@ automatiquement à $\bot$ la valeur de vérité $0$.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $\mathcal T$ admette un modèle $\mathcal M$. Alors par définition
-  de $\Val$, $\Val(\bot) = 0$ donc $\mathcal M\not\models \bot$. On en déduit
-  que $\mathcal T\not\vDash\bot$.
+  Supposons que $\mathcal T$ admette un modèle $\mathcal M$. Alors par
+  définition de $\Val$, $\Val(\bot) = 0$ donc $\mathcal M\not\models \bot$. On
+  en déduit que $\mathcal T\not\vDash\bot$.
 
   Dans le sens réciproque et par contraposée, supposons que $\mathcal T$ n'admet
   pas de modèle. Alors pour tout $\mathcal M$ tel que
@@ -571,26 +580,20 @@ automatiquement à $\bot$ la valeur de vérité $0$.
 
 On voit donc qu'une théorie ne doit pas pouvoir prouver trop de choses.
 Néanmoins, on peut vouloir une théorie la plus forte possible, qui reste malgré
-tout cohérente. Une telle théorie est une théorie complète : elle est une théorie
-dans laquelle si un énoncé est faux, alors son contraire est vrai. Elle peut
-donc décider tout énoncé, et puisqu'elle est complète elle ne peut pas décider
-plus (sinon il serait possible de vérifier $A$ et $\lnot A$, ce qui est
+tout cohérente. Une telle théorie est une théorie complète : elle est une
+théorie dans laquelle si un énoncé est faux, alors son contraire est vrai. Elle
+peut donc décider tout énoncé, et puisqu'elle est complète elle ne peut pas
+décider plus (sinon il serait possible de vérifier $A$ et $\lnot A$, ce qui est
 impossible).
 
 \begin{definition}[Théorie complète]
   Une théorie $\mathcal T$ sur une signature $\Sigma$ est dite complète si pour
   toute formule $A\in\Formula(\Sigma)$, soit $A\in \vclose{\mathcal T}$ soit
-  $\lnot A \in \vclose{\mathcal T}$.
+  $\lnot A \in \vclose{\mathcal T}$, mais pas les deux.
 \end{definition}
 
-Donnons dès maintenant un résultat essentiel, dont on ne donnera la preuve que
-dans la \cref{sbsct.ultrafiltre}, en tant que corrolaire du
-\cref{thm.ultrafilter.lemma}.
-
-\begin{theorem}[Extension complète d'une théorie]\label{thm.completion}
-  Soit une théorie cohérente $\mathcal T$ sur une signature $\Sigma$. Il existe
-  une théorie $\mathcal T'$ complète contenant $\mathcal T$.
-\end{theorem}
+On va voir plus tard que toute théorie cohérente, c'est-à-dire dont $\bot$ n'est
+pas une conséquence logique, peut être étendue en une théorie complète.
 
 \subsection{Morphismes de modèles}
 
@@ -1216,9 +1219,9 @@ que notre résultat suffira à prouver $\vDash\subseteq\vdash$.
   démonstration précédente n'est pas tout à fait exacte. Une façon de corriger
   cela est d'enrichir le langage : pour chaque variable $x$ libre dans
   $\mathcal F$ ou $A$, on ajoute un symbole de constante $c_x$, et on considère
-  ensuite la théorie où $x$ est remplacé par $c_x$. On a une correspondance entre
-  l'existence d'un modèle avec $x$ ou avec $c_x$, puisque notre théorie sans
-  $c_x$ pourra s'évaluer dans le modèle avec $x\mapsto c_x$.
+  ensuite la théorie où $x$ est remplacé par $c_x$. On a une correspondance
+  entre l'existence d'un modèle avec $x$ ou avec $c_x$, puisque notre théorie
+  sans $c_x$ pourra s'évaluer dans le modèle avec $x\mapsto c_x$.
 \end{remark}
 
 Il nous reste donc à démontrer qu'une théorie consistante admet bien un modèle.
@@ -1234,33 +1237,35 @@ seulement si $\mathcal M\vDash \varphi$ puisque ce que vérifie $\mathcal M$ est
 exactement ce que $\mathcal T$ peut prouver. On a alors besoin de deux
 caractéristiques essentielles :
 \begin{itemize}
-\item tout d'abord, $\mathcal T$ doit être complète. L'ensemble des énoncés vrais
-  dans un modèle est une théorie complète, puisqu'un énoncé est vrai dans un
-  modèle si et seulement si sa négation est fausse. Ainsi, si $\mathcal T$ n'est
-  pas complète, ça ne peut pas être la théorie d'un modèle. Moralement, on peut
-  voir ça comme le fait qu'au moment de construire un modèle, il faut faire des
-  choix parmi les propositions, car certains modèles de $\mathcal T$ peuvent
+\item tout d'abord, il nous faut résoudre un problème quant à la quantification
+  existentielle. Supposons que $\exists x,P$ soit vraie~: on veut pouvoir
+  exhiber un élément $m$ tel que $P[m/x]$ est vrai, et nos éléments sont des
+  termes. On en déduit donc qu'il faut pour chaque proposition $P$ avoir un
+  terme $t_P$ correspondant tel que $\exists x, P \implies P[t_P/x]$. Cela n'est
+  pas vrai \textit{a priori}, on va donc chercher à élargir notre langage pour
+  ajouter à chaque fois des constantes témoignant pour une proposition
+  $\exists x,P$ vraie qu'un terme correspond : c'est ce que l'on appelle la
+  méthode des témoins de Henkin.
+\item ensuite, $\mathcal T$ doit être complète. L'ensemble des énoncés
+  vrais dans un modèle est une théorie complète, puisqu'un énoncé est vrai dans
+  un modèle si et seulement si sa négation est fausse. Ainsi, si $\mathcal T$
+  n'est pas complète, ça ne peut pas être la théorie d'un modèle. Moralement, on
+  peut voir ça comme le fait qu'au moment de construire un modèle, il faut faire
+  des choix parmi les propositions, car certains modèles de $\mathcal T$ peuvent
   vérifier telle proposition ou telle autre, si $\mathcal T$ n'est pas complète.
   Nous avons donc besoin d'étendre notre théorie en une théorie complète.
-\item ensuite, il reste un problème au niveau des quantifications. Supposons que
-  $\exists x,P$ soit vraie : on veut pouvoir exhiber un élément $m$ tel que
-  $P[m/x]$ est vrai, et nos éléments sont des termes. On en déduit donc qu'il
-  faut pour chaque proposition $P$ avoir un terme $t_P$ correspondant tel que
-  $\exists x, P \implies P[t_P/x]$. Cela n'est pas vrai \textit{a priori}, on va
-  donc chercher à élargir notre langage pour ajouter à chaque fois des constantes
-  témoignant pour une proposition $\exists x,P$ vraie qu'un terme correspond :
-  c'est ce que l'on appelle la méthode des témoins de Henkin.
 \item une fois cela fait, il ne nous restera plus qu'à appliquer la complétion
   de la théorie enrichie par témoins de Henkin pour obtenir une théorie
   $\overline{\mathcal T}$ contenant $\mathcal T$ et qui nous permettra de
   construire un modèle.
 \end{itemize}
 
-On va donc définir la complétion par témoins de Henkin.
+Pour pouvoir effectuer les deux premières étapes, il est important que celles-ci
+soient compatibles entre elles.
 
 \begin{definition}[Propriété de Henkin]
-  On dit qu'une théorie $\mathcal T$ sur une signature $\Sigma$ a la propriété de
-  Henkin si pour toute formule telle que $\mathcal T\vdash\exists x, P$, il
+  On dit qu'une théorie $\mathcal T$ sur une signature $\Sigma$ a la propriété
+  de Henkin si pour toute formule telle que $\mathcal T\vdash\exists x, P$, il
   existe un terme $c_P\in\Term(\Sigma)$ tel que $\mathcal T\vdash P[c_P/x]$.
 \end{definition}
 
@@ -1342,22 +1347,37 @@ Enfin, la clôture par témoins conserve la cohérence.
   absurde. Ainsi $\hclose{\mathcal T}\not\vdash\bot$.
 \end{proof}
 
-En combinant les deux dernières propriété avec le \cref{thm.completion} nous
-obtenons une extension de $\mathcal T$ complète et vérifiant la propriété de
-Henkin.
+On va maintenant énoncer qu'on peut compléter une théorie pour $\vdash$. Pour
+prouver ce théorème, on va utiliser un contexte plus adapté qui est celui du
+\cref{chp.ordres}.
+
+\begin{theorem}[Extension complète d'une théorie]\label{thm.completion}
+  Soit $\mathcal T$ une théorie telle que $\mathcal T \nvdash \bot$. Alors il
+  existe une théorie $\mathcal T'$ complète pour $\vdash$, c'est-à-dire telle
+  que pour tout formule $\varphi$, on a $\mathcal T'\vdash \varphi$ ou
+  $\mathcal T'\vdash \lnot \varphi$, et $\mathcal T'\nvdash\bot$.
+\end{theorem}
+
+\begin{proof}
+  Retardée à la \cref{sbsct.ultrafiltre}.
+\end{proof}
+
+En combinant les deux propriétés sur la complétion de Henkin avec le
+\cref{thm.completion}, nous obtenons une extension de $\mathcal T$ complète et
+vérifiant la propriété de Henkin.
 
 \begin{lemma}
   Si $\mathcal T$ est une théorie sur $\Sigma$ telle que
-  $\mathcal T\not\vdash\bot$, alors il existe $\Sigma\subseteq\hclose{\Sigma}$ et
-  une théorie $\mathcal T\subseteq\mathcal T'$ complète et possédant la propriété
-  de Henkin.
+  $\mathcal T\not\vdash\bot$, alors il existe $\Sigma\subseteq\hclose{\Sigma}$
+  et une théorie $\mathcal T\subseteq\mathcal T'$ complète et possédant la
+  propriété de Henkin.
 \end{lemma}
 
 \begin{proof}
   On applique le \cref{thm.completion} à $\hclose{\mathcal T}$ : comme on sait
   que $\hclose{\mathcal T}\not\vdash\bot$, on peut effectivement compléter cette
-  théorie. Avec la \cref{prop.henkin.ext}, on sait que cette complétion vérifie
-  aussi la propriété de Henkin.
+  théorie pour $\vdash$. Avec la \cref{prop.henkin.ext}, on sait que cette
+  complétion vérifie aussi la propriété de Henkin.
 \end{proof}
 
 On fixe maintenant la théorie $\mathcal T'$ construite à partir de $\mathcal T$.
@@ -1494,7 +1514,7 @@ On peut maintenant prouver le théorème de complétude.
   $\mathcal M_{\mathcal T'}\models \mathcal T$.
 \end{proof}
 
-\begin{theorem}[Complétude, deuxième version]
+\begin{theorem}[Complétude, deuxième version]\label{thm.completude}
   Soit $\Sigma$ une signature. Alors les deux relations
   $\vdash,\vDash\subseteq \powerset(\Formula(\Sigma))\times\Formula(\Sigma)$
   coïncident.
