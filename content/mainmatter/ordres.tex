@@ -412,6 +412,31 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
   Montrer que l'ordre défini plus tôt est bien un ordre bien fondé.
 \end{exercise}
 
+Cela nous permet aussi de généraliser la récursion en la récursion bien fondée.
+
+\begin{theorem}[Récursion bien fondée]\label{thm.recur.bf}
+  Soient $X,Y$ deux ensembles, et $<$ un ordre bien fondé sur $X$. Soit
+  une fonction
+  \[f : \powerset (Y) \to Y\]
+  alors il existe une unique fonction $g : X \to Y$ telle que
+  \[\forall x \in X, g(x) = f(\{g(y)\mid y < x\})\]
+\end{theorem}
+
+\begin{proof}
+  On prouve par induction bien fondée que si la fonction est définie pour les
+  éléments $y < x$, alors elle est définie de façon unique en $x$. Mais cela
+  est directement le cas puisque l'image de $x$ est l'image par une fonction
+  (donc définie de façon unique) d'un ensemble déjà défini de façon unique par
+  hypothèse d'induction bien fondée, donc $g(x)$ est définie de façon unique.
+\end{proof}
+
+On peut donc définir une fonction $g : X \to Y$ avec $(X,<)$ bien fondé en la
+définissant en $x$ grâce à ses valeurs pour tous les $y < x$. On verra dans le
+\cref{chp.ordinaux} une version plus générale de ce principe dans le cas des
+ensembles bien ordonnés. On aurait pu renforcer ce théorème en utilisant comme
+condition que $g(x) = f(g\restr{x\!\downarrow})$, permettant non seulement
+d'utiliser les $g(y)$ mais aussi les $y$ associés.
+
 \section{Treillis}
 
 Nous allons maintenant étudier le cas des treillis, qui sont des ensembles

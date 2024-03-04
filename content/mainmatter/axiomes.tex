@@ -403,7 +403,7 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
   \begin{itemize}
   \item si $\varphi = R(f(x))$ où $R$ est une proposition atomique (une relation
     avec potentiellement d'autres termes que $f(x)$), alors
-    \[\varphi' = \forall y\in Y, (x,y)\in \Gamma_f \implies R(y)\]
+    \[\varphi' \defeq \forall y\in Y, (x,y)\in \Gamma_f \implies R(y)\]
   \item si $\varphi = \lnot \psi$, alors $\varphi' = \lnot \psi'$.
   \item si $\varphi = \psi \lor \chi$, alors $\varphi' = \psi'\lor \chi'$.
   \item si $\varphi = \psi \land \chi$, alors $\varphi' = \psi'\land \chi'$.
@@ -475,8 +475,9 @@ Donnons maintenant deux nouvelles formulations de l'axiome du choix.
   $a\cap b = \varnothing$. On peut donc appliquer l'axiome du choix sur
   $C_0$ pour trouver $C$ tel que pour tout $y\in x$,
   \[\{(y,z)\mid z \in y\}\cap C = \{(y,f(y))\}\]
-  donc $C$ définit exactement une relation fonctionnelle $f$ (à $y$ on n'associe
-  qu'une seule image), et par définition de $C_0$ on sait que $f(y)\in y$.
+  donc $C\cap \bigcup C_0$ définit exactement une relation fonctionnelle $f$
+  (à $y$ on n'associe qu'une seule image), et par définition de $C_0$ on sait
+  que $f(y)\in y$.
 
   Supposons qu'on possède une fonction de choix pour tout ensemble sans élément
   vide. Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
@@ -490,7 +491,7 @@ Donnons maintenant deux nouvelles formulations de l'axiome du choix.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
-  \[\forall x, x\neq\varnothing
+  \[\forall x, x\neq\varnothing\implies
   \exists f : \powerset (x) \backslash \{\varnothing\} \to x,
   \forall y \in \powerset(x)\backslash \{\varnothing\}, f(y)\in y\]
 \end{proposition}
@@ -585,7 +586,7 @@ transitif.
   L'ensemble $\trcl(x)$ est alors $\displaystyle\bigcup_{n\in \mathbb N} x_n$.
 
   Vérifions que $\trcl(x)$ est bien transitif et contient $x$. Comme
-  $x_O\subseteq \trcl(x)$ par définition de l'union, $\trcl(x)$ contient $x$.
+  $x_0\subseteq \trcl(x)$ par définition de l'union, $\trcl(x)$ contient $x$.
   Soient $y\in \trcl(x)$ et $z\in y$. Par définition, il existe $n\in \mathbb N$
   tel que $y\in x_n$. Alors $z\in x_{n+1}$ puisque $z\in y \in x_n$ et
   $x_{n+1}=\bigcup x_n$. Ainsi $z\in \trcl(x)$.
@@ -615,7 +616,7 @@ relation se comportant suffisamment comme la relation $\in$ peut en fait se
 simuler par une unique classe transitive bien fondée où la relation est
 directement $\in$.
 
-\begin{lemma}[Effondrement de Mostowski]
+\begin{lemma}[Effondrement de Mostowski]\label{lem.most}
   Soit $\mathcal M$ une classe et $R$ une relation vérifiant :
   \begin{itemize}
   \item $R$ définit des ensembles, c'est-à-dire que pour tout $x\in \mathcal M$,
@@ -684,7 +685,7 @@ directement $\in$.
   & & x & \longmapsto & \{\pi(y)\mid y \in R^{-1}[x]\}
   \end{array}\]
   c'est-à-dire que la relation $\pi$ est définie par la proposition
-  \[\pi(x,y) \defeq y = \{\pi(z)\mid z \in R^{-1}[x]\}\]
+  \[\pi(y) \defeq \{\pi(z)\mid z \in R^{-1}[x]\}\]
   où l'on prouve par l'absurde que cette proposition vérifie les propriétés d'un
   isomorphisme entre $(\mathcal M,R)$ et $(\mathcal N,\in)$, en utilisant un
   principe analogue à la preuve précédente. La classe $\mathcal N$ est définie
@@ -696,6 +697,30 @@ directement $\in$.
   hypothèses du résultat intermédiaire, et est donc l'identité. D'où
   $\mathcal N = \mathcal N'$.
 \end{proof}
+
+\begin{remark}
+  Notre définition de $\pi$ peut sembler illégitime, étant donné que le
+  \cref{thm.recur.bf} ne couvre que le cas où le domaine est un ensemble (et
+  qu'il est un ordre bien fondé, mais il est assez clair que cela se déroule de
+  la même façon pour une relation bien fondée qui n'est pas forcément un ordre).
+  Cependant, on voit que pour définir $\pi(y)$, il suffit de le définir sur
+  un ensemble, celui des éléments inférieurs (comme $R$ définit des ensembles,
+  cela fonctionne bien).
+
+  Ainsi la version purement formelle de $\pi$ devrait être, avec $\varphi$ le
+  prédicat définissant $\mathcal M$~:
+  \begin{multline*}
+    \pi(x,y) \defeq \exists X,
+    (\forall a \in X, \varphi(a) \land \forall b, b R a \implies b \in X)
+    \land \exists f : X \to \mathcal U, \\(\forall z\in X,
+    \forall Y, (\forall a, a \in Y \iff a R z) \implies
+    f(z) = \{f(a) \mid a R z\})\\
+    \land f(x) = y
+  \end{multline*}
+
+  Et l'utilisation du \cref{thm.recur.bf} permet de conclure que cette relation
+  est bien fonctionnelle.
+\end{remark}
 
 \subsection{Résumé~: les fragments de ZFC}
 

@@ -242,8 +242,28 @@ Donnons maintenant un outil efficace pour prouver qu'un ensemble est un ordinal.
   A FAIRE
 \end{proof}
 
-Comme nous l'avons dit, le lemme de Mostovski appliqué aux ordinaux nous
-permet de définir le représentant canonique d'un bon ordre.
+On voudrait maintenant utiliser le lemme d'effondrement de Mostovski pour
+prouver qu'un ensemble bien ordonné est isomorphe à un unique ordinal. Comme
+nous avons fait le choix de travailler dans $\ZF - \AxF$, le lemme
+d'effondrement n'est pas utilisable. On va donc en remontrer une version adaptée
+aux ordinaux, qui vérifient l'axiome de fondation.
+
+On montre d'abord un lemme similaire à celui utilisé pour la démonstration du
+lemme d'effondremnet de Mostovski.
+
+\begin{lemma}
+  Soient $\alpha$ et $\beta$ deux ordinaux, avec
+  $\varphi : (\alpha,\in) \cong (\beta,\in)$, alors $\varphi = \id$ et
+  $\alpha = \beta$.
+\end{lemma}
+
+\begin{proof}
+  Supposons par l'absurde que $\varphi\neq\id$. On définit donc l'ensemble non
+  vide $\{\gamma \in \alpha \mid \varphi(\gamma)\neq\gamma\}$, soit $\gamma$
+  le plus petit élément de cet ensemble. On applique le même raisonnement que
+  dans le \cref{lem.most} pour en déduire que $\gamma = \varphi(\gamma)$, donc
+  que $\varphi\neq\id$ est absurde.
+\end{proof}
 
 \begin{proposition}
   Soit $(X,<)$ un bon ordre. Alors il existe un unique ordinal $\alpha$ et un
@@ -251,13 +271,30 @@ permet de définir le représentant canonique d'un bon ordre.
 \end{proposition}
 
 \begin{proof}
-  On applique le lemme d'effondrement de Mostovski à $(X,<)$ qui est un ensemble
-  muni d'une relation bien fondée. On trouve donc un unique ensemble $\alpha$
-  transitif et un unique isomorphisme $\pi : (X,<) \cong (\alpha,\in)$. Comme
-  $(\alpha,\in)$ est isomorphe à $(X,<)$, on en déduit directement que c'est
-  un bon ordre. $\alpha$ est donc un ordinal, et tout autre ordinal isomorphe
-  à $\alpha$ est alpha lui-même puisque ce sont deux ensembles transitifs
-  bien fondés pour $\in$ (l'isomorphisme est donc l'identité).
+  On définit la fonction $\pi : X \to \Ord$ par récursion bien fondée sur
+  $X$~:
+  \[\pi(x)\defeq \{ \pi(y) \mid y < x\}\]
+  qui, d'après l'axiome de remplacement et par une induction bien fondée,
+  peut bien être défini comme une fonction $\pi : X \to Y$ avec
+  $Y\subseteq \Ord$. On vérifie alors que $\pi$ est un isomorphisme d'ensemble
+  ordonné vers un ordinal~:
+  \begin{itemize}
+  \item $\pi$ est surjective par définition, puisqu'on considère son codomaine
+    comme étant son image.
+  \item $\pi$ est injective~: si $x\neq y$ alors $x < y$ sans perte de
+    généralité, et $\pi(x) \subsetneq \pi(y)$, donc $\pi(x)\neq\pi(y)$.
+  \item si $x < y$ alors $\pi(x) \in \pi(y)$.
+  \item si $\pi(x) \in \pi(y)$, alors $y < x$ est impossible puisque dans ce
+    cas, $\pi(y) \in \pi(x)$, donc (comme $<$ est total) $x < y$.
+  \item $Y$ est un segment initial de $\Ord$~: si $\alpha \in Y$ alors on trouve
+    $x \in X$ tel que $\alpha = \pi(x)$, et si $\beta \in \alpha$ alors
+    on trouve $y\in X$ tel que $\beta = \pi(y)$ et $y < x$, par définition de
+    $\pi$, donc $\beta \in Y$.
+  \end{itemize}
+  On a donc trouvé un isomorphisme entre $(X,<)$ et un ordinal $\alpha$ donné.
+  Si on avait deux ordinaux isomorphes, alors par le lemme précédent,
+  l'isomorphisme induit entre eux est l'idéentité, donc on a en fait un seul
+  tel ordinal.
 \end{proof}
 
 \begin{corollary}
@@ -362,7 +399,7 @@ de bon ordre et avec la distinction des sortes d'ordinaux.
 Ce résultat est cependant souvent plus pratique à utiliser une fois combiné à la
 disjonction de cas sur ce qu'est un ordinal.
 
-\begin{proposition}[Induction transtfinie, variante]
+\begin{proposition}[Induction transfinie, variante]
   Soit $\varphi(x_0,\ldots,x_n,y)$ une formule dans le langage des ensembles.
   Soient $x_0,\ldots,x_n$ des ensembles. On suppose que~:
   \begin{itemize}
@@ -394,15 +431,15 @@ Notre principe d'induction est donc généralisé à des ensembles bien plus gra
 que $\omega$. On va de même montrer un principe de récursion. Dans le cas des
 entiers, on peut définir une suite $u_n$ à un rang $n$ donné à partir de $n$ et
 de $u_{n-1}$. Pour un ordinal, on étend cette définition avec le cas d'un
-ordinal limite, pour lequel $f(\lambda)$ est définie à partie de $f(\beta)$ pour
-$\beta < \lambda$.
+ordinal limite, pour lequel $f(\lambda)$ est définie à partie des tous les
+$f(\beta)$ et $\beta$, pour $\beta < \lambda$.
 
 Pour préciser ces notions, nous allons introduire un peu de vocabulaire.
 
 \begin{definition}[Fonction inductive pour une relation]
   Soit $H(x,y)$ une relation fonctionnelle à deux variables libres. Soit
-  $\alpha$ un ordinal. On dit qu'une fonction $f : \alpha \to X$ est inductive
-  pour $H$ si pour tout $\beta < \alpha$, on a~:
+  $\alpha$ un ordinal. On dit qu'une fonction $f : \alpha \to \mathcal U$ est
+  inductive pour $H$ si pour tout $\beta < \alpha$, on a~:
   \begin{itemize}
   \item $f\restr\beta$ est dans le domaine de $H$.
   \item $f(\beta) = H(f\restr{\beta})$.
@@ -444,7 +481,7 @@ $H$ dont le domaine est $\alpha$.
 
 \begin{proof}
   Supposons qu'il existe $f,g$ deux fonctions inductives pour $H$. Par
-  l'absurde,Supposons que $f\neq g$, soit alors $\beta$ l'ordinal minimal tel
+  l'absurde, supposons que $f\neq g$, soit alors $\beta$ l'ordinal minimal tel
   que $f(\beta)\neq g(\beta)$. Comme $\beta$ est minimal, on en déduit que
   $f\restr{\beta}=g\restr{\beta}$, donc par le fait que $f$ et $g$ sont
   inductives pour $H$, il vient que $f(\beta) = g(\beta)$, ce qui est une
@@ -1208,3 +1245,210 @@ coïncident-elles ? Cette question mène à deux énoncés.
 Le fait est assez connu que $\HC$ et $\HCG$ sont en fait des énoncés
 indépendants de $\ZFC$, c'est-à-dire que si $\ZFC$ est cohérent, alors
 $\ZFC + \HC$ comme $\ZFC + \lnot\HC$ sont cohérents (et de même pour $\HCG$).
+
+\section{Cofinalité}
+
+Pour introduire la notion de cofinalité, commençons par observer deux exemples.
+Tout d'abord, étant donnée une famille finie $(n_i)_{i\in F}$ d'entiers, la borne
+supérieure de cette famille est un entier. Ainsi si $(\alpha_i)_{i\in \beta}$ est
+une famille d'ordinaux tous inférieurs strictement à $\omega$, et où
+$\beta < \omega$, alors $\sup \alpha_i < \omega$.
+
+Ce phénomène n'a rien de surprenant et, écrit comme ça, ne nous apporte pas
+vraiment d'informations. Cependant, en le généralisant à $\omega_1$, la chose
+devient alors moins intuitive. En effet, si $(\alpha_i)_{i\in \beta}$ est une
+famille d'ordinaux dénombrables, et $\beta$ est dénombrable, alors
+$\sup \alpha_i$ est dénombrable, donc pour une famille
+$(\alpha_i)_{i\in \beta}$ où $\alpha_i < \omega_1$ pour tout $i$ et
+$\beta < \omega_1$, $\sup \alpha_i < \omega_1$. Le cardinal $\omega_1$ ne peut
+donc pas être atteint par une suite.
+
+Au contraire, le cardinal $\aleph_\omega$ peut parfaitement être atteint par
+une suite, dénombrable~: $n \mapsto \aleph_n$ est une telle suite. On voit donc
+apparaître une nouvelle propriété sur les ordinaux, qui n'est pas simplement
+liée à la taille.
+
+Nous allons dans un premier temps nous concentrer sur la définition de
+cofinalité, de suite cofinale et sur les propriétés usuelles de cette notion.
+Nous verrons ensuite le théorème de König et ses conséquences sur le cardinal
+d'un ensemble de parties.
+
+\subsection{Premières définitions}
+
+Nous avons parlé ci-dessus d'atteindre un ordinal. Une façon plus formelle de
+définir cette idée est d'avoir une partie non strictement majorée, c'est-à-dire
+une partie $X\subseteq \alpha$ telle que pour tout $\beta \in \alpha$ il existe
+$\gamma \in X$ tel que $\beta \leq \gamma$.
+
+\begin{definition}[Cofinalité]
+  Soit $\alpha\in\Ord$, on dit qu'une partie $X\subseteq \alpha$ est cofinale si
+  \[\forall \beta \in \alpha, \exists \gamma \in X, \beta \leq \gamma\]
+
+  On définit la cofinalité d'un ordinal $\alpha$ par~:
+  \[\cof(\alpha) \defeq \min \{\type(X)
+  \mid X\subseteq\alpha, X\text{ est cofinale}\}\]
+\end{definition}
+
+Remarquons que, par définition, $\alpha$ est une partie cofinale dans lui-même,
+on a donc l'inégalité $\cof(\alpha) \leq \alpha$.
+
+\begin{definition}[Ordinal régulier, cardinal singulier]
+  Un ordinal $\alpha$ tel que $\cof(\alpha) = \alpha$ est un ordinal régulier.
+  Un cardinal qui n'est pas régulier est dit singulier.
+\end{definition}
+
+\begin{example}
+  $\omega$ est un ordinal régulier, et $\omega_1$ aussi, comme nous l'avons dit
+  au début. $\aleph_\omega$ est un cardinal singulier, puisqu'il a une partie
+  cofinale de type $\omega$.
+\end{example}
+
+\'Eliminons maintenant le cas de la cofinalité finie. Le cas de la cofinalité
+nulle n'est possible que pour l'ordinal nul, qui n'est pas très intéressant.
+
+\begin{proposition}
+  Un ordinal $\alpha$ a une cofinalité finie non nulle si et seulement si
+  $\cof(\alpha) = 1$, si et seulement si $\alpha$ est un ordinal successeur.
+\end{proposition}
+
+\begin{proof}
+  Si $\alpha$ a une cofinalité finie non nulle, alors soit $X$ une partie
+  cofinale de type $n$. On peut en prendre le maximum, qui est une partie
+  cofinale, donc $\cof(\alpha) = 1$. Si $\cof(\alpha) = 1$ alors on trouve
+  $\beta$ tel que $\forall \gamma \in \alpha, \gamma \leq \beta$, donc
+  $\alpha = \beta + 1$. Si $\alpha$ est successeur, alors en prenant $\{\beta\}$
+  tel que $\alpha = \beta + 1$ on trouve une partie cofinale finie.
+\end{proof}
+
+On va maintenant s'intéresser à l'effet des opérations ordinales sur la
+cofinalité, mais nous avons d'abord besoin d'un lemme assez naturel.
+
+\begin{lemma}\label{lem.cof.type}
+  Soit $\alpha$ un ordinal limite et $X$ une partie cofinale dans $\alpha$.
+  Alors on a l'égalité $\cof(\alpha) = \cof(\type(X))$.
+\end{lemma}
+
+\begin{proof}
+  Soit $Y\subseteq X$ telle que $\type(Y) = \cof(\type(X))$. Comme $X$ est
+  cofinale dans $\alpha$ et $Y$ est cofinale dans $X$, $Y$ est cofinale dans
+  $\alpha$, donc $\cof(\alpha) \leq \type(Y)$, donc
+  $\cof(\alpha) \leq \cof(\type(X))$.
+
+  Réciproquement, soit $Y\subseteq \alpha$ cofinale telle que
+  $\type(Y) = \cof(\alpha)$. On définit alors la fonction
+  \[\begin{array}{ccccc}
+  f & : & Y & \longmapsto & X\\
+  & & y &\longmapsto &\min (X\setminus y)
+  \end{array}\]
+  L'image de $f$ dans $X$ est cofinale. En effet, si on prend $\beta \in X$,
+  alors on peut trouver $\gamma \in \alpha$ tel que $\beta < \gamma$ (car
+  $\alpha$ est limite). Comme $Y$ est cofinale dans $\alpha$, on trouve
+  $\delta \in Y$ tel que $\beta < \delta$, mais alors $f(\delta) > \delta$
+  par définition, donc $\beta < f(\delta)$, donc on trouve un élément dans
+  $\im(f)$ qui est supérieur à $\beta$. Comme $\im(f)$ est cofinale, on en
+  déduit que $\cof(\type(X)) \leq \type(Y)$, donc que
+  $\cof(\alpha) = \cof(\type(X))$ par double inégalité.
+\end{proof}
+
+On peut maintenant comprendre quel effet a une somme sur la cofinalité.
+Moralement, l'ordinal $\alpha + \beta$ peut se voir comme la droite représentant
+$\alpha$ à laquelle on a accolé la droite représentant $\beta$ à sa fin. Ainsi,
+pour avoir une partie non bornée de $\alpha + \beta$, la partie en $\alpha$
+n'importe pas, puisqu'il suffit de dépasser les éléments de $\beta$. De même
+$\alpha \times \beta$ peut se voir comme $\beta$ successions de l'ordinal
+$\alpha$. Si $\beta$ est successeur, alors il suffit d'avoir une cofin à
+$\alpha$ et de l'appliquer au dernier segment de $\alpha\times\beta$. Si
+$\beta$ est limite, alors il faut au contraire avoir une cofin à $\beta$ pour
+l'appliquer à chaque copie de $\alpha$.
+
+\begin{proposition}
+  Soit $\alpha$ un ordinal limite, et $\beta$ un ordinal. Alors
+  \begin{itemize}
+  \item $\cof(\alpha + \beta) = \cof(\beta)$
+  \item si $\beta$ est successeur, $\cof(\alpha \times \beta) = \cof(\alpha)$
+  \item si $\beta$ est limite, $\cof(\alpha\times\beta) = \cof(\beta)$
+  \end{itemize}
+\end{proposition}
+
+\begin{proof}
+  On prouve chaque point.
+  \begin{itemize}
+  \item On a vu qu'une autre façon d'écrire $\alpha + \beta$ était comme
+    $\type(\{0\}\times\alpha \cup \{1\}\times\beta, \lexl)$. Ainsi $\beta$ est
+    cofinal dans $\alpha + \beta$, à l'encodage près, donc
+    $\cof(\beta) = \cof(\alpha + \beta)$.
+  \item Par définition, $\alpha \times \beta = \alpha \times \gamma + \alpha$
+    où $\beta = \gamma + 1$, donc avec l'argument précédent,
+    $\cof(\alpha\times\beta) = \cof(\alpha)$.
+  \item Dans le cas où $\beta$ est limite, en utilisant la représentation de
+    $\alpha \times \beta$ comme $\type(\alpha\times\beta,\lexl)$ avec le produit
+    cartésien, on remarque que
+    \[F \defeq \{(0,\gamma) \mid \gamma \in \beta\}\]
+    est cofinal dans $\alpha \times \beta$. Donc
+    $\cof(\alpha\times \beta) = \cof(\type(F))$ et $\type(F) = \beta$, d'où le
+    résultat.
+  \end{itemize}
+  Chaque point est donc prouvé.
+\end{proof}
+
+Pour donner les propriétés essentielles de la cofinalité, nous allons avoir
+besoin d'un lemme technique pour comparer des cofinalités à partir de fonctions.
+
+\begin{proposition}\label{lem.cof.compar.surj}
+  Soient $\alpha,\beta$ deux ordinaux, $f : \beta \to \alpha$ une fonction telle
+  que l'image de $f$ est cofinale dans $\alpha$. Alors
+  $\cof(\alpha) \leq \beta$.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On en déduit une version plus précise dans le cas d'une fonction croissante.
+
+\begin{proposition}
+  Soient $\alpha,\beta$ deux ordinaux, $f : \beta \to \alpha$ une fonction
+  croissante (au sens large) telle que l'image de $f$ est cofinale dans
+  $\alpha$. Alors $\cof(\alpha)\leq\cof(\beta)$.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On peut maintenant prouver les propriétés essentielles sur la cofinalité, et en
+particulier qu'un ordinal régulier est en fait un cardinal.
+
+\begin{proposition}
+  Soit $\alpha$ un ordinal limite. Alors on a la suite d'inégalités~:
+  \[\omega\leq \cof(\alpha) \leq |\alpha|\leq \alpha\]
+\end{proposition}
+
+\begin{proof}
+  Le fait que $|\alpha|\leq \alpha$ est par définition, de même
+  $\omega\leq\cof(\alpha)$ se déduit du résultat sur la cofinalité finie. On
+  veut donc montrer que $\cof(\alpha) \leq|\alpha|$. On sait par définition
+  qu'on dispose d'une fonction $f : |\alpha|\to \alpha$ surjective, donc
+  cofinale. En utilisant le \cref{lem.cof.compar.surj}, on en déduit donc que
+  $\cof(\alpha)\leq|\alpha|$.
+\end{proof}
+
+\begin{property}
+  Soit $\alpha$ un ordinal régulier, alors $\alpha$ est un cardinal.
+\end{property}
+
+\begin{proof}
+  On sait que $\cof(\alpha) \leq |\alpha| \leq \alpha$, donc dans le cas où
+  $\alpha = \cof(\alpha)$ on en déduit que $|\alpha| = \alpha$, donc $\alpha$
+  est un cardinal.
+\end{proof}
+
+\begin{property}
+  Soit $\alpha\in\Ord$, $\cof(\alpha)$ est un cardinal régulier.
+\end{property}
+
+\begin{proof}
+  On trouve une partie $X\subseteq\alpha$ de type $\cof(\alpha)$ cofinale dans
+  $\alpha$, par définition de $\cof(\alpha)$. Alors en utilisant le
+  \cref{lem.cof.type}, on en déduit que $\cof(\alpha) = \cof(\cof(\alpha))$.
+\end{proof}
