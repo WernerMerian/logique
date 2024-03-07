@@ -1,0 +1,279 @@
+\chapter{Combinatoire dans les ordinaux}
+\label{chp.combi}
+
+\minitoc
+
+Dans ce chapitre, nous étudions les notions combinatoires liées aux ordinaux.
+L'objectif du chapitre est d'aborder les ensembles stationnaires et les clubs,
+en en voyant les principales propriétés.
+
+Nous verrons avant tout ce qu'est un ensemble stationnaire, dont l'utilisation
+est omniprésente en théorie des ensembles modernes. Nous donnerons ensuite le
+lemme de Fodor.
+
+\section{Clubs et ensembles stationnaires}
+
+Pour pouvoir étudier les ensembles stationnaires, il est nécessaire de définir
+avant les clubs, qui sont une notion liée à la topologie des ordinaux, que nous
+abordons donc en premier lieu.
+
+\subsection{Topologie des ordinaux}
+
+A FAIRE
+
+\subsection{Filtre des clubs}
+
+On a vu dans le chapitre précédent qu'on pouvait considérer des parties
+cofinales dans un ordinal $\alpha$. \'Etant données deux parties cofinales,
+il est possible de différencier celles qui sont \og suffisament pleines\fg dans
+$\alpha$ de celles qui ont de nombreux trous (en un certain sens). On introduit
+donc une nouvelle notion, combinant la cofinalité (s'étendre assez haut dans
+l'ordinal $\alpha$) et la topologie (être assez non dispersé) pour définir ce
+qu'est un club.
+
+\begin{definition}[Club]
+  Soit $\alpha$ un ordinal. Un club (abréviation de l'anglais
+  \emph{closed unbounded}) est une partie $C\subseteq \alpha$ qui est close dans
+  $\alpha$ muni de la topologie de l'ordre, et cofinale dans $\alpha$.
+\end{definition}
+
+Un club est donc une grosse partie de $\alpha$. En particulier, en suivant
+l'intuition que l'on a donné dans le \cref{chp.ordres}, une telle notion de
+grosse partie devrait former un filtre. On peut imaginer une partie contenant
+un club mais n'étant pas un club, donc on voudra plutôt considérer le filtre
+engendré par cette famille de parties.
+
+Cependant, pour construire ce filtre, il est nécessaire (pour que le filtre ne
+soit pas trivial) que les clubs soient stables par intersection finie. En
+l'occurrence, ça n'est pas le cas dans le cas général, mais c'est le cas à
+partir du moment où la cofinalité de $\alpha$ est indénombrable.
+
+\begin{proposition}
+  Soit $\alpha$ un ordinal infini. Alors $\cof(\alpha) > \aleph_0$ si et
+  seulement si l'intersection de deux clubs est encore un club.
+\end{proposition}
+
+\begin{proof}
+  Commençons par le cas où $\cof(\alpha) \leq \aleph_0$. Dans ce cas, on peut
+  trouver une suite $(\alpha_n)$ strictement croissante cofinale dans $\alpha$.
+  Soient alors $(\alpha_{2n})$ et $(\alpha_{2n+1})$ deux suites extraites. Les
+  images $B$ et $C$, respectivement, de $(\alpha_{2n})$ et $(\alpha_{2n+1})$, sont
+  cofinales dans $\alpha$ et disjointes. De plus, $B$ et $C$ sont des parties
+  fermées de $\alpha$. On a donc trouvé deux parties disjointes de $\alpha$ qui
+  sont des clubs.
+
+  Supposons maintenant que $\cof(\alpha) > \aleph_0$. Soient alors $C_1$ et
+  $C_2$ deux clubs de $\alpha$. Montrons que $C_1\cap C_2$ est encore un club~:
+  \begin{itemize}
+  \item c'est une intersection de fermés, donc c'est un fermé.
+  \item soit $\beta \in \alpha$, montrons qu'il existe $\gamma \in C_1\cap C_2$
+    tel que $\beta \leq \gamma$. Pour cela, on construit une suite $(\gamma_n)$
+    d'éléments supérieurs à $\beta$~: comme $C_1$ est cofinal dans $\alpha$,
+    on définit $\gamma_{2n+2}$ comme un élément supérieur à $\gamma_{2n+1}$ qui
+    est dans $C_1$ et $\gamma_{2n+1}$ comme un élément supérieur à
+    $\gamma_{2n}$ qui est dans $C_2$, et on fixe $\gamma_0 = \beta$.
+
+    Comme $\cof(\alpha) > \aleph_0$, $\sup \gamma_n \in \alpha$, donc comme
+    $(\gamma_{2n+2})$ est une suite à valeurs dans $C_1$ qui est fermé,
+    $\sup \gamma_n \in C_1$ et de même $\sup \gamma_n \in C_2$ car
+    $(\gamma_{2n+1})$ est une suite à valeurs dans $C_2$.
+
+    Ainsi $C_1\cap C_2$ est bien cofinal dans $\alpha$.
+  \end{itemize}
+  On en déduit donc que si $\cof(\alpha) > \aleph_0$, alors l'intersection de
+  deux clubs est encore un club.
+\end{proof}
+
+Comme la condition porte sur la cofinalité, qui est une notion cardinale, on
+parlera à partir de maintenant de cardinaux réguliers. Il est en général
+possible de généraliser les résultats au cas d'un ordinal quelconque en
+traduisant les conditions sur sa cofinalité, mais parler uniquement de cardinaux
+réguliers simplifie les énoncés et suffit en pratique.
+
+\begin{definition}[Filtre des clubs]
+  Soit $\kappa \geq \aleph_1$ un cardinal régulier. On définit le filtre propre
+  des clubs de $\kappa$ par
+  \[\Club_\kappa \defeq \filclose{\{C\subseteq \kappa
+    \mid C\text{ est un club}\}}\]
+\end{definition}
+
+\begin{proof}
+  On a vérifie que l'intersection de deux clubs est encore un clubs, donc
+  l'intersection d'un nombre fini de clubs est encore un club. En particulier,
+  l'intersection d'un nombre fini de clubs est non vide, donc le filtre engendré
+  par la famille des clubs de $\kappa$ est un filtre propre.
+\end{proof}
+
+Donnons d'abord une famille d'éléments de ce filtre.
+
+\begin{property}
+  Soit $\kappa$ un cardinal régulier indénombrable. L'ensemble $\Club_\kappa$
+  contient toutes les parties de la forme
+  $\{\beta \in\kappa\mid \alpha\leq\beta\}$ pour $\alpha \in \kappa$.
+\end{property}
+
+\begin{proof}
+  Soit $\alpha \in \kappa$, montrons que $\{\beta\in\kappa\mid\alpha\leq\beta\}$
+  est un club~:
+  \begin{itemize}
+  \item il est fermé car le complémentaire de l'ouvert $\alpha$.
+  \item il est cofinal dans $\kappa$ puisque si $\alpha \leq \beta$, alors
+    $\alpha \leq \beta + 1$.
+  \end{itemize}
+  $\Club_\kappa$ contient donc toutes les parties co-bornées.
+\end{proof}
+
+Définissons maintenant les parties non stationnaires et stationnaires.
+
+\begin{definition}[Parties stationnaires, non stationnaires]
+  Soit $\kappa$ un cardinal régulier indénombrable. Une partie
+  $X\subseteq\kappa$ est dite non stationnaire si elle est le complémentaire
+  d'un élément de $\Club_\kappa$. Elle est dite stationnaire si elle n'est pas
+  non stationnaire.
+\end{definition}
+
+De la même façon que les parties de $\mathbb R$ de complémentaire négligeable
+forment un filtre dont le complémentaire forme l'idéal des parties négligeables
+(de mesure nulle), on a ici les parties non stationnaires qui sont négligeables
+en un sens. Une partie stationnaire est alors l'analogue d'une partie de mesure
+non nulle dans $\mathbb R$. On donne une caractérisation des parties
+stationnaires, qui peut largement être prise comme définition.
+
+\begin{proposition}
+  Une partie $X$ est stationnaire si et seulement si elle intersecte tous les
+  clubs de $\kappa$.
+\end{proposition}
+
+\begin{proof}
+  $X$ est non stationnaire si et seulement s'il $\kappa\setminus X$ contient
+  un club $C$, ce qui est équivalent à dire que $X$ est disjoint avec au moins
+  un club de $\kappa$~: on en déduit l'équivalence annoncée.
+\end{proof}
+
+\subsection{Exemples importants}
+
+Dans cette sous-section, nous traitons des cas élémentaires qu'il est important
+de couvrir pour avoir une certaine intuition des clubs et ensembles
+stationnaires.
+
+Pour commencer, un exemple important de club est celui des points de fermeture,
+que l'on va définir d'abord.
+
+\begin{definition}[Point de fermeture]
+  Soit $\alpha$ un ordinal et $f : \alpha \to \alpha$. On dit qu'un point
+  $\beta \in \alpha$ est un point de fermeture de $f$ lorsque
+  \[\forall \gamma < \beta, f(\gamma) < \beta\]
+  ou, de façon équivalence, lorsque $f(\beta) \subseteq \beta$ en considérant
+  l'image directe pour $f(\beta)$ (et non l'image de $\beta$). On notera
+  $\Clos(f)$ l'ensemble des points de fermeture de $f$.
+\end{definition}
+
+\begin{proposition}
+  Soit $\kappa$ un ordinal régulier indénombrable et $f : \kappa \to \kappa$,
+  alors $\Clos(f)$ est un club de $\kappa$.
+\end{proposition}
+
+\begin{proof}
+  On vérifie que $\Clos(f)$ est un club~:
+  \begin{itemize}
+  \item soit $X\subseteq \Clos(f)$, montrons que $\sup X \in \Clos(f)$. Si
+    $\sup X \in X$ le résultat est évident. On suppose donc que $\sup X$ est un
+    ordinal limite. Soit $\beta \in \sup X$, comme $\sup X$ est limite,
+    on trouve $\alpha \in X$ tel que $\beta + 1 \leq \alpha$, et comme
+    $\beta < \alpha$ et $\alpha \in \Clos(f)$, on en déduit que
+    $f(\beta) < \alpha < \sup X$, donc pour tout
+    $\beta \in \sup X, f(\beta) < \sup X$, d'où $X\in \Clos(f)$.
+  \item de plus $\Clos(f)$ est cofinal dans $\kappa$. Soit $\beta\in\kappa$, on
+    définit la suite
+    \[\begin{cases}
+    \alpha_0 \defeq \beta + 1 \\
+    \alpha_{n+1} \defeq \displaystyle
+    \Big(\sup_{\delta \leq \alpha_n} f(\delta)\Big) + 1
+    \end{cases}\]
+    Comme on a une suite dans un ordinal régulier indénombrable, on en déduit
+    que $\sup \alpha_n \in \kappa$ et $\sup \alpha_n > \beta$. Il nous reste à
+    montrer que $\sup \alpha_n \in \Clos(f)$. Soit $\gamma < \sup \alpha_n$, on
+    trouve $n \in \mathbb N$ tel que $\beta \leq \alpha_n$, dont on déduit par
+    définition de $\alpha_{n+ 1}$ que $f(\beta) < \alpha_{n+1}\leq \sup\alpha_n$,
+    donc $\sup\alpha_n\in\Clos(f)$.
+  \end{itemize}
+\end{proof}
+
+Dans cet exemple précis, il est essentiel que $\kappa$ soit régulier. En effet,
+en prenant $f : \aleph_{\omega_1} \to \aleph_{\omega_1}$ tel que
+$f(\alpha) = \aleph_\alpha$ pour $\alpha < \omega_1$ et $f(\alpha) = 0$ sinon,
+on a un exemple de fonction sans point de fermeture.
+
+Un autre exemple important de club est celui des limites. On peut le voir comme
+un cas particulier de point de fermeture, pour la fonction $S$, mais cela ne
+fonctionne que dans le cas d'un cardinal régulier.
+
+\begin{definition}[Ensemble des limites]
+  Soit $\alpha$ un ordinal, on définit l'ensemble des limites de $\alpha$ comme
+  \[\Lim_\alpha \defeq
+  \left\{\beta \in \alpha \mid \bigcup \beta = \beta\right\}\]
+\end{definition}
+
+\begin{proposition}
+  Pour $\kappa$ un cardinal régulier indénombrable, $\Lim_\kappa$ est un club
+  de $\kappa$.
+\end{proposition}
+
+\begin{proof}
+  On vérifie que $\Lim_\kappa$ est un club~:
+  \begin{itemize}
+  \item Soit $X\subseteq \Lim_\kappa$ tel que $\sup X \in \kappa$, alors
+    \begin{align*}
+      \bigcup (\sup X) &= \bigcup_{\alpha \in \sup X} \alpha \\
+      &= \bigcup_{\alpha \in \bigcup X} \alpha \\
+      &= \bigcup_{\alpha \in X} \left(\bigcup \alpha\right)\\
+      &= \bigcup_{\alpha \in X} \alpha\\
+      &= \sup X
+    \end{align*}
+    donc $\sup X \in \Lim_\kappa$, donc $\Lim_\kappa$ est fermé.
+  \item Soit $\alpha \in \kappa$, alors $\alpha + \omega$ est un ordinal limite
+    et il est supérieur à $\alpha$, donc $\Lim_\kappa$ est non borné.
+  \end{itemize}
+  Donc $\Lim_\kappa$ est un club de $\kappa$.
+\end{proof}
+
+Parmi ces limites, dans un ordinal donné, on peut faire une distinction sur la
+cofinalité. Dans le cas de $\aleph_2$ par exemple, les ordinaux limites peuvent
+avoir une cofinalité de $\aleph_0$ ou de $\aleph_1$. Comme toute limite a l'une
+des deux cofinalités, il est clair qu'au moins l'ensemble des ordinaux limites
+de cofinalité $\aleph_0$ ou celui des ordinaux limites de cofinalité $\aleph_1$
+est stationnaire, comme l'union des deux est un club. En réalité, ils sont
+tous les deux stationnaires, et on peut généraliser ce résultat, en utilisant
+la notation $E_\kappa^\lambda$ introduite dans la \cref{sct.cof}.
+
+\begin{proposition}
+  Soient $\kappa$ et $\lambda$ deux cardinaux réguliers infinis tels que
+  $\kappa < \lambda$. Alors l'ensemble $E_\kappa^\lambda$ est stationnaire.
+\end{proposition}
+
+\begin{proof}
+  On va montrer que tout club contient un élément de cofinalité $\kappa$. Soit
+  $C$ un club de $\lambda$. On définit $f : \lambda \to C$ par récursion
+  transfinie~:
+  \begin{itemize}
+  \item $f(0) = \min C$
+  \item pour tout $\alpha \in \lambda$,
+    $f(\alpha + 1) = \min C\setminus f(\alpha)$
+  \item pour tout $\alpha \in \Lim_\lambda$,
+    $f(\alpha) = \sup_{\beta < \alpha} f(\beta)$
+  \end{itemize}
+
+  $f$ est bien définie. En effet, pour $\alpha \in \lambda$, comme $\lambda$ est
+  régulier, $f\restr\alpha$ est bornée, et $C$ ne l'est pas donc on peut bien
+  trouver un minimum dans $C\setminus f(\alpha)$. Dans le cas limite, comme $C$
+  est un club, on en déduit que $\sup f(\beta)$ est effectivement un élément de
+  $C$.
+
+  En fait, on peut même montrer que $f$ est une bijection entre $\lambda$ et
+  $C$, de façon analogue à la preuve que $\aleph$ établit une bijection entre
+  les ordinaux et les cardinaux infinis.
+
+  On voit alors que $f(\kappa)$ est un élément de cofinalité $\kappa$, donc que
+  $C\cap E_\kappa^\lambda \neq \varnothing$. $E_\kappa^\lambda$ est donc bien
+  stationnaire.
+\end{proof}
