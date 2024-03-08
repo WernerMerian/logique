@@ -277,3 +277,551 @@ la notation $E_\kappa^\lambda$ introduite dans la \cref{sct.cof}.
   $C\cap E_\kappa^\lambda \neq \varnothing$. $E_\kappa^\lambda$ est donc bien
   stationnaire.
 \end{proof}
+
+\begin{corollary}\label{cor.al2.deuxdis}
+  Il existe deux ensembles stationnaires disjoints dans $\aleph_2$.
+\end{corollary}
+
+\begin{proof}
+  On vient de voir que $E_{\aleph_0}^{\aleph_2}$ et $E_{\aleph_1}^{\aleph_2}$ sont
+  stationnaires, et ils sont évidemment disjoints, d'où le résultat.
+\end{proof}
+
+On sait donc que dans le cas d'une cofinalité indénombrable, la famille des
+clubs est stable par intersection finie. Est-il possible d'aller plus loin et de
+montrer une stabilité pour des intersections plus grandes ? C'est effectivement
+le cas, comme nous le montrons maintenant.
+
+\begin{proposition}\label{prop.inter.club.k}
+  Soit $\kappa$ un cardinal régulier indénombrable. Alors l'intersection d'une
+  famille de cardinal $\lambda < \kappa$ de clubs est encore un club.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+L'autre question naturelle, se basant sur les $E_\kappa^\lambda$, est de savoir
+s'il existe de plus grandes familles de parties stationnaires disjointes, car
+$2$ ensembles stationnaires disjoints dans $\aleph_2$ peut sembler peu. On va
+ici simplement donner un résultat légèrement plus fort.
+
+\begin{proposition}\label{prop.al1.deuxdis}
+  Il existe deux ensembles stationnaires dans $\aleph_1$ qui sont disjoints.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\section{Lemme de Fodor et applications}
+
+Dans cette section, nous allons étudier plus précisément les ensembles
+stationnaires. Notre premier objectif sera de donner un résultat plus général
+similaire au \cref{cor.al2.deuxdis} et à la \cref{prop.al1.deuxdis}. En
+répondant à la question naturelle de savoir combien on peut trouver d'ensembles
+stationnaires disjoints dans un cardinal, nous serons naturellement amenés à
+utiliser une version faible du lemme de Fodor, que nous renforcerons ensuite
+pour obtenir le vrai lemme de Fodor. Nous verrons dans la deuxième sous-section
+une application du lemme de Fodor avec le théorème de Silver, donnant une
+condition sur l'exponentiation cardinale dans le cas de cardinaux singuliers.
+
+\subsection{Lemme de Fodor}
+
+Le lemme de Fodor s'applique sur des fonctions dites régressives, commençons
+donc par en donner la définition.
+
+\begin{definition}[Fonction régressive]
+  Soit $\kappa$ un cardinal, $S\subseteq \kappa$ et $f : S \to \kappa$. On
+  dit que $f$ est régressive si la propriété suivante est vérifiée~:
+  \[\forall \alpha \in S\setminus\{0\}, f(\alpha) < \alpha\]
+\end{definition}
+
+On donne alors la version faible du lemme de Fodor~:
+
+\begin{lemma}[Fodor, version faible]
+  Soit $\lambda$ un cardinal régulier indénombrable et $S\subseteq \lambda$ un
+  ensemble stationnaire. Soit $f : S \to \lambda$ régressive, alors $f$ est
+  constante sur un ensemble de taille $\lambda$, c'est-à-dire qu'il existe
+  $T\subseteq S$ et $\alpha \in \lambda$ tels que
+  \[\begin{cases}
+  \forall \beta \in T, f(\beta) = \alpha\\
+  \Card(T) = \lambda
+  \end{cases}\]
+\end{lemma}
+
+\begin{proof}
+  On procède par l'absurde. Supposons que pour tout $\beta \in \lambda$,
+  $f^{-1}(\{\beta\})$ est de cardinal strictement inférieur à $\lambda$. On sait
+  donc, comme $\lambda$ est régulier, que $\sup f^{-1}(\{\beta\})\in \lambda$.
+  Soit alors
+  \[\begin{array}{ccccc}
+  g & : & \lambda & \longrightarrow & \lambda\\
+  & & \alpha & \longmapsto & \sup f^{-1}(\{\alpha\})
+  \end{array}\]
+  On va étudier $\Clos(f)$~: si $\alpha \in S$, alors $f(\alpha) < \alpha$ donc
+  $g(f(\alpha)) \geq \alpha$, d'où $\alpha \notin \Clos(f)$. Pourtant, on sait
+  que $\Clos(f)$, donc $S$ doit intersection $\Clos(f)$, ce qui est absurde.
+
+  On en déduit donc qu'il existe $\alpha \in \lambda$ tel que
+  $|f^{-1}(\{\alpha\})| = \lambda$, d'où le résultat en prenant ce tel $\alpha$
+  et $T = f^{-1}(\{\alpha\})$.
+\end{proof}
+
+On va maintenant définir un outil combinatoire de théorie des ensembles~: les
+matrices d'Ulam. Celles-ci vous nous servir pour prouver le théorème sur les
+ensembles stationnaires disjoints de façon particulièrement élégantes.
+
+\begin{definition}[Matrices d'Ulam]
+  Soit $\kappa$ un cardinal infini et $\lambda = \kappa^+$. Pour chaque
+  $\alpha < \lambda$, on se donne une injection $f_\alpha : \alpha \to\kappa$.
+  On définit la matrice d'Ulam en $\alpha < \lambda$ et $\beta < \kappa$ par
+  \[X_\alpha^\beta \defeq
+  \{\xi \mid \alpha < \xi < \lambda, f_\xi(\alpha) = \beta\}\]
+  (chaque $X_\alpha^\beta$ est donc une partie de $\lambda$).
+\end{definition}
+
+\begin{property}
+  Soient $\kappa$ un cardinal infini et $\lambda = \kappa^+$. Alors la matrice
+  d'Ulam a les propriétés suivantes~:
+  \begin{enumerate}[label=(\roman*)]
+  \item\label{enum.ulam1} pour tout $\beta < \kappa$, la famille
+    $\{X_\alpha^\beta\}_{\alpha < \lambda}$ est constituée d'ensembles deux à deux
+    disjoints.
+  \item\label{enum.ulam2} pour tout $\alpha < \lambda$, on a l'identité
+    \[\bigcup_{\beta < \kappa} X_\alpha^\beta = \lambda \setminus (\alpha + 1)\]
+  \item pour tout $\alpha$ il existe $\beta(\alpha)$ tel que
+    $X_\alpha^{\beta(\alpha)}$ est stationnaire.
+  \item il existe $\beta < \kappa$ tel que
+    $Y = \{\alpha \mid \beta(\alpha) = \beta\}$ est de taille $\lambda$.
+  \item pour le $\beta$ ci-dessus, la famille
+    $\{X_\alpha^\beta\}_{\alpha \in Y}$ est constituée d'ensembles stationnaires
+    deux à deux disjoints.
+  \end{enumerate}
+\end{property}
+
+\begin{proof}
+  On vérifie chaque propriété~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Soit $\beta < \kappa$ et $\alpha, \gamma \in\lambda$. Si
+    $x\in X_\alpha^\beta \cap X_\gamma^\beta$, alors $f_x(\alpha) = f_x(\gamma)$
+    donc, comme $f_x$ est une injection, $\alpha = \gamma$.
+  \item Soit $\xi \in \lambda \setminus (\alpha + 1)$. Comme $\xi > \alpha$,
+    $f_\xi$ est définie en $\alpha$, et $f_\xi : \xi \to \kappa$, donc
+    $\xi \in X_\alpha^{f_\xi(\alpha)}$, d'où
+    $\displaystyle
+    \lambda\setminus(\alpha+1)\subseteq\bigcup_{\beta < \kappa} X_\alpha^\beta$
+
+    Dans le sens réciproque, si $\xi \in X_\alpha^\beta$ pour $\beta <\kappa$,
+    alors par définition $\alpha < \xi < \lambda$ donc
+    $\xi \in \lambda\setminus(\alpha + 1)$.
+  \item Soit $\alpha < \lambda$. Par l'absurde, supposons que tous les
+    $X_\alpha^\beta$ pour $\beta < \kappa$ sont non stationnaires. En utilisant
+    la \cref{prop.inter.club.k} sous la forme complémentaire (en utilisant des
+    ensembles non stationnaires plutôt que des clubs), on en déduit que
+    $\displaystyle\bigcup_{\beta < \kappa} X_\alpha^\beta$ est non stationnaire.
+    Pourtant, on sait que cette union vaut $\lambda \setminus(\alpha + 1)$ qui
+    est, en tant que partie co-bornée de $\lambda$, un club. C'est donc une
+    absurdité, donc il existe au moins un indice $\beta(\alpha)$ tel que
+    $X_\alpha^{\beta(\alpha)}$ est stationnaire.
+  \item On utilise maintenant le lemme de Fodor faible~: la fonction
+    $g : \alpha \mapsto \beta(\alpha)$ est régressive sur
+    $\lambda\setminus\kappa$ comme $\beta(\alpha) \in \kappa$, et la partie
+    $\lambda\setminus\kappa$ est un club (donc stationnaire). On en déduit
+    l'existence de $Y$ de cardinal $\lambda$ et $\beta \in \kappa$ tels que
+    \[\forall \alpha \in Y, \beta(\alpha) = \beta\]
+  \item On sait que pour tout $\alpha \in Y$, $\beta(\alpha) = \beta$, et
+    que $X_\alpha^{\alpha(\beta)}$ est stationnaire, donc la famille
+    $\{X_\alpha^\beta\}_{\alpha \in Y}$ est constituée d'ensembles stationnaires. De
+    plus, en utilisant \ref{enum.ulam1}, on en déduit que les ensembles sont
+    deux à deux disjoints.
+  \end{enumerate}
+\end{proof}
+
+On en déduit le résultat voulu.
+
+\begin{theorem}
+  Soit $\lambda$ un cardinal successeur, il existe une famille de taille
+  $\lambda$ de parties stationnaires dans $\lambda$ deux à deux disjointes.
+\end{theorem}
+
+\begin{proof}
+  Par définition, il existe $\kappa$ tel que $\lambda = \kappa^+$, on prend
+  alors comme famille celle précédemment exhibée.
+\end{proof}
+
+En fait, on voit que tout le raisonnement sur les matrices d'Ulam peut se faire
+relativement à un ensemble stationnaire $S$ donné, en définissant
+\[S_\alpha^\beta \defeq \{\xi \in S\mid \alpha < \xi < \lambda,
+f_\xi(\alpha) = \beta\}\]
+le \cref{enum.ulam2} devient alors
+\[\bigcup_{\beta < \kappa} S_\alpha^\beta = (\lambda \setminus (\alpha +1))\cap S\]
+
+On peut alors en déduire une version plus forte du théorème.
+
+\begin{theorem}
+  Soit $\lambda$ un cardinal successeur et $S\subseteq\lambda$ un ensemble
+  stationnaire. Il existe alors une famille de taille $\lambda$ de parties
+  stationnaires de $S$ deux à deux disjointes.
+\end{theorem}
+
+Revenons maintenant au lemme de Fodor. Si l'on souhaite naïvement intersecter
+$\kappa$ clubs dans un cardinal régulier indénombrable $\kappa$, on peut
+se retrouver dans le cas des segments terminaux de $\kappa$ où l'on obtient une
+intersection vide. On doit donc définir une intersection plus subtile~: c'est
+l'intersection diagonale.
+
+\begin{definition}[Intersection diagonale]
+  Soit $\kappa$ un cardinal et $\{C_\alpha\}_{\alpha < \kappa}$ une famille de
+  parties de $\kappa$. On définit l'intersection diagonale de $\{C_\alpha\}$ par
+  \[\diagcap_{\alpha < \kappa} C_\alpha \defeq \{\beta <\kappa\mid
+  \beta\in\bigcap_{\alpha < \beta} C_\alpha\}\]
+\end{definition}
+
+\begin{proposition}
+  Soit $\kappa$ un cardinal régulier indénombrable et
+  $\{C_\alpha\}_{\alpha < \kappa}$ une famille de $\kappa$ clubs. Alors
+  $\displaystyle\diagcap_{\alpha < \kappa} C_\alpha$ est un club.
+\end{proposition}
+
+\begin{proof}
+  Nommons $D$ cette intersection diagonale et vérifions les axiomes d'un club~:
+  \begin{itemize}
+  \item Soit $X\subseteq D$ borné, montrons que $\sup X \in D$. Soit
+    $\beta < \sup X$, par définition pour tout $\delta$ tel que
+    $\beta<\delta<\sup X$ et $\delta \in X$, $\delta \in C_\beta$. On en déduit,
+    comme $\sup X$ est une limite d'éléments de $X$ supérieurs à $\beta$,
+    que $\sup X$ est une limite d'éléments de $C_\beta$, donc un élément de
+    $C_\beta$ puisque $C_\beta$ est un club (en particulier un fermé). Donc
+    $\sup X\in C_\beta$ pour tout $\beta < \sup X$, donc $\sup X \in D$.
+  \item A FAIRE
+  \end{itemize}
+  Ainsi $D$ est bien un club.
+\end{proof}
+
+On en déduit le lemme de Fodor.
+
+\begin{lemma}[Fodor]
+  Soit $\kappa$ un cardinal régulier indénombrable, $S \subseteq \kappa$ une
+  partie stationnaire et $f : S \to \kappa$ une fonction régressive. Alors
+  $f$ est constante sur un ensemble stationnaire.
+\end{lemma}
+
+\begin{proof}
+  Supposons que pour tout $\beta \in \kappa$, $f^{-1}(\{\beta\})$ est non
+  stationnaire. On trouve alors $C_\beta$ un club disjoint de
+  $f^{-1}(\{\beta\})$. Comme $\displaystyle\diagcap_{\beta < \kappa} C_\beta$
+  et $S$ est stationnaire, on peut trouver
+  $\gamma \in S\cap \diagcap_{\beta < \kappa} C_\beta$. On sait donc que
+  $\gamma \in C_\beta$ pour tout $\beta < \gamma$, c'est-à-dire que
+  $f(\gamma) \neq \beta$ pour tout $\beta < \gamma$. On en déduit que
+  $f(\gamma) \geq \gamma$, ce qui est impossible car $f$ est supposée
+  régressive.
+\end{proof}
+
+\subsection{Théorème de Silver}
+
+Dans cette partie, on va montrer le théorème de Silver. On a vu dans le
+\cref{chp.ordinaux} que sur les cardinaux réguliers, on disposait de très peu
+d'informations sur le comportement de $\kappa \mapsto X^\kappa$. Le théorème de
+Silver montre que dans le cas des cardinaux singuliers cela était très
+différent. Ce que nous allons montrer est, plus précisément, que si l'hypothèse
+généralisée du continue est vraie jusqu'à un certain cardinal singulier
+$\lambda$ de cofinalité indénombrable, alors celle-ci est vrai aussi en ce
+cardinal.
+
+On va d'abord introduire la notion de suite cofinale continue, qui est un
+renforcement naturel de la notion de suite cofinale.
+
+\begin{definition}[Suite cofinale continue]
+  Soit $\alpha$ un ordinal et $(\alpha_\beta)$ une suite d'éléments de $\alpha$.
+  On dit que $(\alpha_\beta)$ est une suite cofinale continue si c'est une
+  suite strictement croissante, que $\sup\alpha_\beta = \alpha$ et que pour
+  tout $\gamma \in\Lim_\alpha$, $\sup_{\beta < \gamma} \alpha_\beta = \gamma$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que si $\alpha$ est un ordinal limite, alors il existe une suite
+  cofinale continue de taille $\cof(\alpha)$.
+\end{exercise}
+
+On aura aussi besoin de la notion de famille éventuellement différentes, qui
+peut se voir comme une généralisation de celle de famille presque disjointe pour
+un cardinal autre que $\omega$.
+
+\begin{definition}
+  Soit $X$ un ensemble et $\kappa$ un cardinal. Une famille
+  $\mathcal F\subseteq\Funct(\kappa,X)$ est dite éventuellement différente si
+  la condition suivante est vérifiée~:
+  \[\forall f,g \in \mathcal F, f \neq g \implies
+  \Card(\{\xi\mid f(\xi) = g(\xi)\}) < \kappa\]
+\end{definition}
+
+\begin{notation}
+  Dans le suite de cette sous-section, on pose $\lambda$ un cardinal singulier
+  de cofinalité indénombrable, $\alpha$ l'ordinal tel que
+  $\lambda = \aleph_\alpha$ et $\kappa = \cof(\alpha)$ (avec, donc,
+  $\kappa > \omega$). On suppose aussi
+  \[\HCG_\lambda \defeq \forall \beta < \lambda, 2^{\aleph_\beta} = \aleph_{\beta + 1}
+  \]
+
+  Comme nous allons procéder par l'absurde, on supposera de plus que
+  $2^\lambda > \lambda^+$.
+
+  On se fixe une suite cofinale continue $(\alpha_{\beta})_{\beta < \kappa}$ dans
+  $\alpha$.
+\end{notation}
+
+\begin{proposition}
+  Il existe une famille éventuellement différente
+  $\mathcal F\subseteq\Funct(\kappa,\lambda)$ de taille $2^\lambda$ telle que
+  \[\forall f\in\mathcal F, \forall \beta < \kappa,
+  f(\beta) < \aleph_{\alpha_\beta + 1}\]
+\end{proposition}
+
+\begin{proof}
+  On se donne, pour chaque $\beta < \kappa$, une bijection
+  \[\iota_\beta : \powerset(\aleph_{\alpha_\beta}) \xrightarrow[\cong]{}
+  \aleph_{\alpha_\beta + 1}\]
+  donnée par $\HCG_\alpha$.
+
+  Pour chaque $X\subseteq \lambda$, on définit la fonction
+  \[\begin{array}{ccccc}
+  f_X & : & \kappa & \longrightarrow & \lambda\\
+  & & \beta &\longmapsto & \iota_\beta(X \cap \aleph_{\alpha_\beta})
+  \end{array}\]
+  Remarquons que cette fonction est bien définie, car
+  $X\cap \aleph_{\alpha_\beta}$ est une partie de $\aleph_{\alpha_\beta}$ et elle est
+  donc à valeur dans $\aleph_{\beta + 1} < \lambda$. Montrons maintenant que
+  $\{f_X\}_{X\subseteq \lambda}$ est une famille éventuellement différente~:
+
+  Soient $X,Y\subseteq \lambda$ tels que $X\neq Y$. On veut montrer que
+  $\{\xi \mid f_X(\xi) = f_Y(\xi)\}$ est de cardinal strictement inférieur à
+  $\kappa$. Comme $X\neq Y$, on trouve $\delta = \min X \triangle Y$. La suite
+  $(\alpha_\beta)$ est cofinale dans $\alpha$, donc on peut trouver
+  $\gamma\in \kappa$ tel que $\aleph_{\alpha_\gamma} > \delta$. Comme
+  $(\alpha_\beta)$ est strictement croissante, on en déduit que pour tout
+  $\gamma' > \gamma, \aleph_{\gamma'} > \delta$.
+
+  En remarquand que
+  $(X\triangle Y) \cap \aleph_{\alpha_\beta} =
+  (X\cap \aleph_{\alpha_\beta})\triangle (Y\cap \aleph_{\alpha_\beta})$,
+  si $\beta \in \kappa$ est tel que $\delta \in \aleph_{\alpha_\beta}$, alors
+  $\delta\in(X\cap \aleph_{\alpha_\beta})\triangle (Y\cap \aleph_{\alpha_\beta})$
+  donc $X\cap \aleph_{\alpha_\beta}\neq Y\cap \aleph_{\alpha_\beta}$,
+  d'où par injectivité de $\iota_\beta$, $f_X(\beta) \neq f_Y(\beta)$.
+
+  On voit donc que l'ensemble $\{\xi\mid f_X(\xi) = f_Y(\xi)\}$ est borné par
+  $\gamma$ tel que $\delta \in \aleph_\gamma$, c'est donc un ensemble de
+  cardinal inférieur à $\gamma$ et $\gamma < \kappa$, donc $\{f_X\}$ est une
+  famille éventuellement différente.
+\end{proof}
+
+On définit maintenant une relation entre les parties de $\lambda$.
+
+\begin{definition}
+  Pour deux parties $X,Y\subseteq \lambda$, on définit la relation
+  $\mathcal R$ par
+  \[X \mathcal R Y\defeq \{\gamma\mid f_X(\gamma) < f_Y(\gamma)\}
+  \text{ est stationnaire dans }\kappa\]
+\end{definition}
+
+\begin{property}
+  Soient $X\neq Y$ deux parties de $\lambda$. Alors $X\mathcal R Y$ ou
+  $Y\mathcal R X$.
+\end{property}
+
+\begin{proof}
+  Comme $\{f_X\}$ est une famille éventuelle différente, on peut trouver
+  $\kappa' < \kappa$ tel que $\{\xi \mid f_X(\xi) =f_Y(\xi)\}\subseteq\kappa'$
+  donc $\{xi\mid f_X(\xi)\neq f_Y(\xi)\}$ contient un club (la partie
+  $\kappa\setminus \kappa$). De plus on a l'égalité
+  \[\{\xi \mid f_X(\xi) \neq f_Y(\xi)\} = \{\xi\mid f_X(\xi) < f_Y(\xi)\}
+  \cup \{\xi\mid f_X(\xi) > f_Y(\xi)\}\]
+  donc l'union des deux ensembles est un ensemble stationnaire. On en déduit
+  qu'au moins l'un des deux ensembles est stationnaire, ce qui signifie que
+  $X\mathcal R Y$ ou $Y\mathcal R X$.
+\end{proof}
+
+\begin{proposition}
+  Il existe une partie $X\subseteq \lambda$ telle que
+  $\Card(\mathcal R^{-1}[X]) \geq \lambda^+$.
+\end{proposition}
+
+\begin{proof}
+  Soit $A\subseteq \powerset(\lambda)$ tel que $\Card(A) = \lambda^+$. On
+  définit alors, pour tout $X\in A$~:
+  \[A_X\defeq \mathcal R^{-1}[X]\cup \{X\}\]
+  Il y a alors deux possibilités à traiter~:
+  \begin{itemize}
+  \item s'il existe $X\in A$ tel que $\Card(A_X)\geq \lambda^+$, alors en
+    prenant ce tel $X$, on a bien prouvé l'affirmation souhaitée.
+  \item sinon, alors on sait que pour tout $X\in A$, $\Card(A_X)< \lambda^+$,
+    donc en utilisant le \cref{thm.Konig}, on en déduit que~:
+    \[\Card\left(\bigcup_{X\in A}A_X\right) \leq \lambda^+\]
+    donc, comme on a supposé que $2^\lambda > \lambda^+$, on peut trouver une
+    partie
+    \[X\in \powerset(\lambda)\setminus\left(\bigcup_{X\in A}A_X\right)\]
+    Comme on sait que pour tous $X\neq Y$, $X\mathcal R Y$ ou $Y\mathcal R X$,
+    le fait que $X\notin A_Y$ pour tout $Y\in A$ signifie que
+    $\mathcal R^{-1}[X]\supseteq A$, donc que
+    $\Card(\mathcal R^{-1}[X]) \geq\lambda^+$.
+  \end{itemize}
+  Dans les deux cas, on a donc trouvé $X$ tel que
+  $\Card(\mathcal R^{-1}[X]) \geq \lambda^+$.
+\end{proof}
+
+\begin{notation}
+  On fixe maintenant $X$ tel que défini dans la proposition précédente. De plus,
+  pour tout $\gamma \in \kappa$, comme
+  $f_X(\gamma) \in \aleph_{\alpha_\gamma + 1}$, on se donne une injection
+  $g_\gamma : f_X(\gamma) \to \aleph_{\alpha_\gamma}$.
+
+  Pour tout $Y\in\mathcal R^{-1}[X]$, on définit
+  $S_Y = \{\gamma\mid f_Y(\gamma) < f_X(\gamma)\}$.
+\end{notation}
+
+On va maintenant introduire une variant du lemme de Fodor pour traiter notre
+famille éventuellement différente.
+
+\begin{lemma}[Fodor, variante]
+  Soit $\alpha_\beta$ une suite cofinale continue dans $\alpha$. Soit
+  $S\subseteq\kappa$ une partie stationnaire et $f : S \to \aleph_\alpha$ telle
+  que
+  \[\forall \beta < \kappa, f(\beta) < \aleph_{\alpha_\beta}\]
+  On peut alors trouver $\gamma < \alpha$ et une partie $T\subseteq S$
+  stationnaire telle que
+  \[\forall \beta \in T, f(\beta) < \aleph_\gamma\]
+\end{lemma}
+
+\begin{proof}
+  On commence par considérer
+  \[S' \defeq S \cap \Lim_\kappa\]
+  qui, comme $\Lim_\kappa$ est un club, est encore une partie stationnaire.
+  Soit maintenant, pour $\beta \in S'$, l'ensemble
+  \[A_\beta \defeq \{\gamma \mid f(\beta) < \aleph_{\alpha_\beta}\}\]
+  On sait que pour tout $\beta \in A_\beta$, $f(\beta) < \aleph_{\alpha_\beta}$,
+  donc $A_\beta$ est toujours non vide. On définit la fonction
+  \[\begin{array}{ccccc}
+  g & : & S' & \longrightarrow & \kappa\\
+  & & \beta & \longmapsto & \min A_\beta
+  \end{array}\]
+
+  Montrons que $g$ est régressive pour pouvoir y appliquer le lemme de Fodor.
+  Soit $\beta \in S'$, montrons que $g(\beta) < \beta$. $(\alpha_\beta)$ est
+  une suite continue, et $\aleph$ est aussi continue (par définition), donc
+  (comme $f(\beta) < \aleph_{\alpha_\beta}$) on en déduit que
+  $f(\beta) < \sup_{\gamma < \beta} \aleph_{\alpha_\gamma}$
+  On peut donc trouver $\delta \in \beta$ tel que
+  $f(\beta) < \aleph_{\alpha_\delta}$, puisque sinon
+  $f(\beta) \geq \sup_{\gamma < \beta} \aleph_{\alpha_\gamma}$.
+  Il vient donc que $\delta < \beta$ et $\delta \in A_\beta$, donc
+  $\min A_\beta < \beta$, d'où $g(\beta) < \beta$.
+
+  On applique donc le lemme de Fodor à $g$~: on trouve un ensemble stationnaire
+  $T\subseteq S$ et $\delta \in \kappa$ tel que
+  \[\forall \beta \in T, g(\beta) = \delta\]
+  ce qui signifie que $f(\beta) < \aleph_{\alpha_\delta}$. En prenant pour
+  $\gamma$ notre $\alpha_\delta$ ainsi trouvé, on a bien une partie $T$
+  vérifiant la condition attendue.
+\end{proof}
+
+En utilisant cette variante, on peut prouver le résultat suivant, qui nous
+permettra finalement de conclure le théorème de Silver.
+
+\begin{lemma}
+  Pour tout $Y\in\mathcal R^{-1}[X]$, on peut trouver $T_Y\subseteq S_Y$
+  stationnaire et $\overline\gamma_Y$ tels que
+  \[\forall \gamma \in T_Y, g_\gamma(f_Y(\gamma)) <
+  \aleph_{\overline\gamma_Y}\]
+\end{lemma}
+
+\begin{proof}
+  Soit $Y\in\mathcal R^{-1}[X]$. On applique la variante du lemme de Fodor en
+  considérant la suite cofinale continue $(\alpha_\beta)$, l'ensemble
+  stationnaire $S_Y$ et la fonction $\gamma\mapsto g_\gamma(f_Y(\gamma))$.
+
+  La fonction
+  \[\begin{array}{ccccc}
+  F_Y & : & S_Y & \longrightarrow & \lambda\\
+  & & \gamma & \longmapsto & g_\gamma(f_Y(\gamma))
+  \end{array}\]
+  est bien définie car sur $S_Y, f_Y < f_X$. De plus,
+  $g_\gamma : f_X(\gamma) \to \aleph_{\alpha_\gamma}$ donc $F_Y$ vérifie bien
+  les condition de la variant du lemme de Fodor.
+
+  On trouve donc $\overline\gamma_Y$ et $T_Y\subseteq S_Y$ tels que
+  \[\forall \gamma \in T_Y, g_\gamma(f_Y(\gamma)) < \aleph_{\overline\gamma_Y}\]
+\end{proof}
+
+On généralise ce lemme pour avoir un $T$ et un $\overline\gamma$ indépendants
+de $Y$.
+
+\begin{lemma}
+  Il existe $T\subseteq \kappa$ stationnaire et un ordinal $\overline\gamma$
+  tels que
+  \[\Card\left(\{Y\mid T_Y = T \land \overline\gamma_Y = \overline\gamma\right)
+  \geq\lambda^+\]
+\end{lemma}
+
+\begin{proof}
+  Soit la fonction
+  \[\begin{array}{ccccc}
+  h & : & \mathcal R^{-1}[X] & \longrightarrow & \powerset(\kappa)\times\alpha\\
+  & & Y & \longmapsto & (T_Y,\overline\gamma_Y)
+  \end{array}\]
+  On peut donc écrire $\mathcal R^{-1}[X]$ comme l'union des
+  $h^{-1}(\{(T,\overline\gamma)\})$ pour tous
+  $(T,\overline\gamma)\in\powerset(\kappa)\times\alpha$. Par l'absurde,
+  supposons que chacun de ces ensembles $h^{-1}(\{(T,\overline\gamma)\})$ sont
+  de cardinal strictement inférieur à $\lambda^+$. Comme
+  $\Card(\powerset(\kappa)) < \lambda^+$ et $\Card(\alpha) < \lambda^+$, on
+  peut utiliser le \cref{thm.Konig} pour en déduire que
+  \[\Card\left(\bigcup_{{T\subseteq \kappa} \atop {\overline\gamma\in \alpha}}
+  h^{-1}(\{(T,\overline\gamma)\})\right) < \lambda^+\]
+  ce qui contredit le fait que cette union vaut $\mathcal R^{-1}[X]$, qui est
+  de cardinal supérieur ou égal à $\lambda^+$.
+
+  On en déduit donc qu'il existe un certain $(T,\overline\gamma)$ tel que
+  $h^{-1}(\{(T,\overline\gamma)\})$ est de taille $\lambda^+$, nous donnant le
+  résultat attendu.
+\end{proof}
+
+\begin{theorem}[Silver]
+  Soit $\lambda$ un cardinal singulier de cofinalité indénombrable. Si
+  $\HCG_\lambda$ est vraie, alors $2^\lambda = \lambda^+$.
+\end{theorem}
+
+\begin{proof}
+  On suppose donc que $2^\lambda > \lambda$ et on veut arriver à une
+  contradiction, on reprend les constructions et notations précédentes.
+
+  Soit
+  \[\mathcal Y \defeq \{Y\subseteq \lambda\mid T_Y = T \land
+  \overline\gamma_Y = \overline\gamma\}\]
+
+  On commence par trouver $Y_1\neq Y_2$ deux éléments de $\mathcal Y$ tels que
+  \[\forall \gamma \in T, g_\gamma(f_{Y_1}(\gamma)) = g_\gamma(f_{Y_2}(\gamma))\]
+
+  Un argument de dénombrement suffit. En effet, la condition précédente revient
+  à dire que $F_{Y_1} = F_{Y_2}$, et ces deux fonctions sont des éléments de
+  $\Funct(T,\aleph_{\overline\gamma})$. On sait que
+  $\Card(T) < \aleph_{\overline\gamma}$, donc
+  \begin{align*}
+    \Card(\Funct(S,\aleph_{\overline\gamma})) &
+    \leq \aleph_{\overline\gamma}^{\aleph_{\overline\gamma}}\\
+    &\leq 2^{\aleph_{\overline\gamma}} \\
+    &\leq \aleph_{\overline\gamma + 1}
+  \end{align*}
+  Comme $\Card(\mathcal Y) = \lambda^+$, on en déduit qu'il existe au moins
+  deux parties $Y_1,Y_2$ telles que $F_{Y_1} = F_{Y_2}$ et $Y_1\neq Y_2$.
+
+  Maintenant, comme on sait que chaque $g_\gamma$ est injective, et qu'on sait
+  que
+  \[\forall \gamma\in T, g_\gamma(f_{Y_1}(\gamma)) = g_\gamma(f_{Y_2}(\gamma))\]
+  on en déduit que $f_{Y_1}$ et $f_{Y_2}$ coïncident sur $T$. Pourtant, on sait
+  que $\{\xi\mid f_{Y_1}(\xi) = f_{Y_2}(\xi)\}$ est de cardinal strictement
+  inférieur à $\kappa$, et est donc non stationnaire. C'est absurde, donc
+  notre hypothèse de départ, que $2^\lambda > \lambda^+$, est fausse. Comme
+  $2^\lambda \leq \lambda^+$, on en déduit que $2^\lambda = \lambda^+$.
+\end{proof}
