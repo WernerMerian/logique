@@ -1,0 +1,206 @@
+\chapter{Modèles de ZFC}
+\label{chp.modZFC}
+
+\minitoc
+
+Nous avons vu dans les chapitres précédents combien $\ZFC$ était une théorie
+riche en terme d'expressivité, au point même où l'ensemble des mathématiques
+peut se formaliser dans $\ZFC$. Il devient alors assez technique de parler de
+modèle de $\ZFC$, puisqu'un tel modèle est en quelque sorte un modèle de toutes
+les mathématiques que l'on connait.
+
+Une première conséquence de cette expressivité est un certain flou entre ce que
+l'on exprime dans $\ZFC$ et dans les maths usuelles. Puisque tout peut se
+définir en terme d'ensembles, il semble que tout ce dont nous avons parlé jusque
+là puisse se formaliser dans $\ZFC$. C'est le cas, mais il faut faire attention
+à ce qu'on manipule.
+
+En particulier, un modèle de $\ZFC$, nommons-le $\mathcal M$, contient lui-même
+un ensemble $\Formula(\Sigma)$ pour une signature $\Sigma$ donnée. On pourrait
+alors se dire que, comme on peut formaliser nos résultats de logique en terme
+d'ensembles, on peut travailler au sein de $\ZFC$ pour faire de la logique.
+Malheureusement, les propositions de $\Formula(\Sigma)$ ne sont pas les mêmes
+que celles que nous connaissons~: on peut facilement interpréter une proposition
+habituelle par un élément de $\Formula(\Sigma)$, mais l'inverse n'a pas de
+raison d'être vrai.
+
+Cela mène à deux résultats essentiels pour décrire les limitations de cette
+approche formelle de la logique~: les théorèmes d'incomplétudes de Gödel et le
+théorème d'indéfinissabilité de la vérité de Tarski, que nous verrons dans la
+PARTIE TROIS. Ceux-ci ont pour conséquence que si l'on considère un codage
+$\ceil -$ qui à une formule au sens habituel associe une formule de notre
+modèle $\mathcal M$, alors il n'existe pas de formule $\varphi_\top$ telle que
+\[\forall \psi \in \Formula(\Sigma), \mathcal M \models \psi
+\iff \mathcal M\models \varphi_\top(\ceil \psi)\]
+
+Une conséquence de cette limitation est que l'on ne peut pas à strictement
+parler écrire une formule comme $\mathcal U\models \ZFC$ pour notre univers
+ensembliste $\mathcal U$. Par contre, il est possible d'écrire par exemple
+$\ZFC\vdash \varphi$, qui en utilisant le théorème de complétude permet de dire
+que $\mathcal U \models \varphi$~: ainsi, l'écriture de $\mathcal U\models\ZFC$
+se traduit en fait par une infinité de théorèmes de la forme
+$\ZFC\vDash \varphi$ pour chaque axiome $\varphi \in \ZFC$.
+
+S'il est assez clair que $\ZFC\vDash\ZFC$ est un constat assez vide, cela nous
+permet ensuite d'introduire la relativisation, qui permet d'exprimer la notion
+de modèle classe de $\ZFC$.
+
+Ce chapitre s'attachera à l'étude des outils basiques à propos des modèles
+classe. Nous verrons d'abord les définitions et conséquences de cette notion,
+puis nous aborderons l'absoluité, qui permet d'étudier la conservation entre des
+modèles de $\ZFC$.
+
+Nous verrons ensuite la théorie des modèles intérieurs, et son exemple le plus
+connu~: l'univers constructible de Gödel $\mathbb L$.
+
+\section{Premiers pas}
+
+\subsection{Relativisation}
+
+On commence par introduire la notion de relativisation d'une formule. Comme on
+l'a dit, il est impossible de représenter de façon interne à un modèle de $\ZFC$
+que celui-ci vérifie une formule~: il faut donc parler de façon externe au
+modèle. Pour exprimer que $\varphi$ est vraie dans l'univers ambiant, il suffit
+alors de travailler normalement, en utilisant les axiomes de $\ZFC$. Cependant,
+cette approche est très limitée, et on aimerait s'autoriser à parler d'autres
+classes que l'univers $\mathcal U$ tout entier. Pour ce faire, comme on doit
+procéder de façon purement syntaxique, on modifie la formule même qu'on veut
+prouver en y incluant l'information de la classe qu'on utilise.
+
+Disons qu'on veuille montrer qu'une formule $\varphi$ est vraie dans la classe
+des ordinaux, l'idée est simplement de modifier tous les quantificateurs pour
+que ceux-ci ne parlent que d'éléments de $\Ord$. La relativisation est
+précisément ce procédé de réduire la portée des quantificateurs par une formule,
+exprimant en général l'appartenance à une classe qui nous intéresse.
+
+\begin{definition}[Relativisation d'une formule]
+  Soient $\varphi,\psi\in\Formula(\mathcal L_{\ZF})$. On appelle relativisation
+  de $\varphi$ à $\psi$ la formule $\varphi^\psi$ définie par induction sur
+  $\varphi$ par~:
+  \begin{itemize}
+  \item si $\varphi = x \in y$ ou $\varphi = x \in y$ alors
+    $\varphi^\psi = \varphi$.
+  \item si $\varphi = \top$ alors $\varphi^\psi = \top$.
+  \item si $\varphi = \bot$ alors $\varphi^\psi = \bot$.
+  \item si $\varphi = \lnot \chi$ alors $\varphi^\psi = \lnot \chi^\psi$.
+  \item si $\varphi = \chi \lor \xi$ alors
+    $\varphi^\psi = \chi^\psi \lor \xi^\psi$.
+  \item si $\varphi = \chi \land \xi$ alors
+    $\varphi^\psi = \chi^\psi \land \xi^\psi$.
+  \item si $\varphi = \chi \to \xi$ alors
+    $\varphi^\psi = \chi^\psi \to \xi^\psi$.
+  \item si $\varphi = \exists x, \chi$ alors
+    $\varphi^\psi = \exists x, \psi(x) \land \chi^\psi$.
+  \item si $\varphi = \forall x, \chi$ alors
+    $\varphi^\psi = \forall x, \psi(x) \to \chi^\psi$.
+  \end{itemize}
+\end{definition}
+
+Le théorème central pour l'étude des modèles classes est que la cohérence est
+préservée par ceux-ci.
+
+\begin{lemma}
+  Pour $\Gamma\in\List(\Formula(\Sigma))$ et $\varphi,\psi\in\Formula(\Sigma)$,
+  si $\Gamma\vdash \varphi$ alors $\Gamma^\psi \vdash \varphi^\psi$ où
+  $\Gamma^\psi$ l'application de la relativisation à $\psi$ de tous les éléments
+  de $\Gamma$.
+\end{lemma}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{theorem}[Préservation de la cohérence]
+  Soit $\mathcal T$ et $\mathcal S$ deux théories sur $\mathcal L_{\ZF}$ et
+  $\psi(x)$ une formule à une variable libre dans ce même langage telles que
+  pour toute formule
+  $\varphi \in \mathcal S$, $\mathcal T\vdash \varphi^\psi$. Alors
+  \[\Coher(\mathcal T) \implies \Coher(\mathcal S)\]
+\end{theorem}
+
+\begin{proof}
+  On donne deux preuves, l'une syntaxique et l'autre sémantique.
+  \begin{itemize}
+  \item supposons $\lnot\Coher(\mathcal S)$, cela signifie donc qu'il existe une
+    preuve $\mathcal S\vdash \bot$, et comme cette preuve est finie on peut
+    extraire une partie finie $F\subfin \mathcal S$ telle que $F\vdash \bot$.
+    En utilisant le lemme précédent, il vient donc que $F^\psi\vdash \bot^\psi$
+    mais $\bot^\psi = \bot$, donc on en déduit que $F^\psi\vdash \bot$. Comme
+    $\mathcal T\vdash \varphi^\psi$ pour chaque $\varphi \in F$, on en déduit
+    que $\mathcal T\vdash \bot$, donc que $\lnot\Coher(\mathcal T)$. Par
+    contraposée, on en déduit l'implication voulue.
+  \item supposons $\Coher(\mathcal T)$. On trouve donc un modèle $\mathcal M$
+    de $\mathcal T$. Soit $\mathcal N$ le sous-modèle de $\mathcal M$ défini
+    par
+    \[|\mathcal N|\defeq \{x \mid x\in |\mathcal M|,
+    \mathcal M\models \psi(x)\}\]
+    Par hypothèse, on sait que $\mathcal M\models \mathcal S^\psi$, donc
+    $\mathcal N\models \mathcal S$, d'où $\Coher(\mathcal S)$.
+  \end{itemize}
+
+  Les deux approches nous donnent donc que
+  $\Coher(\mathcal T) \implies \Coher(\mathcal S)$.
+\end{proof}
+
+On peut par exemple appliquer ce théorème à $\ZFC - \AxF$ et $\ZFC$ pour dire
+que s'il existe une classe $\mathbb V$ telle que
+$\ZFC - \AxF\vdash \ZFC^\mathbb V$, alors les deux théories sont équicohérentes
+(puisque dans l'autre sens, il est évident qu'enlever des axiomes ne change pas
+la cohérence).
+
+\subsection{L'univers bien fondé de Von Neumann}
+
+On peut maintenant introduire l'univers $\mathbb V$, qui est d'une certaine
+façon l'univers ensembliste au sens intuitif~: il est un modèle de $\ZFC$
+présent dans tout modèle de $\ZFC - \AxF$.
+
+\begin{definition}[L'univers bien fondé]
+  On définit la hiérarchie d'ensembles $\mathbb V_{\alpha}$, pour
+  $\alpha \in \Ord$, par induction transfinie~:
+  \begin{itemize}
+  \item $\mathbb V_0 = \varnothing$.
+  \item $\mathbb V_{\alpha + 1} = \powerset(\mathbb V_{\alpha})$
+  \item pour tout ordinal limite $\lambda$,
+    $\displaystyle\mathbb V_\lambda = \bigcup_{\beta < \lambda}\mathbb V_\beta$
+  \end{itemize}
+
+  On définit maintenant la classe $\mathbb V$ par
+  \[\mathbb V \defeq \bigcup_{\alpha \in \Ord} \mathbb V_\alpha\]
+\end{definition}
+
+\begin{remark}
+  Par une union indicée par $\alpha \in \Ord$, il faut en fait comprendre que le
+  prédicat $\mathbb V(x)$ est défini comme
+  \[\mathbb V(x) \defeq \exists \alpha \in \Ord, \mathbb V(\alpha,x)\]
+  On préfère une approche sémantique que syntaxique ici, car celle-ci est bien
+  plus facile à appréhender.
+\end{remark}
+
+Notre premier théorème à propos de l'univers bien fondé est le suivant~: il est
+un modèle de $\ZFC$.
+
+\begin{theorem}
+  Pour tout $\varphi \in \ZFC$, on a $\ZFC - \AxF \vdash \varphi^\mathbb V$.
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On a donc notre premier modèle classe de $\ZFC$. Un point important lorsque l'on
+ne travaille pas \emph{a priori} avec l'axiome de fondation est que la classe
+$\mathbb V$ correspond exactement à la classe des éléments bien fondés de
+l'univers ambiant.
+
+\begin{proposition}
+  Soit un ensemble $x$, alors on a l'équivalence suivante dans $\ZFC-\AxF$~:
+  \[x\in \mathbb V \iff \exists y \in \trcl(x), \trcl(x) \cap y = \varnothing\]
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On voit donc que dans le cas d'un univers ensembliste $\mathcal U$, celui-ci
+vérifie $\AxF$ si et seulement si $\mathbb V = \mathcal U$. On utilisera donc en
+général $\mathbb V$ pour parler de l'univers ensembliste.
