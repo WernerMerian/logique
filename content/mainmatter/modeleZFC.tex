@@ -176,15 +176,157 @@ présent dans tout modèle de $\ZFC - \AxF$.
   plus facile à appréhender.
 \end{remark}
 
-Notre premier théorème à propos de l'univers bien fondé est le suivant~: il est
-un modèle de $\ZFC$.
+Un premier résultat important~: la hiérarchie est cumulative, ce qui signifie
+que les ensembles sont de plus en plus grands.
+
+\begin{property}
+  Si $\alpha \leq \beta$, alors $\mathbb V_\alpha\subseteq \mathbb V_\beta$.
+\end{property}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Une conséquence de ce résultat est la transitivité de chaque
+$\mathbb V_\alpha$.
+
+\begin{property}
+  Pour chaque $\alpha\in\Ord$, $\mathbb V_\alpha$ est un ensemble transitif. De
+  plus, $\mathbb V$ est une classe transitive.
+\end{property}
+
+\begin{proof}
+  On raisonne par induction transfinie~:
+  \begin{itemize}
+  \item si $x\in \varnothing$, alors $x\subseteq\varnothing$.
+  \item supposons que $\mathbb V_\alpha$ est transitif. Soit
+    $x\in\mathbb V_{\alpha+1}$. Par définition, cela signifie que
+    $x\subseteq \mathbb V_\alpha$. Soit $y\in x$, par inclusion cela signifie
+    que $y\in \mathbb V_\alpha$, donc comme la hiérarchie est cumulative, on
+    en déduit que $y\in \mathbb V_{\alpha +1}$, donc
+    $x\subseteq \mathbb V_{\alpha +1}$.
+  \item si pour tous $\beta < \lambda$, $\mathbb V_\beta$ est transitif, alors
+    pour $x\in \mathbb V_\lambda$, on trouve $\alpha < \lambda$ tel que
+    $x\in V_\alpha$, donc $x\subseteq V_\alpha$. De plus,
+    $V_\alpha \subseteq V_\lambda$ donc $x\subseteq V_\lambda$.
+  \end{itemize}
+  Ainsi tous les $\mathbb V_\alpha$ sont transitif. Le fait que $\mathbb V$ est
+  une classe transitive est une conséquence directe.
+\end{proof}
+
+Notre premier objectif est de montrer que $\mathbb V$ constitue un premier
+modèle classe de $\ZFC$. Ce résultat est assez long à montrer directement. A la
+place, nous allons introduire la notion de rang. Celui-ci va nous permettre de
+montrer plus facilement que les axiomes sont vérifiés.
+
+Le rang indique à quelle étape de la construction des $\mathbb V_\alpha$ notre
+ensemble a été construit.
+
+\begin{definition}[Rang]
+  On définit le rang d'un ensemble $x\in\mathbb V$ par~:
+  \[\rk(x) \defeq \min \{\alpha \in \Ord\mid x\subseteq \mathbb V_\alpha\}\]
+\end{definition}
+
+Le rang d'un ensemble peut se voir comme la profondeur d'accolades imbriquées
+lorsque l'on définit l'ensemble en question. Ce rang se comporte bien vis à vis
+des opérations ensemblistes usuelles, comme nous allons le voir.
+
+\begin{proposition}\label{prop.cara.rk}
+  Soit un ensemble $X\in\mathbb V$, on peut caractériser son rang par
+  \[\rk(X) = \sup_{x \in X} (\rk(x) + 1)\]
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{property}
+  Les propriétés suivantes sont vérifiées~:
+  \begin{itemize}
+  \item $\forall x,y\in\mathbb V, x\in y \implies \rk(x) + 1 \leq \rk(y)$
+  \item $\forall x,y\in\mathbb V, x\subseteq y \implies \rk(x) \leq \rk(y)$
+  \item $\displaystyle \forall x\in\mathbb V,
+    \rk\left(\bigcup x\right) + 1 \leq \rk(x)$
+  \item $\forall x,y\in\mathbb V, \rk(x\cup y) = \max(\rk(x),\rk(y))$
+  \item $\forall x,y\in\mathbb V, \rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1$
+  \item $\forall x\in\mathbb V, \rk(\powerset(x)) = \rk(x) + 1$
+  \item $\forall x\in\mathbb V, \rk(\trcl(x)) = \rk(x)$
+  \item $\displaystyle \forall \alpha \in \Ord, \rk(\alpha) = \alpha$
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Vérifions chaque propriété~:
+  \begin{itemize}
+  \item l'inégalité vient directement de la \cref{prop.cara.rk}.
+  \item soient $x,y$ tels que $x\subseteq y$. Si $y\subseteq\mathbb V_\alpha$,
+    comme $x\subseteq y$, on en déduit que $x\subseteq\mathbb V_\alpha$, donc
+    $\rk(x)\leq \rk(y)$.
+  \item soit $y\in \bigcup x$, on trouve $z\in x$ tel que $y\in z \in x$. En
+    utilisant l'inégalité précédente, on en déduit que $\rk(y) + 1 \leq \rk(z)$
+    et que $\rk(z) + 1 \leq \rk(x)$, donc $\rk(y) + 2 \leq \rk(x)$. On en détuit
+    en utilisant la \cref{prop.cara.rk} que $\rk(\bigcup x) + 1 \leq \rk(x)$.
+  \item soient $x,y$. On utilise directement la \cref{prop.cara.rk}~:
+    \begin{align*}
+      \rk(x\cup y) &= \sup_{z \in x \cup y} (\rk(z) + 1)\\
+      &= \max(\sup_{z \in x} (\rk(z) + 1), \sup_{z\in y} (\rk(z) + 1))\\
+      &= \max(\rk(x),\rk(y))
+    \end{align*}
+  \item pour deux éléments $x,y$, il est clair que le sup est un max, d'où
+    l'égalité.
+  \item soit un ensemble $x$. comme $x\in \mathcal P(x)$, on en déduit que
+    $\rk(x) + 1 \leq \mathcal (\powerset (x))$. Pour l'autre inclusion, si
+    $y\in \mathcal (\powerset(x))$ alors $y\subseteq x$, donc
+    $\rk(y) \leq \rk(x)$ par un point précédent. On en déduit que
+    $\sup_{y\in \powerset(x)} (\rk(y) + 1) \leq \rk(x) + 1$ d'où
+    l'égalité.
+  \item comme chaque $\mathbb V_\alpha$ est transitif, si
+    $x\subseteq \mathbb V_\alpha$ alors $\trcl(x)\subseteq \mathbb V_\alpha$. On
+    en déduit que $\rk(\trcl(x)) \leq \trcl(x)$, et il est clair que l'autre
+    inégalité tient toujours puisqu'on rajoute des éléments.
+  \item on prouve cela par induction transfinie~:
+    \begin{itemize}
+    \item $\varnothing \subseteq \varnothing$ donc $\rk(0) = 0$.
+    \item on sait que $\alpha + 1 = \alpha \cup \{\alpha\}$. En utilisant les
+      précédentes égalités, $\rk(\{\alpha\}) = \rk(\alpha) + 1$ donc
+      $\rk(\alpha + 1) = \alpha + 1$.
+    \item si $\lambda$ est un ordinal limite, alors
+      $\rk(\lambda) = \sup_{\beta < \lambda} \rk(\beta)$ et par hypotèse
+      d'induction, $\rk(\beta) = \beta$, donc $\rk(\lambda) = \lambda$.
+    \end{itemize}
+    Ainsi pour tout $\alpha \in \Ord, \rk(\alpha) = \alpha$.
+  \end{itemize}
+  Les propriétés sont donc vérifiées.
+\end{proof}
 
 \begin{theorem}
   Pour tout $\varphi \in \ZFC$, on a $\ZFC - \AxF \vdash \varphi^\mathbb V$.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On vérifie chaque axiome relativisé~:
+  \begin{itemize}
+  \item vérifions l'axiome d'extensionalité. Soient $x,y\in \mathbb V$ tels que
+    $\forall z\in \mathbb V, z\in x\iff z \in y$. Comme $\mathbb V$ est une
+    classe transitive, pour tous $z\in x, z\in \mathbb V$ et de même pour les
+    éléments de $y$. On en déduit que $\forall z, z\in x \iff z \in y$, donc
+    l'axiome d'extensionalité peut s'appliquer directement pour conclure que
+    $x = y$.
+  \item vérifions l'axiome de la réunion~: si $x\in \mathbb V$ alors on trouve
+    $\alpha$ tel que $\rk(x) = \alpha$. A FAIRE
+  \item vérifions l'axiome de l'ensemble des parties~: soit $x\in \mathbb V$,
+    on trouve $\alpha$ tel que $\rk(x) = \alpha$. Alors pour tous
+    $y\subseteq x$, $y\subseteq \mathbb V_\alpha$ donc
+    $y\in\mathbb V_{\alpha +1}$. On en déduit que pour tous $y\in \powerset(x)$,
+    $y\in \mathbb V$, donc $\powerset(x)\in\mathbb V$.
+  \item vérifions l'axiome de remplacement~: A FAIRE
+  \item vérifions l'axiome de l'infini~: on sait que $\Ord\subseteq\mathbb V$,
+    donc il existe bien un ensemble $\omega^\mathbb V \in \mathbb V$
+    contenant $0$ et stable par successeur, c'est $\omega$ lui-même.
+  \item vérifions l'axiome de fondation~: A FAIRE
+  \item vérifions l'axiome du choix~: A FAIRE
+  \end{itemize}
+  D'où le résultat.
 \end{proof}
 
 On a donc notre premier modèle classe de $\ZFC$. Un point important lorsque l'on
@@ -198,9 +340,16 @@ l'univers ambiant.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  L'implication directe est une conséquence du fait que $\mathbb V\models \AxF$.
+  Soit $x$ tel que $\exists y \in \trcl(x), \trcl(x) \cap y = \varnothing$. On
+  en déduit que $\in$ est une relation bien fondée sur $x$, 
 \end{proof}
 
 On voit donc que dans le cas d'un univers ensembliste $\mathcal U$, celui-ci
 vérifie $\AxF$ si et seulement si $\mathbb V = \mathcal U$. On utilisera donc en
 général $\mathbb V$ pour parler de l'univers ensembliste.
+
+\section{Vers le théorème de réflexion}
+
+A FAIRE
+
