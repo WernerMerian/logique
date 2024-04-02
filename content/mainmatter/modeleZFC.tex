@@ -215,91 +215,9 @@ $\mathbb V_\alpha$.
 \end{proof}
 
 Notre premier objectif est de montrer que $\mathbb V$ constitue un premier
-modèle classe de $\ZFC$. Ce résultat est assez long à montrer directement. A la
-place, nous allons introduire la notion de rang. Celui-ci va nous permettre de
-montrer plus facilement que les axiomes sont vérifiés.
+modèle classe de $\ZFC$.
 
-Le rang indique à quelle étape de la construction des $\mathbb V_\alpha$ notre
-ensemble a été construit.
-
-\begin{definition}[Rang]
-  On définit le rang d'un ensemble $x\in\mathbb V$ par~:
-  \[\rk(x) \defeq \min \{\alpha \in \Ord\mid x\subseteq \mathbb V_\alpha\}\]
-\end{definition}
-
-Le rang d'un ensemble peut se voir comme la profondeur d'accolades imbriquées
-lorsque l'on définit l'ensemble en question. Ce rang se comporte bien vis à vis
-des opérations ensemblistes usuelles, comme nous allons le voir.
-
-\begin{proposition}\label{prop.cara.rk}
-  Soit un ensemble $X\in\mathbb V$, on peut caractériser son rang par
-  \[\rk(X) = \sup_{x \in X} (\rk(x) + 1)\]
-\end{proposition}
-
-\begin{proof}
-  A FAIRE
-\end{proof}
-
-\begin{property}
-  Les propriétés suivantes sont vérifiées~:
-  \begin{itemize}
-  \item $\forall x,y\in\mathbb V, x\in y \implies \rk(x) + 1 \leq \rk(y)$
-  \item $\forall x,y\in\mathbb V, x\subseteq y \implies \rk(x) \leq \rk(y)$
-  \item $\displaystyle \forall x\in\mathbb V,
-    \rk\left(\bigcup x\right) + 1 \leq \rk(x)$
-  \item $\forall x,y\in\mathbb V, \rk(x\cup y) = \max(\rk(x),\rk(y))$
-  \item $\forall x,y\in\mathbb V, \rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1$
-  \item $\forall x\in\mathbb V, \rk(\powerset(x)) = \rk(x) + 1$
-  \item $\forall x\in\mathbb V, \rk(\trcl(x)) = \rk(x)$
-  \item $\displaystyle \forall \alpha \in \Ord, \rk(\alpha) = \alpha$
-  \end{itemize}
-\end{property}
-
-\begin{proof}
-  Vérifions chaque propriété~:
-  \begin{itemize}
-  \item l'inégalité vient directement de la \cref{prop.cara.rk}.
-  \item soient $x,y$ tels que $x\subseteq y$. Si $y\subseteq\mathbb V_\alpha$,
-    comme $x\subseteq y$, on en déduit que $x\subseteq\mathbb V_\alpha$, donc
-    $\rk(x)\leq \rk(y)$.
-  \item soit $y\in \bigcup x$, on trouve $z\in x$ tel que $y\in z \in x$. En
-    utilisant l'inégalité précédente, on en déduit que $\rk(y) + 1 \leq \rk(z)$
-    et que $\rk(z) + 1 \leq \rk(x)$, donc $\rk(y) + 2 \leq \rk(x)$. On en détuit
-    en utilisant la \cref{prop.cara.rk} que $\rk(\bigcup x) + 1 \leq \rk(x)$.
-  \item soient $x,y$. On utilise directement la \cref{prop.cara.rk}~:
-    \begin{align*}
-      \rk(x\cup y) &= \sup_{z \in x \cup y} (\rk(z) + 1)\\
-      &= \max(\sup_{z \in x} (\rk(z) + 1), \sup_{z\in y} (\rk(z) + 1))\\
-      &= \max(\rk(x),\rk(y))
-    \end{align*}
-  \item pour deux éléments $x,y$, il est clair que le sup est un max, d'où
-    l'égalité.
-  \item soit un ensemble $x$. comme $x\in \mathcal P(x)$, on en déduit que
-    $\rk(x) + 1 \leq \mathcal (\powerset (x))$. Pour l'autre inclusion, si
-    $y\in \mathcal (\powerset(x))$ alors $y\subseteq x$, donc
-    $\rk(y) \leq \rk(x)$ par un point précédent. On en déduit que
-    $\sup_{y\in \powerset(x)} (\rk(y) + 1) \leq \rk(x) + 1$ d'où
-    l'égalité.
-  \item comme chaque $\mathbb V_\alpha$ est transitif, si
-    $x\subseteq \mathbb V_\alpha$ alors $\trcl(x)\subseteq \mathbb V_\alpha$. On
-    en déduit que $\rk(\trcl(x)) \leq \trcl(x)$, et il est clair que l'autre
-    inégalité tient toujours puisqu'on rajoute des éléments.
-  \item on prouve cela par induction transfinie~:
-    \begin{itemize}
-    \item $\varnothing \subseteq \varnothing$ donc $\rk(0) = 0$.
-    \item on sait que $\alpha + 1 = \alpha \cup \{\alpha\}$. En utilisant les
-      précédentes égalités, $\rk(\{\alpha\}) = \rk(\alpha) + 1$ donc
-      $\rk(\alpha + 1) = \alpha + 1$.
-    \item si $\lambda$ est un ordinal limite, alors
-      $\rk(\lambda) = \sup_{\beta < \lambda} \rk(\beta)$ et par hypotèse
-      d'induction, $\rk(\beta) = \beta$, donc $\rk(\lambda) = \lambda$.
-    \end{itemize}
-    Ainsi pour tout $\alpha \in \Ord, \rk(\alpha) = \alpha$.
-  \end{itemize}
-  Les propriétés sont donc vérifiées.
-\end{proof}
-
-\begin{theorem}
+\begin{theorem}\label{thm.V.ZFCAF}
   Pour tout $\varphi \in \ZFC$, on a $\ZFC - \AxF \vdash \varphi^\mathbb V$.
 \end{theorem}
 
@@ -351,5 +269,453 @@ général $\mathbb V$ pour parler de l'univers ensembliste.
 
 \section{Vers le théorème de réflexion}
 
-A FAIRE
+Dans le reste du chapitre, on suppose l'axiome de fondation~: on considère donc
+que $\mathcal U = \mathbb V$. Notre premier objectif est de montrer le théorème
+de réflexion. Pour ce faire, nous introduisons d'abord la notion de rang,
+permettant d'étudier plus en détail la hiérarchie des $\mathbb V_\alpha$, et les
+ensembles $H_\kappa$. Nous verrons ensuite l'absoluité, permettant de rendre plus
+formel ce qu'on attend d'une proposition qui passe d'un modèle de $\ZFC$ à un
+autre.
 
+\subsection{Rang et parties héréditaires}
+
+Le rang indique à quelle étape de la construction des $\mathbb V_\alpha$ notre
+ensemble a été construit.
+
+\begin{definition}[Rang]
+  On définit le rang d'un ensemble $x\in\mathbb V$ par~:
+  \[\rk(x) \defeq \min \{\alpha \in \Ord\mid x\subseteq \mathbb V_\alpha\}\]
+\end{definition}
+
+Le rang d'un ensemble peut se voir comme la profondeur d'accolades imbriquées
+lorsque l'on définit l'ensemble en question. Ce rang se comporte bien vis à vis
+des opérations ensemblistes usuelles, comme nous allons le voir.
+
+\begin{proposition}\label{prop.cara.rk}
+  Soit un ensemble $X\in\mathbb V$, on peut caractériser son rang par
+  \[\rk(X) = \sup_{x \in X} (\rk(x) + 1)\]
+\end{proposition}
+
+\begin{proof}
+  Supposons que $\forall x \in X, \rk(x) \leq \alpha$ pour un certain
+  $\alpha\in\Ord$. Soit $x\in X$. Par définition de $\rk(x)$, on déduit que
+  $x\subseteq \mathbb V_\alpha$, donc $x\in \mathbb V_{\alpha + 1}$, donc
+  $X = \{x\}_{x\in X} \subseteq \mathbb V_{\alpha + 1}$. Donc $\rk(X)$ est
+  un majorant de $\{\rk(x) + 1 \mid x \in X\}$.
+
+  Montrons que ce majorant est une borne supérieure. Soit $\beta\in\Ord$ tel que
+  $\forall x \in X, \rk(x) + 1 \leq \beta$. Pour tout
+  $x\in X$, $x\in \mathbb V_\beta$ donc $X\subseteq \mathbb V_\beta$, donc
+  $\rk(X) \leq \beta$. Ce majorant est donc une borne supérieure, d'où
+  l'égalité.
+\end{proof}
+
+\begin{property}\label{prop.rg.oper}
+  Les propriétés suivantes sont vérifiées~:
+  \begin{itemize}
+  \item $\forall x,y\in\mathbb V, x\in y \implies \rk(x) + 1 \leq \rk(y)$
+  \item $\forall x,y\in\mathbb V, x\subseteq y \implies \rk(x) \leq \rk(y)$
+  \item $\displaystyle \forall x\in\mathbb V,
+    \rk\left(\bigcup x\right) + 1 \leq \rk(x)$
+  \item $\forall x,y\in\mathbb V, \rk(x\cup y) = \max(\rk(x),\rk(y))$
+  \item $\forall x,y\in\mathbb V, \rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1$
+  \item $\forall x\in\mathbb V, \rk(\powerset(x)) = \rk(x) + 1$
+  \item $\forall x\in\mathbb V, \rk(\trcl(x)) = \rk(x)$
+  \item $\displaystyle \forall \alpha \in \Ord, \rk(\alpha) = \alpha$
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Vérifions chaque propriété~:
+  \begin{itemize}
+  \item l'inégalité vient directement de la \cref{prop.cara.rk}.
+  \item soient $x,y$ tels que $x\subseteq y$. Si $y\subseteq\mathbb V_\alpha$,
+    comme $x\subseteq y$, on en déduit que $x\subseteq\mathbb V_\alpha$, donc
+    $\rk(x)\leq \rk(y)$.
+  \item soit $y\in \bigcup x$, on trouve $z\in x$ tel que $y\in z \in x$. En
+    utilisant l'inégalité précédente, on en déduit que $\rk(y) + 1 \leq \rk(z)$
+    et que $\rk(z) + 1 \leq \rk(x)$, donc $\rk(y) + 2 \leq \rk(x)$. On en détuit
+    en utilisant la \cref{prop.cara.rk} que $\rk(\bigcup x) + 1 \leq \rk(x)$.
+  \item soient $x,y$. On utilise directement la \cref{prop.cara.rk}~:
+    \begin{align*}
+      \rk(x\cup y) &= \sup_{z \in x \cup y} (\rk(z) + 1)\\
+      &= \max(\sup_{z \in x} (\rk(z) + 1), \sup_{z\in y} (\rk(z) + 1))\\
+      &= \max(\rk(x),\rk(y))
+    \end{align*}
+  \item pour deux éléments $x,y$, il est clair que le sup est un max, d'où
+    l'égalité.
+  \item soit un ensemble $x$. comme $x\in \mathcal P(x)$, on en déduit que
+    $\rk(x) + 1 \leq \mathcal (\powerset (x))$. Pour l'autre inclusion, si
+    $y\in \mathcal (\powerset(x))$ alors $y\subseteq x$, donc
+    $\rk(y) \leq \rk(x)$ par un point précédent. On en déduit que
+    $\sup_{y\in \powerset(x)} (\rk(y) + 1) \leq \rk(x) + 1$ d'où
+    l'égalité.
+  \item comme chaque $\mathbb V_\alpha$ est transitif, si
+    $x\subseteq \mathbb V_\alpha$ alors $\trcl(x)\subseteq \mathbb V_\alpha$. On
+    en déduit que $\rk(\trcl(x)) \leq \trcl(x)$, et il est clair que l'autre
+    inégalité tient toujours puisqu'on rajoute des éléments.
+  \item on prouve cela par induction transfinie~:
+    \begin{itemize}
+    \item $\varnothing \subseteq \varnothing$ donc $\rk(0) = 0$.
+    \item on sait que $\alpha + 1 = \alpha \cup \{\alpha\}$. En utilisant les
+      précédentes égalités, $\rk(\{\alpha\}) = \rk(\alpha) + 1$ donc
+      $\rk(\alpha + 1) = \alpha + 1$.
+    \item si $\lambda$ est un ordinal limite, alors
+      $\rk(\lambda) = \sup_{\beta < \lambda} (\rk(\beta) + 1)$ et par hypotèse
+      d'induction, $\rk(\beta) = \beta$, donc $\rk(\lambda) = \lambda$.
+    \end{itemize}
+    Ainsi pour tout $\alpha \in \Ord, \rk(\alpha) = \alpha$.
+  \end{itemize}
+  Les propriétés sont donc vérifiées.
+\end{proof}
+
+On peut alors affiner certains résultats liés au fait que
+$\mathbb V \models \ZFC$. En effet, puisque
+$\mathbb V_\alpha \subseteq\mathbb V$, on peut chercher ce que chaque
+$\mathbb V_\alpha$ vérifie. Tout d'abord, plutôt que le cas particulier de
+$\mathbb V_\alpha$, l'axiome d'extensionalité est vérifié dès qu'un ensemble est
+transitif (cette condition n'est pas nécessaire, elle est seulement suffisante).
+
+\begin{property}
+  Soit $X$ un ensemble transitif, alors l'axiome d'extensionalité relativisé à
+  $X$ est vérifié~:
+  \[X \models \forall x,\forall y, (\forall z, z \in x\iff z \in y) \implies
+  x = y\]
+\end{property}
+
+\begin{proof}
+  On reprend la preuve faite dans le \cref{thm.V.ZFCAF}~: soient $x,y\in X$ deux
+  ensembles tels que $\forall z \in X, z \in x \iff z \in y$. Alors pour tout
+  $z\in x$, comme $X$ est transitif, $z\in X$, donc par notre hypothèse
+  $z\in y$, donc $x\subseteq y$. L'argument fonctionne symétriquement pour nous
+  assurer que $y\subseteq x$, donc $x = y$.
+\end{proof}
+
+De plus, chaque $\mathbb V_\alpha$ vérifie l'axiome de fondation.
+
+On voit dans la \cref{prop.rg.oper} que la plupart des opérations ne font pas
+exploser le rang. Cela signifie que, dans le cas d'un ordinal limite, où
+$\alpha \in \lambda \implies \alpha + 1 \in \lambda$, beaucoup de constructions
+sont stables par $\mathbb V_\lambda$.
+
+\begin{property}
+  Soit $\lambda$ un ordinal limite. Alors $\mathbb V_\lambda$ vérifie les
+  axiomes suivants~:
+  \begin{itemize}
+  \item l'axiome de la paire
+  \item l'axiome de l'union
+  \item l'axiome de l'ensemble des parties
+  \item l'axiome de compréhension
+  \item l'axiome du choix
+  \end{itemize}
+
+  De plus, si $\lambda > \omega$ alors $\mathbb V_\lambda$ vérifie l'axiome de
+  l'infini.
+\end{property}
+
+\begin{proof}
+  Vérifions chaque axiome~:
+  \begin{itemize}
+  \item soient $x,y\in \mathbb V_\lambda$, donc tels que $\rk(x) <\lambda$ et
+    $\rk(y)<\lambda$. Alors $\rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1 < \lambda$,
+    donc $\{x,y\}\in\mathbb V_\lambda$.
+  \item soit $x\in \mathbb V_\lambda$, alors $\rk(x) < \lambda$, donc
+    $\rk(\bigcup x) < \lambda$ donc $\bigcup x \in \mathbb V_\lambda$.
+  \item soit $x\in \mathbb V_\lambda$. Comme $\rk(\powerset(x)) = \rk(x) + 1$,
+    que $\rk(x) < \lambda$ et que $\lambda$ est limite, on en déduit que
+    $\rk(\powerset(x)) < \lambda$ donc que $\powerset(x) \in \mathbb V_\lambda$.
+  \item soit $\varphi(x_1,\ldots,x_n,x)$ une formule dans le langage de
+    $\ZFC$, $a_1,\ldots,a_n$ des éléments de $\mathbb V_\lambda$ et
+    $X\in \mathbb V_\lambda$. Alors l'ensemble
+    \[y \defeq \{x \in X \mid \varphi(a_1,\ldots,a_n,x)\}\]
+    est une partie de $X$, donc $\rk(y)\leq \rk(X) \leq \lambda$, donc
+    $y\in \mathbb V_\lambda$.
+  \item soit $X$ un ensemble non vide, d'éléments deux à deux disjoints. Alors
+    par l'axiome du choix, il existe $C$ tel que $\forall x \in X,|C\cap x|=1$.
+    Quitte à prendre $C \cap \bigcup X$, $C\subseteq \bigcup X$ donc
+    $\rk(C) < \lambda$, donc $C\in \mathbb V_\lambda$.
+  \end{itemize}
+
+  Si $\lambda > \omega$, alors $\omega \in \mathbb V_\lambda$ donc il existe
+  bien dans $V_\lambda$ un élément contenant l'ensemble vide et stable par
+  successeur. On peut préciser que l'ensemble vide est bien dans
+  $\mathbb V_\lambda$, donnant un sens à la définition.
+\end{proof}
+
+On peut se demander alors si l'axiome de remplacement est vérifié. En fait il
+est évident que ça n'est pas le cas, en partant du deuxième théorème
+d'incomplétude de Gödel~: si c'était le cas, alors on trouverait un modèle de
+$\ZFC$, impliquant que $\ZFC\vdash \Coher(\ZFC)$ (ou plutôt
+$\ZFC\vdash \Coher(\lceil \ZFC\rceil)$).
+
+Les $\mathbb V_\lambda$ nous donnent donc une approximation assez fidèle d'un
+modèle de $\ZFC$ s'il s'agit de mathématiques usuelles, mais ces ensembles
+perdent tout leur intérêt pour de la théorie des ensembles~: le schéma d'axiomes
+de remplacement est utilisé pour la plupart de nos constructions, dès
+l'utilisation de la récursion transfinie.
+
+On introduit une autre hiérarchie d'ensembles qui, eux, vérifieront le schéma
+d'axiomes de remplacement~: ce sont les ensembles héréditaires.
+
+\begin{definition}[Ensemble héréditaire]
+  Soit $\kappa \in \Card$. On appelle ensemble des ensembles héréditairement de
+  cardinal $\kappa$ la classe
+  \[\mathbb H_\kappa \defeq \{x \mid |\trcl(x)| < \kappa\}\]
+\end{definition}
+
+Pour deux cardinaux $\kappa,\lambda$, on définit le cardinal
+\[\lambda^{<\kappa} \defeq \sup_{\kappa' < \kappa} \lambda^{\kappa'}\]
+On peut voir ce cardinal comme le cardinal de l'ensemble des fonctions de
+$\kappa$ dans $\lambda$ dont le support (ensemble des points de $\kappa$ où la
+fonction n'est pas nulle) est strictement inférieur à $\kappa$.
+
+On montre maintenant que, plus que des classes, les $\mathbb V_\kappa$ sont des
+ensembles.
+
+\begin{proposition}
+  Soit $\kappa\in\Card_\infty$. Alors $\mathbb H_\kappa\subseteq\mathbb V_\kappa$
+  et  $|\mathbb H_\kappa| = 2^{<\kappa}$.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Comme $\mathbb H_\kappa$ est inclus dans un ensemble, c'est lui-même un
+ensemble.
+
+On veut maintenant montrer les cas d'égalité entre $\mathbb H$ et $\mathbb V$.
+
+\begin{property}
+  Les propriétés suivantes sont vérifiées~:
+  \begin{itemize}
+  \item $\mathbb V_\omega = \mathbb H_\omega$
+  \item pour tout $\alpha\in\Ord$, $|\mathbb V_{\omega + \alpha}| = \beth_\alpha$,
+    donc en particulier pour $\alpha \geq \omega^2$,
+    $|\mathbb V_\alpha| = \beth_\alpha$.
+  \item si $\kappa > \omega$, alors $\mathbb H_\kappa = \mathbb V_\kappa$
+    si et seulement si $\kappa = \beth_\kappa$.
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On peut maintenant prouver que $\mathbb H_\kappa$ vérifie les axiomes de
+$\ZFC - P$ pour un cardinal régulier $\kappa$, c'est-à-dire les axiomes de
+$\ZFC$ sauf celui de l'ensemble des parties.
+
+\begin{property}
+  Soit $\kappa$ un cardinal régulier. Alors $\mathbb H_\kappa$ vérifie~:
+  \begin{itemize}
+  \item l'axiome de la paire
+  \item l'axiome de la réunion
+  \item l'axiome de remplacement
+  \item l'axiome de l'infini
+  \item l'axiome de fondation
+  \item l'axiome du choix
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  On vérifie chaque axiome~:
+  \begin{itemize}
+  \item A FAIRE
+  \end{itemize}
+\end{proof}
+
+On voit qu'ici, pour que $\mathbb H_\kappa$ vérifie tout $\ZFC$, il lui suffit
+que pour tout $\kappa' \in \kappa$, $2^{\kappa'} \in \kappa$. C'est ce qu'on
+appelle un cardinal fortement inaccessible.
+
+\begin{definition}[Cardinal fortement inaccessible]
+  On dit qu'un cardinal $\lambda$ est fortement inaccessible (on dit aussi, plus
+  simplement, inaccessible) si $\lambda > \omega$ et
+  \[\forall \kappa \in \lambda, 2^\kappa \in \lambda\]
+\end{definition}
+
+Il vient directement qu'un tel cardinal ne peut exister dans tout modèle de
+$\ZFC$.
+
+\begin{proposition}
+  Il n'est pas prouvable dans $\ZFC$ qu'il existe un cardinal inaccessible.
+\end{proposition}
+
+\begin{proof}
+  S'il existait un $\kappa$ inaccessible, alors $\mathbb H_\kappa$ serait un
+  modèle ensembliste de $\ZFC$, ce qui contredit le second théorème
+  d'incomplétude de Gödel.
+\end{proof}
+
+Enfin, nous allons introduire l'univers constructible $\mathbb L$ de Gödel, que
+nous étudierons dans la section prochaine. Nous aurons cependant besoin de
+notions liées à sa construction.
+
+\begin{definition}[Partie définissable]
+  Soit un ensemble $X$, on dit qu'une partie $Y\subseteq X$ est définissable
+  dans $X$ s'il existe une formule $\varphi(x_1,\ldots,x_n,x)$ à $n+1$ variables
+  libres et des ensembles $a_1,\ldots,a_n \in X$ tels que
+  \[\forall x \in X, x \in Y \iff X\models \varphi(a_1,\ldots,a_n,x)\]
+
+  On appelle ensemble des parties définissables d'un ensemble $X$ l'ensemble
+  \begin{multline*}
+    \powerdef(X) \defeq \{Y \subseteq X \mid \exists
+    \varphi(x_1,\ldots,x_n,x)\in\Formula(\mathcal L_{\ZF}),\\
+    \exists a_1,\ldots,a_n \in X,
+    \forall x \in X, x \in Y \iff X \models \varphi(a_1,\ldots,a_n,x)\}
+  \end{multline*}
+\end{definition}
+
+\begin{remark}
+  Il peut être bon de préciser, ici, de quel type de formule on parle. Dans le
+  cas de la notion de définissabilité, on considère les propositions internes
+  au modèle de $\ZFC$, c'est-à-dire les objets ensemblistes représentant
+  intérieurement nos propositions. Cela explique l'utilisation de
+  \og $X\models \varphi(x)$\fg plutôt que \og$\varphi(x)$\fg directement.
+\end{remark}
+
+L'univers constructible est alors l'itération de cette opérations à la place de
+l'ensemble des parties.
+
+\begin{definition}[Univers constructible de Gödel]
+  On définit par induction transfinie la hiérarchie $\mathbb L_\alpha$~:
+  \begin{itemize}
+  \item $\mathbb L_0 = \varnothing$
+  \item $\mathbb L_{\alpha + 1} = \powerdef (\mathbb L_\alpha)$
+  \item si $\lambda$ est limite, alors
+    $\displaystyle\mathbb L_\lambda = \bigcup_{\beta < \lambda} \mathbb L_\beta$
+  \end{itemize}
+  L'univers constructible de Gödel est alors
+  \[\mathbb L \defeq \bigcup_{\alpha \in \Ord} \mathbb L_\alpha\]
+\end{definition}
+
+\subsection{Absoluité et réflexion}
+
+On va maintenant s'intéresser à une question assez naturelle à se poser, dans
+les conditions de notre étude des modèles de $\ZFC$. Supposons donnés deux
+modèles (potentiellement des classes) $(\mathcal M,\in)$ et $(\mathcal N,\in)$
+et $\mathcal M \subseteq \mathcal N$, quand une formule $\varphi$ à paramètres
+dans $\mathcal M$ garde-t-elle la même valeur de vérité que l'on l'étudie dans
+$\mathcal M$ ou dans $\mathcal N$ ?
+
+Prenons un exemple~: on a vu que $\mathcal V_\alpha$ étant un ensemble
+transitif, celui-ci vérifiait l'extensionalité. La preuve montre assez
+clairement que la proposition $\forall z, z \in x \iff z \in y$ en elle-même
+ne dépend pas du point de vue choisi, tant que celui-ci se fait dans un
+ensemble transitif. Ainsi si on imagine un surmodèle de notre univers
+ensembliste, ou une partie seulement, la vérité de
+$\forall z, z \in x \iff z \in y$ est presque constante (encore une fois, tant
+que l'univers considéré est transitif). Une formule absolue est donc une
+formule dont la valeur de vérité ne changera pas suivant les modèles.
+
+\begin{definition}[Formule absolue]
+  Soient deux classes $(\mathcal M,\in)$, $(\mathcal N,\in)$ telles que
+  $\mathcal M \subseteq \mathcal N$.
+  Soit $\varphi(x_1,\ldots,x_n) \in \mathcal L_{\ZF}$ une formule à $n$
+  paramètres. On dit que $\varphi$ est absolue entre $\mathcal M$ et
+  $\mathcal N$ lorsque
+  \[\mathcal M \preccurlyeq_\varphi \mathcal N \defeq
+  \forall a_1,\ldots,a_n \in \mathcal M, \varphi^{\mathcal M}(a_1,\ldots,x_n)
+  \iff \varphi^{\mathcal N}(a_1,\ldots,a_n)\]
+
+  On dirait que $\varphi$ est absolue pour une classe $\mathcal M$ si elle est
+  absolue entre $\mathcal M$ et $\mathbb V$.
+\end{definition}
+
+L'exemple précédent sur l'extensionalité peut en fait se généraliser. La
+propriété exploitée est le fait que si l'on étudie
+$\forall x, z \in x \iff z \in y$ dans un modèle transitif, alors on est obligé
+de contenir tous les éléments de $x$ et $y$. Cette propriété est en quelque
+sorte locale~: tout ce qui est nécessaire pour évaluer la vérité de cette
+proposition est la donnée de tous les éléments de $x$ et de $y$.
+
+Au contraire, une propriété comme \og être un cardinal\fg n'est pas du tout
+locale, puisqu'elle repose sur la non existence d'une injection dans l'univers
+ambiant. Imaginons qu'on puisse ajouter une telle injection dans notre univers,
+alors un élément qui était un cardinal peut ne plus l'être.
+
+Pour étudier une proposition qui présente cette propriété locale mentionnée
+ci-dessus, on introduit la hiérarchie de Lévy.
+
+\begin{definition}[Hiérarchie de Lévy]
+  On définit par induction trois familles d'ensembles de formules sur
+  $\mathcal L_{\ZF}, (\Delta^{\ZFC}_n)_{n\in\mathbb N},
+  (\Sigma^{\ZFC}_n)_{n\in\mathbb N}$
+  et $(\Pi^{\ZFC}_n)_{n \in \mathbb N}$~:
+  \begin{itemize}
+  \item $\Delta^{\ZFC}_0=\Sigma^{\ZFC}_0=\Pi^{\ZFC}_0$ est l'ensemble des formules
+    prouvablement équivalentes dans $\ZFC$ à une formule dont les
+    quantificateurs sont tous bornés, c'est-à-dire que toute quantification
+    $Q x, \psi$ est de la forme $Q x \in t, \psi$ où $t$ est un terme ne
+    contenant pas $x$.
+  \item $\Sigma^{\ZFC}_{n+1}$ est l'ensemble des formules prouvablement
+    équivalentes
+    dans $\ZFC$ à une formule de la forme
+    $\exists x, \psi$ où $\psi$ est une formule $\Pi^{\ZFC}_n$.
+  \item $\Pi^{\ZFC}_{n+1}$ est l'ensemble des formules prouvablement équivalentes
+    dans $\ZFC$ à une formule de la forme $\forall x, \psi$ où $\psi$ est une
+    formule $\Sigma^{\ZFC}_n$.
+  \item $\Delta^{\ZFC}_n$ est l'ensemble des formules qui sont à la fois
+    $\Sigma^{\ZFC}_n$ et $\Pi^{\ZFC}_n$.
+  \end{itemize}
+
+  On notera en général simple $\Delta_n$ (respectivement $\Sigma_n$ et $\Pi_n$)
+  pour $\Delta^{\ZFC}_n$.
+\end{definition}
+
+On peut maintenant énoncer la généralisation de notre preuve de l'axiome
+d'extensionalité pour toute formule $\Delta_0$.
+
+\begin{proposition}
+  Soit $\mathcal M$ une classe transitive. Alors toute formule
+  $\varphi\in\Delta_0$ est absolue pour $\mathcal M$.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Donnons des exemples de formules $\Delta_0$~:
+
+\begin{example}
+  Les formules suivantes sont $\Delta_0$~:
+  \begin{itemize}
+  \item $x\in y$
+  \item $x\subseteq y$, car cela s'écrit $\forall z \in x, z \in y$
+  \item $x = \{y,z\}$
+  \item $x = \bigcup y$
+  \item $x$ est transitif, car cela s'écrit $\forall y \in x, y\subseteq x$
+  \item $x$ est un couple, car cela s'écrit
+    $\exists y,\exists z, x = \{\{y,z\},\{y\}\}$
+  \item $f$ est une fonction, car cela s'écrit
+    \begin{multline*}
+      \forall \gamma \in f, \gamma\text{ est un couple }\land
+      \forall x,y \in \bigcup \bigcup f,\\
+      (\exists z \in \bigcup\bigcup f,
+      (x,z) = \gamma \land (y,z) = \gamma) \implies x = y
+    \end{multline*}
+  \item $\alpha \in \Ord$, car être un ordinal est la conjonction de~:
+    \begin{itemize}
+    \item être transitif, dont on vient de voir que la proposition était
+      $\Delta_0$.
+    \item que $\in$ est transitif sur $\alpha$, ce qui s'écrit
+      \[\forall x \in \alpha, \forall y \in \alpha, \forall z \in \alpha,
+      x\in y \land y \in z \implies x \in z\] qui est clairement $\Delta_0$.
+    \item que $\in$ est total, ce qui s'écrit
+      \[\forall x \in \alpha, \forall y \in \alpha, x \neq y \implies
+      x \in y \lor y \in x\] qui est là encore clairement $\Delta_0$.
+    \item comme on suppose l'axiome de fondation, l'irréflexivité de $\in$ et sa
+      bonne fondation sont forcément vérifiés.
+    \end{itemize}
+  \end{itemize}
+\end{example}
+
+\begin{exercise}
+  Montrer qu'être un ordinal successeur (respectivement limite) peut s'exprimer
+  par une formule $\Delta_0$. Montrer qu'être une bijection peut s'exprimer
+  par une formule $\Delta_0$.
+\end{exercise}
+
+On voit donc une famille importante de formules qui sont absolues entre les
+classes transitives (qui sont presque les seules classes d'intérêt).
