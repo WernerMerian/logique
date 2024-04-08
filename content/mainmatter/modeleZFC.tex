@@ -1056,7 +1056,7 @@ fonctions sont absolues pour $\mathbb L$.
 On montre aussi que $\mathbb L$ est un modèle de $\ZF$.
 
 \begin{theorem}
-  $\ZF\models (\ZF)^{\mathcal L}$.
+  $\ZF\models (\ZF)^{\mathbb L}$.
 \end{theorem}
 
 \begin{proof}
@@ -1082,8 +1082,105 @@ cette incohérence était déjà dans $\ZF$.
 
 \subsection{Les propriétés de l'univers constructible}
 
-On monte dans cette sous-section que l'univers $\mathbb L$ vérifie des résultats
-particulièrement forts~: l'axiome du choix global et l'hypothèse du continu
-généralisée.
+On montre dans cette sous-section que l'univers $\mathbb L$ vérifie des
+résultats particulièrement forts~: l'axiome du choix global et l'hypothèse du
+continu généralisée. On montrera aussi le principe du carreau (en anglais
+\textit{diamond principle}).
 
-A FAIRE
+Présentons donc l'axiome du choix global. Plutôt qu'un simple axiome, celui-ci
+a besoin d'autres données pour être exprimé. Nous considérons que nous sommes
+munis d'un symbole $F$ de fonction unaire.
+
+\begin{axiom}[Axiome du choix global]
+  L'axiome du choix global, pour le symbole de fonction $F$, s'exprime par
+  \[\forall x, x\neq \varnothing \implies F(x)\in x\]
+\end{axiom}
+
+Dans notre cas, puisqu'on cherche à représenter des fonctions par des prédicats
+binaires fonctionnels, on peut à la place considérer une formule $\varphi(x,y)$
+fonctionnelle. L'axiome du choix global pour $\varphi$ (supposée fonctionnelle)
+est alors
+\[\forall x, x \neq \varnothing \implies (\forall y, \varphi(x,y)\implies
+y\in x)\]
+
+On cherche donc à construire une telle formule $\varphi$.
+
+En fait, on voit avec les constructions précédentes à propos de l'axiome du
+choix qu'il nous suffit de pouvoir bien ordonner l'univers, c'est-à-dire
+construire un prédicat $\leL$ vérifiant les axiomes suivants~:
+\begin{itemize}
+\item $\forall x, \lnot(x \leL x)$
+\item $\forall x,y,z, (x \leL y \land y \leL z) \implies x \leL z$
+\item $\forall x,y, x\neq y \implies x \leL y \lor y \leL x$
+\item $\forall x, x\neq \varnothing \implies
+  \exists y, y \in x \land (\forall z \in x, \lnot (z \leL y))$
+\end{itemize}
+La fonction est alors simplement
+\[\varphi(x,y) \defeq y \in x \land \forall z \in x, \lnot(z \leL y)\]
+qui est évidemment fonctionnelle totale pour $x\neq \varnothing$ puiqu'il existe
+un tel $y$ par le dernier point, et les autres axiomes assurent que ce $y$ est
+unique.
+
+Il nous faut donc construire $\leL$. Pour cela, remarquons deux choses~:
+\begin{itemize}
+\item $\Formula(\mathcal L_{\ZF})$ peut être bien ordonné.
+\item si $\mathbb L_\alpha$ peut être bien ordonné, alors l'ensemble des
+  suites finies $\mathbb L_\alpha^{<\omega}$ à valeurs dans $\mathbb L_\alpha$
+  peut l'être aussi.
+\end{itemize}
+En utilisant ces deux faits, comme un élément de $\mathbb L_{\alpha + 1}$
+peut être associé à un tuple $(\varphi,x_1,\ldots,x_n)$ où
+$\varphi\in\Formula(\mathcal L_{\ZF})$ et $x_1,\ldots,x_n \in\mathcal L_{\alpha}$,
+on peut bien ordonner $\mathbb L_{\alpha + 1}$. Remarquons cependant que
+plusieurs tuples peuvent correspondre à une seule partie définissable~: il faut
+donc prendre à chaque fois le tuple le plus petit possible.
+
+Enfin, la question se pose du recollement des ordres~: si on a défini un ordre
+sur $\mathbb L_\alpha$ il faut que celui défini sur $\mathbb L_{\alpha + 1}$
+contienne l'ordre défini juste avant. Cela nous mène à l'énoncé que l'on veut
+donner.
+
+\begin{theorem}
+  Il existe une fonction $\leL : \Ord \to \mathbb V$ telle que que
+  $\leL(\alpha)$ est un bon ordre sur $\mathbb L_\alpha$ pour tout
+  $\alpha\in \Ord$ et telle que pour tous $\alpha < \beta$,
+  $\leL(\alpha)$ est un segment initial de $\leL(\beta)$.
+\end{theorem}
+
+\begin{proof}
+  Notre démonstration est une induction transfinie~:
+  \begin{itemize}
+  \item pour $\varnothing$, le résultat est direct.
+  \item supposons que $\leL(\alpha)$ existe. On utilise ce qu'on a dit
+    précédemment~: on se fixe un bon ordre $<$ sur
+    $\Formula(\mathcal L_{\ZF})\times \mathbb L_{\alpha}^{<\omega}$, soit
+    $\beta$ le type de cet ordre. On peut associer à chaque partie
+    $X\in\mathbb L_{\alpha + 1}\setminus\mathbb L_\alpha$ un élément de $\beta$
+    comme étant le plus petit tuple $(\varphi,a_1,\ldots,a_n)$ tel que
+    $x\in X \iff \mathbb L_{\alpha}\models \varphi(a_1,\ldots,a_n,x)$.
+    Cette association est clairement injective, vu que la partie définie par
+    un tuple est unique. On a donc une injection de
+    $\mathbb L_{\alpha + 1}\setminus \mathbb L_\alpha$ vers un ordinal, donc un
+    bon ordre sur $\mathbb L_{\alpha + 1} \setminus \mathbb L_\alpha$.
+    En prenant simplement la somme ordinale avec l'ordre défini sur
+    $\mathbb L_\alpha$, on trouve ainsi un bon ordre sur
+    $\mathbb L_{\alpha + 1}$ tel que l'ordre sur $\mathbb L_\alpha$ en est
+    un segment initial.
+  \item si $\leL(\beta)$ a été défini pour tout ordinal $\beta < \lambda$,
+    avec $\lambda$ un ordinal limite, alors on peut définir $\leL(\lambda)$
+    comme l'union des $\leL(\beta)$. Comme tous les bons ordres sont
+    compatibles, l'union est encore un bon ordre.
+  \end{itemize}
+  On a donc construit notre fonction $\leL : \Ord \to \mathbb V$ telle que
+  $\leL(\alpha)$ est un bon ordre sur $\mathbb L_\alpha$ pour tout
+  $\alpha\in\Ord$.
+\end{proof}
+
+On en déduit l'axiome du choix global.
+
+\begin{corollary}
+  Il existe une relation $\leL$ sur $\mathbb L$ qui est un bon ordre au sens
+  défini plus tôt, donc $\ZF\models (\AxC)^{\mathbb L}$.
+\end{corollary}
+
+On veut maintenant montrer que $\mathbb L$ vérifie $\HCG$.
