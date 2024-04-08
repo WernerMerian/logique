@@ -579,7 +579,7 @@ notions liées à sa construction.
 L'univers constructible est alors l'itération de cette opérations à la place de
 l'ensemble des parties.
 
-\begin{definition}[Univers constructible de Gödel]
+\begin{definition}[Univers constructible de Gödel]\label{def.L}
   On définit par induction transfinie la hiérarchie $\mathbb L_\alpha$~:
   \begin{itemize}
   \item $\mathbb L_0 = \varnothing$
@@ -665,6 +665,14 @@ ci-dessus, on introduit la hiérarchie de Lévy.
   pour $\Delta^{\ZFC}_n$.
 \end{definition}
 
+\begin{remark}
+  Comme on peut toujours prendre un produit fini comme un nouvel ensemble, il
+  est équivalent de prendre un seul quantificateur $\exists$ (respectivement
+  $\forall$) et une suite finie de quantificateurs $\exists$ (respectivement
+  $\forall$), d'où le fait qu'on se limite dans la hiérachie aux alternances
+  de quantificateurs.
+\end{remark}
+
 On peut maintenant énoncer la généralisation de notre preuve de l'axiome
 d'extensionalité pour toute formule $\Delta_0$.
 
@@ -709,6 +717,9 @@ Donnons des exemples de formules $\Delta_0$~:
     \item comme on suppose l'axiome de fondation, l'irréflexivité de $\in$ et sa
       bonne fondation sont forcément vérifiés.
     \end{itemize}
+  \item être égal à $\omega$, car \og $X = \omega$\fg peut s'écrire
+    \[X\in \Ord \land (\forall z \in X, S\;z \in X) \land
+    (\forall y \in X, \lnot (\forall z \in y, S\;z \in y))\]
   \end{itemize}
 \end{example}
 
@@ -720,3 +731,346 @@ Donnons des exemples de formules $\Delta_0$~:
 
 On voit donc une famille importante de formules qui sont absolues entre les
 classes transitives (qui sont presque les seules classes d'intérêt).
+
+On peut aussi étudier les formules $\Sigma_1$ et $\Pi_1$, qui ne sont pas
+absolues mais transmettent leur vérité d'une classe à une sur-classe
+(respectivement à une sous-classe).
+
+\begin{proposition}
+  Soit $\mathcal M$, $\mathcal N$ deux classes transitives, avec
+  $\mathcal M \subseteq \mathcal N$. Alors pour un énoncé
+  $\varphi\in\Formula(\mathcal L_{\ZF})$, on a les implications suivantes~:
+  \begin{itemize}
+  \item si $\varphi \in \Sigma_1$ alors
+    $\varphi^{\mathcal M} \implies \varphi^{\mathcal N}$
+  \item si $\varphi \in \Pi_1$ alors
+    $\varphi^{\mathcal N} \implies \varphi^{\mathcal M}$
+  \end{itemize}
+  et toute formule $\Delta_1$ est absolue entre $\mathcal M$ et $\mathcal N$.
+\end{proposition}
+
+\begin{proof}
+  On montre d'abord les deux implications~:
+  \begin{itemize}
+  \item supposons que $\varphi \in \Sigma_1$ et $\varphi^{\mathcal M}$. On
+    suppose sans perte de généralité que $\varphi$ est de la forme
+    $\exists x, \psi$ où $\psi\in\Delta_0$. On sait donc qu'il existe un
+    ensemble $a\in\mathcal M$ tel que $\psi[a/x]$ est vraie. Comme
+    $\psi[a/x]$ est $\Delta_0$, elle est absolue entre ces deux classes
+    transitives, et $\mathcal M \subseteq\mathcal N$ donc $\psi[a/x]$
+    permet de déduire $(\exists x, \psi)^{\mathcal N}$.
+  \item supposons que $\varphi \in \Pi_1$ et $\varphi^{\mathcal N}$. On
+    suppose sans perte de généralité que $\varphi$ est de la forme
+    $\forall x, \psi$ où $\psi\in\Delta_0$. On sait que donc pour tout
+    ensemble $a\in \mathcal N$, $\psi[a/x]$ est vraie. Ainsi, pour tout
+    ensemble $a\in \mathcal M$, $\psi[a/x]$ est vérifiée aussi, par inclusion.
+    Donc $(\forall x, \psi)^{\mathcal M}$.
+  \end{itemize}
+
+  Si $\varphi\in\Delta_1$, alors $\varphi$ est $\Sigma_1$ et $\Pi_1$, ce qui
+  signifie que $\varphi^{\mathcal M}\iff \varphi^{\mathcal N}$, donc que
+  $\mathcal M\preccurlyeq_\varphi \mathcal N$.
+\end{proof}
+
+Donnons maintenant le théorème de réflexion, qui est un théorème majeur de la
+théorie des ensembles. Celui-ci nous permet de montrer que pour toute hiérarchie
+telle $\mathbb V$ ou $\mathbb L$ et toute proposition $\varphi$, il existe des
+ordinaux arbitrairement élevés tels que $\varphi$ est absolue entre la
+hiérarchie et sa construction partielle à l'ordinal donné.
+
+\begin{theorem}[Réflexion]
+  Soit une fonction $f : \Ord \to \mathbb V$ vérifiant~:
+  \begin{itemize}
+  \item pour tout $\alpha \in \Ord$,
+    $\powerdef(f(\alpha))\subseteq f(\alpha + 1)\subseteq\powerset(f(\alpha))$
+  \item pour tout $\lambda \in \Ord$ limite,
+    $\displaystyle f(\lambda) = \bigcup_{\beta < \lambda} f(\beta)$
+  \end{itemize}
+  et $\displaystyle F = \bigcup_{\alpha \in \Ord} f(\alpha)$.
+  alors pour toute proposition $\varphi\in\Formula(\mathcal L_{\ZF})$ et tout
+  ordinal $\alpha \in \Ord$, il existe un ordinal $\beta > \alpha$ tel que
+  $f(\beta)\preccurlyeq_\varphi F$. On peut de plus prendre $\beta$ limite.
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{remark}
+  Comme on peut toujours représenter un ensemble fini de propositions $F$ par
+  $\bigwedge F$, le théorème de réflexion s'étend directement à un ensemble fini
+  de propositions.
+\end{remark}
+
+Une première conséquence est un résultat assez peu surprenant, mais qu'il est
+intéressant d'avoir.
+
+\begin{proposition}
+  La théorie $\ZFC$ n'est pas finiment axiomatisable.
+\end{proposition}
+
+\begin{proof}
+  Si $\ZFC$ était finiment axiomatisable, alors on trouverait un certain
+  $\mathbb V_\alpha$ tel que $\ZFC$ est absolu pour $\mathbb V_\alpha$, nous
+  donnant donc un modèle ensembliste de $\ZFC$.
+\end{proof}
+
+\section{L'univers constructible de Gödel}
+
+Nous avons introduit cet univers dans la \cref{def.L}, mais ne l'avons pas
+encore étudié. Nous le verrons, c'est un univers ensembliste se comportant
+particulièrement bien~: l'axiome du choix y est vrai dans une version
+particulièrement forte, l'hypothèse du continu généralisée y est vraie\ldots
+Nous allons donc étudier plus en profondeur l'univers $\mathbb L$.
+
+\subsection{Premiers pas}
+
+Tout d'abord, intéressons-nous à l'opération $\powerdef$. Celle-ci nous donne
+une forme plus faible d'ensemble des parties, mais on peut remarquer que son
+action sur le cardinal n'est pas du tout la même.
+
+\begin{proposition}
+  Les assertions suivantes sont vérifiées~:
+  \begin{itemize}
+  \item si $X$ est un ensemble fini, alors $\powerdef(X) = \powerset(X)$.
+  \item si $X$ est un ensemble infini, alors $|\powerdef(X)| = |X|$.
+  \end{itemize}
+\end{proposition}
+
+\begin{proof}
+  Prouvons ces deux assertions~:
+  \begin{itemize}
+  \item La première inclusion, $\powerdef(X)\subseteq\powerset(X)$, est directe.
+    Supposons que $X$ est fini et soit $Y\subseteq X$. Décomposons
+    $Y = \{y_1,\ldots,y_p\}$. On peut alors définir la proposition
+    \[\varphi(x) \defeq \bigvee_{i = 1}^p (x = y_i)\]
+    dont il est évident que $x \in Y \iff X \models \varphi(x)$. Ainsi
+    $Y\in \powerdef(X)$, d'où l'égalité.
+  \item Supposons que $X$ est infini. Pour énumérer $\powerdef(X)$, il nous
+    suffit d'énumérer $\Formula(\mathcal L_{\ZF})$, qui est dénombrable, et
+    l'ensemble des parties finies de $X$~: $|X^{<\omega}| = |X|$ car $X$ est
+    au moins dénombrable. Ainsi il y a $|\omega \times X^{<\omega}| = |X|$
+    tuples $(\varphi,a_1,\ldots,a_n)$ définissant une partie définissable de
+    $X$, donc $|\powerdef(X)|\leq |X|$. De plus, on peut injecter $X$ dans
+    $\powerdef(X)$ par $x\mapsto \{x\}$, dont la représentation est la
+    formule
+    \[\psi(y) \defeq x = y \]
+    donc $|\powerdef(X)| = |X|$.
+  \end{itemize}
+\end{proof}
+
+On montre aussi, de façon analogue au travail effectué pour $\mathbb V$, que
+$(\mathbb L_\alpha)_{\alpha \in \Ord}$ est une hiérarchie cumulative et transitive.
+
+\begin{proposition}
+  Pour tout $\alpha,\beta \in \Ord$, si $\alpha \leq \beta$ alors
+  $\mathbb L_{\alpha} \subseteq \mathbb L_\beta$. De plus chaque
+  $\mathbb L_\alpha$ est un ensemble transitif.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Il est donc clair que $\powerdef(X)\neq \powerset(X)$ lorsque $X$ est infini.
+On peut donc montrer que $\mathbb L$ ne coïncide avec $\mathbb V$ que jusqu'à
+$\omega$.
+
+\begin{proposition}
+  Pour tout $\alpha \leq \omega$, $\mathbb L_\alpha = \mathbb V_\alpha$.
+  Cependant, pour tout $\alpha > \omega$,
+  $\mathbb L_\alpha \subsetneq \mathbb V_\alpha$.
+\end{proposition}
+
+\begin{proof}
+  On procède par induction transfinie~:
+  \begin{itemize}
+  \item $\mathbb L_0 = \mathbb V_0$
+  \item pour tout $n \in \omega$, si $\mathbb L_n = \mathbb V_n$, alors comme
+    les deux ensembles sont finis~:
+    \begin{align*}
+      \mathbb L_{n+1} &= \powerdef(\mathbb L_n)\\
+      &= \powerset(\mathbb L_n)\\
+      &= \powerset(\mathbb V_n)\\
+      &= \mathbb V_{n+1}
+    \end{align*}
+  \item si $\forall n < \omega, \mathbb L_n = \mathbb V_n$, alors
+    $\mathbb L_\omega = \bigcup \mathbb L_n = \mathbb V_\omega$.
+  \item comme $\mathbb L_\omega$ est infini,
+    $\mathbb L_{\omega+1} \subsetneq \powerset(\mathbb L_\omega)$, donc
+    $\mathbb L_{\omega+1} \subsetneq\mathbb V_{\omega+1}$.
+  \item A FAIRE
+  \end{itemize}
+\end{proof}
+
+Cependant, $\mathbb L$ contient bien tous les ordinaux.
+
+\begin{proposition}
+  Pour tout $\alpha \in \Ord$, $\alpha \in \mathbb L_{\alpha + 1}$.
+\end{proposition}
+
+\begin{proof}
+  On raisonne par induction transfinie~:
+  \begin{itemize}
+  \item $\varnothing \in \mathbb L$.
+  \item si $\alpha \in \mathbb L_{\alpha + 1}$,
+    alors $\alpha \in \mathbb L_{\alpha + 2}$ et on définit la formule
+    \[\varphi(x,\alpha) \defeq x = \alpha \lor x \in \alpha\]
+    qui définit exactement la partie
+    $\alpha + 1 \subseteq \mathbb L_{\alpha + 1}$, donc
+    $\alpha + 1 \in \mathbb L_{\alpha + 2}$.
+  \item si $\lambda$ est un ordinal limite, que pour tout $\beta < \lambda$,
+    $\beta \in \mathbb L_\beta$, alors on peut définir $\lambda$ par
+    \[\varphi(x,\lambda) \defeq \exists \beta\in \Ord, x = \beta\]
+  \end{itemize}
+  Ainsi pour tout $\alpha \in \Ord, \alpha \in \mathbb L_{\alpha + 1}$.
+\end{proof}
+
+Il y a donc toujours plus d'éléments dans $\mathbb V_\alpha$ que dans
+$\mathbb L_\alpha$. Cependant, on pourrait imaginer qu'en prenant par exemple
+$\alpha' = \beth_\alpha$, on puisse rattraper $\mathbb V_\alpha$ en considérant
+$\mathbb L_{\alpha'}$. Le fait que l'on puisse toujours rattraper la hiérarchie
+$(\mathbb V_{\alpha})_{\alpha\in\Ord}$ avec $\mathbb L$ est indépendant de $\ZFC$,
+d'où l'introduction de l'axiome suivant~:
+
+\begin{axiom}[V = L]\label{ax.VeqL}
+  On définit l'axiome $\VeqL$ par la formule suivante~:
+  \[\VeqL \defeq \forall x, \exists \alpha \in \Ord, x \in \mathbb L_\alpha\]
+\end{axiom}
+
+Nous étudions maintenant les propriétés de $\ZFC+\VeqL$. Pour cela, cherchons
+d'abord à situer dans la hiérarchie de Lévy les éléments importants de l'univers
+constructible.
+
+\begin{property}
+  La définition d'une fonction $H$-inductive est $\Delta_0$ si $H$ est
+  $\Delta_0$.
+\end{property}
+
+\begin{proof}
+  En effet, dire que $f : \alpha \to \mathbb V$ est $H$-inductive signifie que~:
+  \begin{itemize}
+  \item $\forall \beta < \alpha, f\restr{\beta}\subseteq \dom(H)$
+  \item $\forall \beta < \alpha, f(\beta) = H(f\restr{\beta})$
+  \end{itemize}
+  Il nous suffit donc de montrer~:
+  \begin{itemize}
+  \item qu'être le domaine de $f$ est un prédicat $\Delta_0$, et on peut
+    exprimer \og $X$ est le domaine de $f$\fg par
+    \[\forall (x,y)\in f, x\in X \land \forall x \in X, \exists (z,y)\in f,
+    x = z\]
+    donc $\dom(f)$ est défini par un prédicat $\Delta_0$.
+  \item qu'être une restriction de $f$ est un prédicat $\Delta_0$, ce qui est
+    direct en voyant que
+    \[g = f\restr{X} \iff \dom(g)\subseteq\dom(f)\land
+    \forall x \in \dom(g), g(x)=f(x)\]
+  \end{itemize}
+  Comme $H$ est supposé $\Delta_0$, il vient qu'être $H$-inductif est un
+  prédicat $\Delta_0$. De plus, si $H$ est $\Delta_n$ (respectivement
+  $\Sigma_n$, $\Pi_n$) alors être $H$-inductif l'est aussi.
+\end{proof}
+
+Ainsi exprimer, pour $\alpha$ un ordinal, le prédicat d'être $\mathbb L_\alpha$,
+est à un niveau aussi élevé que le prédicat utilisé pour sa définition, qui est
+clairement la complexité de $\powerdef$.
+
+C'est précisément ici que l'on voit que $\mathbb L$ se comporte beaucoup mieux
+que $\mathbb V$~: là où $\powerset$ est une fonction $\Pi_1$, $\powerdef$ n'est
+que $\Delta_0$.
+
+\begin{property}\label{prop.Form.Delta}
+  Le prédicat $Y = \Formula(\mathcal L_{\ZF})$ est $\Delta_0$.
+\end{property}
+
+\begin{proof}
+  La définition est par induction, et la relation permettant de construire
+  de nouvelles formules à partir d'anciennes est clairement $\Delta_0$.
+\end{proof}
+
+\begin{property}
+  Le prédicat $Y = \powerdef(X)$ est $\Delta_0$.
+\end{property}
+
+\begin{proof}
+  On sait grâce à la \cref{prop.Form.Delta} que l'on peut quantifier
+  sur $\Formula(\mathcal L_{\ZF})$ sans souci. La définition de
+  $X\models \varphi$ est elle aussi simplement une induction sur
+  $\Formula(\mathcal L_{\ZF})$. La quantification sur les éléments de $X$ est,
+  elle aussi, $\Delta_0$. Ainsi
+  \begin{multline*}
+    \exists \varphi(x_1,\ldots,x_n)\in\Formula(\mathcal L_{\ZF}),
+    \exists a_1,\ldots,a_n\in X, \forall x\in X, \\
+    x\in Y \iff X\models \varphi(a_1,\ldots,a_n,x)
+  \end{multline*}
+  est bien $\Delta_0$, donc $Y\in \powerdef(X)$ est un prédicat $\Delta_0$.
+  Maintenant, dire que $Y = \powerdef(X)$ signifie
+  \begin{multline*}
+    (\forall y \in Y, y \in \powerdef(X)) \land
+    \forall \varphi\in\Formula(\mathcal L_{\ZF}),
+    \forall a_1,\ldots,a_n\in X, \exists y \in Y, \forall x \in X,\\
+    x \in y \iff X\models \varphi(a_1,\ldots,a_n,x)
+  \end{multline*}
+  donc $Y = \powerdef(X)$ est un prédicat $\Delta_0$.
+\end{proof}
+
+\begin{corollary}
+  Pour tout ordinal $\alpha$ et toute classe transitive $\mathcal M$, le
+  prédicat $x\in \mathbb L_{\alpha}$ est absolu sur $\mathcal M$.
+\end{corollary}
+
+On peut donc placer l'axiome de constructibilité dans la hiérarchie de Lévy.
+
+\begin{proposition}
+  $\VeqL \in \Pi_2$.
+\end{proposition}
+
+\begin{proof}
+  On peut énoncer $\VeqL$ par
+  $\forall x, \exists \alpha \in \Ord, x\in \mathbb L_\alpha$ qui est clairement
+  $\Pi_2$ avec les résultats précédents.
+\end{proof}
+
+Une conséquence intéressante est que $\VeqL$ est un axiome vérifié dans
+$\mathbb L$. Cela parait assez évident, mais il faut rappeler
+qu'\textit{a priori}, on pourrait obtenir plus de parties en regardant
+$\powerdef$ dans $\mathbb V$. L'avantage justement ici est que toutes nos
+fonctions sont absolues pour $\mathbb L$. 
+
+\begin{theorem}
+  $\ZFC\models (\VeqL)^{\mathbb L}$
+\end{theorem}
+
+\begin{proof}
+  On sait que le prédicat $x\in \mathbb L_{\alpha}$ est vrai dans
+  $\mathbb L$ si et seulement s'il est vrai dans $\mathbb V$. Par définition,
+  on a
+  \[(\VeqL)^{\mathbb L} =
+  \forall x \in \mathbb L,\exists \alpha \in \Ord\cap \mathbb L,
+  x\in \mathbb L_\alpha\]
+  mais on a vu que $\Ord\subseteq \mathbb L$, donc il nous reste à prouver que
+  $\forall x \in \mathbb L, \exists \alpha \in \Ord, x \in \mathbb L_\alpha$
+  ce qui est vrai dans $\mathbb V$ par définition, et donc dans
+  $\mathbb L$ par absoluité.
+\end{proof}
+
+Il en découle donc que $\VeqL$ est relativement cohérent~: on peut ajouter cet
+axiome sans risque puisque si ajouter $\VeqL$ mène à une incohérence, alors
+cette incohérence était déjà dans $\ZFC$.
+
+\begin{corollary}
+  Si $\Coher(\ZFC)$ alors $\Coher(\ZFC + \VeqL)$.
+\end{corollary}
+
+\begin{remark}
+  En réalité, on n'a pas eu besoin de l'axiome du choix ici. On verra qu'en
+  réalité, $\VeqL$ implique $\AxC$ dans $\ZF$, donc cela nous donne une preuve
+  que $\Coher(\ZF)\implies \Coher(\ZFC)$.
+\end{remark}
+
+\subsection{Les propriétés de l'univers constructible}
+
+On monte dans cette sous-section que l'univers $\mathbb L$ vérifie des résultats
+particulièrement forts~: l'axiome du choix global et l'hypothèse du continu
+généralisée.
+
+A FAIRE
