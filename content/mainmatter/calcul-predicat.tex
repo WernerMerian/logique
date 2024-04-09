@@ -1538,3 +1538,67 @@ modèles : le théorème de compacité.
   $\Gamma\in\List(\mathcal A)$ : on en déduit donc que $\mathcal A\vdash F$,
   d'où par correction que $\mathcal A\vDash F$.
 \end{proof}
+
+En étudiant un peu en détail le modèle syntaxique que nous avons construit, il
+est possible d'étudier son cardinal. En fait, comme le modèle est construit
+comme un quotient de l'ensemble des termes, il nous suffit de dénombrer cet
+ensemble. Cela mène au théorème de Löwenheim-Skolem descendant.
+
+\begin{theorem}[Löwenheim-Skolem descendant]
+  Soit $\mathcal T$ une théorie cohérente sur une signature $\Sigma$ qui
+  n'admet aucun modèle fini. Alors il existe un modèle de $\mathcal T$ de
+  cardinal inférieur $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
+\end{theorem}
+
+\begin{proof}
+  En effet, soit le modèle $\mathcal M$ de $\mathcal T$ syntaxique, construit
+  précédemment. Comme $\mathcal T$ n'admet aucun modèle fini, le modèle est de
+  cardinal au moins $\aleph_0$. De plus, on a une surjection
+  $\Term(\Sigma) \to \mathcal M$ par $t\mapsto \overline t$. L'ensemble
+  $\Term(\Sigma)$ étant de cardinal $\max(|\Sigma_{\mathcal F}|,\aleph_0)$, on
+  en déduit le résultat.
+\end{proof}
+
+Le théorème de compacité, lui, nous permet de déduire la version ascendante du
+théorème.
+
+\begin{theorem}[Löwenheim-Skolem ascendant]
+  Soit $\mathcal T$ une théorie admettant un modèle infini, et
+  soit $\lambda$ un cardinal infini. Alors il existe un modèle
+  de $\mathcal T$ de cardinal supérieur à $\lambda$.
+\end{theorem}
+
+\begin{proof}
+  On ajoute à $\Sigma$ l'ensemble $\{c_a\mid a \in \kappa\}$ de constantes, et
+  on définit la théorie $\mathcal T'$ sur cette signature par
+  \[\mathcal T'\defeq\mathcal T\cup \bigcup_{a,b\in \kappa}(a\neq b)\]
+  ainsi un modèle de $\mathcal T'$ est naturellement un modèle de $\mathcal T$,
+  et il a au moins $\kappa$ éléments. Par le théorème de compacité, pour
+  que $\mathcal T'$ soit cohérent, il suffit que toute partie finie de
+  $\mathcal T'$ soit cohérente. Mais le modèle de $\mathcal T$, infini, est
+  un modèle de toute partie finie de $\mathcal T'$ en associant aux éléments
+  $c_a$ des éléments (seul un nombre fini est considéré par la partie finie de
+  $\mathcal T'$, les autres peuvent être associés au même élément). Ainsi on
+  a un modèle de $\mathcal T'$.
+\end{proof}
+
+On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une autre forme.
+
+\begin{theorem}[Löwenheim-Skolem]
+  Soit $\mathcal M$ une structure infinie sur une signature $\Sigma$ et
+  $\kappa \geq \max(|\Sigma_{\mathcal F}|,\aleph_0)$. Alors il existe une
+  structure $\mathcal N$ élémentairement équivalente à $\mathcal M$,
+  c'est-à-dire telle que pour tout énoncé clos $\varphi\in\Clos(\Sigma)$, on a
+  \[\mathcal M \models \varphi \iff \mathcal N \models \varphi\]
+  et telle que $|\mathcal N| = \kappa$.
+\end{theorem}
+
+\begin{proof}
+  On définit la théorie $\mathcal T_{\mathcal M}$ des énoncés vrais dans
+  $\mathcal M$. Comme c'est une théorie cohérente sans modèle fini (puisque
+  les axiomes exprimant qu'il y a au moins $n$ éléments sont vérifiés par
+  $\mathcal M$), on peut trouver un modèle de cardinal $\kappa$ à
+  $\mathcal T_{\mathcal M}$. Cette théorie étant complète, cela signifie que
+  $\mathcal T_{\mathcal N} = \mathcal T_{\mathcal M}$, ce qui est le
+  résultat attendu.
+\end{proof}

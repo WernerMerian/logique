@@ -1084,8 +1084,7 @@ cette incohérence était déjà dans $\ZF$.
 
 On montre dans cette sous-section que l'univers $\mathbb L$ vérifie des
 résultats particulièrement forts~: l'axiome du choix global et l'hypothèse du
-continu généralisée. On montrera aussi le principe du carreau (en anglais
-\textit{diamond principle}).
+continu généralisée.
 
 Présentons donc l'axiome du choix global. Plutôt qu'un simple axiome, celui-ci
 a besoin d'autres données pour être exprimé. Nous considérons que nous sommes
@@ -1184,3 +1183,93 @@ On en déduit l'axiome du choix global.
 \end{corollary}
 
 On veut maintenant montrer que $\mathbb L$ vérifie $\HCG$.
+
+Pour cela, on va montrer d'abord que, sous l'hypothèse $\VeqL$, la hiérarchie
+$\mathbb H$ coïncide avec $\mathbb L$ sur les cardinaux infinis.
+
+On remarque que, comme $\mathbb H_\lambda$ et $\mathbb L_\lambda$ peuvent
+s'exprimer comme l'union des $\mathbb H_\beta$ (respectivement $\mathbb L_\beta$)
+pour $\beta < \lambda$ lorsque $\lambda$ est limite, il nous suffit de nous
+occuper du cas successeur.
+
+L'inclusion qui nous demandera du travail est
+$\mathbb H_\kappa \subseteq\mathbb L_\kappa$, nous allons donc l'étudier à part.
+
+\begin{lemma}
+  Soit $\kappa$ un cardinal infini successeur, $\kappa = \lambda^+$. Si
+  $\VeqL$, alors $\mathbb H_\kappa \subseteq \mathbb L_\kappa$.
+\end{lemma}
+
+\begin{proof}
+  Soit $x \in \mathbb H_\kappa$. On pose $y = \trcl(\{x\})$, on sait donc que
+  $x \in y$ et $|y| \leq \lambda < \lambda^+$. On définit $\rho(y)$ comme étant
+  le rang minimal tel que $y\in\mathbb L_{\rho(y)}$. On peut trouver un cardinal
+  régulier indénombrable $\theta > \rho(y)$ dans $\mathbb V$, donc dans
+  $\mathbb L$ puisque $\VeqL$. On peut vérifier qu'alors,
+  $\mathbb L_{\theta}\models \ZF - \mathrm{P} + (\VeqL)$. On utilise alors le
+  théorème de Löwenheim-Skolem pour trouver un modèle $M$ vérifiant les mêmes
+  énoncés de $\mathcal L_{\ZF}$ que $\mathbb L_{\theta}$, contenant
+  $y$ et tel que $|M| \leq \lambda$ (ce qui est possible car $|y|\leq \lambda$).
+
+  En utilisant alors le \cref{lem.most}, on trouve un ensemble $N$ et un
+  isomorphisme $\pi : (M,\in)\cong (N,\in)$. Comme $y\in M$ est transitif, il
+  est un point fixe par l'effondrement, donc pour tout $z\in y, \pi(z) = z$. En
+  particulier, $\pi(x) = x$ et $x\in N$.
+
+  On veut alors prouver que $N = \mathbb L_\beta$ avec $\beta = N\cap \Ord$.
+
+  Soit $\alpha < \beta$, comme $\alpha \mapsto \mathbb L_\alpha$ est absolu
+  pour les modèles de $\ZF - \mathrm{P}$, l'axiome de remplacement nous donne
+  que $\mathbb L_\alpha \in N$. Comme, de plus, $N$ est transitif,
+  $\mathbb L_\alpha \subseteq N$ donc $\mathbb L_\beta \subseteq N$.
+
+  Réciproquement, comme $N\models \VeqL$, et par absoluité, on a
+  \[(\VeqL)^N \iff \forall x \in N, \exists \alpha \in \Ord\cap N,
+  x\in \mathbb L_\alpha\]
+  Puisque $\beta = \Ord \cap N$, on en déduit que
+  $\forall x \in N, \exists \alpha < \beta, x\in \mathbb L_\alpha$ donc
+  $N\subseteq\mathbb L_\beta$.
+
+  Ainsi $|\beta| = |N| = |M| = \lambda < \lambda^+$, et $x\in N$, donc
+  $x\in L_\beta$ avec $\beta < \lambda^+$, donc $x\in L_\kappa$.
+\end{proof}
+
+Il nous reste maintenant à vérifier l'autre inclusion.
+
+\begin{lemma}
+  Soit $\kappa$ un cardinal infini, on suppose de plus que $\VeqL$. Alors
+  $\mathbb H_\kappa = \mathbb L_\kappa$.
+\end{lemma}
+
+\begin{proof}
+  Comme on l'a dit, le cas des cardinaux limite est direct par continuité de
+  $\mathbb H_\alpha$ et $\mathbb L_\alpha$. Il nous reste donc à prouver que
+  $\mathbb L_\kappa\subseteq \mathbb H_\kappa$ pour $\kappa = \lambda^+$.
+
+  Si $x\in \mathbb L_\kappa$, alors on trouve $\alpha < \kappa$ tel que
+  $x\in \mathbb L_\alpha$, mais alors $\trcl(x)\subseteq \mathbb L_\alpha$ et, de
+  plus, $|\mathbb L_\alpha| = |\alpha| < \kappa$.
+  Donc $\trcl(x)\in\mathbb H_\kappa$.
+
+  Ainsi $\mathbb H_\kappa = \mathbb L_\kappa$.
+\end{proof}
+
+On en déduit $\HCG$ dans $\VeqL$.
+
+\begin{theorem}
+  Si $\VeqL$, alors $\HCG$ est vérifiée.
+\end{theorem}
+
+\begin{proof}
+  Soit un cardinal infini $\lambda$, alors
+  $\powerset(\lambda) \subseteq \mathbb H_{\lambda^+} = \mathbb L_{\lambda^+}$,
+  donc $|\powerset(\lambda)| \leq \lambda^+$.
+\end{proof}
+
+Nous concluons donc ce chapitre sur ce résultat important~:
+\[\Coher(\ZFC) \implies \Coher(\ZFC + \HCG)\]
+
+$\HCG$ ne peut donc pas être prouvée faux dans $\ZFC$. Pour montrer que ce
+résultat est indépendant de $\ZFC$, il nous reste alors à montrer que
+$\Coher(\ZFC)\implies\Coher(\ZFC+\lnot\HC)$, ce qui nécessite la technique du
+forcing, introduite par Cohen.
