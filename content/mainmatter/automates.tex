@@ -30,3 +30,195 @@ Myhill-Nérode, ainsi que ses conséquences.
 
 \section{Alphabet, mot, langage}
 
+Pour étudier de façon plus systématique les langages, nous étudierons aussi de
+l'algèbre avec la structure de monoïde, qui est intimement liée à celle
+d'ensemble de mots. Nous verrons donc tout d'abord l'aspect concret de ce qu'est
+un mot et un langage, puis nous aborderons les côtés théoriques de l'étude des
+monoïdes.
+
+\subsection{Premières définitions}
+
+Tout d'abord, il nous faut définit ce qu'est un alphabet. Intuitivement, cela
+désigne l'ensemble des symboles que nous utilisons pour écrire. Pour avoir un
+trairement uniforme, on considère que des symboles comme \og ( \fg font aussi
+partie de l'alphabet. C'est alors un objet particulièrement quelconque~: on peut
+imaginer écrire avec à peu près n'importe quel ensemble de symboles. D'où la
+définition semblant inutile d'un alphabet~: parler d'alphabet permet surtout de
+situer le contexte d'étude.
+
+\begin{definition}[Alphabet]
+  Un alphabet $\Sigma$ est un ensemble fini non vide.
+\end{definition}
+
+L'intérêt d'un alphabet est avant tout de pouvoir écrire des mots avec. La
+notion de mot est la notion finie par excellence~: un mot est donc simplement
+une suite finie de lettres.
+
+\begin{definition}[Mot]
+  Un mot $u$ sur un alphabet $\Sigma$ est une suite finie à valeurs dans
+  $\Sigma$, c'est-à-dire
+  $u = (u_0,\ldots,u_{n-1})\in \Sigma^n$ pour un certain entier $n\in\mathbb N$.
+
+  On note $\Sigma^*$ l'ensemble des mots sur $\Sigma$~:
+  \[\Sigma^* \defeq \bigcup_{n\in \mathbb N} \Sigma^n\]
+\end{definition}
+
+\begin{notation}
+  Pour tout mot $u\in\Sigma^n$, on note $u_i$ pour la
+  \ordinalnumeralfeminin{$i$} lettre, c'est-à-dire l'image de $u$ par la
+  projection $\pi_i : \Sigma^n \to \Sigma$.
+
+  Pour tout mot $u\in\Sigma^*$, on note $|u|\in\mathbb N$ l'entier $n$ tel que
+  $u\in \Sigma^*$.
+\end{notation}
+
+Remarquons qu'une suite vide est une suite finie~: on peut donc définir le mot
+vide, qu'on notera $\varepsilon$.
+
+On peut désormais définir un langage~: c'est un ensemble de mots.
+
+\begin{definition}[Langage]
+  Soit $\Sigma$ un alphabet. Un langage $\mathcal L$ sur $\Sigma$ est une partie
+  $\mathcal L\subseteq\Sigma^*$.
+\end{definition}
+
+Parlons dès maintenant de stabilité~:
+
+\begin{definition}[Stabilité]
+  Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur $\Sigma^*$. On
+  dit qu'un langage $\mathcal L$ sur $\Sigma$ est stable par $\star$ si
+  \[\forall u,v\in \mathcal L, u\star v \in \mathcal L\]
+\end{definition}
+
+Cette notion de stabilité se généralise très bien à des classes de langages,
+dont il convient donc d'introduire la définition.
+
+\begin{definition}[Classe de langages]
+  Soit un alphabet $\Sigma$. On appelle classe de langages une partie
+  $\mathcal C\subseteq \powerset(\Sigma^*)$ (ses éléments sont donc des
+  langages).
+\end{definition}
+
+\begin{definition}[Stabilité d'une classe de langages]
+  Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur
+  $\powerset(\Sigma)^*$. On dit qu'une classe de langages $\mathcal C$ sur
+  $\Sigma$ est stable par $\star$ si
+  \[\forall \mathcal L,\mathcal M\in\mathcal C,
+  \mathcal L\star \mathcal M\in\mathcal C\]
+\end{definition}
+
+Pour le reste de cette sous-section, nous allons juste voir des exemples de
+langages, d'opérations et de classes de langages.
+
+\begin{example}
+  Nous allons dès maintenant définir l'alphabet qui nous sera le plus utile~:
+  \[\btwo \defeq \{0,1\}\]
+
+  Voici quelques langages sur $\btwo$ ou un alphabet $\Sigma$ quelconque~:
+  \begin{itemize}
+  \item le langage des mots commençant par $0$~:
+    \[\mathcal L_0 \defeq \{u\in\Sigma^*\mid u_0 = 0\}\]
+  \item le langage des mots ayant une taille paire~:
+    \[\mathcal L_{\mathrm{pair}} \defeq \{u\in\Sigma^*\mid |u|\in2\mathbb N\}\]
+  \item le langage des mots dont le début et la fin sont la même lettre~:
+    \[\mathcal L_{\mathrm{début}/\mathrm{fin}}\defeq
+    \{u\in\Sigma^*\mid u_0 = u_{|u| - 1}\}\]
+  \item pour un langage $\mathcal L$, le langage $\overline{\mathcal L}$ des
+    mots pris dans l'autre sens~:
+    \[\overline{\mathcal L}\defeq
+    \{u\in\Sigma^*\mid u_{|u|-1}\ldots u_0 \in \mathcal L\}\]
+  \item l'intersection de deux langages.
+  \item l'union de deux langages.
+  \end{itemize}
+\end{example}
+
+Nous allons définir une nouvelle opération, fortement liée à la structure de
+$\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
+
+\begin{definition}[Concaténation]
+  Soit un alphabet $\Sigma$. On définit l'opération de concaténation
+  $\star : \Sigma^*\times\Sigma^*\to\Sigma^*$ comme le fait, étant donnés deux
+  mots $u,v\in\Sigma^*$, de lire les deux mots à la suite. Formellement, on
+  définit
+  \[u\star v \defeq (u_0,\ldots,u_{|u|-1},v_0,\ldots,v_{|v|-1})\]
+
+  Pour tout $n\in \mathbb N$, on notera $u^n$ pour l'itération de l'opération
+  $\star$~:
+  \[u^0 \defeq \varepsilon \qquad
+  \forall n \in \mathbb N, u^{n+1} = u^n \star u\]
+\end{definition}
+
+\begin{remark}
+  Le mot vide, $\varepsilon$, est neutre pour $\star$~: $u\star\varepsilon = u$.
+\end{remark}
+
+\begin{example}
+  Voici plusieurs autres langages possibles sur un alphabet $\Sigma$~:
+  \begin{itemize}
+  \item pour deux langages $\mathcal L, \mathcal L'$, le langage concaténé des
+    deux langages~:
+    \[\mathcal L\star\mathcal L'\defeq
+    \{u\star u'\mid u \in \mathcal L, u' \in \mathcal L' \}\]
+  \item pour un langage $\mathcal L$, l'itération de concaténation sur ce
+    langage~:
+    \[\mathcal L^{\star 0} \defeq \{\varepsilon\}\qquad
+    \forall n \in \mathbb N, \mathcal L^{\star(n+1)} \defeq
+    \mathcal L^{\star n}\star\mathcal L\]
+  \item pour un langage $\mathcal L$, le langage des mots dont toutes les
+    concaténations sont encore dans $\mathcal L$~:
+    \[\mathcal L_{\mathrm{stable}\star}\defeq
+    \{u\in \Sigma^*\mid \forall n \in \mathbb N, u^n \in \mathcal L\}\]
+  \item pour un langage $\mathcal L$, le langage des itérations de mots de
+    $\mathcal L$~:
+    \[\mathcal L^\star \defeq
+    \{u_0\star\cdots\star u_{n-1}\mid
+    n \in \mathbb N, \forall i\in \{0,\ldots,n -1\}, u_i \in \mathcal L\}\]
+  \end{itemize}
+\end{example}
+
+\begin{exercise}
+  Montrer que pour tout langage $\mathcal L$ sur un alphabet $\Sigma$, on a
+  l'égalité suivante~:
+  \[\mathcal L^\star = \bigcup_{n \in \mathbb N} \mathcal L^{\star n}\]
+\end{exercise}
+
+\begin{example}
+  Donnons quelques exemples de classes de langages sur un alphabet $\Sigma$~:
+  \begin{itemize}
+  \item la classe des langages contenant $\varepsilon$~:
+    \[\mathcal C_\varepsilon \defeq \{\mathcal L \subseteq \Sigma^*\mid
+    \varepsilon \in \mathcal L\}\]
+  \item la classe des langages stables par $\star$~:
+    \[\mathcal C_\star \defeq \{\mathcal L \subseteq \Sigma^*\mid
+    \forall u,v\in\mathcal L, u\star v \in \mathcal L\}\]
+  \end{itemize}
+\end{example}
+
+\subsection{Aspect algébrique des langages}
+
+Nous nous intéressons maintenant à l'aspect algébrique des langages. L'objectif
+de cette sous-section est d'aboutir à la caractérisation de l'ensemble des mots
+comme construction universelle (celle du monoïde libre). Pour cela, commençons
+par voir ce qu'est un monoïde.
+
+\begin{definition}[Monoïde]
+  Un monoïde est un ensemble $M$ muni d'une opération binaire
+  $\cdot : M \times M \to M$ et d'un élément neutre $e$,
+  c'est-à-dire un élément $e\in M$ tel que
+  \[\forall x\in M, x\cdot e = e \cdot x = x\]
+  et tel que $\cdot$ est associative, c'est-à-dire
+  \[\forall x,y,z\in M, x\cdot (y\cdot z) = (x\cdot y) \cdot z\]
+\end{definition}
+
+Définissons la notion de morphisme associée à la structure de monoïde.
+
+\begin{definition}[Morphisme de monoïde]
+  Soient $(M,\cdot,e)$ et $(N,\diamond,e')$ deux monoïdes. Un morphisme entre
+  ces deux monoïdes est une fonction $f : M \to N$ vérifiant les deux conditions
+  \begin{equation}
+    \forall x,y\in M, f(x\cdot y) = f(x)\diamond f(y)
+  \end{equation}
+  \begin{equation}
+    f(e) = e'
+  \end{equation}
+\end{definition}
