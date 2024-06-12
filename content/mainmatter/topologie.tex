@@ -879,6 +879,12 @@ stables par complémentaires.
   On notera $K\Omega_X$ l'ensemble des ouverts-fermés de $X$.
 \end{definition}
 
+\begin{remark}
+  En réalité, $K\Omega_X$ désigne l'ensemble des ouverts compacts de
+  $(X,\Omega)$, mais nous verrons que dans le cas qui nous intéresse, cette
+  notion coïncide avec celle des ouverts-fermés.
+\end{remark}
+
 \begin{property}
   Soit $(X,\Omega_X)$ un espace topologique. L'ensemble ordonné
   $(K\Omega_X,\subseteq)$ est une algèbre de Boole.
@@ -1447,8 +1453,9 @@ La caractérisation séquentielle est directe, mais on l'écrit tout de même.
   peut montrer qu'elle dérive de la métrique $(x,y)\mapsto |x-y|$).
 \end{example}
 
-On peut donc définir la notion de séparabilité, qui est une propriété disant
-qu'un espace n'a pas trop de points.
+On peut donc définir la notion de séparabilité, qui exprime qu'un espace ne
+contient pas de point dont les voisinages sont trop nombreux (en particulier, on
+peut s'approcher de n'importe quel point par une suite).
 
 \begin{definition}[Espace séparable]
   Soit $(X,\Omega_X)$ un espace topologique. On dit que cet espace est
@@ -1505,11 +1512,126 @@ métrisable), qui n'impose pas la métrique mais seulement son existence.
   $\Omega_X$ (et telle que l'espace métrique est complet).
 \end{definition}
 
-Pour clore ce chapitre, on peut maintenant définir ce qu'est un espace polonais.
+Il existe une construction permettant de plonger un espace métrique dans un
+espace métrique complet, on l'appelle la complétion.
+
+\begin{proposition}
+  Soit $(X,d)$ un espace métrique. Il existe un espace métrique complet
+  $(\hat X,\hat d)$ pour lequel $(X,d)$ se plonge isométriquement dans une
+  partie dense.
+\end{proposition}
+
+\begin{proof}
+  On considère l'espace
+  \[Y \defeq \{(x_n)\in X^{\mathbb N}\mid (x_n)\text{ est de Cauchy}\}\]
+  et la distance
+  \[d'((x_n),(y_n)) \defeq \lim_{n \to \infty} d(x_n,y_n)\]
+
+  Cet espace n'est pas métrique car il ne vérifie pas la séparabilité~: on
+  quotiente donc cet espace par la relation
+  \[(x_n)\sim (y_n) \defeq \lim_{n\to\infty} d(x_n,y_n) = 0\]
+
+  On vérifie qu'on a alors une distance et que l'espace engendré est complet~:
+  \begin{itemize}
+  \item la fonction $d'$ est bien définie~: si $(x_n)$ et $(y_n)$ sont de
+    Cauchy, alors pour tout $\varepsilon > 0$ on trouve $n_0$ tel que
+    \[\forall p,q > n_0, d(x_p,x_q) \leq \dfrac{\varepsilon}{2}
+    \land d(y_p,y_q) \leq \dfrac{\varepsilon}{2}\]
+    Alors, pour tous $p,q > n_0$, on voit que
+    \begin{align*}
+      |d(x_p,y_p) - d(x_q,y_q)| &\leq |d(x_p,x_q) + d(x_q,y_p) - d(x_q,y_q)|\\
+      &\leq |d(x_p,x_q) + d(x_q,y_q) + d(y_p,y_q) - d(x_q,y_q)|\\
+      &\leq \left|\dfrac{\varepsilon}{2} + \dfrac{\varepsilon}{2}
+      + d(x_q,y_q) - d(x_q,y_q)\right|\\
+      &\leq \varepsilon
+    \end{align*}
+    La suite $d(x_n,y_n)$ est donc de Cauchy, ce qui signifie qu'elle converge
+    (puisque la suite est à valeurs dans $\mathbb R_+$).
+  \item la fonction $\hat d$ induite par $d'$ est bien définie. En effet, si
+    $(x_n)\sim (y_n)$ et $(z_n)\sim (a_n)$, cela signifie que
+    $\displaystyle\lim_{n\to\infty} d(x_n,y_n) = 0$ et
+    $\displaystyle\lim_{n\to\infty}d(z_n,a_n) = 0$, d'où
+    \begin{align*}
+      d'((x_n),(z_n)) &= \displaystyle\lim_{n \to \infty} d(x_n,z_n)\\
+      &= \lim_{n\to \infty} d(x_n,z_n) + \lim_{n\to\infty} d(x_n,y_n) +
+      \lim_{n\to \infty} d(z_n,a_n)\\
+      &= \lim_{n\to\infty} d(y_n,x_n) + d(x_n,z_n) + d(z_n,a_n)\\
+      &\geq \lim_{n\to \infty} d(y_n,a_n)
+    \end{align*}
+    De la même façon, on prouve l'autre inégalité, donc
+    $d'((x_n),(z_n)) = d'((y_n),(a_n)))$, donc $d'$ est constante sur les
+    classes d'équivalences.
+  \item pour la séparation, soient $\overline{(x_n)},\overline{(y_n)}$ deux
+    éléments de l'espace quotient. Si l'on suppose $\hat d((x_n),(y_n)) = 0$,
+    alors par définition $\displaystyle\lim_{n\to\infty} d(x_n,y_n) = 0$, donc
+    $(x_n)\sim (y_n)$, ce qui
+    signifie que les deux classes sont égales.
+  \item pour la symétrie, cela découle directement de la symétrie de $d$ puisque
+    les définitions utilisent $d$.
+  \item pour l'inégalité triangulaire, soient
+    $\overline{(x_n)},\overline{(y_n)},\overline{(z_n)}$ trois éléments de
+    l'espace quotient. On veut prouver l'inégalité
+    \[\lim_{n\to\infty} d(x_n,z_n) \leq \lim_{n\to\infty} d(x_n,y_n) +
+    \lim_{n\to\infty} d(y_n,z_n)\]
+    mais cette inégalité passe directement à la limite à partir du fait que,
+    pour tout $n$, le fait que $d$ est une distance implique
+    \[d(x_n,z_n) \leq d(x_n,y_n) + d(y_n,z_n)\]
+  \item si $x_n$ est une suite de Cauchy dans $\hat X$, alors par définition on
+    peut réécrire cette suite
+    $(\overline{(a_{i,j})_{i \in \mathbb N}})_{j \in \mathbb N})$. On
+    définit la limite de cette suite par
+    \[\lim x_n \defeq \overline{\left(
+    \lim_{j \to \infty} a_{i,j}\right)_{i \in \mathbb N}}\]
+    où chaque coordonnée converge car les suites sont de Cauchy. La suite ainsi
+    définie est bien de Cauchy~: soit $\varepsilon > 0$, on veut montrer qu'il
+    existe $n$ tel que
+    \[\forall p,q > n, d(\lim_{j\to\infty}a_{p,j},\lim_{j\to\infty} a_{q,j})
+    \leq\varepsilon\]
+    Comme $x_n$ est une
+    suite de Cauchy, on trouve $n_0$ tel que
+    \[\forall p,q > n_0, \lim_{n\to\infty} d(a_{n,p},a_{n,q})
+    \leq\frac{\varepsilon}{2}\]
+    A FAIRE
+  \end{itemize}
+  De plus, on veut montrer que $(X,d)$ s'injecte isométriquement dans
+  $(\hat X,\hat d)$. Pour cela, on considère l'application
+  \[\begin{array}{ccccc}
+  \iota & : & X & \longrightarrow & \hat X\\
+  & & x & \longmapsto & \overline{(n \mapsto x)_{n\in \mathbb N}}
+  \end{array}\]
+  Dans ce cas, on voit que $d(\iota(x),\iota(y)) = d(x,y)$, donc $\iota$ est
+  bien isométrique (et donc injective).
+
+  Enfin, montrons que l'image de $\iota$ est dense dans $\hat X$. Soit un
+  élément $\overline{(x_n)}\in\hat X$ et $\varepsilon > 0$, montrons qu'il
+  existe $x\in X$ tel que $\hat d(\overline{(x_n)},\iota(x)) \leq\varepsilon$,
+  ce qui se traduit par
+  \[\lim_{n\to\infty} d(x_n,x) \leq \varepsilon\]
+  mais on sait, par définition, que $(x_n)$ est une suite de Cauchy~: on peut
+  donc trouver $n_0$ tel que
+  \[\forall p,q > n_0, d(x_p,x_q) \leq\varepsilon\]
+  donc, en prenant $x = n_0$, la limite précédente est majorée à partir d'un
+  certain rang par $\varepsilon$, d'où l'inégalité. Ainsi $X$ est dense dans
+  $\hat X$.
+\end{proof}
+
+Pour clore ce chapitre, on peut maintenant définir ce qu'est un espace polonais,
+et comment celui-ci se comporte vis à vis de la complétion.
 
 \begin{definition}[Espace polonais]
   Un espace polonais $(X,\Omega_X)$ est un espace topologique complètement
   métrisable séparable.
 \end{definition}
 
-A FAIRE
+\begin{proposition}
+  Soit $(X,d)$ un espace métrique séparable. Alors la complétion
+  $(\hat X,\hat d)$ de cet espace, comme construite précédemment, est un espace
+  polonais.
+\end{proposition}
+
+\begin{proof}
+  On sait qu'il existe une partie dense dénombrable $Y\subseteq X$, et que
+  $X$ est dense dans $\hat X$, donc $Y$ est dense (et dénombrable) dans
+  $\hat X$. Comme $\hat X$ est par construction un espace complet, on en déduit
+  qu'il est un espace séparable complet~: c'est un espace polonais.
+\end{proof}

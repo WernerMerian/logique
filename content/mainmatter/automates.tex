@@ -222,3 +222,75 @@ Définissons la notion de morphisme associée à la structure de monoïde.
     f(e) = e'
   \end{equation}
 \end{definition}
+
+Remarquons que contrairement au cas des groupes, les morphismes de monoïdes ont
+besoin de stabiliser l'élément neutre.
+
+L'exemple le plus évident de monoïde est $(\mathbb N,+,0)$, mais nous allons
+voir que la structure des mots généralise de façon naturelle ce cas.
+
+\begin{exercise}
+  Soit $\Sigma$ un alphabet, montrer que $(\Sigma^*, \star,\varepsilon)$ est un
+  monoïde.
+\end{exercise}
+
+Ce fait généralise le cas de $\mathbb N$ car on peut représenter un entier en
+unaire comme un mot sur l'alphabet $\{*\}$~: la seule information d'un tel mot
+est sa longueur.
+
+L'étude des monoïdes permet donc d'inclure l'étude de la structure de
+$\Sigma^*$. Nous allons maintenant voir qu'en fait, $\Sigma^*$ peut être
+construit comme la structure de monoïde la plus simple engendrée par $\Sigma$.
+Cela se traduit par la propriété universelle du monoïde libre.
+
+\begin{theorem}[Propriété universelle du monoïde libre]
+  Soit $\Sigma$ un alphabet, $(M,\diamond,e)$ un monoïde et $f : \Sigma \to M$
+  une fonction (quelconque). Alors il existe un unique morphisme de monoïde
+  $\tilde f$ entre $\Sigma^*$ et $M$ tel que $\tilde f (x) = f(x)$ pour tout
+  $x \in \Sigma$.
+\end{theorem}
+
+\begin{proof}
+  On procède par analyse-synthèse~:
+  \begin{itemize}
+  \item supposons que $\tilde f$ existe et vérifie les conditions décrites.
+    Alors pour tout mot $u = u_0\ldots u_{n-1}$, on sait par récurrence sur
+    $n$ que $\tilde f(u) = f(u_0)\diamond \cdots \diamond f(u_{n-1})$. La
+    fonction ainsi définie est unique, étant donnée la construction.
+  \item en considérant la fonction proposée précédemment, on voit d'abord que
+    $\tilde f(x) = f(x)$ pour $x\in \Sigma$, et que si $u = v\star w$ alors
+    $\tilde f(u) = \tilde f(v)\diamond \tilde f(w)$, où l'associativité est
+    nécessaire pour pouvoir couper le produit au milieu sans changer le
+    résultat.
+  \end{itemize}
+  On voit donc qu'un seul candidat est possible pour la fonction donnée, et que
+  ce candidat vérifie la proposition attendue.
+\end{proof}
+
+Remarquons qu'en choisissant une fonction $f : \Sigma \to M$ sans propriété
+particulière, on peut potentiellement atteindre avec $\tilde f$ des valeurs qui
+ne sont pas atteintes par $f$ directement. Par exemple si on prend la fonction
+\[\begin{array}{ccccc}
+f & : & \Sigma & \longrightarrow & \mathbb N\\
+& & \alpha & \longmapsto & 1
+\end{array}\]
+alors l'image d'un mot de taille $n$ est $n$. De cette façon, on vient de voir
+que l'ensemble des mots de taille $n$ peut être décrit à partir du monoïde
+$(\mathbb N,+,1)$ en considérant une partie du monoïde et une fonction
+$f : \Sigma \to \mathbb N$.
+
+\begin{definition}
+  Soit $\Sigma$ un alphabet, $(M,\cdot,e)$ un monoïde, $h : \Sigma \to M$ une
+  fonction et $S\subseteq M$. On dit que $\mathcal L(\Sigma,M,\cdot,e,h)$ est
+  le langage induit par $(\Sigma,M,\cdot,e,h,S)$, qui est défini par~:
+  \[\mathcal L(\Sigma,M,\cdot,e,h,S)\defeq
+  \{u\in\Sigma^*\mid \tilde h(u)\in S\}\]
+\end{definition}
+
+En reprenant l'exemple de $\alpha \mapsto 1$, on voit qu'en prenant $S = \{n\}$,
+on induit le langage $\Sigma^n$.
+
+\section{Automate fini et langage reconnaissable}
+
+On peut désormais s'intéresser plus en profondeur aux automates finis et aux
+langages reconnaissables.

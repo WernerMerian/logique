@@ -25,4 +25,756 @@ induite par $\tanh$. Les deux nous donnent des métriques, mais seulement celle
 induite par $\tanh$ est complète~: cela ne change rien dans notre définition
 d'espace polonais, où les deux cas donnent le même espace.
 
+\section{Stabilité des espaces polonais}
+
+Pour commencer, nous allons voir que la structure d'espace polonais est stable
+par de nombreuses opérations. Nous allons distinguer plusieurs opérations~: les
+opérations élémentaires, qui sont des opérations topologiques classiques, les
+opérations liées à la hiérarchie de Borel, et la compactification d'Alexandrov.
+
+\subsection{Opérations élémentaires}
+
+La première opération est celle de produit dénombrable. On a vu que la compacité
+était stable par des produits quelconques, donc cette stabilité est légèrement
+plus faible, mais il faut garder à l'esprit que la structure d'espace polonais
+est largement plus restrictive que celle d'espace compact, donc garder une
+stabilité par produits dénombrables (et non juste par produits finis) est déjà
+remarquable.
+
+\begin{proposition}
+  Soit $(X_n)_{n\in \mathbb N}$ une suite dénombrable d'espaces polonais (on garde
+  la topologie sous-entendue). Alors l'espace produit de ces espaces polonais
+  est encore un espace polonais.
+\end{proposition}
+
+\begin{proof}
+  Tout d'abord, on remarque que si $(X,d)$ est un espace métrique, alors la
+  métrique suivante est équivalente~:
+  \[d'(x,y) \defeq \frac{d(x,y)}{1+d(x,y)}\]
+  En effet, si A FAIRE
+  On voit, de plus, que $d'$ est bornée (si $d$ tend vers $\infty$, alors $d'$
+  tend vers $1$). $d'$ est complète si et seulement si $d$ est complète~:
+  A FAIRE
+
+  Ainsi on peut considérer que pour chaque espace $X_i$, on possède une
+  distance complète $d_i$ bornée induisant la topologie de $X_i$. On définit
+  alors la distance sur $\displaystyle\prod_{i\in\mathbb N} X_i$ par
+  \[d((x_n),(y_n)) \defeq \sum_{n \in \mathbb N} \frac{d_n(x_n,y_n)}{2^n}\]
+  Cette distance définit bien la topologie produit sur
+  $\displaystyle\prod_{i\in\mathbb N} X_n$~: A FAIRE
+
+  Enfin, cette distance est complète~: soit
+  $((x_{i,j})_{i\in\mathbb N})_{j \in\mathbb N}$
+  une suite de Cauchy dans cet espace. On définit la limite par
+  \[x_i \defeq \lim_{j\to\infty} x_{i,j}\]
+  Pour montrer que cette suite est bien définie, il nous suffit de montrer que
+  pour tout $i\in\mathbb N$, la suite $(x_{i,j})_{j\in\mathbb N}$ est de Cauchy.
+  Soit $\varepsilon > 0$, on A FAIRE
+\end{proof}
+
+La seconde propriété de stabilité, là encore dénombrable, est celle par union
+disjointe. Nous n'avons pas précisé ce qu'est l'union disjointe dans le cas des
+espaces topologiques, nous donnons donc la définition ici~:
+
+\begin{definition}[Union disjointe d'espaces topologiques]
+  Soit $(X_i,\Omega_i)_{i\in I}$ une famille d'espaces topologiques. L'union
+  disjointe de cette famille est l'espace donné par
+  \[\coprod_{i\in I} X_i \defeq \{(i,x)\mid x \in X_i\}\]
+  et où la topologie est engendrée par la famille de parties
+  \[\Omega\left(\coprod_{i\in I} X_i\right)\defeq
+  \bigcup_{i \in I}\left\{\{(i,x)\mid x\in U\}\mid U\in\Omega_i\right\}\]
+\end{definition}
+
+Intuitivement, l'union disjointe des $(X_i)$ est l'espace global dans lequel
+on considère tous les $X_i$ en même temps, mais en ne considérant aucune
+proximité entre eux.
+
+\begin{proposition}
+  Soit $(X_i)_{i\in \mathbb N}$ une suite d'espaces polonais. Alors l'espace
+  $\coprod_i X_i$ est un espace polonais.
+\end{proposition}
+
+\begin{proof}
+  Pour chaque $X_n$, on fixe une distance complète $d_n$ (qu'on choisit bornée
+  par $1$ grâce à la construction précédente) qui induit la topologie de $X_n$.
+  On définit sur le coproduit la distance
+  \[d((i,x),(j,y)) \defeq
+  \left\{\begin{array}{cl}
+  d_i(x,y) & \text{si } i = j\\
+  1 & \text{sinon}
+  \end{array}\right.\]
+  On veut montrer que les deux bases s'engendrent l'une l'autre~:
+  \begin{itemize}
+  \item soit $i\in I, U \in \Omega_i$. Comme la topologie de $X_i$ est
+    engendrée par $d_i$, on peut écrire
+    \[U = \bigcup_{j \in J} B_i(x_j,\varepsilon_j)\]
+    mais dans ce cas,
+    \[\bigcup_{j \in J}B((i,x_j),\varepsilon) = \{(i,x)\mid x \in U\}\]
+  \item soit $x\in \coprod_i X_i$ et $\varepsilon > 0$. Si
+    $\varepsilon \geq 1$, alors $B(x,\varepsilon) = \coprod_i X_i$ qui est un
+    ouvert par définition. Sinon, on peut écrire $x = (i,y)$, et dans ce cas
+    $B(x,\varepsilon) = \{(i,z) \mid d_i(y,z) < \varepsilon\}$, qui est par
+    définition un élément de la topologie sur $\coprod_i X_i$.
+  \end{itemize}
+  donc $d$ définit la bonne topologie sur $\coprod_i X_i$.
+
+  Cette distance est complète~: soit $(x_n)$ une suite de Cauchy sur notre
+  espace. Comme la suite est de Cauchy, on peut trouver $n\in\mathbb N$ tel que
+  \[\forall p,q > n, d(x_p,x_q) < \frac{1}{2}\]
+  donc à partir du rang $n$, $(x_n)$ est dans la boule $B(x_n,\dfrac{1}{2})$.
+  Cela signifie donc qu'à partir du rang $n$, tous les éléments de la suite
+  sont de la forme $(i,y_n)$ pour un même $i$. Naturellement, cette suite
+  correspond à la suite $(y_n) \in X_i$ qui est de Cauchy dans l'espace complet
+  $(X_i,d_i)$, donc converge vers un certain point $y$. Au final, $(x_i)$
+  converge vers $(i,y)$. Donc $d$ est une distance complète.
+
+  L'espace est séparable~: pour chaque $i\in \mathbb N$, on trouve une partie
+  $D_i\subseteq X_i$ dénombrable et dense dans $X_i$. Alors la partie
+  \[\bigcup_{i\in \mathbb N}\{(i,x)\mid x \in D_i\}\]
+  est une partie dénombrable et dense dans $\coprod_{i\in \mathbb N} X_i$.
+
+  L'espace $\displaystyle\coprod_{i\in \mathbb N} X_i$ est donc un espace
+  polonais.
+\end{proof}
+
+Enfin, on a stabilité par partie fermée.
+
+\begin{proposition}\label{desc.ferme.polonais}
+  Soit $(X,\Omega)$ un espace polonais et $F\subseteq X$ un fermé de $X$. Alors
+  l'espace induit par $F$ sur $X$ est un espace polonais.
+\end{proposition}
+
+\begin{proof}
+  On sait qu'une partie d'un espace complet est un espace complet pour la
+  distance induite si et seulement si la partie est fermée, donc le fait d'être
+  complètement métrisable passe directement à $F$.
+  
+  Soit $D$ une partie dénombrable dense dans $X$, notons-la
+  $\{x_n\}_{n\in\mathbb N}$. On construit alors un ensemble $D'\subseteq Y$~: pour
+  chaque $i\in \mathbb N$ et chaque $j\in \mathbb N^*$, si
+  $B\left(x_n,\dfrac{1}{j}\right)\neq\varnothing$ alors on ajoute à $D'$ un
+  élément $y_{i,j}$ de cet ensemble. Soit $y\in Y$ et $\varepsilon > 0$, on veut
+  trouver un élément $y_{i,j}$ tel que $d(y,y_{i,j}) < \varepsilon$. Pour cela,
+  on commence par fixer $j$ tel que $\dfrac{1}{j} < \dfrac{\varepsilon}{2}$.
+  Par définition de la densité de $x_n$ dans $X$, on trouve $n$ tel que
+  \[\forall m > n, d(y,x_n) < \frac{1}{j}\]
+  et, par construction de $D'$, on trouve $i$ tel que
+  $d(x_n,y_{i,j})<\dfrac{1}{j}$. Ainsi
+  \begin{align*}
+    d(y,y_{i,j}) &\leq d(y,x_n) + d(x_n,y_{i,j})\\
+    &\leq \frac{1}{j} + \frac{1}{j}\\
+    &\leq \varepsilon
+  \end{align*}
+  $D'$ est donc dense dans $Y$. $Y$ est donc un espace polonais.
+\end{proof}
+
+On donne l'exemple paradigmatique d'espace polonais~: l'ensemble des réels.
+
+\begin{exercise}
+  Montrer que $\mathbb R$ muni de la topologie usuelle est un espace polonais.
+\end{exercise}
+
+Avec ces quelques opérations élémentaires, on peut déjà donner plusieurs
+exemples d'espaces polonais.
+
+\begin{example}
+  Les espaces suivants sont des espaces polonais (avec leur topologie usuelle)~:
+  \begin{itemize}
+  \item l'intervale $[0,1]$, les hypercubes $[0,1]^n$ pour tout $n\in\mathbb N$
+    et le cube de Hilbert $[0,1]^{\mathbb N}$.
+  \item de même avec $\mathbb R$ et $\mathbb C$ à la place de $[0,1]$.
+  \item le cercle unité \[\mathbb U \defeq \{z\in \mathbb C\mid |z| = 1\}\]
+  \item tous les espaces de Banach séparables.
+  \item pour tout espace $X$ dénombrable et discret, l'espace $X^\mathbb N$.
+  \end{itemize}
+\end{example}
+
+\begin{exercise}
+  Prouver les exemples précédents. Prouver aussi que le tore de dimension $n$,
+  défini par
+  \[\mathbb T^n \defeq \prod_{i = 0}^{n-1} \mathbb U\]
+  est un espace polonais pour tout $n \in \mathbb N$.
+\end{exercise}
+
+\subsection{La hiérarchie de Borel}
+
+Un outil important de théorie descriptive des ensembles est la hiérarchie de
+Borel. Elle permet de hiérarchiser les parties d'un espace topologique suivant
+la complexité à les construire. Plus précisément, cette hiérarchie s'applique
+aux boréliens, notion importante entre autre en théorie de la mesure. Nous
+rappelons la définition d'ensemble des boréliens, qui peut être vu comme la plus
+petite $\sigma$-algèbre contenant $\Omega$.
+
+\begin{definition}[Ensemble des boréliens]
+  Soit un espace topologique $(X,\Omega)$. On appelle ensemble des boréliens de
+  $(X,\Omega)$, que l'on note $\Borel(X,\Omega)$, le plus petit ensemble
+  $\Borel\subseteq \powerset(X)$ tel que~:
+  \begin{itemize}
+  \item $\Omega\subseteq \Borel$
+  \item si $(Y_i)_{i\in\mathbb N}$ est une suite d'éléments de $\Borel$, alors
+    $\displaystyle\bigcap_{i\in\mathbb N} Y_i\in \Borel$ et
+    $\displaystyle\bigcup_{i\in\mathbb N} Y_i\in\Borel$.
+  \item si $Y\in\Borel$, alors $X\setminus Y \in \Borel$.
+  \end{itemize}
+\end{definition}
+
+On peut alors décomposer $\Borel(X,\Omega)$ en une hiérarchie indicée par
+$\Ord$.
+
+\begin{definition}[Hiérarchie de Borel]
+  Soit $(X,\Omega)$ un espace topologique. On définit par induction transfinie
+  les ensembles $\bSigma^0_\alpha,\bPi^0_\alpha$ et $\bDelta^0_\alpha$ pour
+  $\alpha \in \Ord$~:
+  \begin{itemize}
+  \item $\bSigma_1^0 = \Omega$
+  \item pour une partie $Y\subseteq X$, $Y\in\bSigma_\alpha^0$ si et seulement
+    s'il existe une suite $(Y_i)_{i\in\mathbb N}$ telle que
+    \[\left\{\begin{array}{c}
+    \forall i \in \mathbb N, \exists \beta < \alpha, Y_i \in \bPi_\beta^0\\
+    \displaystyle\bigcup_{i\in\mathbb N} Y_i = Y
+    \end{array}\right.\]
+  \item pour tout $\alpha \in \Ord$, on définit
+    \[\bPi_\alpha^0 \defeq \{X\setminus Y\mid Y \in \bSigma_0^\alpha\}\]
+  \item pour tout $\alpha \in \Ord$, on définit
+    \[\bDelta_\alpha^0\defeq \bSigma_\alpha^0\cap \bPi_\alpha^0\]
+  \end{itemize}
+
+  En particulier, on dit qu'une partie $Y\subseteq X$ est un $F_\sigma$ si
+  $Y\in\bSigma_2^0$ et un $G_\delta$ si $Y\in\bPi_2^0$, ce sont respectivement les
+  unions dénombrables de fermés et les intersections dénombrables d'ouverts.
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour tout espace topologique $(X,\Omega)$, on a l'égalité
+  \[\Borel(X,\Omega) = \bigcup_{\alpha < \omega_1} \bSigma_\alpha^0\]
+\end{exercise}
+
+On peut désormais montrer la stabilité des espaces polonais pour les parties
+$G_\delta$.
+
+\begin{proposition}
+  Soit $(X,\Omega)$ un espace polonais et $Y\subseteq X$ un $G_\delta$. Alors
+  $Y$ muni de la topologie induite est un espace polonais.
+\end{proposition}
+
+\begin{proof}
+  On se donne une distance complète $d$ sur $X$ engendrant $\Omega$. Soit
+  $(U_n)_{n\in\mathbb N}$ une suite d'ouverts telle que $\bigcap U_n = Y$. On
+  définit
+  \[C_n \defeq X\setminus U_n\]
+  et une nouvelle distance $d'$ sur $Y$~:
+  \[d'(x,y) \defeq d(x,y) + \sum_{n\in \mathbb N} \min\left(2^{-n-1},
+  \left|\frac{1}{d(x,C_n)} - \frac{1}{d(y,C_n)}\right|
+  \right)\]
+
+  La topologie induite par $d'$ est la même que celle induite par $d$~: A FAIRE
+
+  $d'$ est une distance complète~: soit $(x_n)_{n\in\mathbb N}$ une suite de
+  Cauchy de $(Y,d')$. $(x_n)$ est aussi une suite de Cauchy dans $(X,d)$. En
+  effet, pour $\varepsilon > 0$, on trouve $n_0$ tel que
+  \[\forall p,q > n_0, d'(x_p,x_q) \leq \varepsilon\]
+  mais $d \leq d'$, donc $d(x_p,x_q) \leq \varepsilon$ dans l'expression
+  ci-dessus, donc la fonction est de Cauchy pour $d$. Comme $(X,d)$ est complet,
+  on trouve une limite $x$ pour $(x_n)_{n\in\mathbb N}$. Soit $n\in \mathbb N$, on
+  veut montrer que $x\notin C_n$, ce que l'on peut prouver en montrant que
+  $d(x,C_n) \neq 0$. Pour cela, on veut montrer que
+  $\dfrac{1}{d(x,C_n)} \neq 0$ en utilisant la définition de $d'$.
+
+  Soit $\varepsilon > 0$, comme $(x_n)$ est de Cauchy, on peut trouver $n_0$ tel
+  que
+  \[\forall p,q > n_0, d'(x_p,x_q) \leq \min(2^{-n-2}, \varepsilon)\]
+  Soient $p,q > n_0$. Comme $d'(x_p,x_q) \leq 2^{-n-2}$, il n'est pas possible
+  d'avoir
+  \[\left|\frac{1}{d(x_p,C_n)}-\frac{1}{d(x_q,C_n)}\right| \leq 2^{-n-1}\]
+  d'où l'inégalité dans le sens inverse, d'où
+  \begin{align*}
+    \left|\frac{1}{d(x_p,C_n)} - \frac{1}{d(x_q,C_n)}\right| & \leq
+    d(x_p,x_q) + \min\left(2^{-n-1},\left|\frac{1}{d(x_p,C_n)}
+    - \frac{1}{d(x_q,C_n)}\right|\right)\\
+    &\leq d'(x_p,x_q)\\
+    &\leq \varepsilon
+  \end{align*}
+
+  On en déduit que
+  $\displaystyle\left(\frac{1}{d(x_p,C_n)}\right)_{p\in\mathbb N}$ est une
+  suite de Cauchy, donc converge (dans $\mathbb R$), ce qui signifie que
+  pour tout $p$ suffisamment grand, $d(x_p,C_n) \neq 0$, donc que
+  $d(x,C_n) \neq 0$, d'où $x\notin C_n$. Comme cela est vrai pour tout $n$, on
+  en déduit que $x\in \bigcap U_n$, donc que $x\in Y$. Ainsi $(Y,d')$ est
+  complet.
+
+  Cet espace est séparable par le même argument que pour la preuve de la
+  \cref{desc.ferme.polonais}.
+\end{proof}
+
+\subsection{Compactification d'Alexandrov}
+
+La dernière opération élémentaire que nous abordons est celle de la
+compactification d'Alexandrov. L'idée de cette opération est de transformer un
+espace se comportant suffisamment bien en un espace compact. Cette construction
+s'applique aux espace localement compact, que nous devons donc introduire.
+
+\begin{definition}[Espace localement compact]
+  Un espace $(X,\Omega)$ est localement compact si pour tout $x\in X$, il existe
+  un ouvert $U\in \Omega$ et un compact $K$ de $X$ tels que $x\in U\subseteq K$.
+\end{definition}
+
+L'idée d'un espace localement compact, dans le cas métrique, est qu'une boule
+suffisamment petite est contenue dans un compact. Remarquons que dans le cas
+d'un espace vectoriel normé de dimension infini par exemple, n'importe quel
+ouvert aussi petit soit-il n'est pas inclus dans un compact, donc cette
+condition n'est pas anodine.
+
+\begin{definition}[Compactification d'Alexandrov]
+  Soit $(X,\Omega)$ un espace localement compact. On appelle compactifié
+  d'Alexandrov de $(X,\Omega)$ l'espace $(\tilde X,\tilde\Omega)$ défini par
+  \[\tilde X \defeq X\cup \{\infty\}\qquad
+  \tilde\Omega\defeq \Omega \cup
+  \{(X\setminus K) \cup \{\infty\}\mid K \text{ compact de } X\}\]
+  où $\infty\notin X$.
+\end{definition}
+
+Le compactifié d'Alexandrov d'un espace est donc l'espace auquel on ajoute un
+point (considéré à l'infini), dont les voisinages ont comme base les
+complémentaires de compacts dans $X$. La propriété essentielle du compactifié
+d'Alexandrov, comme son nom l'indique, est de produire un espace compact.
+
+\begin{proposition}
+  Soit $(X,\Omega)$ un espace localement compact, alors
+  $(\tilde X,\tilde\Omega)$ est un espace compact.
+\end{proposition}
+
+\begin{proof}
+  Soit $(U_i)_{i\in I}$ un recouvrement de $\tilde X$ par des ouverts de
+  $\tilde\Omega$, alors il existe $i\in I$ tel que $\infty \in U_i$. Par
+  définition de $\tilde \Omega$, on trouve $K$ compact tel que
+  $U_i = (X\setminus K)\cup\{\infty\}$. On en déduit que
+  $(U_j)_{j\in I\setminus\{i\}}$ est un recouvrement de $K$, mais comme
+  on a un recouvrement d'un compact, on peut en extraire un recouvrement
+  fini $(U_j)_{j\in J}$ où $J\subfin I\setminus\{i\}$. Ainsi
+  $(U_j)_{j\in J\cup \{i\}}$ est un recouvrement fini de $\tilde X$, donc
+  $(\tilde X,\tilde\Omega)$ est compact.
+\end{proof}
+
+Cette notion de compactification va nous servir pour considérer de nouveaux
+espaces. Cependant, il nous faut aussi d'autres notions et résultats. Ces
+résultats sont importants en topologie, mais cet ouvrage n'est pas un cours de
+topologie~: nous décidons donc d'admettre le \cref{desc.thm.urysohn}.
+
+\begin{definition}[Espace à base dénombrable]
+  Un espace $(X,\Omega)$ est dit à base dénombrable s'il existe une famille
+  $(U_i)_{i\in\mathbb N}$ engendrant $\Omega$.
+\end{definition}
+
+\begin{proposition}
+  Un espace polonais est à base dénombrable.
+\end{proposition}
+
+\begin{proof}
+  Soit $(X,\Omega)$ un espace polonais. On trouve un ensemble dense
+  $D\subseteq X$, on notera $D = \{x_n\}_{n\in\mathbb N}$. Pour tout
+  $n\in\mathbb N$, on considère la base de voisinages
+  \[(V_{n,j})_{j\in \mathbb N} \defeq B\left(x_n,\frac{1}{n}\right)\]
+
+  La famille $(V_{n,j})_{(n,j)\in\mathbb N\times\mathbb N}$ est une base de $\Omega$.
+  En effet, soit $U\in\Omega$. Pour tout $x\in U$, on peut trouver
+  $\varepsilon$ tel que $B(x,\varepsilon)\subseteq U$. Comme $D$ est dense,
+  on peut trouver un certain $x_n$ tel que
+  $x_n \in B\left(x,\dfrac{\varepsilon}{3}\right)$. On peut alors, en
+  choisissant $i$ tel que
+  $\dfrac{\varepsilon}{3} < \dfrac{1}{i} < \dfrac{\varepsilon}{2}$, remarquer
+  que $x\in V_{n,i}\subseteq B(x,\varepsilon)\subseteq U$. On peut donc écrire,
+  en notant $n(x)$ et $i(x)$ respectivement les indices trouvés,
+  \[U = \bigcup_{x\in U} V_{n(x),i(x)}\]
+  donc $(V_{n,j})$ est bien une base dénombrable de $\Omega$.
+\end{proof}
+
+\begin{definition}[Espace régulier]
+  Un espace $(X,\Omega)$ est dit régulier si pour tout fermé $C\subseteq X$ et
+  point $x\notin C$ il existe deux ouverts $U_1,U_2\in\Omega$ tels que
+  \[\left\{
+  \begin{array}{l}
+    x\in U_1\\
+    C\subseteq U_2\\
+    U_1\cap U_2 = \varnothing
+  \end{array}
+  \right.\]
+\end{definition}
+
+\begin{theorem}[Métrisation d'Urysohn]\label{desc.thm.urysohn}
+  Tout espace régulier à base dénombrable est métrisable.
+\end{theorem}
+
+On peut alors énoncer nos derniers résultats de stabilité.
+
+\begin{proposition}\label{desc.prop.second}
+  Un espace compact séparé est métrisable si et seulement s'il est à base
+  dénombrable. Un espace vérifiant ces propriétés équivalentes est un espace
+  polonais.
+\end{proposition}
+
+\begin{proof}
+  Supposons qu'on possède une métrique sur $(X,\Omega)$ supposé compact séparé.
+  Soit $n\in \mathbb N$. Il est clair que la famille
+  $\{B(x,2^{-n})\mid x \in X\}$ recouvre $X$, donc on peut en extraire un
+  recouvrement fini $\{B(x,2^{-n})\mid x \in I_n\}$ où $I_n\subfin X$. Notre
+  base dénombrable est
+  \[\bigcup_{i\in \mathbb N} \{B(x,q)\mid x \in I_n, q \in \mathbb Q\}\]
+  On veut donc montrer que pour tout $x\in X, \varepsilon > 0$, on peut écrire
+  $B(x,\varepsilon)$ comme une union d'éléments de notre base. Soit $y$ tel que
+  $d(x,y) < \varepsilon$, A FAIRE
+
+  Pour le sens réciproque, si $(X,\Omega)$ est compact séparé à base
+  dénombrable, on veut appliquer le \cref{desc.thm.urysohn}~: il nous suffit
+  donc de vérifier que cet espace est régulier. Soit $C\subseteq X$ fermé et
+  $x\in X \setminus C$. Notons $U = X \setminus C$. Comme $(X,\Omega)$ est
+  séparé, on sait que pour tout $y \in C$, il existe $(U_y,v_y)$ deux ouverts
+  tels que
+  \[\left\{\begin{array}{c}
+  x \in U_y\\
+  y \in v_y\\
+  U_y \cap V_y = \varnothing
+  \end{array}\right.\]
+  La famille $\{V_y\}_{y \in C}$ est alors un recouvrement de $C$, qui est
+  compact car c'est un fermé dans un espace compact~: on en déduit un ensemble
+  $I\subfin C$ tel que $\bigcup_I V_y \supseteq C$, notons cet ensemble $V$.
+  On voit alors que
+  \[U \defeq \bigcap_{y\in I} U_y\]
+  est un ouvert comme intersection finie d'ouverts, et $U\cap V = \varnothing$
+  et $x \in U$ puisque chaque $U_y$ contient $x$ par construction. On a donc
+  trouvé les deux ouverts souhaités.
+
+  Enfin, supposons que $(X,\Omega)$ est un espace métrique compact à base
+  dénombrable, montrons que c'est un espace polonais. Pour la séparabilité,
+  on voit que la famille $\bigcup_{i \in \mathbb N} I_n$ définie au début de la
+  preuve est dense dans $X$. On sait que l'espace est métrique, il nous reste
+  donc à montrer qu'on a une métrique complète. Soit $(x_n)_{n\in\mathbb N}$
+  une suite de Cauchy. Comme l'espace est compact, on sait qu'il existe une
+  sous-suite $(x_{\varphi(n)})_{n\in\mathbb N}$ convergente~: notons $x$ cette
+  limite. Soit $\varepsilon > 0$, comme $(x_n)$ est de Cauchy on peut trouver
+  $n_0$ tel que
+  \[\forall p,q > n_0, d(x_p,x_q) \leq \frac{\varepsilon}{2}\]
+  de plus, puisque $(x_{\varphi(n)})$ converge, on peut trouver $n_1$ tel que
+  \[\forall n > n_1, d(x_{\varphi(n)},x) \leq \frac{\varepsilon}{2}\]
+  On voit donc que, pour $n > \max(n_0,n_1)$~:
+  \begin{align*}
+    d(x_n,x) &\leq d(x_n,x_{\varphi(n)}) + d(x_{\varphi(n)},x)\\
+    &\leq \frac{\varepsilon}{2} + \frac{\varepsilon}{2}\\
+    &\leq\varepsilon
+  \end{align*}
+  donc $(x_n)$ converge vers $x$. Ainsi $d$ est complète, achevant la preuve
+  que $(X,\Omega)$ est un espace polonais.
+\end{proof}
+
+L'exerice suivant cherche à montrer la stabilité pour les fonctions continues à
+valeurs dans $\mathbb C$.
+
+\begin{exercise}
+  Soit $(X,\Omega)$ un espace compact métrisable. Montrer que l'espace
+  $\mathcal C(X,\mathbb C)$ muni de la distance
+  \[d(f,g) \defeq \sup_{x \in X}|f(x) - g(x)|\]
+  est un espace polonais.
+\end{exercise}
+
+Enfin, en réutilisant le résultat sur les $G_\delta$, on peut affaiblir les
+conditions de la \cref{desc.prop.second} à de la compacité locale.
+
+\begin{proposition}
+  Soit $(X,\Omega)$ un espace localement compact à base dénombrable, c'est un
+  espace polonais.
+\end{proposition}
+
+\begin{proof}
+  On voit d'abord que $X$ est un ouvert de $\tilde X$, et un ouvert est en
+  particulier un $G_\delta$, donc il suffit de montrer que $\tilde X$ est un
+  espace polonais.
+
+  On veut donc montrer que l'espace est compact et à base dénombrable. La
+  compacité est directe, il nous reste donc à trouver une base dénombrable. Un
+  ouvert de $\tilde X$ est soit un ouvert de $X$ (auquel cas, $X$ étant à base
+  dénombrable, on peut directement reconstruire cet ouvert grâce à la base
+  dénombrable de $X$), soit un voisinage de $\infty$. Il nous reste donc à
+  trouver une base de $\mathcal V_\infty$. Pour cela, on considère la partie
+  dense $D\subseteq X$ donnée par la séparabilité~: pour chaque $x\in D$ et
+  chaque $n \in \mathbb N$, A FAIRE
+\end{proof}
+
+\section{Espace de Cantor et de Baire}
+
+Dans cette dernière section, on s'intéresse aux espaces de Cantor et de Baire,
+qui sont des exemples essentiels d'espaces polonais. L'espace de Cantor a été
+d'une certaine manière introduit dans le \cref{chp.topo} puisqu'il est un espace
+de Stone, mais nous allons étudier plus en détail ses propriétés topologiques.
+Nous allons voir les notions de schéma de Cantor et de schéma de Lusin,
+permettant de construire efficacement des fonctions depuis les espace
+respectifs. Nous verrons ensuite le théorème de Cantor-Bendixon, qui est un des
+théorèmes importants de la théorie descriptive des ensembles, puis nous verrons
+la caractérisation des espaces de Cantor et de Baire.
+
+\subsection{Schémas de Cantor et de Baire}
+
+On sait que la topologie de $2^{\mathbb N}$ peut être engendrée par la famille de
+parties
+$\{\alpha \in 2^{\mathbb N}\mid \forall i \in \{1,\ldots,n\}, \alpha(i) = x_i\}$
+pour $(x_1,\ldots,x_n)$ des éléments de $\{0,1\}$. On voit ainsi qu'un élément
+de l'espace de Cantor peut être vu comme la limite de suites finies sur $2$.
+On veut donc associer à des suites finies sur $2$ des ouverts, en voulant
+associer ces ouverts de base de l'espace de Cantor.
+
+Ainsi, un schéma de Cantor sera une association des suites finies sur un espace,
+de sorte que l'image des suites infinies est obtenue par passage à la limite.
+Pour une suite finie $s \in 2^{<\omega}$ de taille $n$ et $a \in \{0,1\}$, on
+note $s\star a$ la suite finie obtenue en associant $n$ à $a$ et les termes
+de $0$ à $n-1$ à ceux correspondant dans $s$.
+
+\begin{definition}[Schéma de Cantor]
+  Soit $(X,\Omega)$ un espace polonais. On appelle schéma de Cantor sur $X$ une
+  famille $\mathcal X = \{X_s\mid s \in 2^{<\omega}\}$ vérifiant les propriétés
+  suivantes~:
+  \begin{itemize}
+  \item pour tout $s\in 2^{<\omega}$, $X_{s\star 0} \subseteq X_s$ et
+    $X_{s\star 1} \subseteq X_s$.
+  \item pour tout $s\in 2^{<\omega}$,
+    $X_{s\star 0}\cap X_{s\star 1} = \varnothing$.
+  \end{itemize}
+
+  On dit qu'un schéma de Cantor est de diamètre évanescant si pour toute suite
+  $u\in 2^{\mathbb N}$, on a
+  \[\lim_{n\in\mathbb N} \sup_{x,y\in X_{u\restr n}}d(x,y) = 0\]
+\end{definition}
+
+\begin{proposition}\label{desc.prop.schem.C}
+  Soit $(X,\Omega)$ un espace polonais et $\mathcal X$ un schéma de Cantor dont
+  tous les éléments sont des ouverts. Alors une fonction
+  $f : 2^{\mathbb N} \to X$ vérifiant
+  \[\forall u \in 2^{\mathbb N}, f(u) \in \bigcap_{n \in \mathbb N}X_{u\restr n}\]
+  est une injection continue.
+\end{proposition}
+
+\begin{proof}
+  Pour l'injectivité, supposons que $u \neq v$ pour deux suites
+  $u,v\in 2^{\mathbb N}$. On trouve alors un indice minimal $i\in\mathbb N$ tel
+  que $u(i) \neq v(i)$. Ainsi, comme $f(u) \in X_{u\restr i}$ et
+  $f(v)\in X_{v\restr i}$, on en déduit que $f(u) \neq f(v)$.
+
+  Il nous reste à vérifier la continuité. Soit $x\in X$ et $\varepsilon > 0$.
+  Si $f^{-1}(B(x,\varepsilon)) = \varnothing$, la prémiage est effectivement un
+  ouvert. Sinon, soit $u$ tel que $d(x,f(u)) < \varepsilon$. Comme $\mathcal X$
+  est de diamètre évanescent, on trouve $n$ tel que
+  \[\forall m \geq n, \sup_{x,y \in X_{u\restr m}} d(x,y) <
+  \varepsilon - d(x,f(u))\]
+  Alors, pour tout $v \in \ext(u\restr n)$~:
+  \[d(f(v),x) \leq d(f(v),f(u)) + d(\] A FAIRE
+\end{proof}
+
+\begin{remark}
+  Si $\mathcal X$ est de diamètre évanescent, alors il existe au plus une seule
+  fonction vérifiant la condition précédente.
+\end{remark}
+
+L'analogue d'un schéma de Cantor pour l'espace de Baire $\mathbb N^\mathbb N$
+est appelé schéma de Lusin.
+
+\begin{definition}[Schéma de Lusin]
+  Soit $(X,\Omega)$ un espace polonais. On appelle schéma de Lusin une famille
+  $\{X_s\}_{s\in \mathbb N^{<\omega}}$ telle que~:
+  \begin{itemize}
+  \item $X = U_{\varnothing}$
+  \item pour tout $s\in \mathbb N^{<\omega}$, on a
+    $\displaystyle \bigcup_{n\in\mathbb N} X_{s\star n} = X_s$
+  \item pour tout $s\in\mathbb N^{<\omega}$, $X_s$ est un ouvert-fermé non vide
+    tel que $\displaystyle\sup_{x,y\in X_s} d(x,y) < 2^{-n}$.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Soit $(X,\Omega)$ un espace polonais et $\mathcal X$ un schéma de Lusin sur
+  $X$. Alors il existe une unique fonction $f : \mathbb N^\mathbb N \to X$
+  vérifiant
+  \[\forall u \in \mathbb N^\mathbb N, f(u) \in
+  \bigcap_{n \in \mathbb N} X_{u\restr n}\]
+  et cette fonction est une injection continue.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Revenons maintenant aux schémas de Cantor. Une façon naturelle de l'appliquer
+est de considérer un espace $X$ et de le couper en deux ouverts disjoints
+$X_0$ et $X_1$, puis ceux-ci récursivement en deux ouverts disjoints, jusqu'à
+obtenir un schéma de Cantor. Si on considère un ouvert $U\in \Omega$, le
+couper en deux ouverts disjoints est particulièrement facile~: étant donnés deux
+points dans $U$, la séparation de $X$ (métrisable) nous donne deux ouverts
+disjoints, chacun contenant l'un des deux points. Le souci étant que $U$ n'a pas
+de raison de contenir deux points.
+
+Cela nous mène à la notion de point isolé et d'espace parfait.
+
+\begin{definition}[Point isolé]
+  Soit $(X,\Omega)$ un espace topologique. On dit qu'un point $x\in X$ est isolé
+  si $\{x\}\in\Omega$.
+\end{definition}
+
+\begin{remark}
+  Un espace est discret si et seulement si tous ses points sont isolés.
+\end{remark}
+
+Le contraire d'un point isolé est appelé un point d'accumulation. On le définit
+habituellement relativement à un ensemble, ce que nous allons donc faire ici,
+mais ce qui nous importe est de considérer un point d'accumulation de l'espace
+entier.
+
+\begin{definition}[Point d'accumulation]
+  Soit $(X,\Omega)$ un espace topologique, $Y\subseteq X$ une partie et
+  $x\in X$. On dit que $x$ est un point d'accumulation de $Y$ si pour tout
+  ouvert $U\in\Omega$ contenant $x$, il existe un point $y\in Y$ différent de
+  $x$ tel que $y\in U$. On dira que $x$ est un point d'accumulation sans
+  autre précision si $x$ est un point d'accumulation de $X$.
+\end{definition}
+
+On voit donc qu'un point est soit un point isolé, soit un point d'accumulation.
+Pour construire le schéma de Cantor énoncé plus haut, il nous suffit donc
+que l'espace ne contienne aucun point isolé~: ces espaces sont nommés des
+espaces parfaits.
+
+\begin{definition}[Espace parfait]
+  Un espace parfait est un espace topologique dont tous les points sont des
+  points d'accumulation. Si $(X,\Omega)$ est un espace topologique et
+  $Y\subseteq X$ est un espace parfait (pour la topologie induite), on dit alors
+  que $Y$ est parfait dans $X$.
+\end{definition}
+
+On peut maintenant construire le schéma de Cantor que l'on évoquait.
+
+\begin{proposition}
+  Soit $(X,\Omega)$ un espace polonais parfait. Il existe une injection continue
+  $2^{\mathbb N} \to X$.
+\end{proposition}
+
+\begin{proof}
+  On construit pour cela un schéma de Cantor de diamètre évanescent constitué
+  d'ouverts de $X$~:
+  \begin{itemize}
+  \item on définit $X_\varnothing = X$.
+  \item pour toute suite finie $s\in 2^{<\omega}$, on considère deux éléments
+    $x,y\in X_s$ (qui existent car $X_s$ est un ouvert et $X$ est parfait). Par
+    séparation, on trouve $U_x,U_y$ disjoints contenant respectivement $x$ et
+    $y$. On pose alors
+    \[X_{s\star 0} = X_s\cap U_x \cap B(x,2^{-|s|+1})\qquad
+    X_{s\star 1} = X_s\cap U_y \cap B(y,2^{-|s|+1})\]
+  \end{itemize}
+  Comme $X_s$ a un diamètre inférieur à $2^{-|s|}$, on en déduit que le diamètre
+  du schéma de Cantor est bien évanescent. Il nous reste donc à vérifier que
+  l'assertion suivante~:
+  \[\forall u\in 2^\mathbb N,\bigcap_{n \in \mathbb N}X_{u\restr n}
+  \neq\varnothing\]
+  On sait que chaque $X_s$ est non vide, par construction, donc on peut trouver
+  une suite $(x_n)_{n\in\mathbb N}$ telle que $x_i\in X_{u\restr n}$~: celle-ci
+  est de Cauchy. En effet, comme à partir du rang $n$ tous les points de
+  $(x_n)$ appartiennent à $X_{u\restr n}$, on en déduit que la distance entre
+  deux éléments est inférieure à $2^{-n}$, nous donnant la propriété d'être de
+  Cauchy puisque $2^{-n} \xrightarrow[n\to\infty]{} 0$. Comme $X$ est complet,
+  on en déduit que $x$ converge et donc que
+  $\displaystyle x\in\bigcap_{n\in\mathbb N} X_{u\restr n}$.
+
+  On a ainsi, grâce à la \cref{desc.prop.schem.C}, on en déduit l'existence
+  d'une injection continue de $2^\mathbb N$ dans $X$.
+\end{proof}
+
+\begin{corollary}
+  Un espace polonais parfait est de cardinal $2^{\aleph_0}$.
+\end{corollary}
+
+\begin{proof}
+  On sait que $2^{\aleph_0}$ minore de le cardinal d'un espace polonais parfait
+  par la proposition précédente. De plus, comme tout point peut être écrit
+  comme limite de points dans un ensemble dénombrable, on peut injecter l'espace
+  dans $\mathbb N^\mathbb N$, de cardinal $2^{\aleph_0}$, d'où le résultat.
+\end{proof}
+
+En fait, on peut être plus précis sur les espaces polonais~: ceux-ci sont
+presque entièrement parfait, au sens où l'ensemble des points non parfaits d'un
+espace polonais est dénombrable. L'énoncé plus précis est celui du théorème de
+Cantor-Bendixson.
+
+\begin{theorem}[Cantor-Bendixson]
+  Soit $(X,\Omega)$ un espace polonais. Il existe alors un ouvert dénombrable
+  $U\in \Omega$ et une partie parfaite $P\subseteq X$ tels que
+  $X = U \cup P$.
+\end{theorem}
+
+\begin{proof}
+  Une idée intuitive de preuve est que depuis l'ensemble $X$, on peut décider
+  de retirer les points isolés. Cependant, on peut imaginer que de nouveaux
+  points deviennent isolés à cause de ce retrait, obligeant à itérer ce
+  processus. Comme l'ensemble $U$ souhaité se trouve être dénombrable, le
+  processus n'a à être itéré qu'un nombre dénombrable de fois pour converger,
+  ce qui signifie qu'un point qui ne sera jamais retiré est un point dont les
+  voisinages sont indénombrables.
+
+  Le point de départ de la preuve à proprement parler va à rebours de cette
+  ébauche. On appelle un point de condensation de $X$ un point $x$ tel que
+  tous les voisinages de $x$ sont indénombrables. On définit alors
+  \[P \defeq \{x \in X \mid x\text{ est un point de condensation}\}\]
+  On fixe désormais une base dénombrable de $\Omega$, qu'on notera
+  $(U_i)_{i\in I}$. Pour tout $i\in I$, si $U_i$ est dénombrable alors tous ses
+  éléments sont hors de $P$ (par définition d'être un point de condensation).
+  Réciproquement, si un point $x$ n'est pas de condensation, alors on trouve un
+  ouvert $U$ dénombrable tel que $x\in U$, mais alors comme $(U_i)$ est une
+  base, on peut trouver un ouvert $U_i\subseteq U$ tel que $x\in U_i$, qui est
+  nécessairement dénombrable par inclusion~: $x$ appartient à un certain $U_i$
+  dénombrable.
+
+  On en déduit donc que
+  \[X\setminus P = \bigcup\left\{U_i\mid i \in I, |U_i| \leq \aleph_0\right\}\]
+  cet ensemble, qu'on notera désormais $U$, est dénombrable (comme union
+  dénombrable d'ensembles dénombrable). Il nous reste donc à montrer que $P$ est
+  parfait dans $X$. Soit $x\in P$ et $U$ un ouvert contenant $x$. Cet ouvert
+  est indénombrable puisqu'il est un voisinage de $x$~: il a donc une
+  intersection indénombrable avec $P$ (puisque $X = U \cup P$ et $U$ est
+  dénombrable), donc il contient en particulier d'autres points que $x$ dans
+  $P$, donc $x$ est un point d'accumulation.
+\end{proof}
+
+\begin{remark}
+  La décomposition donnée ici est de plus unique. Si on trouve une autre
+  décomposition $X = U' \cup P'$, alors $U = U'$ et $P = P'$. Pour le prouver,
+  on peut utiliser le fait que l'ensemble des points de condensation d'un
+  espace parfait est lui-même.
+\end{remark}
+
+On peut donc en déduire qu'il y a une forme d'hypothèse du continu dans les
+espaces polonais.
+
+\begin{corollary}
+  Un espace polonais indénombrable est de cardinal $2^{\aleph_0}$.
+\end{corollary}
+
+\begin{proof}
+  Un espace polonais contient une partie parfaite, qui est non vide si l'espace
+  est indénombrable~: on peut donc injecter l'espace de Cantor dans cet espace.
+\end{proof}
+
+\subsection{Caractérisation des espaces de Cantor et de Baire}
+
+Nous montrons maintenant que quelques propriétés topologiques suffisent à
+caractériser, à homéomorphisme près, les espaces de Cantor et de Baire.
+
+On peut voir que l'espace de Cantor est un espace de Stone. A ce titre, il est
+compact, possède une base d'ouverts-fermés. De plus, on a vu qu'il est un
+espace polonais parfait. En réalité, ces propriétés suffisent à caractériser
+l'espace de Cantor.
+
+\begin{theorem}[Caractérisation de l'espace de Cantor]
+  Soit $(X,\Omega)$ un espace polonais parfait compact, non vide, possédant une
+  base d'ouverts-fermés. Alors $X$ est homéomorphe à l'espace de Cantor.
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Enfin, l'espace de Baire possède aussi une caractérisation.
+
 A FAIRE
