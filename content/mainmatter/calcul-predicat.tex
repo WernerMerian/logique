@@ -616,7 +616,7 @@ et de fonction.
     $(m_1,\ldots,m_n)\in|\mathcal M|^n$ :
     \[\varphi(f^{\mathcal M}(m_1,\ldots,m_n))
     = f^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
-  \item pour tout symbole de relatoin $r$ d'arité $n$ et tout tuple
+  \item pour tout symbole de relation $r$ d'arité $n$ et tout tuple
     $(m_1,\ldots,m_n)\in|\mathcal M|^n$ :
     \[r^{\mathcal M}(m_1,\ldots,m_n) \implies
     r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n)) \]
@@ -636,10 +636,18 @@ et de fonction.
   morphisme.
 \end{exercise}
 
-Un renforcement de la notion de morphisme est celle de plongement : un plongement
-est un morphisme dont l'image est isomorphe au domaine, c'est-à-dire que non
-seulement le morphisme est injectif, mais il le comportement vis à vis des
-propositions peut s'étudier dans l'image uniquement en étudiant le modèle de
+\begin{exercise}\label{pred.exo.morph.val}
+  Montrer que pour tout morphisme de structure
+  $\varphi : \mathcal M \to \mathcal N$, terme $t$ sur la même signature et
+  environnement $\rho$ tel que $\VL(t) \subseteq \dom(\rho)$, on a l'égalité
+  suivante~:
+  \[t_\rho^\mathcal M = t_{\varphi\circ\rho}^\mathcal N\]
+\end{exercise}
+
+Un renforcement de la notion de morphisme est celle de plongement : un
+plongement est un morphisme dont l'image est isomorphe au domaine, c'est-à-dire
+que non seulement le morphisme est injectif, mais le comportement vis à vis
+des propositions peut s'étudier dans l'image uniquement en étudiant le modèle de
 départ.
 
 \begin{definition}[Plongement]
@@ -651,8 +659,8 @@ départ.
 \end{definition}
 
 \begin{remark}
-  Puisque nous avons toujours la relation $=$ dont l'interprétation est l'égalité
-  dans son sens naturel, on en déduit qu'un plongement est injectif.
+  Puisque nous avons toujours la relation $=$ dont l'interprétation est
+  l'égalité dans son sens naturel, on en déduit qu'un plongement est injectif.
 \end{remark}
 
 Enfin, la notion d'isomorphisme est celle à laquelle on s'attend.
@@ -667,21 +675,103 @@ Enfin, la notion d'isomorphisme est celle à laquelle on s'attend.
   \end{cases}\]
 \end{definition}
 
+Assez naturellement, un isomorphisme préserve les formules. Cela se voit par
+exemple en théorie des groupes, où on n'étudie les groupes qu'à isomorphisme
+près puisque toute formule qu'on voudrait énoncer reste stable en passant à
+travers un isomorphisme.
+
+\begin{proposition}
+  Si $\varphi : \mathcal M \cong \mathcal N$ alors pour toute formule close $A$,
+  $\mathcal M\models A$ si et seulement si $\mathcal N\models A$.
+\end{proposition}
+
+\begin{proof}
+  On montre par induction sur la structure de $A$ que pour tout environnement
+  $\rho : \Var\partialto |\mathcal M|$ tel que $\VL(A) \subseteq\dom(\varphi)$,
+  on a l'équivalence
+  \[\mathcal M,\rho\models A \iff \mathcal N,\varphi\circ \rho\models A\]
+  \begin{itemize}
+  \item si $A$ est de la forme $r(t_1,\ldots,t_n)$ avec un symbole de relation
+    $r$, alors comme $\varphi$ est un morphisme on sait que si
+    $(t_{1,\rho}^\mathcal M,\ldots,t_{n,\rho}^\mathcal M)\in r^\mathcal M$, alors
+    $(t_{1,\varphi\circ \rho}^\mathcal N,\ldots,
+    t_{n,\varphi\circ\rho}^\mathcal N)\in r^{\mathcal N}$, comme on sait qu'on a
+    un morphisme réciproque $\psi : \mathcal N \to \mathcal M$, on peut
+    écrire $t_{i,\rho}^\mathcal M = t_{i,\psi\circ\varphi\circ\rho}^\mathcal M$, donc
+    l'argument précédent appliqué à $\psi$ permet de déduire que si
+    $\mathcal N,\varphi\circ \rho\models A$ alors $\mathcal M,\rho\models A$.
+  \item si $A$ est $\top$ ou $\bot$, le résultat est direct puisqu'indépendant
+    de la structure dans laquelle on l'évalue.
+  \item si $A$ est de la forme $\lnot B$, alors
+    \[\mathcal M, \rho\models \lnot B\iff \mathcal M, \rho\not\models B
+    \iff \mathcal N,\varphi\circ\rho\not\models B
+    \iff \mathcal N,\varphi\circ\rho\models \lnot B\]
+  \item si $A$ est de la forme $B\lor C$, alors
+    \begin{align*}
+      \mathcal M, \rho \models B\lor C &\iff (\mathcal M,\rho\models B)\lor
+      (\mathcal M,\rho\models C) \\
+      &\iff (\mathcal N,\varphi\circ\rho\models B)\lor
+      (\mathcal N,\varphi\circ\rho\models C)\\
+      &\iff \mathcal N,\varphi\circ \rho \models B\lor C
+      \end{align*}
+  \item si $A$ est de la forme $B\land C$, alors
+    \begin{align*}
+      \mathcal M, \rho \models B\land C &\iff (\mathcal M,\rho\models B)\land
+      (\mathcal M,\rho\models C) \\
+      &\iff (\mathcal N,\varphi\circ\rho\models B)\land
+      (\mathcal N,\varphi\circ\rho\models C)\\
+      &\iff \mathcal N,\varphi\circ \rho \models B\land C
+      \end{align*}
+  \item si $A$ est de la forme $B\to C$ A FAIRE
+  \item si $A$ est de la forme $\forall x,B$ A FAIRE
+  \item si $A$ est de la forme $\exists x, B$ A FAIRE
+  \end{itemize}
+  D'où le résultat par induction. On a le résultat dans le cas particulier d'une
+  formule close.
+\end{proof}
+
+Cela étant, l'inverse n'est pas vrai en général, comme le montre l'exercice
+suivante.
+
+\begin{exercise}
+  On considère les deux ensembles ordonnés suivants~:
+  \begin{itemize}
+  \item $\{0,1\}$ où $0$ et $1$ ne sont pas comparables
+  \item $\{\bot,\top\}$ où $\bot \leq \top$
+  \end{itemize}
+  Construire un morphisme bijectif entre les deux ensembles ordonnés qui n'est
+  pas un isomorphisme.
+\end{exercise}
+
+Cependant, pour un plongement, ce résultat devient valide.
+
 \begin{proposition}
   Un morphisme $\varphi : \mathcal M \to \mathcal N$ est un isomorphisme si et
   seulement si c'est un plongement surjectif.
 \end{proposition}
 
 \begin{proof}
-  Supposons que A FAIRE
+  Si $\varphi$ est un isomorphisme, alors c'est en particulier une bijection,
+  le rendant surjectif. De plus, comme $\varphi$ préserve toutes les
+  propositions dans les deux sens, ce morphisme préserve en particulier les
+  propositions atomiques, c'est donc un plongement.
+
+  Si $\varphi$ est un plongement surjectif, alors c'est une bijection~: on
+  peut donc considérer la réciproque $\psi$ de $\varphi$. Il nous reste à
+  prouver que $\psi$ est bien un morphisme~: la préservation des termes est
+  automatique, et il nous faut encore montrer que pour tout symbole de relation
+  $r$ d'arité $p$ et $n_1,\ldots,n_p\in|\mathcal N|$~:
+  \[r^\mathcal N(n_1,\ldots,n_p) \implies r^\mathcal M
+  (\psi(n_1),\ldots,\psi(n_p))\]
+  mais chaque $n_1,\ldots,n_p$ peut se réécrire
+  $\varphi(m_1),\ldots,\varphi(m_p)$, donnant
+  \[r^\mathcal N(\varphi(m_1),\ldots,\varphi(m_p)) \implies r^\mathcal M
+  (\psi(\varphi(m_1)),\ldots,\psi(\varphi(m_p)))\]
+  Or on sait que $\psi\circ \varphi = \id$, donc la condition revient à la
+  réciproque de celle disant que $\varphi$ est un morphisme~: c'est justement
+  ce que nous donne le fait que $\varphi$ est un plongement. Donc $\varphi$ est
+  un isomorphisme.
 \end{proof}
-
-De plus, un ismorphisme préserve entièrement les formules.
-
-\begin{proposition}
-  Si $\varphi : \mathcal M \cong \mathcal N$ alors pour toute formule close $A$,
-  $\mathcal M\models A$ si et seulement si $\mathcal N\models A$.
-\end{proposition}
 
 \subsection{Agrandir des modèles}
 
@@ -710,9 +800,10 @@ la notion d'enrichissement.
   signature.
 \end{remark}
 
-Par exemple, le langage des anneaux est un enrichissement du langage des groupes.
-On remarque qu'un anneau est toujours, en particulier, un groupe additif : nous
-allons généraliser ce résultat pour une structure sur un enrichissement.
+Par exemple, le langage des anneaux est un enrichissement du langage des
+groupes. On remarque qu'un anneau est toujours, en particulier, un groupe
+additif~: nous allons généraliser ce résultat pour une structure sur un
+enrichissement.
 
 \begin{proposition}
   Soit deux signatures $\Sigma\subseteq\Sigma'$ et $\mathcal M'$ une structure
@@ -727,9 +818,9 @@ allons généraliser ce résultat pour une structure sur un enrichissement.
 
 \begin{corollary}
   Soit deux signatures $\Sigma\subseteq\Sigma'$, une structure $\mathcal M'$
-  et une théorie $\mathcal T$ sur $\Sigma$. Alors si
-  $\mathcal M'\models \mathcal T$, alors en prenant l'appauvrissement
-  $\mathcal M$ de $\mathcal M'$ sur $\Sigma$, $\mathcal M\models \mathcal T$.
+  et une théorie $\mathcal T$ sur $\Sigma$. Si $\mathcal M'\models \mathcal T$,
+  alors en prenant l'appauvrissement $\mathcal M$ de $\mathcal M'$ sur $\Sigma$,
+  $\mathcal M\models \mathcal T$.
 \end{corollary}
 
 \section[Syntaxe de preuves]{Système de démonstration du calcul des prédicats}
@@ -742,9 +833,9 @@ prédicats.
 Nous avons alors plusieurs choix, car plusieurs formalismes existent. Les trois
 principaux sont les sytèmes à la Hilbert, le calcul des séquents et la déduction
 naturelle. Nous avons eu un aperçu du calcul des séquents dans le chapitre
-précédent, et il pourrait être pertinent de continuer à l'utiliser, mais le choix
-fait ici est d'introduire un nouveau formalisme : celui de la déduction
-naturelle. Ce choix ce justifier par deux raisons principales :
+précédent, et il pourrait être pertinent de continuer à l'utiliser, mais le
+choix fait ici est d'introduire un nouveau formalisme : celui de la déduction
+naturelle. Ce choix se justifie par deux raisons principales :
 \begin{itemize}
 \item Tout d'abord, il permet d'aborder d'autres systèmes de preuves, puisque
   nous avons déjà exploré le calcul des séquents. Cet argument est en même temps
@@ -756,26 +847,27 @@ naturelle. Ce choix ce justifier par deux raisons principales :
   intéressantes à explorer contrairement aux deux autres formalismes et n'a rien
   de naturel à manipuler.
 \item La deuxième raison, plus importante, est que la déduction naturelle est en
-  quelque sorte le raisonnement le plus primitif d'un mathématicien. Chaque règle
-  exprime une règle loique tout à fait évidente à l'intuition, particulièrement
-  à celle du mathématicien, et on peut trouver une correspondance importante
+  quelque sorte le raisonnement le plus primitif d'un mathématicien. Chaque
+  règle exprime une règle tout à fait évidente à l'intuition, particulièrement à
+  celle du mathématicien, et on peut trouver une correspondance importante
   entre une preuve utilisant la déduction naturelle et une preuve en langage
-  naturel (à la différence évidente que la première est illisible pour un profane
-  quand la deuxième est\ldots illisible aussi pour un profane, mais il y a moins
-  de profanes des mathématiques que de profanes de la déduction naturelle).
+  naturel (à la différence évidente que la première est illisible pour un
+  profane quand la deuxième est\ldots illisible aussi pour un profane, mais il y
+  a moins de profanes des mathématiques que de profanes de la déduction
+  naturelle).
 \end{itemize}
 
-Il y a de nombreux avantages à définir une syntaxe pour nos preuves en calcul des
-prédicats. Le premier est évident : avoir, comme dans le chapitre précédent, un
-système efficace pour prouver des relations entre formules, ne passant pas par
-une interprétation et une quantification sur toutes les valuations (et ici, en
-plus : tous les modèles). Le deuxième, moins évident, sera plus lourd de
+Il y a de nombreux avantages à définir une syntaxe pour nos preuves en calcul
+des prédicats. Le premier est évident : avoir, comme dans le chapitre précédent,
+un système efficace pour prouver des relations entre formules, ne passant pas
+par une interprétation et une quantification sur toutes les valuations (et ici,
+en plus~: tous les modèles). Le deuxième, moins évident, sera plus lourd de
 conséquences : une syntaxe nous permet de voir l'ensemble de l'activité
 mathématique comme un processus finitaire. Nous n'avons le droit que d'employer
 des phrases finies en des textes finis pour étudier des objets potentiellement
 infinis. Si ce fait semble en premier lieu purement philosophique (et il est
 effectivement important, philosophiquement parlant) il mène aussi à une
-conséquence importante : le théorème de compacité. Ce théorème est un analogue
+conséquence importante~: le théorème de compacité. Ce théorème est un analogue
 au \cref{thm.compac.prop} dans le cas du calcul des prédicats. Simplement, au
 lieu de quantifier sur les valuations, nous quantifions sur les modèles, et
 puisque nous nous occupons en priorité des formules closes cela nous donne un
@@ -786,7 +878,7 @@ puisque nous nous occupons en priorité des formules closes cela nous donne un
 Commençons par définir la relation $\vdash$ de conséquence syntaxique. Pour
 cela, comme pour le calcul des séquents, on va définir un système travaillant
 sur des listes (par nature finies) plutôt que sur des ensembles. Une différence
-importante : nous n'allons pas relier deux listes, mais une liste avec une
+importante~: nous n'allons pas relier deux listes, mais une liste avec une
 proposition. Ainsi un séquent $\Gamma\vdash A$ signifie directement que, sous
 les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
 
@@ -1015,7 +1107,7 @@ naturelle).
 \item La règle $\top$ dit simplement que $\top$ est toujours prouvable.
 \item La règle $\bot_\mathrm c$ dit que pour prouver $A$, on peut supposer
   $\lnot A$ est aboutir à une contradiction : c'est le raisonnement par
-  l'absurde, d'où l'ince \og c\fg{} exprimant que cette règle est propre à la
+  l'absurde, d'où l'indice \og c\fg{} exprimant que cette règle est propre à la
   logique classique (nous le verrons, remplacer cette règle par une autre plus
   faible a des conséquences particulièrement intéressantes).
 \item La règle $\lnot_\mathrm i$ dit que pour prouver $\lnot A$, il suffit de
@@ -1476,7 +1568,7 @@ On peut alors démontrer le lemme qui permettra de prouver le théorème de
 complétude.
 
 \begin{lemma}
-  Pour toute proposition $\varphi \in \Form(\Sigma')$, on a l'équivalence
+  Pour toute proposition $\varphi \in \Formula(\Sigma')$, on a l'équivalence
   suivante :
   \[\mathcal T' \vdash \varphi \iff \mathcal M_{\mathcal T'}\models \varphi\]
 \end{lemma}

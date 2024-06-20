@@ -894,3 +894,641 @@ La relation $\leq$ est aussi définissable grâce à notre langage ensembliste.
   \end{itemize}
   Ainsi, $\leq$ est une relation d'ordre.
 \end{proof}
+
+\subsection{Les entiers relatifs}
+
+Nous allons maintenant construire les entiers relatifs, dont l'ensemble est
+noté $\mathbb Z$, avec la construction classique~: on cherche à transformer
+le monoïde $(\mathbb N,0,+)$ en un groupe. Cette construction se généralise
+en fait en une construction sur n'importe quel monoïde commutatif.
+
+Nous allons donc voir d'abord la construction de $\mathbb Z$, puis la
+construction plus générale du symétrisé d'un monoïde commutatif.
+
+L'ensemble $\mathbb Z$ sera vu comme un quotient de l'ensemble
+$\mathbb N \times \mathbb N$. L'idée est de considérer une paire $(n,m)$ comme
+l'entier $n - m$. On voit alors que pour avoir $(n,m) = (p,q)$, il faut et il
+suffit que $n - m = p - q$, c'est-à-dire que $n + q = p + m$. Cela motive la
+définition de notre relation $\sim$.
+
+\begin{definition}[Congruence additive]
+  On définit la relation binaire $\sim$ sur $\mathbb N \times \mathbb N$ par~:
+  \[(n,m)\sim (p,q) \defeq n + q = p + m\]
+\end{definition}
+
+\begin{proposition}
+  La relation $\sim$ est une relation d'équivalence.
+\end{proposition}
+
+\begin{proof}
+  On vérifie les axiomes d'une relation d'équivalence~:
+  \begin{itemize}
+  \item on voit que $n+m=n+m$ donc $(n,m)\sim (n,m)$.
+  \item supposons que $(n,m) \sim (p,q)$, alors $n + q = p + m$, donc par
+    symétrie de l'égalité $p + m = n + q$, donc $(p,q)\sim (n,m)$.
+  \item supposons que $(n,m)\sim(p,q)$ et $(p,q)\sim (r,s)$. On sait donc que
+    $n + q = p + m$ et $p + s = r + q$. En ajoutant $r$ de chaque côté dans
+    la première équation et en réordonnant les termes, on a alors
+    \[n + (r + q) = p + m + r\]
+    d'où $n + p + s = p + m + r$ donc, par régularité, $n + s = r + m$.
+    Donc $(n,m)\sim(r,s)$.
+  \end{itemize}
+  Ainsi $\sim$ est une relation d'équivalence.
+\end{proof}
+
+Pour simplifier nos constructions, nous allons maintenant introduire la notion
+de congruence.
+
+\begin{definition}[Congruence]
+  Soit $(X,\star)$ un magma. On appelle congruence une relation d'équivalence
+  $\sim\subseteq X \times X$ telle que
+  \[\forall x,y,x',y' \in X, x\sim x' \land y \sim y'
+  \implies x\star y \sim x' \star y'\]
+\end{definition}
+
+Une congruence nous permet de définir directement une opération sur l'ensemble
+quotient.
+
+\begin{proposition}
+  Soit $(X,\star)$ un magma et $\sim$ une congruence sur $(X,\star)$. Alors
+  il existe une unique opération de magma $\star'$ définie sur $X/\sim$
+  vérifiant
+  \[\forall x,y \in X, \overline{x\star y} = \overline x\star' \overline y\]
+\end{proposition}
+
+\begin{proof}
+  Le fait qu'il existe au plus une telle opération découle directement du fait
+  que la propriété définit l'opération $\star'$. On veut donc montrer que
+  l'opération est bien définie~: soient $x,x',y,y'\in X$ tels que
+  $x\sim x'$ et $y\sim y'$, alors comme $\sim$ est une congruence, on en
+  déduit que $x\star y \sim x' \star y'$, donc que
+  \[\overline x \star' \overline y = \overline{x'}\star' \overline{y'}\]
+  c'est-à-dire que le résultat de $\star'$ ne dépend pas du représentant choisi.
+\end{proof}
+
+\begin{exercise}
+  Montrer que si les propriétés suivantes sont vraies pour $(X,\star)$ alors
+  elles le sont aussi pour $(X/\sim,\star')$~:
+  \begin{itemize}
+  \item associativité
+  \item commutativité
+  \item existence d'un élément neutre
+  \item existence d'un inverse
+  \item régularité à gauche (respectivement à droite)
+  \end{itemize}
+\end{exercise}
+
+En revenant sur le cas de notre construction de $\mathbb Z$, on voit que
+$\mathbb N\times\mathbb N$ peut être muni d'une structure de monoïde en
+considérant l'addition coordonnée par coordonnée~: $(n,m)+(p,q) = (n+p,m+q)$.
+Il se trouve que $\sim$ est une congruence sur cette opération.
+
+\begin{proposition}
+  $\sim$ est une congruence sur $\mathbb N \times \mathbb N$ avec la structure
+  de monoïde coordonnée par coordonnée.
+\end{proposition}
+
+\begin{proof}
+  Il s'agit d'une simple vérification~: supposons que $(n,m)\sim(n',m')$ et que
+  $(p,q)\sim(p',q')$, alors $(n+p,m+q)\sim(n'+p',m'+q')$~:
+  \begin{align*}
+    n + p + m' + q' &= (n + m') + (p + q')\\
+    &= (n' + m) + (p' + q)\\
+    &= n' + p' + m + q
+  \end{align*}
+\end{proof}
+
+Ainsi, en notant $\mathbb Z = (\mathbb N \times \mathbb N) / \sim$, on a
+défini une opération $+$ lui conférant une structure de monoïde commutatif. Il
+nous reste à prouver que c'est en fait un groupe abélien.
+
+\begin{proposition}
+  $(\mathbb Z,+)$ est un groupe abélien.
+\end{proposition}
+
+\begin{proof}
+  Soit $x \in \mathbb Z$, par définition on trouve $n,m\in\mathbb N$ tels que
+  $x = \overline{(n,m)}$, et on pose $-x = \overline{(m,n)}$. On montre que
+  $x + (-x) \sim (0,0)$. Par définition,
+  \[x + (-x) = \overline{(n + m, m + n)}\]
+  et $n + m + 0 = 0 + m + n$, donc $\overline{(n,n)}=\overline{(0,0)}$, d'où le
+  résultat.
+\end{proof}
+
+On s'attarde maintenant à la structure multiplicative de $\mathbb Z$.
+
+\begin{definition}
+  On définit sur $\mathbb N\times \mathbb N$ l'opération $\times$ par
+  \[(n,m)\times(p,q) = (n\times p + m \times q, m \times p + n \times q)\]
+  et $\times$ est définie sur $\mathbb Z$ par passage au quotient de cette
+  opération par $\sim$.
+\end{definition}
+
+\begin{proof}
+  Pour que la définition ait du sens, il faut vérifier que $\sim$ est bien une
+  congruence pour $\times$. Soient $(n,m)\sim(n',m')$ et $(p,q)\sim(p',q')$, et
+  montrons la relation $(n,m)\times(p,q)\sim(n',m')\times(p',q')$, ce qui
+  revient à l'égalité
+  \[n\times p + m \times q + m' \times p' + n' \times q' =
+  n' \times p' + m' \times q' + m \times p + n \times q\]
+  A FAIRE
+\end{proof}
+
+\begin{exercise}
+  Montrer que $(\mathbb Z,0,+,1,\times)$ est un anneau.
+\end{exercise}
+
+On montre qu'on peut injecter le demi-anneau $(\mathbb N,0,+,1,\times)$ dans
+l'anneau $(\mathbb Z,0,+,1,\times)$.
+
+\begin{proposition}
+  La fonction
+  \[\begin{array}{ccccc}
+  \iota & : & \mathbb N & \longrightarrow & \mathbb Z\\
+  & & n & \longmapsto & \overline{(n,0)}
+  \end{array}\]
+  est un morphisme d'anneau injectif.
+\end{proposition}
+
+\begin{proof}
+  On vérifie chaque axiome~:
+  \begin{itemize}
+  \item pour tous $n,m\in\mathbb N$~:
+    \begin{align*}
+      \iota(n) + \iota(m) &= \overline{(n,0)} + \overline{(m,0)}\\
+      &= \overline{(n+m,0+0)}\\
+      &= \iota(n+m)
+    \end{align*}
+  \item pour tous $n,m\in\mathbb N$~:
+    \begin{align*}
+      \iota(n)\times \iota(m) &= \overline{(n,0)} \times \overline{(m,0)}\\
+      &= \overline{(n \times m + 0, 0 + 0)}
+      &= \overline{(n\times m,0)}\\
+      &= \iota(n+m)
+    \end{align*}
+  \item le neutre de l'anneau $\mathbb Z$ est $\overline{(1,0)}$, qui est bien
+    $\iota(1)$.
+  \item on vérifie que le noyau de $\iota$ est nul~: si $n\neq 0$ alors
+    $\iota(n) \neq \overline{(0,0)}$ puisque $n + 0 \neq 0 + 0$, donc
+    $(n,0)\nsim (0,0)$.
+  \end{itemize}
+  On en déduit que $\iota$ est un morphisme d'anneau injectif.
+\end{proof}
+
+Enfin, sur $\mathbb Z$, on peut caractériser les éléments comme des entiers
+naturels ou des opposés d'entiers naturels.
+
+\begin{proposition}
+  Pour tout $k \in \mathbb Z$, il existe $n \in \mathbb N$ tel que soit
+  $k = \iota(n)$, soit $k = (-\iota(1)) \times \iota(n)$, que l'on écrira
+  plus rapidement $k = -n$ (respectivement $k = -n$).
+\end{proposition}
+
+\begin{proof}
+  Soit $k \in \mathbb Z$. Par définition, on trouve $n,m\in\mathbb N$ tels que
+  $k = \overline{(n,m)}$. Comme $\leq$ est total, on sait que soit
+  $n \leq m$, soit $m \leq n$. Deux cas se présentent alors~:
+  \begin{itemize}
+  \item si $n \leq m$, alors $m = (m - n) + n$, donc $k = \overline{(0,m - n)}$,
+    nous donnant $k = (-\iota(1))\times \iota(m-n)$.
+  \item si $m \leq n$, alors $n = (n - m) + m$, donc
+    $k = \overline{(n - m, 0)}$, nous donnant $k = \iota(n-m)$.
+  \end{itemize}
+  D'où le résultat.
+\end{proof}
+
+Passons maintenant à la construction générale sur un monoïde commutatif.
+
+\begin{definition}
+  Soit $(M,\star,e)$ un monoïde commutatif. On définit sur $M\times M$ muni des
+  opérations coordonnée par coordonnée la congruence suivante~:
+  \[(m,m') \sim (a,a') \defeq \exists k \in M, m \star a' \star k
+  = m' \star a \star k\]
+
+  On appelle symétrisé de $(M,\star,e)$ le groupe abélien obtenu à partir de
+  $M\times M$ par quotient par $\sim$.
+\end{definition}
+
+\begin{proof}
+  Montrons que $\sim$ est une congruence~:
+  \begin{itemize}
+  \item $\sim$ est réflexive~: pour $(m,m')$, on a
+    $m \star m' \star e = m \star m' \star e$.
+  \item $\sim$ est symétrique par symétrie de l'égalité.
+  \item $\sim$ est transitive~: supposons qu'on a $(m,m')\sim (a,a')\sim(b,b')$
+    et montrons qu'alors $(m,m')\sim (b,b')$. D'après les définitions, on trouve
+    $k,k'\in M$ tels que
+    \[\left\{\begin{array}{l}
+    m \star a' \star k = m' \star a \star k\\
+    a \star b' \star k' = a' \star b \star k'
+    \end{array}\right.\]
+    En \og additionnant\fg les deux lignes, on obtient
+    \[m \star (a \star a' \star k \star k') \star b' =
+    m' \star (a \star a' \star k \star k') \star b\]
+    d'où le résultat en prenant $k'' = a \star a' \star k \star k'$.
+  \item $\sim$ est une congruence~: supposons que $(m,m')\sim(a,a')$ et
+    $(n,n')\sim(b,b')$, alors
+    $(m\star n, m' \star n') \sim(a\star b,a'\star b')$. En effet, si on
+    considère $k,k'\in M$ tels que
+    \[\left\{\begin{array}{l}
+    m \star a' \star k = m' \star a \star k\\
+    n \star b' \star k' = n' \star b \star k'
+    \end{array}\right.\]
+    alors on obtient en \og additionnant\fg les deux lignes
+    \[(m \star n) \star (a' \star b') \star (k \star k') =
+    (m' \star n') \star (a \star b) \star (k \star k')\]
+    nous donnant le résultat en prenant $k'' = k \star k'$.
+  \end{itemize}
+  On en déduit que $\sim$ est une congruence. Ainsi le symétrisé est un monoïde
+  commutatif.
+
+  Il nous reste à prouver que c'est un groupe. Soit $\overline{(m,m')}$ un
+  élément du symétrisé. On définit son inverse par $\overline{(m',m)}$~:
+  \[\overline{(m,m')}\star \overline{(m',m)} =
+  \overline{(m\star m',m'\star m)}\]
+  or $(m,m)\sim (e,e)$ assez directement, d'où le fait que leur produit vaut
+  $\overline{(e,e)}$, le neutre du symétrisé.
+\end{proof}
+
+\begin{remark}
+  On ajoute dans notre définition de $\sim$ un terme $k$~: celui-ci est
+  nécessaire pour le cas où notre monoïde n'est pas régulier. On voit en effet
+  que ce $k$ absorbe le terme $a \star a'$ pour la transitivité.
+\end{remark}
+
+\begin{exercise}
+  Soit $M$ un monoïde commutatif et $A$ son symétrisé. Montrer que la fonction
+  \[\begin{array}{ccccc}
+  \iota & : & M & \longrightarrow & A\\
+  & & m & \longmapsto & \overline{(m,e)}
+  \end{array}\]
+  est un morphisme de monoïde.
+\end{exercise}
+
+\begin{exercise}
+  Soit $M$ un monoïde commutatif et $A$ son symétrisé. Montrer que pour tout
+  groupe $G$ et tout morphisme de monoïde $f : M \to G$ il existe un unique
+  morphisme de groupe $\hat f : A \to G$, ce que l'on peut représenter par le
+  fait que tout diagramme comme suit peut être complété en un diagramme
+  commutatif~:
+  \begin{center}
+    \begin{tikzcd}
+      M \ar[r,"f"]\ar[d,"\iota"] & G\\
+      A \ar[ur,"\hat f",dashed]
+    \end{tikzcd}
+  \end{center}
+\end{exercise}
+
+\subsection{Les nombres rationnels}
+
+Nous avons vu comment construire les nombres entiers en tant que cas particulier
+de symétrisation~: $\mathbb Z$ est $\mathbb N$ auquel on a ajouté des inverses
+pour la loi $+$. Pour le cas de $\mathbb Q$, on va montrer qu'on peut construire
+cet ensemble comme cas particulier du procédé dit de localisation, qui permet
+d'inverser pour la loi $\times$ dans un anneau. Comme précédemment, on commence
+par construire le cas particulier de $\mathbb Q$ et sa structure de corps avant
+d'étudier le cas plus général de la localisation.
+
+Si la construction de $\mathbb Z$ peut paraitre assez difficile à visualiser
+au début, celle de $\mathbb Q$ sera au contraire très naturelle~: elle
+consiste simplement à étudier les fractions. On sait en effet manipuler les
+fractions comme des \og couples\fg de la forme $\dfrac{p}{q}$ où plusieurs
+règles nous permettent de transformer un couple en un autre. Ces règles peuvent
+se synthétiser en
+\[\frac{p}{q} = \frac{p'}{q'} \defeq p\times q' = p' \times q\]
+
+\'A partir de là, le procédé est très similaire au précédent~: on considère cela
+comme une relation d'équivalence sur des couples, et on en déduit la
+construction du corps des fractions.
+
+\begin{definition}
+  On définit la relation d'équivalence $\sim$ sur
+  $\mathbb Z \times (\mathbb N\setminus\{0\})$ par~:
+  \[(p,q) \sim (p',q') \defeq p\times q' = p'\times q\]
+\end{definition}
+
+\begin{proof}
+  On vérifie que cela définit bien une relation d'équivalence~:
+  \begin{itemize}
+  \item pour tout $(p,q)$, $p\times q = p \times q$ donc $(p,q)\sim(p,q)$.
+  \item pour tous $(p,q)\sim (p',q')$, la symétrie de l'égalité nous fait
+    déduire que $(p',q')\sim(p,q)$.
+  \item si $(p,q)\sim(p',q')\sim(p'',q'')$, alors on sait que
+    \[\left\{\begin{array}{l}
+    p\times q' = p' \times q\\
+    p' \times q'' = p'' \times q'
+    \end{array}\right.\]
+    si l'un des nombres parmi $p,p',p''$ est nul, alors tous les autres le sont
+    (puisque $q,q',q''$ sont tous les trois non nuls). On en déduit donc qu'on
+    peut simplifier (puisque $\mathbb Z$ est un anneau intègre) le produit des
+    deux lignes par $q'\times p'$, nous donnant~:
+    \[p\times q'' = p'' \times q\]
+    donc $(p,q)\sim(p'',q'')$.
+  \end{itemize}
+  Donc $\sim$ est une relation d'équivalence.
+\end{proof}
+
+\begin{exercise}\label{exo.ax.Qring}
+  Montrer qu'on peut munir $\mathbb Z\times (\mathbb N\setminus\{0\})$ d'une
+  structure d'anneau en définissant les opérations
+  \[(p,q)+(p',q') \defeq (p\times q' + p' \times q, q\times q')\qquad
+  (p,q)\times(p',q')\defeq (p\times p',q\times q')\]
+\end{exercise}
+
+Cette structure passe au quotient par $\sim$, ce qui nous donnera la structure
+souhaitée pour $\mathbb Q$.
+
+\begin{proposition}
+  La relation $\sim$ est une congruence pour les deux opérations définies dans
+  l'\cref{exo.ax.Qring}.
+\end{proposition}
+
+\begin{proof}
+  Soient $(p,q)\sim(p',q')$ et $(r,s)\sim(r',s')$, montrons les deux relations
+  \[(p\times s + q\times r, q \times s) \sim
+  (p'\times s' + q'\times r',q'\times s')\qquad
+  (p\times r, q\times s)\sim(p'\times r', q'\times s')\]
+  la seconde relation est la plus facile à montrer~: cela revient à l'égalité
+  \[p\times r \times q' \times s' = q\times s \times p' \times r'\]
+  mais on sait que $p\times q' = p' \times q$ et que
+  $r \times s' = t' \times s$, ce qui nous donne directement le résultat en
+  multipliant les deux égalités entre elles.
+
+  Pour la première relation, celle-ci revient à montrer l'égalité
+  \[(p\times s + q \times r)\times q' \times s' =
+  (p'\times s' + q' \times r')\times q \times s\]
+  ce qui, par distributivité, donne
+  \[p\times q' \times s \times s' + r \times q \times q' \times s' =
+  p'\times q \times s \times s' + r' \times q \times q' \times s\]
+  or $p\times q' = p' \times q$ et $r\times s' = r' \times s$, donnant le
+  résultat en multipliant les équations respectivement par $s\times s'$ et par
+  $q\times q'$, puis en les additionnant.
+\end{proof}
+
+\begin{notation}
+  On notera $p/q$ ou $\dfrac{p}{q}$ pour noter $\overline{(p,q)}$.
+\end{notation}
+
+On peut donc définir $\mathbb Q$~: c'est l'anneau quotient obtenu à partir de
+$\sim$. On montre maintenant que cet anneau est un corps.
+
+\begin{proposition}
+  $(\mathbb Q,0,+,1,\times)$ est un corps.
+\end{proposition}
+
+\begin{proof}
+  On a déjà prouvé qu'on avait un anneau commutatif, il nous reste à montrer que
+  c'est un corps. Pour cela, soit $p/q\in\mathbb Q$ non nul. Cela signifie en
+  particulier que $p \neq 0$. Si $p > 0$, alors on définit l'inverse
+  de $p/q$ par $q/p$, et on voit que
+  \[\frac{p}{q}\times\frac{p}{q} = \frac{pq}{pq} = 1\]
+  Si $p < 0$, alors on définit l'inverse de $p/q$ par $(-p)/(-q)$, et on
+  trouve alors
+  \[\frac{p}{q}\times\frac{-p}{-q} = \frac{-pq}{-pq} = 1\]
+
+  Dans les deux cas, si $r\in \mathbb Q$ est non nul, alors il est inversible
+  pour $\times$.
+\end{proof}
+
+\begin{exercise}
+  Montrer que la fonction
+  \[\begin{array}{ccccc}
+  \iota &: & \mathbb Z & \longrightarrow & \mathbb Q \\
+  & & k & \longmapsto & \frac{k}{1}
+  \end{array}\]
+  est un morphisme d'anneau injectif.
+\end{exercise}
+
+Ainsi $\mathbb Q$ peut se voir comme le plus petit corps contenant $\mathbb Z$,
+voire comme le plus petit corps contenant $\mathbb N$.
+
+On passe maintenant au cas général. Tout d'abord, on peut voir que la
+construction ne demande, pour être effectuée, que d'avoir une partie stable
+par $\times$ dans $\mathbb Z$. Si l'on imagine prendre l'ensemble
+$\{2^n\mid n \in \mathbb N\}$, par exemple, on peut vérifier que la
+construction précédente donne encore une structure, qui ne sera cependant pas
+un corps~: ce sera un anneau contenant $\mathbb Z$ dans lequel chaque élément
+de $\{2^n \mid n \in \mathbb N\}$ devient inversible. C'est ce procédé qu'on
+appelle localisation.
+
+\begin{definition}
+  Soit $A$ un anneau commutatif intègre. On considère une partie $S\subseteq A$
+  close par produit, c'est-à-dire telle que
+  \[\forall x,y\in S, x \times y \in S\]
+  On définit la relation $\sim_S$ sur $A\times S$ par
+  \[(a,s) \sim (a',s') \defeq a\times s' = a' \times s\]
+\end{definition}
+
+\begin{proposition}
+  $\sim_S$ est une congruence pour les opérations
+  \[(a,s)+(a',s') \defeq (a\times s' + a' \times s, s\times s')\qquad
+  (a,s)\times (a',s') \defeq (a\times a',s\times s')\]
+\end{proposition}
+
+\begin{proof}
+  On montre les différents axiomes~:
+  \begin{itemize}
+  \item pour tout $(a,s)$, on a $a\times s = a \times s$ donc $(a,s)\sim(a,s)$.
+  \item la symétrie vient de celle de l'égalité.
+  \item si $(a,s)\sim(a',s')\sim(a'',s'')$, alors $(a,s)\sim(a'',s'')$. En
+    effet, l'hypothèse nous dit que
+    \[\left\{\begin{array}{l}
+    a \times s' = a' \times s\\
+    a' \times s'' = a'' \times s'
+    \end{array}\right.\]
+    d'où, en multipliant les deux lignes~:
+    \[a\times (s'\times a') \times s'' = a''\times (s'\times a') \times s\]
+    si l'un parmi $a,a',a''$ est nul, les trois sont nuls et le résultat est
+    direct. Sinon, par intégrité, on peut simplifier la multiplication par
+    $s'\times a'$, nous donnant $a\times s'' = a'' \times s$, donc
+    $(a,s) \sim (a'',s'')$.
+  \item si $(a,s)\sim(a',s')$ et $(b,t)\sim(b',t')$, pour montrer que
+    $(a,s)\times(b,t)\sim (a',s')\times (b',t')$, il nous faut montrer
+    l'égalité
+    \[(a\times t + b \times s)\times s' \times t' =
+    (a'\times t' + b' \times s')\times s \times t\]
+    et le raisonnement donné plus tôt dans le cas de $\mathbb Q$ fonctionne
+    encore.
+  \item si $(a,s)\sim(a',s')$ et $(b,t)\sim(b',t')$, on veut montrer que
+    \[a\times b \times s' \times t' = a' \times b' \times s \times t\]
+    ce qui se déduit directement des hypothèses.
+  \end{itemize}
+  Ainsi $\sim$ est bien une congruence pour les opérations considérées.
+\end{proof}
+
+On peut alors montrer que $A/\sim$, qu'on note en général $S^{-1}A$, contient
+$A$ et des inverses pour chaque élément de $S$. En réalité, on peut construire
+la localisation sans avoir l'intégrité, en prenant une définition analogue à
+celle où on ajoute $k$ dans la définition de la symétrisation.
+
+\subsection{Les nombres réels}
+
+Nous abordons notre dernière construction avec celle des réels. Il existe deux
+constructions classiques de $\mathbb R$~: celle par suites de Cauchy et celle
+par coupures de Dedekind. Comme nous avons abordé la complétion dans le cadre
+général dans le \cref{chp.topo}, nous allons étudier ici la construction par
+les coupures de Dedekind, qui se base sur la structure ordonnée de $\mathbb Q$.
+
+La relation $\leq$, en effet, peut s'étendre de $\mathbb N$ à $\mathbb Z$ puis
+à $\mathbb Q$, conférant à $\mathbb Q$ une structure de corps ordonné. Il nous
+faut donc commencer par donner les définitions d'ordre sur $\mathbb Z$ et
+$\mathbb Q$~:
+
+\begin{definition}
+  On définit sur $\mathbb Z$ la relation $\leq$ par~:
+  \[a \leq b \defeq b - a \in \mathbb N\]
+  où $\mathbb N$ est identifié à $\iota(\mathbb N) \subseteq \mathbb Z$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\leq$ est une relation d'ordre compatible avec l'addition,
+  c'est-à-dire que pour tous $a\leq b$ et $c\leq d$, on a $a+c\leq b+d$.
+  Montrer de plus que si $a \geq 0$ et $b\geq 0$ alors $a\times b \geq 0$.
+  La structure $(\mathbb Z,0,+,1,\times,\leq)$ est alors appelée un anneau
+  ordonné.
+\end{exercise}
+
+\begin{definition}
+  On définit la partie de $\mathbb Q$ suivante~:
+  \[\mathbb Q_+ \defeq \left\{\frac{p}{q}\mid p,q\in \mathbb N\right\}\]
+  On définit alors la relatoin $\leq$ sur $\mathbb Q$ par~:
+  \[r \leq s \defeq s - r \in \mathbb Q_+\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $(\mathbb Q,0,+,1,\times,\leq)$ est un aussi un anneau ordonné.
+  On dit alors que c'est un corps ordonné.
+\end{exercise}
+
+De plus, toutes ces structures ordonnées ont la propriété d'être archimédienne,
+ce qui signifie que $\mathbb Z$ et $\mathbb Q$ vérifient la proposition
+suivante~:
+\[\forall k\in A, \exists n \in\mathbb N, n \geq k\]
+
+On veut désormais compléter $\mathbb Q$, ce qui signifie moralement qu'on veut
+supprimer tous les trous que contient cet ensemble. Dans le contexte des suites
+de Cauchy, cela signifie qu'on veut qu'une suite de Cauchy, devant converger en
+terme d'à quel point ses points se rapprochent, doit converger effectivement
+vers un point donné. Dans le contexte de l'ordre, la notion naturelle de limite
+est celle de borne supérieure ou inférieure. On peut voir cela par exemple avec
+l'intervalle $(0,1)$~: il ne contient ni $0$ ni $1$, mais on pense à $1$ comme à
+un point limite de l'intervalle. Pour une suite croissante, d'ailleurs, la
+limite coïncide avec la borne supérieure (dans $\mathbb R$).
+
+On souhaite donc ajouter à notre ensemble $\mathbb Q$ toutes les bornes
+supérieures de parties de $\mathbb Q$. Une construction générale de théorie des
+ordres existe pour cela~: c'est la complétion idéale. Elle consiste à étudier,
+à la place d'un ensemble ordonné $(X,\leq)$, l'ensemble $\mathcal I(X)$ de ses
+idéaux muni de l'inclusion. La construction des coupures de Dedekind est très
+proche, mais considère au lieu des idéaux des paires $(L,U)$ d'un idéal et d'un
+filtre (on exprimera différemment ces paires dans le contexte des coupures de
+Dedekind).
+
+\begin{definition}[Coupure de Dedekind]\label{def.ax.cut}
+  On appelle coupure de Dedekind un couple $(L,U)\in (\powerset(\mathbb Q))^2$
+  tel que~:
+  \begin{itemize}
+  \item $L \neq \varnothing$ et $U\neq\varnothing$
+  \item $L\cup U = \mathbb Q$
+  \item $\forall x \in L, \forall y \in B, x < y$
+  \item si $L$ possède une borne supérieure (dans $\mathbb Q$), alors cette
+    borne inférieure est dans $L$
+  \end{itemize}
+
+  On note $\Dedekind(\mathbb Q)$ l'ensemble des coupures de Dedekind.
+\end{definition}
+
+Les trois premières conditions expriment que $L$ est un enemble clos par le bas,
+$U$ un ensemble clos par le haut, que les deux forment une partition de
+$\mathbb Q$ et que $L$ est strictement en-dessous de $U$ (d'où la notation de
+$L$ pour \textit{lower} et $U$ pour \textit{upper}).
+
+L'idée est alors de représenter un réel $x\in\mathbb R$ par la coupure de
+Dedekind des points inférieurs et supérieurs~:
+\[(\{r\in \mathbb Q \mid r \leq x\},\{r\in \mathbb Q \mid r > x\})\]
+On voit qu'avec seulement les trois premières conditions, on aurait pu choisir
+de dire que $r < x$ et $r \geq x$ dans les deux conditions précédentes. La
+dernière condition de la \cref{def.ax.cut} fixe notre choix en disant que si
+le point identifié par la coupure est déjà rationnel, alors il est placé dans
+la coupure du bas.
+
+Les définitions sur les coupures de Dedekind souffrent d'un problème important~:
+il faut faire des disjonctions de cas suivant le signe des éléments. Pour
+éviter ce problème, on va à la place construire $\mathbb R_+$, que l'on peut
+étendre à $\mathbb R$ par exemple en reprenant le processus de symétrisation.
+On notera donc notre ensemble de coupures $\Dedekind(\mathbb Q_+)$. Remarquons
+que notre choix de mettre le point rationnel potentiel dans la partie du bas
+permet à la partie du bas de rester non vide, même pour représenter $0$.
+
+\begin{definition}
+  On définit sur $\Dedekind(\mathbb Q_+)$ l'opération $+$ par~:
+  \[(L,U)+(L',U') \defeq
+  (\{a + b \mid a \in L, b \in L'\},\{a + b \mid a \in U, b \in U'\})\]
+  et l'opération $\times$ par~:
+  \[(L,U)\times(L',U')\defeq (\{a \times b \mid a \in L, b \in L'\},
+  \{a \times b \mid a \in U, b \in U'\})\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $(\Dedekind(\mathbb Q_+),0_\Dedekind,+,1_\Dedekind,\times)$ est un
+  demi-anneau, où
+  \[0_\Dedekind = (\{0\},\mathbb Q\setminus \{0\})\qquad
+  1_\Dedekind = (\{r \in \mathbb Q \mid 0 \leq r \leq 1\},
+  \mathbb Q \setminus [0,1]\})\]
+\end{exercise}
+
+On peut aussi définir l'ordre sur les coupures.
+
+\begin{definition}
+  On définit sur $\Dedekind(\mathbb Q_+)$ l'ordre $\leq$ par~:
+  \[(L,U)\leq (L',U')\defeq L \subseteq L'\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $+$ est compatible avec $\leq$.
+\end{exercise}
+
+On revient maintenant à $\Dedekind(\mathbb Q)$~: cet ensemble possède la
+propriété de la borne supérieure. Nous allons montrer la version de la borne
+inférieure à la place, car nos choix rendent plus simple cette démonstration.
+Il est direct, dans un deuxième temps, de voir que la borne supérieure est la
+borne inférieure de l'ensemble opposé.
+
+\begin{proposition}
+  Toute partie $S\subseteq \Dedekind(\mathbb Q)$ non vide minorée admet une
+  borne inférieure.
+\end{proposition}
+
+\begin{proof}
+  Soit une telle partie $S$. On définit la borne inférieure de $S$ comme
+  \[(L_S,U_S) \defeq (\bigcap_{(L,U)\in S} L, \bigcup_{(L,U)\in S} U)\]
+  Montrons que cela définit bien une coupure~:
+  \begin{itemize}
+  \item $S$ est non vide, donc on trouve $(L,U)\in S$~: $U$ est non vide donc
+    on trouve $r\in U$, et $U\subseteq U_S$ donc $r\in U_S$. $U_S$ est donc
+    non vide. Comme $S$ est minorée, on trouve $(L,U)$ minorant $S$~: il existe
+    donc $r \in L$ et pour tout $(L',U')\in S$, comme $(L',U')\leq(L,U)$, on
+    en déduit que $r\in L'$, donc $r\in L_S$~: $L_S$ est non vide.
+  \item soit $r\in \mathbb Q$. S'il existe $(L,U) \in S$ tel que $r\in U$,
+    alors $r\in U_S$ par définition. Sinon, alors pour tout $(L,U)\in S$,
+    $r\notin U$, donc $r\in L$~: on en déduit donc que $r\in L_S$. Donc
+    $L_S\cup U_S = \mathbb Q$.
+  \item si $x \in L_S$ et $y\in U_S$ alors on trouve $(L,U)\in S$ tel que
+    $y\in U$. Comme $x \in U$ et $(L,U)\in\Dedekind(\mathbb Q)$, on en
+    déduit que $x < y$.
+  \item si $L_S$ possède une borne supérieure $x$, alors soit $(L,U) \in S$.
+    Comme $L_S\subseteq L$, tout majorant de $L$ est un majorant de $L_S$
+    donc $x$ est plus petit que tout majorant de $L$. Si $L$ n'a pas de borne
+    supérieure, alors $x$ ne peut pas être un majorant de $L$ et est donc
+    un élément de $L$. Si $L$ a une borne supérieure, alors $x\in L$ puisque
+    c'est le plus petit majorant. Dans les deux cas, $x \in L$, donc $x$ est
+    dans $L$ pour tout $(L,U)\in S$, donc $x\in L_S$.
+  \end{itemize}
+
+  On veut maintenant montrer que $(L_S,U_S)$ est bien la borne inférieure
+  de $S$. On sait que $L_S\subseteq L$ pour tout $(L,U)\in S$ par propriété de
+  l'intersection. Soit $(L',U')$ tel que
+  \[\forall (L,U)\in S, (L',U')\leq (L,U)\]
+  alors cela signifie que $\displaystyle L'\subseteq \bigcap_{(L,U)\in S} L$
+  ce qui signifie exactement que $(L',U')\leq (L_S,U_S)$. D'où le résultat.
+\end{proof}
