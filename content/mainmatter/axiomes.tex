@@ -1381,11 +1381,11 @@ $\mathbb Q$~:
 \end{definition}
 
 \begin{exercise}
-  Montrer que $\leq$ est une relation d'ordre compatible avec l'addition,
+  Montrer que $\leq$ est une relation d'ordre totale compatible avec l'addition,
   c'est-à-dire que pour tous $a\leq b$ et $c\leq d$, on a $a+c\leq b+d$.
   Montrer de plus que si $a \geq 0$ et $b\geq 0$ alors $a\times b \geq 0$.
   La structure $(\mathbb Z,0,+,1,\times,\leq)$ est alors appelée un anneau
-  ordonné.
+  totalement ordonné.
 \end{exercise}
 
 \begin{definition}
@@ -1396,8 +1396,8 @@ $\mathbb Q$~:
 \end{definition}
 
 \begin{exercise}
-  Montrer que $(\mathbb Q,0,+,1,\times,\leq)$ est un aussi un anneau ordonné.
-  On dit alors que c'est un corps ordonné.
+  Montrer que $(\mathbb Q,0,+,1,\times,\leq)$ est un aussi un anneau totalement
+  ordonné. On dit alors que c'est un corps totalement ordonné.
 \end{exercise}
 
 De plus, toutes ces structures ordonnées ont la propriété d'être archimédienne,
@@ -1421,114 +1421,337 @@ ordres existe pour cela~: c'est la complétion idéale. Elle consiste à étudie
 à la place d'un ensemble ordonné $(X,\leq)$, l'ensemble $\mathcal I(X)$ de ses
 idéaux muni de l'inclusion. La construction des coupures de Dedekind est très
 proche, mais considère au lieu des idéaux des paires $(L,U)$ d'un idéal et d'un
-filtre (on exprimera différemment ces paires dans le contexte des coupures de
-Dedekind).
+filtre. Dans notre cas, nous allons traiter le cas général de la complétion
+idéale plutôt que la version historique des coupures de Dedekind.
 
-\begin{definition}[Coupure de Dedekind]\label{def.ax.cut}
-  On appelle coupure de Dedekind un couple $(L,U)\in (\powerset(\mathbb Q))^2$
-  tel que~:
+Notre présentation sera un entre deux~: nous donnons une construction
+similaire à celle de la complétion idéale pour les ordres partiels complets,
+mais nous nous plaçons directement dans le cadre des ordres totaux. On parle
+donc d'ordre total complet, et on considère une variante qui nous rapproche
+directement de la propriété de la borne supérieure, qu'on veut vérifier dans
+$\mathbb R$.
+
+\begin{definition}[Ordre total complet]
+  On dit qu'un ensemble totalement ordonné $(X,\leq)$ est complet si toute
+  partie non vide majorée admet une borne supérieure et toute partie minorée
+  non vide admet une borne inférieure.
+\end{definition}
+
+Notre objectif est donc, à partir de $(\mathbb Q,\leq)$, de construire
+l'ensemble ordonné $(\mathbb R,\leq)$ qui est complet et contient, en un sens,
+$\mathbb Q$. On veut donc \og ajouter les bornes supérieures\fg de $\mathbb Q$,
+les bornes inférieures en étant conséquences du fait que $x\mapsto -x$ envoie
+les bornes supérieures sur les bornes inférieures et inversement (on le verra
+après notre construction).
+
+Partons d'une remarque essentielle~: les bornes supérieures existent toujours
+quand on étudie des ensembles d'ensembles, grâce à l'union. Cela nous motive à
+plonger $\mathbb Q$ dans un ensemble d'ensembles. En l'occurrence, il existe une
+façon assez naturelle d'associer une partie de $\mathbb Q$ à un rationnel $r$~:
+il suffit de considérer l'ensemble $\{r' \in \mathbb Q \mid r' \leq r\}$. Cette
+association tient compte de l'ordre, ce qui est souhaité vu notre objectif.
+
+On veut donc caractériser les parties qui se comportent comme celle définie plus
+haut. Une propriété évidente est qu'une telle partie est close par le bas, par
+transitivité d el'ordre $\leq$. Une telle partie est aussi non vide, dans le cas
+de $\mathbb Q$, puisque $\mathbb Q$ n'est pas minoré. Elle n'est pas non plus
+l'ensemble tout entier. Ces conditions sont exactement celles définissant un
+idéal dans un ensemble totalement ordonné (car la propriété à propos de $\land$
+est alors automatiquement vérifiée), et ne pas être $\mathbb Q$ signifie être un
+idéal propre.
+
+Cependant, on voit que deux idéaux peuvent sembler coder le même rationnel~:
+$\{q < 2\}$ et $\{q \leq 2\}$ sont des idéaux et ont la même borne supérieure,
+ce qui est un problème dans notre cas. Pour arranger cela, on ajoute qu'une
+partie ayant une borne supérieure doit la contenir.
+
+\begin{definition}[Complétion idéale]
+  Soit $(X,\leq)$ un ensemble totalement ordonné. On appelle complétion idéale
+  l'ensemble $\ideal(X)\subseteq \powerset(X)$ défini par le fait que
+  $Y\in \ideal(X)$ si et seulement si~:
   \begin{itemize}
-  \item $L \neq \varnothing$ et $U\neq\varnothing$
-  \item $L\cup U = \mathbb Q$
-  \item $\forall x \in L, \forall y \in B, x < y$
-  \item si $L$ possède une borne supérieure (dans $\mathbb Q$), alors cette
-    borne inférieure est dans $L$
+  \item pour tout $x,y\in X$, si $x\leq y$ et $y \in Y$ alors $x\in Y$.
+  \item $Y\neq \varnothing$
+  \item $Y\neq X$
+  \item si $\bigvee Y$ existe, alors $\bigvee Y \in Y$.
   \end{itemize}
-
-  On note $\Dedekind(\mathbb Q)$ l'ensemble des coupures de Dedekind.
+  muni de l'inclusion comme ordre.
 \end{definition}
 
-Les trois premières conditions expriment que $L$ est un enemble clos par le bas,
-$U$ un ensemble clos par le haut, que les deux forment une partition de
-$\mathbb Q$ et que $L$ est strictement en-dessous de $U$ (d'où la notation de
-$L$ pour \textit{lower} et $U$ pour \textit{upper}).
+\begin{remark}
+  On aurait aussi pu caractériser cet ensemble comme l'ensemble des idéaux de
+  $X$ fermés pour la topologie de l'ordre, qui est la topologie engendrée par
+  les intervalles ouverts, c'est-à-dire de la forme $\{x \in X\mid y < x < z\}$
+  pour $y,z\in X$.
+\end{remark}
 
-L'idée est alors de représenter un réel $x\in\mathbb R$ par la coupure de
-Dedekind des points inférieurs et supérieurs~:
-\[(\{r\in \mathbb Q \mid r \leq x\},\{r\in \mathbb Q \mid r > x\})\]
-On voit qu'avec seulement les trois premières conditions, on aurait pu choisir
-de dire que $r < x$ et $r \geq x$ dans les deux conditions précédentes. La
-dernière condition de la \cref{def.ax.cut} fixe notre choix en disant que si
-le point identifié par la coupure est déjà rationnel, alors il est placé dans
-la coupure du bas.
-
-Les définitions sur les coupures de Dedekind souffrent d'un problème important~:
-il faut faire des disjonctions de cas suivant le signe des éléments. Pour
-éviter ce problème, on va à la place construire $\mathbb R_+$, que l'on peut
-étendre à $\mathbb R$ par exemple en reprenant le processus de symétrisation.
-On notera donc notre ensemble de coupures $\Dedekind(\mathbb Q_+)$. Remarquons
-que notre choix de mettre le point rationnel potentiel dans la partie du bas
-permet à la partie du bas de rester non vide, même pour représenter $0$.
-
-\begin{definition}
-  On définit sur $\Dedekind(\mathbb Q_+)$ l'opération $+$ par~:
-  \[(L,U)+(L',U') \defeq
-  (\{a + b \mid a \in L, b \in L'\},\{a + b \mid a \in U, b \in U'\})\]
-  et l'opération $\times$ par~:
-  \[(L,U)\times(L',U')\defeq (\{a \times b \mid a \in L, b \in L'\},
-  \{a \times b \mid a \in U, b \in U'\})\]
-\end{definition}
-
-\begin{exercise}
-  Montrer que $(\Dedekind(\mathbb Q_+),0_\Dedekind,+,1_\Dedekind,\times)$ est un
-  demi-anneau, où
-  \[0_\Dedekind = (\{0\},\mathbb Q\setminus \{0\})\qquad
-  1_\Dedekind = (\{r \in \mathbb Q \mid 0 \leq r \leq 1\},
-  \mathbb Q \setminus [0,1]\})\]
-\end{exercise}
-
-On peut aussi définir l'ordre sur les coupures.
-
-\begin{definition}
-  On définit sur $\Dedekind(\mathbb Q_+)$ l'ordre $\leq$ par~:
-  \[(L,U)\leq (L',U')\defeq L \subseteq L'\]
-\end{definition}
-
-\begin{exercise}
-  Montrer que $+$ est compatible avec $\leq$.
-\end{exercise}
-
-On revient maintenant à $\Dedekind(\mathbb Q)$~: cet ensemble possède la
-propriété de la borne supérieure. Nous allons montrer la version de la borne
-inférieure à la place, car nos choix rendent plus simple cette démonstration.
-Il est direct, dans un deuxième temps, de voir que la borne supérieure est la
-borne inférieure de l'ensemble opposé.
+On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
 
 \begin{proposition}
-  Toute partie $S\subseteq \Dedekind(\mathbb Q)$ non vide minorée admet une
-  borne inférieure.
+  Soit $(X,\leq)$ un ordre totalement ordonné non majoré. Alors
+  $(\ideal(X),\subseteq)$ est un ordre total complet.
 \end{proposition}
 
 \begin{proof}
-  Soit une telle partie $S$. On définit la borne inférieure de $S$ comme
-  \[(L_S,U_S) \defeq (\bigcap_{(L,U)\in S} L, \bigcup_{(L,U)\in S} U)\]
-  Montrons que cela définit bien une coupure~:
-  \begin{itemize}
-  \item $S$ est non vide, donc on trouve $(L,U)\in S$~: $U$ est non vide donc
-    on trouve $r\in U$, et $U\subseteq U_S$ donc $r\in U_S$. $U_S$ est donc
-    non vide. Comme $S$ est minorée, on trouve $(L,U)$ minorant $S$~: il existe
-    donc $r \in L$ et pour tout $(L',U')\in S$, comme $(L',U')\leq(L,U)$, on
-    en déduit que $r\in L'$, donc $r\in L_S$~: $L_S$ est non vide.
-  \item soit $r\in \mathbb Q$. S'il existe $(L,U) \in S$ tel que $r\in U$,
-    alors $r\in U_S$ par définition. Sinon, alors pour tout $(L,U)\in S$,
-    $r\notin U$, donc $r\in L$~: on en déduit donc que $r\in L_S$. Donc
-    $L_S\cup U_S = \mathbb Q$.
-  \item si $x \in L_S$ et $y\in U_S$ alors on trouve $(L,U)\in S$ tel que
-    $y\in U$. Comme $x \in U$ et $(L,U)\in\Dedekind(\mathbb Q)$, on en
-    déduit que $x < y$.
-  \item si $L_S$ possède une borne supérieure $x$, alors soit $(L,U) \in S$.
-    Comme $L_S\subseteq L$, tout majorant de $L$ est un majorant de $L_S$
-    donc $x$ est plus petit que tout majorant de $L$. Si $L$ n'a pas de borne
-    supérieure, alors $x$ ne peut pas être un majorant de $L$ et est donc
-    un élément de $L$. Si $L$ a une borne supérieure, alors $x\in L$ puisque
-    c'est le plus petit majorant. Dans les deux cas, $x \in L$, donc $x$ est
-    dans $L$ pour tout $(L,U)\in S$, donc $x\in L_S$.
-  \end{itemize}
+  On souhaite d'abord montrer que cet ordre est total. Soient $Y,Z\in\ideal(X)$,
+  $Y\neq Z$. Par définition, on trouve $x\in Y\Delta Z$. Par symétrie du rôle de
+  $Y$ et $Z$, on suppose sans perte de généralité que $x\in Y$. Alors pour tout
+  $z\in Z$, si $x \leq z$ on aurait $x\in Z$ puisque $Z$ est clos par le bas.
+  Donc, comme $x\in Y\setminus Z$, on en déduit que $x \leq z$ est faux. Comme
+  l'ordre est total, on en déduit que $z\leq x$, donc par clôture par le bas de
+  $Y$ que $z\in Y$. En conclusion, $Z\subseteq Y$, donc l'ordre est total.
 
-  On veut maintenant montrer que $(L_S,U_S)$ est bien la borne inférieure
-  de $S$. On sait que $L_S\subseteq L$ pour tout $(L,U)\in S$ par propriété de
-  l'intersection. Soit $(L',U')$ tel que
-  \[\forall (L,U)\in S, (L',U')\leq (L,U)\]
-  alors cela signifie que $\displaystyle L'\subseteq \bigcap_{(L,U)\in S} L$
-  ce qui signifie exactement que $(L',U')\leq (L_S,U_S)$. D'où le résultat.
+  Soit maintenant une partie $A\subseteq \ideal(X)$ non vide majorée, on
+  construit la borne supérieure de $A$ en deux temps. On pose d'abord
+  $B = \bigcup A$. Si $B$ admet une borne supérieure (dans $X$), alors on
+  considère comme borne supérieure de $A$ l'ensemble $B \cup\{\bigvee B\}$,
+  sinon on considère simplement $B$. On note cet ensemble $C$. On vérifie que
+  $C\in \ideal(X)$~:
+  \begin{itemize}
+  \item soient $x,y\in X$ tels que $x < y$ et $y\in C$. Si $y = \bigvee B$,
+    alors comme $x < \bigvee B$, on en déduit qu'il existe $z \in B$ tel que
+    $x < z$, et par définition de $z\in B$ on trouve $Z\in A$ tel que $z\in Z$,
+    donc $x \in Z$, donc $x \in B$. Si $y \in B$, alors on trouve $Z\in A$ tel
+    que $y \in Z$ et on en déduit que $x\in Z$, donc que $x \in B$.
+  \item comme $A\neq \varnothing$, on trouve $Y\in A$, et $Y\neq\varnothing$
+    donc on trouve $y\in Y$, on en déduit que $y\in C$, donc que
+    $C\neq\varnothing$.
+  \item comme $A$ est majorée, on trouve $Y \in \ideal(X)$ tel que pour tout
+    $Z\in C$, $Z\subseteq Y$. Comme $Y\neq X$, on trouve $x\in X\setminus Y$,
+    et par totalité de $\leq$ on en déduit que $x$ est un majorant de $Y$, c'est
+    de plus un majorant strict puisque la borne supérieure de $Y$ doit
+    appartenir à $Y$. On remarque que $C\subseteq Y$, donc $x\notin C$, donc
+    $C\neq X$.
+  \item si $\bigvee C$ existe, alors par construction c'est $\bigvee B$ qui est
+    un élément de $C$.
+  \end{itemize}
+  Donc $C\in\ideal(X)$.
+
+  On montre maintenant que c'est la borne supérieure de $A$~:
+  \begin{itemize}
+  \item $C$ contient l'union de $A$ donc pour tout $Y\in A, Y\subseteq C$.
+  \item supposons que pour tout $Y\in A, Y\subseteq Z$ pour un certain
+    $Z\in \ideal(X)$. Alors $B\subseteq Z$, il nous faut donc montrer que si
+    $\bigvee B$ existe alors $\bigvee B \in Z$. Supposons que cet élément
+    existe et qu'il n'appartient pas à $Z$. Alors il est un majorant de $Z$.
+    Soit $z$ un autre majorant de $Z$, alors si $z < \bigvee B$, on en déduit
+    qu'il existe $Y\in A$ tel que $z\in Y$, donc $z \in Z$, donc $z$ est le
+    maximum de $Z$, qui est une borne supérieure~: on en déduit que
+    $\bigvee B = z$, donc que $\bigvee B \in Z$, ce qui est absurde. Ainsi
+    $\bigvee B \in Z$, donc $C\subseteq Z$.
+  \end{itemize}
+  Ainsi $C$ est le plus petit majorant de $A$, donc $C$ est la borne supérieure
+  de $A$ dans $(\ideal(X),\subseteq)$.
+
+  Le cas des bornes inférieures est laissé en exercice.
 \end{proof}
+
+\begin{exercise}
+  Montrer qu'une partie minorée non vide $A$ possède une borne inférieure dans
+  $(\ideal(X),\subseteq)$. \textit{Indication~:} on considère comme candidat de
+  cette borne inféreure de $A$ l'ensemble $\bigcap A$.
+\end{exercise}
+
+\begin{remark}
+  On peut noter la différence de traitement de la borne supérieure de l'idéal
+  entre l'intersection et l'union. La raison à cela peut s'interpréter de façon
+  topologique~: nous imposons à nos idéaux d'être des fermés, donc considérer
+  l'union nous demande de prendre ensuite l'adhérence (qui correspond dans notre
+  cas à ajouter la borne supérieure) là où la stabilité par intersection est
+  assurée. Une autre asymétrie est donnée par le fait que les idéaux considèrent
+\end{remark}
+
+On veut aussi montrer que $\ideal(X)$ est un prolongement, en un sens, naturel,
+de $X$. Cela se traduit par deux faits~: on peut plonger $X$ dans $\ideal(X)$,
+et $\ideal(X)$ est le plus petit ensemble contenant $X$ et étant stable par
+sups de parties bornées non vides.
+
+\begin{proposition}
+  Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. La fonction
+  \[\begin{array}{ccccc}
+  \iota & : & X & \longrightarrow & \ideal(X)\\
+  & & x &\mapsto & \{y \in X \mid y \leq x\}
+  \end{array}\]
+  est une fonction strictement croissante.
+\end{proposition}
+
+\begin{proof}
+  Montrons d'abord que la fonction est bien définie, c'est-à-dire que pour tout
+  $x\in X$, $\iota(x)$ est bien un élément de $\ideal(X)$~:
+  \begin{itemize}
+  \item si $y,z\in X$ tels que $y\leq z$ et $z\in \iota(x)$, alors $z \leq x$
+    donc $y\leq x$ par transitivité, donc $y\in \iota(x)$.
+  \item $x\in\iota(x)$ donc $\iota(x)\neq\varnothing$.
+  \item $X$ n'est pas majoré, donc on trouve $y > x$, ce qui signifie que
+    $y\notin\iota(x)$, donc $\iota(x)\neq X$.
+  \item $\bigvee\iota(x) = x$ et $x\in\iota(x)$ donc la borne supérieure  de
+    $\iota(x)$ existe et appartient bien à $\iota(x)$.
+  \end{itemize}
+  On en déduit que $\iota$ est bien définie.
+
+  Si $x < y$ alors pour tout $z \in \iota(x)$, $z \leq x$ donc par transitivité
+  $z \leq y$, donc $z \in \iota(y)$. De plus, $y\notin\iota(x)$ et
+  $y\in\iota(y)$ donc $\iota(x)\subsetneq\iota(y)$. $\iota$ est donc strictement
+  croissante.
+\end{proof}
+
+\begin{remark}
+  On peut utiliser ce résultat pour prouver que $\ideal(X)$ n'est pas majoré.
+  En effet, s'il l'était, alors son majorant contiendrait tous les $\iota(x)$
+  pour $x\in X$, donc tout $X$, ce qui n'est pas possible. En réalité, on
+  pourrait simplement considérer l'ensemble des idéaux et non l'ensemble des
+  idéaux propres (un idéal est propre s'il est différent de $X$), mais dans
+  notre construction de $\mathbb R$ cela introduirait un point à l'infini.
+\end{remark}
+
+\begin{lemma}\label{lem.id.cup}
+  Soit $(X,\leq)$ un ensemble totalement ordonné. Alors pour tout
+  $Y\in\ideal(X)$, on a l'égalité
+  \[Y = \bigcup_{x\in Y} \iota(x)\]
+\end{lemma}
+
+\begin{proof}
+  On prouve ce résultat par double inclusion~:
+  \begin{itemize}
+  \item pour tout $x\in Y$, comme $Y$ est clos par le bas,
+    $\iota(x)\subseteq Y$, donc
+    $\displaystyle\bigcup_{x\in Y}\iota(x)\subseteq Y$.
+  \item on sait que $x\in \iota(x)$, donc pour tout $x\in Y$,
+    $\displaystyle x\in \bigcup_{x\in Y} \iota(x)$.
+  \end{itemize}
+  D'où le résultat par double inclusion.
+\end{proof}
+
+\begin{theorem}[Propriété universelle de la complétion idéale]
+  Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. Soit $(Y,\leq)$
+  un ensemble totalement ordonné complet et $f : X \to Y$ une fonction
+  croissante préservant les bornes inférieures et supérieures. Il existe une
+  unique fonction $\hat f : \ideal(X) \to Y$ qui préserve les bornes supérieures
+  et les bornes inférieures et telle que $f = \hat f \circ \iota$.
+\end{theorem}
+
+\begin{proof}
+  On procède par analyse-synthèse~:
+  \begin{itemize}
+  \item si une telle fonction $\hat f$ existe, alors par définition, on sait
+    que pour tout $x\in X$, $\hat f(\iota(x)) = f(x)$. De plus, par le
+    \cref{lem.id.cup}, on sait que pour tout $Y\in \iota(x)$,
+    $\displaystyle Y = \bigcup_{x\in Y} \iota(x)$, donc par préservation des
+    bornes supérieures on en déduit que
+    \[\hat f(Y) = \bigvee_{x\in Y} f(x)\]
+    ce qui définit de façon unique $\hat f$.
+  \item Montrons que notre candidat $\hat f$ est une fonction croissante qui
+    préserve les bornes supérieures et inférieures~:
+    \begin{itemize}
+    \item Tout d'abord, si
+      $Y\subseteq Z$, comme la borne supérieure est croissante pour l'inclusion,
+      on en déduit que $\bigvee f(Y) \leq \bigvee f(Z)$, d'où
+      $\hat f(Y)\leq \hat f(Z)$.
+      
+    \item Soit $A\subseteq \ideal(X)$ admettant une borne supérieure, qu'on note
+      $a$. On a vu que cette borne supérieure est $\bigcup A$, en ajoutant si
+      nécessaire la borne supérieure (dans $X$) de $\bigcup A$, ce qui nous
+      donne donc
+      \[\hat f(a) = \bigvee_{x \in a} f(x)\]
+      on veut montrer que cette valeur est la borne supérieure de $\hat f(A)$.
+      Comme la borne supérieure est croissante vis à vis de l'inclusion, on sait
+      déjà que $\hat f(a)$ est un majorant de $\hat f(A)$.
+      Soit $b$ un majorant de $\hat f(A)$, cela signifie que pour tout
+      $Y\in A, \bigvee_{x \in Y} f(x) \leq b$, donc pour tout
+      $x \in \bigcup A, f(x) \leq b$. Il nous reste donc, si $\bigvee a$ existe,
+      à montrer que $f(\bigvee a) \leq b$. Mais cela est dû au fait que $f$
+      préserve les bornes supérieures.
+    \item Le cas de la borne inférieure est laissé en exercice.
+    \end{itemize}
+  \end{itemize}
+  Ainsi il existe une unique fonction $\hat f$ vérifiant les conditions
+  imposées.
+\end{proof}
+
+\begin{exercise}
+  Montrer que $\hat f$ préserve bien les bornes inférieures.
+\end{exercise}
+
+\begin{remark}
+  On peut représenter la propriété précédente par le fait qu'il existe une
+  unique flèche $\hat f$ faisant commuter le diagramme suivant~:
+  \begin{center}
+    \begin{tikzcd}
+      X \ar[r,"f"]\ar[d,"\iota"] & Y\\
+      \ideal(X) \ar[ur,dashed,"\hat f"]
+    \end{tikzcd}
+  \end{center}
+\end{remark}
+
+On peut donc construire l'ensemble ordonné $(\mathbb R,\leq)$, mais nous
+souhaitons aussi définir les opérations sur cet ensemble. Pour l'addition, nous
+avons besoin d'un simple lemme car l'addition est compatible avec l'ordre de
+$\mathbb Q$.
+
+\begin{lemma}\label{lem.R.compat}
+  Soit $(X,+,\leq)$ un monoïde régulier où $+$ est compatible avec
+  $\leq$. Alors l'ensemble ordonné $(\ideal(X),\subseteq)$ peut être muni de
+  la loi de composition interne $+$ définie par~:
+  \[Y + Z \defeq \{y + z \mid y \in Y, z \in Z\}\]
+  et $(\ideal(X),+,\subseteq)$ est alors un monoïde régulier et $+$ est
+  compatible avec $\subseteq$.
+\end{lemma}
+
+\begin{proof}
+  Soient $Y,Z\in \ideal(X)$, montrons que $Y + Z \in \ideal(X)$~:
+  \begin{itemize}
+  \item soient $x,x'\in X$ tels que $x\leq x'$ et $x\in Y + Z$. Par définition,
+    on trouve $y\in Y,z \in Z$ tels que $x' = y + z$. On veut montrer que
+    $x \in Y + Z$. A FAIRE  
+  \end{itemize}
+\end{proof}
+
+En utilisant toutes les constructions précédentes, on peut déjà construire
+$(\mathbb R,+,\leq)$, mais la multiplication, elle, n'est pas compatible avec
+l'ordre. On peut procéder de plusieurs manières~: la manière classique est de
+définir le produit sur $\mathbb R$ par disjonction de cas suivant le signe des
+arguments, mais nous allons plutôt nous restreindre à $\mathbb Q_+$,
+c'est-à-dire aux rationnels positifs.
+
+Nous avons vu que $(\mathbb N,+,\times)$ est un demi-anneau~: c'est aussi le cas
+de $(\mathbb Q_+,+,\times)$ en utilisant les mêmes arguments. On peut alors
+réutiliser la construction de $\mathbb Z$ à partir de $\mathbb N$ pour passer de
+$\mathbb Q_+$ à $\mathbb R$.
+
+\begin{exercise}
+  Montrer que $(\mathbb Q_+,+,\times,\leq)$ est un demi-anneau où les deux
+  opérations sont compatibles avec $\leq$.
+\end{exercise}
+
+\begin{definition}
+  On définit $(\mathbb R_+,+,\times,\leq)$ comme la complétion idéale du
+  demi-anneau ordonné $(\mathbb Q_+,+,\times,\leq)$. On définit alors le corps
+  ordonné complet $(\mathbb R,+,\times,\leq)$ comme le symétrisé de
+  $\mathbb R_+$ pour la loi $+$.
+\end{definition}
+
+\begin{remark}
+  En utilisant le \cref{lem.R.compat}, on montre qu'on peut prolonger $+$ sur
+  $\mathbb R_+$ et $\times$ sur $\mathbb R_+^\star$, mais on peut facilement
+  traiter le cas de la multiplication par $0$.
+\end{remark}
+
+\begin{corollary}[Propriété de la borne supérieure]
+  Toute partie non vide de $\mathbb R$ majorée a une borne supérieure, et toute
+  partie non vide de $\mathbb R$ minorée a une borne inférieure.
+\end{corollary}
+
+\begin{remark}
+  Plusieurs possibilités de construire les ensembles de nombres usuels se
+  dessinent, en retrospective. La première consiste à partir de $\mathbb N$
+  pour obtenir ensuite un anneau avec $\mathbb Z$ puis un corps avec $\mathbb Q$
+  et un corps complet avec $\mathbb R$ et deux façon permettent de faire la
+  dernière étape~: utiliser le complété par suites de Cauchy, auquel cas comme
+  l'ensemble des suites de Cauchy de limite nulle est un idéal de l'anneau des
+  suites de Cauchy les lois passent directement au quotient ; ou utiliser la
+  complétion idéale et définir $\times$ par disjonction de cas. L'autre
+  possibilité est de construire $\mathbb N$ et de symétriser $\times$ pour
+  obtenir $\mathbb Q_+$, compléter par idéaux et, finalement, symétriser
+  $+$ pour obtenir $\mathbb R$. Un avantage est que la définition de la valeur
+  absolue sur $\mathbb R$ devient particulièrement directe.
+\end{remark}
