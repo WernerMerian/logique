@@ -1404,15 +1404,122 @@ définition que nous prendrons pour la valeur d'adhérence d'une suite.
   les définitions avec les filtres et les définitions séquentielles.
 \end{remark}
 
-On peut maintenant caractériser la compacité dans un espace métrique grâce à des
-suites. On donnera la caractérisation sur les parties compactes, en prenant donc
-comme définition d'un espace compact un espace où l'ensemble entier est une
-partie compacte.
+On veut maintenant caractériser la compacité dans un espace métrique grâce à des
+suites. Notre analogie entre les suites et le filtres nous motive à donner une
+définition séquentielle des compacts utilisant la notion de valeur d'adhérence,
+c'est ce que nous faisons.
+
+\begin{definition}[Compact séquentiel]
+  Soit un espace métrique $(X,d)$. On dit qu'une partie $Y\subseteq X$ est une
+  partie séquentiellement compacte si toute suite $(x_n)\in Y^\mathbb N$ admet
+  une valeur d'adhérence.
+\end{definition}
+
+Un espace séquentiellement compact est alors, naturellement, un espace métrique
+$(X,d)$ tel que $X$ en est une partie séquentielement compacte.
+
+Pour prouver cette généralisation, un sens demande plus de technique~: c'est
+celui de montrer qu'un espace compact au sens séquentiel l'est au sens général.
+Nous introduisons deux notions importantes pour prouver ce sens plus
+naturellement~: le nombre de Lebesgue et la précompacité.
+
+\begin{definition}[Nombre de Lebesgue]
+  Soit $(X,d)$ un espace métrique et $(U_i)_{i\in I}$ un recouvrement de $X$. On
+  dit que $(U_i)$ admet un nombre de Borel si la propriété suivante est
+  vérifiée~:
+  \[\exists \rho > 0,\forall x \in X, \exists i \in I, B_\rho(x) \subseteq U_i \]
+  Si $(U_i)$ admet un nombre de Borel, on appelle nombre de Borel de $(U_i)$ un
+  $\rho$ tel que dans la formule précédente.
+\end{definition}
+
+\begin{lemma}\label{lem.nb.lebesgue}
+  Si $(X,d)$ est séquentiellement compact, alors tout recouvrement
+  $(U_i)_{i\in I}$ de $X$ admet un nombre de Borel.
+\end{lemma}
+
+\begin{proof}
+  On raisonne par l'absurde. Supposons donc que pour tout $\rho > 0$, on puisse
+  trouver $x \in X$ tel que pour tout
+  $i \in I, B_\rho(x) \setminus U_i \neq \varnothing$. On décide donc, pour
+  chaque $\rho > 0$, de noter $x_\rho$ un élément de $B_\rho(x) \setminus U_i$.
+  Cela forme une suite $(x_{1/n})_{n\in \mathbb N}$, dont on peut par compacité
+  séquentielle extraire une suite convergente, dont on note $\varphi$
+  l'extractrice, $(y_n)$ la suite extraite et $x$ la limite.
+
+  Comme $(U_i)$ est un recouvrement, on trouve $i\in I$ tel que $x \in U_i$.
+  Comme $U_i$ est ouvert et $x\in U_i$, on trouve $\varepsilon > 0$ tel que
+  $B_\varepsilon(x) \subseteq U_i$. Cependant, comme $(y_n)$ converge vers $x$,
+  on trouve $n\in \mathbb N$ tel que pour tout
+  $m > n, y_m\in B_{\varepsilon/2}(x)$. On sait alors que pour tout $m > n$ et
+  tout $y\in B_{\varepsilon/2}(y_m)$, $d(y,x) < \varepsilon$ par inégalité
+  triangulaire. Cela signifie donc que
+  $B_{\varepsilon/2}(y_m)\subseteq B_\varepsilon(x)\subseteq U_i$, mais cela
+  est impossible pour $m$ suffisamment grand (puisqu'alors $B_{1/m}(y_m)$ serait
+  inclus dans $U_i$), ce qui est absurde.
+
+  Le recouvrement $(U_i)_{i\in I}$ possède donc un nombre de Lebesgue.
+\end{proof}
+
+L'idée du nombre de Lebesgue est de montrer qu'un recouvrement donné contient
+des ouverts suffisamment gros~: il montre que tout point est contenu dans au
+moins un des ouverts avec assez d'espace autour de lui. Cet élément est
+important car on pourrait s'attendre à un échec de l'extraction d'un
+recouvrement fini justement à cause d'ouverts devenant de plus en plus petits.
+Ici, on a montré que s'il est possible d'avoir des ouverts devenant de plus en
+plus petits, ces ouverts trop petits ne sont pas important à considérer~: tous
+les points sont déjà recouverts par d'autres suffisamment gros.
+
+La deuxième étape est donc de prouver que ces ouverts suffisamment grands
+suffisent à avoir notre compacité. Cela se réduit à la propriété de
+précompacité, donc nous donnons la définition.
+
+\begin{definition}[Précompacité]
+  Soit $(X,d)$ un espace métrique. On dit que $X$ est précompact si pour tout
+  $\varepsilon > 0$, il existe un recouvrement fini de $X$ constitué
+  uniquement de boules de rayon $\varepsilon$.
+\end{definition}
+
+\begin{lemma}\label{lem.precomp}
+  Soit $(X,d)$ un espace métrique et séquentiellement compact, alors il est
+  précompact.
+\end{lemma}
+
+\begin{proof}
+  Par l'absurde, supposons qu'il existe $\varepsilon > 0$ tel qu'il n'existe
+  aucun recouvrement fini de $X$ constitué de boules de rayon $\varepsilon$.
+  On peut alors construire une suite $(x_n)$ de la façon suivante~:
+  \begin{itemize}
+  \item $x_0 \in X$
+  \item si $(x_n)_{n < N}$ est construite, alors on considère
+    $\displaystyle X\setminus \bigcup_{n < N} B_\varepsilon(x_n)$, qui est non
+    vide car sinon on aurait un recouvrement fini de $X$ par des boules ouvertes
+    de rayon $\varepsilon$.
+  \end{itemize}
+  On voit donc que $(x_n)$ vérifie la propriété que pour tout
+  $i < j, d(x_i,x_j) \geq \varepsilon$ (sinon on a une contradiction vis à vis
+  de la définition de $x_j$). Comme $(X,d)$ est séquentiellement compact, on
+  peut extraire une suite convergente de $(x_n)$~: notons-la $(y_n)$ et $x$ sa
+  limite. On voit alors que par définition de la limite, on peut trouver
+  $n_0\in\mathbb N$ tel que pour tout
+  $n > n_0, d(y_n,x) < \dfrac{\varepsilon}{2}$, mais alors pour $p,q > n_0$ on
+  trouve
+  \begin{align*}
+    d(y_p,y_q) &\leq d(y_p,x) + d(x,y_q)\\
+    &\leq \frac\varepsilon 2 + \frac\varepsilon 2\\
+    &\leq \varepsilon
+  \end{align*}
+  mais on sait que $d(y_p,y_q) \geq \varepsilon$~: c'est absurde.
+
+  Ainsi il doit, pour tout $\varepsilon > 0$, exister un recouvrement de $(X,d)$
+  par des boules ouvertes de rayon $\varepsilon$.
+\end{proof}
+
+On peut maintenant prouver l'équivalence entre la compacité séquentielle et la
+compacité générale.
 
 \begin{theorem}[Bolzano-Weierstrass généralisé]
   Soit $(X,d)$ un espace métrique. Alors une partie $K\subseteq X$ est compacte
-  si et seulement si toute suite à valeurs dans $K$ admet une valeur
-  d'adhérence.
+  si et seulement si elle est séquentiellement compacte.
 \end{theorem}
 
 \begin{proof}
@@ -1425,10 +1532,18 @@ partie compacte.
   \[\bigcap_{n \in F}\adher{\{u_k\mid k > n\}} \supseteq
   \adher{\{u_k\mid k > p\}}\]
   On déduit de la compacité que $\Adh(x_n)$ est non vide.
-
-  Supposons que toute suite à valeurs dans $K$ admet une valeur d'adhérence.
-  Soit $\mathcal F$ une famille de parties de $K$ ayant la propriété
-  d'intersection finie. A FAIRE
+  
+  Supposons que $K$ est séquentiellement compacte. Soit $(U_i)_{i\in I}$ un
+  recouvrement ouvert de $K$. Par le \cref{lem.nb.lebesgue}, on trouve $\rho$ un
+  nombre de Lebesgue de $(U_i)$. De plus, par le \cref{lem.precomp}, on sait
+  qu'on peut trouver un recouvrement fini de $K$ par des boules ouvertes de
+  rayon $\rho$, notons $Y \subfin X$ l'ensemble des points tel que
+  $\{B_\rho(x)\mid x \in Y\}$ soit le recouvrement fini obtenu par notre lemme.
+  Par définition du nombre de Lebesgue, on sait que pour chaque $x \in Y$, il
+  existe $i_x \in I$ tel que $B_\rho(x) \subseteq U_{i_x}$~: notre recouvrement
+  fini est alors $\{i_x\mid x \in Y\}$, puisque
+  \[K\subseteq \bigcup_{x \in Y} B_\rho(x) \subseteq \bigcup_{x \in Y} U_{i_x}\]
+  On en déduit que $K$ est compacte.
 \end{proof}
 
 On introduit maintenant une nouvelle notion, qui a du sens en topologie générale

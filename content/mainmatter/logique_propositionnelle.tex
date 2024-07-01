@@ -472,52 +472,37 @@ $\vdash$.
 
     \vspace{0.5cm}
     \AxiomC{$\Gamma,P\vdash \Delta$}
-    \AxiomC{$\Theta,Q\vdash \Xi$}
+    \AxiomC{$\Gamma,Q\vdash \Delta$}
     \RightLabel{l$\lor$}
-    \BinaryInfC{$\Gamma,\Theta,P\lor Q\vdash \Delta,\Xi$}
+    \BinaryInfC{$\Gamma,P\lor Q\vdash \Delta$}
     \DisplayProof
     \qquad
-    \AxiomC{$\Gamma\vdash \Delta,P$}
-    \RightLabel{r$\lor_1$}
-    \UnaryInfC{$\Gamma\vdash \Delta,P\lor Q$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma\vdash \Delta,Q$}
-    \RightLabel{r$\lor_2$}
+    \AxiomC{$\Gamma\vdash \Delta,P,Q$}
+    \RightLabel{r$\lor$}
     \UnaryInfC{$\Gamma\vdash \Delta,P\lor Q$}
     \DisplayProof
 
     \vspace{0.5cm}
-    \AxiomC{$\Gamma,P\vdash \Delta$}
-    \RightLabel{l$\land_1$}
-    \UnaryInfC{$\Gamma,P\land Q\vdash \Delta$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma,Q\vdash \Delta$}
-    \RightLabel{l$\land_2$}
+    \AxiomC{$\Gamma,P,Q\vdash \Delta$}
+    \RightLabel{l$\land$}
     \UnaryInfC{$\Gamma,P\land Q\vdash \Delta$}
     \DisplayProof
     \qquad
     \AxiomC{$\Gamma\vdash \Delta,P$}
-    \AxiomC{$\Theta\vdash \Xi,Q$}
+    \AxiomC{$\Gamma\vdash \Delta,Q$}
     \RightLabel{r$\land$}
-    \BinaryInfC{$\Gamma,\Theta\vdash \Delta,\Xi,P\land Q$}
+    \BinaryInfC{$\Gamma\vdash \Delta,P\land Q$}
     \DisplayProof
 
     \vspace{0.5cm}
     \AxiomC{$\Gamma,Q\vdash \Delta$}
-    \AxiomC{$\Theta\vdash \Xi,P$}
+    \AxiomC{$\Gamma\vdash \Delta,P$}
     \RightLabel{l$\to$}
-    \BinaryInfC{$\Gamma,\Theta,P\to Q\vdash \Delta,\Xi$}
+    \BinaryInfC{$\Gamma,P\to Q\vdash \Delta$}
     \DisplayProof
     \qquad
-    \AxiomC{$\Gamma,P\vdash \Delta$}
-    \RightLabel{r$\to_1$}
-    \UnaryInfC{$\Gamma\vdash \Delta,P\to Q$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma\vdash \Delta,Q$}
-    \RightLabel{r$\to_2$}
+    \AxiomC{$\Gamma,P\vdash Q,\Delta$}
+    \RightLabel{r$\to$}
     \UnaryInfC{$\Gamma\vdash \Delta,P\to Q$}
     \DisplayProof
   \end{center}
@@ -589,9 +574,15 @@ sur le résultat à prouver.
 \begin{proof}
   Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, le résultat
   à montrer est que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$ sachant que
-  $\Gamma\vdash \Delta$. Pour cela, on procède par induction sur $\vdash$, en
-  utilisant le lemme précédent pour remplacer l'égalité de la valuation par
-  l'existence de témoins d'une inégalité~:
+  $\Gamma\vdash \Delta$. Pour cela, on procède par induction sur $\vdash$,
+  en utilisant le lemme précédent pour remplacer l'égalité de la valuation par
+  l'existence de témoins d'une inégalité. Comme les opérateurs $\bigvee$ et
+  $\bigwedge$ sont commutatifs et idempotents, on déduit directement la validité
+  des règles d'échange et de contraction. Pour alléger le nombre de cas, on ne
+  montrera que les règles de la colonne de gauche dans les règles définissant
+  $\vdash$, le lecteur pouvant facilement inférer comment prouver les règles
+  de la colonne de droite à partir de celles-ci (sauf pour cut, que nous
+  traitons), et on laissera le cas de $\to$ en exercice~:
   \begin{itemize}
   \item Supposons que $P\in\Gamma$. Alors en choisissant $P$, on trouve
     $P\in\Gamma$ et $Q\in\{P\}$ ($=P$) tels que $\Val_\rho(P) \leq\Val_\rho(Q)$.
@@ -603,8 +594,8 @@ sur le résultat à prouver.
     \begin{equation}\label{eq.prop.corr.2}
       \Val_\rho(Q')\leq\Val_\rho(R')
     \end{equation}
-    Fixons ces $Q,R,Q',R'$. Montrons qu'alors il existe $Q''\in\Gamma,\Theta$ et
-    $R''\in\Delta,\Xi$ tels que $\Val_\rho(Q'')\leq\Val_\rho(R'')$. Pour le
+    Fixons ces $Q,R,Q',R'$. Montrons qu'alors il existe $Q''\in(\Gamma,\Theta)$
+    et $R''\in(\Delta,\Xi)$ tels que $\Val_\rho(Q'')\leq\Val_\rho(R'')$. Pour le
     prouver, traitons les cas possibles pour la valeur de $\Val_\rho(P)$~:
     \begin{itemize}
     \item si $\Val_\rho(P) = 0$, alors en utilisant l'\cref{eq.prop.corr.2},
@@ -618,19 +609,16 @@ sur le résultat à prouver.
       l'inégalité est vérifiée. Dans le cas où $R'\neq P$, il suffit de prendre
       $Q'' = Q$ et $R'' = R$.
     \end{itemize}
-  \item Supposons qu'il existe $R\in\Gamma,P,Q,\Gamma'$ et $S\in\Delta$ tels que
-    $\Val_\rho(R) \leq \Val_\rho(S)$. Dans ce cas, $R\in\Gamma,Q,P\Gamma'$ et
-    $S\in\Delta$, et $R,S$ respectent l'inégalité voulue.
-  \item On procède comme dans le cas précédent.
-  \item Supposons qu'il existe $Q\in\Gamma,P,P$ et $R\in\Delta$ tels que
-    $\Val_\rho(Q)\leq\Val_\rho(R)$. Dans ce cas, $Q\in\Gamma,P$ et $R\in\Delta$,
-    donnant l'inégalité voulue.
-  \item On procède comme dans le cas précédent.
-  \item Comme précédemment, si l'on trouve $Q\in\Gamma$ alors $Q\in\Gamma,P$,
-    donc on peut réutiliser directement $Q$ pour prouver la propriété sur le
-    séquent du bas.
-  \item On procède comme dans le cas précédent.
-  \item Supposons qu'il existe $Q\in\Gamma$ et $R\in\Delta,P$ tels que
+  \item Supposons que
+    $\Val_\rho(\bigwedge \Gamma) \leq \Val_\rho(\bigvee \Delta)$ pour tout
+    $\rho$, alors comme
+    $\Val_\rho(\bigwedge (\Gamma, P)) \leq \Val_\rho(\bigwedge \Gamma)$ on voit
+    directement que
+    $\Val_\rho(\bigwedge(\Gamma,P)) \leq \Val_\rho(\bigvee\Delta)$.
+  \item Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
+    $\Val_\rho(\bigwedge(\Gamma,\top)) = \Val_\rho(\bigwedge \Gamma)$ d'où le
+    résultat.
+  \item Supposons qu'il existe $Q\in\Gamma$ et $R\in(\Delta,P)$ tels que
     $\Val_\rho(Q)\leq\Val_\rho(R)$. Si $R \neq P$, il suffit de reprendre $Q$ et
     $Q$ déjà définis. Suppsons maintenant que $R = P$. Distinguons les cas des
     valeurs possibles de $\Val_\rho(P)$ :
@@ -641,9 +629,8 @@ sur le résultat à prouver.
       $Q' = \lnot P \in \Gamma,\lnot P$ et $R\in \Delta$ quelconque, on a alors
       $\Val_\rho(\lnot P) = 0 \leq \Val_\rho(R)$.
     \end{itemize}
-  \item On procède comme dans le cas précédent.
-  \item Supposons qu'il existe $R\in\Gamma,P$, $S\in\Delta$, $R'\in\Theta,P$ et
-    $S'\in\Xi$ tels que $\Val_\rho(R)\leq\Val_\rho(S)$ et
+  \item Supposons qu'il existe $R\in(\Gamma,P)$, $S\in\Delta$, $R'\in(\Theta,P)$
+    et $S'\in\Xi$ tels que $\Val_\rho(R)\leq\Val_\rho(S)$ et
     $\Val_\rho(R')\leq\Val_\rho(S')$. Si $R$ (respectivement $R'$) est choisie
     comme étant différente de $P$ (respectivement $Q$), le résultat est direct
     en reprenant $(R,S)$ (respectivement $R',S'$). Supposons donc maintenant que
@@ -651,15 +638,20 @@ sur le résultat à prouver.
     $\Val_\rho(P\lor Q) = \max(\Val_\rho(P),\Val_\rho(Q)) \leq \max(\Val_\rho(S),
     \Val_\rho(S'))$ d'où l'inégalité en choisissant $S$ ou $S'$ suivant lequel
     a la plus grande valuation.
-  \item Les deux cas de $\mathrm r\lor_i$ pour $i\in\{1,2\}$ se traitent de
-    façon analogue, on ne traitera donc que le cas $i = 1$. Supposons donc qu'il
-    existe $Q\in\Gamma$ et $R\in\Delta,P$ tels que
-    $\Val_\rho(Q)\leq\Val_\rho(R)$. Dans le cas où $R\neq P$, le résultat est
-    direct. Si $R = P$, alors comme $\Val_\rho(P\lor Q) \geq \Val_\rho(P)$ et
-    par transitivité de $\leq$, on en déduit l'inégalité pour $Q' = Q$ et
-    $R' = P\lor Q$.
+  \item On voit que
+    $\Val_\rho(\bigwedge(\Gamma,P,Q)) = \Val_\rho(\bigwedge(\Gamma, P \land Q))$
+    par associativité de $\bigwedge$, donc si l'on suppose que
+    $\Val_\rho(\bigwedge(\Gamma,P,Q)) \leq \Val_\rho(\bigvee\Delta)$, on en
+    déduit directement que
+    $\Val_\rho(\bigwedge(\Gamma,P\land Q)) = \leq\Val_\rho(\bigvee\Delta)$.
   \end{itemize}
+  Donc, par induction, si $\Gamma\vdash \Delta$ alors
+  $\models \bigwedge\Gamma\to\bigvee\Delta$.
 \end{proof}
+
+\begin{exercise}
+  Montrer les cas manquants dans la preuve précédente.
+\end{exercise}
 
 On en déduit donc, comme $\bigwedge P = P$ et $\bigvee Q = Q$, que
 $P\vdash Q \implies P \vDash Q$.
@@ -693,72 +685,66 @@ $P\vdash Q \implies P \vDash Q$.
   ajoutant la règle suivante~:
   \begin{prooftree}
     \AxiomC{}
-    \RightLabel{Ax$^\dagger$}
+    \RightLabel{ax$^\dagger$}
     \UnaryInfC{$x_1,\ldots,x_n\vdash^* y_1,\ldots,y_p$}
   \end{prooftree}
-  où $x_1,\ldots,x_n,y_1,\ldots,y_n$ sont des variables propositionnelles toutes
-  deux à deux distinctes.
+  où $x_1,\ldots,x_n,y_1,\ldots,y_n$ sont des variables propositionnelles
+  toutes deux à deux distinctes, et en remplaçant la règle axiome, les règles
+  d'affaiblissement et la règle cut par la règle axiomes renforcée~:
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{ax'}
+    \UnaryInfC{$\Gamma,P\vdash^* \Delta,P$}
+  \end{prooftree}
 
   On prouve maintenant que pour tous $\Gamma,\Delta\in\List(\Prop)$,
   $\Gamma\vdash^*\Delta$. On raisonne par induction sur le nombre de
   constructeurs apparaissant au total dans le séquent $\Gamma\vdash^* \Delta$,
   c'est-à-dire la somme du nombre de constructeurs de chaque formule~:
   \begin{itemize}
-  \item s'il n'y a aucun constructeurs dans $\Gamma,\Delta$, alors plusieurs
+  \item s'il n'y a aucun constructeur dans $\Gamma,\Delta$, alors plusieurs
     séquents sont possibles~:
     \begin{itemize}
     \item si le séquent contient des $\top$ à gauche ou des $\bot$ à droite,
       alors on peut les éliminer par des contractions (règles lc et rc
       respectivement).
     \item si le séquent contient un $\top$ à droite ou un $\bot$ à gauche,
-      alors on peut prouver $\vdash^* \top$ (respectivement $\bot\vdash^*$)~:
+      alors on peut prouver $\Gamma\vdash^* \Delta,\top$
+      (respectivement $\Gamma,\bot\vdash^*\Delta$)~:
       \begin{center}
         \AxiomC{}
-        \RightLabel{ax}
-        \UnaryInfC{$\top\vdash^* \top$}
+        \RightLabel{ax'}
+        \UnaryInfC{$\Gamma,\top\vdash^* \Delta,\top$}
         \RightLabel{$\top$}
-        \UnaryInfC{$\vdash^* \top$}
+        \UnaryInfC{$\Gamma\vdash^* \Delta,\top$}
         \DisplayProof
         \qquad
         \AxiomC{}
-        \RightLabel{ax}
-        \UnaryInfC{$\bot\vdash^* \bot$}
+        \RightLabel{ax'}
+        \UnaryInfC{$\Gamma,\bot\vdash^* \Delta\bot$}
         \RightLabel{$\bot$}
-        \UnaryInfC{$\bot\vdash^*$}
+        \UnaryInfC{$\Gamma,\bot\vdash^*\Delta$}
       \end{center}
-      et on récupère alors le séquent en appliquant des contractions.
     \item si le séquent est de la forme $x_1,\ldots,x_n\vdash y_1,\ldots,y_p$
       où toutes les variables sont deux à deux distinctes, alors la règle
       $\mathrm{Ax}^\dagger$ donne le résultat.
-    \item si le séquent est de la forme $\Gamma,x\vdash^* \Delta,x$, alors on
-      peut se ramener à prouver $\Gamma\vdash^* \Delta$~:
-      \begin{center}
-        \AxiomC{$\Gamma\vdash^* \Delta$}
-        \RightLabel{lw}
-        \UnaryInfC{$\Gamma,P\vdash^* \Delta$}
-        \AxiomC{}
-        \RightLabel{ax}
-        \UnaryInfC{$x\vdash^* x$}
-        \RightLabel{rw}
-        \UnaryInfC{$x\vdash^* x,P$}
-        \RightLabel{cut}
-        \BinaryInfC{$\Gamma,x\vdash^* \Delta,x$}
-        \DisplayProof
-      \end{center}
+    \item si le séquent est de la forme $\Gamma,x\vdash^* \Delta,x$, alors la
+      règle ax' donne le résultat directement.
     \end{itemize}
     On peut donc toujours prouver un séquent ne contenant aucun constructeur.
   \item Si $\Gamma = \Gamma', \lnot P$, alors par $\mathrm{l}\lnot$ il nous
     suffit de prouver $\Gamma'\vdash^* \Delta, P$, ce qui est vérifié par
     notre hypothèse d'induction.
   \item si $\Gamma = \Gamma', P\to Q$, alors par $\mathrm{l}\to$ il nous
-    suffit de prouver à la fois $\Gamma', Q \vdash^* \Delta$ et $\vdash^* P$,
-    qui ont tous les deux strictement moins de constructeurs que notre
-    séquent original~: on peut donc appliquer notre hypothèse d'induction.
+    suffit de prouver à la fois $\Gamma', Q \vdash^* \Delta$ et
+    $\Gamma'\vdash^* P$, qui ont tous les deux strictement moins de
+    constructeurs que notre séquent original~: on peut donc appliquer notre
+    hypothèse d'induction.
   \item si $\Gamma = \Gamma', P\lor Q$, alors il nous suffit de montrer
-    à la fois $\Gamma', P\vdash^* \Delta$ et $Q\vdash^*$ qui contiennent
-    strictement moins de constructeurs que le séquent original.
+    à la fois $\Gamma', P\vdash^* \Delta$ et $\Gamma,Q\vdash^*\Delta$ qui
+    contiennent strictement moins de constructeurs que le séquent original.
   \item si $\Gamma = \Gamma', P\land Q$, alors il nous suffit de
-    montrer $\Gamma', P \vdash^* \Delta$ qui est vérifié par hypothèse
+    montrer $\Gamma', P,Q \vdash^* \Delta$ qui est vérifié par hypothèse
     d'induction.
   \item les cas où on veut éliminer un constructeur qui est dans $\Delta$
     sont parfaitement analogues aux précédents.
@@ -771,18 +757,25 @@ $P\vdash Q \implies P \vDash Q$.
   $\rho$, $\Val_\rho(\bigcap \Gamma) \leq \Val_\rho(\bigcup \Delta)$).
   On procède par induction sur $\vdash^*$~:
   \begin{itemize}
-  \item si la dernière règle utilisée est ax, alors cela est absurde avec le
-    fait que $\Gamma\nvdash \Delta$.
-  \item si la dernière règle utilisée est cut, on suppose qu'on a
-    $\Gamma,P\vdash^* \Delta$ et $\Theta\vdash^* \Xi, P$ mais
-    $\Gamma,\Theta\nvdash \Delta,\Xi$. Deux cas se présentent~:
-    \begin{itemize}
-    \item si $\Gamma,P\nvdash \Delta$, alors par hypothèse d'induction il
-      existe une valuation $\rho$ telle que
-      $\Val_\rho(\bigcap \Gamma, P) > \Val_\rho(\bigcup \Delta)$. A FAIRE
-    \end{itemize}
+  \item si la dernière règle utilisée est ax', alors cela est absurde avec le
+    fait que $\Gamma\nvdash \Delta$ puisque le séquent sé démontre avec la règle
+    axiome et des règles d'affaiblissement.
+  \item si la dernière règle utilisée est $\mathrm{ax}^\dagger$, alors on
+    construit la valuation invalidant le séquent en mettant tous les $x_i$ à
+    $1$ et tous les $y_i$ à $0$.
+  \item si la dernière règle utilisée est un échange, une contraction, $\top$
+    ou $\bot$, alors une valuation invalidant le séquent de départ invalide
+    aussi le séquent d'arrivée. Cela vaut aussi pour $\mathrm{r}\lor$,
+    $\mathrm{l}\land$ et $\mathrm{r}\to$.
+  \item si la dernière règle utilisée est $\mathrm{l}\lor$ (un raisonnement
+    analogue fonctionne pour $\mathrm{r}\land$ et $\mathrm{l}\to$), alors
+    on suppose qu'on a $\rho$ telle que
+    $\min_{R\in (\Gamma,P\lor Q)}\Val_\rho(R)>\max_{S\in \Delta}\Val_\rho(S)$. On sait
+    donc que $\Val_\rho(P\lor Q) = 1$, donc soit $P$ soit $Q$ a une valuation
+    de $1$. Dans le premier cas, cela signifie que $\rho$ invalide le
+    séquent $\Gamma,P\vdash^* \Delta$ et dans le deuxième cas que $\rho$
+    invalide le séquent $\Gamma,Q\vdash^* \Delta$.
   \end{itemize}
-  A FAIRE
 
   Ainsi, comme $\Gamma\vdash^*\Delta$ est toujours vérifié, on en déduit que
   $\Gamma\nvdash\Delta\implies\Gamma\nvDash\Delta$, d'où par contraposée

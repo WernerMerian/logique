@@ -722,16 +722,36 @@ travers un isomorphisme.
       (\mathcal N,\varphi\circ\rho\models C)\\
       &\iff \mathcal N,\varphi\circ \rho \models B\land C
       \end{align*}
-  \item si $A$ est de la forme $B\to C$ A FAIRE
-  \item si $A$ est de la forme $\forall x,B$ A FAIRE
-  \item si $A$ est de la forme $\exists x, B$ A FAIRE
+  \item si $A$ est de la forme $B\to C$, alors
+    \begin{align*}
+      \mathcal M,\rho\models B\to C &\iff
+      \mathcal M,\rho\models (\lnot B)\lor C\\
+      &\iff \mathcal N,\varphi\circ\rho\models (\lnot B) \lor C\\
+      &\iff \mathcal N,\varphi\circ\rho\models B \to C
+    \end{align*}
+  \item si $A$ est de la forme $\forall x,B$, on montre le résultat par double
+    implication. Si pour tout
+    $m \in |\mathcal M|, \mathcal M,\rho[x\leftarrow m]\models B$, alors
+    pour tout $n \in |\mathcal N|$, par surjectivité de $\varphi$, on trouve
+    $m \in |\mathcal M|$ tel que $\varphi(m) = n$. On sait alors que
+    $\mathcal M,\rho[x\leftarrow m]\models B$ donc, par hypothèse d'induction,
+    que $\mathcal N,\varphi\circ(\rho[x\leftarrow m])\models B$, ce qui revient
+    à $\mathcal N,(\varphi\circ\rho)[x\leftarrow \varphi(m)]\models B$, donc
+    $\mathcal N,(\varphi\circ\rho)[x\leftarrow n]\models B$, d'où le résultat.
+    Dans le sens réciproque, si pour tout
+    $n\in|\mathcal N|, \mathcal N,(\varphi\circ\rho)[x\leftarrow n]\models B$,
+    on peut faire le même raisonnement en écrivant tout $m \in |\mathcal N|$
+    comme $\varphi(\varphi^{-1}(m))$ et utiliser l'hypothse d'induction pour en
+    déduire que $\mathcal M,\rho\models \forall x,B$.
+  \item le cas où $A$ est de la forme $\exists x, B$ est analogue au précédent.
   \end{itemize}
   D'où le résultat par induction. On a le résultat dans le cas particulier d'une
   formule close.
 \end{proof}
 
-Cela étant, l'inverse n'est pas vrai en général, comme le montre l'exercice
-suivante.
+On a montré qu'un isomorphisme était un morphisme bijectif~: il est faux en
+toute généralité de considérer que cette propriété caractérise un isomorphisme,
+comme le montre l'exercice suivant.
 
 \begin{exercise}
   On considère les deux ensembles ordonnés suivants~:
@@ -775,8 +795,8 @@ Cependant, pour un plongement, ce résultat devient valide.
 
 \subsection{Agrandir des modèles}
 
-Pour conclure cette partie introductive à propos des modèles, nous allons définir
-la notion d'enrichissement.
+Pour conclure cette partie introductive à propos des modèles, nous allons
+définir la notion d'enrichissement.
 
 \begin{definition}[Enrichissement]
   Soit deux signatures $\Sigma\subseteq\Sigma'$, c'est-à-dire telles que tout
@@ -806,14 +826,36 @@ additif~: nous allons généraliser ce résultat pour une structure sur un
 enrichissement.
 
 \begin{proposition}
-  Soit deux signatures $\Sigma\subseteq\Sigma'$ et $\mathcal M'$ une structure
-  sur $\Sigma'$, alors pour toute formule $A\in\Formula(\Sigma)$ et tout
-  environnement $\rho$, on a
+  Soit deux signatures $\Sigma\subseteq\Sigma'$, $\mathcal M'$ une structure
+  sur $\Sigma'$ et $\mathcal M$ son appauvrissement sur $\Sigma$, alors pour
+  toute formule $A\in\Formula(\Sigma)$ et tout environnement $\rho$, on a
   \[\mathcal M,\rho\models A \iff \mathcal M',\rho\models A\]
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On montre d'abord que pour tout terme $t\in\Term(\Sigma)$,
+  $t_\rho^\mathcal M = t_\rho^{\mathcal M'}$. Cela se fait par induction~: pour une
+  variable $x$, on a $\rho(x) = \rho(x)$ et si l'on suppose que pour tout
+  $i\in\{1,\ldots,n\}$ on a $(t_i)_\rho^\mathcal M = (t_i)_\rho^{\mathcal M'}$ alors
+  \[(f(t_1,\ldots,t_n))_\rho^\mathcal M = (f(t_1,\ldots,t_n))_\rho^\mathcal M\]
+  d'où le résultat pour tout terme $t$.
+  
+  On procède maintenant par induction sur la structure de $A$~:
+  \begin{itemize}
+  \item si $A = r(t_1,\ldots,t_n)$ alors
+    \begin{align*}
+      \Val_\rho^\mathcal M(r(t_1,\ldots,t_n)) &= r^\mathcal M((t_1)_\rho^\mathcal M,
+      \ldots,(t_n)_\rho^\mathcal M) \\
+      &= r^{\mathcal M'}((t_1)_\rho^{\mathcal M'},\ldots,(t_n)_{\rho}^{\mathcal M'})
+    \end{align*}
+  \item si $A$ est un connecteur logique, alors le résultat est direct.
+  \item si $A = \forall x, B$ ou $A = \exists x, B$ alors la quantification se
+    fait sur le même ensemble pour $\mathcal M$ et $\mathcal M'$ donc le
+    résultat est le même dans les deux cas (en utilisant l'hypothèse
+    d'induction).
+  \end{itemize}
+  Donc par induction $\Val_\rho^\mathcal M(A) = \Val_\rho^{\mathcal M'}(A)$,
+  ce qui est le résultat attendu.
 \end{proof}
 
 \begin{corollary}
@@ -822,6 +864,12 @@ enrichissement.
   alors en prenant l'appauvrissement $\mathcal M$ de $\mathcal M'$ sur $\Sigma$,
   $\mathcal M\models \mathcal T$.
 \end{corollary}
+
+La notion d'enrichissement est fondamentale en théorie des modèles~: elle
+permet d'avoir un meilleur contrôle sur les modèles qu'on manipule en y ajoutant
+des informations par enrichissement, pour ensuite les appauvrir de nouveau vers
+le langage d'origine. C'est par exemple l'idée menant à la méthode des
+diagrammes, développés dans la partie dédiée à la théorie des modèles.
 
 \section[Syntaxe de preuves]{Système de démonstration du calcul des prédicats}
 
@@ -1032,6 +1080,7 @@ dans notre système.
   \item $\lnot (\exists x, A) \dashv\vdash \forall x, \lnot A$
   \item $\lnot (\forall x, A) \dashv\vdash \exists x, \lnot A$
   \item $\lnot\lnot A \dashv\vdash A$
+  \item $\lnot (A\to B) \dashv\vdash A \land \lnot B$
   \end{itemize}
 \end{exercise}
 
@@ -1417,26 +1466,127 @@ lorsque nous complèterons notre théorie).
   $\mathcal S$.
 \end{proof}
 
-Enfin, la clôture par témoins conserve la cohérence.
+Enfin, on veut montrer que la clôture par témoins conserve la cohérence. Pour
+prouver cela, on a besoin d'abord de montrer un lemme important~: une constante
+sur laquelle on ne fait aucune hypothèse revient à considérer une variable
+libre.
+
+\begin{lemma}[Simulation d'une variable par une constante]\label{lem.var.const}
+  Soit $\Sigma$ une signature contenant une constante $c$,
+  $A_1,\ldots,A_n\in\Formula(\Sigma\setminus\{c\})$ et $P\in\Formula(\Sigma)$.
+  Les deux propositions sont alors équivalentes~:
+  \begin{itemize}
+  \item $A_1,\ldots,A_n\vdash P$
+  \item $A_1,\ldots,A_n\vdash P[c/x]$
+  \end{itemize}
+\end{lemma}
+
+\begin{proof}
+  On raisonne par double implication. Par induction sur
+  $A_1,\ldots,A_n\vdash P$ (on notera $\Gamma \defeq A_1,\ldots,A_n$)~:
+  \begin{itemize}
+  \item si $P\in \Gamma$, alors $x\notin\VL(P)$ donc $P[c/x]=P$ et
+    le résultat est évident.
+  \item si $P = \top$ alors $P[c/x]=P$ encore une fois.
+  \item pour toutes les règles $\bot_\mathrm c,\lnot,\lor,\land,\to$, la
+    validité est immédiate puisque l'hypothèse d'induction est stable dans
+    toutes les règles (les variables ne changent jamais).
+  \item si la dernière règle est $\forall_\mathrm i$, on suppose alors que
+    $P = \forall y, A$ et que $\Gamma\vdash A[c/x]$~: on voit que $y$ est
+    toujours libre dans $\Gamma$, donc le résultat tient toujours.
+  \item si la denière règle est $\forall_\mathrm e$, on suppose alors que
+    $P = A[t/y]$ pour un certain terme $t$, donc $P[c/x] = A[t/y][c/x]$ ou
+    encore $P[c/x] = A[c/x][t[c/x]/y]$. Par hypothèse d'induction, on sait que
+    $\Gamma\vdash \forall y, A[c/x]$, donc $\Gamma\vdash A[c/x][t[c/x]/y]$
+    d'où le résultat.
+  \item si la dernière règle est $\forall_\mathrm i$, on suppose alors que
+    $P = \exists y, A$ et l'hypothèse d'induction nous donne
+    $\Gamma\vdash A[t/y][c/x]$, mais on peut réécrire
+    $A[t/y][c/x] = A[c/x][t[y/x]/y]$ et appliquer la règle $\exists_\mathrm i$
+    pour avoir le résultat.
+  \item si la dernière règle est $\exists_\mathrm e$, on suppose que
+    $\Gamma\vdash \exists y, A$ et $\Gamma, A[v/x]\vdash P$ où $v$ n'apparait
+    pas dans $\Gamma$ ou dans $P$. On utilise notre hypothèse d'induction sur
+    la première hypothèse pour en déduire que $\Gamma\vdash \exists y, A[c/x]$,
+    puis sur notre deuxième hypothèse réécrite en $\Gamma\vdash A[v/y]\to B$,
+    pour obtenir $\Gamma\vdash A[v/y][c/x]\to B[c/x]$. On peut réécrire
+    $A[v/y][c/x] = A[c/x][v/y]$, et on peut alors déduire que
+    $\Gamma,A[c/x][v/y]\vdash B[c/x]$ donc en utilisant $\exists_\mathrm e$, que
+    $\Gamma\vdash B[c/x]$.
+  \item si la dernière règle est $=_\mathrm i$, le résultat est direct.
+  \item si la dernière règle est $=_\mathrm e$, alors on suppose que $P = A[u/y]$
+    et, en utilisant l'hypothèse d'induction, que $\Gamma\vdash A[t/y][c/x]$
+    et $\Gamma\vdash t[c/x] = u[c/x]$. On peut alors montrer que
+    $A[t/y][c/x] = A[c/x][t[c/x]/y]$, d'où $\Gamma\vdash A[c/x][u[c/x]/y]$, ce
+    qui est exactement $\Gamma\vdash A[u/y][c/x]$.
+  \end{itemize}
+  Ainsi si $\Gamma\vdash P$ alors $\Gamma\vdash P[c/x]$. Le sens réciproque est
+  une induction sur $\Gamma\vdash P[c/x]$ et est analogue, nous ne la détaillons
+  donc pas.
+\end{proof}
+
+On peut maintenant prouver que la clôture par témoins de Henkin préserve la
+cohérence.
 
 \begin{property}
-  Si $\mathcal T\not\vdash \bot$, alors $\hclose{\mathcal T}\not\vdash\bot$.
+  Si $\mathcal T\nvdash \bot$, alors $\hclose{\mathcal T}\nvdash\bot$.
 \end{property}
 
 \begin{proof}
-  On suppose que $\mathcal \not\vdash\bot$, on montre alors par récurrence que
+  On suppose que $\mathcal \nvdash\bot$, on montre alors par récurrence que
   $\mathcal T_n\not\vdash\bot$ :
   \begin{itemize}
   \item Comme $\mathcal T_0 =\mathcal T$, le résultat est direct.
-  \item Supposons que $\mathcal T_n\not\vdash\bot$, alors A FAIRE
+  \item Supposons que $\mathcal T_n\not\vdash\bot$ et que
+    $\mathcal T_{n+1}\vdash\bot$. Par définition, on trouve
+    $\Gamma\in\List(\mathcal T_{n+1})$ tel que $\Gamma\vdash\bot$. On écrit
+    alors $\Gamma = A_1,\ldots,A_m,B_1,\ldots,B_p$ où chaque $A_i$ est dans
+    $\mathcal T_n$ et chaque $B_i$ dans
+    $\mathcal T_n\setminus\mathcal T_{n+1}$. On sait que chaque $B_i$ est de
+    la forme $(\exists x,F_i)\to F[c_{F_i}/x]$ où $F_i\in\Formula(\Sigma_n)$.
+    En fait, on peut même préciser que
+    $F_i \in\Formula(\Sigma_n)\setminus\Formula(\Sigma_{n-1})$ puisque
+    sinon $B_i$ serait dans $\mathcal T_n$, ce qui signifie que
+    $c_{F_i}\notin\Sigma_n$, nous permettant donc d'utiliser le
+    \cref{lem.var.const}. On peut réécrire notre séquent en
+    \[A_1,\ldots,A_m\vdash \left(\bigwedge_{i=1}^p B_i\right) \to \bot\]
+    donc, en utilisant le \cref{lem.var.const}, on obtient avec de nouvelles
+    variables fraîches $x_1,\ldots,x_p$~:
+    \[A_1,\ldots,A_m\vdash
+    \lnot \left(\bigwedge_{i = 1}^p ((\exists x, F_i)\to F_i[x_i/x])\right)\]
+    On peut alors généraliser chaque $x_i$ pour obtenir
+    \[A_1,\ldots,A_m\vdash \forall y_1,\ldots,y_p, \lnot \left(
+    \bigwedge_{i = 1}^p ((\exists x, F_i) \to F_i[y_i/x])\right)\]
+    En utilisant les lois de De Morgan, on peut inverser les quantifications sur
+    les $y_i$ et la négation, nous donnant
+    \begin{equation}\label{eq.henk}
+      A_1,\ldots,A_m\vdash \lnot \left(\exists y_1,\ldots,y_p,
+      \bigwedge_{i = 1}^p (\exists x, F_i) \to F_i[y_i/x]\right)
+    \end{equation}
+
+    On a alors besoin de deux lemmes qui sont laissés en exercices~: pour toutes
+    formules $P,Q$ et variables $x,y$ où $x\notin\VL(Q), y \notin\VL(P)$, on
+    a les équivalences suivantes ci-dessous.
+    \[\exists x, \exists y, (P(x)\land Q(y)) \dashv\vdash (\exists x,P(x))\land
+    \exists y,Q(y)
+    \qquad \exists y, (P \to Q) \dashv\vdash P \to (\exists y, Q)\]
+
+    On peut alors transformer la déduction \ref{eq.henk} en
+    \[A_1,\ldots,A_m\vdash \lnot \left(\bigwedge_{i = 1}^p (\exists x, F_i)\to
+    (\exists y, F_i[y/x])\right)\]
+    or on peut prouver $(\exists x, F_i) \to (\exists y, F_i[y/x])$, en
+    particulier dans $A_1,\ldots,A_m$, ce qui signifie par
+    \textit{modus ponens} que $A_1,\ldots,A_m\vdash \bot$, donc que
+    $\mathcal T_n\vdash \bot$, ce qui est contradictoire avec notre hypothèse.
+    On en déduit donc que $\mathcal T_{n+1}\nvdash\bot$.
   \end{itemize}
 
-  Ainsi, $\mathcal T_n\not\vdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
+  Ainsi, $\mathcal T_n\nvdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
   notre preuve, car si $\hclose{\mathcal T}\vdash \bot$, alors il existe une
   liste (finie) $\Gamma\in\List(\hclose{\mathcal T})$ telle que
   $\Gamma\vdash\bot$, mais $\Gamma\in\List(\mathcal T_n)$ pour un certain $n$,
-  puisque cette liste est finie. Comme $\mathcal T_n\not\vdash\bot$, cela est
-  absurde. Ainsi $\hclose{\mathcal T}\not\vdash\bot$.
+  puisque cette liste est finie. Comme $\mathcal T_n\nvdash\bot$, cela est
+  absurde. Ainsi $\hclose{\mathcal T}\nvdash\bot$.
 \end{proof}
 
 On va maintenant énoncer qu'on peut compléter une théorie pour $\vdash$. Pour
@@ -1581,14 +1731,44 @@ complétude.
   \item si $\varphi = r(t_1,\ldots,t_n)$ alors
     $\mathcal T'\vdash r(t_1,\ldots,t_n)$ signifie exactement que
     $r^{\mathcal T'}(\overline{t_1},\ldots,\overline{t_n})$, donc
-    $\mathcal M_{\mathcal T'}\models r(t_1,\ldots,t_n)$. Ce fait est une équivalence
-    puisqu'il provient de la définition même de $r^{\mathcal T'}$.
+    $\mathcal M_{\mathcal T'}\models r(t_1,\ldots,t_n)$. Ce fait est une
+    équivalence puisqu'il provient de la définition même de $r^{\mathcal T'}$.
   \item si $\varphi = \lnot \psi$, montrons que
     $\mathcal T'\vdash\varphi\implies \mathcal M_{\mathcal T'}\models \varphi$.
     Comme $\mathcal T'\vdash \lnot \psi$, on en déduit que
-    $\mathcal T'\not\vdash \psi$ (car $\mathcal T'\not\vdash\bot$), mais puisque
-    $\mathcal T'$ est une théorie complète, on en déduit que A FAIRE
+    $\mathcal T'\nvdash \psi$ (car $\mathcal T'\nvdash\bot$), donc par
+    hypothèse d'induction $\mathcal M_{\mathcal T'}\not\models \psi$, donc
+    $\mathcal M_{\mathcal T'}\models \varphi$. Montrons la réciproque~: on
+    suppose que $\mathcal M_{\mathcal T'}\models \varphi$, c'est-à-dire que
+    $\mathcal M_{\mathcal T'}\not\models \psi$. Par hypothèse d'induction, cela
+    signifie que $\mathcal T'\nvdash \psi$, mais $\mathcal T'$ est complète
+    donc $\mathcal T'\vdash\psi$. On a donc l'équivalence.
+  \item si $\varphi = \psi \land \chi$, on suppose que
+    $\mathcal T'\vdash \psi\land\chi$. Comme $\mathcal T'$ est complète, cela
+    est équivalent à dire que $\mathcal T'\vdash \psi$ et
+    $\mathcal T'\vdash \chi$ (puisque si $\lnot\psi$ ni $\lnot \chi$ ne sont
+    prouvables), ce qui est équivalent par hypothèse d'induction à dire que
+    $\mathcal M_{\mathcal T'}\models\psi$ et
+    $\mathcal M_{\mathcal T'}\models\chi$, donc équivalent à
+    $\mathcal M_{\mathcal T'}\models \psi\land \chi$.
+  \item les cas de $\to$ et $\lor$ se ramènent directement à $\land$ et $\lnot$
+    grâce aux lois de De Morgan (sémantiquement on peut voir facilement
+    l'équivalence par l'égalité des valeurs de vérité).
+  \item le cas de $\forall$ se ramène à celui de $\exists$ et $\lnot$ grâce
+    aux lois de De Morgan, nous traitons donc simplement $\exists$.
+  \item si $\varphi = \exists x, \psi$, alors supposons que
+    $\mathcal T'\vdash \exists x, \psi$~: la propriété de Henkin sur
+    $\mathcal T'$ nous donne un terme $t$ tel que $\mathcal T'\vdash \psi[t/x]$
+    et donc un élément $\overline t \in |\mathcal M_{\mathcal T'}|$ tel que
+    $\mathcal M_{\mathcal T'}, [x\leftarrow \overline t] \models \psi$, donc
+    $\mathcal M_{\mathcal T'}\models \exists x, \psi$. Réciproquement, s'il
+    existe $\overline t$ tel que
+    $\mathcal M_{\mathcal T'}[x\leftarrow \overline t]\models \psi$, alors
+    par hypothèse d'induction $\mathcal T'\vdash \psi[t/x]$ donc
+    $\mathcal T'\vdash \exists x, \psi$.
   \end{itemize}
+
+  D'où le résultat par induction.
 \end{proof}
 
 On peut maintenant prouver le théorème de complétude.

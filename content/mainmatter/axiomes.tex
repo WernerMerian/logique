@@ -1689,69 +1689,128 @@ avons besoin d'un simple lemme car l'addition est compatible avec l'ordre de
 $\mathbb Q$.
 
 \begin{lemma}\label{lem.R.compat}
-  Soit $(X,+,\leq)$ un monoïde régulier où $+$ est compatible avec
+  Soit $(X,+,\leq)$ un groupe abélien où $+$ est compatible avec
   $\leq$. Alors l'ensemble ordonné $(\ideal(X),\subseteq)$ peut être muni de
   la loi de composition interne $+$ définie par~:
   \[Y + Z \defeq \{y + z \mid y \in Y, z \in Z\}\]
-  et $(\ideal(X),+,\subseteq)$ est alors un monoïde régulier et $+$ est
-  compatible avec $\subseteq$.
+  et $(\ideal(X),+,\subseteq)$ est alors un groupe abélien et $+$ est compatible
+  avec $\subseteq$.
 \end{lemma}
 
 \begin{proof}
   Soient $Y,Z\in \ideal(X)$, montrons que $Y + Z \in \ideal(X)$~:
   \begin{itemize}
   \item soient $x,x'\in X$ tels que $x\leq x'$ et $x\in Y + Z$. Par définition,
-    on trouve $y\in Y,z \in Z$ tels que $x' = y + z$. On veut montrer que
-    $x \in Y + Z$. A FAIRE  
+    on trouve $y\in Y,z \in Z$ tels que $x' = y + z$. Comme $x \leq y + z$, on
+    en déduit que $x - z \leq y$ par compatibilité de $+$ avec $\leq$, et comme
+    $Y$ est clos par le bas, $x - z \in Y$, donc $x - z + z \in Y + Z$, et
+    $x - z + z = x$, donc $x \in Y + Z$.
+  \item comme $Y$ et $Z$ sont non vides, on trouve $y\in Y$ et $z\in Z$. Comme
+    $y + z \in Y + Z$, $Y + Z \neq \varnothing$.
+  \item on trouve $y\notin Y$ et $z\notin Z$~: si $y + z \in Y + Z$ alors
+    A FAIRE
+  \item A FAIRE
   \end{itemize}
+
+  On vérifie maintenant qu'on a un groupe abélien~:
+  \begin{itemize}
+  \item pour tous $Y,Z,A\in\ideal(X)$, on a
+    \begin{align*}
+      Y + (Z + A) &= \{ y + (z + a) \mid y \in Y, z \in Z, a \in A\}\\
+      &= \{ (y + z) + a \mid y \in Y, z \in Z, a \in A\}\\
+      &= (Y + Z) + A
+    \end{align*}
+  \item en notant $0$ le neutre de $X$, on a pour tout $Y \in \ideal(X)$~:
+    \begin{align*}
+      Y + \iota(0) &= \{ y + 0 \mid y \in Y \}\\
+      &= \{y \mid y \in Y \}\\
+      &= Y
+    \end{align*}
+  \item pour tout $Y\in \ideal(X)$, on définit
+    \[-Y \defeq X \setminus \{ - y \mid y \in Y\}\]
+    augmenté si besoin de sa borne supérieure. C'est un élément de $\ideal(X)$~:
+    \begin{itemize}
+    \item si $x,y \in X$, $x\leq y$ et $y \in -Y$, alors on sait que
+      $-y\notin Y$, et $-y \leq -x$. Si $-x \in Y$, alors $-y \in Y$ par cloture
+      par le bas, donc on en déduit que $-x \notin Y$, donc $x \in -Y$.
+    \item comme $Y \neq X$, on trouve $y\notin Y$, et alors $-y \in -Y$, donc
+      $-Y\neq \varnothing$.
+    \item comme $Y \neq \varnothing$, on trouve $y\in Y$, et alors
+      $-y \notin -Y$, donc $-Y\neq X$.
+    \item ajouter la borne supérieure si elle existe assure la dernière
+      condition.
+    \end{itemize}
+    On montre alors que pour tout $Y \in \ideal(X)$, on a
+    $Y + (-Y) = \iota(0)$. A FAIRE
+  \item enfin, $+$ est commutatif~: pour tout $Y,Z \in \ideal(X)$, on a~:
+    \begin{align*}
+      Y + Z &= \{ y + z \mid y \in Y, z \in Z \}\\
+      &= \{ z + y \mid z \in Z, y \in Y \}\\
+      &= Z + Y
+    \end{align*}
+  \end{itemize}
+  Ainsi $(\ideal(X),+,\subseteq)$ est un groupe abélien ordonné.
 \end{proof}
 
-En utilisant toutes les constructions précédentes, on peut déjà construire
-$(\mathbb R,+,\leq)$, mais la multiplication, elle, n'est pas compatible avec
-l'ordre. On peut procéder de plusieurs manières~: la manière classique est de
-définir le produit sur $\mathbb R$ par disjonction de cas suivant le signe des
-arguments, mais nous allons plutôt nous restreindre à $\mathbb Q_+$,
-c'est-à-dire aux rationnels positifs.
+On peut donc utiliser ce fait pour munir $\mathbb R$ de la loi $+$. Cependant,
+pour la loi $\times$, cela pose un problème~: $\times$ n'est pas compatible avec
+$\leq$ dans $\mathbb Q$. Pour contourner ce problème, on peut définir d'abord
+$\times$ sur $\mathbb R_+^\star$~: la loi $\times$ est en effet compatible
+avec $\leq$ sur $\mathbb Q_+^\star$ et donne un groupe.
 
-Nous avons vu que $(\mathbb N,+,\times)$ est un demi-anneau~: c'est aussi le cas
-de $(\mathbb Q_+,+,\times)$ en utilisant les mêmes arguments. On peut alors
-réutiliser la construction de $\mathbb Z$ à partir de $\mathbb N$ pour passer de
-$\mathbb Q_+$ à $\mathbb R$.
-
-\begin{exercise}
-  Montrer que $(\mathbb Q_+,+,\times,\leq)$ est un demi-anneau où les deux
-  opérations sont compatibles avec $\leq$.
-\end{exercise}
-
-\begin{definition}
-  On définit $(\mathbb R_+,+,\times,\leq)$ comme la complétion idéale du
-  demi-anneau ordonné $(\mathbb Q_+,+,\times,\leq)$. On définit alors le corps
-  ordonné complet $(\mathbb R,+,\times,\leq)$ comme le symétrisé de
-  $\mathbb R_+$ pour la loi $+$.
+\begin{definition}[Ensemble des réels]
+  On définit $(\mathbb R,+,\leq)$ comme la complétion idéale de $\mathbb Q$.
+  On définit de plus $(\mathbb R_+^\star,\times, \leq)$ comme la complétion
+  idéale de $(\mathbb Q_+^\star,\times)$.
 \end{definition}
 
 \begin{remark}
-  En utilisant le \cref{lem.R.compat}, on montre qu'on peut prolonger $+$ sur
-  $\mathbb R_+$ et $\times$ sur $\mathbb R_+^\star$, mais on peut facilement
-  traiter le cas de la multiplication par $0$.
+  Ces constructions peuvent être définies grâce au fait que $\mathbb Q$ et
+  $\mathbb Q_+^\star$ sont non majorés.
 \end{remark}
 
-\begin{corollary}[Propriété de la borne supérieure]
-  Toute partie non vide de $\mathbb R$ majorée a une borne supérieure, et toute
-  partie non vide de $\mathbb R$ minorée a une borne inférieure.
+\begin{definition}[Produit de réels]
+  On définit maintenant le produit de nombres réels par
+  \[x \times y \defeq \left\{\begin{array}{l}
+  0 \text{ si } x = 0 \lor y = 0 \\
+  x \times_{\mathbb Q_+^\star} y \text{ si } x > 0 \land y > 0\\
+  - (x \times_{\mathbb Q_+^\star} (-y)) \text{ si } x > 0 \land y < 0\\
+  - ((-x) \times_{\mathbb Q_+^\star} y) \text{ si } x < 0 \land y > 0\\
+  - ((-x) \times_{\mathbb Q_+^\star} (-y)) \text{ si } x < 0 \land y < 0
+  \end{array}\right.\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $(\mathbb R,+,\times,\leq)$ est un corps totalement ordonné.
+\end{exercise}
+
+\begin{corollary}
+  Toute partie non vide majorée (respectivement, minorée) de $\mathbb R$ admet
+  une borne supérieure (respectivement, inférieure).
 \end{corollary}
 
 \begin{remark}
-  Plusieurs possibilités de construire les ensembles de nombres usuels se
-  dessinent, en retrospective. La première consiste à partir de $\mathbb N$
-  pour obtenir ensuite un anneau avec $\mathbb Z$ puis un corps avec $\mathbb Q$
-  et un corps complet avec $\mathbb R$ et deux façon permettent de faire la
-  dernière étape~: utiliser le complété par suites de Cauchy, auquel cas comme
-  l'ensemble des suites de Cauchy de limite nulle est un idéal de l'anneau des
-  suites de Cauchy les lois passent directement au quotient ; ou utiliser la
-  complétion idéale et définir $\times$ par disjonction de cas. L'autre
-  possibilité est de construire $\mathbb N$ et de symétriser $\times$ pour
-  obtenir $\mathbb Q_+$, compléter par idéaux et, finalement, symétriser
-  $+$ pour obtenir $\mathbb R$. Un avantage est que la définition de la valeur
-  absolue sur $\mathbb R$ devient particulièrement directe.
+  On aurait pu, au lieu de faire cette disjonction de cas, construire nos
+  ensembles de nombres dans un ordre plus efficace en vu de la construction par
+  complétion idéale. En construisant $\mathbb N$, puis $\mathbb Q_+$ (en
+  inversant $\times$ dans $\mathbb N^\star$), on peut directement considérer le
+  demi-anneau $(\mathbb R,+,\times,\leq)$ complet, puis le symétriser pour la
+  loi $+$ pour obtenir un corps totalement ordonné complet.
+
+  Cette construction, cependant, demande d'affiner le \cref{lem.R.compat} pour
+  le cas d'un monoïde régulier, puisque $(\mathbb Q_+,+)$ n'a pas une structure
+  de groupe.
+\end{remark}
+
+\begin{remark}
+  L'autre construction de $\mathbb R$ n'exige pas de construction
+  \textit{ad hoc} comme la disjonction de cas précédente. Elle utilise la
+  complétion par les suites de Cauchy~: il se trouve que si $(A,+,\times)$ est
+  un anneau, alors les suites à valeurs dans $A$ ont naturellement une structure
+  d'anneau en considérant les opérations termes à termes. L'ensemble des suites
+  de Cauchy de limite nulle est alors un idéal de cet anneau~: on peut donc
+  directement construire l'anneau quotient. Cette construction de $\mathbb R$
+  est plus directe et plus naturelle depuis $\mathbb Q$, mais nous souhaitions
+  traiter de cette autre construction que sont les coupures de Dedekind (dans
+  une version éloignée de la construction historique).
 \end{remark}
