@@ -64,6 +64,13 @@ formalisme pour parler des constructeurs.
   est appelé l'arité de $c$.
 \end{definition}
 
+On appelle en général signature la donnée des symboles qui constituent une
+structure munis d'une forme de sens (ici leur arité). La présentation qui en est
+faite ici est assez aride dans son formalisme~: l'important est d'accepter que
+l'on peut spécifier correctement un ensemble inductif par certaines données.
+Pour une description plus systématique, mais utilisant le langage catégorique,
+on peut par exemple se référer à \cite{JacobsCLTT}.
+
 Une signature sera généralement donnée sous forme dite de Backus-Naur. Cette
 présentation se décompose de la façon suivante :
 \[a,b,\ldots ::= \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots\]
@@ -156,6 +163,23 @@ Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
   \end{itemize}
 \end{proof}
 
+\begin{remark}
+  Nous le verrons dans le CHAPITRE GRAMMAIRE HORS CONTEXTE, mais une BNF peut
+  aussi se lire comme engendrant un langage, c'est-à-dire un ensemble de suites
+  finies sur un ensemble fixé à l'avance. On peut par exemple décider de lire
+  l'entier $SSS0$ comme une simple suite de symboles, ici la suite $(S,S,S,0)$.
+  Dans ce cas, le lemme de lecture unique est non trivial et parfois faux,
+  selon la forme de notre grammaire, et la structure stratifiée d'union
+  dénombrable n'est plus inhérente à l'ensemble construit. Cette autre approche,
+  qui est celle utilisée dans \cite{cori2003logique}, a le mérite d'être la plus
+  syntaxique possible (il n'y a aucune forme d'interprétation des symboles),
+  mais elle nous semble à la fois moins systématique et moins intuitive, c'est
+  pourquoi nous lui préférons cette structure stratifiée. Cette structure est
+  plus facilement décrite de façon catégorique par des $F$-algèbres initiales,
+  comme on peut le voir présenté dans \cite{JacobsCLTT} et qui donne un sens
+  plus profond au \cref{thm.PU.ind}.
+\end{remark}
+
 \subsection{Récursion et induction}
 
 Maintenant qu'une construction a été donnée d'un ensemble inductif, il faut
@@ -172,7 +196,7 @@ verrons en pratique. Nous verrons ensuite que ce principe de définition
 récursive peut se modifier pour donner le principe d'induction, un analogue à
 la preuve par récurrence pour un ensemble inductif quelconque.
 
-\begin{theorem}[Propriété universelle des ensembles inductifs]
+\begin{theorem}[Propriété universelle des ensembles inductifs]\label{thm.PU.ind}
   Soit $(C,\alpha)$ une signature, et $X$ l'ensemble associé à cette signature.
   Soit un ensemble $Y$ quelconque.
   Soit une famille de fonctions $\{f_c\}_{c\in C}$ telles que pour tout $c\in C$,
@@ -243,6 +267,11 @@ pour aller d'un coin à l'autre du carré sont égaux.
   constructeur $c \in C$.
 \end{remark}
 
+\begin{remark}
+  On peut trouver plus de détails sur les définitions par induction dans
+  \cite{winskell1996formal}, au chapitre $3$.
+\end{remark}
+
 Cet outil nous permet maintenant de définir des fonctions dont le domaine est
 un ensemble inductif en utilisant sa structure.
 
@@ -299,7 +328,8 @@ Un procédé similaire est celui d'induction. Là où la récursion nous permet 
 définir une fonction depuis un ensemble inductif, l'induction va nous permettre
 de faire une preuve sur un ensemble inductif. Il s'agit donc, au lieu de donner
 une fonction $X \to Y$, de donner un prédicat $P \subseteq X$ et de montrer que
-$P = X$.
+$P = X$. On peut trouver plus de précisions sur l'induction dans le chapitre $3$
+de \cite{winskell1996formal}, qui parle d'induction structurelle.
 
 \begin{theorem}[Principe d'induction]
   Soit $(C,\alpha)$ une signature et $X$ l'ensemble inductif associé. Soit
@@ -607,6 +637,14 @@ la règle le définissant.
   \mathrm{pair}(|\ell|)\]
   avec le prédicat $\mathrm{pair}$ sur les entiers défini précédemment.
 \end{exercise}
+
+\begin{remark}
+  Comme les notions précédentes, l'induction sur les relations est abordée dans
+  \cite{winskell1996formal}, mais notre présentation s'en éloigne en cherchant
+  à être plus formelle. La présentation qui y est faite dans
+  \cite{winskell1996formal} propose au contraire une présentation plus simple à
+  suivre, avec plus d'exemples et moins de généralité.
+\end{remark}
 
 \subsection{Dérivation d'arbre}
 
