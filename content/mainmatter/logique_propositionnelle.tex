@@ -16,7 +16,7 @@ on peut séparer plusieurs parties :
 \end{itemize}
 
 La logique propositionnelle est une simplification de cette grammaire, dans
-laquelle les propositions atomiques sont remplacées par de simple variables,
+laquelle les propositions atomiques sont remplacées par de simples variables,
 pouvant prendre la valeur $\mathrm{Vrai}$ ou $\mathrm{Faux}$, et où l'on
 supprime les quantificateurs. L'étude de la logique propositionnelle, beaucoup
 plus simple que le calcul des prédicats, permet de donner une première idée des
@@ -92,7 +92,9 @@ $\{\mathrm{Faux},\mathrm{Vrai}\}$.
 \end{definition}
 
 Un environnement permet ensuite de définir la notion de valuation, qui est la
-valeur de vérité d'une proposition dans un environnement donné. On considère
+valeur de vérité d'une proposition dans un environnement donné. On peut voir
+la valuation comme le prolongement d'un environnement par les règles inductives
+naturelles pour donner le sens voulu aux propositions.
 
 \begin{definition}[Valuation]
   Soit $\rho$ un environnement. On définit par induction sur $\mathrm{Prop}$
@@ -128,7 +130,7 @@ On peut donc définir la relation de vérité, dans un environnement donné, pou
 une proposition.
 
 \begin{definition}[Satisfaction]
-  Soit $\rho$ un environnement et $P\in\Prop$. On définir la relation
+  Soit $\rho$ un environnement et $P\in\Prop$. On définit la relation
   $\rho\models P$ par $$(\rho\models P) \defeq (\Val_\rho(P) = 1)$$
   On dit alors que $\rho$ satisfait $P$.
 
@@ -157,8 +159,21 @@ les tables de vérité.
 \end{definition}
 
 \begin{example}
-  Voici une table de vérité pour l'expression
-  $\lnot (x_0 \lor x_1)\to \lnot x_0 \land \lnot x_1$ :
+  Voici une table de vérité pour les expressions
+  $x_0\lor x_1, \lnot (x_0\lor x_1), \lnot x_0\land \lnot x_1$ et
+  $\lnot (x_0 \lor x_1)\to \lnot x_0 \land \lnot x_1$~:
+  \begin{center}
+    \begin{tabular}{|c|c|c|c|c|c|}
+      \hline $x_0$ & $x_1$ & $x_0\lor x_1$ & $\lnot (x_0\lor x_1)$ &
+      $\lnot x_0 \land \lnot x_1$ &
+      $\lnot (x_0 \lor x_1)\to \lnot x_0 \land \lnot x_1$\\
+      \hline $0$ & $0$ & $0$ & $1$ & $1$ & $1$ \\
+      \hline $1$ & $0$ & $1$ & $0$ & $0$ & $1$ \\
+      \hline $0$ & $1$ & $1$ & $0$ & $0$ & $1$ \\
+      \hline $1$ & $1$ & $1$ & $0$ & $0$ & $1$ \\
+      \hline
+    \end{tabular}
+  \end{center}
 \end{example}
 
 Une table de vérité permet de vérifier qu'une proposition est bien une

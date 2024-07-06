@@ -91,6 +91,9 @@ est défini par :
   & & a (\in A) & \longmapsto & 1
 \end{array}
 \]
+Ainsi, plutôt que de considérer un constructeur à deux arguments ayant un
+argument extérieur à la signature, on définit formellement un famille de
+constructeurs à un seul argument.
 
 Voyons maintenant comment associer à une signature un ensemble généré par les
 constructeurs donnés dans la signature. L'ensemble généré doit être un ensemble
@@ -353,7 +356,7 @@ de \cite{winskell1996formal}, qui parle d'induction structurelle.
     Il vient donc, avec l'hypothèse du théorème sur $P$, que
     $c(x_1,\ldots,x_p)\in P$.
 
-    On en conclus que $P\subseteq X_{n+1}$.
+    On en déduit que $P\subseteq X_{n+1}$.
   \end{itemize}
 
   Ainsi, par récurrence, pour tout $n\in \mathbb N$, $X_n \subseteq P$.
@@ -405,15 +408,20 @@ dans plus de cas.
 
 Une façon de considérer les ensembles inductif est, étant donnée une signature,
 de prendre le plus petit ensemble stable par les constructeurs de cette
-signature. Le problème, pour faire cela, est que nous n'avons d'ensemble sur
-lequelle travailler a priori. C'est pourquoi la construction précédente
-définissait chaque ensemble intermédiaire pour en prendre l'union. Au contraire,
-pour définir les relations inductives, nous avons un ensemble ambiant et nous
-pouvons donc travailler sur la notion de plus petit ensemble stable. Pour
-pouvoir mieux appréhender les relations inductives, nous allons directement
-introduire les règles d'inférence.
-
-Rappelons la définition d'une relation.
+signature. Le problème, pour faire cela, est que nous n'avons pas d'ensemble sur
+lequel travailler a priori, au sens où l'ensemble inductif que l'on a construit
+précédemment n'est pas un élément ou une partie d'un ensembl déjà construit en
+amont. C'est pourquoi la construction précédente définissait chaque ensemble
+intermédiaire pour en prendre l'union~: l'existence de chaque ensemble de
+l'union est à spécifier. Au contraire, pour définir les relations inductives,
+nous avons un ensemble ambiant et nous pouvons donc travailler sur la notion de
+plus petit ensemble stable puisqu'une relation, au sens d'une partie d'un
+ensemble $X$ donné (souvent $X$ est un produit cartésien), vit naturellement
+dans $\powerset(X)$. La notion de stabilité mérite un traitement systématique et
+une syntaxe appropriée, puisque nous construirons très souvent des relations par
+induction. Nous allons donc commencer par donner une description formelle de la
+syntaxe des règles d'inférence. Mais avant, rappelons la définition d'une
+relation.
 
 \begin{definition}[Relation]
   Soit $X$ un ensemble. On appelle relation sur $X$ une partie $R\subseteq X^n$
@@ -538,8 +546,8 @@ Knaster-Tarski.
 
   De plus, comme $f(\alpha)\subseteq \alpha$, on en déduit par croissance de
   $f$ que $f(f(\alpha))\subseteq f(\alpha)$, c'est-à-dire que $f(\alpha)$ est
-  lui aussi un élément de $\prefix(f)$ : comme $\alpha$ en est une
-  borne inférieure, cela signifie que $\alpha \subseteq f(\alpha)$, d'où en
+  lui aussi un élément de $\prefix(f)$ : comme $\alpha$ en est l'intersection,
+  cela signifie que $\alpha \subseteq f(\alpha)$, d'où en
   utilisant l'inclusion précédente, $f(\alpha) = \alpha$.
 
   De plus, si $B$ est un point fixe de $f$, alors $f(B)\subseteq B$ donc par
@@ -547,17 +555,23 @@ Knaster-Tarski.
 \end{proof}
 
 \begin{exercise}
-  Soit $E$ un ensemble quelconque et $f : \mathcal P(E) \to \mathcal P(E)$ une
-  fonction croissante pour l'inclusion, et $A \in \mathcal P(A)$. Montrer que
-  l'on peut étendre le théorème pour trouver un plus petit point fixe $\alpha$
-  tel que $A\subseteq \alpha$.
+  Soit $E$ un ensemble quelconque, $f : \powerset(E) \to \powerset(E)$ une
+  fonction préservant les intersections et telle que
+  \[\forall X \in \powerset(E), X\subseteq f(X)\]
+  et $A \in \mathcal P(E)$. Montrer que $f$ est croissante, et que l'on peut
+  étendre le théorème pour trouver un plus petit point fixe $\alpha$ tel que
+  $A\subseteq \alpha$.
 \end{exercise}
 
 \begin{exercise}
-  Soit $E$ un ensemble quelconque, et $f : \mathcal P(E) \to \mathcal P(E)$ une
-  fonction croissante pour l'inclusion. On définit
-  $g_f : \mathcal P(E) \to \mathcal P(E)$ par $X \mapsto X \cup f(X)$. Montrer
-  que $g_f$ est croissante pour l'inclusion.
+  Soit $E$ un ensemble quelconque, et $f : \powerset(E) \to \powerset(E)$ une
+  fonction croissante pour l'inclusion préservant les intersections. On définit
+  \[\begin{array}{ccccc}
+    g_f & : & \powerset(E) & \longrightarrow & \powerset(E)\\
+    & & X & \longmapsto & X \cup f(X)
+  \end{array}\]
+  Montrer que $g_f$ est croissante pour l'inclusion, et préserve les
+  intersections.
 \end{exercise}
 
 Des deux exercises précédents, on peut déduire le résultat suivant :
@@ -576,14 +590,14 @@ qui est très proche de celui sur les ensembles inductifs.
   Soit $E$ un ensemble, $R$ une relation $n$-aire sur $E$ et $r$ une règle
   d'inférence incluant comme paramètre $R$. Soit $P \subseteq \mathcal P(E^n)$
   un prédicat d'arité $n$ sur $E$. Supposons que $R\subseteq P$ et que
-  $P\models \mathrm r$. Alors $R'\subseteq P$.
+  $P\models \mathrm r$. Alors $R_r\subseteq P$.
 \end{theorem}
 
 \begin{proof}
   Il suffit de remarquer que $P$ est un point fixe de $r$ puisque
   $P\models \mathrm r$. Ainsi, comme $P$ est un point fixe de $r$ contenant
   $R$, on en déduit que $P$ contient le plus petit point fixe de $r$ contenant
-  $R$, qui est exactement $R'$.
+  $R$, qui est exactement $R_r$.
 \end{proof}
 
 Ce résultat est essentiel pour prouver beaucoup de résultats : étant donnée une
@@ -602,7 +616,7 @@ la règle le définissant.
 \begin{remark}
   La plupart des relations inductives que nous construirons utilisent plusieurs
   règles, mais l'idée de la construction pour une seule règle suffit. L'exercice
-  précédent sert principalement pour justifier au lecteur le plus dubitatif que
+  précédent sert principalement à justifier au lecteur le plus dubitatif que
   le procédé fonctionne effectivement aussi pour plusieurs règles.
 \end{remark}
 
@@ -668,9 +682,17 @@ relation est vérifiée.
     \AxiomC{}
     \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
     \UnaryInfC{$\mathrm{pair}([0,0])$}
-    \UnaryInfC{$\mathrm{pari}([0,0,0,0])$}
+    \UnaryInfC{$\mathrm{pair}([0,0,0,0])$}
   \end{prooftree}
 \end{example}
+
+\begin{remark}
+  La notion de dérivation dépend uniquement des règles utilisées~: on n'a donc
+  pas besoin de préciser la relation dans laquelle on travaille. Comme on
+  travaille en général dans le cas d'une relation définie par les règles, la
+  question de si la dérivation dépend des règles ou de la relation en elle-même
+  est sans importance.
+\end{remark}
 
 Par construction, comme une relation définie par des règles vérifie ces règles,
 et étant donnée la définition de \og vérifier une règle\fg{}, il ne fait aucun
@@ -678,7 +700,7 @@ doute que si l'on peut dériver $R(x_1,\ldots,x_n)$, alors $R(x_1,\ldots,x_n)$
 est vraie.
 
 En logique, nous formalisons les preuves mathématiques comme de tels arbres, car
-leur structure simple permet de facilité l'étude du langage mathématique. Si,
+leur structure simple permet de faciliter l'étude du langage mathématique. Si,
 dans la réalité, on n'écrit pas une preuve comme une dérivation (nous le
 verrons, cette pratique est beaucoup trop laborieuse), il est communément admis
 qu'une preuve satisfaisante permet de savoir écrire un tel arbre mentalement.
@@ -695,10 +717,11 @@ syntaxiquement prouver la correspondance avec la règle.
 \end{definition}
 
 \begin{definition}[Règle dérivable]
-  Soit $R$ une relation définie par les règles $\mathrm r_1,\ldots,\mathrm r_n$,
-  une règle $\mathrm r$ est dérivable s'il existe une dérivation de la
-  conclusion de $\mathrm r$ utilisant les règles
-  $\mathrm r_1,\ldots,\mathrm r_n$ et les prémisses de $\mathrm r$.
+  Soit un ensemble de règles $\mathrm r_1,\ldots,\mathrm r_n$ et une règle
+  $\mathrm r$. $\mathrm r$ est dite dérivable s'il existe une dérivation de la
+  conclusion de $\mathrm r$ utilisant (potentiellement) les règles
+  $\mathrm r_1,\ldots,\mathrm r_n$ et (potentiellement) les prémisses de
+  $\mathrm r$.
 \end{definition}
 
 \begin{exercise}
@@ -722,11 +745,20 @@ syntaxiquement prouver la correspondance avec la règle.
 \end{exercise}
 
 \begin{exercise}
-  \'Etant donnée une relation $R$ inductive sur un ensemble $E$ définie par
-  des règles $\mathrm r_1,\ldots,\mathrm r_n$, donner une construction analogue
-  au principe de récursion pour les ensembles inductifs, permettant de définir
-  une fonction $R \to Y$ pour un ensemble $Y$ quelconque.
+  Construire un ensemble inductif correspondant aux arbres de dérivations.
+  Montrer alors que pour l'ensemble $T_{\mathrm r_1,\ldots,\mathrm r_n}$
+  des arbres construits sur les règles $\mathrm r_1,\ldots,\mathrm r_n$ et
+  $R$ la relation engendrée par ces règles, une instance $R(x_1,\ldots,x_p)$
+  est vraie si et seulement s'il existe un élément de
+  $T_{\mathrm r_1,\ldots,\mathrm r_n}$ dont la racine est $R(x_1,\ldots,x_p)$.
 \end{exercise}
+
+\begin{remark}
+  On a donc une correspondance entre les relations inductives et les ensembles
+  inductifs. Cependant, on remarque qu'on perd de l'information dans le cas des
+  relation inductives~: dire simplement $R(x_1,\ldots,x_p)$ ne dit pas comment
+  on a dérivé cette instance.
+\end{remark}
 
 Enfin, donnons le lemme d'inversion, que l'on peut voir comme un affaiblissement
 de l'induction sur une relation, pour une seule étape.
