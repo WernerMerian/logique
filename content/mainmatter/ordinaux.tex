@@ -84,9 +84,9 @@ ordonné pour la relation $\in$. Telle est donc notre définition d'ordinal.
     ordre sur $\alpha$~:
     \[(\forall x\in \alpha, x\notin \alpha)\land (\forall x,y,z\in \alpha,
     x\in y \land y \in z \implies x \in z)\]
-    et que toutes ses parties ont un minimum~:
-    \[\forall X\subseteq \alpha, \exists x \in \alpha, \forall y \in X,
-    (x=y \lor x \in y)\]
+    et que toutes ses parties non vides ont un minimum~:
+    \[\forall X\subseteq \alpha, X\neq\varnothing\implies
+    \exists x \in \alpha, \forall y \in X, (x=y \lor x \in y)\]
   \end{itemize}
 
   On note $\Ord$ la classe des ordinaux, qui peut donc être définir par la
@@ -133,7 +133,33 @@ stable par $S$, par intersection et l'inclusion entre ordinaux est équivalente
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On suppose que $\alpha$ est un ordinal et on vérifie les axiomes d'un ordinal
+  pour $S\;\alpha$~:
+  \begin{itemize}
+  \item $S\;\alpha$ est un ensemble transitif. Soient $x\in y\in S\;\alpha$.
+    Si $y = \alpha$ alors $x \in \alpha$ et $S\;\alpha = \alpha \cup\{\alpha\}$
+    donc $x\in S\;\alpha$. Si $y \in \alpha$, alors par transitivité de $\alpha$
+    on en déduit que $x\in \alpha$, donc $x\in S\;\alpha$.
+  \item $\in$ est un bon ordre strict sur $S\;\alpha$, c'est-à-dire~:
+    \begin{itemize}
+    \item $\in$ est irréflexif~: si $x\in S\;\alpha$, alors soit $x\in\alpha$
+      soit $x = \alpha$. Dans le premier cas, comme $\in$ est irréflexif sur
+      $\alpha$, $x\notin x$. Dans le deuxième cas, si $x = \alpha$, alors
+      si $x \in x$, cela signifie que $x \in \alpha$, donc que $x\notin x$, ce
+      qui est absurde.
+    \item $\in$ est transitif~: si $x \in y \in z$ sont des éléments de
+      $S\;\alpha$, alors soit $z = \alpha$ et la transitivité de $\alpha$ donne
+      le résultat, soit $z \in \alpha$ et la transitivité de $\in$ dans $\alpha$
+      donne le résultat.
+    \item soit une partie non vide $X\subseteq S\;\alpha$, alors $X$ a un
+      minimum. Si $X = \{\alpha\}$, son minimum est $\alpha$. Sinon, on en
+      déduit que $X\cap \alpha \neq\varnothing$, donc on peut considérer, comme
+      $\alpha$ est un ordinal, le minimum de $X\setminus \{\alpha\}$~: le
+      minimum de cet ensemble est le minimum de $X$ puisque $\alpha$ est
+      plus grand que tous ses éléments.
+    \end{itemize}
+  \end{itemize}
+  On en déduit donc que $S\;\alpha$ est un ordinal.
 \end{proof}
 
 \begin{proposition}
@@ -142,7 +168,30 @@ stable par $S$, par intersection et l'inclusion entre ordinaux est équivalente
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On vérifie les axiomes d'un ordinal pour $\alpha\cap\beta$~:
+  \begin{itemize}
+  \item $\alpha \cap \beta$ est transitif. Si $x\in y \in \alpha \cap \beta$,
+    alors $x\in y\in \alpha$ et $x\in y \in\beta$, par transitivité des deux
+    ordinaux, on en déduit que $x\in \alpha$ et $x\in \beta$, donc
+    $x\in\alpha\cap\beta$.
+  \item $\in$ est un bon ordre sur $\alpha\cap\beta$~:
+    \begin{itemize}
+    \item $\in$ est irréflexif~: si $x \in \alpha\cap\beta$, alors $x\in \alpha$
+      donc $x\notin x$ (parce qu'$\alpha$ est un ordinal).
+    \item $\in$ est transitif~: si $x\in y\in z$ sont des éléments de
+      $\alpha\cap\beta$ alors en particulier $x\in y \in z$ dans $\alpha$, donc
+      $x\in z$ par transitivité de $\in$ dans $\alpha$.
+    \item soit $X\subseteq \alpha\cap \beta$ non vide. Par définition,
+      $X\subseteq \alpha$ donc on peut trouver un minimum pour $X$ dans
+      $\alpha$, notons-le $m$. Pour montrer que $m$ est un minimum dans
+      $\alpha\cap \beta$, il suffit de montrer que $m \in \beta$ puisque tout
+      élément de $\alpha\cap \beta$ est élément de $\alpha$, donc minorer dans
+      $\alpha$ implique de minorer dans $\alpha\cap\beta$. Or, on sait que
+      $X\subseteq \alpha\cap \beta$, donc, $m$ étant le minimum de $X$,
+      $m\in \alpha\cap\beta$. Donc $X$ a un minimum.
+    \end{itemize}
+  \end{itemize}
+  Ainsi $\alpha\cap\beta$ est bien un ordinal.
 \end{proof}
 
 \begin{proposition}
@@ -174,7 +223,7 @@ la proposition suivante.
   Les propositions suivantes sont vraies~:
   \begin{enumerate}
   \item si $\alpha \in \beta \in \Ord$ alors $\alpha \in \Ord$.
-  \item si $X\subseteq \Ord$, alors $\bigcap X \in \Ord$.
+  \item si $X\subseteq \Ord$ est non vide, alors $\bigcap X \in \Ord$.
   \item $\Ord$ n'est pas un ensemble.
   \end{enumerate}
 \end{proposition}
@@ -182,8 +231,45 @@ la proposition suivante.
 \begin{proof}
   On vérifie les différentes propositions~:
   \begin{enumerate}
-  \item A FAIRE
-  \item A FAIRE
+  \item $\alpha$ est un ordinal~:
+    \begin{itemize}
+    \item $\alpha$ est transitif~: si $x\in y \in \alpha$, alors comme
+      $\beta$ est transitif et $\alpha \in \beta$, $\alpha\subseteq \beta$,
+      donc $x \in y \in \alpha$ est vrai pour $\in$ restreint à $\beta$. Par
+      transitivité de $\in$ dans $\beta$, $x\in\alpha$.
+    \item $\in$ est un bon ordre strict sur $\alpha$~:
+      \begin{itemize}
+      \item $\in$ est irréflexif~: si $x\in \alpha$ alors $x\in \beta$ donc
+        $x\notin x$ puisque $\beta$ est un ordinal.
+      \item $\in$ est transitif puisque transitif sur $\beta$ et
+        $\alpha\subseteq\beta$.
+      \item si $X\subseteq \alpha$ est non vide, alors $X\subseteq \beta$
+        donc $X$ a un minimum pour $\in$~: c'est aussi un minimum pour $\in$
+        dans $\alpha$.
+      \end{itemize}
+    \end{itemize}
+    Donc $\alpha$ est un ordinal.
+  \item $\bigcap X$ est un ordinal~:
+    \begin{itemize}
+    \item $\bigcap X$ est transitif~: si $x\in y \in \bigcap X$, alors pour
+      tout $\alpha \in X$, $x \in y \in \alpha$ donc par transitivité de
+      $\alpha$, $x \in \alpha$, donc $x\in \bigcap X$.
+    \item $\in$ est un bon ordre strict sur $\bigcap X$~:
+      \begin{itemize}
+      \item si $x \in \bigcap X$ alors en particulier $x\in \alpha$ pour un
+        certain $\alpha \in X$, et comme $\alpha \in \Ord$, on en déduit que
+        $x\notin x$.
+      \item $\in$ est transitif~: si $x\in y \in z$ est vrai dans $\bigcap X$,
+        alors les relations sont encore vraies dans un certain
+        $\alpha \in \bigcap X$, donc $x \in z$ par transitivité de $\in$ dans
+        $\alpha$.
+      \item si $X\subseteq \bigcap X$ est non vide, alors on peut en trouver
+        un minimum dans un certain $\alpha \in X$. Ce minimum est dans
+        $X$, donc dans $\bigcap X$~: c'est donc bien un minimum au sens de $\in$
+        dans $\bigcap X$.
+      \end{itemize}
+      Donc $\bigcap X$ est un ordinal.
+    \end{itemize}
   \item Supposons que $\Ord$ est un ensemble. Alors, par les propositions
     précédentes, c'est un ordinal~: on en déduit que $\Ord\in\Ord$, or par
     hypothèse, $\Ord\notin\Ord$.
@@ -239,7 +325,24 @@ Donnons maintenant un outil efficace pour prouver qu'un ensemble est un ordinal.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On vérifie les axiomes d'un ordinal pour $Y$~:
+  \begin{itemize}
+  \item $Y$ est transitif~: par définition de partie close par le bas, pour
+    l'ordre strict $\in$.
+  \item $\in$ est un ordre strict sur $Y$~:
+    \begin{itemize}
+    \item $\in$ est irréflexif~: si $x \in Y$ alors $x \in \alpha$ donc
+      $x\notin x$.
+    \item $\in$ est transitif~: si $x\in y \in z$ est vrai dans $Y$, alors
+      la même chose est vraie dans $\alpha$, donc $x \in z$ par transitivité de
+      $\alpha$.
+    \item si $X\subseteq Y$ est non vide, alors comme $Y\subseteq \alpha$ on
+      peut y trouver un minimum $m$ pour $\in$ dans $\alpha$. C'est un élément
+      de $X$, donc de $Y$, et comme les éléments de $Y$ sont éléments de
+      $\alpha$ on en déduit que $m$ est bien le minimum de $X$ dans $Y$.
+    \end{itemize}
+  \end{itemize}
+  $Y$ est donc un ordinal.
 \end{proof}
 
 On voudrait maintenant utiliser le lemme d'effondrement de Mostovski pour
@@ -671,24 +774,137 @@ $\alpha$ tel que $f(\alpha)\neq g(\alpha)$, on a $f(\alpha) < g(\alpha)$.
 On peut maintenant prouver plusieurs résultats d'arithmétique ordinale.
 
 \begin{property}
-  Soient $\alpha,\beta,\gamma\in\Ord$, on a~:
+  Soient $\alpha,\beta,\gamma\in\Ord$, on a les propriétés suivantes~:
   \begin{itemize}
   \item $\alpha + (\beta + \gamma) = (\alpha + \beta) + \gamma$
+  \item $\alpha\times(\beta+\gamma) = \alpha\times\beta+\alpha\times\gamma$
   \item $\alpha\times(\beta\times\gamma) = (\alpha\times\beta)\times \gamma$
-  \item $\alpha < \beta \implies \alpha + \gamma < \beta + \gamma \text{ et }
-    \gamma + \alpha < \gamma + \beta$
+  \item $1 + \alpha = \alpha$ si et seulement si $\alpha \geq \omega$
+  \item $\alpha + 1 = S\;\alpha$
+  \item si $\alpha < \beta$ alors $\gamma + \alpha < \gamma + \beta$ et
+    $\alpha + \gamma \leq \beta + \gamma$
+  \item si $\gamma \neq 0$ et $\alpha < \beta$ alors
+    $\gamma \times \alpha < \gamma \times \beta$ et
+    $\alpha\times\gamma\leq\beta\times\gamma$.
   \item $\alpha + \beta = \alpha + \gamma \implies \beta = \gamma$
+  \item si $\alpha \neq 0$ et $\alpha \times \beta = \alpha \times \gamma$,
+    alors $\beta = \gamma$.
   \item $\alpha \times 1 = 1 \times \alpha = \alpha$
   \item $\alpha\times\beta = 0 \implies \alpha = 0 \text{ ou }\beta=0$
-  \item $\alpha\times(\beta+\gamma) = \alpha\times\beta+\alpha\times\gamma$
-  \item si $\beta > 0$ alors il existe un unique couple $(\delta,\varepsilon)$
-    tel que $\alpha = \beta \times\delta + \varepsilon$ et
-    $\varepsilon < \beta$, c'est la division euclidienne ordinale.
+  \item si $\alpha < \beta$ alors il existe un unique $\gamma$ tel que
+    $\alpha + \gamma = \beta$
+  \item si $\alpha < \beta$ alors il existe un unique couple
+    $(\delta,\varepsilon)$ tel que $\beta = \alpha \times\delta + \varepsilon$
+    et $\varepsilon < \alpha$, c'est la division euclidienne ordinale.
   \end{itemize}
 \end{property}
 
 \begin{proof}
-  A FAIRE
+  Démontrons chaque propriété~:
+  \begin{itemize}
+  \item  on raisonne par induction sur $\gamma$~:
+    \begin{itemize}
+    \item si $\gamma = 0$ alors l'équation devient
+      $\alpha + \beta = \alpha + \beta$, ce qui est vrai.
+    \item si $\gamma = S\;\gamma'$, alors en supposant que
+      $\alpha + (\beta + \gamma') = (\alpha + \beta) + \gamma'$~:
+      \begin{align*}
+        \alpha + (\beta + S\;\gamma) &= \alpha + S(\beta + \gamma')\\
+        &= S\;(\alpha + (\beta + \gamma'))\\
+        &= S\;((\alpha + \beta) + \gamma')\\
+        &= (\alpha + \beta) + S\;\gamma'\\
+      \end{align*}
+    \item si $\gamma$ est un ordinal limite et que pour tout $\delta < \gamma$,
+      $\alpha + (\beta + \delta) = (\alpha + \beta) + \delta$~:
+      \begin{align*}
+        \alpha + (\beta + \gamma) &= \alpha +
+        (\bigcup_{\delta < \gamma} \beta + \delta)\\
+        &= \bigcup_{\delta < \gamma} (\alpha + (\beta + \delta))\\
+        &= \bigcup_{\delta < \gamma} ((\alpha + \beta) + \delta)\\
+        &= (\alpha + \beta) + \gamma
+      \end{align*}
+    \end{itemize}
+    D'où le résultat par induction transfinie.
+  \item on raisonne par induction sur $\gamma$~:
+    \begin{itemize}
+    \item si $\gamma = 0$, l'équation devient
+      $\alpha \times \beta = \alpha \times \beta$, ce qui est vrai.
+    \item si $\gamma = S\;\gamma'$ et l'équation est vraie en $\gamma'$, alors~:
+      \begin{align*}
+        \alpha \times (\beta + \gamma) &= \alpha \times S\;(\beta + \gamma')\\
+        &= \alpha \times (\beta + \gamma') + \alpha\\
+        &= \alpha \times \beta + \alpha \times \gamma' + \alpha\\
+        &= \alpha \times \beta + \alpha \times \gamma
+      \end{align*}
+    \item si $\gamma$ est limite et que l'équation est vérifiée pour tout
+      $\delta < \gamma$, alors
+      \begin{align*}
+        \alpha \times (\beta + \gamma) &= \alpha \times
+        (\bigcup_{\delta < \gamma} \beta + \delta)\\
+        &= \bigcup_{\delta < \gamma} \alpha \times (\beta + \delta)\\
+        &= \bigcup_{\delta < \gamma} (\alpha\times\beta + \alpha\times \delta)\\
+        &= \alpha \times \beta + \bigcup_{\delta < \gamma} \alpha \times \delta\\
+        &= \alpha \times \beta + \alpha \times \gamma
+      \end{align*}
+    \end{itemize}
+    D'où le résultat par induction transfinie.
+  \item on raisonne par induction sur $\gamma$~:
+    \begin{itemize}
+    \item si $\gamma = 0$, l'équation est simplement $0 = 0$.
+    \item si $\gamma = S\;\gamma'$ et
+      $\alpha \times (\beta\times\gamma') = (\alpha\times\beta)\times\gamma'$,
+      alors~:
+      \begin{align*}
+        \alpha \times (\beta \times \gamma) &=
+        \alpha \times (\beta\times \gamma' + \beta) \\
+        &= \alpha \times (\beta\times \gamma') +
+        \alpha \times \beta\\
+        &= (\alpha \times \beta) \times \gamma' + \alpha \times \beta\\
+        &= (\alpha \times \beta) \times \gamma
+      \end{align*}
+    \item si $\gamma$ est limite et que l'équation est vérifiée pour tout
+      $\delta < \gamma$, alors~:
+      \begin{align*}
+        \alpha \times (\beta \times \gamma) &= \alpha \times
+        (\bigcup_{\delta < \gamma} \beta \times \delta)\\
+        &= \bigcup_{\delta < \gamma} \alpha \times (\beta \times \delta)\\
+        &= \bigcup_{\delta < \gamma} (\alpha \times \beta) \times \delta\\
+        &= (\alpha\times\beta) \times \gamma
+      \end{align*}
+    \end{itemize}
+    D'où le résultat par induction transfinie.
+  \item par induction transfinie, montrons que si $\alpha \geq \omega$ alors
+    $1 + \alpha = \alpha$~:
+    \begin{itemize}
+    \item c'est bien le cas si $\alpha = \omega$
+    \item si $\alpha = S\;\beta$, alors $\beta \geq \omega$ (puisque $\omega$
+      est limite), donc
+      \begin{align*}
+        1+\alpha &= 1 + S\;\beta \\
+        &= S\;(1 + \beta) \\
+        &= S\;\beta\\
+        &= \alpha
+      \end{align*}
+    \item si $\alpha$ est limite et pour tout $\beta < \alpha$ tel que
+      $\beta \geq \omega$, $1+\beta = \beta$, alors
+      \begin{align*}
+        1 + \alpha &= \bigcup_{\beta < \alpha} 1 + \beta \\
+        &= \left(\bigcup_{\beta < \omega} 1 + \beta\right) \cup
+        \left(\bigcup_{\omega \leq \beta < \alpha} 1 + \beta\right)\\
+        &= \omega \cup \bigcup_{\omega\leq\beta < \alpha} \beta\\
+        &= \omega \cup \alpha\\
+        &= \alpha
+      \end{align*}
+    \end{itemize}
+    Donc par induction transfinie,
+    $\omega \leq \alpha \implies 1 + \alpha = \alpha$.
+
+    Par contraposée, si $n \in \omega$, alors $1 + n = n + 1 = S\;n \neq n$,
+    donc $1 + \alpha = \alpha \implies \omega \leq \alpha$.
+  \item un simple calcul nous donne que
+    $\alpha + 1 = S\;(\alpha + 0) = S\;\alpha$.
+  \item A FAIRE
+  \end{itemize}
 \end{proof}
 
 On peut aussi dégager des propriétés arithmétiques sur l'exponentiation, mais
@@ -763,7 +979,7 @@ cardinal.
 
 Montrons maintenant le lemme de Zorn, qui utilise l'axiome du choix.
 
-\begin{theorem}[Lemme de Zorn]
+\begin{theorem}[Lemme de Zorn]\label{thm.ordi.Zorn}
   Soit $(X,<)$ un ensemble inductif, c'est-à-dire tel que toute chaîne
   $C\subseteq X$ possède un majorant, et soit $x_0\in X$. Alors il existe un
   élément maximal $x$ dans $X$ supérieur à $x_0$, c'est-à-dire tel que
@@ -811,7 +1027,37 @@ Montrons aussi la réciproque~: le lemme de Zorn implique l'axiome du choix.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On veut montrer l'axiome du choix. Soit donc un ensemble $X$ dont tous les
+  éléments sont non vides et disjoints deux à deux~: on veut construire un
+  ensemble $C$ tel que pour tout $x \in X$, $x\cap C$ est un singleton.
+
+  On pose l'ensemble
+  \[Y = \left\{c \subseteq \bigcup X\mid \forall x,y \in c, \forall a \in X,
+  (x \in a)\land (y \in a) \implies x = y\right\}\]
+  un élément de $Y$ est donc un choix, pour chaque élément $a$ de $X$, d'au plus
+  un élément de $a$. On veut montrer que $(Y,\subseteq)$ est un ensemble
+  inductif~:
+
+  Soit une chaîne $(c_i)_{i\in I}$ d'éléments de $Y$, montrons que
+  $\displaystyle\bigcup_{i\in I} c_i\in Y$. Soient donc $a\in X$ et
+  $x,y\in\displaystyle\bigcup_{i \in I} c_i$, montrons que $x = y$.
+  Par définition, on trouve $i,j \in I$ tels que $x \in c_i$ et $y\in c_j$.
+  Comme $(c_i)$ est une chaîne, on sait qu'il existe un élément $k\in\{i,j\}$
+  tel que $x\in c_k$ et $y\in c_k$, soit $k$ cet élément.On sait donc que
+  $x\in a$ et $y\in a$, pour $x,y\in c_k$~: par définition de $Y$, on en
+  déduit que $x = y$. Donc $\displaystyle\bigcup_{i\in I} c_i\in Y$, et
+  c'est ensemble est la borne supérieure pour $\subseteq$.
+
+  Par le \cref{thm.ordi.Zorn}, on trouve donc $C \in Y$ un élément maximal pour
+  l'inclusion. Montrons alors que pour tout $a \in X$,
+  $C \cap a \neq\varnothing$. Supposons qu'il existe $a \in X$ tel que
+  $C\cap a = \varnothing$. Comme $a\neq\varnothing$, on trouve $x \in a$, et
+  on peut alors définir $C \cup \{x\}$, qui est un élément de $Y$~: c'est un
+  élément plus grand que $C$, ce qui contredit sa maximalité.
+
+  Ainsi, $C$ contient au moins un élément de chaque élément de $X$, et par
+  définition de l'appartenance à $Y$ il en contient au plus un~: cela signifie
+  que $C\cap a$ est un singleton pour tout $a \in X$. D'où l'axiome du choix.
 \end{proof}
 
 \begin{exercise}[Une caractérisation des ordinaux finis]
@@ -877,7 +1123,40 @@ immédiate~: c'est le théorème de Cantor-Bernstein.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  Comme il existe une injection $f : X \to Y$, on en déduit (comme toute
+  fonction est surjective sur son image) que $X \simeq \im(f)$. On se contente
+  donc de montrer que si $X \subseteq Y$ et qu'il existe $g : Y \to X$
+  injective, alors $X \simeq Y$.
+
+  On définit une suite de parties $(Z_n)_{n\in\mathbb N}$ de $Y$ comme suit~:
+  \[\left\{\begin{array}{l}
+  Z_0 = Y \setminus X\\
+  \forall n \in \mathbb N, Z_{n+1} = g(Z_n)
+  \end{array}\right.\]
+  et on définit
+  \[Z \defeq \bigcup_{n \in \mathbb N} Z_n\]
+  la fonction $g$ est alors stable sur $Z$, par construction. On décide donc de
+  définir la fonction
+  \[\begin{array}{ccccc}
+  h & : & Y & \rightarrow & X \\
+  & & x & \longmapsto & \left\{
+  \begin{array}{l}
+    g(x) \text{ si } x \in Z\\
+    x \text{ si } x \notin Z
+  \end{array}\right.
+  \end{array}\]
+  $h$ est bien à valeurs dans $X$~: si $x \in Z$, alors $h(x) = g(x)$ et
+  $g$ est à valeurs dans $X$~; sinon, $x \notin Z$, donc $x\notin Z_0$, donc
+  $x \in X$.
+
+  On montre que $h$ est une bijection~: c'est une injection sur $Z$ et une
+  injection sur $X\setminus Z$ et ces deux parties sont stables par $h$, donc
+  $h$ est injective. $h$ est surjective~: si $x \in X$, alors soit $x \in Z$,
+  auquel cas on trouve $i \in \mathbb N$ tel que $x \in Z_i$. $i$ ne peut
+  pas être nul, puisque $x \in X$, donc on peut trouver $z \in Z_0$ tel que
+  $x = g^i(z)$~: cela signifie alors que $x = h(g^{i-1}(z))$. Si $x \notin Z$,
+  alors $h(x) = x$. Ainsi $h$ est injective et surjective~: c'est une bijection
+  entre $X$ et $Y$.
 \end{proof}
 
 La relation $\preceq$ est donc une relation d'ordre sur les classes
@@ -978,7 +1257,7 @@ Cela motive donc notre définition de la hiérarchie cardinale.
   $\beta < \alpha$, $\alpha\not\preceq \beta$. On dénote la classe des cardinaux
   par $\Card$.
 
-  Pour un ensemble quelconque $X$, on appelle son cardinal, noté $\Card(X)$,
+  Pour un ensemble quelconque $X$, on définit son cardinal, noté $\Card(X)$,
   comme le plus grand cardinal inférieur à l'ordinal associé à $(X,<)$ où $<$
   est un bon ordre sur $X$.
 \end{definition}
@@ -1080,8 +1359,44 @@ cardinaux infinis.
 \begin{proof}
   On prouve chaque assertion.
   \begin{enumerate}[label=(\roman*)]
-  \item A FAIRE
-  \item A FAIRE
+  \item On montre par induction transfinie sur $\gamma$ que pour tout
+    $\alpha,\gamma \in \Ord$, $\gamma\neq 0$, on a
+    $\aleph_{\alpha} < \aleph_{\alpha + \gamma}$, puisque tout $\beta > \alpha$ peut
+    s'écrire sous cette forme~:
+    \begin{itemize}
+    \item on sait que pour tout cardinal $\kappa, \kappa^+ > \kappa$, donc si
+      $\gamma = S\;\gamma'$, on a
+      \[\aleph_{\alpha} < \aleph_{\alpha + \gamma'}
+      < \aleph_{\alpha + \gamma}\]
+      d'où le résultat par transitivité de $<$.
+    \item si $\gamma$ est limite et que pour tout $\delta < \gamma$,
+      $\aleph_{\alpha} < \aleph_{\alpha + \delta}$, alors
+      $\aleph_{\alpha + \gamma} = \bigcup_{\delta < \gamma} \aleph_{\alpha + \delta}$
+      donc, par hypothèse d'induction,
+      $\aleph_{\alpha} < \aleph_{\alpha + \delta} \leq \aleph_{\alpha + \gamma}$
+      d'où le résultat.
+    \end{itemize}
+    Ainsi par induction transfinie, on en déduit que $\aleph$ est strictement
+    croissante.
+  \item Par induction transfinie sur $\alpha$~:
+    \begin{itemize}
+    \item si $\alpha = 0$, l'inégalité est $0\leq \omega$, ce qui est vrai.
+    \item si $\alpha \leq \aleph_\alpha$, alors par croissance de
+      $x\mapsto 1+x$, on sait que $S\;\alpha \leq S\;\aleph_\alpha$, mais
+      comme $\aleph_\alpha$ est un cardinal infini, on sait que
+      $S\;\aleph_\alpha \simeq \aleph_\alpha$, donc
+      $S\;\aleph_\alpha < \aleph_\alpha^+ = \aleph_{S\;\alpha}$, donc
+      $S\;\alpha < \aleph_{S\;\alpha}$.
+    \item si $\alpha$ est limite et que pour tout $\beta < \alpha$,
+      $\beta \geq \aleph_\beta$, alors
+      \begin{align*}
+        \alpha &= \bigcup_{\beta < \alpha} \beta\\
+        &\leq \bigcup_{\beta < \alpha} \aleph_\beta\\
+        &\leq \aleph_\alpha
+      \end{align*}
+      d'où le résultat.
+    \end{itemize}
+    Le résultat est donc vérifié par induction transfinie.
   \item Par l'absurde, supposons qu'il existe des valeurs non atteintes. Soit la
     plus petite valeur non atteinte, $\kappa$. On pose alors
     \[\alpha = \{\gamma \in \Ord \mid \aleph_\gamma < \kappa\}\]
@@ -1098,6 +1413,19 @@ cardinaux infinis.
     Par l'absurde, $\aleph$ est surjective.
   \end{enumerate}
 \end{proof}
+
+\begin{remark}
+  Dans la preuve que $\alpha \leq \aleph_\alpha$, on voit que le cas successeur
+  et le cas nul donnent une inégalité stricte. On pourrait s'attendre à ce que
+  $\alpha < \aleph_\alpha$, mais on peut en réalité construire une infinité de
+  points fixes de $\alpha$, en considérant pour chaque ordinal $\alpha$ la suite
+  \[\alpha_n \defeq \left\{\begin{array}{l}
+  \alpha \text{ si } n = 0\\
+  \aleph_{\alpha_n} \text{ sinon}
+  \end{array}\right.\]
+  l'ordinal $\displaystyle\bigcup_{n \in \mathbb N} \alpha_n$ est alors un
+  point fixe de $\aleph$ au-dessus de $\alpha$.
+\end{remark}
 
 \begin{definition}[Cardinal limite]
   On dit qu'un cardinal $\kappa$ est limite s'il est un cardinal de la forme

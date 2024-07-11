@@ -184,7 +184,7 @@ vérité. Ainsi, une proposition est une tautologie si et seulement si toute la
 dernière colonne est remplie de $1$.
 
 \begin{exercise}
-  Montrer que $\lnot x_0\land \lnot x_1 \implies \lnot (x_0\lor x_1)$ est une
+  Montrer que $\lnot x_0\land \lnot x_1 \to \lnot (x_0\lor x_1)$ est une
   tautologie.
 \end{exercise}
 
@@ -251,12 +251,12 @@ propositions.
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
 
   On définit $\rho\models P$ de façon analogue à précédemment :
-  \[\rho\models P \iff \Val_\rho(P) = 1\]
+  \[\rho\models P \defeq \Val_\rho(P) = 1\]
 \end{definition}
 
 \begin{exercise}
-  Montrer que si $\rho$ est un environnement fini, alors $\Val_\rho$ est définie
-  de la même manière avec les deux définitions.
+  Montrer que si $\rho$ est un environnement fini, alors les deux définitions de
+  $\Val_\rho$ coïncident.
 \end{exercise}
 
 \begin{definition}[Satisfaction infinie]
@@ -291,7 +291,7 @@ la relation $\vDash$ pour un ensemble infini et pour ses parties finies.
 Montrons d'abord que ces trois principes sont bien équivalents.
 
 \begin{proposition}
-  Les deux propriétés suivantes sont équivalentes :
+  Les trois propriétés suivantes sont équivalentes :
   \begin{enumerate}[label=(\roman*)]
   \item\label{enum.compac.prop1} pour tout $\mathcal P\subseteq \Prop$,
     $\mathcal P$ est satisfiable si et seulement s'il est finiment satisfiable.
@@ -410,7 +410,7 @@ $\vdash$.
   Dorénavant, pour utiliser des listes, nous écrirons $a, \ell$ pour signifie
   $\cons(a,\ell)$ et nous n'écrirons pas $\nil$ lorsque le contexte permet
   clairement de comprendre qu'il s'agit d'une liste. Par exemple, on confondra
-  la simple proposition $P$ et la liste $\cons(\nil,P)$. La notation
+  la simple proposition $P$ et la liste $\cons(P,\nil)$. La notation
   $\Gamma,\Delta$ correspond à la concaténation, qui serait notée avec les
   conventions précédentes $\Gamma\oplus\Delta$.
 \end{notation}
@@ -599,10 +599,10 @@ sur le résultat à prouver.
   de la colonne de droite à partir de celles-ci (sauf pour cut, que nous
   traitons), et on laissera le cas de $\to$ en exercice~:
   \begin{itemize}
-  \item Supposons que $P\in\Gamma$. Alors en choisissant $P$, on trouve
+  \item Ax~: Supposons que $P\in\Gamma$. Alors en choisissant $P$, on trouve
     $P\in\Gamma$ et $Q\in\{P\}$ ($=P$) tels que $\Val_\rho(P) \leq\Val_\rho(Q)$.
-  \item Supposons qu'il existe $Q\in\Gamma$, $R\in\Delta$, $Q'\in\Theta$ et
-    $R'\in\Xi$ tels que
+  \item Cut~: Supposons qu'il existe $Q\in\Gamma$, $R\in\Delta$, $Q'\in\Theta$
+    et $R'\in\Xi$ tels que
     \begin{equation}\label{eq.prop.corr.1}
       \Val_\rho(Q)\leq\Val_\rho(R)
     \end{equation}
@@ -624,19 +624,19 @@ sur le résultat à prouver.
       l'inégalité est vérifiée. Dans le cas où $R'\neq P$, il suffit de prendre
       $Q'' = Q$ et $R'' = R$.
     \end{itemize}
-  \item Supposons que
+  \item le~: Supposons que
     $\Val_\rho(\bigwedge \Gamma) \leq \Val_\rho(\bigvee \Delta)$ pour tout
     $\rho$, alors comme
     $\Val_\rho(\bigwedge (\Gamma, P)) \leq \Val_\rho(\bigwedge \Gamma)$ on voit
     directement que
     $\Val_\rho(\bigwedge(\Gamma,P)) \leq \Val_\rho(\bigvee\Delta)$.
-  \item Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
+  \item $\top$~: Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
     $\Val_\rho(\bigwedge(\Gamma,\top)) = \Val_\rho(\bigwedge \Gamma)$ d'où le
     résultat.
-  \item Supposons qu'il existe $Q\in\Gamma$ et $R\in(\Delta,P)$ tels que
-    $\Val_\rho(Q)\leq\Val_\rho(R)$. Si $R \neq P$, il suffit de reprendre $Q$ et
-    $Q$ déjà définis. Suppsons maintenant que $R = P$. Distinguons les cas des
-    valeurs possibles de $\Val_\rho(P)$ :
+  \item $\mathrm l\lnot$~: Supposons qu'il existe $Q\in\Gamma$ et
+    $R\in(\Delta,P)$ tels que $\Val_\rho(Q)\leq\Val_\rho(R)$. Si $R \neq P$, il
+    suffit de reprendre $Q$ et $Q$ déjà définis. Suppsons maintenant que
+    $R = P$. Distinguons les cas des valeurs possibles de $\Val_\rho(P)$ :
     \begin{itemize}
     \item si $\Val_\rho(P) = 0$, alors $\Val_\rho(Q) = 0$, donc on peut prendre
       n'importe quel autre formule dans $\Delta$ pour vérifier l'inégalité.
@@ -644,8 +644,8 @@ sur le résultat à prouver.
       $Q' = \lnot P \in \Gamma,\lnot P$ et $R\in \Delta$ quelconque, on a alors
       $\Val_\rho(\lnot P) = 0 \leq \Val_\rho(R)$.
     \end{itemize}
-  \item Supposons qu'il existe $R\in(\Gamma,P)$, $S\in\Delta$, $R'\in(\Theta,P)$
-    et $S'\in\Xi$ tels que $\Val_\rho(R)\leq\Val_\rho(S)$ et
+  \item $\mathrm l\lor$~: Supposons qu'il existe $R\in(\Gamma,P)$, $S\in\Delta$,
+    $R'\in(\Theta,P)$ et $S'\in\Xi$ tels que $\Val_\rho(R)\leq\Val_\rho(S)$ et
     $\Val_\rho(R')\leq\Val_\rho(S')$. Si $R$ (respectivement $R'$) est choisie
     comme étant différente de $P$ (respectivement $Q$), le résultat est direct
     en reprenant $(R,S)$ (respectivement $R',S'$). Supposons donc maintenant que
@@ -653,12 +653,12 @@ sur le résultat à prouver.
     $\Val_\rho(P\lor Q) = \max(\Val_\rho(P),\Val_\rho(Q)) \leq \max(\Val_\rho(S),
     \Val_\rho(S'))$ d'où l'inégalité en choisissant $S$ ou $S'$ suivant lequel
     a la plus grande valuation.
-  \item On voit que
+  \item $\mathrm l\land$~: On voit que
     $\Val_\rho(\bigwedge(\Gamma,P,Q)) = \Val_\rho(\bigwedge(\Gamma, P \land Q))$
     par associativité de $\bigwedge$, donc si l'on suppose que
     $\Val_\rho(\bigwedge(\Gamma,P,Q)) \leq \Val_\rho(\bigvee\Delta)$, on en
     déduit directement que
-    $\Val_\rho(\bigwedge(\Gamma,P\land Q)) = \leq\Val_\rho(\bigvee\Delta)$.
+    $\Val_\rho(\bigwedge(\Gamma,P\land Q)) \leq\Val_\rho(\bigvee\Delta)$.
   \end{itemize}
   Donc, par induction, si $\Gamma\vdash \Delta$ alors
   $\models \bigwedge\Gamma\to\bigvee\Delta$.
