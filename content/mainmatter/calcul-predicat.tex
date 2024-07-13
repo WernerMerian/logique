@@ -42,7 +42,7 @@ On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
 Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
 \[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \lor
 (\exists m \in \mathbb N, n = 2 \times m + 1)\]
-Remarquons tout d'abord que l'on remplace \og ou\fg{} par le symboles $\lor$,
+Remarquons tout d'abord que l'on remplace \og ou\fg{} par le symbole $\lor$,
 maintenant que nous connaissons le formalisme de la logique propositionnelle.
 Il nous reste cependant plusieurs points à définir formellement : tout d'abord,
 la phrase précédente contient des termes, comme $2$ ou $n$. Ceux-ci sont d'une
@@ -113,6 +113,11 @@ mathématiques sur lesquels porteront nos formules. Ces formules sont définies
 par induction, d'une façon analogue aux propositions de la logique
 propositionnelle. En l'absence de variables propositionnelles, les éléments
 atomiques des formules seront construits à partir des termes.
+
+Nous donnons la définition d'une proposition atomique comme une proposition de
+la forme $r(t_1,\ldots,t_n)$ où $n$ correspond à l'arité de $r$. En plus des
+symboles de relation de la signature, on considère le symbole $=$, représentant
+l'égalité.
 
 \begin{definition}[Proposition atomique]
   Soit une signature $\Sigma$. On définit l'ensemble $\Atom(\Sigma)$ des
@@ -288,6 +293,18 @@ notion de vérité : les formules closes prennent une plus grande importance que
 le reste des formules, mais il faut quantifier sur des structures en
 contrepartie.
 
+Donner un sens à notre langage signifie que l'on sélectionne en premier lieu un
+univers de discours~: on désigne un ensemble $M$ dans lequel seront interprétées
+les formules. Par exemple, quand on parle d'arithmétique, une formule telle que
+\[\forall n,\exists m, n \leq m\]
+s'interprète naturellement comme portant sur des entiers, c'est-à-dire que $n$
+et $m$ ont alors vocation à être des éléments de $\mathbb N$. Il nous faut
+ensuite donner un sens aux symboles~: ceux-ci n'ont, par défaut, pas de sens
+défini. On a donc besoin, pour chaque symbole de fonctions, d'associer une
+réelle fonction ensembliste, dont le domaine est l'univers de discours choisi.
+De même, un symbole de relation sera associé à une vraie relation ensembliste
+sur l'univers de discours.
+
 \begin{definition}[Structure]
   Soit une signature $\Sigma$. On appelle $\Sigma$-structure (ou simplement
   structure) $\mathcal M$ un triplet
@@ -305,6 +322,19 @@ contrepartie.
   de constante est associé directement à un élément.
 \end{definition}
 
+\begin{remark}
+  Si l'on définit un modèle comme un triplet, définir un modèle revient à lister
+  toutes les assignations, c'est-à-dire donner un ensemble $|\mathcal M|$ puis
+  une fonction $f^\mathcal M$ pour chaque symbole de fonction $f$, et
+  une relation $r^\mathcal M$ pour chaque symbole de relation $r$. On
+  notera donc, au lieu d'un triplet contenant deux fonctions, une liste de
+  tous les éléments donnés par l'intérprétation. En règle générale (comme par
+  exemple le modèle donné au paragraphe suivant) l'association de chaque symbole
+  est évidente, car la notation du symbole de fonction évoque la fonction qui
+  l'interprète ($0$ pour le neutre dans le langage des groupes abéliens, par
+  exemple).
+\end{remark}
+
 \begin{example}
   En reprenant les différents langages définis précédemments, on peut voir que,
   par exemple, $(\mathbb Z,0,+,-)$ est une structure sur le langage des groupes.
@@ -317,23 +347,30 @@ Avec ces nouveaux exemples, on voit qu'il devient naturel d'interpréter dans la
 structure $(\mathbb N,0,n\mapsto n+1,+,\times,\leq)$ le terme
 $S\;S\;0 + S\;S\;0$
 par l'élément $4\in\mathbb N$. Nous pouvons donc généraliser ce résultat. Pour
-cela, on définit d'abord la notion d'environnement, puis de valuation étant
-donné un environnement.
+cela, on définit d'abord la notion d'environnement. Un environnement permet de
+gérer les variables libres d'un terme et d'une formule pour qu'une variable $x$
+puisse être assignée à un réel objet de $|\mathcal M|$. Dans un environnement
+$\rho$ donné, dont on suppose qu'il contient les variables libres d'un certain
+terme $t$, on peut construire de façon canonique un élément
+$t^\mathcal M_\rho \in |\mathcal M|$~: une variable libre est associée à son
+image par $\rho$, et le reste se construit par l'interprétation des symboles
+de fonction. De même, une formule est alors associée à une valeur de vérité,
+dépendant des valeurs de $\rho$.
 
 \begin{definition}[Environnement]
   Soit une signature $\Sigma$ et une structure $\mathcal M$. Un environnement
   $\rho$ est une fonction partielle $\rho : \Var\partialto |\mathcal M|$. On
   note $\mathcal E$ l'ensemble des environnements. Etant donnés un élément
-  $m\in|\mathcal M$, une variable $x$ et un environnement $\rho$, on note
+  $m\in|\mathcal M$|, une variable $x$ et un environnement $\rho$, on note
   $\rho[x \mapsto m]$ l'environnement coïncidant avec $\rho$ sur
   $\Var\backslash\{x\}$ et valant $m$ en $x$.
 \end{definition}
 
 \begin{definition}[Interprétation, valuation]
   Soit une signature $\Sigma$, une structure $\mathcal M$ et un environnement
-  $\rho$. On définit par induction sur $t$ (respectivement $\varphi$), où
-  $\VL(t)\subseteq\dom(\rho)$ (respectivement $\VL(\varphi)\subseteq\dom(\rho)$)
-  les fonctions suivantes :
+  $\rho$. On définit par induction sur $t$ (respectivement sur $\varphi$), en
+  supposant que $\VL(t)\subseteq\dom(\rho)$ (respectivement
+  $\VL(\varphi)\subseteq\dom(\rho)$), les fonctions suivantes~:
   \[\begin{array}{rcccc}
   -_\rho^\mathcal M & : & \Term(\Sigma) & \longrightarrow & |\mathcal M|\\
   & & t & \longmapsto & t^{\mathcal M}_\rho\\
@@ -349,8 +386,10 @@ donné un environnement.
     f^\mathcal M((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
   \item si $\varphi = r(t_1,\ldots,t_n)$ alors
     $\Val_\rho(\varphi) =
-    \chi_{r^\mathcal M}((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
-    On interprète le symbole $=$ par la partie
+    \chi_{r^\mathcal M}((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$, l'image
+    de $((t_i)^\mathcal M_\rho)_{i = 1,\ldots,n}$ par la fonction indicatrice de
+    $r^{\mathcal M}$ (qui est, rappelons-le, une partie de $|\mathcal M|^n$).
+    On interprète le symbole $=$ de la même façon, en prenant la partie
     $\{(m,m)\mid m\in |\mathcal M|\}$.
   \item si $\varphi = \top$, alors $\Val_\rho(\varphi) = 1$.
   \item si $\varphi = \bot$, alors $\Val_\rho(\varphi) = 0$.
@@ -382,8 +421,10 @@ commutent.
 
 \begin{proposition}\label{prop.comm.subst.env}
   Soit une signature $\Sigma$, une structure $\mathcal M$, un environnement
-  $\rho$, une variable $x$, deux termes $t,u$ et une formule $\varphi$. Alors on
-  a les deux égalités suivantes :
+  $\rho$, une variable $x$, deux termes $t,u$ et une formule $\varphi$. On
+  suppose de plus les inclusions suivantes~: $\VL(t)\subseteq \dom(\rho)$,
+  $\VL(u)\subseteq\dom(\rho)$ et $\VL(\varphi)\subseteq\dom(\rho)$. On a alors
+  les deux égalités suivantes :
   \[(t[u/x])_\rho^\mathcal M = t^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]} \qquad
   \Val_\rho(\varphi[u/x]) = \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\varphi)\]
 \end{proposition}
@@ -392,13 +433,14 @@ commutent.
   On montre la première égalité par induction sur $t$, et l'autre par induction
   sur $\varphi$ :
   \begin{itemize}
-  \item si $t = x$ alors $(t[u/x])_\rho^\mathcal M = u^\mathcal M_\rho$ d'où
-    l'égalité.
+  \item si $t = x$ alors $(t[u/x])_\rho^\mathcal M = u^\mathcal M_\rho$ d'un côté,
+    et de l'autre
+    $t^\mathcal M_{\rho[x\mapsto u_\rho^\mathcal M]} =
+    (\rho[x\mapsto u_\rho^\mathcal M])(x)$
+    d'où l'égalité.
   \item si $t = y$ où $y\in\Var$ et $y\neq x$, alors
-    $(t[u/x])_\rho^\mathcal M = \bot$ si $y\notin\dom(\rho)$, ce qui est aussi
-    la valeur de $y^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]}$, ou bien
-    $\rho(y)$, qui est là encore la même valeur pour l'autre partie de
-    l'équation.
+    $(t[u/x])_\rho^\mathcal M = \rho(y)$, qui est la même valeur pour l'autre
+    partie de l'équation.
   \item si $t = f(t_1,\ldots,t_n)$ où pour tout $i\in\{1,\ldots,n\}$,
     $(t_i[u/x])^\mathcal M_\rho = (t_i)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]}$, alors
     \begin{align*}

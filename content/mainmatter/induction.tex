@@ -410,7 +410,7 @@ Une façon de considérer les ensembles inductif est, étant donnée une signatu
 de prendre le plus petit ensemble stable par les constructeurs de cette
 signature. Le problème, pour faire cela, est que nous n'avons pas d'ensemble sur
 lequel travailler a priori, au sens où l'ensemble inductif que l'on a construit
-précédemment n'est pas un élément ou une partie d'un ensembl déjà construit en
+précédemment n'est pas un élément ou une partie d'un ensemble déjà construit en
 amont. C'est pourquoi la construction précédente définissait chaque ensemble
 intermédiaire pour en prendre l'union~: l'existence de chaque ensemble de
 l'union est à spécifier. Au contraire, pour définir les relations inductives,
@@ -454,49 +454,63 @@ Une règle d'inférence, elle, va relier des relations.
   auquel cas la règle est juste lorsqu'elle est juste pour chaque instance
   possible de ces paramètres. Dans l'exemple, on suppose que $a$ et $b$ sont
   quantifiés sur un certain ensemble $A$, et la règle est donc juste lorsque
-  $\forall a,b\in A, ((a = b) \text{ et } P(a)) \implies P(b)$.
-
-  \'Etant donnée une règle r comme précédemment avec un paramètre $X$ non
-  spécifié, on notera $R\models \mathrm{r}$ si la règle r est juste en prenant
-  $R$ pour le paramètre $X$. De même, on notera
-  $R,x_1,\ldots,x_n\models \mathrm{r}$ dans le cas où l'ont remplace plusieurs
-  paramètres.
+  $\forall a,b\in A, ((a = b) \text{ et } P(a)) \implies P(b)$. On dira que la
+  règle est juste aussi lorsque l'on fixe un paramètre, mais on dira alors
+  \og la règle $\mathrm r$ est juste pour $X = R$\fg{}, dans le cas où l'on
+  fixe le paramètre $X$ comme valant $R$. Pour signifier qu'une assignation
+  des variables $x_i$ à des objets $a_i$ vérifie un énoncé $P$, on notera
+  $(x_i \mapsto a_i) \models P$.
 \end{definition}
 
-Ainsi, à une règle de la forme
+Supposons donnée une règle de la forme
 \begin{prooftree}
-  \AxiomC{$P_1$}
-  \AxiomC{$P_2$}
+  \AxiomC{$P_1(R,x_1,\ldots,x_k)$}
+  \AxiomC{$P_2(R,x_1,\ldots,x_k)$}
   \AxiomC{$\cdots$}
-  \AxiomC{$P_n$}
+  \AxiomC{$P_n(R,x_1,\ldots,x_k)$}
   \RightLabel{r}
-  \QuaternaryInfC{$P$}
+  \QuaternaryInfC{$P(R,x_1,\ldots,x_k)$}
 \end{prooftree}
-avec un paramètre $R$ fixé d'arité $n\in\mathbb N$ et sur un ensemble $E$, on
-peut associer une fonction
-\[\begin{array}{rcccl}
-  r &:& \mathcal P(E^n) & \longrightarrow & \mathcal P(E^n) \\
-  & & R & \longmapsto & R \cup
-  \{ (x_1,\ldots,x_n) \in E^n\mid R,x_1,\ldots,x_n\models \mathrm {r}\}
+dont les paramètres sont $R$, une partie de $\powerset (E^p), p \in \mathbb N$
+et les variables $x_i$, des éléments de $E$. Vérifier que la règle est valide
+signifie que pour toute instance des $x_i$ vérifiant tous les $P_i$, la
+proposition $P$ est valide aussi. En supposant que la conclusion est de la forme
+$R(t_1,\ldots,t_p)$, où $t_1,\ldots,t_p$ sont des termes définis en fonction
+de $x_1,\ldots,x_k$, alors la validité de $r$ signifie que, si l'on définit
+l'ensemble $X$ des $(x_1,\ldots,x_k)$ vérifiants $P_i(R,x_1,\ldots,x_k)$, alors
+l'ensemble des termes $t_1,\ldots,t_p$ est inclus dans $R$.
+
+Dans la suite de ce chapitre, on considérera toujours des règles se finissant
+par une clause de la forme $R(f_1(x_1,\ldots,x_k),\ldots,f_p(x_1,\ldots,x_k))$.
+Une règle $\mathrm r$ définit alors la fonction suivante, qui considère
+l'ensemble des $R(t_1,\ldots,t_k)$~:
+\begin{multline*}
+  X \longmapsto\{ (f_1(a_1,\ldots,a_k),\ldots,f_p(a_1,\ldots,a_k))\mid\\
+  a_1,\ldots,a_k \in E, \forall i \in \{1,\ldots,n\},
+  (X\mapsto R,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \models P_i\}
+\end{multline*}
+On note cette fonction $f_\mathrm r$. La validité de $\mathrm r$ pour une
+relation $R$ revient à l'inclusion $f_\mathrm r(R)\subseteq R$. Une autre façon
+de l'exprimer est que $f_\mathrm r(R)\cup R = R$. Cela nous pousse à définir la
+fonction suivante, qui nous sera essentielle pour les prochaines constructions.
+
+\[\begin{array}{ccccc}
+\mathrm r &: & \powerset (E^p) & \longrightarrow & \powerset (E^p)\\
+& & X & \longmapsto & X \cup f_\mathrm r(X)
 \end{array}\]
-où tous les paramètres n'apparaissant pas dans la conclusion sont quantifiés de
-façon existentielle.
+
+Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
 
 \begin{example}
   Prenons la règle
   \begin{prooftree}
-    \AxiomC{$x = y$}
-    \RightLabel{refl}
-    \UnaryInfC{$R(x,y)$}
-  \end{prooftree}
-  exprimant que la règle $R$ est réflexive. La fonction $\mathrm{refl}$ est
-  alors $R \mapsto R \cup \{(x,x)\mid x \in E\}$.
-
-  Dans ce genre de cas, on écrira de façon plus compacte la règle par
-  \begin{prooftree}
     \AxiomC{}
+    \RightLabel{refl}
     \UnaryInfC{$R(x,x)$}
   \end{prooftree}
+  exprimant que $R$ est réflexive. La fonction associée à $\mathrm{trans}$ est
+  alors $R \mapsto R \cup \{(x,x) \mid x \in E\}$. Remarquons que l'absence de
+  prémisse signifie que la conclusion est toujours valide.
 \end{example}
 
 \begin{example}
@@ -510,14 +524,17 @@ façon existentielle.
   \end{prooftree}
   Dans ce cas, l'image de $R$ par $\mathrm{trans}$ est l'ensemble
   \[R \cup \{ (x,z) \in E^2\mid \exists z \in E, R(x,y)\text{ et } R(y,z)\}\]
+  En effet, même si $y$ n'apparait pas dans la conclusion, il est nécessaire
+  qu'un tel $y$ existe pour que le triplet $(x,y,z)$ vérifie la condition
+  de $f_\mathrm r$.
 \end{example}
 
 Supposons maintenant que nous ayons une relation $R$ et une règle $\mathrm r$,
 $R$ ne vérifiant pas forcément $\mathrm r$. Nous cherchons alors à construire à
-partir de $R$ une relation vérifiant $\mathrm r$. Une remarque essentielle : si
+partir de $R$ une relation vérifiant $\mathrm r$. Une remarque essentielle~: si
 $R$ vérifie $\mathrm r$, alors $R$ est un point fixe de la fonction $r$
 associée. On va ainsi chercher à créer un point fixe de la fonction associée.
-Pour cela, nous allons donner un théorème essentiel en logique : le théorème de
+Pour cela, nous allons donner un théorème essentiel en logique~: le théorème de
 Knaster-Tarski.
 
 \begin{theorem}[Knaster-Tarski (faible)]\label{thm.ind.KT}
@@ -532,8 +549,9 @@ Knaster-Tarski.
 \begin{proof}
   Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
   \[\prefix(f) = \{ A \in \mathcal P(E)\mid f(A)\subseteq A\}\]
+  Cet ensemble est non vide, puisqu'il contient $E$.
   Soit $\alpha = \bigcap \prefix(f)$, montrons que $\alpha$ est dans
-  $\mathrm{prefix}(f)$ :
+  $\mathrm{prefix}(f)$~:
 
   Pour cela, il suffit de montrer que $f(\alpha)\subseteq \alpha$, mais comme
   $\alpha$ est une intersection, il suffit de montrer que pour tout
