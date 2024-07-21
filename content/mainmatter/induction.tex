@@ -471,10 +471,10 @@ Supposons donnée une règle de la forme
   \RightLabel{r}
   \QuaternaryInfC{$P(R,x_1,\ldots,x_k)$}
 \end{prooftree}
-dont les paramètres sont $R$, une partie de $\powerset (E^p), p \in \mathbb N$
-et les variables $x_i$, des éléments de $E$. Vérifier que la règle est valide
-signifie que pour toute instance des $x_i$ vérifiant tous les $P_i$, la
-proposition $P$ est valide aussi. En supposant que la conclusion est de la forme
+dont les paramètres sont $R$, une partie de $E^p, p \in \mathbb N$ et les
+variables $x_i$, des éléments de $E$. Vérifier que la règle est valide signifie
+que pour toute instance des $x_i$ vérifiant tous les $P_i$, la proposition $P$
+est valide aussi. En supposant que la conclusion est de la forme
 $R(t_1,\ldots,t_p)$, où $t_1,\ldots,t_p$ sont des termes définis en fonction
 de $x_1,\ldots,x_k$, alors la validité de $r$ signifie que, si l'on définit
 l'ensemble $X$ des $(x_1,\ldots,x_k)$ vérifiants $P_i(R,x_1,\ldots,x_k)$, alors
@@ -490,8 +490,8 @@ l'ensemble des $R(t_1,\ldots,t_k)$~:
   (X\mapsto R,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \models P_i\}
 \end{multline*}
 On note cette fonction $f_\mathrm r$. La validité de $\mathrm r$ pour une
-relation $R$ revient à l'inclusion $f_\mathrm r(R)\subseteq R$. Une autre façon
-de l'exprimer est que $f_\mathrm r(R)\cup R = R$. Cela nous pousse à définir la
+relation $R$ revient à l'inclusion $f_\mathrm r(R)\subseteq R$, que l'on peut
+ausside exprimer par $f_\mathrm r(R)\cup R = R$. Cela nous pousse à définir la
 fonction suivante, qui nous sera essentielle pour les prochaines constructions.
 
 \[\begin{array}{ccccc}
@@ -508,7 +508,7 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
     \RightLabel{refl}
     \UnaryInfC{$R(x,x)$}
   \end{prooftree}
-  exprimant que $R$ est réflexive. La fonction associée à $\mathrm{trans}$ est
+  exprimant que $R$ est réflexive. La fonction associée à $\mathrm{refl}$ est
   alors $R \mapsto R \cup \{(x,x) \mid x \in E\}$. Remarquons que l'absence de
   prémisse signifie que la conclusion est toujours valide.
 \end{example}
@@ -523,7 +523,7 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
     \BinaryInfC{$R(x,z)$}
   \end{prooftree}
   Dans ce cas, l'image de $R$ par $\mathrm{trans}$ est l'ensemble
-  \[R \cup \{ (x,z) \in E^2\mid \exists z \in E, R(x,y)\text{ et } R(y,z)\}\]
+  \[R \cup \{ (x,z) \in E^2\mid \exists y \in E, R(x,y)\text{ et } R(y,z)\}\]
   En effet, même si $y$ n'apparait pas dans la conclusion, il est nécessaire
   qu'un tel $y$ existe pour que le triplet $(x,y,z)$ vérifie la condition
   de $f_\mathrm r$.
@@ -544,7 +544,7 @@ Knaster-Tarski.
   \[\forall A,B\in\mathcal P(E), A\subseteq B \implies f(A)\subseteq f(B)\]
   Alors il existe un plus petit point fixe de $f$ pour $\subseteq$, ou de façon
   équivalente il existe un élément $A\in \mathcal P(E)$ tel que $f(A)=A$ et tel
-  que pour tous $B\in\mathcal P(E)$ tel que $f(B)=B$, $A\subseteq B$.
+  que pour tout $B\in\mathcal P(E)$ tel que $f(B)=B$, $A\subseteq B$.
 \end{theorem}
 \begin{proof}
   Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
@@ -604,23 +604,23 @@ qui est très proche de celui sur les ensembles inductifs.
 
 \begin{theorem}[Induction sur une relation]
   Soit $E$ un ensemble, $R$ une relation $n$-aire sur $E$ et $r$ une règle
-  d'inférence incluant comme paramètre $R$. Soit $P \subseteq \mathcal P(E^n)$
+  d'inférence incluant comme paramètre $X$. Soit $P \in \mathcal P(E^n)$
   un prédicat d'arité $n$ sur $E$. Supposons que $R\subseteq P$ et que
-  $P\models \mathrm r$. Alors $R_r\subseteq P$.
+  $(X\mapsto P)\models \mathrm r$. Alors $R_r\subseteq P$.
 \end{theorem}
 
 \begin{proof}
   Il suffit de remarquer que $P$ est un point fixe de $r$ puisque
-  $P\models \mathrm r$. Ainsi, comme $P$ est un point fixe de $r$ contenant
-  $R$, on en déduit que $P$ contient le plus petit point fixe de $r$ contenant
-  $R$, qui est exactement $R_r$.
+  $(X\mapsto P)\models \mathrm r$. Ainsi, comme $P$ est un point fixe de $r$
+  contenant $R$, on en déduit que $P$ contient le plus petit point fixe de $r$
+  contenant $R$, qui est exactement $R_r$.
 \end{proof}
 
 Ce résultat est essentiel pour prouver beaucoup de résultats : étant donnée une
 relation $R$ construite par induction, pour montrer un résultat de la forme
 $\forall x_1,\ldots,x_n\in E, R(x_1,\ldots,x_n)\implies P(x_1,\ldots,x_n)$ pour
 un certain prédicat $P$, il suffit de montrer que ce prédicat est stable par
-la règle le définissant.
+la règle définissant $R$.
 
 \begin{exercise}
   Soient désormais $n$ règles $\mathrm r_1,\ldots,\mathrm r_n$ incluant toutes
@@ -637,13 +637,14 @@ la règle le définissant.
 \end{remark}
 
 \begin{exercise}
-  Soit une relation $R$ et une règle $\mathrm r$. Montrer que la relation $R'$
-  définie par $\mathrm r$ sur $R$ est la même que la relation $R''$ définie
-  par la règle $\mathrm r$ et la règle
+  Soit une relation $R$ et une règle $\mathrm r$. On définit la relation $R'$
+  comme la relation inductive définie par $\mathrm r$ sur $R$, et $R''$ la
+  relation inductive définie par les règles $\mathrm r$ et
   \begin{prooftree}
     \AxiomC{$R(x_1,\ldots,x_n)$}
     \UnaryInfC{$R''(x_1,\ldots,x_n)$}
   \end{prooftree}
+  Montrer que ces deux relations coïncident.
 \end{exercise}
 
 \begin{remark}
@@ -672,8 +673,8 @@ la règle le définissant.
   Comme les notions précédentes, l'induction sur les relations est abordée dans
   \cite{winskell1996formal}, mais notre présentation s'en éloigne en cherchant
   à être plus formelle. La présentation qui y est faite dans
-  \cite{winskell1996formal} propose au contraire une présentation plus simple à
-  suivre, avec plus d'exemples et moins de généralité.
+  \cite{winskell1996formal} est, au contraire, plus intuitive à suivre, avec
+  plus d'exemples et moins de généralité.
 \end{remark}
 
 \subsection{Dérivation d'arbre}
