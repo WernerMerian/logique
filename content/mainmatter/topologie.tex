@@ -1308,9 +1308,9 @@ On en déduit une caractérisation de l'adhérence par les distances.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $x\in \adher(Y)$ et montrons que $d(x,Y) = 0$. Soit
+  Supposons que $x\in \adher{Y}$ et montrons que $d(x,Y) = 0$. Soit
   $\varepsilon > 0$, on va montrer qu'il existe $y\in Y$ tel que
-  $d(x,y)< \varepsilon$ : par définition de $x\in \adher(Y)$, on peut trouver
+  $d(x,y)< \varepsilon$ : par définition de $x\in \adher{Y}$, on peut trouver
   un élément dans $B_\varepsilon(x)\cap Y$ (puisque l'intersection avec un
   ouvert contenant $x$ est non vide), mais cet élément $y$ vérifie justement
   $d(x,y) < \varepsilon$, d'où le résultat.
@@ -1711,11 +1711,11 @@ espace métrique complet, on l'appelle la complétion.
 
     Montrons que $(a_{m_i,i})$ est bien de Cauchy. Soit $\varepsilon > 0$, on
     trouve $n_0$ tel que $\dfrac{1}{n_0 + 1} < \dfrac{\varepsilon}{4}$ et $n_1$
-    tels que
+    tel que
     \[\forall p,q \geq n_1, \hat d(x_p,x_q) < \frac{\varepsilon}{4}\]
-    On peut réécrire $\hat d(x_p,x_q)$ en $\lim_{n \to \infty} d(a_{n,p}, a_{n,q})$
-    donc, par définition de la limite, on peut trouver $n_2(p,q)$ tel que pour
-    tout $m > n_2(p,q)$, on a
+    On peut réécrire $\hat d(x_p,x_q)$ en
+    $\displaystyle\lim_{n \to \infty} d(a_{n,p}, a_{n,q})$ donc, par définition de
+    la limite, on peut trouver $n_2(p,q)$ tel que pour tout $m > n_2(p,q)$, on a
     \[d(a_{m,p},a_{m,q}) < \hat d(x_p,x_q) + \frac{\varepsilon}{4}\]
     soit encore $d(a_{m,p},a_{m,q}) < \dfrac{\varepsilon}{2}$ par inégalité
     trianglulaire, si $p,q > n_1$. Alors, on pose $n_3 = \max(n_0,n_1)$, et on
@@ -1732,17 +1732,29 @@ espace métrique complet, on l'appelle la complétion.
     \[\forall p,q > n_3, d(a_{m_p,p}, a_{m_q,q}) < \varepsilon\]
     donc notre suite est de Cauchy.
 
-    La suite $(x_n)$ converge vers $x$. Soit $\varepsilon > 0$. Avec les
-    arguments précédents, on sait qu'on peut trouver $n_0$ tel que
+    Montrons que la suite $(x_n)$ converge vers $x$. Soit $\varepsilon > 0$.
+    Avec les arguments précédents, on sait qu'on peut trouver $n_0$ tel que
     \[\forall p,q \geq n_0, d(a_{m_p,p},a_{m_q,q}) < \frac{\varepsilon}{2}\]
-    De plus, comme $(x_n)$ est de Cauchy, on trouve $n_1$ tel que
-    \[\forall p,q \geq n_1, \hat d(x_p,x_q) < \frac{\varepsilon}{2}\]
-
+    On trouve aussi $n_1$ tel que
+    $\dfrac{1}{n_1 + 1} < \dfrac{\varepsilon}{4}$. Soit $n_2 = \max(n_0,n_1)$.
+    Par définition de la limite, et en réécrivant $\hat d(x,x_{n_2})$ en
+    $\displaystyle\lim_{n\to\infty} d(a_{m_n,n},a_{n,n_2})$, on trouve $n_3$ tel que
+    pour tout $i \geq n_3$, on a
+    \[\hat d(x,x_{n_2}) < d(a_{m_i,i}, a_{i,n_2}) + \frac{\varepsilon}{4}\]
+    Soit $i \geq \max(n_2,n_3)$, on montre alors l'inégalité voulue~:
     \begin{align*}
-      \hat d(x,x_i) &= \lim_{n \to \infty} d(a_{m_n,n}, a_{n,i}) \\
-      &\leq 
+      \hat d(x,x_{n_2}) &< d(a_{m_i,i}, a_{i,n_2}) + \frac{\varepsilon}{4}\\
+      &< d(a_{m_i,i}, a_{m_{n_2},n_2}) + d(a_{m_{n_2},n_2}, a_{i,n_2})
+      + \frac{\varepsilon}{4}\\
+      &< \frac{\varepsilon}{2} + \frac{1}{n_2 + 1} + \frac{\varepsilon}{4}\\
+      &< \varepsilon
     \end{align*}
+    Donc pour tout $\varepsilon > 0$, il existe $n_2$ tel que
+    $\hat d(x,x_{n_2}) < \varepsilon$, d'où
+    $\displaystyle\lim_{n \to \infty} x_n = x$.
   \end{itemize}
+  L'espace $(\hat X,\hat d)$ est donc bien un espace métrique complet.
+  
   De plus, on veut montrer que $(X,d)$ s'injecte isométriquement dans
   $(\hat X,\hat d)$. Pour cela, on considère l'application
   \[\begin{array}{ccccc}
