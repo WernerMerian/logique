@@ -100,6 +100,8 @@ naturelles pour donner le sens voulu aux propositions.
   Soit $\rho$ un environnement. On définit par induction sur $\mathrm{Prop}$
   la fonction partielle $\Val_\rho : \Prop \to \{0,1\}$~:
   \begin{itemize}
+  \item $\Val_\rho(\top) = 1$.
+  \item $\Val_\rho(\bot) = 0$.
   \item pour $x\in \Var$, si $x\in \dom(\rho)$ alors
     $\Val_\rho (x)= \rho(x)$, si $x\notin \dom(\rho)$ alors
     $\Val_\rho (x)$ n'est pas défini.
@@ -245,7 +247,7 @@ propositions.
 \begin{definition}[Environnement infini]
   On définit l'ensemble $\mathcal E$ des environnement potentiellement infinis
   comme l'ensemble des fonctions partielles $\Var \to \{0,1\}$. On définit la
-  fonction $\Val : (\mathcal E,\Prop)\to \{0,1\}$, pour tout
+  fonction $\Val : \mathcal E\times \Prop \to \{0,1\}$, pour tout
   $\rho\in\mathcal E$, par :
   \[\Val_\rho(P) = \Val_{\rho_{|\VL(P)}}(P)\]
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
@@ -350,9 +352,9 @@ Montrons d'abord que ces trois principes sont bien équivalents.
     que $\mathcal P$ est satisfiable. Par l'absurde, supposons que $\mathcal P$
     n'est pas satisfiable. Cela signifie que $\mathcal P\vDash \bot$~: par
     \ref{enum.compac.prop3} on trouve donc $F\subfin \mathcal P$ tel que
-    $F\vDash \bot$, donc $F$ est donc finiment contradictoire, ce qui contredit
-    le fait que $\mathcal P$ est finiment satisfiable. Par l'absurde, on en
-    déduit que $\mathcal P$ est satisfiable.
+    $F\vDash \bot$, $F$ est donc finiment contradictoire, ce qui contredit le
+    fait que $\mathcal P$ est finiment satisfiable. Par l'absurde, on en déduit
+    que $\mathcal P$ est satisfiable.
   \end{itemize}
 
   Les propositions sont ainsi toutes équivalentes.
@@ -558,15 +560,11 @@ ressemblent de ne prouver que quelques cas les plus significatifs.
 Pour commencer, introduisons un lemme permettant de plus facilement travailler
 sur le résultat à prouver.
 
-\begin{lemma}
+\begin{lemma}\label{lem.cor.uti}
   Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, on a
   l'équivalence suivante~:
   \[ \Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1 \iff
   \min_{P\in\Gamma}(\Val_\rho(P)) \leq \max_{P\in\Delta}(P)\]
-
-  De même, les deux conditions équivalentes sont aussi équivalentes au fait
-  qu'il existe $P\in\Gamma$ et $Q\in\Delta$ telles que
-  $\Val_\rho(P)\leq\Val_\rho(Q)$.
 \end{lemma}
 
 \begin{proof}
@@ -574,21 +572,29 @@ sur le résultat à prouver.
   \begin{align*}
     \Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) =&
     \max(1 - \Val_\rho(\bigwedge\Gamma), \Val_\rho(\bigvee\Delta))\\
-    =& \max(1 - \min_{P\in \Gamma}(\Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P)))\\
-    =& \max(\max_{P\in\Gamma}(1 - \Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P)))
+    =& \max(1 - \min_{P\in \Gamma}(\Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P)))
   \end{align*}
-  Ainsi, si $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$, on peut trouver
-  $P\in\Gamma$ tel que $\Val_\rho(P) = 0$ ou $P\in\Delta$ tel que $\Val_\rho(P)$.
-  Dans les deux cas, on en déduit que
-  $\min_{P\in\Gamma}(\Val_\rho(P)) \leq \max_{P\in\Delta}(\Val_\rho(P))$.
+  Si cette valeur est $1$, alors deux cas se présentent~:
+  \begin{itemize}
+  \item $\displaystyle\max_{P \in \Delta}(\Val_\rho(P)) = 1$, ce cas signifiant
+    forcément que $\max_{P\in \Delta}(P) \geq \min_{P\in \Gamma}(\Val_\rho(P))$
+    puisque $\Val$ est à valeurs dans $\{0,1\}$.
+  \item $1 - \min_{P \in \Gamma}(\Val_\rho(P)) = 1$, ou, de façon équivalente,
+    $\min_{P\in \Gamma}(\Val_\rho(P)) = 0$, ce cas impliquant encore l'inégalité
+    puisque $\Val$ est à valeurs dans $\{0,1\}$.
+  \end{itemize}
+  Réciproquement, si l'inégalité est vérifiée, alors on raisonne par disjonction
+  de cas sur la valeur de $\min_{P\in\Gamma}(\Val_\rho(P))$~:
+  \begin{itemize}
+  \item si sa valeur est $0$, alors on sait déjà que
+    $1 - \min_{P \in \Gamma}(\Val_\rho(P)) = 1$, donc
+    $\Val_\rho(\bigwedge \Gamma\to \bigvee \Delta) = 1$.
+  \item si sa valeur est $1$, alors par notre inégalité on sait que
+    $\max_{P\in\Delta}(\Val_\rho(P)) = 1$, donc
+    $\Val_\rho(\bigwedge \Gamma\to \bigvee \Delta) = 1$.
+  \end{itemize}
 
-  Inversement, si
-  $\min_{P\in\Gamma}(\Val_\rho(P))\leq\max_{P\in\Delta}(\Val_\rho(P))$
-  alors on peut trouver $P\in\Gamma$ et $Q\in\Delta$ tels que
-  $\Val_\rho(P)\leq\Val_\rho(Q)$. Si $\Val_\rho(P) = 0$ alors par le calcul
-  précédent, on en déduit que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$.
-  Sinon, alors $\Val_\rho(Q) = 1$ par inégalité, et par le calcul précédent,
-  $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$.
+  D'où l'équivalence souhaitée.
 \end{proof}
 
 \begin{exercise}
@@ -603,42 +609,45 @@ sur le résultat à prouver.
 \begin{proof}
   Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, le résultat
   à montrer est que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$ sachant que
-  $\Gamma\vdash \Delta$. Pour cela, on procède par induction sur $\vdash$,
-  en utilisant le lemme précédent pour remplacer l'égalité de la valuation par
-  l'existence de témoins d'une inégalité. Comme les opérateurs $\bigvee$ et
-  $\bigwedge$ sont commutatifs et idempotents, on déduit directement la validité
-  des règles d'échange et de contraction. Pour alléger le nombre de cas, on ne
-  montrera que les règles de la colonne de gauche dans les règles définissant
-  $\vdash$, le lecteur pouvant facilement inférer comment prouver les règles
-  de la colonne de droite à partir de celles-ci (sauf pour cut, que nous
-  traitons), et on laissera le cas de $\to$ en exercice~:
+  $\Gamma\vdash \Delta$. Pour cela, on procède par induction sur $\vdash$, en
+  utilisant le \cref{lem.cor.uti} pour avoir à prouver l'inégalité de
+  valuations. Comme les opérateurs $\bigvee$ et $\bigwedge$ sont commutatifs et
+  idempotents, on déduit directement la validité des règles d'échange et de
+  contraction. Pour alléger le nombre de cas, on ne montrera que les règles de
+  la colonne de gauche dans les règles définissant $\vdash$, le lecteur pouvant
+  facilement inférer comment prouver les règles de la colonne de droite à partir
+  de celles-ci (sauf pour cut, que nous traitons), et on laissera le cas de
+  $\to$ en exercice~:
   \begin{itemize}
-  \item Ax~: Supposons que $P\in\Gamma$. Alors en choisissant $P$, on trouve
-    $P\in\Gamma$ et $Q\in\{P\}$ ($=P$) tels que $\Val_\rho(P) \leq\Val_\rho(Q)$.
-  \item Cut~: Supposons qu'il existe $Q\in\Gamma$, $R\in\Delta$, $Q'\in\Theta$
-    et $R'\in\Xi$ tels que
-    \begin{equation}\label{eq.prop.corr.1}
-      \Val_\rho(Q)\leq\Val_\rho(R)
+  \item Ax~: Supposons que $P\in\Gamma$. L'inégalité à prouver se résume à
+    \begin{align*}
+      \min_{R \in \Gamma}(\Val_\rho(R)) &\leq \Val_\rho(P) \\
+      &= \max_{R \in \{P\}}(\Val_\rho(R))
+    \end{align*}
+  \item Cut~: On suppose que
+    \begin{equation}\label{eq.cor1}
+      \min_{R \in (\Gamma, P)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)
     \end{equation}
-    \begin{equation}\label{eq.prop.corr.2}
-      \Val_\rho(Q')\leq\Val_\rho(R')
+    et
+    \begin{equation}\label{eq.cor2}
+      \min_{R \in \Theta} \Val_\rho(R) \leq \max_{R \in \Xi, P} \Val_\rho(R)
     \end{equation}
-    Fixons ces $Q,R,Q',R'$. Montrons qu'alors il existe $Q''\in(\Gamma,\Theta)$
-    et $R''\in(\Delta,\Xi)$ tels que $\Val_\rho(Q'')\leq\Val_\rho(R'')$. Pour le
-    prouver, traitons les cas possibles pour la valeur de $\Val_\rho(P)$~:
+    Montrons que
+    $\min_{R \in (\Gamma, \Theta)} \Val_\rho(R)
+    \leq \max_{R \in \Delta,\Xi} \Val_\rho(R)$.
+    On raisonne par disjonction de cas sur la valeur de $\Val_\rho(P)$~:
     \begin{itemize}
-    \item si $\Val_\rho(P) = 0$, alors en utilisant l'\cref{eq.prop.corr.2},
-      deux cas sont possibles. Dans le cas où $R' = P$, cela signifie que
-      $\Val_\rho(Q') = 0$ et ainsi, en prenant $Q'' = Q'$ et $R''$ quelconque,
-      l'inégalité est vérifiée. Dans le cas où $R' \neq P$, il suffit de prendre
-      $Q'' = Q'$ et $R'' = R'$.
-    \item si $\Val_\rho(P) = 1$, alors en utilisant l'\cref{eq.prop.corr.1},
-      deux cas sont possibles. Dans le cas où $Q = P$, cela signifie que
-      $\Val_\rho(R) = 1$ et ainsi, en prenant $R'' = R$ et $Q''$ quelconque,
-      l'inégalité est vérifiée. Dans le cas où $R'\neq P$, il suffit de prendre
-      $Q'' = Q$ et $R'' = R$.
+    \item si $\Val_\rho(P) = 0$, alors en injectant cette équation dans
+      \ref{eq.cor2}, on obtient
+      \[\min_{R \in\Theta} \Val_\rho(R) \leq \max_{R\in \Xi}\Val_\rho(R)\]
+      d'où l'inégalité souhaitée (puisque rajouter des termes dans un minimum
+      le fera décroître et rajouter des termes dans un maximum le fera croître).
+    \item si $\Val_\rho(P) = 1$, alors on injectant cette équation dans
+      \ref{eq.cor1}, on obtient
+      \[\min_{R\in \Gamma} \Val_\rho(R) \leq \max_{R\in \Delta} \Val_\rho(R)\]
+      d'où l'inégalité souhaitée.
     \end{itemize}
-  \item le~: Supposons que
+  \item lw~: Supposons que
     $\Val_\rho(\bigwedge \Gamma) \leq \Val_\rho(\bigvee \Delta)$ pour tout
     $\rho$, alors comme
     $\Val_\rho(\bigwedge (\Gamma, P)) \leq \Val_\rho(\bigwedge \Gamma)$ on voit
@@ -647,26 +656,49 @@ sur le résultat à prouver.
   \item $\top$~: Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
     $\Val_\rho(\bigwedge(\Gamma,\top)) = \Val_\rho(\bigwedge \Gamma)$ d'où le
     résultat.
-  \item $\mathrm l\lnot$~: Supposons qu'il existe $Q\in\Gamma$ et
-    $R\in(\Delta,P)$ tels que $\Val_\rho(Q)\leq\Val_\rho(R)$. Si $R \neq P$, il
-    suffit de reprendre $Q$ et $Q$ déjà définis. Suppsons maintenant que
-    $R = P$. Distinguons les cas des valeurs possibles de $\Val_\rho(P)$~:
+  \item $\mathrm l\lnot$~: Supposons que
+    \begin{equation}\label{eq.cor3}
+      \min_{R \in \Gamma} \Val_\rho(R) \leq \max_{R \in (\Delta, P)} \Val_\rho(R)
+    \end{equation}
+    et montrons que
+    $\min_{R \in (\Gamma, \lnot P)} \Val_\rho(R) \leq
+    \max_{R \in \Delta} \Val_\rho(R)$. On raisonne par disjonction de cas sur
+    $\Val_\rho(P)$~:
     \begin{itemize}
-    \item si $\Val_\rho(P) = 0$, alors $\Val_\rho(Q) = 0$, donc on peut prendre
-      n'importe quel autre formule dans $\Delta$ pour vérifier l'inégalité.
-    \item si $\Val_\rho(P) = 1$, alors on trouve
-      $Q' = \lnot P \in \Gamma,\lnot P$ et $R\in \Delta$ quelconque, on a alors
-      $\Val_\rho(\lnot P) = 0 \leq \Val_\rho(R)$.
+    \item si $\Val_\rho(P) = 0$, alors en injectant cette équation dans
+      \ref{eq.cor3}, on obtient
+      \[\min_{R \in \Gamma} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)\]
+      d'où l'inégalité souhaité en rajoutant un élément dans le minimum.
+    \item si $\Val_\rho(P) = 1$, alors
+      $\min_{R \in (\Gamma, \lnot P)} \Val_\rho(R) = 0$ donc l'inégalité est
+      vérifiée.
     \end{itemize}
-  \item $\mathrm l\lor$~: Supposons qu'il existe $R\in(\Gamma,P)$, $S\in\Delta$,
-    $R'\in(\Theta,P)$ et $S'\in\Xi$ tels que $\Val_\rho(R)\leq\Val_\rho(S)$ et
-    $\Val_\rho(R')\leq\Val_\rho(S')$. Si $R$ (respectivement $R'$) est choisie
-    comme étant différente de $P$ (respectivement $Q$), le résultat est direct
-    en reprenant $(R,S)$ (respectivement $R',S'$). Supposons donc maintenant que
-    $R = P$ et $R' = Q$. Dans ce cas,
-    $\Val_\rho(P\lor Q) = \max(\Val_\rho(P),\Val_\rho(Q)) \leq \max(\Val_\rho(S),
-    \Val_\rho(S'))$ d'où l'inégalité en choisissant $S$ ou $S'$ suivant lequel
-    a la plus grande valuation.
+  \item $\mathrm l\lor$~: Supposons que
+    \begin{equation}\label{eq.cor4}
+      \min_{R \in (\Gamma, P)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)
+    \end{equation}
+    et
+    \begin{equation}\label{eq.cor5}
+      \min_{R \in (\Gamma, Q)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)
+    \end{equation}
+    et montrons que
+    $\min_{R \in (\Gamma, P \lor Q)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)$.
+    On raisonne par disjonction de cas sur la valeur de $\Val_\rho(P)$~:
+    \begin{itemize}
+    \item si $\Val_\rho(P) = 1$, alors en injectant cette égalité dans
+      \ref{eq.cor4}, on obtient
+      \[\min_{R \in \Gamma} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)\]
+      d'où l'inégalité souhaitée en ajoutant un terme dans le minimum.
+    \item si $\Val_\rho(P) = 0$, alors on procède par disjonction de cas sur
+      la valeur de $\Val_\rho(Q)$~:
+      \begin{itemize}
+      \item si $\Val_\rho(Q) = 1$, l'argument précédent fonctionne aussi en
+        remplaçant \ref{eq.cor4} par \ref{eq.cor5}.
+      \item si $\Val_\rho(Q) = 0$, alors on sait que $\Val_\rho(P\lor Q) = 0$
+        avec nos deux équations, donc
+        $\min_{R \in (\Gamma, P \lor Q)} \Val_\rho(R) = 0$, d'où l'inégalité.
+      \end{itemize}
+    \end{itemize}
   \item $\mathrm l\land$~: On voit que
     $\Val_\rho(\bigwedge(\Gamma,P,Q)) = \Val_\rho(\bigwedge(\Gamma, P \land Q))$
     par associativité de $\bigwedge$, donc si l'on suppose que
@@ -686,9 +718,9 @@ On en déduit donc, comme $\bigwedge P = P$ et $\bigvee Q = Q$, que
 $P\vdash Q \implies P \vDash Q$.
 
 \begin{remark}
-  En utilisant à la fois le théorème de compacité et le théorème de correction,
-  on en déduit que pour $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si l'on
-  trouve $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$, alors
+  En utilisant le théorème de correction, on en déduit que pour
+  $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si l'on trouve
+  $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$, alors
   $\mathcal P \vDash P$.
 
   On peut donc définir la relation
@@ -715,10 +747,12 @@ $P\vdash Q \implies P \vDash Q$.
   \begin{prooftree}
     \AxiomC{}
     \RightLabel{ax$^\dagger$}
-    \UnaryInfC{$x_1,\ldots,x_n\vdash^* y_1,\ldots,y_p$}
+    \UnaryInfC{$x_1,\ldots,x_n,\top,\ldots,\top\vdash^*
+      y_1,\ldots,y_p,\bot,\ldots,\bot$}
   \end{prooftree}
   où $x_1,\ldots,x_n,y_1,\ldots,y_n$ sont des variables propositionnelles
-  toutes deux à deux distinctes, et en remplaçant la règle axiome, les règles
+  toutes deux à deux distinctes, on ajoute un nombre arbitraire de $\top$ à
+  gauche et de $\bot$ à droite, et en remplaçant la règle axiome, les règles
   d'affaiblissement et la règle cut par la règle axiomes renforcée~:
   \begin{prooftree}
     \AxiomC{}
@@ -734,9 +768,6 @@ $P\vdash Q \implies P \vDash Q$.
   \item s'il n'y a aucun constructeur dans $\Gamma,\Delta$, alors plusieurs
     séquents sont possibles~:
     \begin{itemize}
-    \item si le séquent contient des $\top$ à gauche ou des $\bot$ à droite,
-      alors on peut les éliminer par des contractions (règles lc et rc
-      respectivement).
     \item si le séquent contient un $\top$ à droite ou un $\bot$ à gauche,
       alors on peut prouver $\Gamma\vdash^* \Delta,\top$
       (respectivement $\Gamma,\bot\vdash^*\Delta$)~:
@@ -754,7 +785,8 @@ $P\vdash Q \implies P \vDash Q$.
         \RightLabel{$\bot$}
         \UnaryInfC{$\Gamma,\bot\vdash^*\Delta$}
       \end{center}
-    \item si le séquent est de la forme $x_1,\ldots,x_n\vdash y_1,\ldots,y_p$
+    \item si le séquent est de la forme
+      $x_1,\ldots,x_n,\top,\ldots,\top\vdash y_1,\ldots,y_p,\bot,\ldots,\bot$
       où toutes les variables sont deux à deux distinctes, alors la règle
       $\mathrm{Ax}^\dagger$ donne le résultat.
     \item si le séquent est de la forme $\Gamma,x\vdash^* \Delta,x$, alors la
@@ -770,7 +802,7 @@ $P\vdash Q \implies P \vDash Q$.
     constructeurs que notre séquent original~: on peut donc appliquer notre
     hypothèse d'induction.
   \item si $\Gamma = \Gamma', P\lor Q$, alors il nous suffit de montrer
-    à la fois $\Gamma', P\vdash^* \Delta$ et $\Gamma,Q\vdash^*\Delta$ qui
+    à la fois $\Gamma', P\vdash^* \Delta$ et $\Gamma',Q\vdash^*\Delta$ qui
     contiennent strictement moins de constructeurs que le séquent original.
   \item si $\Gamma = \Gamma', P\land Q$, alors il nous suffit de
     montrer $\Gamma', P,Q \vdash^* \Delta$ qui est vérifié par hypothèse
@@ -783,12 +815,12 @@ $P\vdash Q \implies P \vDash Q$.
   Maintenant, prouvons que si $\Gamma\vdash^*\Delta$ et $\Gamma\nvdash\Delta$,
   alors $\Gamma\nvDash\Delta$ (où $\Gamma\vDash \Delta$ signifie que pour toute
   valuation
-  $\rho$, $\Val_\rho(\bigcap \Gamma) \leq \Val_\rho(\bigcup \Delta)$).
+  $\rho$, $\Val_\rho(\bigwedge \Gamma) \leq \Val_\rho(\bigvee \Delta)$).
   On procède par induction sur $\vdash^*$~:
   \begin{itemize}
-  \item si la dernière règle utilisée est ax', alors cela est absurde avec le
-    fait que $\Gamma\nvdash \Delta$ puisque le séquent se démontre avec la règle
-    axiome et des règles d'affaiblissement.
+  \item si la dernière règle utilisée est ax', alors, puisque le séquent se
+    démontre avec la règle axiome et les règles d'affaiblissement, le fait que
+    $\Gamma\nvdash \Delta$ est absurde.
   \item si la dernière règle utilisée est $\mathrm{ax}^\dagger$, alors on
     construit la valuation invalidant le séquent en mettant tous les $x_i$ à
     $1$ et tous les $y_i$ à $0$.
@@ -798,12 +830,23 @@ $P\vdash Q \implies P \vDash Q$.
     $\mathrm{l}\land$ et $\mathrm{r}\to$.
   \item si la dernière règle utilisée est $\mathrm{l}\lor$ (un raisonnement
     analogue fonctionne pour $\mathrm{r}\land$ et $\mathrm{l}\to$), alors
-    on suppose qu'on a $\rho$ telle que
-    $\min_{R\in (\Gamma,P\lor Q)}\Val_\rho(R)>\max_{S\in \Delta}\Val_\rho(S)$. On sait
-    donc que $\Val_\rho(P\lor Q) = 1$, donc soit $P$ soit $Q$ a une valuation
-    de $1$. Dans le premier cas, cela signifie que $\rho$ invalide le
-    séquent $\Gamma,P\vdash^* \Delta$ et dans le deuxième cas que $\rho$
-    invalide le séquent $\Gamma,Q\vdash^* \Delta$.
+    en considérant que la conclusion de la règle est
+    $\Gamma, P \lor Q \vdash^* \Delta$, on suppose que
+    $\Gamma, P \vdash^* \Delta$ et $\Gamma, Q \vdash^* \Delta$.
+    Or, comme $\Gamma, P\lor Q\nvdash \Delta$, on ne peut avoir à la fois
+    $\Gamma, P \vdash \Delta$ et $\Gamma, Q \vdash \Delta$. Sans perte de
+    généralité puisque $P$ et $Q$ jouent des rôles symétriques, on suppose que
+    $\Gamma, P \nvdash \Delta$. Alors, par hypothèse d'induction, on sait que
+    $\Gamma, P \nvDash \Delta$, donc on trouve $\rho$ telle que
+    \[\max_{R \in (\Gamma, P)} \Val_\rho(R) > \min_{S \in \Delta} \Val_\rho(S)\]
+    On en déduit qu'il existe une proposition $R \in (\Gamma, P)$ telle que
+    $\Val_\rho(R) = 1$ et que pour tout $S\in \Delta, \Val_\rho(S) = 0$.
+    Si $R \in \Gamma$, alors on en déduit directement que
+    \[\max_{R\in (\Gamma, P \lor Q)} \Val_\rho(R) > \min_{S\in\Delta} \Val_\rho(S)\]
+    et donc que $\Gamma, P \lor Q \nvDash \Delta$. Sinon, cela signifie que
+    $R = P$, donc que $\Val_\rho(P) = 1$, d'où $\Val_\rho(P\lor Q) = 1$, donc
+    \[\max_{R\in (\Gamma, P \lor Q)} \Val_\rho(R) > \min_{S\in\Delta} \Val_\rho(S)\]
+    Ainsi, dans tous les cas, $\Gamma, P \lor Q \nvDash \Delta$.
   \end{itemize}
 
   Ainsi, comme $\Gamma\vdash^*\Delta$ est toujours vérifié, on en déduit que
