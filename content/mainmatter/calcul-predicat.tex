@@ -26,12 +26,12 @@ est que nous prouverons le théorème de compacité à partir de la complétude.
 
 Ce chapitre peut être vu comme la base commune de la théorie de la démonstration
 et de la théorie des modèles. A ce titre, nous donnerons avant tout les
-définitions des concepts importants, mais n'allons pas nous attarder sur ceux-ci,
-puisque nous les reverrons dans des chapitres dédiés. En particulier nous allons
-donner un formalisme pour la syntaxe du calcul des prédicats et un seul, alors
-que la partie dédiée à la théorie de la démonstration donnera un résultat plus
-général sur toute une famille de systèmes de preuves, et présentera plusieurs
-formalismes.
+définitions des concepts importants, mais n'allons pas nous attarder sur
+ceux-ci, puisque nous les reverrons dans des chapitres dédiés. En particulier
+nous allons donner un formalisme pour la syntaxe du calcul des prédicats et un
+seul, alors que la partie dédiée à la théorie de la démonstration donnera un
+résultat plus général sur toute une famille de systèmes de preuves, et
+présentera plusieurs formalismes.
 
 On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
 
@@ -89,9 +89,9 @@ ce que signifie chaque symbole.
 \end{example}
 
 L'exemple du langage de l'arithmétique permet de voir ce que nous entendons par
-termes : avec ce langage, nous avons envie de pouvoir écrire $0$ (qui est une
-constante) mais aussi $1$ défini par $S\;0$ ou $S\;S\;0$. De plus, il doit être
-possible d'écrire $(S\;S\;0) + (S\;0)$ par exemple : l'écriture est donc
+termes~: avec ce langage, nous avons envie de pouvoir écrire $0$ (qui est une
+constante) mais aussi $1$, défini par $S\;0$, ou $S\;S\;0$. De plus, il doit
+être possible d'écrire $(S\;S\;0) + (S\;0)$ par exemple : l'écriture est donc
 naturellement donnée comme un ensemble inductif, où les arités des symboles de
 fonction nous donnent les arités des constructeurs de l'ensemble.
 
@@ -143,6 +143,13 @@ l'égalité.
   sera toujours présente.
 \end{remark}
 
+\begin{notation}
+  Pour un symbole de relation $r$ (pouvant être l'égalité), on écrira
+  $r(t_1,\ldots,t_k)$ plutôt que $(r,t_1,\ldots,t_k)$ dans la suite. Cela est
+  motivé par le fait que le sens donné à $r$ est d'être un prédicat atomique
+  prenant en argument des termes.
+\end{notation}
+
 Nous pouvons maintenant définir l'ensemble des formules sur une signature
 donnée.
 
@@ -182,10 +189,11 @@ basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
   \item si $\varphi = \forall x, \psi$ ou $\varphi = \exists x, \psi$, alors
     $\VL(\varphi) = \VL(\psi)\backslash\{x\}$.
   \end{itemize}
-  On dit que $\varphi$ est une formule close si $\VL(\varphi) =\varnothing$.
-  On note par $\Clos(\Sigma)$ l'ensemble des formules closes sur la signature
-  $\Sigma$. De même, un terme $t$ est appelé un terme clos s'il n'a pas de
-  variables libres (c'est-à-dire s'il n'a pas de variable).
+  On dit que $\varphi$ est une formule close (ou une proposition) si
+  $\VL(\varphi) =\varnothing$. On note par $\Clos(\Sigma)$ l'ensemble des
+  formules closes sur la signature $\Sigma$. De même, un terme $t$ est appelé un
+  terme clos s'il n'a pas de variables libres (c'est-à-dire s'il n'a pas de
+  variable).
 \end{definition}
 
 \begin{remark}\label{rmk.alpha}
@@ -373,10 +381,8 @@ dépendant des valeurs de $\rho$.
   $\VL(\varphi)\subseteq\dom(\rho)$), les fonctions suivantes~:
   \[\begin{array}{rcccc}
   -_\rho^\mathcal M & : & \Term(\Sigma) & \longrightarrow & |\mathcal M|\\
-  & & t & \longmapsto & t^{\mathcal M}_\rho\\
   \\
   \Val_\rho & : & \Formula(\Sigma) & \longrightarrow & \{0,1\}\\
-  & & \varphi & \longmapsto & \Val_\rho(\varphi)
   \end{array}\]
 
   \begin{itemize}
@@ -729,7 +735,7 @@ travers un isomorphisme.
 
 \begin{proof}
   On montre par induction sur la structure de $A$ que pour tout environnement
-  $\rho : \Var\partialto |\mathcal M|$ tel que $\VL(A) \subseteq\dom(\varphi)$,
+  $\rho : \Var\partialto |\mathcal M|$ tel que $\VL(A) \subseteq\dom(\rho)$,
   on a l'équivalence
   \[\mathcal M,\rho\models A \iff \mathcal N,\varphi\circ \rho\models A\]
   \begin{itemize}
@@ -846,6 +852,7 @@ définir la notion d'enrichissement.
   structure $\mathcal M'$ sur $\Sigma'$, alors on dit que $\mathcal M'$ est un
   enrichissement d'une structure $\mathcal M$ sur $\Sigma$ si :
   \begin{itemize}
+  \item $|\mathcal M| = |\mathcal M'|$
   \item pour tout symbole de fonction $f\in \Sigma$,
     $f^{\mathcal M} = f^{\mathcal M'}$
   \item pour tout symbole de fonction $r\in \Sigma$,
@@ -879,7 +886,7 @@ enrichissement.
   $t_\rho^\mathcal M = t_\rho^{\mathcal M'}$. Cela se fait par induction~: pour une
   variable $x$, on a $\rho(x) = \rho(x)$ et si l'on suppose que pour tout
   $i\in\{1,\ldots,n\}$ on a $(t_i)_\rho^\mathcal M = (t_i)_\rho^{\mathcal M'}$ alors
-  \[(f(t_1,\ldots,t_n))_\rho^\mathcal M = (f(t_1,\ldots,t_n))_\rho^\mathcal M\]
+  \[(f(t_1,\ldots,t_n))_\rho^\mathcal M = (f(t_1,\ldots,t_n))_\rho^{\mathcal M'}\]
   d'où le résultat pour tout terme $t$.
   
   On procède maintenant par induction sur la structure de $A$~:
@@ -1088,7 +1095,8 @@ les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
   \end{center}
   Où $x,v\in \Var$ et où $t,u\in \Term(\Sigma)$.
   
-  Les règles avec $^\dagger$ signifient que $v\notin\VL(\Gamma)\cup\VL(B)$.
+  Les règles avec $^\dagger$ signifient que
+  $v\notin\VL(\Gamma)\cup\VL(A)\cup\VL(B)$.
 
   De plus, on définit la relation
   $\vdash\subseteq\powerset(\Formula(\Sigma))\times\Formula(\Sigma)$ par
@@ -1143,11 +1151,11 @@ dans notre système.
   uniquement du fragment restreint.
 
   Nous n'emploierons pas cette méthode de restriction car, structurellement,
-  il n'est pas évident par exemple que $\lnot (\lnot A \lor \lnot B)$, qui
-  est code $A \land B$, s'utilise de la même façon au niveau des règles. Si l'on
-  sait que l'on peut se ramener en utilisant certaines règles de l'un à l'autre,
-  il faudrait travailler à montrer en plus que les règles à propos de $A\land B$
-  peut se dériver des règles de $\lnot$ et $\lor$ sur
+  il n'est pas évident par exemple que $\lnot (\lnot A \lor \lnot B)$, qui code
+  $A \land B$, s'utilise de la même façon au niveau des règles. Si l'on sait que
+  l'on peut se ramener en utilisant certaines règles de l'un à l'autre, il
+  faudrait travailler à montrer en plus que les règles à propos de $A\land B$
+  peuvent se dériver des règles de $\lnot$ et $\lor$ sur
   $\lnot (\lnot A \lor \lnot B)$. Mais cela motive aussi un déroulement plus
   lent des preuves par induction et des différents cas, qui s'ils sont
   laborieux peuvent pour autant être instructifs pour une première lecture.
@@ -1175,7 +1183,7 @@ une action sur le contexte des variables, avec par exemple
   \UnaryInfC{$\Gamma\mid \Theta\vdash \forall x, \varphi$}
 \end{prooftree}
 où $\Gamma\mid\Theta\vdash \forall x, \varphi$ doit être une proposition bien
-typée, imposant ansi que $v\notin\VL(\Theta)$.
+typée, imposant ansi que $v\notin\VL(\Theta)\cup\VL(\varphi)$.
 
 Le fait de gérer les variables est bien plus naturel, étant donné qu'une preuve
 en langage naturel va toujours tenir compte des variables (en particulier, il
@@ -1221,8 +1229,8 @@ naturelle).
   peut en déduire $B$. C'est la règle du \textit{modus ponens}.
 \item La règle $\forall_\mathrm i$ signifie que pour prouver $\forall x, A$, il
   suffit de prouver $A$ pour une variable $v$ quelconque à la place de $x$. La
-  nécessité que $v\notin\VL(\Gamma)$ exprime que ce $v$ est quelconque : aucune
-  hypothèse n'est faite sur celui-ci.
+  nécessité que $v\notin\VL(\Gamma)\cup\VL(A)$ exprime que ce $v$ est
+  quelconque~: aucune hypothèse n'est faite sur celui-ci.
 \item La règle $\forall_\mathrm e$ signifie qu'à partir d'une preuve de
   $\forall x, A$ on peut instancier $x$ à un terme $t$ quelconque pour obtenir
   une preuve de $A[t/x]$.
@@ -1256,10 +1264,10 @@ c'est pourquoi on préfère englober les deux en un résultat, et comme le sens 
 plus technique est celui de complétude, c'est celui qu'on utilise pour nommer le
 théorème.
 
-Comme $\vdash$ est définie par induction, la preuve de correction est directement
-une induction sur sa structure. Remarquons cependant qu'il est nécessaire de
-pouvoir prendre en compte les variables, et donc d'introduire des environnements
-en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
+Comme $\vdash$ est définie par induction, la preuve de correction est
+directement une induction sur sa structure. Remarquons cependant qu'il est
+nécessaire de pouvoir prendre en compte les variables, et donc d'introduire des
+environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
 
 \begin{theorem}[Correction]
   Soit une signature $\Sigma$, une liste $\Gamma\in\List(\Formula(\Sigma))$ et
@@ -1273,46 +1281,52 @@ en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
   Nous allons prouver ce résultat par induction sur $\Gamma\vdash A$, en
   supposant introduits $\mathcal M$ et $\rho$ :
   \begin{itemize}
-  \item Si $A\in \Gamma$, alors il est évident que $\mathcal M,\rho\models A$.
-  \item Peu importe les prémisses, $\mathcal M,\rho\models \top$.
-  \item Supposons qu'aucun modèle $\mathcal M$ et aucun environnement $\rho$ ne
-    sont tels que $\mathcal M,\rho\models X_\Gamma\cup\{\lnot A\}$. Alors si
-    $\mathcal M,\rho\models X_\gamma$, on ne peut pas avoir
+  \item Ax~: Si $A\in \Gamma$, alors il est évident que
+    $\mathcal M,\rho\models A$.
+  \item $\top$~: Peu importe les prémisses, $\mathcal M,\rho\models \top$.
+  \item $\bot_\mathrm c$~: Supposons qu'aucun modèle $\mathcal M$ et aucun
+    environnement $\rho$ ne sont tels que
+    $\mathcal M,\rho\models X_\Gamma\cup\{\lnot A\}$. Alors si
+    $\mathcal M,\rho\models X_\Gamma$, on ne peut pas avoir
     $\mathcal M,\rho\models \lnot A$, donc $\Val_\rho(\lnot A) = 0$, donc
     $\Val_\rho(A) = 1$, d'où $\mathcal M,\rho\models A$.
-  \item Supposons qu'aucun $(\mathcal M,\rho)$ ne vérifie que
+  \item $\lnot_\mathrm i$~: Supposons qu'aucun $(\mathcal M,\rho)$ ne vérifie que
     $\mathcal M,\rho\models X_\Gamma\cup\{A\}$, alors si
     $\mathcal M,\rho\models X_\Gamma$, $\Val_\rho(A) = 0$ donc
     $\Val_\rho(\lnot A) = 1$, d'où $\mathcal M,\rho\models \lnot A$.
-  \item Supposons qu'un modèle de $\Gamma$ est un modèle à la fois de $A$ et de
-    $\lnot A$. Alors $\Val_\rho(A) = 1$ et $\Val_\rho(\lnot A) = 1$, mais
-    $\Val_\rho(\lnot A) = 1 - \Val_\rho(A)$, donc $0 = 1$ : c'est absurde, donc
-    il n'y a pas de modèle de $\Gamma$.
-  \item Supposons que si $\mathcal M,\rho\models X_\Gamma$ alors
-    $\mathcal M,\rho\models A$. Soit $\mathcal M,\rho\models X_\Gamma$, par
-    hypothèse $\Val_\rho(A) = 1$, donc $\Val_\rho(A\lor B) = \max(1,\Val_\rho(B))$,
-    donc $\mathcal M,\gamma\models A\lor B$.
-  \item L'argument précédent fonctionne exactement de la même manière.
-  \item A partir de maintenant, nous n'expliciterons plus les hypothèses
-    d'induction, ni ce que l'on cherche à prouver, pour gagner de la place.
-    Supposons que $\mathcal M,\rho\models X_\Gamma$. Alors par hypothèse
+  \item $\lnot_\mathrm e$~: Supposons qu'un modèle de $\Gamma$ est un modèle à la
+    fois de $A$ et de $\lnot A$. Alors $\Val_\rho(A) = 1$ et
+    $\Val_\rho(\lnot A) = 1$, mais $\Val_\rho(\lnot A) = 1 - \Val_\rho(A)$, donc
+    $0 = 1$~: c'est absurde, donc il n'y a pas de modèle de $\Gamma$.
+  \item $\lor_\mathrm i^\mathrm g$~: Supposons que si
+    $\mathcal M,\rho\models X_\Gamma$ alors $\mathcal M,\rho\models A$. Soit
+    $\mathcal M,\rho\models X_\Gamma$, par
+    hypothèse $\Val_\rho(A) = 1$, donc
+    $\Val_\rho(A\lor B) = \max(1,\Val_\rho(B))$, donc
+    $\mathcal M,\rho\models A\lor B$.
+  \item $\lor_\mathrm i^\mathrm d$~: L'argument précédent fonctionne exactement de
+    la même manière.
+  \item $\lor_\mathrm e$~: A partir de maintenant, nous n'expliciterons plus les
+    hypothèses d'induction, ni ce que l'on cherche à prouver, pour gagner de la
+    place. Supposons que $\mathcal M,\rho\models X_\Gamma$. Alors par hypothèse
     d'induction, $\mathcal M,\rho\models A\lor B$, donc
-    $\max(\Val_\rho(A),\Val_\rho(B)) = 1$ : on en déduit qu'au moins l'un des deux
-    entre $A$ et $B$ est tel que $\Val_\rho = 1$. Sans perte de généralité,
+    $\max(\Val_\rho(A),\Val_\rho(B)) = 1$~: on en déduit qu'au moins l'un des
+    deux entre $A$ et $B$ est tel que $\Val_\rho = 1$. Sans perte de généralité,
     supposons que $\Val_\rho(A) = 1$. On sait donc que
     $\mathcal M,\rho\models X_\Gamma\cup\{A\}$, donc par hypothèse d'induction
     $\mathcal M,\rho\models C$.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors par hypothèse
-    d'induction $\Val_\rho(A) = 1$ et $\Val_\rho(B) = 1$, donc
-    $\Val_\rho(A\land B) = \min(1,1) = 1$, donc
+  \item $\land_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
+    alors par hypothèse d'induction $\Val_\rho(A) = 1$ et $\Val_\rho(B) = 1$,
+    donc $\Val_\rho(A\land B) = \min(1,1) = 1$, donc
     $\mathcal M,\rho\models A\land B$.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors par hypothèse
-    d'induction $\Val_\rho(A\land B) = 1$, donc $\Val_\rho(A) = 1$ car cette
-    valeur est supérieure à $\Val_\rho(A\land B)$ : donc
-    $\mathcal M,\rho\models A$.
-  \item L'argument précédent fonctionne de la même manière.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$. On travaille par
-    disjonction de cas sur la valeur de $\Val_\rho(A)$ :
+  \item $\land_\mathrm e^\mathrm g$~: Supposons que
+    $\mathcal M,\rho\models X_\Gamma$, alors par hypothèse d'induction
+    $\Val_\rho(A\land B) = 1$, donc $\Val_\rho(A) = 1$ car cette valeur est
+    supérieure à $\Val_\rho(A\land B)$~: donc $\mathcal M,\rho\models A$.
+  \item $\land_\mathrm e^\mathrm d$~: L'argument précédent fonctionne de la même
+    manière.
+  \item $\to_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$. On
+    travaille par disjonction de cas sur la valeur de $\Val_\rho(A)$~:
     \begin{itemize}
     \item si $\Val_\rho(A) = 0$ alors $\Val_\rho(A\to B) = 1$ donc
       $\mathcal M,\rho\models A \to B$.
@@ -1320,45 +1334,49 @@ en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
       donc par hypothèse d'induction $\mathcal M,\rho\models B$, donc
       $\Val_\rho(A\to B) = 1$, donc $\mathcal M,\rho\models A \to B$.
     \end{itemize}
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$. On sait donc que
-    $\Val_\rho(A\to B) = 1$ et $\Val_\rho(A) = 1$. Ainsi,
-    $\min(0,\Val_\rho(B)) = 1$ : on en déduit que $\Val_\rho(B) = 1$, c'est-à-dire
-    que $\mathcal M,\rho\models B$.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$. On veut montrer que
-    $\Val_\rho(\forall x, A) = 1$. Pour cela, soit $m \in |\mathcal M|$ : on
-    remarque que, par hypothèse d'induction, $\mathcal M,\rho\models A[v/x]$
-    (ici on remarque un point important pour la question de la vacuité : on
-    suppose que $\rho$ est bien définie en $v$, ce qui peut se faire sans
-    perte de généralité si on a bien un élément dans le modèle), mais à ce
-    moment-là comme $v$ est libre dans $\Gamma$, on remarque que
-    $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$, soit
+  \item $\to_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$. On sait
+    donc que $\Val_\rho(A\to B) = 1$ et $\Val_\rho(A) = 1$. Ainsi,
+    $\max(0,\Val_\rho(B)) = 1$~: on en déduit que $\Val_\rho(B) = 1$,
+    c'est-à-dire que $\mathcal M,\rho\models B$.
+  \item $\forall_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$.
+    On veut montrer que $\Val_\rho(\forall x, A) = 1$. Pour cela, soit
+    $m \in |\mathcal M|$~: on remarque que, par hypothèse d'induction,
+    $\mathcal M,\rho\models A[v/x]$ (ici on remarque un point important pour la
+    question de la vacuité~: on suppose que $\rho$ est bien définie en $v$, ce
+    qui peut se faire sans perte de généralité si on a bien un élément dans le
+    modèle), mais à ce moment-là comme $v$ est libre dans $\Gamma$
+    (c'est-à-dire que $v\notin\VL(\Gamma)$), on remarque
+    que $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$, soit
     $\mathcal M,\rho[v\mapsto m]\models A[v/x]$, d'où
     $\Val_{\rho[v\mapsto m]}(A[v/x]) = 1$, mais l'expression de gauche vaut
     $\Val_{\rho[x\mapsto m]}(A)$. Comme cela fonctionne pour tout $m$, on en
     déduit que $\Val_\rho(\forall x, A) = 1$.
-  \item Supposons que $\mathcal M, \rho\models X_\Gamma$, on sait donc que
-    $\mathcal M,\rho\models \forall x, A$, ce qui signifie en particulier que
-    pour tous, $m\in\mathcal M$, $\mathcal M,\rho[x\mapsto m]\models A$.
+  \item $\forall_\mathrm e$~: Supposons que $\mathcal M, \rho\models X_\Gamma$, on
+    sait donc que $\mathcal M,\rho\models \forall x, A$, ce qui signifie en
+    particulier que pour tout $m\in\mathcal M$,
+    $\mathcal M,\rho[x\mapsto m]\models A$.
     Mais alors, en considérant $m = t^\mathcal M_\rho$, on trouve que
     $\Val_{\rho[x\mapsto t^\mathcal M_\rho]}(A) = 1$, mais l'expression de gauche
     correpsond exactement à $\Val_\rho(A[t/x])$, donc
     $\mathcal M,\rho\models A[t/x]$.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
-    $\mathcal M,\rho\models A[t/x]$, mais comme
+  \item $\exists_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
+    alors $\mathcal M,\rho\models A[t/x]$, mais comme
     $\Val_\rho(A[t/x])\leq\Val_\rho(\exists x,A)$ on en déduit que
     $\Val_\rho(\exists x,A) = 1$, donc $\mathcal M,\rho\models \exists x,A$.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
-    $\mathcal M,\rho\models \exists x,A$, donc on peut trouver un élément
-    $m\in|\mathcal M|$ tel que $\Val_{\rho[x\mapsto m]}(A) = 1$. Alors, en
-    considérant $\rho[v\mapsto m]$, on a $\mathcal M,\rho \models X_\Gamma$, donc
-    $Val_{\rho[x\mapsto m][v\mapsto m]}(A) = 1$, ce qui revient à dire que
-    $\Val_{\rho[x\mapsto m]}(A[v/x]) = 1$, donc $\Val_{\rho[x\mapsto m]}(B) = 1$. Mais
-    on sait que $x\notin\VL(B)$, donc $\Val_\rho(B) = 1$ : ainsi,
-    $\mathcal M,\rho\models B$.
-  \item Pour tout modèle $\mathcal M$ et environnement $\rho$, on a forcément
-    $\Val_\rho(t=t) = 1$ puisque
+  \item $\exists_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
+    alors $\mathcal M,\rho\models \exists x,A$, donc on peut trouver un élément
+    $m\in|\mathcal M|$ tel que $\Val_{\rho[x\mapsto m]}(A) = 1$. On a
+    $\Val_{\rho[v\mapsto m]}(A[v/x]) = \Val_{\rho[v\mapsto m][x\mapsto m]}(A)$, mais
+    aussi $\Val_{\rho[v\mapsto m][x\mapsto m]}(A) = \Val_{\rho[x\mapsto m]}(A)$
+    car $v\notin\VL(A)$, et cette expression vaut $1$. On en déduit que
+    $\mathcal M M,\rho[v\mapsto m]\models A[v/x]$. De plus, comme
+    $v\notin\VL(\Gamma)$, on a $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$,
+    donc par hypothèse d'induction $\mathcal M,\rho[v\mapsto m]\models B$.
+    Mais $v\notin\VL(B)$, donc $\mathcal M,\rho\models B$.
+  \item $=_\mathrm i$~: Pour tout modèle $\mathcal M$ et environnement $\rho$, on
+    a forcément $\Val_\rho(t=t) = 1$ puisque
     $(t^\mathcal M_\rho,t^\mathcal M_\rho)\in\{(m,m)\mid m\in|\mathcal M|\}$.
-  \item Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
+  \item $=_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
     $\mathcal M,\rho\models A[t/x]$ et $\mathcal M,\rho\models t = u$. On en
     déduit que $\Val_\rho(t = u) = 1$, c'est-à-dire que
     $t^\mathcal M_\rho = u^\mathcal M_\rho$, donc
@@ -1379,12 +1397,12 @@ Il nous reste à prouver le sens réciproque. En réalité, le point critique po
 la démonstration est celui de l'existence d'un modèle. Plutôt que de montrer
 réellement que $\vDash\subseteq\vdash$, nous allons montrer qu'une théorie
 consistante, c'est-à-dire une théorie $\mathcal T$ telle que
-$\mathcal T\not\vdash \bot$, possède un modèle. On va donc commencer par montrer
+$\mathcal T\nvdash \bot$, possède un modèle. On va donc commencer par montrer
 que notre résultat suffira à prouver $\vDash\subseteq\vdash$.
 
 \begin{lemma}
   Supposons que pour toute théorie $\mathcal T$ telle que
-  $\mathcal T\not\vdash\bot$, il existe une structure $\mathcal M$ telle que
+  $\mathcal T\nvdash\bot$, il existe une structure $\mathcal M$ telle que
   $\mathcal M\models \mathcal T$. Alors $\vDash\subseteq\vdash$.
 \end{lemma}
 
@@ -1400,7 +1418,7 @@ que notre résultat suffira à prouver $\vDash\subseteq\vdash$.
 \begin{remark}
   Nous avons défini une théorie comme un ensemble de formules closes, donc la
   démonstration précédente n'est pas tout à fait exacte. Une façon de corriger
-  cela est d'enrichir le langage : pour chaque variable $x$ libre dans
+  cela est d'enrichir le langage~: pour chaque variable $x$ libre dans
   $\mathcal F$ ou $A$, on ajoute un symbole de constante $c_x$, et on considère
   ensuite la théorie où $x$ est remplacé par $c_x$. On a une correspondance
   entre l'existence d'un modèle avec $x$ ou avec $c_x$, puisque notre théorie
@@ -1479,11 +1497,11 @@ alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
 \end{property}
 
 \begin{proof}
-  Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où $F\in\hclose{\Sigma}$.
-  Remarquons que $F$ ne peut contenir qu'un nombre fini de symboles de fonctions
-  et de relations : on en déduit qu'il existe $n\in \mathbb N$ tel que
-  $F\in\Formula(\Sigma_n)$. Cela signifie donc que
-  $(\exists x,F)\to F[c_F/x] \in \mathcal T_{n+1}$. On en déduit
+  Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où
+  $\exists x, F\in\Clos(\hclose{\Sigma})$. Remarquons que $F$ ne peut contenir
+  qu'un nombre fini de symboles de fonctions et de relations~: on en déduit
+  qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$. Cela signifie
+  donc que $(\exists x,F)\to F[c_F/x] \in \mathcal T_{n+1}$. On en déduit
   \begin{prooftree}
     \AxiomC{}
     \RightLabel{Ax}
@@ -1493,6 +1511,18 @@ alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
     \BinaryInfC{$\hclose{\mathcal T}\vdash F[c_F/x]$}
   \end{prooftree}
 \end{proof}
+
+\begin{remark}
+  On considère ici que $\exists x, F$ est une formule close. En réalité, on peut
+  tout à
+  fait montrer la propriété pour une formule avec des variables libres~: il
+  suffit simplement d'ajouter, au lieu de $\exists x, F \to F[c_F/x]$, la
+  proposition
+  \[\forall y_1,\ldots,y_n,(\exists x, F[y_i/x_i] \to F[c_F/x][y_i/x_i]\]
+  pour $x_i$ les variables libres dans $F$ autres que $x$. Cela est plus
+  fastidieux et n'apporte rien conceptuellement, d'où la facilité que nous
+  avons prise.
+\end{remark}
 
 De plus, cette construction est stable par extension (ce qui nous servira
 lorsque nous complèterons notre théorie).
@@ -1515,7 +1545,8 @@ libre.
 
 \begin{lemma}[Simulation d'une variable par une constante]\label{lem.var.const}
   Soit $\Sigma$ une signature contenant une constante $c$,
-  $A_1,\ldots,A_n\in\Formula(\Sigma\setminus\{c\})$ et $P\in\Formula(\Sigma)$.
+  $A_1,\ldots,A_n\in\Formula(\Sigma\setminus\{c\})$, $P\in\Formula(\Sigma)$ et
+  $x\notin \VL(A_1,\ldots,A_n)$.
   Les deux propositions sont alors équivalentes~:
   \begin{itemize}
   \item $A_1,\ldots,A_n\vdash P$
@@ -1534,14 +1565,14 @@ libre.
     validité est immédiate puisque l'hypothèse d'induction est stable dans
     toutes les règles (les variables ne changent jamais).
   \item si la dernière règle est $\forall_\mathrm i$, on suppose alors que
-    $P = \forall y, A$ et que $\Gamma\vdash A[c/x]$~: on voit que $y$ est
+    $P = \forall y, A$ et que $\Gamma\vdash A[c/y]$~: on voit que $y$ est
     toujours libre dans $\Gamma$, donc le résultat tient toujours.
   \item si la denière règle est $\forall_\mathrm e$, on suppose alors que
     $P = A[t/y]$ pour un certain terme $t$, donc $P[c/x] = A[t/y][c/x]$ ou
     encore $P[c/x] = A[c/x][t[c/x]/y]$. Par hypothèse d'induction, on sait que
     $\Gamma\vdash \forall y, A[c/x]$, donc $\Gamma\vdash A[c/x][t[c/x]/y]$
     d'où le résultat.
-  \item si la dernière règle est $\forall_\mathrm i$, on suppose alors que
+  \item si la dernière règle est $\exists_\mathrm i$, on suppose alors que
     $P = \exists y, A$ et l'hypothèse d'induction nous donne
     $\Gamma\vdash A[t/y][c/x]$, mais on peut réécrire
     $A[t/y][c/x] = A[c/x][t[y/x]/y]$ et appliquer la règle $\exists_\mathrm i$
@@ -1575,7 +1606,7 @@ cohérence.
 \end{property}
 
 \begin{proof}
-  On suppose que $\mathcal \nvdash\bot$, on montre alors par récurrence que
+  On suppose que $\mathcal T\nvdash\bot$, on montre alors par récurrence que
   $\mathcal T_n\not\vdash\bot$ :
   \begin{itemize}
   \item Comme $\mathcal T_0 =\mathcal T$, le résultat est direct.
@@ -1587,8 +1618,9 @@ cohérence.
     $\mathcal T_n\setminus\mathcal T_{n+1}$. On sait que chaque $B_i$ est de
     la forme $(\exists x,F_i)\to F[c_{F_i}/x]$ où $F_i\in\Formula(\Sigma_n)$.
     En fait, on peut même préciser que
-    $F_i \in\Formula(\Sigma_n)\setminus\Formula(\Sigma_{n-1})$ puisque
-    sinon $B_i$ serait dans $\mathcal T_n$, ce qui signifie que
+    $F_i \in\Clos(\Sigma_n)\setminus\Clos(\Sigma_{n-1})$ (en considérant
+    que $\Clos(\Sigma_{-1}) = \varnothing$ pour uniformiser les notations)
+    puisque sinon $B_i$ serait dans $\mathcal T_n$, ce qui signifie que
     $c_{F_i}\notin\Sigma_n$, nous permettant donc d'utiliser le
     \cref{lem.var.const}. On peut réécrire notre séquent en
     \[A_1,\ldots,A_m\vdash \left(\bigwedge_{i=1}^p B_i\right) \to \bot\]
@@ -1652,8 +1684,9 @@ vérifiant la propriété de Henkin.
 
 \begin{lemma}
   Si $\mathcal T$ est une théorie sur $\Sigma$ telle que
-  $\mathcal T\nvdash\bot$, alors il existe $\Sigma\subseteq\hclose{\Sigma}$
-  et une théorie $\mathcal T\subseteq\mathcal T'$ complète et possédant la
+  $\mathcal T\nvdash\bot$, alors il existe une signature
+  $\Sigma'\supseteq\Sigma$ et une théorie
+  $\mathcal T'\supseteq\mathcal T$ sur $\Sigma'$, complète et possédant la
   propriété de Henkin.
 \end{lemma}
 
@@ -1691,7 +1724,7 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
 \begin{proof}
   Pour que cette définition ait du sens, il convient de montrer que $\equiv$ est
   une relation d'équivalence, et qu'elle est compatible avec les symboles de
-  fonction et d'équivalence (c'est-à-dire que nos définitions de
+  fonction et de relation (c'est-à-dire que nos définitions de
   $f^{\mathcal T'}$ et $r^{\mathcal T'}$ ne dépendent pas du représentant choisi).
 
   Montrons d'abord que $\equiv$ est une relation d'équivalence :
@@ -1733,10 +1766,10 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
   $f^{\mathcal T'}(\overline t) = f^{\mathcal T'}(\overline u)$, c'est-à-dire que
   $\mathcal T'\vdash f(t) = f(u)$, ce que l'on peut prouver par
   \begin{prooftree}
-    \AxiomC{$\mathcal T'\vdash t = u$}
     \AxiomC{}
     \RightLabel{$=_\mathrm i$}
     \UnaryInfC{$\mathcal T' \vdash f(t) = f(t)$}
+    \AxiomC{$\mathcal T'\vdash t = u$}
     \RightLabel{$=_\mathrm e$}
     \BinaryInfC{$\mathcal T'\vdash f(t) = f(u)$}
   \end{prooftree}
@@ -1748,8 +1781,8 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
   équivalence, mais il suffit en fait de montrer l'implication puisque $\equiv$
   a été montrée symétrique). L'arbre de preuve suivant nous le montre :
   \begin{prooftree}
-    \AxiomC{$\mathcal T'\vdash t = u$}
     \AxiomC{$\mathcal T'\vdash r(t)$}
+    \AxiomC{$\mathcal T'\vdash t = u$}
     \RightLabel{$=_\mathrm e$}
     \BinaryInfC{$\mathcal T'\vdash r(u)$}
   \end{prooftree}
@@ -1784,7 +1817,7 @@ complétude.
     suppose que $\mathcal M_{\mathcal T'}\models \varphi$, c'est-à-dire que
     $\mathcal M_{\mathcal T'}\not\models \psi$. Par hypothèse d'induction, cela
     signifie que $\mathcal T'\nvdash \psi$, mais $\mathcal T'$ est complète
-    donc $\mathcal T'\vdash\psi$. On a donc l'équivalence.
+    donc $\mathcal T'\vdash\lnot\psi$. On a donc l'équivalence.
   \item si $\varphi = \psi \land \chi$, on suppose que
     $\mathcal T'\vdash \psi\land\chi$. Comme $\mathcal T'$ est complète, cela
     est équivalent à dire que $\mathcal T'\vdash \psi$ et
@@ -1802,10 +1835,10 @@ complétude.
     $\mathcal T'\vdash \exists x, \psi$~: la propriété de Henkin sur
     $\mathcal T'$ nous donne un terme $t$ tel que $\mathcal T'\vdash \psi[t/x]$
     et donc un élément $\overline t \in |\mathcal M_{\mathcal T'}|$ tel que
-    $\mathcal M_{\mathcal T'}, [x\leftarrow \overline t] \models \psi$, donc
+    $\mathcal M_{\mathcal T'}, [x\mapsto \overline t] \models \psi$, donc
     $\mathcal M_{\mathcal T'}\models \exists x, \psi$. Réciproquement, s'il
     existe $\overline t$ tel que
-    $\mathcal M_{\mathcal T'}[x\leftarrow \overline t]\models \psi$, alors
+    $\mathcal M_{\mathcal T'}[x\mapsto \overline t]\models \psi$, alors
     par hypothèse d'induction $\mathcal T'\vdash \psi[t/x]$ donc
     $\mathcal T'\vdash \exists x, \psi$.
   \end{itemize}
@@ -1861,16 +1894,26 @@ ensemble. Cela mène au théorème de Löwenheim-Skolem descendant.
 \begin{theorem}[Löwenheim-Skolem descendant]
   Soit $\mathcal T$ une théorie cohérente sur une signature $\Sigma$ qui
   n'admet aucun modèle fini. Alors il existe un modèle de $\mathcal T$ de
-  cardinal inférieur $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
+  cardinal inférieur à $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
 \end{theorem}
 
 \begin{proof}
   En effet, soit le modèle $\mathcal M$ de $\mathcal T$ syntaxique, construit
   précédemment. Comme $\mathcal T$ n'admet aucun modèle fini, le modèle est de
   cardinal au moins $\aleph_0$. De plus, on a une surjection
-  $\Term(\Sigma) \to \mathcal M$ par $t\mapsto \overline t$. L'ensemble
-  $\Term(\Sigma)$ étant de cardinal $\max(|\Sigma_{\mathcal F}|,\aleph_0)$, on
-  en déduit le résultat.
+  $\Term(\hclose\Sigma) \to \mathcal M$ par $t\mapsto \overline t$. L'ensemble
+  $\Term(\hclose\Sigma)$ est de cardinal $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
+  En effet, en notant à nouveau $\Sigma_n$ chaque signature utilisée à chaque
+  étape de la construction de $\hclose\Sigma$, on voit qu'on ajoute seulement
+  un nombre dénombrable de constantes $c_F$. La signature $\hclose\Sigma$
+  est donc dénombrable en tant qu'union dénombrable d'ensembles dénombrables.
+  On voit enfin que l'ensemble des termes sur $\hclose\Sigma$ est dénombrable,
+  puisque c'est là encore une union dénombrable d'ensembles dénombrables en
+  reprenant la construction d'un ensemble inductif.
+
+  En conclusion, on a une surjection d'un ensemble de cardinal
+  $\max(|\Sigma_\mathcal F|,\aleph_0)$ vers le modèle syntaxique, qui est donc
+  un modèle vérifiant l'affirmation voulue.
 \end{proof}
 
 Le théorème de compacité, lui, nous permet de déduire la version ascendante du
@@ -1878,14 +1921,14 @@ théorème.
 
 \begin{theorem}[Löwenheim-Skolem ascendant]
   Soit $\mathcal T$ une théorie admettant un modèle infini, et
-  soit $\lambda$ un cardinal infini. Alors il existe un modèle
-  de $\mathcal T$ de cardinal supérieur à $\lambda$.
+  soit $\kappa$ un cardinal infini. Alors il existe un modèle
+  de $\mathcal T$ de cardinal supérieur à $\kappa$.
 \end{theorem}
 
 \begin{proof}
   On ajoute à $\Sigma$ l'ensemble $\{c_a\mid a \in \kappa\}$ de constantes, et
   on définit la théorie $\mathcal T'$ sur cette signature par
-  \[\mathcal T'\defeq\mathcal T\cup \bigcup_{a,b\in \kappa}(a\neq b)\]
+  \[\mathcal T'\defeq\mathcal T\cup \bigcup_{a,b\in \kappa}(c_a\neq c_b)\]
   ainsi un modèle de $\mathcal T'$ est naturellement un modèle de $\mathcal T$,
   et il a au moins $\kappa$ éléments. Par le théorème de compacité, pour
   que $\mathcal T'$ soit cohérent, il suffit que toute partie finie de
@@ -1896,7 +1939,8 @@ théorème.
   a un modèle de $\mathcal T'$.
 \end{proof}
 
-On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une autre forme.
+On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une forme générale,
+utilisant la version ascendante et descendante.
 
 \begin{theorem}[Löwenheim-Skolem]
   Soit $\mathcal M$ une structure infinie sur une signature $\Sigma$ et
