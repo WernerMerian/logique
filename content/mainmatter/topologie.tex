@@ -151,6 +151,12 @@ voisinages.
   Il en vient que $U$ est un ouvert en tant qu'union d'ouverts.
 \end{proof}
 
+\begin{remark}
+  Dans cette preuve comme dans d'autres qui suivront, nous utilisons l'axiome du
+  choix pour, à partir du fait que pour tout $x$ il existe un ouvert $U_x$
+  ayant une propriété souhaitée, en extraire une fonction $x \mapsto U_x$.
+\end{remark}
+
 Pour définir plus facilement une topologie, il nous faut parler de la notion de
 base d'une topologie. Par défaut, une famille $\mathcal T\subseteq\powerset(X)$
 n'a pas de raison d'être une topologie, puisqu'il faut des propriétés de clôture
@@ -249,7 +255,7 @@ l'adhérence), mais sous une forme plus intuitive.
 \end{exercise}
 
 Enfin, définissons la notion de continuité. On la présente pour l'instant comme
-une simple notion de morphisme associée à notre structure d'espace topologoque.
+une simple notion de morphisme associée à notre structure d'espace topologique.
 Nous en verrons une interprétation grâce aux filtres.
 
 \begin{definition}[Fonction continue]
@@ -306,7 +312,7 @@ on peut dire que $x$ est dans la préimage de l'ouvert par $f$. On trouve donc,
 plutôt qu'une suite de quantificateurs quelconque, une considération de
 finnesse. En fait, on peut reformuler cette formule par la formule équivalente
 suivante~ :
-\[(\vois_a)_f \supseteq \vois_b\]
+\[f_*\vois_a \supseteq \vois_b\]
 c'est-à-dire que le filtre image de $\vois_a$ par $f$ est plus fin que le filtre
 $\vois_b$.
 
@@ -330,14 +336,14 @@ fonction en un point.
 \begin{definition}[Convergence d'une fonction]
   Soient $(X,\Omega_X),(Y,\Omega_Y)$ deux espaces topologiques et $f : X \to Y$.
   On dit que $f$ converge vers $b\in Y$ en $a\in X$ (au sens des filtres) si
-  \[\lim_{\mathcal F \to a}f(\mathcal F) = b\defeq (\vois_a)_f \supseteq\vois_b\]
+  \[\fillim_{x\to a}f(x) = b\defeq f_*\vois_a \supseteq\vois_b\]
 \end{definition}
 
 Remarquons que comme tout voisinage de $a$ contient $a$, il est nécessaire que
-$f(a)\in\cap\vois_b$. On a donc envie de dire que $f(a)=b$, mais on n'a pas de
-raison de dire \textit{a priori} que les filtres d'un voisinage ne contiennent
-qu'un élément dans leur intersection. Prenons par exemple sur $\{a,b,c\}$ la
-topologie \textit{ad hoc} suivante :
+$\displaystyle f(a)\in\bigcap\vois_b$. On a donc envie de dire que $f(a)=b$,
+mais on n'a pas de raison de dire \textit{a priori} que les filtres d'un
+voisinage ne contiennent qu'un élément dans leur intersection. Prenons par
+exemple sur $\{a,b,c\}$ la topologie \textit{ad hoc} suivante :
 \[\{\{a,b\},\{c\},\{a,b,c\},\varnothing\}\]
 Les deux éléments $a$ et $b$ ne peuvent pas être distingués.
 
@@ -384,45 +390,45 @@ Montrons qu'on a alors l'unicité de la limite.
 En particulier, si $f$ converge en un point $a$ et que son espace d'arrivée est
 un espace séparé, alors on a unicité du point vers lequel $f$ converge. Cela
 signifie aussi que si $f$ converge en un point $a$, ce point ne peut être que
-$f(a)$, puisque celui-ci est le seul à appartenir à $\bigcap (\vois_a)_f$.
+$f(a)$, puisque celui-ci est le seul à appartenir à $\bigcap f_*\vois_a$.
 
 La notion de limite permet aussi de caractériser la continuité : une fonction
 est continue quand la limite commute avec l'application par $f$.
 
-\begin{property}
-  Soient deux espaces $(X,\Omega_X)$ et $(Y,\Omega_Y)$ sépérés, et une fonction
+\begin{property}\label{prop.carac.cont.fil}
+  Soient deux espaces $(X,\Omega_X)$ et $(Y,\Omega_Y)$ séparés, et une fonction
   $f : X \to Y$. Alors $f$ est continue si et seulement si
-  \[\forall x \in X, \lim_{\mathcal F \to a} f(\mathcal F) = f(a)\]
+  \[\forall x \in X, \lim_{y \to x}^\mathcal F f(y) = f(x)\]
 \end{property}
 
 \begin{proof}
-  Tout d'abord, supposons que $f$ est continue, montrons alors que
-  $(\vois_a)_f \supseteq \vois_{f(a)}$.
+  Soit $x \in X$. Tout d'abord, supposons que $f$ est continue montrons que
+  $f_*\vois_x \supseteq \vois_{f(x)}$.
 
-  Soit $V\in\vois_{f(a)}$ et $U$ un ouvert contenant $f(a)$ contenu dans $V$
-  (donné par la définition du fait d'être un voisinage de $f(a)$).
+  Soit $V\in\vois_{f(a)}$ et $U$ un ouvert contenant $f(x)$ contenu dans $V$
+  (donné par la définition du fait d'être un voisinage de $f(x)$).
   Comme $f$ est continue, cela signifie que $f^{-1}(U)$ est aussi un ouvert. Or
-  $f^{-1}(U)\subseteq f^{-1}(V)$ et $a\in f^{-1}(U)$ puisque $a\in U$, donc
-  $f^{-1}(V)\in\vois_a$, ce qui signifie exactement que $V\in(\vois_a)_f$, d'où
+  $f^{-1}(U)\subseteq f^{-1}(V)$ et $x\in f^{-1}(U)$ puisque $f(x)\in U$, donc
+  $f^{-1}(V)\in\vois_x$, ce qui signifie exactement que $V\in f_*\vois_x$, d'où
   l'inclusion.
 
-  Supposons maintenant que $(\vois_a)_f\supseteq \vois_{f(a)}$, et montrons que
+  Supposons maintenant que $(\vois_x)_f\supseteq \vois_{f(x)}$, et montrons que
   $f$ est continue.
 
   Soit $U$ un ouvert de $Y$, montrons que $f^{-1}(U)$ est un ouvert de $X$.
   Comme $U$ est un ouvert, pour tout $x\in U$ on a $U\in\vois_x$. On en
-  déduit que pour tout $y\in f^{-1}(x)$, $U\in\vois_{f(y)}$ donc, par inclusion,
-  $U\in(\vois_y)_f$, c'est-à-dire que $f^{-1}(U)\in\vois_y$ pour tout
-  $y\in f^{-1}(U)$ (puisque c'est le cas pour tout $y\in f^{-1}(x)$ pour chaque
-  $x\in U$). On vient donc de montrer que $f^{-1}(U)$ est un voisinage de tous
-  ses éléments, ce qui par une caractérisation précédente signifie qu'il est un
-  ouvert. Donc la préimage d'un ouvert est un ouvert : $f$ est donc continue.
+  déduit que pour tout $y\in f^{-1}(U)$, $U\in\vois_{f(y)}$ donc, par inclusion,
+  $U\in f_*\vois_y$, c'est-à-dire que $f^{-1}(U)\in\vois_y$ pour tout
+  $y\in f^{-1}(U)$. On vient donc de montrer que $f^{-1}(U)$ est un voisinage de
+  tous ses éléments, ce qui par une caractérisation précédente signifie qu'il
+  est un ouvert. Donc la préimage d'un ouvert est un ouvert~: $f$ est donc
+  continue.
 \end{proof}
 
 \begin{exercise}\label{exo.conv.suite}
   On dit qu'une suite $u : \mathbb N \to X$ converge lorsque le filtre image du
-  filtre de Fréchet sur $\mathbb N$ converge vers $X$. Montrer que cela revient
-  à vérifier la formule usuelle :
+  filtre de Fréchet sur $\mathbb N$ converge vers un certain élément $x\in X$.
+  Montrer que cela revient à vérifier la formule usuelle~:
   \[\exists x\in X,\forall V\in\vois_x, \exists n \in \mathbb N,
   \forall m \geq n, u_m \in V\]
 \end{exercise}
@@ -534,9 +540,9 @@ vide est une famille dont l'intersection est non vide.
 \begin{proof}
   A $S$ on associe la famille $R$ par
   \[R \defeq \{X\setminus A\mid A \in S\}\]
-  en écrivant la contraposée de la proposition ci-dessus, on obtient :
+  en écrivant la contraposée de la proposition ci-dessus, on obtient~:
   \[\bigcap S =\varnothing\implies \exists F\subfin S, \bigcap F = \varnothing\]
-  d'où, en appliquant la fonction $A \mapsto X\setminus A$ :
+  En passant au complémentaire~:
   \[\bigcup_{A \in S}(X\setminus A) = X\implies
   \exists F\subfin S, \bigcup_{A\in F}(X\setminus A) = X\]
   ce qui correspond exactement au fait que si $X = \bigcup R$ alors il existe
@@ -655,8 +661,6 @@ quelconque.
   $\bigcup A \supseteq K$.
 \end{remark}
 
-Tout d'abord, un compact est un fermé.
-
 \begin{property}
   Soit $(X,\Omega_X)$ un espace topologique séparé et $K$ une partie compacte de
   $X$. Alors $K$ est fermé.
@@ -674,13 +678,13 @@ Tout d'abord, un compact est un fermé.
   on extrait $F\subfin K$ tel que $\{V_x\mid x \in F\}$ recouvre $K$.
   On en déduit que $\displaystyle\bigcap_{x\in F}U_x$ ne contient aucun des
   $V_x$, et est donc disjoint de $K$. Comme c'est une intersection finie
-  d'ouverts, c'est aussi un ouvert : on a donc un ouvert $U$ contenant
+  d'ouverts, c'est aussi un ouvert~: on a donc un ouvert $U$ contenant
   $y$ et disjoint de $K$, donc $X\setminus U$ est un fermé contenant $K$ et
   ne contenant pas $y$.
 \end{proof}
 
 Dans un espace compact séparé, on a une caractérisation forte des parties
-compactes~ : ce sont les fermés de l'espace.
+compactes~: ce sont les fermés de l'espace.
 
 \begin{proposition}
   Soit $(X,\Omega_X)$ un espace compact séparé, alors une partie $K\subseteq X$
@@ -824,20 +828,22 @@ version) qu'il est équivalent à l'axiome du choix.
   Soit $\mathcal F$ un filtre propre sur $\prod X_i$. Pour tout $i\in I$, on
   écrit
   \[\mathcal F_i \defeq \big(\mathcal F\big)_{\pi_i}\]
-  où $\pi_i$ est la projection (continue) de $\prod X_i$ sur $X_i$. Par
-  continuité et comme $\mathcal F$ est un filtre propre, $\mathcal F_i$ est
-  aussi un filtre propre. Comme
+  où $\pi_i$ est la projection de $\prod X_i$ sur $X_i$. Comme $\mathcal F$ est
+  un filtre propre, $\mathcal F_i$ est aussi un filtre propre. Comme
   chaque $X_i$ est compact, on en déduit que chaque $\mathcal F_i$ admet une
-  valeur d'adhérence : soit $x_i$ une valeur d'adhérence de $\mathcal F_i$
+  valeur d'adhérence~: soit $x_i$ une valeur d'adhérence de $\mathcal F_i$
   (choisir un $x_i$ pour chaque $i\in I$ demande l'axiome du choix), on
   peut donc définir l'élément
   $\displaystyle (x_i)_{i\in I}\in \prod_{i \in I}X_i$
   dont on veut montrer qu'il est une valeur d'adhérence de $\mathcal F$.
 
-  Soit $(F_{i\in I})\in \mathcal F$, on veut montrer que $(x_i)\in \adher F$.
-  Soit donc $U$ un ouvert contenant $(x_i)$, que l'on va noter
-  $\cylin{(U_i)_{i\in F}}$ avec $F\subfin I$. On veut donc montrer que pour
-  tout $i\in F$, $U_i\cap F_i\neq\varnothing$ (pour $j\notin F$, la condition
+  Soit $F\in \mathcal F$ (on notera aussi $(F_{i\in I})$), on veut montrer que
+  $(x_i)\in \adher F$. Soit donc $U$ un ouvert contenant $(x_i)$. Sans perte de
+  généralité, on suppose que $U$ est un cylindre car tout ouvert est un union
+  de cylindre, donc si $(x_i)$ appartient à une union de cylindre, on peut
+  trouver un cylindre en particulier auquel il appartient. On note donc
+  $U = \cylin{(U_i)_{i\in J}}$ avec $J\subfin I$. On veut donc montrer que pour
+  tout $i\in J$, $U_i\cap F_i\neq\varnothing$ (pour $j\notin J$, la condition
   est simplement que $X_i \cap F_i\neq\varnothing$, ce qui signifie que
   $F_i\neq\varnothing$, mais $F_i\in\mathcal F_i$ est non vide par hypothèse).
   On sait que $x_i \in \adher{F_i}$ puisque $\mathcal F_i$ converge vers
@@ -845,9 +851,13 @@ version) qu'il est équivalent à l'axiome du choix.
   donc $U_i\cap F_i \neq\varnothing$. Donc pour tout $i\in I$,
   $x_i\in \adher{F_i}$.
 
-  En remarquant que $\adher{\mathcal F_i} = \big(\adher{\mathcal F}\big)_i$,
-  il vient donc que $(x_i) \in \adher{\mathcal F}$, donc $\mathcal F$
-  converge, donc $\displaystyle\prod_{i\in I} X_i$ est compact.
+  En remarquant que
+  \[\bigcap_{G \in \mathcal F_i}\adher G =
+  \pi_i\left(\bigcap_{G \in \mathcal F} \adher G\right)\]
+  grâce à la continuité de $\pi_i$, il vient donc que
+  $\displaystyle (x_i) \in \bigcap_{G \in\mathcal F}\adher G$, donc $\mathcal F$
+  admet une valeur d'adhérence, donc $\displaystyle\prod_{i\in I} X_i$ est
+  compact.
 \end{proof}
 
 \section{Dualité de Stone}
@@ -867,7 +877,7 @@ et donnerons la construction seulement ensuite.
 
 Notre premier objectif est, étant donné un espace topologique, de trouver une
 algèbre de Boole qui lui est naturellement associée. Les ouverts sont stables
-par union et par intersection, donnant un bon candidats, mais ils ne le sont pas
+par union et par intersection, donnant un bon candidat, mais ils ne le sont pas
 par complémentaire. De même, les fermés ne sont pas stables par complémentaires.
 Cependant, les ensembles qui sont à la fois ouverts et fermés, eux, sont bien
 stables par complémentaires.
@@ -1022,39 +1032,41 @@ spectre est un tel espace.
     $x\in \mathcal U\setminus \mathcal V$, mais alors $\ext(x)$ et
     $\ext(\lnot x)$ forment deux ouverts disjoints tels que
     $\mathcal U \in\ext(x)$ et $\mathcal V \in\ext(\lnot x)$
-    (car $y\notin\mathcal V$ donc $\lnot x \in \mathcal V$).
-  \item L'espace est compact : on veut montrer qu'une famille de fermés
-    $\mathcal F$ vérifiant la propriété d'intersection finie a une
+    (car $x\notin\mathcal V$ donc $\lnot x \in \mathcal V$).
+  \item L'espace est compact~: on veut montrer qu'une famille de fermés
+    $\mathcal C$ vérifiant la propriété d'intersection finie a une
     intersection non vide. Comme la topologie est engendré par les $\ext(x)$,
     on peut dire sans perte de généralité que
-    $\mathcal F = \{\ext(x_i)\mid i\in I\}$ avec $x_i \in B$ (quitte à
-    avoir plus d'éléments et à ce que le $\mathcal F$ original soit une
-    intersection d'éléments du nouveau $\mathcal F$). On définit maintenant le
+    $\mathcal C = \{\ext(x_i)\mid i\in I\}$ avec $x_i \in B$ (quitte à
+    avoir plus d'éléments et à ce que le $\mathcal C$ original soit une
+    intersection d'éléments du nouveau $\mathcal C$). On définit maintenant le
     filtre
-    \[\mathcal A_\mathcal F = \filclose{\{x_i\mid i \in I\}}\]
+    \[\mathcal A_\mathcal C = \filclose{\{x_i\mid i \in I\}}\]
     et on veut montrer que ce filtre est un filtre propre. Il nous suffit de
-    montrer que $\{x_i\mid i \in I\}$ a la propriété de l'intersection finie :
+    montrer que $\{x_i\mid i \in I\}$ a la propriété de l'intersection finie~:
     soit $F\subfin I$, on a alors l'identité
     $\displaystyle\ext(\bigwedge_{i \in F} x_i) = \bigcap_{i \in F}\ext(x_i)$,
     mais l'expression de droite est une intersection finie de fermés dans
-    $\mathcal F$ : c'est donc par hypothèse un ensemble non vide. On trouve
+    $\mathcal C$~: c'est donc par hypothèse un ensemble non vide. On trouve
     donc $\mathcal V \in \displaystyle\ext(\bigwedge_{i\in F} x_i)$, qui est un
     ultrafiltre et ne contient donc pas $\bot$. On en déduit donc que
     $\displaystyle\bigwedge_{i \in F} x_i \neq \bot$. Ainsi
-    $\mathcal A_\mathcal F$ est bien un filtre propre : on peut donc par le
-    lemme de l'ultrafiltre l'étendre en un ultrafiltre $\mathcal U_\mathcal F$
-    qui, comme $\mathcal A_\mathcal F$ contient tous les $x_i$, contient aussi
-    tous les $x_i$, c'est donc un élément de $\bigcap \ext(x_i)$, d'où
-    \[\bigcap \mathcal F \neq \varnothing\]
+    $\mathcal A_\mathcal C$ est bien un filtre propre~: on peut donc par le
+    \cref{thm.ultrafilter.lemma} l'étendre en un ultrafiltre
+    $\mathcal U_\mathcal C$ qui, comme $\mathcal A_\mathcal C$ contient tous les
+    $x_i$, contient aussi tous les $x_i$, c'est donc un élément de
+    $\bigcap \ext(x_i)$, d'où
+    \[\bigcap \mathcal C \neq \varnothing\]
     donc $\Spec(B)$ est compact.
   \end{itemize}
+  On a donc prouvé que le spectre de $B$ est un espace de Stone.
 \end{proof}
 
 On dispose maintenant d'une fonction
 $(B,\leq) \mapsto (\Spec(B),\Omega_{\Spec(B)})$ et d'une fonction
 $(X,\Omega_X)\mapsto (K\Omega_X,\subseteq)$. On peut voir assez directement
 que ces fonctions ne sont pas inverses, puisque le spectre de l'algèbre des
-ouverts-fermés de $X$ est une partie de $\powerset(X)$, on veut donc que ces
+ouverts-fermés de $X$ est une partie de $\powerset(X)$. On veut donc que ces
 fonctions soient des inverses \og faible\fg~: appliquer une fonction puis
 l'autre nous donne deux structures isomorphes, même si potentiellement
 différentes.
@@ -1079,13 +1091,14 @@ Il nous reste à vérifier que ces espaces sont isomorphes.
     qui est donc dans $\ext(y)$ et pas dans $\ext(x)$, donc
     $\ext(x)\neq\ext(y)$.
   \item $\ext$ est surjective~: soit $K$ un ouvert-fermé de $\Spec(B)$. Par
-    définition de $K$, on peut l'écrire l'union~:
+    définition du fait que $K$ est un ouvert, on peut l'écrire comme une union~:
     \[K = \bigcup_{i \in I} \ext(x_i)\]
     où $x_i \in B$ et $I$ est un ensemble quelconque. On sait que $\Spec(B)$
     est compact, donc comme $K$ est fermé, il est aussi compact. On en déduit
     qu'on peut trouver $F\subfin I$ tel que
     \[K = \bigcup_{i \in F} \ext(x_i)\]
-    Mais alors $K = \ext(\bigvee x_i)$, donc $K$ est dans l'image de $\ext$.
+    Mais alors $\displaystyle K = \ext\left(\bigvee_{i \in F} x_i\right)$,
+    donc $K$ est dans l'image de $\ext$.
   \end{itemize}
 
   On a donc un morphisme d'algèbres de Boole bijectif, c'est donc un
@@ -1122,11 +1135,11 @@ Il nous reste à vérifier que ces espaces sont isomorphes.
   \begin{itemize}
   \item si $x\neq y$, on peut trouver un ouvert-fermé contenant $x$ et pas $y$
     (ce qui suffit à prouver que $\varphi(x)\neq\varphi(y)$). En effet, par
-    séparation, on trouver $U_x$ et $U_y$ deux ouverts disjoints, le premier
+    séparation, on trouve $U_x$ et $U_y$ deux ouverts disjoints, le premier
     contenant $x$ et le second $y$. Comme $\Omega_X$ est un espace de Stone on
     peut écrire $U_x$ comme union d'ouverts-fermés~: on trouve donc un
-    ouvert-fermé $K$ tel que $x\in K$ et comme $U_x\cap U_y=\varnothing$, on en
-    déduit que $y\notin K$, d'où le résultat.
+    ouvert-fermé $K$ tel que $x\in K$ et, comme $U_x\cap U_y=\varnothing$, on
+    en déduit que $y\notin K$, d'où le résultat.
   \item $\varphi$ est surjective. Soit $\mathcal F$ un filtre premier sur
     $K\Omega_X$. Comme l'espace est compact et séparé, on trouve un unique
     $x$ dans l'adhérence de $\mathcal F$~: on en déduit que
@@ -1148,22 +1161,21 @@ Il nous reste à vérifier que ces espaces sont isomorphes.
     \[U = \bigcup_{i\in I} \ext(K_i)\]
     où $K_i\in K\Omega_X$ et $I$ est un ensemble quelconque. Il nous suffit
     de montrer que $\varphi^{-1}(\ext(K_i))$ est un ouvert-fermé de $X$,
-    puisqu'on sait ($X$ étant un espace de Stone) qu'une telle union est alors
-    un ouvert.
+    puisqu'on sait qu'une telle union est alors un ouvert.
 
     Soit donc $K\in K\Omega_X$, montrons que $\varphi^{-1}(\ext(K))$ est un
-    ouvert-fermé. Par définition, $\ext(K)$ est
+    ouvert-fermé. Par définition, $\ext(K)$ se réécrit
     \[\ext(K) = \{\mathcal U \in \Spec(K\Omega_X)\mid K \in \mathcal U\}\]
     mais comme $\varphi$ est surjectif, on peut trouver un ensemble
-    $K'\subseteq X$ tel que $\ext(K) = \varphi(K')$, donc tel que
-    $\varphi^{-1}(\ext(K)) = K'$. L'ensemble $K'$ est
+    $K'\subseteq X$ vérifiant l'équation $\ext(K) = \varphi(K')$, c'est-à-dire
+    tel que $\varphi^{-1}(\ext(K)) = K'$. L'ensemble $K'$ est
     \[K' \defeq \{x \mid K \in \varphi(x)\}\]
     c'est-à-dire $\{x\in X\mid x\in K\}$, soit $K$, qui est par hypothèse
     un ouvert-fermé.
   \item Comme précédemment, on peut se ramener à montrer que l'image d'un
     ouvert-fermé est un ouvert-fermé. Soit donc $K\in\Omega_X$, montrons que
     $\varphi(K)$ est un ouvert-fermé de $\Spec(K\Omega_X)$. Par définition~:
-    \[\varphi(K) \defeq \{\{K \in K\Omega_X\mid x \in K\}\mid x \in K\}\]
+    \[\varphi(K) \defeq \{\{K' \in K\Omega_X\mid x \in K'\}\mid x \in K\}\]
     Montrons que $\varphi(K) = \ext(K)$. Soit $\mathcal U \in \varphi(K)$,
     par définition on trouve $x\in K$ tel que $\mathcal U = \varphi(x)$.
     On a alors, comme $x\in K$, que $K\in \varphi(x)$, donc
@@ -1234,7 +1246,7 @@ thème de notre chapitre.
   Soit $(X,d)$ un espace métrique. Pour $x\in X$ et $\varepsilon \geq 0$, on
   définit la boule ouverte centrée en $x$ de rayon $\varepsilon$ par
   \[B_\varepsilon(x) \defeq \{y\in X \mid d(x,y) < \varepsilon\}\]
-  On définit de façon analogue
+  On définit de façon analogue la boule fermée~:
   \[\clB_\varepsilon(x)\defeq\{y\in X \mid d(x,y)\leq\varepsilon\}\]
 
   On appelle topologie métrique de $(X,d)$ la topologie engendrée par la
@@ -1243,7 +1255,7 @@ thème de notre chapitre.
 \end{definition}
 
 \begin{remark}
-  Dans ce cas-là, notre famille n'est pas une base de topologie : on peut ne
+  Dans ce cas-là, notre famille n'est pas une base de topologie~: on peut ne
   peut pas forcément obtenir $X$ comme une boule, et l'intersection de deux
   boules n'est pas toujours une boule. On considère donc l'ensemble des
   intersections finies d'union de boules.
@@ -1266,7 +1278,7 @@ thème de notre chapitre.
 \begin{exercise}[Sur les espaces ultra-métriques]
   Soit un ensemble $X$. On dit qu'une distance $d$ est ultramétrique lorsqu'elle
   vérifie les hypothèses d'une distance à l'exception de la propriété suivante,
-  remplaçant l'inégalité triangulaire :
+  remplaçant l'inégalité triangulaire~:
   \[\forall x,y,z\in X, d(x,z)\leq \max(d(x,y),d(y,z))\]
 
   Montrer qu'une distance ultramétrique est bien une distance. Montrer que pour
@@ -1283,7 +1295,7 @@ thème de notre chapitre.
 
 \begin{remark}
   Avec l'exemple de la distance discrète, on voit que dans le cas général,
-  $\clB_\varepsilon(x)$ n'est pas toujours l'adhérence de $B_\varepsilon(x)$ : en
+  $\clB_\varepsilon(x)$ n'est pas toujours l'adhérence de $B_\varepsilon(x)$~: en
   prenant $\varepsilon = 1$, la boule ouverte est un singleton fermé mais la
   boule fermée est l'espace tout entier.
 \end{remark}
@@ -1390,7 +1402,7 @@ définition que nous prendrons pour la valeur d'adhérence d'une suite.
   note $\Adh(x_n)$ l'ensemble des valeurs d'adhérence de $x_n$.
 \end{definition}
 
-\begin{exercise}
+\begin{exercise}\label{exo.adh.fil.metr}
   Montrer que l'ensemble des valeurs d'adhérence de $(x_n)$ peut s'écrire
   comme~:
   \[\Adh(x_n) = \bigcap_{n \in \mathbb N} \adher{\{u_k \mid k > n\}}\]
@@ -1505,12 +1517,12 @@ précompacité, donc nous donnons la définition.
   trouve
   \begin{align*}
     d(y_p,y_q) &\leq d(y_p,x) + d(x,y_q)\\
-    &\leq \frac\varepsilon 2 + \frac\varepsilon 2\\
-    &\leq \varepsilon
+    &< \frac\varepsilon 2 + \frac\varepsilon 2\\
+    &< \varepsilon
   \end{align*}
   mais on sait que $d(y_p,y_q) \geq \varepsilon$~: c'est absurde.
 
-  Ainsi il doit, pour tout $\varepsilon > 0$, exister un recouvrement de $(X,d)$
+  Ainsi, pour tout $\varepsilon > 0$, il doit exister un recouvrement de $(X,d)$
   par des boules ouvertes de rayon $\varepsilon$.
 \end{proof}
 
@@ -1524,9 +1536,9 @@ compacité générale.
 
 \begin{proof}
   Supposons que $K$ est compacte. Alors toute famille de fermés de $K$ ayant
-  la propriété d'intersection finie a une intersection finie. Soit
+  la propriété d'intersection finie a une intersection non vide. Soit
   $(x_n)\in K^{\mathbb N}$. On peut définir
-  $\Adh(x_n)$ par une intersection de fermés par l'exercice précédent, et
+  $\Adh(x_n)$ par une intersection de fermés par l'\cref{exo.adh.fil.metr}, et
   la famille ainsi définie vérifie la propriété d'intersection finie~: si
   $F\subfin \mathbb N$, alors on peut trouver $p > \max(F)$, et alors
   \[\bigcap_{n \in F}\adher{\{u_k\mid k > n\}} \supseteq
@@ -1568,9 +1580,19 @@ La caractérisation séquentielle est directe, mais on l'écrit tout de même.
   peut montrer qu'elle dérive de la métrique $(x,y)\mapsto |x-y|$).
 \end{example}
 
-On peut donc définir la notion de séparabilité, qui exprime qu'un espace ne
-contient pas de point dont les voisinages sont trop nombreux (en particulier, on
-peut s'approcher de n'importe quel point par une suite).
+Nous donnons en exercice une caractérisation de la continuité, analogue à la
+\cref{prop.carac.cont.fil}, mais utilisant la limite de suites.
+
+\begin{exercise}\label{exo.carac.cont.suit}
+  Soient $(X,d)$ et $(Y,d)$ deux espaces métriques. Montrer que toute fonction
+  $f : X \to Y$ est continue si et seulement si, en notant $\ell(X)$ l'ensemble
+  des suites convergentes à valeurs dans $X$, on a
+  \[\forall (x_n) \in \ell(X),
+  \lim_{n \to \infty} f(x_n) = f(\lim_{n\to\infty} x_n)\]
+\end{exercise}
+
+On peut donc définir la notion de séparabilité, qui exprime qu'un espace est,
+d'une certaine manière, l'adhérence d'un espace dénombrable.
 
 \begin{definition}[Espace séparable]
   Soit $(X,\Omega_X)$ un espace topologique. On dit que cet espace est
@@ -1611,6 +1633,39 @@ valeurs tend vers $0$.
   la première métrique mais pas pour la deuxième.
 \end{remark}
 
+Pour se convaincre qu'une telle suite a l'air de converger, donnons une
+propriété importante des suites de Cauchy~: une valeur d'adhérence est une
+limite pour ces suites.
+
+\begin{property}\label{prop.cauchy.adh}
+  Soit $(X,d)$ un espace métrique et $(x_n)\in X^\mathbb N$ une suite de
+  Cauchy. On a l'équivalence suivante, pour tout $x \in X$~:
+  \[\lim_{n\to\infty} x_n = x \iff x \in \Adh(x_n)\]
+\end{property}
+
+\begin{proof}
+  Si $x$ est la limite de $(x_n)$ il est clair que $x$ en est une valeur
+  d'adhérence~: il suffit de considérer $\id$ comme extractrice.
+
+  Réciproquement, supposons que $x$ est une valeur d'adhérence de $(x_n)$. On
+  trouve donc une fonction $\varphi : \mathbb N \to \mathbb N$ strictement
+  croissante telle que $\lim x_{\varphi(n)} = x$. Montrons que $(x_n)$ converge
+  vers $x$~: soit $\varepsilon > 0$, par définition de la limite, on peut
+  trouver $n_0$ tel que
+  \[\forall n \geq n_0, d(x_{\varphi(n)},x) < \frac{\varepsilon}{2}\]
+  De plus, comme $(x_n)$ est de Cauchy, on trouve $n_1$ tel que
+  \[\forall p,q \geq n_1, d(x_p,x_q) < \frac{\varepsilon}{2}\]
+  On sait donc que pour $m \geq \max(n_0,n_1)$, on a
+  \begin{align*}
+    d(x_m,x) &\leq d(x_m,x_{\varphi(m)}) + d(x_{\varphi(m)},x) \\
+    &< \frac{\varepsilon}{2} + \frac{\varepsilon}{2}\\
+    &< \varepsilon
+  \end{align*}
+  Où l'inégalité $d(x_m,x_{\varphi(m)}) < \dfrac{\varepsilon}{2}$ vient du
+  fait que $\varphi(m) \geq m \geq n_1$. On en déduit que $(x_n)$ converge vers
+  $x$.
+\end{proof}
+
 On peut alors introduire la notion d'espace complet.
 
 \begin{definition}[Espace complet]
@@ -1629,6 +1684,43 @@ métrisable), qui n'impose pas la métrique mais seulement son existence.
 
 Il existe une construction permettant de plonger un espace métrique dans un
 espace métrique complet, on l'appelle la complétion.
+
+L'intérêt de cette construction est de donner un espace semblant le plus proche
+possible de notre espace initial. Pour un espace $X$, son complété $\hat X$ est
+un espace contenant $X$ comme partie dense, donc tous les points ajoutés pour
+construire $\hat X$ ne sont que des limites d'éléments de $X$~: on n'ajoute en
+quelque sorte que les limites manquantes aux suites de Cauchy non convergentes.
+De plus, on peut montrer que la distance sur $\hat X$ est induite par la
+distance sur $X$ de telle sorte que deux éléments de $X$ sont à la même
+distance, qu'ils soient considérés comme des éléments de $X$ ou comme des
+éléments de $\hat X$. Pour formaliser cette idée, nous donnons d'abord la
+définition d'isométrie.
+
+\begin{definition}[Isométrie]
+  Soient $(X,d)$ et $(Y,d')$ deux espaces métriques. On dit qu'une fonction
+  $X \to Y$ est une isométrie si elle vérifie la propriété suivante~:
+  \[\forall x,y \in X, d(x,y) = d'(f(x),f(y))\]
+\end{definition}
+
+\begin{property}
+  Une isométrie entre $(X,d)$ et $(Y,d')$ est une fonction continue.
+\end{property}
+
+\begin{proof}
+  En utilisant l'\cref{exo.carac.cont.suit},
+  il nous suffit de montrer que pour une suite convergente $(x_n)$, dont on
+  notera $x$ sa limite, on a $\displaystyle\lim_{n \to \infty} f(x_n) = f(x)$.
+
+  Soit $\varepsilon > 0$, par définition de $\lim x_n = x$ on trouve $n_0$ tel
+  que
+  \[\forall n > n_0, d(x_n,x) < \varepsilon\]
+  alors, pour tout $n > n_0$, on a
+  \begin{align*}
+    d(f(x_n),f(x)) &= d(x_n,x)\\
+    &< \varepsilon
+  \end{align*}
+  d'où le fait que $\displaystyle\lim_{n\to\infty} f(x_n) = f(x)$.
+\end{proof}
 
 \begin{proposition}
   Soit $(X,d)$ un espace métrique. Il existe un espace métrique complet
@@ -1700,12 +1792,10 @@ espace métrique complet, on l'appelle la complétion.
     s'approche de la limite de $a_i$, et $a_i$. Il reste malheureusement un
     dernier souci, qui est que la suite $a_{i,i}$ n'est pas une suite de
     Cauchy à première vue. Pour contourner ce problème, on commence par
-    définir une fonction $i \mapsto n_i$ de la façon suivante~: pour tout
+    définir une fonction $i \mapsto m_i$ de la façon suivante~: pour tout
     $i \in \mathbb N$, on sait que $x_i$ est de Cauchy, donc on peut trouver
     $m_i$ tel que
-    %\begin{equation}\label{eq.ineg.1}
     \[\forall p,q \geq m_i, d(a_{p,i},a_{q,i}) < \frac{1}{i + 1}\]
-    %\end{equation}
     On définit la limite de $x_n$ comme
     \[x \defeq \overline{(a_{m_i,i})_{i\in \mathbb N}}\]
 
@@ -1732,7 +1822,9 @@ espace métrique complet, on l'appelle la complétion.
     \[\forall p,q > n_3, d(a_{m_p,p}, a_{m_q,q}) < \varepsilon\]
     donc notre suite est de Cauchy.
 
-    Montrons que la suite $(x_n)$ converge vers $x$. Soit $\varepsilon > 0$.
+    Montrons que la suite $(x_n)$ converge vers $x$. Par la
+    \cref{prop.cauchy.adh}, il nous suffit de montrer que $x$ est une valeur
+    d'adhérence de $(x_n)$, ce que l'on prouve donc. Soit $\varepsilon > 0$.
     Avec les arguments précédents, on sait qu'on peut trouver $n_0$ tel que
     \[\forall p,q \geq n_0, d(a_{m_p,p},a_{m_q,q}) < \frac{\varepsilon}{2}\]
     On trouve aussi $n_1$ tel que
@@ -1761,8 +1853,8 @@ espace métrique complet, on l'appelle la complétion.
   \iota & : & X & \longrightarrow & \hat X\\
   & & x & \longmapsto & \overline{(n \mapsto x)_{n\in \mathbb N}}
   \end{array}\]
-  Dans ce cas, on voit que $d(\iota(x),\iota(y)) = d(x,y)$, donc $\iota$ est
-  bien isométrique (et donc injective).
+  Dans ce cas, on voit que $\hat d(\iota(x),\iota(y)) = d(x,y)$, donc $\iota$
+  est bien isométrique (et donc injective).
 
   Enfin, montrons que l'image de $\iota$ est dense dans $\hat X$. Soit un
   élément $\overline{(x_n)}\in\hat X$ et $\varepsilon > 0$, montrons qu'il

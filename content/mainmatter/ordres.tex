@@ -64,10 +64,10 @@ En fait, un pré-ordre peut se ramener à un ordre par un quotient.
 \begin{proof}
   Vérifions que $\sim$ est une relation d'équivalence :
   \begin{itemize}
-  \item $\sim$ est transitive : $x\leq x$ et $x\leq x$, donc $x\sim x$.
-  \item $\sim$ est symétrique : supposons que $x\sim y$, alors $x\leq y$ et
+  \item $\sim$ est réflexive~: $x\leq x$ et $x\leq x$, donc $x\sim x$.
+  \item $\sim$ est symétrique~: supposons que $x\sim y$, alors $x\leq y$ et
     $y\leq x$, donc $y\leq x$ et $x\leq y$, donc $y\sim x$.
-  \item $\sim$ est réflexive : supposons que $x\sim y$ et $y\sim z$, alors
+  \item $\sim$ est transitive~: supposons que $x\sim y$ et $y\sim z$, alors
     $x\leq y$ et $y\leq z$, donc $x\leq z$, et de même $z\leq y$ et $y\leq x$
     donc $z\leq z$, ainsi $x\sim z$.
   \end{itemize}
@@ -382,16 +382,16 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
   Soit $(X,\leq)$ un ensemble ordonné bien fondé. Soit $P\subseteq X$ une partie
   vérifiant
   \[\forall x, (\forall y < x, y\in P) \implies x\in P\]
-  est égale à $P$.
+  Alors $P$ est égale à $X$.
 \end{theorem}
 
 \begin{proof}
   Supposons que $P\neq X$. On trouve alors $x\in X \setminus P$ minimal pour
-  $<$. Comme $<$ est minimal dans
-  $X\setminus P$, on en déduit que pour tout $y < x$, $y \notin X\setminus P$,
-  c'est-à-dire $y\in X$. Par hypothèse, puisque $\forall y < x, y\in P$, on en
-  déduit que $x\in P$ : c'est absurde. Ainsi, par l'absurde, on a prouvé que
-  $X\setminus P = \varnothing$, donc que $P = X$.
+  $<$. Comme $<$ est minimal dans $X\setminus P$, on en déduit que pour tout
+  $y < x$, $y \notin X\setminus P$, c'est-à-dire $y\in P$. Par hypothèse,
+  puisque $\forall y < x, y\in P$, on en déduit que $x\in P$~: c'est absurde.
+  Ainsi, par l'absurde, on a prouvé que $X\setminus P = \varnothing$, donc que
+  $P = X$.
 \end{proof}
 
 \begin{remark}
@@ -415,12 +415,18 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
 
 Cela nous permet aussi de généraliser la récursion en la récursion bien fondée.
 
+\begin{notation}
+  Pour gagner en lisibilité, si $(X,<)$ est un ensemble strictement ordonné et
+  $x \in X$, on notera
+  \[x\!\downarrow \defeq \{y \in X \mid y < x\}\]
+\end{notation}
+
 \begin{theorem}[Récursion bien fondée]\label{thm.recur.bf}
   Soient $X,Y$ deux ensembles, et $<$ un ordre bien fondé sur $X$. Soit
   une fonction
-  \[f : \powerset (Y) \to Y\]
+  \[f : \powerset (X) \to Y\]
   alors il existe une unique fonction $g : X \to Y$ telle que
-  \[\forall x \in X, g(x) = f(\{g(y)\mid y < x\})\]
+  \[\forall x \in X, g(x) = f(g(x\!\downarrow))\]
 \end{theorem}
 
 \begin{proof}
@@ -434,7 +440,8 @@ Cela nous permet aussi de généraliser la récursion en la récursion bien fond
 On peut donc définir une fonction $g : X \to Y$ avec $(X,<)$ bien fondé en la
 définissant en $x$ grâce à ses valeurs pour tous les $y < x$. On verra dans le
 \cref{chp.ordinaux} une version plus générale de ce principe dans le cas des
-ensembles bien ordonnés. On aurait pu renforcer ce théorème en utilisant comme
+ensembles bien ordonnés. En utilisant la notation $f\restr E$ pour \og $f$
+restreinte à $E$\fg, on aurait pu renforcer ce théorème en utilisant comme
 condition que $g(x) = f(g\restr{x\!\downarrow})$, permettant non seulement
 d'utiliser les $g(y)$ mais aussi les $y$ associés.
 
@@ -619,7 +626,7 @@ relation $\leq_\lor$ : il faut vérifier que ces deux relations coïncident.
 
 \begin{proposition}
   Un bimonoïde $(X,\bot,\lor,\top,\land)$ est un treillis pour $\leq_\lor$
-  (respectivement pour $\lor_\land$) si et seulement si $(X,\bot,\lor)$ est un
+  (respectivement pour $\leq_\land$) si et seulement si $(X,\bot,\lor)$ est un
   inf demi-treillis, $(X,\top,\land)$ est un inf demi-treillis, $\leq_\lor$ et
   $\leq_\land$ coïncident, cette dernière condition étant équivalente aux
   deux identités d'absorption suivantes~ :
@@ -684,7 +691,7 @@ particulier, un treillis est un modèle d'une certaine théorie).
   Soit une signature $\Sigma$. Soit $\mathcal M$ une structure sur $\Sigma$.
   Montrer que la fonction
   \[\begin{array}{ccccc}
-  \Phi & : & \mathcal L(\Sigma_{\mathrm ZF}) & \longrightarrow &
+  \Phi & : & \mathcal L(\Sigma) & \longrightarrow &
   \powerset(\mathcal M)\\
   & & \varphi(x) & \longmapsto &
   \{x \in |\mathcal M| : \mathcal M\models \varphi(x)\}
@@ -797,7 +804,8 @@ Une algèbre de Boole peut ainsi se décrire grâce à cette notion de compléme
 
 \begin{exercise}
   Montrer que les identités de De Morgan sont vérifiées :
-  \[\lnot\lnot x = x \qquad \lnot (x \lor y) = \lnot x \land \lnot y
+  \[\lnot \top = \bot \qquad \lnot\lnot x = x
+  \qquad \lnot (x \lor y) = \lnot x \land \lnot y
   \qquad \lnot (x \land y) = \lnot x \lor \lnot y\]
 \end{exercise}
 
@@ -1223,7 +1231,7 @@ $F\subfin X$. On obtient ainsi la construction suivante :
 \end{definition}
 
 \begin{proposition}
-  Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie non vide.
+  Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie de $X$.
   Alors $\filclose Y$ est un filtre sur $X$.
 \end{proposition}
 
@@ -1239,12 +1247,16 @@ $F\subfin X$. On obtient ainsi la construction suivante :
   donc $x\land y \in \filclose Y$. Ainsi $\filclose Y$ est un filtre.
 \end{proof}
 
+\begin{remark}
+  Dans le cas où $Y = \varnothing$, $\filclose Y = \{\top\}$.
+\end{remark}
+
 Par défaut, le filtre engendré par une partie peut tout à fait contenir tous
-les éléments. Prenons par exemple un ensemble $X$, une partie $Y$ et le filte
-engendré par $\{Y,X\setminus Y\}$ : il est évident que ce filtre n'est pas
+les éléments. Prenons par exemple une algèbre de Boole $X$, un élément $x$ et le
+filte engendré par $\{x,\lnot x\}$~: il est évident que ce filtre n'est pas
 propre. Cependant, il existe une propriété assurant qu'un filtre engendré est
-propre, est qui est tout à fait naturelle : on veut que les $\bigwedge F$ soient
-tous différents de l'ensemble vide. Evidemment, cette propriété n'a d'intérêt
+propre, est qui est tout à fait naturelle~: on veut que les $\bigwedge F$ soient
+tous différents de l'élément minimum. Evidemment, cette propriété n'a d'intérêt
 que dans le cas d'un treillis.
 
 \begin{definition}[Propriété de l'intersection finie]
@@ -1412,8 +1424,9 @@ un ultrafiltre.
 
   Soit $\{\mathcal F_i\}_{i\in I}$ une chaîne d'éléments de $\mathcal X$,
   montrons que $\mathcal F_0 = \displaystyle\bigcup_{i\in I} \mathcal F_i$ est un
-  majorant de cette chaîne. Il nous suffit pour cela de vérifier que
-  $\mathcal F_0$ est bien un filtre propre :
+  majorant de cette chaîne (si $I \neq \varnothing$, car sinon n'importe quel
+  élément est un majorant de la chaîne). Il nous suffit pour cela de vérifier
+  que $\mathcal F_0$ est bien un filtre propre :
   \begin{itemize}
   \item soit $i\in I$, comme $\top \in \mathcal F_i$, on en déduit que
     $\top \in \mathcal F_0$.
@@ -1449,7 +1462,7 @@ On peut maintenant montrer le \cref{thm.completion} :
 \begin{proof}
   Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ supposée
   cohérente, donc telle que pour toute partie finie $\Gamma\subfin \mathcal T$,
-  $\bigwedge \gamma \nvdash \bot$. On redonne l'algèbre de Lindenbaum-Tarski~:
+  $\bigwedge \Gamma \nvdash \bot$. On redonne l'algèbre de Lindenbaum-Tarski~:
   \[\mathcal L(\Sigma) \defeq \Formula(\Sigma)/\dashv\vdash\]
   (comme on prouve ce théorème avant le théorème de complétude, on montre bien
   la proposition pour la relation $\vdash$ et non la relation $\vDash$).
@@ -1473,8 +1486,7 @@ On peut maintenant montrer le \cref{thm.completion} :
   $\overline{\lnot\varphi}\in \mathcal S$ : dans le premier cas,
   $\varphi\in \mathcal T'$ et dans le deuxième cas,
   $\lnot\varphi\in \mathcal T'$. Ainsi pour toute formule $\varphi$, soit
-  $\varphi\in \mathcal T'$ soit $\lnot\varphi\in \mathcal T'$ (c'est donc en
-  particulier encore le cas pour $\vdclose{\mathcal T'} = \mathcal T'$).
+  $\varphi\in \mathcal T'$ soit $\lnot\varphi\in \mathcal T'$.
 
   Donc il existe une théorie complète $\mathcal T'$ qui contient la théorie
   $\mathcal T$.
@@ -1512,7 +1524,7 @@ permettent de définir de nouveaux filtres.
   Soient $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
   sur $Y$ et $f : X \to Y$ une fonction croissante. On définit la rétrotirette
   de $\mathcal F$ par $f$ comme :
-  \[\mathcal F_f \defeq \{f^{-1}(x)\mid x \in \mathcal F\}\]
+  \[\mathcal F_f \defeq \{x\mid f(x) \in \mathcal F\}\]
 \end{definition}
 
 \begin{property}
@@ -1611,7 +1623,7 @@ noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
   \item pour montrer que
     $\chi_\mathcal U(x\lor y) = \chi_\mathcal U(x)\lor\chi_\mathcal U(y)$, il
     suffit de montrer que
-    \[x\land y \in \mathcal U \iff x\in\mathcal U \text{ ou }y\in\mathcal U\]
+    \[x\lor y \in \mathcal U \iff x\in\mathcal U \text{ ou }y\in\mathcal U\]
     Si $x\in \mathcal U$ (respectivement $y\in \mathcal U$) alors comme
     $x\leq x\lor y$ (respectivement $y\leq x\lor y$) et par clôture par le haut,
     $x\lor y \in \mathcal U$. Si $x\lor y \in \mathcal U$, alors comme un
@@ -1653,10 +1665,10 @@ noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
 
 \begin{notation}
   Pour une fonction $f : X \to Y$ entre deux ensembles et un filtre $\mathcal F$
-  sur $\powerset(X)$, on notera $\mathcal F_f$ la rétrotirette de $\mathcal F$
+  sur $\powerset(X)$, on notera $f_*\mathcal F$ la rétrotirette de $\mathcal F$
   par $f^{-1}$. On n'a pas d'ambigüité car, par défaut, $f$ n'est pas un
   morphisme d'algèbre de Boole entre les ensembles de parties.
 
-  Donnons une description rapide de $\mathcal F_f$ :
-  \[\mathcal F_f = \{A \in Y \mid f^{-1}(A) \in \mathcal F\}\]
+  Donnons une description rapide de $f_*\mathcal F$ :
+  \[f_*\mathcal F = \{A \in Y \mid f^{-1}(A) \in \mathcal F\}\]
 \end{notation}
