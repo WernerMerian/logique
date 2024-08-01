@@ -1552,6 +1552,11 @@ On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
   cette borne inféreure de $A$ l'ensemble $\bigcap A$.
 \end{exercise}
 
+\begin{exercise}\label{exo.ide.maj}
+  Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. Montrer tout
+  $Y \in \ideal(X)$ est majoré dans $X$.
+\end{exercise}
+
 \begin{remark}
   On peut noter la différence de traitement de la borne supérieure de l'idéal
   entre l'intersection et l'union. La raison à cela peut s'interpréter de façon
@@ -1689,11 +1694,12 @@ avons besoin d'un simple lemme car l'addition est compatible avec l'ordre de
 $\mathbb Q$.
 
 \begin{lemma}\label{lem.R.compat}
-  Soit $(X,+,\leq)$ un groupe abélien où $+$ est compatible avec
+  Soit $(X,+,\leq)$ un groupe abélien non majoré où $+$ est compatible avec
   $\leq$. Alors l'ensemble ordonné $(\ideal(X),\subseteq)$ peut être muni de
   la loi de composition interne $+$ définie par~:
   \[Y + Z \defeq \{y + z \mid y \in Y, z \in Z\}\]
-  et $(\ideal(X),+,\subseteq)$ est alors un groupe abélien et $+$ est compatible
+  en ajoutant la borne supérieure de cet ensemble si celle-ci existe dans $X$.
+  $(\ideal(X),+,\subseteq)$ est alors un groupe abélien et $+$ est compatible
   avec $\subseteq$.
 \end{lemma}
 
@@ -1701,18 +1707,31 @@ $\mathbb Q$.
   Soient $Y,Z\in \ideal(X)$, montrons que $Y + Z \in \ideal(X)$~:
   \begin{itemize}
   \item soient $x,x'\in X$ tels que $x\leq x'$ et $x\in Y + Z$. Par définition,
-    on trouve $y\in Y,z \in Z$ tels que $x' = y + z$. Comme $x \leq y + z$, on
-    en déduit que $x - z \leq y$ par compatibilité de $+$ avec $\leq$, et comme
-    $Y$ est clos par le bas, $x - z \in Y$, donc $x - z + z \in Y + Z$, et
-    $x - z + z = x$, donc $x \in Y + Z$.
+    si $x'$ n'est pas la borne supérieure de $Y + Z$, on trouve $y\in Y,z \in Z$
+    tels que $x' = y + z$. Comme $x \leq y + z$, on en déduit que $x - z \leq y$
+    par compatibilité de $+$ avec $\leq$, et comme $Y$ est clos par le bas,
+    $x - z \in Y$, donc $x - z + z \in Y + Z$, et $x - z + z = x$, donc
+    $x \in Y + Z$.
+
+    Rajouter la borne supérieure à cet ensemble ne change pas la clôture par le
+    bas, puisque tout élément inférieur à la borne supérieure de $Y + Z$ est
+    inférieur à un élément de $Y + Z$. En effet, si $x \leq \bigvee(Y + Z)$ et
+    $x > a$ pour tout $a \in Y + Z$, alors $x$ est un majorant de $Y + Z$ donc
+    $\bigvee(Y + Z) \leq x$, donc $x = \bigvee (Y + Z)$.
   \item comme $Y$ et $Z$ sont non vides, on trouve $y\in Y$ et $z\in Z$. Comme
     $y + z \in Y + Z$, $Y + Z \neq \varnothing$.
-  \item on trouve $y\notin Y$ et $z\notin Z$~: si $y + z \in Y + Z$ alors
-    A FAIRE
-  \item A FAIRE
+  \item $Y + Z \neq X$~: en utilisant l'\cref{exo.ide.maj}, on trouve
+    $y$ un majorant de $Y$ et $z$ un majorant de $Z$. On sait donc que
+    $y + z$ est un majorant de $Y + Z$ puisque $+$ est compatible avec $\leq$.
+    Comme $X$ est supposé non majoré, on peut donc trouver un élément
+    strictement supérieur à $y + z$, qui est donc un majorant strict de $Y + Z$,
+    donc $Y + Z \neq X$.
+  \item le fait d'ajouter la borne supérieure assure que notre ensemble vérifie
+    la dernière condition.
   \end{itemize}
 
-  On vérifie maintenant qu'on a un groupe abélien~:
+  On vérifie maintenant qu'on a un groupe abélien, en omettant le cas où la
+  borne supérieure doit être ajoutée dans la somme de deux idéaux~:
   \begin{itemize}
   \item pour tous $Y,Z,A\in\ideal(X)$, on a
     \begin{align*}
@@ -1727,7 +1746,7 @@ $\mathbb Q$.
       &= Y
     \end{align*}
   \item pour tout $Y\in \ideal(X)$, on définit
-    \[-Y \defeq X \setminus \{ - y \mid y \in Y\}\]
+    \[-Y \defeq X \setminus \{ - y \mid y \in Y \}\]
     augmenté si besoin de sa borne supérieure. C'est un élément de $\ideal(X)$~:
     \begin{itemize}
     \item si $x,y \in X$, $x\leq y$ et $y \in -Y$, alors on sait que
@@ -1741,7 +1760,16 @@ $\mathbb Q$.
       condition.
     \end{itemize}
     On montre alors que pour tout $Y \in \ideal(X)$, on a
-    $Y + (-Y) = \iota(0)$. A FAIRE
+    $Y + (-Y) = \iota(0)$. Soient $y\in Y, y' \in -Y$, si $y + y' > 0$, alors
+    $y > - y'$, donc par clôture par le bas de $Y$, $-y' \in Y$, ce qui est
+    faux par définition de $-Y$~: il en résulte que $y + y' \leq 0$, donc que
+    $Y + (-Y) \subseteq \iota(0)$. Réciproquement, soit $x \leq 0$, montrons
+    qu'il existe $y \in Y, y' \in (-Y)$ tels que $x = y + y'$. Pour commencer,
+    montrons que soit $0 \in Y$, soit $0 \in -Y$. En effet, si $0 \notin Y$,
+    alors $-0 = 0 \in -Y$, donc que $0 \in Y$ ou non, on a $0 \in Y \cup (-Y)$.
+    Disons sans perte de généralité que $0 \in Y$, alors comme $x \leq 0$, on
+    trouve $y \in Y$ (car $Y \neq \varnothing$) et on sait que $y + x \leq y$,
+    donc par clôture vers le bas $y + x \in Y$. De plus, A FAIRE
   \item enfin, $+$ est commutatif~: pour tout $Y,Z \in \ideal(X)$, on a~:
     \begin{align*}
       Y + Z &= \{ y + z \mid y \in Y, z \in Z \}\\
@@ -1806,11 +1834,11 @@ avec $\leq$ sur $\mathbb Q_+^\star$ et donne un groupe.
   L'autre construction de $\mathbb R$ n'exige pas de construction
   \textit{ad hoc} comme la disjonction de cas précédente. Elle utilise la
   complétion par les suites de Cauchy~: il se trouve que si $(A,+,\times)$ est
-  un anneau, alors les suites à valeurs dans $A$ ont naturellement une structure
-  d'anneau en considérant les opérations termes à termes. L'ensemble des suites
-  de Cauchy de limite nulle est alors un idéal de cet anneau~: on peut donc
-  directement construire l'anneau quotient. Cette construction de $\mathbb R$
-  est plus directe et plus naturelle depuis $\mathbb Q$, mais nous souhaitions
-  traiter de cette autre construction que sont les coupures de Dedekind (dans
-  une version éloignée de la construction historique).
+  un anneau, alors les suites de Cauchy à valeurs dans $A$ ont naturellement une
+  structure d'anneau en considérant les opérations termes à termes. L'ensemble
+  des suites de Cauchy de limite nulle est alors un idéal de cet anneau~: on
+  peut donc directement construire l'anneau quotient. Cette construction de
+  $\mathbb R$ est plus directe et plus naturelle depuis $\mathbb Q$, mais nous
+  souhaitions traiter de cette autre construction que sont les coupures de
+  Dedekind (dans une version éloignée de la construction historique).
 \end{remark}

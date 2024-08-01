@@ -781,15 +781,16 @@ On peut maintenant prouver plusieurs résultats d'arithmétique ordinale.
   \item $\alpha\times(\beta\times\gamma) = (\alpha\times\beta)\times \gamma$
   \item $1 + \alpha = \alpha$ si et seulement si $\alpha \geq \omega$
   \item $\alpha + 1 = S\;\alpha$
+  \item $0 + \alpha = \alpha$
   \item si $\alpha < \beta$ alors $\gamma + \alpha < \gamma + \beta$ et
     $\alpha + \gamma \leq \beta + \gamma$
-  \item si $\gamma \neq 0$ et $\alpha < \beta$ alors
-    $\gamma \times \alpha < \gamma \times \beta$ et
-    $\alpha\times\gamma\leq\beta\times\gamma$.
   \item $\alpha + \beta = \alpha + \gamma \implies \beta = \gamma$
   \item si $\alpha \neq 0$ et $\alpha \times \beta = \alpha \times \gamma$,
     alors $\beta = \gamma$.
   \item $\alpha \times 1 = 1 \times \alpha = \alpha$
+  \item si $\gamma \neq 0$ et $\alpha < \beta$ alors
+    $\gamma \times \alpha < \gamma \times \beta$ et
+    $\alpha\times\gamma\leq\beta\times\gamma$.
   \item $\alpha\times\beta = 0 \implies \alpha = 0 \text{ ou }\beta=0$
   \item si $\alpha < \beta$ alors il existe un unique $\gamma$ tel que
     $\alpha + \gamma = \beta$
@@ -800,7 +801,8 @@ On peut maintenant prouver plusieurs résultats d'arithmétique ordinale.
 \end{property}
 
 \begin{proof}
-  Démontrons chaque propriété~:
+  On ne prouve que les $7$ premières propriété, les autres étant laissées en
+  exercice~:
   \begin{itemize}
   \item  on raisonne par induction sur $\gamma$~:
     \begin{itemize}
@@ -903,9 +905,72 @@ On peut maintenant prouver plusieurs résultats d'arithmétique ordinale.
     donc $1 + \alpha = \alpha \implies \omega \leq \alpha$.
   \item un simple calcul nous donne que
     $\alpha + 1 = S\;(\alpha + 0) = S\;\alpha$.
-  \item A FAIRE
+  \item par induction transfinie sur $\alpha$~:
+    \begin{itemize}
+    \item si $\alpha = 0$, alors $0 + 0 = 0$.
+    \item on suppose que $0 + \alpha= \alpha$, alors
+      \begin{align*}
+        0 + S\;\alpha &= S\;(0+\alpha) \\
+        &= S\;\alpha
+      \end{align*}
+    \item si $\alpha$ est limite et que pour tout $\beta < \alpha$,
+      $0 + \beta = \beta$, alors
+      \begin{align*}
+        0 + \alpha &= \bigcup_{\beta < \alpha} (0 + \beta)\\
+        &= \bigcup_{\beta < \alpha} \beta \\
+        &= \alpha
+      \end{align*}
+      d'où le résultat par induction transfinie.
+    \end{itemize}
+  \item on effectue deux inductions transfinie. La première, sur $\gamma$, pour
+    montrer que $\alpha + \gamma \leq \beta + \gamma$~:
+    \begin{itemize}
+    \item pour $\gamma = 0$, cela signifie que $\alpha \leq \beta$, ce qui est
+      vrai par hypothèse.
+    \item supposons que $\alpha + \gamma \leq \beta + \gamma$, et prouvons alors
+      que $\alpha + S\;\gamma \leq \beta + S\;\gamma$. Il nous suffit de montrer
+      que pour tous $\xi,\zeta\in\Ord$, si $\xi \leq \zeta$ alors
+      $S\;\xi\leq S\;\zeta$. Comme les ordinaux sont totalement ordonnés, si
+      l'inégalité était fausse alors on aurait $S\;\xi \ni S\;\zeta$, donc
+      $S\;\zeta = \xi$ ou $S\;\zeta\in \xi$. Dans les deux cas, cela contredit
+      le fait que $\xi \leq \zeta$ (dans le premier cas, on sait que
+      $\zeta < \xi$ puisque $\zeta \in \zeta \cup \{\zeta\}$ et dans le
+      deuxième cas, l'inclusion donnée par $\leq$ sur les ordinaux signifie que
+      $S\;\zeta \in \zeta$). On en déduit que dans le cas particulier où
+      $\xi = \alpha + \gamma$ et $\zeta = \beta + \gamma$, l'inégalité est
+      vérifiée.
+    \item supposons que $\gamma$ est limite et que pour tout $\delta < \gamma$,
+      $\alpha + \delta \leq \beta + \delta$. Alors
+      \begin{align*}
+        \alpha + \gamma &= \bigcup_{\delta < \gamma} \alpha + \delta\\
+        &\leq \bigcup_{\delta < \gamma} \beta + \delta \\
+        &\leq \beta + \delta
+      \end{align*}
+    \end{itemize}
+    Donc $\alpha + \gamma \leq \beta + \gamma$.
+
+    On veut maintenant prouver que $\gamma + \alpha < \gamma + \beta$. On
+    raisonne par induction transfinie sur $\beta$~:
+    \begin{itemize}
+    \item si $\beta = 0$ alors notre hypothèse est que $\alpha < 0$, ce qui est
+      impossible.
+    \item supposons que $\gamma + \alpha < \gamma + \beta$, alors
+      \[\gamma + \alpha < \gamma + \beta < S\;(\gamma + \beta)
+      = \gamma + S\;\beta\]
+      d'où le résultat.
+    \item supposons que $\beta$ est limite et que pour tout $\delta < \beta$,
+      $\gamma + \alpha < \gamma + \delta$. Alors comme $\alpha < \beta$, on en
+      déduit $\gamma + \alpha < \gamma + \alpha$, ce qui est absurde.
+    \end{itemize}
+    On en déduit donc que $\gamma + \alpha < \gamma + \beta$ par induction
+    transfinie.
   \end{itemize}
+  Nous avons donc prouvé la moitié des propriétés.
 \end{proof}
+
+\begin{exercise}
+  Montrer l'autre moitié des propriétés ci-dessus.
+\end{exercise}
 
 On peut aussi dégager des propriétés arithmétiques sur l'exponentiation, mais
 celles-ci sont laissées en exercice car elles ne seront pas essentielles.
@@ -1201,7 +1266,7 @@ que c'est en fait une équivalence.
 Le théorème de Zermelo indique qu'il est toujours possible de munir un ensemble
 d'un bon ordre.
 
-\begin{theorem}[Zermelo]
+\begin{theorem}[Zermelo]\label{thm.Zermelo}
   Soit $X$ un ensemble. Alors il existe $<$ qui est un bon ordre sur $X$.
 \end{theorem}
 
@@ -1451,7 +1516,64 @@ qui rend l'arithmétique cardinale si simple.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On prouve ce résultat pour un cardinal $\kappa$ (supposé infini), et on peut
+  étendre ce résultat par bijection entre un ensemble $X$ et son cardinal.
+
+  On veut d'abord définir un bon ordre sur tout ordinal $\alpha \times \alpha$.
+  Pour cela, on définit plus généralement un bon ordre sur $\Ord\times\Ord$,
+  qu'on note $\ordbis$, par~:
+  \[(\alpha,\alpha')\ordbis(\beta,\beta') \defeq
+  \left\{\begin{array}{ccc}
+  \max(\alpha,\alpha') < \max(\beta,\beta') & &\\
+  \text{ou} & &\\
+  \max(\alpha,\alpha') = \max(\beta,\beta')&\text{et}&
+  (\alpha,\alpha')\lexl (\beta,\beta')
+  \end{array}\right.\]
+  (où $\lexl$ est l'ordre lexicographique sur les paires).
+
+  On souhaite donc montrer que $\ordbis$ est un bon ordre strict. Le fait que
+  c'est un ordre total découle directement du fait que $<$ et $\lexl$ le sont.
+  On considère donc un ensemble $S\subseteq \Ord\times \Ord$, et on veut montrer
+  qu'il existe un minimum à $S$ pour $\ordbis$. Soit
+  \[S'\defeq \{\max(a\alpha,\beta)\mid (\alpha,\beta) \in S\}\]
+  Par l'axiome de remplacement, $S'$ est un ensemble, et ses éléments sont des
+  ordinaux~: on peut donc lui trouver un minimum $\gamma$. Soit alors
+  \[S'' \defeq \{(\alpha,\beta) \in S\mid \max(\alpha,\beta) = \gamma\}\]
+  Cet ensemble est une partie non vide de $S$. De plus, on voit que puisque
+  $\max(\alpha,\beta)$ est constant sur $S''$, $\lexl$ et $\ordbis$ coïncident
+  sur $S''$. Puisque $\gamma$ est choisi minimal, cela signifie que le minimum
+  de $S''$ pour $\lexl$ est le minimum de $S$ pour $\ordbis$. Ainsi, $\ordbis$
+  est un bon ordre sur $\Ord\times \Ord$.
+
+  On veut maintenant prouver que $\type(\kappa\times\kappa,\ordbis) = \kappa$
+  pour tout cardinal infini $\kappa$. Par l'absurde, supposons que cela n'est
+  pas le cas, et que $\kappa$ est le tel cardinal minimum. On peut remarquer que
+  $\kappa > \omega$.
+
+  Soit $\alpha < \kappa$ un ordinal. On sait que
+  $|\alpha \times \alpha| < \kappa$ puisque $\kappa$ est choisi minimal, donc
+  pour tout $\alpha < \kappa$ on sait que
+  $\type(|\alpha| \times |\alpha|,\ordbis) = |\alpha|$. Soit
+  $\delta = \type(\kappa\times\kappa,\ordbis)$. Par hypothèse,
+  $\delta \neq \kappa$. Soit $f : \delta \to \kappa \times \kappa$
+  l'isomorphisme entre $(\delta,\in)$ et $(\kappa\times\kappa,\ordbis)$.
+
+  Si $\delta > \kappa$, alors soient $(\eta,\xi) = f(\kappa)$ et
+  $\alpha = \max(\eta,\xi) + 1$. $\kappa$ est un cardinal infini, donc un
+  ordinal limite~: on en déduit que $\alpha < \kappa$, donc on peut majorer pour
+  tout $\beta < \kappa$, $f(\beta) \leq \alpha \times \alpha$ (puisqu'on sait
+  que $f$ est un isomorphisme et que $f(\kappa) < (\alpha,\alpha)$). On a donc
+  trouvé une injection de $\kappa$ vers $\alpha \times \alpha$, donc
+  $\kappa \preceq \alpha\times \alpha < \kappa$, qui est une contradiction.
+
+  Si $\delta < \kappa$, alors $\kappa \preceq \kappa \times \kappa$ par
+  l'injection $\alpha \mapsto (\alpha, 0)$, et $\kappa\times\kappa \cong \delta$
+  par définition, donc par transitivité $\kappa \prec \delta < \kappa$, ce
+  qui est encore une contradiction.
+
+  Ainsi, le seul cas possible est $\delta = \kappa$, donc on peut trouver un
+  bon ordre de type $\kappa$ sur $\kappa\times\kappa$, ce qui revient à dire que
+  $\kappa \cong \kappa\times\kappa$.
 \end{proof}
 
 A partir de ce théorème, on peut montrer ce que l'on souhaite sur l'addition
@@ -1484,7 +1606,27 @@ grandes.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On considère que $I$ est non vide et que chaque $X_i$ est aussi non vide
+  (les cas d'ensembles vides sont strictement plus simples à traiter). Comme
+  $\Card(I) \leq \kappa$, on peut trouver une injection $\Card(I) \to \kappa$
+  et donc une surjection $g : \kappa \to \Card(I)$. Il y a aussi, pour chaque
+  $i \in I$, une surjection $\kappa \to X_i$ par le même argument. On peut
+  réécrire cela en disant que pour tout $\alpha < \kappa$, il existe une
+  surjection $\kappa \to X_{g(\alpha)}$.
+
+  On utilise alors le \cref{thm.Zermelo} pour fixer un bon ordre $<_1$ sur
+  $\displaystyle\Funct(\kappa,\bigcup_{i \in I} X_i)$. Pour $\alpha < \kappa$,
+  on définit $g_\alpha$ l'élément minimal pour $<_1$ tel que
+  $\im(g_\alpha) = X_{g(\alpha)}$~: c'est donc une surjection
+  $\kappa\to X_{g(\alpha)}$. On définit maintenant
+  \[\begin{array}{ccccc}
+  h & : & \kappa \times \kappa & \longrightarrow & \bigcup_{i \in I} X_i\\
+  & & (\alpha, \beta) &\longmapsto & g_\alpha(b)
+  \end{array}\]
+  $h$ est surjective, donc comme $|\kappa \times \kappa| = \kappa$, on en
+  déduit qu'il existe une surjection
+  $\displaystyle\kappa \to \bigcup_{i \in I} X_i$, donc une injection dans l'autre
+  sens (par un corollaire de l'axiome du choix).
 \end{proof}
 
 Il nous reste à traiter du cas de l'exponentiation. Si l'on décidait simplement
@@ -1709,8 +1851,8 @@ l'appliquer à chaque copie de $\alpha$.
     où $\beta = \gamma + 1$, donc avec l'argument précédent,
     $\cof(\alpha\times\beta) = \cof(\alpha)$.
   \item Dans le cas où $\beta$ est limite, en utilisant la représentation de
-    $\alpha \times \beta$ comme $\type(\alpha\times\beta,\lexl)$ avec le produit
-    cartésien, on remarque que
+    $\alpha \times \beta$ comme étant égal à $\type(\alpha\times\beta,\lexl)$
+    avec le produit cartésien, on remarque que
     \[F \defeq \{(0,\gamma) \mid \gamma \in \beta\}\]
     est cofinal dans $\alpha \times \beta$. Donc
     $\cof(\alpha\times \beta) = \cof(\type(F))$ et $\type(F) = \beta$, d'où le
