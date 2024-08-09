@@ -1598,7 +1598,7 @@ et le produit.
 On peut montrer qu'en fait ce résultat se généralise pour des unions bien plus
 grandes.
 
-\begin{proposition}
+\begin{proposition}\label{prop.card.union}
   Soit $(X_i)_{i\in I}$ une famille d'ensembles de cardinal inférieur à
   $\kappa$ indicée par un ensemble $I$ de cardinal inférieur à $\kappa$, où
   $\kappa$ est un certain cardinal. Alors
@@ -1820,6 +1820,12 @@ cofinalité, mais nous avons d'abord besoin d'un lemme assez naturel.
   $\cof(\alpha) = \cof(\type(X))$ par double inégalité.
 \end{proof}
 
+\begin{remark}
+  Une partie $X$ cofinale à un ordinal $\alpha$ est une partie non strictement
+  bornée de $\alpha$. Dans le cas d'une fonction $f : X \to \alpha$, on dira
+  qu'elle est cofinale lorsque son image est une partie cofinale.
+\end{remark}
+
 On peut maintenant comprendre quel effet a une somme sur la cofinalité.
 Moralement, l'ordinal $\alpha + \beta$ peut se voir comme la droite représentant
 $\alpha$ à laquelle on a accolé la droite représentant $\beta$ à sa fin. Ainsi,
@@ -1871,7 +1877,21 @@ besoin d'un lemme technique pour comparer des cofinalités à partir de fonction
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On pose
+  \[C \defeq \{\gamma \in \beta \mid
+  \forall \delta < \gamma, f(\delta) < f(\gamma)\}\]
+  et
+  \[B \defeq f(C)\]
+  Comme $C\subseteq \beta$, on sait que $\type(B)\leq \type(C) \leq \beta$.
+  On veut maintenant prouver que $B$ est cofinal dans $\alpha$, ce qui nous
+  permettra alors d'en déduire que $\cof(\alpha) \leq \beta$.
+
+  Soit $\xi \in \alpha$, comme $f$ est cofinale dans $\alpha$, on sait que
+  $\{\gamma \in \beta \mid \xi \leq f(\gamma)\}$ est non vide, donc on peut en
+  trouver un minimum $\gamma_0$. Pour $\delta < \gamma_0$, par minimalité de
+  $\gamma_0$ on sait que $f(\delta) < \xi\leq f(\gamma_0)$, donc
+  $\gamma_0 \in C$. On en déduit que $f(\gamma_0)\in B$ et que
+  $f(\gamma_0) \geq \xi$, donc $B$ est cofinal dans $\alpha$.
 \end{proof}
 
 On en déduit une version plus précise dans le cas d'une fonction croissante.
@@ -1883,7 +1903,15 @@ On en déduit une version plus précise dans le cas d'une fonction croissante.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Soient $\gamma = \cof(\beta)$ et $g : \gamma \to \beta$ une fonction
+  strictement croissante témoignant du fait que $\gamma$ est cofinal à $\beta$.
+  On remarque alors que $f\circ g : \gamma \to \alpha$ est cofinale à $\alpha$.
+  En effet, pour tout $\xi \in \alpha$, on peut trouver $\delta \in \beta$
+  tel que $f(\delta) \geq \xi$, puis $\eta$ tel que $g(\eta) \geq \delta$, d'où
+  par croissance $f(g(\eta)) \geq \xi$.
+  
+  Ainsi, en utilisant le \cref{lem.cof.compar.surj}, on sait que
+  $\cof(\alpha)\leq \gamma$, c'est-à-dire que $\cof(\alpha)\leq\cof(\beta$.
 \end{proof}
 
 On peut maintenant prouver les propriétés essentielles sur la cofinalité, et en
@@ -1928,14 +1956,35 @@ On a vu dans le cas de $\omega$ et $\omega_1$ que des suites finies
 ont une limite finie (respectivement dénombrable). Cette propriété se généralise
 pour caractériser les inégalités sur les cofinalités.
 
-\begin{proposition}
+\begin{proposition}\label{prop.ineg.bounded}
   Soient $\kappa$ et $\lambda$ deux cardinaux infinis. L'inégalité
   $\kappa < \cof(\lambda)$ est vraie si et seulement si toute fonction
   $f : \kappa \to \lambda$ est bornée.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Si $\kappa \geq \cof(\lambda)$, alors on trouve une partie $X\subseteq\lambda$
+  telle que $\type(X)=\cof(\lambda)$, cofinale dans $\lambda$. On pose alors
+  une énumération strictement croissante $(x_\alpha)_{\alpha < \cof(\lambda)}$ de
+  $X$~:
+  \[X = \{x_\alpha\mid \alpha < \cof(\lambda)\}\]
+  On considère alors la fonction
+  \[\begin{array}{ccccc}
+  f & : & \kappa & \longrightarrow & \lambda\\
+  & & \gamma & \longmapsto &
+  \left\{\begin{array}{cl}
+  x_\alpha & \text{si } \alpha < \cof(\lambda)\\
+  0 &\text{ sinon}
+  \end{array}\right.
+  \end{array}\]
+  qui est cofinale dans $\lambda$.
+
+  Réciproquement, s'il existe $f : \kappa \to \lambda$ cofinale, alors on sait
+  que $f(\kappa)$ est de cardinal au plus $\kappa$, donc de type d'ordre
+  strictement inférieur à $\kappa^+$. Comme on sait que $f(\kappa)$ est
+  cofinale dans $\lambda$, on en déduit que
+  $\kappa^+ > \type(f(\kappa)) \geq \cof(\lambda)$, donc
+  $\kappa \geq \cof(\lambda)$ car $\cof(\lambda)$ est un cardinal.
 \end{proof}
 
 On va maintenant affiner le critère de régularité. Tout d'abord, un cardinal
@@ -1946,7 +1995,12 @@ successeur est régulier.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  Par l'absurde, supposons qu'on trouve $X$ une partie cofinale de $\kappa^+$
+  de cardinal inférieur à $\kappa$. Comme $X$ est une partie cofinale,
+  $\sup X = \kappa^+$, or on sait que chaque élément de $X$ est de cardinal
+  inférieur à $\kappa$, donc en utilisant le \cref{prop.card.union}, on sait
+  que $\Card(\sup X) \leq \kappa$, ce qui est absurde. On en déduit que
+  $\kappa^+$ est régulier.
 \end{proof}
 
 Pour les cardinaux limites, on a un résultat beaucoup plus faible.
@@ -1982,12 +2036,55 @@ arbitrairement haut.
 
 \begin{proposition}
   Soient $\kappa$ et $\mu$ deux cardinaux infinis. On peut trouver $\lambda$ tel
-  que $\mu \leq \lambda$, $\cof(\lambda) = \cof(\kappa)$, et même que
+  que $\mu \leq \lambda$, $\cof(\lambda) = \cof(\kappa)$, et même tel que
   $\aleph_\lambda = \lambda$.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Pour commencer, on définit la classe $C$ suivante~:
+  \[C \defeq \{\alpha \in \Ord\mid \alpha = \aleph_\alpha\}\]
+  Une première remarque est que si $X\subseteq C$ est un ensemble, alors
+  $\sup X \in C$. En effet, comme $\aleph$ est continue, on peut faire le calcul
+  suivant~:
+  \begin{align*}
+    \aleph_{\sup X} &= \sup_{\gamma \in X} \aleph_\gamma\\
+    &= \sup_{\gamma \in X} \gamma\\
+    &= \sup X
+  \end{align*}
+  Où le passage de la deuxième à la troisième ligne est donné par le fait que
+  $X\subseteq C$. De plus, $C$ est non borné dans $\Ord$. En effet, si $\alpha$
+  est un ordinal, alors on peut construire la suite $(\alpha_n)$ définie par
+  \[\left\{\begin{array}{c}
+  \alpha_0 = \alpha + 1\\
+  \alpha_{n+1} = \aleph_{\alpha_n}
+  \end{array}\right.\]
+  On voit alors que $\sup_{n \in \mathbb N} \alpha_n$ est un ordinal strictement
+  supérieur à $\alpha$ qui est un point fixe de $\aleph$.
+
+  On construit maintenant une fonction $f : \Ord \to C$ par induction
+  transfinie~:
+  \begin{itemize}
+  \item $f(0) = \min C$.
+  \item si $f(\alpha)$ est défini, alors
+    $f(\alpha + 1) = \min(C \setminus (f(\alpha) + 1))$, qui est bien défini car
+    $C$ est non borné, donc la classe dont on prend le minimum est non vide.
+  \item si $\beta$ est un ordinal limite, alors
+    $f(\beta) = \sup_{\alpha \in \beta} f(\alpha)$, qui est bien défini car
+    on a vérifié que $C$ était stable par borne supérieure.
+  \end{itemize}
+  On a ainsi une fonction $f$, strictement croissante, dont on peut prouver
+  qu'elle atteint tout élément de $C$ (par un argument similaire à ce qui a été
+  fait pour la surjectivité de $\aleph$).
+
+  On pose maintenant
+  \[\lambda \defeq f(\mu + \kappa)\qquad
+  X \defeq \{f(\mu + \alpha)\mid \alpha < \kappa\}\]
+  On sait que $X$ est une partie de $\lambda$ de type d'ordre $\kappa$, puisque
+  c'est l'image par une fonction strictement croissante de $\kappa$. De plus,
+  comme $\kappa$ est un ordinal limite (car c'est un cardinal infin), $X$ est
+  cofinale dans $\lambda$. On en déduit donc, par le \cref{lem.cof.type}, que
+  $\cof(\lambda) = \cof(\type(X))$, c'est-à-dire que
+  $\cof(\lambda) = \cof(\kappa)$. On en déduit donc le résultat souhaité.
 \end{proof}
 
 \begin{proposition}
@@ -1998,7 +2095,8 @@ arbitrairement haut.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Soit $\beta < \lambda$. Alors $\beta + \kappa < \lambda$ et
+  $\cof(\beta + \kappa) = \cof(\kappa) = \kappa$.
 \end{proof}
 
 \subsection{Théorème de König}
@@ -2022,8 +2120,22 @@ mais commençons par le théorème lui-même.
 \begin{proof}
   On prouve les deux points~:
   \begin{itemize}
-  \item A FAIRE
-  \item A FAIRE
+  \item soit
+    \[Y \defeq \{\Card(X) \mid X \in \mathcal F\}\]
+    On sait que $Y\subseteq \kappa$ et $|Y| < \kappa$, donc $Y$ est bornée
+    d'après la \cref{prop.ineg.bouded} et le fait que $\kappa$ est régulier.
+    Soit $\lambda = \max(|\mathcal F|, \sup Y)$. D'après ce qui a été dit,
+    $\lambda < \kappa$, et on sait que $\bigcup \mathcal F$ est l'union d'un
+    nombre inférieur à $\lambda$ de parties de cardinal inférieur à $\lambda$,
+    donc d'après la \cref{prop.card.union}, on en déduit que le cardinal de
+    $\bigcup \mathcal F$ est inférieur à $\lambda$, donc strictement inférieur
+    à $\kappa$.
+  \item si $\cof(\kappa) < \kappa$, on peut trouver une partie
+    $\mathcal F\subseteq \kappa$ de taille $\cof(\kappa)$ cofinale dans
+    $\kappa$. Comme $\kappa$ est un cardinal et que tout élément de $\mathcal F$
+    est un élément de $\kappa$, on en déduit
+    \[\forall \alpha \in \mathcal F, |\alpha| < \kappa\]
+    Ainsi, comme $\bigcup \mathcal F = \kappa$, on en déduit le résultat.
   \end{itemize}
   D'où le résultat.
 \end{proof}
@@ -2035,7 +2147,21 @@ On peut maintenant en tirer deux conséquences sur l'exponentiation cardinale.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Soit $f : \cof(\kappa) \to \kappa$ une fonction cofinale (qui existe par
+  définition de $\cof(\kappa)$). Supposons par l'absurde qu'il existe une
+  surjection $g : \kappa \to \kappa^{\cof(\kappa)}$. On définit
+  \[\begin{array}{ccccc}
+  h & : & \cof(\kappa) & \longrightarrow & \kappa \\
+  & & \alpha & \longmapsto &
+  \min(\kappa \setminus\{g(\beta)(\alpha)\mid \beta < f(\alpha)\})
+  \end{array}\]
+  Comme $g$ est une surjection, on trouve $\beta$ tel que $h = g(\beta)$. On
+  trouve $\alpha < \cof(\kappa)$ tel que $f(\alpha) > \beta$, par définition de
+  la cofinalité de $f$ (et le fait que $\cof(\kappa)$ et $\kappa$ sont des
+  ordinaux limites). On sait alors que $h(\alpha) > g(\beta)(\alpha)$, donc
+  $h\neq g(\beta)$, ce qui est une contradiction.
+
+  Ainsi $g$ ne peut être surjective, donc $\kappa^{\cof(\kappa)} > \kappa$.
 \end{proof}
 
 \begin{theorem}
@@ -2044,15 +2170,19 @@ On peut maintenant en tirer deux conséquences sur l'exponentiation cardinale.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  Supposons par l'absurde que $\cof(\kappa^\lambda) \leq \lambda$. On a alors la
+  chaîne d'inégalités suivante~:
+  \[\kappa^\lambda < (\kappa^\lambda)^{\cof(\kappa^\lambda)} \leq
+  (\kappa^\lambda)^\lambda = \kappa^{\lambda \times \lambda} = \kappa^\lambda\]
+  ce qui est absurde.
 \end{proof}
 
 On sait donc que la fonction $\kappa \mapsto 2^\kappa$ vérifie les propriétés
 suivantes~:
 \begin{itemize}
 \item $\kappa < 2^\kappa$ (théorème de Cantor)
-\item si $\kappa < \lambda$ alors $2^\kappa \leq 2^\lambda$
-\item $\kappa < \cof(2^\kappa)$
+\item si $\kappa < \lambda$ alors $2^\kappa \leq 2^\lambda$ (stricte croissance)
+\item $\kappa < \cof(2^\kappa)$ (théorème de König)
 \end{itemize}
 
 En fait, on peut prouver qu'il est impossible d'être plus précis que ces trois
