@@ -70,7 +70,7 @@ $\omega$ dans $\omega + 1$ par exemple n'est pas un point isolé. En effet,
 si on veut qu'un ouvert de base contienne $\omega$, alors il doit contenir un
 élément strictement inférieur à $\omega$, qui est donc un élément
 $n \in \omega$. On a alors tous les éléments $m > n$ dans notre partie,
-puisqu'ils sont entre $n$ et $\omega$. Sachant qu'un ouvert est une uniont
+puisqu'ils sont entre $n$ et $\omega$. Sachant qu'un ouvert est une union
 d'ouverts de base, il sera donc impossible de ne pas contenir au moins un
 segment finissant de $\omega$ si on veut contenir $\omega$. Plus généralement,
 pour contenir un ordinal limite dans un ouvert, il faut en contenir un segment
@@ -140,7 +140,26 @@ Enfin, donnons un résultat caractérisant les ordinaux compacts.
   donc un recouvrement dont on ne peut extraire un recouvrement fini~: $\alpha$
   n'est pas compact.
 
-  Réciproquement, A FAIRE
+  Montrons maintenant qu'un ordinal successeur est compact. Par l'absurde,
+  supposons qu'il existe un plus petit ordinal $\alpha$ non compact et
+  successeur, et soit $\beta$ tel que $\alpha = \beta + 1$. Soit
+  \[\mathcal F \defeq \{(\gamma_i,\delta_i)\mid i \in \kappa\}\]
+  un recouvrement de $\alpha$ par des ouverts de base, où $\kappa$ est le
+  cardinal de $\mathcal F$. Soit $j \in \kappa$ tel que
+  $\beta \in (\gamma_j,\delta_j)$ et $\gamma = \min((\gamma_j,\delta_j))$,
+  c'est-à-dire $\gamma_j + 1 = \gamma$. Comme on sait que $\mathcal F$ est un
+  recouvrement de $\alpha$, on en déduit que
+  \[\mathcal F' \defeq \{(\gamma_i,\delta_i) \cap \gamma\mid i \in \kappa\}\]
+  est un recouvrement de $\gamma$ constitué d'ouverts de base. Par hypothèse de
+  minimalité de $\alpha$, et comme $\gamma < \alpha$
+  (puisque $\beta \in (\gamma_j,\delta_j)$) et est un successeur, on en déduit
+  qu'il existe un sous-recouvrement $F\subfin \mathcal F'$ de $\gamma$. Alors en
+  posant $J\subfin \kappa$ tel que
+  $F = \{(\gamma_i,\delta_i)\cap \gamma \mid i \in J\}$, on en déduit que
+  $F' = \{(\gamma_i,\delta_i)\mid i \in J\} \cup \{(\gamma_j,\delta_j)\}$ est
+  un sous-recouvrement fini de $\mathcal F$. Donc $\alpha$ est compact, ce qui
+  contredit notre hypothèse. Par l'absurde, on en déduit que tout ordinal
+  successeur est compact.
 \end{proof}
 
 \subsection{Filtre des clubs}
@@ -220,7 +239,7 @@ réguliers simplifie les énoncés et suffit en pratique.
 \end{definition}
 
 \begin{proof}
-  On a vérifie que l'intersection de deux clubs est encore un clubs, donc
+  On a vérifié que l'intersection de deux clubs est encore un clubs, donc
   l'intersection d'un nombre fini de clubs est encore un club. En particulier,
   l'intersection d'un nombre fini de clubs est non vide, donc le filtre engendré
   par la famille des clubs de $\kappa$ est un filtre propre.
@@ -267,7 +286,7 @@ stationnaires, qui peut largement être prise comme définition.
 \end{proposition}
 
 \begin{proof}
-  $X$ est non stationnaire si et seulement s'il $\kappa\setminus X$ contient
+  $X$ est non stationnaire si et seulement si $\kappa\setminus X$ contient
   un club $C$, ce qui est équivalent à dire que $X$ est disjoint avec au moins
   un club de $\kappa$~: on en déduit l'équivalence annoncée.
 \end{proof}
@@ -409,10 +428,10 @@ la notation $E_\kappa^\lambda$ introduite dans la \cref{sct.cof}.
   stationnaires, et ils sont évidemment disjoints, d'où le résultat.
 \end{proof}
 
-On sait donc que dans le cas d'une cofinalité indénombrable, la famille des
-clubs est stable par intersection finie. Est-il possible d'aller plus loin et de
-montrer une stabilité pour des intersections plus grandes ? C'est effectivement
-le cas, comme nous le montrons maintenant.
+Pour revenir sur un point précédent, on sait que dans le cas d'une cofinalité
+indénombrable, la famille des clubs est stable par intersection finie. Est-il
+possible d'aller plus loin et de montrer une stabilité pour des intersections
+plus grandes ? C'est effectivement le cas, comme nous le montrons maintenant.
 
 \begin{proposition}\label{prop.inter.club.k}
   Soit $\kappa$ un cardinal régulier indénombrable. Alors l'intersection d'une
@@ -420,7 +439,47 @@ le cas, comme nous le montrons maintenant.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On raisonne par l'absurde. Supposons qu'il existe un cardinal
+  $\lambda < \kappa$ tel qu'il existe une famille $\mathcal C$ de cardinal
+  $\lambda$ dont les éléments sont des clubs et dont l'intersection n'est pas
+  un club. Prenons $\lambda$ minimal, et soit $(C_\alpha)$ une énumération de
+  $\mathcal C$~:
+  \[\mathcal C \defeq \{C_\alpha \mid \alpha < \lambda\}\]
+  On souhaite montrer que $\bigcap \mathcal C$ est un club. Pour cela, on
+  définit d'abord la famille suivante~:
+  \[D_\alpha \defeq \bigcup_{\beta < \alpha} C_\beta\]
+  On remarque que
+  $\displaystyle\bigcap_{\alpha < \lambda} D_\alpha = \bigcap\mathcal C$, donc il
+  nous suffit de montrer que cette intersection est un club. De plus, on sait
+  que chaque $D_\alpha$ est un club, car il est l'intersection
+  d'une famille de cardinal strictement inférieur à $\lambda$ de club (et
+  $\lambda$ est supposé minimal). Comme chaque $D_\alpha$ est un fermé,
+  $\bigcap D_\alpha$ aussi. Il nous reste donc à montrer que $\bigcap D_\alpha$
+  est cofinal.
+
+  Soit $\beta < \kappa$, on veut construire une famille $(\beta_\gamma)$ de
+  taille $\lambda$ d'éléments supérieurs à $\beta$ par induction transfinie~:
+  \begin{itemize}
+  \item on sait que $D_0 = C_0$ est cofinal, donc on peut trouver
+    $\beta_0 \geq \beta$ un élément de $D_0$.
+  \item si on a défini $\beta_\gamma$, alors on peut utiliser le fait que
+    $D_{\gamma + 1}$ est un club pour trouver
+    $\beta_{\gamma + 1}\in D_{\gamma+ 1}$ supérieur à $\beta_\gamma$.
+  \item si on a défini $\beta_\gamma$ pour tout $\gamma < \delta$ et $\delta$
+    est un ordinal limite, alors comme $\delta < \cof(\kappa) = \kappa$, on
+    sait que $\sup_{\gamma < \delta} \beta_\gamma < \kappa$, donc on peut prendre
+    $\beta_\delta \in D_\delta$ supérieur à ce suprémum.
+  \end{itemize}
+  On considère maintenant
+  \[\gamma \defeq \sup_{\gamma < \lambda} \beta_\gamma\]
+  Comme $\kappa$ est régulier et $\lambda < \kappa$, on sait que
+  $\gamma < \kappa$, et cet élément est dans tous les $D_\alpha$. En effet, il
+  est la borne supérieure d'une famille d'éléments de $D_\alpha$, donc comme
+  $D_\alpha$ est fermé, $\gamma \in D_\alpha$.
+
+  Ainsi $\displaystyle\bigcap_{\alpha < \lambda} D_\alpha$ est un club, ce qui est
+  absurde. On en déduit que l'intersection d'une famille de cardinal
+  $\lambda < \kappa$ de clubs est encore un club.
 \end{proof}
 
 L'autre question naturelle, se basant sur les $E_\kappa^\lambda$, est de savoir
@@ -433,7 +492,45 @@ ici simplement donner un résultat légèrement plus fort.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Pour commencer, on pose $f : \omega_1 \to [0,1]\setminus \mathbb Q$ une
+  injection (qui existe par un simple argument de cardinalité). On va
+  construire, pour chaque $u \in \mathbb N^*$ de taille $n$, un ensemble
+  $C_u\subseteq \omega_1$ tel que $f(C_u)$ est de diamètre inférieur à
+  $2^{-n}$.
+
+  Pour cela, on pose
+  \[\begin{cases}
+  C_0 \defeq \{\alpha \mid f(\alpha) < 1/2\}\\
+  C_1 \defeq \omega_1\setminus C_0
+  \end{cases}\]
+  Si $C_u$ a été défini pour $u$ de taille $n$, alors on considère $r$ le
+  milieu de $f(C_u)$
+  (la moyenne entre la borne supérieure et la borne inférieure) et on pose
+  \[\begin{cases}
+  C_{u\star 0} \defeq \{\alpha \in C_u \mid f(\alpha) < r\}\\
+  C_{u\star 1} \defeq C_u \setminus C_{u0}
+  \end{cases}\]
+  (où $u\star i$ est le mot constitué de $u$ et de la lettre $i$).
+  On a ainsi notre famille de parties $C_u$ pour tout $u \in \mathbb N^*$, dont
+  le diamètre est inférieur à $2^{-n}$ pour un mot $u$ de taille $n$.
+
+  On raisonne maintenant par l'absurde~: supposons qu'il n'existe pas deux
+  ensembles stationnaires disjoints dans $\omega_1$. On va alors construire une
+  suite $g : \omega \to 2$ de telle sorte que $C_{g\restr n}$ contient toujours
+  un club. Ce faisant, $\displaystyle\bigcap C_{g\restr n}$ contiendra un club
+  et aura comme image par $f$, injective, un seul point~: cela constitue une
+  contradiction.
+
+  On construit donc $g$ par récurrence~: on sait que $C_{g\restr n\star 0}$ et
+  $C_{g\restr n\star 1}$ sont disjoints, et par hypothèse il n'existe
+  pas deux ensembles stationnaires dans $\omega_1$ disjoints, donc l'un des
+  deux ensembles est non stationnaire~: cela signifie que l'autre ensemble
+  contient un club. On choisit alors $i$ tel que $C_{g\restr n \star i}$
+  contient un club. A l'étape $0$, on sait que $\omega_1$ entier contient un
+  club, nous permettant donc de faire ce raisonnement.
+
+  On en déduit donc, avec les arguments précédents, qu'il existe au moins deux
+  ensembles stationnaires disjoints dans $\aleph_1$.
 \end{proof}
 
 \section{Lemme de Fodor et applications}
@@ -461,7 +558,7 @@ donc par en donner la définition.
 
 On donne alors la version faible du lemme de Fodor~:
 
-\begin{lemma}[Fodor, version faible]
+\begin{lemma}[Fodor, version faible]\label{lem.fodor.faible}
   Soit $\lambda$ un cardinal régulier indénombrable et $S\subseteq \lambda$ un
   ensemble stationnaire. Soit $f : S \to \lambda$ régressive, alors $f$ est
   constante sur un ensemble de taille $\lambda$, c'est-à-dire qu'il existe
@@ -546,7 +643,7 @@ ensembles stationnaires disjoints de façon particulièrement élégantes.
     est, en tant que partie co-bornée de $\lambda$, un club. C'est donc une
     absurdité, donc il existe au moins un indice $\beta(\alpha)$ tel que
     $X_\alpha^{\beta(\alpha)}$ est stationnaire.
-  \item On utilise maintenant le lemme de Fodor faible~: la fonction
+  \item On utilise maintenant le \cref{lem.fodor.faible}~: la fonction
     $g : \alpha \mapsto \beta(\alpha)$ est régressive sur
     $\lambda\setminus\kappa$ comme $\beta(\alpha) \in \kappa$, et la partie
     $\lambda\setminus\kappa$ est un club (donc stationnaire). On en déduit
@@ -616,7 +713,26 @@ l'intersection diagonale.
     que $\sup X$ est une limite d'éléments de $C_\beta$, donc un élément de
     $C_\beta$ puisque $C_\beta$ est un club (en particulier un fermé). Donc
     $\sup X\in C_\beta$ pour tout $\beta < \sup X$, donc $\sup X \in D$.
-  \item A FAIRE
+  \item On utilie un argument développé dans la preuve de la
+    \cref{prop.inter.club.k} pour montrer que $D$ est cofinal. On pose
+    \[D_\alpha \defeq \bigcap_{\beta < \alpha} C_\alpha\]
+    Chaque $D_\alpha$ est un club d'après la \cref{prop.inter.club.k}.
+    Soit $\beta < \kappa$, on construit une suite $(\alpha_n)$ par
+    récurrence~:
+    \begin{itemize}
+    \item $\alpha_0 = \beta + 1$
+    \item pour tout $n \in \mathbb N$, si $\alpha_n$ a été défini, alors on
+      sait que $D_{\alpha_n}$ est un club, donc on peut trouver
+      $\alpha_{n+1}\in D_{\alpha_n}$ tel que $\alpha_{n+1} > \alpha_n$.
+    \end{itemize}
+    On définit alors
+    \[\alpha \defeq \sup_{n \in \mathbb N} \alpha_n\]
+    Alors, pour tout $n \in \mathbb N$, on sait que $\alpha_m \in D_{\alpha_n}$
+    pour tout $m \geq n$, donc $\alpha \in D_{\alpha_n}$. Comme
+    $\displaystyle D_{\alpha} =\bigcap_{n \in \mathbb N} D_{\alpha_n}$,
+    on en déduit que $\alpha \in D_\alpha$, c'est-à-dire
+    $\alpha \in \bigcap_{\beta < \alpha} C_\alpha$, donc
+    $\alpha \in D$ et $\alpha > \beta$.
   \end{itemize}
   Ainsi $D$ est bien un club.
 \end{proof}
@@ -632,8 +748,8 @@ On en déduit le lemme de Fodor.
 \begin{proof}
   Supposons que pour tout $\beta \in \kappa$, $f^{-1}(\{\beta\})$ est non
   stationnaire. On trouve alors $C_\beta$ un club disjoint de
-  $f^{-1}(\{\beta\})$. Comme $\displaystyle\diagcap_{\beta < \kappa} C_\beta$
-  et $S$ est stationnaire, on peut trouver
+  $f^{-1}(\{\beta\})$. Comme $\displaystyle\diagcap_{\beta < \kappa} C_\beta$ est un
+  club et $S$ est stationnaire, on peut trouver
   $\gamma \in S\cap \diagcap_{\beta < \kappa} C_\beta$. On sait donc que
   $\gamma \in C_\beta$ pour tout $\beta < \gamma$, c'est-à-dire que
   $f(\gamma) \neq \beta$ pour tout $\beta < \gamma$. On en déduit que
