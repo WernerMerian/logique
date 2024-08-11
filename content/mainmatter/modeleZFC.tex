@@ -75,12 +75,11 @@ précisément ce procédé de réduire la portée des quantificateurs par une fo
 exprimant en général l'appartenance à une classe qui nous intéresse.
 
 \begin{definition}[Relativisation d'une formule]
-  Soient $\varphi,\psi\in\Formula(\mathcal L_{\ZF})$. On appelle relativisation
-  de $\varphi$ à $\psi$ la formule $\varphi^\psi$ définie par induction sur
-  $\varphi$ par~:
+  Soient $\varphi,\psi\in\Formula(\mathcal L_{\ZF})$ où $\psi$ possède une
+  variable libre. On appelle relativisation de $\varphi$ à $\psi$ la formule
+  $\varphi^\psi$ définie par induction sur $\varphi$ par~:
   \begin{itemize}
-  \item si $\varphi = x \in y$ ou $\varphi = x \in y$ alors
-    $\varphi^\psi = \varphi$.
+  \item si $\varphi$ est atomique alors $\varphi^\psi = \varphi$.
   \item si $\varphi = \top$ alors $\varphi^\psi = \top$.
   \item si $\varphi = \bot$ alors $\varphi^\psi = \bot$.
   \item si $\varphi = \lnot \chi$ alors $\varphi^\psi = \lnot \chi^\psi$.
@@ -100,16 +99,104 @@ exprimant en général l'appartenance à une classe qui nous intéresse.
 Le théorème central pour l'étude des modèles classes est que la cohérence est
 préservée par ceux-ci.
 
-\begin{lemma}
-  Pour $\Gamma\in\List(\Formula(\Sigma))$ et $\varphi,\psi\in\Formula(\Sigma)$,
-  si $\Gamma\vdash \varphi$ alors $\Gamma^\psi \vdash \varphi^\psi$ où
-  $\Gamma^\psi$ l'application de la relativisation à $\psi$ de tous les éléments
-  de $\Gamma$.
+\begin{lemma}\label{lem.relat.deduc}
+  Pour $\Gamma\in\List(\Formula(\mathcal L_{\ZF}))$ et
+  $\varphi,\psi\in\Formula(\mathcal L_{\ZF})$, si $\Gamma\vdash \varphi$ alors
+  $\Gamma^\psi \vdash \varphi^\psi$ où $\Gamma^\psi$ est l'application de la
+  relativisation à $\psi$ de tous les éléments de $\Gamma$, augmentée de la
+  formule $\psi(x)$ pour toute variable $x\in \VL(\Gamma)\cup \VL(\varphi)$.
 \end{lemma}
 
 \begin{proof}
-  A FAIRE
+  On procède par induction sur la relation $\Gamma \vdash \varphi$, en
+  considérant une variant de $\vdash$ où l'on tient compte des variables libres
+  dans les séquents~:
+  \begin{itemize}
+  \item cas Ax~: si $\varphi \in \Gamma$, alors $\varphi^\psi \in \Gamma^\psi$,
+    d'où le résultat.
+  \item cas $\top$~: peu importe $\Gamma$, on a toujours
+    $\Gamma^\psi \vdash \top$.
+  \item cas $\bot_\mathrm c$~: on suppose que
+    $\Gamma^\psi, \lnot A^\psi \vdash \bot$, alors on peut appliquer
+    $\bot_\mathrm c$ pour en déduire que $\Gamma^\psi \vdash A^\psi$.
+  \item cas $\lor_\mathrm i^\mathrm g$~: on suppose que
+    $\Gamma^\psi \vdash A^\psi$, donc $\Gamma^\psi \vdash A^\psi\lor B^\psi$,
+    c'est-à-dire $\Gamma^\psi \vdash (A\lor B)^\psi$.
+  \item le cas $\lor_\mathrm i^\mathrm d$ est analogue.
+  \item cas $\lor_\mathrm e$~: on suppose que
+    $\Gamma^\psi\vdash A^\psi\lor B^\psi$, $\Gamma^\psi, A^\psi \vdash C^\psi$ et
+    $\Gamma^\psi,B^\psi\vdash C^\psi$, alors on peut appliquer la règle
+    $\lor_\mathrm e$ pour en déduire que $\Gamma^\psi \vdash C^\psi$.
+  \item cas $\land_\mathrm i$~: on suppose que $\Gamma^\psi\vdash A^\psi$ et
+    $\Gamma^\psi \vdash B^\psi$, alors $\Gamma^\psi \vdash A^\psi \land B^\psi$.
+  \item cas $\land_\mathrm e^\mathrm g$~: on suppose que
+    $\Gamma^\psi\vdash (A\land B)^\psi$, c'est-à-dire que
+    $\Gamma^\psi\vdash A^\psi \land B^\psi$, alors on peut en déduire que
+    $\Gamma^\psi \vdash A^\psi$.
+  \item le cas $\land_\mathrm e^\mathrm d$ est analogue.
+  \item cas $\to_\mathrm i$~: si $\Gamma^\psi,A^\psi\vdash B^\psi$ alors
+    $\Gamma^\psi\vdash A^\psi \to B^\psi$, et par définition
+    $A^\psi\to B^\psi = (A\to B)^\psi$, d'où le résultat.
+  \item cas $\to_\mathrm e$~: si $\Gamma^\psi \vdash (A\to B)^\psi$ et
+    $\Gamma^\psi \vdash A^\psi$, alors $\Gamma^\psi\vdash B^\psi$.
+  \item cas $\forall_\mathrm i$~: si $\Gamma^\psi\vdash A[v/x]^\psi$, où $v$ est
+    libre dans $\Gamma$ et $A$, alors par affaiblissement on sait que
+    $\Gamma^\psi, \psi(v)\vdash A[v/x]^\psi$, donc que
+    $\Gamma^\psi\vdash \psi(v)\to A[v/x]^\psi$, d'où par la règle
+    $\forall_\mathrm i$ le fait que $\Gamma^\psi \vdash (\forall x, A)^\psi$.
+  \item cas $\forall_\mathrm e$~: si $\Gamma^\psi \vdash (\forall x,A)^\psi$, et
+    pour une variable $y \in \VL(\Gamma)\cup \VL(A)$ (puisque tout terme dans
+    $\mathcal L_{\ZF}$ est une variable et que la relativisation n'ajoute pas
+    de variable libre), on peut spécialiser notre séquent en
+    $\Gamma^\psi \vdash \psi(y)\to A[y/x]$, puis utiliser l'hypothèse
+    $\psi(y)\in\Gamma^\psi$ pour en déduire que $\Gamma^\psi \vdash A[t/x]$.
+  \item cas $\exists_\mathrm i$~: si $\Gamma^\psi \vdash A[y/x]$ alors on sait
+    que $\Gamma^\psi\vdash \psi(y)$, donc
+    $\Gamma^\psi\vdash \psi(y)\land A[y/x]$, d'où
+    $\Gamma^\psi \vdash (\exists x, A)^\psi$.
+  \item cas $\exists_\mathrm e$~: si $\Gamma^\psi \vdash (\exists x, A)^\psi$ et
+    $\Gamma^\psi, \psi(x) \land A^\psi \vdash B^\psi$, alors la règle
+    $\lor_\mathrm e$ nous donne directement $\Gamma^\psi \vdash B^\psi$. On
+    remarque qu'on peut effectivement utiliser l'hypothèse d'induction sur
+    $\Gamma^\psi, \psi(x)\land A^\psi\vdash B^\psi$ car ce séquent est équivalent
+    à $\Gamma^\psi, \psi(x), A^\psi \vdash B^\psi$, qui contient bien $\psi(a)$
+    pour chaque $a \in \VL(\Gamma)\cup\VL(A)$.
+  \item cas $=_\mathrm i$~: si $t$ est un terme, alors $\Gamma^\psi\vdash t = t$
+  \item cas $=_\mathrm e$~: si $\Gamma^\psi \vdash t = u$ et
+    $\Gamma^\psi \vdash A[t/x]^\psi$, alors on peut vérifier par induction sur
+    $A$ que $(A[t/x])^\psi = A^\psi [t/x]$, donc on peut directement appliquer
+    $=_\mathrm e$ pour obtenir le résultat.
+  \end{itemize}
+  Ainsi, par induction, on sait que $\Gamma^\psi \vdash \varphi^\psi$.
 \end{proof}
+
+\begin{remark}
+  La preuve ci-dessus n'est pas parfaitement rigoureuse, principalement à cause
+  du choix fait plus tôt de ne pas détailler les règles de déduction naturelle
+  prenant en compte des variables. Pour être plus précis, étant donné un séquent
+  $\Gamma\vdash \varphi$ bien typé en considérant une liste de variables
+  $x_1,\ldots,x_n$, on veut montrer que
+  $\Gamma^\psi, \psi(x_1),\ldots,\psi(x_n) \vdash \varphi^\psi$. Sans gestion des
+  variables du premier ordre, ce lemme serait faux~: en prenant pour $\psi$ un
+  prédicat toujours faux, tel que $x\neq x$, on peut prouver
+  $\vdash (\forall x, A)\to (\exists x, A)$ mais pas
+  $\vdash (\forall x,A)^\psi \to (\exists x, A)^\psi$ puisque le $x$ invoqué par
+  la première formule ne vérifie pas $\psi$. Dans un tel cas, en ajoutant la
+  gestion des variables, on a une hypothèse absurde donc la conclusion est
+  forcément vraie.
+\end{remark}
+
+\begin{remark}
+  Il est possible de généraliser ce lemme à une signature $\Sigma$ quelconque.
+  Cependant, pour cela, il est nécessaire que $\psi$ vérifie une propriété de
+  stabilité~: il faut que pour chaque symbole de fonction $f$ d'arité $n$,
+  on puisse prouver
+  \[\vdash\forall x_1,\ldots,x_n, \left(\bigwedge_{i = 1}^n \psi(x_i)\right)
+  \to \psi(f(x_1,\ldots,x_n))\]
+  Ce faisant, on peut montrer que tout terme vérifie $\psi$ (en supposant que
+  les variables vérifient $\psi$), et ainsi vérifier les parties de l'induction
+  liées à l'élimination du $\forall$ et l'introduction du $\exists$.
+\end{remark}
 
 \begin{theorem}[Préservation de la cohérence]
   Soit $\mathcal T$ et $\mathcal S$ deux théories sur $\mathcal L_{\ZF}$ et
@@ -125,11 +212,13 @@ préservée par ceux-ci.
   \item supposons $\lnot\Coher(\mathcal S)$, cela signifie donc qu'il existe une
     preuve $\mathcal S\vdash \bot$, et comme cette preuve est finie on peut
     extraire une partie finie $F\subfin \mathcal S$ telle que $F\vdash \bot$.
-    En utilisant le lemme précédent, il vient donc que $F^\psi\vdash \bot^\psi$
-    mais $\bot^\psi = \bot$, donc on en déduit que $F^\psi\vdash \bot$. Comme
-    $\mathcal T\vdash \varphi^\psi$ pour chaque $\varphi \in F$, on en déduit
-    que $\mathcal T\vdash \bot$, donc que $\lnot\Coher(\mathcal T)$. Par
-    contraposée, on en déduit l'implication voulue.
+    En utilisant le \cref{lem.relat.deduc}, il vient donc que
+    $F^\psi\vdash \bot^\psi$ (comme les énoncés sont clos, on n'a pas à rajouter
+    de $\psi(x)$ pour des variables $x$). Or, $\bot^\psi = \bot$, donc on en
+    déduit que $F^\psi\vdash \bot$. Comme $\mathcal T\vdash \varphi^\psi$ pour
+    chaque $\varphi \in F$, on en déduit que $\mathcal T\vdash \bot$, donc que
+    $\lnot\Coher(\mathcal T)$. Par contraposée, on en déduit l'implication
+    voulue.
   \item supposons $\Coher(\mathcal T)$. On trouve donc un modèle $\mathcal M$
     de $\mathcal T$. Soit $\mathcal N$ le sous-modèle de $\mathcal M$ défini
     par
@@ -177,19 +266,8 @@ présent dans tout modèle de $\ZFC - \AxF$.
   plus facile à appréhender.
 \end{remark}
 
-Un premier résultat important~: la hiérarchie est cumulative, ce qui signifie
-que les ensembles sont de plus en plus grands.
-
-\begin{property}
-  Si $\alpha \leq \beta$, alors $\mathbb V_\alpha\subseteq \mathbb V_\beta$.
-\end{property}
-
-\begin{proof}
-  A FAIRE
-\end{proof}
-
-Une conséquence de ce résultat est la transitivité de chaque
-$\mathbb V_\alpha$.
+Un premier résultat important~: chaque $\mathbb V_\alpha$ est transitif, et
+$\mathbb V$ tout entier l'est donc aussi.
 
 \begin{property}
   Pour chaque $\alpha\in\Ord$, $\mathbb V_\alpha$ est un ensemble transitif. De
@@ -202,28 +280,110 @@ $\mathbb V_\alpha$.
   \item si $x\in \varnothing$, alors $x\subseteq\varnothing$.
   \item supposons que $\mathbb V_\alpha$ est transitif. Soit
     $x\in\mathbb V_{\alpha+1}$. Par définition, cela signifie que
-    $x\subseteq \mathbb V_\alpha$. Soit $y\in x$, par inclusion cela signifie
-    que $y\in \mathbb V_\alpha$, donc comme la hiérarchie est cumulative, on
-    en déduit que $y\in \mathbb V_{\alpha +1}$, donc
-    $x\subseteq \mathbb V_{\alpha +1}$.
+    $x\subseteq \mathbb V_\alpha$. Soit $y\in x$~: par inclusion,
+    $y\in \mathbb V_\alpha$, donc (comme $\mathbb V_\alpha$ est transitif)
+    $y\subseteq \mathbb V_\alpha$, c'est-à-dire $y\in \mathbb V_{\alpha + 1}$,
+    donc $x\subseteq \mathbb V_{\alpha + 1}$.
   \item si pour tous $\beta < \lambda$, $\mathbb V_\beta$ est transitif, alors
     pour $x\in \mathbb V_\lambda$, on trouve $\alpha < \lambda$ tel que
     $x\in V_\alpha$, donc $x\subseteq V_\alpha$. De plus,
     $V_\alpha \subseteq V_\lambda$ donc $x\subseteq V_\lambda$.
   \end{itemize}
-  Ainsi tous les $\mathbb V_\alpha$ sont transitif. Le fait que $\mathbb V$ est
+  Ainsi tous les $\mathbb V_\alpha$ sont transitifs. Le fait que $\mathbb V$ est
   une classe transitive est une conséquence directe.
 \end{proof}
 
+Une conséquence première est que la hiérarchie est cumulative, ce qui signifie
+que les ensembles sont de plus en plus grands.
+
+\begin{property}
+  Si $\alpha \leq \beta$, alors $\mathbb V_\alpha\subseteq \mathbb V_\beta$.
+\end{property}
+
+\begin{proof}
+  On prouve ce résultat par induction sur l'ordinal $\gamma$ tel que
+  $\alpha + \gamma = \beta$~:
+  \begin{itemize}
+  \item pour tout $\alpha$, $\mathbb V_\alpha \subseteq \mathbb V_\alpha$.
+  \item supposons que $\mathbb V_\alpha \subseteq \mathbb V_\beta$, alors
+    montrons que $\mathbb V_\alpha \subseteq \mathbb V_\beta$~: il nous suffit
+    pour cela de montrer que pour tout $\beta$,
+    $\mathbb V_\beta \subseteq \mathbb V_{\beta + 1}$. Si $x \in \mathbb V_\beta$,
+    alors comme $\mathbb V_\beta$ est transitif, $x\subseteq \mathbb V_\beta$,
+    donc $x\in \mathbb V_{\beta + 1}$ par définition.
+  \item supposons que pour tout $\delta < \gamma$ et $\gamma$ ordinal limite,
+    $\mathbb V_\alpha \subseteq \mathbb V_{\alpha + \delta}$. Alors
+    comme
+    \[\mathbb V_{\alpha + \gamma} =
+    \bigcup_{\delta < \gamma} \mathbb V_{\alpha + \delta}\]
+    on en déduit que $\mathbb V_\alpha \subseteq \mathbb V_{\alpha + \gamma}$.
+  \end{itemize}
+  D'où le résultat par induction transfinie.
+\end{proof}
+
 Notre premier objectif est de montrer que $\mathbb V$ constitue un premier
-modèle classe de $\ZFC$.
+modèle classe de $\ZFC$. Pour cela, on donne d'abord un lemme essentiel pour
+prouver de tels axiomes.
+
+\begin{lemma}\label{lem.axZFC}
+  Soit $M$ une classe, alors on a les propriétés suivantes~:
+  \begin{itemize}
+  \item si $M$ est une classe transitive, alors $M$ vérifie l'axiome
+    d'extensionalité.
+  \item si $M$ est clos par sous-ensemble, c'est-à-dire si pour tout ensemble
+    $x \in M$ et $y \subseteq x$, on a $y \in M$, alors $M$ vérifie l'axiome
+    de compréhension.
+  \item si pour tout $x,y \in M$, $\{x,y\} \in M$ alors $M$ vérifie l'axiome de
+    la paire.
+  \item si pour tout $x \in M, \bigcup x \in M$ alors $M$ vérifie l'axiome de la
+    réunion.
+  \item si $M$ est une classe transitive vérifiant la proposition suivante~:
+    pour toute fonction partielle $f$ (non obligatoirement dans $M$) telle que
+    $\dom(f) \in M$ et $\im(f) \subseteq M$, on a $\im(f) \in M$ ; alors $M$
+    vérifie l'axiome de remplacement.
+  \end{itemize}
+\end{lemma}
+
+\begin{proof}
+  On prouve chaque propriété~:
+  \begin{itemize}
+  \item soient $x,y \in M$ deux ensembles tels que
+    $\forall z \in M, z \in x \iff z \in y$. Alors pour tout $z \in x$, comme
+    $M$ est transitive, $z \in M$, donc par notre hypothèse $z \in y$, donc
+    $x \subseteq y$. L'argument fonctionne symétriquement pour nous assurer que
+    $y \subseteq x$, donc $x = y$.
+  \item supposons que $M$ est clos par sous-ensemble. Soient $a_1,\ldots,a_n,a$
+    des éléments de $M$ et $\psi(x_1,\ldots,x_n,a)$ une formule sur
+    $\mathcal L_{\ZF}$. Alors on sait que
+    $\{ y \in a \mid \psi(a_1,\ldots,a_n,y)\} \subseteq a \in M$,
+    donc il existe bien dans $M$ un ensemble $A$ tel que
+    $y \in A \iff \psi(a_1,\ldots,a_n,y)$.
+  \item soient $x,y \in M$, alors $\{x,y\} \in M$, donc il existe dans $M$ un
+    ensemble $A$ tel que $z \in A \iff z = x \lor z = y$.
+  \item de même, si $M$ est stable par réunion, on a directement un candidat
+    pour être l'union d'un ensemble $x$, donné par $\bigcup x$ lui-même~: on
+    voit qu'un élément $z$ est dans $\bigcup x$ si et seulement s'il existe
+    $y$ tel que $z \in y \in x$.
+  \item soit une formule fonctionnelle $\psi^M(x_1,\ldots,x_n,x,y)$,
+    $a_1,\ldots,a_n,a \in M$ des paramètrs. Par l'axiome de remplacement (dans
+    l'univers ambiant), on sait qu'il existe un ensemble $b$, image de $a$
+    par $\psi^M(a_1,\ldots,a_n)$, et une fonction $f : a \to b$ (partielle).
+    Alors, par le \cref{lem.relat.deduc}, pour tout $y \in b$, comme on sait que
+    $\psi^M(a_1,\ldots,a_n,x,y)$ pour un certain $x \in a$ (donc $x \in M$
+    d'après le fait que $M$ est transitif), on en déduit que $y \in M$.
+    Ainsi, $f : a \to b$, dont le domaine est $a \in M$, a une image
+    $b \subseteq M$. Par notre hypothèse, $b \in M$, donc l'axiome de
+    remplacement est vérifié.
+  \end{itemize}
+  D'où les propriétés énoncées.
+\end{proof}
 
 \begin{theorem}\label{thm.V.ZFCAF}
   Pour tout $\varphi \in \ZFC$, on a $\ZFC - \AxF \vdash \varphi^\mathbb V$.
 \end{theorem}
 
 \begin{proof}
-  On vérifie chaque axiome relativisé~:
+  On vérifie chaque axiome relativisé à l'aide de \cref{lem.axZFC}~:
   \begin{itemize}
   \item vérifions l'axiome d'extensionalité. Soient $x,y\in \mathbb V$ tels que
     $\forall z\in \mathbb V, z\in x\iff z \in y$. Comme $\mathbb V$ est une
@@ -232,18 +392,43 @@ modèle classe de $\ZFC$.
     l'axiome d'extensionalité peut s'appliquer directement pour conclure que
     $x = y$.
   \item vérifions l'axiome de la réunion~: si $x\in \mathbb V$ alors on trouve
-    $\alpha$ tel que $\rk(x) = \alpha$. A FAIRE
+    $\alpha$ tel que $x \in \mathbb V_\alpha$. On sait que $\mathbb V_\alpha$ est
+    transitif, donc pour tout $y \in x$, $y \in \mathbb V_\alpha$ et, pour tout
+    $z \in y \in x$, $z \in \mathbb V_\alpha$~: on en déduit que $\bigcup x$
+    est une partie de $\mathbb V_\alpha$, donc
+    $\bigcup x\in \mathbb V_{\alpha + 1}$.
   \item vérifions l'axiome de l'ensemble des parties~: soit $x\in \mathbb V$,
-    on trouve $\alpha$ tel que $\rk(x) = \alpha$. Alors pour tous
+    on trouve $\alpha$ tel que $x \in\mathbb V_\alpha$. Alors pour tous
     $y\subseteq x$, $y\subseteq \mathbb V_\alpha$ donc
     $y\in\mathbb V_{\alpha +1}$. On en déduit que pour tous $y\in \powerset(x)$,
     $y\in \mathbb V$, donc $\powerset(x)\in\mathbb V$.
-  \item vérifions l'axiome de remplacement~: A FAIRE
+  \item vérifions l'axiome de remplacement~: soit $f$ une fonction partielle
+    dont le domaine est un ensemble $x \in \mathbb V_\alpha$, et dont l'image
+    est $y \subseteq \mathbb V$. On peut alors considérer pour chaque $z \in y$
+    un $\beta_z$ tel que $z \in \mathbb V_{\beta_z}$. Alors en prenant
+    $\beta = \sup_{z\in y} \beta_z$, on a $y \subseteq \mathbb V_\beta$, donc
+    $y\in \mathbb V_{\beta + 1}$ par définition, donc $y \in \mathbb V$.
   \item vérifions l'axiome de l'infini~: on sait que $\Ord\subseteq\mathbb V$,
     donc il existe bien un ensemble $\omega^\mathbb V \in \mathbb V$
     contenant $0$ et stable par successeur, c'est $\omega$ lui-même.
-  \item vérifions l'axiome de fondation~: A FAIRE
-  \item vérifions l'axiome du choix~: A FAIRE
+  \item vérifions l'axiome de fondation~: par l'absurde, supposons qu'il existe
+    un élément $x \in \mathbb V$ non vide tel que pour tout $y \in x$
+    $x \cap y \neq \varnothing$. Soit $\alpha$ l'ordinal minimal tel que
+    $x \in \mathbb V_\alpha$. On sait que pour tout $y \in x$, il existe
+    $\beta < \alpha$ tel que $y \in \mathbb V_\beta$~: prenons le $\beta$ minimal
+    contenant au moins un $y \in x$ et $y$ un tel élément de $x$ associé. On
+    sait alors, par hypothèse, qu'il existe $z \in x \cap y$. On en déduit,
+    comme $z \in y$, qu'il existe $\gamma < \beta$ tel que
+    $z \in \mathbb V_\gamma$, mais comme $z \in x$, cela contredit la minimalité
+    de $\beta$. C'est donc absurde, donc $x$ est bien fondé pour $\in$.
+  \item vérifions l'axiome du choix~: soit un ensemble $X$ non vide, dont les
+    éléments sont non vides et deux à deux disjoints. Soit $\alpha$ tel que
+    $X \in \mathbb V_\alpha$, on sait donc que tous les éléments de $X$ sont
+    des éléments de $\mathbb V_\alpha$. Par l'axiome du choix, on trouve
+    $C$ tel que $C \cap x$ est un singleton pour tout $x \in X$. Quitte à
+    restreindre $C$ aux éléments d'éléments de $X$, on a donc un ensemble
+    dont les éléments sont des éléments de $\mathbb V_\alpha$, donc
+    $C\in\mathbb V_{\alpha + 1}$, d'où le réstultat.
   \end{itemize}
   D'où le résultat.
 \end{proof}
@@ -255,13 +440,21 @@ l'univers ambiant.
 
 \begin{proposition}
   Soit un ensemble $x$, alors on a l'équivalence suivante dans $\ZFC-\AxF$~:
-  \[x\in \mathbb V \iff \exists y \in \trcl(x), \trcl(x) \cap y = \varnothing\]
+  \[x\in \mathbb V \iff
+  \forall y \in \trcl(x), \exists z \in y, y \cap z = \varnothing\]
 \end{proposition}
 
 \begin{proof}
   L'implication directe est une conséquence du fait que $\mathbb V\models \AxF$.
-  Soit $x$ tel que $\exists y \in \trcl(x), \trcl(x) \cap y = \varnothing$. On
-  en déduit que $\in$ est une relation bien fondée sur $x$, 
+  Pour le sens réciproque, on raisonne par induction bien fondée sur $\in$~:
+  si pour tout $x \in X$, $x \in \mathbb V$, alors en considérant
+  \[\alpha_x \defeq \min\{\alpha \in \Ord\mid x \in \mathbb V_\alpha\}\]
+  puis
+  \[\alpha \defeq \sup_{x \in X} \alpha_x\]
+  on sait que $x\in \mathbb V_\alpha$ pour tout $x \in X$, donc
+  $X\subseteq \mathbb V_\alpha$, donc $X \in \mathbb V_{\alpha + 1}$.
+  Ainsi, pour tout ensemble $X$ tel que $\in$ est bien fondé sur $X$,
+  $X \in \mathbb V$.
 \end{proof}
 
 On voit donc que dans le cas d'un univers ensembliste $\mathcal U$, celui-ci
@@ -309,6 +502,25 @@ des opérations ensemblistes usuelles, comme nous allons le voir.
   $x\in X$, $x\in \mathbb V_\beta$ donc $X\subseteq \mathbb V_\beta$, donc
   $\rk(X) \leq \beta$. Ce majorant est donc une borne supérieure, d'où
   l'égalité.
+\end{proof}
+
+\begin{lemma}\label{lem.rk.surj}
+  Soit $x$ un ensemble et $\alpha$ son rang. Alors pour tout $\beta < \alpha$,
+  il existe $y$ tel que $\beta = \rk(y)$ et $y \in \trcl(x)$.
+\end{lemma}
+
+\begin{proof}
+  Par l'absurde, en fixant $\alpha$, supposons qu'il existe un ensemble $x$,
+  minimal pour $\in$, tel que $\rk(x) > \alpha$ et il n'existe aucun élément
+  $y\in\trcl(x)$ tel que $\rk(y) = \alpha$. Comme on sait que $\alpha < \rk(x)$
+  et que $\displaystyle \rk(x) = \sup_{y \in x} (\rk(y) + 1)$,
+  alors on peut trouver $y \in x$ tel que $\rk(y) + 1 > \alpha$. Si
+  $\rk(y) = \alpha$, alors cela contredit notre hypothèse sur $x$. Si
+  $\rk(y) > \alpha$, alors par $\in$-minimalité de $x$, on en déduit qu'il
+  existe $z \in \trcl(y)$ tel que $\rk(z) = \alpha$, mais alors
+  $z \in \trcl(x)$, ce qui est absurde. Ainsi, dans tous les cas, on a une
+  absurdité. On en déduit que pour tout $x$ et $\alpha < \rk(x)$, il existe
+  $y \in \trcl(x)$ tel que $\rk(y) = \alpha$.
 \end{proof}
 
 \begin{property}\label{prop.rg.oper}
@@ -373,26 +585,8 @@ des opérations ensemblistes usuelles, comme nous allons le voir.
 On peut alors affiner certains résultats liés au fait que
 $\mathbb V \models \ZFC$. En effet, puisque
 $\mathbb V_\alpha \subseteq\mathbb V$, on peut chercher ce que chaque
-$\mathbb V_\alpha$ vérifie. Tout d'abord, plutôt que le cas particulier de
-$\mathbb V_\alpha$, l'axiome d'extensionalité est vérifié dès qu'un ensemble est
-transitif (cette condition n'est pas nécessaire, elle est seulement suffisante).
-
-\begin{property}
-  Soit $X$ un ensemble transitif, alors l'axiome d'extensionalité relativisé à
-  $X$ est vérifié~:
-  \[X \models \forall x,\forall y, (\forall z, z \in x\iff z \in y) \implies
-  x = y\]
-\end{property}
-
-\begin{proof}
-  On reprend la preuve faite dans le \cref{thm.V.ZFCAF}~: soient $x,y\in X$ deux
-  ensembles tels que $\forall z \in X, z \in x \iff z \in y$. Alors pour tout
-  $z\in x$, comme $X$ est transitif, $z\in X$, donc par notre hypothèse
-  $z\in y$, donc $x\subseteq y$. L'argument fonctionne symétriquement pour nous
-  assurer que $y\subseteq x$, donc $x = y$.
-\end{proof}
-
-De plus, chaque $\mathbb V_\alpha$ vérifie l'axiome de fondation.
+$\mathbb V_\alpha$ vérifie. Chaque $\mathbb V_\alpha$ vérifie l'axiome de
+fondation.
 
 On voit dans la \cref{prop.rg.oper} que la plupart des opérations ne font pas
 exploser le rang. Cela signifie que, dans le cas d'un ordinal limite, où
@@ -415,22 +609,22 @@ sont stables par $\mathbb V_\lambda$.
 \end{property}
 
 \begin{proof}
-  Vérifions chaque axiome~:
+  Vérifions chaque axiome, en utilisant le \cref{lem.axZFC}~:
   \begin{itemize}
-  \item soient $x,y\in \mathbb V_\lambda$, donc tels que $\rk(x) <\lambda$ et
-    $\rk(y)<\lambda$. Alors $\rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1 < \lambda$,
-    donc $\{x,y\}\in\mathbb V_\lambda$.
-  \item soit $x\in \mathbb V_\lambda$, alors $\rk(x) < \lambda$, donc
-    $\rk(\bigcup x) < \lambda$ donc $\bigcup x \in \mathbb V_\lambda$.
-  \item soit $x\in \mathbb V_\lambda$. Comme $\rk(\powerset(x)) = \rk(x) + 1$,
-    que $\rk(x) < \lambda$ et que $\lambda$ est limite, on en déduit que
-    $\rk(\powerset(x)) < \lambda$ donc que $\powerset(x) \in \mathbb V_\lambda$.
-  \item soit $\varphi(x_1,\ldots,x_n,x)$ une formule dans le langage de
-    $\ZFC$, $a_1,\ldots,a_n$ des éléments de $\mathbb V_\lambda$ et
-    $X\in \mathbb V_\lambda$. Alors l'ensemble
-    \[y \defeq \{x \in X \mid \varphi(a_1,\ldots,a_n,x)\}\]
-    est une partie de $X$, donc $\rk(y)\leq \rk(X) \leq \lambda$, donc
-    $y\in \mathbb V_\lambda$.
+  \item axiome de la paire~: soient $x,y\in \mathbb V_\lambda$, donc tels que
+    $\rk(x) <\lambda$ et $\rk(y)<\lambda$. On a alors  l'inégalité
+    $\rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1 < \lambda$, donc
+    $\{x,y\}\in\mathbb V_\lambda$.
+  \item axiome de l'union: soit $x\in \mathbb V_\lambda$, alors
+    $\rk(x) < \lambda$, donc $\rk(\bigcup x) < \lambda$ donc
+    $\bigcup x \in \mathbb V_\lambda$.
+  \item axiome de l'ensemble des parties~: soit $x\in \mathbb V_\lambda$. Comme
+    $\rk(\powerset(x)) = \rk(x) + 1$, que $\rk(x) < \lambda$ et que $\lambda$
+    est limite, on en déduit que $\rk(\powerset(x)) < \lambda$ donc que
+    $\powerset(x) \in \mathbb V_\lambda$.
+  \item axiome de compréhension~: on sait que si $x\subseteq y$ alors
+    $\rk(x) \leq \rk(y)$, donc $\mathbb V_{\lambda}$ est stable par
+    sous-ensemble.
   \item soit $X$ un ensemble non vide, d'éléments deux à deux disjoints. Alors
     par l'axiome du choix, il existe $C$ tel que $\forall x \in X,|C\cap x|=1$.
     Quitte à prendre $C \cap \bigcup X$, $C\subseteq \bigcup X$ donc
@@ -461,7 +655,7 @@ d'axiomes de remplacement~: ce sont les ensembles héréditaires.
 \begin{definition}[Ensemble héréditaire]
   Soit $\kappa \in \Card$. On appelle ensemble des ensembles héréditairement de
   cardinal $\kappa$ la classe
-  \[\mathbb H_\kappa \defeq \{x \mid |\trcl(x)| < \kappa\}\]
+  \[\mathbb H_\kappa \defeq \{x \mid \Card(\trcl(x)) < \kappa\}\]
 \end{definition}
 
 Pour deux cardinaux $\kappa,\lambda$, on définit le cardinal
@@ -470,16 +664,46 @@ On peut voir ce cardinal comme le cardinal de l'ensemble des fonctions de
 $\kappa$ dans $\lambda$ dont le support (ensemble des points de $\kappa$ où la
 fonction n'est pas nulle) est strictement inférieur à $\kappa$.
 
-On montre maintenant que, plus que des classes, les $\mathbb V_\kappa$ sont des
+On montre maintenant que, plus que des classes, les $\mathbb H_\kappa$ sont des
 ensembles.
 
-\begin{proposition}
-  Soit $\kappa\in\Card_\infty$. Alors $\mathbb H_\kappa\subseteq\mathbb V_\kappa$
-  et  $|\mathbb H_\kappa| = 2^{<\kappa}$.
+\begin{proposition}\label{prop.Hcard}
+  Soit $\kappa\in\Card$ infini. Alors $\mathbb H_\kappa\subseteq\mathbb V_\kappa$
+  et $|\mathbb H_\kappa| = 2^{<\kappa}$.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Soit un ensemble $x$ et $\alpha$ son rang. Par le \cref{lem.rk.surj}, pour
+  tout $\beta < \alpha$, on trouve $x_\beta \in \trcl(x)$ tel que
+  $\rk(x_\beta) = \beta$. On a donc une injection de $\rk(x)$ vers $\trcl(x)$,
+  donc $\Card(\trcl(x)) \geq \Card(\rk(x))$, d'où $x \in \mathbb V_\kappa$.
+
+  Pour la deuxième proposition, procédons par double inégalité. Tout d'abord,
+  pour $\lambda < \kappa$, on sait que
+  $\powerset(\lambda) \subseteq \mathbb H_\kappa$, donc
+  $|\mathbb H_\kappa| \geq 2^\lambda$, d'où $|\mathbb H_\kappa| \geq 2^{<\kappa}$.
+
+  Pour l'autre inégalité, on va construire pour chaque $x \in \mathbb H_\kappa$
+  une relation $r_x \subseteq \lambda \times \lambda$ pour un certain
+  $\lambda < \kappa$, de telle sorte que l'association soit injective.
+  Soit donc $x \in \mathbb H_\kappa$, on pose $\lambda = |\trcl(x)\cup \{x\}|$
+  (donc $\lambda < \kappa$) et on pose $r_x\subseteq \lambda \times \lambda$
+  une relation telle que
+  \[(\lambda,r_x)\cong (\trcl(x)\cup \{x\}, \in)\]
+  (cette relation existe puisqu'on a une bijection entre $\trcl(x)\cup\{x\}$ et
+  $\lambda$). On veut maintenant prouver que pour tout autre $y$ et
+  $\lambda' = |\trcl(y)\cup\{y\}|$, si $(\lambda, r_x) = (\lambda',r_y)$, alors
+  $x = y$. On suppose donc que $(\lambda, r_x) = (\lambda',r_y)$. Par le
+  \cref{lem.most}, on sait (puisque $\trcl(x)\cup \{x\}$ et $\trcl(x)\cup \{y\}$
+  sont des ensembles transitifs) que le seul isomorphisme existant entre
+  $(\trcl(x)\cup \{x\},\in)$ et $(\trcl(y)\cup\{y\},\in)$ est l'identité. Or,
+  on sait que $(\lambda,r_x) = (\lambda',r_y)$, donc on en conclut que
+  $\trcl(x)\cup \{x\} = \trcl(y)\cup \{y\}$ par unicité de l'isomorphisme.
+  Il vient ensuite que $x = y$ puisque $x$ (respectivement $y$) est l'unique
+  élément $\in$-maximal dans $\trcl(x)\cup \{x\}$ (respectivement dans
+  $\trcl(y)\cup\{y\}$). On a donc une injection de $\mathbb H_\kappa$ dans
+  $\displaystyle\bigcup_{\lambda < \kappa}\lambda \times 2^{\lambda \times \lambda}$,
+  d'où $|\mathbb H_\kappa| \leq 2^{<\kappa}$.
 \end{proof}
 
 Comme $\mathbb H_\kappa$ est inclus dans un ensemble, c'est lui-même un
@@ -500,7 +724,46 @@ On veut maintenant montrer les cas d'égalité entre $\mathbb H$ et $\mathbb V$.
 \end{property}
 
 \begin{proof}
-  A FAIRE
+  Prouvons chaque propriété~:
+  \begin{itemize}
+  \item on voit que pour tout $n$, $\mathbb V_n$ ne contient que des ensembles
+    finis (c'est le cas de $\mathbb V_0$, et $\powerset(X)$ ne contient que des
+    ensembles finis si $X$ est fini), donc
+    $\mathbb V_n \subseteq \mathbb H_\omega$, d'où
+    $\mathbb V_\omega \subseteq \mathbb H_\omega$. Réciproquement, si
+    $x \notin \mathbb V_\omega$, alors $\trcl(x)$ est au moins dénombrbale,
+    puisque $x$ a un élément de chaque rang $n \in \omega$~: par contraposée,
+    si $x\in \mathbb H_\omega$ alors $x\in \mathbb V_\omega$.
+  \item on sait que $|\mathbb V_\omega| = \omega$ car on a une union
+    dénombrable d'ensembles finis, que
+    $|\mathbb V_{\alpha + 1}| = 2^{\mathbb V_\alpha}$ et que
+    $|\mathbb V_\lambda | = \sup_{\beta < \lambda} |\mathbb V_\beta|$ pour
+    $\lambda$ limite, donc $\mathbb V_{\omega + \alpha}$ coïncide avec
+    $\beth_\alpha$. Si $\alpha \geq \omega^2$, alors $\omega + \alpha = \alpha$,
+    d'où le résultat.
+  \item on prouve l'équivalence par double implication~:
+    \begin{itemize}
+    \item soit $\kappa > \omega$ tel que $\mathbb H_\kappa = \mathbb V_\kappa$.
+      Soit $\alpha$ tel que $\omega^2\leq \alpha < \kappa$. On sait que
+      $\mathbb V_\alpha \in \mathbb V_\kappa$, donc
+      $\mathbb V_\alpha \in \mathbb H_\kappa$, donc en utilisant la propriété
+      prouvée précédemment, $\beth_\alpha < \kappa$. En prenant alors la borne
+      supérieure de ces égalités pour $\alpha < \kappa$ et par continuité de
+      $\beth$, on en déduit que $\beth_\kappa \leq \kappa$. Comme on sait que
+      $\kappa \leq \beth_\kappa$ pour n'importe quel $\kappa$, on en déduit que
+      $\kappa = \beth_\kappa$.
+    \item supposons que $\kappa = \beth_\kappa$. Soit $x \in \mathbb V_\kappa$,
+      on peut trouver $\alpha$ tel que $\omega^2\leq \alpha < \kappa$ et
+      $x \in \mathbb V_\alpha$, car $\kappa$ est un ordinal limite et un
+      cardinal indénombrable. Comme $x \subseteq \mathbb V_\alpha$, on en
+      déduit que $|\trcl(x)| \leq |\mathbb V_\alpha|$, or $\mathbb V_\alpha$ est
+      de cardinal $\beth_\alpha$, et $\beth_\alpha < \beth_\kappa = \kappa$. On
+      en déduit donc que $x \in \mathbb H_\kappa$. L'inclusion réciproque est
+      directement due à la \cref{prop.Hcard}.
+    \end{itemize}
+    d'où le résultat.
+  \end{itemize}
+  Ainsi, on a prouvé les trois propriétés.
 \end{proof}
 
 On peut maintenant prouver que $\mathbb H_\kappa$ vérifie les axiomes de
@@ -508,8 +771,10 @@ $\ZFC - P$ pour un cardinal régulier $\kappa$, c'est-à-dire les axiomes de
 $\ZFC$ sauf celui de l'ensemble des parties.
 
 \begin{property}
-  Soit $\kappa$ un cardinal régulier. Alors $\mathbb H_\kappa$ vérifie~:
+  Soit $\kappa$ un cardinal régulier indénombrable. Alors $\mathbb H_\kappa$
+  vérifie~:
   \begin{itemize}
+  \item l'axiome d'extensionalité
   \item l'axiome de la paire
   \item l'axiome de la réunion
   \item l'axiome de remplacement
@@ -520,10 +785,38 @@ $\ZFC$ sauf celui de l'ensemble des parties.
 \end{property}
 
 \begin{proof}
-  On vérifie chaque axiome~:
+  On vérifie chaque axiome, en utilisant le \cref{lem.axZFC}~:
   \begin{itemize}
-  \item A FAIRE
+  \item axiome de la paire~: comme
+    $\trcl(\{x,y\}) = \trcl(x) \cup \trcl(y) \cup \{x,y\}$, si
+    $\trcl(x)$ et $\trcl(y)$ sont de cardinal inférieur strictement à $\kappa$,
+    alors $|\trcl(\{x,y\})| < \kappa$.
+  \item axiome de la réunion~: si $X\in \mathbb H_\kappa$, alors
+    $|\trcl(X)| < \kappa$. Or, on peut remarquer que
+    \[\trcl\left(\bigcup X\right)\subseteq \trcl(X)\]
+    puisque $\trcl(X)$ contient déjà $\bigcup X$ et est transitif. Il vient donc
+    que $\displaystyle\left|\trcl\left(\bigcup X\right)\right| < \kappa$.
+  \item axiome de remplacement~: soit $f$ une fonction partielle d'un
+    ensemble $x \in \mathbb H_\kappa$ vers un ensemble
+    $y \subseteq \mathbb H_\kappa$. Alors
+    \[\trcl(y) = \bigcup_{z \in y} (\trcl(z)\cup \{z\})\]
+    mais comme chaque $z \in y$ est un élément de $\mathbb H_\kappa$, et qu'on
+    sait que $x \in \mathbb H_\kappa$, on en déduit que $\trcl(y)$ est une
+    union de cardinal inférieur strictement à $\kappa$ d'ensembles de cardinal
+    inférieur strictement à $\kappa$. Ainsi, d'après le \cref{thm.Konig},
+    $|\trcl(y)| < \kappa$, donc $y \in \mathbb H_\kappa$.
+  \item axiome de l'infini~: puisque $\kappa$ est indénombrable, il contient
+    $\omega$.
+  \item axiome de fondation~: $\mathbb H_\kappa \subseteq \mathbb V_\kappa$ donc
+    tous les éléments de $\mathbb H_\kappa$ sont bien fondés pour $\in$.
+  \item axiome du choix~: si un ensemble $x \in \mathbb H_\kappa$ est non vide
+    et tous ses éléments sont non vide et deux à deux disjoints, alors par
+    l'axiome du choix on trouve $C$ tel que $C \cap y$ est un singleton pour
+    tout $y \in x$. Quitte à intersecter $C$ avec $\bigcup x$, on sait que
+    $C\subseteq \bigcup x$, donc comme $\mathbb H_\kappa$ est stable par
+    union et par sous-ensembles, $C \in \mathbb H_\kappa$.
   \end{itemize}
+  Ainsi $\mathbb H_\kappa$ vérifie $\ZF - P$.
 \end{proof}
 
 On voit qu'ici, pour que $\mathbb H_\kappa$ vérifie tout $\ZFC$, il lui suffit
@@ -661,8 +954,8 @@ ci-dessus, on introduit la hiérarchie de Lévy.
     $\Sigma^{\ZFC}_n$ et $\Pi^{\ZFC}_n$.
   \end{itemize}
 
-  On notera en général simple $\Delta_n$ (respectivement $\Sigma_n$ et $\Pi_n$)
-  pour $\Delta^{\ZFC}_n$.
+  On notera en général simplement $\Delta_n$ (respectivement $\Sigma_n$ et
+  $\Pi_n$) pour $\Delta^{\ZFC}_n$.
 \end{definition}
 
 \begin{remark}
@@ -682,7 +975,29 @@ d'extensionalité pour toute formule $\Delta_0$.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On prouve le résultat par induction sur la formule $\psi$ qu'on considère~:
+  \begin{itemize}
+  \item dans le cas d'une formule atomique, puisque $\in$ est la même relation
+    interprétée dans $\mathcal M$ et dans $\mathbb V$, on a le résultat (de
+    même pour $=$).
+  \item dans le cas de $\lor,\land,\to,\lnot,\top,\bot$, le résultat se fait
+    simplement en écrivant les définitions.
+  \item dans le cas de $\exists$, supposons donc que
+    $\psi(x_1,\ldots,x_n,z) = \exists y \in z,\varphi(x_1,\ldots,x_n,y,z)$
+    (les termes dans $\mathcal L_{\ZF}$ sont uniquement des variables). Par
+    hypothèse d'induction, on suppose donc que $\varphi$ est absolue pour
+    $\mathcal M$. Soient des paramètres $a_1,\ldots,a_n$ et $c$ dans
+    $\mathcal M$. On veut donc prouver que
+    \[\exists b^{\mathcal M}, b \in c \land \varphi^{\mathcal M}(a_1,\ldots,a_n,b,c)
+    \iff \exists b \in c, \varphi(a_1,\ldots,a_n,b,c)\]
+    Le sens direct se vérifie facilement. Pour le sens réciproque, on
+    remarque que comme $\mathcal M$ est transitive, $b \in c$ implique que
+    $b \in \mathcal M$. Alors, par absoluité de $\varphi$ pour $\mathcal M$,
+    on en déduit que $\varphi(a_1,\ldots,a_n,b,c)$.
+  \item on peut prouver le cas de $\forall$ en passant par les loi de De Morgan.
+  \end{itemize}
+  Ainsi, par induction, on sait que $\psi \in \Delta_0$ est absolue pour
+  $\mathcal M$.
 \end{proof}
 
 Donnons des exemples de formules $\Delta_0$~:
@@ -778,7 +1093,7 @@ telle $\mathbb V$ ou $\mathbb L$ et toute proposition $\varphi$, il existe des
 ordinaux arbitrairement élevés tels que $\varphi$ est absolue entre la
 hiérarchie et sa construction partielle à l'ordinal donné.
 
-\begin{theorem}[Réflexion]
+\begin{theorem}[Réflexion]\label{thm.reflexion}
   Soit une fonction $f : \Ord \to \mathbb V$ vérifiant~:
   \begin{itemize}
   \item pour tout $\alpha \in \Ord$,
@@ -869,7 +1184,35 @@ $(\mathbb L_\alpha)_{\alpha \in \Ord}$ est une hiérarchie cumulative et transit
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On prouve d'abord que chaque $\mathbb L_\alpha$ est un ensemble transitif,
+  par induction sur $\alpha$~:
+  \begin{itemize}
+  \item $\mathbb L_0 = \varnothing$ est transitif.
+  \item supposons que $\mathbb L_\alpha$ est transitif. Soit alors
+    $x \in \mathbb L_{\alpha + 1}$. Pour tout $y \in x$, comme $\mathbb L_\alpha$
+    est transitif, $y \in \mathbb L_\alpha$. Mais alors on peut définir
+    $y$ par la formule
+    \[\varphi_y(x) \defeq x \in y\]
+    à paramètre ($y$) dans $\mathbb L_\alpha$. Ainsi
+    $y \in \mathbb L_{\alpha + 1}$, donc $x \subseteq \mathbb L_{\alpha + 1}$.
+  \item pour le cas limite, l'union d'ensembles transitifs est un ensemble
+    transitif.
+  \end{itemize}
+
+  On prouve maintenant que la hiérarchie est cumulative, par induction sur
+  la différence entre $\beta$ et $\alpha$~:
+  \begin{itemize}
+  \item $\mathbb L_\alpha \subseteq \mathbb L_\alpha$
+  \item on montre que $\mathbb L_{\beta}\subseteq \mathbb L_{\beta + 1}$, ce qui
+    suffit à montrer que $\mathbb L_\alpha \subseteq \mathbb L_\beta \implies
+    \mathbb L_\alpha \subseteq \mathbb L_{\beta + 1}$.
+    Si $x \in \mathbb L_{\beta}$, alors on peut définir $x$ par
+    \[\varphi_x(a) \defeq a \in x\]
+    dans $\mathbb L_{\beta + 1}$, donc $x \in \mathbb L_{\beta + 1}$.
+  \item le cas où la différence est un ordinal limite est direct.
+  \end{itemize}
+  Ainsi, par induction transfinie, $\mathbb L_\alpha$ est une hiérarchie
+  cumulative.
 \end{proof}
 
 Il est donc clair que $\powerdef(X)\neq \powerset(X)$ lorsque $X$ est infini.
@@ -878,7 +1221,7 @@ $\omega$.
 
 \begin{proposition}
   Pour tout $\alpha \leq \omega$, $\mathbb L_\alpha = \mathbb V_\alpha$.
-  Cependant, pour tout $\alpha > \omega$,
+  Cependant, pour tout $\alpha > \omega$, si $|\alpha| \neq \beth_\alpha$ alors
   $\mathbb L_\alpha \subsetneq \mathbb V_\alpha$.
 \end{proposition}
 
@@ -899,7 +1242,11 @@ $\omega$.
   \item comme $\mathbb L_\omega$ est infini,
     $\mathbb L_{\omega+1} \subsetneq \powerset(\mathbb L_\omega)$, donc
     $\mathbb L_{\omega+1} \subsetneq\mathbb V_{\omega+1}$.
-  \item A FAIRE
+  \item comme on sait que $|\powerdef(X)| = |X|$ pour $X$ infini, on en déduit
+    que $|\mathbb L_{\alpha}| = |\alpha|$ pour $\alpha > \omega$. En comparaison,
+    $|\mathbb V_\alpha| = \beth_\alpha$ à partir de $\alpha^2$, donc l'égalité
+    des deux ensembles implique que $|\alpha| = \beth_\alpha$, d'où l'inclusion
+    stricte par contraposée.
   \end{itemize}
 \end{proof}
 
@@ -1053,18 +1400,82 @@ fonctions sont absolues pour $\mathbb L$.
   $\mathbb L$ par absoluité.
 \end{proof}
 
-On montre aussi que $\mathbb L$ est un modèle de $\ZF$.
+On montre aussi que $\mathbb L$ est un modèle de $\ZF$. On donne d'abord un
+lemme, similaire à \cref{lem.axZFC}, mais utilisant des conditions plus fortes.
+
+\begin{lemma}\label{lem.axZFC2}
+  Soit $\mathcal M$ une classe transitive vérifiant l'axiome de compréhension
+  et telle que pour tout $x \subseteq \mathcal M$, si $x$ est un ensemble, alors
+  il existe $y \in \mathcal M$ tel que $x \subseteq y$. Dans ce cas,
+  $\mathcal M$ est un modèle de $\ZF$.
+\end{lemma}
+
+\begin{proof}
+  On traite les différents axiomes~:
+  \begin{itemize}
+  \item axiome d'extensionalité~: $\mathcal M$ est une classe transitive.
+  \item axiome de fondation~: vrai puisque $\mathcal M$ est une partie de
+    $\mathbb V$.
+  \item axiome de la paire~: on voit que si $x, y \in \mathcal M$ alors
+    $\{x,y\} \subseteq \mathcal M$, puis on applique l'axiome de compréhension
+    à l'ensemble contenant $\{x,y\}$ et appartenant à $\mathcal M$ qu'on trouve
+    par hypothèse sur $\mathcal M$.
+  \item axiome de la réunion~: si $x \in \mathcal M$ alors par transitivité de
+    $\mathcal M$, $\bigcup x \subseteq \mathcal M$, d'où le résultat par
+    compréhension et hypothèse sur $\mathcal M$.
+  \item axiome de compréhension~: vrai par hypothèse.
+  \item axiome de remplacement~: supposons que $f$ est une fonction dont le
+    domaine est $x \in \mathcal M$ et l'image $y \subseteq \mathcal M$. Alors
+    par hypothèse on trouve $z \in \mathcal M$ contenant $y$, et on utilise
+    l'axiome de compréhension sur $z$ avec la formule
+    \[\varphi(b) \defeq \exists a \in x, f(x) = b\]
+    pour en déduire que $y \in \mathcal M$.
+  \item axiome de l'ensemble des parties~: soit $x \in \mathcal M$. On
+    considère
+    \[\mathcal P \defeq \{ y \in \mathcal M \mid y \subseteq x\}\]
+    par hypothèse sur $\mathcal M$, on trouve $z \in \mathcal M$ tel que
+    $\mathcal P \subseteq z$, et par compréhension on peut restreindre $z$
+    aux éléments contenus dans $x$, nous redonnant $\mathcal P$. Ainsi pour
+    tout $y \in \mathcal M, y \in \mathcal P \iff y \subseteq x$.
+  \item axiome de l'infini~: comme $\mathcal M$ est clos par parties finies
+    grâce à l'axiome de la paire et de la réunion, et puisque
+    $\varnothing \in \mathcal M$ par compréhension, on en déduit que pour tout
+    $n \in \omega, V_n \subseteq \mathcal M$, donc
+    $\mathbb V_\omega \subseteq \mathcal M$. On applique alors notre hypothèse
+    pour trouver $z$ contenant $\mathbb V_\omega$ et donc $\omega$, puis on
+    utilise la compréhension.
+  \end{itemize}
+  On a ainsi montré notre critère pour avoir un modèle de $\ZF$.
+\end{proof}
+
+On peut ainsi prouver que $\mathbb L$ est un modèle (classe) de $\ZF$.
 
 \begin{theorem}
   $\ZF\models (\ZF)^{\mathbb L}$.
 \end{theorem}
 
 \begin{proof}
-  On vérifie chaque axiome de $\ZF$~:
-  \begin{itemize}
-  \item A FAIRE
-  \end{itemize}
-  Ainsi $\mathbb L$ est un modèle classe de $\ZF$.
+  On vérifie les hypothèses du \cref{lem.axZFC2}. On sait déjà que $\mathbb L$
+  est transitif. Pour la dernière hypothèse, si $x$ est un ensemble inclus dans
+  $\mathbb L$, alors pour tout $y \in x$ on trouve $\alpha_y$ tel que
+  $y \in \mathbb L_{\alpha_y}$. On sait alors que pour
+  \[\alpha \defeq \sup_{y \in x} \alpha_y\]
+  on a $x \subseteq \mathbb L_\alpha \in \mathbb L$.
+
+  On veut maintenant prouver l'axiome de compréhension. Soit donc
+  $\psi^{\mathbb L}(x_1,\ldots,x_n,x,y)$ une formule sur $\mathcal L_{\ZF}$, et
+  $a_1,\ldots,a_n,a$ des paramètres dans $\mathbb L$. Quitte à prendre une
+  borne supérieure, soit $\alpha$ tel que
+  $a_1,\ldots,a_n,a \in \mathbb L_\alpha$. Par le \cref{thm.reflexion}, on
+  trouve $\beta > \alpha$ tel que $\psi^{\mathbb L}(x_1,\ldots,x_n,x,y)$ est
+  absolue entre $\mathbb L_\beta$ et $\mathbb L$. On a alors
+  \[\{ b \in \mathbb L_\beta \mid b \in a \land
+  \psi^{\mathbb L}(a_1,\ldots,a_n,a,b)\} \in \mathbb L_{\beta + 1}\]
+  et un élément de $\mathbb L$ vérifie $\psi^{\mathbb L}$ si et seulement s'il
+  le vérifie dans $\mathbb L_{\beta}$, si et seulement s'il appartient à $b$.
+  On a donc vérifié l'axiome de compréhension.
+
+  Ainsi $\mathbb L \models \ZF$.
 \end{proof}
 
 Il en découle donc que $\VeqL$ est relativement cohérent~: on peut ajouter cet
