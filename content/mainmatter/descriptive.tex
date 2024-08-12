@@ -49,27 +49,164 @@ remarquable.
 
 \begin{proof}
   Tout d'abord, on remarque que si $(X,d)$ est un espace métrique, alors la
-  métrique suivante est équivalente~:
+  métrique suivante engendre la même topologie~:
   \[d'(x,y) \defeq \frac{d(x,y)}{1+d(x,y)}\]
-  En effet, si A FAIRE
+  Le fait que $d'$ est une métrique se vérifie directement, sauf pour
+  l'inégalité triangulaire. Soient $x,y,z \in X$, alors
+  \begin{align*}
+    d'(x,z) &= \frac{d(x,z)}{1 + d(x,z)}\\
+    &\leq \frac{d(x,y) + d(y,z)}{1 + d(x,y) + d(y,z)}\text{ par croissance
+      de la fonction } x \mapsto \frac{x}{1 + x}\\
+    &\leq \frac{d(x,y)}{1 + d(x,y)} + \frac{d(y,z)}{1 + d(y,z)}\\
+    &\leq d'(x,y) + d'(y,z)
+  \end{align*}
+
+  On montre donc que $d$ et $d'$ engendrent la même topologie. Pour cela,
+  comme on sait que $d' \leq d$, on sait que dans toute boule ouverte $U$ pour
+  $d$ il existe une boule ouverte $V$ pour $d'$ (puisque si
+  $d(x,y) < \varepsilon$, alors $d'(x,y) < \varepsilon$) contenue dans $U$. On
+  en déduit que tout voisinage au sens de $d$ est un voisinage au sens de $d'$,
+  montrant que la topologie engendrée par $d'$ est plus fine (contient plus
+  d'ouverts) que la topologie engendrée par $d$. Dans le sens réciproque, pour
+  une boule
+  \[U \defeq \{ y \in X \mid d'(x,y) \leq \varepsilon\}\]
+  Quitte à prendre $\varepsilon$ plus petit, on sait que la fonction
+  $x\mapsto \dfrac{x}{1 + x}$ est surjective sur $[0,1]$ donc sur
+  $[0,\varepsilon]$ (si $\varepsilon > 1$, alors trouver une boule inclue dans
+  $B_1(x)$ nous donne encore le résultat souhaité). On peut donc trouver
+  $\rho$ tel que $\dfrac{\rho}{1 + \rho} = \varepsilon$. Par stricte croissance
+  de $x\mapsto \dfrac{x}{1 + x}$, on sait aussi que pour tout $z \in [0,1]$,
+  \[\frac{z}{1 + z} < \varepsilon \iff z < \rho\]
+  On sait donc que pour tout $y \in X$,
+  \[\frac{d(x,y)}{1 + d(x,y)}< \varepsilon \iff d(x,y) < \rho\]
+  donc la boule pour $d$ de centre $x$ et de rayon $\rho$ est incluse dans $U$.
+  Ainsi tout voisinage au sens de $d'$ est un voisinage au sens de $d$, donc
+  les deux topologies coïncident.
+  
   On voit, de plus, que $d'$ est bornée (si $d$ tend vers $\infty$, alors $d'$
   tend vers $1$). $d'$ est complète si et seulement si $d$ est complète~:
-  A FAIRE
+  une suite $(u_n)$ est de Cauchy pour $d$ si et seulement si elle est de
+  Cauchy pour $d'$. Dans un sens, il suffit d'utiliser le fait que
+  $d \leq d'$. Dans l'autre sens, si $(u_n)$ est de Cauchy pour
+  $d$, alors soit $\varepsilon > 0$, qu'on choisit sans perte de généralité
+  inférieur strict à $1$. Par l'argument de surjectivité précédent, on trouve
+  $\rho$ tel que
+  \[\frac{\rho}{1 + \rho} = \varepsilon\]
+  Comme $(u_n)$ est de Cauchy, on trouve $n_0$ tel que
+  \[\forall p,q \geq n_0, d(u_p,u_q) < \rho\]
+  donc on en déduit, par stricte croissance de $x\mapsto \dfrac{x}{1 + x}$,
+  que pour tout $p,q \geq n_0$, on a l'inégalité $d'(u_p,u_q) < \varepsilon$.
+  Ainsi les deux distances définissent les mêmes suites de Cauchy. Comme la
+  convergence est une notion purement topologique et que $d$ et $d'$
+  définissent les mêmes topologies, $d$ est complète si et seulement si $d'$
+  l'est.
 
   Ainsi on peut considérer que pour chaque espace $X_i$, on possède une
   distance complète $d_i$ bornée induisant la topologie de $X_i$. On définit
-  alors la distance sur $\displaystyle\prod_{i\in\mathbb N} X_i$ par
+  alors la $d$ distance sur $\displaystyle\prod_{i\in\mathbb N} X_i$ par
   \[d((x_n),(y_n)) \defeq \sum_{n \in \mathbb N} \frac{d_n(x_n,y_n)}{2^n}\]
   Cette distance définit bien la topologie produit sur
-  $\displaystyle\prod_{i\in\mathbb N} X_n$~: A FAIRE
+  $\displaystyle\prod_{i\in\mathbb N} X_n$.
+
+  Soit une boule $B_\varepsilon((x_n))$ pour notre distance $d$, alors à partir
+  d'un certain rang $n_0$~:
+  \[\forall m \geq n, \forall x,y \in X_m,
+  \frac{d_m(x,y)}{2} < \frac{\varepsilon}{2}\]
+  On veut prouver qu'on peut trouver un ouvert contenant $(x_n)$ pour la
+  topologie produit (montrant ainsi qu'un voisinage pour $d$ est un voisinage
+  pour la topologie produit). On sait qu'un ouvert de la topologie produit
+  est de la forme $\displaystyle\prod_{i \in F} X_i$ pour une certaine partie
+  finie $F\subfin \mathbb N$~: notre candidat pour $F$ est ici
+  $\{0,\ldots,n_0\}$ puisqu'on a déjà majoré la distance des éléments après
+  $n_0$. On peut donc déjà écrire que pour tout $(y_n)$~:
+  \[d((x_n),(y_n)) < \frac{\varepsilon}{2} +
+  \sum_{i = 0}^{n_0 - 1} \frac{d_i(x_i,y_i)}{2^i}\]
+  Il nous reste donc à trouver pour chaque $i$ une boule centrée en
+  $x_i$ de rayon suffisamment petit pour que la somme finie soit inférieure à
+  $\dfrac{\varepsilon}{2}$, ce qui se fait directement en prenant
+  \[\varepsilon'_i \defeq \frac{2^i\times \varepsilon}{2 \times n_0}\]
+  Ainsi si on considère pour chaque $i$ la boule $B_{\varepsilon'_i}(x_i)$, on
+  sait que pour tout $y$ dans le cylindre engendré par cette famille~:
+  \[d((x_n),(y_n)) < \varepsilon\]
+  Donc tout voisinage au sens de $d$ est un voisinage au sens de la topologie
+  produit.
+
+  Réciproquement, soit une famille finie $(U_i)_{i \in F}$ où
+  $F \subfin \mathbb N$ où $U_i$ est une boule ouverte de $X_i$, disons
+  \[U_i \defeq B_{\varepsilon_i}(x_i)\]
+  et soient $(x_j)_{j \notin F}$ une famille d'éléments complétant
+  $(x_i)_{i \in I}$ en un élément de
+  $\displaystyle\prod_{n \in \mathbb N} X_n$. Montrons qu'on peut trouver une boule
+  ouverte centrée en $(x_i)_{i \in \mathbb N}$ incluse dans le cylindre engendré
+  par $(U_i)$. En prenant
+  \[\varepsilon \defeq \min_{i \in F} \varepsilon_i\]
+  et en posant
+  \[U \defeq B_\varepsilon ((x_i))\]
+  on sait que pour tout
+  $\displaystyle (y_i)_{i \in \mathbb N} \in \prod_{n \in \mathbb N} X_n$,
+  si $(y_i) \in U$ alors
+  \[\sum_{n \in \mathbb N} d_i(x_i,y_i) < \varepsilon\]
+  donc, puisque $d_i(x_i,y_i)$ est inférieur à $d((x_n),(y_n))$, on sait que
+  $d_i(x_i,y_i) < \varepsilon_i$, donc $y_i \in U_i$. Ainsi $(y_i)$ est dans
+  le cylindre engendré par $(U_i)$.
+
+  En conclusion, $d$ engendre la topologie produit sur
+  $\displaystyle\prod_{n \in \mathbb N} X_n$.
 
   Enfin, cette distance est complète~: soit
-  $((x_{i,j})_{i\in\mathbb N})_{j \in\mathbb N}$
-  une suite de Cauchy dans cet espace. On définit la limite par
-  \[x_i \defeq \lim_{j\to\infty} x_{i,j}\]
+  \[(a_i)_{i \in \mathbb N} \defeq ((x_{i,j})_{j\in\mathbb N})_{i \in\mathbb N}\]
+  une suite de Cauchy dans cet espace. On définit la limite
+  $(b_j)_{j \in \mathbb N}$ par
+  \[b_j \defeq \lim_{i\to\infty} x_{i,j}\]
   Pour montrer que cette suite est bien définie, il nous suffit de montrer que
-  pour tout $i\in\mathbb N$, la suite $(x_{i,j})_{j\in\mathbb N}$ est de Cauchy.
-  Soit $\varepsilon > 0$, on A FAIRE
+  pour tout $j\in\mathbb N$, la suite $(x_{i,j})_{i\in\mathbb N}$ est de Cauchy.
+  Soit $\varepsilon > 0$, comme $(a_i)$ est de Cauchy, on trouve $n_0$ tel que
+  \[\forall p,q > n_0, d(a_p,a_q) < \varepsilon\]
+  or on sait que $d_j(x_{p,j},x_{q,j}) < d(a_p,a_q)$, donc
+  $(x_{i,j})_{i \in \mathbb N}$ est de Cauchy, donc $(b_j)$ est bien définie.
+
+  On vérifie maintenant que $(a_i)$ tend vers $b$. Soit $\varepsilon > 0$.
+  On sait (par définition de la convergence), que pour tout $j$ il existe
+  $i_j$ tel que
+  \[\forall m \geq i_j, d_j(x_{m,j},b_j) < \frac{\varepsilon}{4}\]
+  De plus, comme $(a_i)$ est de Cauchy, on trouve $n_0$ tel que
+  \[\forall p,q \geq n_0, d(a_p,a_q) < \frac{\varepsilon}{4}\]
+  d'où on déduit que pour tout $j \in \mathbb N$,
+  \[\forall p,q \geq n_0, d_j(x_{p,j},x_{q,j}) < \frac{\varepsilon}{4}\]
+  Ainsi, pour tout $j \in \mathbb N$ et $m > n_0$, on a
+  \begin{align*}
+    d_j(x_{m,j},b_j) &\leq d_j(x_{m,j},x_{m + i_j,j}) + d_j(x_{m + i_j,j}, b_j)\\
+    &< \frac{\varepsilon}{4} + \frac{\varepsilon}{4}\\
+    &< \frac{\varepsilon}{2}
+  \end{align*}
+  D'où, en sommant ces inégalités pour tout $j \in \mathbb N$~:
+  \[d(a_m,b) < \sum_{n = 0}^\infty \frac{\varepsilon}{2}\]
+  d'où $d(a_m,b) < \varepsilon$. Donc $\lim_{i \to \infty} a_i = b$.
+  
+  Enfin, l'espace produit est séparable. Pour tout $n \in \mathbb N$, on
+  choisit $Y_n$ une partie dense dénombrable de $X_n$ et $x_n$ un élément
+  quelconque de $X_n$. On définit alors, pour chaque $F\subfin \mathbb N$~:
+  \[Z_F \defeq \left\{ (y_i)_{i \in \mathbb N} \;\Bigg|\; \begin{cases}
+    \forall i \in F, y_i \in Y_i\\
+    \forall j \in \mathbb N \setminus F, y_j = x_j
+  \end{cases}\right\}\]
+  Le cardinal de $Z_F$ est donc dénombrable, puisqu'il y a autant d'éléments
+  dans $Z_F$ que de tuples dans le produit fini des $Y_i$ pour $i \in F$. On
+  en déduit, comme l'ensemble des parties finies de $\mathbb N$ est dénombrable,
+  que
+  \[Z \defeq \bigcup_{F\subfin \mathbb N} Z_F\]
+  est dénombrable. Montrons maintenant que $Z$ est dense dans le produit
+  dénombrable des $X_n$. Un ouvert de
+  $\displaystyle\prod_{n \in \mathbb N} X_n$
+  correspond à un ensemble fini $F\subfin \mathbb N$ et, pour chaque
+  $n \in F$, un ouvert $U_n \subseteq X_n$. Par chaque $n$, comme $Y_n$ est
+  dense dans $X_n$, on peut donc trouver $y_n \in Y_n \cap Y_n$. Alors
+  la suite
+  \[u_n \defeq \begin{cases} y_n\text{ si } n \in F \\
+    x_n \text{ sinon}\end{cases}\]
+  appartient au cylindre en $(U_n)_{n \in F}$, et à $Y$, donc $Y$ intersecte
+  tout ouvert, donc $Y$ est dense dans
+  $\displaystyle \bigcup_{n \in \mathbb N} X_n$.
 \end{proof}
 
 La seconde propriété de stabilité, là encore dénombrable, est celle par union
