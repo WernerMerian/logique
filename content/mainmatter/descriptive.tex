@@ -404,7 +404,8 @@ $G_\delta$.
   \left|\frac{1}{d(x,C_n)} - \frac{1}{d(y,C_n)}\right|
   \right)\]
 
-  La topologie induite par $d'$ est la même que celle induite par $d$~: A FAIRE
+  La topologie induite par $d'$ est la même que celle induite par $d$
+  (vérification laissée dans l'\cref{exo.desc.verif1}).
 
   $d'$ est une distance complète~: soit $(x_n)_{n\in\mathbb N}$ une suite de
   Cauchy de $(Y,d')$. $(x_n)$ est aussi une suite de Cauchy dans $(X,d)$. En
@@ -444,6 +445,11 @@ $G_\delta$.
   \cref{desc.ferme.polonais}.
 \end{proof}
 
+\begin{exercise}\label{exo.desc.verif1}
+  Vérifier, dans la preuve précédente, que $d'$ est une distance et qu'elle
+  induit la même topologie que $d$.
+\end{exercise}
+
 \subsection{Compactification d'Alexandrov}
 
 La dernière opération élémentaire que nous abordons est celle de la
@@ -461,6 +467,49 @@ suffisamment petite est contenue dans un compact. Remarquons que dans le cas
 d'un espace vectoriel normé de dimension infini par exemple, n'importe quel
 ouvert aussi petit soit-il n'est pas inclus dans un compact, donc cette
 condition n'est pas anodine.
+
+Une version équivalente de cette définition est que tout filtre de voisinage
+peut se définir par des compacts. Cette définition est largement plus
+manipulable, puisqu'elle permet de directement considérer des compacts aussi
+proches d'un points que l'on veut.
+
+\begin{proposition}\label{prop.carac.compac.loc}
+  Soit un espace $(X,\Omega)$ séparé. Cet espace est localement compact si et
+  seulement si, pour tout $x$, il existe une famille $(K_i)_{i \in I}$ engendrant
+  le filtre des voisinages de $x$.
+\end{proposition}
+
+\begin{proof}
+  On procède par double implication~:
+  \begin{itemize}
+  \item si tout voisinage est engendré par un compact, alors pour tout $x$, on
+    trouve un voisinage $V$ de $x$~: celui-ci contient un compact $K$ de notre
+    famille. Mais comme $K$ fait partie d'une famille qui engendre le
+    filtre des voisinages de $x$, $K$ est lui-même un voisinage de $x$, donc
+    on trouve un ouvert $U$ tel que $x \in U \subseteq K$.
+  \item réciproquement, si l'espace est localement compact, montrons que pour
+    tout $x \in X$, il existe une famille $(K_i)$ de compacts engendrant
+    le filtre des voisinages de $x$. On sait qu'il existe un compact $K$ tel que
+    $x \in K$, et qu'une partie d'un compact est compacte si et seulement si
+    elle est fermée (par la \cref{prop.compac.equiv.ferme}), donc il suffit pour
+    tout voisinage $U$ de $x$ de montrer qu'il existe $F$ fermé contenant $x$
+    et contenu dans $U$. On considère la frontière de $K \cap U$, c'est-à-dire
+    l'ensemble
+    \[\partial(K \cap U) \defeq \adher{K \cap U} \setminus \inter{K \cap U}\]
+    qui est fermée puisqu'intersection de fermés, donc compacte (puisque partie
+    de $K$). Pour chaque $y \in \partial(K \cap U)$, on trouve par séparation
+    un voisinage ouvert $V_y$ de $y$ et un voisinage ouvert $W_y$ de $x$,
+    disjoints. Quitte à intersecter $W_y$ par $K\cap U$, on peut considérer que
+    $W_y$ est une partie de $K \cap U$. Comme $(V_y)$ est un recouvrement de
+    $\partial(K\cap U)$, on peut par compacité en extraire un recouvrement
+    fini $(V_y)_{y \in J}$.En prenant alors
+    \[W \defeq \bigcap_{y \in J} W_y\]
+    on a alors un voisinage de $x$ disjoint de tous les $V_y$, supposés
+    ouverts, donc l'adhérence de $W$ est disjointe de $\partial(K \cap U)$.
+    On a donc trouvé un voisinage fermé $F$ de $x$ contenu dans $U$.
+  \end{itemize}
+  L'équivalence est donc prouvée.
+\end{proof}
 
 \begin{definition}[Compactification d'Alexandrov]
   Soit $(X,\Omega)$ un espace localement compact. On appelle compactifié
@@ -554,12 +603,24 @@ On peut alors énoncer nos derniers résultats de stabilité.
   Supposons qu'on possède une métrique sur $(X,\Omega)$ supposé compact séparé.
   Soit $n\in \mathbb N$. Il est clair que la famille
   $\{B(x,2^{-n})\mid x \in X\}$ recouvre $X$, donc on peut en extraire un
-  recouvrement fini $\{B(x,2^{-n})\mid x \in I_n\}$ où $I_n\subfin X$. Notre
+  recouvrement fini $\{B_{2^{-n}}(x)\mid x \in I_n\}$ où $I_n\subfin X$. Notre
   base dénombrable est
-  \[\bigcup_{i\in \mathbb N} \{B(x,q)\mid x \in I_n, q \in \mathbb Q\}\]
-  On veut donc montrer que pour tout $x\in X, \varepsilon > 0$, on peut écrire
-  $B(x,\varepsilon)$ comme une union d'éléments de notre base. Soit $y$ tel que
-  $d(x,y) < \varepsilon$, A FAIRE
+  \[\bigcup_{i\in \mathbb N} \{B_{2^{-n}}(x)\mid x \in I_n, q \in \mathbb Q\}\]
+  On veut donc montrer que pour tout $x\in X, \varepsilon > 0$, il existe un
+  élément de notre base qui contient $x$ et est contenu dans $B_\varepsilon(x)$
+  (cela montrera alors que la topologie engendrée par notre base est plus
+  fine que la topologie $\Omega$, ce qui suffit puisque notre base est
+  extraite de $\Omega$). On sait que la famille des $B_\varepsilon(y)$ pour
+  $y \in (X \setminus B_\varepsilon(x))\cup \{x\}$ recouvre $X$, et on sait que
+  $X$ est compact. On en déduit donc, par le \cref{lem.nb.lebesgue}, qu'il
+  existe un nombre de Lebesgue $\rho$ pour ce recouvrement. Ainsi, pour $n$ tel
+  que $2^{-n} < \rho$, comme la famille des $B_{2^{-n}}(x_i)$ pour $x_i \in I_n$
+  recouvre $X$, on sait qu'il existe $x_0$ tel que $B_{2^{-n}}(x_0) \ni x$. Par la
+  propriété du nombre de Lebesgue, on trouve $a$ dans notre recouvrement tel que
+  $B_{2^{-n}}(x_0)\subseteq B_\varepsilon(a)$, mais cela n'est possible que pour
+  $a = x$, étant donné qu'aucun autre élément du recouvrement ne contient $x$.
+  On en déduit donc que $B_{2^{-n}}(x_0)\subseteq B_\varepsilon(x)$, d'où le
+  résultat.
 
   Pour le sens réciproque, si $(X,\Omega)$ est compact séparé à base
   dénombrable, on veut appliquer le \cref{desc.thm.urysohn}~: il nous suffit
@@ -631,9 +692,25 @@ conditions de la \cref{desc.prop.second} à de la compacité locale.
   ouvert de $\tilde X$ est soit un ouvert de $X$ (auquel cas, $X$ étant à base
   dénombrable, on peut directement reconstruire cet ouvert grâce à la base
   dénombrable de $X$), soit un voisinage de $\infty$. Il nous reste donc à
-  trouver une base de $\mathcal V_\infty$. Pour cela, on considère la partie
-  dense $D\subseteq X$ donnée par la séparabilité~: pour chaque $x\in D$ et
-  chaque $n \in \mathbb N$, A FAIRE
+  trouver une base de $\mathcal V_\infty$. Pour trouver cette base, on commence
+  par remarquer que, comme $X$ est à base dénombrable, c'est un espace
+  sépérable~: on peut prendre un élément de chaque ouvert de la base dénombrable
+  pour construire un espace dense dénombrable. On considère maintenant une
+  partie dense dénombrable $D \subseteq X$. Pour chaque $x \in D$ et chaque
+  $n \in \mathbb N$, comme l'espace est localement compact, par la
+  \cref{prop.compac.equiv.ferme}, on trouve un voisinage compact $K_x$ de
+  $x$. On définit maintenant notre base de $\mathcal V_\infty$ par le filtre
+  $\mathcal W$, engendré par les complémentaires des $K_x$~:
+  \[\mathcal W \defeq \filclose{\bigcup_{x \in D} X\setminus K_{x}}\]
+  On sait déjà, comme cette famille est constituée d'ouverts, que le filtre
+  $\mathcal V_\infty$ est plus fin que $\mathcal W$. Dans le sens réciproque,
+  soit $K$ un compact, on veut montrer que l'ouvert $X\setminus K$ contient un
+  ouvert de $\mathcal W$. Cela revient à dire que pour tout compact $K$, il
+  existe une union finie de $K_x$ recouvrant $K$. Or, on sait que
+  $(K_x)_{x \in K}$ recouvre $K$, et que chaque $K_x$ contient un voisinage
+  ouvert $U_x$ de $x$. Ainsi, par compacité de $K$, on extrait une partie finie
+  $F\subseteq K$ telle que $(U_x)_{x \in F}$ recouvre $K$, donc $(K_x)_{x \in F}$
+  recouvre $K$, d'où le résultat.
 \end{proof}
 
 \section{Espace de Cantor et de Baire}
@@ -669,6 +746,7 @@ de $0$ à $n-1$ à ceux correspondant dans $s$.
   famille $\mathcal X = \{X_s\mid s \in 2^{<\omega}\}$ vérifiant les propriétés
   suivantes~:
   \begin{itemize}
+  \item pour tout $s \in 2^{<\omega}$, $X_s \neq \varnothing$.
   \item pour tout $s\in 2^{<\omega}$, $X_{s\star 0} \subseteq X_s$ et
     $X_{s\star 1} \subseteq X_s$.
   \item pour tout $s\in 2^{<\omega}$,
@@ -705,12 +783,18 @@ de $0$ à $n-1$ à ceux correspondant dans $s$.
 \end{proof}
 
 \begin{remark}
-  Si $\mathcal X$ est de diamètre évanescent, alors il existe au plus une seule
-  fonction vérifiant la condition précédente.
+  Si $\mathcal X$ est de diamètre évanescent, alors il existe une et une seule
+  fonction vérifiant la condition précédente. En effet, l'intersection à
+  laquelle appartient $f(u)$ contient au plus un élément, et elle contient
+  bien un élément car, en prenant un élément dans chaque $X_{u\restr n}$ supposé
+  non vide, on obtient une suite de Cauchy dont la limite doit appartenir à
+  l'intersection décrite plus haut.
 \end{remark}
 
 L'analogue d'un schéma de Cantor pour l'espace de Baire $\mathbb N^\mathbb N$
-est appelé schéma de Lusin.
+est appelé schéma de Lusin. On impose ici directement que le diamète est
+évanescent (en un sens fort), puisque dans tous les cas on n'utilisera un schéma
+de Lusin que dans ce cas.
 
 \begin{definition}[Schéma de Lusin]
   Soit $(X,\Omega)$ un espace polonais. On appelle schéma de Lusin une famille
@@ -899,9 +983,49 @@ Nous montrons maintenant que quelques propriétés topologiques suffisent à
 caractériser, à homéomorphisme près, les espaces de Cantor et de Baire.
 
 On peut voir que l'espace de Cantor est un espace de Stone. A ce titre, il est
-compact, possède une base d'ouverts-fermés. De plus, on a vu qu'il est un
+compact et possède une base d'ouverts-fermés. De plus, on a vu qu'il est un
 espace polonais parfait. En réalité, ces propriétés suffisent à caractériser
 l'espace de Cantor.
+
+Pour faire construire un homéomorphisme entre un espace quelconque vérifiant ces
+hypothèses et l'espace de Cantor, on s'attend à devoir construire un schéma de
+Cantor. En utilisant la compacité de l'espace (qu'on nommera $X$), on peut
+trouver un nombre fini de parties $X_1,\ldots,X_n$ disjointes, qui seront
+de taille $2^{-x}$ à mesure qu'on effectue les séparations. Malheureusement,
+on ne peut pas dire que $n = 2$, donc notre construction de schéma de Cantor
+demande à être adaptée. Pour cela, en considérant un arbre à branchements
+finis dont la racine est $X$ et les fils de chaque n\oe ud $X_0$ sont les
+parties disjointes de diamètre moitié (par rapport à $X_0$) décomposant $X_0$,
+que l'on peut représenter par le schéma ci-dessous~:
+\begin{center}
+  \begin{tikzpicture}
+    \node (A) at (0,0) {$X_0$};
+    \node (B) at (2,2.25) {$X_1$};
+    \node (C) at (2,0.75) {$X_2$};
+    \node (D) at (2,-0.75) {$\vdots$};
+    \node (E) at (2,-2.25) {$X_n$};
+    \draw[->, >=latex] (A) -- (B);
+    \draw[->, >=latex] (A) -- (C);
+    \draw[->, >=latex] (A) -- (E);
+  \end{tikzpicture}
+\end{center}
+on effectue la transformation en un arbre binaire, en transformant
+la suite de fils de $X_0$ (notons-les $X_1,\ldots,X_n$) en une branche partant
+de $X_0$, où les n\oe uds intermédiaires sont les unions partielles des
+$X_i\cup\cdots \cup X_n$~:
+\begin{center}
+  \begin{tikzpicture}
+    \node (A) at (0,0) {$X_0$};
+    \node (B) at (2,1) {$X_1$};
+    \node (C) at (2,-1) {$X_2\cup \cdots \cup X_n$};
+    \node (D) at (5,-0.5) {$X_2$};
+    \node (E) at (5,-1.5) {$X_3\cup\cdots\cup X_n$};
+    \draw[->, >=latex] (A) -- (B);
+    \draw[->, >=latex] (A) -- (C);
+    \draw[->, >=latex] (C) -- (D);
+    \draw[->, >=latex] (C) -- (E);
+  \end{tikzpicture}
+\end{center}
 
 \begin{theorem}[Caractérisation de l'espace de Cantor]
   Soit $(X,\Omega)$ un espace polonais parfait compact, non vide, possédant une
@@ -909,7 +1033,52 @@ l'espace de Cantor.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On construit donc notre schéma de Cantor sur $X$, dont on s'assure que
+  chaque $X_s$ est un ouvert-fermé de $X$. Supposons construit notre schéma pour
+  un mot $s$ de taille $n$ et tel qu'aucun $X_t$ n'est défini, pour $t$ dont
+  $s$ est un préfixe. On considère alors $X_s$ et on note $\rho$ son diamètre.
+  On sait que $X_s$ est un compact (puisque fermé dans l'espace de Cantor,
+  compact). De plus, comme $X_s$ peut être recouvert par des boules de taille
+  $\dfrac{\rho}{2}$, et qu'on a une base d'ouverts-fermés, on peut recouvrir
+  $X_s$ par des ouverts-fermés de diamètres inférieur à $\dfrac{\rho}{2}$~: par
+  compacité, on en déduit donc l'existence d'un recouvrement fini
+  $Y_1,\ldots,Y_n$ de $X_s$ par des ouverts-fermés de diamètre inférieur à
+  $\dfrac{\rho}{2}$, comme on a un ensemble fini d'ouverts-fermés, on peut
+  conserver toutes ces propriétés en considérant
+  \[X_i = Y_i \setminus \bigcup_{ j < i} Y_i\]
+  pour obtenir une nouvelle famille $(X_i)_{i = 1,\ldots, n}$ d'ouverts-fermés
+  disjoints de diamètre suffisamment petit. On ajoute alors la suite des
+  parties $X_i$ comme décrit plus tôt. On remarque que, dans cette
+  construction~:
+  \begin{itemize}
+  \item lorsqu'on ajoute une branche pour une famille de $X_i$ donnée, on
+    a toujours au moins deux $X_i$, car sinon cela voudrait dire que
+    $\rho = \dfrac{\rho}{2}$ et donc que $X_s$, supposé ouvert, est un
+    singleton~: c'est impossible dans un espace parfait.
+  \item après l'ajout d'une branche, on ne peut donc pas avoir un n\oe ud avec
+    une seule branche~: soit on a défini ses deux fils, soit on n'en a
+    défini aucun. Cela signifie que sur les n\oe ud non encore définis, on peut
+    appliquer notre hypothèse de récurrence.
+  \end{itemize}
+  On a ainsi construit un schéma de Cantor $\mathcal X$, dont on veut vérifier
+  que son diamètre est évanescent. Or, on sait que si $X_s$ est de diamètre
+  $\rho$, alors pour un certain $n$ fini et tout mot $u$ de taille $n$,
+  $X_{s\star u}$ est de diamètre inférieur à $\rho/2$, donc le diamètre de
+  $u\restr n$ tend vers $0$ quand $n$ tend vers $\infty$.
+
+  On a donc construit une injection continue de l'espace de Cantor dans $X$.
+  Comme à chaque étape, $X_s$ est partitionné, on sait que l'injection est de
+  plus surjective~: si on considère $x \in X$, alors on peut trouver une suite
+  $u$ telle que $f(u) = x$. Si $x \in X_0$, alors on définit $u_0 = 0$, sinon
+  on définit $u_0 = 1$, et on procède ainsi par induction sur $n$. Si la suite
+  n'atteint pas $x$, cela signifie que $x$ est dans un ensemble $X_s$ (car il
+  est au moins dans $X_\varepsilon = X$) mais dans aucun élément de la partition
+  de $X_s$ en $X_1,\ldots,X_n$, ce qui est absurde. Il nous reste enfin à
+  vérifier que l'image d'un ouvert de l'espace de Cantor est ouvert. Cela se
+  voit directement, puisque l'image de $\ext(u)$ pour $u\in 2^{<\omega}$ est
+  choisie comme un ouvert-fermé.
+
+  On en déduit que $X \cong 2^\mathbb N$.
 \end{proof}
 
 Enfin, l'espace de Baire possède aussi une caractérisation.
