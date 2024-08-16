@@ -552,7 +552,7 @@ topologie~: nous décidons donc d'admettre le \cref{desc.thm.urysohn}.
   $(U_i)_{i\in\mathbb N}$ engendrant $\Omega$.
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop.base.denomb}
   Un espace polonais est à base dénombrable.
 \end{proposition}
 
@@ -727,9 +727,10 @@ la caractérisation des espaces de Cantor et de Baire.
 
 \subsection{Schémas de Cantor et de Baire}
 
-On sait que la topologie de $2^{\mathbb N}$ peut être engendrée par la famille de
-parties
-$\{\alpha \in 2^{\mathbb N}\mid \forall i \in \{1,\ldots,n\}, \alpha(i) = x_i\}$
+Remarquons que la topologie de $2^{\mathbb N}$ peut être engendrée par la famille
+de parties
+\[\ext(x_1,\ldots,x_n) \defeq
+\{\alpha \in 2^{\mathbb N}\mid \forall i \in \{1,\ldots,n\}, \alpha(i) = x_i\}\]
 pour $(x_1,\ldots,x_n)$ des éléments de $\{0,1\}$. On voit ainsi qu'un élément
 de l'espace de Cantor peut être vu comme la limite de suites finies sur $2$.
 On veut donc associer à des suites finies sur $2$ des ouverts, en voulant
@@ -751,6 +752,8 @@ de $0$ à $n-1$ à ceux correspondant dans $s$.
     $X_{s\star 1} \subseteq X_s$.
   \item pour tout $s\in 2^{<\omega}$,
     $X_{s\star 0}\cap X_{s\star 1} = \varnothing$.
+  \item pour tout $s \in 2^{<\omega}$ et $b \in \{0,1\}$,
+    $\adher{X_{s\star b}}\subseteq X_s$.
   \end{itemize}
 
   On dit qu'un schéma de Cantor est de diamètre évanescant si pour toute suite
@@ -759,37 +762,56 @@ de $0$ à $n-1$ à ceux correspondant dans $s$.
 \end{definition}
 
 \begin{proposition}\label{desc.prop.schem.C}
-  Soit $(X,\Omega)$ un espace polonais et $\mathcal X$ un schéma de Cantor dont
-  tous les éléments sont des ouverts. Alors une fonction
-  $f : 2^{\mathbb N} \to X$ vérifiant
+  Soit $(X,\Omega)$ un espace polonais et $\mathcal X$ un schéma de Cantor de
+  diamètre évanescent dont tous les éléments sont des ouverts. Alors il existe
+  une fonction $f : 2^{\mathbb N} \to X$ et une seule vérifiant
   \[\forall u \in 2^{\mathbb N}, f(u) \in \bigcap_{n \in \mathbb N}X_{u\restr n}\]
-  est une injection continue.
+  De plus, c'est une injection continue.
 \end{proposition}
 
 \begin{proof}
-  Pour l'injectivité, supposons que $u \neq v$ pour deux suites
-  $u,v\in 2^{\mathbb N}$. On trouve alors un indice minimal $i\in\mathbb N$ tel
-  que $u(i) \neq v(i)$. Ainsi, comme $f(u) \in X_{u\restr i}$ et
-  $f(v)\in X_{v\restr i}$, on en déduit que $f(u) \neq f(v)$.
+  S'il existe une telle fonction, alors pour tout $u \in 2^{\mathbb N}$, on
+  sait qu'il existe au plus un élément dans
+  $\bigcup_{n \in \mathbb N} X_{u\restr n}$ comme son diamètre est nul. Comme on
+  peut choisir un élément dans chaque $X_{u\restr n}$ par hypothèse, on peut
+  construire une suite, donc la condition sur les diamètres assure qu'elle est
+  de Cauchy. On sait donc qu'elle converge, et sa limite est dans l'intersection
+  de tous les $X_{u\restr n}$, donc $f(u)$ est bien définie. On en déduit
+  l'existence et l'unicité d'une telle fonction $f$. On veut maintenant montrer
+  qu'elle est une injection continue.
+  
+  Commençons par montrer que pour $u \neq v$ deux mots finis, on a
+  $X_u \cap X_v = \varnothing$. Pour cela, en considérant le plus grand préfixe
+  commun entre $u$ et $v$, notons-le $p$, on sait (sans perte de généralité,
+  quitte à inverser $u$ et $v$) que $X_u \subseteq X_{p\star 0}$ et
+  $v \subseteq X_{p\star 1}$, donc $X_u\cap X_v =\varnothing$.
 
-  Il nous reste à vérifier la continuité. Soit $x\in X$ et $\varepsilon > 0$.
-  Si $f^{-1}(B(x,\varepsilon)) = \varnothing$, la prémiage est effectivement un
-  ouvert. Sinon, soit $u$ tel que $d(x,f(u)) < \varepsilon$. Comme $\mathcal X$
-  est de diamètre évanescent, on trouve $n$ tel que
-  \[\forall m \geq n, \sup_{x,y \in X_{u\restr m}} d(x,y) <
-  \varepsilon - d(x,f(u))\]
-  Alors, pour tout $v \in \ext(u\restr n)$~:
-  \[d(f(v),x) \leq d(f(v),f(u)) + d(\] A FAIRE
+  On en déduit donc directement l'injectivité de $f$, puisque si $u \neq v$
+  sont deux suites de $2^\mathbb N$, alors elles diffèrent à partir d'un certain
+  rang fini, permettant d'appliquer notre résultat précédent.
+
+  On en déduit aussi que pour tout $s \in 2^{<\omega}$.
+  \[f^{-1}(X_s) = \ext(u)\]
+  Comme on sait que l'adhérence de $X_{u\restr n}$ est incluse dans
+  $X_{u \restr{n + 1}}$, on sait que $f(u) \in X_s$ pour $u \in \ext(s)$.
+  Réciproquement, si $f(u) \in X_s$, alors le préfixe de taille $|s|$ de $u$
+  ne peut pas différer de $s$, donc $u \in \ext(s)$.
+
+  Pour montrer que $f$ est continue, puisqu'on a vu que les $f^{-1}(X_s)$ sont
+  des ouverts de $2^\mathbb N$, il nous suffit de montrer que pour tout
+  $u \in 2^\mathbb N$, $(X_{u\restr n})_{n \in \mathbb N}$ est une base de voisinages
+  de $f(u)$.
+
+  On considère donc un voisinage $V$ de $f(u)$, pour $u \in 2^\mathbb N$. Par
+  l'absurde, supposons que pour tout $n \in\mathbb N, X_{u\restr n} \nsubseteq V$.
+  On sait donc que $\adher{X_{u\restr n}} \setminus V$ est une famille de
+  fermés ($V$ et un ouvert, donc son complémentaire est un fermé) non vides
+  de $X_{\varepsilon}$, qui est ouvert en tant qu'ouvert de $X$. On sait donc
+  qu'il existe (par complétude) un unique élément de
+  \[\bigcup_{n \in \mathbb N} (\adher{X_{u\restr n}}\setminus V)\]
+  qui est donc $f(u)$, mais $f(u) \in V$~: c'est absurde. On en déduit donc que
+  $f$ est continue.
 \end{proof}
-
-\begin{remark}
-  Si $\mathcal X$ est de diamètre évanescent, alors il existe une et une seule
-  fonction vérifiant la condition précédente. En effet, l'intersection à
-  laquelle appartient $f(u)$ contient au plus un élément, et elle contient
-  bien un élément car, en prenant un élément dans chaque $X_{u\restr n}$ supposé
-  non vide, on obtient une suite de Cauchy dont la limite doit appartenir à
-  l'intersection décrite plus haut.
-\end{remark}
 
 L'analogue d'un schéma de Cantor pour l'espace de Baire $\mathbb N^\mathbb N$
 est appelé schéma de Lusin. On impose ici directement que le diamète est
@@ -808,18 +830,14 @@ de Lusin que dans ce cas.
   \end{itemize}
 \end{definition}
 
-\begin{proposition}
+\begin{exercise}\label{exo.Lusin.inj}
   Soit $(X,\Omega)$ un espace polonais et $\mathcal X$ un schéma de Lusin sur
-  $X$. Alors il existe une unique fonction $f : \mathbb N^\mathbb N \to X$
-  vérifiant
+  $X$. Montrer qu'il existe une fonction $f : \mathbb N^\mathbb N \to X$
+  et une seule vérifiant
   \[\forall u \in \mathbb N^\mathbb N, f(u) \in
   \bigcap_{n \in \mathbb N} X_{u\restr n}\]
-  et cette fonction est une injection continue.
-\end{proposition}
-
-\begin{proof}
-  A FAIRE
-\end{proof}
+  et que cette fonction est une injection continue.
+\end{exercise}
 
 Revenons maintenant aux schémas de Cantor. Une façon naturelle de l'appliquer
 est de considérer un espace $X$ et de le couper en deux ouverts disjoints
@@ -881,7 +899,10 @@ On peut maintenant construire le schéma de Cantor que l'on évoquait.
   \item pour toute suite finie $s\in 2^{<\omega}$, on considère deux éléments
     $x,y\in X_s$ (qui existent car $X_s$ est un ouvert et $X$ est parfait). Par
     séparation, on trouve $U_x,U_y$ disjoints contenant respectivement $x$ et
-    $y$. On pose alors
+    $y$. Quitte à en prendre une boule ouverte à l'intérieur de $U_x$
+    (respectivement de $U_y$), on peut considérer que l'adhérence de
+    $U_x$ et l'adhérence de $U_y$ sont incluses dans $X_s$ et sont djsointes.
+    On pose alors
     \[X_{s\star 0} = X_s\cap U_x \cap B(x,2^{-|s|+1})\qquad
     X_{s\star 1} = X_s\cap U_y \cap B(y,2^{-|s|+1})\]
   \end{itemize}
@@ -1081,6 +1102,128 @@ $X_i\cup\cdots \cup X_n$~:
   On en déduit que $X \cong 2^\mathbb N$.
 \end{proof}
 
-Enfin, l'espace de Baire possède aussi une caractérisation.
+Enfin, l'espace de Baire possède aussi une caractérisation. Pour cette
+caractérisation, il nous est nécessaire d'introduire d'abord des prérequis
+topologiques. Même si ce livre n'est pas un livre de topologie, étant donnée le
+caractère élémentaire et profond de ces notions, nous considérons pertinent de
+les introduire, même si pour un seul théorème final.
 
-A FAIRE
+\begin{definition}[Espace de Lindelöf]
+  Un espace topologique $(X,\Omega)$ est dit de Lindelöf si pour tout
+  recouvrement ouvert, il existe un recouvrement dénombrable.
+\end{definition}
+
+Les espaces de Lindelöf forment une famille assez large d'espace topologiques,
+mais nous souhaitons ici simplement considérer les espaces polonais. D'après
+la \cref{prop.base.denomb}, un espace polonais est à base dénombrable, et on
+peut prouver qu'un espace à base dénombrable est un espace de Lindelöf.
+
+\begin{lemma}[Lindelöf]\label{lem.lindelof}
+  Tout espace à base dénombrable est de Lindelöf.
+\end{lemma}
+
+\begin{proof}
+  On considère donc un espace topologique $(X,\Omega)$ et une base dénombrable
+  de cet espace $(U_n)_{n \in \mathbb N}$. Soit un recouvrement ouvert
+  $(V_i)_{i \in I}$ de $X$. Pour tout $x \in X$, on sait qu'on peut trouver
+  $i_x \in I$ tel que $x \in V_{i_x}$. Comme $(U_n)$ est une base de l'espace et
+  que $V_i$ est un ouvert, on peut donc trouver $J_x \subseteq \mathbb N$ tel
+  que
+  \[V_{i_x} = \bigcup_{n \in J_x} U_n\]
+  On considère maintenant
+  \[J \defeq \bigcup_{x \in X} J_x\]
+  On sait donc que l'union des $U_j$ pour $j \in J$ vaut $X$, puisque ces
+  indices donnent un recouvrement de $X$. De plus, pour tout $U_j$, il existe
+  un $V_i$ contenant $U_j$ (par construction), donc on peut considérer
+  l'ensemble $\{V_{i_j}\mid j \in J\}$ des tels $V_i$. Cet ensemble est
+  dénombrable et recouvre $X$ puisqu'il contient l'union des $U_j$.
+\end{proof}
+
+Comme pour un espace compact dont une partie ouverte peut ne pas être ouverte,
+une partie ouverté d'un espace de Lindelöf n'est pas forcément de Lindelöf~:
+un exemple est l'ouvert $\omega_1$ dans $S\;\omega_1$ (compact puisque c'est un
+ordinal successeur, d'après la \cref{prop.compac.succ}). Cependant, pour un
+fermé, comme dans le cas des compacts, cette propriété est préservée~: c'est ce
+que l'on prouve dans l'exercice suivant.
+
+\begin{exercise}
+  Montrer qu'un fermé d'un espace de Lindelöf est un espace de Lindelöf pour la
+  topologie induite.
+\end{exercise}
+
+\begin{remark}
+  Dans le cas d'un espace polonais, on remarque que les ouverts eux aussi sont
+  de Lindelöf, étant donné qu'un $G_\delta$ d'un espace polonais est un
+  espace polonais (et que ceux-ci sont compacts).
+\end{remark}
+
+Cela nous permet enfin de donner la caractériser de l'espace de Baire.
+
+\begin{theorem}[Caractérisation de l'espace de Baire]
+  Soit $(X,\Omega)$ un espace polonais de dimension zéro et tel que tout compact
+  de $X$ est d'intérieur vide. Alors cet espace est homéomorphe à l'espace de
+  Baire $\mathbb N^\mathbb N$.
+\end{theorem}
+
+\begin{proof}
+  On construit un schéma de Lusin dans $X$. On suppose construit notre schéma
+  jusqu'à une taille $n$ donné. Soit $s \in \mathbb N^{<\omega}$, on veut
+  définir une partition de $X_s$ en ouverts-fermés de diamètre inférieur à
+  la moitié de celui de $X_s$ (on suppose que $X_s$ est un ouvert-fermé de
+  diamètre inférieur à $2^{-|s|}$, et qu'il est non vide). En considérant la
+  famille d'ouverts
+  \[(U_x)_{x \in X_s} \defeq B_{2^{-(|s| + 1)}}(x)\]
+  et par séparabilité de $X_s$, on sait qu'on peut trouver pour chaque ouvert
+  $U_x$ un élément $y_x$ contenu dans $U_x$, choisi dans un certain ensemble
+  dénombrable $Y$ (indépendant de $x$). On en déduit donc qu'il existe une
+  famille $(y_i)_{i\in \mathbb N}$ dénombrable telle que tout élément de $X_s$ est
+  à distance inférieure à $2^{-(|s| + 1)}$ d'au moins un élément de la famille.
+  On a donc un recouvrement ouvert donné par la famille
+  \[(V_i)_{i \in \mathbb N} \defeq\{B_{2^{-(|s| + 1)}}(y_i)\}_{i \in \mathbb N}\]
+  En utilisant le \cref{lem.lindelof}, on sait que chaque $V_i$, qui est fermé,
+  peut être recouvert par une famille dénombrable d'ouverts-fermés, donc on a
+  une famille dénombrable pour chaque $V_i$, nous permettant de construire une
+  famille dénombrable $(W_i)_{i \in\mathbb N}$ d'ouverts-fermés recouvrant $X_s$
+  et de diamètre inférieur à $2^{-(|s| + 1)}$.
+
+  Remarquons que notre construction peut, quitte à intersecter nos ouverts
+  avec une famille bien choisie, être considérée comme ne contenant aucun
+  sous-recouvrement fini. En effet, comme $X_s$ n'est pas compact (car son
+  intérieur n'est pas vide), mais de Lindelöf, on peut considérer un
+  recouvrement ouvert dénombrable sans sous-recouvrement fini de $X_s$, et
+  considérer à l'intérieur de ces ouverts des boules suffisamment petites et des
+  sous-recouvrements dénombrables en ouverts-fermés. On suppose donc désormais
+  que $(W_i)_{i \in \mathbb N}$ n'admet aucun sous-recouvrement fini.
+
+  On construit alors nos $X_{s\star i}$ pour $i \in \mathbb N$ par récurrence, en
+  considérant des ouverts-fermés de $X_s$ inclus dans les
+  $(W_i)_{i\in \mathbb N}$~: en supposant construits nos ensembles pour $j < i$,
+  on considère l'ensemble
+  \[Y \defeq X_s\setminus\bigcup_{j < i} X_{s\star j}\]
+  Cet ensemble est non vide car $(W_i)$ n'admet aucun sous-recouvrement fini. On
+  trouve donc $W$ extrait de cette famille tel que $W\cap Y \neq \varnothing$.
+  Comme tous ces éléments sont des ouverts-fermés, on sait que
+  \[W' \defeq W \setminus \bigcup_{j < i} X_{s\star j}\]
+  est un ouvert-fermé (non vide d'après le choix effectué). On définit alors
+  \[X_{s \star i} = W'\]
+
+  On a donc construit un schéma de Lusin vers notre espace $X$. Ce schéma est
+  surjectif d'après notre construction, puisque tout élément est dans une
+  intersection de $X_s$ pour $s$ de longueur aussi grande que l'on souhaite.
+  De plus, la fonction définie par ce schéma est ouverte, puisque tout ouvert de
+  l'espace de Baire est associé par construction à un ouvert de $X$. Enfin,
+  d'après l'\cref{exo.Lusin.inj}, la fonction est une injection continue. On
+  a donc un homéomorphisme.
+
+  Ainsi tout espace polonais $X$ de dimension zéro dont tous les compacts sont
+  d'intérieur vide est homéomorphe à $\mathbb N^\mathbb N$.
+\end{proof}
+
+\begin{exercise}
+  Montrer que l'espace de Baire est homéomorphe à un $G_\delta$ de l'espace de
+  Cantor par la fonction
+  \[\begin{array}{ccccc}
+  f & : & \mathbb N^\mathbb N & \longrightarrow & 2^\mathbb N\\
+  & & u & \longmapsto & 1^{u_0}01^{u_1}\ldots
+  \end{array}\]
+\end{exercise}
