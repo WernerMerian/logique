@@ -1093,23 +1093,178 @@ telle $\mathbb V$ ou $\mathbb L$ et toute proposition $\varphi$, il existe des
 ordinaux arbitrairement élevés tels que $\varphi$ est absolue entre la
 hiérarchie et sa construction partielle à l'ordinal donné.
 
-\begin{theorem}[Réflexion]\label{thm.reflexion}
-  Soit une fonction $f : \Ord \to \mathbb V$ vérifiant~:
+Ce théorème est plutôt un schéma de théorème~: pour chaque $\varphi$, il existe
+un théorème correspondant. La démonstration, sans surprise, s'effectuera par
+induction sur $\varphi$. Cependant, on remarque un point important~: pour une
+formule sans quantificateur, $\varphi^\mathcal M = \varphi$. On n'a donc qu'à
+traiter le cas des quantifications, et en utilisant la mise sous forme prénexe
+des formules, déduire le résultat pour toute formule. De plus, en utilisant les
+lois de De Morgan, on sait qu'on peut se contenter de prouver ce fait pour un
+quantificateur (on choisit $\exists$) et de traiter le cas de la négation~:
+celui-ci est direct, puisque si on sait que $\varphi \iff \psi$ alors
+$\lnot\varphi \iff \lnot \psi$.
+
+Pour montrer le résultat dans le cas de $\exists$, on a besoin d'un lemme sur
+l'absoluité.
+
+\begin{lemma}\label{lem.refl1}
+  Soit une formule $Q_1\; x_1,\ldots,Q_k\;x_k, \psi$ où les $Q_i$ sont des
+  quantificateurs et $\psi$ est sans quantificateurs, $\mathcal X$ une classe,
+  $(X_n)_{n\in \mathbb N}$ une suite croissante d'ensembles inclus dans
+  $\mathcal X$, et
+  \[X \defeq \bigcup_{n \in \mathbb N} X_n\]
+  Si pour tout $i \leq k$ et $n \in \mathbb N$, on a
+  \[X_n \preccurlyeq_{Q_i\;x_i,\ldots, Q_k\;x_k,\psi} \mathcal X\]
+  alors on a aussi pour tout $i \leq k$
+  \[X \preccurlyeq_{Q_i\; x_i,\ldots, Q_k\;q_k, \psi}\mathcal X\]
+\end{lemma}
+
+\begin{proof}
+  On raisonne par induction sur $k$, en ajoutant des négations ou des
+  quantificateurs $\exists$~:
   \begin{itemize}
-  \item pour tout $\alpha \in \Ord$,
-    $\powerdef(f(\alpha))\subseteq f(\alpha + 1)\subseteq\powerset(f(\alpha))$
-  \item pour tout $\lambda \in \Ord$ limite,
-    $\displaystyle f(\lambda) = \bigcup_{\beta < \lambda} f(\beta)$
+  \item si la formule est simplement $\psi$, sans quantificateurs, alors comme
+    $\psi^\mathcal X = \psi^X$, le résultat est automatiquement vrai.
+  \item si la formule est $\lnot \varphi$ où $\varphi$ est une formule absolue
+    entre $X$ et $\mathcal X$, comme on sait que $\chi \iff \theta$ est
+    équivalente à $\lnot\chi \iff \lnot \theta$ pour toutes formules
+    $\chi,\theta$, on en déduit à partir de l'hypothèse d'induction que
+    $\lnot \varphi$ est absolue entre $X$ et $\mathcal X$ (et de même pour
+    toutes les formules partielles obtenues à partir de $\varphi$ en en
+    supprimant des quantificateurs en tête).
+  \item si la formule est $\exists x, Q_1\;x_1,\ldots,Q_k\;x_k,\psi$, alors
+    en posant
+    \[\varphi \defeq Q_1\;x_1,\ldots,Q_k\;x_k, \psi\]
+    on sait par hypothèse d'induction que chaque
+    $Q_j\;x_j,\ldots,Q_k\;x_k,\psi$ est absolue entre $X$ et $\mathcal X$.
+    On souhaite donc maintenant montrer que $\exists x, \varphi$ est absolue
+    entre $X$ et $\mathcal X$. Soient des paramètres $a_1,\ldots,a_p \in X$,
+    montrons
+    \[\exists x\in X, \varphi^X(a_1,\ldots,a_p)
+    \iff \exists x \in \mathcal X, \varphi^\mathcal X(a_1,\ldots,a_p)\]
+    par double implication~:
+    \begin{itemize}
+    \item supposons que $\exists x \in X,\varphi^X(a_1,\ldots,a_p)$.
+      On trouve alors $a \in X$ vérifiant la formule
+      $\varphi^X(a,a_1,\ldots,a_p)$. Par hypothèse d'induction, comme $\varphi$
+      est absolue entre $X$ et $\mathcal X$, on en déduit que
+      $\varphi^\mathcal X(a,a_1,\ldots,a_p)$, donc il existe bien
+      $x \in \mathcal X$ tel que $\varphi^\mathcal X(a_1,\ldots,a_p)$.
+    \item réciproquement, si
+      $\exists x\in\mathcal M, \varphi^\mathcal X(a_1,\ldots,a_p)$,
+      en prenant un tel $a$, on trouve $j$ tel que $a_1,\ldots,a_p \in X_j$~:
+      par absoluité entre $X_j$ et $\mathcal X$, on sait donc qu'il existe
+      $a \in X_j$, donc $a \in X$, tel que $\varphi^\mathcal X(a,a_1,\ldots,a_p)$
+      donc, par absoluité de $\varphi$ entre $X$ et $\mathcal X$, on en déduit
+      que $\exists x \in X, \varphi^X(a_1,\ldots,a_p)$.
+    \end{itemize}
+    On en déduit donc que $\exists x, \varphi$ est absolue entre $\mathcal X$
+    et $X$.
   \end{itemize}
-  et $\displaystyle F = \bigcup_{\alpha \in \Ord} f(\alpha)$.
+  D'où le résultat, par induction sur $k$.
+\end{proof}
+
+On peut maintenant montrer le théorème à proprement parler.
+
+\begin{theorem}[Réflexion]\label{thm.reflexion}
+  Soit une fonction $W : \Ord \to \mathbb V$ vérifiant~:
+  \begin{itemize}
+  \item pour tous $\alpha, \beta \in \Ord$,
+    $\alpha \leq \beta \implies W_\alpha \subseteq W_\beta$.
+  \item pour tout $\lambda \in \Ord$ limite,
+    $\displaystyle W_\lambda = \bigcup_{\beta < \lambda} W_\beta$
+  \end{itemize}
+  et $\displaystyle \mathcal W = \bigcup_{\alpha \in \Ord} W_\alpha$.
   alors pour toute proposition $\varphi\in\Formula(\mathcal L_{\ZF})$ et tout
   ordinal $\alpha \in \Ord$, il existe un ordinal $\beta > \alpha$ tel que
-  $f(\beta)\preccurlyeq_\varphi F$. On peut de plus prendre $\beta$ limite.
+  $W_\beta\preccurlyeq_\varphi \mathcal W$. On peut de plus prendre $\beta$
+  limite.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On montre le résultat uniquement sur les formules sous formes prénexes, mais
+  comme toute formule est équivalente à une formule sous forme prénexe, cela
+  suffit à montrer le résultat souhaité. On procède donc par récurrence sur
+  le nombre de quantificateur de la formule, en ajoutant des $\exists$ et des
+  négations~:
+  \begin{itemize}
+  \item comme dans le lemme précédent, le cas sans quantificateur se traite
+    directement puisque la relativisation ne change pas la formule.
+  \item dans le cas d'une négation, comme $\varphi \iff \psi$ et
+    $\lnot\varphi\iff\lnot\psi$ sont équivalentes, on a aussi le résultat
+    directement.
+  \item on suppose donc que la formule pour laquelle on souhaite prouver notre
+    énoncé est $\exists x, \varphi(x,x_1,\ldots,x_n)$. Par hypothèse
+    d'induction, on sait déjà que pour tout $\alpha \in \Ord$, on peut trouver
+    $\beta > \alpha$ limite, tel que
+    $W_\beta \preccurlyeq_{\varphi} \mathcal W$.
+
+    On définit maintenant une fonction (entre classes) $F$, à $n$ arguments,
+    donnée par le fait que $F(x_1,\ldots,x_n)$ est l'ensemble des
+    $x \in \mathcal W$ tels que $\varphi(x,x_1,\ldots,x_n)$ et dont le
+    $\mathcal W$-rang (au sens de plus petit $\alpha$ tel que l'élément est dans
+    $W_\alpha$) est minimal. Ainsi, quitte à choisir uniquement les éléments de
+    $\mathcal W$-rang minimal, on a l'équivalence suivante, pour toute formule
+    $\psi$~:
+    \[\exists x \in \mathcal W, \psi(x,x_1,\ldots,x_n) \iff
+    \exists x \in F(x_1,\ldots,x_n), \psi(x,x_1,\ldots,x_n)\]
+
+    Soit $\alpha \in \Ord$. On décide maintenant de définir une suite
+    $(\beta_n)$ d'ordinaux limites supérieurs à $\alpha$, par récursion d'ordre
+    2~:
+    \begin{itemize}
+    \item on choisit pour $\beta_0$ le premier $\beta > \alpha$ tel que
+      $W_\beta \preccurlyeq_\varphi \mathcal W$.
+    \item pour un rang $k$ fixé, on définit $\beta_{2k + 1}$ comme le plus
+      petit ordinal strictement supérieur à $\beta_{2k}$ tel que
+      $W_{\beta_{2k + 1}}$ contienne $F(a_1,\ldots,a_n)$ pour tous
+      $a_1,\ldots,a_n \in W_{\beta_{2k}}$ (il nous suffit de considérer l'union de
+      tous ces $F(a_1,\ldots,a_n)$ pour obtenir un ensemble, dont les
+      $\mathcal W$-rangs sont donc majorés, et de prendre un ordinal supérieur
+      à cette majoration).
+    \item on définit ensuite $\beta_{2k + 2}$ comme le plus petit ordinal
+      supérieur strictement à $\beta_{2k + 1}$ tel que
+      $W_{\beta_{2k + 2}}\preccurlyeq_\varphi \mathcal W$.
+    \end{itemize}
+    On définit alors $\beta = \sup \beta_n$~: c'est un ordinal limite car
+    les $\beta_k$ sont des ordinaux limites. D'après le \cref{lem.refl1}, et
+    comme les $W_{\beta_k}$ forment une suite croissante et incluse dans
+    $\mathcal W$ par hypothèse, on sait donc que $\varphi$ est absolue entre
+    $W_\beta$ et $\mathcal W$ (puisque $\beta$ est le sup des $\beta_{2k}$). On
+    montre maintenant que $\exists x, \varphi$ est absolue entre $W_\beta$ et
+    $\mathcal W$. Soient $a_1,\ldots,a_k \in W_\beta$, ce que l'on peut
+    réécrire par $a_1,\ldots,a_k \in W_{2k}$ pour un certain $k \in \mathbb N$
+    (que l'on fixe désormais). Montrons par double implication que
+    \[\exists x\in W_\beta, \varphi^{W_\beta}(a_1,\ldots,a_n) \iff
+    \exists x \in \mathcal W, \varphi^{\mathcal W}(a_1,\ldots,a_n)\]
+    \begin{itemize}
+    \item si on trouve $x \in W_\beta$ vérifiant l'énoncé, alors en utilisant
+      le fait que $\varphi$ est absolue entre $W_\beta$ et $\mathcal W$ et
+      le fait que $W_\beta \subseteq \mathcal W$, on obtient le résultat.
+    \item réciproquement, si l'on trouve $a \in \mathcal W$ tel que
+      $\varphi^\mathcal W(a,a_1,\ldots,a_n)$ alors on peut aussi le trouver de
+      $\mathcal W$-rang minimal. Cela signifie donc que
+      $a \in F(a_1,\ldots,a_n)$, donc on sait que $a \in W_{\beta_{2k + 1}}$, donc
+      $a \in W_\beta$. On en déduit, comme $\varphi$ est absolue entre
+      $W_\beta$ et $\mathcal W$, qu'il existe $a\in W_\beta$
+      tel que $\varphi^{W_\beta}(a,a_1,\ldots,a_n)$, d'où le résultat.
+    \end{itemize}
+  \end{itemize}
+  On a donc prouvé notre résultat par induction sur les formules sous forme
+  prénexe.
 \end{proof}
+
+\begin{remark}
+  La preuve a été légèrement allégée pour être plus digeste~: pour vérifier les
+  hypothèses du \cref{lem.refl1}, il nous faut établir comme énoncé à montrer
+  par induction que le $\beta$ que l'on trouve à chaque fois est vrai non
+  seulement pour $\varphi$, mais aussi pour $\varphi$ auquel on enlève une
+  partie des quantificateurs de tête. Remarquons aussi que, comme le
+  \cref{lem.refl1} est lui-même un schéma de lemme, et que l'on veut prouver
+  un schéma de théorèmes, il est bon de vérifier un fait~: pour une formule
+  $\varphi$ donnée, il nous suffit d'utiliser notre schéma de lemmes un nombre
+  fini de fois pour atteindre la conclusion.
+\end{remark}
 
 \begin{remark}
   Comme on peut toujours représenter un ensemble fini de propositions $F$ par
