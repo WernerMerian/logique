@@ -609,13 +609,13 @@ associerait automatiquement à $\bot$ la valeur de vérité $0$.
 \begin{proof}
   Supposons que $\mathcal T$ admette un modèle $\mathcal M$. Alors par
   définition de $\Val$, $\Val(\bot) = 0$ donc $\mathcal M\not\models \bot$. On
-  en déduit que $\mathcal T\not\vDash\bot$.
+  en déduit que $\mathcal T\nvDash\bot$.
 
   Dans le sens réciproque et par contraposée, supposons que $\mathcal T$ n'admet
   pas de modèle. Alors pour tout $\mathcal M$ tel que
   $\mathcal M\models \mathcal T$, $\mathcal M\models \bot$, par vacuité de la
   condition : on en déduit donc que $\mathcal T \vDash \bot$, donc que si
-  $\mathcal T \not\vDash\bot$, alors $\mathcal T$ a un modèle.
+  $\mathcal T \nvDash\bot$, alors $\mathcal T$ a un modèle.
 \end{proof}
 
 \begin{definition}[Théorie cohérente, contradictoire]
@@ -695,8 +695,8 @@ et de fonction.
 Un renforcement de la notion de morphisme est celle de plongement : un
 plongement est un morphisme dont l'image est isomorphe au domaine, c'est-à-dire
 que non seulement le morphisme est injectif, mais le comportement vis à vis
-des propositions peut s'étudier dans l'image uniquement en étudiant le modèle de
-départ.
+des propositions atomiques peut s'étudier dans l'image uniquement en étudiant le
+modèle de départ.
 
 \begin{definition}[Plongement]
   Un plongement d'une structure $\mathcal M$ vers une structure $\mathcal N$ est
@@ -1183,7 +1183,9 @@ une action sur le contexte des variables, avec par exemple
   \UnaryInfC{$\Gamma\mid \Theta\vdash \forall x, \varphi$}
 \end{prooftree}
 où $\Gamma\mid\Theta\vdash \forall x, \varphi$ doit être une proposition bien
-typée, imposant ansi que $v\notin\VL(\Theta)\cup\VL(\varphi)$.
+typée, imposant ansi que $v\notin\VL(\Theta)\cup\VL(\varphi)$. On peut par
+exemple citer \cite{JacobsCLTT} pour trouver un traitement de la syntaxe qui
+prend en compte les variables introduites.
 
 Le fait de gérer les variables est bien plus naturel, étant donné qu'une preuve
 en langage naturel va toujours tenir compte des variables (en particulier, il
@@ -1460,6 +1462,11 @@ caractéristiques essentielles :
   $\overline{\mathcal T}$ contenant $\mathcal T$ et qui nous permettra de
   construire un modèle.
 \end{itemize}
+
+Historiquement, le théorème de complétude de la logique du premier ordre date de
+Gödel, dans sa thèse de doctorat \cite{GödelCompleteness}, mais la méthode que
+nous présentons ici (et celle généralement utilisée de nos jours) a été
+introduite par Henkin, dans \cite{HenkinCompleteness}.
 
 Pour pouvoir effectuer les deux premières étapes, il est important que celles-ci
 soient compatibles entre elles.
@@ -1848,7 +1855,7 @@ complétude.
 
 On peut maintenant prouver le théorème de complétude.
 
-\begin{theorem}[Complétude de la déduction naturelle]
+\begin{theorem}[Complétude de la déduction naturelle \cite{GödelCompleteness}]
   Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ telle que
   $\mathcal T\nvdash\bot$. Alors il existe un modèle
   $\mathcal M\models \mathcal T$.
@@ -1940,9 +1947,10 @@ théorème.
 \end{proof}
 
 On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une forme générale,
-utilisant la version ascendante et descendante.
+utilisant la version ascendante et descendante. Ce théorème, dû à Löwenheim
+pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
-\begin{theorem}[Löwenheim-Skolem]
+\begin{theorem}[Löwenheim-Skolem\cite{Löwenheim1915}\cite{skolem1920logisch}]
   Soit $\mathcal M$ une structure infinie sur une signature $\Sigma$ et
   $\kappa \geq \max(|\Sigma_{\mathcal F}|,\aleph_0)$. Alors il existe une
   structure $\mathcal N$ élémentairement équivalente à $\mathcal M$,
