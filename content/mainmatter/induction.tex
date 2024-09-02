@@ -36,7 +36,7 @@ robuste que les ensembles infinis. Il est en effet très facile de se convaincre
 un ensemble à $300!$ éléments semble légèrement plus long). Cette robustesse
 découle du fait qu'on peut explicitement les construire, et cette possibilité
 n'existe que pour un ensemble fini. Pourtant, l'ensemble $\mathbb N$ tend aussi
-à être plus facilement accepté qu'un ensmeble tel que $\mathbb R / \mathbb Q$.
+à être plus facilement accepté qu'un ensemble tel que $\mathbb R / \mathbb Q$.
 Un point essentiel qui rend le premier ensemble logiquement plus simple que le
 deuxième est qu'il est facile à engendrer : l'ensemble $\mathbb N$ est constitué
 de l'élément $0$ et de l'opération $S$ définie par $n \mapsto n + 1$, et tout
@@ -313,7 +313,7 @@ un ensemble inductif en utilisant sa structure.
 
   Définir une fonction $h : \mathrm{BinTree}(A) \to \mathbb N$ donnant la
   hauteur d'un arbre, c'est-à-dire la longueur du plus long chemin entre la
-  racine de l'arbre (la première étiquette) et une feuile (un arbre vide qui est
+  racine de l'arbre (la première étiquette) et une feuille (un arbre vide qui est
   sous-arbre). On prend comme convention que $h(\mathrm{nil}) = 0$.
 
   Définir une fonction $|-| : \mathrm{BinTree}(A) \to \mathbb N$ donnant le
@@ -477,7 +477,7 @@ que pour toute instance des $x_i$ vérifiant tous les $P_i$, la proposition $P$
 est valide aussi. En supposant que la conclusion est de la forme
 $R(t_1,\ldots,t_p)$, où $t_1,\ldots,t_p$ sont des termes définis en fonction
 de $x_1,\ldots,x_k$, alors la validité de $r$ signifie que, si l'on définit
-l'ensemble $X$ des $(x_1,\ldots,x_k)$ vérifiants $P_i(R,x_1,\ldots,x_k)$, alors
+l'ensemble $X$ des $(x_1,\ldots,x_k)$ vérifiant $P_i(R,x_1,\ldots,x_k)$, alors
 l'ensemble des termes $t_1,\ldots,t_p$ est inclus dans $R$.
 
 Dans la suite de ce chapitre, on considérera toujours des règles se finissant
@@ -489,10 +489,16 @@ l'ensemble des $R(t_1,\ldots,t_k)$~:
   a_1,\ldots,a_k \in E, \forall i \in \{1,\ldots,n\},
   (R\mapsto X,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \models P_i\}
 \end{multline*}
-On note cette fonction $f_\mathrm r$. La validité de $\mathrm r$ pour une
-relation $R$ revient à l'inclusion $f_\mathrm r(R)\subseteq R$, que l'on peut
-ausside exprimer par $f_\mathrm r(R)\cup R = R$. Cela nous pousse à définir la
-fonction suivante, qui nous sera essentielle pour les prochaines constructions.
+On note cette fonction $f_\mathrm r$. On suppose maintenant une hypothèse qui,
+en pratique, sera toujours vérifiée~: la fonction $f_\mathrm r$ est croissante.
+Le cas le plus fréquent est celui où les prémisses de la règle sont directement
+des instances de la forme $R(t_1,\ldots,t_n)$, auquel cas il est clair que
+notre fonction est croissante.
+
+La validité de $\mathrm r$ pour une relation $R$ revient à l'inclusion
+$f_\mathrm r(R)\subseteq R$, que l'on peut aussi exprimer par
+$f_\mathrm r(R)\cup R = R$. Cela nous pousse à définir la fonction suivante, qui
+nous sera essentielle pour les prochaines constructions.
 
 \[\begin{array}{ccccc}
 \mathrm r &: & \powerset (E^p) & \longrightarrow & \powerset (E^p)\\
@@ -515,7 +521,7 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
 
 \begin{example}
   La règle précédente n'utilisait pas $R$ dans ses prémisses, un exemple
-  l'utilisant est la règle exprimant la transivité :
+  l'utilisant est la règle exprimant la transitivité :
   \begin{prooftree}
     \AxiomC{$R(x,y)$}
     \AxiomC{$R(y,z)$}
@@ -524,7 +530,7 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
   \end{prooftree}
   Dans ce cas, l'image de $R$ par $\mathrm{trans}$ est l'ensemble
   \[R \cup \{ (x,z) \in E^2\mid \exists y \in E, R(x,y)\text{ et } R(y,z)\}\]
-  En effet, même si $y$ n'apparait pas dans la conclusion, il est nécessaire
+  En effet, même si $y$ n'apparaît pas dans la conclusion, il est nécessaire
   qu'un tel $y$ existe pour que le triplet $(x,y,z)$ vérifie la condition
   de $f_\mathrm r$.
 \end{example}
@@ -590,7 +596,7 @@ Knaster-Tarski.
   $X\in\powerset(E), X\subseteq f(X)$.
 \end{exercise}
 
-Des deux exercises précédents, on peut déduire le résultat suivant :
+Des deux exercices précédents, on peut déduire le résultat suivant :
 
 \begin{corollary}[Définition d'une relation inductive]
   Soit une règle $\mathrm r$ sur un ensemble $E$ et une relation $R$. Alors il

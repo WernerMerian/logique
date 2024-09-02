@@ -174,7 +174,7 @@ basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
   définie par induction sur $\Term(\Sigma)$ (respectivement $\Formula(\Sigma)$)
   par les équations suivantes :
   \begin{itemize}
-  \item si $t = x\in Var$, alors $\VL(t) = \{x\}$.
+  \item si $t = x\in \Var$, alors $\VL(t) = \{x\}$.
   \item si $t = f(t_1,\ldots,t_n)$ où $f\in \mathcal F_\Sigma$,
     $t_1,\ldots,t_n\in\Term(\Sigma)$, alors
     $\displaystyle\VL(t) =\bigcup_{k = 1}^n \VL(t_k)$.
@@ -226,7 +226,7 @@ comme une évaluation syntaxique : on remplace une variable libre par un terme.
   structure de $\Formula(\Sigma)$) :
   \begin{itemize}
   \item si $u = x$, alors $u[t/x] = t$.
-  \item si $u = y\in Var$ avec $y \neq x$, alors $u[t/x] = y$.
+  \item si $u = y\in \Var$ avec $y \neq x$, alors $u[t/x] = y$.
   \item si $u = f(u_1,\ldots,u_n)$, alors
     $u[t/x] = f(u_1[t/x],\ldots,u_n[t/x])$.
   \item si $\varphi = r(u_1,\ldots,u_n)$, alors
@@ -267,6 +267,40 @@ comme une évaluation syntaxique : on remplace une variable libre par un terme.
   nous ne le détaillons pas ici.
 \end{remark}
 
+On définit aussi la notion de substitution simultanée, permettant de remplacer
+plusieurs variables à la fois par des termes.
+
+\begin{definition}[Substitution simultanée]
+    Soit une signature $\Sigma$, une fonction partielle
+    $\rho : \Var \partialto \Term(\Sigma)$, un terme $t \in \Term(\Sigma)$ et 
+    une formule $\varphi \in \Formula(\Sigma)$. On définit la substitution de $t$
+    (respectivement $\varphi$) par $\rho$, notée  $\rho(t)$
+    (respectivement $\rho(\varphi)$), par induction sur $\varphi$~:
+    \begin{itemize}
+        \item si $t = x \in \dom(\rho)$ alors $\rho(t) = \rho(x)$
+        \item si $t = f(t_1,\ldots,t_n)$ alors
+        $\rho(t) = f(\rho(t_1),\ldots,\rho(t_n))$.
+        \item si $\varphi = r(t_1,\ldots,t_n)$ alors
+        $\rho(\varphi) = r(\rho(t_1),\ldots,\rho(t_n))$.
+        \item si $\varphi = \top$ alors $\rho(\varphi) = \top$.
+        \item si $\varphi = \bot$ alors $\rho(\varphi) = \bot$.
+        \item si $\varphi = \lnot \psi$ alors
+        $\rho(\varphi) = \lnot \rho(\psi)$.
+        \item si $\varphi = \psi \lor \chi$ alors
+        $\rho(\varphi) = \rho(\psi)\lor\rho(\chi)$.
+        \item si $\varphi = \psi \land \chi$ alors
+        $\rho(\varphi) = \rho(\psi)\land\rho(\chi)$.
+        \item si $\varphi = \psi \to \chi$ alors
+        $\rho(\varphi) = \rho(\psi)\to\rho(\chi)$.
+        \item si $\varphi = \forall z, \psi$ où
+        $\displaystyle z \notin \bigcup_{x \in \dom(\rho)}\VL(\rho(x))$,
+        alors $\rho(\varphi) = \forall z, \rho(\psi)$.
+        \item si $\varphi = \exists z, \psi$ où
+        $\displaystyle z \notin \bigcup_{x \in \dom(\rho)}\VL(\rho(x))$,
+        alors $\rho(\varphi) = \exists z, \rho(\psi)$.
+    \end{itemize}
+\end{definition}
+
 \begin{exercise}
   Soit $x\in \Var$, $t\in\Term(\Sigma)$ et $\varphi\in\Clos(\Sigma)$ pour une
   signature $\Sigma$ quelconque. Montrer que $\varphi[t/x] = \varphi$.
@@ -275,6 +309,13 @@ comme une évaluation syntaxique : on remplace une variable libre par un terme.
 \begin{exercise}
   Soient $t,u,v\in\Term(\Sigma)$ et $x,y\in\Var$, montrer que
   \[t[u/x][v/y] = (t[v/y])[u[v/y]/x]\]
+\end{exercise}
+
+\begin{exercise}
+  Soient $t,u\in\Term(\Sigma)$, $\rho : \Var \partialto \Term(\Sigma)$ et
+  $x \notin \VL(\rho)$ (cet ensemble est l'abréviation de
+  $\displaystyle\bigcup_{y \in \VL(\rho)} \VL(\rho(y))$). Montrer que
+  \[\rho(t[u/x]) = \rho(t)[\rho(u)/x]\]
 \end{exercise}
 
 \section{Bases de théorie des modèles}
@@ -428,7 +469,7 @@ commutent.
 \begin{proposition}\label{prop.comm.subst.env}
   Soit une signature $\Sigma$, une structure $\mathcal M$, un environnement
   $\rho$, une variable $x$, deux termes $t,u$ et une formule $\varphi$. On
-  suppose de plus les inclusions suivantes~: $\VL(t)\subseteq \dom(\rho)$,
+  suppose de plus des inclusions suivantes~: $\VL(t)\subseteq \dom(\rho)$,
   $\VL(u)\subseteq\dom(\rho)$ et $\VL(\varphi)\subseteq\dom(\rho)$. On a alors
   les deux égalités suivantes :
   \[(t[u/x])_\rho^\mathcal M = t^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]} \qquad
@@ -488,6 +529,14 @@ commutent.
       &= \min (\Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
       \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
       &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\land \chi)
+    \end{align*}
+  \item si $\varphi = \psi \to \chi$, alors
+    \begin{align*}
+      \Val_\rho((\psi to \chi)[u/x]) &= \Val_\rho(\psi[u/x] \to \chi[u/x])\\
+      &= \max (1 - \Val_\rho(\psi[u/x]),\Val_\rho(\chi[u/x]))\\
+      &= \max (1 - \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
+      \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
+      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\to \chi)
     \end{align*}
   \item si $\varphi = \forall y, \psi$ (sans perte de généralité,
     $y\notin \VL(u)$), alors
@@ -1241,7 +1290,7 @@ naturelle).
 \item La règle $\exists_\mathrm e$ dit qu'à partir d'une proposition de la forme
   $\exists x, A$, on peut déduire une proposition $B$ en ajoutant dans le
   contexte $A[v/x]$, où $v$ est quelconque (ce qui se traduit par la condition
-  de $v\notin\VL(\Gamma)\cup\VL(B)$).
+  de $v\notin\VL(\Gamma)\cup\VL(A)\cup\VL(B)$).
 \item La règle $=_\mathrm i$ est la réflexivité de l'égalité : un terme est
   égal à lui-même.
 \item La règle $=_\mathrm e$, parfois appelée principe de Leibniz, exprime que
@@ -1359,7 +1408,7 @@ environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
     $\mathcal M,\rho[x\mapsto m]\models A$.
     Mais alors, en considérant $m = t^\mathcal M_\rho$, on trouve que
     $\Val_{\rho[x\mapsto t^\mathcal M_\rho]}(A) = 1$, mais l'expression de gauche
-    correpsond exactement à $\Val_\rho(A[t/x])$, donc
+    correspond exactement à $\Val_\rho(A[t/x])$, donc
     $\mathcal M,\rho\models A[t/x]$.
   \item $\exists_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
     alors $\mathcal M,\rho\models A[t/x]$, mais comme
@@ -1371,7 +1420,7 @@ environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
     $\Val_{\rho[v\mapsto m]}(A[v/x]) = \Val_{\rho[v\mapsto m][x\mapsto m]}(A)$, mais
     aussi $\Val_{\rho[v\mapsto m][x\mapsto m]}(A) = \Val_{\rho[x\mapsto m]}(A)$
     car $v\notin\VL(A)$, et cette expression vaut $1$. On en déduit que
-    $\mathcal M M,\rho[v\mapsto m]\models A[v/x]$. De plus, comme
+    $\mathcal M,\rho[v\mapsto m]\models A[v/x]$. De plus, comme
     $v\notin\VL(\Gamma)$, on a $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$,
     donc par hypothèse d'induction $\mathcal M,\rho[v\mapsto m]\models B$.
     Mais $v\notin\VL(B)$, donc $\mathcal M,\rho\models B$.
@@ -1473,13 +1522,22 @@ soient compatibles entre elles.
 
 \begin{definition}[Propriété de Henkin]
   On dit qu'une théorie $\mathcal T$ sur une signature $\Sigma$ a la propriété
-  de Henkin si pour toute formule telle que $\mathcal T\vdash\exists x, P$, il
-  existe un terme $c_P\in\Term(\Sigma)$ tel que $\mathcal T\vdash P[c_P/x]$.
+  de Henkin si pour toute formule $F$ telle que $\mathcal T\vdash\exists x, F$,
+  il existe un terme $t_F\in\Term(\Sigma)$ tel que $\mathcal T\vdash P[t_F/x]$.
 \end{definition}
 
 Le point important de cette propriété est qu'elle peut être vérifiée, au prix
 d'une augmentation de la théorie et du langage. Il faut cependant vérifier,
 alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
+
+Pour créer notre nouvelle théorie, on va ajouter artificiellement, pour chaque
+formule $\exists x, F(x)$, un témoin $c_F$ ainsi qu'une formule dans notre
+théorie disant que, dans le cas où $\exists x, F(x)$ est vérifiée, il vient
+directement que $F(c_F)$ est vérifiée aussi. Cependant, comme on veut permettre
+de considérer des formules non closes $F$, on remplace l'idée d'un témoin
+constant $c_F$ par une fonction $f_F$ prenant en arguments les variables libres
+de $F$. On ajoute aussi dans les paramètres le variable $x$ sur laquelle on
+utilise la quantification existentielle.
 
 \begin{definition}[Clôture par témoins]
   Soit $\Sigma$ une signature, et $\mathcal T$ une théorie sur $\Sigma$. On
@@ -1488,10 +1546,14 @@ alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
   \begin{itemize}
   \item $\Sigma_0 = \Sigma$ et $\mathcal T_0 = \mathcal T$.
   \item Si $\Sigma_n$ et $\mathcal T_n$ sont construits, on définit la signature
-    $\Sigma_{n+1}$ en ajoutant, pour chaque formule $F\in\Formula(\Sigma_n)$,
-    une constante $c_F$. On définit $\mathcal T_{n+1}$ en ajoutant à la théorie
-    $\mathcal T$ la famille de formules
-    $\{(\exists x,F)\to F[c_F/x]\}_{F\in\Formula(\Sigma_n)}$.
+    $\Sigma_{n+1}$ en ajoutant les éléments suivants~: pour chaque formule
+    $F \in \Formula(\Sigma_n)$, dont les variables libres seront considérées être
+    $x_1,\ldots,x_n$ et chaque variable $x \in \Var$, on ajoute une fonction
+    $f_{F,x}$ d'arité $n - 1$ si $x \in \VL(F)$ et $n$ sinon. On construit ensuite
+    la théorie $\mathcal T_{n + 1}$ en ajoutant à $\mathcal T_n$, pour chaque
+    formule $\exists x, F(x_1,\ldots,x_n,x)$, la formule
+    \[\forall x_1,\ldots,x_n, (\exists x, F(x_1,\ldots,x_n,x)) \to
+    F(x_1,\ldots,x_n,f_{F,x}(x_1,\ldots,x_n))\]
   \end{itemize}
   On définit alors
   \[\hclose{\Sigma}\defeq \bigcup_{n\in\mathbb N}\Sigma_n
@@ -1507,32 +1569,26 @@ alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
   Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où
   $\exists x, F\in\Clos(\hclose{\Sigma})$. Remarquons que $F$ ne peut contenir
   qu'un nombre fini de symboles de fonctions et de relations~: on en déduit
-  qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$. Cela signifie
-  donc que $(\exists x,F)\to F[c_F/x] \in \mathcal T_{n+1}$. On en déduit
+  qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$, et on pose
+  $x_1,\ldots,x_n$ les variables libres de $F$. Cela signifie
+  donc que
+  \[\forall x_1,\ldots,x_n, (\exists x,F(x_1,\ldots,x_n,x))\to 
+  F(x_1,\ldots,x_n,f_{F,x}(x_1,\ldots,x_n)) \in \mathcal T_{n+1}\]
+  On en déduit, quitte à appliquer un nombre fini de fois $\forall_\mathrm e$
+  pour substituer $\forall x_i, P$ par $P[x_i/x_i]$~:
   \begin{prooftree}
     \AxiomC{}
     \RightLabel{Ax}
-    \UnaryInfC{$\hclose{\mathcal T}\vdash (\exists x, F)\to F[c_F/x]$}
-    \AxiomC{$\hclose{\mathcal T}\vdash \exists x,F$}
+    \UnaryInfC{$\hclose{\mathcal T}\vdash 
+    (\exists x, F(x))\to F(f_{F,x}(x_1,\ldots,x_n))$}
+    \AxiomC{$\hclose{\mathcal T}\vdash \exists x,F(x)$}
     \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\hclose{\mathcal T}\vdash F[c_F/x]$}
+    \BinaryInfC{$\hclose{\mathcal T}\vdash F(f_{F,x}(x_1,\ldots,x_n))$}
   \end{prooftree}
 \end{proof}
 
-\begin{remark}
-  On considère ici que $\exists x, F$ est une formule close. En réalité, on peut
-  tout à
-  fait montrer la propriété pour une formule avec des variables libres~: il
-  suffit simplement d'ajouter, au lieu de $\exists x, F \to F[c_F/x]$, la
-  proposition
-  \[\forall y_1,\ldots,y_n,(\exists x, F[y_i/x_i] \to F[c_F/x][y_i/x_i]\]
-  pour $x_i$ les variables libres dans $F$ autres que $x$. Cela est plus
-  fastidieux et n'apporte rien conceptuellement, d'où la facilité que nous
-  avons prise.
-\end{remark}
-
 De plus, cette construction est stable par extension (ce qui nous servira
-lorsque nous complèterons notre théorie).
+lorsque nous compléterons notre théorie).
 
 \begin{property}\label{prop.henkin.ext}
   Si $\hclose{\mathcal T}\subseteq \mathcal S$ pour une certaine théorie
@@ -1540,9 +1596,9 @@ lorsque nous complèterons notre théorie).
 \end{property}
 
 \begin{proof}
-  Comme $(\exists x,F)\to F[c_F/x]$ appartient à $\mathcal S$, l'arbre de preuve
-  précédent fonctionne encore en remplaçant $\hclose{\mathcal T}$ par
-  $\mathcal S$.
+  Comme $\forall x_1,\ldots,x_n,(\exists x,F)\to F(f_{F,x})$ appartient à
+  $\mathcal S$, l'arbre de preuve précédent fonctionne encore en remplaçant
+  $\hclose{\mathcal T}$ par $\mathcal S$.
 \end{proof}
 
 Enfin, on veut montrer que la clôture par témoins conserve la cohérence. Pour
@@ -1553,7 +1609,7 @@ libre.
 \begin{lemma}[Simulation d'une variable par une constante]\label{lem.var.const}
   Soit $\Sigma$ une signature contenant une constante $c$,
   $A_1,\ldots,A_n\in\Formula(\Sigma\setminus\{c\})$, $P\in\Formula(\Sigma)$ et
-  $x\notin \VL(A_1,\ldots,A_n)$.
+  une variable $x\notin \VL(A_1,\ldots,A_n)$.
   Les deux propositions sont alors équivalentes~:
   \begin{itemize}
   \item $A_1,\ldots,A_n\vdash P$
@@ -1572,9 +1628,12 @@ libre.
     validité est immédiate puisque l'hypothèse d'induction est stable dans
     toutes les règles (les variables ne changent jamais).
   \item si la dernière règle est $\forall_\mathrm i$, on suppose alors que
-    $P = \forall y, A$ et que $\Gamma\vdash A[c/y]$~: on voit que $y$ est
-    toujours libre dans $\Gamma$, donc le résultat tient toujours.
-  \item si la denière règle est $\forall_\mathrm e$, on suppose alors que
+    $P = \forall y, A$ et que $\Gamma\vdash A[v/y]$. Par hypothèse d'induction,
+    on en déduit que $\Gamma\vdash A[v/y][c/x]$, mais on remarque que
+    $A[v/y][c/x] = A[c/x][v/y]$ car $v$ est une variable différente de $x$,
+    donc $\Gamma\vdash A[c/x][v/y]$, d'où $\Gamma\vdash \forall y, A[c/x]$
+    puisque $v$ reste libre dans $\Gamma,A$.
+  \item si la dernière règle est $\forall_\mathrm e$, on suppose alors que
     $P = A[t/y]$ pour un certain terme $t$, donc $P[c/x] = A[t/y][c/x]$ ou
     encore $P[c/x] = A[c/x][t[c/x]/y]$. Par hypothèse d'induction, on sait que
     $\Gamma\vdash \forall y, A[c/x]$, donc $\Gamma\vdash A[c/x][t[c/x]/y]$
@@ -1585,7 +1644,7 @@ libre.
     $A[t/y][c/x] = A[c/x][t[y/x]/y]$ et appliquer la règle $\exists_\mathrm i$
     pour avoir le résultat.
   \item si la dernière règle est $\exists_\mathrm e$, on suppose que
-    $\Gamma\vdash \exists y, A$ et $\Gamma, A[v/x]\vdash P$ où $v$ n'apparait
+    $\Gamma\vdash \exists y, A$ et $\Gamma, A[v/x]\vdash P$ où $v$ n'apparaît
     pas dans $\Gamma$ ou dans $P$. On utilise notre hypothèse d'induction sur
     la première hypothèse pour en déduire que $\Gamma\vdash \exists y, A[c/x]$,
     puis sur notre deuxième hypothèse réécrite en $\Gamma\vdash A[v/y]\to B$,
@@ -1617,49 +1676,7 @@ cohérence.
   $\mathcal T_n\not\vdash\bot$ :
   \begin{itemize}
   \item Comme $\mathcal T_0 =\mathcal T$, le résultat est direct.
-  \item Supposons que $\mathcal T_n\not\vdash\bot$ et que
-    $\mathcal T_{n+1}\vdash\bot$. Par définition, on trouve
-    $\Gamma\in\List(\mathcal T_{n+1})$ tel que $\Gamma\vdash\bot$. On écrit
-    alors $\Gamma = A_1,\ldots,A_m,B_1,\ldots,B_p$ où chaque $A_i$ est dans
-    $\mathcal T_n$ et chaque $B_i$ dans
-    $\mathcal T_n\setminus\mathcal T_{n+1}$. On sait que chaque $B_i$ est de
-    la forme $(\exists x,F_i)\to F[c_{F_i}/x]$ où $F_i\in\Formula(\Sigma_n)$.
-    En fait, on peut même préciser que
-    $F_i \in\Clos(\Sigma_n)\setminus\Clos(\Sigma_{n-1})$ (en considérant
-    que $\Clos(\Sigma_{-1}) = \varnothing$ pour uniformiser les notations)
-    puisque sinon $B_i$ serait dans $\mathcal T_n$, ce qui signifie que
-    $c_{F_i}\notin\Sigma_n$, nous permettant donc d'utiliser le
-    \cref{lem.var.const}. On peut réécrire notre séquent en
-    \[A_1,\ldots,A_m\vdash \left(\bigwedge_{i=1}^p B_i\right) \to \bot\]
-    donc, en utilisant le \cref{lem.var.const}, on obtient avec de nouvelles
-    variables fraîches $x_1,\ldots,x_p$~:
-    \[A_1,\ldots,A_m\vdash
-    \lnot \left(\bigwedge_{i = 1}^p ((\exists x, F_i)\to F_i[x_i/x])\right)\]
-    On peut alors généraliser chaque $x_i$ pour obtenir
-    \[A_1,\ldots,A_m\vdash \forall y_1,\ldots,y_p, \lnot \left(
-    \bigwedge_{i = 1}^p ((\exists x, F_i) \to F_i[y_i/x])\right)\]
-    En utilisant les lois de De Morgan, on peut inverser les quantifications sur
-    les $y_i$ et la négation, nous donnant
-    \begin{equation}\label{eq.henk}
-      A_1,\ldots,A_m\vdash \lnot \left(\exists y_1,\ldots,y_p,
-      \bigwedge_{i = 1}^p (\exists x, F_i) \to F_i[y_i/x]\right)
-    \end{equation}
-
-    On a alors besoin de deux lemmes qui sont laissés en exercices~: pour toutes
-    formules $P,Q$ et variables $x,y$ où $x\notin\VL(Q), y \notin\VL(P)$, on
-    a les équivalences suivantes ci-dessous.
-    \[\exists x, \exists y, (P(x)\land Q(y)) \dashv\vdash (\exists x,P(x))\land
-    \exists y,Q(y)
-    \qquad \exists y, (P \to Q) \dashv\vdash P \to (\exists y, Q)\]
-
-    On peut alors transformer la déduction \ref{eq.henk} en
-    \[A_1,\ldots,A_m\vdash \lnot \left(\bigwedge_{i = 1}^p (\exists x, F_i)\to
-    (\exists y, F_i[y/x])\right)\]
-    or on peut prouver $(\exists x, F_i) \to (\exists y, F_i[y/x])$, en
-    particulier dans $A_1,\ldots,A_m$, ce qui signifie par
-    \textit{modus ponens} que $A_1,\ldots,A_m\vdash \bot$, donc que
-    $\mathcal T_n\vdash \bot$, ce qui est contradictoire avec notre hypothèse.
-    On en déduit donc que $\mathcal T_{n+1}\nvdash\bot$.
+  \item A FAIRE
   \end{itemize}
 
   Ainsi, $\mathcal T_n\nvdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
@@ -1796,57 +1813,89 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
   donc $r^{\mathcal T'}$ est bien définie.
 \end{proof}
 
+Afin de montrer le théorème de complétude, on va vouloir montrer que les formules
+vérifiées par $\mathcal M_{\mathcal T'}$ sont exactement les résultats montrés par
+la théorie $\mathcal T'$. Comme l'induction se fera sur la structure de la formule
+vérifiée, il nous faut considérer des possibles variables libres. On définit donc
+d'abord une notation pour définir un environnement sur $\mathcal M_{\mathcal T'}$.
+
+\begin{definition}[Valuation syntaxique]
+    Soit $\rho$ une valuation sur $\mathcal M_{\mathcal T'}$, on la notera
+    $\overline \rho$ et on notera $\rho$ une fonction
+    $\Var \partialto \Term(\Sigma')$ telle que
+    $\overline{\rho(x)} = \overline\rho(x)$.
+\end{definition}
+
 On peut alors démontrer le lemme qui permettra de prouver le théorème de
 complétude.
 
 \begin{lemma}
-  Pour toute proposition $\varphi \in \Formula(\Sigma')$, on a l'équivalence
-  suivante :
-  \[\mathcal T' \vdash \varphi \iff \mathcal M_{\mathcal T'}\models \varphi\]
+  Pour toute formule $\varphi \in \Formula(\Sigma')$ et tout valuation
+  $\overline\rho$ telle que $\VL(\varphi)\subseteq \dom(\rho)$, on a l'équivalence
+  suivante~:
+  \[\mathcal T' \vdash \rho(\varphi) \iff
+  \mathcal M_{\mathcal T'},\overline \rho\models \varphi\]
 \end{lemma}
 
 \begin{proof}
-  On démontre ce résultat par induction sur la structure de $\varphi$ :
+  On peut prouver par induction sur la structure des termes que pour tout terme
+  $t \in \Term(\Sigma')$, on a $\overline{\rho(t)} = \overline \rho(t)$ (l'exercice
+  est laissé au lecteur, mais il s'agit d'une induction qui ne présente aucune
+  difficulté).
+  
+  On démontre le résultat par induction sur la structure de $\varphi$ :
   \begin{itemize}
   \item si $\varphi$ est $\top$ ou $\bot$, le résultat est évident (en
-    particulier $\mathcal T'\not\vdash\bot$).
-  \item si $\varphi = r(t_1,\ldots,t_n)$ alors
-    $\mathcal T'\vdash r(t_1,\ldots,t_n)$ signifie exactement que
-    $r^{\mathcal T'}(\overline{t_1},\ldots,\overline{t_n})$, donc
-    $\mathcal M_{\mathcal T'}\models r(t_1,\ldots,t_n)$. Ce fait est une
-    équivalence puisqu'il provient de la définition même de $r^{\mathcal T'}$.
+    particulier $\mathcal T'\nvdash\bot$).
+  \item si $\varphi = r(t_1,\ldots,t_n)$ alors la proposition
+    $\mathcal T'\vdash r(\rho(t_1),\ldots,\rho(t_n))$ signifie exactement
+    \[r^{\mathcal T'}(\overline{\rho(t_1)},\ldots,\overline{\rho(t_n)})\]
+    ce qui correspond à
+    \[\mathcal M_{\mathcal T'}\models 
+    r(\overline \rho (t_1),\ldots,\overline \rho(t_n))\]
+    en utilisant le résultat sur la substitution des termes.
+    Ce fait est une équivalence puisqu'il provient de la définition même de
+    $r^{\mathcal T'}$.
   \item si $\varphi = \lnot \psi$, montrons que
-    $\mathcal T'\vdash\varphi\implies \mathcal M_{\mathcal T'}\models \varphi$.
-    Comme $\mathcal T'\vdash \lnot \psi$, on en déduit que
-    $\mathcal T'\nvdash \psi$ (car $\mathcal T'\nvdash\bot$), donc par
-    hypothèse d'induction $\mathcal M_{\mathcal T'}\not\models \psi$, donc
-    $\mathcal M_{\mathcal T'}\models \varphi$. Montrons la réciproque~: on
-    suppose que $\mathcal M_{\mathcal T'}\models \varphi$, c'est-à-dire que
-    $\mathcal M_{\mathcal T'}\not\models \psi$. Par hypothèse d'induction, cela
-    signifie que $\mathcal T'\nvdash \psi$, mais $\mathcal T'$ est complète
-    donc $\mathcal T'\vdash\lnot\psi$. On a donc l'équivalence.
+    $\mathcal T'\vdash\rho(\varphi)\implies \mathcal M_{\mathcal T'},
+    \overline\rho \models \varphi$.
+    Comme $\mathcal T'\vdash \lnot \rho(\psi)$, on en déduit que
+    $\mathcal T'\nvdash \rho(\psi)$ (car $\mathcal T'\nvdash\bot$), donc par
+    hypothèse d'induction
+    $\mathcal M_{\mathcal T'},\overline \rho\not\models \psi$, donc
+    $\mathcal M_{\mathcal T'},\overline \rho\models \varphi$.
+    Montrons la réciproque~: on suppose que
+    $\mathcal M_{\mathcal T'},\overline\rho\models \varphi$, c'est-à-dire que
+    $\mathcal M_{\mathcal T'},\overline\rho\not\models \psi$. Par hypothèse
+    d'induction, cela signifie que $\mathcal T'\nvdash \rho(\psi)$, mais
+    $\mathcal T'$ est complète donc $\mathcal T'\vdash\lnot\rho(\psi)$. On a
+    donc l'équivalence.
   \item si $\varphi = \psi \land \chi$, on suppose que
-    $\mathcal T'\vdash \psi\land\chi$. Comme $\mathcal T'$ est complète, cela
-    est équivalent à dire que $\mathcal T'\vdash \psi$ et
-    $\mathcal T'\vdash \chi$ (puisque si $\lnot\psi$ ni $\lnot \chi$ ne sont
-    prouvables), ce qui est équivalent par hypothèse d'induction à dire que
-    $\mathcal M_{\mathcal T'}\models\psi$ et
-    $\mathcal M_{\mathcal T'}\models\chi$, donc équivalent à
-    $\mathcal M_{\mathcal T'}\models \psi\land \chi$.
+    $\mathcal T'\vdash \rho(\psi)\land\rho(\chi)$. Comme $\mathcal T'$ est
+    complète, cela est équivalent à dire que $\mathcal T'\vdash \rho(\psi)$ et
+    $\mathcal T'\vdash \rho(\chi)$ (puisque ni $\lnot\rho(\psi)$ ni
+    $\lnot \rho(\chi)$ ne sont prouvables), ce qui est équivalent par hypothèse
+    d'induction à dire que
+    $\mathcal M_{\mathcal T'},\overline\rho\models\psi$ et
+    $\mathcal M_{\mathcal T'},\overline\rho\models\chi$, donc équivalent à
+    $\mathcal M_{\mathcal T'},\overline\rho\models \psi\land \chi$.
   \item les cas de $\to$ et $\lor$ se ramènent directement à $\land$ et $\lnot$
     grâce aux lois de De Morgan (sémantiquement on peut voir facilement
     l'équivalence par l'égalité des valeurs de vérité).
   \item le cas de $\forall$ se ramène à celui de $\exists$ et $\lnot$ grâce
     aux lois de De Morgan, nous traitons donc simplement $\exists$.
-  \item si $\varphi = \exists x, \psi$, alors supposons que
-    $\mathcal T'\vdash \exists x, \psi$~: la propriété de Henkin sur
-    $\mathcal T'$ nous donne un terme $t$ tel que $\mathcal T'\vdash \psi[t/x]$
-    et donc un élément $\overline t \in |\mathcal M_{\mathcal T'}|$ tel que
-    $\mathcal M_{\mathcal T'}, [x\mapsto \overline t] \models \psi$, donc
-    $\mathcal M_{\mathcal T'}\models \exists x, \psi$. Réciproquement, s'il
-    existe $\overline t$ tel que
-    $\mathcal M_{\mathcal T'}[x\mapsto \overline t]\models \psi$, alors
-    par hypothèse d'induction $\mathcal T'\vdash \psi[t/x]$ donc
+  \item si $\varphi = \exists x, \psi$, où $x \notin \VL(\rho)$; alors supposons
+    que $\mathcal T'\vdash \exists x, \rho(\psi)$~: la propriété de Henkin sur
+    $\mathcal T'$ nous donne un terme $t$ tel que
+    $\mathcal T'\vdash \rho(\psi[t/x])$
+    et donc un élément $\overline \rho(t) \in |\mathcal M_{\mathcal T'}|$ tel que
+    $\mathcal M_{\mathcal T'}, \overline\rho[x\mapsto \overline \rho(t)] \models \psi$,
+    donc
+    $\mathcal M_{\mathcal T'},\overline\rho\models \exists x, \psi$.
+    Réciproquement, s'il existe $\overline t$ tel que
+    $\mathcal M_{\mathcal T'},\overline\rho[x\mapsto \overline t]\models \psi$,
+    alors par hypothèse d'induction
+    $\mathcal T'\vdash \rho[x\mapsto \overline t](\psi)$ donc
     $\mathcal T'\vdash \exists x, \psi$.
   \end{itemize}
 
@@ -1864,7 +1913,8 @@ On peut maintenant prouver le théorème de complétude.
 \begin{proof}
   En reprenant notre modèle $\mathcal M_{\mathcal T'}$, on sait à partir du lemme
   précédent que $\mathcal M_{\mathcal T'}\models \mathcal T'$ grâce à la règle
-  d'axiome. Comme $\mathcal T\subseteq\mathcal T'$, on en déduit donc que
+  d'axiome, et au fait que $\mathcal T'$ ne contient que des formules closes.
+  Comme $\mathcal T\subseteq\mathcal T'$, on en déduit donc que
   $\mathcal M_{\mathcal T'}\models \mathcal T$.
 \end{proof}
 
@@ -1911,12 +1961,12 @@ ensemble. Cela mène au théorème de Löwenheim-Skolem descendant.
   $\Term(\hclose\Sigma) \to \mathcal M$ par $t\mapsto \overline t$. L'ensemble
   $\Term(\hclose\Sigma)$ est de cardinal $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
   En effet, en notant à nouveau $\Sigma_n$ chaque signature utilisée à chaque
-  étape de la construction de $\hclose\Sigma$, on voit qu'on ajoute seulement
-  un nombre dénombrable de constantes $c_F$. La signature $\hclose\Sigma$
-  est donc dénombrable en tant qu'union dénombrable d'ensembles dénombrables.
-  On voit enfin que l'ensemble des termes sur $\hclose\Sigma$ est dénombrable,
-  puisque c'est là encore une union dénombrable d'ensembles dénombrables en
-  reprenant la construction d'un ensemble inductif.
+  étape de la construction de $\hclose\Sigma$, on voit qu'on ajoute un nombre
+  de $\max(|\Sigma_\mathcal F|,\aleph_0)$ de constantes $c_F$. La signature
+  $\hclose\Sigma$ est donc l'union dénombrable d'ensembles de cardinal
+  $\max(|\Sigma_\mathcal F|,\aleph_0)$, donc c'est un ensemble dénombrable.
+  On voit enfin que l'ensemble des termes sur $\hclose\Sigma$ est de même
+  cardinal, avec le même argument.
 
   En conclusion, on a une surjection d'un ensemble de cardinal
   $\max(|\Sigma_\mathcal F|,\aleph_0)$ vers le modèle syntaxique, qui est donc
@@ -1941,9 +1991,9 @@ théorème.
   que $\mathcal T'$ soit cohérent, il suffit que toute partie finie de
   $\mathcal T'$ soit cohérente. Mais le modèle de $\mathcal T$, infini, est
   un modèle de toute partie finie de $\mathcal T'$ en associant aux éléments
-  $c_a$ des éléments (seul un nombre fini est considéré par la partie finie de
-  $\mathcal T'$, les autres peuvent être associés au même élément). Ainsi on
-  a un modèle de $\mathcal T'$.
+  $c_a$ des éléments distincts (seul un nombre fini est considéré par la partie
+  finie de $\mathcal T'$, les autres peuvent être associés au même élément). Ainsi
+  on a un modèle de $\mathcal T'$.
 \end{proof}
 
 On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une forme générale,
@@ -1960,11 +2010,18 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 \end{theorem}
 
 \begin{proof}
-  On définit la théorie $\mathcal T_{\mathcal M}$ des énoncés vrais dans
-  $\mathcal M$. Comme c'est une théorie cohérente sans modèle fini (puisque
-  les axiomes exprimant qu'il y a au moins $n$ éléments sont vérifiés par
-  $\mathcal M$), on peut trouver un modèle de cardinal $\kappa$ à
-  $\mathcal T_{\mathcal M}$. Cette théorie étant complète, cela signifie que
-  $\mathcal T_{\mathcal N} = \mathcal T_{\mathcal M}$, ce qui est le
-  résultat attendu.
+  On combine les deux résultats précédents~: on considère tout d'abord la
+  théorie $\mathcal T_{\mathcal M}$ des propositions vraies dans $\mathcal M$.
+  Cette théorie étant complète (un modèle vérifie un énoncé ou sa négation),
+  construire un modèle de $\mathcal T_{\mathcal M}$ de cardinal $\kappa$
+  suffit à prouver ce qu'on veut. On définit alors, comme précédemment, la
+  théorie $\mathcal T_\mathcal M'$ constituée des énoncés $c_a \neq c_b$
+  (on enrichit la signature en conséquences).
+
+  On sait donc qu'il existe un modèle syntaxique de cette théorie, qui est
+  donc de cardinal inférieur à $\kappa$ par la version descendante du
+  théorème, et de cardinal supérieur à $\kappa$ par la version ascendante
+  du théorème~: le modèle syntaxique est de cardinal $\kappa$.
+
+  On en déduit donc le résultat.
 \end{proof}

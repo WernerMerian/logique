@@ -30,7 +30,7 @@ II. Théorie des ensembles
 
 9. Modèle de ZFC et absoluité
 
-10. L'univers constructible de Gödel : choix général et HCG
+10. Théorie descriptive des ensembles 
 
 III. Théorie des modèles
 
