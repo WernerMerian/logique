@@ -23,9 +23,10 @@ régulières et des monoïdes.
 
 Ce chapitre commence par la base de la théorie des langages~: les définitions
 de ce qu'est un alphabet, un mot, un langage\ldots Nous aborderons ensuite la
-classe des langages réguliers en abordant les trois formalismes décrits plus
-haut, et la preuve de leur équivalence. Enfin, nous verrons les théorèmes de
-structure sur ces langages~: le lemme de pompage et le théorème de
+classe des langages réguliers en abordant les trois formalismes décrits que sont
+les automates, les expressions régulières et les langages reconnus par des
+monoïdes, puis la preuve de leur équivalence. Enfin, nous verrons les théorèmes
+de structure sur ces langages~: le lemme de pompage et le théorème de
 Myhill-Nérode, ainsi que ses conséquences.
 
 \section{Alphabet, mot, langage}
@@ -69,7 +70,7 @@ une suite finie de lettres.
   projection $\pi_i : \Sigma^n \to \Sigma$.
 
   Pour tout mot $u\in\Sigma^*$, on note $|u|\in\mathbb N$ l'entier $n$ tel que
-  $u\in \Sigma^*$.
+  $u\in \Sigma^n$.
 \end{notation}
 
 Remarquons qu'une suite vide est une suite finie~: on peut donc définir le mot
@@ -101,7 +102,7 @@ dont il convient donc d'introduire la définition.
 
 \begin{definition}[Stabilité d'une classe de langages]
   Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur
-  $\powerset(\Sigma)^*$. On dit qu'une classe de langages $\mathcal C$ sur
+  $\powerset(\Sigma^*)$. On dit qu'une classe de langages $\mathcal C$ sur
   $\Sigma$ est stable par $\star$ si
   \[\forall \mathcal L,\mathcal M\in\mathcal C,
   \mathcal L\star \mathcal M\in\mathcal C\]
@@ -149,7 +150,8 @@ $\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
 \end{definition}
 
 \begin{remark}
-  Le mot vide, $\varepsilon$, est neutre pour $\star$~: $u\star\varepsilon = u$.
+  Le mot vide, $\varepsilon$, est neutre pour $\star$~: $u\star\varepsilon = u$
+  et $\varepsilon \star u = u$.
 \end{remark}
 
 \begin{example}
@@ -294,3 +296,115 @@ on induit le langage $\Sigma^n$.
 
 On peut désormais s'intéresser plus en profondeur aux automates finis et aux
 langages reconnaissables.
+
+Pour présenter un automate, le meilleur moyen est de commencer par une approche
+graphique~: un automate se visualise comme une machine effectuant des opérations
+élémentaires sur des mots. Dans notre premier cas, l'opération est
+particulièrement simple puisque la machine se contente de lire le mot. Un
+automate fini est une machine lisant linéairement un mot (elle lit chaque lettre
+l'une après l'autre, sans pouvoir faire demi-tour). A chaque lettre lue,
+l'automate change (ou non) d'état, parmi un ensemble fini d'états~: le mot lu
+est accepté si la lecture aboutit à un certain état considéré comme acceptant.
+
+Le formalisme derrière cette définion est lourd, mais nécessaire, nous donnons
+donc la définition formelle d'un automate.
+
+\begin{definition}[Automate fini déterministe]
+  Soit un alphabet $\Sigma$. Un automate fini déterministe $\mathcal A$ sur
+  $\Sigma$ est un quadruplet $(Q,q_0,\delta,F)$ où~:
+  \begin{itemize}
+  \item $Q$ est un ensemble fini appelé ensemble des états de $\mathcal A$,
+  \item $q_0 \in Q$ est appelé l'état initial,
+  \item $\delta : Q\times \Sigma \partialto Q$ est une fonction partielle
+    appelée la fonction (ou table) de transitions,
+  \item $F \subseteq Q$ est appelé l'ensemble des états terminaux.
+  \end{itemize}
+
+  On notera $\mathcal A_\Sigma$ l'ensemble des automates sur $\Sigma$.
+\end{definition}
+
+Le processus de lecture décrit plus haut, en reprenant les notations
+introduites, consiste à prendre un mot $u = u_0\ldots u_n$ et calculer
+$\delta(\delta(\cdots\delta(q_0,u_0)\cdots),u_n)$ puis vérifier que cette
+valeur appartient à $F$.
+
+\begin{definition}[Fonction de transition étendue]
+  Soit un automate fini déterministe $\mathcal A$ sur un alphabet $\Sigma$ et
+  $\delta$ sa fonction de transition. On appelle fonction de transition
+  étendue la fonction $\delta^* : Q \times \Sigma^* \partialto Q$ définie par
+  induction sur $\Sigma^*$ par~:
+  \[\delta^* (q,\varepsilon) = q \qquad
+  \delta^* (q,u\star a) = \delta(\delta^*(q,u),a)\]
+\end{definition}
+
+\begin{definition}[Langage accepté par un automate]
+  Soit $\mathcal A$ un automate sur un alphabet $\Sigma$. On dit que
+  $\mathcal A$ accepte (ou reconnait) le mot $u \in \Sigma^*$ si
+  $\delta^*(q_0,u) \in F$, ce qu'on note $\mathcal A \models u$. On définit le
+  langage reconnu par $\mathcal A$ par~:
+  \[\mathcal L_\mathcal A \defeq \{u \in \Sigma^* \mid \mathcal A \models u\}\]
+\end{definition}
+
+Maintenant que les définitions ont été introduites, donnons une intuition
+graphique de ce qu'il se passe (intuition largement indispensable pour
+comprendre les automates). Pour représenter un automate $\mathcal A$, la
+convention est de dessiner un graphe donc les sommets sont les états (l'ensemble
+$Q$), et où $\delta$ est représentée par des arcs dirigés et étiquetés par
+$\Sigma$. Par exemple, entre deux états $q$ et $q'$, s'il existe $a$ tel que
+$\delta(a,q) = q'$, alors on aura une flèche $q \xrightarrow{a} q'$. L'état
+initial est représenté avec une flèche entrante, et les états terminaux sont
+représentés par des doubles cercles.
+
+Prenons par exemple un premier automate sur $\btwo$~:
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[state, initial] (q_0) {$q_0$};
+    \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
+    \node[state] (q_2) [above right = of q_1] {$q_2$};
+    \node[state, accepting] (q_3) [below right = of q_1] {$q_3$};
+    \path[->,>=latex]
+    (q_0) edge node {0,1} (q_1)
+    (q_1) edge node {1} (q_2)
+    edge node {0} (q_3)
+    (q_2) edge node {0} (q_3)
+    edge [loop above] node {1} ()
+    (q_3) edge node {1} (q_0);
+  \end{tikzpicture}
+\end{figure}
+
+En lisant simplement ce dessin, on peut voir que l'automate reconnaît, par
+exemple, $00$. Cette représentation a l'avantage, en plus de la lisibilité,
+de donner l'ensemble des informations nécessaires pour retrouver l'objet
+mathématique représenté associé.
+
+On a ainsi construit une classe de langages~: la classe des langages
+reconnaissables.
+
+\begin{definition}[Langage reconnaissable]
+  Soit $\Sigma$ un alphabet. On appelle classe des langages reconnaissbles sur
+  $\Sigma$ l'ensemble des langages reconnus par les automates sur $\Sigma$~:
+  \[\mathcal L_{\mathrm{reco}(\Sigma)} \defeq \{\mathcal L \mid
+  \exists \mathcal A \in \mathcal A_\Sigma, \mathcal L = \mathcal L_\mathcal A\}\]
+\end{definition}
+
+Cette premier classe de langage est en fait le centre de l'étude de ce chapitre.
+On le verra, mais plusieurs définitions de cette classe existent, par des
+formalismes très différents, ce qui rend cette classe de langages assez
+remarquable.
+
+Tout d'abord, l'ensemble des langages reconnaissables est aussi l'ensemble des
+langages induits par des monoïdes, ce que l'on va prouver directement.
+
+\begin{theorem}
+  Soit $\Sigma$ un alphabet. Un langage $\mathcal L \subseteq \Sigma^*$ est
+  reconnaissable si et seulement s'il est induit par un monoïde.
+\end{theorem}
+
+\begin{proof}
+  On procède donc par double implication~:
+  \begin{itemize}
+  \item 
+  \end{itemize}
+\end{proof}
