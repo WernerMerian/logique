@@ -1481,7 +1481,7 @@ Cette construction est technique, c'est pourquoi on va commencer par donner
 l'idée de la preuve.
 
 L'idée principale est de construire un modèle syntaxique, c'est-à-dire un modèle
-dont les éléments sont exactement les termes du langage. Ceux-ci seront
+dont les éléments sont exactement les termes (clos) du langage. Ceux-ci seront
 quotientés par l'égalité, c'est-à-dire que si $\mathcal T \vdash t = u$, alors
 les termes $t$ et $u$ seront identifiés. En construisant un tel modèle
 $\mathcal M$, on va chercher à ce que $\mathcal T \vdash \varphi$ si et
@@ -1522,8 +1522,9 @@ soient compatibles entre elles.
 
 \begin{definition}[Propriété de Henkin]
   On dit qu'une théorie $\mathcal T$ sur une signature $\Sigma$ a la propriété
-  de Henkin si pour toute formule $F$ telle que $\mathcal T\vdash\exists x, F$,
-  il existe un terme $t_F\in\Term(\Sigma)$ tel que $\mathcal T\vdash P[t_F/x]$.
+  de Henkin si pour toute formule $F$ à une variable libre $x$ telle que
+  $\mathcal T\vdash\exists x, F$, il existe un terme $t_F\in\Term(\Sigma)$ tel
+  que $\mathcal T\vdash P[t_F/x]$.
 \end{definition}
 
 Le point important de cette propriété est qu'elle peut être vérifiée, au prix
@@ -1531,13 +1532,10 @@ d'une augmentation de la théorie et du langage. Il faut cependant vérifier,
 alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
 
 Pour créer notre nouvelle théorie, on va ajouter artificiellement, pour chaque
-formule $\exists x, F(x)$, un témoin $c_F$ ainsi qu'une formule dans notre
-théorie disant que, dans le cas où $\exists x, F(x)$ est vérifiée, il vient
-directement que $F(c_F)$ est vérifiée aussi. Cependant, comme on veut permettre
-de considérer des formules non closes $F$, on remplace l'idée d'un témoin
-constant $c_F$ par une fonction $f_F$ prenant en arguments les variables libres
-de $F$. On ajoute aussi dans les paramètres le variable $x$ sur laquelle on
-utilise la quantification existentielle.
+formule $\exists x, F(x)$ où $x$ est la seule variable libre de $F$, un témoin
+$c_F$ ainsi qu'une formule dans notre théorie disant que, dans le cas où
+$\exists x, F(x)$ est vérifiée, il vient directement que $F(c_F)$ est vérifiée
+aussi.
 
 \begin{definition}[Clôture par témoins]
   Soit $\Sigma$ une signature, et $\mathcal T$ une théorie sur $\Sigma$. On
@@ -1547,13 +1545,9 @@ utilise la quantification existentielle.
   \item $\Sigma_0 = \Sigma$ et $\mathcal T_0 = \mathcal T$.
   \item Si $\Sigma_n$ et $\mathcal T_n$ sont construits, on définit la signature
     $\Sigma_{n+1}$ en ajoutant les éléments suivants~: pour chaque formule
-    $F \in \Formula(\Sigma_n)$, dont les variables libres seront considérées être
-    $x_1,\ldots,x_n$ et chaque variable $x \in \Var$, on ajoute une fonction
-    $f_{F,x}$ d'arité $n - 1$ si $x \in \VL(F)$ et $n$ sinon. On construit ensuite
-    la théorie $\mathcal T_{n + 1}$ en ajoutant à $\mathcal T_n$, pour chaque
-    formule $\exists x, F(x_1,\ldots,x_n,x)$, la formule
-    \[\forall x_1,\ldots,x_n, (\exists x, F(x_1,\ldots,x_n,x)) \to
-    F(x_1,\ldots,x_n,f_{F,x}(x_1,\ldots,x_n))\]
+    $F \in \Formula(\Sigma_n)$ avec une unique variable libre
+    (qu'on notera $x$), on ajoute une constante $c_F$ à $\Sigma_{n+1}$ et la
+    formule close $(\exists x, F(x))\to F[c_F/x]$ à $\mathcal T_{n+1}$.
   \end{itemize}
   On définit alors
   \[\hclose{\Sigma}\defeq \bigcup_{n\in\mathbb N}\Sigma_n
@@ -1569,22 +1563,10 @@ utilise la quantification existentielle.
   Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où
   $\exists x, F\in\Clos(\hclose{\Sigma})$. Remarquons que $F$ ne peut contenir
   qu'un nombre fini de symboles de fonctions et de relations~: on en déduit
-  qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$, et on pose
-  $x_1,\ldots,x_n$ les variables libres de $F$. Cela signifie
+  qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$. Cela signifie
   donc que
-  \[\forall x_1,\ldots,x_n, (\exists x,F(x_1,\ldots,x_n,x))\to 
-  F(x_1,\ldots,x_n,f_{F,x}(x_1,\ldots,x_n)) \in \mathcal T_{n+1}\]
-  On en déduit, quitte à appliquer un nombre fini de fois $\forall_\mathrm e$
-  pour substituer $\forall x_i, P$ par $P[x_i/x_i]$~:
-  \begin{prooftree}
-    \AxiomC{}
-    \RightLabel{Ax}
-    \UnaryInfC{$\hclose{\mathcal T}\vdash 
-    (\exists x, F(x))\to F(f_{F,x}(x_1,\ldots,x_n))$}
-    \AxiomC{$\hclose{\mathcal T}\vdash \exists x,F(x)$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\hclose{\mathcal T}\vdash F(f_{F,x}(x_1,\ldots,x_n))$}
-  \end{prooftree}
+  \[(\exists x,F(x))\to F(c_F) \in \mathcal T_{n+1}\]
+  On en déduit que $\mathcal T_{n+1}\vdash F(c_F)$.
 \end{proof}
 
 De plus, cette construction est stable par extension (ce qui nous servira
@@ -1596,9 +1578,9 @@ lorsque nous compléterons notre théorie).
 \end{property}
 
 \begin{proof}
-  Comme $\forall x_1,\ldots,x_n,(\exists x,F)\to F(f_{F,x})$ appartient à
-  $\mathcal S$, l'arbre de preuve précédent fonctionne encore en remplaçant
-  $\hclose{\mathcal T}$ par $\mathcal S$.
+  Comme $(\exists x,F)\to F(c_F)$ appartient à $\mathcal S$, la dérivation
+  syntaxique précédente fonctionne encore en remplaçant $\hclose{\mathcal T}$
+  par $\mathcal S$.
 \end{proof}
 
 Enfin, on veut montrer que la clôture par témoins conserve la cohérence. Pour
@@ -1673,10 +1655,52 @@ cohérence.
 
 \begin{proof}
   On suppose que $\mathcal T\nvdash\bot$, on montre alors par récurrence que
-  $\mathcal T_n\not\vdash\bot$ :
+  $\mathcal T_n\nvdash\bot$ :
   \begin{itemize}
   \item Comme $\mathcal T_0 =\mathcal T$, le résultat est direct.
-  \item A FAIRE
+  \item Supposons par l'absurde que $\mathcal T_{n+1}\vdash \bot$, et par
+    hypothèse de récurrence que $\mathcal T_n\nvdash \bot$. On sait donc qu'il
+    existe $A_1,\ldots,A_n \in \mathcal T_n$ et
+    $B_1,\ldots,B_p \in \mathcal T_{n+1}\setminus \mathcal T_n$
+    tels que
+    \[A_1,\ldots,A_n,B_1,\ldots,B_p\vdash \bot\]
+    En itérant la règle $\to_\mathrm i$ et en utilisant l'équivalence
+    $A\land B \to \bot \dashv\vdash A \to (B \to \bot)$ (que le lecteur peut
+    montrer en exercice), on obtient le séquent équivalent
+    \[A_1,\ldots,A_n\vdash \lnot\left(\bigwedge_{i = 1}^p B_i\right)\]
+    On sait de plus que les $B_i$ sont de la forme
+    \[B_i \defeq (\exists x, F_i) \to F_i[c_{F_i}/x]\]
+    Or, comme chaque $B_i$ est dans $\mathcal T_{n+1}$ mais pas dans
+    $\mathcal T_n$, on en déduit que chaque $c_{F_i}$ n'est pas dans $\Sigma_n$.
+    Cela signifie donc, en utilisant le \cref{lem.var.const}, que prouver notre
+    séquent est équivalent, en choisissant de nouvelles variables $y_i$, libres
+    dans $A_1,\ldots,A_n,B_1,\ldots,B_p$, à prouver
+    \[A_1,\ldots,A_n\vdash \lnot \left(\bigwedge_{i = 1}^p
+    (\exists x, F_i) \to F_i[y_i/x]\right)\]
+    On peut alors généraliser chaque $y_i$ pour obtenir
+    \[A_1,\ldots,A_n\vdash \forall y_1,\ldots,y_p, \lnot \left(
+    \bigwedge_{i=1}^p(\exists x, F_i) \to F_i[y_i/x]\right)\]
+    On a ensuite besoin de deux équivalences relativement naturelles à
+    considérer~:
+    \[\exists x_i, \bigwedge_{i = 1}^p A_i\dashv\vdash
+    \bigwedge_{i = 1}^p(\exists x_1, A_i)\qquad
+    \exists x, (A \to B) \dashv\vdash A \to (\exists B)\]
+    si $x$ n'apparaît pas dans $A$ et dans aucun $A_j$ pour $j \neq i$.
+
+    En utilisant les lois de De Morgan on obtient donc d'abord que le séquent
+    suivant est équivalent à notre séquent d'origine~:
+    \[A_1,\ldots,A_n\vdash \lnot\left(\exists y_1,\ldots,\exists y_p,
+    \bigwedge_{i = 1}^p (\exists x, F_i) \to F_i[y_i/x]\right)\]
+    puis 
+    \[A_1,\ldots,A_n\vdash \lnot\left(\bigwedge_{i = 1}^p
+    \exists y_i,(\exists x, F) \to F_i[y_i/x]\right)\]
+    d'où, en utilisant la deuxième équivalence~:
+    \[A_1,\ldots,A_n\vdash \lnot\left(\bigwedge_{i = 1}^p
+    (\exists x, F) \to (\exists y_i, F_i[y_i/x])\right)\]
+    Or il est clair que chaque $(\exists x, F)\to (\exists y_i, F_i[y_i/x])$
+    est prouvable puisque de la forme $A \to A$ (à renommage des variables liées
+    près). On en déduit donc que $A_1,\ldots,A_n\vdash \bot$, ce qui est
+    absurde. Ainsi $\mathcal T_{n+1}\nvdash \bot$.
   \end{itemize}
 
   Ainsi, $\mathcal T_n\nvdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
@@ -1715,8 +1739,8 @@ vérifiant la propriété de Henkin.
 \end{lemma}
 
 \begin{proof}
-  On applique le \cref{thm.completion} à $\hclose{\mathcal T}$ : comme on sait
-  que $\hclose{\mathcal T}\not\vdash\bot$, on peut effectivement compléter cette
+  On applique le \cref{thm.completion} à $\hclose{\mathcal T}$~: comme on sait
+  que $\hclose{\mathcal T}\nvdash\bot$, on peut effectivement compléter cette
   théorie pour $\vdash$. Avec la \cref{prop.henkin.ext}, on sait que cette
   complétion vérifie aussi la propriété de Henkin.
 \end{proof}
@@ -1727,8 +1751,9 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
 \begin{definition}[Modèle syntaxique]
   On définit le modèle syntaxique $\mathcal M_{\mathcal T'}$ par :
   \begin{itemize}
-  \item $|\mathcal M_{\mathcal T'}|$ défini comme $\Term(\Sigma')/\equiv$ où
-    $\equiv$ est défini par
+  \item $|\mathcal M_{\mathcal T'}|$ défini comme l'ensemble des termes sur
+    $\Sigma'$ (la signature définie plus tôt) qui n'ont aucune variable libre,
+    quotienté par $\equiv$ où $\equiv$ est défini par
     \[t\equiv u \defeq \mathcal T'\vdash t = u\]
   \item pour chaque symbole de fonction $f\in\Sigma'$ d'arité $n$, on associe la
     fonction
@@ -1813,11 +1838,12 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
   donc $r^{\mathcal T'}$ est bien définie.
 \end{proof}
 
-Afin de montrer le théorème de complétude, on va vouloir montrer que les formules
-vérifiées par $\mathcal M_{\mathcal T'}$ sont exactement les résultats montrés par
-la théorie $\mathcal T'$. Comme l'induction se fera sur la structure de la formule
-vérifiée, il nous faut considérer des possibles variables libres. On définit donc
-d'abord une notation pour définir un environnement sur $\mathcal M_{\mathcal T'}$.
+Afin de montrer le théorème de complétude, on va vouloir montrer que les
+formules vérifiées par $\mathcal M_{\mathcal T'}$ sont exactement les résultats
+montrés par la théorie $\mathcal T'$. Comme l'induction se fera sur la structure
+de la formule vérifiée, il nous faut considérer des possibles variables libres.
+On définit donc d'abord une notation pour définir un environnement sur
+$\mathcal M_{\mathcal T'}$.
 
 \begin{definition}[Valuation syntaxique]
     Soit $\rho$ une valuation sur $\mathcal M_{\mathcal T'}$, on la notera
@@ -1831,17 +1857,17 @@ complétude.
 
 \begin{lemma}
   Pour toute formule $\varphi \in \Formula(\Sigma')$ et tout valuation
-  $\overline\rho$ telle que $\VL(\varphi)\subseteq \dom(\rho)$, on a l'équivalence
-  suivante~:
+  $\overline\rho$ telle que $\VL(\varphi)\subseteq \dom(\rho)$, on a
+  l'équivalence suivante~:
   \[\mathcal T' \vdash \rho(\varphi) \iff
   \mathcal M_{\mathcal T'},\overline \rho\models \varphi\]
 \end{lemma}
 
 \begin{proof}
   On peut prouver par induction sur la structure des termes que pour tout terme
-  $t \in \Term(\Sigma')$, on a $\overline{\rho(t)} = \overline \rho(t)$ (l'exercice
-  est laissé au lecteur, mais il s'agit d'une induction qui ne présente aucune
-  difficulté).
+  $t \in \Term(\Sigma')$, on a $\overline{\rho(t)} = \overline \rho(t)$
+  (l'exercice est laissé au lecteur, mais il s'agit d'une induction qui ne
+  présente aucune difficulté).
   
   On démontre le résultat par induction sur la structure de $\varphi$ :
   \begin{itemize}
@@ -1885,11 +1911,15 @@ complétude.
   \item le cas de $\forall$ se ramène à celui de $\exists$ et $\lnot$ grâce
     aux lois de De Morgan, nous traitons donc simplement $\exists$.
   \item si $\varphi = \exists x, \psi$, où $x \notin \VL(\rho)$; alors supposons
-    que $\mathcal T'\vdash \exists x, \rho(\psi)$~: la propriété de Henkin sur
-    $\mathcal T'$ nous donne un terme $t$ tel que
-    $\mathcal T'\vdash \rho(\psi[t/x])$
-    et donc un élément $\overline \rho(t) \in |\mathcal M_{\mathcal T'}|$ tel que
-    $\mathcal M_{\mathcal T'}, \overline\rho[x\mapsto \overline \rho(t)] \models \psi$,
+    que $\mathcal T'\vdash \exists x, \rho(\psi)$~: comme chaque terme substitué
+    par $\rho$ devient un terme clos et que toutes les variables libres de
+    $\varphi$ sont dans le domaine de $\rho$, on sai que seul $x$ est une
+    variable libre de $\rho(\psi)$, la propriété de Henkin sur $\mathcal T'$
+    nous donne done une constante $c$ telle que
+    $\mathcal T'\vdash \rho(\psi[c/x])$
+    et donc un élément $\overline c \in |\mathcal M_{\mathcal T'}|$ tel que
+    $\mathcal M_{\mathcal T'}, \overline\rho[x\mapsto \overline c]
+    \models \psi$,
     donc
     $\mathcal M_{\mathcal T'},\overline\rho\models \exists x, \psi$.
     Réciproquement, s'il existe $\overline t$ tel que
