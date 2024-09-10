@@ -184,6 +184,11 @@ $\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
   \[\mathcal L^\star = \bigcup_{n \in \mathbb N} \mathcal L^{\star n}\]
 \end{exercise}
 
+\begin{exercise}
+  Pour tout langage $\mathcal L$ sur un alphabet $\Sigma$, on a
+  $\varepsilon \in \mathcal L^\star$.
+\end{exercise}
+
 \begin{example}
   Donnons quelques exemples de classes de langages sur un alphabet $\Sigma$~:
   \begin{itemize}
@@ -297,6 +302,8 @@ on induit le langage $\Sigma^n$.
 On peut désormais s'intéresser plus en profondeur aux automates finis et aux
 langages reconnaissables.
 
+\subsection{Définition d'un automate}
+
 Pour présenter un automate, le meilleur moyen est de commencer par une approche
 graphique~: un automate se visualise comme une machine effectuant des opérations
 élémentaires sur des mots. Dans notre premier cas, l'opération est
@@ -385,26 +392,636 @@ reconnaissables.
 \begin{definition}[Langage reconnaissable]
   Soit $\Sigma$ un alphabet. On appelle classe des langages reconnaissbles sur
   $\Sigma$ l'ensemble des langages reconnus par les automates sur $\Sigma$~:
-  \[\mathcal L_{\mathrm{reco}(\Sigma)} \defeq \{\mathcal L \mid
+  \[\Reco(\Sigma) \defeq \{\mathcal L \mid
   \exists \mathcal A \in \mathcal A_\Sigma, \mathcal L = \mathcal L_\mathcal A\}\]
 \end{definition}
+
+\begin{exercise}
+  Trouver le langage reconnu par l'automate suivant sur $\btwo$ (et prouver que
+  le langage reconnu est bien celui attendu)~:
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+      \node[state, initial,accepting] (q_0) {$q_0$};
+      \node[state] (q_1) [right = of q_0] {$q_1$};
+      \path[->,>=latex]
+      (q_0) edge [bend left] node {0} (q_1)
+      edge [loop above] node {1} (q_0)
+      (q_1) edge [bend left] node {0} (q_0)
+      edge [loop above] node {1} (q_1);
+    \end{tikzpicture}
+  \end{figure}
+\end{exercise}
 
 Cette premier classe de langage est en fait le centre de l'étude de ce chapitre.
 On le verra, mais plusieurs définitions de cette classe existent, par des
 formalismes très différents, ce qui rend cette classe de langages assez
 remarquable.
 
-Tout d'abord, l'ensemble des langages reconnaissables est aussi l'ensemble des
-langages induits par des monoïdes, ce que l'on va prouver directement.
+L'un de ces formalismes a déjà été présenté~: on verra que les langages associés
+à des monoïdes sont en fait des langages reconnus par des automates.
 
-\begin{theorem}
-  Soit $\Sigma$ un alphabet. Un langage $\mathcal L \subseteq \Sigma^*$ est
-  reconnaissable si et seulement s'il est induit par un monoïde.
-\end{theorem}
+\subsection{Langage rationnel}
+
+Avant de donner notre dernier formalisme, décrivons une autre classe de
+langages, qui s'avérera en fait être la même classe.
+
+\begin{definition}[Langage rationnel]
+  La classe des langages rationnels sur un alphabet $\Sigma$ est la plus petite
+  classe $\mathcal R$ de langages sur $\Sigma$ telle que~:
+  \begin{itemize}
+  \item $\varnothing \in \mathcal R$
+  \item pour tout $a \in \Sigma$, $\{a\}\in \mathcal R$
+  \item si $\mathcal L,\mathcal L' \in \mathcal R$ alors
+    $\mathcal L\cup \mathcal L' \in \mathcal R$
+  \item si $\mathcal L,\mathcal L' \in \mathcal R$ alors
+    $\mathcal L\star \mathcal L' \in \mathcal R$
+  \item si $\mathcal L \in \mathcal R$ alors $\mathcal L^\star \in \mathcal R$.
+  \end{itemize}
+
+  On note $\Ratio(\Sigma)$ cette classe $\mathcal R$.
+\end{definition}
+
+\begin{remark}
+  Le langage $\{\varepsilon\}$ est rationnel, car il peut s'écrire
+  $\varnothing^\star$. On peut donc ajouter si on le souhaite le mot vide tout
+  en gardant la rationnalité d'un langage.
+\end{remark}
+
+Cette définition est une définition par induction, comme on en a rencontré
+de nombreuses fois depuis le début de ce livre. Cependant, il n'est pas
+particulièrement facile de manipuler un tel ensemble de langages, en particulier
+pour représenter un langage de façon efficace~: devoir décrire le procédé par
+lequel on obtient le langage est, pour l'instant, fastidieux.
+
+Heureusement, il existe un formalisme permettant exactement de décrire comment
+on obtient un langage rationnel à partir de ces opérations inductives, c'est ce
+qu'on appelle les expressions rationnelles.
+
+\begin{definition}[Expression rationnelle]
+  Soit un alphabet $\Sigma$. On définit l'ensemble des expressions rationnelles
+  par la grammaire suivante~:
+  \[e,e' \Coloneq \varnothing\mid a \mid e + e' \mid e e' \mid e^\star\]
+  où $a \in \Sigma$. On note $\Regex(\Sigma)$ l'ensemble des expressions
+  rationnelles sur $\Sigma$.
+\end{definition}
+
+\begin{remark}
+  On appelle aussi ces expressions et langages des expressions régulières et des
+  langages réguliers, d'où le terme \textit{regular expression} donnant lieu à
+  \textit{regex}.
+\end{remark}
+
+La correspondance est assez naturelle~: une expression de la forme $a$
+représente le langage $\{a\}$, $\varnothing$ le langage vide et les trois
+opérations représentent les opérations par lesquelles est stable la classe des
+langages rationnels.
+
+On définit donc une fonction d'interprétation des expressions rationnelles. De
+plus, on ajoute $\varepsilon$ dans nos expressoins rationnelles, par souci de
+lisbilité.
+
+\begin{definition}[Interprétation d'une expression rationnelle]
+  On définit la fonction $\Val : \Regex(\Sigma)\to\Ratio(\Sigma)$ par
+  induction~:
+  \begin{itemize}
+  \item $\Val(\varnothing) = \varnothing$
+  \item $\Val(a) = \{a\}$
+  \item $\Val(e+e') = \Val(e) \cup \Val(e')$
+  \item $\Val(ee') = \Val(e) \star \Val(e')$
+  \item $\Val(e^\star) = (\Val(e))^\star$
+  \item $\Val(\varepsilon) = \{\varepsilon\}$
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\Val$ est une surjection.
+\end{exercise}
+
+\begin{exercise}
+  Trouver le langage interprété par l'expression rationnelle suivante sur
+  $\btwo$~:
+  \[(01^\star 0)^\star\]
+\end{exercise}
+
+\begin{remark}
+  Cette surjection n'est pas pour autant injective, et ce même en retirant
+  $\varepsilon$ des expressions rationnelles. Par exemple, $a + a$ a la même
+  interprétation que $a$.
+\end{remark}
+
+On a ainsi une façon plus simple de manipuler la classe des langages rationnels.
+Notre première équivalence va donc consister en deux étapes~:
+\begin{itemize}
+\item montrer que les langages reconnaissables sont stables par les
+  constructions de la classe des langages rationnels.
+\item étant donnée un automate $\mathcal A$, construire une expression
+  rationnelle $e$ dont l'interprétation est le langage reconnu par $\mathcal A$.
+\end{itemize}
+
+Pour la première étape, nous aurons besoin de faire des constructions sur les
+automates.
+
+\subsection{Constructions d'automates}
+
+Les langages rationnels contiennent les singletons $\{a\}$ pour $a \in \Sigma$,
+l'ensemble vide et sont stables par trois opérations~:
+\begin{itemize}
+\item l'union,
+\item la concaténation de langage,
+\item l'étoile d'un langage.
+\end{itemize}
+
+Il est clair qu'on peut construire des automates pour les singletons~:
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+      \node[state, initial] (q_0) {$q_0$};
+      \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
+      \path[->,>=latex]
+      (q_0) edge [bend left] node {$a$} (q_1);
+  \end{tikzpicture}
+\end{figure}
+et pour l'ensemble vide~:
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+      \node[state, initial] (q_0) {$q_0$};
+  \end{tikzpicture}
+\end{figure}
+
+Le point essentiel est donc la stabilité par les trois opérations. On va donc
+devoir introduire deux constructions d'automates~: l'automate union, et les
+$\varepsilon$-transitions.
+
+\begin{definition}[Automate union]
+  Soient $\mathcal A$ et $\mathcal A'$ deux automates sur un alphabet $\Sigma$.
+  On définit l'automate union $\mathcal A \sqcup \mathcal A'$ par~:
+  \begin{itemize}
+  \item $Q_{\mathcal A\sqcup \mathcal A'} \defeq Q\times Q'$
+  \item $q_{0,\mathcal A\sqcup \mathcal A'} \defeq (q_0,q'_0)$
+  \item $\delta_{\mathcal A \sqcup \mathcal A'}(q,a) \defeq (\delta_{\mathcal A}(q,a),
+    \delta_{\mathcal A'}(q,a))$
+  \item $F_{\mathcal A \sqcup \mathcal A'} \defeq F\times Q' \cup Q\times F'$
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}\label{prop.union.ratio}
+  Pour tous automates $\mathcal A, \mathcal A'$ sur un alphabet $\Sigma$ donné,
+  on a l'équation
+  \[\mathcal L_{\mathcal A} \cup \mathcal L_{\mathcal A'} =
+  \mathcal L_{\mathcal A \sqcup \mathcal A'}\]
+\end{proposition}
 
 \begin{proof}
-  On procède donc par double implication~:
+  On montre d'abord par récurrence sur $u$ que pour tout $u \in \Sigma^\star$,
+  on a
+  \[\delta_{\mathcal A\sqcup\mathcal A'}^\star((q_0,q'_0),u) =
+  (\delta_\mathcal A^\star(q_0,u),\delta_{\mathcal A'}^\star(q'_0,u))\]
   \begin{itemize}
-  \item 
+  \item pour $u = \varepsilon$, le résultat est par définition.
+  \item si l'égalité est vraie pour $u$ et pour tout $a \in \Sigma$, on a
+    \begin{align*}
+      \delta_{\mathcal A\sqcup\mathcal A'}^\star ((q_0,q'_0),u\star a) &=
+      \delta_{\mathcal A\sqcup \mathcal A'}(
+      \delta_{\mathcal A\sqcup \mathcal A'}^\star(q_0,q'_0),a)\\
+      &= \delta_{\mathcal A\sqcup\mathcal A'}(
+      (\delta_\mathcal A^\star(q_0,u),\delta_{\mathcal A'}^\star(q'_0,u)),a)\\
+      &= (\delta_\mathcal A(\delta_\mathcal A^\star(q_0,u)),\delta_{\mathcal A'}(
+      \delta_{\mathcal A'}^\star(q'_0,u)))\\
+      &= (\delta_\mathcal A^\star(q_0,u\star a),
+      \delta_{\mathcal A'}^\star(q'_0,u\star a))
+    \end{align*}
   \end{itemize}
+
+  De plus, $(q,q') \in F\times Q' \cup Q\times F'$ signifie que $q \in F$ ou
+  $q' \in F'$. On en déduit donc, en utilisant le résultat précédent, que
+  \[\mathcal A \sqcup \mathcal A'\models u \iff
+  \mathcal A \models u \lor \mathcal A'\models u\]
 \end{proof}
+
+\begin{exercise}[Automate produit]
+  Soient $\mathcal A$ et $\mathcal A'$ deux automates sur un alphabet $\Sigma$.
+  On définit l'automate produit $\mathcal A \times \mathcal A'$ par~:
+  \begin{itemize}
+  \item $Q_{\mathcal A\sqcup \mathcal A'} \defeq Q\times Q'$
+  \item $q_{0,\mathcal A\sqcup \mathcal A'} \defeq (q_0,q'_0)$
+  \item $\delta_{\mathcal A \sqcup \mathcal A'}(q,a) \defeq (\delta_{\mathcal A}(q,a),
+    \delta_{\mathcal A'}(q_a))$
+  \item $F_{\mathcal A \sqcup \mathcal A'} \defeq F\times F'$
+  \end{itemize}
+
+  Montrer que cet automate reconnait
+  $\mathcal L_\mathcal A \cap \mathcal L_{\mathcal A'}$, en déduire que les
+  langages reconnaissables sont stables par intersection (binaire).
+\end{exercise}
+
+On veut maintenant montrer la stabilité par concaténation de deux langages et
+par étoile d'un langage. L'idée derrière ces deux constructions est relativement
+simple~: pour deux automates $\mathcal A,\mathcal A'$, l'automate reconnaissant
+la concaténation est une copie de chacun des deux automates, en ajoutant des
+transitions entre les états acceptants de $\mathcal A$ et l'état initial de
+$\mathcal A'$. De même pour l'étoile d'un langage, on ajoute un nouvel état
+initial, acceptant, on le relie à l'ancien état initial et on crée une
+transition entre chaque état acceptant et le nouvel état initial.
+
+Cependant, ces transitions demandent à pouvoir être effectuées automatiquement,
+en ayant la possibilité pour un état de faire (ou non) cette transition avant
+la lecture d'une nouvelle lettre. Cela nous pousse à ajouter deux choses~: le
+non déterminisme, pour pouvoir choisir ou non si l'on fait une transition, et
+les $\varepsilon$-transitions, qui sont des transitions qui, comme décrites
+précédemment, peuvent s'exécuter ou non et sans lecture de lettre.
+
+Commençons par présenter un automate non déterministe~: celui-ci est un automate
+dans lequel, au lieu d'une fonction de transition indiquant à partir d'un état
+et d'une lettre quel est l'état lu ensuite, on dispose d'une relation de
+transition indiquant pour deux états et une lettre s'il existe une transition
+entre ces deux états étiquetée par cette lettre. On lui préfère en général une
+présentation équivalente~: à un état et une lettre on associe l'ensemble des
+états possibles à atteindre.
+
+\begin{definition}[Automate fini non déterministe]
+  Soit $\Sigma$ un alphabet. On appelle automate fini non déterministe
+  $\mathcal A$ un quadruplet $(Q,Q_0,\delta,F)$ où~:
+  \begin{itemize}
+  \item $Q$ est un ensemble fini appelé ensemble des états de $\mathcal A$,
+  \item $Q_0\subseteq Q$ est l'ensemble des états initiaux,
+  \item $\delta : Q\times \Sigma \partialto \powerset(Q)$ est la fonction de
+    transition non déterministe,
+  \item $F\subseteq Q$ est l'ensemble des états terminaux.
+  \end{itemize}
+\end{definition}
+
+On peut définir la fonction de transition étendue, dont le principe est de
+considérer l'union à chaque fois qu'on prend un ensemble d'états possibles.
+
+\begin{definition}[Fonction de transition étendue]
+  Soit un automate fini non déterministe $\mathcal A$ sur un alphabet $\Sigma$,
+  on note $\delta^\star : Q \times \Sigma^\star \to \powerset(Q)$ sa fonction de
+  transition étendue, définie par induction par~:
+  \begin{itemize}
+  \item $\delta^\star(q,\varepsilon) = \{q\}$
+  \item $\displaystyle\delta^\star(q,u\star a) =
+    \bigcup_{q' \in \delta^\star(q,u)} \delta(q',a)$
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Langage accepté]
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini non déterministe
+  sur $\Sigma$. On dit que $\mathcal A$ accepte (ou reconnaît) le mot
+  $u \in \Sigma^\star$ s'il existe $q_0 \in Q_0$ tel que
+  $\delta^*(q_0,u) \cap F\neq\varnothing$, ce qu'on note $\mathcal A \models u$.
+  On définit le langage reconnu par $\mathcal A$ par~:
+  \[\mathcal L_\mathcal A\defeq \{u \in \Sigma^\star \mid \mathcal A \models u\}\]
+\end{definition}
+
+Un automate fini non déterministe se représente comme un automate fini
+déterministe, à ceci près qu'on accepte d'avoir plusieurs flèches depuis un
+état qui sont étiquetées par la même lettre, et qu'on peut avoir plusieurs
+états initiaux. Accepter un mot dans un tel automate est alors simplement
+trouver au moins un chemin partant d'un état initial et arrivant à un état
+terminal en suivant des transitions étiquetées par les lettres du mot lu.
+
+Cela mène à une définition alternative de l'acceptation d'un mot, qu'on traite
+en exercice. La notion de trace est assez générale, et représente l'historique
+de l'exécution d'une entrée sur une machine~: ici, la trace d'un automate est
+alors la suite des états dans lesquels est la machine en lisant un mot.
+
+\begin{exercise}\label{exo.traces.auto}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini non déterministe
+  sur $\Sigma$. On définit, pour tout $u \in \Sigma^\star$, l'ensemble $\tr(u)$
+  des traces de $u$ sur $\mathcal A$, comme l'ensemble des suites finies
+  $(q_0,\ldots,q_n)$ d'états de $\mathcal A$ dont le premier élément est un
+  élément de $Q_0$ et tel que $\delta(q_i,u_i) = q_{i+1}$ pour tout
+  $i \in \{0,\ldots,n-1\}$. Montrer que $\mathcal A \models u$ si et seulement
+  s'il existe un élément $p \in \tr(u)$ dont le dernier état est un état
+  terminal.
+\end{exercise}
+
+On pourrait s'attendre à ce que relâcher tant de contraintes augmente la
+puissance des automates, mais ce n'est en réalité pas le cas. Il est clair qu'un
+automate déterministe peut être transformé en un automate non déterministe, en
+prenant $Q_0 \defeq \{q_0\}$ et pour fonction de transition non déterministe le
+singleton de l'image par la fonction de transition déterministe. La réciproque,
+elle, demande une construction plus subtile, appelée l'automate des parties.
+
+\begin{definition}[Automate des parties]
+  Soit un alphabet $\Sigma$ et un automate fini non déterministe $\mathcal A$
+  sur $\Sigma$. On définit l'automate des parties de $\mathcal A$, noté
+  $\powerset(\mathcal A)$, par~:
+  \begin{itemize}
+  \item $Q_{\powerset(\mathcal A)} \defeq \powerset(Q_\mathcal A)$
+  \item $q_0 \defeq Q_0$
+  \item $\delta_{\powerset(\mathcal A)} (R,a) \defeq
+    \bigcup_{q \in R} \delta_{\mathcal A}(q,a)$
+  \item $F_{\powerset(\mathcal A)} \defeq \{R \subseteq Q\mid
+    R\cap F \neq \varnothing\}$
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Soit un automate non déterministe $\mathcal A$ sur un alphabet $\Sigma$, on a
+  l'égalité
+  \[\mathcal L_{\mathcal A} = \mathcal L_{\powerset(\mathcal A)}\]
+\end{proposition}
+
+\begin{proof}
+  On prouve par induction sur $u$ que pour tout $u \in \Sigma^\star$, on a
+  l'égalité suivante pour tout $R \subseteq Q$~:
+  \[\delta^\star_{\powerset(\mathcal A)}(R,u) = \delta^\star_{\mathcal A}(R,u)\]
+  \begin{itemize}
+  \item dans le cas où $u = \varepsilon$, le résultat est direct.
+  \item supposons que l'hypothèse d'induction est valide pour $u$ et montrons
+    le cas $u \star a$~:
+    \begin{align*}
+      \delta^\star_{\powerset(\mathcal A)}(R,u\star a) &=
+      \bigcup_{q \in \delta^\star_{\powerset(\mathcal A)}(R,u)}
+      \delta_{\mathcal A}(q,a)\\
+      &= \bigcup_{q \in \delta^\star_\mathcal A(R,u)} \delta_\mathcal A(q,a)\\
+      &= \delta_\mathcal A^\star(R,u\star a)
+    \end{align*}
+  \end{itemize}
+  D'où le résultat par induction. On voit alors que la condition pour que
+  $u$ soit accepté, dans les deux automates, revient à
+  \[\delta_{\powerset(\mathcal A)}^\star (Q_0,u) \cap F \neq \varnothing\]
+  donc $\mathcal L_{\powerset(\mathcal A)} = \mathcal L_\mathcal A$.
+\end{proof}
+
+\begin{remark}
+  Cette construction n'est pas gratuite en pratique~: elle fait passer d'un
+  ensemble d'états à son ensemble des parties, ce qui donne une complexité
+  exponentielle à la construction.
+\end{remark}
+
+On peut donc utiliser des automates non déterministes pour étudier les langages
+reconnaissables. On introduit maintenant les $\varepsilon$-transitions, qui
+ont plus de sens dans le contexte des automates non déterministes.
+
+\begin{definition}[Automate avec $\varepsilon$-transitions]
+  On définit un automate fini non déterministe avec $\varepsilon$-transitions
+  comme un automate fini non déterministe, mais dans lequel la fonction de
+  transition est de la forme
+  $\delta : Q\times (\Sigma \cup \{\varepsilon\}) \partialto Q$.
+\end{definition}
+
+Pour définir l'acceptation d'un mot par un automate avec
+$\varepsilon$-transitions, on utilisera le formalisme des traces, introduit dans
+l'\cref{exo.traces.auto}.
+
+\begin{definition}[Langage reconnu par un automate avec
+    $\varepsilon$-transitions]
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate non déterministe avec
+  $\varepsilon$-transitions sur $\Sigma$. On définit l'ensemble $\tr(u)$ des
+  traces sur un mot $u$ comme l'ensemble des suites finies $(q_0,\ldots,q_n)$
+  d'états de $Q$ où $q_0 \in Q_0$ et telles qu'il existe pour tout
+  $i \in \{0,\ldots,n-1\}$ une lettre $a_i$ telle que les deux conditions
+  suivantes sont vérifiées~:
+  \begin{itemize}
+  \item $\delta(q_i,a_i) = q_{i+1}$
+  \item $u = a_0\star\cdots\star a_{n-1}$
+  \end{itemize}
+  On dit que $\mathcal A$ accepte le mot $u$
+  s'il existe une suite $(q_0,\ldots,q_n) \in \tr(u)$ telle que $q_n \in F$.
+
+  On définit le langage reconnu par $\mathcal A$ comme l'ensemble des mots
+  reconnus par $\mathcal A$.
+\end{definition}
+
+Les traces dans un automate avec $\varepsilon$-transitions représentent juste
+les exécutions possibles lors de la lecture d'un mot, mais où il est possible
+d'effectuer gratuitement des transitions étiquetées par $\varepsilon$.
+
+Là encore, il est clair qu'un automate sans $\varepsilon$-transition peut être
+simulé par un automate sans $\varepsilon$-transition, en n'ajoutant aucune
+$\varepsilon$-transition.
+
+On introduit donc maintenant l'élimination des $\varepsilon$-transitions,
+permettant de construire un automate sans $\varepsilon$-transition mais
+reconnaissant le même langage.
+
+L'idée de l'élimination des $\varepsilon$-transitions est assez simple~: au lieu
+de faire des sauts spontanés dans une $\varepsilon$-transition, on décide de
+faire une grande transition contenant toutes les $\varepsilon$-transitions ainsi
+que la transition qui suit. Il nous faut aussi modifier l'ensemble des états
+terminaux pour ajouter les états qui peuvent atteindre un état terminal
+uniquement en effectuant des $\varepsilon$-transitions.
+
+\begin{definition}[\'Elimination des $\varepsilon$-transitions]
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate avec
+  $\varepsilon$-transitions sur $\Sigma$. On définit la relation $\to^\star$ sur
+  les états de $\mathcal A$ comme la plus petite relation  réflexive et
+  transitive contenant la relation
+  \[q\to q' \defeq q' \in \delta(q,\varepsilon)\]
+
+  On définit l'automate $\mathcal A_{\not\varepsilon}$ non déterministe sans
+  $\varepsilon$-transition par la construction suivante~:
+  \begin{itemize}
+  \item $Q_{\mathcal A_{\not\varepsilon}} \defeq Q_\mathcal A$
+  \item $Q_{0,\mathcal A_{\not\varepsilon}} \defeq Q_{0,\mathcal A}$
+  \item $\displaystyle\delta_{\mathcal A_{\not\varepsilon}}(q,a) \defeq
+    \bigcup_{{q' \in Q}\atop{q\to^\star q'}} \delta_{\mathcal A}(q',a)$
+  \item $F_{\mathcal A_{\not\varepsilon}} =\{q \in Q
+    \mid \exists q' \in Q, q \to^\star q' \land q' \in F_\mathcal A\}$
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate avec
+  $\varepsilon$-transitions sur $\Sigma$. Alors
+  \[\mathcal L_{\mathcal A} = \mathcal L_{\mathcal A_{\not\varepsilon}}\]
+\end{proposition}
+
+\begin{proof}
+  On prouve d'abord que $q'\in \delta_{\mathcal A_{\not\varepsilon}}(q,a)$ si et
+  seulement s'il existe une suite finie $(q_0,\ldots,q_n)$ telle que~:
+  \begin{itemize}
+  \item $q_0 = q$
+  \item $\forall i \in \{0,\ldots,n-2\}, q_{i+1} \in
+    \delta_{\mathcal A}(q_i,\varepsilon)$
+  \item $q_n \in \delta_{\mathcal A}(q_{n-1},a)$
+  \item $q_n = q'$
+  \end{itemize}
+  Pour un sens, on remarque que dans une telle suite, $q_1 \to^\star q_{n-1}$
+  donc $\delta_{\mathcal A_{\not\varepsilon}}(q,a)\supseteq \delta_\mathcal A(q_{n-1},a)$.
+  Pour l'autre sens, on sait par définition qu'il existe $q''$ tel que
+  $q\to^\star q''$ et $q'\in\delta_\mathcal A (q'',a)$, donc il nous reste à
+  vérifier que si $q\to^\star q''$ alors il existe une suite d'états uniquement
+  reliés par des $\varepsilon$-transition, ce qui se fait par induction sur
+  $\to^\star$ (on laisse la vérification au lecteur).
+
+  Ainsi, on a une trace $(q_0,\ldots,q_n)$ dans $\mathcal A$ pour un mot $u$
+  donné si et seulement si $(q'_0,\ldots,q'_p)$, obtenue en supprimant les
+  états reliés par des $\varepsilon$-transitions, est une trace pour $u$ dans
+  $\mathcal A_{\not\varepsilon}$ (réciproquement si on peut ajouter des états
+  reliés par des $\varepsilon$-transitions).
+
+  De plus, un état $q_n$ est terminal dans $\mathcal A_{\not\varepsilon}$ si et
+  seulement s'il existe une suite d'$\varepsilon$-transitions menant à un état
+  terminal~: ainsi une trace terminant sur un tel état dans $\mathcal A$ donne
+  une trace acceptante en ajoutant des $\varepsilon$-transitions et
+  réciproquement on récupère une trace acceptante dans
+  $\mathcal A_{\not\varepsilon}$ en supprimant ces $\varepsilon$-transitions.
+
+  Ainsi
+  \[\mathcal L_{\mathcal A} = \mathcal L_{\mathcal A_{\not\varepsilon}}\]
+\end{proof}
+
+On sait donc maintenant que les automates déterministes, non déterministes et
+non déterministes avec $\varepsilon$-transitions, sont tous équivalents du
+point de vue de la classe de langage qu'ils reconnaissent.
+
+On peut maintenant prouver la stabilité des langages reconnaissables par
+concaténation de langages et par étoile.
+
+\begin{proposition}\label{prop.concat.ratio}
+  Soit $\Sigma$ un alphabet et $\mathcal A, \mathcal A'$ deux automates non
+  déterministes avec $\varepsilon$-transitions sur $\Sigma$. Alors il existe
+  un automate reconnaissant
+  \[\mathcal L_\mathcal A \star \mathcal L_{\mathcal A'}\]
+\end{proposition}
+
+\begin{proof}
+  On construit l'automate $\mathcal A''$ dont les états est la somme directe des
+  états de $\mathcal A$ et $\mathcal A'$ (pour simplifier les notations on va
+  considérer les deux ensembles d'états disjoints et considérer leur union), les
+  transitions sont uniquement celles définies au sein de $\mathcal A$ et
+  $\mathcal A'$ sauf entre chaque état $q_f$ de $\mathcal A$ et chaque état
+  initial $q_i$ de $\mathcal A'$ où l'on rajoute une transition
+  $q_f\xrightarrow{\varepsilon} q_i$. Les états initiaux sont ceux de
+  $\mathcal A$ et les états terminaux ceux de $\mathcal A'$.
+
+  Accepter un mot dans cet automate signifie donc avoir une trace
+  $(q_0,\ldots,q_n)$ commençant en un état initial de $\mathcal A$ et terminant
+  dans un état terminal de $\mathcal A'$. Comme la seule façon de passer d'un
+  état de $\mathcal A$ a un état de $\mathcal A'$ est d'utiliser une des
+  $\varepsilon$-transitions ajoutées, on sait que la trace peut se décomposer
+  en $(q_0,\ldots,q_p)$ et $(q_{p+1},\ldots,q_n)$ et ces deux traces sont
+  acceptantes respectivement pour un mot dans $\mathcal L_\mathcal A$ et pour un
+  mot dans $\mathcal L_{\mathcal A'}$, donc la trace est acceptant pour un
+  mot dans $\mathcal L_\mathcal A \star \mathcal L_{\mathcal A'}$.
+
+  Réciproquement, si on a deux traces $(q_0,\ldots,q_p)$ et
+  $(q_{p+1},\ldots,q_n)$ pour respectivement $u \in \mathcal L_{\mathcal A}$ et
+  $v\in\mathcal L_{\mathcal A'}$, alors $(q_0,\ldots,q_n)$ est une trace
+  acceptante pour $u\star v$.
+\end{proof}
+
+On prouve de même qu'ajouter simplement des transitions entre les états
+terminaux et initiaux d'un automate donne le langage de l'étoile. Comme la
+preuve est très proche de la preuve précédente, nous préférons la donner en
+exercice.
+
+\begin{definition}[Automate étoile]
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$. On définit
+  l'automate étoile $\mathcal A^\star$ par~:
+  \begin{itemize}
+  \item $Q_{\mathcal A^\star} \defeq Q_\mathcal A \sqcup \{p\}$
+  \item $Q_{0,\mathcal A^\star} \defeq \{p\}$
+  \item $\delta_{\mathcal A^\star}$ est définie comme $\delta_\mathcal A$ mais en
+    ajoutant des $\varepsilon$-transitions entre $p$ et chaque
+    $q_0\in Q_{0,\mathcal A}$, ainsi qu'entre chaque $q_f \in F_\mathcal A$ et
+    $p$.
+  \item $F_{\mathcal A^\star} \defeq \{p\}$.
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}\label{prop.etoile.ratio}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$, montrer
+  que
+  \[\mathcal L_{\mathcal A^\star} = \mathcal L_{\mathcal A}^\star\]
+\end{exercise}
+
+On déduit donc des constructions effectuées la stabilité par les opérations
+rationnelles.
+
+\begin{corollary}
+  Soit $\Sigma$ un alphabet. La classe $\Reco(\Sigma)$ contient la classe
+  $\Ratio(\Sigma)$.
+\end{corollary}
+
+\begin{proof}
+  On a déjà dit que $\varnothing \in \Reco(\Sigma)$ et que
+  $\{a\}\in \Reco(\Sigma)$ pour tout $a \in \Sigma$. De plus, en utilisant la
+  \cref{prop.union.ratio}, la \cref{prop.concat.ratio} et
+  l'\cref{prop.etoile.ratio}, on en déduit que $\Reco$ est stable par union,
+  concaténation et étoile. On en déduit donc, puisque $\Ratio(\Sigma)$ est la
+  plus petite telle classe, que $\Ratio(\Sigma)\subseteq\Reco(\Sigma)$.
+\end{proof}
+
+Pour montrer l'inclusion réciproque, on commence par s'intéresser aux propriétés
+des automates. Certaines ne nous seront pas utiles directement, mais nous
+pensons que faire un inventaire des propriétés usuelles des automates et des
+constructions permettant d'obtenir certaines propriétés est important pour se
+forger une intuition sur les automates.
+
+\subsection{Propriétés d'automates}
+
+Plusieurs propriétés d'intérêt existent, à propos des automates. Pour faciliter
+la génération d'une expression rationnelle à pratir d'un automate, nous allons
+présenter des propriétés basiques à leur propos. La première est celle
+d'avoir une table de transition totale plutôt que partielle.
+
+\begin{definition}[Automate complet]
+  Un automate $\mathcal A$ est dit complet si la fonction de transition $\delta$
+  est une fonction totale.
+\end{definition}
+
+Il est facile d'assurer cette propriété en ajoutant un état dit \og puits\fg
+vers lequel pointent toutes les transitions à ajouter, et les transitions
+partant de cet état.
+
+\begin{proposition}
+  Soit $\mathcal A$ un automate sur un alphabet $\Sigma$, il existe un automate
+  $\mathcal A'$ qui est complet et reconnaît le même langage que $\mathcal A$.
+\end{proposition}
+
+\begin{proof}
+  On construit l'automate $\mathcal A'$ comme décrit ci-dessus~:
+  \begin{itemize}
+  \item $Q' \defeq Q \sqcup \{p\}$
+  \item $q'_0 \defeq q_0$
+  \item $\delta' : Q' \times \Sigma \to Q'$ est défini par disjonction de cas~:
+    \begin{itemize}
+    \item si $(q,a) \in \dom(\delta)$, alors $\delta'(q,a) = \delta(q,a)$
+    \item sinon, $\delta'(q,a) = p$
+    \end{itemize}
+  \item $F' = F$
+  \end{itemize}
+
+  On veut maintenant prouver que les deux automates reconnaissent le même
+  langage. Soit $u \in \Sigma^\star$, montrons que $\delta^\star(q_0,u)$ est
+  indéfini si et seulement si $\delta'^\star(q_0,u) = p$ et que sinon
+  $\delta'^\star(q_0,u) = \delta^\star(q_0,u)$, par induction sur $u$~:
+  \begin{itemize}
+  \item dans le cas de $\varepsilon$, on sait que
+    $\delta'^\star(q_0,\varepsilon) = \delta^\star(q_0,\varepsilon) = q_0$.
+  \item supposons l'hypothèse vraie pour $u$, et soit $a \in \Sigma$. Supposons
+    que $\delta^\star(q_0,u\star a)$ est indéfinie, on a alors deux cas
+    possibles~:
+    \begin{itemize}
+    \item Si $\delta^\star(q_0,u)$ est indéfinie, alors par hypothèse
+      d'induction $\delta'^\star(q_0,u) = p$ et comme $\delta'(p,a) = p$, on en
+      déduit que $\delta'^\star(q_0,u\star a) = p$.
+    \item Si $\delta^\star(q_0,u) = q$ et $\delta(q,a)$ est indéfini, alors
+      par hypothèse d'induction $\delta'^\star(q_0,u) = q$ et, par définition,
+      $\delta'(q,a) = p$.
+    \end{itemize}
+    
+    Réciproquement, si $\delta'^\star(q_0,u\star a) = p$ alors c'est que la
+    transition a atteint un état puits à un moment, et cela correspondait à
+    une transition non définie dans $\delta$ (la preuve est parfaitement
+    analogue à celle du sens direct).
+
+    Dans l'autre cas, si $\delta'^\star(q_0,u\star a) = q$ où $q \in Q$, alors
+    on sait par induction que $\delta'^\star(q_0,u) = \delta(q_0,u) = q'$ par
+    hypothèse d'induction, et $\delta'(q,a) = \delta(q,a)$ par définition,
+    donc $\delta'^\star(q_0,u\star a) = \delta^\star(q_0,u\star a)$.
+  \end{itemize}
+
+  On en déduit donc~:
+  \[\delta^\star(q_0,u) \in F \iff \delta'^\star(q_0,u)\in F\]
+  ce qui est le résultat voulu.
+\end{proof}
+
+Une autre propriété importante sur un automate est celle d'automate émondé.
+Pour donner une idée de leur intérêt, commençons
