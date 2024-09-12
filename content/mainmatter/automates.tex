@@ -825,7 +825,7 @@ uniquement en effectuant des $\varepsilon$-transitions.
   \end{itemize}
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop.epsi.equiv}
   Soit $\Sigma$ un alphabet et $\mathcal A$ un automate avec
   $\varepsilon$-transitions sur $\Sigma$. Alors
   \[\mathcal L_{\mathcal A} = \mathcal L_{\mathcal A_{\not\varepsilon}}\]
@@ -948,11 +948,8 @@ rationnelles.
   plus petite telle classe, que $\Ratio(\Sigma)\subseteq\Reco(\Sigma)$.
 \end{proof}
 
-Pour montrer l'inclusion réciproque, on commence par s'intéresser aux propriétés
-des automates. Certaines ne nous seront pas utiles directement, mais nous
-pensons que faire un inventaire des propriétés usuelles des automates et des
-constructions permettant d'obtenir certaines propriétés est important pour se
-forger une intuition sur les automates.
+Avant de montrer l'inclusion réciproque, il nous faut nous attarder sur les
+propriétés des automates.
 
 \subsection{Propriétés d'automates}
 
@@ -1024,4 +1021,303 @@ partant de cet état.
 \end{proof}
 
 Une autre propriété importante sur un automate est celle d'automate émondé.
-Pour donner une idée de leur intérêt, commençons
+Pour donner une idée de leur intérêt, reprenons la construction précédente.
+En complétant un automate, on ajoute un état puits, mais arriver à cet état
+signifie forcément que la lecture du mot n'arrivera jamais à un état acceptant.
+On peut donc, si on préfère minimiser le nombre d'états qui interviennent
+effectivement dans l'automate, décider de supprimer notre état puits, mais aussi
+tous les états qui n'arriveront jamais à un état acceptant. De tels états sont
+dits co-accessibles. Un état accessible, lui, est un état qu'on peut atteindre
+à la lecture d'un mot~: en effet, si un état mène à un état acceptant (ou même
+est lui-même acceptant), cela n'a peut d'importance si aucun chemin ne mène à
+lui.
+
+On peut donc donner des définitions similaires à propos d'un automate pour
+parler de tous ses états~: un automate accessible est un automate dont tous les
+états sont accessibles et un automate co-accessible est un automate dont tous
+les états sont co-accessibles. Un automate à la fois accessible et co-accessible
+est appelé un automate émondé, et il est toujours possible de construire un
+automate émondé, en ne gardant que les états traversés lors de traces
+acceptantes.
+
+\begin{proposition}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$. Alors
+  il existe un automate $\mathcal A'$ émondé qui reconnaît le même langage que
+  $\mathcal A$.
+\end{proposition}
+
+\begin{proof}
+  On remarque que pour toute trace $(q_0,\ldots,q_n)$ acceptante, les états
+  $q_i, i \in \{0,\ldots,n\}$ sont à la fois accessibles et co-accessibles.
+  Ainsi, si une trace contient un état non accessible ou non co-accessible,
+  alors elle n'est pas acceptante. Puisqu'un mot $u$ n'est accepté que lorsqu'il
+  existe une trace acceptante pour $u$, l'ensemble des mots acceptés n'est pas
+  changé en ne gardant que les états à la fois accessibles et co-accessibles. On
+  en déduit que l'automate $\mathcal A'$ induit par $\mathcal A$ en ne prenant
+  que les états intervenant dans des traces acceptantes reconnaît le même
+  langage que $\mathcal A$.
+\end{proof}
+
+Enfin, parlons de la notion d'automate normalisé. Un tel automate est un
+automate dans lequel on peut trouver trois parties~: l'état initial,
+unique, le c\oe ur de l'automate et l'état terminal. Celui-ci permet d'avoir
+une forme plus linéaire à un automate.
+
+\begin{definition}[Automate normalisé]
+  Soit $\Sigma$ un alphabet. Un automate normalisé sur $\Sigma$ est un automate
+  sur $\Sigma$ tel qu'il existe un unique état initial, un unique état terminal,
+  tel qu'il n'existe aucune transition d'un état vers l'état initial et aucune
+  transition depuis l'état terminal.
+\end{definition}
+
+\begin{proposition}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$, il existe
+  alors un automate non déterministe avec $\varepsilon$-transitions, normalisé,
+  reconnaissant le même langage que $\mathcal A$.
+\end{proposition}
+
+\begin{proof}
+  On construit l'automate simplement en ajoutant un nouvel état initial $q_0$
+  et un nouvel état terminal $q_f$ et des $\varepsilon$-transitions depuis
+  $q_0$ vers tout état anciennement initial, et de tout état anciennement
+  terminal vers $q_f$.
+\end{proof}
+
+\begin{exercise}
+  Montrer que l'automate construit précédemment reconnaît le même langage que
+  $\mathcal A$.
+\end{exercise}
+
+On peut aussi procéder à l'élimination des $\varepsilon$-transitions sur un
+tel automate, mais on remarque alors un problème~: si le langage contient
+$\varepsilon$, alors il doit y avoir une transition de $q_0$ à $q_f$ étiquetée
+par $\varepsilon$, ce qui ne peut pas s'éliminer en gardant $q_0$ et $q_f$
+distincts. On a donc besoin d'ajouter que le langage reconnu par $\mathcal A$
+ne contient par $\varepsilon$, si l'on veut renforcer le résultat en donnant un
+automate sans $\varepsilon$-transitions normalisé.
+
+On montre maintenant que $\Reco(\Sigma)\subseteq \Ratio(\Sigma)$. Pour montrer
+cette inclusion, on va construire une expression rationnelle par un processus
+d'élimination d'états depuis un automate. \'Etant donné un automate
+$\mathcal A$, on peut considérer les étiquettes comme des expressions
+rationnelles limitées à un caractère. Avec cette considération, effectuer deux
+transitions $\xrightarrow a \xrightarrow b$ correspond à une seule transition
+$\xrightarrow{ab}$. Cela nous donne alors une procédure pour regrouper des
+transitions, et ainsi éliminer des états (puisque l'état du milieu entre la
+transition $a$ et la transition $b$ peut alors être supprimé). On a ainsi un
+algorithme qui construit un expression rationnelle pour un automate. On remarque
+que les $\varepsilon$-transitions sont parfaitement adaptées dans ce contexte,
+puisque $\Val(\varepsilon e) = \Val(e)$, comme on l'attend d'une
+$\varepsilon$-transition.
+
+La procédure à suivre est donc la suivante~:
+\begin{itemize}
+\item définir une notion plus générale d'automate fini qui permet d'utiliser des
+  expressions rationnelles pour les étiquettes,
+\item créer le processus d'élimination d'état,
+\item montrer que ce processus conserve le langage reconnu.
+\end{itemize}
+
+\begin{definition}[Automate fini généralisé]
+  Soit $\Sigma$ un alphabet, on appelle un automate fini généralisé un
+  quadruplet $(Q,Q_0,\delta,F)$ tel que~:
+  \begin{itemize}
+  \item $Q$ est l'ensemble fini des états,
+  \item $Q_0\subseteq Q$ est l'ensemble des états initiaux,
+  \item $\delta : Q \times \Regex(\Sigma) \partialto \powerset(Q)$ est la
+    fonction de transition généralisée,
+  \item $F\subseteq Q$ est l'ensemble des terminaux.
+  \end{itemize}
+\end{definition}
+
+\begin{definition}[Acceptation d'un mot par un automate généralisé]
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate généralisé sur $\Sigma$.
+  On dit qu'un mot $u\in \Sigma^\star$ est accepté (ou reconnu) par $\mathcal A$
+  s'il existe une décomposition $u = u_0\star\cdots\star u_{p-1}$ et une suite
+  d'états $(q_0,\ldots,q_p)$ telles que~:
+  \begin{itemize}
+  \item $q_0 \in Q_0$
+  \item $q_p \in F$
+  \item $\forall i \in \{0,\ldots,p-1\}, \exists e \in \Regex(\Sigma),
+    u_i \in \Val(e) \land q_{i+1}\in \delta(q_i,e)$
+  \end{itemize}
+\end{definition}
+
+On voit ici qu'une inclusion évidente existe entre les automates non
+déterministes et les automates généralisés~: il suffit de transformer
+l'étiquette $a$ par le regex $a$. On veut donc maintenant construire le
+processus d'élimination. On a dit précédemment qu'une suite de deux transitions
+peut se transformer en une seule concaténation, ce qui donne l'idée suivante de
+transformation~:
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[state] (q_0) {$q_0$};
+    \node[state] (q_1) [right = of q_0] {$q_1$};
+    \node[state] (q_2) [right = of q_1] {$q_2$};
+    \node (use) [right = of q_2] {$\longmapsto$};
+    \node[state] (q_3) [right = of use] {$q_0$};
+    \node (use2) [right = of q_3] {};
+    \node[state] (q_4) [right = of use2] {$q_2$};
+    \path[->,>=latex]
+    (q_0) edge node {$a$} (q_1)
+    (q_1) edge node {$b$} (q_2)
+    (q_3) edge node {$ab$} (q_4);
+  \end{tikzpicture}
+\end{figure}
+
+En effectuant cette transformation entre chaque paire de transitions passant par
+$q_1$, il semble donc possible d'éliminer l'état $q_1$. Cependant, un cas
+important reste possible~: on peut avoir une boucle sur $q_1$. Dans ce cas, il
+est nécessaire d'ajouter pour chaque expression $e$ étiquetant une boucle,
+l'expression $ae^\star b$ au lieu de simplement $ab$~:
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[state] (q_0) {$q_0$};
+    \node[state] (q_1) [right = of q_0] {$q_1$};
+    \node[state] (q_2) [right = of q_1] {$q_2$};
+    \node (use) [right = of q_2] {$\longmapsto$};
+    \node[state] (q_3) [right = of use] {$q_0$};
+    \node (use2) [right = of q_3] {};
+    \node[state] (q_4) [right = of use2] {$q_2$};
+    \path[->,>=latex]
+    (q_0) edge node {$a$} (q_1)
+    (q_1) edge node {$b$} (q_2)
+    (q_1) edge [loop above] node {$e$} ()
+    (q_3) edge node {$ae^\star b$} (q_4);
+  \end{tikzpicture}
+\end{figure}
+
+Il reste un souci~: il est possible qu'il existe plusieurs transitions
+distinctes entre deux états donnés. Pour contrer ça, on s'assure d'abord qu'on
+peut, sans perte de généralité, considérer qu'un automate généralisé n'a qu'au
+plus une transition d'un état à un autre.
+
+On introduit une nouvelle notation~: on décrit les transitions avec $R_\delta$
+définie par la formule suivante~:
+\[R_\delta(q,e,q') \defeq q' \in \delta(q,e)\]
+On définit aussi la notation $\sum e_i$ pour des expressions rationnelles
+$e_1,\ldots,e_n$, comme $\varnothing$ si $n = 0$ et de façon naturelle en
+itérant l'opération $+$ sinon.
+
+\begin{proposition}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate généralisé sur $\Sigma$.
+  Il existe alors un automate généralisé $\mathcal A'$, équivalent à
+  $\mathcal A$, tel que pour tous états $q,q'$ il existe exactement une
+  expression $e$ telle que $R_\delta(q,e,q')$.
+\end{proposition}
+
+\begin{proof}
+  On construit $\mathcal A'$ en remplaçant pour tous états $q,q'$ les
+  expressions les reliant par l'unique expressions
+  \[\sum_{e \in \Regex(\Sigma)\atop{R_\delta(q,e,q')}} e\]
+  Soit un mot $u\in \Sigma^\star$. On considère une trace $(q_0,\ldots,q_n)$
+  pour $u$, une décomposition $u = u_0\star\cdots\star u_{n-1}$ et une suite
+  $e_0,\ldots, e_{n-1}$ telles que $u_i \in \Val(e_i)$ et
+  $R_\delta(q_i,e_i,e_{i+1})$, pour tous $i \in \{0,\ldots,n-1\}$.
+  Cette décomposition est aussi valide dans $\mathcal A'$, puisque si
+  $a_i \in \Val(e_i)$, $u_i$ appartient à la somme des $e$ pour
+  $R_\delta(q_i,e,q_{i+1})$. Réciproquement, appartenir à la somme signifie qu'on
+  peut trouver $e$ tel que $R_\delta(q_i,e,q_{i+1})$ telle que
+  $a_i \in \Val(e_i)$. On en déduit donc que les traces acceptantes sont
+  identiques dans les deux automates, et comme les états initiaux et terminaux
+  sont les mêmes, $\mathcal A$ et $\mathcal A'$ sont équivalents.
+\end{proof}
+
+\begin{remark}
+  On ajoute potentiellement de nombreuses transitions en considérant des
+  transitions de la forme $a\xrightarrow \varnothing b$, mais celles-ci ont le
+  même rôle que l'absence de transition (puisque $u \in \Val(\varnothing)$ n'est
+  pas possible). On peut donc maintenant définir l'unique expression reliant
+  deux états, ce qu'on écrire $e(q,q')$. Ainsi accepter un mot $u$ signifie
+  obtenir une trace $(q_0,\ldots,q_n)$ où $q_0$ est initial, $q_n$ terminal et
+  une décomposition $u = u_1\star \cdots u_{n-1}$ où
+  $u_i \in \Val(e(q_i,q_{i+1}))$.
+\end{remark}
+
+On introduit maintenant le lemme essentiel menant au théorème souhaité~:
+éliminer un état avec la procédure définie plus tôt ne change pas le langage
+calculé.
+
+\begin{lemma}\label{lem.elim.state}
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate généralisé contenant
+  exactement une transition entre chaque deux états. Soit $q$ un état ni initial
+  ni terminal. On définit l'automate $\mathcal A'$ par~:
+  \begin{itemize}
+  \item $Q_{\mathcal A'} \defeq Q_{\mathcal A} \setminus \{q\}$
+  \item $Q_{0,\mathcal A'} \defeq Q_{0,\mathcal A'}$
+  \item $e(q_1,q_2) \defeq e(q_1,q) (e(q,q))^\star e(q,q_2) + e(q_1,q_2)$
+  \item $F_{\mathcal A'} \defeq F_{\mathcal A}$
+  \end{itemize}
+  Alors $\mathcal A'$ reconnaît le même langage que $\mathcal A$.
+\end{lemma}
+
+\begin{proof}
+  Si on trouve une trace $(q_0,\ldots,q_n)$ acceptante pour un mot $u$ dans
+  $\mathcal A$, alors en supprimant les occurrences de $q$ dans cette trace
+  on obtient une trace acceptante pour $u$ dans $\mathcal A'$, puisque pour
+  $q_{i-1},q,q_{i+1}$ et deux facteurs $u_{i-1},u_i$ apparaissant dans la trace
+  (respectivement la décomposition de $u$), on peut les remplacer par
+  $q_i,q_{i+1}$ et $u_{i-1}\star u_i$, et cela donnera une transition valide pour
+  $\mathcal A'$. Entre deux états $q_{i-1},q_i$ où $q$ n'apparaît pas, comme
+  on sait que
+  $\Val(e_{\mathcal A}(q_{i-1},q_i))\subseteq \Val(e_{\mathcal A'}(q_{i-1},q_i))$
+  (car on a une union), on en déduit le résultat pour le reste de la trace.
+
+  Réciproquement, si on a une trace valide pour $\mathcal A'$ alors, entre deux
+  états $q_{i},q_{i+1}$, on a soit un mot $u_i$ qui est dans
+  $\Val(e_{\mathcal A}(q_i,q_{i+1}))$, soit on peut remplacer ces deux états par
+  $(q_i,q,q_{i+1})$ pour faire une trace valide pour $\mathcal A$.
+\end{proof}
+
+On peut donc enfin construire une expression régulière à partir d'un automate.
+
+\begin{proposition}
+  Soit un langage reconnaissable $\mathcal L$, alors il existe une expression
+  régulière $e$ telle que $\Val(e) = \mathcal L$.
+\end{proposition}
+
+\begin{proof}
+  On sait qu'un langage reconnaissable peut être reconnu par un automate non
+  déterministe avec $\varepsilon$-transitions. On pose donc $\mathcal A$ un
+  tel automate, reconnaissant $\mathcal L$. On le normalise et lui associe
+  naturellement un automate généralisé $\mathcal A'$ qui contient exactement une
+  transition entre deux de ses états. En utilisant le \cref{lem.elim.state},
+  on sait donc qu'on peut éliminer n'importe quel état qui n'est ni initial ni
+  terminal~: on peut donc itérer ce lemme pour obtenir un automate généralisé
+  $\mathcal A''$ qui reconnait le même langage $\mathcal L$ que $\mathcal A'$,
+  et qui ne contient qu'un état initial et un état terminal (car l'automate
+  a été choisi normalisé). Notre automate est donc de la forme~:
+  \begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+      \node[state,initial] (q_0) {$q_0$};
+      \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
+      \path[->,>=latex]
+      (q_0) edge node {$e$} (q_1);
+    \end{tikzpicture}
+  \end{figure}
+  
+  On en déduit donc que pour tout mot $u \in \Sigma^\star$, on a l'équvalence
+  suivante~:
+  \[u \in \mathcal L \iff u \in \Val(e)\]
+  Donc il existe $e$ tel que $\mathcal L = \Val(e)$.
+\end{proof}
+
+On en déduit donc le théorème de Kleene~:
+
+\begin{theorem}[Kleene]
+  Soit $\Sigma$ un alphabet. Les classes $\Ratio(\Sigma)$ et $\Reco(\Sigma)$
+  sont égales.
+\end{theorem}
+
+\begin{remark}
+  Ces deux équivalences sont algorithmiques~: elles permettent de construire
+  effectivement, étant donné un automate, une expression régulière et
+  inversement de construire un automate depuis une expression régulière (il faut
+  alors utiliser l'automate union, la concaténation et l'étoile d'automates pour
+  obtenir l'automate depuis une expression régulière).
+\end{remark}
