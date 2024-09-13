@@ -1321,3 +1321,488 @@ On en déduit donc le théorème de Kleene~:
   alors utiliser l'automate union, la concaténation et l'étoile d'automates pour
   obtenir l'automate depuis une expression régulière).
 \end{remark}
+
+Nous avons vu de nombreuses constructions à propos des automates. Ces
+constructions renforce le fait qu'un langage reconnaissable est reconnu par de
+nombreux automates. On peut donc se demander s'il existe un automate meilleur
+que les autres, ce qui nous mène à la prochaine section~: la construction d'un
+automate minimal.
+
+\`A partir de maintenant, on parlera toujours de langage rationnel pour parler
+indistinctement de langage reconnaissable ou rationnel, puisque les deux notions
+sont équivalentes.
+
+\section{Vers le théorème de Myhill-Nérode}
+
+Le théorème au c\oe ur de cette section possède deux aspects~: le premier est
+la notion d'automate minimal, que nous avons évoqué juste avant. Le deuxième
+sera notre premier objectif~: donner un critère permettant de prouver qu'un
+langage est (ou non) rationnel. Nous allons aborder cet aspect du théorème en
+premier lieu.
+
+\subsection{Conditions de rationnalité d'un langage}
+
+Pour arriver à ce résultat, on va présenter un premier lemme important~: le
+lemme de l'étoile. Celui-ci nous indique une condition nécessaire à ce qu'un
+langage soit rationnel, mais non suffisante.
+
+\begin{lemma}[de l'étoile]
+  Soit un langage rationnel $\mathcal L$ sur un alphabet $\Sigma$. Alors il
+  existe un entier $N \in \mathbb N$ tel que pour tout mot $u\in\mathcal L$ de
+  longueur supérieure à $N$, il existe une décomposition $u = vws$ telle que
+  \[\forall n \in \mathbb N, vw^ns \in \mathcal L\]
+\end{lemma}
+
+La preuve de ce résultat se base principalement sur l'idée de trouver une boucle
+dans la lecture d'un mot~: si un mot est assez long, alors il finira par
+repasser par un état, et on pourra alors itérer cette boucle.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+      \node[state,initial] (q_0) {$q_0$};
+      \node[state] (q_1) [right = of q_0] {$q_i$};
+      \node[state] (q_2) [right = of q_1] {$q_i$};
+      \node[state,accepting] (q_3) [right = of q_2] {$q_f$};
+      \path[->,>=latex]
+      (q_0) edge node {$v$} (q_1)
+      (q_1) edge node {$w$} (q_2)
+      (q_2) edge node {$s$} (q_3);
+  \end{tikzpicture}
+\end{figure}
+
+\begin{proof}
+  Puisque $\mathcal L$ est un langage rationnel, on pose $\mathcal A$ un
+  automate (déterministe, sans $\varepsilon$-transitions) reconnaissant
+  $\mathcal L$. On pose $N = |Q| + 1$, prouvons que la propriété souhaitée est
+  vraie pour ce choix de $N$~:
+
+  Soit $u\in\mathcal L$ de longueur $n \geq N$. Comme $u \in \mathcal L$, on
+  peut trouver une trace acceptante $(q_0,\ldots,q_n)$ pour $u$ dans
+  $\mathcal A$. Comme $n \geq N$, on en déduit que $n > |Q|$, donc par le
+  principe des tiroirs, on trouve $q$ tel qu'il existe au moins deux occurrences
+  de $q$ dans notre trace. On coupe alors notre trace selon deux telles
+  occurrences~: $(q_0,\ldots,q_i)$, $(q_i,\ldots,q_j)$ et $(q_j,\ldots,q_n)$
+  où $q_i = q_j = q$. De même, on peut découper $u = vws$ de telle sorte que
+  $(q_0,\ldots,q_i)$ est une trace pour $v$, $(q_i,\ldots,q_j)$ est une trace
+  pour $w$ et $(q_j,\ldots,q_n)$ est une trace pour $s$. On en déduit alors
+  qu'en concaténant $p$ fois la suite $(q_i,\ldots,q_j)$ au milieu, on obtient
+  une trace acceptante pour $vw^ps$. Ainsi on en déduit
+  \[\forall p \in \mathbb N, vw^ps\in \mathcal L\]
+
+  D'où le résultat souhaité pour $N = |Q| + 1$.
+\end{proof}
+
+\begin{remark}
+  Tout d'abord, il est possible que l'automate ne présente aucune boucle. Dans
+  ce cas, le langage est fini puisque le nombre de traces possibles l'est. Notre
+  lemme nous donne alors comme $N$ un nombre jamais atteint par un mot~: le
+  lemme est alors vrai par vacuité.
+
+  Un autre point à relever concerne le fait que, dans notre décomposition, on a
+  aussi le fait que $vs \in \mathcal L$, car supprimer la boucle conserve aussi
+  la validité de la trace.
+
+  Enfin, un point plus important~: ce nombre $N$ existe pour un langage
+  $\mathcal L$ donné, mais il n'est pas uniforme puisqu'il dépend du choix de
+  l'automate. On pourrait considérer le $N$ minimal pour tous les automates
+  possibles, mais celui-ci n'a pas de construction explicite \textit{a priori}.
+  On va en fait pouvoir montrer que ce $N$ minimal correspond au $N$ associé à
+  un automate particulier, et qu'on peut donc choisir un $N$ de façon uniforme
+  en fonction de $\mathcal L$.
+\end{remark}
+
+\begin{exercise}
+  En utilisant le lemme précédent, montrer que le langage suivante n'est pas
+  rationnel~:
+  \[\mathcal L \defeq \{0^n1^n\mid n \in \mathbb N\}\]
+\end{exercise}
+
+On souhaite maintenant affiner le résultat en cherchant une condition non
+seulement nécessaire, mais aussi suffisante, permettant donc de caractériser les
+langages rationnels.
+
+Pour y arriver, on a besoin d'une premier définition~: celle de quotient gauche.
+
+\begin{definition}[Quotient gauche]
+  Soit $\Sigma$ un alphabet et $\mathcal L$ un langage. Pour tout
+  $u \in \Sigma^\star$, on définit le quotient gauche (ou résiduel) de
+  $\mathcal L$ par $u$ comme~:
+  \[u^{-1}\mathcal L\defeq \{v \in \Sigma^\star\mid u\star v \in \mathcal L\}\]
+\end{definition}
+
+Le quotient gauche par $u$ peut se voir au niveau des automates~: si on prend
+un automate qui reconnaît $\mathcal L$, la lecture de $u$ depuis l'état
+initial mène à un état $q$, et l'ensemble $u^{-1}\mathcal L$ est l'ensemble des
+mots acceptés si l'on remplace l'état initial par $q$, c'est-à-dire l'ensemble
+des mots qui finissent la lecture de $u$ en une lecture acceptante. On remarque
+en particulier que $\varepsilon \in u^{-1}\mathcal L$ si et seulement si
+$u \in \mathcal L$.
+
+Cela motive notre construction syntaxique~: les différents $u^{-1}\mathcal L$
+peuvent naturellement former une structure d'automates, puisque les transitions
+peuvent se définir par $\delta(u^{-1}\mathcal L,a) = (u\star a)^{-1}\mathcal L$.
+On a aussi défini les états terminants avec la remarque précédente, et l'état
+initial est simplement $\mathcal L = \varepsilon^{-1}\mathcal L$. Un tel
+automate, qu'on appelle automate syntaxique, respecte notre définition
+d'automate lorsque le nombre d'états est fini, ce qui nous donne en fait le
+théorème de Myhill-Nérode.
+
+\begin{theorem}[Myhill-Nérode]
+  Soit $\Sigma$ un alphabet et $\mathcal L$ un langage sur $\Sigma$. Le langage
+  $\mathcal L$ est rationnel si et seulement si l'ensemble
+  $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$ est fini.
+\end{theorem}
+
+\begin{proof}
+  Supposons que $\mathcal L$ est rationnel. On trouve un automate $\mathcal A$
+  déterministe reconnaissant $\mathcal L$. On construit alors une surjection de
+  l'ensemble des états vers l'ensemble des $u^{-1}\mathcal L$ pour
+  $u\in \Sigma^\star$. Pour cela, pour chaque état $q \in Q$ on définit
+  l'automate $\mathcal A_q$ où l'état initial est remplacé par $q$. On définit
+  alors l'ensemble
+  \[f(q) \defeq \{u \in \Sigma^\star\mid \mathcal A_q \models u\}\]
+  La fonction $f$ est surjective~: pour tout $u$, en prenant
+  $q_u \defeq \delta(q_0,u)$, on voit que $f(q_u) = u^{-1}\mathcal L$. Ainsi,
+  comme $Q$ est fini, on en déduit que
+  $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$ est fini aussi.
+
+  Réciproquement, supposons que $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$
+  est fini. On construit alors l'automate syntaxique $\mathcal A_{\mathcal L}$~:
+  \begin{itemize}
+  \item $Q \defeq \{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$
+  \item $q_0 \defeq \mathcal L$
+  \item $\delta(u^{-1}\mathcal L, a) \defeq (u\star a)^{-1}\mathcal L$
+  \item $F \defeq \{q \in Q\mid \varepsilon \in q\}$
+  \end{itemize}
+  On veut vérifier que cet automate reconnaît bien $\mathcal L$. Par une
+  induction directe sur $u \in \Sigma^\star$, on prouve que
+  \[\forall u \in \Sigma^\star, \delta^\star(q_0,u) = u^{-1}\mathcal L\]
+  donc $\mathcal A_\mathcal L \models u$ si et seulement si
+  $\varepsilon \in u^{-1}\mathcal L$, ce qui signifie exactement que
+  $u \in \mathcal L$ d'après la remarque précédente.
+\end{proof}
+
+Il existe donc, pour tout langage rationnel $\mathcal L$, un automate
+naturellement associé.
+
+On a ainsi un moyen de montrer à la fois qu'un langage est rationnel, et qu'un
+langage n'est pas rationnel~: en exibant une infinité de résiduels, on en
+déduit directement qu'un langage n'est pas rationnel, et ce critère est plus
+précis que le lemme de l'étoile puisqu'il est exact.
+
+\begin{exercise}
+  On considère l'alphabet $\{a,b,c\}$, montrer que le langage
+  \[\mathcal L \defeq \{a^nb^mc^p\mid (n,m,p)\in \mathbb N^3\}\]
+  vérifie le lemme de l'étoile, mais n'est pas rationnel.
+\end{exercise}
+
+\subsection{Automate minimal}
+
+On passe maintenant à l'autre aspect du théorème de Myhill-Nérode~: l'automate
+syntaxique qu'on a construit est en fait l'automate minimal, au sens où tout
+automate reconnaissant le même langage contiendra plus d'états.
+
+Pour en donner une idée plus claire, on va introduire les notions de morphismes
+d'automates et d'automate quotient. Pour simplifier, on ne parlera que
+d'automates finis déterministes complets et accessibles.
+
+\begin{definition}[Morphisme d'automate]
+  Soit $\Sigma$ et $\mathcal A$, $\mathcal A'$ deux automates finis déterminstes
+  sur $\Sigma$. On appelle morphisme d'automate $f : \mathcal A \to \mathcal A'$
+  une fonction $f : Q_{\mathcal A} \to Q_{\mathcal A'}$ telle que~:
+  \begin{itemize}
+  \item $f(q_{0,\mathcal A}) = q_{0,\mathcal A'}$
+  \item pour tous $q \in Q_{\mathcal A}, a \in \Sigma$,
+    $f(\delta_\mathcal A(q,a)) = \delta_{\mathcal A'}(f(q),a)$
+  \item pour tout $q \in F_\mathcal A, f(q) \in F_{\mathcal A'}$
+  \end{itemize}
+\end{definition}
+
+Un morphisme d'automate est donc une façon de transformer l'automate
+$\mathcal A$ en l'automate $\mathcal A'$. Remarquons que généralement, il est
+tout à fait possible de n'avoir des morphismes que dans un sens, par exemple
+pour
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+      \node[state,initial] (q_0) {$q_0$};
+      \node[state,accepting] (q_1) [above right = of q_0] {$q_1$};
+      \node[state, accepting] (q_2) [below right = of q_0] {$q_2$};
+      \path[->,>=latex]
+      (q_0) edge node {$0$} (q_1)
+      (q_0) edge node {$1$} (q_2)
+      (q_1) edge [loop right] node {$0,1$} ()
+      (q_2) edge [loop right] node {$0,1$} ();
+      \node (use) [right = of q_0] {};
+      \node (use2) [right = of use] {};
+      \node[state, initial] (q_3) [right = of use2] {$q'_0$};
+      \node[state, accepting] (q_4) [right = of q_3] {$q'_1$};
+      \path[->,>=latex]
+      (q_3) edge node {$0,1$} (q_4)
+      (q_4) edge [loop right] node {$0,1$} ();
+  \end{tikzpicture}
+\end{figure}
+On peut trouver un morphisme de l'automate de gauche vers l'automate de droite,
+en prenant $f(q_1) = f(q_2) = q'_1$. Cependant, dans l'autre sens, on ne peut
+pas conserver la transition $0,1$ entre $q'_0$ et $q'_1$ en associant une image
+à $q'_1$.
+
+Un premier théorème nous dit qu'au niveau des langages reconnus, un morphisme
+donne une inclusion.
+
+\begin{proposition}
+  Soient $\mathcal A, \mathcal A'$ deux automates sur un alphabet $\Sigma$, et
+  $f : \mathcal A \to \mathcal A'$ un morphisme d'automates. Alors
+  \[\mathcal L_{\mathcal A} \subseteq \mathcal L_{\mathcal A'}\]
+\end{proposition}
+
+\begin{proof}
+  On va noter $q,q_0,\ldots$ les états de $\mathcal A$ et $q',q'_0$ les états
+  de $\mathcal A'$, de même $F$ et $F'$ pour respectivement l'ensemble des
+  états terminaux de $\mathcal A$ et ceux de $\mathcal A'$.
+  
+  On voit tout d'abord que pour tout mot $u\in\Sigma^\star$, on a
+  \[\delta^\star(f(q_0),u) = f(\delta^\star(q_0,u))\]
+  et $f(q_0) = q'_0$. De plus, par définition, l'image de $f(F)\subseteq F'$,
+  donc $\delta^\star(q_0,u) \in F \implies f(\delta^\star(q_0,u))\in F'$, d'où
+  le résultat.
+\end{proof}
+
+Un autre résultat, peut-être moins intuitif, est que l'inclusion devient une
+égalité dès lors que $f(F) = F'$ (en réutilisant les notations précédentes).
+
+\begin{proposition}
+  Si un morphisme d'automates $f : \mathcal A \to \mathcal A'$ est tel que
+  $f(F) = F'$, alors $\mathcal L_\mathcal A = \mathcal L_{\mathcal A'}$.
+\end{proposition}
+
+\begin{proof}
+  On réutilise les notations de la preuve précédente. Par contraposée, supposons
+  que $u \notin \mathcal L_\mathcal A$. Cela signifie donc que
+  $\delta^\star(q_0,u) \notin F$, donc $f(\delta^\star(q_0,u)) \notin F'$ puisque
+  $F' = f(F)$, donc $\delta^\star(q'_0,u)\notin F'$ par l'argument précédent.
+
+  Par contraposée, $\mathcal A'\models u \implies \mathcal A \models u$, d'où
+  le résultat.
+\end{proof}
+
+On dit qu'un tel morphisme est surjectif (attention, cela ne signifie pas que le
+morphisme est surjectif en tant que fonction $Q \to Q'$).
+
+On peut alors prouver que l'automate syntaxique est minimal.
+
+\begin{proposition}
+  Soit $\mathcal A$ un automate fini déterministe complet et accessible sur un
+  alphabet $\Sigma$. Il existe un morphisme surjectif
+  $\mathcal A \to \mathcal A_{\mathcal L_\mathcal A}$ et surjectif sur les états.
+\end{proposition}
+
+\begin{proof}
+  Comme on sait que $\mathcal A$ est accessible, on peut trouver pour tout état
+  $q \in Q$ un mot $u(q)$ tel que $\delta(q_0,u(q)) = q$. On définit alors
+  l'image de $q$ comme $(u(q))^{-1}\mathcal L_\mathcal A$. On montre d'abord que
+  ce choix d'image ne dépend pas du mot $u(q)$ choisi. En effet, si
+  $\delta(q_0,u) = \delta(q_0,v)$ alors pour tout $w \in \Sigma^\star$~:
+  \[\mathcal A \models u\star w \iff \mathcal A \models v \star w\]
+  donc $u^{-1}\mathcal L_\mathcal A = v^{-1}\mathcal L_\mathcal A$.
+
+  Pour un état terminant dans l'automate syntaxique donné, on trouve un mot
+  $u$ tel que cet état vaut $u^{-1}\mathcal L$. On peut alors considérer
+  $\delta(q_0,u)$ pour obtenir un état qui est associé à cet état, et puisque
+  $\varepsilon \in u^{-1}\mathcal L$, on en déduit que $\delta(q_0,u)\in F$,
+  donc notre morphisme est surjectif. Il est même surjectif en tant que fonction
+  entre états, puisque l'argument précédent donne pour tout $u^{-1}\mathcal L$
+  un antécédent par le morhpisme~: $\delta(q_0,u)$.
+\end{proof}
+
+\begin{remark}
+  En soi, le point important est la surjectivité sur les états. Cependant, comme
+  nous allons le voir, l'existence d'un morphisme nous permet de montrer que
+  l'automate minimal peut être obtenu à partir des autres automates, en
+  regroupant les états.
+\end{remark}
+
+Nous cherchons maintenant à obtenir une construction explicite de l'automate
+syntaxique à partir d'un automate donné. Pour cela, nous introduisons d'abord la
+notion d'automate quotient. Ces quotients s'appliquent à ce qu'on va appeler des
+congruences d'automates, qui sont des relations d'équivalence compatibles avec
+la structure d'automate.
+
+\begin{definition}[Congruence d'automate]
+  Soit $\Sigma$ un alphabet, et $\mathcal A$ un automate fini déterministe sur
+  $\Sigma$. Une relation $\sim \subseteq Q \times Q$ est appelée une congruence
+  d'automate si toutes les conditions suivantes sont vérifiées~:
+  \begin{itemize}
+  \item $\sim$ est une relation d'équivalence.
+  \item $\sim$ est compatible avec $\delta$~:
+    \[\forall q,q' \in Q, q \sim q' \implies \forall a \in \Sigma,
+    \delta(q,a) \sim \delta(q',a)\]
+  \item $\sim$ sature $F$~:
+    \[\forall q,q' \in Q, q \sim q' \implies (q \in F \iff q' \in F)\]
+  \end{itemize}
+
+  On peut alors définir l'automate quotient $\mathcal A/\sim$ par~:
+  \begin{itemize}
+  \item son ensemble d'états est $Q/\sim$.
+  \item son état initial est la classe de $q_0$.
+  \item pour tout $q \in Q$ et $a \in \Sigma$,
+    $\delta(\overline q,a) =\delta(q,a)$
+  \item l'ensemble des états terminaux est $\{\overline q_f \mid q_f \in F\}$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  La compatibilité est essentielle pour que cette définition ait du sens,
+  puisque l'on veut que le choix de $q$ dans une classe ne change pas le
+  résultat de $\delta(q,a)$~: c'est le cas ici puisque si $q\sim q'$ alors
+  $\delta(q,a) \sim \delta(q',a)$. Pour les états terminaux, dire qu'un ensemble
+  d'état est terminal si tous ne sont pas terminaux semble changer le sens de
+  l'automate, ce qui motive notre volonté de saturation (remarquons que la
+  condition de saturation aurait pu se limiter à une implication, puisque la
+  relation est symétrique dans tous les cas).
+\end{remark}
+
+On prouve alors que le quotient, comme attendu puisqu'on regroupe des états de
+même comportement, ne change pas le langage reconnu.
+
+\begin{proposition}
+  Soit un automate $\mathcal A$ et une congruence d'automate sur $\mathcal A$.
+  Alors
+  \[\mathcal L_\mathcal A = \mathcal L_{\mathcal A/\sim}\]
+\end{proposition}
+
+\begin{proof}
+  Par une récurrence sur $u$ qui ne pose aucune difficulté, on vérifie que
+  \[\forall u \in \Sigma^\star,
+  \delta^\star_{\mathcal A/\sim}(\overline{q_0},u)=
+  \overline{\delta^\star(q_0,u)}\]
+  Si $\delta^\star(q_0,u) \in F$ alors
+  $\overline{\delta^\star(q_0,u)} \in F_{\mathcal A/\sim}$.
+  Réciproquement, si $\overline{\delta^\star(q_0,u)}$, alors on sait qu'il
+  existe $q$ dans cette classe tel que $q \in F$, et comme $\sim$ sature $F$,
+  on en déduit que $\delta^\star(q_0,u) \in F$.
+
+  On a donc l'égalité des deux langages.
+\end{proof}
+
+On donne un second résultat, relian la congruence et les morphismes.
+
+\begin{proposition}
+  Soient $\mathcal A, \mathcal A'$ deux automates sur le même alphabet $\Sigma$
+  et $f : \mathcal A \to \mathcal A'$ un morphisme surjectif. Alors $f$ définit
+  sur $\mathcal A$ une congruence d'automate par~:
+  \[q\sim_f q' \defeq f(q) = f(q')\]
+\end{proposition}
+
+\begin{proof}
+  On veut montrer que $\sim_f$ définit une congruence. Il est clair que c'est
+  une relation d'équivalence, on prouve donc les deux autres points~:
+  \begin{itemize}
+  \item si $f(q) = f(q')$ et $a \in \Sigma$, alors
+    \begin{align*}
+      f(\delta(q,a)) &= \delta(f(q),a)\\
+      &= \delta(f(q'),a)\\
+      &= f(\delta(q',a))
+    \end{align*}
+    donc $\sim_f$ est compatible avec $\delta$.
+  \item si $f(q) = f(q')$ et $q \in F$, alors $f(q) \in f(F)$, donc
+    $f(q') \in f(F)$, d'où par surjectivité de $f$ que $q' \in F$.
+  \end{itemize}
+  Ainsi $\sim_f$ est une congruence.
+\end{proof}
+
+Vu la forme de $\sim_f$, il est clair que $\mathcal A/{\sim_f}$ est isomorphe à
+$\mathcal A'$ (en prenant pour notion d'isomorphisme l'existence d'un morphisme
+réciproque). On en déduit donc qu'on peut construire
+$\mathcal A_{\mathcal L_\mathcal A}$ directement depuis $\mathcal A$ par un
+quotient~: il se trouve que ce quotient peut être décrit de façon très concrète.
+
+\begin{definition}[Congruence de Nérode]
+  Soit $\mathcal A$ un automate sur un alphabet $\Sigma$. On définit la
+  congruence de Nérode sur $\mathcal A$ par~:
+  \[q \equiv q' \defeq \forall u \in \Sigma^\star,
+  \delta^\star(q,u) \in F \iff \delta^\star(q',u) \in F\]
+\end{definition}
+
+On voit déjà que si on prend un mot $u$ tel que $\delta(q_0,u) = q$ et $v$ tel
+que $\delta(q_0,v) = q'$, alors $q \equiv q'$ revient à dire que
+$u^{-1}\mathcal L_\mathcal A = v^{-1}\mathcal L_\mathcal A$, ce qui confirme que
+le quotient de $\mathcal A$ par $\equiv$ nous donne l'automate syntaxique. Pour
+l'instant, notre construction de l'automate ne peut pas être automatisée~: on a
+besoin de tester tous les mots pour déterminer si $q\sim q'$. Pour combler
+cette lacune, on définit les approximations de la congruence de Nérode~:
+
+\begin{definition}[Approximation de la congruence de Nérode]
+  On définit l'approximation $n$ de la congruence de Nérode, notée $\equiv_n$,
+  par
+  \[q\equiv_n q' \defeq \forall u \in \Sigma^{<n}, \delta^\star(q,u)\in F \iff
+  \delta^\star(q',u) \in F\]
+\end{definition}
+
+L'approximation consiste donc en la considération des premiers mots seulement.
+On introduit maintenant un lemme essentiel, permettant de calculer effectivement
+cette congruence pour tout $n$.
+
+\begin{lemma}\label{lem.nerode.succ}
+  Soit un automate $\mathcal A$ sur un alphabet $\Sigma$, deux états $q,q'$ de
+  $\mathcal A$ et $n \in \mathbb N$. On a la relation suivante~:
+  \[q \equiv_{n+1} q' \iff q\equiv_n q' \land \forall a \in \Sigma,
+  \delta^\star(q,a)\equiv_n \delta^\star(q',a)\]
+\end{lemma}
+
+\begin{proof}
+  Si $q\equiv_{n+1} q'$, alors pour tout $a\in \Sigma$ et $u \in \Sigma^{<n}$,
+  on a $\delta(q,u\star a) \in F \iff \delta(q',u\star a) \in F$ par hypothèse.
+  Mais alors, cela se réécrit en
+  $\delta^\star(\delta(q,a),u)\in F \iff \delta^\star(\delta(q',a),u)\in F$, donc
+  on en déduit que $\delta(q,a)\equiv_n \delta(q',a)$. Réciproquement, pour
+  $u \in \Sigma^{< n + 1}$, on peut éliminer le cas où $u = \varepsilon$ qui est
+  direct et considérer que $u = v\star a$ où $|v| < n$, ce qui nous permet
+  d'utiliser l'hypothèse pour déduire que
+  $\delta^\star(q,v\star a)\in F \iff \delta^\star(q',v\star a)$, donc que
+  $q\equiv_{n+1} q'$.
+\end{proof}
+
+Le deuxième lemme essentiel nous dit que l'algorithme effectué en construisant
+cette suite de congruence, lorsqu'il atteint un point stationnaire, donne un
+résultat.
+
+\begin{lemma}
+  Soit un automate $\mathcal A$ sur un alphabet $\Sigma$. Si pour
+  $n \in \mathbb N$, les relations $\equiv_n$ et $\equiv_{n+1}$ coïncident,
+  alors pour tout $k \in \mathbb N$, $\equiv_{n+k}$ et $\equiv$ coïncident.
+\end{lemma}
+
+\begin{proof}
+  Supposons que pour tous $q,q'$, on ait
+  \[q\equiv_n q' \iff q\equiv_{n+1} q'\]
+  alors par induction sur $k$, on prouve que $\equiv_{n+k}$ coïncide avec
+  $\equiv_n$~:
+  \begin{itemize}
+  \item c'est évident pour $k = 0$.
+  \item supposons que $\equiv_{n+k}$ et $\equiv_n$ coïncident. Alors, par le
+    \cref{lem.nerode.succ}, on voit que $\equiv_{n+k+1}$ et $\equiv_{n+1}$
+    coïncident, mais par hypothèse $\equiv_{n+1}$ et $\equiv_n$ coïncident,
+    d'où le fait que $\equiv_{n+1}$ et $\equiv_n$ coïncident.
+  \end{itemize}
+
+  On veut maintenant prouver que $\equiv_n$ et $\equiv$ coïncident. Soit deux
+  états $q,q'$ tels que $q\equiv_n q'$ et un mot $u \in \Sigma^\star$. Si
+  $|u| < n$ alors par définition $\delta(q,u) \in F \iff \delta(q',u) \in F$.
+  Sinon, alors $q\equiv_{|u|} q'$ puisque $\equiv_n$ coïncide avec $\equiv_k$
+  pour tout $k > n$, d'où le résultat. La réciproque est immédiate.
+\end{proof}
+
+On a donc un algorithme permettant de calculer l'automate minimal d'un automate
+complet~: on construit la congruence de Nérode par approximations successives
+grâce au \cref{lem.nerode.succ} jusqu'à obtenir une partition stable des états,
+et le quotient est alors directement l'automate minimal.
+
+\subsection{Les langages reconnus par monoïde}
+
+Pour clore ce chapitre, revenons aux considérations algébriques énoncées au
+début. Dans celles-ci, on a vu qu'il était possible d'associer un langage à un
+monoïde en utilisant la propriété universelle du monoïde libre. Nous allons
+maintenant prouver qu'en réalité, les langages associés à des monoïdes finis
+sont exactement les langages rationnels.
