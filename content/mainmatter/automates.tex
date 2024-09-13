@@ -1806,3 +1806,100 @@ début. Dans celles-ci, on a vu qu'il était possible d'associer un langage à u
 monoïde en utilisant la propriété universelle du monoïde libre. Nous allons
 maintenant prouver qu'en réalité, les langages associés à des monoïdes finis
 sont exactement les langages rationnels.
+
+On commence par prouver un premier sens~: les langages reconnus par monoïdes
+sont aussi reconnus par automates.
+
+\begin{proposition}
+  Soit $\Sigma$ un alphabet, $M$ un monoïde (de produit $\cdot$ et de neutre
+  $e$) et $\mathcal L$ un langage reconnu par une fonction $h : \Sigma \to M$
+  et $S\subseteq M$. Alors $\mathcal L \in \Reco(\Sigma)$.
+\end{proposition}
+
+\begin{proof}
+  On construit l'automate $\mathcal A$ suivant~:
+  \begin{itemize}
+  \item $Q = M$
+  \item $q_0 = e$
+  \item $\delta(q,a) = q\cdot f(a)$
+  \item $F = S$
+  \end{itemize}
+
+  Une récurrence immédiate sur $u$ permet de prouver que
+  \[\forall u \in \Sigma^\star, \delta(q_0,u) = \prod_{i = 0}^{|u|-1} u_i\]
+  Cette valeur est exactement celle de $\tilde h(u)$, et être reconnu par
+  $\mathcal A$ correspond exactement à appartenir à $S$, d'où l'égalité de
+  langage.
+\end{proof}
+
+Il nous reste donc à construire un monoïde à partir d'un automate. Pour cela,
+on va utiliser la construction du monoïde des transitions.
+
+\begin{definition}[Monoïde des transitions]
+  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini déterministe
+  complet reconnaissant un langage $\mathcal L$. On définit le monoïde des
+  transitions de $\mathcal A$, qu'on notera $M_\mathcal A$, par~:
+  \begin{itemize}
+  \item les éléments du monoïde sont les relations binaires
+    $R\subseteq Q\times Q$.
+  \item la multiplication est la composition de relations~:
+    \[R\cdot R' \defeq \{(x,z) \mid \exists y \in Q, xRy\land yRz\}\]
+  \item l'élément neutre est la relation
+    \[\Delta_Q \defeq \{(q,q)\mid q \in Q\}\]
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Prouver que $\mathcal M_{\mathcal A}$ est bien un monoïde.
+\end{exercise}
+
+Les éléments du monoïde sont les relations binaires. Cependant, les éléments
+d'importances sont plus précisément les relations telles que pour tout couple
+$(q,q')$, on a un chemin de $q$ vers $q'$ dans $\mathcal A$. On peut donc
+simplement prendre la relation $(q,q') \defeq \delta(q,a) = q'$ paramétrée par
+$a$ pour obtenir à travers $\delta^\star$ les relations contenant les chemins
+entre états paramétrés par un mot $u$ donné. Un mot est acceptant quand l'état
+$q_0$ est relié à un état terminal, donc le choix de $S$ est celui des
+relations incluant un couple $(q_0,q_f)$ où $q_f \in F$. On en vient donc au
+résultat à proprement parler.
+
+\begin{proposition}
+  Soit un automate fini déterministe complet $\mathcal A$ reconnaissant un
+  langage $\mathcal L$ sur un alphabet $\Sigma$, alors la fonction
+  \[\begin{array}{ccccc}
+  h & : & \Sigma & \longrightarrow & M_\mathcal A\\
+  & & a &\longmapsto & \{(q,q') \mid \delta(q,a) = q'\}
+  \end{array}\]
+  et la partie
+  \[S \defeq \{R \in M_\mathcal A\mid
+  R \cap (\{q_0\}\times F)\neq\varnothing\}\]
+  reconnaissent le langage $\mathcal L$.
+\end{proposition}
+
+\begin{proof}
+  Par induction sur la longueur de $u$, on montre que~:
+  \[\forall u\in \Sigma^\star, \tilde h(u) =
+  \{(q,q') \mid \delta^\star(q,u) = q'\}\]
+  \begin{itemize}
+  \item on sait que $\tilde h(\varepsilon)$ est l'élément neutre du monoïde,
+    et que cet élément est $\{(q,q)\}$, or c'est aussi l'ensemble décrit par
+    $\delta^\star(q,\varepsilon) = q'$.
+  \item supposons que l'égalité est vraie pour un mot $u$, et soit
+    $a \in \Sigma$. Alors
+    \begin{align*}
+      \tilde h(u\star a) &= h(u) \cdot \{(q,q')\mid \delta(q,a) = q'\}\\
+      &= \{(q,q')\mid \delta^\star(q,u) = q'\}\cdot
+      \{(q,q')\mid \delta(q,a) = q'\}\\
+      &= \{(q,q'')\mid \exists q',
+      \delta^\star(q,u) = q' \land \delta(q',a) = q''\}\\
+      &= \{(q,q'')\mid \delta(\delta^\star(q,u),a) = q''\}\\
+      &= \{(q,q')\mid \delta^\star(q,u\star a) = q'\}
+    \end{align*}
+  \end{itemize}
+  D'où le résultat par induction. On sait donc que $\tilde h(u) \in S$ est
+  équivalent à ce qu'il existe un couple
+  $(q_0,q_f) \in \{(q,q')\mid \delta^\star(q,u) = q'\}$ où $q_f \in F$, ce
+  qui revient à dire que $\delta^\star(q_0,u) \in F$, donc à ce que $\mathcal A$
+  accepte $u$. Ainsi $M_\mathcal A$ reconnaît le même langage que
+  $\mathcal A$.
+\end{proof}
