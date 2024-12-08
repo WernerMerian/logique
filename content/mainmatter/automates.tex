@@ -1,4 +1,4 @@
-\chapter{Automates finis et langages réguliers}
+\chapter[Langages rationnels]{Automates finis et langages rationnels}
 \label{chp.auto}
 
 \minitoc
@@ -16,17 +16,17 @@ de Chomsky. Nous pensons en particulier que les automates permettent d'illuminer
 profondément le fonctionnement intuitif d'une machine de Turing, plus complexe
 mais basée sur des notions très proches.
 
-Ce chapitre couvre donc les bases de l'étude des langages réguliers et des
+Ce chapitre couvre donc les bases de l'étude des langages rationnelss et des
 automates finis. Cette classe de langage peut être décrite par de nombreux
 formalismes, mais nous nous contenterons des automates finis, des expressions
-régulières et des monoïdes.
+rationnelless et des monoïdes.
 
 Ce chapitre commence par la base de la théorie des langages~: les définitions
 de ce qu'est un alphabet, un mot, un langage\ldots Nous aborderons ensuite la
-classe des langages réguliers en abordant les trois formalismes décrits que sont
-les automates, les expressions régulières et les langages reconnus par des
-monoïdes, puis la preuve de leur équivalence. Enfin, nous verrons les théorèmes
-de structure sur ces langages~: le lemme de pompage et le théorème de
+classe des langages rationnelss en abordant les trois formalismes décrits que
+sont les automates, les expressions rationnelles et les langages reconnus par
+des monoïdes, puis la preuve de leur équivalence. Enfin, nous verrons les
+théorèmes de structure sur ces langages~: le lemme de pompage et le théorème de
 Myhill-Nérode, ainsi que ses conséquences.
 
 \section{Alphabet, mot, langage}
@@ -60,8 +60,8 @@ une suite finie de lettres.
   $\Sigma$, c'est-à-dire
   $u = (u_0,\ldots,u_{n-1})\in \Sigma^n$ pour un certain entier $n\in\mathbb N$.
 
-  On note $\Sigma^*$ l'ensemble des mots sur $\Sigma$~:
-  \[\Sigma^* \defeq \bigcup_{n\in \mathbb N} \Sigma^n\]
+  On note $\Sigma^\star$ l'ensemble des mots sur $\Sigma$~:
+  \[\Sigma^\star \defeq \bigcup_{n\in \mathbb N} \Sigma^n\]
 \end{definition}
 
 \begin{notation}
@@ -69,8 +69,8 @@ une suite finie de lettres.
   \ordinalnumeralfeminin{$i$} lettre, c'est-à-dire l'image de $u$ par la
   projection $\pi_i : \Sigma^n \to \Sigma$.
 
-  Pour tout mot $u\in\Sigma^*$, on note $|u|\in\mathbb N$ l'entier $n$ tel que
-  $u\in \Sigma^n$.
+  Pour tout mot $u\in\Sigma^\star$, on note $|u|\in\mathbb N$ l'entier $n$ tel
+  que $u\in \Sigma^n$.
 \end{notation}
 
 Remarquons qu'une suite vide est une suite finie~: on peut donc définir le mot
@@ -80,14 +80,14 @@ On peut désormais définir un langage~: c'est un ensemble de mots.
 
 \begin{definition}[Langage]
   Soit $\Sigma$ un alphabet. Un langage $\mathcal L$ sur $\Sigma$ est une partie
-  $\mathcal L\subseteq\Sigma^*$.
+  $\mathcal L\subseteq\Sigma^\star$.
 \end{definition}
 
 Parlons dès maintenant de stabilité~:
 
 \begin{definition}[Stabilité]
-  Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur $\Sigma^*$. On
-  dit qu'un langage $\mathcal L$ sur $\Sigma$ est stable par $\star$ si
+  Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur $\Sigma^\star$.
+  On dit qu'un langage $\mathcal L$ sur $\Sigma$ est stable par $\star$ si
   \[\forall u,v\in \mathcal L, u\star v \in \mathcal L\]
 \end{definition}
 
@@ -96,13 +96,13 @@ dont il convient donc d'introduire la définition.
 
 \begin{definition}[Classe de langages]
   Soit un alphabet $\Sigma$. On appelle classe de langages une partie
-  $\mathcal C\subseteq \powerset(\Sigma^*)$ (ses éléments sont donc des
+  $\mathcal C\subseteq \powerset(\Sigma^\star)$ (ses éléments sont donc des
   langages).
 \end{definition}
 
 \begin{definition}[Stabilité d'une classe de langages]
   Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur
-  $\powerset(\Sigma^*)$. On dit qu'une classe de langages $\mathcal C$ sur
+  $\powerset(\Sigma^\star)$. On dit qu'une classe de langages $\mathcal C$ sur
   $\Sigma$ est stable par $\star$ si
   \[\forall \mathcal L,\mathcal M\in\mathcal C,
   \mathcal L\star \mathcal M\in\mathcal C\]
@@ -118,29 +118,30 @@ langages, d'opérations et de classes de langages.
   Voici quelques langages sur $\btwo$ ou un alphabet $\Sigma$ quelconque~:
   \begin{itemize}
   \item le langage des mots commençant par $0$~:
-    \[\mathcal L_0 \defeq \{u\in\Sigma^*\mid u_0 = 0\}\]
+    \[\mathcal L_0 \defeq \{u\in\Sigma^\star\mid u_0 = 0\}\]
   \item le langage des mots ayant une taille paire~:
-    \[\mathcal L_{\mathrm{pair}} \defeq \{u\in\Sigma^*\mid |u|\in2\mathbb N\}\]
+    \[\mathcal L_{\mathrm{pair}} \defeq \{u\in\Sigma^\star
+    \mid |u|\in2\mathbb N\}\]
   \item le langage des mots dont le début et la fin sont la même lettre~:
     \[\mathcal L_{\mathrm{debut}=\mathrm{fin}}\defeq
-    \{u\in\Sigma^*\mid u_0 = u_{|u| - 1}\}\]
+    \{u\in\Sigma^\star\mid u_0 = u_{|u| - 1}\}\]
   \item pour un langage $\mathcal L$, le langage $\overline{\mathcal L}$ des
     mots pris dans l'autre sens~:
     \[\overline{\mathcal L}\defeq
-    \{u\in\Sigma^*\mid u_{|u|-1}\ldots u_0 \in \mathcal L\}\]
+    \{u\in\Sigma^\star\mid u_{|u|-1}\ldots u_0 \in \mathcal L\}\]
   \item l'intersection de deux langages.
   \item l'union de deux langages.
   \end{itemize}
 \end{example}
 
 Nous allons définir une nouvelle opération, fortement liée à la structure de
-$\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
+$\Sigma^\star$, qui nous permettra de donner plus d'exemples de langages.
 
 \begin{definition}[Concaténation]
   Soit un alphabet $\Sigma$. On définit l'opération de concaténation
-  $\star : \Sigma^*\times\Sigma^*\to\Sigma^*$ comme le fait, étant donnés deux
-  mots $u,v\in\Sigma^*$, de lire les deux mots à la suite. Formellement, on
-  définit
+  $\star : \Sigma^\star\times\Sigma^\star\to\Sigma^\star$ comme le fait, étant
+  donnés deux mots $u,v\in\Sigma^\star$, de lire les deux mots à la suite.
+  Formellement, on définit
   \[u\star v \defeq (u_0,\ldots,u_{|u|-1},v_0,\ldots,v_{|v|-1})\]
 
   Pour tout $n\in \mathbb N$, on notera $u^n$ pour l'itération de l'opération
@@ -153,6 +154,11 @@ $\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
   Le mot vide, $\varepsilon$, est neutre pour $\star$~: $u\star\varepsilon = u$
   et $\varepsilon \star u = u$.
 \end{remark}
+
+\begin{notation}
+  Il nous arrivera régulièrement de ne pas écrire l'opération de concaténation.
+  La notation $uv$ où $u,v\in \Sigma^\star$, doit donc se lire $u\star v$.
+\end{notation}
 
 \begin{example}
   Voici plusieurs autres langages possibles sur un alphabet $\Sigma$~:
@@ -169,7 +175,7 @@ $\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
   \item pour un langage $\mathcal L$, le langage des mots dont toutes les
     concaténations sont encore dans $\mathcal L$~:
     \[\mathcal L_{\mathrm{stable}\star}\defeq
-    \{u\in \Sigma^*\mid \forall n \in \mathbb N, u^n \in \mathcal L\}\]
+    \{u\in \Sigma^\star\mid \forall n \in \mathbb N, u^n \in \mathcal L\}\]
   \item pour un langage $\mathcal L$, le langage des itérations de mots de
     $\mathcal L$~:
     \[\mathcal L^\star \defeq
@@ -193,10 +199,10 @@ $\Sigma^*$, qui nous permettra de donner plus d'exemples de langages.
   Donnons quelques exemples de classes de langages sur un alphabet $\Sigma$~:
   \begin{itemize}
   \item la classe des langages contenant $\varepsilon$~:
-    \[\mathcal C_\varepsilon \defeq \{\mathcal L \subseteq \Sigma^*\mid
+    \[\mathcal C_\varepsilon \defeq \{\mathcal L \subseteq \Sigma^\star\mid
     \varepsilon \in \mathcal L\}\]
   \item la classe des langages stables par $\star$~:
-    \[\mathcal C_\star \defeq \{\mathcal L \subseteq \Sigma^*\mid
+    \[\mathcal C_\star \defeq \{\mathcal L \subseteq \Sigma^\star\mid
     \forall u,v\in\mathcal L, u\star v \in \mathcal L\}\]
   \end{itemize}
 \end{example}
@@ -237,8 +243,8 @@ L'exemple le plus évident de monoïde est $(\mathbb N,+,0)$, mais nous allons
 voir que la structure des mots généralise de façon naturelle ce cas.
 
 \begin{exercise}
-  Soit $\Sigma$ un alphabet, montrer que $(\Sigma^*, \star,\varepsilon)$ est un
-  monoïde.
+  Soit $\Sigma$ un alphabet, montrer que $(\Sigma^\star, \star,\varepsilon)$ est
+  un monoïde.
 \end{exercise}
 
 Ce fait généralise le cas de $\mathbb N$ car on peut représenter un entier en
@@ -246,14 +252,14 @@ unaire comme un mot sur l'alphabet $\{*\}$~: la seule information d'un tel mot
 est sa longueur.
 
 L'étude des monoïdes permet donc d'inclure l'étude de la structure de
-$\Sigma^*$. Nous allons maintenant voir qu'en fait, $\Sigma^*$ peut être
+$\Sigma^\star$. Nous allons maintenant voir qu'en fait, $\Sigma^\star$ peut être
 construit comme la structure de monoïde la plus simple engendrée par $\Sigma$.
 Cela se traduit par la propriété universelle du monoïde libre.
 
-\begin{theorem}[Propriété universelle du monoïde libre]
+\begin{theorem}[Propriété universelle du monoïde libre]\label{thm.PU.monoid}
   Soit $\Sigma$ un alphabet, $(M,\diamond,e)$ un monoïde et $f : \Sigma \to M$
   une fonction (quelconque). Alors il existe un unique morphisme de monoïde
-  $\tilde f$ entre $\Sigma^*$ et $M$ tel que $\tilde f (x) = f(x)$ pour tout
+  $\tilde f$ entre $\Sigma^\star$ et $M$ tel que $\tilde f (x) = f(x)$ pour tout
   $x \in \Sigma$.
 \end{theorem}
 
@@ -291,7 +297,7 @@ $f : \Sigma \to \mathbb N$.
   fonction et $S\subseteq M$. On dit que $\mathcal L(\Sigma,M,\cdot,e,h)$ est
   le langage induit par $(\Sigma,M,\cdot,e,h,S)$, qui est défini par~:
   \[\mathcal L(\Sigma,M,\cdot,e,h,S)\defeq
-  \{u\in\Sigma^*\mid \tilde h(u)\in S\}\]
+  \{u\in\Sigma^\star\mid \tilde h(u)\in S\}\]
 \end{definition}
 
 En reprenant l'exemple de $\alpha \mapsto 1$, on voit qu'en prenant $S = \{n\}$,
@@ -338,18 +344,19 @@ valeur appartient à $F$.
 \begin{definition}[Fonction de transition étendue]
   Soit un automate fini déterministe $\mathcal A$ sur un alphabet $\Sigma$ et
   $\delta$ sa fonction de transition. On appelle fonction de transition
-  étendue la fonction $\delta^* : Q \times \Sigma^* \partialto Q$ définie par
-  induction sur $\Sigma^*$ par~:
-  \[\delta^* (q,\varepsilon) = q \qquad
-  \delta^* (q,u\star a) = \delta(\delta^*(q,u),a)\]
+  étendue la fonction $\delta^\star : Q \times \Sigma^\star \partialto Q$ définie
+  par induction sur $\Sigma^\star$ par~:
+  \[\delta^\star (q,\varepsilon) = q \qquad
+  \delta^\star (q,u\star a) = \delta(\delta^\star(q,u),a)\]
 \end{definition}
 
 \begin{definition}[Langage accepté par un automate]
   Soit $\mathcal A$ un automate sur un alphabet $\Sigma$. On dit que
-  $\mathcal A$ accepte (ou reconnait) le mot $u \in \Sigma^*$ si
-  $\delta^*(q_0,u) \in F$, ce qu'on note $\mathcal A \models u$. On définit le
-  langage reconnu par $\mathcal A$ par~:
-  \[\mathcal L_\mathcal A \defeq \{u \in \Sigma^* \mid \mathcal A \models u\}\]
+  $\mathcal A$ accepte (ou reconnait) le mot $u \in \Sigma^\star$ si
+  $\delta^\star(q_0,u) \in F$, ce qu'on note $\mathcal A \models u$. On définit
+  le langage reconnu par $\mathcal A$ par~:
+  \[\mathcal L_\mathcal A \defeq \{u \in \Sigma^\star
+  \mid \mathcal A \models u\}\]
 \end{definition}
 
 Maintenant que les définitions ont été introduites, donnons une intuition
@@ -468,8 +475,8 @@ qu'on appelle les expressions rationnelles.
 
 \begin{remark}
   On appelle aussi ces expressions et langages des expressions régulières et des
-  langages réguliers, d'où le terme \textit{regular expression} donnant lieu à
-  \textit{regex}.
+  langages réguliers, d'où le terme \foreignexpr{regular expression} donnant
+  lieu à \foreignexpr{regex}.
 \end{remark}
 
 La correspondance est assez naturelle~: une expression de la forme $a$
@@ -670,7 +677,8 @@ considérer l'union à chaque fois qu'on prend un ensemble d'états possibles.
   Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini non déterministe
   sur $\Sigma$. On dit que $\mathcal A$ accepte (ou reconnaît) le mot
   $u \in \Sigma^\star$ s'il existe $q_0 \in Q_0$ tel que
-  $\delta^*(q_0,u) \cap F\neq\varnothing$, ce qu'on note $\mathcal A \models u$.
+  $\delta^\star(q_0,u) \cap F\neq\varnothing$, ce qu'on note
+  $\mathcal A \models u$.
   On définit le langage reconnu par $\mathcal A$ par~:
   \[\mathcal L_\mathcal A\defeq \{u \in \Sigma^\star \mid \mathcal A \models u\}\]
 \end{definition}
@@ -1273,11 +1281,11 @@ calculé.
   $(q_i,q,q_{i+1})$ pour faire une trace valide pour $\mathcal A$.
 \end{proof}
 
-On peut donc enfin construire une expression régulière à partir d'un automate.
+On peut donc enfin construire une expression rationnelle à partir d'un automate.
 
 \begin{proposition}
   Soit un langage reconnaissable $\mathcal L$, alors il existe une expression
-  régulière $e$ telle que $\Val(e) = \mathcal L$.
+  rationnelle $e$ telle que $\Val(e) = \mathcal L$.
 \end{proposition}
 
 \begin{proof}
@@ -1316,10 +1324,10 @@ On en déduit donc le théorème de Kleene~:
 
 \begin{remark}
   Ces deux équivalences sont algorithmiques~: elles permettent de construire
-  effectivement, étant donné un automate, une expression régulière et
-  inversement de construire un automate depuis une expression régulière (il faut
-  alors utiliser l'automate union, la concaténation et l'étoile d'automates pour
-  obtenir l'automate depuis une expression régulière).
+  effectivement, étant donné un automate, une expression rationnelle et
+  inversement de construire un automate depuis une expression rationnelle (il
+  faut alors utiliser l'automate union, la concaténation et l'étoile
+  d'automates pour obtenir l'automate depuis une expression rationnelle).
 \end{remark}
 
 Nous avons vu de nombreuses constructions à propos des automates. Ces
@@ -1406,10 +1414,10 @@ repasser par un état, et on pourra alors itérer cette boucle.
   Enfin, un point plus important~: ce nombre $N$ existe pour un langage
   $\mathcal L$ donné, mais il n'est pas uniforme puisqu'il dépend du choix de
   l'automate. On pourrait considérer le $N$ minimal pour tous les automates
-  possibles, mais celui-ci n'a pas de construction explicite \textit{a priori}.
-  On va en fait pouvoir montrer que ce $N$ minimal correspond au $N$ associé à
-  un automate particulier, et qu'on peut donc choisir un $N$ de façon uniforme
-  en fonction de $\mathcal L$.
+  possibles, mais celui-ci n'a pas de construction explicite
+  \latinexpr{a priori}. On va en fait pouvoir montrer que ce $N$ minimal
+  correspond au $N$ associé à un automate particulier, et qu'on peut donc
+  choisir un $N$ de façon uniforme en fonction de $\mathcal L$.
 \end{remark}
 
 \begin{exercise}
