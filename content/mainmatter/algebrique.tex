@@ -238,9 +238,9 @@ mot. Cela nous mène au lemme suivant, qualifié de fondamental dans
 \subsection{Grammaires sous formes particulières}
 
 Pour manipuler des grammaires, il est souvent utile de les transformer pour leur
-donner une forme plus pratique. Nous allons ici traiter de trois formes
+donner une forme plus pratique. Nous allons ici traiter de quatre formes
 importantes que peuvent avoir des grammaires~: la forme réduite, la forme
-propre et la forme normale de Chomsky.
+propre, la forme normale de Chomsky et la forme normale de Greibach.
 
 Nous reprenons assez directement les preuves données dans
 \cite{carton2008langages}, et décidons donc de conserver la mise en avant de la
@@ -412,7 +412,7 @@ de substitution.
   relever des langages comme celui de Dyck contenant le mot vide.
 \end{remark}
 
-Enfin, introduisons la forme normale de Chomsky.
+Introduisons aussi la forme normale de Chomsky.
 
 \begin{definition}[Forme normale de Chomsky]
   Soit $\Sigma$ un alphabet, et $G = (\Gamma, \to, S)$ une grammaire sur
@@ -428,6 +428,26 @@ Enfin, introduisons la forme normale de Chomsky.
   Soit $\Sigma$ un alphabet et $G = (\Gamma,\to,S)$ une grammaire sur $\Sigma$.
   Il existe une grammaire $G'$ sous forme normale de Chomsky telle que
   $\mathcal L_{G'} = \mathcal L_G\setminus \{\varepsilon\}$.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+La dernière forme que nous étudions est la forme normale de Greibach.
+
+\begin{definition}[Forme normale de Greibach]
+  Soit $\Sigma$ un alphabet et $G = (\Gamma,\to,S)$ une grammaire sur $\Sigma$.
+  On dit que $G$ est sous forme normale de Greibach si toutes ses règles sont
+  de la forme $A \to aU$ où $a \in \Sigma$ et $U \in \Gamma^\star$. On dira que
+  $G$ est sous forme normale de Greibach quadratique si les règles sont, de
+  plus, de la forme $A \to a$, $A \to aB$ où $A \to aBC$ avec
+  $a\in\Sigma, B,C \in \Gamma$.
+\end{definition}
+
+\begin{proposition}
+  Toute grammaire est équivalente à une grammaire sous forme normale de Greibach
+  quadratique.
 \end{proposition}
 
 \begin{proof}
@@ -675,4 +695,190 @@ cela se traduit par le lemme suivant~:
   \caption{Illustration de la décomposition précédente}
 \end{figure}
 
+Un problème se présente cependant, avec les arbres de dérivation. Dans le cas
+des dérivations d'un mot, de la forme $S\to^\star u$, on sait qu'il existe en
+général de nombreuses dérivations, mais qu'en est-il des arbres de dérivation ?
+
+Une grammaire peut en fait, ou non, posséder un unique arbre de dérivation pour
+chaque mot~: c'est ce qu'on appelle une grammaire non ambigüe.
+
+\begin{definition}[Ambigüité]
+  Soit $\Sigma$ un alphabet et $G$ une grammaire sur $\Sigma$. On dit que $G$
+  est ambigüe lorsqu'il existe deux arbres de dérivation sur $G$ distincts mais
+  de même frontière. On dit qu'un langage algébrique $\mathcal L$ est
+  inhéremment ambigu s'il n'existe aucune grammaire non ambigüe engendrant
+  $\mathcal L$.
+\end{definition}
+
+La notion d'ambigüité, ou plutôt de non ambigüité, nous permet de définir une
+propriété universelle, analogue au \cref{thm.PU.ind}.
+
+\begin{proposition}[Propriété universelle d'une grammaire non ambigüe]
+  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,S)$ une grammaire non ambigüe sur
+  $\Sigma$. Soit un ensemble $X$ et une famille $(f_{A,u})_{(A,u) \in \to}$ de
+  fonctions telles que pour tout $(A,u) \in \to$, $f_{A,u} : X^n \to X$ où $n$
+  est le nombre de non terminaux appartenant à $u$. Il existe alors une unique
+  fonction $f : \mathcal L_G \to X$ telle que pour toute règle
+  $A \to u_1A_1\cdots A_nu_{n+1}$ et mots $v_1,\ldots,v_n\in\Sigma^\star$ tels que
+  $A_i \to^\star v_i$, on a l'égalité
+  \[f(u_1\star v_1\star\cdots\star v_n u_{n+1}) =
+  f_{A,u_1A_1\cdots A_nu_{n+1}}(f(v_1),\ldots,f(v_n))\]
+\end{proposition}
+
+\begin{proof}
+  On raisonne par induction sur la hauteur d'un arbre de dérivation d'un mot
+  $u$, en supposant que la racine de l'arbre est un non terminal $A$
+  quelconque. Formellement, on prouve qu'il existe une unique fonction dont
+  le domaine est l'ensemble des mots s'obtenant par un arbre de dérivation de
+  hauteur au plus $n$ depuis un non terminal quelconque~:
+  \begin{itemize}
+  \item si la dérivation est de la forme $A \to u$ où $u\in\Sigma^\star$, alors
+    notre condition est que $f(u) = f_{A,u} \in X$, et cette fonction convient
+    bien
+  \item supposons qu'un mot $u$ soit obtenu par un arbre de dérivation dont la
+    racine est $A$ suivi des sous-arbres $T_1,\ldots,T_k$, où l'on ignore les
+    terminaux (on notera $u_1,\ldots,u_{k+1}$ les mots constitués des terminaux
+    entre chaque non terminal). On sait alors que $f$ est définie de façon
+    unique sur les mots issus de $T_1,\ldots,T_k$ par hypothèse d'induction, et
+    alors il existe une unique valeur à $u$ qui est donnée par la condition.
+  \end{itemize}
+
+  Ainsi, par induction, tout arbre de dérivation d'un mot est associé à un
+  élément de $X$ de sorte de respecter la condition souhaitée, d'où le
+  résultat dans le cas des arbres de dérivation dont la racine est $S$.
+\end{proof}
+
+\begin{remark}
+  En réalité, on aurait pu définir un ensemble $X_A$ pour chaque non terminal
+  $A$, ce qui donne une fonction $f$ de codomaine différent pour chaque
+  non terminal pris comme symbole de départ.
+\end{remark}
+
+Nous profitons de ces définitions pour donner une notion essentielle plus tard~:
+le codage de Gödel. Pour cela, on va d'abord introduire le polynôme de Cantor,
+qui est une bijection entre $\mathbb N$ et $\mathbb N\times\mathbb N$ très
+utilisée en calculabilité.
+
+\begin{definition}[Bijection de Cantor]\label{def.bij.Cantor}
+  On appelle bijection de Cantor, ou polynôme de Cantor, la fonction
+  \[\begin{array}{ccccc}
+  \alpha & : & \mathbb N \times \mathbb N & \longrightarrow & \mathbb N\\
+  & & (n,m) & \displaystyle\longmapsto & \left(\sum_{k = 1}^{n+m} k\right)+m
+  \end{array}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que la bijection de Cantor est effectivement une bijection et
+  croissante strictement en chaque coordonnée.
+\end{exercise}
+
+L'intérêt de cette fonction est de nous donner un encodage des paires d'entiers
+avec les entiers eux-mêmes. On peut en fait généraliser cette idée avec les
+$k$-uplets d'entiers, et même les listes d'entiers.
+
+\begin{definition}
+  On définit la \ordinalnumeralfeminin{$n$} bijection, $\alpha_n$, par
+  récursion sur $n$~:
+  \begin{itemize}
+  \item la bijection $\alpha_1 : \mathbb N \cong \mathbb N$ est définie par
+    l'identité.
+  \item si $\alpha_n$ est définie, alors on définit
+    \[\begin{array}{ccccc}
+    \alpha_{n+1} & : & \mathbb N^{n+1} & \longrightarrow & \mathbb N\\
+    & & (p_1,\ldots,p_{n+1}) & \longmapsto &
+    \alpha_2(\alpha_n(p_1,\ldots,p_n),p_{n+1})
+    \end{array}\]
+  \end{itemize}
+
+  On définit aussi la bijection $\alpha_\star : \mathbb N^\star \cong \mathbb N$
+  par récursion sur les listes~:
+  \begin{itemize}
+  \item $\alpha_\star (\varepsilon) = 0$
+  \item $\alpha_\star (u\star a) = 1 + \alpha_2(\alpha_\star(u),a)$
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\alpha_n$ et $\alpha_\star$ sont des bijections croissantes
+  strictement en chaque coordonnée.
+\end{exercise}
+
+\begin{notation}
+  On notera en général $\langle n,m\rangle$ pour $\alpha_n(n,m)$, et de même
+  $\langle n_1,\ldots,n_p\rangle$ pour $\alpha_p(n_1,\ldots,n_p)$.
+\end{notation}
+
+\begin{definition}[Codage de Gödel d'un langage algébrique]
+  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,V)$ une grammaire non ambigüe sur
+  $\Sigma$. Pour chaque $A \in \Gamma$, on numérote les règles $(A,u) \in \to$
+  pour les ordonner, on note $e(A,u)$ le numéro de la règle $A,u$. Soit
+  $u = u_1A_1\cdots A_nu_{n+1}$ où $u_1,\ldots,u_{n+1}\in\Sigma^\star$, on définit
+  \[f_{A,u}(x_1,\ldots,x_n)\defeq \langle e(A,u),x_1,\ldots,x_n\rangle\]
+  La fonction obtenue est ce qu'on appelle le codage de Gödel de
+  $\mathcal L_G$~:
+  \[\ceil{-} : \mathcal L_G \to \mathbb N\]
+\end{definition}
+
+\begin{example}
+  On fixe une signature du premier ordre $\Delta$ et un ensemble de variables
+  du premier ordre $\mathcal X$. On peut définir les formules sur la signature
+  $\Delta$ par la grammaire suivante~:
+  \begin{align*}
+    S &\Coloneq \forall x, S \mid \exists x, S\mid T\\
+    T &\Coloneq U \to T \mid U\\
+    U &\Coloneq V \lor U \mid V\\
+    V &\Coloneq W \land V \mid W\\
+    W &\Coloneq \lnot W \mid \top \mid \bot \mid Y = Y \mid
+    R^p(Y,\ldots,Y)\mid (S)\\
+    Y &\Coloneq x \mid f^p(Y,\ldots,Y)
+  \end{align*}
+  où $x \in \mathcal X$, $R^p$ décrit l'ensemble des symboles de relation
+  d'arité $p$ et $f^p$ les symboles de fonctions d'arité $p$. Les tuples
+  $Y,\ldots,Y$ sont des $p$-uplets~: en particulier pour $p = 0$ on a simplement
+  $R^0$ (respectivement $f^0$).
+  
+  On peut vérifier que la grammaire est sans ambigüité. Ainsi, pour une formule
+  $\varphi$ donnée, on peut lui associer un entier naturel $\ceil\varphi$, en
+  prenant comme numérotation l'ordre dans lequel on a présenté les règles venant
+  d'un même non terminal.
+
+  En particulier, lorsque $\Delta$ est la signature de l'arithmétique
+  $\mathcal L_{\mathrm{Arith}}$ dont nous avons parlé dans le
+  \cref{chp.logpred}, on peut de plus associer à une formule $\varphi$ son
+  code de Gödel $\ceil\varphi$, puis le terme dans le langage de l'arithmétique
+  $S^{\ceil\varphi}0$. On a ainsi une façon de représenter une formule de
+  l'arithmétique à l'intérieur même de l'arithmétique. Nous verrons que ce
+  processus est au c\oe ur des théorèmes d'incomplétude de Gödel.
+\end{example}
+
+\begin{remark}
+  Si l'on parle ici \emphexpr{du} codage de Gödel, c'est en réalité un abus de
+  langage. Tout d'abord, ce codage est paramétré par plusieurs choix, dont celui
+  de la grammaier et de la numérotation des des règles. De plus, le terme
+  \og code de Gödel\fg est informel et recouvre une grande classe de fonctions
+  possibles, qui ont pour but d'internaliser les formules de l'arithmétique,
+  c'est-à-dire de pouvoir exprimer au sein du langage de l'arithmétique les
+  notions liées aux propositions sur l'arithmétique (ce que nous avons présenté
+  ici avec le terme $S^{\ceil\varphi}0$). Historiquement, le premier codage de
+  Gödel utilisait la décomposition en facteurs premiers, pour encoder un
+  tuple $(n_1,\ldots,n_k)$ par l'entier
+  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)$ est
+  l'énumération canonique des nombres premiers.
+\end{remark}
+
+\begin{remark}
+  Dans notre description des propositions, nous avons un ensemble infini de
+  symboles avec $x \in \mathcal X$. Pour résoudre ça, il suffit de considérer
+  $x$ comme un symbole non terminal et la règle
+  \[x \Coloneq x_0\mid x_s\;x\]
+  décrivant une variable $x_0$ et une fonction injective non surjective
+  $x_s : \mathcal X \to \mathcal X$. Ainsi la variable $x_n$ est remplacée par
+  la variable $(x_s)^n\;x_0$ et on a alors bien un langage algébrique. Cela
+  nous donne d'ailleurs un codage plus explicite des termes (les expressions
+  dérivées de $Y$ dans notre grammaire).
+\end{remark}
+
 \subsection{Automates à pile}
+
+Dans cette sous-section, l'objectif sera de présenter les automates à pile.
+A FAIRE

@@ -1,0 +1,496 @@
+\chapter{Fonctions récursives, machines de Turing}
+\label{chp.recur}
+
+\minitoc
+
+\lettrine{C}{e} chapitre est celui commençant à traiter la calculabilité à
+proprement parler. Jusque là, nous avons vu des versions simples d'automates, et
+de langages traités par ces automates, pour introduire donner une meilleure
+connaissance du traitement des mots par des automates.
+
+Les langages algébriques (et encore plus les langages rationnels) restent
+restreints. Par exemple, un langage tel que $\{a^nb^nc^n\mid n \in \mathbb N\}$
+n'est pas algébrique, bien qu'il existe clairement un algorithme permettant de
+le reconnaître. On souhaite donc trouver une notion plus forte et expressive de
+fonction.
+
+Cette notion plus forte est celle de fonction calculable, que nous allons voir
+dans ce chapitre à travers les fonctions récursives en premier lieu, puis par
+les machines de Turing.
+
+\section{Fonctions primitives récursives}
+
+Avant d'introduire les fonctions récursives, nous en donnons une version faible
+mais très importante~: les fonctions primitives récursives (abrégées en
+fonctions RP). Si l'on imagine une fonction calculable comme un programme
+C ou Python, une fonction RP est un programme n'employant comme seule boucle que
+la boucle \texttt{for}.
+
+\subsection{Définitions et premières fonctions}
+
+Donnons dès maintenant la définition de la classe RP.
+
+\begin{definition}[Fonctions primitives récursives]
+  On définit la classe
+  $\RecP\subseteq \bigcup_{n \in \mathbb N}\Funct(\mathbb N^n,\mathbb N)$
+  comme la plus petite classe telle que~:
+  \begin{itemize}
+  \item soient les projections
+    \[\begin{array}{ccccc}
+    \pi_k^n &:& \mathbb N^n &\longrightarrow& \mathbb N\\
+    & & (x_1,\ldots,x_n) & \longmapsto & x_k
+    \end{array}\]
+    on a pour tout $n,k\in \mathbb N, \pi_k^n \in \RecP$.
+  \item pour tout $n \in \mathbb N$, on note
+    $\mathrm k_0^n : \mathbb N^p \to \mathbb N$ la fonction nulle. Pour tout
+    $n \in \mathbb N$, $\mathrm k_0^n \in \RecP$.
+  \item la fonction $n \mapsto n + 1$ est primitive récursive~: $\sucs\in\RecP$.
+  \item si $f_1,\ldots,f_n : \mathbb N^k \to \mathbb N$ sont des fonctions RP
+    et $g : \mathbb N^n \to \mathbb N$ est une fonction RP, alors la fonction
+    \[\begin{array}{ccccc}
+    g \circ (f_1,\ldots,f_n) & : & \mathbb N^k &\longrightarrow & \mathbb N\\
+    & & (x_1,\ldots,x_k) & \longmapsto &
+    g(f_1(x_1,\ldots,x_k),\ldots,f_n(x_1,\ldots,x_k))
+    \end{array}\]
+    est elle aussi RP.
+  \item si $f : \mathbb N^k \to \mathbb N$ et
+    $g : \mathbb N^{k+2} \to \mathbb N$ sont des fonctions RP, alors la fonction
+    \[\begin{array}{ccccc}
+    \rec(f,g) & : & \mathbb N^{k+1} &\longrightarrow & \mathbb N \\
+    & & (x_1,\ldots,x_k,0) &\longmapsto & f(x_1,\ldots,x_k)\\
+    & & (x_1,\ldots,x_k,y+1) & \longmapsto &
+    g(x_1,\ldots,x_k,y,\rec(f,g)(x_1,\ldots,x_k,y))
+    \end{array}\]
+    est elle aussi RP. On appelle cette opération la récursion primitive.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  Comme toujours, on identifie $\mathbb N^0 \to \mathbb N$ avec $\mathbb N$.
+  Ainsi on peut définir une fonction $\mathbb N \to \mathbb N$ à partir d'une
+  constante $x_0 \in \mathbb N$ et d'une fonction
+  $f_s : \mathbb N^2 \to \mathbb N$.
+\end{remark}
+
+\begin{remark}
+  Toute fonction RP est une fonction totale, puisque les opérations permettant
+  de construire de nouvelles fonctions RP conservent la totalité, et les
+  fonctions RP de base sont totales.
+\end{remark}
+
+On peut donc, dès lors, donner plusieurs fonctions RP élémentaires.
+
+\begin{proposition}
+  Les fonctions suivantes sont RP~:
+  \begin{itemize}
+  \item pour tout $n \in \mathbb N$ et tout $p \in \mathbb N$, la fonction
+    constante
+    \[\begin{array}{ccccc}
+    \mathrm k_n^p &:& \mathbb N^p&\longrightarrow &\mathbb N\\
+    & & (x_1,\ldots,x_p) &\longmapsto & n
+    \end{array}\]
+  \item $+ : \mathbb N^2 \to \mathbb N$
+  \item $\times : \mathbb N^2 \to \mathbb N$
+  \item $\exp : \mathbb N^2 \to \mathbb N$
+  \end{itemize}
+\end{proposition}
+
+\begin{proof}
+  Pour les fonctions constantes, il nous suffit de composer $n$ fois la fonction
+  $\sucs$ à la fonction nulle $\mathrm k_0^n$.
+  
+  On sait que les autres fonctions souhaitées sont définies par ces équations~:
+  \begin{itemize}
+  \item $\forall n \in \mathbb N, n+0 = n$
+  \item $\forall n,m \in \mathbb N, n + \sucs(m) = \sucs(n+m)$
+  \item $\forall n \in \mathbb N, n \times 0 = 0$
+  \item $\forall n,m \in \mathbb N, n \times \sucs(m) = n + (n\times m)$
+  \item $\forall n \in \mathbb N, \exp(n,0) = 1$
+  \item $\forall n,m\in \mathbb N, \exp(n,\sucs(m)) = n \times \exp(n,m)$
+  \end{itemize}
+  On définit les fonctions suivantes~:
+  \begin{itemize}
+  \item $+ \defeq \rec(\pi_1^1,\sucs\circ \pi_3^3)$
+  \item $\times \defeq \rec(k_0^1,+ \circ (\pi_2^3,\pi_3^3))$
+  \item $\exp \defeq \rec(k_1^1,\times\circ (\pi_2^3,\pi_3^3))$
+  \end{itemize}
+  Il est direct de vérifier que ces fonctions vérifient les équations attendues.
+\end{proof}
+
+A partir de ces fonctions élémentaires, on peut construire les fonctions de
+somme et de produit.
+
+\begin{proposition}
+  Les fonctions suivantes sont RP~:
+  \[
+  \begin{array}{ccccc}
+    \Sigma^p &: & \mathbb N^p &\longrightarrow & \mathbb N \\
+    & & (x_1,\ldots,x_p) &\longmapsto & \sum_{i = 1}^p x_i
+  \end{array}\qquad
+  \begin{array}{ccccc}
+    \Pi^p &: & \mathbb N^p &\longrightarrow & \mathbb N\\
+    & & (x_1,\ldots,x_p) &\longmapsto & \prod_{i = 1}^p x_i
+  \end{array}
+  \]
+\end{proposition}
+
+\begin{proof}
+  On prouve par récurrence sur $p$ que chaque $\Sigma^p,\Pi^p$ est une fonction
+  RP~:
+  \begin{itemize}
+  \item dans le cas où $p = 0$, on a simplement deux constantes, respectivement
+    $0$ et $1$, qui sont RP.
+  \item supposons que $\Sigma^p$ est RP, alors on peut définir $\Sigma^{p+1}$
+    par
+    \[\Sigma^{p+1} \defeq +\circ
+    (\Sigma^p \circ (\pi_1^{p+1},\ldots,\pi_p^{p+1}),
+    \pi_{p+1}^{p+1})\]
+    et $\Pi^{p+1}$ par
+    \[\Pi^{p+1}\defeq \times\circ
+    (\Pi^p \circ (\pi_1^{p+1},\ldots,\pi_p^{p+1}),
+    \pi_{p+1}^{p+1})\]
+  \end{itemize}
+  Les deux fonctions sont donc RP.
+\end{proof}
+
+\begin{exercise}
+  Soit une fonction RP $f : \mathbb N^n \to \mathbb N$. Montrer que la
+  fonction
+  \[\begin{array}{ccccc}
+  \Sigma^f &: &\mathbb N^{n+1} &\longrightarrow & \mathbb N\\
+  & & (x_1,\ldots,x_n,p) &\longmapsto & \sum_{i = 1}^p f(x_1,\ldots,x_n,i)
+  \end{array}\]
+  est une fonction RP. Montrer la même chose pour la fonction $\Pi^f$ dans
+  laquelle la somme est remplacée par le produit.
+\end{exercise}
+
+D'autres fonctions arithmétiques parmi les plus élémentaires sont facilement
+prouvables comme étant RP.
+
+\begin{proposition}
+  Les fonctions $\min,\max : \mathbb N^2 \to \mathbb N$, la fonction
+  $d : \mathbb N^2 \to \mathbb N$ définie par $d(n,m) = | n - m |$,
+  ainsi que la fonction
+  \[\begin{array}{ccccc}
+  - &: & \mathbb N^2 &\longrightarrow & \mathbb N\\
+  & & (n,0) & \longmapsto & n\\
+  & & (0,\sucs(m)) &\longmapsto & 0\\
+  & & (\sucs(n),\sucs(m)) &\longmapsto & n - m
+  \end{array}\]
+  sont RP.
+\end{proposition}
+
+\begin{proof}
+  On commence par prouver que $-$ est RP. Pour cela, on définit d'abord la
+  fonction prédécesseur, qui associe $0$ à $0$ et $\sucs(n)$ à $n$~:
+  \[p \defeq \rec(\mathrm k_0^0,\pi_1^2)\]
+  A partir de cette fonction $p$, on définit la fonction $-$ comme son
+  itération~:
+  \[- \defeq \rec(\pi_1^1,p \circ \pi_3^3)\]
+  On voit qu'alors, $n - 0 = n$ pour tout $n \in \mathbb N$. On montre ensuite
+  par récurrence sur $m$ que $0 - m = 0$~:
+  \begin{itemize}
+  \item $0 - 0 = 0$
+  \item si $0 - m = 0$, alors $0 - \sucs(m) = p(0-m) = p(0) = 0$
+  \end{itemize}
+  Il nous reste alors à montrer que $\sucs(n) - \sucs(m) = n - m$. On raisonne
+  par induction sur $m$~:
+  \begin{itemize}
+  \item $\sucs(n) - \sucs(0) = p(\sucs(n) - 0) = p(\sucs(n)) = n = n - 0$
+  \item supposons que $\sucs(n) - \sucs(m) = n - m$, alors
+    \[
+    \sucs(n) - \sucs(\sucs(m)) = p(\sucs(n) - \sucs(m)) = p(n - m)
+    = n - \sucs(m)
+    \]
+  \end{itemize}
+  Donc $-$ est RP.
+
+  A partir de cette définition de $-$, on peut prouver que $n-m = \max(0,n-m)$
+  (nous considérons la preuve suffisamment directe pour la laisser en
+  exercice). On peut alors définir $d(n,m) = (n - m) + (m - n)$.
+
+  On peut vérifier que pour tous $n,m$, on a les deux équations suivantes~:
+  \[\min(n,m) = \frac{1}{2}(n + m - |n - m|)\qquad
+  \max(n,m) = \frac{1}{2}(n + m + |n - m|)\]
+  donc les fonctions $\min$ et $\max$ s'écrivent comme
+  \begin{align*}
+    \min &\defeq \mathrm{demi}\circ - \circ (+,d)\\
+    \max &\defeq \mathrm{demi}\circ + \circ (+,d)
+  \end{align*}
+  On en déduit que les fonctions souhaitées sont RP.
+\end{proof}
+
+\begin{exercise}
+  Montrer que les fonctions $\min$ et $\max$ sur un $n$-uplet sont encore des
+  fonctions RP.
+\end{exercise}
+
+\begin{exercise}
+  Vérifier que la fonction
+  \[\begin{array}{ccccc}
+  \mathrm{demi} & : & \mathbb N &\longrightarrow & \mathbb N\\
+  & & n &\longmapsto & \displaystyle\left\lfloor \frac{n}{2}\right\rfloor
+  \end{array}\]
+  est bien une fonction RP.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que la fonction $q : \mathbb N^2 \to \mathbb N$ et la fonction
+  $r : \mathbb N^2 \to \mathbb N$, renvoyant respectivement le quotient et le
+  reste de la division euclidienne d'un entier par un autre, sont des fonctions
+  RP.
+\end{exercise}
+
+Attardons-nous maintenant sur la notion de prédicat RP. On a vu qu'une fonction
+RP était une certaine fonction $\mathbb N^n \to \mathbb N$, mais il est aussi
+intéressant de considérer à la place de fonctions des relations
+$R\subseteq \mathbb N^n$. On adapte donc notre notion de RP à ces relations.
+
+\begin{definition}[Relation RP]
+  On dit qu'une relation $R \subseteq \mathbb N^n$ est RP si sa fonction
+  caractéristique $\chi_R : \mathbb N^n \to \btwo$ est une fonction RP.
+\end{definition}
+
+\begin{remark}
+  On parlera aussi d'ensemble RP ou de partie RP, en général lorsque l'on parle
+  de partie de $\mathbb N$.
+\end{remark}
+
+Les relations RP se comportent bien, au sens de la proposition suivante.
+
+\begin{proposition}
+  Pour tout $n \in \mathbb N$, l'ensemble des relations RP sur $\mathbb N^n$
+  est une sous-algèbre de Boole de $\powerset(\mathbb N^n)$.
+\end{proposition}
+
+\begin{proof}
+  On cherche donc à prouver que les relations RP sont stables par intersection,
+  union et complément, et que $\mathbb N^n$ et $\varnothing$ sont des relations
+  RP. Les deux derniers points sont directs puisque ces deux relations
+  correspondent respectivement à $\mathrm k_1^n$ et $\mathrm k_0^n$.
+
+  Soient $R,S$ deux relations RP, alors~:
+  \[\forall n_1,\ldots,n_p \in \mathbb N,
+  \begin{cases}
+    \chi_{R\cap S}(n_1,\ldots,n_p) =
+    \min(\chi_R(n_1,\ldots,n_p),\chi_S(n_1,\ldots,n_p))\\
+    \chi_{R\cup S}(n_1,\ldots,n_p) =
+    \max(\chi_R(n_1,\ldots,n_p),\chi_S(n_1,\ldots,n_p))
+  \end{cases}
+  \]
+  donc $R\cap S$ et $R\cup S$ sont RP, en composant par $\min$ et $\max$,
+  respectivement.
+
+  De plus,
+  \[\forall n_1,\ldots,n_p \in \mathbb N,
+  \chi_{\mathbb N^p\setminus R}(n_1,\ldots,n_p) = 1 - \chi_R(n_1,\ldots,n_p)\]
+  donc $\mathbb N^p \setminus R$ est aussi RP, en composant par
+  $x \mapsto 1 - x$.
+
+  Ainsi les relations RP forment une algèbre de Boole pour les opérations
+  ensemblistes usuelles.
+\end{proof}
+
+\begin{proposition}
+  Les relations $\triangle \defeq \{(x,x) \mid x \in \mathbb N^n\}$ et
+  $\leq \defeq \{(n,m) \mid n \leq m\}$ sont RP.
+\end{proposition}
+
+\begin{proposition}
+  On prouve d'abord que $\leq$ est RP. Pour cela, on remarque que $n \leq m$
+  exactement lorsque $n - m \leq 0$, c'est-à-dire lorsque $n - m = 0$.
+  En prenant alors $(n,m) \mapsto 1 - (n - m)$, on a bien une fonction RP à
+  valeurs dans $\btwo$ et qui coïncide avec $\chi_\leq$. Pour montrer que
+  la relation $\triangle$ est aussi RP, il suffit de remarquer que
+  \[(n,m) \in \triangle \iff (n \leq m) \land (m \leq n)\]
+\end{proposition}
+
+\begin{exercise}
+  Montrer que $\triangle^n \defeq
+  \{(n,\ldots,n) \in \mathbb N^n\mid n \in \mathbb N\}$ est
+  une relation RP.
+\end{exercise}
+
+Grâce à ces propriétés de base, on sait déjà que des formules sans
+quantification utilisant l'égalité et l'inégalité comme symbole de relation
+sont, en s'interprétant dans la structure $\mathbb N$, des relations RP.
+
+On verra qu'il n'est pas possible de rajouter n'importe quelle quantification,
+mais le résultat suivant est déjà un résultat particulièrement fort~: une
+quantification bornée sur une relation RP reste une relation RP.
+
+\begin{proposition}
+  Soit une relation RP $R\subseteq \mathbb N^{n+1}$. On définit les fonctions
+  \[\begin{array}{ccccc}
+  \exists R&:&\mathbb N^{n+1} & \longrightarrow & \btwo\\
+  & & (x_1,\ldots,x_n,y) &\longmapsto &
+  \begin{cases}
+    1 \text{ si } \exists z < y, R(x_1,\ldots,x_n,z)\\
+    0 \text{ sinon }
+  \end{cases}
+  \end{array}\]
+  \[\begin{array}{ccccc}
+  \forall R & : & \mathbb N^{n+1} & \longrightarrow & \btwo\\
+  & & (x_1,\ldots,x_n,y) &\longmapsto &
+  \begin{cases}
+    1 \text{ si } \forall z < y, R(x_1,\ldots,x_n,z)\\
+    0 \text{ sinon }
+  \end{cases}
+  \end{array}\]
+  Ces deux fonctions sont RP.
+\end{proposition}
+
+\begin{proof}
+  On construit les deux fonctions par récursion primitive~:
+  \[\exists R \defeq \rec(\mathrm k_0^n,\max\circ
+  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1}))\]
+  \[\forall R \defeq \rec(\mathrm k_1^n,\min\circ
+  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1}))\]
+  On montre seulement le fait que la fonction $\exists R$ ainsi définie
+  vérifie la propriété voulue, le cas de $\forall$ étant parfaitement analogue.
+
+  On remarque d'abord qu'il n'existe aucun $z < 0$, donc dans le cas de
+  $(x_1,\ldots,x_n,0)$ la valeur retournée est $0$. Dans le cas où l'on appelle
+  la fonction sur $(x_1,\ldots,x_n,\sucs(y))$, alors on voit qu'il existe
+  $z < \sucs (y)$ tel que $R(x_1,\ldots,x_n,z)$ si et seulement s'il existe
+  $z < y$ tel que $R(x_1,\ldots,x_n,z)$ ou si $R(x_1,\ldots,x_n,y)$, ce qui
+  correspond à l'équation vérifiée dans le cas récursif.
+\end{proof}
+
+\begin{exercise}
+  Montrer que l'ensemble des nombres premiers est un ensemble RP.
+\end{exercise}
+
+On peut aussi construire des instructions conditionnelles sur des relations RP.
+
+\begin{proposition}
+  Soit $R \subseteq \mathbb N^n$ une fonction RP et deux fonctions
+  $f,g : \mathbb N^n \to \mathbb N$ deux fonctions RP. Alors la fonction
+  \[\begin{array}{ccccc}
+  \ifrm(R,f,g)& : & \mathbb N^n &\longrightarrow & \mathbb N\\
+  & & (x_1,\ldots,x_n) &\longmapsto &
+  \begin{cases}
+    f(x_1,\ldots,x_n) \text{ si } (x_1,\ldots,x_n) \in R\\
+    g(x_1,\ldots,x_n) \text{ sinon }
+  \end{cases}
+  \end{array}\]
+\end{proposition}
+
+\begin{proof}
+  On définit $\ifrm$ de la façon suivante~:
+  \[\ifrm(R,f,g) \defeq \rec(g,f\circ(\pi_1^{n+2},\ldots,\pi_n^{n+2}))\circ
+  (\pi_1^n,\ldots,\pi_n^n,R)\]
+  Lorsque $R(x_1,\ldots,x_n) = 0$, la fonction vaut
+  $(g\circ (\pi_1^n,\ldots,\pi_n^n)) (x_1,\ldots,x_n)$, c'est-à-dire
+  $g(x_1,\ldots,x_n)$. Lorsque $R(x_1,\ldots,x_n) = 1$, la fonction
+  vaut $(f\circ (\pi_1^n,\ldots,\pi_n^n))(x_1,\ldots,x_n)$, c'est-à-dire
+  $f(x_1,\ldots,x_n)$. D'où le résultat.
+\end{proof}
+
+\begin{remark}
+  La fonction $\ifrm(R,f,g)$ peut s'appliquer avec une fonction $h$ à la place
+  de $R$. La condition sera alors que la valeur retournée par $h$ est non nulle.
+\end{remark}
+
+On voit qu'il est possible de passer facilement d'une fonction à un ensemble,
+en considérant la fonction caractéristique. Réciproquement, on souhaite avoir
+un moyen étant donné un prédicat d'en extraire une fonction~: c'est la notion de
+minimisation qui nous sera utile.
+
+\begin{definition}[Minimisation, minimisation bornée]
+  Soit $R \subseteq \mathbb N^{n+1}$ une relation. On définit la fonction
+  partielle de minimisation comme suit~:
+  \[\begin{array}{ccccc}
+  \mu R & : & \mathbb N^n & \longrightarrow & \mathbb N\\
+  & & (x_1,\ldots,x_n) & \longmapsto & \min
+  \{ y \in \mathbb N\mid (x_1,\ldots,x_n,y)\in R\}
+  \end{array}\]
+  où la fonction n'est pas définie lorsque l'ensemble sur lequel est pris le
+  minimum est vide.
+
+  On appelle minimisation bornée la fonction totale suivante~:
+  \[\begin{array}{ccccc}
+  \mu_B R & : & \mathbb N^{n+1} & \longrightarrow &\mathbb N\\
+  & & (x_1,\ldots,x_n,y) & \longmapsto & \min
+  \{ z < y \mid (x_1,\ldots,x_n,z) \in R\}
+  \end{array}\]
+  où la fonction vaut $0$ lorsque l'ensemble sur lequel est pris le minimum est
+  vide.
+\end{definition}
+
+La minimisation en général n'est pas RP, mais la minimisation bornée l'est. De
+plus, le fait que la fonction n'est pas définie dans le cas de $\mu$ est dû
+au fait que si l'on songe à nos fonctions comme à des algorithmes, et à $R$
+comme à un algorithme de décision, il est impossible de savoir (en temps fini)
+s'il existe ou non un certain $y$ tel que $R(x_1,\ldots,x_n,y)$. Au contraire,
+dans le cas de la minimisation bornée, il est possible de le vérifier en temps
+fini, et on peut donc donner une valeur dans le cas où l'ensemble est vide.
+
+\begin{proposition}
+  Soit $R\subseteq \mathbb N^{n+1}$ une relation RP. La fonction $\mu_B R$ est
+  une fonction RP.
+\end{proposition}
+
+\begin{proof}
+  On définit $\mu_B R$ par récursion primitive. Dans le cas où $y = 0$, alors
+  l'ensemble $\{ z < 0 \mid (x_1,\ldots,x_n,z) \in R\}$ est vide donc la
+  fonction retourne $0$. Dans le cas inductif, lorsque $y = \sucs(y')$, le
+  minimum de l'ensemble est soit le minimum de
+  $\{ z < y' \mid (x_1,\ldots,x_n,z)\in R\}$ si cet ensemble est non vide, soit
+  $y'$ si $(x_1,\ldots,x_n,y') \in R$ si cet ensemble est non vide, soit $0$. On
+  pourrait se contenter de cet algorithme, qui nous fait recalculer en
+  permanence l'habitation des ensembles. A la place, on va construire une
+  fonction qui retourne $\sucs(m)$ où $m$ est le minimum s'il existe, et $0$
+  sinon~:
+  \[f_0 \defeq \rec(\km_0^n,\ifrm(\pi_{n+2}^{n+2},\pi_{n+2}^{n+2},
+  \times\circ(R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1},
+  \sucs\circ \pi_{n+1}^{n+1}))))\]
+  On définit alors $\mu_B R$ simplement par $p\circ f_0$, où $p$ est la
+  fonction précédesseur définie plus haut.
+\end{proof}
+
+Avec les outils présents, on peut montrer que la bijection de Cantor introduite
+dans la \cref{def.bij.Cantor} est une fonction RP.
+
+\begin{proposition}
+  La bijection de Cantor $\alpha : \mathbb N \times \mathbb N \to \mathbb N$
+  est une fonction RP. Les deux fonctions
+  $\pi_1',\pi_2' : \mathbb N \to \mathbb N$ telles que
+  $(\pi_1'(\alpha(n,m)),\pi_2'(\alpha(n,m))) = (n,m)$ sont elles aussi RP.
+\end{proposition}
+
+\begin{proof}
+  On sait que la fonction $f_1 : k \mapsto \sum_{i = 1}^k i$ est RP. On peut
+  alors définir $\alpha$~:
+  \[\alpha \defeq + \circ (f_1\circ +,\pi_2^2)\]
+  Ainsi $\alpha$ est bien une fonction RP.
+
+  Comme la situation est symétrique entre $\pi_1'$ et $\pi_2'$, on montre
+  seulement que $\pi_1'$ est RP. Soit $n,m\in \mathbb N$ et $a = \alpha(n,m)$.
+  Le prédicat $k = \pi_1'(a)$ revient à $\exists p \leq a,\alpha(k,p) = a$ car
+  $p \leq \alpha(p,i)$ pour tout $i\in\mathbb N$. De plus, pour tout
+  $a\in \mathbb N$, il existe effectivemnet $n,m$ tels que $a = \alpha(n,m)$,
+  donc $\{k \leq a \mid \exists p\leq a, \alpha(k,p) = a\}$
+  contient exactement un élément, que l'on peut récupérer par minimisation.
+  On en déduit donc
+  \[\pi_1' \defeq \mu_B (\exists(\triangle\circ
+  (\alpha\circ (\pi_2^3,\pi_3^3), \pi_1^3)))\circ (\pi_1^1,\pi_1^1)\]
+  Donc $\pi_1'$ est une fonction RP.
+\end{proof}
+
+\begin{exercise}
+  Montrer que chaque $\alpha_n$ est aussi une fonction RP, et que chaque
+  projection $\varpi_i^n$ telle que $\varpi_i^n(\alpha_n(x_1,\ldots,x_n)) = n$,
+  est une fonction RP.
+\end{exercise}
+
+Avec ces données, on se rend compte que le fait d'avoir des fonctions
+$\mathbb N^n \to \mathbb N$ n'apporte pas réellement plus d'expressivité que
+d'avoir simplement des fonctions $\mathbb N \to \mathbb N$, puisque toutes les
+fonctions RP $f : \mathbb N^k \to \mathbb N$ peuvent se réécrire en une
+composée de fonctions
+$n \mapsto (\varpi_1^n(n),\ldots,\varpi_n^n(n)) \overset{f}{\mapsto}$ elle aussi
+RP. Bien sûr, il est toujours nécessaire de définir les fonctions avec plusieurs
+coordonnées de par la définition même des fonctions RP (puisqu'en particulier
+la récursion primitive utilise un appel sur une seule coordonnée en laissant les
+autres statiques).
