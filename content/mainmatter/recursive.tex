@@ -343,9 +343,9 @@ quantification bornée sur une relation RP reste une relation RP.
 \begin{proof}
   On construit les deux fonctions par récursion primitive~:
   \[\exists R \defeq \rec(\mathrm k_0^n,\max\circ
-  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1}))\]
+  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1})))\]
   \[\forall R \defeq \rec(\mathrm k_1^n,\min\circ
-  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1}))\]
+  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1})))\]
   On montre seulement le fait que la fonction $\exists R$ ainsi définie
   vérifie la propriété voulue, le cas de $\forall$ étant parfaitement analogue.
 
@@ -494,3 +494,766 @@ RP. Bien sûr, il est toujours nécessaire de définir les fonctions avec plusie
 coordonnées de par la définition même des fonctions RP (puisqu'en particulier
 la récursion primitive utilise un appel sur une seule coordonnée en laissant les
 autres statiques).
+
+\subsection{Codages primitifs récursifs}
+
+Dans cette sous-section, on va définir une notion généralisée de fonctions
+primitives récursives, où les fonctions ont comme domaine et codomaine d'autres
+ensembles que $\mathbb N$. Comme on peut voir $\mathbb N$ comme le monoïde libre
+à un élément, $\{*\}^\star$, on peut généraliser les définitions facilement en
+remplaçant $\mathbb N$ par $\Sigma^\star$ pour un ensemble fini $\Sigma$.
+
+Les définitions et propositions données dans cette sous-section sont l'\oe uvre
+des auteurs de ce livre, d'où l'absence de références bibliographiques.
+L'intérêt de ces constructions est avant tout de faciliter des notions de
+codage, en remplaçant de futures preuves fastidieuses en 3 résultats
+principaux~:
+\begin{itemize}
+\item généraliser les fonctions récursives primitives sur des alphabets
+  différents ne change pas la classe des fonctions RP de la forme
+  $\mathbb N^n \to \mathbb N$,
+\item les langages algébriques sont primitifs récursifs,
+\item les fonctions définies par induction par la \cref{prop.PU.gram} sont
+  compatibles avec la classe des fonctions RP.
+\end{itemize}
+Le deuxième résultat est déjà plus élégant que si l'on se restreignait aux
+fonctions $\mathbb N^n \to \mathbb N$, étant donné que l'exprimer uniquement
+avec cette classe de fonctions demanderait de définir des codages préalables.
+Ne pas passer par des codages supplémentaires pour exprimer ces résultats donne
+un aspect plus intrinsèque à notre notion de fonctions PR~: les langages que
+cette notion engendrent sont effectivement plus fort que les langages
+algébriques.
+
+Cependant, le réel atout de cette généralisation est de permettre de considérer
+des opérations \og syntaxiques\fg sur des langages algébriques en restant dans
+une classe plus restreinte que ce que nous verrons dans la suite du chapitre.
+De plus, grâce au premier des trois résultats, on pourra montrer que toutes ces
+opérations peuvent se traduire en des opérations sur
+$\mathbb N^n \to \mathbb N$ modulo un codage prélable, sans avoir à prouver à
+nouveau que de telles opérations sont bien des fonctions RP. On le verra dans le
+CHAPITRE HIERARCHIE ARITHMETIQUE, mais ces résultats donneront en corollaire
+beaucoup de résultats techniques.
+
+\begin{definition}[Fonctions récursives primitives généralisées]
+  On définit la classe des fonctions récursives primitives généralisées
+  (RPG) comme la plus petite classe de fonctions
+  $(\Sigma_1)^\star\times\cdots\times(\Sigma_n)^\star\to \Sigma^\star$
+  où $\Sigma_1,\ldots,\Sigma_n,\Sigma$ sont des ensembles finis, telle que~:
+  \begin{itemize}
+  \item chaque fonction
+    \[\begin{array}{ccccc}
+    \pi_k^n & : &\displaystyle \left(\prod_{i = 1}^n (\Sigma_i)^\star\right)&
+    \longrightarrow & (\Sigma_k)^\star\\
+    & & (u_1,\ldots,u_n) & \longmapsto & u_k
+    \end{array}\]
+    est une fonction RPG.
+  \item pour tout $\Sigma$ et $a \in \Sigma$, la fonction
+    \[\begin{array}{ccccc}
+    \cons_a & : & \Sigma^\star & \longrightarrow & \Sigma^\star\\
+    & & u & \longmapsto & u\star a
+    \end{array}\]
+    est une fonction RPG.
+  \item pour tous $\Sigma_1,\ldots,\Sigma_n,\Sigma$, la fonction
+    \[\begin{array}{ccccc}
+    \km_\varepsilon^n &: & \displaystyle
+    \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) &\longrightarrow& \Sigma^\star\\
+    & & (u_1,\ldots,u_n) & \longmapsto & \varepsilon
+    \end{array}\]
+    est une fonction RPG.
+  \item si $f_k : \prod_{i = 1}^n (\Sigma_i)^\star \to (\Gamma_k)^\star$ est une
+    fonction RPG pour chaque $k = 1,\ldots,p$, et
+    $g : \prod_{i = 1}^p (\Gamma_i)^\star \to \Sigma$ est une fonction RPG, alors
+    \[\begin{array}{ccccc}
+    g\circ (f_1,\ldots,f_n) & : & \displaystyle
+    \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) &
+    \longrightarrow & \Sigma\\
+    & & (u_1,\ldots,u_n) &\longmapsto &
+    g(f_1(u_1,\ldots,u_n),\ldots,f_p(u_1,\ldots,u_n))
+    \end{array}\]
+    est une fonction RPG.
+  \item si $f : \prod_{i = 1}^p (\Sigma_i)^\star \to \Sigma^\star$ est une
+    fonction RPG, $\Gamma$ est un ensemble fini et, pour tout $a\in \Gamma$,
+    \[g_a : \left(\prod_{i = 1}^p (\Sigma_i)^\star\right)\times \Gamma^\star\times
+    \Sigma^\star\to\Sigma^\star\]
+    est une fonction RPG, alors la fonction
+    \[\rec(f,(g_a)_{a \in \Gamma}) : \left(\prod_{i = 1}^p (\Sigma_i)^\star\right)
+    \times \Gamma^\star \longrightarrow \Sigma^\star \]
+    vérifiant les équations
+    \begin{align*}
+      \rec(f,(g_a)_{a\in\Gamma})(u_1,\ldots,u_p,\varepsilon) &=
+      f(u_1,\ldots,u_p)\\
+      \rec(f,(g_a)_{a\in\Gamma})(u_1,\ldots,u_p,a\star u) &=
+      g_a(u_1,\ldots,u_p,u,\rec(f,(g_a)_{a \in \Gamma})(u_1,\ldots,u_p,u))
+    \end{align*}
+    est une fonction RPG.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  On parle ici de tous les ensembles finis, ce qui est trop grand pour obtenir
+  un ensemble, et donc définir un prédicat inductif \og être une fonction RPG\fg
+  en utilisant le théorème de Knaster-Tarski. Pour régler ce problème, on
+  utilise en réalité comme seuls alphabets les ensembles $n \in \omega$, qui
+  représentent déjà tous les ensembles finis à bijection près.
+\end{remark}
+
+Les fonctions RP sont naturellement un sous-ensemble des fonctions RPG, en
+assimilant $\mathbb N$ à $\{0\}^\star$. On va considérer pour cette sous-section
+que $\{0\}^\star$ est exactement l'ensemble $\mathbb N$ qu'on manipule dans le
+cas des fonctions RP/RPG.
+
+Une question naturelle à se poser est si cette notion de fonctions RPG est
+strictement plus forte que celle de fonction RP~: ça n'est pas le cas, et c'est
+ce que nous allons montrer dans un premier temps. Pour montrer cela, on va
+construire une notion de traduction entre chaque $\Sigma^\star$ et $\mathbb N$.
+La traduction $f_\Sigma : \Sigma^\star \cong \mathbb N$ sera choisie RPG, et de
+telle sorte que pour toute fonction $f$ RPG, la fonction associée en utilisant
+les traductions pour avoir une fonction $\hat{f} : \mathbb N^n \to \mathbb N$
+est RP.
+
+\begin{definition}[Traduction RPG canonique]
+  Soit $\Sigma$ un ensemble fini. Il existe une fonction
+  $f_\Sigma : \Sigma^\star \to \mathbb N$ telle que~:
+  \[\begin{cases}
+  f_\Sigma\text{ est bijective }\\
+  f_\Sigma\in \RPG\\
+  f^{-1}_\Sigma\in\RPG
+  \end{cases}\]
+  et telle que $f_{\{0\}} = \id_{\mathbb N}$.
+\end{definition}
+
+\begin{proof}
+  Sans perte de généralité, on considère que $\Sigma = \{0,\ldots,n-1\}$ pour un
+  certain $n \in \mathbb N$. L'encodage de la suite $u = a_p\cdots a_1$ va être
+  donné par
+  \[f_\Sigma \defeq \sum_{i = 0}^{p-1} (a_i + 1) n^i\]
+  Tout d'abord, on voit que dans le cas où $n = 1$, c'est-à-dire le cas du
+  singleton $\{0\}$, cela nous donne
+  \[f_{\{0\}}(0^n) = \sum_{i = 0}^{n-1} 1^i = n\]
+  donc $f_{\{0\}} = \id_\mathbb N$.
+
+  On souhaite donc montrer que $f_\Sigma$ est une fonction RPG. Pour cela, on
+  va définir pour $k \in \{0,\ldots,n-1\}$ la fonction
+  \begin{align*}
+  g_k &: \Sigma^\star \times \mathbb N \to \mathbb N\\
+  g_k(u,m) &\defeq m \times n + (k + 1)
+  \end{align*}
+  Alors on peut définir
+  \[f_\Sigma \defeq \rec(0,(g_k)_{k\in\{0,\ldots,n-1\}})\]
+  On voit alors que $f_\Sigma(\varepsilon) = 0$ et que si
+  $f_\Sigma(a_p\cdots a_1) = \sum_{i = 1}^{p-1} (a_i + 1)n^{i-1}$ alors
+  \begin{align*}
+    f_\Sigma(a_p\cdots a_0) &= n \times f_\Sigma(a_p\cdots a_1) + (a_0 + 1)\\
+    &= n \times \left(\sum_{i = 1}^{p-1} (a_i + 1) n^{i-1}\right) + (a_0+1)\\
+    &= \left(\sum_{i = 1}^{p-1} (a_i+1) n^i\right) + (a_0+1)\\
+    &= \sum_{i = 0}^{p-1} (a_i + 1) n^i\\
+  \end{align*}
+  D'où le résultat souhaité par induction sur $\Sigma^\star$.
+
+  On va donner un candidat à la fonction $f_\Sigma^{-1}$ et montrer que ce
+  candidat est RPG. Pour cela, on montre d'abord qu'il est possible
+  de construire la décomposition en base $n$ sur $p$ chiffres d'un nombre $m$
+  donné en tant que fonction RPG $\mathbb N \to \{0,\ldots,n-1\}^\star$.
+
+  Pour commencer, il nous faut construre une première fonction~: étant donné un
+  nombre $k \in \mathbb N$, on souhaite montrer que la fonction
+  \begin{align*}
+    \cons_{k\% n} &: \Sigma\to\Sigma\\
+    \cons_{k\% n}(u) &\defeq u\star (k \% n)
+  \end{align*}
+  et RPG, où $k \% n$ désigne le reste de la division euclidienne de $k$ par
+  $n$. En réalité, comme $n$ est un nombre fini, il nous suffit d'imbriquer des
+  conditions d'égalité de $k \% n$ à chaque nombre dans $i\in\{0,\ldots,n-1\}$
+  et, dans chaque cas, d'utiliser la fonction $\cons_i$.
+
+  On définit alors la fonction
+  \[\begin{array}{ccccc}
+  f_n &: & \mathbb N^2 &\longrightarrow & \Sigma^\star\\
+  & & (k,0) & \longmapsto & u\\
+  & & (k,d + 1) & \longmapsto & \cons_{k\% n}(f_0(k//n,d))
+  \end{array}\]
+  où $k//n$ est le quotient de la division euclidienne de $k$ par $n$. Il est
+  clair que cette fonction est RPG, en utilisant une récursion primitive. On
+  souhaite maintenant montrer par récurrence sur $d$ que
+  $f_n(k,d)$ est la suite des $d$ chiffres de poids le plus faible de la
+  décomposition en base $n$ de $k$~:
+  \begin{itemize}
+  \item le cas pour $d = 0$, donc $f_n(k,d) = \varepsilon$, est automatique
+  \item pour l'hérédité, on remarque d'abord que la décomposition en base
+    $n$ de $k$ est la décomposition en base $n$ de $k//n$ suivie de
+    $k \% n$. Ainsi, si $f_n(k//n,d)$ est la suite des $d$ chiffres de poids le
+    plus faible de la décomposition en base $n$ de $k//n$, alors
+    $f_n(k//n,d)\star k\%n$ est la suite des $d + 1$ chiffres de poids le plus
+    faible de la décomposition en base $n$ de $k$.
+  \end{itemize}
+  Donc la décomposition en base $n$ sur $d$ chiffres est bien une fonction RPG.
+
+  On peut maintenant définir la fonction $d : \mathbb N \to \mathbb N$ telle que
+  $d(m)$ est le plus petit entier $d$ tel que
+  \[m < \sum_{i = 0}^d n^i\]
+  Cette fonction est RPG puisqu'il s'agit d'une minimisation, dont une borne
+  est donnée par $m$ lui-même étant donné que $m < \sum_{i = 0}^m n^i$.
+  On construit ensuite l'entier $m' = m - \sum_{i = 0}^{d(m)-1} n^i$ (comme $d(m)$
+  est choisi minimal, la valeur de droite est bien positive) puis le
+  mot sur $\{0,\ldots,n-1\}^\star$ donné par la décomposition de $m'$ sur
+  $d$ chiffres. Ainsi, si cette fonction est bien la réciproque de $f_\Sigma$,
+  alors elle est RPG.
+
+  Montrons maintenant que les deux fonctions sont réciproques l'une de l'autre.
+  Tout d'abord, si on a un entier $m$, $d$ le plus petit entier $d$ tel que
+  $m < \sum_{i = 0}^d n^i$ et $a_{d-1}\cdots a_0$ la décomposition en base
+  $n$ sur $d$ chiffres de $m - \sum_{i = 0}^{d-1}n^i$, alors
+  \[m = \sum_{i=0}^{d-1} (a_i + 1)n^i\]
+  donc $f_\Sigma\circ f_\Sigma^{-1} = \id_{\mathbb N}$.
+
+  Réciproquement, si $a_d\cdots a_0\in \Sigma^\star$, alors en notant
+  $m = f_\Sigma(a_d\cdots a_0)$, $d(m) = d + 1$ puisque
+  \[\sum_{i = 0}^d n^i \leq m \leq \sum_{i = 0}^d (n-1)n^i = n^{d+1} - 1 <
+  \sum_{i = 1}^{d+1} n^i\]
+  On voit alors que $m - \sum_{i = 0}^d n^i = \sum_{i = 0}^d a_i n^i$, donc la
+  décomposition en base $n$ sur $d+1$ chiffres nous donne $a_d\cdots a_0$.
+
+  Ainsi $f_\Sigma$ est une fonction RPG bijective de réciproque RPG.
+\end{proof}
+
+On peut alors associer à une fonction RPG $f$ une fonction RPG ne prenant en
+argument et ne retournant que des entiers.
+
+\begin{definition}[Fonction RP associée à une fonction RPG]
+  Soit
+  \[f : \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) \longrightarrow
+  \Sigma^\star\]
+  une fonction RPG. On appelle sa fonction RP associée la fonction RPG
+  \begin{align*}
+    \hat f &: \mathbb N^n \to \mathbb N\\
+    \hat f &\defeq f_\Sigma \circ f \circ
+    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1})
+  \end{align*}
+\end{definition}
+
+L'objectif est donc de montrer que pour toute fonction RPG $f$, la fonction
+$\hat f$ est une focntion RP. La preuve se faisant par induction sur la
+définition des fonctions RPG, donnons donc une étude sommaire des cas les
+plus évidents~:
+\begin{itemize}
+\item dans le cas des projections, la fonction associée est
+  $f_{\Sigma_k}\circ f^{-1}_{\Sigma_k} = \id$.
+\item dans le cas de $\cons_a : \Sigma \to \Sigma$, pour
+  $\Sigma = \{0,\ldots,n-1\}$ et tout $a \in \Sigma$,
+  la fonction $f_\Sigma\circ \cons_a\circ f_\Sigma^{-1}$ est simplement la
+  fonction $k \mapsto n\times k + a + 1$. Cette fonction est RP en utilisant les
+  résultats précédents.
+\item pour la fonction $\km_\varepsilon$, la fonction associée est directement
+  $\km_0$.
+\item si $g$ et $(h_i)_{i \in \{1,\ldots,p\}}$ sont des fonctions RPG,
+  alors on peut vérifier que l'égalité
+  $\widehat{g\circ (h_i)_i} = \hat g \circ (\hat{h_i})_i$
+  est vérifiée~:
+  \begin{align*}
+    \widehat{g\circ h} &= f_\Sigma\circ (g \circ (h_i)) \circ
+    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1})\\
+    &= f_\Sigma\circ g \circ (f_{\Gamma_i}^{-1}\circ f_{\Gamma_i}\circ h_i\circ
+    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1}))_i\\
+    &= f_\Sigma\circ g \circ (f_{\Gamma_1}^{-1},\ldots,f_{\Gamma_p}^{-1})
+    \circ (f_{\Gamma_i}\circ h_i\circ
+    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1}))_i\\
+    &= \hat f \circ (\hat{g_i})_i
+  \end{align*}
+  la stabilité des fonctions RP par composition et l'hypothèse d'induction
+  permettent donc de conclure.
+\end{itemize}
+
+On voit donc que le point réellement important de cette preuve est le cas de
+la récursion primitive.
+
+\begin{lemma}
+  Soit $f$ une fonction RPG, alors $\hat f$ est une fonction RP.
+\end{lemma}
+
+\begin{proof}
+  On procède par induction sur les fonctions RPG. On a prouvé juste avant les
+  cas directs, on s'intéresse donc au cas de la récursion primitive.
+
+  Soient des ensembles finis $\Sigma_1,\ldots,\Sigma_p,\Gamma,\Sigma$ et
+  \[f : \left(\prod_{i = 1}^p (\Sigma_i)^\star\right)\to \Sigma^\star\qquad
+  \forall a \in \Gamma, g_a : \left(\prod_{i = 1}^p
+  (\Sigma_i)^\star\right)\times\Gamma^\star\times\Sigma^\star
+  \to \Sigma^\star\]
+  des fonctions RPG. On souhaite montrer que $\widehat{\rec(f,(g_a))}$ est
+  une fonction RP sachant que $\hat f, (\hat{g_a})_{a\in \Gamma}$ sont
+  des fonctions RP. On suppose que $\Sigma = \{0,\ldots,n-1\}$.
+
+  On a vu comment extraire un élément de $\Sigma^\star$ à partir d'un
+  entier. L'objectif dans cette construction va être d'adapter cette
+  extraction pour l'appliquer directement à la récursion. Dans un premier
+  temps, avec le même argument que dans celui pour construire $f_\Sigma$,
+  on peut définir une fonction $\hat g$ telle que
+  \[\hat g (x_1,\ldots,x_p,y,z) = \widehat{g_{z\% n}}(x_1,\ldots,x_p,y//n,z)\]
+  en imbricant des instructions conditionnelles.
+
+  On définit alors la fonction
+  \[h(x_1,\ldots,x_p,x) \defeq
+  \langle\pi'_1(x) // n,\hat g(x_1,\ldots,x_p,\pi'_1(x),\pi'_2(x))\rangle\]
+  On rappelle que la fonction $d$, définie dans une preuve précédente, associe
+  à $m$ la taille de $f_\Sigma^{-1}(m)$. On remarque l'identité suivante, pour
+  tous $x_1,\ldots,x_p,y,z\in \mathbb N, u \in \Gamma^\star, a \in \Gamma$~:
+  \[h(x_1,\ldots,x_p,y,\langle f_\Gamma(u\star a),z\rangle) =
+  \langle f_\Gamma(u),g_a(x_1,\ldots,x_p,u,z)\rangle\]
+
+  On définit alors la fonction $F$ à $p+2$ arguments suivante~:
+  \[F \defeq
+  \rec(\alpha\circ (\pi_{p+1}^{p+1},f\circ (\pi_1^{p+1},\ldots,\pi_{p+1}^{p+1})),
+  h\circ (\pi_1^{p+3},\ldots,\pi_p^{p+3},\pi_{p+3}^{p+3}))\]
+  Cette fonction va retourner des codes de couples. L'intérêt est de pouvoir
+  utiliser l'appel récursif pour faire réduire l'argument autrement que d'un
+  seul cran par un seul cran en stockant l'argument dans l'appel récursif,
+  avec la valeur retournée. On montre donc d'abord par récurrence sur $k$ que
+  pour tout $u = u_1\cdots u_N\in\Gamma^\star$,
+  \[F(x_1,\ldots,x_p,f_\Gamma(u),k) = \langle f_\Gamma(u_1\cdots u_{N-k}),
+  \widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u_N\cdots u_{N-k+1}))\rangle\]
+  \begin{itemize}
+  \item dans le cas où $k = 0$, les deux membres de l'équation sont
+    effectivement égaux à
+    $\langle f_\Gamma(u_1\cdots u_N),\hat f(x_1,\ldots,x_p)\rangle$.
+  \item supposons que l'égalité est vraie pour $k$, alors
+    \begin{align*}
+      F(x_1,\ldots,x_p,f_\Gamma(u),k + 1) &=
+      h(x_1,\ldots,x_p,F(x_1,\ldots,x_p,f_\Gamma(u),k))\\
+      &= h(x_1,\ldots,x_p,\langle f_\Gamma(u_1\cdots u_{N-k}),\\
+      &\widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u_N\cdots u_{N-k+1}))
+      \rangle)\\
+      &= \langle f_\Gamma(u_1\cdots u_{N-k-1}),\\
+      &g_{u_{N-k}}(\widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,
+      f_\Gamma(u_N\cdots u_{N-k+1})))\\
+      &= \langle f_\Gamma(u_1\cdots u_{N-k-1}),\\
+      &\widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u_N\cdots u_{N-k}))
+    \end{align*}
+  \end{itemize}
+  D'où le résultat par récurrence.
+
+  On laisse en exercice le soin de vérifier qu'il est possible de transformer
+  $f_\Gamma(u_N\cdots u_1)$ en $f_\Gamma(u_1\cdots u_N)$ par une fonction RP.
+  En utilisant cette fonction, qu'on notera simplement $a \mapsto \overline a$,
+  on construit la fonction~:
+  \[G(x_1,\ldots,x_p,m) \defeq
+  \pi'_2(F(x_1,\ldots,x_p,\overline m,d(m)))\]
+  En utilisant l'identité précédente, on sait que
+  \[G(x_1,\ldots,x_p,f_\Gamma(u)) =
+  \widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u))\]
+  d'où le résultat.
+
+  Ainsi $\widehat{\rec(f,(g_a)_a)}$ est aussi une fonction RP, donc par
+  induction sur les fonction RPG, pour toute fonction RPG $f$ la fonction
+  $\hat f$ associée est RP.
+\end{proof}
+
+\begin{exercise}
+  Vérifier que la fonction $a \mapsto \overline a$ est effectivement une
+  fonction RP.
+\end{exercise}
+
+\begin{theorem}
+  Soit une fonction $f : \mathbb N^n \to \mathbb N$. Cette fonction est
+  RPG si et seulement si elle est RP.
+\end{theorem}
+
+\begin{proof}
+  Il est clair que si $f$ est RP alors elle est RPG. Dans le sens réciproque,
+  on sait que $\hat f$ est RP, donc
+  \[\id\circ f \circ (\id,\ldots,\id) \in \RecP\]
+  ce qui revient à dire que $f \in \RecP$, d'où le résultat.
+\end{proof}
+
+Ainsi, les fonctions RPG n'apportent pas plus de puissance de calcul, puisque
+les fonctions sur les entiers restent les mêmes. De plus, comme on possède un
+codage bijectif bi-RPG entre chaque $\Sigma^\star$ et $\mathbb N$, on en conclut
+que le pouvoir expressif de $\mathbb N$ est suffisant. L'utilité des fonctions
+RPG est de permettre de facilement passer de fonctions sur des langages
+algébriques à leur codage. Donnons d'abord un premier résultat important~: un
+langage algébrique est une partie RPG.
+
+\begin{proposition}
+  Soit $\Sigma$ un alphabet et $G$ une grammaire hors contexte. Alors
+  $\mathcal L_G$ est une partie de $\Sigma^\star$ dont l'indicatrice est
+  une fonction RPG (à valeurs dans $\btwo$).
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Cette proposition permet de donner du sens à la définition suivante.
+
+\begin{definition}[Fonction RPG de langage]
+  Soit $\Sigma,\Gamma$ deux alphabets et $\mathcal L \subseteq \Sigma^\star$ un
+  langage RPG sur $\Sigma$. Une fonction $f : \mathcal L \to \Gamma^\star$
+  est dite RPG s'il existe une fonction RPG
+  $\tilde f : \Sigma^\star \to \Gamma^\star$ qui coïncide avec $f$ sur
+  $\mathcal L$.
+\end{definition}
+
+\begin{remark}
+  Nous décidons de contraindre $\mathcal L$ à être lui-même RPG car sinon,
+  notre fonction $\tilde f$ n'aurait pas de raison de définir une fonction dont
+  le domaine est $\mathcal L$~: appeler $\tilde f$ sur une valeur ne nous
+  permet pas de savoir si l'application de la fonction était autorisée. Au
+  contraire, s'il est possible d'avoir un processus préalable nous disant
+  quelles valeurs peuvent être effectivement appelées, alors la fonction définie
+  sur $\mathcal L$ est calculable par des fonctions RPG dans tous ses aspects.
+\end{remark}
+
+Un exemple essentiel de fonction RPG de langage est celui des fonctions
+définies par inductions à partir de fonctions RPG.
+
+\begin{proposition}
+  Soit $\Sigma,\Gamma$ deux alphabets et $G$ une grammaire non ambigüe sur
+  $\Sigma$. On suppose que pour toute règle $A \to u$ dans $G$, on dispose d'une
+  fonction RPG $g_{A,u} : (\Gamma^\star)^n \to \Gamma^\star$ où $n$ est le nombre
+  de non terminaux apparaissant dans $u$. Alors la fonction
+  $g : \mathcal L_G \to \Gamma^\star$ donnée par la \cref{prop.PU.gram} est une
+  fonction RPG.
+\end{proposition}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{remark}
+  De la même manière qu'on peut généraliser la \cref{prop.PU.gram} à des cas
+  où les ensembles associés à chaque non terminal peuvent différer, cette
+  proposition s'étend aussi à ces cas.
+\end{remark}
+
+Ces résultats nous permettent donc de voir les langages algébriques comme une
+sous-classe des langages RPG. On voit aussi que des opérations syntaxiques
+simples sont RPG. Par exemple, étant donnée une signature du premier ordre
+$\Delta$, un terme $t$ sur $\Delta$, une variable du premier ordre $x_n$ avec
+$n \in \mathbb N$ et une formule $\varphi$ sur $\Delta$, il est possible de
+définir la substitution $\varphi[t/x_n]$ par induction sur la grammaire des
+formules sur $\Delta$~:
+\begin{itemize}
+\item on définit d'abord la substitution pour un terme $t'$. Si $t' = x_m$ où
+  $m \neq n$, alors $t'[t/x_n] = t'$ ; si $t' = x_n$ alors $t'[t/x_n] = t$ et
+  si $t' = f(t_1,\ldots,t_p)$ alors
+  $t'[t/x_n] = f(t_1[t/x_n],\ldots,t_p[t/x_n])$.
+\item si $\varphi = R(t_1,\ldots,t_p)$, alors
+  $\varphi[t/x_n]=R(t_1[t/x_n],\ldots,t_p[t/x_n])$.
+\item le cas de $\top$ et $\bot$ est simple~: la substitution ne fait rien.
+\item dans le cas de $\lor,\land,\to$, on applique simplement la substitution
+  récursivement aux sous-formules.
+\item si $\varphi = \exists x,\psi$ (respectivement
+  $\varphi = \forall x, \psi$), alors $\varphi[t/x_n] = \exists x, \psi[t/x_n]$
+  (respectivement $\varphi[t/x_n] = \forall x, \psi[t/x_n]$).
+\end{itemize}
+
+En réalité, le cas des quantificateurs est un peu particulier. On peut se
+demander comment est représentée une variable liée telle que le $x$ dans
+$\exists x, \psi$. La façon la plus simple de faire est de considérer que
+cette quantification lie $x_0$, et donc que la variable libre $x_0$ dans
+$\exists x, \psi$ est la variable libre $x_s(x_0)$ dans $\psi$. Dans ce cas,
+la définition récursive reste simple~:
+$\varphi[t/x_n] = \exists x, \psi[t/x_{n+1}]$.
+
+Malheureusement, toutes les fonctions qui peuvent s'exprimer par un algorithme
+ne sont pas des fonctions RP. Comme on l'a dit au début, une fonction RP peut
+se voir comme un programme impératif n'utilisant que la boucle \texttt{for}. La
+boucle \texttt{while}, elle, permet de faire des itérations arbitrairement
+grandes, sans savoir \latinexpr{a priori} si on aura un nombre fini
+d'itérations. Cependant, dans l'autre sens, il est possible de définir la boucle
+\texttt{while} à partir de la boucle \texttt{for}, dans les cas où la première
+boucle converge. Si l'on décide d'écrire
+\[\texttt{while}\;\varphi(x) \;\texttt{do}\; f ; x \coloneq x + 1\;
+\texttt{done}\]
+par exemple, pour appliquer une procédure $f$ pour tous les $x$ tels que
+$\varphi(x)$, on peut tout aussi bien écrire, en fait,
+\[\texttt{for}\; i = 0 \;\texttt{to}\; \mu(\lnot \varphi)\;\texttt{do}\; f\;
+\texttt{done}\]
+Ainsi, la minimisation non bornée nous permet de simuler les boucles
+arbitrairement grandes.
+
+Nous définissons donc une classe de fonctions plus générales, les fonctions
+récursives (et récursives généralisées) en ajoutant cet opérateur. Plutôt que de
+le présenter par minimisation d'un prédicat, on va le présenter à partir d'une
+fonction, en considérant le prédicat \og la fonction s'annule en ce point\fg qui
+ne fait pas perdre de généralité (puisqu'un prédicat RP est déjà une fonction
+valant $0$ ou $1$).
+
+\begin{definition}[Fonction récursive, récursive généralisée]
+  On définit la classe $\Rec$ des fonctions récursives comme la plus petite
+  classe de fonctions partielles contenant la classe $\RecP$ et telle que si
+  $f : \mathbb N^{n+1} \to \mathbb N$ est une fonction récursive, alors
+  la fonction
+  \[\begin{array}{ccccc}
+  \mu(f) & : & \mathbb N^n & \longrightarrow & \mathbb N\\
+  & & (x_1,\ldots,x_n) &\longmapsto & \min \{y \in \mathbb N \mid
+  f(x_1,\ldots,x_n,y) = 0\}
+  \end{array}\]
+  où la fonction $\mu(f)$ est indéfinie là où l'ensemble dont on prend le
+  minimum est infini.
+
+  La classe $\RecG$ des fonctions récursives généralisées est la plus petite
+  classe de fonctions partielles contenant la classe $\RPG$ et telle que si
+  \[f : \left(\prod_{i = 1}^n (\Sigma_i)^\star\right)
+  \times \mathbb N \to \Sigma^\star\]
+  est une fonction récursive généralisée, alors
+  \[\begin{array}{ccccc}
+  \mu(f) & : & \displaystyle\prod_{i = 1}^n (\Sigma_i)^\star &\longrightarrow &
+  \mathbb N\\
+  & & (u_1,\ldots,u_n) &\longmapsto &\min\{y \in \mathbb N \mid
+  f(u_1,\ldots,u_n,y) = \varepsilon\}
+  \end{array}\]
+  est aussi une fonction récursive généralisée.
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour les fonctions $f : \mathbb N^n \to \mathbb N$, appartenir à
+  $\Rec$ est équivalent à appartenir à $\RecG$.
+\end{exercise}
+
+La classe $\Rec$ est en fait la classe des fonctions calculables, au sens des
+fonctions que l'on peut écrire comme des programmes informatiques. Dans la
+section qui suit, on s'intéresse à un autre formalisme~: celui des machines de
+Turing. Nous reviendrons à la classe $\Rec$ dans la dernière sous-section de la
+section suivante, pour prouver son équivalence avec la classe que l'on définira
+grâce aux machines de Turing.
+
+\section{Machines de Turing}
+
+Les machines de Turing, introduites dans \cite{turing1936a}, sont un formalisme
+très proche de celui des automates. La différence principale est qu'au lieu
+de lire linéairement un mot, comme dans le cas d'un automate fini ou d'un
+automate à pile, une machine de Turing va agir sur un ruban de données. Cette
+action permet d'avoir des calculs arbitrairement longs, et le ruban de données
+est infiniment grand pour permettre d'effectuer des calculs aussi grands que
+souhaité. L'action sur le ruban, elle, sera déterminée par une structure
+quasiment identique à celle d'un automate~: à chaque instant, une tête de
+lecture indique à quelle place sur le ruban on effectue l'action, et l'action
+dépend de la lettre lue et de l'état de la machine. La différence principale est
+que la machine peut alors décider de continuer la lecture (vers la droite) ou
+bien de revenir en arrière (vers la gauche). Ce formalisme est un prototype de
+langage impératif, qui agit sur une bande de mémoire selon un programme écrit à
+l'avance.
+
+Dans cette section, on définit le formalisme élémentaire pour traiter des
+machines de Turing. Nous montrons ensuite que différents choix sont possibles
+pour définir les machines de Turing~: utiliser plusieurs rubans, considérer des
+états acceptant/rejetant, utiliser des machines non déterministes\ldots Enfin,
+nous montrons que les fonctions calculables au sens des machines de Turing sont
+équivalentes aux fonctions récursives.
+
+\subsection{Premiers pas dans le formalisme des machines de Turing}
+
+Donnons d'abord une définition simple de machine de Turing, permettant de plus
+rapidement travailler avec.
+
+\begin{definition}[Machine de Turing]
+  Soit $\Sigma$ un alphabet. Une machine de Turing $M$ sur $\Sigma$ est la
+  donnée de~:
+  \begin{itemize}
+  \item un ensemble fini $Q$ d'états
+  \item un état initial $q_0$
+  \item un ensemble d'états d'arrêt $F$
+  \item un alphabet $\Gamma$ de travail, tel que $\Sigma \subseteq \Gamma$
+  \item un symbole blanc $\square \in \Gamma$
+  \item une fonction de transition partielle
+    \[\delta : Q \times \Gamma \longrightarrow Q \times \Gamma \times
+    \{\lhd,\rhd\}\]
+  \end{itemize}
+
+  On note $\TM(\Sigma)$ (pour \foreignexpr{Turing machine}) l'ensemble des
+  machines de Turing sur $\Sigma$.
+\end{definition}
+
+Décrivons le fonctionnement d'une machine de Turing à partir de ses
+composantes~:
+\begin{itemize}
+\item la machine de Turing va agir sur un ruban qui est une suite de symboles
+  de $\Gamma$ de la forme $u\square^\infty$, c'est-à-dire ayant un nombre
+  fini d'élément différents de $\square$. A chaque étape, la machine pointe à
+  un certain indice du ruban, lit le symbole à cet indice et agit en
+  conséquence.
+\item au début de l'exécution, la machine point à l'incide $0$ et est dans
+  l'état $q_0$.
+\item à chaque étape lors de l'exécution, en supposant que le ruban est de la
+  forme $uav\square^\infty$ et que la machine pointe sur le symbole $a$, la
+  machine étant en un état $q$, on regarde $\delta(q,a) = q',b,m$~: le symbole
+  $a$ est remplacé par le symbole $b$, la machine entre dans l'état b et elle
+  décale sa tête de lecture d'une case vers la gauche si $m = \lhd$, vers la
+  droite si $m = \rhd$.
+\item lorsque la machine entre dans un état $q \in F$, l'exécution s'arrête.
+\end{itemize}
+
+A FAIRE : SCHEMA DE LA SITUATION EN TIKZ
+
+Rendons maintenant ce fonctionnement formel. On définit d'abord la notion de
+configuration, qui est un objet permettant de retenir simultanément l'état d'une
+machine, de son ruban et l'emplacement de sa tête de lecture.
+
+\begin{definition}[Configuration d'une machine sur un ruban]
+  Soit une machine de Turing $M$ sur un alphabet $\Sigma$. Une configuration
+  pour $M$ est une suite $u \in (\Gamma\cup Q)^\mathbb N$ telle que~:
+  \begin{itemize}
+  \item toutes les valeurs de $u$ sauf un nombre fini sont $\square$
+  \item il existe exactement un indice $i$ tel que $u_i \in Q$.
+  \end{itemize}
+  Etant donnée une configuration $u$, on appel état de $M$ en $u$ l'unique
+  valeur $q \in Q$ prise par $u$.
+\end{definition}
+
+\begin{notation}
+  On notera une configuration $uqv\square^\infty$ pour indiquer que
+  $u \in \Gamma^\star$, $v \in \Gamma^\star$ et $q \in Q$.
+\end{notation}
+
+Il faut lire la configuration $uqv\square^\infty$ comme le fait que la tête
+de lecture de la machine se trouve à la première lettre de $v$, dans l'état $q$,
+et que tous les symboles différents de $\square$ sont contenus dans $uv$.
+
+Une machine de Turing agit alors naturellement sur les configurations grâce à sa
+fonction de transition.
+
+\begin{definition}[Action d'une machine sur une configuration]
+  Soit $M$ une machine de Turing sur un alphabet $\Sigma$ et
+  $uqav\square^\infty$ une configuration pour $M$
+  (où $u,v \in \Gamma^\star, a\in \Gamma$ et $q \in Q$). Soit
+  $q',b,m \defeq \delta(q,a)$, on définit l'action de $M$ en un pas sur
+  $uqbv\square^\infty$, par
+  \[
+  M\cdot uqav\square^\infty \defeq
+  \begin{cases}
+    u'q'a'bv\square^\infty\text{ si } m = \lhd\text{ et si } u = u'\star a'\\
+    ubq'v\square^\infty\text{ si } m = \rhd \\
+    \text{indéfini sinon}
+  \end{cases}\]
+\end{definition}
+
+\begin{remark}
+  Si $\delta$ n'est pas définie en un certain couple $a,q$, l'action n'est pas
+  définie non plus, comme l'indique l'impossibilité de décomposer $\delta(q,a)$.
+\end{remark}
+
+Cette action sur les configurations représente ce qu'il se déroule lors de
+l'exécution de $M$ pendant une seule unité de temps de calcul. Il nous faut
+ensuite, bien sûr, itérer cette action pour créer un vrai calcul de la part de
+$M$. Comme dans le cas des automates, on va appeler trace d'un calcul la suite
+des configurations parcourues.
+
+\begin{definition}[Trace d'une exécution d'une machine de Turing]
+  Soit une machine de Turing $M$ sur un alphabet $\Sigma$ et
+  $uqv\square^\infty$ une configuration pour $M$. On appelle trace de
+  l'exécution de $M$ sur $uqv\square^\infty$ la plus grande suite finie ou
+  infinie de configurations $p_0,\ldots,p_i,\ldots$ telle que
+  \begin{itemize}
+  \item $p_0 = uqv\square^\infty$
+  \item pour tout $i$, $p_{i+1} = M\cdot p_i$
+  \item s'il existe $p_i$ tel que l'état de $M$ en $p_i$ appartient à $F$,
+    alors la trace n'est pas définie pour $j > i$
+  \end{itemize}
+
+  Pour tout mot $u \in \Sigma^\star$, on appelle trace de l'exécution de $M$
+  la trace de l'exécution de $M$ sur $q_0u\square^\infty$.
+\end{definition}
+
+L'exécution d'une machine sur un mot $u$ peut ainsi mener à plusieurs cas~:
+\begin{itemize}
+\item la trace est infinie, ce qui correspond à un calcul qui ne se termine pas,
+  tel un programme exécutant une boucle de la forme \texttt{while true} ;
+\item la trace est finie mais ne pas contient d'état d'arrêt, ce qui correspond
+  à une dernière configuration pour laquelle l'action de $M$ est indéfinie ;
+\item la trace est finie et contient un état d'arrêt, ce qui correspond à un
+  calcul qui s'exécute correctement et s'arrête~: le ruban dans la configuration
+  finale est alors de la forme $vw\square^\infty$ où $v \in \Sigma^\star$ et
+  $w \in \Gamma^\star$ ($v$ peut être vide, et $w$ contient potentiellement
+  des lettres dans $\Sigma)$. On a alors associé à $u\in\Sigma^\star$ un mot
+  $v \in \Sigma^\star$. On notera dans la suite $M(u)$ ce mot $v$.
+\end{itemize}
+
+Une machine de Turing définit donc une fonction partielle
+$\Sigma^\star \partialto \Sigma^\star$~: on dira que cette fonction est calculée
+par la machine de Turing considérée, ce qui nous mène à la notion de fonction
+calculable.
+
+\begin{definition}[Fonction calculée par une machine de Turing]
+  Soit $M$ une machine de Turing sur un alphabet $\Sigma$. On définit la
+  fonction partielle calculée par $M$ comme~:
+  \[\begin{array}{ccccc}
+  f_M & : & \Sigma^\star & \longrightarrow & \Sigma^\star\\
+  & & u & \longmapsto & M(u)
+  \end{array}\]
+  où $M(u)$ est indéfini si la trace de l'exécution de $M$ sur $u$ est infinie
+  ou ne se termine pas sur un état d'arrêt.
+  
+  On définit la classe des fonctions calculables sur $\Sigma$ comme
+  \[\Calc(\Sigma)\defeq \{ f_M\mid M \in \TM(\Sigma)\}\]
+\end{definition}
+
+\subsection{\'Equivalence de machines de Turing}
+
+\subsection{\'Equivalence avec les fonctions récursives}
+
+Pour montrer que les fonctions calculables sont équivalentes aux fonctions
+récursives généralisées, deux sens sont à faire~: montrer qu'il est possible
+d'écrire une machine de Turing qui calcule une fonction $\RecG$, et montrer
+qu'il est possible de simuler l'exécution d'une machine de Turing par une
+fonction $\RecG$.
+
+Le premier sens demande de raisonner par induction~: on montre que les
+constructions définissant la classe $\RecG$ peuvent se faire avec des machines
+de Turing. Le sens réciproque, lui, va se faire en deux temps. Tout d'abord, on
+prouve qu'il existe deux fonctions $T,U \in \RPG$ qui, étant donnés un code
+$e$ donnant la description d'une machine de Turing $M$, une entrée $x$ et un
+temps $t$, retourne respectivement si la machine de Turing s'est arrêtée en
+moins de $t$ étapes de calcul sur l'entrée $x$ et l'état du ruban après
+l'exécution de $M$ sur $x$ pendant $t$ étapes de calcul. En utilisant alors la
+minimisation non bornée, on obtient une simulation des machines de Turing par
+les fonctions $\RecG$, et on remarque alors qu'une fonction $\RecG$ ne
+nécessite qu'une utilisation de la minimisation non bornée par rapport à une
+fonctions $\RPG$.
+
+On montre d'abord le sens direct.
+
+\begin{lemma}
+  Pour toute fonction récursive généralisée $f$, il existe une machine de
+  Turing telle que $f_M = f$.
+\end{lemma}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+Pour montrer le sens réciproque, on doit d'abord décider d'une façon de coder
+une machine de Turing $M$ sur un alphabet $\Sigma$ par un mot. Comme le nom des
+états d'une machine ne sont pas en eux-mêmes importants, on peut remplacer
+l'ensemble $Q$ par un entier $n$ indiquant le nombre d'états. Quitte à n'avoir
+qu'un état initial et qu'un état d'arrêt, on peut considérer que
+$Q = \{0,\ldots,n-1\}$, que $0$ est l'état initial et $n-1$ est l'état final.
+Pour l'alphabet de bande, on peut construire un nouvel alphabet de bande en
+considérant deux symboles $\alpha, \beta \notin \Sigma$. Si
+$\Gamma = \Sigma \sqcup \{\square\}\sqcup \Sigma'$ et
+$\Sigma' = \{a_1,\ldots,a_m\}$, alors on peut coder $a_i$ par $\alpha^i\beta$
+et $\square$ par $\beta$. Ainsi, on peut retenir uniquement l'entier $m$ et
+travailler sur l'alphabet $\Sigma\cup \{\alpha,\beta\}$. La fonction de
+transition, elle, va s'encoder de façon plus technique. On a ainsi un codage
+d'une machine de Turing sur $\Sigma$. Le mot associé doit pouvoir exprimer les
+symboles de $\Gamma$, donc s'écrire au moins sur $\Sigma\cup\{\alpha,\beta\}$.
+Il doit aussi permettre d'écrire des nombres pour exprimer $n$ et $m$. On
+comptera $n$ et $m$ par $\alpha^n$ et $\alpha^m$ respectivement, en mettant
+un symbole $\beta$ pour séparer ces deux nombres.
+
+\begin{definition}[Codage d'une fonction de transition]
+  Soit $\Sigma$ un alphabet, $\alpha,\beta\notin\Sigma$, $\delta$ la fonction de
+  transition d'une machine de Turing sur $\Sigma$ à $n$ états et d'alphabet de
+  bande
+  $\Gamma = \Sigma\sqcup\{\square\}\sqcup\{a_1,\ldots,a_p\}$. On définit le
+  code de sa fonction de transition
+  $\langle\delta\rangle\in(\Sigma\cup\{\alpha,\beta\})^\star$ par
+  \[\langle\delta\rangle\defeq\]
+\end{definition}
+
+\begin{definition}[Codage d'une machine de Turing]
+  Soit $\Sigma$ un alphabet, et $\alpha,\beta\notin \Sigma$. On définit le code
+  d'une machine de Turing $M = (Q,q_0,q_a,\Gamma,\square,\delta)$ comme le mot
+  sur $\Sigma\cup\{\alpha,\beta\}$ suivant~:
+  \[\langle M\rangle \defeq \alpha^{|Q|}\beta\alpha^{|\Gamma\setminus \Sigma|}\beta
+  \]
+\end{definition}

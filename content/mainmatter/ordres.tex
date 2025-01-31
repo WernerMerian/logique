@@ -289,7 +289,7 @@ de majorant ou autre.
 \end{definition}
 
 \begin{exercise}
-  Montrer que le maximum d'une partie en est un élément maximal de cette partie.
+  Montrer que le maximum d'une partie est un élément maximal de cette partie.
 \end{exercise}
 
 Une autre partie intéressant est l'étude de parties sur lesquelles l'ordre
@@ -497,7 +497,7 @@ supérieure pour un ensemble fini.
   \begin{itemize}
   \item si $F = \varnothing$, alors $\bigvee F = \bot$.
   \item si $F = F' \cup \{x\}$ et $\bigvee F'$ existe, alors
-    $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F \lor x$
+    $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F' \lor x$
     donc $\bigvee F$ existe.
   \end{itemize}
 \end{proof}
@@ -784,13 +784,13 @@ complément par élément, pour un treillis distributif.
 \begin{proof}
   Supposons que $y,z$ soient deux compléments de $x$. Alors
   \begin{align*}
-    y\lor z &= y\lor z\lor (z\land x)\\
-    &= z\lor ((y\lor z)\land (y\lor x))\\
-    &= z \lor ((y\lor z)\land \top)\\
-    &= z \lor (y\lor z)\\
-    &= z
+    z &= \top \labd z\\
+    &= (x \or y) \land z\\
+    &= (x \land z) \lor (y \land z)\\
+    &= \bot \lor (y \land z)\\
+    &= y \land z
   \end{align*}
-  d'où $y\leq z$. En inversant le rôle de $y$ et $z$, on trouve aussi que
+  d'où $z\leq y$. En inversant le rôle de $y$ et $z$, on trouve aussi que
   $y\leq z$, d'où $y = z$.
 \end{proof}
 
@@ -1556,12 +1556,12 @@ permettent de définir de nouveaux filtres.
   Soient $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
   sur $Y$ et $f : X \to Y$ une fonction croissante. On définit la rétrotirette
   de $\mathcal F$ par $f$ comme~:
-  \[\mathcal F_f \defeq \{x\mid f(x) \in \mathcal F\}\]
+  \[f^* \mathcal F \defeq \{x\mid f(x) \in \mathcal F\}\]
 \end{definition}
 
 \begin{property}
   Soit $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
-  sur $Y$ et $f$ un morphisme d'inf demi-treillis, alors $\mathcal F_f$ est un
+  sur $Y$ et $f$ un morphisme d'inf demi-treillis, alors $f^*\mathcal F$ est un
   filtre sur $X$.
 \end{property}
 
@@ -1569,15 +1569,15 @@ permettent de définir de nouveaux filtres.
   On vérifie les propriétés d'un filtre~:
   \begin{itemize}
   \item comme $f(\top_X) = \top_Y$ et $\top_Y \in \mathcal F$, on en déduit que
-    $\top_X\in\mathcal F_f$.
-  \item si $x\in \mathcal F_f$ et $y\in X$ tel que $x\leq y$, alors par
+    $\top_X\in f^*\mathcal F$.
+  \item si $x\in f^*\mathcal F$ et $y\in X$ tel que $x\leq y$, alors par
     on sait que $f(x)\in\mathcal F$, donc par croissance $f(x)\leq f(y)$ et,
     par clôture par le haut de $\mathcal F$, $f(y)\in \mathcal F$, donc
-    $y\in \mathcal F_f$.
-  \item si $x\in \mathcal F_f$ et $y\in\mathcal F_f$, alors $f(x)\in\mathcal F$
-    et $f(y)\in\mathcal F$, donc $f(x)\land f(y)\in\mathcal F$ et comme
-    $f$ est un morphisme, $f(x\land y)\in\mathcal F$. Donc
-    $x\land y\in\mathcal F_f$.
+    $y\in f^*\mathcal F$.
+  \item si $x\in f^*\mathcal F$ et $y\in f^*\mathcal F$, alors
+    $f(x)\in\mathcal F$ et $f(y)\in\mathcal F$, donc
+    $f(x)\land f(y)\in\mathcal F$ et comme $f$ est un morphisme,
+    $f(x\land y)\in\mathcal F$. Donc $x\land y\in f^*\mathcal F$.
   \end{itemize}
 \end{proof}
 
@@ -1586,36 +1586,36 @@ l'existence de $\bot$.
 
 \begin{property}
   Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\mathcal F$ un filtre propre
-  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $\mathcal F_f$ est
+  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $f^*\mathcal F$ est
   lui-même un filtre propre.
 \end{property}
 
 \begin{proof}
-  Nous avons déjà vérifié que $\mathcal F_f$ est un filtre. Il nous reste à
+  Nous avons déjà vérifié que $f^*\mathcal F$ est un filtre. Il nous reste à
   montrer que celui-ci est propre. Mais comme on sait que $f(\bot_X)=\bot_Y$
-  et que $\bot_Y\notin\mathcal F$, on en déduit que $\bot_X\notin\mathcal F_f$,
-  donc $\mathcal F_f$ est propre.
+  et que $\bot_Y\notin\mathcal F$, on en déduit que
+  $\bot_X\notin f^*\mathcal F$, donc $f^* \mathcal F$ est propre.
 \end{proof}
 
 Un morphisme de treillis préserve aussi le fait d'être premier.
 
 \begin{property}
   Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\mathcal F$ un filtre premier
-  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $\mathcal F_f$ est un
-  filtre premier.
+  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $f^*\mathcal F$ est
+  un filtre premier.
 \end{property}
 
 \begin{proof}
-  Là encore, il nous suffit de montrer le caractère premier de $\mathcal F_f$.
-  Soient $x,y\in X$ tels que $x\lor y \in \mathcal F_f$, donc par définition
+  Là encore, il nous suffit de montrer le caractère premier de $f^*\mathcal F$.
+  Soient $x,y\in X$ tels que $x\lor y \in f^*\mathcal F$, donc par définition
   $f(x\lor y)\in \mathcal F$, mais comme $\mathcal F$ est premier et que
   $f(x\lor y) = f(x)\lor f(y)$, on en déduit que $f(x)\in\mathcal F$ ou
-  $f(y)\in\mathcal F$, c'est-à-dire que $x\in\mathcal F_f$ ou que
-  $y\in\mathcal F_f$. Donc $\mathcal F_f$ est premier.
+  $f(y)\in\mathcal F$, c'est-à-dire que $x\in f^*\mathcal F$ ou que
+  $y\in f^*\mathcal F$. Donc $f^*\mathcal F$ est premier.
 \end{proof}
 
 Une conséquence directe est que si $\mathcal F$ est un filtre premier et que $X$
-est une algèbre de Boole, $\mathcal F_f$ est un ultrafiltre sur $X$.
+est une algèbre de Boole, $f^*\mathcal F$ est un ultrafiltre sur $X$.
 
 D'un point de vue plus algébrique, si $f : B \to B'$ est un morphisme entre
 algèbres de Boole, alors le quotient de $B$ par $\ker(f)$ nous donne encore une
@@ -1697,10 +1697,10 @@ noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
 
 \begin{notation}
   Pour une fonction $f : X \to Y$ entre deux ensembles et un filtre $\mathcal F$
-  sur $\powerset(X)$, on notera $f_*\mathcal F$ la rétrotirette de $\mathcal F$
+  sur $\powerset(X)$, on notera $f\mathcal F$ la rétrotirette de $\mathcal F$
   par $f^{-1}$. On n'a pas d'ambiguïté car, par défaut, $f$ n'est pas un
   morphisme d'algèbre de Boole entre les ensembles de parties.
 
-  Donnons une description rapide de $f_*\mathcal F$~:
-  \[f_*\mathcal F = \{A \in Y \mid f^{-1}(A) \in \mathcal F\}\]
+  Donnons une description rapide de $f\mathcal F$~:
+  \[f\mathcal F = \{A \subseteq Y \mid f^{-1}(A) \in \mathcal F\}\]
 \end{notation}
