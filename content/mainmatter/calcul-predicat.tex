@@ -326,11 +326,12 @@ d'une proposition était simple à définir, puisqu'il s'agissait d'une valeur d
 vérité en fonction des variables propositionnelles. Dans le cas de la logique du
 premier ordre, les propositions parlent d'objets, et il faut donc fixer un
 univers ambiant sur lequel porte le discours donné par les formules. Par
-exemple, en prenant le langage de l'arithmétique, le terme $S\;S\;0 + S\;S\;0$
-et en considérant $0$ comme l'entier naturel $0$, $S$ comme la fonction
-$n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les entiers, le terme
-devient le terme $4$, mais on peut imaginer une autre interprétation de ce terme
-donnant par exemple $5$ ou tout autre nombre.
+exemple, en prenant le langage de l'arithmétique, pour évaluer le terme
+$S\;S\;0 + S\;S\;0$, on peut considérer $0$ comme l'entier naturel $0$, $S$
+comme la fonction $n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les
+entiers, ce qui fait que notre évaluation du terme sera $4$ ;
+mais on peut imaginer une autre interprétation de ce terme donnant par exemple
+$5$ ou tout autre nombre.
 
 \subsection{Structure et interprétation}
 
@@ -469,7 +470,7 @@ commutent.
 \begin{proposition}\label{prop.comm.subst.env}
   Soit une signature $\Sigma$, une structure $\mathcal M$, un environnement
   $\rho$, une variable $x$, deux termes $t,u$ et une formule $\varphi$. On
-  suppose de plus des inclusions suivantes~: $\VL(t)\subseteq \dom(\rho)$,
+  suppose de plus les inclusions suivantes~: $\VL(t)\subseteq \dom(\rho)$,
   $\VL(u)\subseteq\dom(\rho)$ et $\VL(\varphi)\subseteq\dom(\rho)$. On a alors
   les deux égalités suivantes :
   \[(t[u/x])_\rho^\mathcal M = t^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]} \qquad
@@ -677,9 +678,9 @@ associerait automatiquement à $\bot$ la valeur de vérité $0$.
 
 On voit donc qu'une théorie ne doit pas pouvoir prouver trop de choses.
 Néanmoins, on peut vouloir une théorie la plus forte possible, qui reste malgré
-tout cohérente. Une telle théorie est une théorie complète : elle est une
+tout cohérente. Une telle théorie est une théorie complète~: elle est une
 théorie dans laquelle si un énoncé est faux, alors son contraire est vrai. Elle
-peut donc décider tout énoncé, et puisqu'elle est complète elle ne peut pas
+peut donc décider tout énoncé, et puisqu'elle est cohérente elle ne peut pas
 décider plus (sinon il serait possible de vérifier $A$ et $\lnot A$, ce qui est
 impossible).
 
@@ -700,21 +701,21 @@ allons donner quelques propriétés basiques liées aux morphismes de modèles.
 
 En mathématiques, un morphisme est en toute généralité une application qui
 préserve la structure. C'est l'idée qui est formalisée dans la notion de
-morphisme entre structures : un morphisme commute avec les symboles de relation
+morphisme entre structures~: un morphisme commute avec les symboles de relation
 et de fonction.
 
 \begin{definition}[Morphisme de structures]
   Soit une signature $\Sigma$ et deux structures $\mathcal M,\mathcal N$, un
   morphisme $\varphi$ de $\mathcal M$ vers $\mathcal N$ est une application
   \[\varphi : |\mathcal M|\longrightarrow |\mathcal N|\]
-  vérifiant les propositions suivantes :
+  vérifiant les propositions suivantes~:
   \begin{itemize}
   \item pour tout symbole de fonction $f$ d'arité $n$ et tout tuple
-    $(m_1,\ldots,m_n)\in|\mathcal M|^n$ :
+    $(m_1,\ldots,m_n)\in|\mathcal M|^n$~:
     \[\varphi(f^{\mathcal M}(m_1,\ldots,m_n))
     = f^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
   \item pour tout symbole de relation $r$ d'arité $n$ et tout tuple
-    $(m_1,\ldots,m_n)\in|\mathcal M|^n$ :
+    $(m_1,\ldots,m_n)\in|\mathcal M|^n$~:
     \[r^{\mathcal M}(m_1,\ldots,m_n) \implies
     r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n)) \]
   \end{itemize}
@@ -741,7 +742,7 @@ et de fonction.
   \[t_\rho^\mathcal M = t_{\varphi\circ\rho}^\mathcal N\]
 \end{exercise}
 
-Un renforcement de la notion de morphisme est celle de plongement : un
+Un renforcement de la notion de morphisme est celle de plongement~: un
 plongement est un morphisme dont l'image est isomorphe au domaine, c'est-à-dire
 que non seulement le morphisme est injectif, mais le comportement vis à vis
 des propositions atomiques peut s'étudier dans l'image uniquement en étudiant le
@@ -750,7 +751,7 @@ modèle de départ.
 \begin{definition}[Plongement]
   Un plongement d'une structure $\mathcal M$ vers une structure $\mathcal N$ est
   un morphisme pour lequel la deuxième condition n'est plus une implication mais
-  une équivalence :
+  une équivalence~:
   \[\forall(m_1,\ldots,m_n)\in|\mathcal M|^n,r^{\mathcal M}(m_1,\ldots,m_n) \iff
   r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
 \end{definition}
@@ -899,7 +900,7 @@ définir la notion d'enrichissement.
   Soit deux signatures $\Sigma\subseteq\Sigma'$, c'est-à-dire telles que tout
   symbole de $\Sigma$ est un symbole de $\Sigma'$ de même arité. Soit une
   structure $\mathcal M'$ sur $\Sigma'$, alors on dit que $\mathcal M'$ est un
-  enrichissement d'une structure $\mathcal M$ sur $\Sigma$ si :
+  enrichissement d'une structure $\mathcal M$ sur $\Sigma$ si~:
   \begin{itemize}
   \item $|\mathcal M| = |\mathcal M'|$
   \item pour tout symbole de fonction $f\in \Sigma$,
@@ -980,8 +981,8 @@ Nous avons alors plusieurs choix, car plusieurs formalismes existent. Les trois
 principaux sont les sytèmes à la Hilbert, le calcul des séquents et la déduction
 naturelle. Nous avons eu un aperçu du calcul des séquents dans le chapitre
 précédent, et il pourrait être pertinent de continuer à l'utiliser, mais le
-choix fait ici est d'introduire un nouveau formalisme : celui de la déduction
-naturelle. Ce choix se justifie par deux raisons principales :
+choix fait ici est d'introduire un nouveau formalisme~: celui de la déduction
+naturelle. Ce choix se justifie par deux raisons principales~:
 \begin{itemize}
 \item Tout d'abord, il permet d'aborder d'autres systèmes de preuves, puisque
   nous avons déjà exploré le calcul des séquents. Cet argument est en même temps
@@ -1004,11 +1005,11 @@ naturelle. Ce choix se justifie par deux raisons principales :
 \end{itemize}
 
 Il y a de nombreux avantages à définir une syntaxe pour nos preuves en calcul
-des prédicats. Le premier est évident : avoir, comme dans le chapitre précédent,
+des prédicats. Le premier est évident~: avoir, comme dans le chapitre précédent,
 un système efficace pour prouver des relations entre formules, ne passant pas
 par une interprétation et une quantification sur toutes les valuations (et ici,
 en plus~: tous les modèles). Le deuxième, moins évident, sera plus lourd de
-conséquences : une syntaxe nous permet de voir l'ensemble de l'activité
+conséquences~: une syntaxe nous permet de voir l'ensemble de l'activité
 mathématique comme un processus finitaire. Nous n'avons le droit que d'employer
 des phrases finies en des textes finis pour étudier des objets potentiellement
 infinis. Si ce fait semble en premier lieu purement philosophique (et il est
@@ -1031,7 +1032,7 @@ les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
 \begin{definition}[Déduction naturelle]
   Soit une signature $\Sigma$. On définit la relation
   $\vdash\subseteq \List(\Formula(\Sigma))\times \Formula(\Sigma)$ par induction
-  par les règles suivantes :
+  par les règles suivantes~:
   \begin{center}
     \AxiomC{$A \in \Gamma$}
     \RightLabel{Ax}
@@ -1154,7 +1155,7 @@ les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
 \end{definition}
 
 \begin{exercise}[Sur la négation]
-  Montrer que l'on peut prouver les deux séquents suivants :
+  Montrer que l'on peut prouver les deux séquents suivants~:
   \[\vdash \lnot A \to (A \to \bot) \qquad \vdash (A \to \bot) \to \lnot A\]
 
   Montrer de plus que $\lnot A \vDash A \to \bot$ et que
@@ -1166,13 +1167,13 @@ $A \mapsto A \to \bot$. Cela nous permet alors de réduire le nombre de règles
 dans notre système.
 
 \begin{exercise}[Sur l'implication]
-  Montrer que l'équivalence suivante est prouvable~ :
+  Montrer que l'équivalence suivante est prouvable~:
   \[A \to B \dashv\vdash \lnot A \lor B\]
   où $A \dashv\vdash B$ signifie que $A\vdash B$ et $B\vdash A$.
 \end{exercise}
 
 \begin{exercise}[De Morgan]
-  Montrer que les lois de De Morgan sont dérivables :
+  Montrer que les lois de De Morgan sont dérivables~:
   \begin{itemize}
   \item $\lnot (A \lor B) \dashv\vdash \lnot A \land \lnot B$
   \item $\lnot (A \land B) \dashv\vdash \lnot A \lor \lnot B$
@@ -1184,7 +1185,7 @@ dans notre système.
 \end{exercise}
 
 \begin{exercise}[Tiers exclu et non contradiction]
-  Montrer les deux équivalences suivantes :
+  Montrer les deux équivalences suivantes~:
   \begin{itemize}
   \item $A \lor \lnot A \dashv\vdash \top$
   \item $A \land \lnot A \dashv\vdash \bot$
@@ -1196,7 +1197,7 @@ dans notre système.
   des formules et des règles à un fragment tel que les propositions atomiques,
   $\lnot$, $\lor$ et $\exists$. En effet, toute formule est équivalent à une
   formule écrite avec ce fragment : on peut donc imaginer que toute autre
-  formule est en fait une simple écriture plus lisible de cette constituée
+  formule est en fait une simple écriture plus lisible de celles constituées
   uniquement du fragment restreint.
 
   Nous n'emploierons pas cette méthode de restriction car, structurellement,
@@ -1209,8 +1210,8 @@ dans notre système.
   lent des preuves par induction et des différents cas, qui s'ils sont
   laborieux peuvent pour autant être instructifs pour une première lecture.
 
-  Le cas de $\lnot$ que l'on peut remplacer par $\to \bot$ est différent, car
-  les règles à propos de $\lnot$ sont exactement celle de $\to \bot$.
+  Le cas de $\lnot$, que l'on peut remplacer par $\to \bot$, est différent~:
+  les règles à propos de $\lnot$ sont exactement celles de $\to \bot$.
 \end{remark}
 
 \paragraph{A propos de la vacuité}
@@ -1267,7 +1268,7 @@ naturelle).
 \item Les règles $\lor_\mathrm i$ montrent que si on prouve $A$ (respectivement
   $B$) alors on prouve $A\lor B$.
 \item La règle $\lor_\mathrm e$ montre que pour prouver $C$ à partir de
-  $A\lor B$, il suffit de montrer que $A\to C$ et $B\to C$ ou, comme nous
+  $A\lor B$, il suffit de montrer $A\to C$ et $B\to C$~; ou, comme nous
   l'avons écrit, que l'on peut prouver $C$ à la fois sous l'hypothèse $A$ et
   sous l'hypothèse $B$. C'est un raisonnement par disjonction de cas.
 \item La règle $\land_\mathrm i$ dit que pour prouver $A\land B$, il suffit de
@@ -1303,8 +1304,8 @@ naturelle).
 Nous allons maintenant montrer que $\vDash$ et $\vdash$ coïncident. Un sens est
 élémentaire : montrer que $\vdash \subseteq\vDash$, nous allons donc le traiter
 en premier. C'est la propriété qu'on appelle correction. Elle énonce que ce que
-notre syntaxe dérive est valide. L'autre direction, disans que tout ce qui est
-valide est dérivable, est très souvent plus techniques : ce fut le cas pour
+notre syntaxe dérive est valide. L'autre sens, disant que tout ce qui est
+valide est dérivable, est très souvent plus technique~: ce fut le cas pour
 la logique propositionnelle, c'est encore le cas pour le calcul des prédicats.
 
 On appelle en général, par abus de langage, complétude du système la propriété
@@ -1392,12 +1393,9 @@ environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
   \item $\forall_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$.
     On veut montrer que $\Val_\rho(\forall x, A) = 1$. Pour cela, soit
     $m \in |\mathcal M|$~: on remarque que, par hypothèse d'induction,
-    $\mathcal M,\rho\models A[v/x]$ (ici on remarque un point important pour la
-    question de la vacuité~: on suppose que $\rho$ est bien définie en $v$, ce
-    qui peut se faire sans perte de généralité si on a bien un élément dans le
-    modèle), mais à ce moment-là comme $v$ est libre dans $\Gamma$
-    (c'est-à-dire que $v\notin\VL(\Gamma)$), on remarque
-    que $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$, soit
+    $\mathcal M,\rho\models A[v/x]$, mais comme $v$ est libre dans $\Gamma$
+    (c'est-à-dire que $v\notin\VL(\Gamma)$), on remarque que
+    $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$, soit
     $\mathcal M,\rho[v\mapsto m]\models A[v/x]$, d'où
     $\Val_{\rho[v\mapsto m]}(A[v/x]) = 1$, mais l'expression de gauche vaut
     $\Val_{\rho[x\mapsto m]}(A)$. Comme cela fonctionne pour tout $m$, on en
@@ -1411,15 +1409,14 @@ environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
     correspond exactement à $\Val_\rho(A[t/x])$, donc
     $\mathcal M,\rho\models A[t/x]$.
   \item $\exists_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
-    alors $\mathcal M,\rho\models A[t/x]$, mais comme
-    $\Val_\rho(A[t/x])\leq\Val_\rho(\exists x,A)$ on en déduit que
+    alors $\mathcal M,\rho\models A[t/x]$, mais comme on sait que
+    $\Val_\rho(A[t/x])\leq\Val_\rho(\exists x,A)$, on en déduit que
     $\Val_\rho(\exists x,A) = 1$, donc $\mathcal M,\rho\models \exists x,A$.
   \item $\exists_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
     alors $\mathcal M,\rho\models \exists x,A$, donc on peut trouver un élément
     $m\in|\mathcal M|$ tel que $\Val_{\rho[x\mapsto m]}(A) = 1$. On a
-    $\Val_{\rho[v\mapsto m]}(A[v/x]) = \Val_{\rho[v\mapsto m][x\mapsto m]}(A)$, mais
-    aussi $\Val_{\rho[v\mapsto m][x\mapsto m]}(A) = \Val_{\rho[x\mapsto m]}(A)$
-    car $v\notin\VL(A)$, et cette expression vaut $1$. On en déduit que
+    $\Val_{\rho[v\mapsto m]}(A[v/x]) = \Val_{\rho[x\mapsto m]}(A)$ car
+    $v \notin\VL(A)$, et cette expression vaut $1$. On en déduit que
     $\mathcal M,\rho[v\mapsto m]\models A[v/x]$. De plus, comme
     $v\notin\VL(\Gamma)$, on a $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$,
     donc par hypothèse d'induction $\mathcal M,\rho[v\mapsto m]\models B$.
@@ -1482,12 +1479,12 @@ l'idée de la preuve.
 
 L'idée principale est de construire un modèle syntaxique, c'est-à-dire un modèle
 dont les éléments sont exactement les termes (clos) du langage. Ceux-ci seront
-quotientés par l'égalité, c'est-à-dire que si $\mathcal T \vdash t = u$, alors
-les termes $t$ et $u$ seront identifiés. En construisant un tel modèle
-$\mathcal M$, on va chercher à ce que $\mathcal T \vdash \varphi$ si et
-seulement si $\mathcal M\vDash \varphi$ puisque ce que vérifie $\mathcal M$ est
-exactement ce que $\mathcal T$ peut prouver. On a alors besoin de deux
-caractéristiques essentielles :
+quotientés par l'égalité~: si $\mathcal T \vdash t = u$, alors les termes $t$ et
+$u$ seront identifiés. En construisant un tel modèle $\mathcal M$, on va
+chercher à ce que $\mathcal T \vdash \varphi$ si et seulement si
+$\mathcal M\vDash \varphi$ puisque ce que vérifie $\mathcal M$ est exactement ce
+que $\mathcal T$ peut prouver. On a alors besoin de deux caractéristiques
+essentielles :
 \begin{itemize}
 \item tout d'abord, il nous faut résoudre un problème quant à la quantification
   existentielle. Supposons que $\exists x,P$ soit vraie~: on veut pouvoir
@@ -1496,7 +1493,7 @@ caractéristiques essentielles :
   terme $t_P$ correspondant tel que $\exists x, P \implies P[t_P/x]$. Cela n'est
   pas vrai \latinexpr{a priori}, on va donc chercher à élargir notre langage
   pour ajouter à chaque fois des constantes témoignant pour une proposition
-  $\exists x,P$ vraie qu'un terme correspond : c'est ce que l'on appelle la
+  $\exists x,P$ vraie qu'un terme correspond~: c'est ce que l'on appelle la
   méthode des témoins de Henkin.
 \item ensuite, $\mathcal T$ doit être complète. L'ensemble des énoncés
   vrais dans un modèle est une théorie complète, puisqu'un énoncé est vrai dans
@@ -1717,9 +1714,10 @@ prouver ce théorème, on va utiliser un contexte plus adapté qui est celui du
 
 \begin{theorem}[Extension complète d'une théorie]\label{thm.completion}
   Soit $\mathcal T$ une théorie telle que $\mathcal T \nvdash \bot$. Alors il
-  existe une théorie $\mathcal T'$ complète pour $\vdash$, c'est-à-dire telle
-  que pour tout formule $\varphi$, on a $\mathcal T'\vdash \varphi$ ou
-  $\mathcal T'\vdash \lnot \varphi$, et $\mathcal T'\nvdash\bot$.
+  existe une théorie $\mathcal T' \supseteq \mathcal T$ complète pour $\vdash$,
+  c'est-à-dire telle que pour tout formule $\varphi$, on a
+  $\mathcal T'\vdash \varphi$ ou $\mathcal T'\vdash \lnot \varphi$, et
+  $\mathcal T'\nvdash\bot$.
 \end{theorem}
 
 \begin{proof}
@@ -1856,7 +1854,7 @@ On peut alors démontrer le lemme qui permettra de prouver le théorème de
 complétude.
 
 \begin{lemma}
-  Pour toute formule $\varphi \in \Formula(\Sigma')$ et tout valuation
+  Pour toute formule $\varphi \in \Formula(\Sigma')$ et toute valuation
   $\overline\rho$ telle que $\VL(\varphi)\subseteq \dom(\rho)$, on a
   l'équivalence suivante~:
   \[\mathcal T' \vdash \rho(\varphi) \iff

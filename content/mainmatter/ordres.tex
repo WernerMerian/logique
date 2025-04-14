@@ -124,8 +124,8 @@ réciproquement).
   On définit, dans l'autre sens, la relation $\leq$ à partir de $<$ par
   \[x\leq y \defeq x < y \lor x = y\]
   Le fait que $((x \leq y)\land x \neq y) \lor x = y$ est équivalent à $x\leq y$
-  et que $(x < y\lor x = y) \land x \neq y$ est équivalent à $x < y$ se vérifie
-  directement.
+  et que $(x < y\lor x = y) \land x \neq y$ est équivalent à $x < y$ se
+  vérifient directement.
 
   Montrons que $<$ défini à partir de $\leq$ est un ordre strict~:
   \begin{itemize}
@@ -141,7 +141,7 @@ réciproquement).
   \item si $x\leq y$ et $y\leq x$, alors soit $x = y$, soit $x < y$. Dans le
     premier cas, on a le résultat voulu. Dans le deuxième cas, on utilise le
     fait que $y\leq x$ pour en déduire que soit $y = x$, soit $y < x$. Encore
-    une fois, le cas $y = x$ est directement ce qu'il faut démontrer.
+    une fois, le cas $y = x$ donne directement ce qu'il faut démontrer.
     Si $y < x$, alors par transitivité avec $x < y$ on en déduit que $x < x$,
     ce qui est absurde.
   \item si $x \leq y$ et $y \leq z$, alors soit $x = y$, auquel cas on voit
@@ -235,9 +235,9 @@ de majorant ou autre.
 \begin{definition}[Borne supérieure, borne inférieure]
   Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
   dit que $x$ est la borne supérieure de $F$ si
-  \[F\leq x \land (\forall y, F\leq y \implies x \leq y)\]
+  \[F\leq x \land (\forall y\in X, F\leq y \implies x \leq y)\]
   et que $x$ est la borne inférieure de $F$ si
-  \[x\leq F \land (\forall y, x\leq F \implies y \leq x)\]
+  \[x\leq F \land (\forall y\in X, x\leq F \implies y \leq x)\]
 \end{definition}
 
 \begin{proof}
@@ -285,14 +285,14 @@ de majorant ou autre.
 \begin{definition}[\'Elément maximal, minimal]
   Soit un ensemble ordonné $(X,\leq)$ et une partie $F\subseteq X$. On dit que
   $x \in F$ est un élément maximal (respectivement minimal) dans $F$ s'il
-  n'existe pas $y\in F$ tel que $x\leq y$ (respectivement tel que $y\leq x$).
+  n'existe pas $y\in F$ tel que $x < y$ (respectivement tel que $y < x$).
 \end{definition}
 
 \begin{exercise}
   Montrer que le maximum d'une partie est un élément maximal de cette partie.
 \end{exercise}
 
-Une autre partie intéressant est l'étude de parties sur lesquelles l'ordre
+Une autre partie intéressante est l'étude de parties sur lesquelles l'ordre
 induit se comporte particulièrement bien. C'est ce que nous allons voir avec les
 chaînes, les antichaînes et les parties filtrantes.
 
@@ -302,8 +302,9 @@ chaînes, les antichaînes et les parties filtrantes.
   totalement ordonné. On dit que $A\subseteq X$ est une antichaîne de $X$ si
   l'ensemble $(A,\leq)$ (avec l'ordre induit) ne possède pas deux éléments
   comparables, c'est-à-dire si $(A,\leq)$ est l'ordre discret. On dit que
-  $A\subseteq X$ est une antichaîne forte de $X$ si pour tous $x,y\in A$, $x$ et
-  $y$ ne sont pas compatibles vers le bas.
+  $A\subseteq X$ est une antichaîne forte vers le haut (respectivement vers le
+  bas) de $X$ si pour tous $x,y\in A$, $x$ et $y$ ne sont pas compatibles vers
+  le haut (respectivement vers le bas).
 \end{definition}
 
 Cela nous mène à la notion d'ensemble inductif, importante pour établir le lemme
@@ -321,9 +322,20 @@ en donner l'énoncé. La preuve est donnée dans la \cref{sbsct.Zorn}.
   maximal $y \in X$ qui est supérieur à $x$.
 \end{theorem}
 
+\begin{remark}
+  Il existe plusieurs versions de la définition d'un ordre inductif. Par
+  exemple, on peut considérer que toute chaîne admet une borne supérieure, et
+  non simplement un majorant, ou que ce ne sont pas simplement les chaînes mais
+  les chaînes bien ordonnées (dont nous parlons dans la sous-section suivante)
+  qui admettent un majorant (respectivement une borne supérieure). Dans tous les
+  cas, la version que nous donnons ici est la plus simple, et les versions
+  alternatives se prouvent de la même manière.
+\end{remark}
+
 Si le nom de lemme de Zorn a été donné, par exemple dans \cite{Tukey}, ce
 résultat apparaît déjà avant, chez Kuratowski dès 1922. Le nom de Max Zorn est
-cependant resté (bien qu'en Russie on l'appelle plutôt lemme de Kuratowski-Zorn).
+cependant resté (bien qu'en Russie on l'appelle plutôt lemme de
+Kuratowski-Zorn).
 L'article \cite{ZornLemma}, lui, présente avant tout l'efficacité de ce
 théorème pour simplifier des constructions algébriques dont les preuves se
 ressemblaient toutes.
@@ -338,7 +350,7 @@ fondés sont utiles pour étendre le théorème d'induction.
   Soit $(X,\leq)$ un ensemble ordonné. On dit que $\leq$ est bien fondé si toute
   partie $F\subseteq X$ non vide possède un élément minimal, c'est-à-dire si
   \[\forall F \subseteq X, F\neq \varnothing \implies \exists x\in F,
-  \forall y\in F, y\leq x \implies x = y\]
+  \forall y\in F, (y\leq x \implies x = y)\]
 \end{definition}
 
 \begin{remark}
@@ -381,10 +393,9 @@ $k\in\mathbb N$, on peut prouver
 \[(\forall i < k, P(i)) \implies P(k)\]
 alors on peut en déduire que $\forall n, P(n)$.
 
-Ce procédé peut se généraliser à un ensemble bien fondé~: si l'on définit
-l'ensemble
-$x^{-1} = \{y \in X \mid y < x\}$, on veut montrer que $P(x)$ est vrai pour tout
-$x$ à partir du fait que $(\forall y \in x^{-1}, P(y)) \implies P(x)$.
+Ce procédé peut se généraliser à un ensemble bien fondé~: on veut montrer que
+$P(x)$ est vrai pour tout $x$ à partir du fait que
+\[(\forall y < x, P(y)) \implies P(x)\]
 
 L'idée derrière cette démonstration est que pour un ordre bien fondé, on a un
 moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
@@ -393,7 +404,7 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
 \begin{theorem}[Induction bien fondée]
   Soit $(X,\leq)$ un ensemble ordonné bien fondé. Soit $P\subseteq X$ une partie
   vérifiant
-  \[\forall x, (\forall y < x, y\in P) \implies x\in P\]
+  \[\forall x, ((\forall y < x, y\in P) \implies x\in P)\]
   Alors $P$ est égale à $X$.
 \end{theorem}
 
@@ -500,12 +511,15 @@ supérieure pour un ensemble fini.
     $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F' \lor x$
     donc $\bigvee F$ existe.
   \end{itemize}
+
+  On a donc l'équivalence.
 \end{proof}
 
 Cela nous donne une caractérisation plus algébrique d'un demi-treillis~: c'est
 un ensemble muni d'opérations. Cependant, ces opérations ont encore des
-définitions trop proche de la théorie des ordres. Nous allons voir que l'on peut
-transformer cette définition en une définition purement algébrique.
+définitions trop proches de la théorie des ordres. Nous allons voir que l'on
+peut transformer cette définition en une définition purement algébrique,
+c'est-à-dire n'utilisant que des opérations finies et des égalités.
 
 \begin{definition}[Monoïde commutatif idempotent]
   Un ensemble $X$ muni d'une opération $\cdot$ et d'un élément $e$ est un
@@ -583,6 +597,8 @@ transformer cette définition en une définition purement algébrique.
     $x\lor y \leq_\lor z$, donc $x\lor y$ est inférieur à tout majorant de
     $\{x,y\}$~: c'est la borne supérieure de $\{x,y\}$.
   \end{itemize}
+
+  Le cas des inf demi-treillis se déduit par dualité.
 \end{proof}
 
 Ainsi on parlera de sup demi-treillis (respectivement inf demi-treillis) en
@@ -683,7 +699,8 @@ relation $\leq_\lor$~: il faut vérifier que ces deux relations coïncident.
 \end{proof}
 
 Cela nous donne donc une définition purement algébrique d'un treillis (en
-particulier, un treillis est un modèle d'une certaine théorie).
+particulier, un treillis est un modèle d'une certaine théorie ne contenant que
+l'égalité comme symbole de relation).
 
 \begin{definition}[Morphisme de treillis]
   Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, un morphisme de treillis entre
@@ -784,8 +801,8 @@ complément par élément, pour un treillis distributif.
 \begin{proof}
   Supposons que $y,z$ soient deux compléments de $x$. Alors
   \begin{align*}
-    z &= \top \labd z\\
-    &= (x \or y) \land z\\
+    z &= \top \land z\\
+    &= (x \lor y) \land z\\
     &= (x \land z) \lor (y \land z)\\
     &= \bot \lor (y \land z)\\
     &= y \land z
@@ -860,7 +877,7 @@ de Boole~: on peut le voir comme un anneau idempotent.
   chapitre est dédié aux ensembles ordonnés, nous considérons plus intéressant
   de nous focaliser sur la structure ordonnée des algèbres de Boole pour en
   donner un traitement s'inscrivant dans une continuité, depuis les treillis
-  jusqu'aux algèbre de Boole complètes.
+  jusqu'aux algèbres de Boole complètes.
 \end{remark}
 
 \subsection{Algèbre de Heyting}
@@ -934,7 +951,7 @@ en particulier la tautologie
 exprimant qu'à partir de l'impossibilité que tous les $x$ rejettent $A$, on peut
 extraire un certain $x$ acceptant $A$.
 
-De même, la tautologie
+De même pour la tautologie
 \[\lnot (A \land B) \implies \lnot A \lor \lnot B\]
 car pour la prouver, il faudrait de façon uniforme décider si $\lnot A$ est
 vraie ou si $\lnot B$ est vraie. Comme cela dépend directement que la valeur de
@@ -950,8 +967,8 @@ par $\lnot x = x \to \bot$, comme nous l'avons déjà fait.
 
 \begin{definition}[Pseudo-complément relatif]
   Soit un treillis distributif $(X,\leq)$, et deux éléments $a,b\in X$. On dit
-  que $x$ est le pseudo-complément de $a$ relatif à $b$ si $x$ est la borne
-  supérieure de l'ensemble $\{x \in X \mid a \land x \leq b\}$. Si le
+  que $x$ est le pseudo-complément de $a$ relatif à $b$ si $x$ est le
+  maximum de l'ensemble $\{x \in X \mid a \land x \leq b\}$. Si le
   pseudo-complément de $a$ relatif à $b$ existe, on le note $a\to b$. On appelle
   pseudo-complément de $a$ le pseudo complément de $a$ relatif à $\bot$, s'il
   existe, et on le note alors $\lnot x$.
@@ -960,14 +977,14 @@ par $\lnot x = x \to \bot$, comme nous l'avons déjà fait.
 \begin{definition}[Algèbre de Heyting]
   Un treillis distributif $(X,\leq)$ est une algèbre de Heyting si tout élément
   admet un pseudo-complément relatif à tout autre élément, c'est-à-dire si
-  pour tous $a,b\in X$, l'ensemble $\{x\in X \mid a \land x \leq b\}$ admet une
-  borne supérieure.
+  pour tous $a,b\in X$, l'ensemble $\{x\in X \mid a \land x \leq b\}$ admet un
+  maximum.
 \end{definition}
 
 \begin{remark}
   Une inégalité par rapport à un pseudo-complément peut se réécrire par une
   conjonction~: $a\leq b \to c$ revient directement à $a\land b \leq c$ étant
-  donné que $b \to c$ est la borne supérieure des éléments $x$ tels que
+  donné que $b \to c$ est le maximum des éléments $x$ tels que
   $x\land b \leq c$. On peut donc formaliser le modus ponens~: si l'on a
   $a\leq b \to c$ et $a\leq b$, alors $a\land b \leq c$ et $a\land b = a$, donc
   $a\leq c$.
@@ -1084,21 +1101,26 @@ plus forte et générale.
   ensemble $X$. En déduire le \cref{thm.ind.KT}.
 \end{exercise}
 
-Enfin, donnons deux mots à propos des algèbre de Heyting complètes. On pourrait
-s'attendre à ce qu'un treillis complet $X$ suffise à modéliser ce qu'on attend
-d'une algèbre de Heyting complète, étant donné que pour tous $a,b$, l'ensemble
-\[\{x \in X \mid a \land x \leq b\}\]
-possède une borne inférieure. Ce qui bloque, cependant, est le caractère
-distributif~: on ne sait pas si le treillis complet est distributif. A la place,
-une algèbre de Heyting complète va posséder une version complète de la
-distributivité.
+Enfin, donnons deux mots à propos des algèbre de Heyting complètes. Donnons
+d'abord la définition de cette structure~:
 
 \begin{definition}[Algèbre de Heyting complète]
   Un ensemble ordonné $(H,\leq)$ est une algèbre de Heyting complète si
-  $(H,\leq)$ est un treillis complet et s'il vérifie l'identité suivante, pour
-  toute partie $X\subseteq H$ et tout élément $y \in H$~:
-  \[\Bigg(\bigvee_{x\in X}x\Bigg) \land y = \bigvee_{x\in X}(x\land y)\]
+  $(H,\leq)$ est un treillis complet et si toute paire $(a,b)\in H^2$ possède
+  un pseudo-complément relatif.
 \end{definition}
+
+Un point important pour ces structure est que l'existence des pseudo-compléments
+apporte une nouvelle loi de distributivité, infinie. En effet, étant donnée une
+algèbre de Heyting complète $H$, une partie $X\subseteq H$ et un élément
+$y\in H$, on a l'identité~:
+\[\left(\bigvee_{x\in X} x\right)\land y = \bigvee_{x \in X}(x \land y)\]
+Cette identité permet de récupérer directement la distributivité, et fonctionne
+en fait aussi dans le cas d'une algèbre de Heyting non complète (sous réserve
+d'existence des bornes supérieures), ce qui fait qu'on peut affaiblir les
+définitions d'algèbre de Heyting en un simple treillis contenant un
+pseudo-complément relatif. On peut trouver des détails sur les liens entre ces
+propriétés dans \cite{lattice}.
 
 \section{Filtres}
 
@@ -1209,7 +1231,7 @@ inf demi-treillis.
 
 Les inf demi-treillis permettent donc de mieux caractériser les treillis. En
 quelque sorte, puisqu'ils permettent de délimiter le fait de devenir plus petit,
-il est plus aisé d'y définir ce qui est grand (c'est-à-dire ce qui est arrive à
+il est plus aisé d'y définir ce qui est grand (c'est-à-dire ce qui arrive à
 rester grand quand on le rend plus petit). Les sup demi-treillis, eux, ne
 permettent pas de mieux définir un treillis, mais permettent de décrire ses
 propriétés.
@@ -1243,8 +1265,8 @@ dans $\mathcal F$.
 
 Pour synthétiser les différentes propriétés dans le cas d'un treillis~: les
 filtres propres (qui sont les filtres intéressants) sont les parties closes par
-le haut qui possède $\top$ mais pas $\bot$, et qui sont closes par intersection
-finie.
+le haut qui possèdent $\top$ mais pas $\bot$, et qui sont closes par
+intersection finie.
 
 Supposons maintenant qu'on possède une partie $X$ (non vide) qui n'est pas un
 filtre. Comment trouver un filtre correspondant naturellement à $X$ ?
@@ -1268,9 +1290,10 @@ $F\subfin X$. On obtient ainsi la construction suivante~:
 \end{proposition}
 
 \begin{proof}
-  Tout d'abord, on remarque que $Y\subseteq \filclose Y$, donc $\filclose Y$ est
-  non vide. Soit $x\in \filclose Y$ et $y\in X$ tel que $x\leq y$. On trouve
-  $F\subfin Y$ tel que $\bigwedge F\leq x$, alors $\bigwedge F \leq y$ par
+  Tout d'abord, on remarque que $\top = \filclose \varnothing$ et
+  $\varnothing\subfin Y$, donc $\filclose Y$ est non vide. Soit
+  $x\in \filclose Y$ et $y\in X$ tel que $x\leq y$. On trouve $F\subfin Y$ tel
+  que $\bigwedge F\leq x$, alors $\bigwedge F \leq y$ par
   transitivité, donc $y\in \filclose F$. Soient $x$ et $y$ des éléments de
   $\filclose Y$, on trouve $F$ et $F'$ des parties finies de $Y$ telles que
   $\bigwedge F \leq x$ et $\bigwedge F' \leq y$. Alors
@@ -1287,9 +1310,9 @@ Par défaut, le filtre engendré par une partie peut tout à fait contenir tous
 les éléments. Prenons par exemple une algèbre de Boole $X$, un élément $x$ et le
 filtre engendré par $\{x,\lnot x\}$~: il est évident que ce filtre n'est pas
 propre. Cependant, il existe une propriété assurant qu'un filtre engendré est
-propre, est qui est tout à fait naturelle~: on veut que les $\bigwedge F$ soient
-tous différents de l'élément minimum. \'Evidemment, cette propriété n'a d'intérêt
-que dans le cas d'un treillis.
+propre, et qui est tout à fait naturelle~: on veut que les $\bigwedge F$ soient
+tous différents de l'élément minimum. \'Evidemment, cette propriété n'a
+de sens que dans le cas d'un treillis.
 
 \begin{definition}[Propriété de l'intersection finie]
   Soit $(X,\leq)$ un treillis et $Y\subseteq X$. On dit que $Y$ a la propriété
