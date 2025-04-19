@@ -18,8 +18,8 @@ grande, et permet donc de considérer des représentants pour des phénomènes
 ensemblistes arbitrairement grands. De plus, c'est une classe bien ordonnée,
 ce qui signifie qu'on a un principe de choix sur cette classe (si on a un
 ensemble de parties d'un bon ordre, on peut prendre le minimum de chaque partie
-dans l'ensemble), nous permettant en choisissant des minima d'obtenir un
-représentant canonique.
+dans l'ensemble), nous permettant en choisissant des minima d'obtenir des
+représentants canoniques.
 
 Les cardinaux forment l'exemple le plus évident d'un tel procédé~: par défaut,
 on imagine un cardinal comme une classe d'équipotence, c'est-à-dire comme
@@ -97,7 +97,7 @@ ordonné pour la relation $\in$. Telle est donc notre définition d'ordinal.
   On peut aussi décrire le fait d'être un bon ordre par le fait d'être total
   et d'être un ordre bien fondé. La propriété d'être bien fondée, en présence
   de l'axiome de fondation, est automatiquement vérifiée~: un ordinal est alors
-  un ensemble transitif pour lequel la relation $\in$ est transitive et totale,
+  un ensemble transitif pour lequel la relation $\in$ est totale,
   c'est-à-dire que $x\in y \lor x = y \lor x\ni y$. Même si l'axiome de
   fondation simplifie les preuves, on décide de travailler pour l'instant dans
   $\ZF - \AxF$, pour montrer que toute la construction des ordinaux est possible
@@ -202,7 +202,7 @@ stable par $S$, par intersection et l'inclusion entre ordinaux est équivalente
 \begin{proof}
   On suppose que $\alpha \subsetneq \beta$, montrons qu'alors
   $\alpha \in \beta$. On sait donc que $\beta\setminus\alpha$ est une partie
-  non vide, soit $z = \min \beta\setminus\alpha$. On montre maintenant que
+  non vide, soit $z \defeq \min \beta\setminus\alpha$. On montre maintenant que
   $z = \alpha$ par double inclusion.
 
   Si $x\in \alpha$, alors $x\notin\beta\setminus\alpha$ donc $x\neq z$. Montrons
@@ -396,8 +396,8 @@ lemme d'effondremnet de Mostovski.
   \end{itemize}
   On a donc trouvé un isomorphisme entre $(X,<)$ et un ordinal $\alpha$ donné.
   Si on avait deux ordinaux isomorphes, alors par le lemme précédent,
-  l'isomorphisme induit entre eux est l'idéentité, donc on a en fait un seul
-  tel ordinal.
+  l'isomorphisme induit entre eux est l'identité, donc on a en fait un seul
+  tel ordinal, et l'isomorphisme est unique par le même argument.
 \end{proof}
 
 \begin{corollary}
@@ -522,7 +522,7 @@ disjonction de cas sur ce qu'est un ordinal.
   \[\{\alpha \in\Ord\mid \mathcal \lnot\varphi(x_0,\ldots,x_n,\alpha)\}\]
   n'est pas vide. On trouve alors un minimum à cette classe, qu'on note
   $\alpha$. On sait que $\alpha \neq 0$ d'après nos hypothèses. De plus, si
-  $\alpha$ est successeur, alors $\alpha = \beta$ et
+  $\alpha$ est successeur, alors $\alpha = S\;\beta$ et
   $\varphi(x_0,\ldots,x_n,\beta)$ est vérifiée, donc par hypothèse
   $\varphi(x_0,\ldots,x_n,\alpha)$, ce qui est absurde. Si $\alpha$ est limite,
   alors pour tout $\beta < \alpha$, $\varphi(x_0,\ldots,x_n,\beta)$ est
@@ -752,7 +752,7 @@ transfinie~: l'addition et la multiplication.
 \begin{exercise}
   Montrer que si $(\alpha_i)_{i\in \beta}$ est une famille d'ordinaux indicée par
   un ordinal, alors $\displaystyle\Big(\prod_{i\in \beta}\alpha_i,\lexl\Big)$
-  est un ensemble bien ordonné. On notera $\prod_{i\in\beta}\alpha_i$ sont type
+  est un ensemble bien ordonné. On notera $\prod_{i\in\beta}\alpha_i$ son type
   d'ordre. Montrer que
   $\displaystyle\prod_{i < 2}\alpha_i = \alpha_0\times\alpha_1$.
 \end{exercise}
@@ -994,12 +994,12 @@ celles-ci sont laissées en exercice car elles ne seront pas essentielles.
 L'outil de la récursion transfinie permet d'enfin montrer le lemme de Zorn
 (\cref{thm.Zorn}). La preuve de ce lemme repose sur une récursion transfinie
 dont on prouve qu'elle ne peut pas se prolonger jusqu'à tout $\Ord$. Pour cela,
-on montre d'abord qu'un ensemble quelconque peut voir majorer sa taille par un
+on montre d'abord qu'un ensemble quelconque peut voir majorée sa taille par un
 ordinal, qu'on appelle l'ordinal de Hartogs.
 
 \begin{definition}[Ordinal de Hartogs \cite{Hartogs1915}]
   Soit $X$ un ensemble. Alors il existe un plus petit ordinal $\alpha_X$ tel
-  que $X$ ne s'injecte par dans $\alpha_X$, on appelle $\alpha_X$ l'ordinal
+  que $\alpha_X$ ne s'injecte pas dans $X$, on appelle $\alpha_X$ l'ordinal
   de Hartogs de $X$.
 \end{definition}
 
@@ -1021,18 +1021,18 @@ ordinal, qu'on appelle l'ordinal de Hartogs.
   $\gamma = \alpha_{(Z,R')}$, donc $\gamma\in \alpha_X$. Ainsi $\alpha_X$ est
   bien un ordinal.
 
-  On vérifie maintenant que $X$ ne s'injecte pas dans $\alpha_X$. Si c'était le
+  On vérifie maintenant que $\alpha_X$ ne s'injecte pas dans $X$. Si c'était le
   cas, alors l'image de $\alpha_X$ définirait un élément de $\Ord(X)$ (avec
   l'ordre induit par $\in$ sur l'image de $\alpha_X$), donc par construction
   $\alpha_X\in\alpha_X$, ce qui est impossible pour un ordinal. On en déduit
-  que $X$ ne s'injecte pas dans $\alpha_X$.
+  que $\alpha_X$ ne s'injecte pas dans $X$.
 
-  Pour vérifie que $\alpha_X$ est le plus petit tel ordinal, prenons un autre
-  ordinal $\beta$ tel que $X$ ne s'injecte pas dans $\beta$. On sait que
+  Pour vérifier que $\alpha_X$ est le plus petit tel ordinal, prenons un autre
+  ordinal $\beta$ tel que $\beta$ ne s'injecte pas dans $X$. On sait que
   soit $\beta \in \alpha_X$, soit $\alpha_X\subseteq \beta$. Dans le deuxième
   cas, on a le résultat souhaité. Dans le premier cas, $\beta$ est par
   définition $\alpha_{(Y,R)}$ pour un certain $(Y,R)\in\Ord(X)$, ce qui impose
-  que $X$ s'injecte dans $\beta$, ce qui n'est pas.
+  que $\beta$ s'injecte dans $X$, ce qui n'est pas.
 \end{proof}
 
 L'ordinal de Hartogs permet de relier un ensemble quelconque à la hiérarchie
@@ -1082,7 +1082,7 @@ Montrons maintenant le lemme de Zorn, qui utilise l'axiome du choix.
   particulier qu'on a trouvé $f : \alpha_X\to X$ injective, ce qui n'est pas
   possible par hypothèse.
 
-  Par l'absurde, on en déduit donc qu'il existe bien $x > x_0$ maximal.
+  Par l'absurde, on en déduit donc qu'il existe bien $x \geq x_0$ maximal.
 \end{proof}
 
 Montrons aussi la réciproque~: le lemme de Zorn implique l'axiome du choix.
@@ -1097,21 +1097,21 @@ Montrons aussi la réciproque~: le lemme de Zorn implique l'axiome du choix.
   ensemble $C$ tel que pour tout $x \in X$, $x\cap C$ est un singleton.
 
   On pose l'ensemble
-  \[Y = \left\{c \subseteq \bigcup X\mid \forall x,y \in c, \forall a \in X,
-  (x \in a)\land (y \in a) \implies x = y\right\}\]
+  \[Y = \left\{c \subseteq \bigcup X\;\Big|\; \forall x,y \in c,
+  \forall a \in X, (x \in a)\land (y \in a) \implies x = y\right\}\]
   un élément de $Y$ est donc un choix, pour chaque élément $a$ de $X$, d'au plus
   un élément de $a$. On veut montrer que $(Y,\subseteq)$ est un ensemble
   inductif~:
 
   Soit une chaîne $(c_i)_{i\in I}$ d'éléments de $Y$, montrons que
   $\displaystyle\bigcup_{i\in I} c_i\in Y$. Soient donc $a\in X$ et
-  $x,y\in\displaystyle\bigcup_{i \in I} c_i$, montrons que $x = y$.
-  Par définition, on trouve $i,j \in I$ tels que $x \in c_i$ et $y\in c_j$.
-  Comme $(c_i)$ est une chaîne, on sait qu'il existe un élément $k\in\{i,j\}$
-  tel que $x\in c_k$ et $y\in c_k$, soit $k$ cet élément.On sait donc que
-  $x\in a$ et $y\in a$, pour $x,y\in c_k$~: par définition de $Y$, on en
-  déduit que $x = y$. Donc $\displaystyle\bigcup_{i\in I} c_i\in Y$, et
-  c'est ensemble est la borne supérieure pour $\subseteq$.
+  $x,y\in\displaystyle\left(\bigcup_{i \in I} c_i\right) \cap a$, montrons que
+  $x = y$. Par définition, on trouve $i,j \in I$ tels que $x \in c_i$ et
+  $y\in c_j$. Comme $(c_i)$ est une chaîne, on sait qu'il existe un élément
+  $k\in\{i,j\}$ tel que $x\in c_k$ et $y\in c_k$, soit $k$ cet élément. On sait
+  donc que $x\in a$ et $y\in a$, pour $x,y\in c_k$~: par définition de $Y$, on
+  en déduit que $x = y$. Donc $\displaystyle\bigcup_{i\in I} c_i\in Y$, et
+  cet ensemble est la borne supérieure pour $\subseteq$.
 
   Par le \cref{thm.ordi.Zorn}, on trouve donc $C \in Y$ un élément maximal pour
   l'inclusion. Montrons alors que pour tout $a \in X$,
@@ -1130,11 +1130,11 @@ Montrons aussi la réciproque~: le lemme de Zorn implique l'axiome du choix.
   un ensemble bien ordonné.
 \end{exercise}
 
-\begin{exercise}[Une caractérisation des ordinaux infinis]
+\begin{exercise}[Une caractérisation des ensembles infinis]
   Un ensemble $X$ est dit infini au sens de Dedekind s'il existe une partie
   $Y\subsetneq X$ telle que $X$ s'injecte dans $Y$. Montrer qu'un ensemble $X$
-  est infini au sens de Dedekind si et seulement s'il est infini au sens usuel,
-  c'est-à-dire que $\omega$ s'injecte dans $X$.
+  est infini au sens de Dedekind si et seulement si $\omega$ s'injecte dans $X$,
+  si et seulement si $X$ ne s'injecte dans aucun ordinal fini.
 \end{exercise}
 
 \section{Cardinaux}
@@ -1150,7 +1150,7 @@ Nous allons donc, en utilisant l'axiome du choix, définir une mesure plus
 précise de la taille d'un ensemble, ce qui revient au final à munir un ensemble
 quelconque d'un bon ordre~: c'est le théorème de Zermelo.
 
-Quand nous aurons traité de la définition des ordinaux, nous verrons les
+Quand nous aurons traité de la définition des cardinaux, nous verrons les
 fonctions $\aleph$ et $\beth$, ainsi que l'hypothèse du continu.
 
 \subsection{Axiome du choix et dichotomie cardinale}
@@ -1178,7 +1178,7 @@ qui correspond intuitivement à dire qu'un ensemble est plus petit qu'un autre.
 \end{proof}
 
 La relation d'équipotence est alors la relation d'équivalence associée à ce
-pré-ordre. On la définit aussi par le fait que $X\simeq Y$ si et seulement s'il
+pré-ordre. On la définit aussi par le fait que $X\cong Y$ si et seulement s'il
 existe $f : X \to Y$ bijective. La coïncidence des deux définitions n'est pas
 immédiate~: c'est le théorème de Cantor-Bernstein.
 
@@ -1188,14 +1188,14 @@ ensuite ce théorème en 1897 (cf \cite{deiser2004einführung}).
 
 \begin{theorem}[Cantor-Bernstein]
   Soient $X,Y$ des ensembles. S'il existe une injection $f : X \to Y$ et une
-  injection $g : Y \to X$, alors il existe une bijection $h : X \simeq Y$.
+  injection $g : Y \to X$, alors il existe une bijection $h : X \cong Y$.
 \end{theorem}
 
 \begin{proof}
   Comme il existe une injection $f : X \to Y$, on en déduit (comme toute
-  fonction est surjective sur son image) que $X \simeq \im(f)$. On se contente
+  fonction est surjective sur son image) que $X \cong \im(f)$. On se contente
   donc de montrer que si $X \subseteq Y$ et qu'il existe $g : Y \to X$
-  injective, alors $X \simeq Y$.
+  injective, alors $X \cong Y$.
 
   On définit une suite de parties $(Z_n)_{n\in\mathbb N}$ de $Y$ comme suit~:
   \[\left\{\begin{array}{l}
@@ -1291,9 +1291,9 @@ d'un bon ordre.
   \[\begin{array}{ccccc}
   \varphi & : & \powerset(X)\setminus\{\varnothing\} & \longrightarrow
   & X\\
-  & & X &\longmapsto & \min_{<} X
+  & & Y &\longmapsto & \min_{<} Y
   \end{array}\]
-  et comme $\min X\in X$, on en déduit que cette fonction vérifie bien l'énoncé
+  et comme $\min Y\in Y$, on en déduit que cette fonction vérifie bien l'énoncé
   de l'axiome du choix.
 \end{proof}
 
@@ -1315,9 +1315,9 @@ bijection avec un ordinal, puisqu'un isomorphisme d'ensembles ordonné est en
 particulier une bijection, et que tout ensemble bien ordonné est isomorphe à
 un unique ordinal. Cependant, on n'a pas unicité du bon ordre, et donc de
 l'ordinal auquel un ensemble quelconque est isomorphe. Même au sein des ordinaux
-il y a un défaut d'unicité, puisque $\omega \simeq \omega + 1$ (il suffit
+il y a un défaut d'unicité, puisque $\omega \cong \omega + 1$ (il suffit
 d'envoyer $\omega$ sur $0$ et $n$ sur $n + 1$). On veut donc représenter une
-classe d'équipotence par la hiérarchie ordinale en prenant un unique
+classe d'équipotence sur la hiérarchie ordinale en prenant un unique
 représentant, ce qui se fait en utilisant le plus petit ordinal de la classe.
 Cela motive donc notre définition de la hiérarchie cardinale.
 
@@ -1428,7 +1428,7 @@ cardinaux infinis.
 \begin{proof}
   On prouve chaque assertion.
   \begin{enumerate}[label=(\roman*)]
-  \item On montre par induction transfinie sur $\gamma$ que pour tout
+  \item On montre par induction transfinie sur $\gamma$ que pour tous
     $\alpha,\gamma \in \Ord$, $\gamma\neq 0$, on a
     $\aleph_{\alpha} < \aleph_{\alpha + \gamma}$, puisque tout $\beta > \alpha$ peut
     s'écrire sous cette forme~:
@@ -1451,13 +1451,13 @@ cardinaux infinis.
     \begin{itemize}
     \item si $\alpha = 0$, l'inégalité est $0\leq \omega$, ce qui est vrai.
     \item si $\alpha \leq \aleph_\alpha$, alors par croissance de
-      $x\mapsto 1+x$, on sait que $S\;\alpha \leq S\;\aleph_\alpha$, mais
+      $x\mapsto x + 1$, on sait que $S\;\alpha \leq S\;\aleph_\alpha$, mais
       comme $\aleph_\alpha$ est un cardinal infini, on sait que
-      $S\;\aleph_\alpha \simeq \aleph_\alpha$, donc
+      $S\;\aleph_\alpha \cong \aleph_\alpha$, donc
       $S\;\aleph_\alpha < \aleph_\alpha^+ = \aleph_{S\;\alpha}$, donc
       $S\;\alpha < \aleph_{S\;\alpha}$.
     \item si $\alpha$ est limite et que pour tout $\beta < \alpha$,
-      $\beta \geq \aleph_\beta$, alors
+      $\beta \leq \aleph_\beta$, alors
       \begin{align*}
         \alpha &= \bigcup_{\beta < \alpha} \beta\\
         &\leq \bigcup_{\beta < \alpha} \aleph_\beta\\
@@ -1516,7 +1516,7 @@ que le maximum et l'exponentiation. On va d'abord prouver le résultat central
 qui rend l'arithmétique cardinale si simple.
 
 \begin{theorem}[Hessenberg \cite{hessenberg}]
-  Si $X$ est un ensemble infini, alors $X\times X \simeq X$.
+  Si $X$ est un ensemble infini, alors $X\times X \cong X$.
 \end{theorem}
 
 \begin{proof}
@@ -1590,8 +1590,8 @@ et le produit.
 \end{proposition}
 
 \begin{proof}
-  On a une injection $X+Y\to X\times Y$, une injection $X\to X\times Y$ et une
-  injection $Y\to X\times Y$. Il nous suffit donc de montrer que
+  On a une injection $X+Y\to X\times Y$, une injection $X\to X + Y$ et une
+  injection $Y\to X + Y$. Il nous suffit donc de montrer que
   $X\times Y$ s'injecte dans le plus grand ensemble entre $X$ et $Y$, disons
   sans perte de généralité que le plus grand est $Y$. Comme $X$ s'injecte dans
   $Y$ et que $Y\times Y$ s'injecte dans $Y$ par le théorème précédent,
@@ -1603,7 +1603,7 @@ On peut montrer qu'en fait ce résultat se généralise pour des unions bien plu
 grandes.
 
 \begin{proposition}\label{prop.card.union}
-  Soit $(X_i)_{i\in I}$ une famille d'ensembles de cardinal inférieur à
+  Soit $(X_i)_{i\in I}$ une famille d'ensembles de cardinaux inférieurs à
   $\kappa$ indicée par un ensemble $I$ de cardinal inférieur à $\kappa$, où
   $\kappa$ est un certain cardinal. Alors
   \[\Card\Big(\bigcup_{i\in I} X_i\Big)\leq \kappa\]
@@ -1646,12 +1646,18 @@ comporte pas aussi bien qu'on le voudrait.
   \[\kappa^{\kappa'} \defeq \Card(\Funct(\kappa,\kappa'))\]
 \end{definition}
 
+\begin{exercise}
+  Vérifier que l'exponentiation cardinale est une fonction croissante en ses
+  deux arguments.
+\end{exercise}
+
 \begin{notation}
   On a ici une ambigüité~: $\omega^\omega$ peut vouloir dire deux choses
   suivants si on considère l'exponentiation ordinale ou cardinale. Pour lever
   cette ambigüité, on notera chaque fois $\aleph_0$ (respectivement
   $\aleph_\alpha$) pour montrer qu'on utilise les opérations ordinales, ou on
-  utilisera la lettre $\kappa$ réservée implicitement aux cardinaux.
+  utilisera les lettres $\kappa$ et $\lambda$ réservées implicitement aux
+  cardinaux.
 \end{notation}
 
 \begin{remark}
@@ -1664,13 +1670,15 @@ comporte pas aussi bien qu'on le voudrait.
 \end{proposition}
 
 \begin{proof}
-  Comme $X$ est infini, $X\times X \simeq X$, et $X \simeq 2\times X$, donc
+  Comme $X$ est infini, $X\times X \cong X$, et $X \cong 2\times X$. On a d'une
+  part l'inégalité suivante~:
   \begin{align*}
-    \Card(X)^{\Card(X)} &= (2\times\Card(X))^{\Card(X)}\\
-    &= (2^{\Card(X)})^{\Card(X)} \\
+    \Card(X)^{\Card(X)} &\leq \left(2^{\Card(X)}\right)^{\Card(X)} \\
     &= 2^{\Card(X)\times\Card(X)} \\
     &= 2^{\Card(X)}
   \end{align*}
+  et d'autre part l'inégalité suivante~: \[2^{\Card(X)}\leq \Card(X)^{\Card(X)}\]
+  D'où l'égalité des deux cardinaux.
 \end{proof}
 
 On voit donc que l'exponentiation est surtout utile pour considérer le cardinal
@@ -1915,7 +1923,7 @@ On en déduit une version plus précise dans le cas d'une fonction croissante.
   par croissance $f(g(\eta)) \geq \xi$.
   
   Ainsi, en utilisant le \cref{lem.cof.compar.surj}, on sait que
-  $\cof(\alpha)\leq \gamma$, c'est-à-dire que $\cof(\alpha)\leq\cof(\beta$.
+  $\cof(\alpha)\leq \gamma$, c'est-à-dire que $\cof(\alpha)\leq\cof(\beta)$.
 \end{proof}
 
 On peut maintenant prouver les propriétés essentielles sur la cofinalité, et en
@@ -1967,6 +1975,7 @@ pour caractériser les inégalités sur les cofinalités.
 \end{proposition}
 
 \begin{proof}
+  On prouve les deux sens de l'équivalence par contraposée.
   Si $\kappa \geq \cof(\lambda)$, alors on trouve une partie $X\subseteq\lambda$
   telle que $\type(X)=\cof(\lambda)$, cofinale dans $\lambda$. On pose alors
   une énumération strictement croissante $(x_\alpha)_{\alpha < \cof(\lambda)}$ de
@@ -2020,11 +2029,14 @@ Pour les cardinaux limites, on a un résultat beaucoup plus faible.
 \end{proof}
 
 On voit en particulier que dans le cas d'un point fixe de $\aleph$, cette
-propriété n'aide pas.
+propriété ne donne pas d'information. En particulier, il est possible d'imaginer
+un cardinal qui est à la fois un cardinal limite et un cardinal régulier, mais
+celui-ci ne pourra donc pas s'écrire comme construction à partir de nos
+opérations cardinales et ordinales habituelles.
 
 \begin{definition}[Cardinal faiblement inaccessible]
-  On dit qu'un cardinal $\kappa$ est faiblement inaccessible si $\kappa$ est à
-  la fois un cardinal limite et un cardinal régulier.
+  On dit qu'un cardinal $\kappa > \aleph_0$ est faiblement inaccessible si
+  $\kappa$ est à la fois un cardinal limite et un cardinal régulier.
 \end{definition}
 
 \subsection{Répartition des cofinalités}
@@ -2114,9 +2126,9 @@ mais commençons par le théorème lui-même.
   \begin{itemize}
   \item si $\kappa$ est régulier, alors pour toute famille $\mathcal F$
     d'ensembles telle que $|\mathcal F| < \kappa$ et pour tout $X\in\mathcal F$,
-    $|X| < \kappa$, alors $\displaystyle\Big|\bigcup \mathcal F\Big| < \kappa$.
+    $|X| < \kappa$, on a $\displaystyle\Big|\bigcup \mathcal F\Big| < \kappa$.
   \item si $\cof(\kappa) < \kappa$, alors il existe une famille $\mathcal F$
-    de parties de $\kappa$ telle que $|\mathcal F| = \cof(\kappa)$ et pour tout
+    de parties de $\kappa$ telle que $|\mathcal F| = \cof(\kappa)$, pour tout
     $X\in\mathcal F$, $|X|<\kappa$, et $\displaystyle\bigcup\mathcal F =\kappa$.
   \end{itemize}
 \end{theorem}
@@ -2185,13 +2197,13 @@ On sait donc que la fonction $\kappa \mapsto 2^\kappa$ vérifie les propriétés
 suivantes~:
 \begin{itemize}
 \item $\kappa < 2^\kappa$ (théorème de Cantor)
-\item si $\kappa < \lambda$ alors $2^\kappa \leq 2^\lambda$ (stricte croissance)
+\item si $\kappa < \lambda$ alors $2^\kappa \leq 2^\lambda$ (croissance)
 \item $\kappa < \cof(2^\kappa)$ (théorème de König)
 \end{itemize}
 
 En fait, on peut prouver qu'il est impossible d'être plus précis que ces trois
 conditions dans le cas des cardinaux réguliers~: c'est le théorème d'Easton
-\cite{Easton}. Plus précisément, pour toute fonction $f : C \to \Card$ croissante,
-où $C$ est un ensemble de cardinaux réguliers, qui vérifie
+\cite{Easton}. Plus précisément, pour toute fonction $f : C \to \Card$
+croissante, où $C$ est un ensemble de cardinaux réguliers, qui vérifie
 $\kappa < \cof(f(\kappa))$, il existe un modèle de $\ZFC$ vérifiant que
 $\kappa \mapsto 2^\kappa$ coïncide avec $f$.
