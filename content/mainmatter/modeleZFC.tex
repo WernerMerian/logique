@@ -27,7 +27,7 @@ raison d'être vrai.
 Cela mène à deux résultats essentiels pour décrire les limitations de cette
 approche formelle de la logique~: les théorèmes d'incomplétudes de Gödel et le
 théorème d'indéfinissabilité de la vérité de Tarski, que nous verrons dans la
-PARTIE QUATRE. Ceux-ci ont pour conséquence que si l'on considère un codage
+\cref{part.calc}. Ceux-ci ont pour conséquence que si l'on considère un codage
 $\ceil -$ qui à une formule au sens habituel associe une formule de notre
 modèle $\mathcal M$, alors il n'existe pas de formule $\varphi_{\mathcal M}$
 telle que
@@ -108,9 +108,7 @@ préservée par ceux-ci.
 \end{lemma}
 
 \begin{proof}
-  On procède par induction sur la relation $\Gamma \vdash \varphi$, en
-  considérant une variant de $\vdash$ où l'on tient compte des variables libres
-  dans les séquents~:
+  On procède par induction sur la relation $\Gamma \vdash \varphi$~:
   \begin{itemize}
   \item cas Ax~: si $\varphi \in \Gamma$, alors $\varphi^\psi \in \Gamma^\psi$,
     d'où le résultat.
@@ -124,8 +122,8 @@ préservée par ceux-ci.
     c'est-à-dire $\Gamma^\psi \vdash (A\lor B)^\psi$.
   \item le cas $\lor_\mathrm i^\mathrm d$ est analogue.
   \item cas $\lor_\mathrm e$~: on suppose que
-    $\Gamma^\psi\vdash A^\psi\lor B^\psi$, $\Gamma^\psi, A^\psi \vdash C^\psi$ et
-    $\Gamma^\psi,B^\psi\vdash C^\psi$, alors on peut appliquer la règle
+    $\Gamma^\psi\vdash A^\psi\lor B^\psi$, que $\Gamma^\psi, A^\psi \vdash C^\psi$
+    et que $\Gamma^\psi,B^\psi\vdash C^\psi$, alors on peut appliquer la règle
     $\lor_\mathrm e$ pour en déduire que $\Gamma^\psi \vdash C^\psi$.
   \item cas $\land_\mathrm i$~: on suppose que $\Gamma^\psi\vdash A^\psi$ et
     $\Gamma^\psi \vdash B^\psi$, alors $\Gamma^\psi \vdash A^\psi \land B^\psi$.
@@ -156,7 +154,7 @@ préservée par ceux-ci.
     $\Gamma^\psi \vdash (\exists x, A)^\psi$.
   \item cas $\exists_\mathrm e$~: si $\Gamma^\psi \vdash (\exists x, A)^\psi$ et
     $\Gamma^\psi, \psi(x) \land A^\psi \vdash B^\psi$, alors la règle
-    $\lor_\mathrm e$ nous donne directement $\Gamma^\psi \vdash B^\psi$. On
+    $\exists_\mathrm e$ nous donne directement $\Gamma^\psi \vdash B^\psi$. On
     remarque qu'on peut effectivement utiliser l'hypothèse d'induction sur
     $\Gamma^\psi, \psi(x)\land A^\psi\vdash B^\psi$ car ce séquent est équivalent
     à $\Gamma^\psi, \psi(x), A^\psi \vdash B^\psi$, qui contient bien $\psi(a)$
@@ -310,8 +308,8 @@ que les ensembles sont de plus en plus grands.
   \begin{itemize}
   \item pour tout $\alpha$, $\mathbb V_\alpha \subseteq \mathbb V_\alpha$.
   \item supposons que $\mathbb V_\alpha \subseteq \mathbb V_\beta$, alors
-    montrons que $\mathbb V_\alpha \subseteq \mathbb V_\beta$~: il nous suffit
-    pour cela de montrer que pour tout $\beta$,
+    montrons que $\mathbb V_\alpha \subseteq \mathbb V_{\beta+1}$~: il nous
+    suffit pour cela de montrer que pour tout $\beta$,
     $\mathbb V_\beta \subseteq \mathbb V_{\beta + 1}$. Si $x \in \mathbb V_\beta$,
     alors comme $\mathbb V_\beta$ est transitif, $x\subseteq \mathbb V_\beta$,
     donc $x\in \mathbb V_{\beta + 1}$ par définition.
@@ -387,7 +385,7 @@ prouver de tels axiomes.
 \end{theorem}
 
 \begin{proof}
-  On vérifie chaque axiome relativisé à l'aide de \cref{lem.axZFC}~:
+  On vérifie chaque axiome relativisé à l'aide du \cref{lem.axZFC}~:
   \begin{itemize}
   \item vérifions l'axiome d'extensionalité. Soient $x,y\in \mathbb V$ tels que
     $\forall z\in \mathbb V, z\in x\iff z \in y$. Comme $\mathbb V$ est une
@@ -402,9 +400,9 @@ prouver de tels axiomes.
     est une partie de $\mathbb V_\alpha$, donc
     $\bigcup x\in \mathbb V_{\alpha + 1}$.
   \item vérifions l'axiome de l'ensemble des parties~: soit $x\in \mathbb V$,
-    on trouve $\alpha$ tel que $x \in\mathbb V_\alpha$. Alors pour tous
+    on trouve $\alpha$ tel que $x \in\mathbb V_\alpha$. Alors pour tout
     $y\subseteq x$, $y\subseteq \mathbb V_\alpha$ donc
-    $y\in\mathbb V_{\alpha +1}$. On en déduit que pour tous $y\in \powerset(x)$,
+    $y\in\mathbb V_{\alpha +1}$. On en déduit que pour tout $y\in \powerset(x)$,
     $y\in \mathbb V$, donc $\powerset(x)\in\mathbb V$.
   \item vérifions l'axiome de remplacement~: soit $f$ une fonction partielle
     dont le domaine est un ensemble $x \in \mathbb V_\alpha$, et dont l'image
@@ -495,17 +493,20 @@ des opérations ensemblistes usuelles, comme nous allons le voir.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $\forall x \in X, \rk(x) \leq \alpha$ pour un certain
-  $\alpha\in\Ord$. Soit $x\in X$. Par définition de $\rk(x)$, on déduit que
-  $x\subseteq \mathbb V_\alpha$, donc $x\in \mathbb V_{\alpha + 1}$, donc
-  $X = \{x\}_{x\in X} \subseteq \mathbb V_{\alpha + 1}$. Donc $\rk(X)$ est
-  un majorant de $\{\rk(x) + 1 \mid x \in X\}$.
+  Montrons que $\rk(X)$ est un majorant de $\{\rk(x)+1 \mid x \in X\}$.
+  Pour cela, on montre que pour tout $x \in X$, si $X\subseteq \mathbb V_\alpha$
+  alors $x\subseteq \mathbb V_\alpha$ (donc le minimum des tels
+  $\mathbb V_\alpha$ contenant $x$ est inférieur au minimum de ceux contenant
+  $X$). Soit donc $x \in X$ et $\alpha$ tel que $X\subseteq \mathbb V_\alpha$,
+  alors $x\in \mathbb V_\alpha$, mais comme $\mathbb V_\alpha$ est transitif, on
+  en déduit que $x\subseteq \mathbb V_\alpha$. Donc $\rk(X)$ est un majorant de
+  $\{\rk(x) + 1 \mid x \in X\}$.
 
-  Montrons que ce majorant est une borne supérieure. Soit $\beta\in\Ord$ tel que
-  $\forall x \in X, \rk(x) + 1 \leq \beta$. Pour tout
-  $x\in X$, $x\in \mathbb V_\beta$ donc $X\subseteq \mathbb V_\beta$, donc
-  $\rk(X) \leq \beta$. Ce majorant est donc une borne supérieure, d'où
-  l'égalité.
+  Montrons que ce majorant est une borne supérieure. Soit $\beta\in\Ord$ un
+  majorant de $\{\rk(x)+1\mid x \in X\}$. Pour tout $x\in X$,
+  $x\subseteq \mathbb V_{\rk(x)}$ donc $x\in \mathbb V_{\rk(x)+1}$ donc
+  $X\subseteq \mathbb V_\beta$, donc $\rk(X) \leq \beta$. Ce majorant est donc
+  une borne supérieure, d'où l'égalité.
 \end{proof}
 
 \begin{lemma}\label{lem.rk.surj}
@@ -562,14 +563,14 @@ des opérations ensemblistes usuelles, comme nous allons le voir.
   \item pour deux éléments $x,y$, il est clair que le sup est un max, d'où
     l'égalité.
   \item soit un ensemble $x$. comme $x\in \mathcal P(x)$, on en déduit que
-    $\rk(x) + 1 \leq \mathcal (\powerset (x))$. Pour l'autre inclusion, si
-    $y\in \mathcal (\powerset(x))$ alors $y\subseteq x$, donc
+    $\rk(x) + 1 \leq \rk (\powerset (x))$. Pour l'autre inclusion, si
+    $y\in \powerset(x)$ alors $y\subseteq x$, donc
     $\rk(y) \leq \rk(x)$ par un point précédent. On en déduit que
     $\sup_{y\in \powerset(x)} (\rk(y) + 1) \leq \rk(x) + 1$ d'où
     l'égalité.
   \item comme chaque $\mathbb V_\alpha$ est transitif, si
     $x\subseteq \mathbb V_\alpha$ alors $\trcl(x)\subseteq \mathbb V_\alpha$. On
-    en déduit que $\rk(\trcl(x)) \leq \trcl(x)$, et il est clair que l'autre
+    en déduit que $\rk(\trcl(x)) \leq \rk(x)$, et il est clair que l'autre
     inégalité tient toujours puisqu'on rajoute des éléments.
   \item on prouve cela par induction transfinie~:
     \begin{itemize}
@@ -689,10 +690,10 @@ ensembles.
 
   Pour l'autre inégalité, on va construire pour chaque $x \in \mathbb H_\kappa$
   une relation $r_x \subseteq \lambda \times \lambda$ pour un certain
-  $\lambda < \kappa$, de telle sorte que l'association soit injective.
-  Soit donc $x \in \mathbb H_\kappa$, on pose $\lambda = |\trcl(x)\cup \{x\}|$
-  (donc $\lambda < \kappa$) et on pose $r_x\subseteq \lambda \times \lambda$
-  une relation telle que
+  $\lambda < \kappa$, de telle sorte que l'association $x \mapsto r_x$ soit
+  injective. Soit donc $x \in \mathbb H_\kappa$, on pose
+  $\lambda = |\trcl(x)\cup \{x\}|$ (donc $\lambda < \kappa$) et on pose
+  $r_x\subseteq \lambda \times \lambda$ une relation telle que
   \[(\lambda,r_x)\cong (\trcl(x)\cup \{x\}, \in)\]
   (cette relation existe puisqu'on a une bijection entre $\trcl(x)\cup\{x\}$ et
   $\lambda$). On veut maintenant prouver que pour tout autre $y$ et
@@ -917,7 +918,7 @@ formule dont la valeur de vérité ne changera pas suivant les modèles.
   \forall a_1,\ldots,a_n \in \mathcal M, \varphi^{\mathcal M}(a_1,\ldots,x_n)
   \iff \varphi^{\mathcal N}(a_1,\ldots,a_n)\]
 
-  On dirait que $\varphi$ est absolue pour une classe $\mathcal M$ si elle est
+  On dira que $\varphi$ est absolue pour une classe $\mathcal M$ si elle est
   absolue entre $\mathcal M$ et $\mathbb V$.
 \end{definition}
 
@@ -933,8 +934,8 @@ locale, puisqu'elle repose sur la non existence d'une injection dans l'univers
 ambiant. Imaginons qu'on puisse ajouter une telle injection dans notre univers,
 alors un élément qui était un cardinal peut ne plus l'être.
 
-Pour étudier une proposition qui présente cette propriété locale mentionnée
-ci-dessus, on introduit la hiérarchie de Lévy.
+Pour étudier les propositions qui présentent cette propriété de localité
+mentionnée ci-dessus, on introduit la hiérarchie de Lévy.
 
 \begin{definition}[Hiérarchie de Lévy \cite{LevyH}]
   On définit par induction trois familles d'ensembles de formules sur
@@ -958,7 +959,7 @@ ci-dessus, on introduit la hiérarchie de Lévy.
     $\Sigma^{\ZFC}_n$ et $\Pi^{\ZFC}_n$.
   \end{itemize}
 
-  On notera en général simplement $\Delta_n$ (respectivement $\Sigma_n$ et
+  On notera dans ce chapitre simplement $\Delta_n$ (respectivement $\Sigma_n$ et
   $\Pi_n$) pour $\Delta^{\ZFC}_n$.
 \end{definition}
 
@@ -1016,16 +1017,16 @@ Donnons des exemples de formules $\Delta_0$~:
   \item $x$ est transitif, car cela s'écrit $\forall y \in x, y\subseteq x$
   \item $x$ est un couple, car cela s'écrit
     $\exists y,\exists z, x = \{\{y,z\},\{y\}\}$
+  \item pour un couple $\alpha$, la formule $x = \pi_1(\alpha)$
+    (respectivement $x = \pi_2(\alpha)$)
   \item $f$ est une fonction, car cela s'écrit
-    \begin{multline*}
-      \forall \gamma \in f, \gamma\text{ est un couple }\land
-      \forall x,y \in \bigcup \bigcup f,\\
-      (\exists z \in \bigcup\bigcup f,
-      (x,z) = \gamma \land (y,z) = \gamma) \implies x = y
-    \end{multline*}
-  \item $\alpha \in \Ord$, car être un ordinal est la conjonction de~:
+    \[\left(\forall \gamma \in f, \gamma\text{ est un couple }\right)\land
+    \left(\forall \gamma,\delta \in f, \pi_2(\gamma) = \pi_2(\delta) \implies
+    \pi_1(\gamma) = \pi_1(\delta)\right) \]
+  \item $\alpha \in \Ord$, car être un ordinal est la conjonction des formules
+    disant~:
     \begin{itemize}
-    \item être transitif, dont on vient de voir que la proposition était
+    \item que $\alpha$ est transitif, dont on a vu que la formule était
       $\Delta_0$.
     \item que $\in$ est transitif sur $\alpha$, ce qui s'écrit
       \[\forall x \in \alpha, \forall y \in \alpha, \forall z \in \alpha,
@@ -1034,7 +1035,7 @@ Donnons des exemples de formules $\Delta_0$~:
       \[\forall x \in \alpha, \forall y \in \alpha, x \neq y \implies
       x \in y \lor y \in x\] qui est là encore clairement $\Delta_0$.
     \item comme on suppose l'axiome de fondation, l'irréflexivité de $\in$ et sa
-      bonne fondation sont forcément vérifiés.
+      bonne fondation sont forcément vérifiées.
     \end{itemize}
   \item être égal à $\omega$, car \og $X = \omega$\fg peut s'écrire
     \[X\in \Ord \land (\forall z \in X, S\;z \in X) \land
@@ -1189,7 +1190,7 @@ On peut maintenant montrer le théorème à proprement parler.
   On montre le résultat uniquement sur les formules sous forme prénexe, mais
   comme toute formule est équivalente à une formule sous forme prénexe, cela
   suffit à montrer le résultat souhaité. On procède donc par récurrence sur
-  le nombre de quantificateur de la formule, en ajoutant des $\exists$ et des
+  le nombre de quantificateurs de la formule, en ajoutant des $\exists$ et des
   négations~:
   \begin{itemize}
   \item comme dans le lemme précédent, le cas sans quantificateur se traite
@@ -1348,9 +1349,9 @@ $(\mathbb L_\alpha)_{\alpha \in \Ord}$ est une hiérarchie cumulative et transit
   \begin{itemize}
   \item $\mathbb L_0 = \varnothing$ est transitif.
   \item supposons que $\mathbb L_\alpha$ est transitif. Soit alors
-    $x \in \mathbb L_{\alpha + 1}$. Pour tout $y \in x$, comme $\mathbb L_\alpha$
-    est transitif, $y \in \mathbb L_\alpha$. Mais alors on peut définir
-    $y$ par la formule
+    $x \in \mathbb L_{\alpha + 1}$. Cela signifie que
+    $x\subseteq \mathbb L_{\alpha + 1}$, donc $y \in \mathbb L_\alpha$ pour tout
+    $y \in x$. Mais alors on peut définir $y$ par la formule
     \[\varphi_y(x) \defeq x \in y\]
     à paramètre ($y$) dans $\mathbb L_\alpha$. Ainsi
     $y \in \mathbb L_{\alpha + 1}$, donc $x \subseteq \mathbb L_{\alpha + 1}$.
@@ -1380,7 +1381,9 @@ $\omega$.
 
 \begin{proposition}
   Pour tout $\alpha \leq \omega$, $\mathbb L_\alpha = \mathbb V_\alpha$.
-  Cependant, pour tout $\alpha > \omega$, si $|\alpha| \neq \beth_\alpha$ alors
+  Cependant, pour tout $\alpha > \omega$, on a seulement l'inclusion
+  $\mathbb L_\alpha \subseteq \mathbb V_\alpha$. Lorsque $\alpha > \omega^2$,
+  si $|\alpha| \neq \beth_\alpha$ alors
   $\mathbb L_\alpha \subsetneq \mathbb V_\alpha$.
 \end{proposition}
 
@@ -1396,7 +1399,7 @@ $\omega$.
       &= \powerset(\mathbb V_n)\\
       &= \mathbb V_{n+1}
     \end{align*}
-  \item si $\forall n < \omega, \mathbb L_n = \mathbb V_n$, alors
+  \item comme $\forall n < \omega, \mathbb L_n = \mathbb V_n$, on en déduit que
     $\mathbb L_\omega = \bigcup \mathbb L_n = \mathbb V_\omega$.
   \item comme $\mathbb L_\omega$ est infini,
     $\mathbb L_{\omega+1} \subsetneq \powerset(\mathbb L_\omega)$, donc
@@ -1412,25 +1415,43 @@ $\omega$.
 Cependant, $\mathbb L$ contient bien tous les ordinaux.
 
 \begin{proposition}
-  Pour tout $\alpha \in \Ord$, $\alpha \in \mathbb L_{\alpha + 1}$.
+  Pour tout $\alpha \in \Ord$, $\Ord \cap \mathbb L_\alpha = \alpha$.
 \end{proposition}
 
 \begin{proof}
   On raisonne par induction transfinie~:
   \begin{itemize}
-  \item $\varnothing \in \mathbb L$.
-  \item si $\alpha \in \mathbb L_{\alpha + 1}$,
-    alors $\alpha \in \mathbb L_{\alpha + 2}$ et on définit la formule
-    \[\varphi(x,\alpha) \defeq x = \alpha \lor x \in \alpha\]
-    qui définit exactement la partie
-    $\alpha + 1 \subseteq \mathbb L_{\alpha + 1}$, donc
-    $\alpha + 1 \in \mathbb L_{\alpha + 2}$.
-  \item si $\lambda$ est un ordinal limite, que pour tout $\beta < \lambda$,
-    $\beta \in \mathbb L_\beta$, alors on peut définir $\lambda$ par
-    \[\varphi(x,\lambda) \defeq \exists \beta\in \Ord, x = \beta\]
+  \item le cas de $\varnothing$ est direct.
+  \item on suppose que $\Ord \cap \mathbb L_\alpha = \alpha$, montrons que
+    $\Ord\cap \mathbb L_{\alpha + 1} = \alpha + 1$ par double inclusion.
+
+    Soit $\beta \in\Ord\cap \mathbb L_{\alpha + 1}$~: on sait donc que
+    $\beta$ est une partie définissable de $\mathbb L_\alpha$~: en particulier,
+    c'est un ordinal appartenant à $\powerset(\alpha)$ puisque les ordinaux
+    dans $\mathbb L_\alpha$ sont exactement les éléments de $\alpha$. On en
+    déduit que $\beta < \alpha + 1$.
+
+    Soit $\beta < \alpha + 1$. Si $\beta < \alpha$, alors
+    $\beta \in \mathbb L_\alpha$ par hypothèse d'induction, donc
+    $\beta \in \mathbb L_{\alpha + 1}$ par croissance de la hiérarchie
+    $\mathbb L$. Si $\beta = \alpha$, alors on considère la formule
+    \[\psi(x)\defeq \Ord(x)\]
+    On sait que $\Ord\cap \mathbb L_\alpha = \alpha$, donc
+    $(\mathbb L_\alpha \models \psi(x)) \iff x \in \alpha$, d'où
+    le fait que $\alpha$ est une partie définissable de $\mathbb L_\alpha$, donc
+    un élément de $\mathbb L_{\alpha + 1}$.
+  \item dans le cas où $\lambda$ est un ordinal limite, on suppose que pour tout
+    $\beta < \lambda$, $\Ord \cap \mathbb L_\beta = \beta$, mais alors l'équation
+    passe à la borne supérieure pour donner
+    $\Ord\cap \mathbb L_\lambda = \lambda$ pour continuité de $\mathbb L$.
   \end{itemize}
-  Ainsi pour tout $\alpha \in \Ord, \alpha \in \mathbb L_{\alpha + 1}$.
+  Ainsi pour tout $\alpha \in \Ord, \Ord \cap \mathbb L_\alpha = \alpha$.
 \end{proof}
+
+\begin{corollary}
+  Pour tout $\alpha \in \Ord, \alpha \in \mathbb L_{\alpha + 1}$, et
+  $\Ord \subseteq \mathbb L$.
+\end{corollary}
 
 Il y a donc toujours plus d'éléments dans $\mathbb V_\alpha$ que dans
 $\mathbb L_\alpha$. Cependant, on pourrait imaginer qu'en prenant par exemple
@@ -1476,7 +1497,7 @@ constructible.
   $\Sigma_n$, $\Pi_n$) alors être $H$-inductif l'est aussi.
 \end{proof}
 
-Ainsi exprimer, pour $\alpha$ un ordinal, le prédicat d'être $\mathbb L_\alpha$,
+Ainsi, exprimer le prédicat d'être $\mathbb L_\alpha$ (pour un ordinal $\alpha$),
 est à un niveau aussi élevé que le prédicat utilisé pour sa définition, qui est
 clairement la complexité de $\powerdef$.
 
@@ -1628,11 +1649,12 @@ On peut ainsi prouver que $\mathbb L$ est un modèle (classe) de $\ZF$.
   $a_1,\ldots,a_n,a \in \mathbb L_\alpha$. Par le \cref{thm.reflexion}, on
   trouve $\beta > \alpha$ tel que $\psi^{\mathbb L}(x_1,\ldots,x_n,x,y)$ est
   absolue entre $\mathbb L_\beta$ et $\mathbb L$. On a alors
-  \[\{ b \in \mathbb L_\beta \mid b \in a \land
-  \psi^{\mathbb L}(a_1,\ldots,a_n,a,b)\} \in \mathbb L_{\beta + 1}\]
+  \[b\defeq \{ x \in \mathbb L_\beta \mid x \in a \land
+  \psi^{\mathbb L}(a_1,\ldots,a_n,a,x)\} \in \mathbb L_{\beta + 1}\]
   et un élément de $\mathbb L$ vérifie $\psi^{\mathbb L}$ si et seulement s'il
-  le vérifie dans $\mathbb L_{\beta}$, si et seulement s'il appartient à $b$.
-  On a donc vérifié l'axiome de compréhension.
+  le vérifie dans $\mathbb L_{\beta}$ (car pour vérifier $\psi^{\mathbb L}$, il lui
+  faut au moins être un élément de $a$, donc de $\mathbb L_\beta$), si et
+  seulement s'il appartient à $b$. On a donc vérifié l'axiome de compréhension.
 
   Ainsi $\mathbb L \models \ZF$.
 \end{proof}
@@ -1647,14 +1669,16 @@ cette incohérence était déjà dans $\ZF$.
 
 \begin{remark}
   On verra qu'en fait $\VeqL$ implique une version forte de l'axiome du choix,
-  donc on a aussi une preuve de $\Coher(\ZF)\implies \Coher(\ZFC)$.
+  donc on a aussi une preuve de $\Coher(\ZF)\implies \Coher(\ZFC)$ puisque nos
+  constructions sur $\mathbb L$ n'ont pas nécessité l'axiome du choix.
 \end{remark}
 
 \subsection{Les propriétés de l'univers constructible}
 
 On montre dans cette sous-section que l'univers $\mathbb L$ vérifie des
 résultats particulièrement forts~: l'axiome du choix global et l'hypothèse du
-continu généralisée.
+continu généralisée. On suppose donc l'axiome $\VeqL$ en plus des autres axiomes
+de $\ZFC$.
 
 Présentons donc l'axiome du choix global. Plutôt qu'un simple axiome, celui-ci
 a besoin d'autres données pour être exprimé. Nous considérons que nous sommes
@@ -1766,8 +1790,8 @@ L'inclusion qui nous demandera du travail est
 $\mathbb H_\kappa \subseteq\mathbb L_\kappa$, nous allons donc l'étudier à part.
 
 \begin{lemma}
-  Soit $\kappa$ un cardinal infini successeur, $\kappa = \lambda^+$. Si
-  $\VeqL$, alors $\mathbb H_\kappa \subseteq \mathbb L_\kappa$.
+  Soit $\kappa$ un cardinal infini successeur et $\kappa = \lambda^+$. On a
+  l'inclusion $\mathbb H_\kappa \subseteq \mathbb L_\kappa$.
 \end{lemma}
 
 \begin{proof}
@@ -1787,11 +1811,15 @@ $\mathbb H_\kappa \subseteq\mathbb L_\kappa$, nous allons donc l'étudier à par
   particulier, $\pi(x) = x$ et $x\in N$.
 
   On veut alors prouver que $N = \mathbb L_\beta$ avec $\beta = N\cap \Ord$.
+  Remarquons que $\beta$ est limite puisque $N$ vérifie que les ordinaux sont
+  non bornées (puisqu'il est isomorphe à $M$ qui, lui-même, vérifie les mêmes
+  énoncés que $\mathbb L_\theta$ avec $\theta$ cardinal, donc ordinal limite).
 
   Soit $\alpha < \beta$, comme $\alpha \mapsto \mathbb L_\alpha$ est absolu
   pour les modèles de $\ZF - \mathrm{P}$, l'axiome de remplacement nous donne
   que $\mathbb L_\alpha \in N$. Comme, de plus, $N$ est transitif,
-  $\mathbb L_\alpha \subseteq N$ donc $\mathbb L_\beta \subseteq N$.
+  $\mathbb L_\alpha \subseteq N$ donc en prenant l'union pout tous les
+  $\alpha < \beta$, on en déduit que $\mathbb L_\beta \subseteq N$.
 
   Réciproquement, comme $N\models \VeqL$, et par absoluité, on a
   \[(\VeqL)^N \iff \forall x \in N, \exists \alpha \in \Ord\cap N,
@@ -1807,7 +1835,7 @@ $\mathbb H_\kappa \subseteq\mathbb L_\kappa$, nous allons donc l'étudier à par
 Il nous reste maintenant à vérifier l'autre inclusion.
 
 \begin{lemma}
-  Soit $\kappa$ un cardinal infini, on suppose de plus que $\VeqL$. Alors
+  Soit $\kappa$ un cardinal infini, on a l'égalité
   $\mathbb H_\kappa = \mathbb L_\kappa$.
 \end{lemma}
 
@@ -1827,7 +1855,7 @@ Il nous reste maintenant à vérifier l'autre inclusion.
 On en déduit $\HCG$ dans $\VeqL$.
 
 \begin{theorem}
-  Si $\VeqL$, alors $\HCG$ est vérifiée.
+  $\HCG$ est vérifiée.
 \end{theorem}
 
 \begin{proof}
@@ -1842,4 +1870,5 @@ Nous concluons donc ce chapitre sur ce résultat important~:
 $\HCG$ ne peut donc pas être prouvée faux dans $\ZFC$. Pour montrer que ce
 résultat est indépendant de $\ZFC$, il nous reste alors à montrer que
 $\Coher(\ZFC)\implies\Coher(\ZFC+\lnot\HC)$, ce qui nécessite la technique du
-forcing, introduite par Cohen.
+forcing, introduite par Cohen dans son article
+\cite{doi:10.1073/pnas.50.6.1143}.

@@ -95,7 +95,7 @@ remarquable.
   Comme $(u_n)$ est de Cauchy, on trouve $n_0$ tel que
   \[\forall p,q \geq n_0, d(u_p,u_q) < \rho\]
   donc on en déduit, par stricte croissance de $x\mapsto \dfrac{x}{1 + x}$,
-  que pour tout $p,q \geq n_0$, on a l'inégalité $d'(u_p,u_q) < \varepsilon$.
+  que pour tous $p,q \geq n_0$, on a l'inégalité $d'(u_p,u_q) < \varepsilon$.
   Ainsi les deux distances définissent les mêmes suites de Cauchy. Comme la
   convergence est une notion purement topologique et que $d$ et $d'$
   définissent les mêmes topologies, $d$ est complète si et seulement si $d'$
@@ -113,12 +113,13 @@ remarquable.
   \[\forall m \geq n, \forall x,y \in X_m,
   \frac{d_m(x,y)}{2} < \frac{\varepsilon}{2}\]
   On veut prouver qu'on peut trouver un ouvert contenant $(x_n)$ pour la
-  topologie produit (montrant ainsi qu'un voisinage pour $d$ est un voisinage
-  pour la topologie produit). On sait qu'un ouvert de la topologie produit
-  est de la forme $\displaystyle\prod_{i \in F} X_i$ pour une certaine partie
-  finie $F\subfin \mathbb N$~: notre candidat pour $F$ est ici
-  $\{0,\ldots,n_0\}$ puisqu'on a déjà majoré la distance des éléments après
-  $n_0$. On peut donc déjà écrire que pour tout $(y_n)$~:
+  topologie produit et contenu dans $B_\varepsilon((x_n))$ (montrant ainsi qu'un
+  voisinage pour $d$ est un voisinage pour la topologie produit). On sait qu'un
+  ouvert de la topologie produit est de la forme
+  $\displaystyle\prod_{i \in F} X_i$ pour une certaine partie finie
+  $F\subfin \mathbb N$~: notre candidat pour $F$ est ici $\{0,\ldots,n_0\}$
+  puisqu'on a déjà majoré la distance des éléments après $n_0$. On peut donc
+  déjà écrire que pour tout $(y_n)$~:
   \[d((x_n),(y_n)) < \frac{\varepsilon}{2} +
   \sum_{i = 0}^{n_0 - 1} \frac{d_i(x_i,y_i)}{2^i}\]
   Il nous reste donc à trouver pour chaque $i$ une boule centrée en
@@ -200,13 +201,13 @@ remarquable.
   $\displaystyle\prod_{n \in \mathbb N} X_n$
   correspond à un ensemble fini $F\subfin \mathbb N$ et, pour chaque
   $n \in F$, un ouvert $U_n \subseteq X_n$. Par chaque $n$, comme $Y_n$ est
-  dense dans $X_n$, on peut donc trouver $y_n \in Y_n \cap Y_n$. Alors
+  dense dans $X_n$, on peut donc trouver $y_n \in Y_n \cap U_n$. Alors
   la suite
   \[u_n \defeq \begin{cases} y_n\text{ si } n \in F \\
     x_n \text{ sinon}\end{cases}\]
   appartient au cylindre en $(U_n)_{n \in F}$, et à $Y$, donc $Y$ intersecte
   tout ouvert, donc $Y$ est dense dans
-  $\displaystyle \bigcup_{n \in \mathbb N} X_n$.
+  $\displaystyle \prod_{n \in \mathbb N} X_n$.
 \end{proof}
 
 La seconde propriété de stabilité, là encore dénombrable, est celle par union
@@ -245,7 +246,7 @@ proximité entre eux.
   \item soit $i\in I, U \in \Omega_i$. Comme la topologie de $X_i$ est
     engendrée par $d_i$, on peut écrire
     \[U = \bigcup_{j \in J} B_i(x_j,\varepsilon_j)\]
-    mais dans ce cas,
+    pour un certain ensemble d'indices $J$. Mais dans ce cas,
     \[\bigcup_{j \in J}B((i,x_j),\varepsilon) = \{(i,x)\mid x \in U\}\]
   \item soit $x\in \coprod_i X_i$ et $\varepsilon > 0$. Si
     $\varepsilon \geq 1$, alors $B(x,\varepsilon) = \coprod_i X_i$ qui est un
@@ -258,7 +259,7 @@ proximité entre eux.
   Cette distance est complète~: soit $(x_n)$ une suite de Cauchy sur notre
   espace. Comme la suite est de Cauchy, on peut trouver $n\in\mathbb N$ tel que
   \[\forall p,q > n, d(x_p,x_q) < \frac{1}{2}\]
-  donc à partir du rang $n$, $(x_n)$ est dans la boule $B(x_n,\dfrac{1}{2})$.
+  donc à partir du rang $n$, $(x_n)$ est dans la boule $B(x_n,1/2)$.
   Cela signifie donc qu'à partir du rang $n$, tous les éléments de la suite
   sont de la forme $(i,y_n)$ pour un même $i$. Naturellement, cette suite
   correspond à la suite $(y_n) \in X_i$ qui est de Cauchy dans l'espace complet
@@ -278,7 +279,7 @@ Enfin, on a stabilité par partie fermée.
 
 \begin{proposition}\label{desc.ferme.polonais}
   Soit $(X,\Omega)$ un espace polonais et $F\subseteq X$ un fermé de $X$. Alors
-  l'espace induit par $F$ sur $X$ est un espace polonais.
+  l'espace induit par $X$ sur $F$ est un espace polonais.
 \end{proposition}
 
 \begin{proof}
@@ -287,22 +288,23 @@ Enfin, on a stabilité par partie fermée.
   complètement métrisable passe directement à $F$.
   
   Soit $D$ une partie dénombrable dense dans $X$, notons-la
-  $\{x_n\}_{n\in\mathbb N}$. On construit alors un ensemble $D'\subseteq Y$~: pour
+  $\{x_n\}_{n\in\mathbb N}$. On construit alors un ensemble $D'\subseteq F$~: pour
   chaque $i\in \mathbb N$ et chaque $j\in \mathbb N^*$, si
-  $B\left(x_n,\dfrac{1}{j}\right)\neq\varnothing$ alors on ajoute à $D'$ un
-  élément $y_{i,j}$ de cet ensemble. Soit $y\in Y$ et $\varepsilon > 0$, on veut
-  trouver un élément $y_{i,j}$ tel que $d(y,y_{i,j}) < \varepsilon$. Pour cela,
-  on commence par fixer $j$ tel que $\dfrac{1}{j} < \dfrac{\varepsilon}{2}$.
-  Par définition de la densité de $x_n$ dans $X$, on trouve $n$ tel que
-  \[\forall m > n, d(y,x_n) < \frac{1}{j}\]
-  et, par construction de $D'$, on trouve $i$ tel que
-  $d(x_n,y_{i,j})<\dfrac{1}{j}$. Ainsi
+  $B\left(x_i,\dfrac{1}{j}\right)\cap F\neq\varnothing$ alors on ajoute à $D'$
+  un élément $y_{n,j}$ de cet ensemble. Soit $y\in F$ et $\varepsilon > 0$, on
+  veut trouver un élément $z\in F$ tel que $d(y,z) \leq \varepsilon$. Pour
+  cela, on commence par fixer $j$ tel que
+  $\dfrac{1}{j} < \dfrac{\varepsilon}{2}$. Par définition de la densité de $x_n$
+  dans $X$, on trouve $n$ tel que
+  \[d(y,x_n) < \frac{1}{j}\]
+  et, par construction de $D'$, on trouve $y_{n,j}$ tel que
+  $d(x_n,y_{n,j})<\dfrac{1}{j}$ puisque $y \in B(x_n,1/j)\cap F$. Ainsi
   \begin{align*}
-    d(y,y_{i,j}) &\leq d(y,x_n) + d(x_n,y_{i,j})\\
+    d(y,y_{n,j}) &\leq d(y,x_n) + d(x_n,y_{n,j})\\
     &\leq \frac{1}{j} + \frac{1}{j}\\
     &\leq \varepsilon
   \end{align*}
-  $D'$ est donc dense dans $Y$. $Y$ est donc un espace polonais.
+  $D'$ est donc dense dans $F$. $F$ est donc un espace polonais.
 \end{proof}
 
 On donne l'exemple paradigmatique d'espace polonais~: l'ensemble des réels.
@@ -626,11 +628,11 @@ On peut alors énoncer nos derniers résultats de stabilité.
   dénombrable, on veut appliquer le \cref{desc.thm.urysohn}~: il nous suffit
   donc de vérifier que cet espace est régulier. Soit $C\subseteq X$ fermé et
   $x\in X \setminus C$. Notons $U = X \setminus C$. Comme $(X,\Omega)$ est
-  séparé, on sait que pour tout $y \in C$, il existe $(U_y,v_y)$ deux ouverts
+  séparé, on sait que pour tout $y \in C$, il existe $(U_y,V_y)$ deux ouverts
   tels que
   \[\left\{\begin{array}{c}
   x \in U_y\\
-  y \in v_y\\
+  y \in V_y\\
   U_y \cap V_y = \varnothing
   \end{array}\right.\]
   La famille $\{V_y\}_{y \in C}$ est alors un recouvrement de $C$, qui est
@@ -774,16 +776,16 @@ de $0$ à $n-1$ à ceux correspondant dans $s$.
   sait qu'il existe au plus un élément dans
   $\bigcup_{n \in \mathbb N} X_{u\restr n}$ comme son diamètre est nul. Comme on
   peut choisir un élément dans chaque $X_{u\restr n}$ par hypothèse, on peut
-  construire une suite, donc la condition sur les diamètres assure qu'elle est
+  construire une suite, dont la condition sur les diamètres assure qu'elle est
   de Cauchy. On sait donc qu'elle converge, et sa limite est dans l'intersection
   de tous les $X_{u\restr n}$, donc $f(u)$ est bien définie. On en déduit
   l'existence et l'unicité d'une telle fonction $f$. On veut maintenant montrer
   qu'elle est une injection continue.
   
-  Commençons par montrer que pour $u \neq v$ deux mots finis, on a
-  $X_u \cap X_v = \varnothing$. Pour cela, en considérant le plus grand préfixe
-  commun entre $u$ et $v$, notons-le $p$, on sait (sans perte de généralité,
-  quitte à inverser $u$ et $v$) que $X_u \subseteq X_{p\star 0}$ et
+  Commençons par montrer que pour $u \neq v$ deux mots finis de même longueur,
+  on a $X_u \cap X_v = \varnothing$. Pour cela, en considérant le plus grand
+  préfixe commun entre $u$ et $v$, notons-le $p$, on sait (sans perte de
+  généralité, quitte à inverser $u$ et $v$) que $X_u \subseteq X_{p\star 0}$ et
   $v \subseteq X_{p\star 1}$, donc $X_u\cap X_v =\varnothing$.
 
   On en déduit donc directement l'injectivité de $f$, puisque si $u \neq v$
@@ -791,11 +793,11 @@ de $0$ à $n-1$ à ceux correspondant dans $s$.
   rang fini, permettant d'appliquer notre résultat précédent.
 
   On en déduit aussi que pour tout $s \in 2^{<\omega}$.
-  \[f^{-1}(X_s) = \ext(u)\]
-  Comme on sait que l'adhérence de $X_{u\restr n}$ est incluse dans
-  $X_{u \restr{n + 1}}$, on sait que $f(u) \in X_s$ pour $u \in \ext(s)$.
-  Réciproquement, si $f(u) \in X_s$, alors le préfixe de taille $|s|$ de $u$
-  ne peut pas différer de $s$, donc $u \in \ext(s)$.
+  \[f^{-1}(X_s) = \ext(s)\]
+  En effet, on sait dans un sens que pour toute suite $u$, l'adhérence de
+  $X_{u\restr n}$ est incluse dans $X_{u \restr{n + 1}}$ et que $f(u) \in X_s$ pour
+  $u \in \ext(s)$. Réciproquement, si $f(u) \in X_s$, alors le préfixe de taille
+  $|s|$ de $u$ ne peut pas différer de $s$, donc $u \in \ext(s)$.
 
   Pour montrer que $f$ est continue, puisqu'on a vu que les $f^{-1}(X_s)$ sont
   des ouverts de $2^\mathbb N$, il nous suffit de montrer que pour tout
@@ -907,7 +909,7 @@ On peut maintenant construire le schéma de Cantor que l'on évoquait.
     X_{s\star 1} = X_s\cap U_y \cap B(y,2^{-|s|+1})\]
   \end{itemize}
   Comme $X_s$ a un diamètre inférieur à $2^{-|s|}$, on en déduit que le diamètre
-  du schéma de Cantor est bien évanescent. Il nous reste donc à vérifier que
+  du schéma de Cantor est bien évanescent. Il nous reste donc à vérifier
   l'assertion suivante~:
   \[\forall u\in 2^\mathbb N,\bigcap_{n \in \mathbb N}X_{u\restr n}
   \neq\varnothing\]
@@ -917,10 +919,10 @@ On peut maintenant construire le schéma de Cantor que l'on évoquait.
   $(x_n)$ appartiennent à $X_{u\restr n}$, on en déduit que la distance entre
   deux éléments est inférieure à $2^{-n}$, nous donnant la propriété d'être de
   Cauchy puisque $2^{-n} \xrightarrow[n\to\infty]{} 0$. Comme $X$ est complet,
-  on en déduit que $x$ converge et donc que
-  $\displaystyle x\in\bigcap_{n\in\mathbb N} X_{u\restr n}$.
+  on en déduit que $(x_n)$ converge et donc que
+  $\bigcap_{n\in\mathbb N} X_{u\restr n}\neq\varnothing$.
 
-  On a ainsi, grâce à la \cref{desc.prop.schem.C}, on en déduit l'existence
+  Ainsi, grâce à la \cref{desc.prop.schem.C}, on en déduit l'existence
   d'une injection continue de $2^\mathbb N$ dans $X$.
 \end{proof}
 
@@ -929,10 +931,10 @@ On peut maintenant construire le schéma de Cantor que l'on évoquait.
 \end{corollary}
 
 \begin{proof}
-  On sait que $2^{\aleph_0}$ minore de le cardinal d'un espace polonais parfait
-  par la proposition précédente. De plus, comme tout point peut être écrit
-  comme limite de points dans un ensemble dénombrable, on peut injecter l'espace
-  dans $\mathbb N^\mathbb N$, de cardinal $2^{\aleph_0}$, d'où le résultat.
+  On sait que $2^{\aleph_0}$ minore le cardinal d'un espace polonais parfait par
+  la proposition précédente. De plus, comme tout point peut être écrit comme
+  limite de points dans un ensemble dénombrable, on peut injecter l'espace dans
+  $\mathbb N^\mathbb N$, de cardinal $2^{\aleph_0}$, d'où le résultat.
 \end{proof}
 
 En fait, on peut être plus précis sur les espaces polonais~: ceux-ci sont
@@ -1008,7 +1010,7 @@ compact et possède une base d'ouverts-fermés. De plus, on a vu qu'il est un
 espace polonais parfait. En réalité, ces propriétés suffisent à caractériser
 l'espace de Cantor.
 
-Pour faire construire un homéomorphisme entre un espace quelconque vérifiant ces
+Pour construire un homéomorphisme entre un espace quelconque vérifiant ces
 hypothèses et l'espace de Cantor, on s'attend à devoir construire un schéma de
 Cantor. En utilisant la compacité de l'espace (qu'on nommera $X$), on peut
 trouver un nombre fini de parties $X_1,\ldots,X_n$ disjointes, qui seront
@@ -1113,7 +1115,7 @@ les introduire, même si pour un seul théorème final.
   recouvrement ouvert, il existe un recouvrement dénombrable.
 \end{definition}
 
-Les espaces de Lindelöf forment une famille assez large d'espace topologiques,
+Les espaces de Lindelöf forment une famille assez large d'espaces topologiques,
 mais nous souhaitons ici simplement considérer les espaces polonais. D'après
 la \cref{prop.base.denomb}, un espace polonais est à base dénombrable, et on
 peut prouver qu'un espace à base dénombrable est un espace de Lindelöf.
