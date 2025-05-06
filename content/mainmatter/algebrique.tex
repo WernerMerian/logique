@@ -10,7 +10,7 @@ $\{a^nb^n\}_{n\in\mathbb N}$ n'est pas rationnel. Un tel langage paraît pourtan
 intéressant, d'où la volonté de construire un formalisme plus riche que celui
 des expressions rationnelles.
 
-Les langages algébriques, encore appelés langage hors contextes, sont les
+Les langages algébriques, encore appelés langages hors contextes, sont les
 langages nés d'un tel formalisme. Ce chapitre est dédié à l'étude de ce
 formalisme, qui est celui des grammaires hors contexte. Nous verrons ces
 grammaires ainsi que les automates associés aux langages algébrique~: les
@@ -36,7 +36,7 @@ est privilégiée par des règles de priorité. Une autre façon de faire, qui e
 celle que l'on formalise à l'aide des grammaires hors contexte, est d'inclure
 explicitement le parenthésage dans la construction d'une expression. En faisant
 cela, on souhaite obtenir une description de nos expressions uniquement comme
-un sous-ensemble de $(\mathbb N \cup \{(,),+,\times\}\})^\star$.
+un sous-ensemble de $(\mathbb N \cup \{(,),+,\times\})^\star$.
 
 \begin{remark}
   En réalité, on parle aussi de BNF dans le cas de la présentation qui sera
@@ -74,9 +74,9 @@ $2$. Cela nous mène donc à la notion de dérivation.
 
 \begin{definition}[Dérivation]
   Soit une grammaire $G$. On appelle dérivation en un pas de
-  $u \in (\Sigma\cup \Gamma)^\star$ vers $u' \in (\Sigma\cup\Gamma)^\star$,
-  ce qu'on notera $u \to u'$, s'il existe une décomposition de $u$ et $u'$ de la
-  forme
+  $u \in (\Sigma\cup \Gamma)^\star$ vers $u' \in (\Sigma\cup\Gamma)^\star$ la
+  relation, qu'on notera $u \to u'$, définie par le fait qu'il existe une
+  décomposition de $u$ et $u'$ de la forme
   \[u = vAw\qquad u' = vbw\]
   où $A \to b$, c'est-à-dire $(A,b) \in \to$. On appelle dérivation de $u$ vers
   $u'$ la clôture réflexive et transitive $\to^\star$ de la dérivation en un pas.
@@ -117,11 +117,11 @@ les mots de Dyck.
   \begin{itemize}
   \item $\Sigma = \mathbb N \cup \{(,),+,\times\}$
   \item Les règles sont~:
-    \begin{align*}
-      S &\to \MultExp + S \mid \MultExp\\
-      \MultExp &\to \Atom \times \MultExp \mid \Atom\\
-      \Atom &\to n \mid (S)
-    \end{align*}
+    \[\begin{array}{lcl}
+      S & \to & \MultExp + S \mid \MultExp\\
+      \MultExp & \to & \Atom \times \MultExp \mid \Atom\\
+      \Atom & \to & n \mid (S)
+    \end{array}\]
   \end{itemize}
   
   On définit la grammaire $G_D$ comme suit~:
@@ -135,7 +135,7 @@ les mots de Dyck.
 \end{example}
 
 Donnons aussi des exemples de dérivations, en utilisant nos deux premières
-grammaires. Une première dérivation dans $G_{\mathrm{arith}}$~:
+grammaires. Une première dérivation, dans $G_{\mathrm{arith}}$~:
 \begin{align*}
   S &\to \MultExp + S \to \MultExp + \MultExp \\
   &\to \Atom + \MultExp \to \Atom + \Atom \times \MultExp \\
@@ -145,7 +145,7 @@ grammaires. Une première dérivation dans $G_{\mathrm{arith}}$~:
   &\to 2 + (4 \times \MultExp) \times 3\\
   &\to 2 + (4 \times 5) \times 3
 \end{align*}
-Une seconde dérivation dans $G_D$~:
+Une autre dérivation, dans $G_D$~:
 \begin{align*}
   S &\to S0S1 \to S0S10S1 \to 0S10S1\to 0S0S110S1 \to 00S110S1 \\
   &\to 00S110S0S11 \to 00S1100S11 \to 00S1100S0S111\to 00S11000S111\\
@@ -298,7 +298,7 @@ forme réduite sans changer le langage engendré.
   \Theta_0 \defeq \{S\}\\
   \Theta_{n+1} \defeq \Theta_n \cup
   \{A \in \Delta\mid \exists S' \in \Theta_n,
-  \exists u,v \in \Delta^\star, S' \to uSv\}
+  \exists u,v \in \Delta^\star, S' \to uAv\}
   \end{cases}\]
   Comme précédemment, on considère $\Theta$ l'union finie des $\Theta_n$ car on
   a une suite croissante majorée d'ensembles finis.
@@ -339,7 +339,7 @@ La deuxième forme à introduire est la forme propre.
 \begin{definition}[Forme propre]
   Soit $\Sigma$ un alphabet. Une grammaire $(\Gamma,\to,S)$ sur $\Sigma$ est
   dite sous forme propre s'il n'existe aucune règle de la forme
-  $A \to \varepsilon$ ni $A \to BC$ où $A,B,C\in \Gamma$.
+  $A \to \varepsilon$ ni $A \to B$ où $A,B\in \Gamma$.
 \end{definition}
 
 Si l'on souhaite mettre une grammaire sous forme propre, il semble que dériver
@@ -399,9 +399,67 @@ de substitution.
   On définit donc la relation $\to'$ comme la plus petite relation qui contient
   $\to$ privé de l'ensemble $\{(A,\varepsilon) \mid A \in \Gamma\}$, et qui
   contient chaque règle $A \to' u$ où $A \to w$ et
-  $u \in \sigma(w)\setminus\{\varepsilon\}$.
+  $u \in \sigma(w)\setminus\{\varepsilon\}$ (comme l'ensemble des règles
+  $A \to w$ est fini, l'ensemble des règles ajoutées dans $\to'$ est lui aussi
+  fini).
 
-  A FAIRE
+  On veut prouver qu'un mot non vide est dérivable pour une relation si et
+  seulement s'il l'est pour l'autre.
+
+  Commençons par prouver que si $A \to' u$, alors $A \to^\star u$ dans le cas
+  où $u \neq \varepsilon$. Pour cela, il nous suffit de montrer que pour toute
+  règle $A \to w$ et $u \in \sigma(w)\setminus \{\varepsilon\}$, on a
+  $A \to^\star u$. Pour cela, on procède par récurrence sur la taille de $w$~:
+  \begin{itemize}
+  \item si $A \to w$ et $w = \varepsilon$, alors
+    $u \in \sigma(w) \setminus\{\varepsilon\}$ est absurde, donc le cas est
+    traité.
+  \item supposons que $A \to^\star u$ pour tout $A$ et tout
+    $u \in \sigma(w)\setminus\{\varepsilon\}$ avec $w$ de taille $n$. Soit
+    $w' = w\star a$, où $a$ est une lettre, $A$ un non terminal et
+    $u \in \sigma(w')\setminus\{\varepsilon\}$ tels que $A \to u$. On distingue
+    deux cas~:
+    \begin{itemize}
+    \item si $a \in \Delta$, alors $\sigma(w') = \sigma(w) \cup\sigma(w)\{a\}$,
+      et on en déduit donc que soit $u \in \sigma(w)\setminus\{\varepsilon\}$
+      (auquel cas la propriété est vérifiée par hypothèse de récurrence), soit
+      $u = u'a$ et $u' \in \sigma(w) \setminus\{\varepsilon\}$, et la propriété
+      est alors encore vérifiée.
+    \item si $a \notin \Delta$, alors $\sigma(w')=\sigma(w)$, donc l'hypothèse
+      de récurrence s'applique directement.
+    \end{itemize}
+  \end{itemize}
+  Ainsi $\to'$ ne rajoute pas de mots dérivés.
+
+  Pour le sens réciproque, il nous faut procéder par induction sur la longueur
+  d'une dérivation pour prouver que si $A \to^\star u$ alors
+  $A {\to'}^\star u$, où $u$ est non vide~:
+  \begin{itemize}
+  \item le seul mot dérivable en $0$ étape est $S$ dans les deux cas
+  \item supposons l'implication prouvée pour le cas d'une dérivation en $n$
+    étapes, et soient $A,u$ tels que $A \to^{n+1} u$, montrons que
+    $A {\to'}^\star u$. Par construction on peut considérer que
+    $A \to^n vA'w \to vuw$ avec $A' \to u$. Par hypothèse d'induction, on sait
+    donc que $A {\to'}^n vA'w$~; deux cas se présentent alors~:
+    \begin{itemize}
+    \item si $u = \varepsilon$, alors considérons le mot $\alpha$ tel que
+      $\alpha \to vA'w$. On peut le décomposer en $\alpha = \beta A''\gamma$ et
+      décomposer nos deux mots $v,w$ en $v = \beta v'$ et $w = w'\gamma$.
+      On voit alors que $v'w' \in \sigma(v'A'w')$, donc $A''\to' v'A'w'$. Il
+      vient finalement que $\alpha \to' u$.
+    \item si $u$ est non vide, alors comme $u \in \sigma(u)$ (le résultat se
+      prouve par une induction directe sur $u$, puisque $\sigma(a)$ contient $a$
+      pour toute lettre $a$), on en déduit que $vA'w \to u$.
+    \end{itemize}
+  \end{itemize}
+
+  Les deux langages engendrés sont donc les mêmes, à l'exception potentielle de
+  $\varepsilon$.
+
+  Il nous reste maintenant à supprimer les règles de la forme $A \to BC$. Pour
+  cela, on supprime simplement les telles règles, et on ajoute toutes les
+  règles de la forme $A \to w$ où $A \to^\star B$ et $B \to w$. Le langage
+  reconnu ne change donc pas.
 \end{proof}
 
 \begin{remark}
@@ -415,7 +473,7 @@ de substitution.
 Introduisons aussi la forme normale de Chomsky.
 
 \begin{definition}[Forme normale de Chomsky]
-  Soit $\Sigma$ un alphabet, et $G = (\Gamma, \to, S)$ une grammaire sur
+  Soit un alphabet $\Sigma$ et une grammaire $G \triangleq (\Gamma, \to, S)$ sur
   $\Sigma$. On dit que $G$ est sous forme normale de Chomsky lorsque toutes
   ses règles sont de l'une des deux formes~:
   \begin{itemize}
@@ -425,19 +483,51 @@ Introduisons aussi la forme normale de Chomsky.
 \end{definition}
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $G = (\Gamma,\to,S)$ une grammaire sur $\Sigma$.
+  Soit $\Sigma$ un alphabet et $G \triangleq (\Gamma,\to,S)$ une grammaire sur
+  $\Sigma$.
   Il existe une grammaire $G'$ sous forme normale de Chomsky telle que
   $\mathcal L_{G'} = \mathcal L_G\setminus \{\varepsilon\}$.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  On commence par supposer que $G$ est sous forme propre (d'où le fait qu'on
+  perde potentiellement $\varepsilon$). Nous allons maintenant procéder en deux
+  étapes~: le premier objectif est de transformer toutes les règles en des
+  règles avec un terminal ou uniquement des non terminaux.
+
+  On pose un ensemble $\Gamma' \triangleq \{A_a\mid a \in \Sigma\}$ avec une
+  bijection avec l'ensemble $\Sigma$. Soit la substitution $\sigma$ définie par
+  $\sigma(A) = \{A\}$ pour $A \in \Gamma$ et $\sigma(a) = \{A_a\}$ pour
+  $a \in \Sigma$. Cette substitution indique, étant donné un mot $u$, la version
+  de $u$ où tous les $a \in \Sigma$ ont été remplacés par les non terminaux
+  $A_a$ respectifs.
+  Notre grammaire modifiée est alors $(\Gamma\cup\Gamma',\to',S)$ où $\to'$ est
+  définie par~:
+  \[\begin{cases}
+  A_a \to' a\\
+  A \to' \sigma(u)
+  \end{cases}\]
+  pour tout $a \in \sigma$ et $(A,u)\in \to$. On peut vérifier que les mots
+  engendrés ne changent pas, puisque $\sigma(u){\to}^\star u$.
+
+  Pour finir, il nous suffit pour chaque règle $A \to' A_1\cdots A_k$ de
+  rajouter des non terminaux $A'_1,\cdots,A'_{k-2}$ et les règles
+  \[A \to'' A_1 A'_1\quad A'_1 \to'' A_2 A'_2 \quad\cdots
+  \quad A'_{k-2} \to'' A_{k-1}A_k\]
+  et de supprimer les règles de la forme $A \to' A_1\cdots A_k$. On obtient
+  ainsi une grammaire en forme normale de Chomsky.
 \end{proof}
+
+\begin{remark}
+  Cette grammaire nous permet de construire un algorithme, même si peu efficace,
+  pour calculer l'appartenance d'un mot au langage engendré par une grammaire.
+\end{remark}
 
 La dernière forme que nous étudions est la forme normale de Greibach.
 
 \begin{definition}[Forme normale de Greibach]
-  Soit $\Sigma$ un alphabet et $G = (\Gamma,\to,S)$ une grammaire sur $\Sigma$.
+  Soit un alphabet $\Sigma$ et une grammei $G \triangleq (\Gamma,\to,S)$ sur
+  $\Sigma$.
   On dit que $G$ est sous forme normale de Greibach si toutes ses règles sont
   de la forme $A \to aU$ où $a \in \Sigma$ et $U \in \Gamma^\star$. On dira que
   $G$ est sous forme normale de Greibach quadratique si les règles sont, de
@@ -492,15 +582,17 @@ Nous avons donc d'abord besoin de la notion d'arbre, plus précisément
 d'arbre enraciné.
 
 \begin{definition}[Arbre enraciné, feuille, étiquetage]
-  Un arbre enraciné est un triplet $(V,r,d)$ où~:
+  Un arbre enraciné est un triplet $(V,r,d)$ avec~:
   \begin{itemize}
-  \item un ensemble $V$ de sommets ;
-  \item un sommet $r \in V$ appelé racine ;
+  \item un ensemble $V$ de sommets~;
+  \item un sommet $r \in V$ appelé racine~;
   \item une fonction $d : V \to \List(V)$ associant à un sommet $s$
     la liste de ses fils, qui vérifie que~:
     \begin{itemize}
     \item pour tous $s,s'\in V$, si $d(s) \cap d(s')\neq\varnothing$ alors
-      $s = s'$
+      $s = s'$~;
+    \item pour tous $s,s' \in V$ tels que $s \in d(s')$, il n'existe qu'une
+      occurrence de $s$ dans $d(s')$~;
     \item pour tout $s \in V$, il existe une suite finie $s_0,\ldots,s_n$ telle
       que $s_0 = r$, $s_n = s$ et
       $\forall i \in \{0,\ldots,n-1\},s_{i+1} \in d(s_i)$.
@@ -527,7 +619,7 @@ d'arbre enraciné.
 \end{remark}
 
 On définit la hauteur d'un arbre comme la plus grande suite allant de la racine
-à une feuille de l'arbre (la hauteur d'un arbre limite à une racine étant $0$).
+à une feuille de l'arbre (la hauteur d'un arbre limité à une racine étant $0$).
 Il est alors possible de définir et raisonner par récurrence sur la hauteur de
 l'arbre.
 
@@ -755,16 +847,17 @@ propriété universelle, analogue au \cref{thm.PU.ind}.
   non terminal pris comme symbole de départ.
 \end{remark}
 
-Nous profitons de ces définitions pour donner une notion essentielle plus tard~:
-le codage de Gödel. Pour cela, on va d'abord introduire le polynôme de Cantor,
-qui est une bijection entre $\mathbb N$ et $\mathbb N\times\mathbb N$ très
-utilisée en calculabilité.
+Nous profitons de ces définitions pour donner la bijection de Cantor, qui
+permet d'encoder des données finies grâce à des entiers. On va ici en faire
+usage pour donner un premier cas d'utilisation de notre propriété universelle
+avec une première version de codage de Gödel.
 
 \begin{definition}[Bijection de Cantor]\label{def.bij.Cantor}
   On appelle bijection de Cantor, ou polynôme de Cantor, la fonction
   \[\begin{array}{ccccc}
   \alpha & : & \mathbb N \times \mathbb N & \longrightarrow & \mathbb N\\
-  & & (n,m) & \displaystyle\longmapsto & \left(\sum_{k = 1}^{n+m} k\right)+m
+  & & (n,m) & \displaystyle\longmapsto &
+  \displaystyle\left(\sum_{k = 1}^{n+m} k\right)+m
   \end{array}\]
 \end{definition}
 
@@ -809,15 +902,15 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   $\langle n_1,\ldots,n_p\rangle$ pour $\alpha_p(n_1,\ldots,n_p)$.
 \end{notation}
 
-\begin{definition}[Codage de Gödel d'un langage algébrique]
+\begin{definition}[Codage de Gödel d'un langage algébrique, version 1]
   Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,V)$ une grammaire non ambigüe sur
   $\Sigma$. Pour chaque $A \in \Gamma$, on numérote les règles $(A,u) \in \to$
   pour les ordonner, on note $e(A,u)$ le numéro de la règle $A,u$. Soit
   $u = u_1A_1\cdots A_nu_{n+1}$ où $u_1,\ldots,u_{n+1}\in\Sigma^\star$, on définit
   \[f_{A,u}(x_1,\ldots,x_n)\defeq \langle e(A,u),x_1,\ldots,x_n\rangle\]
-  La fonction obtenue est ce qu'on appelle le codage de Gödel de
+  La fonction obtenue est ce qu'on appelle un codage de Gödel de
   $\mathcal L_G$~:
-  \[\ceil{-} : \mathcal L_G \to \mathbb N\]
+  \[\godcod{-} : \mathcal L_G \to \mathbb N\]
 \end{definition}
 
 \begin{example}
@@ -839,42 +932,46 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   $R^0$ (respectivement $f^0$).
   
   On peut vérifier que la grammaire est sans ambigüité. Ainsi, pour une formule
-  $\varphi$ donnée, on peut lui associer un entier naturel $\ceil\varphi$, en
+  $\varphi$ donnée, on peut lui associer un entier naturel $\godcod\varphi$, en
   prenant comme numérotation l'ordre dans lequel on a présenté les règles venant
   d'un même non terminal.
 
   En particulier, lorsque $\Delta$ est la signature de l'arithmétique
   $\mathcal L_{\mathrm{Arith}}$ dont nous avons parlé dans le
   \cref{chp.logpred}, on peut de plus associer à une formule $\varphi$ son
-  code de Gödel $\ceil\varphi$, puis le terme dans le langage de l'arithmétique
-  $S^{\ceil\varphi}0$. On a ainsi une façon de représenter une formule de
-  l'arithmétique à l'intérieur même de l'arithmétique. Nous verrons que ce
-  processus est au c\oe ur des théorèmes d'incomplétude de Gödel.
+  code de Gödel $\godcod\varphi$, puis le terme dans le langage de
+  l'arithmétique $S^{\godcod\varphi}0$. On a ainsi une façon de représenter une
+  formule de l'arithmétique à l'intérieur même de l'arithmétique. Nous verrons
+  que ce processus est au c\oe ur des théorèmes d'incomplétude de Gödel.
 \end{example}
 
 \begin{remark}
-  Si l'on parle ici \emphexpr{du} codage de Gödel, c'est en réalité un abus de
-  langage. Tout d'abord, ce codage est paramétré par plusieurs choix, dont celui
-  de la grammaier et de la numérotation des des règles. De plus, le terme
-  \og code de Gödel\fg est informel et recouvre une grande classe de fonctions
-  possibles, qui ont pour but d'internaliser les formules de l'arithmétique,
-  c'est-à-dire de pouvoir exprimer au sein du langage de l'arithmétique les
-  notions liées aux propositions sur l'arithmétique (ce que nous avons présenté
-  ici avec le terme $S^{\ceil\varphi}0$). Historiquement, le premier codage de
-  Gödel utilisait la décomposition en facteurs premiers, pour encoder un
-  tuple $(n_1,\ldots,n_k)$ par l'entier
-  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)$ est
-  l'énumération canonique des nombres premiers.
-\end{remark}
+  Le terme \og codage de Gödel\fg sert à désigner une fonction des formules
+  logiques dans les entiers. Dans notre cas, nous avons défini une fonction plus
+  générale, mais il reste que cette fonction, dans le cas particulier de
+  l'arithmétique, correspond à nos attentes. Cependant, nous n'allons pas
+  faire usage de ce codage, car nous aurons l'occasion d'en définir un plus
+  pratique sur le long terme. En effet, dans le \cref{chp.recur}, nous allons
+  définir un codage de Gödel en prouvant en plus qu'il est calculable (en un
+  sens que nous préciserons) et que les opérations les plus basiques effectuées
+  sur ce codage sont aussi calculables.
 
+  Relevons qu'historiquement, le premier codage de Gödel dans son article
+  \cite{Godel1931-GDEBFU} (une traduction en anglais est disponible dans
+  \cite{van1967frege}) utilisait la décomposition en facteurs premiers, pour
+  encoder un tuple $(n_1,\ldots,n_k)$ par l'entier
+  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)$ est l'énumération
+  canonique des nombres premiers.
+\end{remark}
+  
 \begin{remark}
   Dans notre description des propositions, nous avons un ensemble infini de
   symboles avec $x \in \mathcal X$. Pour résoudre ça, il suffit de considérer
   $x$ comme un symbole non terminal et la règle
-  \[x \Coloneq x_0\mid x_s\;x\]
+  \[x \Coloneq x_0\mid x_s(x)\]
   décrivant une variable $x_0$ et une fonction injective non surjective
   $x_s : \mathcal X \to \mathcal X$. Ainsi la variable $x_n$ est remplacée par
-  la variable $(x_s)^n\;x_0$ et on a alors bien un langage algébrique. Cela
+  la variable ${x_s}^n(x_0)$ et on a alors bien un langage algébrique. Cela
   nous donne d'ailleurs un codage plus explicite des termes (les expressions
   dérivées de $Y$ dans notre grammaire).
 \end{remark}

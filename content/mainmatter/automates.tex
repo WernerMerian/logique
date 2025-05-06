@@ -14,7 +14,7 @@ ni par le temps d'un cours ni par l'espace d'un livre imprimé) de traiter, avan
 les formalismes de fonctions calculables, les formalismes liés à la hiérarchie
 de Chomsky. Nous pensons en particulier que les automates permettent d'illuminer
 profondément le fonctionnement intuitif d'une machine de Turing, plus complexe
-mais basée sur des notions très proches.
+mais basé sur des notions très proches.
 
 Ce chapitre couvre donc les bases de l'étude des langages rationnelss et des
 automates finis. Cette classe de langage peut être décrite par de nombreux
@@ -23,11 +23,13 @@ rationnelless et des monoïdes.
 
 Ce chapitre commence par la base de la théorie des langages~: les définitions
 de ce qu'est un alphabet, un mot, un langage\ldots Nous aborderons ensuite la
-classe des langages rationnelss en abordant les trois formalismes décrits que
-sont les automates, les expressions rationnelles et les langages reconnus par
-des monoïdes, puis la preuve de leur équivalence. Enfin, nous verrons les
-théorèmes de structure sur ces langages~: le lemme de pompage et le théorème de
-Myhill-Nérode, ainsi que ses conséquences.
+classe des langages rationnelss en abordant deux des formalismes décrits que
+sont les automates et les expressions rationnelles, puis la preuve de
+leur équivalence. Nous verrons après cela les théorèmes de structure sur ces
+langages~: le lemme de pompage et le théorème de Myhill-Nérode, ainsi que ses
+conséquences. Nous traitons en dernier le cas de l'équivalence des langages
+rationnels avec les langages reconnus par des monoïdes, pour ainsi revenir sur
+un aspect plus algébrique, proche du début du chapitre.
 
 \section{Alphabet, mot, langage}
 
@@ -73,6 +75,14 @@ une suite finie de lettres.
   que $u\in \Sigma^n$.
 \end{notation}
 
+\begin{remark}
+  On aurait aussi pu définir $\Sigma^\star$ comme l'ensemble inductif (au sens
+  du \cref{chp.induction}) des listes d'éléments de $\Sigma$. Les deux
+  formalismes sont équivalents, mais la théorie des automates et plus
+  généralement celle des langages formels utilisent habituellement plutôt le
+  formalisme des suites finies.
+\end{remark}
+
 Remarquons qu'une suite vide est une suite finie~: on peut donc définir le mot
 vide, qu'on notera $\varepsilon$.
 
@@ -83,13 +93,32 @@ On peut désormais définir un langage~: c'est un ensemble de mots.
   $\mathcal L\subseteq\Sigma^\star$.
 \end{definition}
 
-Parlons dès maintenant de stabilité~:
+Parlons dès maintenant de stabilité, qui est une notion importante dans le
+contexte de l'algèbre~: elle permet de décrire une structure dans laquelle
+une opération donnée est interne à la structure.
 
 \begin{definition}[Stabilité]
-  Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur $\Sigma^\star$.
-  On dit qu'un langage $\mathcal L$ sur $\Sigma$ est stable par $\star$ si
-  \[\forall u,v\in \mathcal L, u\star v \in \mathcal L\]
+  Soit $\Sigma$ un alphabet et $\diamond$ une opération binaire sur
+  $\Sigma^\star$. On dit qu'un langage $\mathcal L$ sur $\Sigma$ est stable
+  par $\diamond$ si
+  \[\forall u,v\in \mathcal L, u\diamond v \in \mathcal L\]
 \end{definition}
+
+Une autre façon de parler de stabilité est de commencer par étendre une
+opération binaire sur les mots en une opération sur les langages.
+
+\begin{definition}[Extension sur les langages]
+  Soit $\Sigma$ un alphabet et $\diamond$ une opération binaire sur
+  $\Sigma^\star$. On étend l'opération $\diamond$ sur les langages sur
+  $\Sigma$ par, pour tous langages $\mathcal L,\mathcal M$~:
+  \[\mathcal L\diamond \mathcal M \triangleq
+  \{u\diamond v \mid u \in \mathcal L, v \in \mathcal M\}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer qu'un langage $\mathcal L$ est stable par une opération $\diamond$ si
+  et seulement si $\mathcal L \diamond \mathcal L \subseteq \mathcal L$.
+\end{exercise}
 
 Cette notion de stabilité se généralise très bien à des classes de langages,
 dont il convient donc d'introduire la définition.
@@ -101,15 +130,23 @@ dont il convient donc d'introduire la définition.
 \end{definition}
 
 \begin{definition}[Stabilité d'une classe de langages]
-  Soit $\Sigma$ un alphabet et $\star$ une opération binaire sur
+  Soit $\Sigma$ un alphabet et $\diamond$ une opération binaire sur
   $\powerset(\Sigma^\star)$. On dit qu'une classe de langages $\mathcal C$ sur
-  $\Sigma$ est stable par $\star$ si
+  $\Sigma$ est stable par $\diamond$ si
   \[\forall \mathcal L,\mathcal M\in\mathcal C,
-  \mathcal L\star \mathcal M\in\mathcal C\]
+  \mathcal L\diamond \mathcal M\in\mathcal C\]
 \end{definition}
 
-Pour le reste de cette sous-section, nous allons juste voir des exemples de
-langages, d'opérations et de classes de langages.
+\begin{remark}
+  Si on dispose d'une opération binaire $\diamond$ sur les langages, il est
+  possible de l'étendre sur les classes en faisant une construction analogue
+  à celle étendant les opérations sur les mots en des opérations sur les
+  langages. On peut ainsi passer d'une opération sur les mots en une opération
+  sur les classes de langages, en effectuant les deux extensions à la suite.
+\end{remark}
+
+Pour le reste de cette sous-section, nous allons voir des exemples de langages,
+d'opérations et de classes de langages.
 
 \begin{example}
   Nous allons dès maintenant définir l'alphabet qui nous sera le plus utile~:
@@ -129,8 +166,10 @@ langages, d'opérations et de classes de langages.
     mots pris dans l'autre sens~:
     \[\overline{\mathcal L}\defeq
     \{u\in\Sigma^\star\mid u_{|u|-1}\ldots u_0 \in \mathcal L\}\]
-  \item l'intersection de deux langages.
-  \item l'union de deux langages.
+  \item étant donnés deux langages $\mathcal L$ et $\mathcal L'$ l'intersection
+    des deux langages $\mathcal L \cap \mathcal L'$.
+  \item étant donnés deux langages $\mathcal L$ et $\mathcal L'$, l'union des
+    deux langages $\mathcal L\cup\mathcal L'$.
   \end{itemize}
 \end{example}
 
@@ -191,8 +230,9 @@ $\Sigma^\star$, qui nous permettra de donner plus d'exemples de langages.
 \end{exercise}
 
 \begin{exercise}
-  Pour tout langage $\mathcal L$ sur un alphabet $\Sigma$, on a
-  $\varepsilon \in \mathcal L^\star$.
+  Montrer que pour tout langage $\mathcal L$ sur un alphabet $\Sigma$, on a
+  $\varepsilon \in \mathcal L^\star$ et $\mathcal L^\star$ est stable par
+  $\star$.
 \end{exercise}
 
 \begin{example}
@@ -243,13 +283,15 @@ L'exemple le plus évident de monoïde est $(\mathbb N,+,0)$, mais nous allons
 voir que la structure des mots généralise de façon naturelle ce cas.
 
 \begin{exercise}
-  Soit $\Sigma$ un alphabet, montrer que $(\Sigma^\star, \star,\varepsilon)$ est
-  un monoïde.
+  Soit $\Sigma$ un alphabet, vérifier que $(\Sigma^\star, \star,\varepsilon)$
+  est un monoïde.
 \end{exercise}
 
-Ce fait généralise le cas de $\mathbb N$ car on peut représenter un entier en
-unaire comme un mot sur l'alphabet $\{*\}$~: la seule information d'un tel mot
-est sa longueur.
+Le cas de $\Sigma^\star$ générale le cas de $\mathbb N$~: il est en effet
+possible de considérer un entier dans sa représentation unaire (comme une
+succession d'applications de la fonction $n \mapsto n + 1$ à $0$) comme un mot
+sur l'alphabet $\{*\}$ où $*$ est un objet quelconque. La seule information
+que contient un tel mot est alors sa longueur.
 
 L'étude des monoïdes permet donc d'inclure l'étude de la structure de
 $\Sigma^\star$. Nous allons maintenant voir qu'en fait, $\Sigma^\star$ peut être
@@ -267,9 +309,11 @@ Cela se traduit par la propriété universelle du monoïde libre.
   On procède par analyse-synthèse~:
   \begin{itemize}
   \item supposons que $\tilde f$ existe et vérifie les conditions décrites.
-    Alors pour tout mot $u = u_0\ldots u_{n-1}$, on sait par récurrence sur
-    $n$ que $\tilde f(u) = f(u_0)\diamond \cdots \diamond f(u_{n-1})$. La
-    fonction ainsi définie est unique, étant donnée la construction.
+    Alors pour tout mot $u = u_0\ldots u_{n-1}$, on peut vérifier par récurrence
+    sur $n$ que $\tilde f(u) = f(u_0)\diamond \cdots \diamond f(u_{n-1})$, où
+    le cas où $u$ est de longueur nulle correspond à
+    $\tilde f(\varepsilon) = e$. La fonction ainsi définie est unique, étant
+    donnée la construction.
   \item en considérant la fonction proposée précédemment, on voit d'abord que
     $\tilde f(x) = f(x)$ pour $x\in \Sigma$, et que si $u = v\star w$ alors
     $\tilde f(u) = \tilde f(v)\diamond \tilde f(w)$, où l'associativité est
@@ -292,9 +336,12 @@ que l'ensemble des mots de taille $n$ peut être décrit à partir du monoïde
 $(\mathbb N,+,1)$ en considérant une partie du monoïde et une fonction
 $f : \Sigma \to \mathbb N$.
 
+Plus généralement, on définit ce qu'est le langage induit par une fonction
+depuis un alphabet vers un monoïde possédant une partie distinguée.
+
 \begin{definition}
   Soit $\Sigma$ un alphabet, $(M,\cdot,e)$ un monoïde, $h : \Sigma \to M$ une
-  fonction et $S\subseteq M$. On dit que $\mathcal L(\Sigma,M,\cdot,e,h)$ est
+  fonction et $S\subseteq M$. On dit que $\mathcal L(\Sigma,M,\cdot,e,h,S)$ est
   le langage induit par $(\Sigma,M,\cdot,e,h,S)$, qui est défini par~:
   \[\mathcal L(\Sigma,M,\cdot,e,h,S)\defeq
   \{u\in\Sigma^\star\mid \tilde h(u)\in S\}\]
@@ -305,8 +352,7 @@ on induit le langage $\Sigma^n$.
 
 \section{Automate fini et langage reconnaissable}
 
-On peut désormais s'intéresser plus en profondeur aux automates finis et aux
-langages reconnaissables.
+On s'intéresse désormais aux automates finis et aux langages reconnaissables.
 
 \subsection{Définition d'un automate}
 
@@ -348,6 +394,7 @@ valeur appartient à $F$.
   par induction sur $\Sigma^\star$ par~:
   \[\delta^\star (q,\varepsilon) = q \qquad
   \delta^\star (q,u\star a) = \delta(\delta^\star(q,u),a)\]
+  pour tout état $q \in Q$, mot $u \in \Sigma^\star$ et lettre $a \in \Sigma$.
 \end{definition}
 
 \begin{definition}[Langage accepté par un automate]
@@ -399,8 +446,8 @@ reconnaissables.
 \begin{definition}[Langage reconnaissable]
   Soit $\Sigma$ un alphabet. On appelle classe des langages reconnaissbles sur
   $\Sigma$ l'ensemble des langages reconnus par les automates sur $\Sigma$~:
-  \[\Reco(\Sigma) \defeq \{\mathcal L \mid
-  \exists \mathcal A \in \mathcal A_\Sigma, \mathcal L = \mathcal L_\mathcal A\}\]
+  \[\Reco(\Sigma) \defeq \{\mathcal L_\mathcal A \mid
+  \mathcal A \in \mathcal A_\Sigma\}\]
 \end{definition}
 
 \begin{exercise}
@@ -420,9 +467,9 @@ reconnaissables.
   \end{figure}
 \end{exercise}
 
-Cette premier classe de langage est en fait le centre de l'étude de ce chapitre.
-On le verra, mais plusieurs définitions de cette classe existent, par des
-formalismes très différents, ce qui rend cette classe de langages assez
+Cette première classe de langages d'intérêt est en fait le centre de l'étude de
+ce chapitre. On le verra, mais plusieurs définitions de cette classe existent,
+par des formalismes très différents, ce qui rend cette classe de langages assez
 remarquable.
 
 L'un de ces formalismes a déjà été présenté~: on verra que les langages associés
@@ -539,7 +586,11 @@ l'ensemble vide et sont stables par trois opérations~:
 \item l'étoile d'un langage.
 \end{itemize}
 
+Il nous faut donc construire des automates représentant tous ces cas. Traitons
+d'abord les cas les plus simples.
+
 Il est clair qu'on peut construire des automates pour les singletons~:
+
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
@@ -549,7 +600,9 @@ Il est clair qu'on peut construire des automates pour les singletons~:
       (q_0) edge [bend left] node {$a$} (q_1);
   \end{tikzpicture}
 \end{figure}
+
 et pour l'ensemble vide~:
+
 \begin{figure}[h]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
@@ -557,13 +610,14 @@ et pour l'ensemble vide~:
   \end{tikzpicture}
 \end{figure}
 
-Le point essentiel est donc la stabilité par les trois opérations. On va donc
-devoir introduire deux constructions d'automates~: l'automate union, et les
-$\varepsilon$-transitions.
+Le point essentiel est, par conséquent, la stabilité par les trois opérations.
+Il nous faut donc introduire deux constructions d'automates~: l'automate union,
+et les $\varepsilon$-transitions.
 
 \begin{definition}[Automate union]
-  Soient $\mathcal A$ et $\mathcal A'$ deux automates sur un alphabet $\Sigma$.
-  On définit l'automate union $\mathcal A \sqcup \mathcal A'$ par~:
+  Soient $\mathcal A = (Q,q_0,\delta,F)$ et
+  $\mathcal A' = (Q',q'_0,\delta',F')$ deux automates sur un alphabet
+  $\Sigma$. On définit l'automate union $\mathcal A \sqcup \mathcal A'$ par~:
   \begin{itemize}
   \item $Q_{\mathcal A\sqcup \mathcal A'} \defeq Q\times Q'$
   \item $q_{0,\mathcal A\sqcup \mathcal A'} \defeq (q_0,q'_0)$
@@ -605,6 +659,7 @@ $\varepsilon$-transitions.
   $q' \in F'$. On en déduit donc, en utilisant le résultat précédent, que
   \[\mathcal A \sqcup \mathcal A'\models u \iff
   \mathcal A \models u \lor \mathcal A'\models u\]
+  D'où l'égalité des deux langages.
 \end{proof}
 
 \begin{exercise}[Automate produit]
@@ -782,7 +837,8 @@ l'\cref{exo.traces.auto}.
   $\varepsilon$-transitions sur $\Sigma$. On définit l'ensemble $\tr(u)$ des
   traces sur un mot $u$ comme l'ensemble des suites finies $(q_0,\ldots,q_n)$
   d'états de $Q$ où $q_0 \in Q_0$ et telles qu'il existe pour tout
-  $i \in \{0,\ldots,n-1\}$ une lettre $a_i$ telle que les deux conditions
+  $i \in \{0,\ldots,n-1\}$ une lettre (possiblement $\varepsilon$)
+  $a_i \in \Sigma\cup\{\varepsilon\}$ telle que les deux conditions
   suivantes sont vérifiées~:
   \begin{itemize}
   \item $\delta(q_i,a_i) = q_{i+1}$
@@ -800,7 +856,7 @@ les exécutions possibles lors de la lecture d'un mot, mais où il est possible
 d'effectuer gratuitement des transitions étiquetées par $\varepsilon$.
 
 Là encore, il est clair qu'un automate sans $\varepsilon$-transition peut être
-simulé par un automate sans $\varepsilon$-transition, en n'ajoutant aucune
+simulé par un automate avec $\varepsilon$-transition, en n'ajoutant aucune
 $\varepsilon$-transition.
 
 On introduit donc maintenant l'élimination des $\varepsilon$-transitions,
@@ -866,11 +922,11 @@ uniquement en effectuant des $\varepsilon$-transitions.
   De plus, un état $q_n$ est terminal dans $\mathcal A_{\not\varepsilon}$ si et
   seulement s'il existe une suite d'$\varepsilon$-transitions menant à un état
   terminal~: ainsi une trace terminant sur un tel état dans $\mathcal A$ donne
-  une trace acceptante en ajoutant des $\varepsilon$-transitions et
-  réciproquement on récupère une trace acceptante dans
+  une trace acceptante en ajoutant des $\varepsilon$-transitions.
+  Réciproquement, on récupère une trace acceptante dans
   $\mathcal A_{\not\varepsilon}$ en supprimant ces $\varepsilon$-transitions.
 
-  Ainsi
+  Ainsi,
   \[\mathcal L_{\mathcal A} = \mathcal L_{\mathcal A_{\not\varepsilon}}\]
 \end{proof}
 
@@ -1018,8 +1074,8 @@ partant de cet état.
     analogue à celle du sens direct).
 
     Dans l'autre cas, si $\delta'^\star(q_0,u\star a) = q$ où $q \in Q$, alors
-    on sait par induction que $\delta'^\star(q_0,u) = \delta(q_0,u) = q'$ par
-    hypothèse d'induction, et $\delta'(q,a) = \delta(q,a)$ par définition,
+    on sait que $\delta'^\star(q_0,u) = \delta(q_0,u) = q'$ par hypothèse
+    d'induction, et que $\delta'(q,a) = \delta(q,a)$ par définition,
     donc $\delta'^\star(q_0,u\star a) = \delta^\star(q_0,u\star a)$.
   \end{itemize}
 
@@ -1035,10 +1091,10 @@ signifie forcément que la lecture du mot n'arrivera jamais à un état acceptan
 On peut donc, si on préfère minimiser le nombre d'états qui interviennent
 effectivement dans l'automate, décider de supprimer notre état puits, mais aussi
 tous les états qui n'arriveront jamais à un état acceptant. De tels états sont
-dits co-accessibles. Un état accessible, lui, est un état qu'on peut atteindre
-à la lecture d'un mot~: en effet, si un état mène à un état acceptant (ou même
-est lui-même acceptant), cela n'a peut d'importance si aucun chemin ne mène à
-lui.
+dits co-accessibles. De façon duale, un état accessible est un état qu'on peut
+atteindre à la lecture d'un mot et ils sont eux aussi les seuls d'intérêt~:
+en effet, même si un état mène à un état acceptant, cela n'a pas d'importance
+si aucun chemin ne mène à lui.
 
 On peut donc donner des définitions similaires à propos d'un automate pour
 parler de tous ses états~: un automate accessible est un automate dont tous les
@@ -1158,7 +1214,7 @@ processus d'élimination. On a dit précédemment qu'une suite de deux transitio
 peut se transformer en une seule concaténation, ce qui donne l'idée suivante de
 transformation~:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
     \node[state] (q_0) {$q_0$};
@@ -1179,9 +1235,10 @@ En effectuant cette transformation entre chaque paire de transitions passant par
 $q_1$, il semble donc possible d'éliminer l'état $q_1$. Cependant, un cas
 important reste possible~: on peut avoir une boucle sur $q_1$. Dans ce cas, il
 est nécessaire d'ajouter pour chaque expression $e$ étiquetant une boucle,
-l'expression $ae^\star b$ au lieu de simplement $ab$~:
+l'expression $ae^\star b$ au lieu de simplement $ab$, comme on peut le voir dans
+le diagramme suivant~:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
     \node[state] (q_0) {$q_0$};
@@ -1240,7 +1297,7 @@ itérant l'opération $+$ sinon.
   transitions de la forme $a\xrightarrow \varnothing b$, mais celles-ci ont le
   même rôle que l'absence de transition (puisque $u \in \Val(\varnothing)$ n'est
   pas possible). On peut donc maintenant définir l'unique expression reliant
-  deux états, ce qu'on écrire $e(q,q')$. Ainsi accepter un mot $u$ signifie
+  deux états, ce qu'on écrit $e(q,q')$. Ainsi accepter un mot $u$ signifie
   obtenir une trace $(q_0,\ldots,q_n)$ où $q_0$ est initial, $q_n$ terminal et
   une décomposition $u = u_1\star \cdots u_{n-1}$ où
   $u_i \in \Val(e(q_i,q_{i+1}))$.
@@ -1324,14 +1381,15 @@ On en déduit donc le théorème de Kleene~:
 
 \begin{remark}
   Ces deux équivalences sont algorithmiques~: elles permettent de construire
-  effectivement, étant donné un automate, une expression rationnelle et
-  inversement de construire un automate depuis une expression rationnelle (il
-  faut alors utiliser l'automate union, la concaténation et l'étoile
+  de manière effective, étant donné un automate $\mathcal A$, une expression
+  rationnelle $e(\mathcal A)$ reconnaissant le même langage, et inversement de
+  construire un automate $\mathcal A(e)$ depuis une expression rationnelle $e$
+  (il faut alors utiliser l'automate union, la concaténation et l'étoile
   d'automates pour obtenir l'automate depuis une expression rationnelle).
 \end{remark}
 
 Nous avons vu de nombreuses constructions à propos des automates. Ces
-constructions renforce le fait qu'un langage reconnaissable est reconnu par de
+constructions renforcent le fait qu'un langage reconnaissable est reconnu par de
 nombreux automates. On peut donc se demander s'il existe un automate meilleur
 que les autres, ce qui nous mène à la prochaine section~: la construction d'un
 automate minimal.
@@ -1363,9 +1421,11 @@ langage soit rationnel, mais non suffisante.
 
 La preuve de ce résultat se base principalement sur l'idée de trouver une boucle
 dans la lecture d'un mot~: si un mot est assez long, alors il finira par
-repasser par un état, et on pourra alors itérer cette boucle.
+repasser par un état, et on pourra alors itérer cette boucle. En prenant
+une trace $(q_0,\ldots,q_f)$, passant deux fois par $q_i$, on voudra avoir
+le chemin suivant~:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
       \node[state,initial] (q_0) {$q_0$};
@@ -1392,12 +1452,12 @@ repasser par un état, et on pourra alors itérer cette boucle.
   de $q$ dans notre trace. On coupe alors notre trace selon deux telles
   occurrences~: $(q_0,\ldots,q_i)$, $(q_i,\ldots,q_j)$ et $(q_j,\ldots,q_n)$
   où $q_i = q_j = q$. De même, on peut découper $u = vws$ de telle sorte que
-  $(q_0,\ldots,q_i)$ est une trace pour $v$, $(q_i,\ldots,q_j)$ est une trace
-  pour $w$ et $(q_j,\ldots,q_n)$ est une trace pour $s$. On en déduit alors
-  qu'en concaténant $p$ fois la suite $(q_i,\ldots,q_j)$ au milieu, on obtient
-  une trace acceptante pour $vw^ps$. Ainsi on en déduit
+  $(q_0,\ldots,q_i)$ est une trace pour $v$ de $q_0$ à $q$,
+  $(q_i,\ldots,q_j)$ est une trace pour $w$ de $q$ à $q$
+  et $(q_j,\ldots,q_n)$ est une trace pour $s$ de $q$ à $q_n$. On en déduit
+  alors qu'en concaténant $p$ fois la suite $(q_i,\ldots,q_j)$ au milieu, on
+  obtient une trace acceptante pour $vw^ps$. Ainsi on en déduit~:
   \[\forall p \in \mathbb N, vw^ps\in \mathcal L\]
-
   D'où le résultat souhaité pour $N = |Q| + 1$.
 \end{proof}
 
@@ -1494,8 +1554,58 @@ théorème de Myhill-Nérode.
 Il existe donc, pour tout langage rationnel $\mathcal L$, un automate
 naturellement associé.
 
-On a ainsi un moyen de montrer à la fois qu'un langage est rationnel, et qu'un
-langage n'est pas rationnel~: en exibant une infinité de résiduels, on en
+\begin{remark}
+  L'une des formulation équivalentes de l'axiome du choix est que toute
+  surjection $f : E \to F$ admet une section, c'est-à-dire une fonction
+  $g : F \to E$ telle que $f\circ g = \id_F$. Pour cette raison, montrer un
+  résultat de finitude (et plus généralement de cardinalité) en utilisant une
+  surjection est moins fort que d'utiliser une injection, puisqu'on définit
+  la subpotence par l'existence d'une injection.
+
+  Dans notre cas, il est donc légitime de se demander s'il n'est pas possible
+  de considérer une injection, et la première idée qui vient en tête pour une
+  telle injection est alors, étant donné un automate qui reconnait
+  $\mathcal L$~:
+  \[\begin{array}{ccccc}
+  f & : & \{u^{-1}\mathcal L\mid u \in \Sigma^\star\} & \longrightarrow &
+  Q \\
+  & & \overline u & \longmapsto & \delta^\star (q_0,u)
+  \end{array}\]
+  Malheureusement, cette fonction n'est pas bien définie, car deux mots peuvent
+  être dans le même résiduel pour $\mathcal L$ et pour autant être associé à
+  des états différents. Un exemple d'une telle situation est l'automate
+  suivant~:
+  
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+      \node[state,initial] (q_0) {$q_s$};
+      \node[state] (q_1) [above = of q_0] {$q_0$};
+      \node[state] (q_2) [right = of q_0] {$q_1$};
+      \node[state,accepting] (q_3) [right = of q_1] {$q_f$};
+      \node[state] (q_p) [below left = of q_0] {$q_p$};
+      \path[->,>=latex]
+      (q_0) edge node {$0$} (q_1)
+      (q_0) edge node {$1$} (q_2)
+      (q_1) edge node {$0$} (q_3)
+      (q_2) edge node {$0$} (q_3)
+      (q_3) edge[loop right] node {$0,1$} ()
+      (q_p) edge[loop left] node {$0,1$} ()
+      (q_1) edge[bend right] node {$1$} (q_p)
+      (q_2) edge[bend left] node {$1$} (q_p);
+    \end{tikzpicture}
+  \end{figure}
+  Où les états $q_0$ et $q_1$ sont associés au même résiduel. Heureusement,
+  comme dans notre cas $Q$ est fini, il est possible (par récurrence sur le
+  cardinal de $Q$) de choisir un état pour chaque résiduel, et donc de
+  construire une fonction $f$ comme ci-dessus sur un sous-ensemble de $Q$.
+
+  Remarquons aussi que cette fonction $f$ est bien définie exactement lorsque
+  l'automate est isomorphe à l'automate syntaxique.
+\end{remark}
+
+Cela nous donne un moyen de montrer à la fois qu'un langage est rationnel, et
+qu'un langage n'est pas rationnel~: en exibant une infinité de résiduels, on en
 déduit directement qu'un langage n'est pas rationnel, et ce critère est plus
 précis que le lemme de l'étoile puisqu'il est exact.
 
@@ -1531,7 +1641,8 @@ Un morphisme d'automate est donc une façon de transformer l'automate
 $\mathcal A$ en l'automate $\mathcal A'$. Remarquons que généralement, il est
 tout à fait possible de n'avoir des morphismes que dans un sens, par exemple
 pour
-\begin{figure}[h]
+
+\begin{figure}[H]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
       \node[state,initial] (q_0) {$q_0$};
@@ -1551,7 +1662,7 @@ pour
       (q_4) edge [loop right] node {$0,1$} ();
   \end{tikzpicture}
 \end{figure}
-On peut trouver un morphisme de l'automate de gauche vers l'automate de droite,
+on peut trouver un morphisme de l'automate de gauche vers l'automate de droite,
 en prenant $f(q_1) = f(q_2) = q'_1$. Cependant, dans l'autre sens, on ne peut
 pas conserver la transition $0,1$ entre $q'_0$ et $q'_1$ en associant une image
 à $q'_1$.
@@ -1566,15 +1677,16 @@ donne une inclusion.
 \end{proposition}
 
 \begin{proof}
-  On va noter $q,q_0,\ldots$ les états de $\mathcal A$ et $q',q'_0$ les états
-  de $\mathcal A'$, de même $F$ et $F'$ pour respectivement l'ensemble des
+  On va noter $q,q_0,\ldots$ les états de $\mathcal A$ et $q',q'_0,\ldots$ les
+  états de $\mathcal A'$, de même $F$ et $F'$ pour respectivement l'ensemble des
   états terminaux de $\mathcal A$ et ceux de $\mathcal A'$.
   
   On voit tout d'abord que pour tout mot $u\in\Sigma^\star$, on a
   \[\delta^\star(f(q_0),u) = f(\delta^\star(q_0,u))\]
-  et $f(q_0) = q'_0$. De plus, par définition, l'image de $f(F)\subseteq F'$,
-  donc $\delta^\star(q_0,u) \in F \implies f(\delta^\star(q_0,u))\in F'$, d'où
-  le résultat.
+  et $f(q_0) = q'_0$. De plus, comme $f$ est un morphisme, $f(F)\subseteq F'$,
+  donc
+  \[\delta^\star(q_0,u) \in F \implies f(\delta^\star(q_0,u))\in F'\]
+  d'où le résultat.
 \end{proof}
 
 Un autre résultat, peut-être moins intuitif, est que l'inclusion devient une
@@ -1665,10 +1777,10 @@ la structure d'automate.
   puisque l'on veut que le choix de $q$ dans une classe ne change pas le
   résultat de $\delta(q,a)$~: c'est le cas ici puisque si $q\sim q'$ alors
   $\delta(q,a) \sim \delta(q',a)$. Pour les états terminaux, dire qu'un ensemble
-  d'état est terminal si tous ne sont pas terminaux semble changer le sens de
-  l'automate, ce qui motive notre volonté de saturation (remarquons que la
-  condition de saturation aurait pu se limiter à une implication, puisque la
-  relation est symétrique dans tous les cas).
+  d'états est terminal semble changer le sens de l'automate lorsque l'ensemble
+  n'est pas constitué que d'états terminaux, ce qui motive notre propriété de
+  saturation (remarquons que la condition de saturation aurait pu se limiter à
+  une implication, puisque la relation est symétrique dans tous les cas).
 \end{remark}
 
 On prouve alors que le quotient, comme attendu puisqu'on regroupe des états de
@@ -1681,7 +1793,7 @@ même comportement, ne change pas le langage reconnu.
 \end{proposition}
 
 \begin{proof}
-  Par une récurrence sur $u$ qui ne pose aucune difficulté, on vérifie que
+  Par une récurrence sur $u$ qu'on ne détaille pas, on vérifie que
   \[\forall u \in \Sigma^\star,
   \delta^\star_{\mathcal A/\sim}(\overline{q_0},u)=
   \overline{\delta^\star(q_0,u)}\]
@@ -1694,7 +1806,7 @@ même comportement, ne change pas le langage reconnu.
   On a donc l'égalité des deux langages.
 \end{proof}
 
-On donne un second résultat, relian la congruence et les morphismes.
+On donne un second résultat, reliant la congruence et les morphismes.
 
 \begin{proposition}
   Soient $\mathcal A, \mathcal A'$ deux automates sur le même alphabet $\Sigma$
@@ -1761,20 +1873,20 @@ cette congruence pour tout $n$.
 
 \begin{proof}
   Si $q\equiv_{n+1} q'$, alors pour tout $a\in \Sigma$ et $u \in \Sigma^{<n}$,
-  on a $\delta(q,u\star a) \in F \iff \delta(q',u\star a) \in F$ par hypothèse.
-  Mais alors, cela se réécrit en
-  $\delta^\star(\delta(q,a),u)\in F \iff \delta^\star(\delta(q',a),u)\in F$, donc
-  on en déduit que $\delta(q,a)\equiv_n \delta(q',a)$. Réciproquement, pour
+  on a l'équivalence $\delta(q,u\star a) \in F \iff \delta(q',u\star a) \in F$
+  par hypothèse. Mais alors, cela se réécrit en
+  \[\delta^\star(\delta(q,a),u)\in F \iff \delta^\star(\delta(q',a),u)\in F\]
+  On en déduit que $\delta(q,a)\equiv_n \delta(q',a)$. Réciproquement, pour
   $u \in \Sigma^{< n + 1}$, on peut éliminer le cas où $u = \varepsilon$ qui est
   direct et considérer que $u = v\star a$ où $|v| < n$, ce qui nous permet
   d'utiliser l'hypothèse pour déduire que
-  $\delta^\star(q,v\star a)\in F \iff \delta^\star(q',v\star a)$, donc que
-  $q\equiv_{n+1} q'$.
+  \[\delta^\star(q,v\star a)\in F \iff \delta^\star(q',v\star a)\]
+  c'est-à-dire $q\equiv_{n+1} q'$.
 \end{proof}
 
 Le deuxième lemme essentiel nous dit que l'algorithme effectué en construisant
-cette suite de congruence, lorsqu'il atteint un point stationnaire, donne un
-résultat.
+cette suite de congruence, lorsqu'il atteint un point stationnaire, donne en
+résultat la congruence de Nérode.
 
 \begin{lemma}
   Soit un automate $\mathcal A$ sur un alphabet $\Sigma$. Si pour
