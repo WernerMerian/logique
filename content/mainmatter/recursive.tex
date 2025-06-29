@@ -18,6 +18,15 @@ Cette notion plus forte est celle de fonction calculable, que nous allons voir
 dans ce chapitre à travers les fonctions récursives en premier lieu, puis par
 les machines de Turing.
 
+Une fonction calculable est une version mathématique de l'idée intuitive que
+l'on se fait de \og fonction programmable sur un ordinateur\fg. Bien sûr, le
+caractère mathématique pousse à certaines généralisations (comme le fait que le
+modèle mathématique a une mémoire non bornée), mais il reste important, pour
+fonder son intuition des fonctions calculables, de garder à l'esprit qu'une
+fonction calculable n'est rien d'autre qu'une fonction obtenue en exécutant un
+programme d'un langage de programmation suffisamment expressif (tel que
+C, Python, Ocaml \latinexpr{etc}).
+
 \section{Fonctions primitives récursives}
 
 Avant d'introduire les fonctions récursives, nous en donnons une version faible
@@ -35,15 +44,15 @@ Donnons dès maintenant la définition de la classe RP.
   $\RecP\subseteq \bigcup_{n \in \mathbb N}\Funct(\mathbb N^n,\mathbb N)$
   comme la plus petite classe telle que~:
   \begin{itemize}
-  \item soient les projections
+  \item pour toutes les projections
     \[\begin{array}{ccccc}
     \pi_k^n &:& \mathbb N^n &\longrightarrow& \mathbb N\\
     & & (x_1,\ldots,x_n) & \longmapsto & x_k
     \end{array}\]
-    on a pour tout $n,k\in \mathbb N, \pi_k^n \in \RecP$.
-  \item pour tout $n \in \mathbb N$, on note
-    $\mathrm k_0^n : \mathbb N^p \to \mathbb N$ la fonction nulle. Pour tout
-    $n \in \mathbb N$, $\mathrm k_0^n \in \RecP$.
+    avec $n,k\in \mathbb N, \pi_k^n \in \RecP$.
+  \item pour tout $n \in \mathbb N$, en notant
+    $\mathrm k_0^n : \mathbb N^p \to \mathbb N$ la fonction nulle,
+    $\mathrm k_0^n \in \RecP$.
   \item la fonction $n \mapsto n + 1$ est primitive récursive~: $\sucs\in\RecP$.
   \item si $f_1,\ldots,f_n : \mathbb N^k \to \mathbb N$ sont des fonctions RP
     et $g : \mathbb N^n \to \mathbb N$ est une fonction RP, alors la fonction
@@ -97,7 +106,7 @@ On peut donc, dès lors, donner plusieurs fonctions RP élémentaires.
 
 \begin{proof}
   Pour les fonctions constantes, il nous suffit de composer $n$ fois la fonction
-  $\sucs$ à la fonction nulle $\mathrm k_0^n$.
+  $\sucs$ à la fonction nulle $\mathrm k_0^p$.
   
   On sait que les autres fonctions souhaitées sont définies par ces équations~:
   \begin{itemize}
@@ -182,7 +191,7 @@ prouvables comme étant RP.
 
 \begin{proof}
   On commence par prouver que $-$ est RP. Pour cela, on définit d'abord la
-  fonction prédécesseur, qui associe $0$ à $0$ et $\sucs(n)$ à $n$~:
+  fonction prédécesseur, qui envoie $0$ sur $0$ et $\sucs(n)$ sur $n$~:
   \[p \defeq \rec(\mathrm k_0^0,\pi_1^2)\]
   A partir de cette fonction $p$, on définit la fonction $-$ comme son
   itération~:
@@ -252,13 +261,14 @@ $R\subseteq \mathbb N^n$. On adapte donc notre notion de RP à ces relations.
 \end{definition}
 
 \begin{remark}
-  On parlera aussi d'ensemble RP ou de partie RP, en général lorsque l'on parle
-  de partie de $\mathbb N$.
+  On parlera aussi d'ensemble RP ou de partie RP, ce dernier cas plutôt pour
+  parler de partie de $\mathbb N$.
 \end{remark}
 
-Les relations RP se comportent bien, au sens de la proposition suivante.
+Les relations RP se comportent bien vis à vis de la logique classique, au sens
+de la proposition suivante.
 
-\begin{proposition}
+\begin{proposition}\label{prop.PRBool}
   Pour tout $n \in \mathbb N$, l'ensemble des relations RP sur $\mathbb N^n$
   est une sous-algèbre de Boole de $\powerset(\mathbb N^n)$.
 \end{proposition}
@@ -296,14 +306,15 @@ Les relations RP se comportent bien, au sens de la proposition suivante.
   $\leq \defeq \{(n,m) \mid n \leq m\}$ sont RP.
 \end{proposition}
 
-\begin{proposition}
+\begin{proof}
   On prouve d'abord que $\leq$ est RP. Pour cela, on remarque que $n \leq m$
   exactement lorsque $n - m \leq 0$, c'est-à-dire lorsque $n - m = 0$.
   En prenant alors $(n,m) \mapsto 1 - (n - m)$, on a bien une fonction RP à
   valeurs dans $\btwo$ et qui coïncide avec $\chi_\leq$. Pour montrer que
   la relation $\triangle$ est aussi RP, il suffit de remarquer que
   \[(n,m) \in \triangle \iff (n \leq m) \land (m \leq n)\]
-\end{proposition}
+  et d'utiliser la \cref{prop.PRBool} pour en déduire le résultat.
+\end{proof}
 
 \begin{exercise}
   Montrer que $\triangle^n \defeq
@@ -343,9 +354,9 @@ quantification bornée sur une relation RP reste une relation RP.
 \begin{proof}
   On construit les deux fonctions par récursion primitive~:
   \[\exists R \defeq \rec(\mathrm k_0^n,\max\circ
-  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1})))\]
+  (\pi_{n+2}^{n+2},R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+2})))\]
   \[\forall R \defeq \rec(\mathrm k_1^n,\min\circ
-  (\pi_{n+2}^{n+2},R(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1})))\]
+  (\pi_{n+2}^{n+2},R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+2})))\]
   On montre seulement le fait que la fonction $\exists R$ ainsi définie
   vérifie la propriété voulue, le cas de $\forall$ étant parfaitement analogue.
 
@@ -394,8 +405,8 @@ On peut aussi construire des instructions conditionnelles sur des relations RP.
 
 On voit qu'il est possible de passer facilement d'une fonction à un ensemble,
 en considérant la fonction caractéristique. Réciproquement, on souhaite avoir
-un moyen étant donné un prédicat d'en extraire une fonction~: c'est la notion de
-minimisation qui nous sera utile.
+un moyen, étant donné un prédicat, d'en extraire une fonction~: c'est la notion
+de minimisation qui nous sera utile.
 
 \begin{definition}[Minimisation, minimisation bornée]
   Soit $R \subseteq \mathbb N^{n+1}$ une relation. On définit la fonction
@@ -443,8 +454,8 @@ fini, et on peut donc donner une valeur dans le cas où l'ensemble est vide.
   fonction qui retourne $\sucs(m)$ où $m$ est le minimum s'il existe, et $0$
   sinon~:
   \[f_0 \defeq \rec(\km_0^n,\ifrm(\pi_{n+2}^{n+2},\pi_{n+2}^{n+2},
-  \times\circ(R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+1},
-  \sucs\circ \pi_{n+1}^{n+1}))))\]
+  \times\circ(R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+2}),
+  \sucs\circ \pi_{n+1}^{n+2})))\]
   On définit alors $\mu_B R$ simplement par $p\circ f_0$, où $p$ est la
   fonction précédesseur définie plus haut.
 \end{proof}
@@ -480,7 +491,7 @@ dans la \cref{def.bij.Cantor} est une fonction RP.
 
 \begin{exercise}
   Montrer que chaque $\alpha_n$ est aussi une fonction RP, et que chaque
-  projection $\varpi_i^n$ telle que $\varpi_i^n(\alpha_n(x_1,\ldots,x_n)) = n$,
+  projection $\varpi_i^n$ telle que $\varpi_i^n(\alpha_n(x_1,\ldots,x_n)) = x_i$,
   est une fonction RP.
 \end{exercise}
 
@@ -489,7 +500,8 @@ $\mathbb N^n \to \mathbb N$ n'apporte pas réellement plus d'expressivité que
 d'avoir simplement des fonctions $\mathbb N \to \mathbb N$, puisque toutes les
 fonctions RP $f : \mathbb N^k \to \mathbb N$ peuvent se réécrire en une
 composée de fonctions
-$n \mapsto (\varpi_1^n(n),\ldots,\varpi_n^n(n)) \overset{f}{\mapsto}$ elle aussi
+$n \mapsto (\varpi_1^p(n),\ldots,\varpi_p^p(n))
+\overset{f}{\mapsto} f(n_1,\ldots,n_p)$ elle aussi
 RP. Bien sûr, il est toujours nécessaire de définir les fonctions avec plusieurs
 coordonnées de par la définition même des fonctions RP (puisqu'en particulier
 la récursion primitive utilise un appel sur une seule coordonnée en laissant les
@@ -595,6 +607,15 @@ beaucoup de résultats techniques.
   en utilisant le théorème de Knaster-Tarski. Pour régler ce problème, on
   utilise en réalité comme seuls alphabets les ensembles $n \in \omega$, qui
   représentent déjà tous les ensembles finis à bijection près.
+
+  On peut ensuite considérer la version adaptée à tout ensemble fini en disant
+  qu'une fonction $f : \Sigma^\star \to \Gamma^\star$ est RPG lorsque,
+  pour toutes bijections $\sigma : \Sigma \to \{0,\ldots,n\}$ et
+  $\tau : \Gamma\to\{0,\ldots,k\}$, $\tau\circ f \circ \sigma^{-1}$ est une
+  fonction RPG. Nous ne considérerons cependant ici que des ensemble de la forme
+  $n \in \omega$, car la généralisation des fonctions RPG ajoute déjà de
+  nombreuses lourdeurs, et posséder comme alphabet uniquement les ordinaux finis
+  suffit à ce que l'on souhaite faire pour des codages.
 \end{remark}
 
 Les fonctions RP sont naturellement un sous-ensemble des fonctions RPG, en
@@ -603,7 +624,7 @@ que $\{0\}^\star$ est exactement l'ensemble $\mathbb N$ qu'on manipule dans le
 cas des fonctions RP/RPG.
 
 Une question naturelle à se poser est si cette notion de fonctions RPG est
-strictement plus forte que celle de fonction RP~: ça n'est pas le cas, et c'est
+strictement plus forte que celle de fonctions RP~: ça n'est pas le cas, et c'est
 ce que nous allons montrer dans un premier temps. Pour montrer cela, on va
 construire une notion de traduction entre chaque $\Sigma^\star$ et $\mathbb N$.
 La traduction $f_\Sigma : \Sigma^\star \cong \mathbb N$ sera choisie RPG, et de
@@ -657,10 +678,10 @@ est RP.
 
   Pour commencer, il nous faut construre une première fonction~: étant donné un
   nombre $k \in \mathbb N$, on souhaite montrer que la fonction
-  \begin{align*}
-    \cons_{k\% n} &: \Sigma\to\Sigma\\
-    \cons_{k\% n}(u) &\defeq u\star (k \% n)
-  \end{align*}
+  \[\begin{array}{ccccc}
+  \cons_{k\% n} &: & \Sigma^\star & \longrightarrow & \Sigma^\star\\
+  & & u &\longmapsto & u\star (k\% n)
+  \end{array}\]
   et RPG, où $k \% n$ désigne le reste de la division euclidienne de $k$ par
   $n$. En réalité, comme $n$ est un nombre fini, il nous suffit d'imbriquer des
   conditions d'égalité de $k \% n$ à chaque nombre dans $i\in\{0,\ldots,n-1\}$
@@ -669,8 +690,8 @@ est RP.
   On définit alors la fonction
   \[\begin{array}{ccccc}
   f_n &: & \mathbb N^2 &\longrightarrow & \Sigma^\star\\
-  & & (k,0) & \longmapsto & u\\
-  & & (k,d + 1) & \longmapsto & \cons_{k\% n}(f_0(k//n,d))
+  & & (k,0) & \longmapsto & \varepsilon\\
+  & & (k,d + 1) & \longmapsto & \cons_{k\% n}(f_n(k//n,d))
   \end{array}\]
   où $k//n$ est le quotient de la division euclidienne de $k$ par $n$. Il est
   clair que cette fonction est RPG, en utilisant une récursion primitive. On
@@ -696,8 +717,7 @@ est RP.
   On construit ensuite l'entier $m' = m - \sum_{i = 0}^{d(m)-1} n^i$ (comme $d(m)$
   est choisi minimal, la valeur de droite est bien positive) puis le
   mot sur $\{0,\ldots,n-1\}^\star$ donné par la décomposition de $m'$ sur
-  $d$ chiffres. Ainsi, si cette fonction est bien la réciproque de $f_\Sigma$,
-  alors elle est RPG.
+  $d$ chiffres. On sait donc que cette fonction est RPG.
 
   Montrons maintenant que les deux fonctions sont réciproques l'une de l'autre.
   Tout d'abord, si on a un entier $m$, $d$ le plus petit entier $d$ tel que
@@ -746,7 +766,7 @@ plus évidents~:
 \item pour la fonction $\km_\varepsilon$, la fonction associée est directement
   $\km_0$.
 \item si $g$ et $(h_i)_{i \in \{1,\ldots,p\}}$ sont des fonctions RPG,
-  alors on peut vérifier que l'égalité
+  alors on peut simplement remarque que l'égalité
   $\widehat{g\circ (h_i)_i} = \hat g \circ (\hat{h_i})_i$
   est vérifiée~:
   \begin{align*}
@@ -982,7 +1002,7 @@ valant $0$ ou $1$).
   On définit la classe $\Rec$ des fonctions récursives comme la plus petite
   classe de fonctions partielles contenant la classe $\RecP$ et telle que si
   $f : \mathbb N^{n+1} \to \mathbb N$ est une fonction récursive, alors
-  la fonction
+  c'est aussi le cas de la fonction
   \[\begin{array}{ccccc}
   \mu(f) & : & \mathbb N^n & \longrightarrow & \mathbb N\\
   & & (x_1,\ldots,x_n) &\longmapsto & \min \{y \in \mathbb N \mid
@@ -1158,7 +1178,7 @@ L'exécution d'une machine sur un mot $u$ peut ainsi mener à plusieurs cas~:
 \begin{itemize}
 \item la trace est infinie, ce qui correspond à un calcul qui ne se termine pas,
   tel un programme exécutant une boucle de la forme \texttt{while true} ;
-\item la trace est finie mais ne pas contient d'état d'arrêt, ce qui correspond
+\item la trace est finie mais ne contient pas d'état d'arrêt, ce qui correspond
   à une dernière configuration pour laquelle l'action de $M$ est indéfinie ;
 \item la trace est finie et contient un état d'arrêt, ce qui correspond à un
   calcul qui s'exécute correctement et s'arrête~: le ruban dans la configuration
