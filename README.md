@@ -38,17 +38,19 @@ III. Théorie des modèles
 
 IV. Calculabilité
 
-11. Langage régulier et langage algébrique
+11. Langage régulier et automates finis
 
-12. Modèles de calcul : fonctions récursives, machines de Turing
+12. Langage algébrique et automates à pile
 
-13. Enumérations et théorèmes de calculabilité
+13. Modèles de calcul : fonctions récursives, machines de Turing
 
-14. Codage des propositions, hiérarchie arithmétique
+14. Enumérations et théorèmes de calculabilité
 
-15. Théorèmes d'incomplétude de Gödel
+15. Codage des propositions, hiérarchie arithmétique
 
-16. Complexité
+16. Théorèmes d'incomplétude de Gödel
+
+17. Complexité
 
 V. Théorie de la démonstration
 

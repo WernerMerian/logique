@@ -473,7 +473,7 @@ de substitution.
 Introduisons aussi la forme normale de Chomsky.
 
 \begin{definition}[Forme normale de Chomsky]
-  Soit un alphabet $\Sigma$ et une grammaire $G \triangleq (\Gamma, \to, S)$ sur
+  Soit un alphabet $\Sigma$ et une grammaire $G \defeq (\Gamma, \to, S)$ sur
   $\Sigma$. On dit que $G$ est sous forme normale de Chomsky lorsque toutes
   ses règles sont de l'une des deux formes~:
   \begin{itemize}
@@ -483,7 +483,7 @@ Introduisons aussi la forme normale de Chomsky.
 \end{definition}
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $G \triangleq (\Gamma,\to,S)$ une grammaire sur
+  Soit $\Sigma$ un alphabet et $G \defeq (\Gamma,\to,S)$ une grammaire sur
   $\Sigma$.
   Il existe une grammaire $G'$ sous forme normale de Chomsky telle que
   $\mathcal L_{G'} = \mathcal L_G\setminus \{\varepsilon\}$.
@@ -495,7 +495,7 @@ Introduisons aussi la forme normale de Chomsky.
   étapes~: le premier objectif est de transformer toutes les règles en des
   règles avec un terminal ou uniquement des non terminaux.
 
-  On pose un ensemble $\Gamma' \triangleq \{A_a\mid a \in \Sigma\}$ avec une
+  On pose un ensemble $\Gamma' \defeq \{A_a\mid a \in \Sigma\}$ avec une
   bijection avec l'ensemble $\Sigma$. Soit la substitution $\sigma$ définie par
   $\sigma(A) = \{A\}$ pour $A \in \Gamma$ et $\sigma(a) = \{A_a\}$ pour
   $a \in \Sigma$. Cette substitution indique, étant donné un mot $u$, la version
@@ -526,7 +526,7 @@ Introduisons aussi la forme normale de Chomsky.
 La dernière forme que nous étudions est la forme normale de Greibach.
 
 \begin{definition}[Forme normale de Greibach]
-  Soit un alphabet $\Sigma$ et une grammaire $G \triangleq (\Gamma,\to,S)$ sur
+  Soit un alphabet $\Sigma$ et une grammaire $G \defeq (\Gamma,\to,S)$ sur
   $\Sigma$.
   On dit que $G$ est sous forme normale de Greibach si toutes ses règles sont
   de la forme $A \to aU$ où $a \in \Sigma$ et $U \in \Gamma^\star$. On dira que
@@ -544,16 +544,14 @@ La dernière forme que nous étudions est la forme normale de Greibach.
   A FAIRE
 \end{proof}
 
-\section{Arbres de dérivation, automates à pile}
+\section{Arbres de dérivation}
 
 Cette section s'intéresse au développement de la théorie des langages
-algébriques au travers des arbres de dérivations et des automates à pile. Les
+algébriques au travers des arbres de dérivations. Les
 arbres de dérivation donnent un modèle plus intuitif et visuel pour considérer
-la construction d'un mot depuis une grammaire, et les automates à pile sont un
-formalisme permettant de représenter les langages algébriques comme une
-extension des langages rationnels.
+la construction d'un mot depuis une grammaire.
 
-\subsection{Ambigüité et dérivations}
+\subsection{Dérivation et lemme d'itération}
 
 Pour introduire cette sous-section, il nous faut d'abord présenter la notion
 d'arbre de dérivation. Comme nous l'avons vu, les mots engendrés par une
@@ -578,8 +576,7 @@ plutôt que de considérer la dérivation d'un mot de façon linéaire, on la
 considère comme une arborescence procédant à chaque dérivation parallèle
 simultanément.
 
-Nous avons donc d'abord besoin de la notion d'arbre, plus précisément
-d'arbre enraciné.
+Introduisons donc les arbres en tant que structure à part.
 
 \begin{definition}[Arbre enraciné, feuille, étiquetage]
   Un arbre enraciné est un triplet $(V,r,d)$ avec~:
@@ -658,6 +655,22 @@ l'arbre.
   dans $\Sigma^\star$.
 \end{remark}
 
+\begin{remark}
+    En réutilisant les notions du \cref{chp.induction}, on peut considérer
+    l'ensemble des arbres de dérivation comme une famille d'ensembles
+    inductifs $(X_A)_{A \in \Sigma}$ indicé par les règles données par la
+    grammaire où chaque terminal est une constante, et chaque non terminal
+    appartient à un ensemble distinct~: une règle $r : A \to aBC$ par
+    exemple donne lieu à un constructeur binaire $r_a(B,C)$ appartenant à
+    l'ensemble $X_A$ et prenant en argument un élément de $X_B$ et un élément de
+    $X_C$.
+
+    Nous ne détaillons pas la construction formelle qu'il faudrait effectuer pour
+    obtenir une telle famille. L'ensemble des arbres de dérivation depuis une
+    lettre $A$ est alors $X_A$, et $X_S$ est l'ensemble des arbres de dérivation
+    de la grammaire.
+\end{remark}
+
 \begin{example}
   Les deux dérivations précédentes de $01$ dans le langage de Dyck peuvent être
   associées à l'arbre de dérivation suivant~:
@@ -697,7 +710,7 @@ On obtient alors un nouveau mot dans notre langage, si $T$ et $T'$ sont des
 arbres sur une grammaire du langage (à l'exception près du fait que la racine
 de $T'$ peut avoir une étiquette autre que $S$).
 
-Cela nous permet de définir un résultat, analogue à celui du lemme de l'étoile.
+Cela nous mène à un nouveau résultat, analogue à celui du lemme de l'étoile.
 Dans le lemme de l'étoile, on a considéré un automate pour dire que celui-ci va
 devoir boucler lorsqu'il reconnait un mot suffisamment long. Ici, plutôt que de
 considérer les états d'un automate, on considère les symboles utilisés dans
@@ -753,7 +766,7 @@ cela se traduit par le lemme suivant~:
   \partial T_2 \defeq \alpha A \gamma\]
   Il est dont possible de greffer $T_1$ à $T_2$ un nombre $k$ quelconque de
   fois, puis de greffer $T_0$ à $T_1$, pour obtenir un arbre de dérivation
-  valide. On en déduit donc, en prennat la frontière de chacun de ces arbres de
+  valide. On en déduit donc, en prenant la frontière de chacun de ces arbres de
   dérivation itérée~:
   \[\begin{cases}
   \forall n \in \mathbb N, \alpha v^n \beta w^n \gamma \in \mathcal L_G\\
@@ -787,27 +800,29 @@ cela se traduit par le lemme suivant~:
   \caption{Illustration de la décomposition précédente}
 \end{figure}
 
+\subsection{Ambiguïté et propriété universelle}
+
 Un problème se présente cependant, avec les arbres de dérivation. Dans le cas
 des dérivations d'un mot, de la forme $S\to^\star u$, on sait qu'il existe en
 général de nombreuses dérivations, mais qu'en est-il des arbres de dérivation ?
 
 Une grammaire peut en fait, ou non, posséder un unique arbre de dérivation pour
-chaque mot~: c'est ce qu'on appelle une grammaire non ambigüe.
+chaque mot~: c'est ce qu'on appelle une grammaire non ambiguë.
 
-\begin{definition}[Ambigüité]
+\begin{definition}[Ambiguïté]
   Soit $\Sigma$ un alphabet et $G$ une grammaire sur $\Sigma$. On dit que $G$
-  est ambigüe lorsqu'il existe deux arbres de dérivation sur $G$ distincts mais
+  est ambiguë lorsqu'il existe deux arbres de dérivation sur $G$ distincts mais
   de même frontière. On dit qu'un langage algébrique $\mathcal L$ est
-  inhéremment ambigu s'il n'existe aucune grammaire non ambigüe engendrant
+  inhéremment ambigu s'il n'existe aucune grammaire non ambiguë engendrant
   $\mathcal L$.
 \end{definition}
 
-La notion d'ambigüité, ou plutôt de non ambigüité, nous permet de définir une
+La notion d'ambiguïté, ou plutôt de non ambiguïté, nous permet de définir une
 propriété universelle, analogue au \cref{thm.PU.ind}.
 
-\begin{proposition}[Propriété universelle d'une grammaire non ambigüe]
+\begin{proposition}[Propriété universelle d'une grammaire non ambiguë]
   \label{prop.PU.gram}
-  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,S)$ une grammaire non ambigüe sur
+  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,S)$ une grammaire non ambiguë sur
   $\Sigma$. Soit un ensemble $X$ et une famille $(f_{A,u})_{(A,u) \in \to}$ de
   fonctions telles que pour tout $(A,u) \in \to$, $f_{A,u} : X^n \to X$ où $n$
   est le nombre de non terminaux appartenant à $u$. Il existe alors une unique
@@ -855,7 +870,7 @@ avec une première version de codage de Gödel.
 \begin{definition}[Bijection de Cantor]\label{def.bij.Cantor}
   On appelle bijection de Cantor, ou polynôme de Cantor, la fonction
   \[\begin{array}{ccccc}
-  \alpha & : & \mathbb N \times \mathbb N & \longrightarrow & \mathbb N\\
+  \alpha_2 & : & \mathbb N \times \mathbb N & \longrightarrow & \mathbb N\\
   & & (n,m) & \displaystyle\longmapsto &
   \displaystyle\left(\sum_{k = 1}^{n+m} k\right)+m
   \end{array}\]
@@ -898,12 +913,12 @@ $k$-uplets d'entiers, et même les listes d'entiers.
 \end{exercise}
 
 \begin{notation}
-  On notera en général $\langle n,m\rangle$ pour $\alpha_n(n,m)$, et de même
+  On notera en général $\langle n,m\rangle$ pour $\alpha_2(n,m)$, et de même
   $\langle n_1,\ldots,n_p\rangle$ pour $\alpha_p(n_1,\ldots,n_p)$.
 \end{notation}
 
 \begin{definition}[Codage de Gödel d'un langage algébrique, version 1]
-  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,V)$ une grammaire non ambigüe sur
+  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,V)$ une grammaire non ambiguë sur
   $\Sigma$. Pour chaque $A \in \Gamma$, on numérote les règles $(A,u) \in \to$
   pour les ordonner, on note $e(A,u)$ le numéro de la règle $A,u$. Soit
   $u = u_1A_1\cdots A_nu_{n+1}$ où $u_1,\ldots,u_{n+1}\in\Sigma^\star$, on définit
@@ -931,7 +946,7 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   $Y,\ldots,Y$ sont des $p$-uplets~: en particulier pour $p = 0$ on a simplement
   $R^0$ (respectivement $f^0$).
   
-  On peut vérifier que la grammaire est sans ambigüité. Ainsi, pour une formule
+  On peut vérifier que la grammaire est sans ambiguïté. Ainsi, pour une formule
   $\varphi$ donnée, on peut lui associer un entier naturel $\godcod\varphi$, en
   prenant comme numérotation l'ordre dans lequel on a présenté les règles venant
   d'un même non terminal.
@@ -957,11 +972,10 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   sur ce codage sont aussi calculables.
 
   Relevons qu'historiquement, le premier codage de Gödel dans son article
-  \cite{Godel1931-GDEBFU} (une traduction en anglais est disponible dans
-  \cite{van1967frege}) utilisait la décomposition en facteurs premiers, pour
+  \cite{Godel1931-GDEBFU} utilisait la décomposition en facteurs premiers, pour
   encoder un tuple $(n_1,\ldots,n_k)$ par l'entier
-  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)$ est l'énumération
-  canonique des nombres premiers.
+  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)_{n \in \mathbb N}$
+  est l'énumération canonique des nombres premiers.
 \end{remark}
   
 \begin{remark}
@@ -971,12 +985,183 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   \[x \Coloneq x_0\mid x_s(x)\]
   décrivant une variable $x_0$ et une fonction injective non surjective
   $x_s : \mathcal X \to \mathcal X$. Ainsi la variable $x_n$ est remplacée par
-  la variable ${x_s}^n(x_0)$ et on a alors bien un langage algébrique. Cela
+  la variable $(x_s)^n(x_0)$ et on a alors bien un langage algébrique. Cela
   nous donne d'ailleurs un codage plus explicite des termes (les expressions
   dérivées de $Y$ dans notre grammaire).
 \end{remark}
 
-\subsection{Automates à pile}
+\section{Automates à pile}
 
-Dans cette sous-section, l'objectif sera de présenter les automates à pile.
-A FAIRE
+Dans cette section, nous présentons la notion d'automates à pile. Nous avons vu
+dans le chapitre précédent que les automates finis (déterministes ou non
+déterministes) reconnaissent exactement les langages réguliers. Les automates à pile,
+eux, reconnaissent exactement les langages algébriques.
+
+La première sous-section est dédiée aux définitions, et en particulier au cas de
+l'acceptation, car plusieurs possibilités existent pour définir l'acceptation d'un mot
+par un automate à pile. Nous verrons dans la seconde sous-section les conséquences de
+ces automates, en particulier un théorème de clôture et le cas des automates à pile
+déterministes.
+
+\subsection{Premières définitions}
+
+Cependant, là où les automates finis admettent de nombreuses formulations équivalentes,
+ce n'est pas toujours le cas pour les automates à pile. En particulier, les automates
+à pile sont par défaut non déterministes.
+
+Un automate à pile peut se voir comme un automate fini auquel on adjoint une liste de
+symboles que l'automate peut lire pour avoir une forme de mémoire. Cette liste de
+symboles fonctionne suivant le principe LIFO (\foreignexpr{last in, first out}), ce
+qui correspond à la notion informatique de pile (d'où le nom)~: le symbole lu est le
+dernier symbole ajouté.
+
+\begin{definition}[Automate à pile]
+    Soit un alphabet $\Sigma$. Un automate à pile sur $\Sigma$ est la donnée d'un
+    $5$-uplet $(Q,q_0,\Gamma,\alpha_0,R)$ où~:
+    \begin{itemize}
+        \item $Q$ est l'ensemble (fini) d'états
+        \item $q_0 \in Q$ est l'état initial
+        \item $\Gamma$ est l'alphabet de pile
+        \item $\alpha_0 \in \Gamma$ est le symbole initial
+        \item 
+        $R \subseteq Q \times \Gamma\times (\Gamma\cup \{\varepsilon\})\times
+        Q \times \Gamma^\star$ est la relation de transition.
+        On notera $q,\alpha \xrightarrow{\beta} q',u$ pour signifier
+        $(q,\alpha,\beta,q',u) \in R$ et on appellera $\beta$ l'étiquette de
+        la transition.
+    \end{itemize}
+\end{definition}
+
+\begin{notation}
+    Comme dans le cas des automates finis, on considère par défaut qu'un automate
+    dont on ne spécifie pas les composante a pour ensemble d'état $Q$, pour état
+    initial $q_0$, et de plus que $\Gamma$ est son alphabet de pile et $\alpha_0$
+    son symbole initial.
+\end{notation}
+
+Contrairement au cas d'un automate fini déterministe ou non, utiliser un automate à
+pile demande plus d'information que la simple donnée de l'automate. Cela est dû au
+fait qu'un automate à pile se comportera différemment en fonction de la pile qu'il lit.
+On introduit donc la notion de configuration, qui est une description totale du
+calcul lors de l'exécution d'un automate à pile.
+
+\begin{definition}[Configuration]
+    Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile sur $\Sigma$. On
+    appelle configuration sur $\mathcal A$ une paire $(q,u)$ où $q \in Q$ et
+    $u \in \Gamma^\star$.
+\end{definition}
+
+Comme dans le chapitre précédent, on définir une notion de trace, qui correspond à
+un historique de l'exécution de l'automate.
+
+\begin{definition}[Trace de l'exécution d'un automate à pile]
+    Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile sur $\Sigma$. On
+    appelle trace sur $\mathcal A$ une suite finie $(C_p)$ de
+    configurations telle que, pour tout indice $p$ où $C_p$ et $C_{p+1}$ sont définies,
+    en notant $C_p = (q,u)$ et $C_{p+1} = (q',v)$, on peut trouver deux lettres
+    $\alpha,\beta$ et deux mots $u',v'$ tels que
+    \[\begin{cases}
+        u = \alpha u'\\
+        v = v'u'\\
+        q,\alpha \xrightarrow \beta q',v'
+    \end{cases}\]
+
+    Soit une trace $(C_p)_{p = 0,\ldots,k}$. On dit que cette trace est valide pour un
+    mot $u$ si $C_0 = (q_0,\alpha_0)$ et si $u$ est la concaténation des étiquettes des
+    transitions de la trace $(C_p)$. Plus généralement, la concaténation de ces
+    étiquettes est appelée l'étiquette de la trace de $(C_p)$, l'état de la
+    configuration $C_0$ est l'état de départ et son mot est le mot de départ.
+\end{definition}
+
+Remarquons que pour l'instant, si on a effectivement défini ce qu'est un calcul sur un
+automate à pile, par le biais des traces, il nous manque un critère permettant d'arrêter
+un calcul. Plus précisément, étant donnée une trace $(C_p)_{k = 0,\ldots,k}$, nous
+n'avons pas de condition sur la dernière configuration $C_k$ pour déclarer que la
+trace représente effectivement un calcul qui se termine.
+
+Plusieurs tels critères existent. Nous en donnons deux~:
+\begin{itemize}
+    \item par état final~: on définit un ensemble $F$ d'états finaux, et la trace
+    termine si l'état $q_k$ appartient à l'ensemble $F$~;
+    \item par pile vide~: la trace termine lorsque $u_k = \varepsilon$.
+\end{itemize}
+
+Ces deux critères définissent la même classe de langages reconnus (celle des langages
+algébriques, comme on s'y attend).
+
+Pour vérifier cela, on commence par définir la notion de fond de pile testable.
+
+\begin{definition}[Fond de pile testable]
+    Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile. On dit que cet
+    automate est à fond de pile testable s'il existe une partition
+    $\Gamma = \Gamma_0 \sqcup \Gamma_1$ telle que pour toute configuration
+    accessible depuis la configuration $(q_0,\alpha_0)$, c'est-à-dire toute
+    configuration appartenant à une trace dont la configuration précédente est
+    la configuration de départ, en notant cette configuration $(q,u)$, alors
+    $u$ peut se décomposer en $u'\alpha$ où $u' \in \Gamma_0$ et
+    $\alpha \in \Gamma_1$. Dit autrement, un fond de pile est testable si pour
+    toute exécution de l'automate, il est toujours possible à partir du mot en
+    tête de pile si la pile est réduite à une lettre ou non.
+\end{definition}
+
+\begin{proposition}
+    Soit $\Sigma$ un alphabet, et $\mathcal A$ un automate sur $\Sigma$. Alors
+    il existe un automate à fond de pile testable reconnaissant le même langage que
+    $\mathcal A$, que $\mathcal A$ reconnaisse par état final ou par pile vide.
+\end{proposition}
+
+\begin{proof}
+    L'idée de la démonstration est de doubler l'alphabet $\Gamma$~: on crée une
+    nouvelle copie
+    \[\Gamma' \defeq \{ \alpha_{\mathrm{bis}}\mid \alpha \in \Gamma\}\]
+    disjointe avec $\Gamma$ de sorte que le fond de pile est toujours occupé par
+    une lettre de $\Gamma'$. Il nous suffit ensuite d'ajouter des transitions de
+    sorte à garder en mémoire si la lettre correspond ou non à une lettre de fond
+    de pile.
+\end{proof}
+
+\begin{theorem}
+    Soit $\Sigma$ un alphabet, un langage $\mathcal L$ est reconnu par un automate
+    à pile par état final si et seulement s'il est reconnu par un automate à pile par
+    pile vide.
+\end{theorem}
+
+\begin{proof}
+    Le théorème contient deux parties~: on veut construire un automate à pile par état
+    final à partir d'un automate à pile par pile vide, et inversement.
+
+    On suppose donc, pour commencer, que le langage $\mathcal L$ est reconnu par un
+    automate à pile à fond de pile testable par état final $\mathcal A$. On veut
+    maintenant construire un automate à pile par pile vide. Pour cela, on ajoute deux
+    états $q_+$ et $q_-$ représentant respectivement le cas où on atteint un état final,
+    et le cas où la pile se vide avant d'atteindre un état final. Dans le premier cas,
+    on ajoute une transition de la forme
+    $q,\alpha\xrightarrow \beta q_+,\varepsilon$ pour chaque transition de la forme
+    $q,\alpha\xrightarrow \beta q',\gamma$ où $q' \in F$, ainsi que toutes les
+    transitions $q_+,\alpha \xrightarrow\varepsilon q_+,\varepsilon$, permettant ainsi
+    de transformer une trace pour le premier automate en une trace du nouvel automate
+    identique jusqu'à l'état final, remplacé par $q_+$ où la pile se vide alors.
+    Pour le cas de $q_-$, on ajoute toutes les transitions
+    $q,\alpha \xrightarrow \beta q_-,\alpha$ pour $\alpha$ une lettre de fond de
+    pile ne menant pas à un état final. Ainsi les traces sur l'automate initial sont
+    associées soit à une trace vidant sa pile dans l'état $q_+$, soit par une
+    trace bloquante en $q_-$ où aucune transition ne peut être exécutée mais où la
+    pile n'est pas vide.
+
+    Réciproquement, si le langage est reconnu par un automate à pile à fond de pile
+    testable par pile vide, alors on peut ajouter un unique état final $q_f$ et une
+    transition $q,\alpha\xrightarrow\beta q_f,\alpha$ pour toute lettre $\alpha$
+    de fond de pile.
+\end{proof}
+
+Nous concluons maintenant la sous-section en montrant l'équivalence entre les
+grammaires hors contextes et les automates à pile.
+
+\begin{theorem}
+    Soit $\Sigma$ un alphabet. On a égalité entre la classe des langages algébriques
+    et celle des langages reconnus par un automate à pile.
+\end{theorem}
+
+\begin{proof}
+    A FAIRE
+\end{proof}
