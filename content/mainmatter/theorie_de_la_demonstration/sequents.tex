@@ -3,4 +3,515 @@
 
 \minitoc
 
-\lettrine{B}{la}
+\lettrine{D}{ans} le \cref{chp.logpred}, nous avons prouvé le théorème de
+complétude pour la déduction naturelle dans le cas de la logique du premier
+ordre. La déduction naturelle, comme nous l'avons vu, est une syntaxe de
+démonstration permettant de formaliser des étapes élémentaires de raisonnements
+sous forme d'un arbre de preuve.
+
+La structure de la preuve du théorème de complétude, du moins de sa partie
+technique où l'on construit un modèle d'une théorie cohérente, se décompose
+ainsi~:
+\begin{itemize}
+\item on ajoute des témoins de Henkin à la théorie~;
+\item on complète la théorie~;
+\item on construit le modèle syntaxique, dont les éléments sont les termes clos
+  quotientés par l'égalité prouvable dans la théorie
+\item on montre par induction que la théorie complétée prouve une formule si et
+  seulement si le modèle syntaxique la satisfait.
+\end{itemize}
+
+Ce théorème est donc relativement long et technique à prouver, et notre preuve
+ne fonctionne que dans le cas très précis de la déduction naturelle. Est-il
+possible de généraliser ce résultat à d'autres syntaxes de preuves ? C'est en
+répondant à cette question que nous introduisons une autre syntaxe, celle du
+calcul des séquents, que nous étudierons ce chapitre.
+
+Ce chapitre se compose donc d'abord d'une preuve d'un théorème de complétude
+\og méta\fg, qui permet de prouver avec quelques conditions qu'une large classe
+de syntaxes de preuves sont complètes vis à vis des modèles déjà présentés dans
+le \cref{chp.logpred}. Grâce à cette preuve, nous abordons ensuite le calcul des
+séquents classique, et son principal théorème~: l'élimination des coupures.
+
+Enfin, nous présentons le calcul des séquents intuitionnistes. Pour cela, nous
+préférons prendre un chemin légèrement plus long mais plus riche~: nous étudions
+sommairement la logique modale et la sémantique de Kripke qui leur est associé.
+Cela nous permet de conclure par un théorème de complétude similaire à celui du
+calcul des séquents, mais entre sa version intuitionniste et la classe des
+modèles de Kripke.
+
+\section{Théorème de complétude généralisé}
+
+Dans notre première démonstration du théorème de complétude, nous construisons
+le modèle syntaxique d'une théorie cohérente en ayant un système syntaxique
+déjà donné, ce qui n'est pas notre cas ici. Nous avons donc besoin de considérer
+avant tout des conditions qu'un système syntaxique doit vérifier pour nous
+sembler acceptable.
+
+Nous nous autorisons à en ajouter autant que nécessaire, mais nous souhaitons
+garder un critère essentiel~: chaque condition doit être raisonnable, au sens
+où un système nous paraissant refléter ce qu'est une preuve doit forcément
+vérifier une telle condition.
+
+Tout d'abord, des conditions dites structurelles s'imposent. On considère que
+notre relation $\vdash$ de prouvabilité syntaxique relie une théorie et une
+formule, on a donc, pour une signature $\Sigma$ donnée,
+$\vdash \subseteq \powerset(\Prop(\Sigma))\times \Formula(\Sigma)$. Dire qu'une
+théorie $\mathcal T$ prouve une formule $\varphi$ demande qu'on écrive
+effectivement une preuve, ce qui signifie qu'on doit avoir un ensemble, qu'on
+notera $\Pi$, de preuves. Cet ensemble est muni d'une fonction donnant les
+hypothèses d'une preuves et sa conclusion, c'est-à-dire une fonction
+$\hypo : \Pi \to \powerfin(\Formula(\Sigma))$ et d'une fonction
+$\concl : \Pi \to \Formula(\Sigma)$,
+de telle sorte qu'on puisse écrire
+\[\forall \mathcal T, \varphi, \mathcal T \vdash \varphi \iff
+\exists \pi \in \Pi, (\hypo(\pi) \subseteq \mathcal T) \land
+(\concl(\pi) = \varphi)\]
+Remarquons ici qu'on choisit de poser $\hypo$ comme ayant ses valeurs dans un
+ensemble fini de formules. Le fait de choisir un ensemble fini est poussé par
+le fait qu'une preuve est toujours considérée comme un objet finitaire~: écrire
+une démonstration repose sur un nombre fini de symboles. Le fait de considérer
+des formules et non seulement des propositions permet de considérer des preuves
+qui utilisent des formules non closes comme hypothèses.
+
+Nous voyons donc plusieurs conditions apparaître grâce à cette structure.
+Tout d'abord, cela force la propriété d'affaiblissement~:
+\[
+(\textit{Aff})\quad : \quad \forall \mathcal T,\mathcal T', \varphi,
+(\mathcal T \vdash \varphi) \land (\mathcal T \subseteq \mathcal T') \implies
+\mathcal T' \vdash \varphi
+\]
+ainsi que la propriété de compacité~:
+\[
+(\textit{Comp})\quad : \quad \forall \mathcal T, \varphi,
+\mathcal T \vdash \varphi \implies \exists F \subfin \mathcal T,
+F\vdash \varphi
+\]
+
+Au niveau structurel, il est aussi attendu d'une démonstration qu'elle permette
+de faire deux choses considérées évidentes~: une démonstration peut utiliser une
+hypothèse pour en faire sa conclusion, et une démonstration peut utiliser un
+lemme. Ces deux principes de raisonnements élémentaires se traduisent par deux
+conditions, l'axiome~:
+\[
+(\textit{Ax})\quad : \quad \forall \mathcal T, \varphi, \varphi \in \mathcal T
+\implies \mathcal T \vdash \varphi
+\]
+et la coupure~:
+\[
+(\textit{Cut})\quad : \quad \forall \mathcal T, \varphi, \psi,
+(\mathcal T \vdash \varphi) \land (\mathcal T \cup \{\varphi\}\vdash \psi)
+\implies \mathcal T \vdash \psi
+\]
+
+On ajoute aussi une condition liée au fait qu'on travaille en logique
+classique~: on admet le tiers exclu, ou plutôt ici une version équivalente
+qu'est le raisonnement par l'absurde. Pour faciliter l'écriture de cette
+condition, on définit deux nouvelles notations~: on notera $\mathcal T \vdash$
+pour dire que $\mathcal T$ peut prouver une formule $\varphi$ et son contraire
+$\lnot\varphi$, et on notera $\mathcal T\nvdash$ pour dire que ce n'est pas le
+cas (ce qui correspond au fait que $\mathcal T$ est cohérente). On peut alors
+formuler le raisonnement par l'absurde ainsi~:
+\[
+(\textit{Raa})\quad : \quad \forall \mathcal T, \varphi,
+(\mathcal T\cup\{\lnot \varphi\}\vdash) \implies \mathcal T \vdash \varphi
+\]
+
+Avec ces conditions, toutes largement raisonnables pour considérer une notion de
+prouvabilité entre une théorie et une formule, on peut déjà remarquer deux
+éléments~:
+\begin{itemize}
+\item avec $(\textit{Raa})$, prouver que $\vDash\subseteq \vdash$ ne demande que
+  de prouver que pour toute théorie $\mathcal T$, si $\mathcal T\nvdash$ alors
+  il existe un modèle de $\mathcal T$. Cela revient au
+  \cref{lem.vDashvdashabs} que nous avons vu avant.
+\item sans reconstruire l'algèbre de Lindenbaum-Tarski pour la
+  relation syntaxique, le fait d'avoir $(\textit{Aff})$ et $(\textit{Comp})$
+  nous permet d'utiliser le lemme de Zorn pour étendre toute théorie en une
+  théorie cohérente maximale pour $\vdash$, vu comme un pré-ordre grâce aux
+  conditions $(\textit{Ax})$ et $(\textit{Cut})$ qui assurent respectivement
+  la réflexivité et la transitivité de la relation.
+\end{itemize}
+
+Grâce à ces quatre conditions structurelles, on cherche maintenant des
+conditions pour assurer que la construction effectuée dans le \cref{chp.logpred}
+fonctionne encore. On souhaite donc construire le modèle syntaxique. Pour cela,
+on a besoin de quotienter l'ensemble des termes clos par la relation
+\[t \sim u \defeq \mathcal T \vdash t = u\]
+Mais il faut donc vérifier que cette relation est à la fois une relation
+d'équivalence, et une congruence pour les symboles de fonction et de relation.
+
+On a déjà vu que deux règles suffisaient pour ça, qui sont la réflexivité~:
+\[(\textit{r}=)\quad : \quad \forall \mathcal T, t, \mathcal T \vdash t = t\]
+et la loi de Leibniz~:
+\[(\textit{l}=)\quad : \quad \forall \mathcal T, t, u, \varphi,
+(\mathcal T \vdash \varphi[u/x]) \implies
+\mathcal T \cup\{ t = u \} \vdash \varphi[t/x]
+\]
+
+On peut donc construire notre modèle syntaxique. L'étape suivante est de prouver
+par induction sur les formules que, en notant notre modèle syntaxique
+$\mathcal M$ et notre théorie maximale $\mathcal T$, pour tout environnement
+d'interprétation des variables du premier ordre $\rho$ et toute formule
+$\varphi$ dont les variables libres sont dans le domaine de $\rho$, on a
+\[\mathcal M, \rho \models \varphi \iff \mathcal T \vdash \rho(\varphi)\]
+Sans s'attarder sur les substitutions de variables et en passant les cas
+atomiques (le cas de $\top$ est automatique, le cas de $\bot$ est dû au fait
+que la théorie $\mathcal T$ est cohérente, et les autres formules atomiques sont
+données par définition de l'interprétation des relations), l'induction nous
+donne~:
+\[\begin{array}{ccccc}
+\mathcal M \models \lnot \varphi 
+& \overset{\textit{ind. hyp.}}{\iff} &
+\mathcal T \nvdash \varphi & \overset{\text{?}}{\iff} &
+\mathcal T \vdash \lnot\varphi \\
+\mathcal M \models \varphi\land \psi
+& \overset{\textit{ind. hyp.}}{\iff} &
+(\mathcal T \vdash \varphi) \land (\mathcal T \vdash \psi)&
+\overset{\text{?}}{\iff} &
+\mathcal T \vdash \varphi \land \psi \\
+\mathcal M \models \varphi\lor \psi
+& \overset{\textit{ind. hyp.}}{\iff} &
+(\mathcal T \vdash \varphi) \lor (\mathcal T \vdash \psi)&
+\overset{\text{?}}{\iff} &
+\mathcal T \vdash \varphi \lor \psi \\
+\mathcal M \models \varphi\to \psi
+& \overset{\textit{ind. hyp.}}{\iff} &
+(\mathcal T \nvdash \varphi) \lor (\mathcal T \vdash \psi)&
+\overset{\text{?}}{\iff} &
+\mathcal T \vdash \varphi \lor \psi \\
+\mathcal M \models \forall x, \varphi
+& \overset{\textit{ind. hyp.}}{\iff} &
+\forall m \in |\mathcal M |, \mathcal T \vdash \varphi[t/x]
+& \overset{\text{?}}{\iff} &
+\mathcal T \vdash \forall x, \varphi \\
+\mathcal M \models \exists x, \varphi
+& \overset{\textit{ind. hyp.}}{\iff} &
+\exists m \in |\mathcal M |, \mathcal T \vdash \varphi[t/x]
+& \overset{\text{?}}{\iff} &
+\mathcal T \vdash \exists x, \varphi \\
+\end{array}\]
+
+On a ainsi une liste de nouvelles conditions à satisfaire pour assurer que
+l'induction fonctionne. En séparant les équivalences en deux implications, et
+en prenant la contraposée pour l'une des deux implications, on
+obtient (en notant $\mathcal T, \varphi$ pour $\mathcal T \cup \{\varphi\}$)~:
+\[\begin{array}{ccccc}
+(l\lnot) & : & \mathcal T \vdash \varphi & \implies &
+\mathcal T, \lnot \varphi \vdash \\
+(r\lnot) & : & \mathcal T, \varphi \vdash & \implies &
+\mathcal T \vdash \lnot \varphi \\
+(l\land) & : & (\mathcal T, \varphi \vdash) \lor
+(\mathcal T, \psi \vdash)
+& \implies & \mathcal T, \varphi \land \psi\vdash \\
+(r\land) & : & (\mathcal T \vdash \varphi) \land (\mathcal T \vdash \psi)
+& \implies & \mathcal T \vdash \varphi \land \psi \\
+(l\lor) & : & (\mathcal T, \varphi \vdash) \land (\mathcal T, \psi \vdash)
+& \implies & \mathcal T, \varphi \lor \psi \vdash \\
+(r\lor) & : & (\mathcal T \vdash \varphi) \lor (\mathcal T \vdash \psi)
+& \implies & \mathcal T \vdash \varphi \lor \psi \\
+(l\to) & : & (\mathcal T \vdash \varphi) \land (\mathcal T, \psi \vdash)
+& \implies & \mathcal T, \varphi \to \psi \vdash \\
+(r\to) & : & (\mathcal T,\varphi \vdash) \lor (\mathcal T \vdash \psi)
+& \implies & \mathcal T \vdash \varphi \to \psi \\
+(l\forall) & : & (\exists t \in |\mathcal M |, \mathcal T, \varphi[t/x] \vdash)
+& \implies & \mathcal T, \forall x, \varphi \vdash \\
+(r\forall) & : & (\forall t \in |\mathcal M |, \mathcal T \vdash \varphi [t/x])
+& \overset{\text{?}}{\implies} & \mathcal T \vdash \forall x, \varphi \\
+(l\exists) & : & (\forall t \in |\mathcal M |, \mathcal T, \varphi[t/x] \vdash)
+& \overset{\text{?}}{\implies} & \mathcal T, \exists x, \varphi \vdash \\
+(r\exists) & : & (\exists t \in |\mathcal M |, \mathcal T \vdash \varphi[t/x])
+& \implies & \mathcal T \vdash \exists x, \varphi
+\end{array}\]
+
+Toutes ces conditions, à l'exceptions de deux marquées par un
+$\overset{\text{?}}{\implies}$, sont des conditions parfaitement raisonnables à
+attendre d'un système syntaxique de démonstration. Les deux autres conditions,
+en revanche, n'ont pas de raison d'être vérifiées~: une implication telle que
+$\forall t \in |\mathcal T|, \mathcal T \vdash \varphi[t/x] \implies \mathcal T
+\vdash \forall x, \varphi$
+signifie en particulier que tout objet du premier ordre est représenté par un
+terme clos. On peut facilement se convaincre que ça n'est pas le cas en prenant
+le langage et la théorie des groupes~: pour un certain groupe fixé, disons le
+groupe $\mathbb Z$, seul $0$ peut s'écrire comme un terme clos.
+
+On modifie donc les deux conditions $(r\forall)$ et $(l\exists)$ en demandant,
+non pas que la prémisse soit vérifiée en quantifiant sur les termes clos,
+mais qu'elle soit vérifiée en prenant une constante $c$ n'apparaissant pas dans
+$\varphi$ ni dans $\mathcal T$~:
+\[\begin{array}{ccccc}
+(r\forall)^\dagger & : & \forall c \notin \mathcal T, \varphi,
+\mathcal T \vdash \varphi[c/x]
+& \implies & \mathcal T \vdash \forall x, \varphi \\
+(l\exists)^\dagger & : & \forall c \notin \mathcal T, \varphi,
+\mathcal T, \varphi[c/x]\vdash
+& \implies & \mathcal T, \exists x, \varphi \vdash
+\end{array}\]
+Ces deux conditions sont, elles, raisonnables, puisqu'elles correspondent à une
+généralisation sur une constante indépendante du contexte. Cependant, elles ne
+suffisent pas à assurer l'implication initiale. Nous utilisons donc la
+construction des témoins de Henkin. Dans le cas présent, comme le système
+syntaxique n'est pas défini et qu'on ne connait que quelques unes de ses
+propriétés, on préfère ajouter des témoins de façon plus parcimonieuse.
+
+En effet, on considère maintenant les formules $\varphi$ à une variable libre
+telle que $\exists x, \varphi$ appartient à $\mathcal T$ (ou est prouvable dans
+$\mathcal T$, comme $\mathcal T$ est choisie maximale), on ajoute seulement
+une constante $c_{\exists x, \varphi}$ dans ce cas, et la théorie $\mathcal T'$
+enrichie est alors augmentée seulement de l'axiome
+$\varphi[c_{\exists x, \varphi}/x]$.
+
+On peut alors itérer cette construction pour, à partir de la théorie
+$\mathcal T$, construire une théorie $\hclose{\mathcal T}$ qui possède la
+propriété des témoins de Henkin, c'est-à-dire telle que pour toute formule
+$\varphi$ à une variable libre telle que $\exists x, \varphi$ est prouvable
+dans $\hclose{\mathcal T}$, il existe une constante $c$ telle que
+$\varphi[c/x]$ est prouvable dans $\hclose{\mathcal T}$.
+
+Il se pose alors un nouveau problème. Lorsque nous construisons la version à
+la fois complète et possédant les témoins de Henkin de notre théorie initiale,
+dans le \cref{chp.logpred}, nous utilisons le \cref{prop.henkin.ext} pour,
+depuis le complété de la clôture par témoins de Henkin, avoir une théorie
+possédant les deux propriétés. Dans le cas présent, cette propriété n'a pas de
+raison d'être vérifiée~: augmenter par maximalité notre théorie
+$\hclose{\mathcal T}$ dans le nouveau langage nous fait perdre la propriété des
+témoins de Henkin, et ajouter des témoins de Henkin nous fait perdre la
+maximalité de la théorie.
+
+On décide donc de créer une suite de théorie et de langages (on ne précisera pas
+les langages) $\mathcal T_n$ où $\mathcal T_{2n+1}$ est l'extension par témoins
+de Henkin de $\mathcal T_{2n}$, et $\mathcal T_{2n+2}$ est l'extension par
+maximalité de $\mathcal T_{2n+1}$. En prenant alors l'union de toutes ces
+théories, qu'on notera $\mathcal T'$ ici, on sait que~:
+\begin{itemize}
+\item si $\exists x, \varphi$ appartient à $\mathcal T'$, alors elle appartient
+  à une certaine théorie $\mathcal T_n$, et on trouve donc une constante
+  $c_{\varphi}$ telle que $\varphi[c_{\varphi}/x] \in \mathcal T_{n+2}$, donc
+  $\mathcal T'$ possède la propriété des témoins de Henkin~;
+\item soit $\varphi$ une formule close, exprimée dans le langage de
+  $\mathcal T'$. Comme $\varphi$ est un objet fini, ses symboles appartiennent
+  tous à un certain langage $\Sigma_n$ (en notant $\Sigma_n$ la suite de
+  langages lors de la construction des $\mathcal T_n$). On sait alors que,
+  $\mathcal T_{2n+2}$ contenant l'extension maximale d'une théorie sur
+  $\Sigma_n$, soit $\varphi$ soit $\lnot\varphi$ y appartient. L'extension est
+  donc maximale.
+\end{itemize}
+
+Avec tous ces éléments, il est maintenant possible de généraliser l'énoncé du
+\cref{thm.completude}.
+
+\begin{theorem}[Théorème de complétude généralisé]\label{thm.completude.gen}
+  Soit une relation $\vdash$ vérifiant les règles suivantes~:
+  \[\begin{array}{ccc}
+  \AxiomC{$\varphi \in \mathcal T$}
+  \RightLabel{(\textit{Ax})}
+  \UnaryInfC{$\mathcal T \vdash \varphi$}
+  \DisplayProof
+  & \qquad &
+  \AxiomC{$\mathcal T \vdash \varphi$}
+  \AxiomC{$\mathcal T, \varphi \vdash \psi$}
+  \RightLabel{(\textit{Cut})}
+  \BinaryInfC{$\mathcal T \vdash \psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T \vdash \varphi$}
+  \AxiomC{$\mathcal T \subseteq \mathcal T'$}
+  \RightLabel{(\textit{Aff})}
+  \BinaryInfC{$\mathcal T' \vdash \varphi$}
+  \DisplayProof
+  & &
+  \AxiomC{$\mathcal T \vdash \varphi$}
+  \RightLabel{(\textit{Comp})}
+  \UnaryInfC{$\exists F \subfin \mathcal T, F\vdash \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T\vdash \varphi$}
+  \RightLabel{$(l\lnot)$}
+  \UnaryInfC{$\mathcal T, \lnot\varphi\vdash$}
+  \DisplayProof
+  & &
+  \AxiomC{$\mathcal T, \varphi \vdash$}
+  \RightLabel{$(r\lnot)$}
+  \UnaryInfC{$\mathcal T\vdash \lnot \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T, \varphi \vdash$}
+  \AxiomC{$\mathcal T, \psi \vdash$}
+  \RightLabel{$(l\lor)$}
+  \BinaryInfC{$\mathcal T, \varphi\lor\psi\vdash$}
+  \DisplayProof
+  & &
+  \AxiomC{$\mathcal T \vdash \varphi$}
+  \RightLabel{$(r\lor_1)$}
+  \UnaryInfC{$\mathcal T\vdash \varphi\lor\psi$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\mathcal T \vdash \psi$}
+  \RightLabel{$(r\lor_2)$}
+  \UnaryInfC{$\mathcal T\vdash \varphi \lor \psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T, \varphi \vdash$}
+  \RightLabel{$(l\land_1)$}
+  \UnaryInfC{$\mathcal T,\varphi\land\psi\vdash$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\mathcal T, \psi \vdash$}
+  \RightLabel{$(l\land_2)$}
+  \UnaryInfC{$\mathcal T,\varphi \land \psi\vdash$}
+  \DisplayProof
+  & &
+  \AxiomC{$\mathcal T\vdash \varphi$}
+  \AxiomC{$\mathcal T \vdash \psi$}
+  \RightLabel{$(r\land)$}
+  \BinaryInfC{$\mathcal T\vdash \varphi\land\psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T \vdash \varphi$}
+  \AxiomC{$\mathcal T, \psi \vdash$}
+  \RightLabel{$(l\to)$}
+  \BinaryInfC{$\mathcal T, \varphi\to\psi\vdash$}
+  \DisplayProof
+  & &
+  \AxiomC{$\mathcal T, \varphi \vdash$}
+  \RightLabel{$(r\to_1)$}
+  \UnaryInfC{$\mathcal T\vdash \varphi\to\psi$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\mathcal T \vdash \psi$}
+  \RightLabel{$(r\to_2)$}
+  \UnaryInfC{$\mathcal T\vdash \varphi \to \psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T, \varphi[t/x] \vdash$}
+  \RightLabel{$(l\forall)$}
+  \UnaryInfC{$\mathcal T, \forall x, \varphi \vdash$}
+  \DisplayProof
+  & &
+  \AxiomC{$c \notin \mathcal T, \varphi$}
+  \AxiomC{$\mathcal T \vdash \varphi[c/x]$}
+  \RightLabel{$(r\forall)^\dagger$}
+  \BinaryInfC{$\mathcal T \vdash \forall x, \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$c \notin \mathcal T, \varphi$}
+  \AxiomC{$\mathcal T, \varphi[c/x] \vdash$}
+  \RightLabel{$(l\exists)^\dagger$}
+  \BinaryInfC{$\mathcal T, \exists x, \varphi \vdash$}
+  \DisplayProof
+  & &
+  \AxiomC{$\mathcal T \vdash \varphi[t/x]$}
+  \RightLabel{$(r\exists)$}
+  \UnaryInfC{$\mathcal T \vdash \exists x, \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\mathcal T \vdash \varphi[u / x]$}
+  \RightLabel{$(l=)$}
+  \UnaryInfC{$\mathcal T, t = u \vdash \varphi[t / x]$}
+  \DisplayProof
+  & &
+  \AxiomC{}
+  \RightLabel{$(r=)$}
+  \UnaryInfC{$\mathcal T \vdash t = t$}
+  \DisplayProof
+  \end{array}\]
+  \[
+  \AxiomC{$\mathcal T, \lnot\varphi \vdash$}
+  \RightLabel{(\textit{Raa})}
+  \UnaryInfC{$\mathcal T \vdash \varphi$}
+  \DisplayProof\]
+  Alors on a l'inclusion $\vDash \subseteq \vdash$.
+\end{theorem}
+
+Il nous est donc possible, désormais, de prouver des théorèmes de complétude
+bien plus facilement, en montrant simplement la validité d'un ensemble de
+conditions. On remarque en fait que toutes ces conditions peuvent déjà donner
+lieu à un premier système syntaxique. A la place de considérer une théorie
+$\mathcal T$, on considère des séquents de la forme $\Gamma \vdash [\varphi]$
+où $[\varphi]$ signifie que la conclusion est soit vide (dans le cas d'une
+contradiction), soit la formule $\varphi$, et la relation $\vdash$ donnée par
+les conditions modulo cette réécriture est déjà un système syntaxique de
+démonstration complet vis à vis de $\vDash$. Il est possible de prouver qu'il
+est correct, par un argument similaire au \cref{thm.correction}.
+
+Cependant, plusieurs éléments méritent d'être relevés~:
+\begin{itemize}
+\item en supprimant simplement la règle $(Raa)$ du système, on obtient un
+  système syntaxique intuitionniste, puisque l'affaiblissement permet à partir
+  de $\mathcal T \vdash$, de déduire $\mathcal T \vdash \varphi$ pour n'importe
+  quelle formule $\varphi$~;
+\item il est donc possible d'avoir une théorie intuitionniste, mais le théorème
+  de complétude ne s'y applique alors plus, car ce qui nous permet de passer de
+  la construction d'un modèle à l'inclusion $\vDash\subseteq\vdash$ est le fait
+  que, si $\mathcal T \cup\{\lnot\varphi\}$ n'a pas de modèle, alors
+  $\mathcal T, \lnot\varphi\vdash$, donc que
+  $\mathcal T \vdash \lnot\lnot\varphi$ sans la règle de raisonnement par
+  l'absurde~;
+\item une symétrie peut s'observer entre les règles droites et les règles
+  gauches~: les règles $\lnot$ permettent de changer de côté du $\vdash$ en
+  ajoutant un $\lnot$, les règles $\lor$ et $\land$ sont exactement identiques
+  modulo une inversion des positions, et la même chose peut être dite pour les
+  règles $\exists$ et $\forall$. Ces couples $\lor/\land$ et $\exists/\forall$
+  sont ce qu'on appelle des duaux de De Morgan, c'est-à-dire qu'on a par exemple
+  $\varphi \lor \psi \equiv \lnot (\lnot \varphi \land \lnot \psi)$~;
+\item contrairement au \cref{chp.logpred}, les règles $(r\forall)^\dagger$ et
+  $(l\exists)^\dagger$ utilisent des symboles de constantes, ce qui permet en
+  fait avant tout de faciliter la preuve que nous avons donnée du théorème de
+  complétude~: cela nous évite d'ajouter le théorème de simulation d'une
+  constante par une variable, mais ce théorème est généralement vérifier pour
+  un système syntaxique raisonnable, et on prendra donc généralement plutôt
+  cette version~;
+\item à l'exception des règles sur l'égalité, qui ont un statut particulier du
+  fait que l'égalité n'est pas un symbole logique aussi simple à étudier que les
+  autres, et de la règle $(Raa)$, toutes les autres règles ont la propriété dite
+  de la sous-formule~: les séquents en haut d'une règle sont constitués de
+  sous-formules du séquent en bas de la règle. C'est en fait un critère central
+  pour considérer qu'un formalisme est un calcul des séquents, comme nous le
+  verrons.
+\end{itemize}
+
+Nous avons donc deux options, que nous allons explorer au fil de ce chapitres~:
+créer des séquents symétriques, ou travailler dans un système intuitionniste.
+
+\section{Calcul des séquents LK}
+
+La recherche d'un théorème de complétude plus général nous a en fait poussé vers
+un nouveau formalisme~: en considérant les conditions du
+\cref{thm.completude.gen}, on peut en fait remplacer les séquents de la forme
+$\mathcal T \vdash \varphi$ par des séquents de la forme $\Gamma \vdash \varphi$
+où $\Gamma$ est un ensemble fini de formules, pour obtenir un système
+syntaxique (finitaire). Compte tenu des nombreuses symétries entre le côté
+gauche et le côté droit du $\vdash$ dans les règles, il est alors naturel de
+vouloir construire des séquents de la forme $\Gamma\vdash \Delta$, où
+$\Delta$ est aussi un ensemble fini de formules. S'il est assez clair que
+$\Gamma$, dans le séquent $\Gamma\vdash \Delta$, se lit comme une conjonction
+(on lit le séquent \og en supposant vraies toutes les formules de $\Gamma$\fg,
+c'est-à-dire qu'on suppose la conjonction de toutes les formules), le dual
+naturel est alors une disjonction sur $\Delta$~: ainsi le séquent
+$\Gamma\vdash \Delta$ s'interprète comme l'énoncé \og en supposant vraies toutes
+les formules de $\Gamma$, une au moins des formules de $\Delta$ est vraie\fg.
+Naturellement, le cas où $\Gamma$ est vide donne alors une conclusion toujours
+valide, et le cas où $\Delta$ est vide donne alors une contradiction des
+hypothèses, les deux pouvant donc se réécrire respectivement comme
+$\top \vdash \Delta$ et $\Gamma\vdash \bot$.
+
+On peut maintenant définir notre premier calcul des séquents, $\LK$.
+
+\begin{definition}[Calcul des séquents $\LK$]
+  Soit $\Sigma$ une signature du premier ordre. On définit inductivement
+  la relation
+  $\vdLK\subseteq \List(\Formula(\Sigma))\times\List(\Formule(\Sigma))$
+  par les règles~:
+  \[\begin{itemize}
+
+
+  \end{itemize}\]
+\end{definition}
