@@ -2053,3 +2053,233 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
   On en déduit donc le résultat.
 \end{proof}
+
+\newpage
+
+\section{Exercices}
+
+\begin{exercise}[Mise en jambes]
+  Prouver les formules suivantes~:
+  \[\begin{array}{cc}
+  (\exists x, \forall y, R(x,y)) \to (\forall y, \exists x, R(x,y)) &
+  A FAIRE
+  \end{array}\]
+\end{exercise}
+
+\begin{exercise}[Des formules utiles]
+  Soit une signature $\Sigma$ fixée. Cet exercice vise à construire plusieurs
+  formules simples.
+  \begin{enumerate}[label = (\roman*)]
+  \item Soit $x_1,\ldots,x_n$ des variables. Construire une formule
+    $\mathrm{Ineq_{x_1,\ldots,x_n}}$ exprimant que toutes les variables
+    $x_1,\ldots,x_n$ sont deux à deux différentes.
+  \item En déduire pour tout $n$ une proposition $\varphi_n$ telle que pour
+    toute $\Sigma$-structure $\mathcal M$, on a
+    \[\mathcal M \models \varphi_n \iff \Card(\mathcal M) \geq n\]
+    ainsi qu'une proposition $\psi_n$ telle que pour toute $\Sigma$-structure
+    $\mathcal M$, on a
+    \[\mathcal M \models \psi_n \iff \Card(\mathcal M) = n\]
+  \item Pour un cardinal $\kappa$ infini, peut-on trouver une formule
+    similaire ? \textit{Indication~: on peut utiliser le théorème de compacité.}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Le connecteur d'équivalence]
+  Dans notre définition actuelle des formules, nous n'avons pas le connecteur
+  $\leftrightarrow$, permettant d'exprimer que deux formules sont équivalentes.
+  Il est possible d'encoder
+  \[\varphi\leftrightarrow\psi \defeq
+  (\varphi \to \psi)\land (\psi \to \varphi)\]
+  mais aussi d'ajouter ce constructeur, et les règles
+  \[\begin{array}{cc}
+  \AxiomC{$\Gamma, \varphi\vdash \psi$}
+  \AxiomC{$\Gamma, \psi \vdash \varphi$}
+  \RightLabel{$\leftrightarrow_\mathrm i$}
+  \BinaryInfC{$\Gamma\vdash \varphi\leftrightarrow\psi$}
+  \DisplayProof &
+  \AxiomC{$\Gamma \vdash \varphi \leftrightarrow \psi$}
+  \AxiomC{$\Gamma\vdash \varphi$}
+  \RightLabel{$\leftrightarrow_\mathrm e^\mathrm g$}
+  \BinaryInfC{$\Gamma\vdash \psi$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\Gamma \vdash \varphi \leftrightarrow \psi$}
+  \AxiomC{$\Gamma\vdash \psi$}
+  \RightLabel{$\leftrightarrow_\mathrm e^\mathrm d$}
+  \BinaryInfC{$\Gamma\vdash \varphi$}
+  \end{array}\]
+  Montrer que les deux systèmes sont équivalents~: un séquent avec de possibles
+  connecteurs $\leftrightarrow$ est prouvable si et seulement si sa traduction
+  avec uniquement $\to$ et $\land$ est prouvable.
+\end{exercise}
+
+\begin{exercise}[Formes prénexes]
+  Soit une signature $\Sigma$ fixée. On définit l'ensemble des formules sans
+  quantificateurs $\Formqf(\Sigma)\subseteq \Formula(\Sigma)$ inductivement par
+  \[\varphi, \psi \Coloneq a\mid \top \mid \bot \mid
+  \lnot \varphi \mid \varphi \lor \psi \mid \varphi \land \psi \mid
+  \varphi \to \psi\]
+  où $a \in \Atom(\Sigma)$.
+
+  On définit inductivement l'ensemble des formules sous forme prénexe
+  $\Formula_{\mathrm{pren}}(\Sigma)\subseteq \Formula(\Sigma)$ par
+  \[\varphi\Coloneq \varphi_0\mid \forall x, \varphi \mid \exists x, \varphi\]
+  où $\varphi_0 \in \Formqf(\Sigma)$.
+
+  \begin{enumerate}[label=(\roman*)]
+  \item Soient $\varphi, \psi$ deux formules. Montrer qu'on a les deux
+    équivalences
+    \[\forall x, (\varphi \land \psi) \dashv\vdash
+    (\forall x, \varphi) \land (\forall x, \psi) \qquad
+    \exists x, (\varphi \lor \psi) \dashv\vdash
+    (\exists x, \varphi) \lor (\exists x, \psi)\]
+  \item Montrer que pour toutes formules $\varphi, \psi$ et variable $x$
+    tel que $x$ n'apparait pas dans $\psi$, on a les deux équivalences
+    \[(\exists x,\varphi) \land \psi\dashv\vdash
+    \exists x, (\varphi \land \psi) \qquad
+    (\forall x, \varphi) \lor \psi \dashv\vdash
+    \forall x, (\varphi \lor \psi)\]
+  \item En déduire que toute formule est équivalente à une formule sous forme
+    prénexe~:
+    \[\forall \varphi \in \Formula(\Sigma),
+    \exists \psi \in \Formula_{\mathrm{pren}}(\Sigma),
+    \varphi \dashv\vdash \psi\]
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[La skolémisation]
+  L'objectif de cet exercice est d'utiliser des symboles de fonction pour
+  simuler des quantifications.
+
+  On se donne une signature $\Sigma$ et une formule $\varphi$ sur $\Sigma$.
+
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer que la formule $\exists x, \varphi$ est satisfiable dans une
+    $\Sigma$-structure si et seulement si, en notant $c$ un nouveau
+    symbole de constante et $\Sigma' \defeq \Sigma \cup \{c\}$, la
+    formule $\varphi[c/x]$
+    est satisfiable dans une $\Sigma'$-structure.
+  \item Plus généralement, montrer que la formule
+    $\forall x_1,\ldots,\forall x_n, \exists y, \varphi$ est satisfiable dans
+    une $\Sigma$-structure si et seulement si, en notant $f$ un nouveau
+    symbole de fonction d'arité $n$ et $\Sigma \defeq \Sigma\cup \{f\}$, la
+    formule
+    $\forall x_1,\ldots,\forall x_n,(\varphi[f(x_1,\ldots,x_n)/x])$ est
+    satisfiable dans une $\Sigma'$-structure.
+  \item En déduire que pour toute proposition $\varphi$, on peut trouver une
+    formule $\psi$ prénexe sans quantification existentielle sur un
+    enrichissement de $\Sigma$ telle qu'une
+    structure satisfait $\varphi$ si et seulement si elle admet un
+    enrichissement satisfaisant $\psi$.
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Extension par définition]
+  On fixe une signature $\Sigma$ et une théorie $\mathcal T$. Cet exercice vise
+  à justifier une pratique courante~: donner des noms à des objets définis par
+  une définition.
+
+  \paragraph{Définition d'une relation}
+  Soit une formule $\varphi(x_1,\ldots,x_n)$. On définit un nouveau symbole de
+  relation $R(x_1,\ldots,x_n)$ et on note $\Sigma' \defeq \Sigma\cup\{R\}$. De
+  plus, on augmente la théorie $\mathcal T$ en
+  \[\mathcal T' \defeq \mathcal T \cup
+  \{`` \forall x_1,\ldots,x_n, R(x_1,\ldots,x_n) \leftrightarrow
+  \varphi(x_1,\ldots,x_n)"\}\]
+  \'Etant donnée une formule $\psi$ sur $\Sigma'$, on définit sa traduction
+  $\psi_{-R}$ récursivement~:
+  \begin{itemize}
+  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R$, alors
+    $\psi_{-R} = \psi$~;
+  \item si $\psi = R(t_1,\ldots,t_n)$, alors
+    $\psi_{-R} = \varphi(t_1,\ldots,t_n)$~;
+  \item si $\psi = \lnot \psi'$, alors $\psi_{-R} = \lnot \psi'_{-R}$~;
+  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land,\lor,\to\}$,
+    alors $\psi_{-R} = \psi'_{-R} \oplus \psi''_{-R}$~;
+  \item si $\psi = Q x, \psi'$ où $Q$ est un quantificateur, alors
+    $\psi_{-R} = Q x, \psi'_{-R}$.
+  \end{itemize}
+  Montrer que, pour tout formule $\psi \in \Formula(\Sigma')$~:
+  \[\mathcal T' \vdash \psi \iff \mathcal T \vdash \psi_{-R}\]
+
+  \paragraph{Définition d'une fonction}
+  Soit désormais une formule $\varphi(x_1,\ldots,x_n,y)$. On suppose prouvable
+  l'hypothèse
+  \begin{equation}\label{eq.phi_uniq}
+    \mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y,
+    \varphi(x_1,\ldots,x_n,y)
+  \end{equation}
+  On ajoute maintenant un symbole $f$ d'arité $n$, donnant
+  $\Sigma' \defeq \Sigma\cup \{f\}$, et on définit la nouvelle théorie
+  \[\mathcal T' \defeq \mathcal T \cup \{`` \forall x_1,\ldots,x_n,
+  \varphi(x_1,\ldots,x_n,f(x_1,\ldots,x_n))"\}\]
+  On définit de plus, pour tout terme $t$ sur $\Sigma'$, un ensemble
+  $\mathcal V_t$ des associations de variables nécessaires à la traduction de
+  $t$ et un terme $t_{-f}$~:
+  \begin{itemize}
+  \item si $t = x$, alors $\mathcal V_t = \varnothing$ et $t_{-f} = x$~;
+  \item si $t = g(t_1,\ldots,t_n)$ où $g \neq f$, alors
+    $\mathcal V_t = \bigcup_{i = 1}^n \mathcal V_{t_i}$ et
+    $t_{-f} = g(t_{1,-f}, \ldots, t_{n,-f})$~;
+  \item si $t = f(t_1,\ldots,t_n)$, alors
+    \[\mathcal V_t = \left(\bigcup_{i = 1}^n \mathcal V_{t_i}\right)\cup
+    \{(t_{1,-f},\ldots,t_{n,-f},y)\}\]
+    où $y$ est une variable fraîche (non apparue dans aucun $t_i$ ni
+    $t_{i,-f}$) et $t_{-f} = y$.
+  \end{itemize}
+  Pour chaque association $a = (t_1,\ldots,t_n,x)$, on définit
+  $\varphi_a \defeq \varphi(t_1,\ldots,t_n,x)$, et on définit la traduction
+  $\varphi_{-f}$ d'une formule par A FAIRE
+\end{exercise}
+
+\begin{exercise}[La théorie des relations d'équivalence]
+  On fixe pour cet exercice le langage relationnel
+  \[\Sigma \defeq \{\sim^2\}\]
+  On définit aussi la théorie
+  \[\mathcal T_{\mathrm{equiv}}\defeq \{``\forall x, x \sim x"\}\cup
+  \{``\forall x, y, x \sim y \to y \sim x"\}\cup
+  \{``\forall x,y,z, x \sim y \to y \sim z \to x \sim z"\}\]
+
+  \begin{enumerate}[label=(\roman*)]
+  \item Donner un ensemble d'axiomes $\mathrm{nb}_{\infty}$ tel que
+    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{nb}_\infty$ est la classe des
+    ensembles munis d'une relation d'équivalence $\sim$ avec une infinité de
+    classes d'équivalences.
+  \item Donner un ensemble d'axiomes $\mathrm{cl}_\infty$ tel que
+    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{cl}_\infty$ est la classe des
+    ensembles munis d'une relation d'équivalence $\sim$ dont toutes les classes
+    d'équivalence sont infinies.
+  \item On définit
+    \[\mathcal T_{\mathrm{equiv},\infty} \defeq
+    \mathcal T_{\mathrm{equiv}}\cup \mathrm{nb}_\infty \cup \mathrm{cl}_\infty\]
+    Donner un modèle dénombrable de $\mathcal T_{\mathrm{equiv},\infty}$. Montrer
+    que tout modèle dénombrable de $\mathcal T_{\mathrm{equiv},\infty}$ est
+    isomorphe à ce modèle.
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Une application du théorème de compacité]
+  Un graphe (orienté) est un couple $(V,E)$ où $V$ est un ensemble et $E$ est
+  une relation binaire sur $V$ qui, étant donnés $x,y \in V$ témoigne si
+  $x$ et $y$ sont voisins ou non. Il est donc possible de considérer un graphe
+  comme une structure pour le langage relationnel $\{E^2\}$.
+
+  On fixe donc \[\Sigma \defeq \{E^2\}\] le langage des graphes.
+  \begin{enumerate}[label = (\roman*)]
+  \item Donner une théorie dont les modèles sont exactement la classe des
+    graphes ayant un cycle de taille $n$.
+  \item Donner une théorie dont les modèles sont exactement la classe des
+    graphes non orientés~: de tels graphes correspondent à des graphes orientés
+    où la relation de voisinage est symétrique.
+  \item L'objectif de cette question est de prouver qu'il n'existe pas de
+    théorie (du premier ordre) représentant la classe des graphes connexes.
+    On suppose donc qu'il existe une théorie dont les modèles sont exactement
+    les graphes connexes~; on notera cette théorie $\mathcal T$. On introduit
+    alors deux nouvelles constantes, $v$ et $w$.
+    Construire pour tout $n$ une formule $\varphi_n$ exprimant que $v$ et $w$
+    ne sont reliés par aucun chemin de taille $n$.
+  \item En appliquant le théorème de compacité à la théorie
+    \[\mathcal T' \defeq \mathcal T \cup \bigcup_{n \in \mathbb N } \varphi_n\]
+    montrer qu'on a une contradiction.
+  \end{enumerate}
+\end{exercise}

@@ -160,6 +160,11 @@ les tables de vérité.
   l'environnement donné.
 \end{definition}
 
+\begin{remark}
+  On se permet de mettre plusieurs propositions dans la même table~: on a alors
+  une colonne par variable, et une colonne par formule.
+\end{remark}
+
 \begin{example}
   Voici une table de vérité pour les expressions
   $x_0\lor x_1, \lnot (x_0\lor x_1), \lnot x_0\land \lnot x_1$ et
@@ -180,10 +185,10 @@ les tables de vérité.
 
 Une table de vérité permet de vérifier qu'une proposition est bien une
 tautologie puisque, grâce à l'\cref{exo.val.VL}, nous savons que tout
-environnement $\rho$ contenant les variable libres d'une proposition $P$ donnée
-ne définit $\Val_\rho(P)$ que sur les variables libres listées dans la table de
-vérité. Ainsi, une proposition est une tautologie si et seulement si toute la
-dernière colonne est remplie de $1$.
+environnement $\rho$ contenant les variables libres d'une proposition $P$ donnée
+ne définit $\Val_\rho(P)$ que par les valeurs des variables libres listées dans
+la table de vérité. Ainsi, une proposition est une tautologie si et seulement si
+toute la dernière colonne est remplie de $1$.
 
 \begin{exercise}
   Montrer que $\lnot x_0\land \lnot x_1 \to \lnot (x_0\lor x_1)$ est une
@@ -866,3 +871,38 @@ Ainsi, nous avons un système syntaxique $\vdash$ permettant d'entièrement
 caractériser la relation $\vDash$, qui est une relation sémantique (elle relie
 les propositions par leur sens, là où $\vdash$ n'est qu'un système formel,
 encodable par exemple sur un ordinateur).
+
+\newpage
+
+\section{Exercices}
+
+\begin{exercise}[Forme normale conjonctive, disjonctive]
+  L'objectif de cet exercice est de donner une façon uniforme d'écrire des
+  propositions. Pour cela, on définit plusieurs sous-ensembles~:
+  \begin{itemize}
+  \item on appelle littéral une proposition de la forme $x$ ou $\lnot x$, où
+    $x$ est une variable~;
+  \item on appelle clause disjonctive une proposition de la forme
+    \[\bigvee_{i = 1}^n \ell_i\]
+    où chaque $\ell_i$ est un littéral, et clause conjonctive une proposition
+    de la forme
+    \[\bigwedge_{i = 1}^n \ell_i\]
+    où, là encore, les $\ell_i$ sont des littéraux~;
+  \item on appelle forme normale conjonctive une proposition de la forme
+    \[\bigwedge_{i = 1}^n d_i\]
+    où chaque $d_i$ est une clause disjonctive, et forme normale disjonctive
+    une proposition de la forme
+    \[\bigvee_{i = 1}^n c_i\]
+    où chaque $c_i$ est une clause conjonctive.
+  \end{itemize}
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer les lois de distributivité suivantes, pour toutes propositions
+    $P,Q,R$~:
+    \[P\land (Q\lor R) \equiv (P\land Q) \lor (P\land R) \qquad
+    P\lor (Q \land R) \equiv (P\land Q) \land (P\lor R)\]
+  \item Montrer l'équivalence suivante, pour toutes propositions $P,Q$~:
+    \[P \to Q \equiv \lnot P \lor Q\]
+  \item En déduire que toute proposition est équivalente à une forme normale
+    conjonctive, et à une forme normale disjonctive.
+  \end{enumerate}
+\end{exercise}

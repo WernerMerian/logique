@@ -508,10 +508,127 @@ On peut maintenant définir notre premier calcul des séquents, $\LK$.
 \begin{definition}[Calcul des séquents $\LK$]
   Soit $\Sigma$ une signature du premier ordre. On définit inductivement
   la relation
-  $\vdLK\subseteq \List(\Formula(\Sigma))\times\List(\Formule(\Sigma))$
+  $\vdLK\subseteq \powerfin(\Formula(\Sigma))\times\powerfin(\Formula(\Sigma))$
   par les règles~:
-  \[\begin{itemize}
+  \[\begin{array}{cc}
+  \AxiomC{}
+  \RightLabel{\textit{ax}}
+  \UnaryInfC{$\Gamma, \varphi\vdLK \varphi$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+  \AxiomC{$\Theta, \varphi \vdLK \Xi$}
+  \RightLabel{\textit{cut}}
+  \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma \vdLK \Delta$}
+  \RightLabel{\textit{lw}}
+  \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma \vdLK \Delta$}
+  \RightLabel{\textit{rw}}
+  \UnaryInfC{$\Gamma\vdLK \Delta, \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
+  \RightLabel{$l\lnot$}
+  \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
+  \RightLabel{$r\lnot$}
+  \UnaryInfC{$\Gamma\vdLK \Delta, \lnot\varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+  \AxiomC{$\Theta, \psi \vdLK \Xi$}
+  \RightLabel{$l\lor$}
+  \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+  \RightLabel{$r\lor_1$}
+  \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\lor\psi$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\Gamma\vdLK \Delta,\psi$}
+  \RightLabel{$r\lor_2$}
+  \UnaryInfC{$\Gamma\vdLK \Delta, \varphi \lor \psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+  \RightLabel{$l\land_1$}
+  \UnaryInfC{$\Gamma,\varphi\land\psi\vdLK \Delta$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\Gamma, \psi \vdLK \Delta$}
+  \RightLabel{$l\land_2$}
+  \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+  \AxiomC{$\Theta\vdLK \Xi,\psi$}
+  \RightLabel{$r\land$}
+  \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi, \varphi\land\psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+  \AxiomC{$\Theta, \psi \vdLK \Xi$}
+  \RightLabel{$l\to$}
+  \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+  \RightLabel{$r\to_1$}
+  \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\to\psi$}
+  \DisplayProof
+  \quad
+  \AxiomC{$\Gamma \vdLK \Delta,\psi$}
+  \RightLabel{$r\to_2$}
+  \UnaryInfC{$\Gamma\vdLK\Delta, \varphi \to \psi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
+  \RightLabel{$l\forall$}
+  \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+  \RightLabel{$r\forall^\dagger$}
+  \UnaryInfC{$\Gamma \vdLK \Delta,\forall x, \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+  \RightLabel{$l\exists^\dagger$}
+  \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
+  \DisplayProof
+  &
+  \AxiomC{$\Gamma \vdLK \Delta,\varphi[t/x]$}
+  \RightLabel{$r\exists$}
+  \UnaryInfC{$\Gamma \vdLK \Delta,\exists x, \varphi$}
+  \DisplayProof
+  \\
+  \\
+  \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
+  \RightLabel{$l=$}
+  \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
+  \DisplayProof
+  &
+  \AxiomC{}
+  \RightLabel{$r=$}
+  \UnaryInfC{$\vdLK t = t$}
+  \DisplayProof
+  \end{array}\]
 
-
-  \end{itemize}\]
+  où les règles $l\exists^\dagger$ et $r\forall^\dagger$ demandent que
+  $x$ soit libre dans $\Gamma$ et $\Delta$.
 \end{definition}

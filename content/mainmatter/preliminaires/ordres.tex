@@ -1727,3 +1727,94 @@ noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
   Donnons une description rapide de $f\mathcal F$~:
   \[f\mathcal F = \{A \subseteq Y \mid f^{-1}(A) \in \mathcal F\}\]
 \end{notation}
+
+\newpage
+
+\section{Exercices}
+
+\begin{exercise}[Algèbre de Boole engendrée]
+  Soit $(B,\leq)$ une algèbre de Boole et $X\subseteq B$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer qu'il existe une plus petite algèbre de Boole $B(X)\subseteq B$
+    contenant $X$.
+  \item On définit une expression booléenne en $X$ par la grammaire
+    \[e,e'\Coloneq x \mid \lnot e \mid e\lor e' \mid e \land e'\]
+    où $x \in X$. On confond ici l'expression définie par induction et son
+    interprétation évidente comme un élément de $B$. Montrer que $B(X)$ est
+    exactement l'ensemble des expressions booléennes en $B$.
+  \item Pour tout ensemble $X$, on dit qu'une partie $Y \subseteq X$ est
+    cofinie s'il existe un ensemble fini $F \subfin X$ tel que
+    $Y = X \setminus F$. Montrer que l'ensemble des parties $Y\subseteq X$
+    telles que $Y$ est finie ou cofinie forme une sous-algèbre de Boole de
+    $\powerset(X)$. Montrer que cette sous-algèbre de Boole est engendrée par
+    l'ensemble $\{\{x\}\mid x \in X\}$.
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Atomes d'une algèbre de Boole]
+  On appelle atome d'une algèbre de Boole $B$ un élément $a \in B$ tel que
+  $a > \bot$ et tel qu'il n'existe pas d'élément $b \in B$ tel que
+  $\bot < b < a$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer que pour tout ensemble $X$ et élément $x \in X$,
+    $\{x\}$ est un atome dans l'algèbre de Boole $\powerset(X)$.
+  \end{enumerate}
+  A FAIRE : construire un exo pour montrer que toute algèbre de Boole finie est
+  engendrée par l'ensemble de ses atomes.
+\end{exercise}
+
+\begin{exercise}[Une structure algébrique pour le calcul des prédicats]
+  Nous avons vu qu'il est possible d'axiomatiser grâce à la théorie des ordres
+  la structure de la logique propositionnelle (à équivalence logique près).
+  L'objectif de cet exercice est d'étendre cette idée en donnant des structures
+  qui se comportent comme l'ensemble des formules du calcul des prédicats, en
+  ajoutant en particulier des propriétés que vérifient les quantificateurs et
+  l'égalité.
+  
+  On se fixe dans cet exercise une signature $\Sigma$. Pour tout
+  $n \in \mathbb N$, on dénote par $\Formula_n(\Sigma)$ l'ensemble des formules
+  de $\Sigma$ dont les variables libres appartiennent à
+  $\{x_0,\ldots,x_{n-1}\}$ (ainsi $\Prop(\Sigma) = \Formula_0(\Sigma)$).
+
+  On définit aussi $\mathcal L_n(\Sigma)$, l'algèbre de Lindenbaum-Tarski des
+  formules à $n$ variables libres, comme le quotient de $\Formula_n(\Sigma)$
+  par la relation $\dashv\vdash$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer que chaque $\mathcal L_n(\Sigma)$ est une algèbre de Boole.
+  \item Soit $\iota_n : \Formula_n(\Sigma) \to \Formula_{n+1}(\Sigma)$
+    l'injection canonique des formules à $n$ variables libres dans les formules
+    à $n+1$ variables libres. Justifier que $\iota_n$ est compatible avec
+    $\dashv\vdash$. On note alors aussi $\iota_n$ la fonction canoniquement
+    associée $\mathcal L_n(\Sigma) \to \mathcal L_{n+1}(\Sigma)$~: montrer que
+    cette fonction est un morphisme d'algèbre de Boole.
+  \item De même, montrer que
+    \[\begin{array}{ccccc}
+    \forall & : & \Formula_{n+1}(\Sigma) & \longrightarrow &
+    \Formula_n(\Sigma)\\
+    & & \varphi &\longmapsto & \forall x, \varphi
+    \end{array}\]
+    induit une fonction croissante entre $\mathcal L_{n+1}(\Sigma)$ et
+    $\mathcal L_n(\Sigma)$. Faire de même avec le quantificateur $\exists$.
+  \item Montrer que pour tous $i,j < n$,
+    \[\begin{array}{ccccc}
+    \delta_{i,j} & : & \Formula_{n+1}(\Sigma) & \longrightarrow &
+    \Formula_n(\Sigma)\\
+    & & \varphi & \longmapsto & \varphi[x_j/x_i][x_{k+1}/x_k]_{k > i}
+    \end{array}\]
+    induit un morphisme d'algèbre de Boole entre $\mathcal L_{n+1}(\Sigma)$ et
+    $\mathcal L_n(\Sigma)$.
+  \item Montrer l'équivalence suivante pour
+    $\varphi \in \mathcal L_n(\Sigma)$ et
+    $\psi \in \mathcal L_{n+1}(\Sigma)$~:
+    \[\varphi \vdash \forall \psi \iff \iota_n(\varphi)\vdash \psi\]
+    ainsi que, pour $\varphi \in \mathcal L_{n+1}(\Sigma)$ et
+    $\psi \in \mathcal L_n(\Sigma)$~:
+    \[\exists \varphi \vdash \psi \iff \varphi\vdash \iota_n(\psi)\]
+    Ces équivalences caractérisent en un sens les quantificateurs $\forall$ et
+    $\exists$.
+  \item Montrer l'équivalence suivante, pour $\varphi \in \mathcal L_n(\Sigma)$
+    et $\psi \in \mathcal L_{n+1}(\Sigma)$~:
+    \[\varphi \land x_i = x_j \vdash \psi \iff \varphi\vdash \delta_{i,j}(\psi)\]
+    Cet équivalence caractérise en un sens l'égalité.
+  \end{enumerate}
+\end{exercise}
