@@ -1214,6 +1214,21 @@ dans notre système.
   les règles à propos de $\lnot$ sont exactement celles de $\to \bot$.
 \end{remark}
 
+\begin{remark}
+    Avec l'écriture actuelle des formules, deux écritures utiles nous
+    manquent~:
+    \begin{itemize}
+        \item le connecteur $\leftrightarrow$, qui est traité dans
+        l'\cref{exo.equiv}
+        \item le quantificateur $\exists ! x, \varphi(x)$. Celui-ci peut
+        être encodé par
+        \[\exists!x, \varphi(x) \defeq \exists x, \varphi(x) \land
+        (\forall y, \varphi(y) \to x = y)\]
+    \end{itemize}
+    On utilisera donc ces deux écritures, permettant une meilleure lisibilité
+    mais ne changeant pas l'expressivité de notre formalisme.
+\end{remark}
+
 \paragraph{A propos de la vacuité}
 Notre formalisme a un problème essentiel : on peut prouver la proposition
 $\forall x, A \implies \exists x, A$, qui est fausse dans le modèle vide. Deux
@@ -2056,35 +2071,43 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
 \newpage
 
-\section{Exercices}
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
 
 \begin{exercise}[Mise en jambes]
-  Prouver les formules suivantes~:
-  \[\begin{array}{cc}
-  (\exists x, \forall y, R(x,y)) \to (\forall y, \exists x, R(x,y)) &
-  A FAIRE
-  \end{array}\]
-\end{exercise}
-
-\begin{exercise}[Des formules utiles]
-  Soit une signature $\Sigma$ fixée. Cet exercice vise à construire plusieurs
-  formules simples.
-  \begin{enumerate}[label = (\roman*)]
-  \item Soit $x_1,\ldots,x_n$ des variables. Construire une formule
-    $\mathrm{Ineq_{x_1,\ldots,x_n}}$ exprimant que toutes les variables
-    $x_1,\ldots,x_n$ sont deux à deux différentes.
-  \item En déduire pour tout $n$ une proposition $\varphi_n$ telle que pour
-    toute $\Sigma$-structure $\mathcal M$, on a
-    \[\mathcal M \models \varphi_n \iff \Card(\mathcal M) \geq n\]
-    ainsi qu'une proposition $\psi_n$ telle que pour toute $\Sigma$-structure
-    $\mathcal M$, on a
-    \[\mathcal M \models \psi_n \iff \Card(\mathcal M) = n\]
-  \item Pour un cardinal $\kappa$ infini, peut-on trouver une formule
-    similaire ? \textit{Indication~: on peut utiliser le théorème de compacité.}
+  \begin{enumerate}[label=(\roman*)]
+      \item Prouver les formules suivantes~:
+      \[\begin{array}{cc}
+      (\exists x, \forall y, R(x,y)) \to (\forall y, \exists x, R(x,y)) &
+      \exists x, (\varphi(x) \to \forall y, \varphi(y)) \\
+      (\varphi \to \psi) \lor (\psi \to \varphi) &
+      \lnot\lnot(\varphi \land \psi) \leftrightarrow \lnot\lnot\varphi\land
+      \lnot\lnot\psi
+      \end{array}\]
+      \item Soit la signature $\Sigma = \{f^1, R^1\}$ (où l'exposant
+      représente l'arité) où $f$ est un symbole de fonction et
+      $R$ est un symbole de relation. Montrer la proposition
+      \[(\forall x, R(f(x)) \to \forall x, R(f(f(x)))\]
+      \item On considère la signature des groupes $\mathcal L_{\mathrm{Grp}}$
+      donnée au début du chapitre
+      et la théorie $\mathrm{Grp}$ des groupes abéliens définie par les axiomes~:
+      \[\begin{array}{ccc}
+          \forall x,y,z, x \times (y \times z) = (x \times y) \times z
+          & \forall x, x \times e = x & \forall x, e \times x = x\\
+          \forall x, x \times x^{-1} = e &  \forall x, x^{-1} \times x = e \\
+      \end{array}\]
+      Montrer dans cette théorie les deux formules suivantes~:
+      \[\forall x, (\forall y, (x \times y = y) \land (y \times x = y)) \to 
+      x = e \qquad \forall x,y, (x\times y)^{-1} = y^{-1} \times x^{-1}\]
   \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[Le connecteur d'équivalence]
+\begin{exercise}[Construire des modèles]
+    Pour les propositions suivantes, dire si les 
+\end{exercise}
+
+\begin{exercise}[Le connecteur d'équivalence]\label{exo.equiv}
   Dans notre définition actuelle des formules, nous n'avons pas le connecteur
   $\leftrightarrow$, permettant d'exprimer que deux formules sont équivalentes.
   Il est possible d'encoder
@@ -2113,6 +2136,55 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
   avec uniquement $\to$ et $\land$ est prouvable.
 \end{exercise}
 
+\begin{exercise}[Des formules utiles pour les cardinaux]
+  Soit une signature $\Sigma$ fixée. Cet exercice vise à construire plusieurs
+  formules simples et utiles pour évaluer le cardinal d'un modèle.
+  \begin{enumerate}[label = (\roman*)]
+  \item Soit $x_1,\ldots,x_n$ des variables. Construire une formule
+    $\mathrm{Ineq}_{x_1,\ldots,x_n}$ exprimant que toutes les variables
+    $x_1,\ldots,x_n$ sont deux à deux différentes.
+  \item En déduire pour tout $n$ une proposition $\varphi_n$ telle que pour
+    toute $\Sigma$-structure $\mathcal M$, on a
+    \[\mathcal M \models \varphi_n \iff \Card(\mathcal M) \geq n\]
+    ainsi qu'une proposition $\psi_n$ telle que pour toute $\Sigma$-structure
+    $\mathcal M$, on a
+    \[\mathcal M \models \psi_n \iff \Card(\mathcal M) = n\]
+  \item Pour un cardinal $\kappa$ infini, peut-on trouver une formule
+    similaire ? \textit{Indication~: utiliser un théorème du cours.}
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Les axiomes des ordres]
+    On considère la signature relationnelle
+    \[\Sigma \defeq \{\leq^2\}\]
+    \begin{enumerate}[label=(\roman*)]
+        \item Donner une théorie $\mathcal T_{\mathrm{poset}}$ décrivant les
+        ensembles ordonnés.
+        \item Donner une théorie $\mathcal T_{\mathrm{toset}}$ décrivant les
+        ensembles totalement ordonnés.
+    \end{enumerate}
+    On considère maintenant la signature relationnelle
+    \[\Sigma \defeq \{<^2\}\]
+    et les axiomes suivants~:
+    \begin{align*}
+        A_1 & \defeq \exists x,y, x < y\\
+        A_2 & \defeq \forall x,y,z, (x < y) \land (y < z) \to (x < y)\\
+        A_3 & \defeq \forall x, \lnot (x < x)\\
+        A_4 & \defeq\forall x,y, ((x < y) \to
+        \exists z, (x < z) \land (z < y))
+    \end{align*}
+    Soit $\mathcal T = \{ A_1,A_2,A_3,A_4\}$.
+    \begin{enumerate}[label=(\roman*),resume]
+        \item Donner deux modèles non isomorphes de $\mathcal T$.
+        \item Donner une proposition $\varphi$ telle que
+        $\mathcal T\nvdash \varphi$ et $\mathcal T \nvdash \lnot\varphi$,
+        on en déduit que $\mathcal T$ n'est pas complète.
+        \item Montrer que pour n'importe quel choix de $3$ axiomes parmi les
+        $4$ donnés, il existe un modèle fini de cet ensemble de $3$
+        axiomes. Montrer que tout modèle de $\mathcal T$ est infini.
+    \end{enumerate}
+\end{exercise}
+
 \begin{exercise}[Formes prénexes]
   Soit une signature $\Sigma$ fixée. On définit l'ensemble des formules sans
   quantificateurs $\Formqf(\Sigma)\subseteq \Formula(\Sigma)$ inductivement par
@@ -2121,8 +2193,9 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
   \varphi \to \psi\]
   où $a \in \Atom(\Sigma)$.
 
-  On définit inductivement l'ensemble des formules sous forme prénexe
-  $\Formula_{\mathrm{pren}}(\Sigma)\subseteq \Formula(\Sigma)$ par
+  On définit ensuite inductivement l'ensemble
+  $\Formula_{\mathrm{pren}}(\Sigma)\subseteq \Formula(\Sigma)$
+  des formules sous forme prénexe par
   \[\varphi\Coloneq \varphi_0\mid \forall x, \varphi \mid \exists x, \varphi\]
   où $\varphi_0 \in \Formqf(\Sigma)$.
 
@@ -2164,7 +2237,7 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
     une $\Sigma$-structure si et seulement si, en notant $f$ un nouveau
     symbole de fonction d'arité $n$ et $\Sigma \defeq \Sigma\cup \{f\}$, la
     formule
-    $\forall x_1,\ldots,\forall x_n,(\varphi[f(x_1,\ldots,x_n)/x])$ est
+    $\forall x_1,\ldots,\forall x_n,(\varphi[f(x_1,\ldots,x_n)/y])$ est
     satisfiable dans une $\Sigma'$-structure.
   \item En déduire que pour toute proposition $\varphi$, on peut trouver une
     formule $\psi$ prénexe sans quantification existentielle sur un
@@ -2172,64 +2245,6 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
     structure satisfait $\varphi$ si et seulement si elle admet un
     enrichissement satisfaisant $\psi$.
   \end{enumerate}
-\end{exercise}
-
-\begin{exercise}[Extension par définition]
-  On fixe une signature $\Sigma$ et une théorie $\mathcal T$. Cet exercice vise
-  à justifier une pratique courante~: donner des noms à des objets définis par
-  une définition.
-
-  \paragraph{Définition d'une relation}
-  Soit une formule $\varphi(x_1,\ldots,x_n)$. On définit un nouveau symbole de
-  relation $R(x_1,\ldots,x_n)$ et on note $\Sigma' \defeq \Sigma\cup\{R\}$. De
-  plus, on augmente la théorie $\mathcal T$ en
-  \[\mathcal T' \defeq \mathcal T \cup
-  \{`` \forall x_1,\ldots,x_n, R(x_1,\ldots,x_n) \leftrightarrow
-  \varphi(x_1,\ldots,x_n)"\}\]
-  \'Etant donnée une formule $\psi$ sur $\Sigma'$, on définit sa traduction
-  $\psi_{-R}$ récursivement~:
-  \begin{itemize}
-  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R$, alors
-    $\psi_{-R} = \psi$~;
-  \item si $\psi = R(t_1,\ldots,t_n)$, alors
-    $\psi_{-R} = \varphi(t_1,\ldots,t_n)$~;
-  \item si $\psi = \lnot \psi'$, alors $\psi_{-R} = \lnot \psi'_{-R}$~;
-  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land,\lor,\to\}$,
-    alors $\psi_{-R} = \psi'_{-R} \oplus \psi''_{-R}$~;
-  \item si $\psi = Q x, \psi'$ où $Q$ est un quantificateur, alors
-    $\psi_{-R} = Q x, \psi'_{-R}$.
-  \end{itemize}
-  Montrer que, pour tout formule $\psi \in \Formula(\Sigma')$~:
-  \[\mathcal T' \vdash \psi \iff \mathcal T \vdash \psi_{-R}\]
-
-  \paragraph{Définition d'une fonction}
-  Soit désormais une formule $\varphi(x_1,\ldots,x_n,y)$. On suppose prouvable
-  l'hypothèse
-  \begin{equation}\label{eq.phi_uniq}
-    \mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y,
-    \varphi(x_1,\ldots,x_n,y)
-  \end{equation}
-  On ajoute maintenant un symbole $f$ d'arité $n$, donnant
-  $\Sigma' \defeq \Sigma\cup \{f\}$, et on définit la nouvelle théorie
-  \[\mathcal T' \defeq \mathcal T \cup \{`` \forall x_1,\ldots,x_n,
-  \varphi(x_1,\ldots,x_n,f(x_1,\ldots,x_n))"\}\]
-  On définit de plus, pour tout terme $t$ sur $\Sigma'$, un ensemble
-  $\mathcal V_t$ des associations de variables nécessaires à la traduction de
-  $t$ et un terme $t_{-f}$~:
-  \begin{itemize}
-  \item si $t = x$, alors $\mathcal V_t = \varnothing$ et $t_{-f} = x$~;
-  \item si $t = g(t_1,\ldots,t_n)$ où $g \neq f$, alors
-    $\mathcal V_t = \bigcup_{i = 1}^n \mathcal V_{t_i}$ et
-    $t_{-f} = g(t_{1,-f}, \ldots, t_{n,-f})$~;
-  \item si $t = f(t_1,\ldots,t_n)$, alors
-    \[\mathcal V_t = \left(\bigcup_{i = 1}^n \mathcal V_{t_i}\right)\cup
-    \{(t_{1,-f},\ldots,t_{n,-f},y)\}\]
-    où $y$ est une variable fraîche (non apparue dans aucun $t_i$ ni
-    $t_{i,-f}$) et $t_{-f} = y$.
-  \end{itemize}
-  Pour chaque association $a = (t_1,\ldots,t_n,x)$, on définit
-  $\varphi_a \defeq \varphi(t_1,\ldots,t_n,x)$, et on définit la traduction
-  $\varphi_{-f}$ d'une formule par A FAIRE
 \end{exercise}
 
 \begin{exercise}[La théorie des relations d'équivalence]
@@ -2242,11 +2257,11 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
   \begin{enumerate}[label=(\roman*)]
   \item Donner un ensemble d'axiomes $\mathrm{nb}_{\infty}$ tel que
-    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{nb}_\infty$ est la classe des
+    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{nb}_\infty$ détermine la classe des
     ensembles munis d'une relation d'équivalence $\sim$ avec une infinité de
     classes d'équivalences.
   \item Donner un ensemble d'axiomes $\mathrm{cl}_\infty$ tel que
-    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{cl}_\infty$ est la classe des
+    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{cl}_\infty$ détermine la classe des
     ensembles munis d'une relation d'équivalence $\sim$ dont toutes les classes
     d'équivalence sont infinies.
   \item On définit
@@ -2271,15 +2286,150 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
   \item Donner une théorie dont les modèles sont exactement la classe des
     graphes non orientés~: de tels graphes correspondent à des graphes orientés
     où la relation de voisinage est symétrique.
-  \item L'objectif de cette question est de prouver qu'il n'existe pas de
+  \end{enumerate}
+  L'objectif des questions suivantes est de prouver qu'il n'existe pas de
     théorie (du premier ordre) représentant la classe des graphes connexes.
     On suppose donc qu'il existe une théorie dont les modèles sont exactement
     les graphes connexes~; on notera cette théorie $\mathcal T$. On introduit
     alors deux nouvelles constantes, $v$ et $w$.
-    Construire pour tout $n$ une formule $\varphi_n$ exprimant que $v$ et $w$
+  \begin{enumerate}[label=(\roman*),resume]
+  \item Construire pour tout $n$ une formule $\varphi_n$ exprimant que $v$ et $w$
     ne sont reliés par aucun chemin de taille $n$.
   \item En appliquant le théorème de compacité à la théorie
-    \[\mathcal T' \defeq \mathcal T \cup \bigcup_{n \in \mathbb N } \varphi_n\]
+    \[\mathcal T' \defeq \mathcal T \cup \bigcup_{n \in \mathbb N } \{\varphi_n\}\]
     montrer qu'on a une contradiction.
   \end{enumerate}
 \end{exercise}
+
+\newpage
+
+\subsection{Problèmes}
+
+\begin{problem}[Extension par définition]
+  On fixe une signature $\Sigma$ et une théorie $\mathcal T$. Cet exercice vise
+  à justifier une pratique courante~: donner des noms à des objets définis par
+  une définition.
+
+  Pour cela, on introduit d'abord la notion d'extension conservative~: une théorie
+  $\mathcal T'$ est une extension conservative de $\mathcal T$ si cette théorie ne
+  prouve aucun nouveau théorème possible à exprimer dans $\mathcal T$.
+
+  \begin{definition}[Extension conservative]\label{def.ext.cons}
+      Soient $\Sigma,\Sigma'$ deux signatures telles que $\Sigma\subseteq\Sigma'$
+      et deux théories $\mathcal T, \mathcal T'$ respectivement sur
+      $\Sigma$ et $\Sigma'$ telles que $\mathcal T \subseteq \mathcal T'$.
+      On dit que $\mathcal T'$ est une extension conservative si~:
+      \[\forall \varphi \in \Formula(\Sigma),
+      \mathcal T \vdash \varphi \iff \mathcal T' \vdash \varphi\]
+  \end{definition}
+  
+  Pour justifier l'utilisation de définitions, nous allons montrer le théorème de
+  conservation des extensions par définitions~:
+  \begin{theorem}[Conservation des extensions par définition]\label{thm.ext.def}
+      Soit $\Sigma$ une signature du premier ordre et $\mathcal T$ une théorie
+      sur $\Sigma$, alors~:
+      \begin{itemize}
+          \item pour toute formule $\varphi(x_1,\ldots,x_n)$, la théorie
+          sur la signature $\Sigma\cup \{R\}$ où $R$ est un nouveau symbole
+          de relation $n$-aire, définie par
+          \[\mathcal T' \defeq\mathcal T \cup
+          \{`` \forall x_1,\ldots,x_n, R(x_1,\ldots,x_n) \leftrightarrow
+          \varphi(x_1,\ldots,x_n)"\}\]
+          est une extension conservative de $\mathcal T$.
+          \item pour toute formule $\varphi(x_1,\ldots,x_n,y)$ telle que
+          \[\mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y,
+          \varphi(x_1,\ldots,x_n,y)\]
+          la théorie sur la signature $\Sigma\cup\{f\}$ où $f$ est un
+          nouveau symbole de fonction $n$-aire, définie par
+          \[\mathcal T' \defeq \mathcal T \cup \{`` \forall x_1,\ldots,x_n,
+          \varphi(x_1,\ldots,x_n,f(x_1,\ldots,x_n))"\}\]
+          est une extension conservative de $\mathcal T$.
+      \end{itemize}
+  \end{theorem}
+
+  \paragraph{Définition d'une relation}
+  Soit une formule $\varphi(x_1,\ldots,x_n)$. On définit un nouveau symbole de
+  relation $R(x_1,\ldots,x_n)$ et on note $\Sigma' \defeq \Sigma\cup\{R\}$. De
+  plus, on augmente la théorie $\mathcal T$ en
+  \[\mathcal T' \defeq \mathcal T \cup
+  \{`` \forall x_1,\ldots,x_n, R(x_1,\ldots,x_n) \leftrightarrow
+  \varphi(x_1,\ldots,x_n)"\}\]
+  \'Etant donnée une formule $\psi$ sur $\Sigma'$, on définit sa traduction
+  $\psi_{-R}\in\Formula(\Sigma)$ récursivement~:
+  \begin{itemize}
+  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R$, alors
+    $\psi_{-R} = \psi$~;
+  \item si $\psi = R(t_1,\ldots,t_n)$, alors
+    $\psi_{-R} = \varphi(t_1,\ldots,t_n)$~;
+  \item si $\psi = \lnot \psi'$, alors $\psi_{-R} = \lnot \psi'_{-R}$~;
+  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land,\lor,\to\}$,
+    alors $\psi_{-R} = \psi'_{-R} \oplus \psi''_{-R}$~;
+  \item si $\psi = Q x, \psi'$ où $Q$ est un quantificateur, alors
+    $\psi_{-R} = Q x, \psi'_{-R}$.
+  \end{itemize}
+  \begin{enumerate}[label=(\roman*)]
+      \item Montrer que, pour toute formule $\psi\in\Formula(\Sigma')$~:
+      \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-R}\]
+      \item En déduire que $\mathcal T'$ est une extension conservative de
+      $\mathcal T$.
+  \end{enumerate}
+
+  \paragraph{Définition d'une fonction}
+  Soit désormais une formule $\varphi(x_1,\ldots,x_n,y)$. On suppose prouvable
+  l'hypothèse
+  \begin{equation*}\label{eq.phi_uniq}
+    \mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y,
+    \varphi(x_1,\ldots,x_n,y)
+  \end{equation*}
+  On ajoute maintenant un symbole $f$ d'arité $n$, donnant
+  $\Sigma' \defeq \Sigma\cup \{f\}$, et on définit la nouvelle théorie
+  \[\mathcal T' \defeq \mathcal T \cup \{`` \forall x_1,\ldots,x_n,
+  \varphi(x_1,\ldots,x_n,f(x_1,\ldots,x_n))"\}\]
+  Comme pour le cas des définitions pour des relations, on cherche maintenant
+  à transformer une formule $\varphi \in \Formula(\Sigma')$ en une formule
+  $\varphi_{-f}\in \Formula(\Sigma)$, mais il est nécessaire de faire une
+  transformation plus subtile. Tout d'abord, par induction sur la structure
+  des termes, on définit pour un terme $t$ la liste $\mathcal V_t$ et le
+  terme $t_{-f}$~:
+  \begin{itemize}
+  \item si $t = x$, alors $\mathcal V_t \defeq \nil$ et $t_{-f} \defeq x$~;
+  \item si $t = g(t_1,\ldots,t_n)$ où $g \neq f$, alors
+    $\mathcal V_t \defeq \bigoplus_{i = 1}^n \mathcal V_{t_i}$ et
+    $t_{-f} \defeq g(t_{1,-f}, \ldots, t_{n,-f})$~;
+  \item si $t = f(t_1,\ldots,t_n)$, alors
+    \[\mathcal V_t \defeq
+    \left(\bigoplus_{i = 1}^n \mathcal V_{t_i}\right)\oplus
+    \{(t_{1,-f},\ldots,t_{n,-f},y)\}\]
+    où $y$ est une variable fraîche (non apparue dans aucun $t_i$ ni
+    $t_{i,-f}$) et $t_{-f} \defeq y$.
+  \end{itemize}
+  \'Etant donnée une formule atomique $\psi = R(t_1,\ldots,t_n)$, on pose
+  $\mathcal V \defeq \bigoplus_{i = 1}^n \mathcal V_{t_i}$ et, en notant
+  $\mathcal V = \{(x_{1,i},\ldots,x_{n,i},y_i)\mid i \in \{0,\ldots,k\}\}$ pour
+  un certain entier $k$, on définit la formule $\psi_{-f} \in \Formula(\Sigma)$
+  par
+  \[\psi_{-f} \defeq \forall y_1,\ldots,y_k, R(t_{1,-f},\ldots,t_{n,-f})\]
+  On définit ensuite, pour toute formule $\psi \in \Formula(\Sigma')$, la formule
+  $\psi_{-f}\in\Formula(\Sigma)$
+  par induction sur la structure des formules~:
+  \begin{itemize}
+      \item le cas d'une formule atomique a été traité~;
+      \item si $\psi = \top$ ou $\psi = \bot$ alors
+      $\psi_{-f} = \psi$~;
+      \item si $\psi = \lnot \psi'$ alors $\psi_{-f} = \lnot \psi'_{-f}$~;
+      \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land, \lor,\to\}$
+      alors $\psi_{-f} = \psi'_{-f} \oplus \psi''_{-f}$~;
+      \item si $\psi = Qx, \psi'$ où $Q$ est un quantificateur, alors
+      $\psi_{-f} = Qx, \psi'_{-f}$.
+  \end{itemize}
+  \begin{enumerate}[label=(\roman*)]
+      \item Montrer que, pour toute formule $\psi \in \Formula(\Sigma')$~:
+      \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-f}\]
+      \item En déduire que $\mathcal T'$ est une extension conservative de $\mathcal T$.
+  \end{enumerate}
+
+  En conclure le \cref{thm.ext.def}. Ainsi, lorsqu'on introduit une nouvelle
+  notation de relation ou de fonction à partir d'une formule, on ne change pas
+  l'ensemble des théorèmes de notre langage d'origine~: on se contente simplement
+  d'ajouter des écritures plus courtes pour nos théorèmes.
+\end{problem}
