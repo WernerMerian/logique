@@ -6,21 +6,20 @@
 %----- COMMANDES -----%
 %%%%%%%%%%%%%%%%%%%%%%%
 
-%----- NOUVEAUX SYMBOLS -----%
+%----- NOUVEAUX SYMBOLES -----%
 
 \newcommand{\powerset}{\mathcal{P}} % ensemble des parties
 \newcommand{\powerdef}{\mathcal{D}} % ensemble des parties définissables
 \newcommand{\powerfin}{\mathcal{P}_{\mathrm{fin}}} % ensemble des parties finies
 \newcommand{\vois}{\mathcal{V}} % ensemble des voisinages d'un point
 \newcommand{\partialto}{\rightharpoonup} % fonction partielle
-\newcommand{\defeq}{\triangleq}
+%\newcommand{\defeq}{\triangleq}
            %{\overset{{\normalfont\text{déf}}}{=}} % égalité définitionnelle
 \newcommand{\symdiff}{\triangle} % différence symétrique
 \newcommand{\subfin}{\subseteq_{\mathrm{fin}}} % inclusion d'une partie finie
 \newcommand{\lexl}{<_{\mathrm{lex}}} % ordre lexicographique
-\newcommand{\leL}{<_{\mathbb L}}
+\newcommand{\leL}{<_{\mathbb L}} % ordre sur la classe L
 \newcommand{\ordbis}{\lhd} % ordre utilisé pour la démonstration de Hessenberg, et globalement symbole de relation d'ordre au cas où
-\newcommand{\restrict}[1]{\left.#1\right\vert}
 
 
 %----- PROBLEMES ALGORITHMIQUES -----%
@@ -46,113 +45,162 @@
 
 %----- FONCTIONS -----%
 
-\DeclareMathOperator{\id}{id}
-\DeclareMathOperator{\im}{Im}
-\DeclareMathOperator{\dom}{Dom}
-\DeclareMathOperator{\fix}{fix}
-\DeclareMathOperator{\prefix}{prefix}
-\DeclareMathOperator{\postfix}{postfix}
-\newcommand{\restr}[1]{\!\upharpoonright_{#1}} % restriction d'une fonction à un domaine donné
+\DeclareMathOperator{\id}{id} % fonction identité
+\DeclareMathOperator{\im}{Im} % ensemble image d'une fonction
+\DeclareMathOperator{\dom}{Dom} % domaine d'une fonction
+\DeclareMathOperator{\fix}{fix} % ensemble des points fixes d'une fonction
+\DeclareMathOperator{\prefix}{prefix} % ensemble des pré-points fixes d'une fonction
+\DeclareMathOperator{\postfix}{postfix} % ensemble des post-points fixes d'une fonction
+\newcommand{\restrict}[1]{\left.#1\right\vert} % restriction d'une fonction
+\newcommand{\makeFun}[5]{\begin{array}{ccccc} #1 & : & #2 & \longrightarrow & #3 \\ & & #4 & \longmapsto & #5\end{array}}
 
 %----- PROPOSITIONS ET TERMES -----%
 
-\DeclareMathOperator{\Prop}{Prop}
-\DeclareMathOperator{\Var}{Var}
-\DeclareMathOperator{\VL}{VL}
-\DeclareMathOperator{\Term}{Term}
-\DeclareMathOperator{\Formula}{Form}
-\newcommand{\Formqf}{\Formula_{\mathrm{qf}}}
-\DeclareMathOperator{\Atom}{Atom}
-\DeclareMathOperator{\Clos}{Clos}
-\newcommand{\vclose}[1]{\overline{#1}^{\vDash}}
-\newcommand{\vdclose}[1]{\overline{#1}^{\vdash}}
-\newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}}
+\DeclareMathOperator{\Prop}{Prop} % ensemble des propositions
+\DeclareMathOperator{\Var}{Var} % ensemble des variables
+\DeclareMathOperator{\VL}{VL} % ensemble des variables libres
+\DeclareMathOperator{\Term}{Term} % ensemble des termes
+\DeclareMathOperator{\Formula}{Form} % ensemble des formules
+\newcommand{\Formqf}{\Formula_{\mathrm{qf}}} % ensembles des formules sans quantificateurs
+\DeclareMathOperator{\Atom}{Atom} % ensemble des atomes
+\newcommand{\vclose}[1]{\overline{#1}^{\vDash}} % clôture par conséquence syntaxique d'un ensemble de formules
+\newcommand{\vdclose}[1]{\overline{#1}^{\vdash}} % clôture par conséquence sémantique d'un ensemble de formules
+\newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}} % clôture par ajout des témoins de Henkin d'une théorie
+
+%----- ENSEMBLES CLASSIQUES -----%
+
+\newcommand{\bN}{\mathbb N} % ensemble des entiers naturels
+\newcommand{\bZ}{\mathbb Z} % ensemble des entiers relatifs
+\newcommand{\bQ}{\mathbb Q} % ensemble des nombres rationnels
+\newcommand{\bR}{\mathbb R} % ensemble des nombres réels
+\newcommand{\bV}{\mathbb V} % hiérarchie cumulative de Von Neumann
+\newcommand{\bL}{\mathbb L} % classe des constructibles de Gödel
+\newcommand{\vide}{\varnothing} % ensemble vide
+
+%----- OPERATIONS ENSEMBLISTES -----%
+
+\newcommand{\compr}[2]{\{ #1 \mid #2 \}} % écriture d'un ensemble en compréhension
+\newcommand{\restr}[1]{\!\upharpoonright_{#1}} % restriction d'une fonction à un domaine donné
+\newcommand{\diagcap}{\bigtriangleup} % intersection diagonale
 
 %----- THÉORIE DES MODÈLES -----%
 
-\DeclareMathOperator{\Const}{Const}
-\DeclareMathOperator{\Fun}{Fun}
-\DeclareMathOperator{\Rel}{Rel}
-\DeclareMathOperator{\ar}{ar}
+\DeclareMathOperator{\Const}{Const} % ensemble des constantes
+\DeclareMathOperator{\Fun}{Fun} % ensemble des symboles de fonctions
+\DeclareMathOperator{\Rel}{Rel} % ensemble des symboles de relation
+\DeclareMathOperator{\ar}{ar} % arité d'un symbole
+\DeclareMathOperator{\Struct}{Struct} % classe des structures
+\DeclareMathOperator{\Val}{Val} % valeur de vérité d'une formule dans un modèle
 
-\DeclareMathOperator{\Struct}{Struct}
-\DeclareMathOperator{\Val}{Val}
+%----- EGALITES -----%
+
+\newcommand{\defeq}{\triangleq} % égalité définitionnelle
+\newcommand{\inddefeq}{\Coloneq} % définition inductive, ::=
+
+%----- FILTRES -----%
+
+\DeclareMathOperator{\Spec}{Spec} % spectre
+\newcommand{\filclose}[1]{\overline{#1}^{\mathcal F}} % filtre engendré par un ensemble
+
+%----- CONSTRUCTION DE R -----%
+
+\newcommand{\Dedekind}{\mathfrak{D}} % ensemble des coupures de Dedking
+\newcommand{\subfil}{\subseteq_{\mathrm{fil}}} % partie filtrante
+\newcommand{\ideal}{\mathfrak{I}} % ensemble des idéaux
 
 %----- THÉORIE DES ENSEMBLES -----%
 
-\DeclareMathOperator{\ZFC}{ZFC}
-\DeclareMathOperator{\ZF}{ZF}
-\DeclareMathOperator{\AxC}{AC}
-\DeclareMathOperator{\AxF}{AF}
-\DeclareMathOperator{\HC}{HC}
-\DeclareMathOperator{\HCG}{HCG}
-\DeclareMathOperator{\Card}{Card}
-\DeclareMathOperator{\Ord}{Ord}
-\DeclareMathOperator{\Funct}{Funct}
-\DeclareMathOperator{\Hom}{Hom}
-\DeclareMathOperator{\trans}{trans}
-\DeclareMathOperator{\trcl}{trcl}
-\DeclareMathOperator{\type}{type}
-\DeclareMathOperator{\cof}{cof}
-\DeclareMathOperator{\Spec}{Spec}
-\DeclareMathOperator{\Club}{Club}
-\DeclareMathOperator{\Lim}{Lim}
-\DeclareMathOperator{\rk}{rk}
-\newcommand{\diagcap}{\bigtriangleup}
-\newcommand{\filclose}[1]{\overline{#1}^{\mathcal F}}
-\newcommand{\VeqL}{\mathbb V = \mathbb L}
-\newcommand{\Borel}{\mathcal{B}}
+\DeclareMathOperator{\ZFC}{ZFC} % théorie des ensembles ZFC
+\DeclareMathOperator{\ZF}{ZF} % théorie des ensembles ZF
+\DeclareMathOperator{\AxC}{AC} % axiome du choix
+\DeclareMathOperator{\AxF}{AF} % axiome de fondation
+\DeclareMathOperator{\HC}{HC} % hypothèse du continu
+\DeclareMathOperator{\HCG}{HCG} % hypothèse du continu généralisée
+\DeclareMathOperator{\Funct}{Funct} % ensemble des fonctions entre deux ensembles
+\DeclareMathOperator{\Hom}{Hom} % ensemble des homomorphismes entre deux structures
+\DeclareMathOperator{\trans}{trans} % transitivité
+\DeclareMathOperator{\trcl}{trcl} % clôture transitive d'un ensemble
+\DeclareMathOperator{\type}{type} % type d'un bon ordre
+\DeclareMathOperator{\cof}{cof} % cofinalité d'un ordinal
+\DeclareMathOperator{\Club}{Club} % ensemble des clubs d'un ordinal
+\DeclareMathOperator{\Lim}{Lim} % classe des ordinaux limites, ensemble des limites d'un ordinal
+\DeclareMathOperator{\rk}{rk} % rang
+\newcommand{\VeqL}{\bV = \bL} % axiome V = L
+
+%----- ORDINAUX -----%
+
+\DeclareMathOperator{\Card}{Card} % classe des cardinaux, fonction cardinal
+\DeclareMathOperator{\Ord}{Ord} % classe des ordinaux
+\DeclareMathOperator{\Clos}{Clos} % ensemble des points de clôture
+
+%----- THEORIE DESCRIPTIVE DES ENSEMBLES -----%
+
+\newcommand{\Borel}{\mathcal{B}} % ensemble des boérliens d'un ensemble topologique
+
+% hiérarchie de Borel
 \newcommand{\bSigma}{\boldsymbol{\Sigma}}
 \newcommand{\bPi}{\boldsymbol{\Pi}}
 \newcommand{\bDelta}{\boldsymbol{\Delta}}
-\newcommand{\Dedekind}{\mathfrak{D}}
-\newcommand{\subfil}{\subseteq_{\mathrm{fil}}}
-\newcommand{\ideal}{\mathfrak{I}}
 
-%----- STRUCTURES DE DONNEES -----%
+%----- LISTES -----%
 
-\DeclareMathOperator{\List}{List}
-\DeclareMathOperator{\cons}{cons}
-\DeclareMathOperator{\nil}{nil}
+\DeclareMathOperator{\List}{List} % ensemble des listes sur un ensemble
+\DeclareMathOperator{\cons}{cons} % ajouter un élément en tête d'une liste
+\DeclareMathOperator{\nil}{nil} % liste vide
+\newcommand{\varlist}{\ell} % variable pour désigner une liste
+
+%----- ARBRES -----%
+
+\DeclareMathOperator{\BinTree}{BinTree} % ensemble des arbres binaires
+\DeclareMathOperator{\node}{node} % noeud d'un arbre
 
 %----- THÉORIE DE LA DÉMONSTRATION -----%
 
-\DeclareMathOperator{\EDN}{EDN}
-\DeclareMathOperator{\TE}{TE}
-\DeclareMathOperator{\LK}{LK}
-\DeclareMathOperator{\LJ}{LJ}
-\DeclareMathOperator{\NK}{NK}
-\DeclareMathOperator{\NJ}{NJ}
+\DeclareMathOperator{\EDN}{EDN} % élimination de la double négation
+\DeclareMathOperator{\TE}{TE} % tiers exclu
+\DeclareMathOperator{\LK}{LK} % calcul des séquents classique
+\DeclareMathOperator{\LJ}{LJ} % calcul des séquents intuitionniste
+\DeclareMathOperator{\NK}{NK} % déduction naturelle classique
+\DeclareMathOperator{\NJ}{NJ} % déduction naturelle intuitionniste
 \DeclareMathOperator{\hypo}{hypotheses}
 \DeclareMathOperator{\concl}{conclusion}
-\newcommand{\vdLK}{\vdash_{\LK}}
-\newcommand{\vdLJ}{\vdash_{\LJ}}
-\newcommand{\vdNK}{\vdash_{\NK}}
-\newcommand{\vdNJ}{\vdash_{\NJ}}
+\newcommand{\vdLK}{\vdash_{\LK}} % relation de prouvabilité pour LK
+\newcommand{\vdLJ}{\vdash_{\LJ}} % relation de prouvabilité pour LJ
+\newcommand{\vdNK}{\vdash_{\NK}} % relation de prouvabilité pour NK
+\newcommand{\vdNJ}{\vdash_{\NJ}} % relation de prouvabilité pour NJ
+
+%----- LANGAGES RATIONNELS -----%
+
+\DeclareMathOperator{\Regex}{Regex} % ensemble des expressions régulières
+\DeclareMathOperator{\Ratio}{Ratio} % ensemble des langages rationnels
+\DeclareMathOperator{\Reco}{Reco} % ensemble des langages reconnaissables
+\DeclareMathOperator{\tr}{tr} % trace
+
+%----- ARITHMETIQUE -----%
+
+\DeclareMathOperator{\pair}{pair} % prédicat sur un entier pour qu'il soit pair
+\DeclareMathOperator{\double}{double} % fonction doublant un entier
+\newcommand{\append}{+\!\!+} % concaténation de listes
 
 %----- CALCULABILITÉ -----%
 
-\DeclareMathOperator{\Coher}{Coh}
-\newcommand{\convcal}{\!\downarrow}
-\newcommand{\divcal}{\!\uparrow}
+\DeclareMathOperator{\Coher}{Coh} % cohérence d'une théorie
+\newcommand{\convcal}{\!\downarrow} % calcul convergent
+\newcommand{\divcal}{\!\uparrow} % calcul divergent
 \newcommand{\ceil}[1]{\lceil#1\rceil}
-\newcommand{\btwo}{\boldsymbol{2}}
-\newcommand{\godcod}[1]{\ulcorner#1\urcorner}
-\DeclareMathOperator{\Regex}{Regex}
-\DeclareMathOperator{\Ratio}{Ratio}
-\DeclareMathOperator{\Reco}{Reco}
-\DeclareMathOperator{\tr}{tr}
-\DeclareMathOperator{\MultExp}{MultiplicativeExpr}
-\DeclareMathOperator{\RecP}{RP}
-\DeclareMathOperator{\Rec}{Rec}
-\DeclareMathOperator{\RPG}{RPG}
-\DeclareMathOperator{\RecG}{RecG}
-\DeclareMathOperator{\sucs}{succ}
-\DeclareMathOperator{\rec}{rec}
-\DeclareMathOperator{\ifrm}{if}
-\DeclareMathOperator{\km}{k}
-\DeclareMathOperator{\TM}{TM}
-\DeclareMathOperator{\Calc}{Calc}
+\newcommand{\btwo}{\boldsymbol{2}} % ensemble des booléens
+\newcommand{\godcod}[1]{\ulcorner#1\urcorner} % codage de Gödel
+\DeclareMathOperator{\MultExp}{MultiplicativeExpr} % expression multiplicative
+\DeclareMathOperator{\RecP}{RP} % fonctions récursives primitives
+\DeclareMathOperator{\Rec}{Rec} % fonctions récursives
+\DeclareMathOperator{\RPG}{RPG} % fonctions récursives primitives généralisées
+\DeclareMathOperator{\RecG}{RecG} % fonctions récursives généralisées
+\DeclareMathOperator{\sucs}{succ} % fonction successeur
+\DeclareMathOperator{\rec}{rec} % récurrence
+\DeclareMathOperator{\ifrm}{if} % si
+\DeclareMathOperator{\km}{k} % k
+\DeclareMathOperator{\TM}{TM} % machines de Turing
+\DeclareMathOperator{\Calc}{Calc} % fonctions calculables
 
 %----- TOPOLOGIE -----%
 
@@ -163,7 +211,7 @@
 \newcommand{\adher}[1]{\overline{#1}^{\mathrm c}} % adhérence d'une partie
 \newcommand{\cylin}[1]{\llbracket #1\rrbracket} % cylindre en une partie
 \newcommand{\clB}{\overline{B}} % boule fermée
-\newcommand{\fillim}{\lim^{\mathcal F}}
+\newcommand{\fillim}{\lim^{\mathcal F}} % limite au sens d'un filtre
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %----- LaTeX HACKS -----%

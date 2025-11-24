@@ -31,15 +31,47 @@ C, Python, Ocaml \latinexpr{etc}).
 
 Avant d'introduire les fonctions récursives, nous en donnons une version faible
 mais très importante~: les fonctions primitives récursives (abrégées en
-fonctions RP). Si l'on imagine une fonction calculable comme un programme
+fonctions RP).
+
+Si l'on imagine une fonction calculable comme un programme
 C ou Python, une fonction RP est un programme n'employant comme seule boucle que
-la boucle \texttt{for}.
+la boucle \texttt{for}. Comme nous le verrons, ces
+fonctions ne donnent pas une expressivité aussi forte qu'on pourrait le souhaiter, d'où
+l'introduction plus tard des fonctions récursives. Cependant, cette première notion de
+calcul est centrale pour plusieurs raisons~:
+\begin{itemize}
+\item elle permet en fait d'exprimer toutes les fonctions qu'un ordinateur peut
+  programmer à l'exception d'une unique instruction, que l'on peut rapprocher d'une
+  boucle \texttt{while}~;
+\item elle contient déjà la plupart des fonctions qui nous sont utiles en mathéamtiques,
+  et possède de meilleures propriétés (par exemple un programme n'utilisant que des
+  boucles \texttt{for} est toujours sûr de terminer).
+\end{itemize}
+
+Nous allons d'abord voir la notion de fonction RP la plus classique (on peut retrouver
+les mêmes définitions par exemple dans \cite{cori1993logique}), puis nous introduirons
+une version généralisée de cette classe de fonctions. L'intérêt premier de cette version
+généralisée est de faciliter le travail d'encodage dans les futurs chapitres, et de
+mettre en valeur la classe des fonctions RP non comme un pur objet logique mais bien
+comme un modèle de calcul intermédiaire entre les langages algébriques et les langages
+récursifs (que nous verrons ensuite).
+
+Historiquement, la notion de fonction primitive récursive est apparue avant celle des
+fonctions calculables, notamment dans \cite{skolem1923begrundung} qui a mis en avant
+l'importance et la polyvalence des définitions par récurrence. \`A l'époque, de telles
+fonctions étaient simplement appelées \og fonctions définies par récurrence\fg car, du
+fait de l'absence de la notion de fonction récursive générale, l'adjectif
+\og primitive\fg n'avait pas encore de raison d'être introduit. Notons malgré tout que
+durant une assez longue période, les fonctions que l'on appelle maintenant récursives
+primitives étaient appelées récursives, et les fonctions que l'on appelle maintenant
+récursives étaient appelées récursives générales, comme introduites dans
+\cite{godel1934undecidable}.
 
 \subsection{Définitions et premières fonctions}
 
 Donnons dès maintenant la définition de la classe RP.
 
-\begin{definition}[Fonctions primitives récursives]
+\begin{definition}[Fonctions primitives récursives \cite{skolem1923begrundung}]
   On définit la classe
   $\RecP\subseteq \bigcup_{n \in \mathbb N}\Funct(\mathbb N^n,\mathbb N)$
   comme la plus petite classe telle que~:

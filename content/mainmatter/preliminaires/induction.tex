@@ -9,7 +9,7 @@ récurrence. Nous allons cependant adopter un formalisme différent de celui
 utilisé pour faire une simple récurrence. Les objets principaux sur lesquels
 nous utiliserons l'induction sont les ensembles inductifs et les relations
 inductives, que nous présenterons. Ces deux objets sont associés à des
-formalismes différents : le premier aux grammaire en forme de Backus-Naur, et le
+formalismes différents~: le premier aux grammaire en forme de Backus-Naur, et le
 deuxième aux points fixes et à la théorie des treillis. Comme la théorie des
 treillis sera étudiée plus tard dans cette partie préliminaire, nous ne
 traiterons qu'un cas restreint suffisant pour le travail sur l'induction.
@@ -20,10 +20,13 @@ derrière le formalisme introduit, pour le lecteur qui en aurait besoin. Le poin
 essentiel est avant tout de comprendre comment fonctionne une preuve par
 induction et comment utiliser les objets inductifs, puisqu'ils seront utilisés
 sans arrêt par la suite. Cependant, les justifications mathématiques données
-sont partielles : tous les cas ne se ramènent pas à ceux traités de façon
+sont partielles~: tous les cas ne se ramènent pas à ceux traités de façon
 évidente. Le lecteur le plus prudent devra trouver comment adapter le formalisme
 donné dans ce chapitre aux multiples variantes qui seront utilisées sans le dire
 par la suite.
+
+On peut trouver plus de détails sur les définitions par induction dans
+\cite{winskell1996formal}, au chapitre $3$.
 
 \section{Ensemble inductif}
 
@@ -35,12 +38,12 @@ robuste que les ensembles infinis. Il est en effet très facile de se convaincre
 éléments pour $n$ aussi grand que l'on veut (bien que se convaincre qu'il existe
 un ensemble à $300!$ éléments semble légèrement plus long). Cette robustesse
 découle du fait qu'on peut explicitement les construire, et cette possibilité
-n'existe que pour un ensemble fini. Pourtant, l'ensemble $\mathbb N$ tend aussi
-à être plus facilement accepté qu'un ensemble tel que $\mathbb R / \mathbb Q$.
+n'existe que pour un ensemble fini. Pourtant, l'ensemble $\bN$ tend aussi
+à être plus facilement accepté qu'un ensemble tel que $\bR / \bQ$.
 Un point essentiel qui rend le premier ensemble logiquement plus simple que le
-deuxième est qu'il est facile à engendrer : l'ensemble $\mathbb N$ est constitué
+deuxième est qu'il est facile à engendrer~: l'ensemble $\bN$ est constitué
 de l'élément $0$ et de l'opération $S$ définie par $n \mapsto n + 1$, et tout
-autre élément de $\mathbb N$ peut être construit à partir de ces deux éléments.
+autre élément de $\bN$ peut être construit à partir de ces deux éléments.
 Sa structure est donc fondamentalement simple, et peut être décrite en des
 termes finis.
 
@@ -49,7 +52,7 @@ formalisée par les ensembles inductifs. Un ensemble inductif va être un ensemb
 obtenu par une liste de générateurs, chaque générateur ayant une arité (un
 nombre d'objets qu'il prend en entrée). Dans cette définition d'ensemble
 inductif, l'exemple canonique est bien sûr $\mathbb N$ lui-même, qu'on peut
-définir par :
+définir par~:
 \begin{itemize}
 \item un constructeur sans argument, $0$
 \item un constructeur à un argument, $S$
@@ -65,25 +68,27 @@ formalisme pour parler des constructeurs.
 \end{definition}
 
 On appelle en général signature la donnée des symboles qui constituent une
-structure munis d'une forme de sens (ici leur arité). La présentation qui en est
+structure munie d'une forme de sens (ici leur arité). La présentation qui en est
 faite ici est assez aride dans son formalisme~: l'important est d'accepter que
 l'on peut spécifier correctement un ensemble inductif par certaines données.
 Pour une description plus systématique, mais utilisant le langage catégorique,
 on peut par exemple se référer à \cite{JacobsCLTT}.
 
-Une signature sera généralement donnée sous forme dite de Backus-Naur. Cette
-présentation se décompose de la façon suivante :
-\[a,b,\ldots \Coloneq \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots\]
+Une signature sera généralement donnée sous forme dite de Backus-Naur, abrégée en
+BNF (\foreignexpr{Backus-Naur Form}). Cette
+présentation se décompose de la façon suivante~:
+\[a,b,\ldots \inddefeq \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots\]
 où $a,b,\ldots$ représentent les éléments que les constructeurs définissent,
 et où chaque cas est la définition d'un nouveau constructeur (ou d'une famille
-de constructeurs). Par exemple pour le cas de $\mathbb N$, nous avons :
-\[n \Coloneq 0 \mid S\;n\]
+de constructeurs). Par exemple pour le cas de $\bN$, nous avons :
+\[n \inddefeq 0 \mid S\;n\]
 Il est fréquent d'employer des variables qui seront quantifiées hors de la
-définition à proprement parler, comme
-\[\ell \Coloneq \nil \mid \cons(a,\ell)\]
-où $a \in A$ et $A$ est certain ensemble fixé au préalable. Cette définition
-doit se lire comme l'ensemble $(\{\nil\} \cup A,\alpha)$ où $\alpha$
-est défini par :
+définition à proprement parler. Par exemple, fixons un ensemble $A$, et donnons
+la BNF suivante~:
+\[\varlist \inddefeq \nil \mid \cons(a,\varlist)\]
+où $a \in A$. Cette définition doit se lire comme la signature
+$(\{\nil\} \cup A,\alpha)$ où $\alpha$
+est défini par~:
 \[
 \begin{array}{rcccl}
   \alpha &:& C & \longrightarrow & \mathbb N\\
@@ -99,24 +104,24 @@ Voyons maintenant comment associer à une signature un ensemble généré par le
 constructeurs donnés dans la signature. L'ensemble généré doit être un ensemble
 $X$ contenant, pour chaque $x_1,\ldots,x_n \in X$ et $c \in C$ d'arité $n$,
 l'objet $c(x_1,\ldots,x_n)$, et ne doit contenir que les objets de cette forme.
-Nous procédons alors par le bas : un premier ensemble est construit par
-l'ensemble $C_0 = \{ c \in C \mid \alpha(c) = 0\}$, puis l'ensemble $C_1$ est
-construit par $C_1 = C_0 \cup \{ c(x_1,\ldots,x_n) \mid c \in C, x_1,\ldots,
-x_n \in C_0, \alpha(c) = n\}$ et ainsi de suite. Comme $c$ est simplement un
+Nous procédons alors par le bas~: un premier ensemble est construit par
+l'ensemble $C_0 = \compr{c \in C}{\alpha(c) = 0}$, puis l'ensemble $C_1$ est
+construit par $C_1 = C_0 \cup \compr{c(x_1,\ldots,x_n)}{c \in C, x_1,\ldots,
+x_n \in C_0, \alpha(c) = n}$ et ainsi de suite. Comme $c$ est simplement un
 élément dans notre cas, écrire $c(x_1,\ldots,x_n)$ n'a pas de sens, c'est
 pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
 
 \begin{definition}[Ensemble inductif sur une signature]
   Soit $(C,\alpha)$ une signature, on définit la suite d'ensembles
-  $(X_i)_{i\in\mathbb N}$ par :
+  $(X_i)_{i\in\bN}$ par :
   \begin{itemize}
-  \item $X_0 = \varnothing$
-  \item $X_{n+1} = \{ (c,x_1,\ldots,x_p) \mid c\in C, (x_1,\ldots,x_p)\in (X_n)^p,
-    \alpha(c) = p \}$
+  \item $X_0 = \vide$
+  \item $X_{n+1} = \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in (X_n)^p,
+    \alpha(c) = p }$
   \end{itemize}
 
   L'ensemble inductif engendré par $(C,\alpha)$ est alors l'ensemble
-  \[X = \bigcup_{n\in \mathbb N} X_n\]
+  \[X = \bigcup_{n\in \bN} X_n\]
 \end{definition}
 
 La définition donnée n'est pas exactement celle décrite plus haut, mais la
@@ -130,13 +135,13 @@ avec les deux méthodes.
 \end{proposition}
 
 \begin{proof}
-  On procède par récurrence sur $n$ :
+  On procède par récurrence sur $n$~:
   \begin{itemize}
-  \item comme $X_0 = \varnothing$, il est évident que
+  \item comme $X_0 = \vide$, il est évident que
     $\varnothing \subseteq X_m$ pour tout $m \in\mathbb N$.
   \item supposons que $X_n \subseteq X_m$ pour tout $m \geq n$. Alors
-    \[X_{n+1} = \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
-    \alpha(c) = p\}\]
+    \[X_{n+1} = \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
+    \alpha(c) = p}\]
     mais par inclusion, comme $(x_1,\ldots,x_p)\in (X_n)^p$, on en déduit que
     $(x_1,\ldots,x_p)$ est aussi dans $(X_m)^p$, pour tout $m \geq n$. Ainsi
     $(c,x_1,\ldots,x_p) \in X_{m+1}$ pour tout $m \geq n$, donc
@@ -146,7 +151,7 @@ avec les deux méthodes.
 
 Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
 
-\begin{lemma}[Lecture unique]
+\begin{lemma}[Lecture unique]\label{lem.lecture_unique}
   Soit une signature $(C,\alpha)$ et l'ensemble $X$ engendré par cette
   signature. Alors pour tout élément $x \in X$, il existe $c\in C$ et
   $x_1,\ldots,x_p \in X$ (possiblement une famille vide si $\alpha(c) = 0$)
@@ -156,10 +161,10 @@ Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
 \begin{proof}
   Soit $(X_n)$ la suite d'ensemble définie précédemment telle que $X$ en est
   l'union. Si $x\in X$, alors on trouve $n \in \mathbb N$ tel que $x\in X_n$.
-  Par disjonction de cas sur ce $n$, on prouve le résultat :
+  Par disjonction de cas sur ce $n$, on prouve le résultat~:
   \begin{itemize}
   \item si $n = 0$ alors l'hypothèse $x \in X_0$ signifie qu'on a
-    $x\in \varnothing$ : par absurdité de la prémisse, la conclusion est vraie.
+    $x\in \vide$~: par absurdité de la prémisse, la conclusion est vraie.
   \item si $n = m+1$, alors $x\in X_n$ signifie que
     $x \in \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
     \alpha(c) = p\}$ d'où le résultat par définition.
@@ -223,10 +228,10 @@ pour aller d'un coin à l'autre du carré sont égaux.
 
 \begin{proof}
   Soit $(X_n)$ la suite d'ensemble construite précédemment pour définir $X$. On
-  va prouver par récurrence sur $n$ la proposition suivante :
+  va prouver par récurrence sur $n$ la proposition suivante~:
   \begin{multline*}
-    \forall n\in \mathbb N, \exists ! f : X_n \to Y, \forall c \in C,\\
-    \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)}, f((c,x_1,\ldots,x_p))
+    \forall n\in \mathbb N, \exists ! f_n : X_n \to Y, \forall c \in C,\\
+    \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)}, f_n((c,x_1,\ldots,x_p))
     = f_c(f_n(x_1),\ldots,f_n(x_p))
   \end{multline*}
   \begin{itemize}
@@ -235,21 +240,18 @@ pour aller d'un coin à l'autre du carré sont égaux.
   \item Soit $n \in \mathbb N$. Supposons qu'il existe une unique fonction
     $f_n : X_n \to Y$ telle que
     \[\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)},
-    f((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))\]
+    f_n((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))\]
     On définit alors
-    \[\begin{array}{rcccl}
-      f_{n+1} &:& X_{n+1} &\longrightarrow & Y \\
-      & & (c,x_1,\ldots,x_p) & \longmapsto & f_c(f_n(x_1),\ldots,f_n(x_p))
-    \end{array}\]
+    \[\makeFun{f_{n+1}}{X_{n+1}}{Y}{(c,x_1,\ldots,x_p)}{f_c(f_n(x_1),\ldots,f_n(x_p))}\]
     On remarque que cette fonction vérifie bien la propriété. De plus, si une
-    autre fonction $g$ vérifie la propriété, alors pour $x\in X_{n+1}$, on trouve
-    $c\in C$ et $x_1,\ldots,x_p \in X_n$ tels que $x = (c,x_1,\ldots,x_p)$, on a
-    alors
+    autre fonction $g$ vérifie la propriété, alors pour $x\in X_{n+1}$, on trouve par
+    le \cref{lem.lecture_unique} $c\in C$ et $x_1,\ldots,x_p \in X_n$ tels que
+    $x = (c,x_1,\ldots,x_p)$. On a alors
     \begin{align*}
-      f_{n+1}(x) &= f((c,x_1,\ldots,x_p)) \\
-      &= f_c(f_n(x_1),\ldots,f_n(x_n)) \\
-      &= g((c,x_1,\ldots,x_p))\\
-      &= g (x)
+      f_{n+1}(x) &= f_{n+1}((c,x_1,\ldots,x_p)) & \text{par l'égalité sur }x\\
+      &= f_c(f_n(x_1),\ldots,f_n(x_n)) & \text{par définition }f_{n+1}\\
+      &= g((c,x_1,\ldots,x_p))& \text{par hypothèse sur }g\\
+      &= g(x) & \text{par l'égalité sur }x
     \end{align*}
     Donc pour tout $x\in X_{n+1}$, $f_{n+1} = g(x)$, ce qui signifie que
     $f_{n+1} = g$, d'où l'unicité de $f_{n+1}$.
@@ -270,33 +272,32 @@ pour aller d'un coin à l'autre du carré sont égaux.
   constructeur $c \in C$.
 \end{remark}
 
-\begin{remark}
-  On peut trouver plus de détails sur les définitions par induction dans
-  \cite{winskell1996formal}, au chapitre $3$.
-\end{remark}
-
 Cet outil nous permet maintenant de définir des fonctions dont le domaine est
-un ensemble inductif en utilisant sa structure.
+un ensemble inductif en utilisant sa structure. Lorsqu'on définira une fonction en
+utilisant le \cref{thm.PU.ind} sur un ensemble inductif $X$, on utilisera
+généralement la formulation \og par induction sur la structure de $X$\fg voire
+directement \og par induction sur $x$\fg si le contexte rend clair que $x$ est un
+élément de $X$.
 
-\begin{example}
-  Donnons un premier exemple de fonction récursive : la fonction
-  $d :n\mapsto 2n$, définie de $\mathbb N$ dans $\mathbb N$. En effet, on peut
+\begin{example}\label{ex.double}
+  Donnons un premier exemple de fonction récursive~: la fonction
+  $\double :n\mapsto 2n$, définie de $\bN$ dans $\bN$. En effet, on peut
   la décrire par
   \begin{itemize}
-  \item $d(0) = 0$
-  \item $d(S\;n) = S\;S\;d(n)$
+  \item $\double(0) = 0$
+  \item $\double(S\;n) = S\;S\;\double(n)$
   \end{itemize}
-  nous donnant alors une définition de $d$ grâce au théorème précédent.
+  nous donnant alors une définition de $\double$ grâce au théorème précédent.
 \end{example}
 
 \begin{example}
   Un exemple à la fois d'ensemble inductif et de fonction récursive est le
   suivant. Soit $A$ un ensemble quelconque, on définit la signature des listes
-  sur $A$ par la grammaire suivante :
+  sur $A$ par la grammaire suivante~:
   \[\ell \Coloneq \nil\mid \cons(a,\ell)\]
   où $a\in A$. L'ensemble $\List(A)$ est alors l'ensemble inductif
   associé. On définit alors la fonction $|-|$ donnant la longueur d'une
-  liste :
+  liste~:
   \begin{itemize}
   \item $|\nil| = 0$
   \item $|\cons(a,\ell)| = 1 + |\ell|$
@@ -305,24 +306,24 @@ un ensemble inductif en utilisant sa structure.
 
 \begin{exercise}
   Soit $A$ un ensemble. Donner une signature définissant l'ensemble
-  $\mathrm{BinTree}(A)$ des arbres
-  binaires étiquetés par $A$, constitué d'un objet arbre vide et d'un
-  constructeur binaire $\mathrm{node}$ prenant en argument un élément $a$ de $A$
+  $\BinTree(A)$ des arbres
+  binaires étiquetés par $A$, constitué d'un objet arbre vide $\nil$ et d'un
+  constructeur binaire $\node$ prenant en argument un élément $a$ de $A$
   et deux arbres $g$ et $d$ et retournant un nouvel arbre binaire, d'étiquette
   $a$ et dont les deux sous-arbres sont $g$ et $d$.
 
-  Définir une fonction $h : \mathrm{BinTree}(A) \to \mathbb N$ donnant la
+  Définir une fonction $h : \BinTree(A) \to \bN$ donnant la
   hauteur d'un arbre, c'est-à-dire la longueur du plus long chemin entre la
   racine de l'arbre (la première étiquette) et une feuille (un arbre vide qui est
-  sous-arbre). On prend comme convention que $h(\mathrm{nil}) = 0$.
+  sous-arbre). On prend comme convention que $h(\nil) = 0$.
 
-  Définir une fonction $|-| : \mathrm{BinTree}(A) \to \mathbb N$ donnant le
+  Définir une fonction $|-| : \mathrm{BinTree}(A) \to \bN$ donnant le
   nombre d'étiquettes d'un arbre.
 \end{exercise}
 
 \begin{exercise}
-  En utilisant la structure inductive de $\mathbb N$, définir la fonction
-  $+ : \mathbb N \times \mathbb N \to \mathbb N$. On pourra pour cela définir
+  En utilisant la structure inductive de $\bN$, définir la fonction
+  $+ : \bN \times \bN \to \bN$. On pourra pour cela définir
   la fonction $n \mapsto (m \mapsto n + m)$ et faire une fonction récursive sur
   l'argument $n$.
 \end{exercise}
@@ -331,8 +332,7 @@ Un procédé similaire est celui d'induction. Là où la récursion nous permet 
 définir une fonction depuis un ensemble inductif, l'induction va nous permettre
 de faire une preuve sur un ensemble inductif. Il s'agit donc, au lieu de donner
 une fonction $X \to Y$, de donner un prédicat $P \subseteq X$ et de montrer que
-$P = X$. On peut trouver plus de précisions sur l'induction dans le chapitre $3$
-de \cite{winskell1996formal}, qui parle d'induction structurelle.
+$P = X$.
 
 \begin{theorem}[Principe d'induction]
   Soit $(C,\alpha)$ une signature et $X$ l'ensemble inductif associé. Soit
@@ -344,12 +344,12 @@ de \cite{winskell1996formal}, qui parle d'induction structurelle.
 \end{theorem}
 
 \begin{proof}
-  Pour prouver ce résultat, il suffit de montrer que pour tout $n\in\mathbb N$,
+  Pour prouver ce résultat, il suffit de montrer que pour tout $n\in\bN$,
   $X_n \subseteq P$ pour $(X_n)$ la suite d'ensembles construisant $X$. En
   effectuant une récurrences sur $n$ :
   \begin{itemize}
-  \item Si $n = 0$, alors $\varnothing \subseteq P$.
-  \item Supposons que $X_n \subseteq P$ pour $n \in \mathbb N$. Soit
+  \item Si $n = 0$, alors $\vide \subseteq P$.
+  \item Supposons que $X_n \subseteq P$ pour $n \in \bN$. Soit
     $x \in X_{n+1}$. Par définition de $X_{n+1}$, on trouve $c \in C$ et
     $x_1,\ldots,x_p \in X_n$ tels que $x = c(x_1,\ldots,x_p)$. Par hypothèse
     de récurrence, on en déduit que pour tout $i\in\{1,\ldots,p\}$, $x_i\in P$.
@@ -359,54 +359,55 @@ de \cite{winskell1996formal}, qui parle d'induction structurelle.
     On en déduit que $X_{n+1}\subseteq P$.
   \end{itemize}
 
-  Ainsi, par récurrence, pour tout $n\in \mathbb N$, $X_n \subseteq P$.
+  Ainsi, par récurrence, pour tout $n\in \bN$, $X_n \subseteq P$.
   Cela montre alors que
-  \[\bigcup_{n \in \mathbb N} X_n \subseteq P\]
+  \[\bigcup_{n \in \bN} X_n \subseteq P\]
   ce qu'il fallait démontrer.
 \end{proof}
 
-On peut affiner ce résultat en distinguant deux sortes de constructeurs : d'un
+On peut affiner ce résultat en distinguant deux sortes de constructeurs~: d'un
 côté les constructeurs d'arité $0$, qui sont des constantes, et de l'autre les
 constructeurs d'arité supérieure à $1$. Le théorème précédent nous dit que pour
 prouver une proposition $P$ sur un ensemble inductif, il suffit de prouver qu'il
 contient les constantes et qu'il est stable par chaque constructeur. On remarque
-que dans le cas de $\mathbb N$, engendré par $0$ et $S$, ce principe nous dit
+que dans le cas de $\bN$, engendré par $0$ et $S$, ce principe nous dit
 qu'une partie $P$ contenant $0$ et telle que
-$\forall n\in\mathbb N, n\in P \implies n+1\in P$ est exactement $\mathbb N$ :
+$\forall n\in\bN, n\in P \implies n+1\in P$ est exactement $\bN$~:
 c'est le principe de récurrence.
 
 Ainsi, puisque nous prouvons le principe d'induction à partir du principe de
-récurrence, et puisque le principe de récurrence est un cas particulier du
-principe d'induction, les deux sont logiquement équivalents. L'induction,
-cependant, est conceptuellement plus intéressante puisqu'elle peut s'utiliser
-dans plus de cas.
+récurrence sur $\bN$, et puisque le principe de récurrence sur $\bN$ est un cas
+particulier du principe d'induction, les deux sont logiquement équivalents.
+L'induction, cependant, est conceptuellement plus intéressante puisqu'elle peut
+s'utiliser dans plus de cas.
 
 \begin{exercise}
-  On considère $\mathbb N$ comme un ensemble inductif, et la fonction $d$
-  définie dans un exemple précédent. Montrer que pour tout $n \in \mathbb N$,
-  $d(n)$ est pair. On prendra comme définition de pair le prédicat
-  $\mathrm{pair}(n) \defeq \exists m\in\mathbb N, n = 2 \times m$.
+  On considère $\bN$ comme un ensemble inductif, et la fonction $\double$
+  définie dans l'\cref{ex.double}. Montrer que pour tout $n \in \bN$,
+  $\double(n)$ est pair. On prendra comme définition de pair le prédicat
+  $\pair(n) \defeq \exists m\in\bN, n = 2 \times m$.
 \end{exercise}
 
 \begin{exercise}
   Soit un ensemble $A$. On définit
-  $\oplus : \mathrm{List}(A) \times \mathrm{List}(A)\to \mathrm{List}(A)$ par
-  induction sur le premier argument:
+  $\append : \List(A) \times \List(A)\to \List(A)$ par
+  induction sur le premier argument~:
   \begin{itemize}
-  \item Pour tout $\ell\in \mathrm{List}(A)$, $\mathrm{nil} \oplus \ell = \ell$.
-  \item Pour tous $\ell,\ell'\in\mathrm{List}(A), a\in A$,
-    $\mathrm{cons}(a,\ell) \oplus \ell' = \mathrm{cons}(a,\ell \oplus \ell')$.
+  \item Pour tout $\varlist\in \List(A)$, $\nil \append \varlist = \varlist$.
+  \item Pour tous $\varlist,\varlist'\in\List(A), a\in A$,
+    $\cons(a,\varlist) \append \varlist' = \cons(a,\varlist \append \varlist')$.
   \end{itemize}
 
   Montrer que
-  \[\forall \ell,\ell'\in \mathrm{List}(A), |\ell\oplus \ell'|=|\ell|+|\ell'|\]
+  \[\forall \varlist,\varlist'\in \List(A),
+  |\varlist\append \varlist'|=|\varlist|+|\varlist'|\]
 \end{exercise}
 
 \section{Relation inductive}
 
 \subsection{Construction d'une relation inductive}
 
-Une façon de considérer les ensembles inductif est, étant donnée une signature,
+Une façon de considérer les ensembles inductifs est, étant donnée une signature,
 de prendre le plus petit ensemble stable par les constructeurs de cette
 signature. Le problème, pour faire cela, est que nous n'avons pas d'ensemble sur
 lequel travailler a priori, au sens où l'ensemble inductif que l'on a construit
@@ -441,7 +442,7 @@ Une règle d'inférence, elle, va relier des relations.
     \QuaternaryInfC{$P$}
   \end{prooftree}
   Où $P_1,\ldots,P_n$ sont appelées les prémisses de la règle, et $P$ est
-  appelée la conclusion de la règle. On dit que la règle est juste si, lorsque
+  appelée la conclusion de la règle. On dit que la règle est valide si, lorsque
   toutes les prémisses de la règle sont vérifiées, alors la conclusion est aussi
   vérifiée.
 
@@ -451,12 +452,12 @@ Une règle d'inférence, elle, va relier des relations.
     \AxiomC{$P(a)$}
     \BinaryInfC{$P(b)$}
   \end{prooftree}
-  auquel cas la règle est juste lorsqu'elle est juste pour chaque instance
+  auquel cas la règle est valide lorsqu'elle l'est pour chaque instance
   possible de ces paramètres. Dans l'exemple, on suppose que $a$ et $b$ sont
-  quantifiés sur un certain ensemble $A$, et la règle est donc juste lorsque
+  quantifiés sur un certain ensemble $A$, et la règle est donc valide lorsque
   $\forall a,b\in A, ((a = b) \text{ et } P(a)) \implies P(b)$. On dira que la
-  règle est juste aussi lorsque l'on fixe un paramètre, mais on dira alors
-  \og la règle $\mathrm r$ est juste pour $X = R$\fg{}, dans le cas où l'on
+  règle est valide aussi lorsque l'on fixe un paramètre, mais on dira alors
+  \og la règle $\mathrm r$ est valide pour $X = R$\fg{}, dans le cas où l'on
   fixe le paramètre $X$ comme valant $R$. Pour signifier qu'une assignation
   des variables $x_i$ à des objets $a_i$ vérifie un énoncé $P$, on notera
   $(x_i \mapsto a_i) \models P$.
@@ -485,7 +486,7 @@ par une clause de la forme $R(f_1(x_1,\ldots,x_k),\ldots,f_p(x_1,\ldots,x_k))$.
 Une règle $\mathrm r$ définit alors la fonction suivante, qui considère
 l'ensemble des $R(t_1,\ldots,t_k)$~:
 \begin{multline*}
-  X \longmapsto\{ (f_1(a_1,\ldots,a_k),\ldots,f_p(a_1,\ldots,a_k))\mid\\
+  X \longmapsto\{(f_1(a_1,\ldots,a_k),\ldots,f_p(a_1,\ldots,a_k))\mid\\
   a_1,\ldots,a_k \in E, \forall i \in \{1,\ldots,n\},
   (R\mapsto X,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \models P_i\}
 \end{multline*}
@@ -538,26 +539,26 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
 Supposons maintenant que nous ayons une relation $R$ et une règle $\mathrm r$,
 $R$ ne vérifiant pas forcément $\mathrm r$. Nous cherchons alors à construire à
 partir de $R$ une relation vérifiant $\mathrm r$. Une remarque essentielle~: si
-$R$ vérifie $\mathrm r$, alors $R$ est un point fixe de la fonction $r$
+$R$ vérifie $\mathrm r$, alors $R$ est un point fixe de la fonction $\mathrm r$
 associée. On va ainsi chercher à créer un point fixe de la fonction associée.
 Pour cela, nous allons donner un théorème essentiel en logique~: le théorème de
 Knaster-Tarski.
 
 \begin{theorem}[Knaster-Tarski (faible)\cite{Knaster}]\label{thm.ind.KT}
    Soit un ensemble $E$ quelconque, et une fonction
-  $f : \mathcal P(E) \to \mathcal P(E)$ croissante pour $\subseteq$,
+  $f : \powerset(E) \to \powerset (E)$ croissante pour $\subseteq$,
   c'est-à-dire telle que
-  \[\forall A,B\in\mathcal P(E), A\subseteq B \implies f(A)\subseteq f(B)\]
+  \[\forall A,B\in\powerset(E), A\subseteq B \implies f(A)\subseteq f(B)\]
   Alors il existe un plus petit point fixe de $f$ pour $\subseteq$, ou de façon
-  équivalente il existe un élément $A\in \mathcal P(E)$ tel que $f(A)=A$ et tel
-  que pour tout $B\in\mathcal P(E)$ tel que $f(B)=B$, $A\subseteq B$.
+  équivalente il existe un élément $A\in \powerset(E)$ tel que $f(A)=A$ et tel
+  que pour tout $B\in\powerset(E)$ tel que $f(B)=B$, $A\subseteq B$.
 \end{theorem}
 \begin{proof}
   Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
-  \[\prefix(f) = \{ A \in \mathcal P(E)\mid f(A)\subseteq A\}\]
+  \[\prefix(f) = \{ A \in \powerset(E)\mid f(A)\subseteq A\}\]
   Cet ensemble est non vide, puisqu'il contient $E$.
   Soit $\alpha = \bigcap \prefix(f)$, montrons que $\alpha$ est dans
-  $\mathrm{prefix}(f)$~:
+  $\prefix(f)$~:
 
   Pour cela, il suffit de montrer que $f(\alpha)\subseteq \alpha$, mais comme
   $\alpha$ est une intersection, il suffit de montrer que pour tout
@@ -570,7 +571,7 @@ Knaster-Tarski.
 
   De plus, comme $f(\alpha)\subseteq \alpha$, on en déduit par croissance de
   $f$ que $f(f(\alpha))\subseteq f(\alpha)$, c'est-à-dire que $f(\alpha)$ est
-  lui aussi un élément de $\prefix(f)$ : comme $\alpha$ en est l'intersection,
+  lui aussi un élément de $\prefix(f)$~: comme $\alpha$ en est l'intersection,
   cela signifie que $\alpha \subseteq f(\alpha)$, d'où en
   utilisant l'inclusion précédente, $f(\alpha) = \alpha$.
 
@@ -580,7 +581,7 @@ Knaster-Tarski.
 
 \begin{exercise}
   Soit $E$ un ensemble quelconque, $f : \powerset(E) \to \powerset(E)$ une
-  fonction croissante pour l'inclusion et $A \in \mathcal P(E)$ tel que
+  fonction croissante pour l'inclusion et $A \in \powerset(E)$ tel que
   $A\subseteq f(A)$. Montrer que l'on peut étendre le \cref{thm.ind.KT} pour
   trouver un plus petit point fixe $\alpha$ tel que $A\subseteq \alpha$.
 \end{exercise}
@@ -588,21 +589,18 @@ Knaster-Tarski.
 \begin{exercise}
   Soit $E$ un ensemble quelconque, et $f : \powerset(E) \to \powerset(E)$ une
   fonction croissante pour l'inclusion. On définit
-  \[\begin{array}{ccccc}
-    g_f & : & \powerset(E) & \longrightarrow & \powerset(E)\\
-    & & X & \longmapsto & X \cup f(X)
-  \end{array}\]
+  \[\makeFun{g_f}{\powerset(E)}{\powerset(E)}{X}{X\cup f(X)}\]
   Montrer que $g_f$ est croissante pour l'inclusion et que pour tout
   $X\in\powerset(E), X\subseteq f(X)$.
 \end{exercise}
 
-Des deux exercices précédents, on peut déduire le résultat suivant :
+Des deux exercices précédents, on peut déduire le résultat suivant~:
 
 \begin{corollary}[Définition d'une relation inductive]
   Soit une règle $\mathrm r$ sur un ensemble $E$ et une relation $R$. Alors il
   existe une plus petite relation $R_r$ contenant $R$ et stable par $r$. On dit
   alors que cette relation $R_r$ est la relation définie par $r$ sur $R$. Si
-  $R = \varnothing$, on dira seulement que la relation est définie par $r$.
+  $R = \vide$, on dira seulement que la relation est définie par $r$.
 \end{corollary}
 
 Cela nous permet alors de définir le principe d'induction sur les relations,
@@ -622,7 +620,7 @@ qui est très proche de celui sur les ensembles inductifs.
   contenant $R$, qui est exactement $R_r$.
 \end{proof}
 
-Ce résultat est essentiel pour prouver beaucoup de résultats : étant donnée une
+Ce résultat est essentiel pour prouver beaucoup de résultats~: étant donnée une
 relation $R$ construite par induction, pour montrer un résultat de la forme
 $\forall x_1,\ldots,x_n\in E, R(x_1,\ldots,x_n)\implies P(x_1,\ldots,x_n)$ pour
 un certain prédicat $P$, il suffit de montrer que ce prédicat est stable par
@@ -645,7 +643,7 @@ la règle définissant $R$.
 \begin{exercise}
   Soit une relation $R$ et une règle $\mathrm r$. On définit la relation $R'$
   comme la relation inductive définie par $\mathrm r$ sur $R$, et $R''$ la
-  relation inductive définie par les règles $\mathrm r$ et
+  relation inductive définie par la règle $\mathrm r$ et
   \begin{prooftree}
     \AxiomC{$R(x_1,\ldots,x_n)$}
     \UnaryInfC{$R''(x_1,\ldots,x_n)$}
@@ -658,30 +656,21 @@ la règle définissant $R$.
 \end{remark}
 
 \begin{exercise}
-  Soit $A$ un ensemble quelconque. On définit sur $\mathrm{List}(A)$ le prédicat
-  $\mathrm{pair}$ par induction avec les règles suivantes :
+  Soit $A$ un ensemble quelconque. On définit sur $\List(A)$ le prédicat
+  $\pair$ par induction avec les règles suivantes :
   \begin{center}
     \AxiomC{}
-    \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
+    \UnaryInfC{$\pair(\nil)$}
     \DisplayProof
     \qquad
-    \AxiomC{$\mathrm{pair}(\ell)$}
-    \UnaryInfC{$\mathrm{pair}(\mathrm{cons}(a,\mathrm{cons}(b,\ell)))$}
+    \AxiomC{$\pair(\varlist)$}
+    \UnaryInfC{$\pair(\cons(a,\cons(b,\varlist)))$}
     \DisplayProof
   \end{center}
-  Montrer l'assertion suivante :
-  \[\forall \ell \in \mathrm{List}(A), \mathrm{pair}(\ell) \implies
-  \mathrm{pair}(|\ell|)\]
-  avec le prédicat $\mathrm{pair}$ sur les entiers défini précédemment.
+  Montrer l'assertion suivante~:
+  \[\forall \varlist \in \List(A), \pair(\varlist) \implies \pair(|\varlist|)\]
+  avec le prédicat $\pair$ sur les entiers défini précédemment.
 \end{exercise}
-
-\begin{remark}
-  Comme les notions précédentes, l'induction sur les relations est abordée dans
-  \cite{winskell1996formal}, mais notre présentation s'en éloigne en cherchant
-  à être plus formelle. La présentation qui y est faite dans
-  \cite{winskell1996formal} est, au contraire, plus intuitive à suivre, avec
-  plus d'exemples et moins de généralité.
-\end{remark}
 
 \subsection{Dérivation d'arbre}
 
@@ -692,20 +681,19 @@ relation est vérifiée.
 \begin{definition}[Dérivation]
   Soit une relation $R$ définie par des règles $r_1,\ldots,r_n$. Une dérivation
   de $R(x_1,\ldots,x_p)$ est un arbre dont la racine est $R(x_1,\ldots,x_p)$ et
-  tel que chaque n\oe ud de l'arbre est une règle parmi $r_1,\ldots,r_n$ et
-  contient autant de sous-arbres que l'arité de la règle présente.
+  tel que chaque n\oe ud de l'arbre est une instance valide d'une règle parmi
+  $r_1,\ldots,r_n$.
 \end{definition}
 
 \begin{example}
-  Soit $A = \{0\}$, dérivons $\mathrm{pair}([0,0,0,0])$ où $[0,0,0,0]$ est une
+  Soit $A = \{0\}$, dérivons $\pair([0,0,0,0])$ où $[0,0,0,0]$ est une
   abréviation pour
-  $\mathrm{cons}(0,\mathrm{cons}(0,\mathrm{cons}(0,\mathrm{cons}(0,
-  \mathrm{nil}))))$ :
+  $\cons(0,\cons(0,\cons(0,\cons(0,\nil))))$ :
   \begin{prooftree}
     \AxiomC{}
-    \UnaryInfC{$\mathrm{pair}(\mathrm{nil})$}
-    \UnaryInfC{$\mathrm{pair}([0,0])$}
-    \UnaryInfC{$\mathrm{pair}([0,0,0,0])$}
+    \UnaryInfC{$\pair(nil)$}
+    \UnaryInfC{$\pair([0,0])$}
+    \UnaryInfC{$\pair([0,0,0,0])$}
   \end{prooftree}
 \end{example}
 
@@ -726,7 +714,8 @@ En logique, nous formalisons les preuves mathématiques comme de tels arbres, ca
 leur structure simple permet de faciliter l'étude du langage mathématique. Si,
 dans la réalité, on n'écrit pas une preuve comme une dérivation (nous le
 verrons, cette pratique est beaucoup trop laborieuse), il est communément admis
-qu'une preuve satisfaisante permet de savoir écrire un tel arbre mentalement.
+qu'une preuve satisfaisante peut virtuellement se transformer en un (très grand)
+arbre de dérivation.
 
 \'Etudions maintenant la notion de règle admissible et dérivable, correspondant
 respectivement à une règle vérifiée par une relation et à une règle dont on peut
@@ -753,31 +742,30 @@ syntaxiquement prouver la correspondance avec la règle.
   sur $R$ est exactement $R$.
 \end{exercise}
 
-\begin{exercise}\label{exo:pair_list}
+\begin{exercise}\label{exo.pair_list}
   Avec les définitions précédentes, montrer que la règle
   \begin{prooftree}
-    \AxiomC{$\mathrm{pair}(\ell)$}
-    \UnaryInfC{$\mathrm{pair}([a,b,c,d]\oplus \ell)$}
+    \AxiomC{$\pair(\varlist)$}
+    \UnaryInfC{$\pair([a,b,c,d]\append \varlist)$}
   \end{prooftree}
   est dérivable. Montrer que la règle
   \begin{prooftree}
-    \AxiomC{$\mathrm{pair}(\mathrm{cons}(a,\mathrm{cons}(b,\ell)))$}
-    \UnaryInfC{$\mathrm{pair}(\ell)$}
+    \AxiomC{$\pair(\cons(a,\cons(b,\varlist)))$}
+    \UnaryInfC{$\pair(\varlist)$}
   \end{prooftree}
   est admissible. Est-elle dérivable ?
 \end{exercise}
 
 \begin{exercise}
-  Construire un ensemble inductif correspondant aux arbres de dérivations.
-  Montrer alors que pour l'ensemble $T_{\mathrm r_1,\ldots,\mathrm r_n}$
-  des arbres construits sur les règles $\mathrm r_1,\ldots,\mathrm r_n$ et
-  $R$ la relation engendrée par ces règles, une instance $R(x_1,\ldots,x_p)$
-  est vraie si et seulement s'il existe un élément de
-  $T_{\mathrm r_1,\ldots,\mathrm r_n}$ dont la racine est $R(x_1,\ldots,x_p)$.
+  Soient des règles $\mathrm r_1,\ldots,\mathrm r_n$ et une règle $\mathrm r$.
+  Montrer que toute règle $\mathrm r'$ dérivable dans
+  $\mathrm r_1,\ldots,\mathrm r_n$ est encore dérivable dans
+  $\mathrm r_1,\ldots,\mathrm r_n,\mathrm r$. En utilisant l'\cref{exo.pair_list},
+  est-ce le cas en remplaçant l'hypothèse par $\mathrm r'$ admissible ?
 \end{exercise}
 
 \begin{remark}
-  On a donc une correspondance entre les relations inductives et les ensembles
+  On a une correspondance entre les relations inductives et les ensembles
   inductifs. Cependant, on remarque qu'on perd de l'information dans le cas des
   relation inductives~: dire simplement $R(x_1,\ldots,x_p)$ ne dit pas comment
   on a dérivé cette instance.
@@ -809,6 +797,6 @@ de l'induction sur une relation, pour une seule étape.
 
 Ce résultat permet de travailler par disjonction de cas lorsque l'on étudie une
 relation inductive. On peut l'assimiler au lemme de lecture unique. Par exemple,
-il permet de dire à partir de $\mathrm{pair}(\ell)$ que $\ell$ est soit la liste
-vide, soit $\mathrm{cons}(a,\mathrm{cons}(b,\ell))$ pour deux éléments
-$a,b\in A$, en prenant les conventions de l'exercice \ref{exo:pair_list}.
+il permet de dire à partir de $\pair(\ell)$ que $\ell$ est soit la liste
+vide, soit $\cons(a,\cons(b,\ell))$ pour deux éléments
+$a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.

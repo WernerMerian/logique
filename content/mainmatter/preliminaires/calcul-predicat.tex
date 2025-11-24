@@ -190,10 +190,10 @@ basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
     $\VL(\varphi) = \VL(\psi)\backslash\{x\}$.
   \end{itemize}
   On dit que $\varphi$ est une formule close (ou une proposition) si
-  $\VL(\varphi) =\varnothing$. On note par $\Clos(\Sigma)$ l'ensemble des
-  formules closes sur la signature $\Sigma$. De même, un terme $t$ est appelé un
-  terme clos s'il n'a pas de variables libres (c'est-à-dire s'il n'a pas de
-  variable).
+  $\VL(\varphi) =\varnothing$. On note par $\Prop(\Sigma)$ l'ensemble des
+  formules closes (ou propositions) sur la signature $\Sigma$. De même, un
+  terme $t$ est appelé un terme clos s'il n'a pas de variables libres
+  (c'est-à-dire s'il n'a pas de variable).
 \end{definition}
 
 \begin{remark}\label{rmk.alpha}
@@ -302,7 +302,7 @@ plusieurs variables à la fois par des termes.
 \end{definition}
 
 \begin{exercise}
-  Soit $x\in \Var$, $t\in\Term(\Sigma)$ et $\varphi\in\Clos(\Sigma)$ pour une
+  Soit $x\in \Var$, $t\in\Term(\Sigma)$ et $\varphi\in\Prop(\Sigma)$ pour une
   signature $\Sigma$ quelconque. Montrer que $\varphi[t/x] = \varphi$.
 \end{exercise}
 
@@ -591,7 +591,7 @@ d'une façon analogue à ce que nous avons fait pour la logique propositionnelle
 Cela permet alors de définir ce qu'est un modèle.
 
 \begin{definition}[Modèle]
-  Soit une signature $\Sigma$ et $\mathcal C\subseteq\Clos(\Sigma)$. On dit que
+  Soit une signature $\Sigma$ et $\mathcal C\subseteq\Prop(\Sigma)$. On dit que
   $\mathcal M$ est un modèle de $\mathcal C$ si $\mathcal M\models \mathcal C$.
 \end{definition}
 
@@ -619,7 +619,7 @@ façon que nous avions $\vDash$ pour le calcul propositionnel.
 
 \begin{definition}[Théorie]
   Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$,
-  est une partie $\mathcal T\subseteq\Clos(\Sigma)$.
+  est une partie $\mathcal T\subseteq\Prop(\Sigma)$.
 \end{definition}
 
 \begin{definition}[Conséquence logique, équivalence]
@@ -1573,7 +1573,7 @@ aussi.
 
 \begin{proof}
   Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où
-  $\exists x, F\in\Clos(\hclose{\Sigma})$. Remarquons que $F$ ne peut contenir
+  $\exists x, F\in\Prop(\hclose{\Sigma})$. Remarquons que $F$ ne peut contenir
   qu'un nombre fini de symboles de fonctions et de relations~: on en déduit
   qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$. Cela signifie
   donc que
@@ -2047,7 +2047,7 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
   Soit $\mathcal M$ une structure infinie sur une signature $\Sigma$ et
   $\kappa \geq \max(|\Sigma_{\mathcal F}|,\aleph_0)$. Alors il existe une
   structure $\mathcal N$ élémentairement équivalente à $\mathcal M$,
-  c'est-à-dire telle que pour tout énoncé clos $\varphi\in\Clos(\Sigma)$, on a
+  c'est-à-dire telle que pour tout énoncé clos $\varphi\in\Prop(\Sigma)$, on a
   \[\mathcal M \models \varphi \iff \mathcal N \models \varphi\]
   et telle que $|\mathcal N| = \kappa$.
 \end{theorem}
@@ -2068,6 +2068,420 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
   On en déduit donc le résultat.
 \end{proof}
+
+\section{Des éléments de méta-mathématiques}
+
+Cette section annexe a pour objectif de donner des résultats qui permettent de rapprocher
+notre objet d'étude (la logique formelle) de la pratique mathématique.
+En effet, il manque un élément essentiel des mathématiques à notre système syntaxique
+actuel~: la notion de définition.
+
+Il est possible d'éviter ce problème en considérant qu'aucune définition n'existe. Dans
+une telle optique, on utilise uniquement des raccourcis du langage lorsqu'on désigne un
+objet défini~: par exemple, il faudrait non pas considérer un objet à part nommé
+$\varnothing$, mais un objet $x$ quelconque auquel on a donné la propriété définissant
+$\varnothing$, c'est-à-dire
+\[\forall y, y \notin x\]
+
+L'autre choix possible est de considérer que définir un objet $A$ avec une propriété
+$\varphi(A)$ revient à ajouter à notre signature une constante $A$ et l'axiome
+$\varphi(A)$.
+
+En réalité, ces deux procédés sont équivalents, ce qui reviendra au théorème central de
+cette section. Pour pouvoir l'énoncer et le montrer, on va d'abord s'intéresser aux
+conséquences d'une extension de langage sur les théories.
+
+\subsection{Extension et conservativité}
+
+Supposons donnée une signature $\Sigma$ et un enrichissement $\Sigma' \supseteq \Sigma$.
+Il existe une façon naturelle d'associer une théorie sur $\Sigma$ à une théorie sur
+$\Sigma'$ et une façon naturelle de faire l'inverse.
+
+\begin{definition}[Trace d'une théorie dans un enrichissement]
+  Soient $\Sigma\subseteq \Sigma'$ deux signatures. Soit $\mathcal T$ une théorie sur
+  $\Sigma$ et $\mathcal T'$ une théorie sur $\Sigma'$. On appelle trace de $\mathcal T$
+  (respectivement trace de $\mathcal T'$) la théorie sur $\Sigma'$ (respectivement
+  sur $\Sigma$) suivante~:
+  \[\tr_{\Sigma'}(\mathcal T) \defeq \mathcal T
+  \qquad \tr_{\Sigma}(\mathcal T') \defeq \mathcal T' \cap \Prop(\Sigma)\]
+\end{definition}
+
+Les traces permettent de facilement passer d'un modèle pour une théorie à un modèle sur
+une sous-signature ou sur un enrichissement~:
+
+\begin{proposition}
+  Soient $\Sigma\subseteq \Sigma'$ deux signature. Soit $\mathcal T$ une théorie sur
+  $\Sigma$ et $\mathcal M$ un modèle de $\mathcal T$, alors tout enrichissement de
+  $\mathcal M$ sur $\Sigma'$ est un modèle de $\tr_{\Sigma'}(\mathcal T)$.
+\end{proposition}
+
+\begin{proposition}\label{prop.ext.trace2}
+  Soient $\Sigma\subseteq \Sigma'$ deux signature. Soit $\mathcal T'$ une théorie sur
+  $\Sigma'$ et $\mathcal M$ un modèle de $\mathcal T'$, alors l'affaiblissement de
+  $\mathcal M$ à $\Sigma$ est un modèle de $\tr_{\Sigma}(\mathcal T')$.
+\end{proposition}
+
+\begin{exercise}
+  Prouver les deux propositions précédentes.
+\end{exercise}
+
+\begin{example}
+  Considérons la signature des groupes commutatifs et celle des anneaux, ainsi que leurs
+  théories associées. On peut remarquer que la trace de la théorie des anneaux à la
+  signature des groupes est exactement la théorie des groupes~: ainsi, un anneau contient
+  toujours un groupe pour sa structure additive. Cependant, dans l'autre sens, un
+  groupe qu'un munit d'une seconde opération binaire et d'une seconde constante (ce qui
+  correspond donc à prendre un modèle de la trace de la théorie des groupes dans la
+  signature des anneaux) n'est pas \latinexpr{a priori} un anneau.
+\end{example}
+
+On remarque donc, par l'exemple précédent, que la trace d'une théorie dans une plus
+grande théorie fait généralement perdre une forme d'information.
+
+Notre définition de trace, cependant, est particulièrement syntaxique~: si l'on considère
+par exemple la théorie sur la signature des anneaux donnée par le seul axiome
+\[(\forall x, x + x = 0) \land (\forall x, x \times x = 0)\]
+alors sa trace sur la signature des groupes sera simplement $\varnothing$.
+Ce résultat n'est pas souhaitable, puisque l'axiome donne une information sur le
+comportement du groupe additif avec sa moitié gauche.
+
+On peut régler ce problème directement en considérant, au lieu d'une théorie $\mathcal T$
+dont on regarde la trace, la trace $\tr_{\Sigma}(\vdclose{\mathcal T})$. Dans un tel cas,
+l'énoncé $\forall x, x + x = 0$ appartient effectivement à la trace.
+
+Ainsi, la façon naturelle de plonger une théorie dans une signature plus petite est
+d'en regarder sa clôture par la relation de prouvabilité~: cela correspond donc à
+considérer l'ensemble des théorèmes qui s'écrivent dans $\Sigma$ mais peuvent se
+prouver dans $\mathcal T$ en tant que théorie sur $\Sigma'$. C'est cette vision qui
+motive la notion d'extension conservative.
+
+\begin{definition}[Extension conservative]
+  Soient $\Sigma\subseteq \Sigma'$ deux signatures, et $\mathcal T$ une théorie sur
+  $\Sigma$.
+  Une extension conservative (on dit aussi conservatrice) de $\mathcal T$ est
+  une théorie $\mathcal T'$ sur $\Sigma'$ telle que
+  \[\tr_\Sigma(\vdclose{\mathcal T'}) = \vdclose{\mathcal T}\]
+\end{definition}
+
+Une extension conservative est un outil important pour la pratique mathématique. En
+effet, on ne conserve pas en pratique la même signature tout au long d'une démonstration,
+et encore moins pour développer toute une théorie~: on a besoin d'ajouter de nouveaux
+objets qu'on définit généralement à partir des anciens objets. Prouver qu'une extension
+est conservative signifie que l'on prouve qu'en ajoutant la possibilité de parler de
+nouveaux objets, on ne change pour autant pas les formules que l'on souhaite prouver.
+
+\begin{example}
+  On le verra dans le CHAPITRE QUINZE~: il est possible d'ajouter la fonction
+  \[\begin{array}{ccccc}
+  \exp & : & \mathbb N^2 & \longrightarrow & \mathbb N\\
+  & & (n,m) & \longmapsto & n^m
+  \end{array}\]
+  à la théorie de l'arithmétique de Peano en gardant une extension conservative.
+  Dans un tel cas, on peut alors écrire des propositions telles que
+  \[\forall x, \forall y, \forall z, \forall n, n > 2 \implies x^n + y^n \neq z^n\]
+  et les utiliser dans des démonstrations, pour prouver des énoncés impliquant uniquement
+  les symboles $+, \times, 0, S$.
+\end{example}
+
+On peut désormais s'intéresser au cas particulier des extensions par définition.
+
+\subsection{Extensions par définitions}
+
+On fixe pour tout le reste de la section une signature $\Sigma$. L'objectif d'une
+extension par définition est le suivant~: supposons donnée une formule $\varphi(x)$ qui
+caractérise un objet $x$, nous souhaitons nommer cet objet, l'ajouter à nos symboles et
+considérer $\varphi(x)$ comme un axiome définissant ce symbole. Le théorème principal
+est alors que ce procédé, s'il ajoute effectivement des formules à notre ensemble
+$\Formula$, ne va pas changer les théorèmes que l'on peut prouver à l'origine. Ainsi,
+les définitions permettent d'ajouter des objets mais ne changent pas la théorie ambiante.
+
+Deux cas sont alors à traiter puisque les symboles sont de deux types (symboles de
+fonction et symbole de relation). Nous donnons d'abord le cas des symboles de relation
+car ceux-ci se traitent assez facilement.
+
+\subsubsection{Définition des relations}
+
+\begin{definition}[Extension par définition d'une relation]
+  Soit une théorie $\mathcal T$ et une formule $\varphi(x_1,\ldots,x_n)$, c'est-à-dire
+  telle que $\VL(\varphi) \subseteq \{x_1,\ldots,x_n\}$. On définit l'extension
+  par définition de $\varphi$ par la signature
+  \[\Sigma' \defeq \Sigma \cup \{{R_\varphi}^n\}\]
+  où $R_\varphi$ est un symbole de relation d'arité $n$, et la théorie
+  \[
+    \mathcal T' \defeq \mathcal T \cup
+    \{`` \forall x_1,\ldots,x_n, R_\varphi(x_1,\ldots,x_n)
+    \leftrightarrow \varphi(x_1,\ldots,x_n)"\}
+  \]
+  (On se réfère à l'\cref{exo.equiv} pour traiter du symbole $\leftrightarrow$.)
+\end{definition}
+
+Le symbole $R_\varphi$ joue exactement le rôle de $\varphi$~: la raison pour laquelle
+$\mathcal T'$ est une extension conservative de $\mathcal T$ est donc simplement
+que dans toutes les démonstrations, on peut remplacer $R_\varphi$ par $\varphi$. On
+souhaite donc~:
+\begin{itemize}
+\item construire pour chaque formule $\psi$ une nouvelle formule $\psi_{-R_\varphi}$ qui
+  remplace les occurrences de $R_\varphi$ par $\varphi$~;
+\item prouver que $\mathcal T' \vdash \psi \leftrightarrow \psi_{-R_\varphi}$ pour toute
+  formule $\psi$~;
+\item prouver que $\mathcal T' \vdash \psi$ si et seulement si
+  $\mathcal T \vdash \psi_{-R_\varphi}$.
+\end{itemize}
+
+\begin{definition}[Traduction sans $R_\varphi$]
+  Soit une formule $\psi \in \Formula(\Sigma')$. On définit sa traductions sans
+  $R_\varphi$ par inductino sur la structure des formules~:
+  \begin{itemize}
+  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R_\varphi$, alors
+    $\psi_{-R_\varphi} \defeq \psi$~;
+  \item si $\psi = R_\varphi(t_1,\ldots,t_n)$, alors
+    $\psi_{-R_\varphi} \defeq \varphi(t_1,\ldots,t_n)$~;
+  \item si $\psi = \lnot \psi'$, alors $\psi_{-R_\varphi} \defeq \lnot \psi'_{-R_\varphi}$~;
+  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land,\lor,\to\}$,
+    alors $\psi_{-R_\varphi} \defeq \psi'_{-R_\varphi} \oplus \psi''_{-R_\varphi}$~;
+  \item si $\psi = Q x, \psi'$ où $Q$ est un quantificateur, alors
+    $\psi_{-R_\varphi} \defeq Q x, \psi'_{-R_\varphi}$.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Pour toute formule $\psi \in \Formula(\Sigma')$, on a
+  \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-R_\varphi}\]
+\end{proposition}
+
+\begin{proof}
+  On raisonne par induction sur $\psi$~:
+  \begin{itemize}
+  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R_\varphi$, alors
+    on veut prouver que $\mathcal T' \vdash \psi \leftrightarrow \psi$ ce qui est
+    automatique~;
+  \item si $\psi = R_\varphi(t_1,\ldots,t_n)$, alors on veut prouver que
+    $\mathcal T' \vdash R_\varphi(t_1,\ldots,t_n) \leftrightarrow \varphi(t_1,\ldots,t_n)$
+    ce qui s'obtient exactement en spécialisant l'axiome ajouté dans $\mathcal T'$
+    grâce à la règle $\forall_\mathrm e$.
+  \item pour tous les cas suivants, la preuve est la conséquence d'un lemme que l'on
+    donne en exercice.
+  \end{itemize}
+
+  Ainsi $\mathcal T' \vdash \psi \leftrightarrow \psi_{-R\varphi}$.
+\end{proof}
+
+\begin{exercise}
+  Montrer le lemme suivant~:
+  \begin{lemma}
+    On se donne une signature et des formules sur ces signatures, montrer les
+    implications suivantes~:
+    \[\begin{array}{ccc}
+      (\vdash \varphi \leftrightarrow \varphi') &\implies&
+      \vdash \lnot \varphi \leftrightarrow \lnot \varphi'\\
+      (\vdash \varphi \leftrightarrow \varphi') \land
+      (\vdash \psi \leftrightarrow \psi) &\implies&
+      \vdash (\varphi \land \psi) \leftrightarrow (\varphi' \land \psi') \\
+      (\vdash \varphi \leftrightarrow \varphi') \land
+      (\vdash \psi \leftrightarrow \psi) &\implies&
+      \vdash (\varphi \lor \psi) \leftrightarrow (\varphi' \lor \psi') \\
+      (\vdash \varphi \leftrightarrow \varphi') \land
+      (\vdash \psi \leftrightarrow \psi) &\implies&
+      \vdash (\varphi \to \psi) \leftrightarrow (\varphi' \to \psi') \\
+      (\vdash \varphi \leftrightarrow \varphi') &\implies&
+      \vdash \exists x, \varphi \leftrightarrow \exists x, \varphi'\\
+      (\vdash \varphi \leftrightarrow \varphi') &\implies&
+      \vdash \forall x, \varphi \leftrightarrow \forall x, \varphi'\\
+    \end{array}\]
+  \end{lemma}
+\end{exercise}
+
+\begin{proposition}
+  La théorie $\mathcal T'$ est une extension conservative de $\mathcal T$.
+\end{proposition}
+
+\begin{exercise}
+  Montrer, par induction sur la relation $\vdash$, qu'on a l'implication suivante pour
+  tout contexte $\Gamma \in \List(\Formula(\Sigma'))$ et formule
+  $\psi \in \Formula(\Sigma')$~:
+  \[(\mathcal T', \Gamma \vdash \psi) \implies
+  \mathcal T, \Gamma_{-R_\varphi} \vdash \psi_{-R_\varphi}\]
+  En déduire la proposition.
+\end{exercise}
+
+On a ainsi traité le cas des symboles de relation~: il est toujours possible, sans
+changer l'ensemble des théorèmes de notre langage d'origine, d'ajouter de nouveaux
+symboles de relation définis par une formule paramétrée.
+
+\subsubsection{Définition des fonctions}
+
+Le cas des fonctions est plus complexe. Tout d'abord, qu'est-ce que signifie le fait de
+définir une fonction ? Si l'on est habitué à la théorie des ensembles, on sait qu'il
+suffit de montrer que, pour une instance de l'entrée donnée, il existe une unique
+instance de sortie. Si l'on écrit cela à partir du graphe $\Gamma$ de notre fonction,
+cela signifie
+\[\forall x_1,\ldots,x_n, \exists! y, (x_1,\ldots,x_n,y) \in \Gamma\]
+Ainsi, une formule $\varphi$ définit une fonction dès lors qu'on peut prouver un tel
+énoncé en remplaçant l'appartenance à $\Gamma$ par la formule $\varphi$. Il est donc
+nécessaire d'ajouter une contrainte aux formules pour lesquelles on souhaite ajouter un
+symbole de fonction.
+
+\begin{definition}[Extension par définition d'une fonction]
+  Soit une théorie $\mathcal T$ et une formule $\varphi(x_1,\ldots,x_n,y)$ telle que
+  \[\mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y, \varphi(x_1,\ldots,x_n,y)\]
+  On définit l'extension par définition de $\varphi$ par la signature
+  \[\Sigma' \defeq \Sigma \cup \{{f_\varphi}^n\}\]
+  où $f_\varphi$ est un symbole de fonction d'arité $n$, et la théorie
+  \[
+    \mathcal T' \defeq \mathcal T \cup \\
+    \{`` \forall x_1,\ldots,x_n, \varphi(x_1,\ldots,x_n,f_\varphi(x_1,\ldots,x_n))"\}
+  \]
+\end{definition}
+
+Comme précédemment, on souhaite définir une traduction $\psi_{-f_\varphi}$, prouver que
+$\mathcal T' \vdash \psi \leftrightarrow \psi_{-f_\varphi}$ et prouver que l'extension est
+conservative. Cependant, la définition de la traduction est moins immédiate~: l'idée
+de la traduction est de remplacer toute occurrence de $f(t_1,\ldots,t_n)$ par une
+variable $y$ dont on vérifie, à part, qu'on a bien $\varphi(t_1,\ldots,t_n,y)$.
+Il est donc nécessaire de faire attention aux variables. En particulier, il est
+nécessaire de garder en mémoire toutes les variables introduites et les termes auxquels
+elles sont associées lorsqu'on transforme un terme. On crée donc d'abord l'environnement
+de traduction d'un terme $t$ qui nous permet ensuite de définir la traduction
+$\psi_{-f_\varphi}$ d'une formule $\psi$.
+
+\begin{definition}[Traduction sans $f_{\varphi}$]
+  Pour tout terme $t$, on définit par induction la liste $\mathcal V_t$ et le terme
+  $t_{-f_\varphi}$~:
+  \begin{itemize}
+  \item si $t = x$, alors $\mathcal V_t \defeq \varnothing$ et $t_{-f_\varphi} \defeq t$.
+  \item si $t = g(t_1,\ldots,t_n)$ où $g \neq f$, alors
+    \[\mathcal V_t \defeq \bigcup_{i = 1}^n \mathcal V_{t_i} \quad\text{et}\quad
+    t_{-f_\varphi} \defeq g(t_{1,-f_\varphi},\ldots,t_{n,-f_\varphi})\]
+  \item si $t = f(t_1,\ldots,t_n)$ alors
+    \[\mathcal V_t \defeq \left(\bigcup_{i = 1}^n \mathcal V_{t_i}\right) \cup
+    \{(t_{1,-f_\varphi},\ldots,t_{n,-f_\varphi})\} \quad\text{et}\quad
+    t_{-f_\varphi} \defeq z\]
+    où $z$ est une variable fraîche (non apparue jusqu'alors).
+  \end{itemize}
+
+  On définit maintenant pour toute formule $\psi \in \Formula(\Sigma')$ une formule
+  $\psi_{-f_\varphi}$ par induction sur la structure des formules~:
+  \begin{itemize}
+  \item si $\psi = \top,\bot$ alors $\psi_{-f_\varphi} \defeq \psi$~;
+  \item si $\psi = R(t_1,\ldots,t_n)$ où $R$ est un symbole de relation ou le symbole
+    $=$, alors
+    \[\psi_{-f_\varphi} \defeq \mathop{\forall}_{i = 1}^n
+    \mathop{\forall}_{(u_1,\ldots,u_k,x)\in \mathcal V_{t_i}}x,
+    \varphi(u_1,\ldots,u_k,x) \to R(t_{1,-f_\varphi},\ldots,t_{n,-f_\varphi})\]
+    où les indices des $\forall$ signifient que pour chaque $i$ et chaque
+    $(u_1,\ldots,u_k,x) \in \mathcal V_{t_1}$, on ajoute
+    $\forall x, \varphi(u_1,\ldots,u_k,x) \to$ avant le reste de la formule~;
+  \item si $\psi = \lnot \psi'$, alors $\psi_{-f_\varphi} \defeq \lnot \psi'_{-f_\varphi}$~;
+  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\lor,\land,\to\}$, alors
+    $\psi_{-f_\varphi} \defeq \psi'_{-f_\varphi} \oplus \psi''_{-f_\varphi}$~;
+  \item si $\psi = Q x, \psi'$ où $Q$ est une quantification, alors
+    $\psi_{-f_\varphi} \defeq Q x,\psi'_{-f_\varphi}$.
+  \end{itemize}
+\end{definition}
+
+Il reste maintenant à prouver les deux propriétés. Les preuves sont les mêmes que pour
+le cas d'un symbole de relation, à ceci près que la conservativité va être
+plus technique à prouver. On mentionne en particulier les cas suivants~:
+\begin{itemize}
+\item pour le cas $\exists_\mathrm i$, on suppose qu'on peut prouver pour un certain
+  terme $t \in \Term(\Sigma')$ que
+  \[\mathcal T',\Gamma \vdash \psi[t/x]\]
+  et notre hypothèse d'induction, elle, nous permet de supposer
+  \[\mathcal T, \Gamma_{-f_\varphi} \vdash (\psi[t/x])_{-f_\varphi}\]
+  Cependant, comme $t$ fait potentiellement apparaitre $f$, cette formule est différente
+  de $\psi_{-f_\varphi}[t/x]$ puisqu'elle contient aux formules atomiques de nouvelles
+  quantifications de la forme $\forall x, \varphi(t_1,\ldots,t_n,x) \to$.
+  Il faut donc montrer qu'il est possible de prouver l'un à partir de l'autre.
+  Si ce lemme peut se prouver par induction sur $\psi$, on en donne ici une idée
+  globale.
+
+  Le cas qui nous intéresse est le cas atomique, dans lequel on a donc dans notre
+  hypothèse $\forall x, \varphi(t_1,\ldots,t_n,x) \to \chi$ où $\chi$ est le reste de
+  la formule (on se contente du cas où $t = f_\varphi(t_1,\ldots,t_n)$ pour donner une
+  idée de l'argument à employer). Comme on sait prouvable dans $\mathcal T$ que
+  $\forall x_1,\ldots,x_n, \exists! y, \varphi(x_1,\ldots,x_n,y)$, on peut donc
+  appliquer $\forall_\mathrm e$ jusqu'à avoir $\exists! y, \varphi(t_1,\ldots,t_n,y)$
+  et, alors, utiliser $\exists_\mathrm e$ pour extraire ce $y$. Il suffit
+  désormais de spécialiser la formule initiale en $y$, dont on sait que la
+  prémisse de l'implication $\varphi(t_1,\ldots,t_n,y)$ est vérifiée.
+
+  Dans le cas où $t$ contient plusieurs appels à $f$, il suffit de répéter cet
+  argument autant de fois que nécessaire.
+
+\item pour le cas $=_\mathrm i$, il nous faut prouver pour n'importe quel terme
+  $t\in\Term(\Sigma')$ la formule $(t = t)_{-f_\varphi}$. Dans le cas où
+  $t = f(t_1,\ldots,t_n)$, la formule $(t = t)_{-f_\varphi}$ correspond à
+  $\forall x, \varphi(t_1,\ldots,t_n,x) \to \forall y, \varphi(t_1,\ldots,t_n,y) \to
+  x = y$
+  ce qui se prouve en utilisant l'unicité pour $\exists! y, \varphi(x_1,\ldots,x_n,y)$.
+
+\item pour le cas $=_\mathrm e$, notre hypothèse d'induction donne les deux séquents
+  suivants~:
+  \[\mathcal T, \Gamma_{-f_\varphi}\vdash (t=u)_{-f_\varphi} \qquad
+  \mathcal T, \Gamma_{-f_\varphi}\vdash (\psi[t/x])_{-f_\varphi}\]
+  On a déjà vu comment passer de la seconde hypothèse à l'hypothèse
+  $\mathcal T, \Gamma_{-f_\varphi}\vdash \psi_{-f_\varphi}[t/x]$. La première hypothèse
+  fonctionne d'une façon similaire, en supprimant les occurrences de
+  $\forall x, \varphi(t_1,\ldots,t_n,x) \to$ en extrayant des témoins de
+  $\exists!y, \varphi(t_1,\ldots,t_n,y)$.
+\end{itemize}
+
+\begin{proposition}
+  Pour toute formule $\psi \in \Formula(\Sigma')$, on a
+  \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-f_\varphi}\]
+\end{proposition}
+
+\begin{proposition}
+  La signature la théorie $\mathcal T'$ est une extension conservative de $\mathcal T$.
+\end{proposition}
+
+\begin{exercise}
+  Prouver les deux propositions précédentes.
+  \textit{On pourra montrer pour la seconde proposition l'implication suivante~:}
+  \[\forall \Gamma\in\List(\Formula(\Sigma')), \forall \psi \in \Formula(\Sigma'),
+  \mathcal T', \Gamma\vdash \psi \implies \mathcal T',
+  \Gamma_{-f_\varphi}\vdash \psi_{-f_\varphi}\]
+\end{exercise}
+
+On vient donc de prouver deux choses~:
+\begin{itemize}
+\item si l'on donne une définition d'un objet par une formule univoque (dont l'objet
+  vérifiant la formule est unique), alors donner un nom à l'objet défini ne change
+  pas les formules que l'on prouve~;
+\item mieux encore, on peut trouver pour toute formule $\psi$ une formule $\psi'$
+  qui a le même sens que $\psi$ mais qui n'emploie pas ce raccourci. Le symbole ajouté
+  peut donc être vu comme un raccourci d'écriture que l'on peut remplacer à la volée par
+  la formule le définissant, ce qui donnera une formule équivalente.
+\end{itemize}
+
+Les propositions précédentes justifient donc que l'on donne des définitions dans nos
+théories formelles. En effet, une formulation telle que
+\begin{quote}
+  On définit l'objet $X(t_1,\ldots,t_n)$ par
+  \[X(t_1,\ldots,t_n) \defeq \varphi(t_1,\ldots,t_n)\]
+\end{quote}
+signifie que l'on applique notre théorème d'extension par définition dans le cas de
+$\varphi$. Généralement, lorsque $X$ est l'ajout d'un nouveau symbole de fonction,
+il n'est pas nécessaire d'écrire la formule le caractérisant et il suffit d'écrire
+un terme $T(t_1,\ldots,t_n)$~: la formule associée est alors
+\[\varphi(t_1,\ldots,t_n,y) \defeq `` y = T(t_1,\ldots,t_n)"\]
+Dans un tel cas, la preuve de l'existence et de l'unicité de $T$ est évidente, puisque
+$T$ (en tant que terme) est une fonction totale. On remarque que cela justifie néanmoins
+les précautions d'usage de vérifier en cas de situation litigieuse que l'image est
+bien définie et est unique (par exemple lorsqu'on définit une fonction depuis un
+ensemble quotient en donnant l'image en fonction d'un représentant).
+
+\begin{remark}
+  L'utilisation d'un symbole différent entre $\defeq$ et $=$ permet ici de faire une
+  différence entre le fait d'attribuer le nom (dans l'exemple ci-dessus, $X$) à un
+  symbole dont on donne la sémantique (dans l'exemple ci-dessus, la formule $\varphi$)
+  et le fait d'identifier la sémantique de deux objets de part et d'autre du $=$.
+
+  On peut aussi noter une différence de statut entre les deux symboles~: le symbole
+  $=$ appartient réellement à la syntaxe des formules et des preuves, tandis que le
+  symbole $\defeq$ fait appelle à un théorème de méta-mathématiques pour construire une
+  nouvelle notation.
+\end{remark}
 
 \newpage
 
@@ -2235,7 +2649,7 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
   \item Plus généralement, montrer que la formule
     $\forall x_1,\ldots,\forall x_n, \exists y, \varphi$ est satisfiable dans
     une $\Sigma$-structure si et seulement si, en notant $f$ un nouveau
-    symbole de fonction d'arité $n$ et $\Sigma \defeq \Sigma\cup \{f\}$, la
+    symbole de fonction d'arité $n$ et $\Sigma' \defeq \Sigma\cup \{f\}$, la
     formule
     $\forall x_1,\ldots,\forall x_n,(\varphi[f(x_1,\ldots,x_n)/y])$ est
     satisfiable dans une $\Sigma'$-structure.
@@ -2300,136 +2714,3 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
     montrer qu'on a une contradiction.
   \end{enumerate}
 \end{exercise}
-
-\newpage
-
-\subsection{Problèmes}
-
-\begin{problem}[Extension par définition]
-  On fixe une signature $\Sigma$ et une théorie $\mathcal T$. Cet exercice vise
-  à justifier une pratique courante~: donner des noms à des objets définis par
-  une définition.
-
-  Pour cela, on introduit d'abord la notion d'extension conservative~: une théorie
-  $\mathcal T'$ est une extension conservative de $\mathcal T$ si cette théorie ne
-  prouve aucun nouveau théorème possible à exprimer dans $\mathcal T$.
-
-  \begin{definition}[Extension conservative]\label{def.ext.cons}
-      Soient $\Sigma,\Sigma'$ deux signatures telles que $\Sigma\subseteq\Sigma'$
-      et deux théories $\mathcal T, \mathcal T'$ respectivement sur
-      $\Sigma$ et $\Sigma'$ telles que $\mathcal T \subseteq \mathcal T'$.
-      On dit que $\mathcal T'$ est une extension conservative si~:
-      \[\forall \varphi \in \Formula(\Sigma),
-      \mathcal T \vdash \varphi \iff \mathcal T' \vdash \varphi\]
-  \end{definition}
-  
-  Pour justifier l'utilisation de définitions, nous allons montrer le théorème de
-  conservation des extensions par définitions~:
-  \begin{theorem}[Conservation des extensions par définition]\label{thm.ext.def}
-      Soit $\Sigma$ une signature du premier ordre et $\mathcal T$ une théorie
-      sur $\Sigma$, alors~:
-      \begin{itemize}
-          \item pour toute formule $\varphi(x_1,\ldots,x_n)$, la théorie
-          sur la signature $\Sigma\cup \{R\}$ où $R$ est un nouveau symbole
-          de relation $n$-aire, définie par
-          \[\mathcal T' \defeq\mathcal T \cup
-          \{`` \forall x_1,\ldots,x_n, R(x_1,\ldots,x_n) \leftrightarrow
-          \varphi(x_1,\ldots,x_n)"\}\]
-          est une extension conservative de $\mathcal T$.
-          \item pour toute formule $\varphi(x_1,\ldots,x_n,y)$ telle que
-          \[\mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y,
-          \varphi(x_1,\ldots,x_n,y)\]
-          la théorie sur la signature $\Sigma\cup\{f\}$ où $f$ est un
-          nouveau symbole de fonction $n$-aire, définie par
-          \[\mathcal T' \defeq \mathcal T \cup \{`` \forall x_1,\ldots,x_n,
-          \varphi(x_1,\ldots,x_n,f(x_1,\ldots,x_n))"\}\]
-          est une extension conservative de $\mathcal T$.
-      \end{itemize}
-  \end{theorem}
-
-  \paragraph{Définition d'une relation}
-  Soit une formule $\varphi(x_1,\ldots,x_n)$. On définit un nouveau symbole de
-  relation $R(x_1,\ldots,x_n)$ et on note $\Sigma' \defeq \Sigma\cup\{R\}$. De
-  plus, on augmente la théorie $\mathcal T$ en
-  \[\mathcal T' \defeq \mathcal T \cup
-  \{`` \forall x_1,\ldots,x_n, R(x_1,\ldots,x_n) \leftrightarrow
-  \varphi(x_1,\ldots,x_n)"\}\]
-  \'Etant donnée une formule $\psi$ sur $\Sigma'$, on définit sa traduction
-  $\psi_{-R}\in\Formula(\Sigma)$ récursivement~:
-  \begin{itemize}
-  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R$, alors
-    $\psi_{-R} = \psi$~;
-  \item si $\psi = R(t_1,\ldots,t_n)$, alors
-    $\psi_{-R} = \varphi(t_1,\ldots,t_n)$~;
-  \item si $\psi = \lnot \psi'$, alors $\psi_{-R} = \lnot \psi'_{-R}$~;
-  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land,\lor,\to\}$,
-    alors $\psi_{-R} = \psi'_{-R} \oplus \psi''_{-R}$~;
-  \item si $\psi = Q x, \psi'$ où $Q$ est un quantificateur, alors
-    $\psi_{-R} = Q x, \psi'_{-R}$.
-  \end{itemize}
-  \begin{enumerate}[label=(\roman*)]
-      \item Montrer que, pour toute formule $\psi\in\Formula(\Sigma')$~:
-      \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-R}\]
-      \item En déduire que $\mathcal T'$ est une extension conservative de
-      $\mathcal T$.
-  \end{enumerate}
-
-  \paragraph{Définition d'une fonction}
-  Soit désormais une formule $\varphi(x_1,\ldots,x_n,y)$. On suppose prouvable
-  l'hypothèse
-  \begin{equation*}\label{eq.phi_uniq}
-    \mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y,
-    \varphi(x_1,\ldots,x_n,y)
-  \end{equation*}
-  On ajoute maintenant un symbole $f$ d'arité $n$, donnant
-  $\Sigma' \defeq \Sigma\cup \{f\}$, et on définit la nouvelle théorie
-  \[\mathcal T' \defeq \mathcal T \cup \{`` \forall x_1,\ldots,x_n,
-  \varphi(x_1,\ldots,x_n,f(x_1,\ldots,x_n))"\}\]
-  Comme pour le cas des définitions pour des relations, on cherche maintenant
-  à transformer une formule $\varphi \in \Formula(\Sigma')$ en une formule
-  $\varphi_{-f}\in \Formula(\Sigma)$, mais il est nécessaire de faire une
-  transformation plus subtile. Tout d'abord, par induction sur la structure
-  des termes, on définit pour un terme $t$ la liste $\mathcal V_t$ et le
-  terme $t_{-f}$~:
-  \begin{itemize}
-  \item si $t = x$, alors $\mathcal V_t \defeq \nil$ et $t_{-f} \defeq x$~;
-  \item si $t = g(t_1,\ldots,t_n)$ où $g \neq f$, alors
-    $\mathcal V_t \defeq \bigoplus_{i = 1}^n \mathcal V_{t_i}$ et
-    $t_{-f} \defeq g(t_{1,-f}, \ldots, t_{n,-f})$~;
-  \item si $t = f(t_1,\ldots,t_n)$, alors
-    \[\mathcal V_t \defeq
-    \left(\bigoplus_{i = 1}^n \mathcal V_{t_i}\right)\oplus
-    \{(t_{1,-f},\ldots,t_{n,-f},y)\}\]
-    où $y$ est une variable fraîche (non apparue dans aucun $t_i$ ni
-    $t_{i,-f}$) et $t_{-f} \defeq y$.
-  \end{itemize}
-  \'Etant donnée une formule atomique $\psi = R(t_1,\ldots,t_n)$, on pose
-  $\mathcal V \defeq \bigoplus_{i = 1}^n \mathcal V_{t_i}$ et, en notant
-  $\mathcal V = \{(x_{1,i},\ldots,x_{n,i},y_i)\mid i \in \{0,\ldots,k\}\}$ pour
-  un certain entier $k$, on définit la formule $\psi_{-f} \in \Formula(\Sigma)$
-  par
-  \[\psi_{-f} \defeq \forall y_1,\ldots,y_k, R(t_{1,-f},\ldots,t_{n,-f})\]
-  On définit ensuite, pour toute formule $\psi \in \Formula(\Sigma')$, la formule
-  $\psi_{-f}\in\Formula(\Sigma)$
-  par induction sur la structure des formules~:
-  \begin{itemize}
-      \item le cas d'une formule atomique a été traité~;
-      \item si $\psi = \top$ ou $\psi = \bot$ alors
-      $\psi_{-f} = \psi$~;
-      \item si $\psi = \lnot \psi'$ alors $\psi_{-f} = \lnot \psi'_{-f}$~;
-      \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land, \lor,\to\}$
-      alors $\psi_{-f} = \psi'_{-f} \oplus \psi''_{-f}$~;
-      \item si $\psi = Qx, \psi'$ où $Q$ est un quantificateur, alors
-      $\psi_{-f} = Qx, \psi'_{-f}$.
-  \end{itemize}
-  \begin{enumerate}[label=(\roman*)]
-      \item Montrer que, pour toute formule $\psi \in \Formula(\Sigma')$~:
-      \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-f}\]
-      \item En déduire que $\mathcal T'$ est une extension conservative de $\mathcal T$.
-  \end{enumerate}
-
-  En conclure le \cref{thm.ext.def}. Ainsi, lorsqu'on introduit une nouvelle
-  notation de relation ou de fonction à partir d'une formule, on ne change pas
-  l'ensemble des théorèmes de notre langage d'origine~: on se contente simplement
-  d'ajouter des écritures plus courtes pour nos théorèmes.
-\end{problem}

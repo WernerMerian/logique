@@ -348,7 +348,7 @@ est possible de passer une grammaire sous forme propre en ne perdant que ce
 potentiel mot. Pour le prouver, nous avons d'abord besoin d'introduire la notion
 de substitution.
 
-\begin{definition}[Substitution]
+\begin{definition}[Substitution]\label{def.ghc.subst}
   Soient $\Sigma, \Gamma$ deux alphabets. On appelle substitution de $\Sigma$
   vers $\Gamma$ un morphisme de monoïde
   $\sigma : \Sigma^\star \to \powerset (\Gamma^\star)$ où $\powerset(\Gamma^\star)$
@@ -474,15 +474,15 @@ Introduisons aussi la forme normale de Chomsky.
 
 \begin{definition}[Forme normale de Chomsky]
   Soit un alphabet $\Sigma$ et une grammaire $G \defeq (\Gamma, \to, S)$ sur
-  $\Sigma$. On dit que $G$ est sous forme normale de Chomsky lorsque toutes
-  ses règles sont de l'une des deux formes~:
+  $\Sigma$. On dit que $G$ est sous forme normale de Chomsky (ou forme normale
+  quadratique) lorsque toutes ses règles sont de l'une des deux formes~:
   \begin{itemize}
   \item $A \to BC$ avec $B,C\in \Gamma$
   \item $A \to a$ où $a \in \Sigma$
   \end{itemize}
 \end{definition}
 
-\begin{proposition}
+\begin{proposition}\label{prop.chom}
   Soit $\Sigma$ un alphabet et $G \defeq (\Gamma,\to,S)$ une grammaire sur
   $\Sigma$.
   Il existe une grammaire $G'$ sous forme normale de Chomsky telle que
@@ -531,7 +531,7 @@ La dernière forme que nous étudions est la forme normale de Greibach.
   On dit que $G$ est sous forme normale de Greibach si toutes ses règles sont
   de la forme $A \to aU$ où $a \in \Sigma$ et $U \in \Gamma^\star$. On dira que
   $G$ est sous forme normale de Greibach quadratique si les règles sont, de
-  plus, de la forme $A \to a$, $A \to aB$ où $A \to aBC$ avec
+  plus, de la forme $A \to a$, $A \to aB$ ou $A \to aBC$ avec
   $a\in\Sigma, B,C \in \Gamma$.
 \end{definition}
 
@@ -541,7 +541,83 @@ La dernière forme que nous étudions est la forme normale de Greibach.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Soit $\Sigma$ un alphabet et $G$ une grammaire. Notons
+  \[G \defeq (\{X_1,\ldots,X_n\}, \to, X_1)\]
+  On pose $G(X_i)$ l'ensemble des mots directement dérivés de chaque
+  $X_i$.
+
+  Un mot engendré par une lettre $X_i$ est dans l'un des deux cas suivants~:
+  \begin{itemize}
+  \item le mot est de la forme $X_j w$ pour un certain $j$
+  \item le mot est dans $\Sigma (\Sigma \cup \Gamma)^\star$
+  \end{itemize}
+  dans le premier cas, le mot $w$ appartient à $X_j^{-1}G(X_i)$ et dans le
+  deuxième cas, le mot appartient à $G(X_i) \cap \Sigma(\Sigma\cup\Gamma)^\star$.
+
+  Pour améliorer la lisibilité de ces manipulations, employons un vocabulaire
+  matriciel~: on pose
+  \[ M_{i,j} \defeq X_j^{-1}G(X_i) \qquad
+  S_{i} \defeq G(X_i) \cap \Sigma(\Sigma\cup\Gamma)^\star\]
+  on peut alors réécrire notre grammaire par
+  \[X_i \to \sum_{j} X_j M_{i,j} + S_i\]
+  ou, matriciellement~:
+  \[X \to X M + S\]
+  
+  Remarquons que le langage engendré par une grammaire de la forme $X \to XM + S$
+  (en oubliant que les objets sont ici des matrices) est exactement $SM^\star$.
+  Les deux cas dans ce langage sont l'ajout d'un $M$ à droite et la dérivation en $S$.
+  On peut de plus remarquer que $M^\star = \{\varepsilon\} + MM^\star$, ce qui motive à
+  introduire une nouvelle matrice $Y$ avec les règles $Y \to I + RY$ (où $I$ représente
+  une matrice identité).
+  On introduit donc une famille $(Y_{i,j})$ de nouveaux symboles non terminaux
+  et on considère la grammaire $G'$ suivante (où le symbole
+  $S$ est toujours $X_1$)~:
+  \begin{align*}
+    X &\to' SY \\
+    Y &\to' MY \\
+    Y_{i,i} &\to' \varepsilon
+  \end{align*}
+  Cette grammaire engendre le même langage que $G$. En effet, il nous suffit de montrer
+  que chaque dérivation pour $\to$ depuis un $X_i$ et arrivant en un mot
+  $u \in \Sigma^\star$ correspond à une dérivation pour $\to'$.
+
+  Pour cela, on va commencer par étiqueter les dérivations en un pas
+  $u_0 X_i u_1 \to u_0 v' u_1$ de la façon suivante~:
+  \begin{itemize}
+  \item si $v' \in S_i$, alors on étiquette la dérivation
+    $u_0 X_i u_1 \to_i u_0 v' u_1$
+  \item si $v' = X_j w$ où $w \in M_{i,j}$, alors on étiquette la dérivation
+    $u_0 X_i u_1 \to_{i,j} u_0 v' u_1$
+  \end{itemize}
+  On transforme maintenant les dérivations pour $\to$ (supposées étiquetées) en des
+  dérivations pour $\to'$. Si $u \to_{i,j} v$, alors on remplace les occurrences de
+  $X_i$ dans $u$ par des occurrences de $Y_{i,j}$. On prouve alors que la transformation
+  effectuée donne une dérivation pour $\to'$, par induction sur la longueur de la
+  dérivation. Supposons que $u \to v \to^\star w$ et montrons que $u' {\to'}^\star w'$ (où
+  $u'$ et $w'$ respectivement sont les mots $u$ et $w$ après transformation)~:
+  \begin{itemize}
+  \item si $u \to_i v$, alors $u' = u$ et $u \to' v Y_{i,i} \to' v$, d'où le résultat par
+    hypothèse d'induction.
+  \item si $u \to_{i,j} v$, alors on peut réécrire $v = X_j v_0$ et on a
+    $u' \to' Y_{i,j} v_0$, mais alors $Y_{i,j} (v_0)' = v'$ et, par hypothèse d'induction,
+    $v' {\to'}^\star w'$, donc $u' {\to'}^\star w'$.
+  \end{itemize}
+  On remarque qu'il est possible d'effectuer la transformation réciproque, et que
+  la seule différence entre un mot $u$ et sa transformée $u'$ se trouve dans les symboles
+  non terminaux~: en particulier, si $u \in \Sigma^\star$, alors $X_i \to^\star u$ si et
+  seulement si $X_i {\to'}^\star u$. Les deux grammaires sont donc équivalentes.
+
+  Finalement, on crée une nouvelle grammaire $G''$ en faisant la modification suivante~:
+  pour chaque règle $Y_{i,j} \to' uY_{j,k}$ où $u \in M_{i,j}$, si $u$ commence par le
+  non terminal $X_p$, alors on remplace la règle par l'ensemble de règles
+  $Y_{i,j} \to' S_p(X_p^{-1}u)Y_{j,k}$. Cela ne change pas la grammaire engendrée, puisque
+  chaque règle modifiée ici correspond à une suite de deux règles de dérivation
+  $\to' X_pu' \to' S_pu'$ dans l'ancienne grammaire.
+
+  En éliminant les $\varepsilon$-transitions dans la grammaire $G''$, on obtient ainsi
+  une grammaire sous forme normale de Greibach. De plus, si la grammaire est sous forme
+  normale de Chomsky (ce qu'on peut supposer sans perte de généralité d'après la
+  \cref{prop.chom}), alors cette grammaire est sous forme de Greibach quadratique.
 \end{proof}
 
 \section{Arbres de dérivation}
@@ -615,10 +691,10 @@ Introduisons donc les arbres en tant que structure à part.
   fils d'un sommet pour simplifier la suite.
 \end{remark}
 
-On définit la hauteur d'un arbre comme la plus grande suite allant de la racine
-à une feuille de l'arbre (la hauteur d'un arbre limité à une racine étant $0$).
-Il est alors possible de définir et raisonner par récurrence sur la hauteur de
-l'arbre.
+On définit la hauteur d'un arbre comme la longueur de la plus grande suite allant
+de la racine à une feuille de l'arbre (la hauteur d'un arbre limité à une racine
+étant $0$). Il est alors possible de définir et raisonner par récurrence sur la
+hauteur de l'arbre.
 
 \begin{definition}[Arbre de dérivation]
   Soit $\Sigma$ un alphabet, et $(\Gamma,\to,S)$ une grammaire sur $\Sigma$.
@@ -980,10 +1056,11 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   
 \begin{remark}
   Dans notre description des propositions, nous avons un ensemble infini de
-  symboles avec $x \in \mathcal X$. Pour résoudre ça, il suffit de considérer
-  $x$ comme un symbole non terminal et la règle
+  symboles avec $x \in \mathcal X$. Pour correspondre à notre paradigme où les
+  règles sont en nombre fini, il suffit de considérer $x$ comme un symbole non
+  terminal et la règle
   \[x \Coloneq x_0\mid x_s(x)\]
-  décrivant une variable $x_0$ et une fonction injective non surjective
+  décrivant une variable initiale $x_0$ et une fonction injective non surjective
   $x_s : \mathcal X \to \mathcal X$. Ainsi la variable $x_n$ est remplacée par
   la variable $(x_s)^n(x_0)$ et on a alors bien un langage algébrique. Cela
   nous donne d'ailleurs un codage plus explicite des termes (les expressions
@@ -1024,7 +1101,7 @@ dernier symbole ajouté.
         \item $\Gamma$ est l'alphabet de pile
         \item $\alpha_0 \in \Gamma$ est le symbole initial
         \item 
-        $R \subseteq Q \times \Gamma\times (\Gamma\cup \{\varepsilon\})\times
+        $R \subseteq Q \times \Gamma\times (\Sigma\cup \{\varepsilon\})\times
         Q \times \Gamma^\star$ est la relation de transition.
         On notera $q,\alpha \xrightarrow{\beta} q',u$ pour signifier
         $(q,\alpha,\beta,q',u) \in R$ et on appellera $\beta$ l'étiquette de
@@ -1101,7 +1178,7 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
     $u$ peut se décomposer en $u'\alpha$ où $u' \in \Gamma_0$ et
     $\alpha \in \Gamma_1$. Dit autrement, un fond de pile est testable si pour
     toute exécution de l'automate, il est toujours possible à partir du mot en
-    tête de pile si la pile est réduite à une lettre ou non.
+    tête de pile de savoir si la pile est réduite à une lettre ou non.
 \end{definition}
 
 \begin{proposition}
@@ -1154,14 +1231,70 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
     de fond de pile.
 \end{proof}
 
+\begin{remark}
+  Avec la preuve précédente, il est direct d'en déduire aussi que la combinaison des
+  deux critères d'arrêt donne encore un critère d'arrêt pour les automates à piles, qui
+  engendre la même classe de langage.
+\end{remark}
+
+\begin{definition}[Langage reconnaissable par pile]
+  Un langage $\mathcal L \subseteq \Sigma^\star$ est reconnaissable par automates à pile
+  lorsqu'il existe un critère parmi ceux cités précédemment et un automate à pile
+  $\mathcal A$ tel que pour tout $u \in \Sigma^\star$, $u \in L$ si et seulement s'il
+  existe une trace valide pour $u$ dont la dernière configuration est une configuration
+  d'arrêt pour le critère choisi.
+\end{definition}
+
 Nous concluons maintenant la sous-section en montrant l'équivalence entre les
 grammaires hors contextes et les automates à pile.
 
 \begin{theorem}
     Soit $\Sigma$ un alphabet. On a égalité entre la classe des langages algébriques
-    et celle des langages reconnus par un automate à pile.
+    et celle des langages reconnaissable par un automate à pile.
 \end{theorem}
 
 \begin{proof}
-    A FAIRE
+  Commençons par montrer qu'un langage algébrique est reconnaissable par un automate
+  à pile pour le critère de pile vide et état final.
+
+  Soit une grammaire $G \defeq \{\Gamma, \{A_i \to w_i\}_{i \in I}, S\}$, on construit
+  l'automate $\mathcal A_G$ suivant~:
+  \begin{itemize}
+  \item $Q \defeq q_0 \cup q_f \cup \{q_{i,j} \mid i \in I, w \in \{1,\ldots,|w_i|\}\}$
+  \item $\Gamma_{\mathcal A} \defeq \Sigma \cup \Gamma$
+  \item le symbole initial est vide (quitte à créer une transition le supprimant au
+    début de l'automate)
+  \item l'unique état final est $q_f$
+  \item la relation $R$ est définie par les faits suivants~:
+    \begin{itemize}
+    \item on a une transition $q_0,S\xrightarrow\varepsilon q_f,\varepsilon$
+    \item pour toute règle $A_i \to w_i$, on ajoute les transitions (en considérant que
+      $q_{i,0} = q_0$)
+      \[\forall j < |w_i|, q_{i,j}, (w_{i})_{j} \xrightarrow\varepsilon
+      q_{i,j+1},\varepsilon\]
+      ainsi que $q_{i,|w_i|},\varepsilon\xrightarrow\varepsilon q_0,A_i$
+    \item pour toute lettre $\alpha \in \Sigma$, on ajoute la transition
+      \[q_0,\varepsilon \xrightarrow\alpha q_0,\alpha\]
+      (que l'on peut encoder par, pour tout symbole de pile $\beta$,
+      $q_0,\beta\xrightarrow\alpha q_0,\alpha\beta$)
+    \end{itemize}
+  \end{itemize}
+  On ne montrera pas rigoureusement l'équivalence des deux langages, mais on donne une
+  esquisse de preuve. D'abord,
+  on remarque qu'une trace d'exécution valide est constituée d'alternances de
+  deux types de blocs de configurations~:
+  \begin{itemize}
+  \item des blocs augmentant la taille de la pile, où toutes les transitions sont de
+    la forme $q_0,\varepsilon \xrightarrow\alpha q_0,\alpha$
+  \item des blocs diminuant la taille de la pile, où le bloc commence à l'état $q_0$
+    puis dépile toutes les lettres correspondant au mot $w_i$ d'une règle
+    $A_i \to w_i$, puis revient à l'état $q_0$ en empilant la lettre $A_i$
+  \end{itemize}
+  Suite à cette alternance, on obtient une pile constituée uniquement par $S$ sur l'état
+  $q_0$, permettant d'aller à l'état $q_f$. Pour une dérivation d'un mot $u$ depuis
+  $S$, on remarque qu'il est possible d'effectuer le parcourt de l'automate à l'envers~:
+  si la première règle utilisée est $S \to w$, alors on a un bloc de transitions de
+  $q_0$ à $q_0$ tel que la pile vaut d'abord $w$, puis finit par valoir $S$. Ainsi, les
+  dérivations correspondent à des traces valides, et inversement puisqu'un bloc va
+  toujours correspondre à une dérivation.
 \end{proof}
