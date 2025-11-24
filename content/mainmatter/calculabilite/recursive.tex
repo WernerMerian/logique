@@ -916,6 +916,15 @@ la récursion primitive.
   ce qui revient à dire que $f \in \RecP$, d'où le résultat.
 \end{proof}
 
+\begin{remark}
+  Si nous avons jusque là donné des termes explicites, il doit être clair pour
+  le lecteur que ces termes explicites sont de moins en moins lisibles, et les
+  exemples précédents suffisent pour donner une idée fiable des manipulations
+  autorisées dans le cadre des fonctions RP et RPG. Aussi, nous emploierons
+  désormais des arguments moins formels, en essayant malgré tout d'être
+  suffisamment précis pour ne pas oublier des subtilités techniques.
+\end{remark}
+
 Ainsi, les fonctions RPG n'apportent pas plus de puissance de calcul, puisque
 les fonctions sur les entiers restent les mêmes. De plus, comme on possède un
 codage bijectif bi-RPG entre chaque $\Sigma^\star$ et $\mathbb N$, on en conclut
@@ -931,7 +940,18 @@ langage algébrique est une partie RPG.
 \end{proposition}
 
 \begin{proof}
-  A FAIRE
+  Commençons par remarquer que si l'on prend une grammaire équivalente à
+  $G$, alors $\mathcal L_G$ sera strictement la même fonction. Ainsi, on
+  peut supposer que $G$ est une grammaire sous forme normale de Greibach
+  quadratique. On sait alors que toute dérivation de taille $n$ depuis
+  un symbole non terminal produit au moins un mot de taille $n$. Il
+  nous suffit donc de lister tous les mots obtenus en $n$ dérivations
+  depuis le symbole non terminal initial de la grammaire $G$, puis vérifier
+  que le mot dont on cherche à tester l'appartenance apprait dans la liste
+  des mots listés. Comme on sait qu'on peut encoder les mots par des entiers
+  et les listes d'entiers par des entiers, il est clair qu'on peut manipuler
+  les listes comme attendu. De plus, l'égalité entre entiers permet de
+  déduire l'égalité entre mots au sens général, et ainsi le test d'appartenance.
 \end{proof}
 
 Cette proposition permet de donner du sens à la définition suivante.
@@ -958,7 +978,8 @@ Un exemple essentiel de fonction RPG de langage est celui des fonctions
 définies par inductions à partir de fonctions RPG.
 
 \begin{proposition}
-  Soit $\Sigma,\Gamma$ deux alphabets et $G$ une grammaire non ambigüe sur
+  Soit $\Sigma,\Gamma$ deux alphabets et $G$ une grammaire engendrant un
+  automate à pile déterministe sur
   $\Sigma$. On suppose que pour toute règle $A \to u$ dans $G$, on dispose d'une
   fonction RPG $g_{A,u} : (\Gamma^\star)^n \to \Gamma^\star$ où $n$ est le nombre
   de non terminaux apparaissant dans $u$. Alors la fonction
@@ -967,6 +988,19 @@ définies par inductions à partir de fonctions RPG.
 \end{proposition}
 
 \begin{proof}
+  Comme $G$ engendre un automate à pile déterministe, cela signifie que pour
+  un mot $u$ décomposable en $u = vwx$, si $A \to w$ est une règle de $G$ et
+  que $u \in \mathcal L_G$ alors $S \to^\star vAx \to^\star vw$ est l'unique
+  dérivation de $S$ à $u$ à l'ordre près des dérivations parallèles
+  (cela se justifie par le calcul sur l'automate déterministe).
+
+  On peut donc construire la fonction de la façon suivante~:
+  \begin{itemize}
+  \item on prend en entrée un mot $u$, et on parcourt les préfixes de $u$
+    jusqu'à obtenir une décomposition $u = vwx$ où $A \to w$ est une règle
+    de $G$ (bien sûr, $v$ et $x$ peuvent potentiellement être vides)
+  \end{itemize}
+
   A FAIRE
 \end{proof}
 
@@ -974,6 +1008,12 @@ définies par inductions à partir de fonctions RPG.
   De la même manière qu'on peut généraliser la \cref{prop.PU.gram} à des cas
   où les ensembles associés à chaque non terminal peuvent différer, cette
   proposition s'étend aussi à ces cas.
+
+  Il est aussi possible de généraliser la proposition en l'appliquant à des
+  grammaires non ambigües en général. Cependant, la preuve est plus complexe
+  car l'algorithme pour trouver la dérivation menant au mot souhaité ne peut
+  pas se contenter de considérer la première règle disponible (ce qui est le
+  cas pour un langage déterministe).
 \end{remark}
 
 Ces résultats nous permettent donc de voir les langages algébriques comme une

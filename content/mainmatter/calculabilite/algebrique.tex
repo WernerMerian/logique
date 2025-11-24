@@ -1248,7 +1248,7 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
 Nous concluons maintenant la sous-section en montrant l'équivalence entre les
 grammaires hors contextes et les automates à pile.
 
-\begin{theorem}
+\begin{theorem}\label{thm.reco.alg}
     Soit $\Sigma$ un alphabet. On a égalité entre la classe des langages algébriques
     et celle des langages reconnaissable par un automate à pile.
 \end{theorem}
@@ -1297,4 +1297,134 @@ grammaires hors contextes et les automates à pile.
   $q_0$ à $q_0$ tel que la pile vaut d'abord $w$, puis finit par valoir $S$. Ainsi, les
   dérivations correspondent à des traces valides, et inversement puisqu'un bloc va
   toujours correspondre à une dérivation.
+
+  Montrons le sens réciproque. Pour cela, on utilise la
+  méthode des triplets de Ginsburg \cite{ginsburg1966mathematical}. Soit un automate
+  à pile $\mathcal A$ reconnaissant le langage $\mathcal L$ par pile vide. On suppose
+  sans perte de généralité (quitte à ajouter des
+  états et des transitions) que toute transition n'empile qu'au plus deux symboles.
+
+  Pour tous états $q,q'$ et symbole de pile $\alpha$, on définit
+  $\mathcal L_{q,q',\alpha}$ l'ensemble des mots $u$ des tels qu'il existe un calcul
+  valide pour $u$ entre la configuration $(q,\alpha)$ et la configuration
+  $(q',\varepsilon)$. On remarque que si $u \in \mathcal L_{q,q',\alpha}$, alors
+  pour tout mot $w$, il existe un calcul valide pour $u$ entre
+  $(q,\alpha w)$ et $(q',w)$. On donne les égalités~:
+  \begin{align*}
+    \mathcal L &= \displaystyle\bigcup_{q' \in Q} \mathcal L_{q_0,q',\alpha_0} \\
+    \mathcal L_{q,q',\alpha} &= \{\beta \mid q,\alpha \xrightarrow \beta q',\varepsilon\}
+    \cup\displaystyle\bigcup_{q,\alpha\xrightarrow\beta p,\gamma} \beta\mathcal L_{p,q',\gamma}
+    \cup\bigcup_{q,\alpha\xrightarrow\beta p,\gamma\delta}
+    \beta\mathcal L_{p,p',\gamma}\mathcal L_{p',q',\delta}
+  \end{align*}
+  La première égalité signifie simplement que reconnaître par pile vide un mot $u$
+  peut se réécrire en l'existence d'un calcul valide pour $u$ entre $(q_0,\alpha_0)$ et
+  $(q',\varepsilon)$ pour un état $q'$.
+
+  La seconde égalité, elle, contient trois termes. En effet, si l'on veut faire un
+  calcul entre $(q,\alpha)$ et $(q',\varepsilon)$, trois cas sont possibles~:
+  \begin{itemize}
+  \item soit on supprime simplement la $\alpha$ dans une transition d'étiquette
+    $\beta$~;
+  \item soit on a une transition d'étiquette $\beta$ jusqu'à une configuration
+    $(p,\gamma)$, puis un calcul de $(p,\gamma)$ à $(q',\varepsilon)$~;
+  \item soit on a une transition d'étiquette $\beta$ jusqu'à une configuration
+    $(p,\gamma\delta)$, puis un calcul de $(p,\gamma,\delta)$ à
+    $(p',\delta)$, puis un calcul de $(p',\delta)$ à $(q',\varepsilon)$.
+  \end{itemize}
+  On peut ainsi construire naturellement une grammaire correspondant à ces langages~:
+  \begin{itemize}
+  \item $\Gamma$ est pris comme l'ensemble des triplets $(q,q',\alpha)$
+  \item le non terminal de départ est $S$ muni d'une transition vers chaque
+    $\mathcal L_{q_0,q',\alpha_0}$ pour $q' \in Q$
+  \item les transitions sont celles indiquées par la seconde équations (on remplace
+    simplement les unions par des $+$ et le $=$ par une flèche $\to$)
+  \end{itemize}
+  Ainsi, une dérivation correspond naturellement à un calcul, et un calcul
+  acceptant un mot correspond à une dérivation du mot dans cette grammaire.
 \end{proof}
+
+\subsection{Automates à pile déterministes}
+
+Dans le \cref{chp.auto}, nous avons vu que les automates finis déterministes et non
+déterministes sont équivalents quant au langage qu'ils reconnaissent. Dans le cas des
+automates à pile, on va voir que cela n'est plus le cas.
+
+Pour les automates finis, comme chaque étape de calcul correspond à la lecture d'une
+lettre, le déterminisme ou non d'un automate se caractérise simplement par le fait que
+sa relation de transition est fonctionnelle. Dans le cas présent, cependant, cette
+distinction n'est pas aussi simple~: il est par exemple permis d'utiliser des
+$\varepsilon$-transitions dans un automate à pile déterministe, tant que cette
+transition n'intervient pas sur un état où d'autres transitions avec des lettres sont
+possibles (ceci pour permettre de mieux gérer l'empilement et le dépilement).
+
+\begin{definition}[Automate à pile déterministe]
+  Un automate à pile $\mathcal A = (Q,q_0,\Gamma,\alpha_0,R)$ sur un alphabet
+  $\Sigma$ est dit déterministe si pour chaque configuration $(q,\alpha)$, l'une des
+  deux conditions suivantes est vérifiée~:
+  \begin{itemize}
+  \item soit il existe une unique transition $q,\alpha\xrightarrow\varepsilon q',\beta$
+    et il n'y a aucune transition $q,\alpha\xrightarrow a q',\beta$ pour un
+    élément $a \in \Sigma$
+  \item soit il n'existe aucune transition de la forme
+    $q,\alpha\xrightarrow\varepsilon q',\beta$ et pour chaque $a \in \Sigma$, il
+    existe au plus une transition de la forme $q,\alpha\xrightarrow a q',\beta$.
+  \end{itemize}
+
+  Un langage algébrique est dit déterministe s'il est reconnaissable par un automate
+  à pile déterministe.
+\end{definition}
+
+La proposition principale qui justifie l'introduction de la version déterministe des
+automates à pile est la suivante~:
+
+\begin{proposition}[Non ambiguïté des langages algébriques déterministes]
+  Un langage $\mathcal L\subseteq \Sigma^\star$ algébrique déterministe est un langage
+  non ambigu.
+\end{proposition}
+
+\begin{proof}
+  En utilisant la méthode des triplets de Ginsburg sur l'automate à pile reconnaissant
+  le langage, on obtient une correspondance entre les calculs de l'automate et les
+  dérivations de la grammaire. Il nous suffit donc d'avoir l'unicité des calculs de
+  l'automate~: l'obstacle majeur à cette unicité est la possibilité de faire des
+  $\varepsilon$-transitions à la fin du calcul, ou une infinité
+  d'$\varepsilon$-transitions au milieu du calcul. Il est possible de modifier l'automate
+  pour assurer ce fait, mais nous l'admettons ici (la preuve peut se trouver dans
+  \cite{carton2008langages} à la proposition 2.77).
+\end{proof}
+
+\begin{exercise}
+  Soit un alphabet $\Sigma$ et une grammaire $G = (\Gamma,\to,S)$ sur $\Sigma$. Montrer
+  que si l'automate associé à $G$ par la construction du \cref{thm.reco.alg} est un
+  automate déterministe, alors $G$ est une grammaire non ambigüe.
+
+  En déduire que l'ensemble des formules sur une signature donnée est effectivement
+  une grammaire non ambigüe.
+\end{exercise}
+
+On en déduit le corollaire suivant~:
+
+\begin{corollary}
+  La classe des langages algébriques déterministes est incluse dans la classe des
+  langages algébriques non ambigus, et est donc une sous-classe stricte de la classe
+  des langages algébriques.
+\end{corollary}
+
+\newpage
+
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
+
+\begin{exercise}[Un lemme classique sur les langages algébriques]
+  Montrer que si $\mathcal L$ est un langage algébrique et $\mathcal L'$ est un langage
+  rationnel, alors $\mathcal L \cap \mathcal L'$ est un langage algébrique.
+
+  En supposant $\mathcal L'$ algébrique, le résultat est-il toujours vrai ?
+\end{exercise}
+
+\begin{exercise}[Complémentaire d'un langage déterministe]
+  Montrer que la classe des langages algébriques déterministes est stable par
+  complémentaire.
+\end{exercise}
