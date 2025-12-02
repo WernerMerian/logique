@@ -930,8 +930,67 @@ les fonctions sur les entiers restent les mêmes. De plus, comme on possède un
 codage bijectif bi-RPG entre chaque $\Sigma^\star$ et $\mathbb N$, on en conclut
 que le pouvoir expressif de $\mathbb N$ est suffisant. L'utilité des fonctions
 RPG est de permettre de facilement passer de fonctions sur des langages
-algébriques à leur codage. Donnons d'abord un premier résultat important~: un
+algébriques à leur codage. Montrons d'abord qu'un
 langage algébrique est une partie RPG.
+
+Pour ce faire, nous introduisons un algorithme de \foreignexpr{parsing} de
+langage algébrique. Un algorithme de \foreignexpr{parsing} est un algorithme
+qui, étant donnée une grammaire $G$ et un mot $u$, retourne à la fois un test
+du fait que $u$ dérive de la grammaire $G$, mais aussi une dérivation
+produisant $u$ le cas échéant. L'algorithme de \foreignexpr{parsing} que nous
+utilisons est celui d'Earley.
+
+Donnons d'abord le formalisme adapté pour présenter l'algorithme.
+
+\begin{definition}[Item d'Earley]
+  Soit $\Sigma$ un alphabet et $G = (\Gamma, \to, S)$ une grammaire hors
+  contexte sur $\Sigma$. On appelle item d'Earley les triplets
+  $(R,i,j)$ où $R$ est une règle de $G$ (c'est-à-dire un couple
+  $(A, u)$ tel que $A \to u$) et $i$ et $j$ sont des entiers~: on manipule
+  des items d'Earley pour un mot global $u$ fixé, et ces deux indices sont
+  alors inférieurs à $|u|$.
+
+  On note $A \to \alpha \bullet \beta, i$ pour représenter l'item
+  $(A \to \alpha\beta , i,j)$ où $j = |\alpha|$.
+\end{definition}
+
+L'idée derrière un item d'Earley est d'analyser les occurrences d'une règle
+de production en considérant des facteurs du mot $u$ analysé~: un item
+$(A \to \alpha\bullet \beta, i)$ s'interprète comme le fait que le sous-mot
+$u_i\cdots u_{j-1}$ vaut $\alpha$, et qu'il permet donc de construire le
+début de la règle $A \to u$.
+
+L'algorithme de \foreignexpr{parsing} est un algorithme de programmation
+dynamique~: on considère un tableau $T$ de $n$ lignes (où $n$ est la taille
+du mot $u$ analysé) où chaque ligne contient une liste d'items d'Earley,
+de sorte que la lecture du mot $u$ jusqu'à la lettre $j$ s'effectue dans la
+ligne $T[i]$.
+
+\begin{definition}[Algorithme d'Earley \cite{EarleyAnalyser}]
+  On considère un alphabet $\Sigma$, une grammaire $G = (\Gamma, \to, S)$
+  sur $\Sigma$ et $u \in \Sigma^\star$. L'algorithme d'Earley consiste en la
+  construction donnée à la \cref{fig.Earley}.
+\end{definition}
+
+\begin{figure}[h]
+  \centering
+  \begin{algorithm}[H]
+    \KwData{un vecteur $T[\;]$ de taille $n$ contenant des ensembles d'items
+      d'Earley, initialisé par $T[i] = \varnothing$ pour tout $i$\\
+      un mot $u \in \Sigma^\star$ \\
+      une grammaire $G = (\Gamma, \to, S)$}
+    \KwResult{si $u \in \mathcal L_G$, la dérivation permettant de construire
+      $u$ dans la grammaire $G$\\
+      si $u \notin\mathcal L_G$, la constante $\bot$}
+    \For{$S \to u$}{$T[0] \leftarrow (S\to \bullet u, 0)$}
+    \For{$j = 1$ \KwTo $n$}{
+      \For{A FAIRE}{A FAIRE}
+    }
+    
+  \end{algorithm}
+  \caption{Algorithme d'Earley}
+  \label{fig.Earley}
+\end{figure}
 
 \begin{proposition}
   Soit $\Sigma$ un alphabet et $G$ une grammaire hors contexte. Alors
@@ -978,9 +1037,9 @@ Un exemple essentiel de fonction RPG de langage est celui des fonctions
 définies par inductions à partir de fonctions RPG.
 
 \begin{proposition}
-  Soit $\Sigma,\Gamma$ deux alphabets et $G$ une grammaire engendrant un
-  automate à pile déterministe sur
-  $\Sigma$. On suppose que pour toute règle $A \to u$ dans $G$, on dispose d'une
+  Soit $\Sigma,\Gamma$ deux alphabets et $G$ une grammaire vérifiant
+  l'hypothèse de l'\cref{exo.auto.grammaire}. On suppose que pour toute règle
+  $A \to u$ dans $G$, on dispose d'une
   fonction RPG $g_{A,u} : (\Gamma^\star)^n \to \Gamma^\star$ où $n$ est le nombre
   de non terminaux apparaissant dans $u$. Alors la fonction
   $g : \mathcal L_G \to \Gamma^\star$ donnée par la \cref{prop.PU.gram} est une
@@ -1013,7 +1072,9 @@ définies par inductions à partir de fonctions RPG.
   grammaires non ambigües en général. Cependant, la preuve est plus complexe
   car l'algorithme pour trouver la dérivation menant au mot souhaité ne peut
   pas se contenter de considérer la première règle disponible (ce qui est le
-  cas pour un langage déterministe).
+  cas pour un langage déterministe). Dans notre cas, cette version suffit pour
+  prouver les propriétés essentielles sur les formules puisqu'elles sont
+  engendrées par une grammaire dont l'automate associé est déterministe.
 \end{remark}
 
 Ces résultats nous permettent donc de voir les langages algébriques comme une
@@ -1051,7 +1112,7 @@ ne sont pas des fonctions RP. Comme on l'a dit au début, une fonction RP peut
 se voir comme un programme impératif n'utilisant que la boucle \texttt{for}. La
 boucle \texttt{while}, elle, permet de faire des itérations arbitrairement
 grandes, sans savoir \latinexpr{a priori} si on aura un nombre fini
-d'itérations. Cependant, dans l'autre sens, il est possible de définir la boucle
+d'itérations. Dans l'autre sens, il est possible de définir la boucle
 \texttt{while} à partir de la boucle \texttt{for}, dans les cas où la première
 boucle converge. Si l'on décide d'écrire
 \[\texttt{while}\;\varphi(x) \;\texttt{do}\; f ; x \coloneq x + 1\;
@@ -1070,15 +1131,34 @@ fonction, en considérant le prédicat \og la fonction s'annule en ce point\fg q
 ne fait pas perdre de généralité (puisqu'un prédicat RP est déjà une fonction
 valant $0$ ou $1$).
 
+Comme nous allons introduire des classes de fonctions partielles, nous donnons
+d'abord des notations pour manipuler ces fonctions.
+
+\begin{notation}
+  Soit $f : E \partialto F$ une fonction partielle. Pour tout $x \in E$, on
+  notera $f(x)\convcal$ dans le cas où $f$ est définie en $x$, et on
+  notera $f(x)\divcal$ dans le cas où $f$ n'est pas définie~:
+  \[f(x) \convcal \defeq \exists y \in F, f(x) = y \qquad
+  f(x) \divcal \defeq \lnot(f(x)\convcal)\]
+  On dira donc que $f$ est totale si $f(x)\convcal$ pour tout $x \in E$.
+
+  Etant données deux fonctions partielles $f,g : E \partialto F$, on notera
+  $f \convcal = g\convcal$ pour signifier que $f$ et $g$ sont définies
+  exactement sur les mêmes valeurs et sont égales sur ces valeurs.
+\end{notation}
+
 \begin{definition}[Fonction récursive, récursive généralisée]
   On définit la classe $\Rec$ des fonctions récursives comme la plus petite
-  classe de fonctions partielles contenant la classe $\RecP$ et telle que si
-  $f : \mathbb N^{n+1} \to \mathbb N$ est une fonction récursive, alors
+  classe de fonctions partielles stables par les mêmes opérations
+  que la classe $\RecP$ et telle que si
+  $f : \mathbb N^{n+1} \partialto \mathbb N$ est une fonction partielle
+  récursive, alors
   c'est aussi le cas de la fonction
   \[\begin{array}{ccccc}
-  \mu(f) & : & \mathbb N^n & \longrightarrow & \mathbb N\\
-  & & (x_1,\ldots,x_n) &\longmapsto & \min \{y \in \mathbb N \mid
-  f(x_1,\ldots,x_n,y) = 0\}
+  \mu(f) & : & \mathbb N^n & \xrightharpoonup{\quad} & \mathbb N\\
+  & & (x_1,\ldots,x_n) &\longmapsto & \min \left\{y \in \mathbb N \left\vert
+  \begin{array}{c} f(x_1,\ldots,x_n,y)\convcal = 0 \\ \land \\
+  \forall z < y, f(x_1,\ldots,x_n,z)\convcal \neq 0\end{array}\right.\right\}
   \end{array}\]
   où la fonction $\mu(f)$ est indéfinie là où l'ensemble dont on prend le
   minimum est infini.
