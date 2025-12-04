@@ -964,32 +964,61 @@ L'algorithme de \foreignexpr{parsing} est un algorithme de programmation
 dynamique~: on considère un tableau $T$ de $n$ lignes (où $n$ est la taille
 du mot $u$ analysé) où chaque ligne contient une liste d'items d'Earley,
 de sorte que la lecture du mot $u$ jusqu'à la lettre $j$ s'effectue dans la
-ligne $T[i]$.
-
-\begin{definition}[Algorithme d'Earley \cite{EarleyAnalyser}]
-  On considère un alphabet $\Sigma$, une grammaire $G = (\Gamma, \to, S)$
-  sur $\Sigma$ et $u \in \Sigma^\star$. L'algorithme d'Earley consiste en la
-  construction donnée à la \cref{fig.Earley}.
-\end{definition}
+ligne $T[i]$. On donne donc l'\cref{fig.Earley}.
 
 \begin{figure}[h]
   \centering
   \begin{algorithm}[H]
-    \KwData{un vecteur $T[\;]$ de taille $n$ contenant des ensembles d'items
+    \KwData{\\
+      un vecteur $T[\;]$ de taille $n$ contenant des ensembles d'items
       d'Earley, initialisé par $T[i] = \varnothing$ pour tout $i$\\
-      un mot $u \in \Sigma^\star$ \\
-      une grammaire $G = (\Gamma, \to, S)$}
-    \KwResult{si $u \in \mathcal L_G$, la dérivation permettant de construire
+      un mot $u \in \Sigma^\star$ de longueur $n$ \\
+      une grammaire $G = (\Gamma, \to, S)$ \\
+      une liste $\ell$ contenant la suite des dérivations sous la forme
+      d'un parcours en profondeur de l'arbre de dérivation
+    }
+    \KwResult{\\
+      si $u \in \mathcal L_G$, la dérivation permettant de construire
       $u$ dans la grammaire $G$\\
       si $u \notin\mathcal L_G$, la constante $\bot$}
-    \For{$S \to u$}{$T[0] \leftarrow (S\to \bullet u, 0)$}
-    \For{$j = 1$ \KwTo $n$}{
-      \For{A FAIRE}{A FAIRE}
+    \For{$\alpha$ tel que $S\to \alpha$}{
+      $T[0] \leftarrow (S\to \bullet \alpha, 0)$\;
     }
-    
+    \For{$j = 1$ \KwTo $n$}{
+      \For{$(A \to \alpha \bullet \beta, i) \in T[j-1]$}{
+        \If{$\beta = u_{j-1} \gamma$}{
+          $T[j] \leftarrow (A \to \alpha u_{j-1} \bullet \gamma, i)$\; }
+      }
+      \For{$(A \to \alpha\bullet \beta, i) \in T[j]$}{
+        \If{$\beta = B\gamma$, $B \in \Gamma$}{
+          \For{$(B, \delta) \in \to$}{
+            $T[j]\leftarrow (B \to \bullet\delta, j)$\;
+        }}
+      }
+      \For{$(A \to \alpha \bullet \beta, i) \in T[j]$}{
+        \If{$\beta = \varepsilon$}{
+          \For{$(B \to \gamma \bullet \delta, k) \in T[i]$}{
+            \If{$\delta = A \delta'$}{
+              $T[j]\leftarrow (B \to \gamma A \bullet \delta', k)$\;
+            }
+          }
+        }
+      }
+    }
+    \For{$(A \to \alpha\bullet\beta, i)\in T[n-1]$}{
+      \If{$(A = S)\land (\beta = \varepsilon) \land (i = 0)$}{
+        $\ell \leftarrow S$\;
+        $\ell \leftarrow \alpha$\;
+        \For{A FAIRE}{
+          A FAIRE
+        }
+      }
+    }
+    \KwRet $\bot$\;
+    \caption{Algorithme d'Earley}
+    \label{fig.Earley}
   \end{algorithm}
-  \caption{Algorithme d'Earley}
-  \label{fig.Earley}
+  %\label{fig.Earley}
 \end{figure}
 
 \begin{proposition}
@@ -999,18 +1028,8 @@ ligne $T[i]$.
 \end{proposition}
 
 \begin{proof}
-  Commençons par remarquer que si l'on prend une grammaire équivalente à
-  $G$, alors $\mathcal L_G$ sera strictement la même fonction. Ainsi, on
-  peut supposer que $G$ est une grammaire sous forme normale de Greibach
-  quadratique. On sait alors que toute dérivation de taille $n$ depuis
-  un symbole non terminal produit au moins un mot de taille $n$. Il
-  nous suffit donc de lister tous les mots obtenus en $n$ dérivations
-  depuis le symbole non terminal initial de la grammaire $G$, puis vérifier
-  que le mot dont on cherche à tester l'appartenance apprait dans la liste
-  des mots listés. Comme on sait qu'on peut encoder les mots par des entiers
-  et les listes d'entiers par des entiers, il est clair qu'on peut manipuler
-  les listes comme attendu. De plus, l'égalité entre entiers permet de
-  déduire l'égalité entre mots au sens général, et ainsi le test d'appartenance.
+  Il nous suffit donc d'implémenter l'\cref{fig.Earley} avec des fonctions
+  RPG. A FAIRE
 \end{proof}
 
 Cette proposition permet de donner du sens à la définition suivante.
@@ -1037,8 +1056,8 @@ Un exemple essentiel de fonction RPG de langage est celui des fonctions
 définies par inductions à partir de fonctions RPG.
 
 \begin{proposition}
-  Soit $\Sigma,\Gamma$ deux alphabets et $G$ une grammaire vérifiant
-  l'hypothèse de l'\cref{exo.auto.grammaire}. On suppose que pour toute règle
+  Soient $\Sigma,\Gamma$ deux alphabets et $G = (\Sigma',\to,S)$ une
+  grammaire non ambigüe. On suppose que pour toute règle
   $A \to u$ dans $G$, on dispose d'une
   fonction RPG $g_{A,u} : (\Gamma^\star)^n \to \Gamma^\star$ où $n$ est le nombre
   de non terminaux apparaissant dans $u$. Alors la fonction
@@ -1047,18 +1066,11 @@ définies par inductions à partir de fonctions RPG.
 \end{proposition}
 
 \begin{proof}
-  Comme $G$ engendre un automate à pile déterministe, cela signifie que pour
-  un mot $u$ décomposable en $u = vwx$, si $A \to w$ est une règle de $G$ et
-  que $u \in \mathcal L_G$ alors $S \to^\star vAx \to^\star vw$ est l'unique
-  dérivation de $S$ à $u$ à l'ordre près des dérivations parallèles
-  (cela se justifie par le calcul sur l'automate déterministe).
-
-  On peut donc construire la fonction de la façon suivante~:
-  \begin{itemize}
-  \item on prend en entrée un mot $u$, et on parcourt les préfixes de $u$
-    jusqu'à obtenir une décomposition $u = vwx$ où $A \to w$ est une règle
-    de $G$ (bien sûr, $v$ et $x$ peuvent potentiellement être vides)
-  \end{itemize}
+  On utilise l'implémentation de l'\cref{fig.Earley}. On a donc une fonction
+  $\Sigma^\star \to (\Sigma' \sqcup \{``[",'']"\})^\star$ donnant, pour un
+  mot $u \in \Sigma^\star$, le mot $\varepsilon$ si $u \notin \mathcal L_G$ et
+  la liste $[u_1,u_2,\cdots,u_k]$ obtenue en effectuant un parcours en
+  profondeur de l'arbre de dérivation de $u$, si $u \in \mathcal L_G$.
 
   A FAIRE
 \end{proof}
@@ -1067,14 +1079,6 @@ définies par inductions à partir de fonctions RPG.
   De la même manière qu'on peut généraliser la \cref{prop.PU.gram} à des cas
   où les ensembles associés à chaque non terminal peuvent différer, cette
   proposition s'étend aussi à ces cas.
-
-  Il est aussi possible de généraliser la proposition en l'appliquant à des
-  grammaires non ambigües en général. Cependant, la preuve est plus complexe
-  car l'algorithme pour trouver la dérivation menant au mot souhaité ne peut
-  pas se contenter de considérer la première règle disponible (ce qui est le
-  cas pour un langage déterministe). Dans notre cas, cette version suffit pour
-  prouver les propriétés essentielles sur les formules puisqu'elles sont
-  engendrées par une grammaire dont l'automate associé est déterministe.
 \end{remark}
 
 Ces résultats nous permettent donc de voir les langages algébriques comme une
@@ -1254,6 +1258,36 @@ composantes~:
   droite si $m = \rhd$.
 \item lorsque la machine entre dans un état $q \in F$, l'exécution s'arrête.
 \end{itemize}
+
+Donnons un exemple de machine et d'exécution d'une machine.
+
+\begin{example}[Miroir d'un mot]
+  On fixe l'alphabet $\Sigma \defeq \btwo$ et on donne une machine de Turing
+  qui, étant donné un mot en entrée, réécrit ce mot en miroir.
+
+  On en donne d'abord une description intuitive~:
+  \begin{itemize}
+  \item on commence par déplacer le mot $u$ vers la droite et on le
+    précède d'un $0$, pour avoir $\square^{|u|}0u\square^\infty$ sur la
+    bande
+  \item on va tout à droite du mot $u$ de droite
+  \item on répète la procédure suivante~:
+    \begin{itemize}
+    \item on garde en mémoire le caractère sur lequel on est, qu'on
+      notera $a$ (on peut multiplier les états pour avoir une suite
+      d'état distinct pour chaque symbole $a$ de l'alphabet), on
+      efface de caractère
+    \item on se déplace à gauche jusqu'à atteindre un $\square$, puis
+      une lettre ($0$ ou $1$)
+    \item on se déplace à droite d'une case (de sorte à être sur le
+      premier $\square$) et on y place $a$
+    \item on se déplace à droite jusqu'à lire un $0$
+    \item on se déplace d'une case à droite~: si la case contient
+      $\square$ alors on arrête la procédure~; sinon on la recommence
+    \end{itemize}
+  \item on efface le $0$
+  \end{itemize}
+\end{example}
 
 A FAIRE : SCHEMA DE LA SITUATION EN TIKZ
 
