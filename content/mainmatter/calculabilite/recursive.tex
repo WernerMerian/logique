@@ -608,7 +608,7 @@ beaucoup de résultats techniques.
     fonction RPG pour chaque $k = 1,\ldots,p$, et
     $g : \prod_{i = 1}^p (\Gamma_i)^\star \to \Sigma$ est une fonction RPG, alors
     \[\begin{array}{ccccc}
-    g\circ (f_1,\ldots,f_n) & : & \displaystyle
+    g\circ (f_1,\ldots,f_p) & : & \displaystyle
     \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) &
     \longrightarrow & \Sigma\\
     & & (u_1,\ldots,u_n) &\longmapsto &
@@ -1418,13 +1418,142 @@ fonctions $\RPG$.
 
 On montre d'abord le sens direct.
 
-\begin{lemma}
+\begin{lemma}\label{lem.recG.MT}
   Pour toute fonction récursive généralisée $f$, il existe une machine de
   Turing telle que $f_M = f$.
 \end{lemma}
 
 \begin{proof}
-  A FAIRE
+  \'Etant donné que tous les formalismes de machines de Turing sont équivalents,
+  on en choisit un adapté au lemme que l'on souhaite prouver~: une machine de
+  Turing est prise avec $k$ rubans d'entrée en lecture seule, chacun sur un
+  alphabet distinct, un ruban de sortie en écriture seule sur un alphabet encore
+  distinct et un nombre arbitraire de rubans de travail en lecture et écriture
+  sur un alphabet contenant tous les alphabets précédents.
+
+  On prouve par induction sur la classe des fonctions $\RecG$ la proposition~:
+  \begin{itemize}
+  \item pour une fonction $\pi_k^n$, il suffit de considérer la machine qui
+    recopie le contenu du $\ordinalnumeralmale{k}$ ruban d'entrée sur le ruban
+    de sortie.
+  \item pour un alphabet $\Sigma$ et $a \in \Sigma$, la fonction $\cons_a$ est
+    implémentée en recopiant le mot d'entrée jusqu'au premier blanc et, au
+    premier blanc, en écrivant $a$.
+  \item la fonction s'arrêtant immédiatement sans lire l'entrée retourne
+    la constante $\varepsilon$.
+  \item on suppose données des fonctions $f_k$ d'arité
+    $\prod_{i = 1}^n (\Sigma_i)^\star \to (\Gamma_k)^\star$ encodées par des
+    machines à $n$ rubans d'entrée et $a_k$ rubans de travail, et une fonction
+    $g : \prod_{i = 1}^p (\Gamma_i)^\star \to \Sigma$ encodée par une machine à
+    $p$ rubans d'entrée et $a$ rubans de travail, et on souhaite montrer qu'il
+    existe une machine de Turing à $n$ rubans d'entrées et
+    $\sum a_k + a + p$ rubans de travail encodant $g\circ (f_1,\ldots,f_p)$.
+
+    On décrit le comportement de la machine, sans en donner explicitement les
+    états. Tout d'abord, on numérote les rubans de travail~: on a pour chaque
+    $k \in \{1,\ldots,n\}$ les rubans $T_{k,j}$ correspondant aux rubans de
+    travail de la machine simulant $f_k$, le ruban $T_j$ correspondant au
+    ruban de travail de la machine simulant $g$, et les rubans
+    $S_k$ correspondant aux rubans de sortie de la machine simulant $f_k$.
+    On construit alors la machine de sorte à avoir le comportement suivant~:
+    \begin{itemize}
+    \item pour tout $k \in \{1,\ldots,p\}$, la machine implémente $f_k$ en
+      utilisant les rubans d'entrée, les rubans $T_{k,j}$ pour ses rubans de
+      travail, et écrit sa sortie dans le ruban $S_k$
+    \item la machine implémente $g$ en utilisant les rubans $S_k$ comme rubans
+      d'entrée, les rubans $T_j$ comme rubans de travail, et écrit sa sortie
+      dans le ruban de sortie
+    \end{itemize}
+
+    Dans le déroulement d'une telle machine, la première étape assure que
+    dans le ruban $S_k$ se trouve la valeur de $f_k(u_1,\ldots,u_n)$, et que
+    la valeur de sortie est l'image par $g$ des valeurs contenus dans les
+    rubans $S_k$, d'où le fait que notre machine simule
+    $g\circ(f_1,\ldots,f_p)$.
+  \item soit une fonction $f : \prod_{i =1}^p (\Sigma_i)^\star \to \Sigma^\star$
+    et, pour chaque $a \in \Gamma$,
+    $g_a : \prod_{i = 1}^p (\Sigma_i)^\star \times
+    \Gamma^\star \times \Sigma^\star \to \Sigma^\star$.
+    On suppose par hypothèse d'induction que toutes ces fonctions sont simulées
+    par des machines de Turing. On souhaite montrer que la machine encodant
+    $\rec(f,(g_a)_{a \in \Gamma})$ est simulée par une machine de Turing.
+
+    Explicitons encore les rubans de travail dont nous avons besoin. On fixe
+    d'abord des rubans $T_j$ correspondant aux rubans de travail de $f$, et
+    des rubans $T_{a,j}$ correspondant aux rubans de travail de chaque
+    $g_a$, ainsi qu'un ruban de travail supplémentaire $T$. On ajoute, de plus,
+    un ruban de comptage $C$, un ruban de mémoire $M$, un ruban d'appel
+    récursif $AR$ et un ruban de copie $CC$.
+    On décrit le comportement de la machine simulant cette fonction~:
+    \begin{itemize}
+    \item on recopie le dernier ruban d'entrée, contenant l'argument sur lequel
+      on effectue le calcul récursif, dans le ruban $C$.
+    \item on simule la fonction $f$ sur les rubans d'entrée à l'exception du
+      dernier, avec comme rubans de travail $T_j$ et comme ruban de sortie
+      $AR$.
+    \item on va tout à gauche du ruban $C$, et on effectue les opérations
+      suivantes tant qu'on ne lit pas un $\square$ sur $C$~:
+      \begin{itemize}
+      \item on lit le caractère dans $C$, qu'on fixera comme valant $a$, et
+        qu'on efface de $C$
+      \item on simule la fonction $g_a$ en prenant comme rubans d'entrée~:
+        \begin{itemize}
+        \item les rubans d'entrée à l'exception du dernier,
+        \item le ruban de mémoire $M$ et
+        \item le ruban d'appel récursif $AR$
+        \end{itemize}
+        comme rubans de travail les rubans $T_{a,j}$ et comme ruban de sortie le
+        ruban $CC$.
+      \item on recopie le contenu de $CC$ dans $AR$ (en ayant effacé $AR$ avant)
+        et on efface le contenu de $CC$.
+      \item on ajoute le caractère $a$ à $M$.
+      \item on se déplace d'une case à droite dans $C$.
+      \end{itemize}
+    \item on recopie le contenu de $AR$ sur le ruban de sortie.
+    \end{itemize}
+    
+    L'itération sur $C$ commence en ayant dans le ruban $AR$ la valeur de
+    $f(u_1,\ldots,u_p)$ (où $u_1,\ldots,u_p$ sont le contenu des premiers rubans
+    d'entrée). A chaque étape de cette itération, on déplace une lettre de
+    $C$ dans $M$, de sorte que l'appel sur $g_a$ se fait en ayant en paramètre
+    le mot $u$ lu jusqu'à présent et dans la bande $AR$ le résultat de
+    $\rec(f,(g_a)_{a\in \Gamma})$ sur le mot $u$. Ainsi, la machine simule bien
+    la fonction $\rec(f,(g_a)_{a\in \Gamma})$.
+    
+  \item On suppose donnée une fonction
+    $f : \prod_{i = 1}^n (\Sigma_i)^\star \times \bN \to \Sigma^\star$
+    simulée par une machine à $n+1$ rubans d'entrée et $k$ rubans de travail.
+    Montrons que $\mu(f)$ peut être simulé par une machine à $n$ rubans
+    d'entrée et $k + 2$ rubans de travail.
+
+    Décrivons les rubans. Tout d'abord, on a les rubans $T_i$ correspondant aux
+    rubans de travail de $f$. On ajoute à cela le ruban de comptage $C$ et un
+    ruban de mémoire $M$.
+    Le comportement de la machine est le suivant~:
+    \begin{itemize}
+    \item on effectue la boucle suivante (dont on précisera dans la boucle la
+      condition pour en sortir)~:
+      \begin{itemize}
+      \item on simule $f$ en prenant comme entrée les rubans d'entrée et
+        le ruban $C$, avec comme rubans de travail les rubans $T_i$ et comme
+        ruban de sortie $M$.
+      \item si $M$ est vide, on s'arrête en copiant $C$ dans le ruban de
+        sortie.
+      \item sinon, on ajoute un symbole dans $C$, on efface le contenu de
+        $M$ et on revient au début de la boucle.
+      \end{itemize}
+    \end{itemize}
+
+    Sur les $k$ premières itérations de la boucle, on obtient dans le ruban $M$
+    la valeur de $f(u_1,\ldots,u_n,k)$ au moment de tester si la valeur en
+    question est $0$. Ainsi, si la boucle se termine, alors on a trouvé une
+    valeur d'annulation (la plus petite) de $f(u_1,\ldots,u_n,\_)$. Sinon,
+    cela signifie au choix que la boucle est infinie ou que la simulation de
+    $f$ est elle-même infinie.
+  \end{itemize}
+
+  Par induction sur la structure de $\RecG$, on en déduit que toute fonction
+  récursive générale peut être simulée par une machine de Turing.
 \end{proof}
 
 Pour montrer le sens réciproque, on doit d'abord décider d'une façon de coder
@@ -1463,3 +1592,68 @@ un symbole $\beta$ pour séparer ces deux nombres.
   \[\langle M\rangle \defeq \alpha^{|Q|}\beta\alpha^{|\Gamma\setminus \Sigma|}\beta
   \]
 \end{definition}
+
+A FAIRE : FORME NORMALE DE KLEENE, BLABLABLA
+
+\begin{theorem}[Forme normale de Kleene]\label{thm.norm.Kleene}
+  Soient des alphabets
+  $\Sigma_1,\ldots,\Sigma_n, \Gamma$. Il existe deux fonctions RPG
+  \[T : \bN \times \left(\prod_{i = 1}^n (\Sigma_i)^\star\right)
+  \times\bN \to \btwo \qquad
+  U : \bN \times \left(\prod_{i = 1}^n (\Sigma_i)^\star \right)
+  \times \bN \to \Gamma^\star\]
+  et une fonction
+  \[\godcod - : \TM(\Sigma_1,\ldots,\Sigma_n,\Gamma) \to \bN\]
+  telles que pour toute machine de Turing
+  $M \in \TM(\Sigma_1,\ldots,\Sigma_n,\Gamma)$~:
+  \begin{itemize}
+  \item $T(\godcod M,u_1,\ldots,u_n,k) = 1$ si et seulement si la machine
+    $M$ s'arrête sur les entrées $u_1,\ldots,u_n$ en moins de $k$ étapes
+    de calcul
+  \item $U(\godcod M,u_1,\ldots,u_n,k)$ est le contenu du ruban de sortie de
+    $M$ au bout de $k$ étapes de calcul.
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+On en déduit donc le théorème de Church-Turing.
+
+\begin{theorem}[Church-Turing]
+  Pour tous alphabets $\Sigma_1,\ldots,\Sigma_n,\Gamma$, on a l'égalité
+  \[\RecG(\Sigma_1,\ldots,\Sigma_n,\Gamma) =
+  \Calc(\Sigma_1,\ldots,\Sigma_n,\Gamma)\]
+\end{theorem}
+
+\begin{proof}
+  Par le \cref{lem.recG.MT}, on en déduit l'inclusion $\RecG\subseteq\Calc$.
+  Pour la réciproque, on pose $M \in \Calc(\Sigma_1,\ldots,\Sigma_n,\Gamma)$.
+  D'après le \cref{thm.norm.Kleene}, on peut donc considérer la fonction
+  suivante, qui est $\RecG$ par construction~:
+  \[(u_1,\ldots,u_n) \longmapsto U(\godcod M,u_1,\ldots,u_n,\mu(t \mapsto
+  T(\godcod M,u_1,\ldots, u_n,t)))\]
+  Qui retourne exactement $f_M(u_1,\ldots,u_n)$ si $f_M$ converge en ce point,
+  et n'est pas définie sinon. Cette fonction calculable est donc une fonction
+  récursive générale.
+\end{proof}
+
+Cette preuve apporte aussi un corollaire essentiel, que l'on énonce comme
+théorème à cause de son importance.
+
+\begin{theorem}[Machine universelle]\label{thm.MT.U}
+  Pour tous alphabets $\Sigma_1,\ldots,\Sigma_n,\Gamma$, il existe une machine
+  de Turing $\mathcal U_{\Sigma_1,\ldots,\Sigma_n,\Gamma}$ (que l'on écrira simplement
+  $\mathcal U$) telle que
+  \[\forall M \in \TM(\Sigma_1,\ldots,\Sigma_n,\Gamma),
+  \forall (u_1,\ldots, u_n) \in \prod_{i = 1}^n (\Sigma_i)^\star,
+  f_M(u_1,\ldots,u_n) = f_\mathcal U(\godcod M, u_1,\ldots,u_n)\]
+\end{theorem}
+
+\begin{proof}
+  La fonction donnée précédemment étant une fonction récursive générale, on peut
+  trouver une machine de Turing qui la simule~: cette machine est donc une
+  machine $\mathcal U$ vérifiant la propriété souhaitée.
+\end{proof}
+
