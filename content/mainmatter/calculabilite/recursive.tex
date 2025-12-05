@@ -1657,3 +1657,87 @@ théorème à cause de son importance.
   machine $\mathcal U$ vérifiant la propriété souhaitée.
 \end{proof}
 
+\subsection{Thèse de Church-Turing}
+
+Pour clore ce chapitre, nous partageons la thèse de Church-Turing, d'un ordre
+plus philosophique que mathématique. Malgré son statut informel, cette thèse
+est cruciale dans l'appréciation de la calculabilité et dans sa pratique.
+
+\begin{thesis}[Church-Turing]\label{thesis.CT}
+  Tout algorithme reposant sur des
+  méthodes \emphexpr{finitaire}, et généralement toute fonction intuitivement
+  calculable, peut s'exprimer sous la forme d'une machine de Turing (de façon
+  équivalente, sous la forme d'une fonction récursive).
+\end{thesis}
+
+Historiquement, cette thèse a d'abord été formulée par Church à propos d'un
+autre formalisme équivalent~: le $\lambda$-calcul (que nous étudierons en
+détails dans le CHAPITRE LAMBDA CALCUL). Church \cite{Church1936AnUP}
+propose déjà cette thèse en tant que postulat empiriquement vérifié~: comme
+un postulat physique (\latinexpr{e.g.} les principes de la thermodynamique)
+ce fait est avancé sans une preuve formelle, mais avec une forte conviction de
+sa vérité basée sur de nombreuses tentatives d'invalidation qui ont échoué.
+Ainsi, pour Church, il n'y avait aucune procédure finitaire dont il ne pouvait
+trouver qu'elle était équivalente à un programme au sens de son
+$\lambda$-calcul.
+
+Au contraire, Turing \cite{turing1936a} donne un réel argument pour soutenir
+cette thèse. Comme dit précédemment, cet argument est d'ordre philosophique,
+mais il ne peut en être autrement~: aucune description mathématique
+fiable existe pour définir la notion de
+\og fonction intuitivement calculable\fg et la thèse propose justement
+d'assimiler cette notion floue et informelle avec la définition rigoureuse de
+machine de Turing (ou autre formalisme de calcul équivalent). Décrivons
+dans les grandes lignes cet argument~:
+
+\begin{quotation}
+  Imaginons une méthode algorithmique qui, étant donnée une séquence de symboles
+  en entrée, doit retourner une séquence de symboles en retour. La méthode
+  algorithmique doit être exécutée par un opérateur, qu'il soit un ordinateur
+  exécutant un programme ou un être humain lisant une feuille sur laquelle est
+  écrite la liste des instructions. De plus, on suppose que l'opérateur a accès
+  à une forme de mémoire arbitrairement grande (une mémoire informatique, ou
+  bien simplement un très grand nombre de feuilles de papier pour un humain).
+
+  L'opérateur est un objet fini de la réalité~: il a donc un nombre fini d'états
+  d'esprit qu'il peut adopter, et il ne peut lire qu'une portion minime de la
+  mémoire arbitrairement grande à chaque instant. Ainsi, son comportement à un
+  instant donné lors de l'exécution de l'algorithme ne dépend que de deux
+  facteurs~: son état d'esprit (un parmi une finitude) et le caractère qu'il
+  lit (un parmi une finitude).
+
+  Il se comporte donc comme une machine de Turing dont le nombre d'états est
+  suffisamment grand et le nombre de symboles aussi~: il lit un caractère, passe
+  d'un état d'esprit au suivant, et modifie ce qu'il a lu en conséquence. Ainsi,
+  toute exécution algorithmique est équivalente à l'exécution d'une machine de
+  Turing.
+\end{quotation}
+
+Si cette thèse est généralement acceptée, l'argument de Turing peut être
+discuté. Malgré tout, en bientôt un siècle que cette thèse a été avancée, elle
+n'a jamais été rejetée malgré de très nombreux langages de programmation
+inventés, des façons originales de définir des calculs ou des tentatives de
+construire des modèles plus forts. Tous ces modèles de calculs se sont toujours
+retrouvés équivalents (ou moins forts) que le modèle des machines de Turing.
+
+Cette thèse apporte aussi des effets concrets sur la pratique de la
+calculabilité.
+En effet, en acceptant cette thèse, on admet aussi que toute procédure
+algorithmique peut s'écrire comme une machine de Turing, et qu'il suffit donc de
+décrire des fonctions calculables par des algorithmiques et méthodes
+suffisamment précises et finitaires (par exemple, on refuse quand même
+d'imaginer une méthode qui testerait toutes les valeurs d'une fonction
+$f : \bN \to \bN$). Ce point de vue est largement plus efficace, et permet
+d'éviter de détailler inutilement des constructions techniques qui ne font
+aucunement avancer la compréhension des objets en jeu. Cette pratique était déjà
+présente par exemple dans la preuve du \cref{lem.recG.MT}, où les
+constructions de machines de Turing étaient décrites de façon informelle.
+Dans les chapitres suivants, nous proposerons des constructions encore moins
+formelles, mais restant suffisamment précises pour que la \cref{thesis.CT}
+s'applique.
+
+Enfin, précisons un point important~: cette thèse ne s'applique que dans le
+cadre de la calculabilité, c'est-à-dire pour définir ce qui est de l'ordre du
+calculable, de ce qu'une méthode finitaire peut atteindre. Elle ne dit rien,
+ou presque, sur le lien qui existe entre des modèles de calculs du point de vue
+de leur complexité.
