@@ -961,7 +961,7 @@ L'intérêt de cette fonction est de nous donner un encodage des paires d'entier
 avec les entiers eux-mêmes. On peut en fait généraliser cette idée avec les
 $k$-uplets d'entiers, et même les listes d'entiers.
 
-\begin{definition}
+\begin{definition}\label{def.bij.pairing}
   On définit la \ordinalnumeralfeminin{$n$} bijection, $\alpha_n$, par
   récursion sur $n$~:
   \begin{itemize}
@@ -1071,56 +1071,56 @@ $k$-uplets d'entiers, et même les listes d'entiers.
 
 Dans cette section, nous présentons la notion d'automates à pile. Nous avons vu
 dans le chapitre précédent que les automates finis (déterministes ou non
-déterministes) reconnaissent exactement les langages réguliers. Les automates à pile,
-eux, reconnaissent exactement les langages algébriques.
+déterministes) reconnaissent exactement les langages réguliers. Les automates à
+pile, eux, reconnaissent exactement les langages algébriques.
 
 La première sous-section est dédiée aux définitions, et en particulier au cas de
-l'acceptation, car plusieurs possibilités existent pour définir l'acceptation d'un mot
-par un automate à pile. Nous verrons dans la seconde sous-section les conséquences de
-ces automates, en particulier un théorème de clôture et le cas des automates à pile
-déterministes.
+l'acceptation, car plusieurs possibilités existent pour définir l'acceptation
+d'un mot par un automate à pile. Nous verrons dans la seconde sous-section les
+conséquences de ces automates, en particulier un théorème de clôture et le cas
+des automates à pile déterministes.
 
 \subsection{Premières définitions}
 
-Cependant, là où les automates finis admettent de nombreuses formulations équivalentes,
-ce n'est pas toujours le cas pour les automates à pile. En particulier, les automates
-à pile sont par défaut non déterministes.
+Cependant, là où les automates finis admettent de nombreuses formulations
+équivalentes, ce n'est pas toujours le cas pour les automates à pile. En
+particulier, les automates à pile sont par défaut non déterministes.
 
-Un automate à pile peut se voir comme un automate fini auquel on adjoint une liste de
-symboles que l'automate peut lire pour avoir une forme de mémoire. Cette liste de
-symboles fonctionne suivant le principe LIFO (\foreignexpr{last in, first out}), ce
-qui correspond à la notion informatique de pile (d'où le nom)~: le symbole lu est le
-dernier symbole ajouté.
+Un automate à pile peut se voir comme un automate fini auquel on adjoint une
+liste de symboles que l'automate peut lire pour avoir une forme de mémoire.
+Cette liste de symboles fonctionne suivant le principe LIFO
+(\foreignexpr{last in, first out}), ce qui correspond à la notion informatique
+de pile (d'où le nom)~: le symbole lu est le dernier symbole ajouté.
 
 \begin{definition}[Automate à pile]
-    Soit un alphabet $\Sigma$. Un automate à pile sur $\Sigma$ est la donnée d'un
-    $5$-uplet $(Q,q_0,\Gamma,\alpha_0,R)$ où~:
-    \begin{itemize}
-        \item $Q$ est l'ensemble (fini) d'états
-        \item $q_0 \in Q$ est l'état initial
-        \item $\Gamma$ est l'alphabet de pile
-        \item $\alpha_0 \in \Gamma$ est le symbole initial
-        \item 
-        $R \subseteq Q \times \Gamma\times (\Sigma\cup \{\varepsilon\})\times
-        Q \times \Gamma^\star$ est la relation de transition.
-        On notera $q,\alpha \xrightarrow{\beta} q',u$ pour signifier
-        $(q,\alpha,\beta,q',u) \in R$ et on appellera $\beta$ l'étiquette de
-        la transition.
-    \end{itemize}
+  Soit un alphabet $\Sigma$. Un automate à pile sur $\Sigma$ est la donnée
+  d'un $5$-uplet $(Q,q_0,\Gamma,\alpha_0,R)$ où~:
+  \begin{itemize}
+  \item $Q$ est l'ensemble (fini) d'états
+  \item $q_0 \in Q$ est l'état initial
+  \item $\Gamma$ est l'alphabet de pile
+  \item $\alpha_0 \in \Gamma$ est le symbole initial
+  \item 
+    $R \subseteq Q \times \Gamma\times (\Sigma\cup \{\varepsilon\})\times
+    Q \times \Gamma^\star$ est la relation de transition.
+    On notera $q,\alpha \xrightarrow{\beta} q',u$ pour signifier
+    $(q,\alpha,\beta,q',u) \in R$ et on appellera $\beta$ l'étiquette de
+    la transition.
+  \end{itemize}
 \end{definition}
 
 \begin{notation}
-    Comme dans le cas des automates finis, on considère par défaut qu'un automate
-    dont on ne spécifie pas les composante a pour ensemble d'état $Q$, pour état
-    initial $q_0$, et de plus que $\Gamma$ est son alphabet de pile et $\alpha_0$
-    son symbole initial.
+  Comme dans le cas des automates finis, on considère par défaut qu'un automate
+  dont on ne spécifie pas les composante a pour ensemble d'état $Q$, pour état
+  initial $q_0$, et de plus que $\Gamma$ est son alphabet de pile et $\alpha_0$
+  son symbole initial.
 \end{notation}
 
-Contrairement au cas d'un automate fini déterministe ou non, utiliser un automate à
-pile demande plus d'information que la simple donnée de l'automate. Cela est dû au
-fait qu'un automate à pile se comportera différemment en fonction de la pile qu'il lit.
-On introduit donc la notion de configuration, qui est une description totale du
-calcul lors de l'exécution d'un automate à pile.
+Contrairement au cas d'un automate fini déterministe ou non, utiliser un
+automate à pile demande plus d'information que la simple donnée de l'automate.
+Cela est dû au fait qu'un automate à pile se comportera différemment en fonction
+de la pile qu'il lit. On introduit donc la notion de configuration, qui est une
+description totale du calcul lors de l'exécution d'un automate à pile.
 
 \begin{definition}[Configuration]
     Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile sur $\Sigma$. On

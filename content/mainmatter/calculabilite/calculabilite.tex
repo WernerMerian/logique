@@ -57,9 +57,839 @@ Commençons donc par définir la notion d'énumération.
   par ce théorème.
 \end{remark}
 
+\begin{notation}
+  A partir de maintenant, on emploira une notation vectorielle pour alléger les
+  notations sur les entrées~: $\vec x$ représente la donnée de $x_1,\ldots,x_n$
+  pour un certain n.
+\end{notation}
+
+\begin{notation}
+  Il est parfois utile d'expliciter le temps de calcul~: lorsqu'on considère une
+  fonction calculable $f$ de code $e$ appelée sur une entrée $\vec x$, on écrit
+  \[\Enum_e(\vec x)[t]\]
+  pour désigner la valeur obtenue au bout de $t$ étapes de calcul. Cette
+  notation est relativement informelle en ce qu'elle permet à la fois de
+  désigner le test de terminaison au bout de $t$ étapes et le résultat
+  retourné, combinant les prédicats $T$ et $U$ du \cref{thm.norm.Kleene}
+\end{notation}
+
 On a, de plus, une propriété permettant d'ajouter en paramètre le code de la
 fonction qu'on considère.
 
-\begin{property}[Paramétricité]
-  A FAIRE
+\begin{property}[\'Enumération]
+  Pour notre énumération $(\Enum^k)_{k \in \bN}$, on a la propriété suivante,
+  dite d'énumération~:
+  \[\exists n_U \in \bN, \forall e \in \bN, \forall \vec x \in \bN^k,
+  \Enum^{k+1}_{n_U}(e,\vec x) = \Enum^k_e(\vec x)\]
 \end{property}
+
+\begin{proof}
+  Il nous suffit de prendre pour indice $n_u$ la valeur de
+  $\godcod{\mathcal U_{\bN^k, \bN}}$ où $\mathcal U$ est définie dans le
+  \cref{thm.MT.U}.
+\end{proof}
+
+\begin{remark}
+  En utilisant la \cref{prop.Cantor.bij}, on en déduit que pour tout
+  $k \in \bN$, on peut trouver un code $n_U$ tel que
+  \[\forall e \in \bN, \forall \vec x \in \bN^k,
+  \Enum^k_e (\vec x) = \Enum^1_{n_u} (\langle e, \vec x \rangle)\]
+  pour cette raison, il sera souvent plus facile d'ignorer l'exposant
+  $\Enum^k$ et de simplement considérer la fonction $\Enum$.
+\end{remark}
+
+\begin{exercise}[Lemme de bourrage]
+  Montrer que pour toute fonction $f : \bN^k \partialto \bN$ calculable, il
+  existe en réalité une infinité d'indices $e$ tels que $\Enum^k_e = f$.
+  Montrer le résultat plus fort suivant~: il existe une fonction RP
+  $\nu : \bN^2 \to \bN$ telle que $\nu$ est strictement croissante en son
+  deuxième argument, et pour tous entiers $n,m$ on a
+  $\Enum^k_{\nu(n,m)} = \Enum_n$.
+\end{exercise}
+
+Donnons aussi la propriété de paramétrisation~: celle-ci nous permet de
+considérer une fonction à plusieurs arguments et de ne leur en appliquer qu'une
+partie. C'est une forme de curryfication, dont on montre qu'elle peut
+s'appliquer de façon purement uniforme.
+
+\begin{property}[Paramétrisation]
+  Pour tous entiers $n,m \geq 1$, il existe une fonction RP
+  $s^n_m : \bN^{m+1} \to \bN$ telle que
+  \[\forall e \in \bN, \forall \vec x \in \bN^m, \forall \vec y \in \bN^n,
+  \Enum^{n+m}_e(\vec x, \vec y) = \Enum^n_{s^n_m(e,\vec x)}(\vec y)\]
+\end{property}
+
+\begin{proof}
+  Pour prouver l'égalité, il nous suffit de considérer une machine de Turing
+  $M$ à $n + m$ entrée. Supposons fixées $m$ entrées $\vec x$~: on ajoute
+  à $M$ des états et transitions qui font écrire les valeurs de $\vec x$ aux
+  $m$ premiers rubans d'entrée avant le démarrage de la machine. Il nous
+  faut donc, à $\vec x$ fixé, simplement ajouter des états et des transitions,
+  et modifier l'état initial~: ces modifications sont RP.
+
+  On en déduit qu'il existe une fonction RP qui, généralement, modifie un code
+  $e$ d'une fonction $f$ pour construire une fonction $f'$ où ses premières
+  entrées sont fixées à des valeurs données.
+\end{proof}
+
+En réalité, ces trois propriétés (surjectivité sur les fonctions calculables,
+énumération et paramétricité) suffisent à caractériser notre énumération au
+sens suivant~:
+
+\begin{definition}[\'Equivalence d'énumération]
+  Soient $(\Enum^k)$ et $(\Psi^k)$ deux énumérations des fonctions calculables.
+  On dit que ces deux énumérations sont équivalentes lorsqu'il existe pour
+  tout $k$ une paire de fonctions calculables totales $f_k,g_k : \bN \to \bN$
+  telles que
+  \[\forall e \in \bN, \Psi^k_e = \Enum_{f_k(e)}^k\qquad
+  \forall e \in \bN, \Enum_e^k = \Psi^k_{g_k(e)}\]
+\end{definition}
+
+\begin{proposition}
+  Pour toute énumération de fonctions calculables $(\Psi^k)_{k \in \bN}$, cette
+  énumération est équivalente à $(\Enum^k)$ si et seulement si elle vérifie
+  les trois conditions suivantes~:
+  \begin{itemize}
+  \item pour toute fonction calculable $f : \bN^k \partialto \bN$, il existe
+    $e$ tel que $\Psi^k_e = f$
+  \item pour chaque $k$,
+    il existe un indice $n_U$ tel que pour tout code $e \in \bN$
+    et toute entrée $\vec x \in \bN^k$,
+    $\Psi^k_e(\vec x) = \Psi^k_{n_U}(e,\vec x)$
+  \item pour tous $n,m \geq 1$, il existe une fonction totale calculable
+    $\sigma^n_m$ telle que pour tout code $e \in \bN$, toutes entrées
+    $\vec x \in \bN^m, \vec y \in \bN^n$,
+    $\Psi^{n+m}_e(\vec x,\vec y) = \Psi^n_{\sigma^n_m(e, \vec x)}(\vec y)$
+  \end{itemize}
+  la surjectivité sur les fonctions calculables, l'énumération et la
+  paramétrisation.
+\end{proposition}
+
+\begin{proof}
+  On procède par double implication~:
+  \begin{itemize}
+  \item Supposons que $(\Psi^k)$ est équivalente à $(\Enum^k)$ et soient les
+    deux familles de fonctions $(f_k),(g_k)$ témoignant de leur équivalence.
+    Montrons que les $3$ conditions sont vérifiées~:
+    \begin{itemize}
+    \item Chaque $\Psi^k$ est surjective sur l'ensemble des fonctions
+      calculables à $k$ arguments~: si $f$ a pour code $e$ pour $\Enum^k$,
+      alors elle a pour code $g_k(e)$ pour $\Psi^k$.
+    \item Soit $k \in \bN$, montrons qu'il existe un indice $n_U$ pour la
+      propriété d'énumération. Soient un code $e \in \bN$ et une entrée
+      $\vec x \in \bN^k$. On a alors
+      \[\Psi^k_e(\vec x) = \Enum^k_{f_k(e)}(\vec x)\]
+      En posant $f : e, \vec x \longmapsto \Enum^k_{f_k(e)}(\vec x)$ et prenant
+      $e_U$ un indice de cette fonction (qui existe car c'est la composition
+      d'une machine universelle et de $f_k$ supposée calculable), on a alors
+      \[\Enum^{k+1}_{e_U}(e,\vec x) = \Enum^k_{f_k(e)}(\vec x)\]
+      et $\Enum^{k+1}_{e_U}(e,\vec x) = \Psi^{k+1}_{g_k(e_U)}(e, \vec x)$ par
+      hypothèse. On peut donc prendre l'indice $m_U \defeq g_k(e_U)$
+      pour en déduire le résultat. Remarquons que cet indice
+      $m_U$ est le même pour tout choix de $e$ et de $\vec x$, ce qui est
+      le résultat souhaité.
+    \item Soient $n,m \geq 1$, $i \in \bN$, $\vec x \in \bN^m$ et
+      $\vec y \in \bN^n$, montrons qu'il existe une fonction $\sigma^n_m$
+      vérifiant la propriété attendue. tout d'abord, on sait que
+      \[\Psi^{n+m}_e(\vec x, \vec y) = \Enum^{n+m}_{f_{n+m}(e)}(\vec x, \vec y)\]
+      On pose maintenant
+      $f : e, \vec x, \vec y \longmapsto \Enum^{n+m}_{f_{n+m}(e)}(\vec x,\vec y)$
+      et $n_f$ un code de cette fonction. On a alors
+      \[\Enum^{n+m}_{f_{n+m}(e)}(\vec x, \vec y) =
+      \Enum^{n+m+1}_{n_f}(e, \vec x, \vec y)\]
+      et, grâce à la fonction $s^n_m$, on en déduit que
+      \[\Enum^{n+m+1}_{n_f}(e, \vec x, \vec y) =
+      \Enum^n_{s_{m+1}^n(n_f,e, \vec x)}(\vec y)\]
+      d'où
+      \[\Psi^{n+m}_e(\vec x, \vec y) =
+      \Psi^{m}_{g_m(s^n_{m+1}(n_f,e,\vec x))}(\vec y)\]
+      donc, en posant
+      $\sigma^m_n : e, \vec x \longmapsto g_m(s^n_{m+1}(n_f,e, \vec x))$,
+      on obtient le résultat.
+    \end{itemize}
+
+  \item Réciproquement, supposons que $(\Psi^{k})$ vérifie les propriétées
+    souhaitées. On construit $f_k$ de la façon suivante (la construction de
+    $g_k$ est similaire, puisque la situation est symétrique entre $\Enum^k$
+    et $\Psi^k$, les deux énumérations vérifiant les mêmes hypothèses)~:
+    \begin{align*}
+      \Psi^k_e(\vec x) &= \Psi^{k+1}_{m_U}(e,\vec x) &\text{par énumération}\\
+      &= \Enum^{k+1}_{e'}(e,\vec x) &\text{par surjectivité}\\
+      &= \Enum^k_{s^k_1(e',e)}(\vec x) &\text{par paramétrisation}
+    \end{align*}
+    donc $f_k : e \longmapsto s^k_1(e',e)$ où $e'$ est un code de la fonction
+    $e, \vec x \mapsto \Psi^{k+1}_{m_U}(e, \vec x)$ pour $\Enum$.
+  \end{itemize}
+
+  D'où l'équivalence.
+\end{proof}
+
+Par ce résultat, on comprend que le choix exact de l'énumération $\Enum^k$
+n'est pas essentiel~: tant qu'elle vérifie les trois conditions naturelles que
+sont la surjectivité, l'énumération et la paramétrisation, l'énumération
+choisie permettra de manipuler les fonctions calculables comme on le souhaite.
+
+\subsection{Point fixe et arrêt}
+
+Notre objectif dans cette sous-section est d'exhiber une fonction non calculable
+de façon explicite. L'existence d'une surjection $\bN \to (\bN \partialto \bN)$
+suffit par des arguments de cardinalité à montrer que toute fonction n'est pas
+calculable, mais nous en donnons un exemple explicite avec le problème de
+l'arrêt. Ce problème a une importance fondamentale en calculabilité, puisqu'il
+est à la fois le problème indécidable le plus élémentaire, mais aussi celui
+qui structure toute l'étude des problèmes indécidables.
+
+Pour commencer notre présentation du problème de l'arrêt, nous devons introduire
+une première méthode~: la méthode de l'argument diagonal. Cet argument est à
+l'origine utilisé dans le \cref{thm.Cantor}, mais il s'est avéré extrêmement
+fructueux en logique et en particulier en calculabilité, c'est pourquoi nous
+en donnons une présentation plus systématique reprise en partie de
+\cite{alma991002216619806616}.
+
+Pour exprimer au mieux l'argument diagonal, il convient de considérer ce qui
+mène à la contradiction dans la démonstration du \cref{thm.Cantor}. Le point
+central est le suivant~: en supposant qu'on a une surjection
+$f : X \to \powerset(X)$, on peut considérer une matrice
+$\{x_{i,j}\}_{i,j \in X}$ où
+\[x_{i,j} \defeq
+\begin{cases} 1 \text{ si } i \in f(j) \\ 0 \text{ sinon} \end{cases}\]
+L'argument diagonal, qui lui vaut son nom, est alors de considérer la diagonale
+de cette matrice, c'est-à-dire la famille $\{x_{i,i}\}_{i \in X}$ dont on sait,
+par surjectivité de $f$, qu'elle a un antécédent. En notant $e$ l'antécédent,
+peut alors considérer $x_{e,e}$.
+
+Cette construction peut s'effectuer en considérant n'importe quelle fonction
+$b : \btwo \to \btwo$. Dans ce cas, en prenant la famille
+$\{b(x_{i,i})\}_{i \in X}$ et $e$ un antécédent, on obtient l'égalité suivante~:
+\[x_{e,e} = \chi_{f(e)}(e) = b(x_{i,i})_{i = e} = b(x_{e,e})\]
+ce qui constitue donc un point fixe de $b$.
+
+L'argument diagonal permet ainsi de construire, pour toute fonction
+$f : \btwo \to \btwo$, un point fixe de $f$. Dans ce cas précis, il est clair
+qu'on a une contradiction en prenant la fonction $\lnot$, nous donnant alors
+comme ensemble à considérer
+\[Y \defeq \{x \in X \mid x \notin f(x)\}\]
+comme donné dans la preuve du \cref{thm.Cantor}. Cependant, cette version
+générale devient plus exploitable dans d'autres conditions~: si l'on a à
+disposition une surjection $f : A \to (B^A)$, alors toute fonction $B \to B$
+admet un point fixe. Ces points fixes existent rarement, ce qui fait que cet
+outil permet principalement d'obtenir une contradiction (mais il existe des
+cas où ce point fixe existe).
+
+Avec cette discussion en tête sur l'argument diagonal, et sachant que
+$\Enum$ nous donne une surjection $\bN \to \Calc(\bN \partialto \bN)$, il est
+peu surprenant qu'il existe un théorème de point fixe applicable à notre
+situation.
+
+Pour construire ce point fixe, on utilise une méthode analogue à ce qui a été
+présenté précédemment. En effet, en considérant une machine universelle de code
+$n_U$, on obtient par $\Enum^{k+1}$ une façon de lister les fonctions à $k$
+arguments avec deux paramètre~: le premier indique quelle énumération choisir
+(le cas de $n_U$ indique qu'il existe une énumération qui atteindra toutes les
+fonctions) et le second indique à quelle position dans l'énumération on se
+trouve. Ainsi, la fonction
+\[e \longmapsto s^k_1(e,e)\]
+représente une fonction diagonale analogue à la famille $\{x_{i,i}\}$. En
+considérant une fonction calculable totale $\alpha : \bN \to \bN$, on peut donc
+considérer
+\[e \longmapsto \alpha(s^k_1(e,e))\]
+pour espérer obtenir une point fixe de $\alpha$ (au sens d'une fonction qui
+a comme codes à la fois $e$ et $\alpha(e)$), c'est précisément le contenu du
+théorème du point fixe de Kleene.
+
+\begin{theorem}[Point fixe de Kleene]\label{thm.Kleene.fix}
+  Soit $\alpha : \bN \to \bN$ une fonction totale calculable.
+  Alors il existe un code $e \in \bN$ tel que
+  \[\forall \vec x \in \bN^k, \Enum_e (\vec x)= \Enum_{f(e)}(\vec x)\]
+  calculable en un code de $\alpha$.
+\end{theorem}
+
+\begin{proof}
+  On pose la fonction
+  \[g : (e,\vec x) \mapsto \Enum^k_{\alpha(s^k_1(e,e))}(\vec x)\]
+  qui est calculable comme composée de fonctions calculables.
+  Soit $e_0$ un code de $g$ (on peut calculer $e_0$ directement en fonction
+  d'un code de $\alpha$), on a alors pour tous $e \in \bN,\vec x \in \bN^k$~:
+  \begin{align*}
+    \Enum^{k}_{s^k_1(e_0,e)}(\vec x)
+    &= \Enum^{k+1}_{e_0}(e,\vec x) \\
+    &= \Enum^k_{\alpha(s^k_1(e,e))}(\vec x)
+  \end{align*}
+  d'où, en particulier pour $e \defeq e_0$~:
+  \[\Enum^k_{s^k_1(e_0,e_0)}(\vec x) = \Enum^k_{\alpha(s^k_1(e_0,e_0))}(\vec x)\]
+
+  On en déduit le théorème en considérant $s^k_1(e_0,e_0)$.
+\end{proof}
+
+Ce théorème est central pour construire des programmes, puisqu'il revient à
+la notion de récursion. Pour en donner un exemple simple d'utilisation,
+considérons la transformation de programme suivante~:
+\[(e, n) \longmapsto \ifrm (n = 0)\thenrm 1 \elserm  n \times\Enum_e(n-1)\]
+Cette transformation de programme est évidemment calculable. En currifiant la
+fonction (en la transformant en une fonction de la forme
+$e \mapsto n \mapsto [\cdots]$ au lieu d'une fonction de la forme
+$(e,n) \mapsto [\cdots]$) on obtient une fonction totale calculable
+\[\alpha : \bN \longrightarrow \bN\]
+et, en prenant un point fixe $e$ de cette fonction $\alpha$, donnée par le
+\cref{thm.Kleene.fix}, on obtient la fonction suivante~:
+\[f : n \longmapsto \ifrm (n = 0) \thenrm 1 \elserm n \times f(n-1)\]
+La définition de $f$ fait directement appel à $f$, ce qui est rendu possible
+grâce à ce théorème de point fixe.
+
+Plus généralement, la construction de points fixes dans les définitions de
+fonctions correspond à la possibilité de donner des appels récursifs.
+
+Une autre conséquence de ce théorème de point fixe est l'existence de fonctions
+non calculables. En effet, comme souvent avec les points fixes construits par
+argument diagonal, il suffit de peu pour obtenir une contradiction.
+
+Dans notre cas, la contradiction naît d'un point central de la calculabilité~:
+la partialité des fonctions. Ce point est arrivé relativement tard dans
+l'édification de la calculabilité, pour laquelle plusieurs systèmes de calcul
+existaient dans lesquels on devait prouver qu'une fonction était totale pour la
+rendre calculable. Une question est alors rapidement née, en particulier à
+l'aulne du THEOREME D'INCOMPLETUDE DE GODEL~: pourquoi ne peut-on pas appliquer
+un procédé diagonal à cet ensemble de fonctions totales calculables pour obtenir
+une fonction non listée auparavant ?
+
+En appliquant cette idée naïve, cela nous pousse à considérer la fonction
+\[e \longmapsto \Enum_e(e) + 1\]
+qui, par définition, est différente de toutes les fonctions calculables, et
+n'est donc pas calculable. La solution à ce paradoxe apparent est donc que
+l'expression $\Enum_e(e) + 1$ est parfois non définie, et montre qu'on ne peut
+supprimer du domaine de la calculabilité le fait que les fonctions étudiées sont
+partielles dans leur définition.
+
+En suivant cette idée, un premier candidat de fonction non calculable se
+dessine~: la fonction valant $1$ si $\Enum_e(e)$ est définie et $0$ sinon.
+
+\begin{definition}[Problème de l'arrêt]
+  On définit le problème de l'arrêt comme la partie (ou, de façon équivalente,
+  comme sa fonction caractéristique)~:
+  \[K \defeq \{e \in \bN \mid \Enum_e(e)\convcal\}\]
+\end{definition}
+
+\begin{theorem}\label{thm.arret.indec}
+  Le problème de l'arrêt a une fonction caractéristique non calculable.
+\end{theorem}
+
+\begin{proof}
+  Supposons qu'il existe un code $e_K$ tel que $\Enum_{e_K} = \chi_K$. On
+  introduit l'\cref{algo.diag}.
+  
+  \begin{figure}[h!]
+    \begin{algorithm}[H]
+      \KwData{un code de machine $e$}
+      \If{$\Enum_{e_K}(e) = 1$}{
+        effectuer une boucle infinie\;
+      }
+      \Else{
+        \KwRet 0\;
+      }
+      \caption{Algorithme diagonal}
+      \label{algo.diag}
+    \end{algorithm}
+  \end{figure}
+
+  Cette procédure est calculable, et donne un code $e'$ à partir d'un code $e$.
+  D'après le \cref{thm.Kleene.fix}, on peut donc trouver un code $e$ qui est
+  un point fixe de cette transformation, ce qui mène à deux cas possibles~:
+  \begin{itemize}
+  \item soit $\Enum_e(e)\convcal$. Dans ce cas, d'après le branchement
+    conditionnel, l'algorithme effectue une boucle infinie, donc il diverge.
+  \item soit $\Enum_e(e)\divcal$. Dans ce cas, d'après le branchement
+    conditionnel, l'algorithme s'arrête et retourne $0$.
+  \end{itemize}
+  Ainsi, $\Enum_e(e)$ s'arrête si et seulement s'il ne s'arrête pas~: on a une
+  contradiction.
+\end{proof}
+
+\begin{remark}
+  La définition de l'ensemble $K$ repose sur le tiers exclu~: on utilise le
+  fait que $\Enum_e(e)$ converge ou diverge pour définir la valeur de
+  $\chi_K(e)$. Dans un contexte où l'on rejette le tiers exclu (en logique
+  intuitionniste) il est possible de vérifier un énoncé tel que
+  \[\forall f : \bN \to \bN, \exists e \in \bN, \forall n \in \bN,
+  f(n) = \Enum_e(n)\]
+  au prix de ne plus avoir l'existence d'ensembles tels que $K$.
+\end{remark}
+
+A partir de la non calculabilité de cet ensemble, il est possible de déduire
+celle de plusieurs autres ensembles similaires, que nous laissons en exercice.
+
+\begin{exercise}
+  Montrer que pour tout $k$, la fonction caractéristique de l'ensemble
+  \[\{(e,\vec x) \in \bN^{k+1}\mid \Enum^k_e(\vec x)\convcal\}\]
+  n'est pas calculable.
+\end{exercise}
+
+Relevons que notre exemple de fonction non calculable a une forme particulière~:
+c'est une fonction apparaissant comme fonction caractéristique d'un ensemble.
+Si nous avons exposé le problème de l'arrêt par une fonction, il est clair
+(puisque les parties de $\bN$ sont isomorphes aux fonctions $\bN \to \btwo$)
+que le caractère non calculable du problème de l'arrêt se définit tout aussi
+bien sur l'ensemble lui-même.
+
+L'idée d'étudier les parties de $\bN$ pour la calculabilité nous mène alors à
+la notion de problème de décision.
+
+\section{Problèmes de décision}
+
+Un problème de décision peut se représenter de plusieurs manières~: une fonction
+$\bN \to \btwo$, une partie $X \subseteq \bN$, ou encore un prédicat
+arithmétique (comme nous le verrons dans le CHAPITRE ARITHMETIQUE). Toutes
+ces visions étant identiques, nous considérons principalement les problèmes
+comme des parties de $\bN$.
+
+\subsection{Codes et ensembles c.e.}
+
+Commençons par donner la définition d'un problème de décision.
+
+\begin{definition}[Problème de décision]
+  Un problème de décision (ou simplement \emphexpr{problème}) est une partie
+  $X \subseteq \bN$.
+\end{definition}
+
+La notion de problème de décision est naturelle, si l'on considère les éléments
+de $\bN$ comme des codes~: un problème est un ensemble d'objets (appelés
+\emphexpr{instances}) dont on souhaite déterminer si ces objets vérifient une
+propriété ou non.
+
+\begin{example}
+  Donnons plusieurs exemple de problèmes de décision~:
+  \begin{itemize}
+  \item étant donné le code $e$ d'une fonction $f$, est-ce que $f$ est définie
+    en $e$ ?
+  \item étant donné le code $e$ d'une fonction $f$, est-ce que $f$ est une
+    fonction totale ?
+  \item étant donné un graphe $G = (S,A)$ encodé par un entier $p$,
+    est-ce que $G$ est connexe ?
+  \item étant donné un nombre $p$, est-il premier ?
+  \end{itemize}
+\end{example}
+
+On peut se donner plusieurs conventions pour encoder facilement des ensembles
+dans $\bN$, et ainsi parler de problèmes de décisions sur ces ensembles sans
+s'attarder sur la façon d'encoder les objets~:
+\begin{itemize}
+\item on a déjà vu qu'il était possible d'encoder n'importe quel ensemble de
+  la forme $\Gamma^\star$ où $\Gamma$ est un ensemble fini.
+\item encore mieux~: toute partie d'un tel ensemble $\Gamma^\star$ qui est un
+  langage algébrique $\mathcal L$ est en particulier une partie décidable, et
+  le code $\Gamma^\star \to \bN$ se restreint donc en un code
+  $\mathcal L \to \bN$. En particulier, tout ensemble défini inductivement
+  de façon finitaire (avec un nombre fini de constructeurs) s'écrit
+  naturellement comme un langage algébrique, et est donc possible à encoder
+  dans $\bN$.
+\item pour deux ensembles $X,Y$ avec un code $c_X : X \to \bN$ et un code
+  $c_Y : Y \to \bN$, on définit le code $c_{X\times Y}$ par la composée
+  \[X \times Y \xrightarrow{c_X \times c_Y} \bN \times \bN
+  \xrightarrow{\langle -,-\rangle} \bN\]
+  Si $c_X$ et $c_Y$ sont surjectifs (resp. injectifs, resp. bijectifs) alors
+  $c_{X\times Y}$ est aussi surjectif (resp. injectif, resp. bijectif).
+\item si $(X_i)_{i \in \bN}$ est une famille d'ensemble, où chaque ensemble est
+  muni d'un code $c_i : X_i \to \bN$, alors on définit le code $c_{\sum_i X_i}$
+  par
+  \[(i,x) \mapsto \langle i,c_i(x)\rangle\]
+\end{itemize}
+
+Parmi les exemples précédents, on remarque que deux problèmes sont décidables
+(vérifier qu'un nombre est premier et vérifier qu'un graphe est connexe), mais
+les deux autres problèmes ne le sont pas. Pourtant, les deux problèmes n'ont
+pas exactement la même forme. Pour le problème de l'arrêt, on peut effectivement
+donner une information dans les cas positifs~: si $\Enum_e(e)\convcal$, alors
+on peut effectivement en déduire que $e \in K$. Au contraire, pour tester si
+$\Enum_e$ est une fonction totale, il faudrait vérifier qu'elle s'arrête sur
+chaque entrée, ce qui demande de vérifier une infinité de valeurs d'entrées et
+ne peut se faire en un temps fini.
+
+On a donc une notion intermédiaire entre les problèmes décidables et les
+problèmes indécidables dont on ne peut rien dire~: la notion de problème
+semi-décidable.
+
+\begin{definition}[Problèmes calculables, calculatoirement énumérables]
+  Soit $X \subseteq \bN$ un problème de décision. On dit que $X$ est~:
+  \begin{itemize}
+  \item décidable (ou calculable, ou récursif) s'il existe un code $e$ tel que
+    \[\forall x \in \bN, (x \in X \iff \Enum_e(x) \conveq 1) \land
+    (x \notin X \iff \Enum_e(x) \conveq 0)\]
+  \item semi-décidable (ou calculatoirement énumérable, ou récursivement
+    énumérable) s'il existe un code $e$ tel que
+    \[\forall x \in \bN, x \in X \iff \Enum_e(x) \conveq 1\]
+  \item co-semi-décidable (ou co-calculatoirement énumérable, ou
+    co-récursivement énumérable) s'il existe un code $e$ tel que
+    \[\forall x \in \bN, x \notin X \iff \Enum_e(x) \conveq 0\]
+  \end{itemize}
+\end{definition}
+
+\begin{notation}
+  On notera c.e. (ou r.e.) pour un problème calculatoirement énumérable. De
+  même, co-c.e. désigne un problème co-calculatoirement énumérable.
+\end{notation}
+
+Un problème calculable est donc un problème dont la fonction caractéristique
+est elle-même calculable. Un problème calculatoirement énumérable, par
+contraste, est un problème dont on n'a une information calculable que sur les
+instances positives du problème~: un ensemble $X$ c.e. est un ensemble dont il
+existe un test $f$ tel que les éléments de $X$ réussissent ce test (en temps
+fini).
+
+L'exemple canonique de problème c.e. est le problème de l'arrêt.
+
+\begin{proposition}
+  L'ensemble $K$ est c.e.
+\end{proposition}
+
+\begin{proof}
+  Il nous suffit de considérer la fonction
+  $f : e \mapsto \ifrm{\Enum_e(e)\convcal}\thenrm{1}$ qui est
+  calculable (partielle). $\Enum_e(e)\convcal$ si et seulement si $f(e) = 1$.
+\end{proof}
+
+Allié au \cref{thm.arret.indec}, on en déduit que la classe des problèmes
+calculables est une sous-classe stricte des problèmes c.e. Le problème
+$\complement K$, le complémentaire de $K$, est naturellement un problème
+co-c.e. On donne le lemme suivant, permettant de voir les problèmes
+calculables comme l'intersection des problèmes c.e. et co-c.e.
+
+\begin{lemma}\label{lem.cal.c.e.co.c.e}
+  Soit $X \subseteq \bN$, alors $X$ est calculable si et seulement si
+  $X$ est c.e. et co-c.e.
+\end{lemma}
+
+\begin{proof}
+  Si $X$ est calculable, il est évident que $X$ est à la fois c.e. et co-c.e.
+  Réciproquement, cependant, on suppose qu'il existe deux fonctions totales
+  (potentiellement distinctes) de codes $e$ et $e'$ telles que pour tout
+  $x \in \bN$~:
+  \[x \in X \iff \Enum_e(x) \conveq 1 \qquad
+  x \notin X \iff \Enum_{e'}(x)\conveq 0\]
+  On construit alors l'algorithme suivant~:
+  
+  \begin{algorithm}[H]
+    $t \leftarrow 0$\;
+    \While{True}{
+      \If{$\Enum_e(x)[t]\conveq 1$}{
+        \KwRet 1\;
+      }
+      \If{$\Enum_{e'}(x)[t]\conveq 0$}{
+        \KwRet 0\;
+      }
+      $t \leftarrow t + 1$\;
+    }
+  \end{algorithm}
+  Cet algorithme est calculable, et il termine sur toute entrée~: en effet,
+  on sait que pour tout $x$, soit $x \in X$ soit $x \notin X$. Dans le premier
+  cas, $\Enum_e(x) \conveq 1$ et dans le second cas $\Enum_{e'}(x) \conveq 0$,
+  donc l'algorithme retourne $0$ ou $1$ selon si $x \in X$.
+
+  On en déduit que $X$ est calculable.
+\end{proof}
+
+L'exercice suivant justifie l'appellation d'ensemble \og énumérable \fg. Celui
+qui suit montre que le comportement de l'énumération peut donner une information
+très forte.
+
+\begin{exercise}
+  Soit $X \subseteq \bN$ un problème de décision non vide. Montrer que
+  $X$ est c.e. si et seulement s'il existe une fonction calculable totale
+  $f : \bN \to \bN$ telle que $X = \Im(f)$.
+\end{exercise}
+
+\begin{exercise}
+  Soit $X\subseteq \bN$ un problème de décision tel qu'il existe une fonction
+  calculable totale $f : \bN \to \bN$ telle que $X = \Im(f)$. Montrer que si
+  $f$ est croissante strictement, alors $X$ est calculable. En déduire que si
+  $f$ est croissante au sens large et $X$ est infini, alors $X$ est
+  calculable.
+\end{exercise}
+
+On montre de plus qu'une large part des problèmes d'intérêt en calculabilité
+sont en fait indécidable. Pour cela, on introduit la notion de fonction
+sémantique.
+
+\begin{definition}[Fonction sémantique]
+  Une fonction $f : \bN \to \bN$ est dite sémantique, ou extensionnelle, si elle
+  se relève en une fonction $\Calc(\bN \partialto \bN) \to \bN$, c'est-à-dire si
+  elle vérifie
+  \[\forall e,e' \in \bN, (\forall x, \Enum_e(x) = \Enum_{e'}(x)) \implies
+  f(e) = f(e')\]
+
+  Un problème sémantique (ou extensionnel) est un problème de décision dont la
+  fonction caractéristique est sémantique.
+\end{definition}
+
+Un problème sémantique est donc un problème qui s'intéresse au comportement des
+programme~: deux programmes décrivant le même comportement (prenant les mêmes
+valeurs aux mêmes entrées) sont équivalents pour un problème sémantique.
+
+\begin{theorem}[Rice]
+  Soit $X \subseteq \bN$ un problème sémantique tel que $X \neq \varnothing$
+  et $X \neq \bN$. Alors $X$ est indécidable.
+\end{theorem}
+
+\begin{proof}
+  Comme on sait que $K$ est indécidable, on souhaite se ramener au problème de
+  $K$. Soit la fonction $\nu : \bN \partialto \bN$ définie nulle part. Sans
+  perte de généralité (quitte à remplacer $X$ par $\complement X$), on peut
+  considérer que $\nu \in X$. Soit de plus $g \notin F$. On définit
+  \[f : (n,x) \longmapsto
+  \begin{cases}
+    g(x) \text{ si } n \in K\\
+    \bot \text{ sinon}
+  \end{cases}\]
+  Cette définition par cas en fonction de si $n \in K$ fonctionne ici car
+  $K$ est semi-décidable~: le fait que le case \og sinon\fg donne une valeur
+  indéfinie assure qu'il n'est pas nécessaire de reconnaître les instances
+  négatives de $K$ (on aurait par exemple pu multiplier $g(x)$ par la fonction
+  caractéristique de $K$). La fonction $f$ est donc encore calculable, soit
+  $e$ un code de cette fonction.
+
+  Pour une entrée $x$ donnée, on sait donc que soit $f(n,x) = g(x)$, soit
+  $f(n,x) = \nu(x)$. Soit $n \in \bN$, on en déduit deux cas~:
+  \begin{itemize}
+  \item si $n \in K$, alors $x \mapsto \Enum^2_e(n,x)$ coïncide avec
+    $g$, donc $s^1_1(e,n)$ est un indice de $g$. Par extensionnalité,
+    $s^1_1(e,n) \notin X$.
+  \item si $n \notin K$, alors $x \mapsto \Enum^2_e(n,x)$ est la fonction $\nu$,
+    donc $s^1_1(e,n)$ est un indice de $\nu$. Par extensionnalité,
+    $s^1_1(e,n) \in X$.
+  \end{itemize}
+  On en déduit
+  \[n \in K \iff s^1_1(e,n) \in X\]
+
+  On en déduit, comme $K$ n'est pas calculable, que $X$ ne l'est pas non plus,
+  car sinon la fonction $n \mapsto s^1_1(e,n)$, calculable, déciderait le
+  problème $K$.
+\end{proof}
+
+Le théorème de Rice apporte une réponse négative à la plupart des questions
+sur les fonctions calculables~:
+\begin{itemize}
+\item il n'est pas possible de décider si un code représente une fonction valant
+  $1$ en $0$~;
+\item il n'est pas possible de décider si un code représente une fonction
+  totale~;
+\item il n'est pas non plus possible de décider si un code représente une
+  fonction avec au moins une valeur où elle est définie.
+\end{itemize}
+
+Ces limitations peuvent se résumer de la façon suivante~: un algorithme, en
+tant qu'objet automatique et finitaire, ne peut explorer que des propriétés
+syntaxiques (par exemple, il est possible de vérifier si un code de machine
+possède une instruction \texttt{While}), mais est incapable de vérifier des
+propriétés portant sur la sémantique des programmes, qui sont des objets
+infinitaires (définis par l'infinité de leurs valeurs).
+
+Cependant, le théorème de Rice n'apporte qu'une réponse négative sur l'aspect
+calculatoire de problèmes, mais ne permet pas de les hiérarchiser. Par exemple,
+on peut remarquer que savoir si une fonction est totale permet de décider
+le problème de l'arrêt (en considérant la fonction constante $f(x)$ et en
+testant sa totalité), mais le sens réciproque ne paraît par automatique (et
+pour cause, on prouvera qu'il est faux).
+
+On souhaite donc pouvoir comparer les problèmes de décision, ce qui nous mène à
+la notion de réduction de problème.
+
+\subsection{Réductions one-one et many-one}
+
+Dans la preuve du théorème de Rice, on a effectué une opération logique
+importante~: en considérant un problème $X$, on a prouvé que toute instance
+$n$ pour $X$ pouvait être associée à une instance $f(n)$ d'un autre problème
+$X'$ de telle sorte que, avec une solution pour $f(n)$, on en déduisait une
+solution pour $n$.
+
+Dans le cas du théorème de Rice, $f$ était la fonction $n \mapsto s_1^1(e,n)$
+et $X'$ était le problème $K$. La preuve permet alors de déduire que le
+problème $X$ est, en un sens, calculatoirement plus difficile que le problème
+$K$, puisque toute façon de résoudre $X$ permet de résoudre $K$ en tant que
+cas particulier.
+
+Cette idée permet de définir la réduction many-one.
+
+\begin{definition}[Réduction many-one, one-one]
+  Soient $A,B \subseteq \bN$. On dit que $A$ est many-one réductible à $B$,
+  ce que l'on note $A\manyOne B$, s'il existe une
+  fonction calculable totale $f : \bN \to \bN$ telle que
+  \[\forall n \in \bN, n \in A \iff f(n) \in B\]
+  si, de plus, la fonction $f$ est injective, alors on dit que $A$ est
+  one-one réductible à $B$, et on le note $A \oneOne B$.
+\end{definition}
+
+Pour deux problèmes $A,B$, dire que $A \manyOne B$ signifie que $A$ est un
+problème plus simple que $B$ à résoudre. En particulier, cela implique le
+résultat suivant.
+
+\begin{proposition}
+  Si $A \manyOne B$ et $B$ est calculable (resp. c.e., resp. co-c.e.) alors
+  $A$ l'est aussi.
+\end{proposition}
+
+\begin{proof}
+  En supposant que $\chi_B$ est calculable et en posant $f$ témoignant que
+  $A \manyOne B$, on remarque que $\chi_B \circ f$ témoigne du caractère
+  calculable (resp. c.e., resp. co-c.e.) de $A$.
+\end{proof}
+
+\begin{remark}
+  Par contraposition, on en déduit que si $A \manyOne B$ et $A$ n'est pas
+  calculable, alors $B$ ne l'est pas non plus~: on peut donc utiliser cet
+  argument pour montrer le théorème de Rice en prouvant $K \manyOne X$ (en
+  reprenant les notations de l'énoncé).
+\end{remark}
+
+En plus de permettre de définir la notion d'un problème plus facile qu'un
+autre, la réduction many-one permet de construire un paradigme abstrait de la
+complexité calculatoire des problèmes. En effet, comme la réduction many-one
+est réflexive et transitive (on laisse au lecteur dubitatif le soin de le
+prouver), on peut construire une relation d'équivalence canonique $\manyEq$
+de telle sorte que
+\[(\powerset(\bN)/\manyEq, \manyOne)\]
+est un ensemble ordonné. On donne donc la définition de degré many-one associé
+à cette construction.
+
+\begin{definition}[Degré many-one]
+  Soient deux problèmes $A,B\subseteq \bN$. On définit le fait qu'ils sont
+  équivalents par
+  \[A \manyEq B \defeq (A \manyOne B) \land (B \manyOne A)\]
+  
+  On appelle degré many-one une partie $\degD\subseteq \powerset(\bN)$ telle que
+  \[\forall A,B \in \degD, A \manyEq B\]
+  On note $\ManyDegrees$ l'ensemble des degrés many-one.
+\end{definition}
+
+Nous ne nous attardons par sur la structure ordonnée de
+$(\ManyDegrees,\manyOne)$ car nous verrons ensuite une autre réduction dont les
+degrés sont importants. Cependant, de nombreuses propriétés peuvent être
+énoncées à leur sujet.
+
+Puisque les réductions permettent d'ordonner les problèmes de décisions, on peut
+relier des classes de problèmes et des notions de réduction. En particulier,
+on a défini les notions d'ensemble calculable et c.e., donc on peut se demander
+quel est leur lien avec les degrés many-one.
+
+Une notion essentielle, établissant ce lien, est celle de problème difficile
+(resp. complet) pour une classe donnée.
+
+\begin{definition}[Problème difficile, complet]
+  Soit $\mathcal C \subseteq \powerset(\bN)$ une classe de problèmes de
+  décision. On dit qu'un problème $A\subseteq \bN$ est difficile pour
+  $\mathcal C$ (ou $\mathcal C$-difficile) si
+  \[\forall B \in \mathcal C, B \manyOne A\]
+  On dit que $A$ est $\mathcal C$-complet si $A$ est $\mathcal C$-difficile et
+  $A \in \mathcal C$.
+\end{definition}
+
+Un problème complet pour une classe donnée est donc un problème représentatif de
+la complexité calculatoire de la classe~: tout problème de la classe est au
+pire plus simple que ce problème. Ainsi, pour une classe $\mathcal C$, on peut
+vérifier qu'un problème $A$ domine $\mathcal C$ si et seulement s'il est
+plus difficile qu'un problème $\mathcal C$-complet, et qu'il suffit qu'il
+domine un problème $\mathcal C$-difficile.
+
+L'exemple de $K$ comme problème c.e. est représentatif dans ce sens de
+complétude.
+
+\begin{proposition}
+  Le problème $K$ est complet pour la classe des problèmes c.e.
+\end{proposition}
+
+\begin{proof}
+  On a déjà prouvé que $K$ était un problème c.e.-complet. On veut donc prouver
+  que $K$ est c.e.-difficile. Soit $A$ un problème c.e. On se donne donc
+  $f : \bN \partialto \bN$ calculable telle que pour tout $x \in \bN$,
+  \[x \in A \iff f(x) \conveq 1\]
+  Sans perte de généralité (quitte à ajouter une boucle infinie au code de $f$
+  pour les valeurs différentes de $1$), on peut supposer que $f(x) \conveq 1$
+  ou $f(x) \divcal$.
+
+  Pour une entrée $x \in \bN$, on sait alors que $x \in A \iff f(x) \convcal$,
+  c'est-à-dire $x \in A \iff f(x) \in K$, ce qui correspond exactement à dire
+  que $A \manyOne K $. En conclusion, $K$ est ce.e.-difficile.
+\end{proof}
+
+La structure des problèmes c.e. revient donc à celle du problème de l'arrêt (ou
+à des cas plus simples). En particulier, on sait que le problème de l'arrêt peut
+s'écrire
+\[e \in K \defeq \exists t \in \bN, T(e,e,t)\]
+Cette forme d'énoncé n'est pas anodine~: on sait que le prédicat $T$ est
+calculable total, et on teste alors l'existence d'une entrée rendant le
+prédicat vrai.
+
+Le fait que les instances positives sont calculables tient à cette
+quantification existentielle. En effet, quand une instance de $t$ qui rend
+vrai $T(e,e,t)$ existe, elle sera trouvée au bout d'un temps fini (possiblement
+très grand), mais le fait qu'aucun temps d'arrêt existe implique qu'on doit
+tester une infinité de valeurs. Au contraire, si l'on regarder $\complement K$,
+on obtient l'énoncé $\forall t \in \bN, \lnot T(e,e,t)$ qui ne peut tester ses
+instances positives en temps fini mais peut trouver des contre-exemples en temps
+fini si un tel $t$ existe.
+
+On voit donc un lien fort entre la quantification des énoncés et la complexité
+calculatoire. Dans le \cref{chp.modZFC}, la hiérarchie de Lévy (\cref{def.Levy})
+a été introduite par une hiérarchie de (classes d'équivalences de) formules,
+triées par les alternances de quantification.
+
+Dans cette hiérarchie, les quantifications non bornées amènent une
+difficulté de traitement du fait que ces tests sur l'entièreté du modèle sont
+instables par passage dans un modèle intérieur. Dans le cas présent, la
+difficulté amenée par une quantification non bornée tient aussi au fait qu'il
+faille tester l'entièreté des objets du modèle, mais ici parce que les
+méthodes que nous avons sont intrinsèquement finitaires. Ainsi, il n'est pas
+possible de tester réellement toutes les valeurs de $\bN$, et une quantification
+va donc rajouter un ordre de difficultée infinie à un problème.
+
+Comme dans le cas de la hiérarchie de Lévy, cependant, un groupe de
+quantificateurs identiques peut se regrouper par une fonction de
+\foreignexpr{pairing}, ici en quantifiant sur $\langle n_1,\ldots,n_p\rangle$
+au lieu de $n_1$ puis $n_2$ puis $\cdots$ puis $n_p$.
+
+Toutes ces considérations permettent d'introduire la hiérarchie arithmétique,
+qui est une façon d'ordonner les problèmes par difficulté croissante.
+
+\begin{definition}[Hiérarchie arithmétique]\label{def.HA}
+  On appelle hiérarchie arithmétique la suite de classes de problèmes
+  suivantes~:
+  \begin{itemize}
+  \item la classe $\HierArithS 1$ est définie comme la classe des problèmes
+    c.e.
+  \item la classe $\HierArithP 1$ est définie comme la classe des problèmes
+    co-c.e.
+  \item pour tout $n \in \bN$, la classe $\HierArithD n$ est définie par
+    \[\HierArithD n \defeq \HierArithS n \cap \HierArithP n\]
+  \item pour tout $n \in \bN$, la classe $\HierArithS{n+1}$ est définie par
+    l'ensemble des problèmes $A$ tel qu'il existe $B \in \HierArithP n$ tel
+    que
+    \[\forall n_1,\ldots,n_k \in \bN, (n_1,\ldots,n_k) \in A \iff
+    (\exists p_1,\ldots,p_m, (n_1,\ldots,n_k,p_1,\ldots,p_m) \in B)\]
+  \item pour tout $n \in \bN$, la classe $\HierArithP{n+1}$ est définie par
+    l'ensemble des problèmes $A$ tel qu'il existe $B \in \HierArithS n$ tel
+    que
+    \[\forall n_1,\ldots,n_k \in \bN, (n_1,\ldots,n_k) \in A \iff
+    (\forall p_1,\ldots,p_m, (n_1,\ldots,n_k,p_1,\ldots,p_m) \in B)\]
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  Par le \cref{lem.cal.c.e.co.c.e}, on sait que les problèmes $\HierArithD 1$
+  sont les problèmes décidables.
+\end{remark}
+
+\begin{exercise}
+  Montrer que pour tout $n$, un problème $A$ est dans $\HierArithS{n+1}$ si
+  et seulement s'il existe $B \in \HierArithP n$ tel que
+  \[A = \{(n_1,\ldots,n_k) \in \bN^k \mid \exists p,
+  \langle n_1,\ldots,n_k,p\rangle \in B\}\]
+\end{exercise}
+
+\begin{remark}
+  Comme la situation est symétrique entre $\HierArithS{}$ et $\HierArithP{}$,
+  on peut se contenter de considérer à chaque fois des problèmes unaires, et
+  des quantifications unaires.
+\end{remark}
+
+\begin{exercise}
+  Montrer que pour tout $n$, un problème $A$ est dans $\HierArithS{n+1}$ si
+  et seulement s'il existe un problème $B \in \HierArithP n$ tel que
+  \[\forall n \in \bN, \chi_A(n) = \sup_{k \in \bN} \chi_B\langle n,k\rangle\]
+\end{exercise}

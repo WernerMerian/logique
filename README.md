@@ -46,19 +46,19 @@ IV. Calculabilité
 
 14. Enumérations et théorèmes de calculabilité
 
-15. Codage des propositions, hiérarchie arithmétique
+15. Arithmétique et incomplétude
 
-16. Théorèmes d'incomplétude de Gödel
-
-17. Complexité
+16. Complexité
 
 V. Théorie de la démonstration
 
-17. Calcul des séquents
+17. Calcul des séquents, complétude, logique intuitionniste
 
 18. Déduction naturelle
 
 19. Lambda-calcul
+
+20. Cohérence de l'arithmétique
 
 
 ## Protocole de compilation
