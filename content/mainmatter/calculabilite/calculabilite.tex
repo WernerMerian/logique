@@ -893,3 +893,256 @@ qui est une façon d'ordonner les problèmes par difficulté croissante.
   et seulement s'il existe un problème $B \in \HierArithP n$ tel que
   \[\forall n \in \bN, \chi_A(n) = \sup_{k \in \bN} \chi_B\langle n,k\rangle\]
 \end{exercise}
+
+La hiérarchie arithmétique donne donc une vision alternative de la complexité
+des problèmes, dont la base (les classes r.e. et co-r.e.) est reliée directement
+au problème de l'arrêt.
+
+Le passage d'un étage $\HierArithS n$ à l'étage $\HierArithP{n+1}$ se voit comme
+l'application d'une infinité d'opérations qui, elles-mêmes, ont eu besoin de
+la complexité calculatoire de l'étage précédent. On voit ainsi intuitivement que
+la hiérarchie n'a pas de raison de s'effondrer~: chaque étage de la hiérarchie
+contient strictement plus de problème.
+
+Ce résultat n'a rien d'évident~: dans le cas de la complexité (étudiée au
+CHAPITRE COMPLEXITE), la hiérarchie polynomiale occupe une place similaire à
+la hiérarchie arithmétique en calculabilité, et le fait que la hiérarchie ne
+s'effondre pas implique que $P \neq NP$, énoncé dont nous n'avons pas de preuve.
+
+Cependant, dans le cas de la hiérarchie arithmétique, un théorème existe bien
+pour montrer que la hiérarchie ne s'effondre pas~: il s'agit du théorème de
+Post. Nous allons le prouver sous une forme plus forte, dans le sens où l'on va
+utiliser une réduction différente de la réduction many-one.
+
+\subsection{Degrés Turing, saut Turing}
+
+La réduction many-one est, en un sens, une réduction trop restreinte~: plusieurs
+problèmes peuvent être vu comme assimilables et sont distincts pour cette
+réduction. Par exemple, $K$ et $\complement K$ contiennent en essence la même
+information calculatoire (celle du problème de l'arrêt) mais ne sont pas
+many-one réductibles l'un à l'autre.
+
+\begin{proposition}
+  On n'a ni $K \manyOne \complement K$ ni $\complement K \manyOne K$.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $K \manyOne \complement K$. On pose alors une fonction
+  $f$ totale calculable telle que
+  \[\forall e \in \bN, e \in K \iff f(e) \in \complement K\]
+  Soit $e \in \bN$. Si $\Enum_e(e)$ termine, alors $e \in K$. Si
+  $\Enum_e(e)$ ne termine pas, alors $e \notin K$, donc
+  $f(e) \notin \complement K$, donc $f(e) \in K$, donc $\Enum_{f(e)}(f(e))$
+  termine. Ainsi, on a un algorithme pour tester si $e \in K$ en testant
+  en parallèle si $e$ ou $f(e)$ s'arrête sur son entrée.
+
+  On en déduit que si $K \manyOne \complement K$ (et par symétrie de l'argument
+  entre $K$ et $\complement K$, si $\complement K \manyOne k$), alors
+  $K$ est décidable. On en déduit le résultat.
+\end{proof}
+
+On souhaite donc trouver une réduction permettant d'égaler plus de problèmes.
+L'idée derrière cette réduction est que, pour prouver $A \leq B$, on peut
+partir du principe que $B$ est décidable pour décider $A$.
+
+Pour formaliser cette idée, on introduit la notion d'oracle.
+
+\begin{definition}[Calculabilité relative]
+  Soit $f : \bN \to \bN$, on définit l'ensemble des fonctions $f$-récursives
+  comme la plus petite classe contenant $f$, les projections et l'opération
+  successeur, et qui est stable à la fois par les schémas $\mu$, de récurrence
+  primitive et de composition.
+
+  On définit l'ensemble des $f$-machines de Turing comme l'ensemble des
+  machines de Turing à $k+1$ rubans d'entrée telle que le calcul de la machine
+  se fait en écrivant dans le premier ruban d'entrée, à la case $i$, la valeur
+  de $f(i)$.
+\end{definition}
+
+Un oracle pour une fonction calculable peut se voir comme une opération
+externe à la machine~: le programme exécute un calcul mais va utiliser un
+outil extérieur auquel il envoie une valeur d'entrée, récupère une valeur de
+sortie et continue son calcul avec cette valeur de calcul. Dans les deux
+définitions de calculabilité relative précédentes, on ajoute exactement un
+moyen au calcul d'accéder à chaque valeur $f(i)$ pour une fonction $f$
+arbitraire, ce qui permet de définir plus de fonctions quand $f$ n'est pas
+calculable.
+
+\begin{exercise}
+  Montrer que les classes $f$-calculables $f$-récursives sont égales.
+\end{exercise}
+
+\begin{exercise}
+  Montrer qu'une fonction $g$ est calculable si et seulement si elle est
+  calculable relativement au problème $\varnothing$, si et seulement s'il
+  existe une fonction $f : \bN \to \bN$ calculable telle que $g$ est
+  $f$-calculable.
+\end{exercise}
+
+Par exemple, en supposant donné un oracle pour $K$, il devient aisé de calculer
+$\complement K$~: il suffit d'appeler $\chi_K$ et d'inverser sa valeur.
+
+On peut prouver des résultats similaires aux résultats de calculabilité
+précédents~: il existe une machine universelle pour les fonctions
+$f$-calculables, le théorème $s_n^m$ est le même, \latinexpr{etc.} On définit
+donc une notion d'énumération relative à une fonction donnée.
+
+\begin{definition}[\'Enumération des fonctions $f$-calculables]
+  Soit $f : \bN \to \bN$. On note $\Enum^f$ une fonction surjective des entiers
+  dans la classe des fonctions $f$-calculables (de façon équivalente, des
+  fonctions $f$-récursives). Pour un problème $X\subseteq \bN$, on note
+  $\Enum^X$ pour l'énumération des fonctions $\chi_X$-calculables.
+\end{definition}
+
+La réduction Turing est alors naturelle à définir~: un problème $A$ est plus
+simple qu'un problème $B$ s'il est possible de calculer $\chi_A$ à partir d'un
+oracle pour $\chi_B$.
+
+\begin{definition}[Réduction Turing, degré Turing]
+  Soient $A,B\subseteq \bN$ deux problèmes. On définit le fait que $A$ est
+  Turing-réductible à $B$ par
+  \[A \TuringRed B \defeq \exists e \in \bN, \chi_A = \Enum^B_e\]
+
+  Deux problèmes sont dits Turing-équivalents lorsqu'ils sont mutuellement
+  Turing-réductibles, ce que l'on note $\TuringEq$.
+
+  On appelle ensemble des degrés Turing l'ensemble ordonné
+  $(\powerset(\bN) / \TuringEq, \TuringRed)$, que l'on note $\TuringDeg$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que si $A \manyOne B$, alors $A \TuringRed B$. En déduire que les
+  degrés Turing peuvent être obtenus comme des unions de degrés many-one.
+\end{exercise}
+
+\begin{exercise}
+  Vérifier que la réduction Turing est un pré-ordre (c'est-à-dire une relation
+  réflexive et transitive). En déduire que $\TuringRed$ est bien un ordre sur
+  $\TuringDeg$.
+\end{exercise}
+
+L'opération fondamentale sur les degrés Turing est le saut Turing. On a vu que
+le problème de l'arrêt est indécidable, mais cette indécidabilité passe aussi à
+la relativisation par une partie de $\bN$.
+
+\begin{definition}[Arrêt relativisé]
+  Soit $X\subseteq \bN$ un problème de décision. On appelle problème de l'arrêt
+  relativisé à $X$ l'ensemble
+  \[K^X \defeq \{ e \in \bN \mid \Enum^X_e(e)\convcal\}\]
+\end{definition}
+
+\begin{proposition}
+  Le problème de l'arrêt relativisé à un problème $X$ n'est pas $X$-calculable.
+\end{proposition}
+
+\begin{proof}
+  On peut toujours construire un point fixe pour une fonction $X$-calculable,
+  et on peut donc construire l'\cref{algo.diag}, permettant d'arriver à une
+  contradiction.
+\end{proof}
+
+\begin{remark}
+  Il faut bien différencier le problème de l'arrêt $K$, qui est $K$-calculable,
+  du problème relativisé de l'arrêt en $K$, $K^K$, qui n'est pas
+  $K$-calculable.
+
+  On remarque aussi que $K^X$ est toujours $X$-r.e.
+\end{remark}
+
+On peut aussi construire les itérations de l'arrêt.
+
+\begin{definition}[Problème de l'arrêt itéré]
+  Pour tout $n \in \bN$, le problème de l'arrêt itéré $K^{(n)} \subseteq \bN$
+  est défini par~:
+  \begin{itemize}
+  \item $K^{(0)} \defeq K$
+  \item $K^{(n+1)} \defeq K^{K^{(n)}}$
+  \end{itemize}
+\end{definition}
+
+Plus généralement, le problème de l'arrêt relativisé induit une fonction sur les
+degrés Turing, qui les augmente strictement.
+
+\begin{definition}[Saut Turing]
+  Soit $\degD \in \TuringDeg$. On définit le saut Turing
+  $\degD' \in \TuringDeg$ par, pour tout $X \in \degD$~:
+  \[\degD' \defeq \{Y \subseteq \bN \mid Y \TuringEq K^X\}\]
+
+  On définit pour tout $n \in \bN$ sont saut de Turing itéré par~:
+  \begin{itemize}
+  \item $\degD^{(0)} \defeq \degD$
+  \item $\degD^{(n+1)} \defeq (\degD^{(n)})'$
+  \end{itemize}
+\end{definition}
+
+\begin{proof}
+  Il convient de montrer que, si $X \TuringEq Y$, alors $K^X \TuringEq K^Y$,
+  pour en déduire que $\degD'$ est bien défini. Comme la situation est
+  symétrique en $X$ et $Y$, on va montrer que $K^X \TuringRed K^Y$.
+
+  On veut donc montrer que $K^X$ est $K^Y$-calculable, sachant que $X$ est
+  $Y$-calculable. On sait donc que toute fonction $X$-calculable est aussi
+  $Y$-calculable. Ainsi, si on a une fonction permettant de décider l'arrêt
+  des fonctions $Y$-calculables, cette fonction permet en particulier de
+  décider l'arrêt des fonctions $X$-calculables~: il suffit de simuler la
+  fonction en remplaçant l'oracle pour $X$ par le calcul de $X$ avec oracle pour
+  $Y$. On en déduit que $K^X \TuringRed K^Y$.
+\end{proof}
+
+\begin{corollary}
+  La preuve précédente montre de plus que le saut Turing est une opération
+  croissante sur les degrés.
+\end{corollary}
+
+\begin{notation}
+  On confondra régulièrement les degrés Turing avec certains de leurs
+  représentans. En particulier, on confond généralement $\varnothing$ avec
+  son degré associé (le degré des fonctions calculables) et
+  $\varnothing'$ avec le degré contenant le problème de l'arrêt, qu'on appelle
+  le degré Turing-complet.
+\end{notation}
+
+On peut donc résumer le saut Turing de la façon suivante~:
+\begin{itemize}
+\item c'est une fonction qui à chaque problème $X$ lui associe son problème de
+  l'arrêt relativisé $K^X$
+\item c'est une fonction croissante $\TuringDeg \to \TuringDeg$
+\item pour tout degré $\degD$, $\degD \TuringRedS \degD'$
+\end{itemize}
+
+\begin{exercise}
+  Montrer que le saut Turing peut aussi être défini sur les degrés many-one.
+  Montrer que le saut Turing est croissant sur les degrés many-one, et que
+  pour chaque degré $\degD \in \ManyDegrees$, $\degD\manyOneS \degD'$.
+\end{exercise}
+
+Le passage d'un étage de la hiérarchie arithmétique au suivant pouvait se voir
+comme un passage sur une itération infinie d'un algorithme de l'étage du
+dessous. Le saut Turing, quant à lui, permet de directement passer d'un problème
+au problème de l'arrêt qui lui est relatif~: ce passage correspond aussi à une
+forme d'itération infinie. Le théorème de Post relie les deux, en montrant que
+le problème de l'arrêt itéré $K^{(n)}$ correspond exactement à un problème
+$\HierArithS n$-complet (pour la réduction many-one, ce qui signifie qu'il est
+en particulier complet pour la réduction Turing).
+
+\begin{theorem}[Post]\label{thm.Post}
+  Pour tout $n \in \bN$, on a les faits suivants~:
+  \begin{itemize}
+  \item $K^{(n)}$ est $\HierArithS n$-complet pour la réduction many-one.
+  \item $\complement K^{(n)}$ est $\HierArithP n$-complet pour la réduction
+    many-one.
+  \item un problème est $\HierArithD{n+1}$ si et seulement s'il est
+    $K^{(n)}$-calculable.
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{corollary}
+  Puisqu'on sait que $K^{(n+1)}$ n'est pas $K^{(n)}$-calculable, on en déduit
+  que chaque étage de la hiérarchie arithmétique est inclus strictement dans
+  l'étage supérieur. Pour la réduction Turing, les degrés $\HierArithS n$ et
+  $\HierArithP n$ sont égaux, mais tous les degrés many-one sont distincts.
+\end{corollary}
