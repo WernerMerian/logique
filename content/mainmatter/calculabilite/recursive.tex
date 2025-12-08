@@ -664,7 +664,7 @@ telle sorte que pour toute fonction $f$ RPG, la fonction associée en utilisant
 les traductions pour avoir une fonction $\hat{f} : \mathbb N^n \to \mathbb N$
 est RP.
 
-\begin{definition}[Traduction RPG canonique]
+\begin{definition}[Traduction RPG canonique]\label{def.trad.RPG}
   Soit $\Sigma$ un ensemble fini. Il existe une fonction
   $f_\Sigma : \Sigma^\star \to \mathbb N$ telle que~:
   \[\begin{cases}
@@ -1557,43 +1557,62 @@ On montre d'abord le sens direct.
 \end{proof}
 
 Pour montrer le sens réciproque, on doit d'abord décider d'une façon de coder
-une machine de Turing $M$ sur un alphabet $\Sigma$ par un mot. Comme le nom des
-états d'une machine ne sont pas en eux-mêmes importants, on peut remplacer
-l'ensemble $Q$ par un entier $n$ indiquant le nombre d'états. Quitte à n'avoir
-qu'un état initial et qu'un état d'arrêt, on peut considérer que
-$Q = \{0,\ldots,n-1\}$, que $0$ est l'état initial et $n-1$ est l'état final.
-Pour l'alphabet de bande, on peut construire un nouvel alphabet de bande en
-considérant deux symboles $\alpha, \beta \notin \Sigma$. Si
-$\Gamma = \Sigma \sqcup \{\square\}\sqcup \Sigma'$ et
-$\Sigma' = \{a_1,\ldots,a_m\}$, alors on peut coder $a_i$ par $\alpha^i\beta$
-et $\square$ par $\beta$. Ainsi, on peut retenir uniquement l'entier $m$ et
-travailler sur l'alphabet $\Sigma\cup \{\alpha,\beta\}$. La fonction de
-transition, elle, va s'encoder de façon plus technique. On a ainsi un codage
-d'une machine de Turing sur $\Sigma$. Le mot associé doit pouvoir exprimer les
-symboles de $\Gamma$, donc s'écrire au moins sur $\Sigma\cup\{\alpha,\beta\}$.
-Il doit aussi permettre d'écrire des nombres pour exprimer $n$ et $m$. On
-comptera $n$ et $m$ par $\alpha^n$ et $\alpha^m$ respectivement, en mettant
-un symbole $\beta$ pour séparer ces deux nombres.
+une machine de Turing $M$ sur un alphabet $\Sigma$ par un mot.
+
+D'après le LEMME NORMALISATION MACHINE DE TURING, il nous suffit de considérer
+une machine à $k$ entrées sur les alphabets $\Sigma_1,\ldots,\Sigma_k$, un ruban
+de sortie sur un alphabet $\Sigma$ et $p$ rubans de travail sur l'alphabet
+$\{*\}$, dont l'ensemble des états est $\{0,\ldots,N\}$ pour un certain entier
+$N\in \bN$ et tel que $q_0 = 0$ et $q_a = N$.
+
+Un code d'une telle machine est donc la donnée des nombres $N,p$ (les alphabets
+$\Sigma_1,\ldots,\Sigma_k,\Sigma$ étant fixés ici) et de la table de transition
+encodée en tant que mot sur
+$\displaystyle\left(\bigcup_{i = 1}^k \Sigma_i\right)\cup \Sigma$. En réalité,
+il nous suffit de donner la table de transition de la machine par des entiers,
+puis composer des fonctions $f_\Sigma$ telles que décrites dans la
+\cref{def.trad.RPG} On donne donc un codage de la fonction de transition par un
+entier.
 
 \begin{definition}[Codage d'une fonction de transition]
-  Soit $\Sigma$ un alphabet, $\alpha,\beta\notin\Sigma$, $\delta$ la fonction de
-  transition d'une machine de Turing sur $\Sigma$ à $n$ états et d'alphabet de
-  bande
-  $\Gamma = \Sigma\sqcup\{\square\}\sqcup\{a_1,\ldots,a_p\}$. On définit le
-  code de sa fonction de transition
-  $\langle\delta\rangle\in(\Sigma\cup\{\alpha,\beta\})^\star$ par
-  \[\langle\delta\rangle\defeq\]
+  Soient $\Sigma_1,\ldots,\Sigma_k, \Sigma$ des alphabets. Soit $M$ une machine
+  de Turing sur ces alphabets à $p$ rubans de travail sur $\{*\}$ et d'états
+  $\{0,\ldots,N\}$.
+
+  On se donne une énumération de la fonction de
+  transition
+  \[\delta : Q \times \left(\prod_{i = 1}^{k} (\Sigma_i \sqcup \{\square\})\right)
+  \times \{*,\square\}^p \longrightarrow
+  Q \times \{*,\square\}^p \times \Sigma \times \{\lhd,\rhd\}^{k+p+1}\]
+  par la famille
+  \[\delta = \{\langle q_i,a_{i,1},\ldots,a_{i,k},b_{i,1},\ldots,b_{i,p}\rangle
+  \longrightarrow \langle q'_i, b'_{i,1},\ldots,b'_{i,p}, a',
+  d_{i,1},\ldots,d_{i,k+p+1}\rangle \}_{i \in I} \]
+  où $I$ est un ensemble fini. On considère le mot obtenu en concaténant tous
+  les éléments de cette famille, pris comme des mots sur
+  \[\mathcal L_{\mathrm{code}} \defeq
+  Q \cup \left(\bigcup_{i = 1}^k \Sigma_i\right) \cup \Sigma \cup
+  \{``,", ``\langle",``\rangle"\} \cup\{\lhd,\rhd\}\cup \{\longrightarrow\}\]
+  où chaque terme de cette union est supposé (sans perte de généralité)
+  distinct des autres termes, à l'exception potentielle des $\Sigma_i$ et de
+  $\Sigma$. On note ce mot $\godcod\delta$.
 \end{definition}
 
 \begin{definition}[Codage d'une machine de Turing]
-  Soit $\Sigma$ un alphabet, et $\alpha,\beta\notin \Sigma$. On définit le code
-  d'une machine de Turing $M = (Q,q_0,q_a,\Gamma,\square,\delta)$ comme le mot
-  sur $\Sigma\cup\{\alpha,\beta\}$ suivant~:
-  \[\langle M\rangle \defeq \alpha^{|Q|}\beta\alpha^{|\Gamma\setminus \Sigma|}\beta
-  \]
+  Soit $\Sigma_1,\ldots,\Sigma_k,\Sigma$ des alphabets. Une machine de Turing
+  $M$ sur ces alphabets, dont les rubans de travail sont $p$ rubans sur $\{*\}$
+  et dont les états sont $\{0,\ldots,N\}$, $0$ étant l'état initial et
+  $N$ l'état d'arrêt, est encodée par le nombre
+  \[\godcod M \defeq \langle N,p,
+  f_{\mathcal L_{\mathrm{code}}}(\godcod \delta)\rangle\]
 \end{definition}
 
-A FAIRE : FORME NORMALE DE KLEENE, BLABLABLA
+Le point central de ce codage est le suivant~: toutes les fonctions simulant
+l'exécution de $M$ sur des rubans donnés peuvent s'écrire de façon RPG. On peut
+résumer ce fait par la mise sous forme normale de Kleene~: on peut trouver deux
+fonctions RPG qui, respectivement, détermine si l'état de la machine en un
+temps $t$ est l'état d'arrêt et affiche le contenu du ruban de sortie au bout
+de $t$ étapes de calcul.
 
 \begin{theorem}[Forme normale de Kleene]\label{thm.norm.Kleene}
   Soient des alphabets
@@ -1616,7 +1635,55 @@ A FAIRE : FORME NORMALE DE KLEENE, BLABLABLA
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  Tout d'abord, puisque les réciproques de la bijection de Cantor sont des
+  fonctions RPG, on peut extraire de $\godcod M$ la valeur de $N,p$ et
+  la table de transition $\delta$ prise comme un mot contenant chaque
+  transition. Remarquons que, si $\delta$ est donnée sous la forme de
+  $f_{\mathcal L_{\mathrm{code}}}(\godcod \delta)$, il est possible de retrouver
+  $\godcod\delta$ à partir de cette valeur puisque la fonction réciproque est
+  une fonction RPG.
+
+  De plus, étant donné le mot $\godcod \delta$, un état $q \in Q$ des
+  lettres $a_1,\ldots, a_k \in \prod \Sigma_i$ et des lettres
+  $b_1,\ldots,b_p \in \{*,\square\}^p$, il est possible de récupérer le mot
+  $\langle q,a_1,\ldots,a_k,b_1,\ldots,b_p \rangle \longrightarrow
+  \langle v \rangle$
+  de $\godcod \delta$ correspondant
+  par une fonction RPG~: il suffit de lire $\godcod\delta$ en essayant de
+  reconnaître le mot de gauche.
+
+  Il nous suffit donc d'établir comment coder une configuration, pour pouvoir
+  simuler l'action de $M$ sur une configuration. \'Etant donnés les
+  $N+p+1$ rubans, de la forme $u_i\square^\infty$, pour des positions
+  $a_i$de la machines aux différents rubans et pour un état $q$, on écrit la
+  configuration par
+  \[\godcod C \defeq q|a_0|u_0|a_2|u_2|a_3|\cdots |a_{N+p}| u_{N+p}\]
+  où $|$ est un nouveau symbole.
+
+  L'action en une étape de calcul de $M$ sur une configuration consiste alors
+  à extraire l'état $q$ et
+  la \ordinalnumeralfeminin{$a_i$} lettre du mot $u_i$, puis de
+  reconnaître le mot $v$ de $\godcod\delta$ obtenu à la fin de la transition
+  contenant ces lettres. Si aucune telle transition est trouvée, on retourne un
+  état de blocage (que l'on peut encoder en dur, par exemple en faisant en sorte
+  que $T$ retourne la valeur $2$ plutôt que $0$ ou $1$). Ensuite, on modifie
+  les configurations de façon adéquate avec les symboles donnés en sortie de
+  la transition, en augmentant ou diminuant les $a_i$ en fonction de si le
+  caractère $d_i$ est $\lhd$ ou $\rhd$.
+
+  On peut ainsi obtenir une fonction qui, pour une configuration $C$ donnée,
+  calcule l'action de $M$ sur $C$ en $t$ étapes de calcul. On peut, de plus,
+  construire de façon RPG une configuration pour des mots $u_1,\ldots,u_k$
+  donnés en entrée. Cela nous permet donc d'obtenir une fonction $RPG$ qui,
+  étant donnés des mots d'entrée et un temps de calcul $t$, retourne la
+  configuration résultante de $t$ étapes de calcul sur la configuration
+  $0|u_1|0|u_1|\cdots |0|u_k|0|\varepsilon|0|\varepsilon|\cdots|0|\varepsilon$
+  (configuration initiale pour le calcul de $u_1,\ldots,u_k$).
+
+  La fonction $T$ est alors obtenue en récupérant l'état $q$ de la
+  configuration et en testant si $q = 0$. La fonction $U$, elle, renvoie
+  simplement le mot de la configuration, en supprimant les $\square$
+  potentiels écrits lors du calcul.
 \end{proof}
 
 On en déduit donc le théorème de Church-Turing.
