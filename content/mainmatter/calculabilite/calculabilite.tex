@@ -297,7 +297,8 @@ pour espérer obtenir une point fixe de $\alpha$ (au sens d'une fonction qui
 a comme codes à la fois $e$ et $\alpha(e)$), c'est précisément le contenu du
 théorème du point fixe de Kleene.
 
-\begin{theorem}[Point fixe de Kleene]\label{thm.Kleene.fix}
+\begin{theorem}[Point fixe de Kleene \cite{Kleene1938}
+    - formulation de Rogers \cite{Rogers1987}]\label{thm.Kleene.fix}
   Soit $\alpha : \bN \to \bN$ une fonction totale calculable.
   Alors il existe un code $e \in \bN$ tel que
   \[\forall \vec x \in \bN^k, \Enum_e (\vec x)= \Enum_{f(e)}(\vec x)\]
@@ -375,21 +376,19 @@ dessine~: la fonction valant $1$ si $\Enum_e(e)$ est définie et $0$ sinon.
 
 \begin{proof}
   Supposons qu'il existe un code $e_K$ tel que $\Enum_{e_K} = \chi_K$. On
-  introduit l'\cref{algo.diag}.
+  introduit la \cref{algo.diag}.
   
-  \begin{figure}[h!]
-    \begin{algorithm}[H]
-      \KwData{un code de machine $e$}
-      \If{$\Enum_{e_K}(e) = 1$}{
-        effectuer une boucle infinie\;
-      }
-      \Else{
-        \KwRet 0\;
-      }
-      \caption{Algorithme diagonal}
-      \label{algo.diag}
-    \end{algorithm}
-  \end{figure}
+  \begin{algorithm}[H]
+    \KwData{un code de machine $e$}
+    \If{$\Enum_{e_K}(e) = 1$}{
+      effectuer une boucle infinie\;
+    }
+    \Else{
+      \KwRet 0\;
+    }
+    \caption{Algorithme diagonal}
+    \label{algo.diag}
+  \end{algorithm}
 
   Cette procédure est calculable, et donne un code $e'$ à partir d'un code $e$.
   D'après le \cref{thm.Kleene.fix}, on peut donc trouver un code $e$ qui est
@@ -883,9 +882,10 @@ qui est une façon d'ordonner les problèmes par difficulté croissante.
 \end{exercise}
 
 \begin{remark}
-  Comme la situation est symétrique entre $\HierArithS{}$ et $\HierArithP{}$,
-  on peut se contenter de considérer à chaque fois des problèmes unaires, et
-  des quantifications unaires.
+  L'argument précédent s'applique aussi bien aux classes $\HierArithP n$.
+  On peut donc se contenter de considérer à chaque fois des problèmes unaires
+  en encodant des tuples, et des quantifications unaires par l'exercice
+  précédent.
 \end{remark}
 
 \begin{exercise}
@@ -969,7 +969,7 @@ arbitraire, ce qui permet de définir plus de fonctions quand $f$ n'est pas
 calculable.
 
 \begin{exercise}
-  Montrer que les classes $f$-calculables $f$-récursives sont égales.
+  Montrer que les classes $f$-calculables et $f$-récursives sont égales.
 \end{exercise}
 
 \begin{exercise}
@@ -983,7 +983,7 @@ Par exemple, en supposant donné un oracle pour $K$, il devient aisé de calcule
 $\complement K$~: il suffit d'appeler $\chi_K$ et d'inverser sa valeur.
 
 On peut prouver des résultats similaires aux résultats de calculabilité
-précédents~: il existe une machine universelle pour les fonctions
+précédents~: il existe une machine universelle $f$-calculable pour les fonctions
 $f$-calculables, le théorème $s_n^m$ est le même, \latinexpr{etc.} On définit
 donc une notion d'énumération relative à une fonction donnée.
 
@@ -1064,11 +1064,11 @@ Plus généralement, le problème de l'arrêt relativisé induit une fonction su
 degrés Turing, qui les augmente strictement.
 
 \begin{definition}[Saut Turing]
-  Soit $\degD \in \TuringDeg$. On définit le saut Turing
+  Soit $\degD \in \TuringDeg$. On définit son saut de Turing
   $\degD' \in \TuringDeg$ par, pour tout $X \in \degD$~:
   \[\degD' \defeq \{Y \subseteq \bN \mid Y \TuringEq K^X\}\]
 
-  On définit pour tout $n \in \bN$ sont saut de Turing itéré par~:
+  On définit pour tout $n \in \bN$ son saut de Turing itéré par~:
   \begin{itemize}
   \item $\degD^{(0)} \defeq \degD$
   \item $\degD^{(n+1)} \defeq (\degD^{(n)})'$
@@ -1126,10 +1126,10 @@ $\HierArithS n$-complet (pour la réduction many-one, ce qui signifie qu'il est
 en particulier complet pour la réduction Turing).
 
 \begin{theorem}[Post]\label{thm.Post}
-  Pour tout $n \in \bN$, on a les faits suivants~:
+  Pour tout $n \geq 1$, on a les faits suivants~:
   \begin{itemize}
-  \item $K^{(n)}$ est $\HierArithS n$-complet pour la réduction many-one.
-  \item $\complement K^{(n)}$ est $\HierArithP n$-complet pour la réduction
+  \item $K^{(n)}$ est $\HierArithS{n+1}$-complet pour la réduction many-one.
+  \item $\complement K^{(n)}$ est $\HierArithP{n+1}$-complet pour la réduction
     many-one.
   \item un problème est $\HierArithD{n+1}$ si et seulement s'il est
     $K^{(n)}$-calculable.
@@ -1137,7 +1137,39 @@ en particulier complet pour la réduction Turing).
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On prouve le résultat par récurrence sur $n$. On suppose donc que $K^{(n)}$
+  est $\HierArithS{n+1}$-complet et que $\complement K^{(n)}$ est
+  $\HierArithP{n+1}$-complet.
+
+  Soit $X$ un problème $\HierArithS{n+2}$. On peut donc écrire
+  \[\forall x \in \bN, x \in X \iff \exists y \in \bN, (x,y) \in Y\]
+  pour $Y$ un problème $\HierArithP{n+1}$. Comme $\complement K^{(n)}$ est
+  $\HierArithP{n+1}$-complet, on trouve $f$ calculable tel que
+  \[\forall (x,y) \in \bN, (x,y) \in Y \iff f(x,y) \in \complement K^{(n)}\]
+  Le membre de droite signifie que $f(x,y)$ est un code ne terminant pas sur son
+  entrée pour l'énumération $\Enum^{K^{(n-1)}}$. On définit alors la fonction
+  \[\makeFunNamePartial{g}{\bN}{\bN}\]
+  telle que $g(x)$ énumère tous les $x,y$ et teste si $f(x,y) \in K^{(n)}$. Si
+  elle trouve $y$ tel que $f(x,y) \in \complement K^{(n)}$, elle s'arrête et
+  accepte $x$.
+
+  $g$ est $K^{(n)}$ définissable car tester si $f(x,y) \in \complement K^{(n)}$
+  peut se faire avec un test d'appartenance à $K^{(n)}$ (qui est son oracle), et
+  le reste de l'algorithme est un parcours non borné des valeurs de $y$.
+
+  On peut transformer $g$ en une fonction $h$ telle que $h(x)(y) = g(x)$, de
+  sorte qu'exécuter $h(x)$ sur son entrée correspond simplement à exécuter
+  $g$ (il suffit d'utiliser le théorème $s_n^m$).
+
+  Ainsi, $x \in X$ si et seulement s'il existe $y$ tel que $(x,y) \in Y$, si
+  et seulement s'il existe $y$ tel que $f(n,m) \in K^{(n)}$, si et seulement si
+  $g(x)$ termine sur sa propre entrée, ce qui signifie $g(x) \in \K^{(n+1)}$.
+  Ainsi $X \TuringRed K^{(n+1)}$, d'où la propriété par induction.
+
+  Le cas de $\HierArithP n$ se traite de façon similaire. Pour $\HierArithD n$,
+  on remarque qu'être décidable est équivalent (en réutilisant l'argument du
+  \cref{lem.cal.c.e.co.c.e}) au fait d'être à la fois c.e. et co-c.e., ce qui
+  correspond ici à appartenir à la fois à $\HierArithS n$ et à $\HierArithP n$.
 \end{proof}
 
 \begin{corollary}
@@ -1146,3 +1178,11 @@ en particulier complet pour la réduction Turing).
   l'étage supérieur. Pour la réduction Turing, les degrés $\HierArithS n$ et
   $\HierArithP n$ sont égaux, mais tous les degrés many-one sont distincts.
 \end{corollary}
+
+\begin{remark}
+  Comme une fonction est calculable si et seulement si elle est
+  $\varnothing$-calculable, on peut réécrire le théorème de Post en disant que
+  $\varnothing^{(n)}$ est $\HierArithS n$-complet pour tout $n \geq 1$. La
+  notation $\varnothing'$ (ainsi que $\varnothing^{(n)}$) est standard pour
+  parler du problème de l'arrêt.
+\end{remark}

@@ -17,15 +17,15 @@ profondément le fonctionnement intuitif d'une machine de Turing, plus complexe
 mais basé sur des notions très proches.
 
 Ce chapitre couvre donc les bases de l'étude des langages rationnelss et des
-automates finis. Cette classe de langage peut être décrite par de nombreux
+automates finis. Cette classe de langages peut être décrite par de nombreux
 formalismes, mais nous nous contenterons des automates finis, des expressions
 rationnelless et des monoïdes.
 
 Ce chapitre commence par la base de la théorie des langages~: les définitions
-de ce qu'est un alphabet, un mot, un langage\ldots Nous aborderons ensuite la
-classe des langages rationnelss en abordant deux des formalismes décrits que
-sont les automates et les expressions rationnelles, puis la preuve de
-leur équivalence. Nous verrons après cela les théorèmes de structure sur ces
+de ce qu'est un alphabet, un mot, un langage\ldots Nous abordons ensuite la
+classe des langages rationnels en considérant les formalismes que sont les
+automates et les expressions rationnelles, ont on prouve leur équivalence.
+Nous étudions après cela les théorèmes de structure sur ces
 langages~: le lemme de pompage et le théorème de Myhill-Nérode, ainsi que ses
 conséquences. Nous traitons en dernier le cas de l'équivalence des langages
 rationnels avec les langages reconnus par des monoïdes, pour ainsi revenir sur
@@ -33,15 +33,15 @@ un aspect plus algébrique, proche du début du chapitre.
 
 \section{Alphabet, mot, langage}
 
-Pour étudier de façon plus systématique les langages, nous étudierons aussi de
+Pour étudier de façon plus systématique les langages, nous étudions d'abord de
 l'algèbre avec la structure de monoïde, qui est intimement liée à celle
-d'ensemble de mots. Nous verrons donc tout d'abord l'aspect concret de ce qu'est
-un mot et un langage, puis nous aborderons les côtés théoriques de l'étude des
+d'ensemble de mots. Tout d'abord, nous donnons une descriptoin concrète de ce
+qu'est un mot et un langage, avant d'aborder l'aspect théoriques de l'étude des
 monoïdes.
 
 \subsection{Premières définitions}
 
-Tout d'abord, il nous faut définit ce qu'est un alphabet. Intuitivement, cela
+Définissons donc la notion d'alphabet. Intuitivement, l'alphabet
 désigne l'ensemble des symboles que nous utilisons pour écrire. Pour avoir un
 trairement uniforme, on considère que des symboles comme \og ( \fg font aussi
 partie de l'alphabet. C'est alors un objet particulièrement quelconque~: on peut
@@ -430,7 +430,7 @@ Prenons par exemple un premier automate sur $\btwo$~:
     (q_1) edge node {1} (q_2)
     edge node {0} (q_3)
     (q_2) edge node {0} (q_3)
-    edge [loop above] node {1} ()
+    edge [loop above] node {$1$} ()
     (q_3) edge node {1} (q_0);
   \end{tikzpicture}
 \end{figure}
@@ -439,6 +439,58 @@ En lisant simplement ce dessin, on peut voir que l'automate reconnaît, par
 exemple, $00$. Cette représentation a l'avantage, en plus de la lisibilité,
 de donner l'ensemble des informations nécessaires pour retrouver l'objet
 mathématique représenté associé.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto,
+      scale=0.65, transform shape]
+    \node[state, initial, color = red] (q_0) {$q_0$};
+    \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
+    \node[state] (q_2) [above right = of q_1] {$q_2$};
+    \node[state, accepting] (q_3) [below right = of q_1] {$q_3$};
+    \path[->,>=latex]
+    (q_0) edge node {0,1} (q_1)
+    (q_1) edge node {1} (q_2)
+    edge node {0} (q_3)
+    (q_2) edge node {0} (q_3)
+    edge [loop above] node {$1$} ()
+    (q_3) edge node {1} (q_0);
+
+    \node (a) [right = of q_1] {};
+    \node (b) [right = of a] {};
+    \path[|->, >=latex] (a) edge node {$\delta(0,q_0)$} (b);
+
+    \node[state, initial] (p_0) [right = of b] {$q_0$};
+    \node[state,accepting, color = red] (p_1) [right = of p_0] {$q_1$};
+    \node[state] (p_2) [above right = of p_1] {$q_2$};
+    \node[state, accepting] (p_3) [below right = of p_1] {$q_3$};
+    \path[->,>=latex]
+    (p_0) edge node {0,1} (p_1)
+    (p_1) edge node {1} (p_2)
+    edge node {0} (p_3)
+    (p_2) edge node {0} (p_3)
+    edge [loop above] node {$1$} ()
+    (p_3) edge node {1} (p_0);
+
+    \node (aa) [right = of p_1] {};
+    \node (bb) [right = of aa] {};
+    \path[|->, >=latex] (aa) edge node {$\delta(0,q_1)$} (bb);
+
+    \node[state, initial] (r_0) [ right = of bb] {$q_0$};
+    \node[state,accepting] (r_1) [right = of r_0] {$q_1$};
+    \node[state] (r_2) [above right = of r_1] {$q_2$};
+    \node[state, accepting, color = red] (r_3) [below right = of r_1] {$q_3$};
+    \path[->,>=latex]
+    (r_0) edge node {0,1} (r_1)
+    (r_1) edge node {1} (r_2)
+    edge node {0} (r_3)
+    (r_2) edge node {0} (r_3)
+    edge [loop above] node {$1$} ()
+    (r_3) edge node {1} (r_0);
+  \end{tikzpicture}
+  \caption{Lecture du mot $00$ par l'automate précédent}
+  \label{fig.ex.reco}
+\end{figure}
 
 On a ainsi construit une classe de langages~: la classe des langages
 reconnaissables.
@@ -1374,7 +1426,7 @@ On peut donc enfin construire une expression rationnelle à partir d'un automate
 
 On en déduit donc le théorème de Kleene~:
 
-\begin{theorem}[Kleene]
+\begin{theorem}[Kleene \cite{Kleene1951RepresentationOE}]
   Soit $\Sigma$ un alphabet. Les classes $\Ratio(\Sigma)$ et $\Reco(\Sigma)$
   sont égales.
 \end{theorem}
@@ -1516,7 +1568,7 @@ automate, qu'on appelle automate syntaxique, respecte notre définition
 d'automate lorsque le nombre d'états est fini, ce qui nous donne en fait le
 théorème de Myhill-Nérode.
 
-\begin{theorem}[Myhill-Nérode]
+\begin{theorem}[Myhill-Nérode \cite{Nerode1963-NERLAT-2}]
   Soit $\Sigma$ un alphabet et $\mathcal L$ un langage sur $\Sigma$. Le langage
   $\mathcal L$ est rationnel si et seulement si l'ensemble
   $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$ est fini.
@@ -1838,7 +1890,7 @@ réciproque). On en déduit donc qu'on peut construire
 $\mathcal A_{\mathcal L_\mathcal A}$ directement depuis $\mathcal A$ par un
 quotient~: il se trouve que ce quotient peut être décrit de façon très concrète.
 
-\begin{definition}[Congruence de Nérode]
+\begin{definition}[Congruence de Nérode \cite{Nerode1963-NERLAT-2}]
   Soit $\mathcal A$ un automate sur un alphabet $\Sigma$. On définit la
   congruence de Nérode sur $\mathcal A$ par~:
   \[q \equiv q' \defeq \forall u \in \Sigma^\star,

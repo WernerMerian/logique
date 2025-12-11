@@ -964,62 +964,58 @@ L'algorithme de \foreignexpr{parsing} est un algorithme de programmation
 dynamique~: on considère un tableau $T$ de $n$ lignes (où $n$ est la taille
 du mot $u$ analysé) où chaque ligne contient une liste d'items d'Earley,
 de sorte que la lecture du mot $u$ jusqu'à la lettre $j$ s'effectue dans la
-ligne $T[i]$. On donne donc l'\cref{fig.Earley}.
+ligne $T[i]$. On donne donc l'algorithme en \cref{fig.Earley}.
 
-\begin{figure}[h]
-  \centering
-  \begin{algorithm}[H]
-    \KwData{\\
-      un vecteur $T[\;]$ de taille $n$ contenant des ensembles d'items
-      d'Earley, initialisé par $T[i] = \varnothing$ pour tout $i$\\
-      un mot $u \in \Sigma^\star$ de longueur $n$ \\
-      une grammaire $G = (\Gamma, \to, S)$ \\
-      une liste $\ell$ contenant la suite des dérivations sous la forme
-      d'un parcours en profondeur de l'arbre de dérivation
+\begin{algorithm}[H]
+  \KwData{\\
+    un vecteur $T[\;]$ de taille $n$ contenant des ensembles d'items
+    d'Earley, initialisé par $T[i] = \varnothing$ pour tout $i$\\
+    un mot $u \in \Sigma^\star$ de longueur $n$ \\
+    une grammaire $G = (\Gamma, \to, S)$ \\
+    une liste $\ell$ contenant la suite des dérivations sous la forme
+    d'un parcours en profondeur de l'arbre de dérivation
+  }
+  \KwResult{\\
+    si $u \in \mathcal L_G$, la dérivation permettant de construire
+    $u$ dans la grammaire $G$\\
+    si $u \notin\mathcal L_G$, la constante $\bot$}
+  \For{$\alpha$ tel que $S\to \alpha$}{
+    $T[0] \leftarrow (S\to \bullet \alpha, 0)$\;
+  }
+  \For{$j = 1$ \KwTo $n$}{
+    \For{$(A \to \alpha \bullet \beta, i) \in T[j-1]$}{
+      \If{$\beta = u_{j-1} \gamma$}{
+        $T[j] \leftarrow (A \to \alpha u_{j-1} \bullet \gamma, i)$\; }
     }
-    \KwResult{\\
-      si $u \in \mathcal L_G$, la dérivation permettant de construire
-      $u$ dans la grammaire $G$\\
-      si $u \notin\mathcal L_G$, la constante $\bot$}
-    \For{$\alpha$ tel que $S\to \alpha$}{
-      $T[0] \leftarrow (S\to \bullet \alpha, 0)$\;
+    \For{$(A \to \alpha\bullet \beta, i) \in T[j]$}{
+      \If{$\beta = B\gamma$, $B \in \Gamma$}{
+        \For{$(B, \delta) \in \to$}{
+          $T[j]\leftarrow (B \to \bullet\delta, j)$\;
+      }}
     }
-    \For{$j = 1$ \KwTo $n$}{
-      \For{$(A \to \alpha \bullet \beta, i) \in T[j-1]$}{
-        \If{$\beta = u_{j-1} \gamma$}{
-          $T[j] \leftarrow (A \to \alpha u_{j-1} \bullet \gamma, i)$\; }
-      }
-      \For{$(A \to \alpha\bullet \beta, i) \in T[j]$}{
-        \If{$\beta = B\gamma$, $B \in \Gamma$}{
-          \For{$(B, \delta) \in \to$}{
-            $T[j]\leftarrow (B \to \bullet\delta, j)$\;
-        }}
-      }
-      \For{$(A \to \alpha \bullet \beta, i) \in T[j]$}{
-        \If{$\beta = \varepsilon$}{
-          \For{$(B \to \gamma \bullet \delta, k) \in T[i]$}{
-            \If{$\delta = A \delta'$}{
-              $T[j]\leftarrow (B \to \gamma A \bullet \delta', k)$\;
-            }
+    \For{$(A \to \alpha \bullet \beta, i) \in T[j]$}{
+      \If{$\beta = \varepsilon$}{
+        \For{$(B \to \gamma \bullet \delta, k) \in T[i]$}{
+          \If{$\delta = A \delta'$}{
+            $T[j]\leftarrow (B \to \gamma A \bullet \delta', k)$\;
           }
         }
       }
     }
-    \For{$(A \to \alpha\bullet\beta, i)\in T[n-1]$}{
-      \If{$(A = S)\land (\beta = \varepsilon) \land (i = 0)$}{
-        $\ell \leftarrow S$\;
-        $\ell \leftarrow \alpha$\;
-        \For{A FAIRE}{
-          A FAIRE
-        }
+  }
+  \For{$(A \to \alpha\bullet\beta, i)\in T[n-1]$}{
+    \If{$(A = S)\land (\beta = \varepsilon) \land (i = 0)$}{
+      $\ell \leftarrow S$\;
+      $\ell \leftarrow \alpha$\;
+      \For{A FAIRE}{
+        A FAIRE
       }
     }
-    \KwRet $\bot$\;
-    \caption{Algorithme d'Earley}
-    \label{fig.Earley}
-  \end{algorithm}
-  %\label{fig.Earley}
-\end{figure}
+  }
+  \KwRet $\bot$\;
+  \caption{Algorithme d'Earley}
+  \label{fig.Earley}
+\end{algorithm}
 
 \begin{proposition}
   Soit $\Sigma$ un alphabet et $G$ une grammaire hors contexte. Alors
