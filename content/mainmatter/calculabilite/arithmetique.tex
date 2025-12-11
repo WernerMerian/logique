@@ -3,4 +3,407 @@
 
 \minitoc
 
-\lettrine{T}{est}
+\lettrine{L}{es} théorèmes d'incomplétude de Gödel sont certainement les
+théorèmes les plus célèbres de la logique mathématique. C'est dans ce chapitre
+que nous les étudions.
+
+Tout d'abord, il est nécessaire d'étudier le lien entre la syntaxe et la
+sémantique des formules arithmétiques, qu'on notera dans ce chapitre simplement
+$\Formula$ (et de même, $\Prop$ signifiera directement l'ensemble des
+propositions arithmétiques). En effet, il est important de développer avec
+précision le lien entre les formules arithmétiques, les théories usuelles et
+leurs modèles (en particulier, le modèle standard). L'objectif de cette première
+section est d'aboutir à la représentation des fonctions RP par des prédicats
+$\HierArithS 0$, et au lien entre l'arithmétique au sens logique et la
+hiérarchie arithmétique telle que décrite au chapitre précédent, basé sur le
+calculabilité.
+
+Sur ces bases, nous pouvons prouver le théorème d'indéfinissabilité de la vérité
+de Tarski, ainsi que les théorèmes d'incomplétude. Pour pouvoir décrire au mieux
+ces théorèmes, on s'attarde sur les conditions exactes permettant de prouver les
+théorèmes.
+
+Enfin, nous abordons la notion de traduction entre signatures et théories, pour
+permettre de généraliser les théorèmes d'incomplétude au cas d'autres théories
+permettant d'encoder l'arithmétique sans être des théories arithmétiques (des
+théories construites sur une extension de la signature de l'arithmétique). Cela
+permet en particulier de prouver que la théorie $\ZFC$ ne peut pas prouver
+$\Coher(\ZFC)$.
+
+\section{\'Etude de l'arithmétique du premier ordre}
+
+Dans le \cref{chp.logpred}, nous avons défini un cadre général pour parler de
+théories et de formules. En particulier, nous avons parlé en général de
+signatures et de modèles. Dans le chapitre actuel, on se concentre uniquement
+sur une signature, et sur ses modèles.
+
+La signature qu'on fixe ici, celle de l'arithmétique, est définie par
+\[\mathcal L_{\mathrm{arith}} \defeq \{0^0,S^1,+^2,\times^2,\leq^2\}\]
+
+\subsection{Axiomatiser l'arithmétique}
+
+Historiquement, l'idée d'axiomatiser l'arithmétique est venue d'un besoin de
+fonder sur des bases clairement établies le manipulation des entiers (objets
+parmi les plus primitifs et essentiels des mathématiques). Ainsi, les axiomes
+de l'arithmétique servent en premier lieu à refléter le comportement du modèle
+$(\bN,0,n \mapsto n+1, +, \times, \leq)$~: il est donc naturel que cette
+structure soit un modèle de toute théorie arithmétique d'intérêt. Nous allons
+donc avant tout étudier les théories admettant cette structure comme modèle
+(et non forcément considérer les modèles d'une théorie donnée).
+
+\begin{definition}[Modèle standard de l'arithmétique]
+  On définit le modèle standard de l'arithmétique comme la structure sur la
+  signature de l'arithmétique donnée précédemment~: $\bN$ muni de
+  l'interprétation canonique des symboles arithmétiques.
+\end{definition}
+
+Pour axiomatiser le comportement de $\bN$, on peut donc donner la théorie
+\[\Th(\bN)\defeq \{\varphi \in \Prop \mid \bN \models \varphi\}\]
+mais cette théorie est inutilisable~: une théorie utilisable en pratique demande
+à ce qu'on puisse écrire effectivement des preuves dans cette théorie. Dans le
+cas présent, une preuve que $\Th(\bN)\vdash \varphi$ signifie que pour chaque
+règle axiome $\Th(\bN) \vdash \psi$, il est nécessaire de prouver un énoncé de
+la forme $\bN \models \psi$ (de plus, comme $\Th(\bN)$ est clos par conséquence
+logique, on peut aussi bien prouver tout énoncé uniquement avec la règle
+d'axiome). Le premier critère essentiel pour qu'une théorie soit utilisable est
+donc sa récursivité.
+
+\begin{definition}[Théorie récursivement axiomatisable]
+  Soit $\Sigma$ une signature. Une théorie $\mathcal T \subseteq \Prop(\Sigma)$
+  est dite récursivement axiomatisable (r.a.) si elle décrit un langage
+  décidable de $\Prop(\Sigma)$ (vu comme un langage algébrique).
+\end{definition}
+
+\begin{remark}
+  L'adjectif \og récursivement\fg ici fait référence à la théorie de la
+  récursion, qui est l'ancien nom de la calculabilité. Les fonctions récursives
+  au sens de Herbrand-Gödel étant antérieures à la notion de machine de Turing,
+  les premiers termes employés pour désigner les fonctions calculables étaient
+  liés à la récursivité. On peut trouver aussi l'expression \og effectivement
+  axiomatisable\fg mais, pour ce cas-ci, le terme \og récursivement\fg est
+  globalement resté.
+\end{remark}
+
+On peut se demander ce qu'il est possible de produire de plus si l'on affaiblit
+la condition, et demande uniquement qu'une théorie soit une partie c.e. de
+l'ensemble des propositions. Pour écrire une preuve, après tout, nous sommes
+généralement d'abord convaincus des axiomes que nous utilisons, et il
+peut donc s'avérer suffisant d'utiliser un algorithme qui énumère positivement
+les axiomes, sans s'inquiéter des formules qui ne sont pas des axiomes.
+
+En fait, cet affaiblissement n'en est pas un, comme le montre l'astuce de Craig.
+
+\begin{lemma}[Astuce de Craig \cite{Craig1953-CRAOAW}]
+  Soit $\mathcal T$ une partie c.e. de l'ensemble des formules, données
+  par une énumération $(\varphi_i)_{i \in \bN}$. Alors la famille
+  $\displaystyle\left(\bigwedge_{p=0}^{i-1} \varphi_p\right)_{i \in \bN}$
+  est une partie décidable de l'ensemble des formules, logiquement équivalente à
+  $\mathcal T$.
+\end{lemma}
+
+\begin{proof}
+  On utilise simplement l'\cref{exo.enum.cr}. En effet, la famille de
+  conjonctions est de longueur strictement croissante et la traduction canonique
+  entre $\bN$ et $\Sigma^\star$ pour un alphabet $\Sigma$ préserve la longueur~:
+  si $u$ est de longueur supérieure à $v$, alors son code $\godcod u$ est
+  inférieur au code $\godcod v$.
+
+  Le fait que les deux familles sont logiquement équivalentes est dû au fait
+  que la conjonction permet de prouver chaque composante, et que l'ensemble
+  des $(\varphi_i)_{i < p}$ permet de prouver la \ordinalnumeralfeminin{$p$}
+  conjonction. Ainsi, toute formule de la première famille est prouvée par une
+  partie finie de la deuxième famille et réciproquement.
+\end{proof}
+
+Ce lemme ne sert pas en pratique~: toutes les théories d'intérêt sont en fait
+récursivement axiomatisables de façon évidente.
+
+Cherchons maintenant une théorie décrivant le modèle standard $\bN$. D'après la
+forme de la signature, il est nécessaire de décrire le comportement de $0$, de
+l'opération successeur $n \mapsto n+1$, de l'addition, de la multiplication et
+de la relation d'ordre $\leq$.
+
+En fait, il est aisé de décrire $\leq$ à partir de $+$ en donnant l'équivalence
+suivante~:
+\[\forall n,m \in \bN, n \leq m \iff \exists k \in \bN, n + k = m\]
+comme nous l'avons fait dans le \cref{chp.axiomes}. On pourrait donc simplement
+ajouter $\leq$ comme une extension par définition~: on préfère le donner ici
+pour des raisons pratiques apparaissant plus tard dans ce chapitre.
+
+Les éléments $0$ et $S$ se définissent ensemble~: ils sont les constructeurs de
+l'ensemble inductif $\bN$ et permettent avant tout d'énoncer que tout élément
+est de la forme $0$ ou $S\;n$ avec $n$ respectant récursivement cette
+spécification. Les points essentiels se résument en $3$ axiomes~:
+\begin{axiom}[Non ambigüité des constructeurs]
+  Aucun élément n'est à la fois un successeur et $0$~:
+  \[\forall n, 0 \neq S\;n\]
+\end{axiom}
+
+\begin{axiom}[Injectivité du successeur]
+  La fonction $S$ est injective~:
+  \[\forall n\;m, S\;n = S\;m \implies n = m\]
+\end{axiom}
+
+\begin{axiom}[Filtrage par motif des entiers]
+  Tout élément est $0$ ou un successeur~:
+  \[\forall n, (n = 0) \lor (\exists m, n = S\;m)\]
+\end{axiom}
+
+Avec ces $3$ axiomes, on décrit que $\bN$ ne contient que $0$ et des itérations
+de $S$, appliquées un nombre fini de fois jusqu'à atteindre $0$.
+
+On souhaite maintenant axiomatiser les deux opérations $+$ et $\times$. Pour
+cela, on a déjà donné des définitions récursives des opérations~: il nous
+suffit de les utiliser ici.
+
+\begin{axiom}[Définition de l'addition]
+  On a les deux équations suivantes pour l'addition~:
+  \[\forall n, n + 0 = n \qquad \forall n\;m, n + (S\;m) = S\;(n+m)\]
+\end{axiom}
+
+\begin{axiom}[Définition de la multiplication]
+  On a les deux équations suivantes pour la multiplication~:
+  \[\forall n, n \times 0 = n \qquad
+  \forall n\;m, n \times (S\;m) = (n\times m) + n\]
+\end{axiom}
+
+Ces axiomes nous permettent de définir une première théorie, simple, décrivant
+une partie de l'arithmétique.
+
+\begin{definition}[Arithmétique de Robinson]
+  On appelle arithmétique de Robinson la théorie formée par les $3$ axiomes
+  définissant $0$ et $S$, les $2$ axiomes définissant l'addition et les $2$
+  axiomes définissant la multiplication. On note $\ArithRobin$ cette théorie.
+\end{definition}
+
+Puisque cette théorie est finie, elle est évidemment r.a. Cette théorie est
+très faible~: elle ne peut par exemple pas prouver la commutativité de
+l'addition. Cependant, elle peut prouver des schémas de théorèmes évoquant
+la commutativité de l'addition. Pour décrire ces schémas, on définit d'abord
+l'encodage standard d'un entier.
+
+\begin{definition}[Encodage standard d'un entier]
+  Soit $n \in \bN$, on appelle encodage de $n$ le terme arithmétique
+  $\encode n \in \Term$ défini par
+  \[\encode 0 \defeq 0 \qquad \encode{n+1} \defeq S\;\encode n\]
+\end{definition}
+
+On peut maintenant prouver le fait suivant~: toute instance de commutativité
+est prouvable.
+
+\begin{proposition}
+  Soient $n,m \in \bN$, alors l'énoncé
+  $\encode n + \encode m = \encode m + \encode n$ est prouvable dans
+  $\ArithRobin$.
+\end{proposition}
+
+\begin{proof}
+  Pour prouver ce résultat, il nous suffit de montrer le fait suivant, évident~:
+  pour tous $n,m \in \bN$, on peut prouver
+  $\encode n + \encode m = \encode{n+m}$. On procède pour cela par récurrence
+  sur $m$. Dans le cas où $m = 0$, on utilise le premier axiome de la définition
+  de l'addition, et dans le cas où $m = S\;p$, on utilise le deuxième axiome
+  et l'hypothèse d'induction.
+
+  Ainsi, comme $n + m = m + n$, on peut directement en déduire le résultat.
+\end{proof}
+
+On remarque un fait essentiel ici~: la preuve n'utilise aucunement un argument
+de récurrence exploitable dans $R$. En réalité, la récurrence effectuée ici est
+de l'ordre de la meta-théorie. C'est en effet le fait que $\bN$ possède la
+propriété de récurrence qui permet de faire cette preuve.
+
+C'est donc par un point de vue extérieur à la théorie qu'on peut interpréter
+l'idée de la commutativité. Cependant, la commutativité n'est pas prouvable dans
+$\ArithRobin$. Par théorème de complétude, cela signifie qu'il existe un modèle
+de $\ArithRobin$ qui ne vérifie pas la commutativité de $+$.
+
+\begin{exercise}
+  Montrer qu'il existe un modèle de $\ArithRobin$ qui dans lequel
+  \[\forall n\;m, n + m = m + n\]
+  n'est pas vérifié. En déduire que cet énoncé est indépendant de $\ArithRobin$.
+\end{exercise}
+
+On se heurte donc à une première limitation~: sans la récurrence au sein même de
+la théorie, il n'est pas possible de prouver des énoncés vrais pour tout
+élément, même s'il est possible de prouver des énoncés vrais pour tout élément
+dit standard, c'est-à-dire (l'interprétation d'un terme) de la forme $\encode n$
+pour $n \in \bN$.
+
+Il convient donc d'ajouter le principe de récurrence. Il existe plusieurs
+manières de l'énoncer, mais le plus naturel en logique du premier ordre est par
+un schéma d'axiomes.
+
+\begin{axiom}[Schéma de récurrence]
+  Pour toute formule $\varphi(\vec x, y)\in \Formula$, on définit l'axiome de
+  récurrence associé
+  \[\forall \vec x, \varphi(\vec x, 0) \implies
+  (\forall y, \varphi(\vec x, y) \implies \varphi(\vec x, S\;y)) \implies
+  \forall y, \varphi(\vec x, y)\]
+\end{axiom}
+
+La théorie de l'arithmétique de Peano (du premier ordre) est alors la théorie
+naturelle incluant la récurrence.
+
+\begin{definition}[Arithmétique de Peano]
+  On définit l'arithmétique de Peano $\ArithPeano$ par l'ensemble d'axiomes de
+  $\ArithRobin$ et du schéma de récurrence pour toutes les formules $\varphi$.
+\end{definition}
+
+Dans cette théorie, il est possible de prouver de nombreuses propriété
+arithmétiques usuelles~: l'associativité et la commutativité de $+$ et de
+$\times$, par exemple.
+
+L'exercice suivant montre que l'arithmétique de Peano, bien qu'elle contienne
+des modèles non standards (le \cref{thm.LS} nous l'assure quoi qu'il arrive),
+ses modèles contiennent tous en un sens une copie de $\bN$.
+
+\begin{exercise}
+  Soit $\mathcal M \models \ArithPeano$. Montrer que $\bN$ est un sous-modèle
+  en interprétant $n \in \bN$ par $\encode n$, et que tous les éléments de
+  $\mathcal M \setminus \bN$ sont supérieurs à tous les éléments de $\bN$.
+
+  Montrer que ce sous-modèle n'est pas élémentaire.
+\end{exercise}
+
+\subsection{Encoder la calculabilité}
+
+Les théories que nous avons vues permettent de prouver de nombreux résultats~:
+l'arithmétique de Robinson par le biais de schémas de théorèmes, et
+l'arithmétique de Peano grâce à la récurrence. Pourtant, la puissance
+d'expressivité de l'arithmétique est déjà très forte avec un fragment de ces
+théories.
+
+Pour introduire ces fragments, on commence par définir les formules
+$\HierArithS 0$.
+
+\begin{definition}[Formules $\HierArithS 0$]\label{def.Sigma0}
+  On définit l'ensemble des formules $\HierArithS 0$ par la grammaire
+  suivante~:
+  \begin{multline*}
+    \varphi \Coloneq t = u \mid t \leq u \mid \top\mid \bot \mid \lnot \varphi
+    \mid \varphi \land \psi \mid \varphi \lor \psi \mid \varphi \to \psi\\
+    \mid \forall x, (x \leq v) \to \varphi \mid
+    \exists x, (x \leq v) \land \varphi
+  \end{multline*}
+  où $t,u \in \Term$ et $v\in \Term$ est tel que $x \notin \VL(v)$.
+
+  L'ensemble $\HierArithS 0$ est aussi nommé $\HierArithP 0$, de sorte que
+  toutes les classes sont les mêmes à l'étage $0$.
+\end{definition}
+
+Une formule $\HierArithS 0$ est donc une formule dont toutes les quantifications
+sont bornées. 
+
+\begin{notation}
+  On écrira naturellement $\forall x \leq t, \varphi$ et
+  $\exists x \leq t, \varphi$ pour les deux quantifications bornées
+  correspondantes.
+\end{notation}
+
+\begin{remark}
+  Comme pour la hiérarchie de Lévy, il est important que le terme
+  qui borne $x$ ne fasse pas apparaitre $x$, sans quoi il serait possible
+  d'écrire par exemple $\forall x \leq x$, qui est une quantification non
+  bornée.
+\end{remark}
+
+La valeur de vérité de ces formules dans $\bN$ est possible à déduire de façon
+algorithmique, puisque toute formule $\HierArithS 0$ quantifie sur un nombre
+fini de valeurs, qu'il est donc possible de tester. En fait, on a déjà vu grâce
+aux \cref{fct.RP.1}, \ref{prop.PRBool}, \ref{fct.RP2} et \ref{fct.RP3}
+le résultat suivant~:
+
+\begin{proposition}
+  Soit $\varphi\in \HierArithS 0$, alors l'ensemble $X$ défini par
+  \[\vec x \in X \defeq \bN, \vec x \models \varphi\]
+  est une relation RP.
+\end{proposition}
+
+La réciproque de cette proposition est fausse (nous l'admettons ici). Cependant,
+il est possible d'encoder toutes les fonctions RP par des prédicats
+$\HierArithS 1$, au sens suivant.
+
+\begin{definition}[Hiérarchie Arithmétique - version 2]\label{def.HA2}
+  On définit la hiérarchie arithmétique pour les formules de l'arithmétique
+  par~:
+  \begin{itemize}
+  \item $\HierArithS 0 = \HierArithP 0 = \HierArithD 0$ est la classe donnée à
+    la \cref{def.Sigma0}.
+  \item si $\varphi \in \HierArithS n$, alors
+    $\forall \vec x, \varphi \in \HierArithP{n+1}$.
+  \item si $\varphi \in \HierArithP n$, alors
+    $\exists \vec x, \varphi \in \HierArithS{n+1}$.
+  \end{itemize}
+
+  On définit aussi la hiérarchie arithmétique pour les parties de $\bN^k$ (pour
+  tout $k \in \bN$) par~:
+  \begin{itemize}
+  \item $\HierArithS 0 = \HierArithP 0 = \HierArithD 0$ est la classe des
+    parties de la forme $\{\vec x \in \bN^k\mid \bN\models\varphi(\vec x)\}$
+  \item $\HierArithS{n+1}$ est défini comme l'ensemble des parties
+    $X \subseteq \bN^{k}$ telles qu'il existe une partie
+    $Y \subseteq \bN^{k+p}$ qui est dans $\HierArithP n$ et telle que
+    \[\forall \vec x \in \bN^k, \vec x \in X \iff
+    \exists \vec y, (\vec x,\vec y) \in Y\]
+  \item $\HierArithP{n+1}$ est défini comme l'ensemble des parties
+    $X \subseteq \bN^k$ telles qu'il existe une partie
+    $Y \subseteq \bN^{k+p}$ qui est dans $\HierArithS n$ et telle que
+    \[\forall \vec x \in \bN^k, \vec x \in X \iff
+    \forall \vec y, (\vec x, \vec y) \in Y\]
+  \item $\HierArithD n = \HierArithS n \cap \HierArithP n$
+  \end{itemize}
+\end{definition}
+
+En comparaison avec la \cref{def.HA1}, on posé un cas $0$ en plus, et on a
+remplacé le fait de considérer des prédicats c.e. et co-c.e. par le fait de
+considérer des formules.
+
+Plusieurs points sont à relever~:
+\begin{itemize}
+\item puisqu'on sait que les parties $\HierArithD 0$ sont calculables par des
+  fonctions RP, on sait déjà que $\HierArithD 1$ au sens de la \cref{def.HA1}
+  contient les parties $\HierArithD 0$. De par la forme des quantifications,
+  on en déduit que toute partie $\HierArithS n$ (resp. $\HierArithP n$, resp.
+  $\HierArithD n$) au sens de la \cref{def.HA2} l'est aussi au sens de la
+  \cref{def.HA1}. La réciproque est vraie (bien sûr, pour $n \geq 1$ puisqu'on
+  n'a pas défini le cas $n = 0$ dans la \cref{def.HA1}), ce qui n'a besoin
+  d'être prouvé qu'à l'étage $1$ de la hiérarchie, la montée dans la hiérarchie
+  suivant la même construction dans les deux cas.
+\item les parties de $\bN^k$ qui sont $\HierArithS n$ (resp. $\HierArithP n$)
+  correspondent aux interprétations de formules $\HierArithS n$ (resp.
+  $\HierArithP n$).
+\item il n'y a pas de classe $\HierArithD n$ pour les formules. Cela s'explique
+  par le fait qu'une formule ne peut qu'avoir l'un des deux
+  quantificateurs $\forall / \exists$ en tête. Dans la hiérarchie de Lévy, la
+  classification se faisait entre des classes d'équivalence pour la
+  prouvabilité dans $\ZFC$, mais nous souhaitons ici garder un aspect purement
+  syntaxique, l'aspect sémantique étant joué par les parties de $\bN^k$.
+\item puisque toute formule est équivalente à une formule en forme prénexe
+  d'après l'\cref{exo.prenexe}, toute formule arithmétique appartient à l'une
+  des classes de la hiérarchie arithmétique.
+\end{itemize}
+
+On souhaite donc prouver la conjecture suivante, suffisante pour faire coïncider
+les deux versions de la hiérarchie arithmétique~:
+
+\begin{conjecture}
+  Pour toute fonction $f : \bN^k \to \bN$ RP, il existe un énoncé
+  $\HierArithS 1$ représentant $f$.
+\end{conjecture}
+
+Précisons la notion de représentation.
+
+\begin{definition}[Représentation d'une fonction d'entiers]
+  Soit $f : \bN^k \to \bN$. On dit que $f$ est représentée par une formule
+  $\varphi(\vec x,y) \in \Form$ à $k+1$ variable libres lorsque
+  \[\forall \vec x, \forall y, f(\vec x) = y \iff \varphi(\vec x, y)\]
+\end{definition}
+
+Une autre façon d'énoncer la conjecture est de dire que toute fonction RP est
+de graphe $\HierArithS 1$.
+
+La forme de la conjecture nous pousse directement vers une induction sur la
+structure de la classe RP. Pour les projections, la fonction successeur, la
+fonction constante et les projections, aucun problème n'apparaît. Pour la
+composition, il convient simplement d'écrire les choses comme on s'y attend~:
