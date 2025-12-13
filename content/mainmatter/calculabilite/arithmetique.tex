@@ -14,8 +14,8 @@ propositions arithmétiques). En effet, il est important de développer avec
 précision le lien entre les formules arithmétiques, les théories usuelles et
 leurs modèles (en particulier, le modèle standard). L'objectif de cette première
 section est d'aboutir à la représentation des fonctions RP par des prédicats
-$\HierArithS 0$, et au lien entre l'arithmétique au sens logique et la
-hiérarchie arithmétique telle que décrite au chapitre précédent, basé sur le
+$\HierArithS 1$, et au lien entre l'arithmétique au sens logique et la
+hiérarchie arithmétique telle que décrite au chapitre précédent, fondée sur le
 calculabilité.
 
 Sur ces bases, nous pouvons prouver le théorème d'indéfinissabilité de la vérité
@@ -234,7 +234,7 @@ Il convient donc d'ajouter le principe de récurrence. Il existe plusieurs
 manières de l'énoncer, mais le plus naturel en logique du premier ordre est par
 un schéma d'axiomes.
 
-\begin{axiom}[Schéma de récurrence]
+\begin{axiom}[Schéma de récurrence]\label{ax.rec}
   Pour toute formule $\varphi(\vec x, y)\in \Formula$, on définit l'axiome de
   récurrence associé
   \[\forall \vec x, \varphi(\vec x, 0) \implies
@@ -850,14 +850,15 @@ possible de prouver un théorème de récursion analogue.
 Nous pouvons désormais prouver les théorèmes centraux sur la logique de
 l'arithmétique.
 
-\section{Théorèmes d'incomplétude}
+\subsection{Premier théorème d'incomplétude}
 
-On peut désormais combiner les conséquences à la fois de la $\Sigma$-complétude,
-et d'être une théorie r.a. Ces conséquences vont nous donner directement le
-premier théorème d'incomplétude.
+On combine désormais les deux propriétés~: être r.a. pour pouvoir parler d'une
+théorie au sein de la calculabilité, et être $\Sigma$-complet pour pouvoir
+exprimer la calculabilité au sein de la théorie. On étudie ainsi des théories
+qui peuvent exprimer des propriétés sur elles-mêmes.
 
-\subsection{Vers le premier théorème d'incomplétude}
-
+La possibilité de parler de soi-même est intuitivement ce qui mène aux
+arguments diagonaux, et cette situation nous invite donc à en utilsier un.
 En étudiant le procédé diagonal et la façon dont il construit un point fixe, on
 en déduit qu'il suffit ici de faire la même chose que pour d'autres arguments
 par contradiction~: on prend pour $\alpha$ la négation, ce qui mènerait donc à
@@ -908,7 +909,7 @@ tel énoncé.
 
 Le théorème de point fixe ne peut donc pas s'appliquer au cas de la satisfaction
 sémantique. Cependant, on a déjà vu un énoncé très proche, mais qui aborde la
-satisfaction sémantique à la place~: $\ThT{\mathcal T}$.
+satisfaction syntaxique à la place~: $\ThT{\mathcal T}$.
 
 \begin{definition}[Formule $G$ de Gödel]
   Soit $\mathcal T$ une théorie $\Sigma$-complète et r.a. On définit $G$ comme
@@ -974,7 +975,7 @@ auteurs).
 L'énoncé devient alors véritablement un énoncé d'incomplétude.
 
 \begin{theorem}[Premier théorème d'incomplétude de Gödel
-    \cite{Godel1931-GDEBFU}]
+    \cite{Godel1931-GDEBFU}]\label{thm.godel.incompl1}
   Soit $\mathcal T$ une théorie arithmétique à la fois $\Sigma$-complète,
   $\Sigma$-cohérente et r.a. Il existe un énoncé $G \in \HierArithP 1$ tel que
   $\mathcal T \nvdash G$ et $\mathcal T \nvdash \lnot G$.
@@ -995,7 +996,9 @@ appliquer ce théorème, sont généralement au moins $\Sigma$-complètes pour
 permettre d'exprimer les fonctions utiles pour un mathématicien, sont
 récursivement axiomatisable pour être utilisables, et sont $\Sigma$-cohérentes
 puisqu'on souhaite d'abord refléter la vérité dans $\bN$ (inatteignable par une
-théorie logique d'après le \cref{thm.ver.indef}).
+théorie logique d'après le \cref{thm.ver.indef}). Enfin, le fait de les
+utiliser pour faire un travail mathématique repose sur la prémisse que ces
+théories d'usage sont cohérentes.
 
 \begin{exercise}[Le cas historique de l'$\omega$-cohérence]
   Dans \cite{Godel1931-GDEBFU}, Gödel n'utilise pas l'hypothse de
@@ -1004,7 +1007,403 @@ théorie logique d'après le \cref{thm.ver.indef}).
   quand pour tout énoncé $\varphi(x)$, on ne peut avoir à la fois les deux
   faits suivants~:
   \[\forall n \in \bN, \mathcal T \vdash \varphi(\encode n) \qquad
-  \mathcal T \vdash \exists x, \lnot \varphi(x)\]
+  \mathcal T \vdash \lnot(\forall x, \varphi(x))\]
   Montrer que toute théorie $\omega$-cohérente est $\Sigma$-cohérente. En
   déduire la version historique du premier théorème d'incomplétude de Gödel.
 \end{exercise}
+
+La condition d'$\omega$-cohérence à la place de la $\Sigma$-cohérence est, elle
+aussi, largement suffisante dans la pratique. Pour autant, il est possible
+d'améliorer le premier théorème d'incomplétude pour supprimer ces conditions
+de cohérence renforcées. C'est l'astuce de Rosser (\foreignexpr{Rosser's trick}
+en anglais).
+
+\begin{definition}[Formule de Rosser]
+  Soit $\mathcal T$ une théorie à la fois $\Sigma$-complète et r.a. On
+  pose $\Not$ le prédicat représentant le graphe
+  \[\Not(\godcod \varphi, \godcod \psi) \defeq \psi = \lnot \varphi\]
+  On définit le prédicat
+  \[\DemBisT{\mathcal T}(x,y) \defeq \DemT{\mathcal T}(x,y) \land
+  (\exists y', \Not(y,y') \land \forall x' < x,
+  \lnot \DemT{\mathcal T}(x',y'))\]
+
+  On définit la formule de Rosser $G'$ par l'application du \cref{lem.fix.godel}
+  de sorte qu'on a l'équivalence
+  \[\mathcal T \vdash G' \iff \lnot
+  \exists x, \DemBisT{\mathcal T}(x, \encode{\godcod{G'}})\]
+\end{definition}
+
+L'énoncé $G'$ est donc une variant de l'énoncé $G$, dans lequel on ajoute une
+condition de non démonstration. Si on fixe une énumération des preuves dans
+$\mathcal T$, l'énoncé $\DemBisT{\mathcal T}(\godcod \pi, \godcod\varphi)$
+énonce que $\pi$ est une preuve de $\varphi$, mais aussi qu'aucune autre preuve
+de $\lnot \varphi$ n'a été énumérée jusqu'alors.
+
+Avec ce nouveau prédicat, la simple cohérence suffit pour obtenir une
+formule indécidable~: le fait que $G'$ implique
+$\lnot\ThT{\mathcal T}(\encode{\godcod{G'}})$ permet de montrer que $G'$ n'est
+pas prouvable, et la condition sur le fait qu'aucune preuve plus courte
+n'existe permet alors d'obtenir directement une contradiction en supposant que
+$\lnot G'$ est prouvable, comme nous allons le montrer. Cependant, cette preuve
+demande une hypothèse supplémentaire sur $\mathcal T$~: elle suppose que
+$\mathcal T$ permet de comparer tout élément à un élément standard.
+
+\begin{theorem}[Théorème d'incomplétude de Godel-Rosser]
+  \label{thm.godel.rosser}
+  Soit $\mathcal T$ une théorie cohérente, $\Sigma$-complète et récursivement
+  axiomatisable. On suppose de plus que le schéma suivant est prouvable~:
+  \[\forall n \in \bN, \mathcal T \vdash \forall x,
+  x \leq \encode n \iff \encode n \nless x \]
+  Alors il existe un énoncé $G'$ tel que $\mathcal T \nvdash G'$ et
+  $\mathcal T \nvdash \lnot G'$.
+\end{theorem}
+
+\begin{proof}
+  On doit donc prouver deux résultat~:
+  \begin{itemize}
+  \item supposons qu'il existe une démonstration de $G'$. On trouve donc $\pi$
+    tel que
+    $\bN\models\DemT{\mathcal T}(\encode{\godcod \pi},\encode{\godcod{G'}})$.
+    On applique donc le fait que $\mathcal T$ représente les graphes
+    $\HierArithS 1$~:
+    \begin{align*}
+      \mathcal T \vdash& \DemT{\mathcal T}
+      (\encode{\godcod \pi},\encode{\godcod{G'}}) \\
+      \forall n \in \bN,\quad\mathcal T
+      \vdash& \lnot \DemT{\mathcal T}(\encode n, \encode{\godcod{G'}})
+      & \text{par cohérence de }\mathcal T \\
+      \mathcal T \vdash & \DemT{\mathcal T} \land \bigwedge_{n < \encode\pi}
+      \lnot\DemT{\mathcal T}(\encode n,\encode{\godcod{G'}}) \\
+      \mathcal T \vdash & \DemT{\mathcal T} \land
+      \forall x < \encode{\godcod{G'}}, \lnot
+      \DemT{\mathcal T}(x,\encode{\godcod{G'}}) \\
+      \mathcal T \vdash & \exists x,
+      \DemBisT{\mathcal T}(x,\encode{\godcod{G'}}) \\
+      \mathcal T \vdash & \lnot G' & \text{par définition de }G'
+    \end{align*}
+    ce qui contredit la cohérence de $\mathcal T$.
+  \item supposons qu'il existe une démonstration de $\lnot G'$. On trouve
+    donc $\pi$ tel que
+    $\bN \models \DemT{\mathcal T}(\encode{\godcod\pi},\encode{\godcod{G'}})$
+    d'où~:
+    \begin{align*}
+      \mathcal T \vdash& \DemT{\mathcal T}(\encode{\godcod\pi},
+      \encode{\godcod{G'}}) & \text{par représentation des graphes }
+      \HierArithS 1\\
+      \mathcal T \vdash& \DemBisT{\mathcal T}(x,\encode{\godcod{G'}})\implies
+      (\encode{\godcod{G'}} < x\\ & \implies \lnot\DemT{\mathcal T}
+      (\encode{\godcod\pi}, \encode{\godcod{G'}}))
+      &\text{où } x \text{ est une nouvelle variable}\\
+      \mathcal T \vdash& \DemBisT{\mathcal T}(x,\encode{\godcod{G'}}) \implies
+      \encode{\godcod\pi}\nless x \\
+      \mathcal T\vdash& \DemBisT{\mathcal T}(x, \encode{\godcod{G'}}) \implies
+      x \leq \encode{\godcod\pi} & \text{par hypothèse sur } \mathcal T
+    \end{align*}
+    De plus, comme $\mathcal T \vdash \lnot G'$, puisque deux
+    propriétés équivalentes sont de négations équivalentes et par propriété de
+    $G'$, on en déduit
+    \[\mathcal T\vdash\exists x,\DemBisT{\mathcal T}(x,\encode{\godcod{G'}})\]
+    par cette proposition et la précédente, on a~:
+    \begin{align*}
+      \mathcal T \vdash & \exists z \leq \encode{\godcod{G'}},
+      \DemBisT{\mathcal T}(x, \encode{\godcod{G'}}) \\
+      \mathcal T \vdash & \bigvee_{n \leq \godcod\pi}
+      \DemT{\mathcal T}(\encode n, \encode{\godcod{G'}})
+      & \text{en affaiblissant l'énoncé }\DemBisT{\mathcal T}\\
+      \forall n \in \bN, \mathcal T \vdash & \lnot \DemT{\mathcal T}(\encode n,
+      \encode{\godcod{G'}}) & \text{par cohérence de }\mathcal T \\
+      \mathcal T \vdash & \bigwedge_{n \leq \godcod\pi}\lnot\DemT{\mathcal T}
+      (\encode{n},\encode{\godcod{G'}}) \\
+      \mathcal T \vdash & \bot 
+    \end{align*}
+    ce qui contredit la cohérence de $\mathcal T$.
+  \end{itemize}
+  
+  Ainsi ni $\mathcal T \vdash G'$, ni $\mathcal T \vdash \lnot G'$.
+\end{proof}
+
+\begin{exercise}
+  Montrer que $\ArithRobin$ est $\Sigma$-complète. En déduire que
+  $\ArithRobin$ et $\ArithPeano$ sont toutes les deux des théories incomplètes.
+\end{exercise}
+
+\subsection{Second théorème d'incomplétude}
+
+Le premier théorème d'incomplétude d'incomplétude nous permet de montrer que
+toute théorie suffisante pour des besoins mathématiques concrets, est
+automatiquement une théorie incomplète. Pour cela, l'énoncé (qu'il s'agisse de
+$G$ ou de $G'$) est purement symbolique et logique~: cet énoncé n'énonce aucun
+fait d'intérêt en lui-même. Le second théorème d'incomplétude, lui, permet
+de donner un cas essentiel d'énoncé indémontrable.
+
+L'idée du second théorème part d'un postulat simple~: notre démonstration
+précédente du \cref{thm.godel.incompl1} pourrait être rendue formelle. C'est le
+cas de toutes les démonstration qui se veulent valides mathématiquement, et
+celle-ci particulièrement peut se formaliser en donnant des arguments purement
+finiraires. Ces arguments finitaires, eux, peuvent s'exprimer directement à
+l'aide de récurrences.
+
+Pour exprimer les propriétés de cette internalisation, on introduit les
+conditions de Hilbert-Bernays.
+
+\begin{definition}[Conditions de Hilbert-Bernays]
+  Soit $\mathcal T$ une théorie munie d'une fonction $\square : \Prop \to \Prop$
+  à une variable libre $x$. On dit que $(\mathcal T,\square)$ vérifie les
+  conditions de Hilbert-Bernays lorsque les trois propriétés suivantes sont
+  vérifiées~:
+  \begin{equation}\label{eq.HB.1}
+    \forall \varphi \in \Prop, \quad
+    \big(\mathcal T \vdash \varphi\big) \implies \big(\mathcal T \vdash
+    \square\varphi\big)
+  \end{equation}
+  \begin{multline}\label{eq.HB.2}
+    \forall \varphi, \psi \in \Prop, \\
+    \mathcal T \vdash \Th(\square(\varphi \implies \psi)) \implies
+    \big( \square \varphi\implies \square(\psi)\big)
+  \end{multline}
+  \begin{equation}\label{eq.HB.3}
+    \forall \varphi \in \Prop, \quad
+    \mathcal T \vdash \square \varphi \implies \square\square \varphi
+  \end{equation}
+\end{definition}
+
+La fonction $\square$ représente ici la formule $\ThT{\mathcal T}$, que l'on
+note ainsi pour être plus compact (et ne pas réécrire des encodages imbriqués).
+En considérant que $\square\varphi$ signifie que $\varphi$ est prouvable dans
+$\mathcal T$, les trois conditions signifient respectivement~:
+\begin{itemize}
+\item si $\mathcal T$ prouve $\varphi$, alors $\square\varphi$ est prouvable
+  aussi dans $\mathcal T$. La condition correspond au fait que
+  $\ThT{\mathcal T}$ capture tous
+  les énoncés démontrables par $\mathcal T$. Remarquons que $\ThT{\mathcal T}$
+  peut aussi bien être prouvable pour d'autres énoncés, vis à vis des conditions
+  de Hilbert-Bernays.
+\item si $\mathcal T$ prouve $\varphi \implies \psi$, alors la prouvabilité de
+  $\varphi$ entraine celle de $\psi$ (et ceci est prouvable dans $\mathcal T$).
+  Cette condition signifie que le \latinexpr{modus ponens} est un principe
+  logique applicable au sein même de $\mathcal T$~: la théorie est suffisamment
+  forte pour l'internaliser.
+\item au sein même de $\mathcal T$, on peut internaliser une démonstration.
+  Cette condition est donc une version interne de la première condition.
+\end{itemize}
+
+On montre d'abord que $\ArithPeano$, qui est par excellence la théorie
+arithmétique possédant le principe de récurrence, vérifie bien les conditions
+pour $\square(\varphi) \defeq \ThT{\ArithPeano}(\encode{\godcod\varphi})$.
+
+\begin{proposition}\label{prop.HB.PA}
+  Soit $\mathcal T$ une théorie r.a. dont $\ArithPeano$ est une conséquence.
+  Cette théorie satisfait les conditions de Hilbert-Bernays pour
+  \[\square \varphi \defeq \Th_{\mathcal T}(\encode{\godcod\varphi})\]
+\end{proposition}
+
+\begin{proof}
+  Par la définition prise de $\square$, il est automatique que la première
+  condition est vérifiée~: $\square$ représente la prouvabilité dans
+  $\mathcal T$.
+
+  Pour la deuxième condition, en posant $\Imp$ la
+  formule représentant les triplets $(\varphi,\psi,\varphi \implies \psi)$, on
+  souhaite prouver
+  \[\ArithPeano\vdash \forall x\;y\;z, \Imp(x,y,z) \land
+  \ThT{\mathcal T}(z) \land
+  \ThT{\mathcal T}(x) \implies \ThT{\mathcal T}(y)\]
+
+  Pour la troisième condition, on peut se ramener à prouver
+  \[\ArithPeano\vdash \forall x\;y,
+  \Subst(\encode{\godcod{\ThT{\mathcal T} x_0}},0,x,y) \land
+  \ThT{\mathcal T}(x) \implies \ThT{\mathcal T}(y)\]
+  signifiant que, si $y = \encode{\godcod{\square \varphi}}$ et que
+  $\varphi$ est prouvable, alors $y$ aussi.
+
+  Puisque $\mathcal T \vdash \ArithPeano$, on en déduit que $\square$ vérifie
+  les conditions de Hilbert-Bernays dans $\mathcal T$.
+\end{proof}
+
+Nous ne donnons pas explicitement la preuve des deux énoncés soulevés, car
+ces deux énoncés sont très techniques (et peu intéressants) à prouver. Il
+suffit simplement de décrire le processus de démonstration initial, à
+l'intérieur de la théorie $\ArithPeano$. Cela demande alors de répéter de
+nombreuses preuves par récurrence, qui justifient syntaxiquement ce que nous
+comprenons déjà intuitivement. De plus, la démonstration de ces deux
+formules dépend de l'écriture exacte de $\Th$ et de $\Dem$.
+
+Plutôt que de démontrer directement le second théorème d'incomplétude, on se
+propose d'en donner une version plus générale (dont la démonstration est presque
+identique).
+
+\begin{theorem}[Löb]\label{thm.Lob}
+  Soit $\mathcal T$ une théorie r.a. et $\Sigma$-complète, et soit $\Th(x)$ une
+  formule à une variable libre telle que
+  $\varphi \mapsto \Th(\encode{\godcod\varphi})$ vérifie les conditions de
+  Hilbert-Bernays. Alors pour toute proposition $\varphi$, si
+  \[\mathcal T \vdash \Th(\encode{\godcod \varphi}) \implies \varphi\]
+  alors $\mathcal T \vdash \varphi$.
+\end{theorem}
+
+\begin{proof}
+  Soit $\varphi$ une telle proposition.
+  Puisque $\mathcal T$ est $\Sigma$-complète, on peut considérer une proposition
+  $\psi$ telle que
+  \[\mathcal T \vdash \psi \iff (\Th(\encode{\godcod \psi}) \implies \varphi)\]
+  par le \cref{lem.fix.godel}. On a alors
+  \begin{align*}
+    \mathcal T \vdash & \psi \implies (\square \psi \implies \varphi) \\
+    \mathcal T \vdash & \square(\psi \implies (\square \psi \implies \varphi))
+    & \text{par la condition } \ref{eq.HB.1}
+    \\
+    \mathcal T \vdash & \square \psi \implies (\square\square \psi \implies
+    \square\varphi) & \text{par la condition } \ref{eq.HB.2}\\
+  \end{align*}
+  On sait alors, par la condition \ref{eq.HB.3}, que
+  $\mathcal T \vdash \square \psi \implies \square \square \psi$, ce qui
+  nous donne alors
+  \begin{align*}
+    \mathcal T \vdash & \square \psi \implies \square\varphi \\
+    \mathcal T \vdash & \square \psi \implies \varphi
+    & \text{par hypothèse} \\
+  \end{align*}
+  Alors, on en déduit que $\psi$ est démontrable puisqu'elle est équivalente à
+  $\square \psi \implies \varphi$, mais par la condition \ref{eq.HB.1}, on
+  en déduit aussi que $\mathcal T \vdash \square \psi$. Puisque
+  $\psi$ est équivalente à $\square \psi \implies \varphi$, et que
+  $\psi$ est prouvable, on en déduit finalement que
+  $\mathcal T \vdash \varphi$.
+\end{proof}
+
+Avec ce résultat, le second théorème d'incomplétude est obtenu simplement en
+considérant $\varphi \defeq \bot$.
+
+\begin{theorem}[Second théorème d'incomplétude de Gödel
+  \cite{Godel1931-GDEBFU}]
+  Soit $\mathcal T$ une théorie r.a. qui est $\Sigma$-complète et cohérente,
+  prouvant la théorie $\ArithPeano$. Alors l'énoncé
+  \[\Coher(\mathcal T) \defeq \lnot \ThT{\mathcal T}(\encode{\godcod\bot})\]
+  n'est pas démontrable dans $\mathcal T$.
+\end{theorem}
+
+\begin{proof}
+  On sait par la \cref{prop.HB.PA} que l'énoncé $\ThT{\mathcal T}$ vérifie les
+  conditions de Hilbert-Bernays. On applique donc le \cref{thm.Lob} en
+  choisissant $\varphi \defeq \bot$ pour en déduire que, si
+  \[\mathcal T \vdash \Coher(\mathcal T)\]
+  qui est équivalente à $\ThT{\mathcal T}(\encode{\godcod\bot}) \implies \bot$,
+  alors $\mathcal T \vdash \bot$. Par contraposée, puisque
+  $\mathcal T \nvdash \bot$ (par cohérence), on en déduit que
+  $\mathcal T \nvdash \Coher(\mathcal T)$.
+\end{proof}
+
+\subsection{Théories non arithmétiques}
+
+Les théorèmes tels qu'énoncés précédemment permettent de déduire que
+la théorie $\ArithPeano$ et d'autres théories arithmétiques, sont incomplètes
+et ne peuvent pas prouver leur propre cohérence. Pour une théorie non
+directement arithmétique, comme $\ZFC$, il est nécessaire d'introduire un moyen
+de transformer les énoncés arithmétiques en énoncés de $\ZFC$. Pour cela, on
+emploie la notion de traduction.
+
+\begin{definition}[Traduction de théories]
+  Soient $\Sigma, \Sigma'$ deux signatures du premier ordre, $\mathcal T$ une
+  théorie sur $\Sigma$ et $\mathcal T'$ une théorie sur $\Sigma'$. On appelle
+  traduction de $\mathcal T'$ dans $\mathcal T$ une fonction
+  \[\makeFunName{T}{\Sigma'}{\Formula(\Sigma)}\]
+  et une formule $\Psi$ unaire telles que
+  \begin{itemize}
+  \item pour tout symbole de relation $r \in \Sigma'$ d'arité $n$,
+    $T(r)$ est une formule à (au plus) $n$ variables libres.
+  \item pour tout symbole de fonction $f \in \Sigma'$ d'arité $n$,
+    $T(f)$ est une formule à (au plus) $n + 1$ variables libres.
+  \item pour tout symbole de fonction $f \in \Sigma'$ d'arité $n$,
+    \[\mathcal T \vdash \forall \vec x ^{\Psi},\exists ! y^{\Psi},
+    T(f)(\vec x, y)\]
+    où la relativisation $\forall \vec x^{\Psi}$ est définie en
+    \cref{def.relativisation}.
+  \item pour tout axiome $\varphi \in \mathcal T'$,
+    $\mathcal T \vdash T(\varphi)$ où $T(\varphi)$ est définie inductivement
+    depuis $\varphi$ en suivant un procédé analogue à la traduction sans
+    symbole de fonction (\cref{def.trad.sans.fun}), où la formule utilisée pour
+    traduire $f$ est $T(f)$, où on remplace $R(t_1,\ldots,t_n)$ par
+    $T(R)[x_1,\ldots,x_n/t_1,\ldots,t_n]$, et où on relativise toutes les
+    quantification par rapport à $\Psi$.
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Construire une traduction de $\ArithPeano$ vers $\Zermelo$ (définie en
+  \cref{subsec.frag.ZFC}).
+\end{exercise}
+
+\begin{proposition}
+  Soient $\Sigma, \Sigma'$ deux signature, $\mathcal T$ et $\mathcal T'$ des
+  théories respectivement sur $\Sigma$ et $\Sigma'$. Soient $(T,\Psi)$
+  une traduction de
+  $\mathcal T'$ vers $\mathcal T$, $\Gamma \in \List(\Formula(\Sigma'))$ et
+  $\varphi \in \List(\Formula(\Sigma'))$, toutes ces formules ayant leurs
+  variables libres dans $\vec x$. Alors
+  \[\Gamma \vdash \Sigma' \implies R(\Gamma), \overrightarrow{\Psi(x)} \vdash
+  R(\varphi)\]
+  Ainsi, les théorèmes de $\mathcal T'$ sont tous des théorèmes de
+  $\mathcal T$ modulo traduction.
+\end{proposition}
+
+\begin{exercise}
+  Prouver la proposition précédente.
+\end{exercise}
+
+Avec la notion de traduction, il est désormais possible d'étendre les
+théorèmes d'incomplétude de Gödel et d'indéfinissabilité de la vérité au cas de
+théories plus générales.
+
+\begin{theorem}[Incomplétude]
+  Soit $\mathcal T$ une théorie cohérente et r.a. sur une signature $\Sigma$
+  telle qu'il existe une traduction de $\ArithPeano$ dans $\mathcal T$, alors
+  $\mathcal T$ est incomplète ne peut pas prouver l'énoncé $\Coher(\mathcal T)$.
+\end{theorem}
+
+\begin{theorem}[Indéfinissabilité de la vérité]
+  Soit $\mathcal T$ une théorie cohérente sur une signature finie $\Sigma$ telle
+  qu'il existe une traduction $(T,\Psi)$ de $\ArithRobin$ dans $\mathcal T$,
+  alors il n'existe aucune formule $V(x)$ à une variable libre telle que
+  \[\forall \varphi \in \Formula(\Sigma),
+  \mathcal T\vdash \varphi \iff V(R(\encode{\godcod{\varphi}}))\]
+\end{theorem}
+
+On en déduit donc, comme annoncé dans le \cref{chp.modZFC}, qu'il n'est pas
+possible de construire dans $\ZFC$ un modèle de $\ZFC$, ou de trouver un énoncé
+qui permette d'exprimer la vérité d'un énoncé quelconque donné.
+
+\paragraph{Conclusions méta-mathématiques parcimonieuses}
+Il est important de définir clairement ce que permettent de dire mais aussi ce
+que ne permettent pas de dire ces théorèmes d'incomplétude. Tout d'abord,
+il faut se rappeler qu'en tant que théorèmes, ce sont simplement des relations
+démontrées entre objets mathématiques. Les objets mis en jeu ici sont des
+théories logiques, et les théorèmes énoncent des limitations sur ces objets.
+Ces démonstrations, elles, sont écrites dans la méta-théorie, aussi appelée plus
+simplement la théorie ambiante, et si celle-ci a intuitivement le même
+comportement que la théorie objet (celle étudiée), il n'est pas pour autant
+automatique que les deux idées coïncident.
+
+Cependant, le fait est clair que les preuves effectuées dans la méta-théorie
+peuvent se réécrire dans la théorie objet. C'est précisément ce fait (ou sa
+potentialité) qui convainc de la validité d'une démonstration, ce qui signifie
+qu'une preuve irréfutable de la cohérence de $\ZFC$, par exemple, pourrait
+automatiquement s'internaliser au sein de $\ZFC$ (si on décide de travailler
+en théorie des ensembles, et qu'on accepte les manipulations ensemblistes
+usuelles). On aurait alors bien une preuve que $\ZFC \vdash \Coher(\ZFC)$, puis
+par conséquence que $\ZFC \vdash \bot$. Cela signifie donc que ces théorèmes,
+en pratique, nous poussent effectivement à ne plus poursuivre de preuve de
+la cohérence de $\ZFC$, comme pouvaient le chercher les mathématiciens suivant
+le programme de Hilbert.
+
+De plus, dans notre méta-théorie, nous avons bien un objet $\bN$, qui témoigne
+que la théorie $\ArithPeano$ est cohérente. Cela peut se justifier par le fait
+que $\ZFC \vdash \Coher(\ArithPeano)$. On peut donc trouver de nombreux modèles
+de $\ArithPeano$, et certains modèles vérifieront $\lnot\Coher(\ArithPeano)$
+d'après le théorème de complétude (sinon, si tous les modèles vérifiaient un
+énoncé, celui-ci serait prouvable). Ce fait, contre-intuitif à
+première vue, doit cependant être remis dans son contexte~: les énoncés tels que
+$\ThT{\ArithPeano}$, représentés en tant que prédicat $\HierArithS 1$, n'ont
+un sens bien défini que pour les entiers standards. Un modèle vérifiant
+l'incohérence de $\ArithPeano$, lui, trouvera cette preuve d'incohérence dans
+des entiers non standards (des éléments du modèle qui ne sont pas de la forme
+$\encode n$).
