@@ -328,7 +328,7 @@ $\HierArithS 1$, au sens suivant.
   On définit la hiérarchie arithmétique pour les formules de l'arithmétique
   par~:
   \begin{itemize}
-  \item $\HierArithS 0 = \HierArithP 0 = \HierArithD 0$ est la classe donnée à
+  \item $\HierArithS 0 = \HierArithP 0$ est la classe donnée à
     la \cref{def.Sigma0}.
   \item si $\varphi \in \HierArithS n$, alors
     $\forall \vec x, \varphi \in \HierArithP{n+1}$.
@@ -396,14 +396,615 @@ Précisons la notion de représentation.
 
 \begin{definition}[Représentation d'une fonction d'entiers]
   Soit $f : \bN^k \to \bN$. On dit que $f$ est représentée par une formule
-  $\varphi(\vec x,y) \in \Form$ à $k+1$ variable libres lorsque
-  \[\forall \vec x, \forall y, f(\vec x) = y \iff \varphi(\vec x, y)\]
+  $\varphi(\vec x,y) \in \Formula$ à $k+1$ variable libres lorsque
+  \[\forall \vec n\in \bN, \forall m \in \bN,
+  f(\vec n) = m \iff \bN\models \varphi(\encode{\vec n}, \encode m)\]
 \end{definition}
 
 Une autre façon d'énoncer la conjecture est de dire que toute fonction RP est
 de graphe $\HierArithS 1$.
 
 La forme de la conjecture nous pousse directement vers une induction sur la
-structure de la classe RP. Pour les projections, la fonction successeur, la
-fonction constante et les projections, aucun problème n'apparaît. Pour la
-composition, il convient simplement d'écrire les choses comme on s'y attend~:
+structure de la classe RP. Pour les projections, la fonction successeur et la
+fonction nulle, aucun problème n'apparaît. En effet,
+elles sont représentées respectivement par
+\begin{itemize}
+\item la formule $y = x_i$ (dont tout $\vec x$ et $y$ constituent l'ensemble des
+  variables libres)~;
+\item la formule $y = S\;x$~;
+\item la formule $y = 0$.
+\end{itemize}
+
+Pour la composition, il suffit simplement d'écrire les choses comme on s'y
+attend~:
+
+\begin{proposition}
+  Soient $f_1,\ldots,f_p : \bN^k \to \bN$ des fonctions (totales) représentées
+  respectivement par $\varphi_1,\ldots,\varphi_p$ et $g : \bN^p \to \bN$ une
+  fonction représentée par la formule $\psi$. Alors $g\circ (f_1,\ldots,f_p)$
+  est représentée par la formule
+  \[\chi(\vec x, y) \defeq \exists \vec z,
+  \left(\bigwedge_{i = 1}^p \varphi_i(\vec x, z_i)\right) \land
+  (\psi(\vec z, y))\]
+\end{proposition}
+
+\begin{proof}
+  Il suffit de vérifier l'équivalence pour $\vec n \in \bN^k, m \in \bN$.
+  On sait que $\bN\models \chi(\encode{\vec n}, \encode m)$ si et
+  seulement si on peut trouver $\vec z \in \bN^p$ tel que
+  \begin{itemize}
+  \item pour tout $i$, $\bN\models \varphi_i(\encode{\vec n}, \encode{z_i})$,
+    ce qui est équivalent à ce que $\encode{z_i} = \encode{f_i(\vec n)}$
+  \item $\bN\models\psi(\encode{\vec z}, \encode m)$, ce qui est équivalent à
+    ce que $\encode m = \encode{g(\vec z)}$.
+  \end{itemize}
+  Par définition de la composition, les deux énoncés
+  $\bN\models \chi(\encode{\vec n},\encode m)$
+  et $m = (g\circ(f_1,\ldots,f_p)) (\vec n)$ sont donc équivalents.
+\end{proof}
+
+\begin{remark}
+  Cette proposition ne parle \emphexpr{que d'entiers standards}. Il est
+  important de garder à l'esprit que $\chi$, par exemple, peut se comporter
+  de manière arbitraire dans un modèle donné, sur les entiers non standards.
+\end{remark}
+
+Ainsi, si les $f_i$ sont représentées par des formules $\HierArithS 1$ et
+$g$ est représentée par une formule $\HierArithS 1$, on peut représentée
+$g\circ (f_1,\ldots,f_p)$ par une formule $\HierArithS 1$ (il suffit de mettre
+la formule $\chi$ précédente sous forme prénexe pour avoir une suite de
+quantifications existentielles non bornées, puis des quantifications bornées).
+
+On peut aussi représenter la minimisation non bornée.
+
+\begin{proposition}
+  Soit $f : \bN^{n+1} \to \bN$ représentée par une formule $\varphi$. Alors la
+  fonction $\mu(f) : \bN^n \to \bN$ est représentée par la formule
+  \[\psi(\vec x, y) \defeq (\forall a < y, \lnot \varphi(\vec x,a,0))
+  \land \varphi(\vec x,y,0)\]
+\end{proposition}
+
+\begin{proof}
+  Pour $\vec n \in \bN^n$ et $m \in \bN$,
+  $\bN \models \psi(\encode{\vec n},\encode m)$ si et seulement si
+  \begin{itemize}
+  \item pour tout $p < m$, $\lnot \varphi(\encode{\vec n},p,0)$, ce qui est
+    équivalent (par représentation de $f$) à ce que $f(\vec n,p) \neq 0$
+  \item $\varphi(\encode{\vec n},\encode m,0)$, ce qui est équivalent à ce que
+    $f(\vec n,m) = 0$.
+  \end{itemize}
+  Ainsi, $\psi(\encode{\vec n}, \encode m)$ est vraie si et
+  seulement si $m$ est le plus petit point d'annulation de $f(\vec n,-)$, si
+  et seulement si $m = \mu(f)(\vec n)$.
+\end{proof}
+
+\begin{remark}
+  L'expression $\lnot\varphi(\vec x, a, 0)$ n'est pas \latinexpr{a priori} dans
+  la classe $\HierArithS 1$, puisque si $\varphi$ a une quantification $\exists$
+  non bornée, alors elle est 
+\end{remark}
+
+Il nous reste à montrer qu'une fonction obtenue par schéma de récursion peut,
+elle aussi, se représenter par une formule $\HierArithS 1$.
+
+L'obstacle majeur à cette représentation est qu'un couple d'équations du type
+\begin{align*}
+  f(\vec n,0) &\defeq g(\vec n) \\
+  f(\vec n, S\;m) &\defeq h(\vec n,m,f(\vec n,m))
+\end{align*}
+doit s'utiliser un nombre arbitrairement de fois pour calculer la valeur de
+$f(\vec n,m)$ (par calculer, on entend la production d'une suite d'équations
+permettant d'établir $f(\vec n,m) = \encode k$ pour un certain entier $k$).
+
+Il existe une façon simple d'encoder ce calcul~: on peut considérer une liste
+des valeurs $f(\vec n,k)$ pour $k < m$. Ainsi, on peut caractériser la fonction
+$f$ par l'existence d'une liste dont le premier élément est $g(\vec n)$ et tel
+que chaque élément vérifie la relation de récurrence par rapport à l'élément
+suivant.
+
+C'est ce que nous allons faire, mais nous ne pouvons pas pour cela utiliser la
+fonction d'encodage $\alpha_\star$ de la \cref{def.bij.pairing}, puisqu'elle
+se calcule par une fonction RP (il faut donc au préalable montrer que les
+fonctions RP peuvent se représenter, ce que l'on cherche déjà à faire). On
+introduit donc la fonction $\beta$ de Gödel, permettant d'effectuer un encodage
+des listes. Cette fonction demande quelques outils de base d'arithmétique.
+Puisque ce cours s'intéresse à la logique avant tout, nous laissons en exercice
+la preuve du lemme permettant l'encodage de la fonction. Nous donnons aussi
+l'énoncé du théorème des restes chinois, sous une version orientée pour nos
+besoins.
+
+\begin{theorem}[Restes chinois]\label{thm.chinois}
+  Soient $d_0,\ldots,d_n$ des entiers premiers entre eux deux à deux, et
+  $a_0,\ldots,a_n$ des entiers tels que
+  \[\forall i \leq n, 0 \leq a_i < d_i\]
+  alors il existe un entier $a$ tel que pour tout $i \leq n$, on a
+  \[a_i = a \% d_i\]
+  (où $\%$ dénote le reste par la division euclidienne).
+\end{theorem}
+
+\begin{lemma}\label{lem.beta}
+  Pour tout entier $n$, il existe une infinité d'entiers $d$ tels que la
+  famille
+  \[d_i \defeq 1 + (n+1)d\]
+  est constituée d'entiers premiers entre eux deux à deux.
+\end{lemma}
+
+\begin{exercise}
+  Prouver le \cref{lem.beta}.
+\end{exercise}
+
+\begin{definition}[Fonction $\beta$ de Gödel]\label{def.beta}
+  La fonction $\beta$ est donnée par
+  \[\beta(d,a,i) = a \% (1 + (1 + i) d)\]
+\end{definition}
+
+On vérifie que $\beta$ permet bien d'encoder les
+suites finies d'entiers.
+
+\begin{proposition}
+  Le graphe de $\beta$ est $\HierArithS 0$, et pour toute liste d'entiers
+  $\ell \in \List(\bN)$ il existe deux entiers $a,d$ tels que
+  \[\forall i < |\ell|, \beta(d,a,i) = \ell_i\]
+\end{proposition}
+
+\begin{proof}
+  On peut écrire le graphe de $\beta$ par l'énoncé
+  \[B(d,a,i,y) \defeq \exists p < a, a = p \times (1 + (1 + i) d) + y\]
+
+  Soit $\ell \in \List(\bN)$. D'après le \cref{lem.beta}, on peut trouver
+  une infinité d'entiers $d$ tels que la famille des $d_i$ de taille $|\ell|$
+  est constituée d'entiers premiers entre eux deux à deux. Puisqu'il en existe
+  une infinite, il en existe au moins un qui est supérieur à la valeur de tous
+  les $\ell_i$~: soit $d$ un tel entier. On en déduit donc que
+  $\ell_i < 1 + (i+1)d$ pour tout $i$, ce qui nous permet donc d'utiliser
+  le \cref{thm.chinois} pour en déduire qu'il existe $a$ tel que
+  $\beta(d,a,i) = \ell_i$ pour tout $i$.
+\end{proof}
+
+\begin{remark}
+  Cette preuve montre aussi qu'il existe une infinité d'encodages d'une liste
+  $\ell$ donnée. Heureusement, puisque nous ne souhaitons utiliser cette
+  fonction que pour définir une trace du calcul, dans une quantification
+  existentielle, la non injectivité du codage n'importe pas.
+\end{remark}
+
+On peut désormais encoder une définition récursive primitive par un énoncé
+$\HierArithS 1$.
+
+\begin{proposition}
+  Soit $f : \bN^p \to \bN$ et $g : \bN^{p+2} \to \bN$ des fonctions représentées
+  respectivement par $\varphi$ et $\psi$. Alors la fonction $\rec(f,g)$ est
+  représentée par
+  \begin{multline*}
+    \chi(\vec x,y,z) \defeq \exists a, \exists d,
+    (\exists k, B(a,d,0,k) \land \varphi(\vec x, k)) \land B(a,d,y,z) \land \\
+    \forall i \leq y, \exists t,t' \leq a, \Big(
+    B(a,d,i,t) \land B(a,d,i+1,t') \land
+    \psi(\vec x,i,t,t') \Big)
+  \end{multline*}
+\end{proposition}
+
+\begin{exercise}
+  Prouver l'énoncé précédent.
+\end{exercise}
+
+On en conclut le théorème suivant.
+
+\begin{theorem}[Représentation des fonctions totales calculables]
+  \label{thm.repr.Sigma1}
+  Toute fonction totale calculable est représentable par une formule
+  arithmétique $\HierArithS 1$. C'est en particulier le cas pour toute fonction
+  RP.
+\end{theorem}
+
+\begin{proof}
+  On a donné dans les propositions précédentes des représentations
+  $\HierArithS 1$ des schémas de composition, de récursion, et du schéma $\mu$.
+  On en déduit le résultat.
+\end{proof}
+
+On en déduit plusieurs faits~:
+\begin{itemize}
+\item le graphe de toute façon calculable totale est $\HierArithS 1$.
+\item les problèmes c.e. sont tous $\HierArithS 1$ (puisqu'ils sont de la
+  forme $\exists x, \varphi$ avec $\varphi$ un énoncé $\HierArithS 1$), donc
+  les problèmes co-c.e. sont tous $\HierArithP 1$ et les problèmes
+  décidables sont $\HierArithD 1$.
+\item les deux définitions de la hiérarchie arithmétique (\cref{def.HA1} et
+  \cref{def.HA2}) sont équivalentes.
+\end{itemize}
+
+Ce théorème de représentation nous donne un fait important dans notre recherche
+d'une théorie de l'arithmétique~: les énoncés $\HierArithS 1$ nous permettent
+d'encoder les fonctions calculables.
+
+\section{Théories de l'arithmétique}
+
+Nous cherchons maintenant les conséquences du théorème de représentation sur les
+théories arithmétiques en général. La première conséquence est, finalement, peu
+surprenante~: il est possible d'encoder l'ensemble $\Formula$, ainsi que les
+arbres de preuves, de façon calculable. Cela se fait même en pratique avec des
+programmes informatiques comme Rocq \cite{Coq-refman} ou Lean \cite{LeanPaper}.
+Il est donc possible, d'après le \cref{thm.repr.Sigma1}, d'écrire une formule
+qui encode une démonstration. On appelle ce processus l'arithmétisation de la
+syntaxe.
+
+\subsection{Arithmétisation de la syntaxe}
+
+Pour étudier ce processus, on donne d'abord l'hypothèse permettant de fonder
+l'ensemble des résultats~: la $\Sigma$-complétude.
+
+\begin{definition}[$\Sigma$-complétude]
+  Soit $\mathcal T$ une théorie arithmétique. On dit qu'elle est
+  $\Sigma$-complète si la condition suivante est vérifiée~:
+  \[\forall \varphi(\vec x) \in \HierArithS 0, \forall \vec n \in \bN^k,
+  \bN,\vec n\models \varphi (\vec x)\implies
+  \mathcal T \vdash \varphi(\encode{\vec n})\]
+\end{definition}
+
+\begin{proposition}
+  Si $\mathcal T$ est une théorie $\Sigma$-complète, alors pour tout énoncé
+  $\varphi(\vec x) \in \HierArithS 1$, on a
+  \[\forall \vec n \in \bN^k, \bN,\vec n \models\varphi(\vec x)\implies
+  \mathcal T \vdash \varphi(\encode{\vec n})\]
+\end{proposition}
+
+\begin{proof}
+  On peut écrire $\varphi(\vec x) = \exists y, \psi(\vec x,y)$ où
+  $\psi \in \HierArithS 0$. Alors, savoir que
+  $\bN,\vec n \models \varphi(\vec x)$ signifie qu'on trouve un entier $m$ tel
+  que $\bN, \vec n,m\models \psi(\vec x, y)$, ce qui suffit par
+  $\Sigma$-cohérence à prouver que
+  $\mathcal T\vdash \psi(\encode{\vec n},\encode m)$, ce qui donne le résultat
+  par introduction de l'existentielle.
+\end{proof}
+
+\begin{remark}
+  Une théorie $\Sigma$-complète prouve donc tout énoncé $\HierArithS 1$ vrai
+  dans $\bN$, mais elle peut prouver de nombreux autres résultats qui sont, eux,
+  faux dans $\bN$. On voit ici s'appliquer le principe que les énoncés
+  existentiels sont stables par sur-modèle, puisque $\bN$ peut toujours être
+  encodé dans un sous-modèle d'une théorie arithmétique (simplement par
+  l'encodage des entiers standards).
+\end{remark}
+
+La conséquence principale de cette proposition est que toute fonction
+calculable peut s'écrire dans une théorie $\Sigma$-complète.
+
+On peut désormais procéder à l'arithmétisation de la syntaxe. Ce processus est,
+dans la plupart des ouvrages, fastidieux. On peut par exemple mentionner
+\cite{cori1993logique} dans lequel sont introduits les codages de Gödel et
+les lemmes prouvant différents énoncés techniques montrant la calculabilité de
+plusieurs fonctions syntaxiques.
+
+Dans notre cas, la \cref{prop.PU.RPG} encapsule déjà toutes les difficultés de
+ces preuves. On peut très facilement se convaincre par exemple que pour une
+formule $\varphi$, il est aisé de définir par la \cref{prop.PU.gram} la
+fonction retournant $\varphi[t/x]$ (nous avons d'ailleurs déjà donné une
+esquisse de démonstration dans le \cref{chp.recur}). On énonce donc simplement
+les faits de récursivité importants, dont on laisse le lecteur se convaincre de
+la véracité à l'aune des constructions sur les fonctions RPG.
+
+\begin{definition}[Codage de Gödel - version 2]
+  Soit $\Sigma$ un alphabet et $\mathcal L$ un langage algébrique sur
+  $\Sigma$. On appelle codage de Gödel de ce langage la fonction
+  \[\makeFun{\godcod -}{\mathcal L}{\bN}{u}{f_{\Sigma}(u)}\]
+  où $f_{\Sigma}$, la fonction de traduction RPG, est celle de la
+  \cref{def.trad.RPG}.
+\end{definition}
+
+\begin{proposition}\label{prop.subst.repr}
+  La fonction suivante est calculable totale~:
+  \[\makeFun{\Subst}{\bN^3}{\bN}{(\godcod \varphi, \godcod t,i)}
+            {\godcod{\varphi[t/x_i]}}\]
+\end{proposition}
+
+On définit de plus le langage des arbres de preuves.
+
+\begin{definition}[Arbres de preuve]
+  On définit l'ensemble des arbres de preuve comme le langage obtenu en
+  encodant les règles telles que
+  \begin{prooftree}
+    \AxiomC{$S_1$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$S_n$}
+    \RightLabel{r}
+    \TrinaryInfC{$S$}
+  \end{prooftree}
+  par $\langle r,S_1,\cdots,S_n,S\rangle$ où $ ``\langle "$, $ ``\rangle"$ et
+  $ ``,"$ sont de nouveaux symboles.
+\end{definition}
+
+Le langage des arbres de preuves n'est pas algébrique à cause des cas tels que
+$\varphi[t/x]$ pour la règle $\exists_\mathrm i$. Cependant, puisqu'il est
+calculable de décider une telle règle, le langage reste décidable (il est même
+RPG), et on peut encore définir le codage de Gödel des arbres, ainsi que des
+fonctions par induction sur ces arbres.
+
+\begin{proposition}
+  L'ensemble des arbres de preuves est un langage RPG. On possède une fonction
+  RPG qui à un arbre $\pi$ associe son séquent $\Gamma\vdash \varphi$
+  conclusion. Pour une théorie $\mathcal T$ r.a., le langage des séquents
+  conclusion $\Gamma\vdash \varphi$ tels que
+  $\Gamma\subseteq \mathcal T$ est aussi RPG.
+\end{proposition}
+
+\begin{notation}
+  On définit $\Proof{\mathcal T}$ pour l'ensemble calculable des arbres de
+  preuve
+  de conclusion $\Gamma \vdash \varphi$ où $\Gamma\subseteq \mathcal T$. On
+  définit aussi la relation $\pi\vdash \varphi$ comme le fait que $\varphi$ est
+  la conclusion de $\pi$. Cette relation est bien sûr calculable.
+\end{notation}
+
+Avec cette proposition, on peut donc définir les arbres $\pi$ témoignant du
+fait que $\mathcal T \vdash \varphi$, puisque cela correspond exactement à
+un arbre de preuve bien formé donc la conclusion est $\Gamma\vdash \varphi$ où
+$\Gamma$ n'est constitué que de formules de $\mathcal T$. On en déduit le
+lemme central permettant les théorèmes d'incomplétude.
+
+\begin{lemma}
+  L'ensemble
+  \[\Th(\mathcal T) \defeq \{\godcod \varphi\mid
+  \varphi \in \Prop,\mathcal T \vdash \varphi\}\]
+  est c.e.
+\end{lemma}
+
+Par représentation des énoncés $\HierArithS 1$ (qui sont exactement les
+ensembles c.e.) on peut donc construire un prédicat permettant de définir la
+prouvabilité.
+
+\begin{definition}
+  Soit $\mathcal T$ une théorie arithmétique r.a. Par le lemme précédent, on
+  pose un énoncé $\HierArithS 1$, noté $\DemT{\mathcal T}$, tel que
+  \[\forall n,m \in \bN^2, (\bN,(n,m) \models \DemT{\mathcal T}) \iff
+  \exists \pi \in \Proof{\mathcal T}, \exists \varphi \in \Formula,
+  n = \godcod \pi \land m = \godcod \varphi \land \pi \vdash \varphi\]
+
+  On définit aussi
+  \[\ThT{\mathcal T}(x) \defeq \exists y, \DemT{\mathcal T}(y,x)\]
+  qui vérifie
+  \[\bN,n\models \ThT{\mathcal T}(x) \iff \exists \varphi \in \Formula,
+  \mathcal T \vdash \varphi\]
+\end{definition}
+
+Avec ce lemme, on sait donc que la prouvabilité d'un énoncé peut s'énoncer au
+sein même de la syntaxe de l'arithmétique. Si on considère maintenant une
+théorie $\mathcal T$ qui est $\Sigma$-complète, on sait (puisque les énoncés
+$\HierArithS 1$ vrais sont prouvables) que si
+$\mathcal T \vdash \varphi$, alors
+$\mathcal T \vdash \ThT{\mathcal T}(\encode{\godcod \varphi})$. Par
+contre, la réciproque n'a pas de raison d'être vraie, puisque l'énoncé n'est
+vérifié que pour les entiers standards, et on peut imaginer l'existence
+d'entiers non standard témoignant par exemple de
+$\ThT{\mathcal T}(\encode{\godcod\varphi})$.
+
+Il manque un élément pour pouvoir arriver aux théorèmes d'incomplétude~: un
+théorème de point fixe. Le premier théorème d'incomplétude consiste globalement
+à écrire un énoncé de la forme
+\quotation{cet énoncé est faux}
+d'après Gödel lui-même \cite{Godel1931-GDEBFU}.
+
+Pour écrire un tel énoncé, il faut avant tout être capable d'écrire un énoncé
+pouvant parler de lui-même. Cet aspect récursif fait penser à la définition de
+la factorielle développée avec le \cref{thm.Kleene.fix}.
+
+Puisque les formules peuvent parler d'elles-mêmes par un codage de Gödel, et
+que les opérations syntaxiques peuvent aussi être traduites, il devient
+possible de prouver un théorème de récursion analogue.
+
+\begin{lemma}[Point fixe \cite{Godel1931-GDEBFU}]\label{lem.fix.godel}
+  Soit $\mathcal T$ une théorie $\Sigma$-complète. Alors pour toute formule
+  $\alpha(x)\in\Formula $ à (au plus) une seule variable libre, il existe une
+  proposition $\varphi \in \Prop$ telle que
+  \[\mathcal T \vdash \varphi \iff \alpha(\encode{\godcod \varphi})\]
+\end{lemma}
+
+\begin{proof}
+  D'après la \cref{prop.subst.repr} et le \cref{thm.repr.Sigma1}, on peut
+  trouver un prédicat $\Subst(n,m,p,k)$ exprimant sur $\bN^4$ la relation
+  \[\Subst(n,m,p,k) \iff \exists \varphi \in \Formula, \exists t \in \Term,
+  \begin{cases}
+    n = \godcod \varphi \\
+    m = \godcod t \\
+    k = \godcod {\varphi[t/x_p]}
+  \end{cases}\]
+
+  On pose alors les deux formules
+  \begin{align*}
+    \delta(x_0) &\defeq \exists y,
+    (\Subst(x_0,x_0,0,y) \land \alpha(y)) \\
+    \varphi &\defeq \delta[\encode{\godcod \delta}/x_0]
+  \end{align*}
+  On remarque d'abord que $\varphi$ est bien une formule close. On peut
+  maintenant vérifier l'équivalence~:
+  \begin{align*}
+    \mathcal T \vdash& \Subst(\encode{\godcod\delta},\encode{\godcod\delta},
+    0,y) \iff y = \encode{\godcod{\delta[\encode{\godcod\delta}/x_0]}} &
+    \text{par représentation de }\Subst \\
+    \mathcal T \vdash& \Subst(\encode{\godcod\delta},\encode{\godcod\delta},
+    0,y) \iff y = \encode{\godcod{\varphi}} &
+    \text{par définition de }\varphi \\
+    \mathcal T \vdash& \exists y,
+    (\Subst(\encode{\godcod\delta},\encode{\godcod\delta}, 0,y) \land \alpha(y))
+    \iff \\
+    &\exists y, (y = \encode{\godcod{\varphi}} \land \alpha(y))
+    & \text{par propriété de l'équivalence}\\
+    \mathcal T \vdash& \varphi \iff \alpha(\encode{\godcod \varphi}) &
+    \text{en réduisant l'égalité}
+  \end{align*}
+  D'où le résultat.
+\end{proof}
+
+\begin{remark}
+  La forme de $\delta$ fait fortement penser à la fonction utilisée pour le
+  \cref{thm.Kleene.fix}~: $\Subst$ joue le rôle de l'application de fonction,
+  puisqu'en voyant une formule $\varphi(x)$ comme une fonction de $x$, la
+  substitution consiste en une application explicite. Une différence notable est
+  qu'ici, c'est la substitution qui apparait explicitement, le fait que toute
+  formule puisse être traité comme une fonction étant déjà acquis. Au contraire,
+  avec l'énumération $\Enum$, on a utilisé le lemme $s_n^m$ pour transformer en
+  objet explicite une fonction en $x$, mais l'application était automatique.
+\end{remark}
+
+Nous pouvons désormais prouver les théorèmes centraux sur la logique de
+l'arithmétique.
+
+\section{Théorèmes d'incomplétude}
+
+On peut désormais combiner les conséquences à la fois de la $\Sigma$-complétude,
+et d'être une théorie r.a. Ces conséquences vont nous donner directement le
+premier théorème d'incomplétude.
+
+\subsection{Vers le premier théorème d'incomplétude}
+
+En étudiant le procédé diagonal et la façon dont il construit un point fixe, on
+en déduit qu'il suffit ici de faire la même chose que pour d'autres arguments
+par contradiction~: on prend pour $\alpha$ la négation, ce qui mènerait donc à
+quelque chose comme
+\[\mathcal T \vdash \varphi \iff \lnot \varphi\]
+qui exprimerait l'incohérence de $\mathcal T$. Il y a donc un problème dans
+cette définition intuitive (car $\mathcal T$ est simplement une théorie r.a. et
+$\Sigma$-complète).
+
+En réalité, notre théorème de point fixe nous dit seulement qu'on peut
+construire des points fixes pour des formules de l'arithmétique. Pour pouvoir
+faire la démonstration précédente, il nous faudrait donc pouvoir éxprimer par
+une formule un énoncé $V$ tel que $V(\encode{\godcod\varphi}) \iff \varphi$.
+
+En allant dans l'autre sens, cela montre qu'on ne peut pas construire de
+tel énoncé.
+
+\begin{theorem}[Indéfinissabilité de la vérité]\label{thm.ver.indef}
+  Soit $\mathcal T$ une théorie $\Sigma$-complète. S'il existe un prédicat
+  arithmétique $V(x)$ tel que
+  \[\forall \varphi \in \Prop, \mathcal T \vdash
+  V(\encode{\godcod\varphi}) \iff \varphi\]
+  alors $\mathcal T$ est incohérente.
+\end{theorem}
+
+\begin{proof}
+  Si un tel prédicat existe, alors on peut construire par le
+  \cref{lem.fix.godel} une formule $\varphi$ telle que
+  \[\mathcal T \vdash \varphi \iff \lnot V(\encode{\godcod{\varphi}})\]
+  mais alors, puisque
+  \[\mathcal T \vdash V(\encode{\godcod\varphi}) \iff \varphi\]
+  on en déduit que $\mathcal T \vdash \varphi \iff \lnot \varphi$, donc que
+  $\mathcal T \vdash \bot$, c'est-à-dire que $\mathcal T$ est incohérente.
+\end{proof}
+
+\begin{exercise}
+  En utilisant le \cref{thm.ver.indef}, montrer qu'il n'existe aucun prédicat
+  $V(x)$ tel que
+  \[\forall \varphi \in \Prop, \bN \models \varphi \iff \bN \models
+  V(\encode{\godcod{\varphi}})\]
+  Plus généralement, montrer que cela fonctionne pour n'importe quelle théorie
+  $\mathcal T$ qui est $\Sigma$-complète et n'importe quel modèle $\mathcal M$
+  de $\mathcal T$~: il n'existe pas de formule $V(x)$ à une variable libre telle
+  que
+  \[\forall \varphi \in \Prop, \mathcal M \models \varphi \iff
+  \mathcal M \models V(\encode{\godcod \varphi})\]
+\end{exercise}
+
+Le théorème de point fixe ne peut donc pas s'appliquer au cas de la satisfaction
+sémantique. Cependant, on a déjà vu un énoncé très proche, mais qui aborde la
+satisfaction sémantique à la place~: $\ThT{\mathcal T}$.
+
+\begin{definition}[Formule $G$ de Gödel]
+  Soit $\mathcal T$ une théorie $\Sigma$-complète et r.a. On définit $G$ comme
+  la proposition obtenue par le \cref{lem.fix.godel} telle que
+  \[\mathcal T \vdash G \iff \lnot \ThT{\mathcal T}(\encode{\godcod{G}})\]
+\end{definition}
+
+Cette formule énonce donc qu'elle est elle-même indémontrable. On remarque un
+fait important~: l'utilisation de la négation n'est pas anodin du point de vue
+de la calculabilité. En effet, dans les constructions de $\DemT{\mathcal T}$,
+de $\Subst$, par conséquent, de la construction du \cref{lem.fix.godel},
+nous employons uniquement des énoncés $\HierArithS 1$. Dans le cas de $G$,
+au contraire, on obtient un énoncé $\HierArithP 1$ puisqu'on nie un énoncé
+$\HierArithS 1$. On peut comprendre la portée universelle de l'énoncé comme le
+fait que, pour n'importe quel code d'arbre de preuve $\godcod \pi$, ce code ne
+représente pas une preuve de $G$. On peut donc énoncer une première version du
+premier théorème d'incomplétude.
+
+\begin{theorem}[Premier théorème d'incomplétude - version faible]
+  Soit $\mathcal T$ une théorie cohérente, $\Sigma$-complète et r.a. Alors il
+  existe un énoncé $G \in \HierArithP 1$ tel que $G$ est vrai dans $\bN$ et non
+  démontrable dans $\mathcal T$.
+\end{theorem}
+
+\begin{proof}
+  L'énoncé $G$ a déjà été donné. Il nous suffit de montrer que $G$ est non
+  prouvable pour en déduire que $\bN \models G$, puisque par définition
+  \[\bN \models \ThT{\mathcal T}(\encode{\godcod G}) \iff
+  \mathcal T \vdash G\]
+  On suppose donc que $G$ est démontrable~: on trouve donc un arbre de preuve
+  $\pi \vdash G$ dont les prémisses sont dans $\mathcal T$. Comme on sait par
+  définition que $G$ est démontrable si et seulement
+  $\lnot\ThT{\mathcal T}(\encode{\godcod G})$ l'est, on en déduit
+  \[\mathcal T \vdash \lnot\ThT{\mathcal T}(\encode{\godcod G})\]
+  mais de plus, puisque $\DemT{\mathcal T}$ est un prédicat $\HierArithS 1$ et
+  que $\mathcal T$ est $\Sigma$-complète, par le fait que
+  $\bN\models \DemT{\mathcal T}(\encode{\godcod{\pi}},\encode{\godcod G})$,
+  on en déduit que
+  \[\mathcal T \vdash \DemT{\mathcal T}
+  (\encode{\godcod{\pi}},\encode{\godcod G})\]
+  donc $\mathcal T \vdash \ThT{\mathcal T}(\encode{\godcod G})$, ce qui est
+  contradictoire avec la cohérence de $\mathcal T$.
+\end{proof}
+
+Cet énoncé suffit par exemple à montrer que tout énoncé arithmétique vrai dans
+$\bN$ n'est pas forcément prouvable dans n'importe quelle théorie utilisable et
+suffisamment expressive. Cependant, cela ne constitue pas un énoncé
+d'incomplétude~: une théorie pourrait être complète en vérifiant
+$\mathcal T \vdash \lnot G$.
+
+On va donc ajouter une condition, qui est un renforcement de la condition de
+cohérence. La cohérence nous indique qu'il existe des énoncés non démontrables,
+mais elle ne place aucune condition sur les énoncés non démontrables en
+question. On introduit alors la $\Sigma$-cohérence (ou $1$-cohérence, selon les
+auteurs).
+
+\begin{definition}[Théorie $\Sigma$-cohérente]
+  Une théorie $\mathcal T$ est dite $\Sigma$-cohérente s'il n'existe aucune
+  proposition $\varphi \in \HierArithS 1$ telle que
+  \[(\mathcal T \vdash \varphi) \land (\bN \models \lnot\varphi)\]
+\end{definition}
+
+L'énoncé devient alors véritablement un énoncé d'incomplétude.
+
+\begin{theorem}[Premier théorème d'incomplétude de Gödel
+    \cite{Godel1931-GDEBFU}]
+  Soit $\mathcal T$ une théorie arithmétique à la fois $\Sigma$-complète,
+  $\Sigma$-cohérente et r.a. Il existe un énoncé $G \in \HierArithP 1$ tel que
+  $\mathcal T \nvdash G$ et $\mathcal T \nvdash \lnot G$.
+\end{theorem}
+
+\begin{proof}
+  On reprend donc le raisonnement précédent. On sait que $G$ est non
+  démontrable dans $\mathcal T$ et qu'elle est vraie dans $\bN$. Comme $G$ est
+  une proposition $\HierArithP 1$, $\lnot G$ est (équivalente à une proposition)
+  $\HierArithS 1$ et $\bN \models \lnot\lnot G$ (puisque $\bN\models G$).
+  Par $\Sigma$-cohérence, on en déduit que $G$ n'est pas démontrable dans
+  $\mathcal T$.
+\end{proof}
+
+Ce théorème est largement suffisant pour la pratique. Les théories utiles pour
+formaliser les mathématiques, qui sont les théories pour lesquelles on souhaite
+appliquer ce théorème, sont généralement au moins $\Sigma$-complètes pour
+permettre d'exprimer les fonctions utiles pour un mathématicien, sont
+récursivement axiomatisable pour être utilisables, et sont $\Sigma$-cohérentes
+puisqu'on souhaite d'abord refléter la vérité dans $\bN$ (inatteignable par une
+théorie logique d'après le \cref{thm.ver.indef}).
+
+\begin{exercise}[Le cas historique de l'$\omega$-cohérence]
+  Dans \cite{Godel1931-GDEBFU}, Gödel n'utilise pas l'hypothse de
+  $\Sigma$-cohérence. A la place, il utilise l'hypothèse dite
+  d'$\omega$-cohérence. Une théorie $\mathcal T$ est dite $\omega$-cohérente
+  quand pour tout énoncé $\varphi(x)$, on ne peut avoir à la fois les deux
+  faits suivants~:
+  \[\forall n \in \bN, \mathcal T \vdash \varphi(\encode n) \qquad
+  \mathcal T \vdash \exists x, \lnot \varphi(x)\]
+  Montrer que toute théorie $\omega$-cohérente est $\Sigma$-cohérente. En
+  déduire la version historique du premier théorème d'incomplétude de Gödel.
+\end{exercise}
