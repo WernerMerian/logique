@@ -170,7 +170,7 @@ suffit de les utiliser ici.
 Ces axiomes nous permettent de définir une première théorie, simple, décrivant
 une partie de l'arithmétique.
 
-\begin{definition}[Arithmétique de Robinson]
+\begin{definition}[Arithmétique de Robinson \cite{robinson1950}]
   On appelle arithmétique de Robinson la théorie formée par les $3$ axiomes
   définissant $0$ et $S$, les $2$ axiomes définissant l'addition et les $2$
   axiomes définissant la multiplication. On note $\ArithRobin$ cette théorie.
@@ -245,7 +245,7 @@ un schéma d'axiomes.
 La théorie de l'arithmétique de Peano (du premier ordre) est alors la théorie
 naturelle incluant la récurrence.
 
-\begin{definition}[Arithmétique de Peano]
+\begin{definition}[Arithmétique de Peano \cite{Peano1889}]
   On définit l'arithmétique de Peano $\ArithPeano$ par l'ensemble d'axiomes de
   $\ArithRobin$ et du schéma de récurrence pour toutes les formules $\varphi$.
 \end{definition}
@@ -750,6 +750,46 @@ lemme central permettant les théorèmes d'incomplétude.
   est c.e.
 \end{lemma}
 
+En fait, l'ensemble $\Th(\mathcal T)$ est un ensemble incalculable. Cela fait
+l'objet d'un théorème historiquement important~: le théorème de Church. Il
+répond à l'\foreignexpr{Entscheidungsproblem},
+un problème posé initialement par Behmann \cite{Mancosu2015HEINRICHB1}
+mais repris ensuite par Hilbert \cite{hilbert1928grundzüge}, consistant à
+trouver un algorithme (ou une \og méthode finitaire\fg pour reprendre les mots
+de l'époque) qui, étant donnée une proposition, décide si cette proposition est
+vraie ou fausse.
+
+Le problème était hautement difficile, car il fallait d'abord donner une notion
+consensuelle de méthode finitaire et de calcul. C'est en résolvant ce problème
+indépendamment que Church et Turing on énoncé la \cref{thesis.CT}, qui suffit
+à répondre négativement au problème.
+
+\'Evidemment, l'énoncé historique de ce théorème est très éloigné de celui que
+nous en donnons actuellement. En particulier, nous parlons d'une théorie
+arithmétique satisfaisant certaines conditions, mais les théorèmes d'origine
+s'appliquaient à des théories telles que
+l'\foreignexpr{engere Funktionenkalkül} de Hilbert.
+
+\begin{theorem}[Church \cite{Church1936AnUP}\cite{turing1936a}]
+  Soit $\mathcal T$ une théorie arithmétique $\Sigma$-complète. Alors l'ensemble
+  $\Th(\mathcal T)$ est non calculable.
+\end{theorem}
+
+\begin{proof}
+  Par représentation des relations $\HierArithS 1$, on peut représenter
+  directement le problème de l'arrêt par un prédicat $K_{\mathrm{arith}}$~:
+  \[\forall n \in \bN,
+  (\mathcal T \vdash K_{\mathrm{arith}}(\encode{n})) \iff \Enum_n(n)\convcal\]
+  mais alors, on en déduit une réduction
+  $K \TuringRed\Th(\mathcal T)$, donc $\Th(\mathcal T)$ est
+  c.e.-difficile pour la réduction Turing.
+\end{proof}
+
+\begin{remark}
+  Dans le cas d'une théorie $\Sigma$-complète et r.a. on en déduit donc que
+  $\Th(\mathcal T)$ est un ensemble c.e.-complet.
+\end{remark}
+
 Par représentation des énoncés $\HierArithS 1$ (qui sont exactement les
 ensembles c.e.) on peut donc construire un prédicat permettant de définir la
 prouvabilité.
@@ -765,6 +805,7 @@ prouvabilité.
   \[\ThT{\mathcal T}(x) \defeq \exists y, \DemT{\mathcal T}(y,x)\]
   qui vérifie
   \[\bN,n\models \ThT{\mathcal T}(x) \iff \exists \varphi \in \Formula,
+  n = \godcod \varphi \land
   \mathcal T \vdash \varphi\]
 \end{definition}
 
@@ -782,8 +823,7 @@ $\ThT{\mathcal T}(\encode{\godcod\varphi})$.
 Il manque un élément pour pouvoir arriver aux théorèmes d'incomplétude~: un
 théorème de point fixe. Le premier théorème d'incomplétude consiste globalement
 à écrire un énoncé de la forme
-\quotation{cet énoncé est faux}
-d'après Gödel lui-même \cite{Godel1931-GDEBFU}.
+\quotation{cet énoncé est faux.}
 
 Pour écrire un tel énoncé, il faut avant tout être capable d'écrire un énoncé
 pouvant parler de lui-même. Cet aspect récursif fait penser à la définition de
@@ -1048,7 +1088,8 @@ $\lnot G'$ est prouvable, comme nous allons le montrer. Cependant, cette preuve
 demande une hypothèse supplémentaire sur $\mathcal T$~: elle suppose que
 $\mathcal T$ permet de comparer tout élément à un élément standard.
 
-\begin{theorem}[Théorème d'incomplétude de Godel-Rosser]
+\begin{theorem}[Théorème d'incomplétude de Gödel-Rosser
+    \cite{Godel1931-GDEBFU}\cite{Rosser1936}]
   \label{thm.godel.rosser}
   Soit $\mathcal T$ une théorie cohérente, $\Sigma$-complète et récursivement
   axiomatisable. On suppose de plus que le schéma suivant est prouvable~:
@@ -1146,7 +1187,7 @@ l'aide de récurrences.
 Pour exprimer les propriétés de cette internalisation, on introduit les
 conditions de Hilbert-Bernays.
 
-\begin{definition}[Conditions de Hilbert-Bernays]
+\begin{definition}[Conditions de Hilbert-Bernays \cite{Hilbert1974-HILGDM-5}]
   Soit $\mathcal T$ une théorie munie d'une fonction $\square : \Prop \to \Prop$
   à une variable libre $x$. On dit que $(\mathcal T,\square)$ vérifie les
   conditions de Hilbert-Bernays lorsque les trois propriétés suivantes sont
