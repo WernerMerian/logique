@@ -263,7 +263,7 @@ ses modèles contiennent tous en un sens une copie de $\bN$.
   en interprétant $n \in \bN$ par $\encode n$, et que tous les éléments de
   $\mathcal M \setminus \bN$ sont supérieurs à tous les éléments de $\bN$.
 
-  Montrer que ce sous-modèle n'est pas élémentaire.
+  Montrer que ce sous-modèle n'est pas (toujours) élémentaire.
 \end{exercise}
 
 \subsection{Encoder la calculabilité}
@@ -341,6 +341,7 @@ $\HierArithS 1$, au sens suivant.
   \begin{itemize}
   \item $\HierArithS 0 = \HierArithP 0 = \HierArithD 0$ est la classe des
     parties de la forme $\{\vec x \in \bN^k\mid \bN\models\varphi(\vec x)\}$
+    où $\varphi$ est une formule $\HierArithS 0$.
   \item $\HierArithS{n+1}$ est défini comme l'ensemble des parties
     $X \subseteq \bN^{k}$ telles qu'il existe une partie
     $Y \subseteq \bN^{k+p}$ qui est dans $\HierArithP n$ et telle que
@@ -455,7 +456,7 @@ $g\circ (f_1,\ldots,f_p)$ par une formule $\HierArithS 1$ (il suffit de mettre
 la formule $\chi$ précédente sous forme prénexe pour avoir une suite de
 quantifications existentielles non bornées, puis des quantifications bornées).
 
-On peut aussi représenter la minimisation non bornée.
+On peut même représenter la minimisation non bornée.
 
 \begin{proposition}
   Soit $f : \bN^{n+1} \to \bN$ représentée par une formule $\varphi$. Alors la
@@ -481,7 +482,10 @@ On peut aussi représenter la minimisation non bornée.
 \begin{remark}
   L'expression $\lnot\varphi(\vec x, a, 0)$ n'est pas \latinexpr{a priori} dans
   la classe $\HierArithS 1$, puisque si $\varphi$ a une quantification $\exists$
-  non bornée, alors elle est 
+  non bornée, alors elle est $\HierArithP 1$. On peut cependant remplacer
+  $\lnot\varphi(\vec x,a,0)$ par $\exists k, \varphi(\vec x, a, S\;k)$ qui
+  représente le même graphe étant donné qu'un élément est non nul si et
+  seulement s'il est un successeur.
 \end{remark}
 
 Il nous reste à montrer qu'une fonction obtenue par schéma de récursion peut,
@@ -744,7 +748,7 @@ $\Gamma$ n'est constitué que de formules de $\mathcal T$. On en déduit le
 lemme central permettant les théorèmes d'incomplétude.
 
 \begin{lemma}
-  L'ensemble
+  Soit $\mathcal T$ une théorie r.a. L'ensemble
   \[\Th(\mathcal T) \defeq \{\godcod \varphi\mid
   \varphi \in \Prop,\mathcal T \vdash \varphi\}\]
   est c.e.
@@ -761,7 +765,7 @@ vraie ou fausse.
 
 Le problème était hautement difficile, car il fallait d'abord donner une notion
 consensuelle de méthode finitaire et de calcul. C'est en résolvant ce problème
-indépendamment que Church et Turing on énoncé la \cref{thesis.CT}, qui suffit
+indépendamment que Church et Turing ont énoncé la \cref{thesis.CT}, qui suffit
 à répondre négativement au problème.
 
 \'Evidemment, l'énoncé historique de ce théorème est très éloigné de celui que
@@ -823,7 +827,9 @@ $\ThT{\mathcal T}(\encode{\godcod\varphi})$.
 Il manque un élément pour pouvoir arriver aux théorèmes d'incomplétude~: un
 théorème de point fixe. Le premier théorème d'incomplétude consiste globalement
 à écrire un énoncé de la forme
-\quotation{cet énoncé est faux.}
+\begin{quotation}
+  cet énoncé est faux.
+\end{quotation}
 
 Pour écrire un tel énoncé, il faut avant tout être capable d'écrire un énoncé
 pouvant parler de lui-même. Cet aspect récursif fait penser à la définition de
@@ -960,7 +966,7 @@ satisfaction syntaxique à la place~: $\ThT{\mathcal T}$.
 Cette formule énonce donc qu'elle est elle-même indémontrable. On remarque un
 fait important~: l'utilisation de la négation n'est pas anodin du point de vue
 de la calculabilité. En effet, dans les constructions de $\DemT{\mathcal T}$,
-de $\Subst$, par conséquent, de la construction du \cref{lem.fix.godel},
+de $\Subst$, et par conséquent, dans celle du \cref{lem.fix.godel},
 nous employons uniquement des énoncés $\HierArithS 1$. Dans le cas de $G$,
 au contraire, on obtient un énoncé $\HierArithP 1$ puisqu'on nie un énoncé
 $\HierArithS 1$. On peut comprendre la portée universelle de l'énoncé comme le
@@ -979,7 +985,7 @@ premier théorème d'incomplétude.
   prouvable pour en déduire que $\bN \models G$, puisque par définition
   \[\bN \models \ThT{\mathcal T}(\encode{\godcod G}) \iff
   \mathcal T \vdash G\]
-  On suppose donc que $G$ est démontrable~: on trouve donc un arbre de preuve
+  On suppose que $G$ est démontrable~: on trouve donc un arbre de preuve
   $\pi \vdash G$ dont les prémisses sont dans $\mathcal T$. Comme on sait par
   définition que $G$ est démontrable si et seulement
   $\lnot\ThT{\mathcal T}(\encode{\godcod G})$ l'est, on en déduit
@@ -1188,8 +1194,8 @@ Pour exprimer les propriétés de cette internalisation, on introduit les
 conditions de Hilbert-Bernays.
 
 \begin{definition}[Conditions de Hilbert-Bernays \cite{Hilbert1974-HILGDM-5}]
-  Soit $\mathcal T$ une théorie munie d'une fonction $\square : \Prop \to \Prop$
-  à une variable libre $x$. On dit que $(\mathcal T,\square)$ vérifie les
+  Soit $\mathcal T$ une théorie munie d'une fonction
+  $\square : \Prop \to \Prop$. On dit que $(\mathcal T,\square)$ vérifie les
   conditions de Hilbert-Bernays lorsque les trois propriétés suivantes sont
   vérifiées~:
   \begin{equation}\label{eq.HB.1}
@@ -1197,11 +1203,11 @@ conditions de Hilbert-Bernays.
     \big(\mathcal T \vdash \varphi\big) \implies \big(\mathcal T \vdash
     \square\varphi\big)
   \end{equation}
-  \begin{multline}\label{eq.HB.2}
+  \begin{equation}\label{eq.HB.2}
     \forall \varphi, \psi \in \Prop, \\
     \mathcal T \vdash \Th(\square(\varphi \implies \psi)) \implies
     \big( \square \varphi\implies \square(\psi)\big)
-  \end{multline}
+  \end{equation}
   \begin{equation}\label{eq.HB.3}
     \forall \varphi \in \Prop, \quad
     \mathcal T \vdash \square \varphi \implies \square\square \varphi
@@ -1448,3 +1454,16 @@ un sens bien défini que pour les entiers standards. Un modèle vérifiant
 l'incohérence de $\ArithPeano$, lui, trouvera cette preuve d'incohérence dans
 des entiers non standards (des éléments du modèle qui ne sont pas de la forme
 $\encode n$).
+
+Le même phénomène est présent lorsqu'on étudie $\ZFC$~: l'impossibilité de
+construire des modèles de $\ZFC$ ne signifie pas qu'il n'existe aucun ensemble
+vérifiant tous les axiomes de notre théorie $\ZFC$ ambiante. Au contraire, on
+peut même prouver le contraire, puisqu'il est possible par les
+\cref{thm.compacite} et \cref{thm.reflexion} de montrer la cohérence relative
+de $\ZFC$ avec l'ajout dans la théorie d'un ensemble (un symbole de constante)
+$M$ et de toutes les formules $\varphi^M$ où $\varphi \in \ZFC$. Ainsi, ne pas
+pouvoir construire un modèle de $\ZFC$ dans $\ZFC$ signifie que l'ensemble
+$\Prop$ construit au sein de la théorie peut contenir strictement plus
+d'élément que l'ensemble des propositions telles qu'on l'entend dans la
+meta-théorie, exactement comme les entiers des théories arithmétique peuvent
+être non standards.
