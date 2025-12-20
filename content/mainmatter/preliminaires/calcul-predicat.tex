@@ -1314,6 +1314,40 @@ naturelle).
   On appelle aussi ce principe \og indiscernabilité des identités\fg{}.
 \end{itemize}
 
+\begin{example}
+  Donnons un exemple d'arbre de preuve pour une proposition simple mais non
+  triviale. On fixe la signature $\Sigma \defeq \{f^1, R^1\}$ où $f$ est un
+  symbole de fonction et $R$ est un symbole de relation. Posons
+  \[\Gamma \defeq \forall x, R(x) \to R(f(x))\]
+  et prouvons que $\Gamma\vdash \forall x, R(x) \to R(f(f(x)))$~:
+  \begin{center}
+  \resizebox{\textwidth}{!}{\(
+    \AxiomC{}
+    \RightLabel{Ax}
+    \UnaryInfC{$\Gamma,R(x)\vdash \forall x, R(x) \to R(f(x))$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\Gamma, R(x)\vdash R(f(x)) \to R(f(f(x)))$}
+    \AxiomC{}
+    \RightLabel{Ax}
+    \UnaryInfC{$\Gamma,R(x)\vdash \forall x, R(x) \to R(f(x))$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\Gamma, R(x)\vdash R(x) \to R(f(x))$}
+    \AxiomC{}
+    \RightLabel{Ax}
+    \UnaryInfC{$\Gamma, R(x)\vdash R(x)$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\Gamma, R(x)\vdash R(f(x))$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\Gamma, R(x)\vdash R(f(f(x)))$}
+    \RightLabel{$\to_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash R(x) \to R(f(f(x)))$}
+    \RightLabel{$\forall_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdash \forall x, R(x) \to R(f(f(x)))$}
+    \DisplayProof
+    \)}
+  \end{center}
+\end{example}
+
 \subsection[Théorème de complétude]{Complétude de la déduction naturelle}
 
 Nous allons maintenant montrer que $\vDash$ et $\vdash$ coïncident. Un sens est

@@ -40,18 +40,26 @@ Cela nous permet de conclure par un théorème de complétude similaire à celui
 calcul des séquents, mais entre sa version intuitionniste et la classe des
 modèles de Kripke.
 
-\section{Théorème de complétude généralisé}
+\section{Du théorème de complétude au calcul des séquents}[Complétude et
+  séquents]
 
-Dans notre première démonstration du théorème de complétude, nous construisons
-le modèle syntaxique d'une théorie cohérente en ayant un système syntaxique
-déjà donné, ce qui n'est pas notre cas ici. Nous avons donc besoin de considérer
-avant tout des conditions qu'un système syntaxique doit vérifier pour nous
-sembler acceptable.
+Pour commencer notre parcours de la théorie de la démonstration, on s'intéresse
+au théorème de complétude. Sous la forme du \cref{thm.completude}, il énonce
+qu'un système syntaxique donné coïncide avec la relation $\vDash$ de
+conséquence sémantique. Comme ce théorème s'intéresse à la syntaxe, se
+démonstration dépend entièrement du système syntaxique considéré. Cependant, on
+peut adapter la preuve donnée d'un système à un autre, en cherchant des
+conditions plus sémantiques sur les systèmes pour avoir une condition suffisante
+à la complétude d'un système. C'est ce que nous nous proposons de faire.
 
-Nous nous autorisons à en ajouter autant que nécessaire, mais nous souhaitons
-garder un critère essentiel~: chaque condition doit être raisonnable, au sens
-où un système nous paraissant refléter ce qu'est une preuve doit forcément
-vérifier une telle condition.
+\subsection{Construire un théorème de complétude généralisé}
+
+On veut donc définir un ensemble de conditions sur une relation $\vdash$ de
+prouvabilité, représentant un système syntaxique de démonstrations.
+Nous nous autorisons à ajouter autant de conditions que nécessaire, mais nous
+souhaitons garder un critère essentiel~: chaque condition doit être raisonnable,
+au sens où un système nous paraissant refléter ce qu'est une preuve doit
+forcément vérifier une telle condition.
 
 Tout d'abord, des conditions dites structurelles s'imposent. On considère que
 notre relation $\vdash$ de prouvabilité syntaxique relie une théorie et une
@@ -59,15 +67,14 @@ formule, on a donc, pour une signature $\Sigma$ donnée,
 $\vdash \subseteq \powerset(\Prop(\Sigma))\times \Formula(\Sigma)$. Dire qu'une
 théorie $\mathcal T$ prouve une formule $\varphi$ demande qu'on écrive
 effectivement une preuve, ce qui signifie qu'on doit avoir un ensemble, qu'on
-notera $\Pi$, de preuves. Cet ensemble est muni d'une fonction donnant les
-hypothèses d'une preuves et sa conclusion, c'est-à-dire une fonction
-$\hypo : \Pi \to \powerfin(\Formula(\Sigma))$ et d'une fonction
-$\concl : \Pi \to \Formula(\Sigma)$,
+notera $\Proof{\mathcal T}(\Sigma)$, de preuves. Cet ensemble est muni d'une
+relation donnant les hypothèses d'une preuves et sa conclusion, c'est-à-dire une
+relation $\concl \subseteq \powerfin(\Formula(\Sigma))\times \Formula(\Sigma)$
 de telle sorte qu'on puisse écrire
 \[\forall \mathcal T, \varphi, \mathcal T \vdash \varphi \iff
-\exists \pi \in \Pi, (\hypo(\pi) \subseteq \mathcal T) \land
-(\concl(\pi) = \varphi)\]
-Remarquons ici qu'on choisit de poser $\hypo$ comme ayant ses valeurs dans un
+\exists \pi \in \Proof{\mathcal T}(\Sigma), \pi \concl (\Gamma,\varphi) \land
+\Gamma\subseteq\mathcal T\]
+Remarquons ici qu'on choisit de considérer pour nos hypothèses un
 ensemble fini de formules. Le fait de choisir un ensemble fini est poussé par
 le fait qu'une preuve est toujours considérée comme un objet finitaire~: écrire
 une démonstration repose sur un nombre fini de symboles. Le fait de considérer
@@ -91,7 +98,7 @@ F\vdash \varphi
 Au niveau structurel, il est aussi attendu d'une démonstration qu'elle permette
 de faire deux choses considérées évidentes~: une démonstration peut utiliser une
 hypothèse pour en faire sa conclusion, et une démonstration peut utiliser un
-lemme. Ces deux principes de raisonnements élémentaires se traduisent par deux
+lemme. Ces deux principes de raisonnement élémentaires se traduisent par deux
 conditions, l'axiome~:
 \[
 (\textit{Ax})\quad : \quad \forall \mathcal T, \varphi, \varphi \in \mathcal T
@@ -240,10 +247,10 @@ non pas que la prémisse soit vérifiée en quantifiant sur les termes clos,
 mais qu'elle soit vérifiée en prenant une constante $c$ n'apparaissant pas dans
 $\varphi$ ni dans $\mathcal T$~:
 \[\begin{array}{ccccc}
-(r\forall)^\dagger & : & \forall c \notin \mathcal T, \varphi,
+(r\forall)^\dagger & : & \forall c \notin \Const(\mathcal T, \varphi),
 \mathcal T \vdash \varphi[c/x]
 & \implies & \mathcal T \vdash \forall x, \varphi \\
-(l\exists)^\dagger & : & \forall c \notin \mathcal T, \varphi,
+(l\exists)^\dagger & : & \forall c \notin \Const(\mathcal T, \varphi),
 \mathcal T, \varphi[c/x]\vdash
 & \implies & \mathcal T, \exists x, \varphi \vdash
 \end{array}\]
@@ -394,14 +401,14 @@ Avec tous ces éléments, il est maintenant possible de généraliser l'énoncé
   \UnaryInfC{$\mathcal T, \forall x, \varphi \vdash$}
   \DisplayProof
   & &
-  \AxiomC{$c \notin \mathcal T, \varphi$}
+  \AxiomC{$c \notin \Const(\mathcal T, \varphi)$}
   \AxiomC{$\mathcal T \vdash \varphi[c/x]$}
   \RightLabel{$(r\forall)^\dagger$}
   \BinaryInfC{$\mathcal T \vdash \forall x, \varphi$}
   \DisplayProof
   \\
   \\
-  \AxiomC{$c \notin \mathcal T, \varphi$}
+  \AxiomC{$c \notin \Const(\mathcal T, \varphi)$}
   \AxiomC{$\mathcal T, \varphi[c/x] \vdash$}
   \RightLabel{$(l\exists)^\dagger$}
   \BinaryInfC{$\mathcal T, \exists x, \varphi \vdash$}
@@ -430,6 +437,28 @@ Avec tous ces éléments, il est maintenant possible de généraliser l'énoncé
   \DisplayProof\]
   Alors on a l'inclusion $\vDash \subseteq \vdash$.
 \end{theorem}
+
+\begin{remark}
+  Le fait que les règles $l\exists$ et $r\forall$ utilisent des constantes
+  n'apparaissant ni dans $\mathcal T$, ni dans $\varphi$, impose que notre
+  relation $\vdash$ est définie uniformément sur toutes les signatures.
+  Cependant, on peut aussi ajouter une règle tout aussi raisonnable que les
+  précédentes, qui est celle qu'on peut tirer du \cref{lem.var.const}. La
+  règle
+  \[
+  \AxiomC{$c \notin \Const(\mathcal T, \varphi)$}
+  \AxiomC{$x \notin \VL(\mathcal T)$}
+  \AxiomC{$\mathcal T \vdash \varphi$}
+  \TrinaryInfC{$\mathcal T \vdash \varphi[c/x]$}
+  \DisplayProof
+  \]
+  ainsi construite permet de remplacer la condition de
+  $c\notin \Const(\mathcal T, \varphi)$ par la règle plus simple
+  $x\notin \VL(\mathcal T)$. Comme la quantification lie la variable $x$, on
+  remarque aussi qu'il n'est pas nécessaire de demander que $x$ soit libre
+  dans $\varphi$, et de substituer $x$ par une autre variable~: on peut
+  directement travailler comme on le faisait dans le \cref{chp.logpred}.
+\end{remark}
 
 Il nous est donc possible, désormais, de prouver des théorèmes de complétude
 bien plus facilement, en montrant simplement la validité d'un ensemble de
@@ -466,7 +495,7 @@ Cependant, plusieurs éléments méritent d'être relevés~:
   $(l\exists)^\dagger$ utilisent des symboles de constantes, ce qui permet en
   fait avant tout de faciliter la preuve que nous avons donnée du théorème de
   complétude~: cela nous évite d'ajouter le théorème de simulation d'une
-  constante par une variable, mais ce théorème est généralement vérifier pour
+  constante par une variable, mais ce théorème est généralement vérifié pour
   un système syntaxique raisonnable, et on prendra donc généralement plutôt
   cette version~;
 \item à l'exception des règles sur l'égalité, qui ont un statut particulier du
@@ -475,17 +504,29 @@ Cependant, plusieurs éléments méritent d'être relevés~:
   de la sous-formule~: les séquents en haut d'une règle sont constitués de
   sous-formules du séquent en bas de la règle. C'est en fait un critère central
   pour considérer qu'un formalisme est un calcul des séquents, comme nous le
-  verrons.
+  verrons~;
+\item le fait que notre théorème prouve la complétude en supposant la compacité
+  du système indique que le théorème de compacité est lui-même vérifié. Il
+  serait possible, au contraire, de démontrer d'abord le théorème de compacité,
+  puis de construire une preuve de complétude n'utilisant que des jugements
+  du type $\Gamma\vdash \varphi$, où $\Gamma$ est fini, mais la démonstration
+  actuelle est plus puissante puisqu'elle donne bel et bien les deux faits à
+  la fois. On peut donc décomposer la complétude de la façon suivante~:
+  \begin{quote}
+    Compacité $+$ Complétude faible $=$ Complétude forte
+  \end{quote}
+  où, dans le \cref{thm.completude.gen}, on prouve la complétude forte
+  directement.
 \end{itemize}
 
 Nous avons donc deux options, que nous allons explorer au fil de ce chapitres~:
 créer des séquents symétriques, ou travailler dans un système intuitionniste.
 
-\section{Calcul des séquents LK}
+\subsection{Calcul des séquents LK}
 
 La recherche d'un théorème de complétude plus général nous a en fait poussé vers
 un nouveau formalisme~: en considérant les conditions du
-\cref{thm.completude.gen}, on peut en fait remplacer les séquents de la forme
+\cref{thm.completude.gen}, on peut remplacer les séquents de la forme
 $\mathcal T \vdash \varphi$ par des séquents de la forme $\Gamma \vdash \varphi$
 où $\Gamma$ est un ensemble fini de formules, pour obtenir un système
 syntaxique (finitaire). Compte tenu des nombreuses symétries entre le côté
@@ -505,130 +546,867 @@ $\top \vdash \Delta$ et $\Gamma\vdash \bot$.
 
 On peut maintenant définir notre premier calcul des séquents, $\LK$.
 
-\begin{definition}[Calcul des séquents $\LK$]
-  Soit $\Sigma$ une signature du premier ordre. On définit inductivement
-  la relation
-  $\vdLK\subseteq \powerfin(\Formula(\Sigma))\times\powerfin(\Formula(\Sigma))$
-  par les règles~:
-  \[\begin{array}{cc}
-  \AxiomC{}
-  \RightLabel{\textit{ax}}
-  \UnaryInfC{$\Gamma, \varphi\vdLK \varphi$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
-  \AxiomC{$\Theta, \varphi \vdLK \Xi$}
-  \RightLabel{\textit{cut}}
-  \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma \vdLK \Delta$}
-  \RightLabel{\textit{lw}}
-  \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma \vdLK \Delta$}
-  \RightLabel{\textit{rw}}
-  \UnaryInfC{$\Gamma\vdLK \Delta, \varphi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
-  \RightLabel{$l\lnot$}
-  \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
-  \RightLabel{$r\lnot$}
-  \UnaryInfC{$\Gamma\vdLK \Delta, \lnot\varphi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
-  \AxiomC{$\Theta, \psi \vdLK \Xi$}
-  \RightLabel{$l\lor$}
-  \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
-  \RightLabel{$r\lor_1$}
-  \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\lor\psi$}
-  \DisplayProof
-  \quad
-  \AxiomC{$\Gamma\vdLK \Delta,\psi$}
-  \RightLabel{$r\lor_2$}
-  \UnaryInfC{$\Gamma\vdLK \Delta, \varphi \lor \psi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
-  \RightLabel{$l\land_1$}
-  \UnaryInfC{$\Gamma,\varphi\land\psi\vdLK \Delta$}
-  \DisplayProof
-  \quad
-  \AxiomC{$\Gamma, \psi \vdLK \Delta$}
-  \RightLabel{$l\land_2$}
-  \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
-  \AxiomC{$\Theta\vdLK \Xi,\psi$}
-  \RightLabel{$r\land$}
-  \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi, \varphi\land\psi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
-  \AxiomC{$\Theta, \psi \vdLK \Xi$}
-  \RightLabel{$l\to$}
-  \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
-  \RightLabel{$r\to_1$}
-  \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\to\psi$}
-  \DisplayProof
-  \quad
-  \AxiomC{$\Gamma \vdLK \Delta,\psi$}
-  \RightLabel{$r\to_2$}
-  \UnaryInfC{$\Gamma\vdLK\Delta, \varphi \to \psi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
-  \RightLabel{$l\forall$}
-  \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
-  \RightLabel{$r\forall^\dagger$}
-  \UnaryInfC{$\Gamma \vdLK \Delta,\forall x, \varphi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
-  \RightLabel{$l\exists^\dagger$}
-  \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
-  \DisplayProof
-  &
-  \AxiomC{$\Gamma \vdLK \Delta,\varphi[t/x]$}
-  \RightLabel{$r\exists$}
-  \UnaryInfC{$\Gamma \vdLK \Delta,\exists x, \varphi$}
-  \DisplayProof
-  \\
-  \\
-  \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
-  \RightLabel{$l=$}
-  \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
-  \DisplayProof
-  &
-  \AxiomC{}
-  \RightLabel{$r=$}
-  \UnaryInfC{$\vdLK t = t$}
-  \DisplayProof
-  \end{array}\]
+\begin{figure}[ht]
+  \centering
+  \resizebox{\textwidth}{!}{\(\begin{array}{cc}
+    \AxiomC{}
+    \RightLabel{\textit{ax}}
+    \UnaryInfC{$\Gamma, \varphi\vdLK \varphi$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+    \AxiomC{$\Theta, \varphi \vdLK \Xi$}
+    \RightLabel{\textit{cut}}
+    \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma \vdLK \Delta$}
+    \RightLabel{\textit{lw}}
+    \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma \vdLK \Delta$}
+    \RightLabel{\textit{rw}}
+    \UnaryInfC{$\Gamma\vdLK \Delta, \varphi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
+    \RightLabel{$l\lnot$}
+    \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
+    \RightLabel{$r\lnot$}
+    \UnaryInfC{$\Gamma\vdLK \Delta, \lnot\varphi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+    \AxiomC{$\Theta, \psi \vdLK \Xi$}
+    \RightLabel{$l\lor$}
+    \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+    \RightLabel{$r\lor_1$}
+    \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\lor\psi$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma\vdLK \Delta,\psi$}
+    \RightLabel{$r\lor_2$}
+    \UnaryInfC{$\Gamma\vdLK \Delta, \varphi \lor \psi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+    \RightLabel{$l\land_1$}
+    \UnaryInfC{$\Gamma,\varphi\land\psi\vdLK \Delta$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma, \psi \vdLK \Delta$}
+    \RightLabel{$l\land_2$}
+    \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+    \AxiomC{$\Theta\vdLK \Xi,\psi$}
+    \RightLabel{$r\land$}
+    \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi, \varphi\land\psi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+    \AxiomC{$\Theta, \psi \vdLK \Xi$}
+    \RightLabel{$l\to$}
+    \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+    \RightLabel{$r\to_1$}
+    \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\to\psi$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\Gamma \vdLK \Delta,\psi$}
+    \RightLabel{$r\to_2$}
+    \UnaryInfC{$\Gamma\vdLK\Delta, \varphi \to \psi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
+    \RightLabel{$l\forall$}
+    \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+    \RightLabel{$r\forall^\dagger$}
+    \UnaryInfC{$\Gamma \vdLK \Delta,\forall x, \varphi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+    \RightLabel{$l\exists^\dagger$}
+    \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
+    \DisplayProof
+    &
+    \AxiomC{$\Gamma \vdLK \Delta,\varphi[t/x]$}
+    \RightLabel{$r\exists$}
+    \UnaryInfC{$\Gamma \vdLK \Delta,\exists x, \varphi$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
+    \RightLabel{$l=$}
+    \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
+    \DisplayProof
+    &
+    \AxiomC{}
+    \RightLabel{$r=$}
+    \UnaryInfC{$\vdLK t = t$}
+    \DisplayProof
+    \end{array}\)}
+  \caption{Règles du calcul des séquents $\LK$}
+  \label{fig.LK}
+\end{figure}
 
-  où les règles $l\exists^\dagger$ et $r\forall^\dagger$ demandent que
-  $x$ soit libre dans $\Gamma$ et $\Delta$.
+\begin{definition}[Calcul des séquents $\LK$ \cite{Gentzen1935}]
+  Soit $\Sigma$ une signature du premier ordre. On définit inductivement
+  l'ensemble $\ProofLK(\Sigma)$ par les règles de la \cref{fig.LK}, où les
+  règles $l\exists^\dagger$ et $r\forall^\dagger$ demandent que $x$ soit libre
+  dans $\Gamma$ et $\Delta$. Le séquent le plus en bas d'un arbre
+  $\pi\in\ProofLK(\Sigma)$ est appelé le séquent conclusion, et on note
+  $\pi \concl \Gamma\vdLK\Delta$ pour signifier que $\Gamma\vdLK\Delta$ est
+  la conclusion de $\pi$. On définit la relation de prouvabilité pour $\LK$
+  par
+  \[\Gamma\vdLK \Delta \defeq \exists \pi \in \ProofLK(\Sigma),
+  \pi\concl \Gamma\vdLK\Delta\]
 \end{definition}
+
+\begin{remark}
+  Dans notre formulation actuelle, les règles sont dites multiplicatives, ce
+  qui signifie que les contextes s'accumulent au fil des utilisations de
+  règles. Une autre version est la version additive, dans laquelle les contextes
+  restent les mêmes. Par exemple, la version additive de $l\to$ est
+  \begin{prooftree}
+    \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
+    \AxiomC{$\Gamma, \psi \vdLK \Delta$}
+    \RightLabel{$l\to$}
+    \BinaryInfC{$\Gamma, \varphi \to \psi \vdLK \Delta$}
+  \end{prooftree}
+  En l'état, puisqu'on travaille avec le weakening et des ensembles de formules
+  (où ni l'ordre ni le nombre d'occurrences des formules n'importe), les deux
+  règles sont dérivables l'une à partir de l'autre. Les versions additives et
+  multiplicatives sont donc équivalentes du point de vue logique, mais elles
+  peuvent avoir un impact sur de la recherche de preuve, ou dans des logiques
+  sous-structurelles comme la logique linéaire que nous aborderons plus tard.
+
+  Nous choisissons une présentation multiplicative ici car le
+  \cref{thm.completude.gen} induit naturellement une accumulation de contextes,
+  en considérant
+  \[\mathcal T \vdLK \varphi \defeq
+  \exists \Gamma \subfin \mathcal T, \Gamma\vdLK \varphi\]
+  En effet, les prémisses d'une règle telle que $l\to$ sont alors qu'il
+  existe $\Gamma\subfin \mathcal T$ tel que $\Gamma\vdLK\varphi$ et qu'il
+  existe $\Delta \subfin \mathcal T$ tel que $\Delta\vdLK\psi$, mais les
+  deux contextes $\Gamma$ et $\Delta$ ne sont pas \latinexpr{a priori} les
+  mêmes.
+\end{remark}
+
+\begin{remark}
+  Contrairement au \cref{chp.logpred} ou au théorème de complétude, on définit
+  l'ensemble des arbres de preuves pour définir ensuite la relation de
+  prouvabilité. Cette approche se justifie par notre besoin de réécrire les
+  arbres de preuves, et plus généralement d'étudier les arbres comme objet
+  mathématiques et non simplement comme des relations.
+\end{remark}
+
+Le système $\LK$ est précisément conçu pour vérifier le
+\cref{thm.completude.gen}, il est donc complet (et correct par une induction
+sans difficulté).
+
+\begin{proposition}
+  Pour toute théorie $\mathcal T \subseteq \Formula(\Sigma)$ sur une signature
+  $\Sigma$ fixée, la relation $\vdLK$ définie par
+  \[\mathcal T \vdLK \varphi \defeq \exists \Gamma \in \powerfin(\mathcal T),
+  \Gamma \vdLK \varphi\]
+  coïncide avec la relation $\vDash$.
+\end{proposition}
+
+\begin{proof}
+  L'induction pour prouver la correction de $\vdLK$ est très similaire à celle
+  du \cref{thm.cor.logprop}, et nous ne la détaillons pas. Pour la complétude,
+  il suffit de vérifier les règles~: la plupart se vérifient automatiquement
+  de par la forme des règles de $\vdLK$, mais la règle $(Raa)$ n'a pas de
+  règle correspondante dans $\vdLK$. On prouve donc qu'elle est malgré tout
+  dérivable~:
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{$ax$}
+    \UnaryInfC{$\varphi\vdLK\varphi$}
+    \RightLabel{$r\lnot$}
+    \UnaryInfC{$\vdLK\varphi,\lnot\varphi$}
+    \AxiomC{$\Gamma,\lnot \varphi \vdLK$}
+    \RightLabel{$cut$}
+    \BinaryInfC{$\Gamma\vdLK\varphi$}
+  \end{prooftree}
+  On déduit donc que $\mathcal T \vDash \varphi \iff \mathcal T\vdLK \varphi$.
+\end{proof}
+
+La règle $cut$, outre son utilisation dans la preuve précédente, est un outil
+central de démonstration. C'est grâce à cette règle qu'on a la possibilité,
+en écrivant une preuve, de rajouter un résultat intermédiaire~: la règle permet
+de faire le lien entre une hypothèse et une conclusion, en montrant que pour
+deux séquents $\Gamma,\varphi\vdLK\Delta$ et $\Theta\vdLK\varphi,\Xi$, on peut
+supprimer les deux occurrences de $\varphi$ et concaténer les contextes, pour
+avoir $\Gamma,\Theta\vdLK\Delta,\Xi$.
+
+La propriété centrale du calcul des séquents, qui a motivé l'étude de ce système
+et qui date d'aussi loin que son introduction dans \cite{Gentzen1935}, est
+l'élimination des coupures~: on peut en fait prouver que la relation $\vdLK$
+prouve les mêmes formules si on supprime la règle $cut$. Autrement dit,
+$cut$ est une règle admissible pour $\LK - cut$. On va prouver ce théorème, mais
+on se propose d'abord d'explorer les conséquences de ce théorème, pour
+comprendre son importance qui lui donne son nom de \foreignexpr{Hauptsatz}
+(théorème principal, en allemand) dans l'article original.
+
+On se donne donc pour l'instant l'élimination des coupures en tant qu'axiome.
+
+\begin{axiom}[\'Elimination des coupures]
+  Pour tout arbre de preuve $\pi$ de conclusion $\Gamma\vdLK \varphi$, il
+  existe un arbre de preuve $\pi'$ de même conclusion mais ne contenant aucune
+  occurrence de la règle $cut$.
+\end{axiom}
+
+La première conséquence est l'une des plus importantes pour justifier le bon
+fonctionnement d'un système syntaxique~: la cohérence de $\LK$.
+
+\begin{theorem}[Cohérence de $\LK$]
+  Il est impossible de prouver le séquent $\vdLK$, ou de façon équivalente de
+  prouver $\top\vdLK\bot$.
+\end{theorem}
+
+\begin{proof}
+  On suppose qu'il existe une preuve de $\vdLK$. On trouve donc $\pi$ dont la
+  conclusion est le séquent $\vdLK$, et par élimination des coupures on
+  suppose que $\pi$ ne contient aucune règle $cut$. On voit alors que toutes
+  les règles ont au moins une formule dans leur séquent conclusion. Il est
+  donc impossible d'avoir une telle preuve sans coupure, et donc d'avoir une
+  preuve de $\vdLK$. Le séquent $\top\vdLK\bot$ ne peut être obtenu que par
+  affaiblissement depuis le séquent $\vdLK$, d'où le résultat.
+\end{proof}
+
+Ainsi, on ne peut pas tout prouver dans $\LK$. Ce résultat peut être directement
+obtenu comme une conséquence du théorème de correction, puisque tout énoncé
+prouvé dans $\LK$ doit être vrai aussi dans les modèles du séquent considéré.
+La différence est qu'ici, le théorème nécessite uniquement l'utilisation de
+l'élimination des coupures. Quand on prouvera l'élimination des coupures, on
+verra que le procédé de transformation d'arbre est entièrement algorithmique,
+et peut ainsi de définir de façon finitaire. La preuve de cohérence qui en
+résultat est donc plus robuste que celle utilisant le théorème de correction,
+dans laquelle on a besoin de quantifier nos résultats sur la classe de toutes
+les structures, donnant lieu à une preuve bien plus infinitaire dans l'esprit.
+
+La preuve de la cohérence de $\LK$ repose donc sur l'élimination des coupures et
+sur une analyse des règles. On peut considérer les arbres sans coupures comme
+des formes normales, dont la construction est en quelque sorte imposée par les
+formules contenues dans la conclusion~: on doit ainsi remonter en utilisant des
+règles décomposant les formules au fur et à mesure. En fait, on remarque un fait
+important~: quand on monte dans l'arbre, en l'absence de coupures, toutes les
+règles construisent des sous-formules des formules déjà présentes en bas de
+l'arbre.
+
+\begin{definition}[Ordre de sous-formule]
+  Soit $\Sigma$ une signature.
+  On définit sur $\Formula(\Sigma)$ un ordre, défini comme l'ordre des
+  sous-formules, comme la plus petite relation de pré-oordre (non forcément
+  antisymétrique) telle que~:
+  \begin{itemize}
+  \item $\varphi$ est une sous-formule de $\lnot\varphi$~;
+  \item $\varphi$ et $\psi$ sont des sous-formules de $\varphi \land \psi$,
+    $\varphi \lor \psi$ et $\varphi \to \psi$~;
+  \item $\varphi[t/x]$ est une sous-formule de $\forall x, \varphi$ et de
+    $\exists x, \varphi$, pour tout terme $t$~;
+  \item si $t,u$ sont des termes, $x$ une variable et $\varphi$ une formule,
+    alors $\varphi[t/x]$ est une sous-formule de $\varphi[u/x]$.
+  \end{itemize}
+\end{definition}
+
+On peut ainsi énoncer la propriété de la sous-formule, dont la preuve est une
+simple vérification des règles.
+
+\begin{property}[Sous-formule]
+  Soit $\pi$ un arbre de preuve de $\LK$ sans occurrence de la règle $cut$.
+  Soit $\varphi_1,\ldots,\varphi_n \vdLK \psi_1,\ldots,\psi_k$ le séquent
+  conclusion de $\pi$. Tout séquent apparaissant dans $\pi$ n'est constitué que
+  de sous-formules des $\varphi_i$ et $\psi_i$.
+\end{property}
+
+\begin{remark}
+  Ce fait est plus général de la cohérence, puisqu'une preuve sans coupure de
+  $\vdLK$ serait une preuve acceptant la propriété de la sous-formule, ce qui
+  est absurde.
+\end{remark}
+
+Combinons maintenant ce résultat et le résultat important de
+l'\cref{exo.prenexe}. On peut remplacer les formules du séquent conclusion par
+des formules équivalentes, toutes sous forme normale. Par la propriété de la
+sous-formule, on sait alors que toutes les formules qui apparaissent sont
+des sous-formules de formes prénexes~: il est facile en considérant la relation
+de sous-formule de remarquer que ce sont des formules elles-mêmes sous forme
+prénexe. Ainsi, tout séquent prouvable $\Gamma \vdLK \Delta$ est équivalent à
+un arbre de preuve contenant uniquement des formules sous forme prénexe.
+
+\begin{figure}[t]
+  \resizebox{\textwidth}{!}{
+  \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    $\rOne$ & $\Sigma^l$ & $\Sigma^r$ & $\Phi^l$ & $\Phi^r$ \\
+    \hline
+    $lw$ & $\varnothing$ & $\varnothing$ & $\{\varphi\}$ & $\varnothing$ \\
+    $rw$ & $\varnothing$ & $\varnothing$ & $\varnothing$ & $\{\varphi\}$ \\
+    $l\lnot$ & $\varnothing$ & $\{\varphi\}$ & $\{\lnot\varphi\}$ &
+    $\varnothing$ \\
+    $r\lnot$ & $\{\varphi\}$ & $\varnothing$ & $\varnothing$ &
+    $\{\lnot\varphi\}$ \\
+    $r\lor_1$ & $\varnothing$ & $\{\varphi\}$ & $\varnothing$ &
+    $\{\varphi \lor \psi\}$ \\
+    $r\lor_2$ & $\varnothing$ & $\{\psi\}$ & $\varnothing$ &
+    $\{\varphi\lor\psi\}$ \\
+    $l\land_1$ & $\{\varphi\}$ & $\varnothing$ & $\{\varphi\land\psi\}$ &
+    $\varnothing$ \\
+    $l\land_2$ & $\{\psi\}$ & $\varnothing$ & $\{\varphi\land\psi\}$ &
+    $\varnothing$ \\
+    $r\to_1$ & $\{\varphi\}$ & $\varnothing$ & $\varnothing$ &
+    $\{\varphi \to \psi\}$ \\
+    $r\to_2$ & $\varnothing$ & $\{\psi\}$ & $\varnothing$ &
+    $\{\varphi\to\psi\}$ \\
+    $l\forall$ & $\{\varphi[t/x]\}$ & $\varnothing$ &
+    $\{\forall x, \varphi\}$ & $\varnothing$ \\
+    $r\forall$ & $\varnothing$ & $\{\varphi\}$ & $\varnothing$ &
+    $\{\forall x, \varphi\}$ \\
+    $l\exists$ & $\{\varphi\}$ & $\varnothing$ & $\{\exists x, \varphi\}$ &
+    $\varnothing$ \\
+    $r\exists$ & $\varnothing$ & $\{\varphi[t/x]\}$ & $\varnothing$ &
+    $\{\exists x, \varphi\}$ \\
+    \hline
+  \end{tabular}
+  \quad
+  \begin{tabular}{|c|c|c|c|c|c|c|}
+    \hline
+    $\rTwo$ & $\Sigma_1^l$ & $\Sigma_1^r$ & $\Sigma_2^l$ & $\Sigma_2^r$ &
+    $\Phi^l$ & $\Phi^r$ \\
+    \hline
+    $l\lor$ & $\{\varphi\}$ & $\varnothing$ & $\{\psi\}$ & $\varnothing$ &
+    $\{\varphi \lor \psi\}$ & $\varnothing$ \\
+    $r\land$ & $\varnothing$ & $\{\varphi\}$ & $\varnothing$ &
+    $\{\psi\}$ & $\varnothing$ & $\{\varphi\land \psi\}$ \\
+    $l\to$ & $\varnothing$ & $\{\varphi\}$ & $\{\psi\}$ & $\varnothing$ &
+    $\{\varphi\to\psi\}$ & $\varnothing$\\
+    \hline
+  \end{tabular}
+  }
+  \caption{Tables de typologie des règles de $\LK$}
+  \label{fig.typologie1}
+\end{figure}
+
+En analysant plus précisément les règles successives, on peut relever des
+réécritures posibles pour commuter certaines règles. Ces réécritures permettent
+de \og faire descendre dans l'arbre \fg les règles portant sur les
+quantificateurs, de sorte qu'on puisse transformer notre arbre de preuve en
+un arbre en deux blocs~: le bas de l'arbre ne contient que des règles
+$l\forall / r\forall / l\exists / r\exists$ ainsi que des règles $lw / rw$,
+et le haut de l'arbre ne contient que d'autres règles que les $6$ précédentes
+(et aucun $cut$ puisqu'on considère des arbres sans coupure).
+
+Pour prouver ce théorème, il nous faut d'abord donner une typologie des règles,
+de sorte à pouvoir écrire plus facilement les transformations. Pour cela, on
+commence par définir plusieurs blocs de règles.
+
+\begin{definition}[Groupes de règles]
+  On appelle règles structurelles les règles $lw/rw$. On appelle règles
+  logiques les règles
+  $l\lnot/r\lnot/l\lor/r\lor_1/r\lor_2/l\land_1/l\land_2/r\land
+  /l\to/r\to_1/r\to_2/l\forall/r\forall/l\exists/r\exists/l=/r=$.
+
+  Parmi les règles logiques, on appelles règles quantifiantes les règles
+  $l\forall/r\forall/l\exists/r\exists$, règles égalitaires les règles
+  $l=/r=$ et règles connectives les autres règles logiques.
+
+  On dira qu'une règle est de type $\rOne$ si elle a une seule prémisse, et
+  de type $\rTwo$ si elle a deux prémisses.
+\end{definition}
+
+Toutes les règles non égalitaires de type $\rOne$ peuvent alors s'écrire de la
+façon suivante~:
+\[
+\AxiomC{$\Gamma,\Sigma^l \vdLK \Sigma^r,\Delta$}
+\RightLabel{$l\rOne$}
+\UnaryInfC{$\Gamma,\varphi \vdLK \Delta$}
+\DisplayProof
+\qquad
+\AxiomC{$\Gamma,\Sigma^l \vdLK\Sigma^r, \Delta$}
+\RightLabel{$r\rOne$}
+\UnaryInfC{$\Gamma\vdLK\varphi,\Delta$}
+\DisplayProof
+\]
+où $\Sigma^l$ et $\Sigma^r$ contiennent des sous-formules de $\varphi$ (et
+chacun contient au plus une formule). On appelle contexte d'une règle les
+formules dans $\Gamma,\Delta$, qui sont inchangées lors de l'application de la
+règle.
+
+Les règles de type $\rTwo$ peuvent s'écrire de façon similaire~:
+\begin{center}
+  \resizebox{\textwidth}{!}{\(
+    \AxiomC{$\Gamma_1,\Sigma^l_1 \vdLK \Sigma^r_1,\Delta_1$}
+    \AxiomC{$\Gamma_2,\Sigma^l_2 \vdLK \Sigma^r_2,\Delta_2$}
+    \RightLabel{$l\rTwo$}
+    \BinaryInfC{$\Gamma_1,\Gamma_2,\varphi \vdLK \Delta_1,\Delta_2$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\Gamma_1,\Sigma^l_1 \vdLK \Sigma^r_1,\Delta_1$}
+    \AxiomC{$\Gamma_2,\Sigma^l_2 \vdLK \Sigma^r_2,\Delta_2$}
+    \RightLabel{$r\rTwo$}
+    \BinaryInfC{$\Gamma_1,\Gamma_2\vdLK \varphi,\Delta_1,\Delta_2$}
+    \DisplayProof
+    \)}
+\end{center}
+
+Quitte à abstraire $\varphi$, on peut considérer que les règles gauches et
+droites s'écrivent avec en séquent conclusion
+$\Gamma, \Phi^l\vdLK\Phi^r,\Delta$ où $\Phi^l,\Phi^r$ sont deux ensembles de
+formules tels que $\Phi^l \cup \Phi^r = \{\varphi\}$ et
+$\Phi^l\cap \Phi^r = \varnothing$. On obtient ainsi les deux règles
+\[
+\AxiomC{$\Gamma,\Sigma^l \vdLK \Sigma^r,\Delta$}
+\RightLabel{$\rOne$}
+\UnaryInfC{$\Gamma,\Phi^l \vdLK \Phi^r,\Delta$}
+\DisplayProof
+\qquad
+\AxiomC{$\Gamma_1,\Sigma^l_1 \vdLK \Sigma^r_1,\Delta_1$}
+\AxiomC{$\Gamma_2,\Sigma^l_2 \vdLK \Sigma^r_2,\Delta_2$}
+\RightLabel{$\rTwo$}
+\BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l\vdLK \Phi^r,\Delta_1,\Delta_2$}
+\DisplayProof
+\]
+qui permettent de réécrire toutes les règles non égalitaires. On donne en
+\cref{fig.typologie1} les instances de $\rOne$ et $\rTwo$ pour obtenir les
+différentes règles.
+
+On peut maintenant introduire le procédé de réécriture permettant de faire
+remonter les règles connectives.
+
+\begin{definition}[Commutation quantitative]
+  On donne les réécritures suivantes de suites de règles, où
+  $\quantif\in\{\forall,\exists\}$~:
+  \begin{center}\resizebox{\textwidth}{!}{
+      $\begin{array}{ccc}
+        \AxiomC{$\varphi[t/x],\Gamma,\Sigma^l\vdLK\Sigma^r,\Delta$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\, \varphi, \Gamma, \Sigma^l\vdLK\Sigma^r,\Delta$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\quantif x\,\varphi,\Gamma,\Phi^l\vdLK\Phi^r,\Delta$}
+        \DisplayProof
+        & \reecr{l\quantif \downarrow}&
+        \AxiomC{$\varphi[t/x],\Gamma,\Sigma^l\vdLK\Sigma^r,\Delta$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\varphi[t/x],\Gamma,\Phi^l\vdLK\Phi^r,\Delta$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\,\varphi,\Gamma,\Phi^l\vdLK\Phi^r,\Delta$}
+        \DisplayProof
+        
+        \\
+        \\
+        
+        \AxiomC{$\varphi[t/x],\Gamma_1,\Sigma^l_1\vdLK\Sigma^r_1,\Delta_1$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\, \varphi, \Gamma_1,
+          \Sigma^l_1\vdLK\Sigma^r_1,\Delta_1$}
+        \AxiomC{$\Gamma_2,\Sigma^l_2\vdLK \Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\quantif x\,\varphi,\Gamma_1,\Gamma_2,
+          \Phi^l\vdLK\Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+        &\reecr{l\quantif \downarrow}&
+        \AxiomC{$\varphi[t/x],\Gamma_1,\Sigma^l_1\vdLK\Sigma^r_1,\Delta_1$}
+        \AxiomC{$\Gamma_2,\Sigma^l_2\vdLK\Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\varphi[t/x],\Gamma_1,\Gamma_2,\Phi^l\vdLK
+          \Phi^r,\Delta_1,\Delta_2$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\,\varphi,\Gamma_1,\Gamma_2,\Phi^l\vdLK
+          \Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+        
+        \\
+        \\
+        
+        \AxiomC{$\Gamma_1,\Sigma^l_1\vdLK \Sigma^r_1,\Delta_1$}
+        \AxiomC{$\varphi[t/x],\Gamma_2,\Sigma^l_2\vdLK\Sigma^r_2,\Delta_2$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\, \varphi, \Gamma_2,
+          \Sigma^l_2\vdLK\Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\quantif x\,\varphi,\Gamma_1,\Gamma_2,
+          \Phi^l\vdLK\Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+        &\reecr{l\quantif \downarrow}&
+        \AxiomC{$\Gamma_1,\Sigma^l_1\vdLK\Sigma^r_1,\Delta_1$}
+        \AxiomC{$\varphi[t/x],\Gamma_2,\Sigma^l_2\vdLK\Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\varphi[t/x],\Gamma_1,\Gamma_2,\Phi^l\vdLK
+          \Phi^r,\Delta_1,\Delta_2$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\,\varphi,\Gamma_1,\Gamma_2,\Phi^l\vdLK
+          \Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+
+        \\
+        \\
+
+        \AxiomC{$\varphi[t/x][u/y],\Gamma[u/y]\vdLK\Delta[u/y]$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\,\varphi[u/y],\Gamma[u/y]\vdLK\Delta[u/y]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\quantif x\,\varphi[v/y], \Gamma[v/y],
+          u = v\vdLK\Delta[v/y]$}
+        \DisplayProof
+        &\reecr{l=\quantif \downarrow} &
+        \AxiomC{$\varphi[t/x][u/y],\Gamma[u/y]\vdLK\Delta[u/y]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\varphi[t/x][v/y],\Gamma[v/y], u = v\vdLK\Delta[v/y]$}
+        \RightLabel{$l\quantif$}
+        \UnaryInfC{$\quantif x\,\varphi[v/y], \Gamma[v/y],
+          u = v\vdLK\Delta[v/y]$}
+        \DisplayProof
+      \end{array}
+      $}
+  \end{center}
+  \begin{center}\resizebox{\textwidth}{!}{
+      $\begin{array}{ccc}
+        
+        \AxiomC{$\Gamma,\Sigma^l\vdLK\varphi[t/x],\Sigma^r,\Delta$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma, \Sigma^l\vdLK
+          \quantif x\,\varphi,\Sigma^r,\Delta$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\Gamma,\Phi^l\vdLK\quantif x\,\varphi,\Phi^r,\Delta$}
+        \DisplayProof
+        & \reecr{r\quantif \downarrow} &
+        \AxiomC{$\Gamma,\Sigma^l\vdLK\varphi[t/x],\Sigma^r,\Delta$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\Gamma,\Phi^l\vdLK\varphi[t/x],\Phi^r,\Delta$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma,\Phi^l\vdLK\quantif x\,\varphi,\Phi^r,\Delta$}
+        \DisplayProof
+        
+        \\
+        \\
+        
+        \AxiomC{$\Gamma_1,\Sigma^l_1\vdLK\varphi[t/x],\Sigma^r_1,\Delta_1$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma_1,
+          \Sigma^l_1\vdLK\quantif x\, \varphi, \Sigma^r_1,\Delta_1$}
+        \AxiomC{$\Gamma_2,\Sigma^l_2\vdLK \Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,
+          \Phi^l\vdLK\quantif x\,\varphi,\Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+        &\reecr{r\quantif \downarrow}&
+        \AxiomC{$\Gamma_1,\Sigma^l_1\vdLK\varphi[t/x],\Sigma^r_1,\Delta_1$}
+        \AxiomC{$\Gamma_2,\Sigma^l_2\vdLK\Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l\vdLK\varphi[t/x],
+          \Phi^r,\Delta_1,\Delta_2$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma_1,\Gamma_2,\Phi^l\vdLK\quantif x\,\varphi,
+          \Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+        
+        \\
+        \\
+        
+        \AxiomC{$\Gamma_1,\Sigma^l_1\vdLK \Sigma^r_1,\Delta_1$}
+        \AxiomC{$\Gamma_2,\Sigma^l_2\vdLK\varphi[t/x],\Sigma^r_2,\Delta_2$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma_2,
+          \Sigma^l_2\vdLK\quantif x\, \varphi, \Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,
+          \Phi^l\vdLK\quantif x\,\varphi,\Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+        &\reecr{r\quantif \downarrow}&
+        \AxiomC{$\Gamma_1,\Sigma^l_1\vdLK\Sigma^r_1,\Delta_1$}
+        \AxiomC{$\Gamma_2,\Sigma^l_2\vdLK\varphi[t/x],\Sigma^r_2,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l\vdLK\varphi[t/x],
+          \Phi^r,\Delta_1,\Delta_2$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma_1,\Gamma_2,\Phi^l\vdLK\quantif x\,\varphi,
+          \Phi^r,\Delta_1,\Delta_2$}
+        \DisplayProof
+
+        \\
+        \\
+
+        \AxiomC{$\Gamma[u/y]\vdLK\varphi[u/y][t/x],\Delta[u/y]$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma[u/y]\vdLK\quantif x\,\varphi[u/y],\Delta[u/y]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\Gamma[v/y],
+          u = v\vdLK\quantif x\,\varphi[v/y], \Delta[v/y]$}
+        \DisplayProof
+        &\reecr{r=\quantif \downarrow} &
+        \AxiomC{$\Gamma[u/y]\vdLK\varphi[u/y][t/x],\Delta[u/y]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\Gamma[v/y], u = v\vdLK\varphi[v/y][t/x],\Delta[v/y]$}
+        \RightLabel{$r\quantif$}
+        \UnaryInfC{$\Gamma[v/y],
+          u = v\vdLK\quantif x\,\varphi[v/y], \Delta[v/y]$}
+        \DisplayProof
+      \end{array}$
+    }
+  \end{center}
+\end{definition}
+
+\begin{remark}
+  Cette réécriture d'arbres de preuve est bien définie. Pour la plupart des
+  règles, cette bonne définition est claire. Relevons cependant que dans le
+  cas où, par exemple, on fait la réécriture $l\quantif\downarrow$ où
+  $\quantif = \exists$, il convient de vérifier que la variable $x$ est
+  bien libre dans les autres séquents des règles une fois écrites~: c'est le
+  cas si la règle initiale était bien applicable.
+
+  De même, pour les règles $=\quantif\downarrow$, il faut vérifier que l'on peut
+  bien faire commuter les deux substitutions $[t/x]$ et $[u/y]$
+  (respectivement $[v/y]$). Si le cas est tel $l\forall$, où le terme introduit
+  n'importe pas, on peut toujours réécrire la formule en $\varphi[u/y]$
+  (respectivement $[v/y]$) au moment d'introduire la quantification. Si le cas
+  est tel $l\exists$, où le terme $t$ est en fait exactement $x$, on sait donc
+  que $x$ est une variable libre uniquement de $v$ (puisque la possibilité
+  d'appliquer $l\exists$ par exemple présuppose que $\Gamma[u/y]$ et
+  $\Delta[u/y]$ ne possèdent pas $x$ comme variable libre), et on peut donc
+  remplacer $x$ dans $v$ par n'importe quelle autre variable qui n'est pas
+  encore apparue.
+\end{remark}
+
+Il est ainsi possible de réécrire des arbres de preuves par les règles
+$l\quantif\downarrow$ et $r\quantif\downarrow$. Pour l'instant on a seulement
+défini les règles de réécriture sur des arbres fixés, qui sont des instances
+locales d'une réécriture qu'on souhaite effectuer de façon globale. Il faut
+donc définir une notion de réécriture globale. On introduit pour ça la notion
+de relation compatible.
+
+\begin{definition}[Relation compatible]
+  Soit $R\subseteq \ProofLK \times \ProofLK$ une relation sur des arbres de
+  preuves. $R$ est dite compatibles si, pour chaque règle de construction de
+  $\LK$, de la forme
+  \begin{prooftree}
+    \AxiomC{$\Gamma_1\vdLK \Delta_1$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$\Gamma_n\vdLK\Delta_n$}
+    \RightLabel{$r$}
+    \TrinaryInfC{$\Theta\vdLK\Xi$}
+  \end{prooftree}
+  pour tous $i$, $\pi_i \concl \Gamma_i\vdLK\Delta_i$ et
+  $\pi' \concl\Gamma_j\vdLK\Delta_j$ pour un certain $j$, si $\pi_j R \pi'$
+  alors on a
+  \begin{center}
+    \resizebox{0.4\textwidth}{!}{$
+      \AxiomC{$\pi_1$}
+      \noLine
+      \UnaryInfC{$\Gamma_1\vdLK\Delta_1$}
+      \AxiomC{$\cdots$}
+      \AxiomC{$\pi_j$}
+      \noLine
+      \UnaryInfC{$\Gamma_j\vdLK\Delta_n$}
+      \AxiomC{$\cdots$}
+      \AxiomC{$\pi_n$}
+      \noLine
+      \UnaryInfC{$\Gamma_n\vdLK\Delta_n$}
+      \RightLabel{$r$}
+      \QuinaryInfC{$\Theta\vdLK\Xi$}
+      \DisplayProof
+      $}
+    \quad
+    \raisebox{-0.2cm}{$R$}
+    \quad
+    \resizebox{0.4\textwidth}{!}{$
+      \AxiomC{$\pi_1$}
+      \noLine
+      \UnaryInfC{$\Gamma_1\vdLK\Delta_1$}
+      \AxiomC{$\cdots$}
+      \AxiomC{$\pi'$}
+      \noLine
+      \UnaryInfC{$\Gamma_j\vdLK\Delta_j$}
+      \AxiomC{$\cdots$}
+      \AxiomC{$\pi_n$}
+      \noLine
+      \UnaryInfC{$\Gamma_n\vdLK\Delta_n$}
+      \RightLabel{$r$}
+      \QuinaryInfC{$\Theta\vdLK\Xi$}
+      \DisplayProof
+      $}
+  \end{center}
+\end{definition}
+
+Une relation compatible est donc une relation telle que, par exemple, si
+$\pi R \pi'$ alors
+$\AxiomC{$\pi$}\RightLabel{$lw$}\UnaryInfC{$\Gamma\vdLK\Delta$}\DisplayProof R
+\AxiomC{$\pi'$}\RightLabel{$lw$}\UnaryInfC{$\Gamma\vdLK\Delta$}\DisplayProof$.
+C'est cette notion de relation compatible qui va permettre de considérer des
+réduction dans des sous-arbres des arbres de preuve.
+
+\begin{definition}[Réduction des commutations quantitatives]
+  On définit la relation $\reecr{\quantif\downarrow}$ comme la plus petite
+  relation compatible contenant les instances de $\reecr{l\quantif\downarrow}$,
+  de $\reecr{r\quantif\downarrow}$, de $\reecr{l=\quantif\downarrow}$ et
+  $\reecr{r=\quantif\downarrow}$.
+\end{definition}
+
+Notre relation $\reecr{\quantif\downarrow}$ nous permet donc de faire descendre
+des règles quantitatives dans un arbre de preuve. On souhaite maintenant réduire
+autant que possible nos arbres pour cette réécriture. Ce processus est
+algorithmique, et il nécessite donc deux preuves algorithmiques pour assurer
+qu'il permet d'obtenir le résultat qu'on recherche~:
+\begin{itemize}
+\item la terminaison, qui indique que la réduction s'opère un nombre fini de
+  fois, et qui se prouve en montrant qu'il n'existe pas de suite infinie de
+  la forme
+  $\pi_1 \reecr{\quantif\downarrow}\pi_2\reecr{\quantif\downarrow}\cdots$
+\item la correction, qui indique que la réduction se termine par un arbre de
+  preuve qui vérifie la propriété qu'on recherche, ici que toute règle
+  connective est située au-dessus de toute règle quantitative.
+\end{itemize}
+
+Pour prouver la terminaison, plusieurs méthodes sont possibles. La méthode la
+plus difficile consiste à prouver que la réduction, ici
+$\reecr{\quantif\downarrow}$, est une relation bien fondée. Ce fait n'est pas
+toujours vrai, mais le prouver signifie alors que tout choix de suite de
+réductions s'arrêtera à un moment (il peut pour autant y avoir des choix plus
+efficaces que d'autres). La seconde méthode est d'assigner à toute instance de
+notre problème de réécriture (ici, à tout arbre de preuve) une \og mesure\fg
+qui est un élément d'un ensemble bien ordonné, et de prouver que pour tout
+élément $\pi$ il existe un élément $\pi'$ tel que
+$\pi\reecr{\quantif\downarrow} \pi'$ et tel que la mesure de $\pi'$ est
+strictement inférieure à celle de $\pi$, ou alors que $\pi$ n'a pas de
+successeur pour la réduction considérée.
+
+On définit donc une mesure sur les arbres.
+
+\begin{definition}[Poids d'une règle connective, d'un arbre]
+  Soit $r$ une règle connective apparaissant dans un arbre de preuve $\pi$.
+  On définit $w(r)$, le poids de $r$, comme le nombre de règles
+  $r\quantif / l\quantif$ qui sont
+  dans les sous-arbres des prémisses de $r$. On définit $w(\pi)$, le poids de
+  l'arbre $\pi$, comme la somme des poids des règles qui composent $\pi$.
+\end{definition}
+
+\begin{proposition}\label{prop.weight.midsequent}
+  Si $\pi\reecr{\quantif\downarrow}\pi'$, alors $w(\pi') = w(\pi) - 1$.
+\end{proposition}
+
+\begin{proof}
+  Il suffit de regarder les différentes règles dans
+  $\reecr{\quantif\downarrow}$. Si on est dans un cas inductif, l'hypothèse
+  d'induction nous donne le résultat directement. Si on est dans l'un des
+  cas de base, on vérifie qu'à chaque cas une règle connective est déplacée
+  sous une règle quantitative, ce qui diminue le poids de la règle connective
+  de $1$ et laisse inchangés tous les autres poids.
+\end{proof}
+
+On peut donc montrer le théorème du séquent du milieu.
+
+\begin{theorem}[Séquent du milieu]\label{thm.midsequent}
+  Soit $\Gamma\vdLK\Delta$ un séquent composé de formules sous forme prénexe.
+  S'il existe un arbre de preuve $\pi\in\ProofLK$ tel que
+  $\pi\concl \Gamma\vdLK\Delta$, alors il existe un arbre de preuve
+  $\pi'\in\ProofLK$ tel que $\pi'\concl\Gamma\vdLK\Delta$ et ne contenant
+  des règles quantitatives qu'en bas de l'arbre, c'est-à-dire qu'il existe un
+  entier $n$ tel que les $n$ règles les plus basses de $\pi'$ sont des règles
+  quantitatives, et toutes les autres règles sont des règles connectives,
+  d'affaiblissement ou égalitaires.
+\end{theorem}
+
+\begin{proof}
+  D'après la \cref{prop.weight.midsequent}, on sait qu'il est possible de
+  trouver depuis $\pi$ un arbre $\pi'$ tel que
+  $\pi\reecr{\quantif\downarrow}^\star \pi'$ et $\pi'$ ne se réduit en
+  aucun autre arbre.
+
+  On veut prouver qu'il n'existe aucune règle quantitative au-dessus d'une
+  règle connective ou d'affaiblissement. Supposons qu'une telle suite de deux
+  règles arrive. En utilisant les notations avec
+  $\Sigma^l,\Sigma^r,\Phi^l,\Phi^r$, on sait que si
+  la formule $\varphi[t/x]$ utilisée pour la règle $\quantif$ est dans
+  le contexte, alors une réduction $\reecr{\quantif\downarrow}$ peut
+  s'appliquer, contredisant le fait que $\pi'$ ne peut pas se réduire.
+  On en déduit donc, sans perte de généralité, que $\varphi[t/x]$ est dans
+  $\Sigma^l$. Mais alors, cela signifie que $\quantif x\,\varphi$ est une
+  sous-formule de la règle du dessus. Si la règle du dessous est une règle
+  logique, on obtient alors une formule qui n'est pas sous forme prénexe, ce
+  qui contredit le fait que $\Gamma\vdLK\Delta$ est sous forme prénexe et la
+  propriété de la sous-formule (et la règle ne peut pas être un affaiblissement
+  si $\quantif x\,\varphi \in \Sigma^l$).
+
+  Enfin, si $\pi_1\reecr{\quantif\downarrow} \pi_2$, alors $\pi_1$ et
+  $\pi_2$ ont le même séquent conclusion, donc $\pi'$ a le même séquent
+  conclusion que $\pi$.
+
+  On en déduit que $\pi'$ vérifie les hypothèses.
+\end{proof}
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}
+    \node (A) at (0,-5) {$\Gamma\vdLK\Delta$};
+    \node (B) at (0,0) {Séquent du milieu};
+    \draw (A) -- (B)
+    node[midway,rotate=90,below]{Règles quantitatives};
+    \node (C) at (0,3) {Règles connectives et};
+    \node (D) at (0,2.5) {d'affaiblissement};
+    \draw[dashed] (B) -- (-5,5) -- (5,5) -- (B);
+  \end{tikzpicture}
+  \caption{Arbre de preuve avec séquent du milieu}
+  \label{fig.midsequent}
+\end{figure}
+
+On donne en \cref{fig.midsequent} la silhouette d'un arbre de preuve respectant
+le séquent du milieu. La forme purement verticale des règles quantitatives est
+dû au fait qu'elles sont toutes de type $\rOne$.
+
+En particulier, cela signifie qu'une preuve d'une formule existentielle ne peut
+pas utiliser de données connectives pour s'effectuer~: elle doit pouvoir se
+dérouler en introduisant directement les témoins à l'aide des règles
+$l\exists/r\exists$. Cela entraine directement le théorème d'Herbrand.
+
+\begin{theorem}[Herbrand]
+  Soit $\exists x, \varphi$ une formule. Cette formule est prouvable
+  si et seulement s'il existe des termes $t_1,\ldots,t_n$ tels que
+  la disjonction des formules $\varphi[t_1/x],\ldots,\varphi[t_n/x]$ est
+  prouvable.
+\end{theorem}
+
+\begin{proof}
+  Si l'une des formules est prouvable, alors il est clair que
+  $\exists x,\varphi$ est prouvable. Réciproquement, supposons que
+  $\vdLK\exists x,\varphi$. Ce séquent est sous forme prénexe~: on y applique
+  le \cref{thm.midsequent} pour obtenir un arbre de preuve
+  $\pi\concl\vdLK\exists x, \varphi$ commençant par des règles
+  quantitatives. Le séquent du milieu est donc constitué uniquement de
+  sous-formules de $\varphi$. S'il contient $\exists x, \varphi$, alors
+  tous les arbres au-dessus de ce séquent contiendront
+  $\exists x, \varphi$ (puisqu'aucune règle non connective ne peut
+  introduire $\exists$) ou appliqueront un affaiblissement sur cette
+  dernière formule. On en déduit donc, quitte à supprimer la dernière
+  formule $\exists x, \varphi$, que le séquent du milieu est constitué
+  uniquement de sous-formules de $\exists x, \varphi$ et n'est pas
+  constitué de $\exists x, \varphi$.
+
+  On sait, de plus, que toutes les règles appliquées entre la conclusion
+  $\vdLK\exists x, \varphi$ et le séquent du milieu, sont des règles
+  $r\exists$, aucune autre règle quantitative n'étant applicable. On en déduit
+  finalement que le séquent du milieu est
+  $\vdLK \varphi[t_1/x],\ldots,\varphi[t_n/x]$ pour certains termes
+  $t_1,\ldots,t_n$.
+\end{proof}
