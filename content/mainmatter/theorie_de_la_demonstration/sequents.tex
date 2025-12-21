@@ -546,133 +546,147 @@ $\top \vdash \Delta$ et $\Gamma\vdash \bot$.
 
 On peut maintenant définir notre premier calcul des séquents, $\LK$.
 
-\begin{figure}[ht]
+\begin{table}[t]
   \centering
-  \resizebox{\textwidth}{!}{\(\begin{array}{cc}
-    \AxiomC{}
-    \RightLabel{\textit{ax}}
-    \UnaryInfC{$\Gamma, \varphi\vdLK \varphi$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
-    \AxiomC{$\Theta, \varphi \vdLK \Xi$}
-    \RightLabel{\textit{cut}}
-    \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma \vdLK \Delta$}
-    \RightLabel{\textit{lw}}
-    \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma \vdLK \Delta$}
-    \RightLabel{\textit{rw}}
-    \UnaryInfC{$\Gamma\vdLK \Delta, \varphi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
-    \RightLabel{$l\lnot$}
-    \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
-    \RightLabel{$r\lnot$}
-    \UnaryInfC{$\Gamma\vdLK \Delta, \lnot\varphi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
-    \AxiomC{$\Theta, \psi \vdLK \Xi$}
-    \RightLabel{$l\lor$}
-    \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
-    \RightLabel{$r\lor_1$}
-    \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\lor\psi$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma\vdLK \Delta,\psi$}
-    \RightLabel{$r\lor_2$}
-    \UnaryInfC{$\Gamma\vdLK \Delta, \varphi \lor \psi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
-    \RightLabel{$l\land_1$}
-    \UnaryInfC{$\Gamma,\varphi\land\psi\vdLK \Delta$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma, \psi \vdLK \Delta$}
-    \RightLabel{$l\land_2$}
-    \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
-    \AxiomC{$\Theta\vdLK \Xi,\psi$}
-    \RightLabel{$r\land$}
-    \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi, \varphi\land\psi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
-    \AxiomC{$\Theta, \psi \vdLK \Xi$}
-    \RightLabel{$l\to$}
-    \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
-    \RightLabel{$r\to_1$}
-    \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\to\psi$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma \vdLK \Delta,\psi$}
-    \RightLabel{$r\to_2$}
-    \UnaryInfC{$\Gamma\vdLK\Delta, \varphi \to \psi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
-    \RightLabel{$l\forall$}
-    \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
-    \RightLabel{$r\forall^\dagger$}
-    \UnaryInfC{$\Gamma \vdLK \Delta,\forall x, \varphi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
-    \RightLabel{$l\exists^\dagger$}
-    \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
-    \DisplayProof
-    &
-    \AxiomC{$\Gamma \vdLK \Delta,\varphi[t/x]$}
-    \RightLabel{$r\exists$}
-    \UnaryInfC{$\Gamma \vdLK \Delta,\exists x, \varphi$}
-    \DisplayProof
-    \\
-    \\
-    \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
-    \RightLabel{$l=$}
-    \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
-    \DisplayProof
-    &
-    \AxiomC{}
-    \RightLabel{$r=$}
-    \UnaryInfC{$\vdLK t = t$}
-    \DisplayProof
-    \end{array}\)}
+  %\hrule
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{cc}
+      \multicolumn{2}{l}{Axiome et coupure :}
+      \\
+      \AxiomC{}
+      \RightLabel{\textit{ax}}
+      \UnaryInfC{$\Gamma, \varphi\vdLK \varphi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+      \AxiomC{$\Theta, \varphi \vdLK \Xi$}
+      \RightLabel{\textit{cut}}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles structurelles :}
+      \\
+      \AxiomC{$\Gamma \vdLK \Delta$}
+      \RightLabel{\textit{lw}}
+      \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta$}
+      \RightLabel{\textit{rw}}
+      \UnaryInfC{$\Gamma\vdLK \Delta, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles logiques :}
+      \\
+      \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Gamma\vdLK \Delta, \lnot\varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+      \AxiomC{$\Theta, \psi \vdLK \Xi$}
+      \RightLabel{$l\lor$}
+      \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+      \RightLabel{$r\lor_1$}
+      \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\lor\psi$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma\vdLK \Delta,\psi$}
+      \RightLabel{$r\lor_2$}
+      \UnaryInfC{$\Gamma\vdLK \Delta, \varphi \lor \psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+      \RightLabel{$l\land_1$}
+      \UnaryInfC{$\Gamma,\varphi\land\psi\vdLK \Delta$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma, \psi \vdLK \Delta$}
+      \RightLabel{$l\land_2$}
+      \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+      \AxiomC{$\Theta\vdLK \Xi,\psi$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi, \varphi\land\psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+      \AxiomC{$\Theta, \psi \vdLK \Xi$}
+      \RightLabel{$l\to$}
+      \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+      \RightLabel{$r\to_1$}
+      \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\to\psi$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma \vdLK \Delta,\psi$}
+      \RightLabel{$r\to_2$}
+      \UnaryInfC{$\Gamma\vdLK\Delta, \varphi \to \psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Gamma \vdLK \Delta,\forall x, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+      \RightLabel{$l\exists^\dagger$}
+      \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta,\varphi[t/x]$}
+      \RightLabel{$r\exists$}
+      \UnaryInfC{$\Gamma \vdLK \Delta,\exists x, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
+      \RightLabel{$l=$}
+      \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
+      \DisplayProof
+      &
+      \AxiomC{}
+      \RightLabel{$r=$}
+      \UnaryInfC{$\vdLK t = t$}
+      \DisplayProof
+  \end{tabular}}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
   \caption{Règles du calcul des séquents $\LK$}
-  \label{fig.LK}
-\end{figure}
+  \label{tbl.LK}
+  \hrule
+\end{table}
 
 \begin{definition}[Calcul des séquents $\LK$ \cite{Gentzen1935}]
   Soit $\Sigma$ une signature du premier ordre. On définit inductivement
-  l'ensemble $\ProofLK(\Sigma)$ par les règles de la \cref{fig.LK}, où les
+  l'ensemble $\ProofLK(\Sigma)$ par les règles de la \cref{tbl.LK}, où les
   règles $l\exists^\dagger$ et $r\forall^\dagger$ demandent que $x$ soit libre
   dans $\Gamma$ et $\Delta$. Le séquent le plus en bas d'un arbre
   $\pi\in\ProofLK(\Sigma)$ est appelé le séquent conclusion, et on note
@@ -918,6 +932,9 @@ un arbre en deux blocs~: le bas de l'arbre ne contient que des règles
 $l\forall / r\forall / l\exists / r\exists$ ainsi que des règles $lw / rw$,
 et le haut de l'arbre ne contient que d'autres règles que les $6$ précédentes
 (et aucun $cut$ puisqu'on considère des arbres sans coupure).
+
+\subsection[Théorème de Herbrand]{Théorème du séquent du milieu et
+  théorème de Herbrand}
 
 Pour prouver ce théorème, il nous faut d'abord donner une typologie des règles,
 de sorte à pouvoir écrire plus facilement les transformations. Pour cela, on
@@ -1380,15 +1397,16 @@ pas utiliser de données connectives pour s'effectuer~: elle doit pouvoir se
 dérouler en introduisant directement les témoins à l'aide des règles
 $l\exists/r\exists$. Cela entraine directement le théorème d'Herbrand.
 
-\begin{theorem}[Herbrand]
+\begin{theorem}[Herbrand]\label{thm.Herbrand}
   Soit $\exists x, \varphi$ une formule. Cette formule est prouvable
   si et seulement s'il existe des termes $t_1,\ldots,t_n$ tels que
-  la disjonction des formules $\varphi[t_1/x],\ldots,\varphi[t_n/x]$ est
+  le séquent $\vdLK\varphi[t_1/x],\ldots,\varphi[t_n/x]$ est
   prouvable.
 \end{theorem}
 
 \begin{proof}
-  Si l'une des formules est prouvable, alors il est clair que
+  Si le séquent $\vdLK\varphi[t_1/x],\ldots,\varphi[t_n/x]$ est prouvable, alors
+  il est clair que
   $\exists x,\varphi$ est prouvable. Réciproquement, supposons que
   $\vdLK\exists x,\varphi$. Ce séquent est sous forme prénexe~: on y applique
   le \cref{thm.midsequent} pour obtenir un arbre de preuve
@@ -1410,3 +1428,937 @@ $l\exists/r\exists$. Cela entraine directement le théorème d'Herbrand.
   $\vdLK \varphi[t_1/x],\ldots,\varphi[t_n/x]$ pour certains termes
   $t_1,\ldots,t_n$.
 \end{proof}
+
+Ce théorème peut sembler légèrement contre-intuitif. Lorsqu'on considère le
+séquent $\vdLK\exists x, \varphi$, on peut être tenté de dire que, dans l'arbre
+de preuve dont ce séquent est la conclusion, la dernière règle est $r\exists$
+et le séquent au-dessus est donc $\vdLK \varphi[t/x]$. Ainsi, on s'attendrait à
+ce qu'il n'existe qu'un seul terme $t$.
+
+Contrairement aux attentes, la règle $r\exists$ ne ressemble pas forcément à
+\begin{prooftree}
+  \AxiomC{$\vdLK\varphi[t/x]$}
+  \RightLabel{$r\exists$}
+  \UnaryInfC{$\vdLK\exists x, \varphi$}
+\end{prooftree}
+mais peut aussi être de la forme
+\begin{prooftree}
+  \AxiomC{$\vdLK\exists x\, \varphi, \varphi[t/x]$}
+  \RightLabel{$r\exists$}
+  \UnaryInfC{$\vdLK\exists x, \varphi$}
+\end{prooftree}
+étant donné que nous manipulons des ensembles finis de formules. C'est ainsi, en
+répétant le dernier arbre, qu'on peut engendrer un ensemble de termes
+$t_1,\ldots,t_n$ et le séquent $\vdLK \varphi[t_1/x],\ldots,\varphi[t_n/x]$.
+
+Ce théorème peut donc être renforcé dans le cas où tout séquent contient au plus
+une formule à droite de $\vdLK$, ce qui est précisément le cas du calcul
+intuitionniste, que nous abordons en SECTION INTUITIONNISTE.
+
+\subsection{Formulations alternatives de LK}
+
+On voit aussi apparaître un défaut de l'utilisation d'ensembles de formules~:
+le fait de dupliquer une formule n'est pas anodin et devrait donc être explicité
+plutôt que d'être une conséquence du type de données utilisé. Pour y remédier,
+on peut utiliser au choix des listes de formules, comme on l'a fait dans le
+\cref{chp.logpred}, ou des multi-ensembles.
+
+\begin{table}[t]
+  \centering
+  %\hrule
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{cc}
+      \multicolumn{2}{l}{Axiome et coupure :}
+      \\
+      \AxiomC{}
+      \RightLabel{\textit{ax}}
+      \UnaryInfC{$\varphi\vdLK \varphi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+      \AxiomC{$\Theta, \varphi \vdLK \Xi$}
+      \RightLabel{\textit{cut}}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles structurelles :}
+      \\
+      \AxiomC{$\Gamma,\varphi,\varphi\vdLK\Delta$}
+      \RightLabel{\textit{lc}}
+      \UnaryInfC{$\Gamma,\varphi\vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK\varphi,\varphi,\Delta$}
+      \RightLabel{\textit{rc}}
+      \UnaryInfC{$\Gamma\vdLK\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLK \Delta$}
+      \RightLabel{\textit{lw}}
+      \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta$}
+      \RightLabel{\textit{rw}}
+      \UnaryInfC{$\Gamma\vdLK \Delta, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles logiques :}
+      \\
+      \AxiomC{$\Gamma\vdLK \Delta, \varphi$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Gamma\vdLK \Delta, \lnot\varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+      \AxiomC{$\Theta, \psi \vdLK \Xi$}
+      \RightLabel{$l\lor$}
+      \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+      \RightLabel{$r\lor_1$}
+      \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\lor\psi$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma\vdLK \Delta,\psi$}
+      \RightLabel{$r\lor_2$}
+      \UnaryInfC{$\Gamma\vdLK \Delta, \varphi \lor \psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+      \RightLabel{$l\land_1$}
+      \UnaryInfC{$\Gamma,\varphi\land\psi\vdLK \Delta$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma, \psi \vdLK \Delta$}
+      \RightLabel{$l\land_2$}
+      \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+      \AxiomC{$\Theta\vdLK \Xi,\psi$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi, \varphi\land\psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLK \Delta,\varphi$}
+      \AxiomC{$\Theta, \psi \vdLK \Xi$}
+      \RightLabel{$l\to$}
+      \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+      \RightLabel{$r\to_1$}
+      \UnaryInfC{$\Gamma\vdLK \Delta,\varphi\to\psi$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma \vdLK \Delta,\psi$}
+      \RightLabel{$r\to_2$}
+      \UnaryInfC{$\Gamma\vdLK\Delta, \varphi \to \psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \Delta,\varphi$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Gamma \vdLK \Delta,\forall x, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+      \RightLabel{$l\exists^\dagger$}
+      \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta,\varphi[t/x]$}
+      \RightLabel{$r\exists$}
+      \UnaryInfC{$\Gamma \vdLK \Delta,\exists x, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
+      \RightLabel{$l=$}
+      \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
+      \DisplayProof
+      &
+      \AxiomC{}
+      \RightLabel{$r=$}
+      \UnaryInfC{$\vdLK t = t$}
+      \DisplayProof
+  \end{tabular}}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles de $\LK$ avec multi-ensembles}
+  \label{tbl.LK.multiset}
+
+  \hrule
+\end{table}
+
+\begin{definition}[Multi-ensembles]
+  Soit $X$ un ensemble.
+  On appelle multi-ensemble d'éléments de $X$, ou juste multi-ensemble,
+  une fonction $Y : X \to \bN$, et on note $\powermul(X)$ l'ensemble des
+  multi-ensembles sur $X$. On définit sur les multi-ensembles les
+  opérations
+  \[
+  \makeFun{\cup}{\powermul(X)\times\powermul(X)}{\powermul(X)}{(Y,Z)}
+          {x \mapsto \max(Y(x),Z(x))}
+  \]
+  \[
+  \makeFun{\cap}{\powermul(X)\times\powermul(X)}{\powermul(X)}{(Y,Z)}
+          {x \mapsto \min(Y(x),Z(x))}
+  \]
+  \[
+  \makeFun{+}{\powermul(X)\times\powermul(X)}{\powermul(X)}{(Y,Z)}
+          {x \mapsto Y(x) + Z(x)}
+  \]
+  On dit qu'un multi-ensemble $Y$ est fini si son support
+  $\Supp(Y) \defeq \{ x \in X \mid Y(x) \neq 0 \}$ est fini.
+\end{definition}
+
+\begin{remark}
+  Les parties d'un ensemble peuvent être vues comme des multi-ensembles dont
+  le codomaine est $\btwo$, grâce à leur fonction caractéristique. On a même
+  un moyen de transformer un multi-ensemble en ensemble, en ramenant toutes les
+  valeurs strictement positives à $1$. Cette opération commute alors avec les
+  opérations d'union et d'intersection, et $+$ devient alors $\cup$ une fois
+  interprété dans les ensembles.
+\end{remark}
+
+Dans le cas des multi-ensembles, l'ordre n'importe pas, mais le nombre
+d'occurrences d'une formule importe. On doit donc ajouter une règle permettant
+de transformer deux occurrences en une seule~: c'est la règle de contraction.
+
+\begin{definition}[Calcul des séquents $\LK$ avec multi-ensembles]
+  On définit le calcul des séquents $\LK$ avec multi-ensembles par l'ensemble
+  $\ProofLK$ construit d'après les règles de la \cref{tbl.LK.multiset} où
+  les séquents $\Gamma\vdLK\Delta$ sont constitués de multi-ensembles finis, et
+  où $\Gamma,\Delta$ est le multi-ensemble $\Gamma + \Delta$.
+\end{definition}
+
+Le \cref{thm.Herbrand} dans ce cadre se prouve alors en considérant que les
+dernières règles sont des successions de $r\exists$ et de $rc$, d'où la
+multiplication des termes $t_1,\ldots,t_n$.
+
+En utilisant des arbres sans coupure, et encore plus en utilisant le
+\cref{thm.midsequent}, il est donc possible de faire de la recherche de
+preuves~: si on considère un séquent $\Gamma\vdLK\Delta$, on sait qu'il est
+prouvable si et seulement s'il l'est par un arbre sans coupure, et commençant
+uniquement par des règles quantitatives (quitte à mettres les formules de
+$\Gamma$ et $\Delta$ sous forme prénexe). Cette approche de la synthèse d'arbres
+de preuves motive alors une présentation \og vers le haut\fg de $\LK$. Dans
+cette présentation, les règles sont construites de sorte à favoriser le
+parcours de l'arbre en partant de la conclusion, et en cherchant à construire
+les sous-arbres. On conserve donc au maximum les hypothèses, au lieu de les
+scinder comme dans la présentation précédente (on a donc un style additif).
+
+\begin{table}[t]
+  \centering
+  %\hrule
+  %\resizebox{!}{!}{
+    \begin{tabular}{cc}
+      \multicolumn{2}{l}{Axiome et coupure :}
+      \\
+      \AxiomC{}
+      \RightLabel{\textit{ax}}
+      \UnaryInfC{$\Gamma,\varphi\vdLK \varphi,\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+      \AxiomC{$\Theta, \varphi \vdLK \Xi$}
+      \RightLabel{\textit{cut}}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles structurelles :}
+      \\
+      \AxiomC{$\Gamma,\varphi,\varphi\vdLK\Delta$}
+      \RightLabel{\textit{lc}}
+      \UnaryInfC{$\Gamma,\varphi\vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK\varphi,\varphi,\Delta$}
+      \RightLabel{\textit{rc}}
+      \UnaryInfC{$\Gamma\vdLK\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi,\psi,\Gamma'\vdLK\Delta$}
+      \RightLabel{\textit{le}}
+      \UnaryInfC{$\Gamma,\psi,\varphi,\Gamma'\vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK\Delta,\varphi,\psi,\Delta'$}
+      \RightLabel{\textit{re}}
+      \UnaryInfC{$\Gamma\vdLK\Delta,\psi,\varphi,\Delta'$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles logiques :}
+      \\
+      \AxiomC{$\Gamma\vdLK \varphi,\Delta$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Gamma\vdLK \lnot\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+      \AxiomC{$\Gamma, \psi \vdLK \Delta$}
+      \RightLabel{$l\lor$}
+      \BinaryInfC{$\Gamma, \varphi\lor\psi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \varphi,\psi,\Delta$}
+      \RightLabel{$r\lor$}
+      \UnaryInfC{$\Gamma\vdLK \varphi \lor \psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi,\psi \vdLK \Delta$}
+      \RightLabel{$l\land$}
+      \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \varphi,\Delta$}
+      \AxiomC{$\Gamma\vdLK \psi,\Delta$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Gamma\vdLK \varphi\land\psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+      \AxiomC{$\Gamma \psi \vdLK \Delta$}
+      \RightLabel{$l\to$}
+      \BinaryInfC{$\Gamma, \varphi\to\psi\vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi \vdLK\psi,\Delta$}
+      \RightLabel{$r\to$}
+      \UnaryInfC{$\Gamma\vdLK \varphi\to\psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \varphi,\Delta$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Gamma \vdLK \forall x\, \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+      \RightLabel{$l\exists^\dagger$}
+      \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \varphi[t/x],\Delta$}
+      \RightLabel{$r\exists$}
+      \UnaryInfC{$\Gamma \vdLK \exists x\, \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
+      \RightLabel{$l=$}
+      \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
+      \DisplayProof
+      &
+      \AxiomC{}
+      \RightLabel{$r=$}
+      \UnaryInfC{$\Gamma \vdLK t = t,\Delta$}
+      \DisplayProof
+  \end{tabular}%}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles de $\LK$ présenté vers le haut avec listes}
+  \label{tbl.LK.upward}
+
+  \hrule
+\end{table}
+
+On donne donc la version vers le haut de $\LK$, dans laquelle on considère des
+listes plutôt que des multi-ensembles, pour offrir une version la plus formelle
+possible du système syntaxique.
+
+\begin{definition}[Calcul des séquents $\LK$ présenté vers le haut avec listes]
+  Le calcul des séquents $\LK$ présenté vers le haut avec listes est l'ensemble
+  $\ProofLK$ décrit par les règles de la \cref{tbl.LK.upward}, où les
+  séquents $\Gamma\vdLK\Delta$ sont donnés par des listes de formules, et où
+  $\Gamma,\Delta$ est la concaténation des listes $\Gamma$ et $\Delta$.
+\end{definition}
+
+\begin{remark}
+  Le fait de considérer des listes nous pousse à ajouter les règles d'échange
+  $le/re$. On peut prouver grâce à elles, et en sachant que toute permutation
+  s'écrit comme produit de transpositions, que si $\sigma,\rho$ sont deux
+  permutations respectivement de $\Gamma$ et de $\Delta$, alors
+  \begin{prooftree}
+    \AxiomC{$\Gamma\vdLK\Delta$}
+    \RightLabel{\textit{exch}}
+    \UnaryInfC{$\sigma(\Gamma)\vdLK\rho(\Delta)$}
+  \end{prooftree}
+  est dérivable.
+
+  Au contraire, les deux règles $lw/rw$ ne sont ici pas considérées. Cela est
+  dû au fait que ces règles sont directement dérivables~: comme les règles
+  préservent toutes leur contexte et que $ax$ et $r=$ sont contextuelles (au
+  sens où on n'a pas simplement $\varphi \vdLK \varphi$ mais un contexte
+  autour de ce séquent), tout ajout de formules dans le contexte peut se
+  conserver des feuilles à la conclusion.
+\end{remark}
+
+\begin{table}[t!]
+  \centering
+  %\hrule
+  %\resizebox{!}{!}{
+    \begin{tabular}{cc}
+      \multicolumn{2}{l}{Axiome et coupure :}
+      \\
+      \AxiomC{}
+      \RightLabel{\textit{ax}}
+      \UnaryInfC{$\varphi\vdLK \varphi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+      \AxiomC{$\Theta, \varphi \vdLK \Xi$}
+      \RightLabel{\textit{cut}}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles structurelles :}
+      \\
+      \AxiomC{$\Gamma,\varphi,\varphi\vdLK\Delta$}
+      \RightLabel{\textit{lc}}
+      \UnaryInfC{$\Gamma,\varphi\vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK\varphi,\varphi,\Delta$}
+      \RightLabel{\textit{rc}}
+      \UnaryInfC{$\Gamma\vdLK\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi,\psi,\Gamma'\vdLK\Delta$}
+      \RightLabel{\textit{le}}
+      \UnaryInfC{$\Gamma,\psi,\varphi,\Gamma'\vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK\Delta,\varphi,\psi,\Delta'$}
+      \RightLabel{\textit{re}}
+      \UnaryInfC{$\Gamma\vdLK\Delta,\psi,\varphi,\Delta'$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLK \Delta$}
+      \RightLabel{\textit{lw}}
+      \UnaryInfC{$\Gamma, \varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \Delta$}
+      \RightLabel{\textit{rw}}
+      \UnaryInfC{$\Gamma\vdLK \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles logiques :}
+      \\
+      \AxiomC{$\Gamma\vdLK \varphi,\Delta$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Gamma, \lnot\varphi \vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi\vdLK \Delta$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Gamma\vdLK \lnot\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK \Delta$}
+      \AxiomC{$\Theta, \psi \vdLK \Xi$}
+      \RightLabel{$l\lor$}
+      \BinaryInfC{$\Gamma, \Theta, \varphi\lor\psi \vdLK \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \varphi,\psi,\Delta$}
+      \RightLabel{$r\lor$}
+      \UnaryInfC{$\Gamma\vdLK \varphi \lor \psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi,\psi \vdLK \Delta$}
+      \RightLabel{$l\land$}
+      \UnaryInfC{$\Gamma,\varphi \land \psi\vdLK \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \varphi,\Delta$}
+      \AxiomC{$\Theta\vdLK \psi,\Xi$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Gamma, \Theta\vdLK \varphi\land\psi,\Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLK \varphi,\Delta$}
+      \AxiomC{$\Theta, \psi \vdLK \Xi$}
+      \RightLabel{$l\to$}
+      \BinaryInfC{$\Gamma, \Theta,\varphi\to\psi\vdLK \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi \vdLK\psi,\Delta$}
+      \RightLabel{$r\to$}
+      \UnaryInfC{$\Gamma\vdLK \varphi\to\psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi[t/x] \vdLK\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma, \forall x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLK \varphi,\Delta$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Gamma \vdLK \forall x\, \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLK\Delta$}
+      \RightLabel{$l\exists^\dagger$}
+      \UnaryInfC{$\Gamma, \exists x, \varphi \vdLK\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLK \varphi[t/x],\Delta$}
+      \RightLabel{$r\exists$}
+      \UnaryInfC{$\Gamma \vdLK \exists x\, \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma[u / x] \vdLK \Delta[u / x]$}
+      \RightLabel{$l=$}
+      \UnaryInfC{$\Gamma[t / x], t = u \vdLK \Delta[t / x]$}
+      \DisplayProof
+      &
+      \AxiomC{}
+      \RightLabel{$r=$}
+      \UnaryInfC{$\vdLK t = t$}
+      \DisplayProof
+  \end{tabular}%}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles de $\LK$ présenté vers le bas avec listes}
+  \label{tbl.LK.upward}
+
+  \hrule
+\end{table}
+
+Une autre présentation est possible, celle-ci orientée vers le bas, dont
+l'objectif est au contraire de favoriser l'écriture d'un arbre dont on
+connait déjà la forme au préalable, en particulier les feuilles, pour pouvoir
+facilement dériver l'ensemble des formules qui suivent.
+
+L'équivalence entre toutes les présentations de $\LK$ données jusque là tient à
+plusieurs éléments~:
+\begin{itemize}
+\item d'abord, on a des façons canoniques de relier les listes, les
+  multi-ensembles finis et les ensembles finis. A l'utilisation de règles
+  d'échange près, les arbres par listes et par multi-ensembles sont les mêmes,
+  et les arbres par multi-ensembles et par ensembles sont les mêmes à
+  l'utilisation de règles de contraction près.
+\item on remarque cependant que les
+  règles d'échange peuvent mener à des arbres particulièrement longs si les
+  règles sont de la forme $\Gamma,\varphi\vdLK\Delta$ plutôt que
+  $\Gamma,\varphi,\Gamma'\vdLK\Delta$ par exemple, puisqu'alors il faudrait
+  des suites de règles d'échange pour placer la formule impliquée dans la
+  règle en tête de la liste de gauche, puis des suites de règles d'échange
+  pour replacer la formule à sa place initiale. Il vaut mieux donc considérer
+  une version plus lâche des règles dans laquelle on applique les règles sur
+  n'importe quelle formule occurrant dans l'une des listes, plutôt que toujours
+  la plus proche du symbole $\vdLK$.
+\item pour simuler les règles additives à partir des règles multiplicatives,
+  il suffit d'enrichir les contextes des prémisses avec des affaiblissements
+  jusqu'à avoir le même contexte des deux côtés~:
+  \begin{center}
+    \resizebox{0.9\textwidth}{!}{$
+    \AxiomC{$\Gamma,\Sigma^l_1\vdLK \Sigma^r_2,\Delta$}
+    \AxiomC{$\Theta,\Sigma^l_2\vdLK \Sigma^r_2,\Xi$}
+    \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLK \Phi^r,\Delta,\Xi$}
+    \DisplayProof
+    \quad\reecr{}\quad
+    \AxiomC{$\Gamma,\Sigma^l_1\vdLK \Sigma^r_1,\Delta$}
+    \doubleLine
+    \RightLabel{$lw/rw$}
+    \UnaryInfC{$\Gamma,\Theta,\Sigma^l_1\vdLK\Sigma^r_1\Delta,\Xi$}
+    \AxiomC{$\Theta,\Sigma^l_2\vdLK\Sigma^r_2,\Xi$}
+    \doubleLine
+    \RightLabel{$lw/rw$}
+    \UnaryInfC{$\Gamma,\Theta,\Sigma^l_2\vdLK\Sigma^r_2,\Delta,\Xi$}
+    \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLK\Phi^r,\Delta,\Xi$}
+    \DisplayProof
+    $}
+  \end{center}
+\item pour simuler les règles multiplicatives à partir des règles additives,
+  il suffit d'utiliser des règles de contraction pour dédoubler le contexte et
+  le répartir uniformément entre les deux prémisses~:
+  \begin{center}
+    \resizebox{0.9\textwidth}{!}{$
+    \AxiomC{$\Gamma,\Sigma^l_1\vdLK \Sigma^r_2,\Delta$}
+    \AxiomC{$\Gamma,\Sigma^l_2\vdLK \Sigma^r_2,\Delta$}
+    \BinaryInfC{$\Gamma,\Phi^l\vdLK \Phi^r,\Delta$}
+    \DisplayProof
+    \quad\reecr{}\quad
+    \AxiomC{$\Gamma,\Sigma^l_1\vdLK \Sigma^r_1,\Delta$}
+    \AxiomC{$\Gamma,\Sigma^l_2\vdLK \Sigma^r_2,\Delta$}
+    \BinaryInfC{$\Gamma,\Gamma,\Phi^l\vdLK\Phi^r,\Delta,\Delta$}
+    \doubleLine
+    \RightLabel{$lc/rc$}
+    \UnaryInfC{$\Gamma,\Phi^l\vdLK\Phi^r,\Delta$}
+    \DisplayProof
+    $}
+  \end{center}
+\end{itemize}
+
+On souhaite maintenant prouver le théorème d'élimination des coupures.
+
+\subsection{L'élimination des coupures}
+
+On a déjà vu comment réécrire des arbres en faisant descendre des règles
+quantifiantes. Pour l'élimination des coupures, l'objectif sera au contraire de
+faire monter les règles $cut$.
+
+Avant de donner la preuve de l'élimination des coupures, on va d'abord
+développer le calcul des séquents sur lequel on va effectuer la preuve. On a
+déjà vu plusieurs présentations possibles, et chaque présentation demande que
+l'on prouve un théorème d'élimination des coupures qui lui est propre. En plus
+de cela, si l'on s'intéresse à la version intuitionniste du calcul des
+séquents, il faut encore prouver un théorème d'élimination des coupures pour
+chaque nouveau calcul introduit.
+
+Comme la preuve est technique, on préfère ménager nos efforts et construire un
+calcul suffisamment général en amont, pour que toutes nos présentations soient
+des fragments de notre calcul général. Ce calcul, $\LS$, sera constitué des
+fragments suivants~:
+\begin{itemize}
+\item les constructeurs $\parr/\land$ sont la disjonction et la conjonction
+  multiplicatives, leurs règles séparent donc les contextes quand on les
+  lit du bas vers le haut~;
+\item les constructeurs $\lor/\with$ sont la disjonction et la conjonction
+  additives, leurs règles copient donc les contextes dans les prémisses,
+  quand on les lit du bas vers le haut~;
+\item la version multiplicative de l'implication sera notée $\multimap$~;
+\item les constructeurs $\diamond/\square$ sont ce qu'on appelle des modalités,
+  qu'on présente plus en détaille dans la suite du chapitre, mais qui doivent
+  se lire comme des constructeurs unaires de formules évoquant respectivement
+  la possibilité d'une formule et sa nécessité. Le choix de la notation
+  $\square$ dans la \cref{def.HB.cond} vient directement de cette notion de
+  modalité, le prédicat $\Th(\encode{\godcod{\varphi}})$ pouvant se voir
+  comme une nécessitation de la vérité de $\varphi$.
+\end{itemize}
+Le fait d'inclure les constructeurs à la fois additifs et multiplicatifs permet
+de déduire de l'élimination des coupures pour $\LS$ la propriété pour les
+présentations de $\LK$ données jusqu'alors. Le fait d'ajouter les modalités
+nous permet d'introduire plusieurs sous fragments d'intérêt. Enfin, cela nous
+permet de mettre l'accent sur le principe suivant
+\begin{quote}
+  La propriété d'élimination des coupures ne s'intéresse aucunement à la
+  sémantique des règles, elle ne dépend que de la façon dont les règles se
+  structurent.
+\end{quote}
+C'est pour cette raison que, par exemple, l'élimination des coupures pour
+$\with$ et pour $\land$ sont bien différentes malgré le fait que les deux
+connecteurs logiques sont logiquement équivalents.
+
+\begin{table}[t!]
+  \centering
+  %\hrule
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{cc}
+      \multicolumn{2}{l}{Axiome et coupure :}
+      \\
+      \AxiomC{}
+      \RightLabel{\textit{ax}}
+      \UnaryInfC{$\varphi\vdLS \varphi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLS \varphi,\Delta$}
+      \AxiomC{$\Theta, \varphi \vdLS \Xi$}
+      \RightLabel{\textit{cut}}
+      \BinaryInfC{$\Gamma, \Theta\vdLS \Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles structurelles :}
+      \\
+      \AxiomC{$\Gamma,\varphi,\varphi\vdLS\Delta$}
+      \RightLabel{\textit{lc}}
+      \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS\varphi,\varphi,\Delta$}
+      \RightLabel{\textit{rc}}
+      \UnaryInfC{$\Gamma\vdLS\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi,\psi,\Gamma'\vdLS\Delta$}
+      \RightLabel{\textit{le}}
+      \UnaryInfC{$\Gamma,\psi,\varphi,\Gamma'\vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS\Delta,\varphi,\psi,\Delta'$}
+      \RightLabel{\textit{re}}
+      \UnaryInfC{$\Gamma\vdLS\Delta,\psi,\varphi,\Delta'$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLS \Delta$}
+      \RightLabel{\textit{lw}}
+      \UnaryInfC{$\Gamma, \varphi \vdLS \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLS \Delta$}
+      \RightLabel{\textit{rw}}
+      \UnaryInfC{$\Gamma\vdLS \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles logiques :}
+      \\
+      \AxiomC{$\Gamma\vdLS \varphi,\Delta$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Gamma, \lnot\varphi \vdLS \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi\vdLS \Delta$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Gamma\vdLS \lnot\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \AxiomC{$\Theta,\psi\vdLS\Xi$}
+      \RightLabel{$l\lor$}
+      \BinaryInfC{$\Gamma,\Theta,\varphi\lor\psi\vdLS\Delta,\Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS\varphi,\Delta$}
+      \RightLabel{$r\lor_1$}
+      \UnaryInfC{$\Gamma\vdLS \varphi\lor\psi,\Delta$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma\vdLS\psi,\Delta$}
+      \RightLabel{$r\lor_2$}
+      \UnaryInfC{$\Gamma\vdLS\varphi\lor\psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLS \Delta$}
+      \AxiomC{$\Theta, \psi \vdLS \Xi$}
+      \RightLabel{$l\parr$}
+      \BinaryInfC{$\Gamma, \Theta, \varphi\parr\psi \vdLS \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS \varphi,\psi,\Delta$}
+      \RightLabel{$r\parr$}
+      \UnaryInfC{$\Gamma\vdLS \varphi \parr \psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi,\psi \vdLS \Delta$}
+      \RightLabel{$l\land$}
+      \UnaryInfC{$\Gamma,\varphi \land \psi\vdLS \Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS \varphi,\Delta$}
+      \AxiomC{$\Theta\vdLS \psi,\Xi$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Gamma, \Theta\vdLS \varphi\land\psi,\Delta, \Xi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \RightLabel{$l\with_1$}
+      \UnaryInfC{$\Gamma,\varphi\with\psi\vdLS\Delta$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma,\psi\vdLS\Delta$}
+      \RightLabel{$l\with_2$}
+      \UnaryInfC{$\Gamma,\varphi\with\psi\vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \AxiomC{$\Gamma,\psi\vdLS\Delta$}
+      \RightLabel{$r\with$}
+      \BinaryInfC{$\Gamma,\varphi\with\psi\vdLS\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \AxiomC{$\Gamma\vdLS\psi,\Delta$}
+      \RightLabel{$l\to$}
+      \BinaryInfC{$\Gamma,\varphi\to\psi\vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \RightLabel{$r\to_1$}
+      \UnaryInfC{$\Gamma\vdLS\varphi\to\psi,\Delta$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma\vdLS\psi,\Delta$}
+      \RightLabel{$r\to_2$}
+      \UnaryInfC{$\Gamma\vdLS\varphi\to\psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLS \varphi,\Delta$}
+      \AxiomC{$\Theta, \psi \vdLS \Xi$}
+      \RightLabel{$l\multimap$}
+      \BinaryInfC{$\Gamma, \Theta,\varphi\multimap\psi\vdLS \Delta, \Xi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi \vdLS\psi,\Delta$}
+      \RightLabel{$r\multimap$}
+      \UnaryInfC{$\Gamma\vdLS \varphi\multimap\psi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi[t/x] \vdLS\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma, \forall x, \varphi \vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS \varphi,\Delta$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Gamma \vdLS \forall x\, \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLS\Delta$}
+      \RightLabel{$l\exists^\dagger$}
+      \UnaryInfC{$\Gamma, \exists x, \varphi \vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLS \varphi[t/x],\Delta$}
+      \RightLabel{$r\exists$}
+      \UnaryInfC{$\Gamma \vdLS \exists x\, \varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \RightLabel{$l\square$}
+      \UnaryInfC{$\Gamma,\square\varphi\vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS\varphi,\Delta$}
+      \RightLabel{$r\square^\ddagger$}
+      \UnaryInfC{$\Gamma\vdLS\square\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
+      \RightLabel{$l\diamond^\ddagger$}
+      \UnaryInfC{$\Gamma,\diamond\varphi\vdLS\Delta$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLS\varphi,\Delta$}
+      \RightLabel{$r\diamond$}
+      \UnaryInfC{$\Gamma\vdLS\diamond\varphi,\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma[u / x] \vdLS \Delta[u / x]$}
+      \RightLabel{$l=$}
+      \UnaryInfC{$\Gamma[t / x], t = u \vdLS \Delta[t / x]$}
+      \DisplayProof
+      &
+      \AxiomC{}
+      \RightLabel{$r=$}
+      \UnaryInfC{$\vdLS t = t$}
+      \DisplayProof
+  \end{tabular}}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles de $\LS$}
+  \label{tbl.LS}
+
+  \hrule
+\end{table}
+
+\begin{definition}[Calcul des séquents $\LS$]
+  On définit le calcul des séquents $\LS$ par les règles de la \cref{tbl.LS},
+  en conditionnant les règles marquées d'un $\dagger$ au fait que $x$ est libre
+  dans $\Gamma,\Delta$ et en conditionnant les règles marquées d'un
+  $\ddagger$ au fait que toutes les formules de $\Gamma$ sont de la forme
+  $\square\psi$ et toutes les formules de $\Delta$ sont de la forme
+  $\diamond\psi$.
+\end{definition}
+
+On a ainsi défini une nouvelle syntaxe. La première chose à faire, pour pouvoir
+étudier plus efficacement les règles, est de donner une typologie des règles
+présentes. Comme auparavant, on considère $\Sigma^l$ et $\Sigma^r$ les ensembles
+des sous-formules des prémisses, et $\Phi^l$ et $\Phi^r$ les ensembles de
+formules de la conclusion, pour une règle donnée.
+
+Puisque nous avons des règles additives et multiplicatives, trois types
+de règles apparaissent plutôt que deux~:
+\begin{itemize}
+\item les règles de type $\rOne$ restent inchangées, elles sont de la forme
+  \begin{prooftree}
+    \AxiomC{$\Gamma,\Sigma^l\vdLS\Sigma^r,\Delta$}
+    \RightLabel{$\rOne$}
+    \UnaryInfC{$\Gamma,\Phi^l\vdLS\Phi^r,\Delta$}
+  \end{prooftree}
+\item les règles multiplicatives à deux prémisses sont de type $\rTwo$, et elles
+  sont de la forme
+  \begin{prooftree}
+    \AxiomC{$\Gamma,\Sigma^l_1\vdLS\Sigma^r_1,\Delta$}
+    \AxiomC{$\Theta,\Sigma^l_2\vdLS\Sigma^r_2,\Xi$}
+    \RightLabel{$\rTwo$}
+    \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLS\Phi^r,\Delta,\Xi$}
+  \end{prooftree}
+\item les règles additives à deux prémisses sont de type $\rTwoB$, et elles sont
+  de la forme
+  \begin{prooftree}
+    \AxiomC{$\Gamma,\Sigma^l_1\vdLS\Sigma^r_1,\Delta$}
+    \AxiomC{$\Gamma,\Sigma^l_2\vdLS\Sigma^r_2,\Delta$}
+    \RightLabel{$\rTwoB$}
+    \BinaryInfC{$\Gamma,\Phi^l\vdLS\Phi^r,\Delta$}
+  \end{prooftree}
+\end{itemize}
+Techniquement, on pourrait considérer que $cut$ est une règle de type $\rTwo$,
+mais on va traiter à part la règle $cut$, puisque c'est elle que l'on souhaite
+éliminer.
