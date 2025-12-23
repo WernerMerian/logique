@@ -786,7 +786,7 @@ comprendre son importance qui lui donne son nom de \foreignexpr{Hauptsatz}
 
 On se donne donc pour l'instant l'élimination des coupures en tant qu'axiome.
 
-\begin{axiom}[\'Elimination des coupures]
+\begin{axiom}[\'Elimination des coupures]\label{ax.cut.elim}
   Pour tout arbre de preuve $\pi$ de conclusion $\Gamma\vdLK \varphi$, il
   existe un arbre de preuve $\pi'$ de même conclusion mais ne contenant aucune
   occurrence de la règle $cut$.
@@ -2576,6 +2576,7 @@ On peut alors commencer par éliminer les règles logique.
         \AxiomC{$\mathlarger{\pi_2}$}
         \noLine
         \UnaryInfC{$\Theta_2\vdLS\varphi_2,\Xi_2$}
+        \RightLabel{$cut$}
         \BinaryInfC{$\Gamma,\Theta_1,\Theta_2\vdLS\Delta,\Xi_1,\Xi_2$}
         \DisplayProof
         \\
@@ -2824,3 +2825,901 @@ On peut alors commencer par éliminer les règles logique.
   La règle de réécriture $\reecr{log}$ est l'union de toutes les règles
   ci-dessus.
 \end{definition}
+
+Les réécritures logiques sont en quelque sorte le c{\oe}ur de l'élimination des
+coupures. On remarque en effet que ces réécritures font disparaitre des règles~:
+chaque paire $l\alpha/r\alpha$ avec $\alpha$ un constructeur logique, se situant
+au-dessus d'une coupure, peut être supprimée par la réécriture.
+
+\begin{remark}
+  Plusieurs points sont à souligner dans les règles de réécriture présentées~:
+  \begin{itemize}
+  \item pour les règles multiplicatives, la réécriture multiplie les coupures,
+    en en formant deux consécutives à la place des règles logiques~;
+  \item pour les règles additives, la réécriture supprime l'un des arbres de
+    preuve pour ne conserver que celui qui est pertinent pour prouver la
+    prémisse~;
+  \item dans le cas des quantificateurs, la réécriture demande d'effectuer une
+    substitution dans l'entièreté de l'un des deux arbres de preuves. Cette
+    substitution est possible grâce à la condition $\dagger$, qui assure que
+    les autres formules restent intactes~;
+  \item la condition $\ddagger$ pour les modalités n'a pas d'influence au
+    moment de la réécriture, puisque la règle disparait directement~;
+  \item pour l'égalité, le fait d'avoir en règle droite $r=$ force la
+    réécriture de $[t/x]$ en $[u/x]$ à s'effectuer dans le cas où $t = u$, et
+    signifie donc qu'on introduit une égalité triviale à gauche, qui
+    disparaît automatiquement par la réécriture~;
+  \item les règles structurelles ne sont presque pas employées lorsqu'on
+    effectue des réécritures logiques. En fait on n'utilise que les règles
+    d'échange, qui peuvent s'éliminer si on ajuste notre calcul des séquents
+    en présentant les règles dans un certain ordre par exemple, ou qu'on se
+    permet d'utiliser des règles n'importe où dans un séquent (en remplaçant
+    dans les règles des séquents $\Gamma,\varphi\vdLS\psi\Delta$ par des
+    séquents $\Gamma_1,\varphi,\Gamma_2\vdLS\Delta_1,\psi,\Delta_2$). On va
+    dorénavant considérer que les règles d'échanges ne sont pas pertinentes.
+    Cela allège grandement la définition des réécritures, et nous fait donc
+    travailler avec la version multi-ensembliste des séquents, qui permet
+    facilement de récupérer une version sous forme de listes (on introduit
+    simplement à l'arbre final, une fois l'élimination des coupures
+    effectuée, des règles d'échanges assurant la cohérence de notre arbre).
+  \end{itemize}
+\end{remark}
+
+Comme les réécritures logiques éliminent chaque fois un couple de règles
+logiques, les coupures résultant de la réécriture contiennent strictement moins
+de règles logiques au-dessus d'elles. En associant à une coupure le nombre de
+règles qui ne sont pas des coupures, on obtient ainsi une mesure qui décroît
+strictement lorsqu'on effectue une réécriture logique. La procédure
+termine donc pour nous donner un arbre sans coupure logique~: malheureusement,
+beaucoup de coupures ne sont pas logiques, et peuvent être seulement
+$l$-logiques ou $r$-logiques, voire ni l'une ni l'autre.
+
+On s'intéresse donc au cas de coupures non logiques. L'objectif, en considérant
+ces cas, est de se ramener à des coupures logiques~: on souhaite donc montrer
+qu'une coupure qui n'est pas $l$-logique peut se réécrire en une coupure
+$l$-logique, et symétriquement pour les coupures $r$-logiques. Pour ce faire,
+il suffit de montrer que toute règle non $l$-logique peut être remontée
+au-dessus de la règle de gauche de la coupure, de sorte qu'on finit par arriver
+à une règle $l$-logique.
+
+\begin{definition}[Relèvement d'une coupure vers la gauche]
+  On définit le relèvement de coupures vers la gauche par les règles suivantes~:
+  \begin{center}
+    \resizebox{\textwidth}{!}{\(
+      \begin{array}{ccc}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma,\Sigma^l\vdLS\Sigma^r,\Delta$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\varphi,\Gamma,\Phi^l\vdLS\Phi^r,\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Phi^l,\Theta\vdLS\Phi^r,\Delta,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow\rOne} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma,\Sigma^l\vdLS\Sigma^r,\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Sigma^l,\Theta\vdLS\Sigma^r,\Delta,\Xi$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\Gamma,\Phi^l,\Theta\vdLS\Phi^r,\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma_1,\Sigma_1^l\vdLS\Sigma_1^r,\Delta_1$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Gamma_2,\Sigma_2^l\vdLS\Sigma_2^r,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\varphi,\Gamma_1,\Gamma_2,\Phi^l\vdLS
+          \Phi^r,\Delta_1,\Delta_2$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l,\Theta\vdLS
+          \Phi^r,\Delta_2,\Delta_2,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow \rTwo_1} &
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma_1,\Sigma_1^l\vdLS\Sigma_1^r,\Delta_1$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma_1,\Theta,\Sigma_1^l\vdLS\Sigma_1^r,\Delta_1,\Xi$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Gamma_2,\Sigma_2^l\vdLS\Sigma_2^r,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l,\Theta\vdLS
+          \Phi^r,\Delta_1,\Delta_2,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Gamma_1,\Sigma_1^l\vdLS\Sigma_1^r,\Delta_1$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma_2,\Sigma_2^l\vdLS\Sigma_2^r,\Delta_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\varphi,\Gamma_1,\Gamma_2,\Phi^l\vdLS
+          \Phi^r,\Delta_1,\Delta_2$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l,\Theta\vdLS
+          \Phi^r,\Delta_2,\Delta_2,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow \rTwo_2} &
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma_1,\Sigma_1^l\vdLS\Sigma_1^r,\Delta_1$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma_2,\Sigma_2^l\vdLS\Sigma_2^r,\Delta_2$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma_2,\Theta,\Sigma_2^l\vdLS\Sigma^r_2,\Delta_2,\Xi$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma_1,\Gamma_2,\Phi^l,\Theta\vdLS
+          \Phi^r,\Delta_1,\Delta_2,\Xi$}
+        \DisplayProof
+      \end{array}
+      \)}
+  \end{center}
+  \begin{center}
+    \resizebox{\textwidth}{!}{\(
+      \begin{array}{ccc}
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma,\Sigma^l_1\vdLS\Sigma^r_1,\Delta$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma,\Sigma^l_2\vdLS\Sigma^r_2,\Delta$}
+        \RightLabel{$\rTwoB$}
+        \BinaryInfC{$\varphi,\Gamma,\Phi^l\vdLS\Phi^r,\Delta$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Phi^l,\Theta\vdLS\Phi^r,\Delta,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow\rTwoB} &
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma,\Sigma^l_1\vdLS\Sigma^r_1,\Delta$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Delta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Sigma^l_1\vdLS \Sigma^r_1,\Delta,\Xi$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma,\Sigma^l_2\vdLS\Sigma^r_2,\Delta$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Sigma^l_2\vdLS\Sigma^r_2,\Delta,\Xi$}
+        \RightLabel{$\rTwoB$}
+        \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLS\Phi^r,\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi,\varphi\vdLS\Delta$}
+        \RightLabel{$lc$}
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow c} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma\varphi,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\varphi\vdLS\Delta,\Xi$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Theta\vdLS\Delta,\Xi,\Xi$}
+        \doubleLine
+        \RightLabel{$lc/rc$}
+        \UnaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma\vdLS\Delta$}
+        \RightLabel{$lw$}
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow w} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma\vdLS\Delta$}
+        \doubleLine
+        \RightLabel{$lw/rw$}
+        \UnaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{}
+        \RightLabel{$ax$}
+        \UnaryInfC{$\varphi\vdLS\varphi$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \DisplayProof
+        & \reecr{\nwarrow ax} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma[u/x],\varphi[u/x]\vdLS\Delta[u/x]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\Gamma[t/x],\varphi[t/x],t=u\vdLS\Delta[t/x]$}
+        \AxiomC{$\mathlarger{\pi'[t/x]}$}
+        \noLine
+        \UnaryInfC{$\Theta[t/x]\vdLS\varphi[t/x],\Xi[t/x]$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma[t/x],\Theta[t/x],t=u\vdLS\Delta[t/x],\Xi[t/x]$}
+        \DisplayProof
+        & \reecr{\nwarrow =} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma[u/x],\varphi[u/x]\vdLS\Delta[u/x]$}
+        \AxiomC{$\mathlarger{\pi'[u/x]}$}
+        \noLine
+        \UnaryInfC{$\Theta[u/x]\vdLS\varphi[u/x],\Xi[u/x]$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma[u/x],\Theta[u/x]\vdLS\Delta[u/x],\Xi[u/x]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\Gamma[t/x],\Theta[t/x],t=u\vdLS\Delta[t/x],\Xi[t/x]$}
+        \DisplayProof
+      \end{array}
+      \)}
+  \end{center}
+  La réécriture $\reecr{\nwarrow}$ est l'union de toutes les règles de
+  réécriture précédentes.
+\end{definition}
+
+\begin{remark}
+  Quelques précisions sont nécessaire cette fois encore~:
+  \begin{itemize}
+  \item lorsque l'on considère $\reecr{\nwarrow \rOne}$, on y inclut
+    par exemple
+    \begin{center}
+      \resizebox{0.8\textwidth}{!}{
+        \(
+        \begin{array}{ccc}
+          \AxiomC{$\mathlarger{\pi}$}
+          \noLine
+          \UnaryInfC{$\Gamma,\varphi\vdLS\psi[t/x],\Delta$}
+          \RightLabel{$r\forall^\dagger$}
+          \UnaryInfC{$\Gamma,\varphi\vdLS\forall x\,\psi,\Delta$}
+          \AxiomC{$\mathlarger{\pi'}$}
+          \noLine
+          \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+          \RightLabel{$cut$}
+          \BinaryInfC{$\Gamma,\Theta\vdLS\forall x\,\psi,\Delta,\Xi$}
+          \DisplayProof
+          & \reecr{\nwarrow r\forall} &
+          \AxiomC{$\mathlarger{\pi}$}
+          \noLine
+          \UnaryInfC{$\Gamma,\varphi\vdLS\psi[t/x],\Delta$}
+          \AxiomC{$\mathlarger{\pi'}$}
+          \noLine
+          \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+          \RightLabel{$cut$}
+          \BinaryInfC{$\Gamma,\Theta\vdLS\psi[t/x],\Delta,\Xi$}
+          \RightLabel{$r\forall^\dagger$}
+          \UnaryInfC{$\Gamma,\Theta\vdLS\forall x\,\psi,\Delta,\Xi$}
+          \DisplayProof
+        \end{array}
+        \)
+      }
+    \end{center}
+    qui demande de vérifier la condition $\dagger$. On ne sait pas,
+    \latinexpr{a priori}, si $x$ est libre dans $\Theta,\Xi$, ce qui empêche
+    de pouvoir appliquer cette réécriture. Néanmoins, on peut toujours
+    renommer la variable $x$ de $\psi[t/x]$ pour obtenir $\psi[y/x][t/y]$
+    et $y$ libre dans $\Theta,\Xi$, assurant ainsi à réécriture des variables
+    libres près, que la réécriture est effectivement bien définie.
+  \item dans le cas d'une réécriture avec $r\square^\ddagger$, cependant, on
+    ne peut pas assurer de la même façon que la réécriture peut malgré tout
+    s'effectuer. Dans un cas tel que
+    \begin{center}
+      \resizebox{0.8\textwidth}{!}{
+        \(
+        \begin{array}{ccc}
+          \AxiomC{$\mathlarger{\pi}$}
+          \noLine
+          \UnaryInfC{$\Gamma,\varphi\vdLS\psi,\Delta$}
+          \RightLabel{$r\square^\ddagger$}
+          \UnaryInfC{$\Gamma,\varphi\vdLS\square\psi,\Delta$}
+          \AxiomC{$\mathlarger{\pi'}$}
+          \noLine
+          \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+          \RightLabel{$cut$}
+          \BinaryInfC{$\Gamma,\Theta\vdLS\square\psi,\Delta,\Xi$}
+          \DisplayProof
+          & \reecr{\nwarrow r\square} &
+          \AxiomC{$\mathlarger{\pi}$}
+          \noLine
+          \UnaryInfC{$\Gamma,\varphi\vdLS\psi,\Delta$}
+          \AxiomC{$\mathlarger{\pi'}$}
+          \noLine
+          \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+          \RightLabel{$cut$}
+          \BinaryInfC{$\Gamma,\Theta\vdLS\psi,\Delta,\Xi$}
+          \RightLabel{$r\square^\ddagger$}
+          \UnaryInfC{$\Gamma,\Theta\vdLS\square\psi,\Delta,\Xi$}
+          \DisplayProof
+        \end{array}
+        \)
+      }
+    \end{center}
+    on ne peut pas considérer que $\Theta$ est constitué de formules avec la
+    modalité $\square$, et que $\Xi$ est constitué de formules avec la
+    modalité $\diamond$.
+    La façon de corriger ce problème est de le contourner~: on
+    sait dans un tel cas que la formule de coupure, $\varphi$, est de la forme
+    $\square \varphi'$, puisqu'on a pu appliquer la règle $r\square^\ddagger$.
+    Dans un tel cas, on verra qu'on peut appliquer une réécriture dans l'autre
+    direction, $\reecr{\nearrow}$ s'appliquant alors. Pour cette réécriture
+    symétrique, le problème se posant serait que la règle appliquée soit
+    $l\diamond^\ddagger$ pour arriver au séquent $\Theta\vdLS\varphi,\Xi$, mais
+    l'application d'une telle règle signifie que $\varphi$ est de la forme
+    $\diamond \varphi'$, ce qui contredit le cas initial. On pourra donc
+    toujours remonter la coupure, ce qui est suffisant pour notre objectif.
+  \item dans le cas d'une égalité, le fait de supposer que l'arbre de droite est
+    de la forme $\pi'[t/x]$ ne fait pas perdre de généralité. On peut s'assurer
+    que lors d'une substitution d'une variable par un terme dans l'entièreté de
+    l'arbre, tout se passe comme on s'y attend~: l'arbre est toujours un
+    arbre de preuve, et le séquent conclusion voit toutes ses formules être
+    substituées. Le fait de faire appraître $\pi'$ sous cette forme est alors
+    directement dû au fait que dans sa conclusion, on puisse écrire
+    $\varphi[t/x]$~: quitte à prendre une variable $x$ libre dans $\Theta$ et
+    $\Xi$, on peut supposer que $\Theta = \Theta[t/x]$ et de même pour
+    $\Xi$.
+  \end{itemize}
+\end{remark}
+
+Comme attendu, cette réécriture peut se faire de façon parfaitement symétrique
+en faisant monter une coupure dans le sous-arbre de droite. Les subtilités
+évoquées pour $\reecr{\nwarrow}$ se retrouvent de façon symétrique dans ces
+règles.
+
+\begin{definition}[Relèvement d'une coupure vers la droite]
+  On définit le relèvement de coupures vers la droite par les règles suivantes~:
+  \begin{center}
+    \resizebox{\textwidth}{!}{\(
+      \begin{array}{ccc}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta,\Sigma^l\vdLS\Sigma^r,\varphi,\Xi$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\Theta,\Phi^l\vdLS\Phi^r,\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLS\Delta,\Phi^r,\Xi$}
+        \DisplayProof
+        & \reecr{\nearrow\rOne} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta,\Sigma_l\vdLS\Sigma_r,\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Sigma^l\vdLS\Delta,\Sigma^r,\Xi$}
+        \RightLabel{$\rOne$}
+        \UnaryInfC{$\Gamma,\Theta,\Phi^l\vdLS\Delta,\Phi^r\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Theta_1,\Sigma_1^l\vdLS\Sigma_1^r,\varphi,\Xi_1$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Theta_2,\Sigma_2^l\vdLS\Sigma_2^r,\Xi_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Theta_1,\Theta_2,\Phi^l\vdLS\varphi,
+          \Phi^r,\Xi_1,\Xi_2$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta_1,\Theta_2,\Phi^l\vdLS
+          \Phi^r,\Delta,\Xi_1,\Xi_2$}
+        \DisplayProof
+        & \reecr{\nearrow \rTwo_1} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\varphi,\Gamma\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Theta_1,\Sigma_1^l\vdLS\Sigma_1^r\varphi,\Xi_1$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta_1,\Sigma_1^l\vdLS\Sigma_1^r,\Delta,\Xi_1$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Theta_2,\Sigma_2^l\vdLS\Sigma_2^r,\Xi_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma,\Theta_1,\Theta_2,\Phi^l\vdLS
+          \Phi^r,\Delta,\Xi_1,\Xi_2$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Theta_1,\Sigma_1^l\vdLS\Sigma_1^r,\Xi_1$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Theta_2,\Sigma_2^l\vdLS\varphi,\Sigma_2^r,\Xi_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Theta_1,\Theta_2,\Phi^l\vdLS\varphi,
+          \Phi^r,\Xi_1,\Xi_2$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta_1,\Theta_2,\Phi^l\vdLS
+          \Phi^r,\Delta,\Xi_1,\Xi_2$}
+        \DisplayProof
+        & \reecr{\nearrow \rTwo_2} &
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Theta_1,\Sigma_1^l\vdLS\Sigma_1^r,\Xi_1$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Theta_2,\Sigma_2^l\vdLS\varphi,\Sigma_2^r,\Xi_2$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta_2,\Sigma_2^l\vdLS\Sigma_2^r,\Xi_2$}
+        \RightLabel{$\rTwo$}
+        \BinaryInfC{$\Gamma,\Theta_1,\Theta_2,\Phi^l\vdLS
+          \Phi^r,\Delta,\Xi_1,\Xi_2$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Theta\Sigma^l_1\vdLS\Sigma^r_1,\varphi,\Xi$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Theta,\Sigma^l_2\vdLS\Sigma^r_2,\varphi,\Xi$}
+        \RightLabel{$\rTwoB$}
+        \BinaryInfC{$\Theta,\Phi^l\vdLS\Phi^r,\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLS\Delta,\Phi^r,\Xi$}
+        \DisplayProof
+        & \reecr{\nearrow\rTwoB} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_1}$}
+        \noLine
+        \UnaryInfC{$\Theta,\Sigma^l_1\vdLS\Sigma^r_1,\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Sigma^l_1\vdLS \Sigma^r_1,\Delta,\Xi$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi_2}$}
+        \noLine
+        \UnaryInfC{$\Theta,\Sigma^l_2\vdLS\Sigma^r_2,\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta,\Sigma^l_2\vdLS\Sigma^r_2,\Delta,\Xi$}
+        \RightLabel{$\rTwoB$}
+        \BinaryInfC{$\Gamma,\Theta,\Phi^l\vdLS\Phi^r,\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\varphi,\Xi$}
+        \RightLabel{$rc$}
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        & \reecr{\nearrow c} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\varphi,\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta\vdLS\varphi,\Delta,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Gamma,\Theta\vdLS\Delta,\Delta,\Xi$}
+        \doubleLine
+        \RightLabel{$lc/rc$}
+        \UnaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\Xi$}
+        \RightLabel{$rw$}
+        \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        & \reecr{\nearrow w} &
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta\vdLS\Xi$}
+        \doubleLine
+        \RightLabel{$lw/rw$}
+        \UnaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+        \AxiomC{}
+        \RightLabel{$ax$}
+        \UnaryInfC{$\varphi\vdLS\varphi$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma\vdLS\varphi,\Delta$}
+        \DisplayProof
+        & \reecr{\nearrow ax} &
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma\vdLS\varphi,\Delta$}
+        \DisplayProof
+        \\
+        \\
+        \AxiomC{$\mathlarger{\pi[t/x]}$}
+        \noLine
+        \UnaryInfC{$\Gamma[t/x],\varphi[t/x]\vdLS\Delta[t/x]$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta[u/x]\vdLS\varphi[u/x]\Xi[u/x]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\Theta[t/x],t=u\vdLS\varphi[t/x],\Xi[t/x]$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma[t/x],\Theta[t/x],t=u\vdLS\Delta[t/x],\Xi[t/x]$}
+        \DisplayProof
+        & \reecr{\nearrow =} &
+        \AxiomC{$\mathlarger{\pi[u/x]}$}
+        \noLine
+        \UnaryInfC{$\Gamma[u/x],\varphi[u/x]\vdLS\Delta[u/x]$}
+        \AxiomC{$\mathlarger{\pi'}$}
+        \noLine
+        \UnaryInfC{$\Theta[u/x]\vdLS\varphi[u/x],\Xi[u/x]$}
+        \RightLabel{$cut$}
+        \BinaryInfC{$\Gamma[u/x],\Theta[u/x]\vdLS\Delta[u/x],\Xi[u/x]$}
+        \RightLabel{$l=$}
+        \UnaryInfC{$\Gamma[t/x],\Theta[t/x],t=u\vdLS\Delta[t/x],\Xi[t/x]$}
+        \DisplayProof
+      \end{array}
+      \)}
+  \end{center}
+  La réécriture $\reecr{\nearrow}$ est l'union de toutes les règles de
+  réécriture précédentes.
+\end{definition}
+
+On peut alors prouver un premier lemme.
+
+\begin{lemma}\label{lem.reecr.log}
+  Soient deux preuves sans coupures
+  $\bottomAlignProof
+  \AxiomC{$\mathlarger{\pi}$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+  \DisplayProof$
+  et
+  $\bottomAlignProof
+  \AxiomC{$\mathlarger{\pi}$}\noLine\UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+  \DisplayProof$.
+  Alors pour la preuve $\pi_0$ définie comme
+  \begin{prooftree}
+    \AxiomC{$\mathlarger{\pi}$}
+    \noLine
+    \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+    \AxiomC{$\mathlarger{\pi'}$}
+    \noLine
+    \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+    \RightLabel{$cut$}
+    \BinaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+  \end{prooftree}
+  il existe une preuve $\pi_1$ telle que
+  $\pi_0 {\reecr{\nwarrow}}^\star{\reecr{\nearrow}}^\star \pi_1$
+  et $\pi_1$ ne contient que des coupures logiques de formule de coupure
+  $\varphi$.
+\end{lemma}
+
+\begin{proof}
+  Commençons par remarquer que~:
+  \begin{itemize}
+  \item si une coupure n'est pas $l$-logique, alors elle peut se réécrire par
+    $\reecr{\nwarrow}$, et de façon symétrique si elle n'est pas $r$-logique
+    alors elle peut se réécrire par $\reecr{\nearrow}$~;
+  \item il suffit donc de prouver que le nombre d'étapes de réécriture par
+    $\reecr{\nwarrow}$ (respectivement $\reecr{\nearrow}$, tous les arguments
+    étant parfaitement symétriques) est fini, c'est-à-dire trouver une mesure
+    qui décroît strictement quand on applique une telle réécriture.
+  \end{itemize}
+
+  On prouve donc qu'il n'y a qu'un nombre fini de réécritures
+  $\reecr{\nwarrow}$ possibles depuis une coupure donnée. Notons $\varphi$
+  la formule de coupure, on appelle $l$-occurrence de $\varphi$ dans un
+  séquent les occurrence de $\varphi$ à gauche de $\vdLS$. Pour une preuve
+  $\pi$ et une occurrence $S$ d'un séquent de $\pi$, on dit que $S$ est
+  $l$-accessible si on peut atteindre $S$ depuis une prémisse gauche d'une
+  coupure par un chemin ascendant dans $\pi$ (qu'on peut considérer comme une
+  suite de sous-arbres de $\pi$ dont chaque élément est un sous-arbre immédiat
+  du précédent, dont on considère les conclusions) tel que~:
+  \begin{itemize}
+  \item à chaque règle $cut$, le chemin choisit la prémisse gauche~;
+  \item dans tout séquent du chemin, on a une $l$-occurrence de $\varphi$.
+  \end{itemize}
+  On peut alors vérifier que le nombre de $l$-occurrences de $\varphi$ dans
+  les séquents $l$-accessibles est une mesure qui décroît strictement pour
+  chaque application d'une règle $\reecr{\nwarrow}$.
+
+  On en déduit qu'il est possible de choisir une suite maximale de réécritures
+  pour $\reecr{\nwarrow}$, dont l'arbre résultat ne peut pas se réécrire par
+  $\reecr{\nwarrow}$ ce qui implique qu'il est $l$-logique.
+
+  On fait alors de même en prenant une suite maximale de réécritures pour
+  $\reecr{\nearrow}$, ce qui nous permet d'obtenir un arbre dont toutes les
+  coupures sont $r$-logiques. On vérifie que le résultat d'une
+  réécriture $\reecr{\nearrow}$ sur une coupure $l$-logique donne toujours une
+  coupure $l$-logique, puisque le sous-arbre gauche d'une coupure reste
+  inchangé par $\reecr{\nearrow}$.
+\end{proof}
+
+Précisons qu'il est important de faire remonter les coupures d'un seul côté à la
+fois, comme le montre l'exercice suivant.
+
+\begin{exercise}
+  Montrer que si on considère la règle de réécriture
+  $\reecr{\nwarrow}\cup\reecr{\nearrow}$, alors on peut construire une
+  suite infinie de réécritures.
+\end{exercise}
+
+On peut maintenant prouver le théorème d'élimination des coupures, à partir de
+l'élimination des coupures logiques et du lemme précédent.
+
+\begin{definition}
+  On définit la relation $\reecr{}$ comme l'union des relations
+  $\reecr{\nwarrow},\reecr{\nearrow},\reecr{log}$.
+\end{definition}
+
+\begin{theorem}[Haupstatz - \'Elimination des coupures \cite{Gentzen1935}]
+  \label{thm.cut.elim}
+  Pour tout arbre $\pi \in \ProofLS$ de conclusion $\Gamma\vdLS\Delta$, il
+  existe un arbre $\pi' \in \ProofLS$ tel que $\pi {\reecr{}}^\star \pi'$ et
+  $\pi'$ ne contient aucune occurrence de la règle de coupure.
+\end{theorem}
+
+\begin{proof}
+  Ce résultat se prouve, naturellement, par induction. Cependant, la valeur
+  sur laquelle on effectue notre induction est importante.
+
+  On va définir le degré d'une formule $\varphi$ et d'un arbre par~:
+  \[\delta(\varphi) \defeq |\varphi| \qquad
+  \delta(\pi) \defeq \max\{\delta(\varphi)\mid\varphi\text{ est une formule de
+    coupure de }\pi\}\]
+  On raisonne par induction sur $\delta(\pi)$.
+
+  Soit $n \in \bN$. On suppose que pour tout arbre de preuve $\pi$ tel que
+  $\delta(\pi) < n$, il existe un arbre $\pi'$ tel que $\pi \reecr{} \pi'$
+  et $\pi'$ n'a pas de coupure.
+
+  Soit $\varphi$ une formule telle que $\varphi = n$. Soient
+  $\bottomAlignProof
+  \AxiomC{$\mathlarger{\pi}$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+  \DisplayProof$
+  et
+  $\bottomAlignProof
+  \AxiomC{$\mathlarger{\pi}$}\noLine\UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+  \DisplayProof$
+  deux arbres de preuve sans coupure. Montrons que l'arbre $\pi_0$ défini comme
+  \begin{prooftree}
+    \AxiomC{$\mathlarger{\pi}$}
+    \noLine
+    \UnaryInfC{$\Gamma,\varphi\vdLS\Delta$}
+    \AxiomC{$\mathlarger{\pi'}$}
+    \noLine
+    \UnaryInfC{$\Theta\vdLS\varphi,\Xi$}
+    \RightLabel{$cut$}
+    \BinaryInfC{$\Gamma,\Theta\vdLS\Delta,\Xi$}
+  \end{prooftree}
+  peut se réécrire par $\reecr{}$ en un arbre sans coupure. D'après le
+  \cref{lem.reecr.log}, on peut trouver $\pi_1$ tel que
+  $\pi_0{\reecr{}}^\star \pi_1$ et toutes les coupures de $\pi_1$ sont logiques
+  et de formule de coupure $\varphi$. On peut donc appliquer pour chaque
+  coupure une réécriture $\reecr{log}$, puis appliquer notre hypothèse
+  d'induction~: on trouve un arbre $\pi_2$ tel que
+  $\pi_0 {\reecr{}}^\star \pi_2$ et $\pi_2$ ne possède aucune coupure.
+
+  Pour un arbre $\pi$ quelconque, on peut désormais procéder à la construction
+  précédente, mais en raisonnant par récurrence sur le nombre de coupure.
+  S'il existe au moins une coupure, alors on peut choisir une coupure qui ne
+  contient aucune coupure au-dessus d'elle, et on peut alors réécrire le
+  sous-arbre donné par cette coupure en utilisant le résultat précédent. On
+  en déduit donc que $\pi$ tout entier peut se réécrire par $\reecr{}$ en un
+  arbre sans coupure.
+\end{proof}
+
+\begin{corollary}
+  La règle $cut$ est admissible dans le système $\LS \setminus\{cut\}$.
+\end{corollary}
+
+\subsection{Conséquences du Haupstatz}
+
+Le théorème d'élimination des coupures que nous avons prouvé est
+particulièrement modulaire. En effet, les réécritures étant définies localement,
+il suffit de peu d'éléments pour éliminer les coupures~:
+\begin{itemize}
+\item si une règle est introduite dans le calcul des séquents, elle doit
+  pouvoir commuter avec la coupure, de sorte qu'on puisse faire un relèvement.
+  Notons que cette condition n'a besoin d'être respectée que d'une façon
+  faible, puisque dans le cas de $r\square^\ddagger$, par exemple, il n'y a pas
+  de commutation directe.
+\item si une règles logique est introduite dans le calcul des séquents, elle
+  doit exister en une version gauche et une version droite de telle sorte que
+  la coupure faisant intervenir ces deux version peut se simplifier.
+\end{itemize}
+Avec ces deux conditions, on peut généralement écrire un théorème d'élimination
+des coupures. En plus du peu de conditions pour écrire un système pour lequel on
+peut s'attendre à prouver une version du \foreignexpr{Haupstatz}, la preuve
+en elle-même fonctionne encore sur tous les fragments du système pour lequel on
+a prouvé notre théorème, pour peu que les fragments contiennent la règle
+d'échange et les paires $l/r$ d'une règle logique voulue.
+
+On a donc prouvé l'élimination des coupures pour $2^{14}$ fragments du système
+$\LS$ ! \'Evidemment, l'écrasante majorité des fragments en question sont peu
+pertinents, mais on peut relever plusieurs calculs dont l'élimination des
+coupures est une conséquence directe, et qui sont intéressants.
+
+\paragraph{La logique classique}
+En choisissant un constructeur (et ses règles associées) entre chaque paire
+$\lor/\parr$,$\land/\with$,$\to/\multimap$, et en supprimant les modalités
+$\square,\diamond$, on obtient une des multiples présentations de $\LK$, dont
+certaines déjà données plus tôt dans le chapitre. On a donc prouvé l'élimination
+des coupures telle que donnée dans l'\cref{ax.cut.elim}.
+
+\paragraph{La logique modale S4}
+En autorisant les modalités $\square,\diamond$, on obtient l'élimination des
+coupures pour la logique modale S4. La logique modale est une variante assez
+large de la logique, dans laquelle on ajoute les deux modalités et certains
+axiomes sur leur comportement. Dans le cas des règles qu'on a données, on peut
+déduire les axiomes du système nommé S4, c'est-à-dire~:
+\begin{align*}
+  N &\defeq (\vdLS \varphi) \implies (\vdLS\square\varphi) \\
+  K &\defeq \vdLS \square(\varphi \to \psi) \to \square \varphi \to
+  \square\psi\\
+  T &\defeq \vdLS \square\varphi \to \varphi\\
+  4 &\defeq \vdLS \square\varphi\to\square\square\varphi
+\end{align*}
+On remarque que la règle $N$, la règle $K$ et la règle $4$ correspondent
+respectivement aux $3$ conditions de Hilbert-Bernays données dans la
+\cref{def.HB.cond}. Cela n'est pas choquant, dans la mesure où le prédicat
+signifiant \og $\varphi$ est prouvable\fg évoque effectivement la nécessité de
+$\varphi$, comme le traduit la logique modale par la modalité $\square$.
+Donnons aussi l'axiome $5$ permettant de définir $S5$ par les propriétés
+$N,K,T,5$~:
+\[5 \defeq \vdLS \diamond \varphi \to \square\diamond \varphi\]
+
+\paragraph{La logique linéaire}
+On peut aussi considérer des logiques sous-structurelles. En analysant les
+règles de réécritures, on s'aperçoit que les règles de relèvement ne modifient
+pas toutes l'arbre global~: dans les relèvement des règles multiplicatives, il
+y a précisément une occurrence de $\pi,\pi_1,\pi_2$ (cela se vérifie aussi pour
+l'égalité). Cependant, le relèvement pour une règle additive multiplie l'un des
+arbres, le relèvement des affaiblissements supprime un arbre et le relèvement
+des contractions multiplie les arbres. Enfin au sein des règles logiques, les
+règles additives suppriment un arbre, contrairement aux règles multiplicatives
+qui gardent le même nombre d'occurrence des arbres.
+
+Cette idée de multiplier ou non les arbres de preuves mène à la linéarité~: le
+phénomène durant lequel chaque information est utilisée une et une seule fois
+pour effectuer une construction. Ce phénomène motive la mise en avant du
+fragment multiplicatif, et la construction d'un fragment de $\LS$ dans lequel
+les contractions et les affaiblissements ne sont plus considérés comme des
+opérations anodines. On appelle une telle logique \og sous-structurelle\fg
+puisqu'elle repose sur un système où on affaiblit les règles structurelles.
+
+La logique linéaire est alors le fragment obtenu en conservant tous les
+connecteurs (les connecteurs $\lor$ et $\parr$ ne seront plus équivalents), et
+en restreignant les règles $lc/rc$ et $lw/rw$ aux formules qui sont à la gauche
+du séquent et de la forme $\square\varphi$, ainsi qu'aux formules qui sont à la
+droite du séquent et de la forme $\diamond\varphi$.
+
+On donne aussi une nouvelle syntaxe pour écrire les constructeurs~:
+\begin{center}
+  \begin{tabular}{|c|c|c|c|c|c|c|c|c|c|c|c|}
+    \hline
+    $\LS$ & $\lnot(-)$&$\to$&$\multimap$&$\lor$&$\parr$&$\land$&$\with$&
+    $\forall$&$\exists$&$\square$&$\diamond$ \\
+    \hline
+    $\LL$ & $(-)^\bot$& & $\multimap$&$\oplus$&$\parr$&$\otimes$&$\with$&
+    $\forall$&$\exists$&$!$&$?$ \\
+    \hline
+  \end{tabular}
+\end{center}
+Notre théorème d'élimination des coupures s'applique encore parfaitement dans ce
+cadre, où les formules affaiblies ou contractées sont toutes marquées comme
+$!\varphi/?\varphi$ selon le côté du symbole $\vdLL$ où elles se trouvent.
+
+On peut trouver des introductions à la logique linéaire dans
+\cite{alma991002216619806616,girard_1989,GIRARD19871}.
+
+\paragraph{La logique intuitionniste}
+La logique intuitionniste, déjà présentée succinctement dans la
+\cref{subsec.heyting.alg}, peut se représentée par le calcul des séquents. En
+reprenant la preuve que $\LK$ vérifie la règle de raisonnement par l'absurde, on
+voit qu'il est nécessaire d'accepter au moins deux formules dans le séquent de
+droite. Si on n'autorise pas ce type de contexte à droite, donnant la symétrie
+qu'on connait au calcul des séquents, on obtient alors un système qui ne
+vérifie pas le raisonnement par l'absurde (ou, de façon équivalente, le tiers
+exclu).
+
+On appelle séquent intuitionniste un tel séquent, où au plus une formule
+apparaît à droite.
+Dans la preuve de l'élimination des coupures, toutes les réécritures
+laissent inchangées le contexte de droite, de telle sorte que tout séquent
+intuitionniste reste intuitionniste après réécriture.
+
+Intéressons-nous maintenant à la logique intuitionniste plus en profondeur.
+
+\section{Logique intuitionniste}
