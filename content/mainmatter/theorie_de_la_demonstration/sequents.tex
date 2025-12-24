@@ -1501,7 +1501,7 @@ $t_1,\ldots,t_n$ et le séquent $\vdLK \varphi[t_1/x],\ldots,\varphi[t_n/x]$.
 
 Ce théorème peut donc être renforcé dans le cas où tout séquent contient au plus
 une formule à droite de $\vdLK$, ce qui est précisément le cas du calcul
-intuitionniste, que nous abordons en SECTION INTUITIONNISTE.
+intuitionniste, que nous abordons en \cref{sec.LJ}.
 
 \subsection{Formulations alternatives de LK}
 
@@ -2126,7 +2126,7 @@ fragments suivants~:
   quand on les lit du bas vers le haut~;
 \item la version multiplicative de l'implication sera notée $\multimap$~;
 \item les constructeurs $\diamond/\square$ sont ce qu'on appelle des modalités,
-  qu'on présente plus en détaille dans la suite du chapitre, mais qui doivent
+  qu'on présente plus en détails dans la suite du chapitre, mais qui doivent
   se lire comme des constructeurs unaires de formules évoquant respectivement
   la possibilité d'une formule et sa nécessité. Le choix de la notation
   $\square$ dans la \cref{def.HB.cond} vient directement de cette notion de
@@ -2265,10 +2265,10 @@ connecteurs logiques sont logiquement équivalents.
       \UnaryInfC{$\Gamma,\varphi\with\psi\vdLS\Delta$}
       \DisplayProof
       &
-      \AxiomC{$\Gamma,\varphi\vdLS\Delta$}
-      \AxiomC{$\Gamma,\psi\vdLS\Delta$}
+      \AxiomC{$\Gamma\vdLS\varphi,\Delta$}
+      \AxiomC{$\Gamma\vdLS\psi,\Delta$}
       \RightLabel{$r\with$}
-      \BinaryInfC{$\Gamma,\varphi\with\psi\vdLS\Delta$}
+      \BinaryInfC{$\Gamma\vdLS\varphi\with\psi,\Delta$}
       \DisplayProof
       \\
       \\
@@ -3656,9 +3656,6 @@ respectivement aux $3$ conditions de Hilbert-Bernays données dans la
 \cref{def.HB.cond}. Cela n'est pas choquant, dans la mesure où le prédicat
 signifiant \og $\varphi$ est prouvable\fg évoque effectivement la nécessité de
 $\varphi$, comme le traduit la logique modale par la modalité $\square$.
-Donnons aussi l'axiome $5$ permettant de définir $S5$ par les propriétés
-$N,K,T,5$~:
-\[5 \defeq \vdLS \diamond \varphi \to \square\diamond \varphi\]
 
 \paragraph{La logique linéaire}
 On peut aussi considérer des logiques sous-structurelles. En analysant les
@@ -3722,4 +3719,675 @@ intuitionniste reste intuitionniste après réécriture.
 
 Intéressons-nous maintenant à la logique intuitionniste plus en profondeur.
 
-\section{Logique intuitionniste}
+\section{Logique intuitionniste}\label{sec.LJ}
+
+Puisque nous abordons la logique intuitionniste par le calcul des séquents,
+commençons par définir le calcul des séquents intuitionniste.
+
+\subsection{Calcul des séquents LJ}
+
+\begin{definition}[Calcul des séquents $\LJ$ \cite{Gentzen1935}]
+  On définit l'ensemble $\ProofLJ$ des arbres de preuve pour le calcul des
+  séquents $\LJ$ par les règles de la \cref{tbl.LJ}. La notation $[\varphi]$
+  signifie que la liste contient la formule $\varphi$ ou est vide. Comme
+  pour les autres calculs des séquents, les règles marquées d'un $\dagger$
+  demandent que la variable $x$ soit libre dans les autres formules du séquent.
+\end{definition}
+
+\begin{table}[t!]
+  \centering
+  %\hrule
+  %\resizebox{\textwidth}{!}{
+    \begin{tabular}{cc}
+      \multicolumn{2}{l}{Axiome et coupure :}
+      \\
+      \AxiomC{}
+      \RightLabel{\textit{ax}}
+      \UnaryInfC{$\varphi\vdLJ \varphi$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLJ \varphi$}
+      \AxiomC{$\Delta, \varphi \vdLJ [\psi]$}
+      \RightLabel{\textit{cut}}
+      \BinaryInfC{$\Gamma, \Delta\vdLJ [\psi]$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles structurelles :}
+      \\
+      \AxiomC{$\Gamma,\varphi,\varphi\vdLJ[\psi]$}
+      \RightLabel{\textit{lc}}
+      \UnaryInfC{$\Gamma,\varphi\vdLJ[\psi]$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi,\psi,\Gamma'\vdLJ[\psi]$}
+      \RightLabel{\textit{le}}
+      \UnaryInfC{$\Gamma,\psi,\varphi,\Gamma'\vdLJ[\psi]$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma \vdLJ [\psi]$}
+      \RightLabel{\textit{lw}}
+      \UnaryInfC{$\Gamma, \varphi \vdLJ [\psi]$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLJ$}
+      \RightLabel{\textit{rw}}
+      \UnaryInfC{$\Gamma\vdLJ \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{l}{Règles logiques :}
+      \\
+      \AxiomC{$\Gamma\vdLJ \varphi$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Gamma, \lnot\varphi \vdLJ$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma, \varphi\vdLJ$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Gamma\vdLJ \lnot\varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLJ[\chi]$}
+      \AxiomC{$\Gamma,\psi\vdLJ[\chi]$}
+      \RightLabel{$l\lor$}
+      \BinaryInfC{$\Gamma,\varphi\lor\psi\vdLJ[\chi]$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLJ\varphi$}
+      \RightLabel{$r\lor_1$}
+      \UnaryInfC{$\Gamma\vdLJ \varphi\lor\psi$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma\vdLJ\psi$}
+      \RightLabel{$r\lor_2$}
+      \UnaryInfC{$\Gamma\vdLJ\varphi\lor\psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma,\varphi\vdLJ[\chi]$}
+      \RightLabel{$l\land_1$}
+      \UnaryInfC{$\Gamma,\varphi\land\psi\vdLJ[\chi]$}
+      \DisplayProof
+      \quad
+      \AxiomC{$\Gamma,\psi\vdLJ[\chi]$}
+      \RightLabel{$l\land_2$}
+      \UnaryInfC{$\Gamma,\varphi\land\psi\vdLJ[\chi]$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLJ \varphi$}
+      \AxiomC{$\Gamma\vdLJ \psi$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Gamma\vdLJ \varphi\land\psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma\vdLJ\varphi$}
+      \AxiomC{$\Gamma,\psi\vdLJ[\chi]$}
+      \RightLabel{$l\to$}
+      \BinaryInfC{$\Gamma,\varphi\to\psi\vdLJ[\chi]$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma,\varphi\vdLJ\psi$}
+      \RightLabel{$r\to$}
+      \UnaryInfC{$\Gamma\vdLJ\varphi\to\psi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi[t/x] \vdLJ[\psi]$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma, \forall x, \varphi \vdLJ[\psi]$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma\vdLJ \varphi$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Gamma \vdLJ \forall x\, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma, \varphi \vdLJ[\psi]$}
+      \RightLabel{$l\exists^\dagger$}
+      \UnaryInfC{$\Gamma, \exists x, \varphi \vdLJ[\psi]$}
+      \DisplayProof
+      &
+      \AxiomC{$\Gamma \vdLJ \varphi[t/x]$}
+      \RightLabel{$r\exists$}
+      \UnaryInfC{$\Gamma \vdLJ \exists x\, \varphi$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\Gamma[u / x] \vdLJ [\varphi[u / x]]$}
+      \RightLabel{$l=$}
+      \UnaryInfC{$\Gamma[t / x], t = u \vdLJ [\varphi[t / x]]$}
+      \DisplayProof
+      &
+      \AxiomC{}
+      \RightLabel{$r=$}
+      \UnaryInfC{$\vdLJ t = t$}
+      \DisplayProof
+    \end{tabular}
+    %}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles de $\LJ$}
+  \label{tbl.LJ}
+
+  \hrule
+\end{table}
+
+La présentation donnée ici de $\LJ$ est une présentation vers le haut,
+optimisée pour la recherche de preuve. Combinée au \cref{thm.cut.elim}, elle
+permet de prouver efficacement qu'un séquent n'est pas prouvable en logique
+intuitionniste.
+
+\begin{example}
+  Montrons que l'une des lois de De Morgan n'est pas prouvable en logique
+  intuitionniste~:
+  \[\nvdLJ \lnot (\varphi \land \psi) \to \lnot \varphi \lor \lnot \psi\]
+  Pour cela, on suppose qu'on a un arbre sans coupure dont la conclusion est
+  $\vdLJ\lnot(\varphi\land\psi)\to\lnot\varphi\lor\lnot\psi$. On raisonne alors
+  sur les règles qui se situent au-dessus de ce séquent. Il ne peut pas y
+  avoir de règle structurelle~: $lc$, $le$ et $lw$ sont inapplicables par
+  absence de formules à gauche, et $rw$ signifierait que $\vdLJ$ est
+  prouvable, ce qu'on a déjà montré comme impossible. Il reste donc une
+  règle logique à appliquer, qui est $r\to$.
+  On a ainsi à prouver $\lnot(\varphi\land\psi)\vdLJ\lnot\varphi\lor\lnot\psi$.
+  Là encore, appliquer une règle structurelle ne changerait rien~:
+  l'échange ou la contraction ne permettent pas de faire avancer la preuve
+  (on peut supposer qu'on en fait un certain nombre, et on regarder alors le
+  séquent $[\lnot(\varphi\land\psi)]^n\vdLJ\lnot\varphi\lor\lnot\psi$). On
+  doit donc appliquer une règle logique. La règle $l\lnot$ ne peut pas
+  s'appliquer s'il existe déjà une règle à droite, donc les seules règles
+  possibles sont $r\lor_1$ et $r\lor_2$.
+
+  On en déduit donc que, si
+  $\lnot(\varphi\land\psi)\vdLJ\lnot\varphi\lor\lnot\psi$ est prouvable, alors
+  $\lnot(\varphi\land\psi)\vdLJ\lnot\varphi$ est prouvable, ou
+  $\lnot(\varphi\land\psi)\vdLJ\lnot\psi$ est prouvable. Cependant, ces
+  deux séquents ne sont pas prouvables, puisqu'ils sont faux même en
+  logique classique. On en déduit
+  \[\nvdLJ \lnot (\varphi \land \psi) \to \lnot \varphi \lor \lnot \psi\]
+\end{example}
+
+Dans cette preuve, l'argument central est le fait que si
+$\vdLJ\varphi\lor\psi$ est prouvable, alors il faut avoir appliqué l'une des
+deux règles $r\lor_1$ ou $r\lor_2$, qui forcent la prouvabilité de
+$\vdLJ\varphi$ ou de $\vdLJ\psi$. On peut l'exprimer par la propriété de la
+disjonction.
+
+\begin{property}[Disjonction]
+  Le calcul $\LJ$ a la propriété de la disjonction, ce qui signifie que si
+  $\vdLJ\varphi \lor \psi$, alors $\vdLJ\varphi$ ou $\vdLJ\psi$.
+\end{property}
+
+\begin{proof}
+  Comme dit précédemment, les seules règles pouvant être appliquée dans un arbre
+  sans coupure et dont la conclusion est $\vdLJ\varphi\lor\psi$ sont
+  $r\lor_1$ et $r\lor_2$, donnant respectivement que $\vdLJ\varphi$ et que
+  $\vdLJ\psi$ sont prouvables.
+\end{proof}
+
+Comme le quantificateur $\exists$ peut s'interpréter comme une version plus
+générale de la disjonction (portant sur les objets et non sur deux formules),
+c'est sans surprise que $\vdLJ$ vérifie une propriété analogue pour la
+quantification existentielle.
+
+\begin{property}[Témoin]
+  Le calcul $\LJ$ a la propriété du témoin, ce qui signifie que si
+  $\vdLJ\exists x,\varphi$, alors il existe un terme $t$ tel que
+  $\vdLS\varphi[t/x]$.
+\end{property}
+
+\begin{proof}
+  Si $\vdLJ\exists x, \varphi$ est prouvable, alors il existe un arbre de
+  preuve de $\LJ$ sans coupure dont la conclusion est ce séquent. La dernière
+  règle ne peut alors être que $r\exists$, d'où le résultat.
+\end{proof}
+
+La propriété du témoin est un renforcement notable du \cref{thm.Herbrand},
+puisqu'on remplace un ensemble fini de termes en un seul terme. Remarquons que
+la preuve de la propriété du témoin est bien plus directe (sous réserve d'avoir
+prouvé l'élimination des coupures), puisqu'elle ne nécessite pas de réécrire les
+arbres de preuve pour avoir le théorème du séquent du milieu. Cela est dû au
+fait qu'il n'y a qu'une seule règle à analyser~: le témoin est introduit dès
+la règle précédent la conclusion, alors que dans le cas classique il est
+possible de faire des contractions pour multiplier $\exists x,\varphi$ puis,
+depuis ces multiples exemplaires, de raisonner sur certains exemplaires avant
+d'en multiplier d'autres. Le théorème du séquent du milieu, et la réécriture qui
+y mène, permettent de regrouper toutes les règles quantitatives d'abord,
+permettant de raisonner comme si les seules règles applicables sont les
+règles quantifitatives.
+
+Ces propriétés sont particulièrement fortes, puisqu'elles donnent à la
+quantification existentielle une valeur de témoin explicite. Cependant, ces
+deux propriétés ne se généralisent pas en présence d'un contexte gauche, et
+donc lorsqu'on raisonne dans une théorie.
+
+\begin{exercise}
+  Montrer qu'il existe un séquent qui est prouvable dans $\LJ$, dont la
+  conclusion est de la forme $\Gamma\vdLJ\varphi\lor \psi$, et tel que
+  ni $\Gamma\vdLJ\varphi$ ni $\Gamma\vdLJ\psi$ ne sont prouvables.
+  Faire de même pour $\exists x, \varphi$.
+\end{exercise}
+
+En l'état, notre système de preuve $\LJ$ a donc de bonnes propriétés uniquement
+pour prouver des résultats généraux, qui sont des tautologies intuitionnistes
+absolues. On peut alors chercher à construire des systèmes de preuves plus
+spécialisés, dans lesquels on définit des règles supplémentaires pour éviter
+de recourir à des axiomes, et ainsi garder les propriétés de disjonction et du
+témoin. C'est en partie ce que construisent les théories des types.
+
+Nous nous tournons maintenant vers un problème important~: quelle est la
+sémantique d'une formule dans la logique intuitionniste ? Une première approche
+est celle des algèbres de Lindenbaum-Tarski, en prenant l'ensemble décrit dans
+l'\cref{exo.LinTar.LJ}. On peut ainsi considérer que, de la même façon qu'une
+algèbre de Boole correspond à une structure logique valide pour la logique
+classique, une algèbre de Heyting correspond à une structure logique valide
+pour la logique intuitionniste.
+
+La limitation de cette approche est l'absence d'une vraie notion de modèle,
+telle que développée en théorie des modèles. \'Etant donnée une signature
+$\Sigma$, une $\Sigma$-structure n'interprètera jamais que la logique classique,
+étant donné que tout structure vérifie une proposition ou sa négation.
+
+On cherche donc un moyen de construire des structures dont la sémantique
+naturelle corresponde à la logique intuitionniste, c'est-à-dire qu'étant donné
+un tel modèle $\mathcal M$, on souhaite que l'ensemble des formules $\varphi$
+telles que $\mathcal M\models \varphi$ soit une algèbre de Heyting, et non
+forcément une algèbre de Boole.
+
+\subsection{Sémantique et modèles de Kripke}
+
+L'obstacle majeur à contourner est le fait qu'une structure induise toujours une
+théorie complète. Cependant, une théorie logique est, \latinexpr{a priori},
+une théorie incomplète. Dans un tel cas, le lien entre les deux est qu'une
+théorie $\mathcal T$ induit un ensemble de théories complètes,
+$\ext(\mathcal T)$, qui correspond à l'ensemble des théories induites par les
+modèles de $\mathcal T$. Ainsi, le candidat naturel pour réduire une théorie
+complète est de considérer des ensembles de structures.
+
+On considère donc un ensemble $\mathcal S$ de structures, dont on souhaite
+construire une interprétation. Une façon naïve de procéder est de considérer
+l'ensemble des formules qui sont valides dans l'ensemble des structures de
+$\mathcal S$. On obtient alors à nouveau la théorie $\mathcal T$, mais cette
+théorie est encore classique. En effet, l'énoncé $\varphi\lor\lnot\varphi$ est
+vérifie dans toutes les structures, et nous sommes donc toujours dans le monde
+de la logique classique.
+
+On souhaite donc raffiner notre modèle~: plutôt que de considérer une famille de
+structures, on va considérer une méta-structure reliant les structures. On va
+définir des structures liées ou non à d'autres, de sorte que la satisfaction
+pour une structure donnée puisse se considérer à l'aune des autres structures.
+En un sens, on transforme la partie locale de notre satisfaction, de sorte que
+\og satisfaire $\varphi$ dans $\mathcal M$ \fg ait un sens différent, qui prend
+en compte la satisfaction de $\varphi$ dans d'autres structures. On définit
+ainsi un cadre de Kripke.
+
+\begin{definition}[Cadre de Kripke]
+  Un cadre de Kripke est une paire $(W,R)$ où $R$ est une relation binaire sur
+  $W$. On appelle monde un élément $w \in W$. On dira que $w'$ est un futur
+  de $w$ si $wRw'$.
+\end{definition}
+
+L'intérêt d'un cadre de Kripke est de fixer la relation de dépendance des
+structures qu'on va considérer. Un structure de Kripke va alors consister en la
+donnée, pour chaque monde, d'une $\Sigma$-structure comme on en a l'habitude.
+La relation $R$ sera, elle, représentée par un morphisme de structures.
+
+\begin{definition}[Structure de Kripke]
+  Soit $\Sigma$ une signature du premier ordre.
+  Une $\Sigma$-structure de Kripke est la donnée d'un cadre de Kripke $(W,R)$
+  ainsi que, pour chaque monde $w \in W$, d'une $\Sigma$-structure
+  $\mathcal M_w$ et, pour tous $wRw'$, d'un morphisme de $\Sigma$-structures
+  $f_{w,w'} : \mathcal M_w \to \mathcal M_{w'}$ tel que si
+  $wRw', w'Rw''$ et $wRw''$ alors
+  $f_{w',w''}\circ f_{w,w'} = f_{w,w''}$ et si $wRw$ alors
+  $f_{w,w} = \id_{\mathcal M_w}$.
+\end{definition}
+
+\begin{notation}
+  On notera dorénavant les structures de kripke par $\mathcal K$, où la
+  structure du monde $w$ sera notée $\mathcal K_w$ et le morphisme de $w$ à
+  $w'$ sera noté $\mathcal K_{w,w'}$.
+\end{notation}
+
+\begin{remark}
+  Le lecteur ayant un bagage en théorie des catégories peut faire un parallèle
+  avec la notion de foncteur. Dans le cas où $(W,R)$ est un pré-ordre, une
+  $\Sigma$-structure de Kripke sur $(W,R)$ est exactement un foncteur de ce
+  pré-ordre vu comme une catégorie, dans la catégorie des $\Sigma$-structures.
+\end{remark}
+
+De cette façon, on peut définir localement, en un monde $w$, la structure
+$\mathcal M_w$ correspondante. On peut aussi, depuis ce monde, considérer tous
+les mondes futurs de ce monde, et les examiner.
+
+Pour interpréter ces opérations sur les mondes, on peut utiliser la logique
+modale. En donnant un aspect temporel aux modalités, la possibilité s'interprète
+comme l'existence d'un monde futur où une propriété est vérifiée, et la
+nécessité s'interprète comme le fait que la propriété est vérifiée pour tout
+monde futur.
+
+\begin{definition}[Logique modale]
+  On définit l'ensemble $\FormMod(\Sigma)$ des formules de logique modale sur
+  une signature $\Sigma$ par
+  \[\varphi,\psi \Coloneq a\mid \top\mid\bot\mid\lnot\varphi\mid\varphi\lor\psi
+  \mid\varphi\land\psi\mid\varphi\to\psi\mid\forall x,\varphi\mid
+  \exists x, \varphi\mid \square\varphi\mid\diamond\varphi\]
+  où $a \in \Atom(\Sigma)$ et $x \in \Var$.
+\end{definition}
+
+\begin{definition}[Satisfaction dans une structure de Kripke]
+  Soit $\Sigma$ une signature du premier ordre.
+  Soit $\mathcal K$ une $\Sigma$-structure de Kripke sur un cadre $(W,R)$,
+  $\varphi \in \FormMod(\Sigma)$ et $\rho$ un environnement du premier ordre
+  contenant les variables libres de $\varphi$. Pour tout $w \in W$, on
+  définit la relation de satisfaction, encore appelée la relation de forcing,
+  notée $w,\rho\Vdash \varphi$, par induction sur $\varphi$~:
+  \begin{itemize}
+  \item si $\varphi = R(t_1,\ldots,t_n)$ où $R$ est un symbole de relation
+    d'arité $n$, alors
+    \[w,\rho\Vdash\varphi \defeq
+    (\rho(t_1),\ldots,\rho(t_n)) \in R^{\mathcal K_w}\]
+  \item si $\varphi = \top$, alors $w,\rho\Vdash \varphi$ est toujours vérifiée
+  \item si $\varphi = \bot$, alors $w,\rho\Vdash \varphi$ n'est jamais vérifiée
+  \item si $\varphi = \lnot \psi$, alors
+    $w,\rho\Vdash\varphi \defeq w,\rho\nVdash\psi$
+  \item si $\varphi = \psi \lor \chi$, alors
+    $w,\rho\Vdash\varphi \defeq (w,\rho\Vdash \psi)\lor(w,\rho\Vdash\chi)$
+  \item si $\varphi = \psi \land \chi$, alors
+    $w,\rho\Vdash\varphi \defeq (w,\rho\Vdash \psi)\land(w,\rho\Vdash\chi)$
+  \item si $\varphi = \psi \to \chi$, alors
+    $w,\rho\Vdash\varphi \defeq (w,\rho\Vdash \psi)\implies(w,\rho\Vdash\chi)$
+  \item si $\varphi = \forall x, \psi$, alors
+    $w,\rho\Vdash\varphi \defeq \forall k \in |\mathcal K_w|,
+    w,\rho[x \mapsto k]\Vdash \psi$
+  \item si $\varphi = \exists x, \psi$, alors
+    $w,\rho\Vdash\varphi \defeq \exists k \in |\mathcal K_w|,
+    w,\rho[x \mapsto k]\Vdash \psi$
+  \item si $\varphi = \square \psi$, alors
+    $w,\rho\Vdash\varphi \defeq \forall w' \in W, wRw' \implies
+    w',\mathcal K_{w,w'}(\rho)\Vdash\psi$
+  \item si $\varphi = \diamond \psi$, alors
+    $w,\rho\Vdash\varphi \defeq \exists w' \in W, wRw' \land
+    (w',\mathcal K_{w,w'}\rho\Vdash\psi)$
+  \end{itemize}
+  Dans le cas où $\varphi$ est une formule close, on note
+  $w\Vdash\varphi$ directement.
+
+  On définit le fait que $\mathcal K$ satisfait $\varphi$ par
+  \[\mathcal K\models \varphi \defeq \forall w \in W, w\Vdash \varphi\]
+\end{definition}
+
+Cette notion de satisfaction de formule est plus fine, puisqu'elle permet de
+conditionner l'évaluation d'une formule à son évaluation dans les mondes
+futurs.
+
+Remarquons que l'aspect modal des formules ne dépend que de la forme du cadre
+dans lequel on définit une structure. De plus, on souhaite que certains schémas
+d'axiomes soient vérifiés, pour spécifier des versions plus fortes de la
+logique modale. On a déjà vu les axiomes définissant le système $S4$, et on va
+donc en donner un pendant sémantique.
+
+\begin{proposition}[Règle $N$ et axiome $K$]
+  Pour toute formule $\varphi$, si dans une $\Sigma$-structure de Kripke
+  $\mathcal K$, $\mathcal K \models \varphi$, alors
+  $\mathcal K \models \square\varphi$.
+  De plus,
+  $\mathcal K \models \square(\varphi \to \psi) \to
+  \square \varphi \to \square\psi$.
+\end{proposition}
+
+\begin{proof}
+  Si $\mathcal K \models \varphi$, alors on sait que pour tout
+  $w \in W_{\mathcal K}$, $w\Vdash\varphi$. Mais alors, pour tous
+  $w,w'\in W_{\mathcal K}$ tels que $wRw'$, on sait que $w'\Vdash\varphi$,
+  donc $w\Vdash\square\varphi$. D'où $\mathcal K \models\square\varphi$.
+
+  Pour montrer que l'axiome $K$ est vérifié, on considère
+  $w \in W_{\mathcal K}$ tel que $w\Vdash\square(\varphi\to\psi)$ et
+  $w\Vdash\square \varphi$. Alors, par définition, pour tout $w'$ tel que
+  $wRw'$, $w'\Vdash\varphi \to \psi$ et $w'\Vdash\varphi$, donc
+  $w'\Vdash\psi$. Ainsi, $w\Vdash\square\psi$, d'où le résultat.
+\end{proof}
+
+On voit donc que la règle $N$ et l'axiome $K$ sont, quoi qu'il arrive,
+vérifiés dans la sémantique des modèles de Kripke. Avec notre calcul des
+séquents $S4$, on vérifie aussi l'axiome $T$ et l'axiome $4$. Ces deux
+conditions ne sont, elles, pas respectées par n'importe quelle structure de
+Kripke. Cependant, deux conditions simples sur les cadres sont équivalents à ces
+axiomes.
+
+\begin{proposition}
+  Soit $(W,R)$ un cadre de Kripke. Une structure de Kripke sur $(W,R)$ vérifie
+  l'axiome $T$ si $R$ est une relation réflexive, et vérifie
+  l'axiome $4$ si $R$ est une relation transitive.
+\end{proposition}
+
+\begin{proof}
+  Pour un monde $w \in W$, si $wRw$ et $w\Vdash\square\varphi$, alors
+  $w\Vdash\varphi$ par définition de la sémantique de $\square$. Ainsi, si
+  $R$ est transitive, pour tout $w \in W$ et formule $\varphi$,
+  $w\Vdash\square\varphi\to\varphi$.
+
+  Supposons $R$ transitive, et soit $w \in W$. Si $w \Vdash \square\varphi$, on
+  en déduit donc que pour tout $w'$ tel que $wRw', w'\Vdash\varphi$. Mais
+  pour tout $w'$ tel que $wRw'$,
+  comme $R$ est transitive, on en déduit que pour tout $w'$ tel que $w'Rw''$,
+  $wRw''$. Cela signifie que $w'\Vdash\square\varphi$, d'où
+  $w\Vdash\square\square\varphi$, donc
+  $w\Vdash\square\varphi\to\square\square\varphi$.
+\end{proof}
+
+\begin{corollary}
+  Soit $(W,\leq)$ un ensemble pré-ordonné. Toute structure de Kripke sur
+  $(W,\leq)$ est correcte vis à vis du fragment $S4$.
+\end{corollary}
+
+\begin{proof}
+  On se propose d'en donner une preuve plus directe, en considérant directement
+  les règles du calcul des séquents. On ne travaille qu'avec les règles pour
+  $\square$, les deux autres étant symétriques. Pour la preuve par induction,
+  on veut montrer que si $\Gamma\vdLS\Delta$ et que $\mathcal K$ est une
+  structure de Kripke sur un pré-ordre qui vérifie
+  $\bigwedge\Gamma$, alors il satisfait $\bigvee \Delta$. On notera plus
+  simplement $\mathcal K \models\Gamma$ pour $\mathcal K\models\bigwedge\Gamma$.
+
+  \begin{itemize}
+  \item cas $l\square$~: on suppose que
+    $\mathcal K \models \Gamma,\square\varphi$ et notre hypothèse d'induction
+    est que pour tout $\mathcal K'$ tel que $\mathcal K' \models\Gamma,\varphi$,
+    $\bigvee\Delta$ est satisfaite dans $\mathcal K'$.
+    Alors, pour tout $w \in \mathcal K$, on sait que
+    $w\Vdash\Gamma,\square\varphi$, mais alors
+    $w\Vdash\Gamma,\varphi$ car $w\leq w$, donc
+    $\mathcal K \models \Gamma,\varphi$, d'où le résultat par hypothèse
+    d'induction.
+  \item cas $r\square^\ddagger$~: on suppose que
+    $\mathcal K \models \Gamma$ et que toutes les formules de
+    $\Gamma$ sont de la forme $\square \psi$. Par hypothèse d'induction,
+    comme $\mathcal K \models \Gamma$, on sait que
+    $\mathcal K\models \varphi\lor\bigvee\Delta$. $\Delta$ est supposée de la
+    forme $\diamond \psi$ pour toute formule $\psi$ dans $\Delta$.
+
+    Soit $w \in W$, on sait donc que $w\Vdash \varphi$ ou que
+    $w\Vdash \bigvee\Delta$. Si $w\Vdash\bigvee\Delta$, alors on en
+    déduit que $w\Vdash\square\varphi\lor\bigvee\Delta$, comme attendu.
+    Sinon, montrons que $w\Vdash\square\varphi\lor\bigvee\Delta$.
+    Pour tout $w'$ tel que $w\leq w'$, on sait que $w'\Vdash\Gamma$, donc que
+    $w'\Vdash\varphi\lor\bigvee\Delta$. On procède alors par disjonction de cas.
+
+    S'il existe $w'$ tel que $w'\Vdash\diamond\psi$, où $\diamond\psi$ est une
+    formule de $\Delta$, alors on en déduit qu'il existe $w''$ tel que
+    $w'\leq w''$ et $w''\Vdash \psi$, mais alors $wRw''$ par transitivité de
+    $\leq$, et donc $w\Vdash\diamond \psi$. Ainsi,
+    $w\Vdash\varphi\lor\bigvee\Delta$.
+
+    Si pour tout $w'$, $w'\Vdash\varphi$, alors on sait que
+    $w\Vdash\square\varphi$.
+
+    On a ainsi montré que pour tout $w\in W$,
+    $w\Vdash\square\varphi\lor\bigvee\Delta$.
+  \end{itemize}
+  On en déduit par induction (les autres cas étant identiques aux cas d'une
+  structure pour la logique classique) que $\vdLS$ est correct pour toute
+  structure de Kripke sur un pré-ordre.
+\end{proof}
+
+La réciproque est, elle aussi, vraie~: la classe des structures de Kripke sur
+des pré-ordres donne une sémantique complète vis à vis du fragment $S4$,
+c'est-à-dire que toute formule vraie dans toute structure de Kripke sur
+un pré-ordre, est prouvable dans $S4$.
+
+\begin{theorem}[Complétude des pré-ordres pour $S4$]
+  Soit $\Gamma\vdash\Delta$ un séquent pour la logique modale $S4$. Si pour
+  toute structure $\mathcal K$ sur un pré-ordre telle que
+  $\mathcal K\models \Gamma$, alors $\mathcal K\models\bigvee\Delta$, alors
+  $\Gamma\vdLS\Delta$.
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+En conclusion, on a une notion sémantique (celle de modèle de Kripke) et une
+notion syntaxique (celle de logique modale) qui permettent de construire des
+modèles dans lesquels on a plus de contrôle sur la satisfaction de formules.
+
+On vérifie cependant toujours le tiers exclu, puisque dans tout modèle (au sens
+classique) $\varphi\lor\lnot\varphi$ est vérifié.
+
+L'intérêt de la logique modale est alors de changer l'interprétation des
+formules intuitionnistes, en rajoutant des modalités.
+
+\begin{definition}[Traduction de la logique intuitionniste dans la logique
+    modale $S4$]
+  Soit $\varphi$ une formule (non modale) sur une signature $\Sigma$, on
+  définit sa traduction $\varphi_{\square}$ inductivement par~:
+  \begin{itemize}
+  \item si $\varphi = R(t_1,\ldots,t_n)$, alors
+    $\varphi_\square \defeq \square R(t_1,\ldots,t_n)$
+  \item si $\varphi = \top$, alors $\varphi_\square \defeq \top$
+  \item si $\varphi = \bot$, alors $\varphi_\square \defeq \bot$
+  \item si $\varphi = \lnot \psi$, alors
+    $\varphi_{\square} \defeq \square\lnot\psi_\square$
+  \item si $\varphi = \psi \lor \chi$, alors
+    $\varphi_\square \defeq \psi_\square\lor \chi_\square$
+  \item si $\varphi = \psi \land \chi$, alors
+    $\varphi_\square \defeq \psi_\square\land\chi_\square$
+  \item si $\varphi = \psi \to \chi$, alors
+    $\varphi_\square \defeq \square(\psi_\square \to \chi_\square)$
+  \item si $\varphi = \forall x, \psi$, alors
+    $\varphi_\square = \square \forall x,\psi_\square$
+  \item si $\varphi = \exists x, \psi$, alors
+    $\varphi_\square = \exists x, \psi_\square$.
+  \end{itemize}
+\end{definition}
+
+La traduction d'une formule en logique modale ajoute donc une modalité
+$\square$ aux atomes, aux implications, aux négations et aux quantifications
+universelles. Si on considère la négation $\lnot\varphi$ comme $\varphi\to\bot$,
+il est naturel qu'il faille ajouter une modalité $\square$.
+
+Ce qui rend les derniers constructeurs particuliers, et qui motive le fait de
+leur ajouter une modalité $\square$, est leur caractère négatif. Quand on
+considère $\forall x, \varphi$, la formule peut être vue comme une fonction qui
+attend d'abord en argument une valeur à substituer à $x$. De même, la formule
+$\varphi \to \psi$ attend d'abord une preuve de $\varphi$, avant d'en déduire
+$\psi$. Pour les atomes, la nécessité d'ajouter une modalité $\square$ vient du
+fait que la vérité de $R(t_1,\ldots,t_n)$ doit être établie de façon durable,
+peu importe le futur considéré.
+
+On peut maintenant définir la satisfaction d'une formule dans un modèle de
+Kripke pour la logique intuitionniste.
+
+\begin{definition}[Sémantique intuitionniste]
+  Soit $\mathcal K$ un modèle de Kripke sur un ensemble pré-ordonné
+  $(W,\leq)$. Pour un environnement d'interprétation $\rho$ et une formule
+  $\varphi$ telle que $\VL(\varphi)\subseteq\dom(\rho)$, on définit
+  $w,\rho\Vdash\varphi$ par induction sur $\varphi$~:
+  \begin{itemize}
+  \item si $\varphi = R(t_1,\ldots,t_n)$, alors
+    $w,\rho\Vdash\varphi \defeq \forall w' \geq w,
+    \mathcal K_{w,w'}(\rho(t_1)),\ldots,\mathcal K_{w,w'}(\rho(t_n)) \in
+    R^{\mathcal K_{w'}}$
+  \item si $\varphi = \top$, alors $w,\rho\Vdash\varphi$
+  \item si $\varphi = \bot$, alors $w,\rho\nVdash\varphi$
+  \item si $\varphi = \lnot \psi$, alors
+    $w,\rho\Vdash\varphi \defeq \forall w' \geq w,
+    w',\rho\nVdash\psi$
+  \item si $\varphi = \psi \lor \chi$, alors
+    $w,\rho\Vdash\varphi \defeq (w,\rho\Vdash\psi) \lor (w,\rho\Vdash\chi)$
+  \item si $\varphi = \psi \land\chi$, alors
+    $w,\rho\Vdash\varphi \defeq (w,\rho\Vdash\psi) \land(w,\rho\Vdash\chi)$
+  \item si $\varphi = \psi \to \chi$, alors
+    $w,\rho\Vdash\varphi \defeq \forall w'\geq w,
+    (w',\rho\Vdash\psi)\implies (w',\rho\Vdash\chi)$
+  \item si $\varphi = \forall x, \psi$, alors
+    $w,\rho\Vdash\varphi \defeq \forall w'\geq w,
+    \forall k \in \mathcal K_{w'},
+    w',\rho[x\mapsto k]\Vdash \psi$
+  \item si $\varphi = \exists x, \psi$, alors
+    $w,\rho\Vdash\varphi\defeq \exists k \in \mathcal K_{w},
+    w,\rho[x\mapsto k]\Vdash \psi$
+  \end{itemize}
+  Pour une formule close, on note directement $w\Vdash\varphi$.
+
+  On définit la satisfaction d'une formule $\varphi$ par un modèle $\mathcal K$
+  par
+  \[\mathcal K \models \varphi \defeq \forall w \in W, w\Vdash \varphi\]
+\end{definition}
+
+\begin{remark}
+  La sémantique de Kripke intuitionniste n'est définie que pour des modèles de
+  Kripke sur des pré-ordres, on ne précisera donc pas ce fait quand on parlera
+  de modèle de Kripke pour la logique intuitionniste, à l'avenir.
+\end{remark}
+
+Avec cette sémantique, on peut de nouveau considérer la formule
+$\varphi\lor\lnot\varphi$. Satisfaire une telle formule à un monde $w$
+signifie que soit $w\Vdash\varphi$, soit aucun futur de $w$ ne satisfait
+$\varphi$. \'Evidemment, il existe des situations ou aucune des deux options
+n'est vérifiée.
+
+\begin{exercise}
+  Exhiber un contre-modèle de Kripke dans lequel $\varphi\lor\lnot\varphi$
+  n'est pas vérifié. \textit{Indication~: on pourra prendre une signature
+    contenant uniquement un symbole de relation $0$-aire, c'est-à-dire une
+    variable propositionnelle.}
+\end{exercise}
+
+On souhaite maintenant montrer que cette sémantique de Kripke est complète
+pour la logique intuitionniste, c'est-à-dire que $\Gamma\vdLJ\varphi$ est
+prouvable si et seulement si pour tout modèle de Kripke $\mathcal K$ tel que
+$\mathcal K\models\bigwedge\Gamma$, on a $\mathcal K\models\varphi$.
+
+\begin{exercise}
+  Montrer la correction de $\LJ$ pour cette sémantique, c'est-à-dire le sens
+  direct de l'équivalence mentionnée.
+\end{exercise}
+
+Plutôt que de démontrer à nouveau un théorème de complétude, on va utiliser la
+traduction de la logique intuitionniste dans la logique modale $S4$.
+
+\begin{theorem}[Plongement de Gödel-McKinsey-Tarski
+    \cite{Godel1932-GDEZIA,McKinsey1948-MCKSTA}]
+    Soit $\Sigma$ une signature du premier ordre.
+    Pour tous $\Gamma\in\List(\Formula(\Sigma)), \varphi\in\Formula(\Sigma)$,
+    on a l'équivalence
+    \[\Gamma\vdLJ\varphi \iff \Gamma_\square\vdLS\varphi_\square\]
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
+
+\begin{corollary}
+  La sémantique de Kripke intuitionniste est complète vis à vis de $\LJ$.
+\end{corollary}
