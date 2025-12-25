@@ -4490,7 +4490,74 @@ traduction de la logique intuitionniste dans la logique modale $S4$.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  La preuve se fait naturellement par double implication.
+
+  \begin{itemize}
+  \item Pour montrer que
+    $\Gamma\vdLJ\varphi\implies\Gamma_\square\vdLS\varphi_\square$, on
+    raisonne par induction sur $\vdLJ$. Cependant, avant de procéder à cette
+    induction, on donne un lemme important sur la traduction des formules~:
+    \begin{quote}
+      Pour toute formule $\psi$, $\psi_\square \dashv\vdLS \square\psi_\square$.
+    \end{quote}
+    Le résultat est une induction directe sur $\psi$, que l'on peut vérifier
+    en considérant l'aspect sémantique~: $\psi_\square$ est vérifiée en un monde
+    si et seulement si $\square\psi_\square$ est vérifiée en ce monde.
+
+    On procède maintenant à l'induction sur $\vdLJ$ (sans ajouter le cas des
+    coupures, grâce au théorème d'élimination des coupures).
+    \begin{itemize}
+    \item Le résultat est direct dans les cas où la traduction ne modifie pas
+      les formules, c'est-à-dire
+      $lc,le,lw,rw,l\lor,r\lor_1,r\lor_2,l\land_1,l\land_2,r\land,l\exists,
+      r\exists$.
+    \item cas $l\lnot$~: on suppose que $\Gamma_\square\vdLS\varphi_\square$,
+      mais alors $\Gamma_\square,\lnot\varphi_\square\vdLS$ par $l\lnot$, puis
+      $\Gamma_\square,\square\lnot\varphi_\square\vdLS$ par $l\square$.
+    \item cas $r\lnot$~: on suppose que $\Gamma_\square,\varphi_\square\vdLS$,
+      donc $\Gamma_\square\vdLS\lnot\varphi_\square$ par $r\lnot$, et puisque
+      $\Gamma_\square$ est équivalent à $\square\Gamma_\square$, on peut
+      $r\square^\ddagger$ pour avoir
+      $\Gamma_\square\vdLS\square\lnot\varphi_\square$.
+    \item Dans tous les autres cas, il suffit de procéder de façon analogue~:
+      pour la règle gauche, on applique la même règle puis $l\square$ et pour
+      la règle droite, on applique la même règle puis $r\square^\ddagger$, dont
+      la condition est vérifiée grâce au fait que $\Gamma_\square$ est
+      équivalent à $\square\Gamma_\square$.
+    \end{itemize}
+  \item Pour le sens réciproque, on raisonne par induction sur la taille d'un
+    arbre de preuve de $\Gamma_\square\vdLS\varphi_\square$. On raisonne par cas
+    sur les dernières règles utilisées pour arriver à ce séquent~:
+    \begin{itemize}
+    \item si les règles sont $ax,lc,le,lw,rw,l\lor,r\lor_1,r\lor_2,l\land_1,l
+      \land_2,r\land,l\exists,r\exists$, alors appliquer la même règle depuis
+      l'hypothèse d'induction donne le résultat~;
+    \item pour $a \in \{\lnot,\to,\forall,=\}$, si les deux dernièes règles ne
+      sont pas $l\square$ en-dessous de $la$, appliquées à la même formule,
+      alors on peut commuter $l\square$ de sorte à ce que la dernière règle
+      soit l'une des règles gauches déjà traitées, et le même argument
+      s'applique aux règles droites~;
+    \item si les deux dernières règles sont $l\square$ en-dessous de
+      $la$, alors on peut appliquer l'hypothèse d'induction sur le
+      sous-arbre au-dessus de ces deux règles et réappliquer $la$ pour
+      obtenir le résultat~;
+    \item si l'arbre de preuve est de la forme
+      \begin{prooftree}
+        \AxiomC{$\mathlarger{\pi}$}
+        \noLine
+        \UnaryInfC{$\Gamma_\square,\varphi_\square\vdLS $}
+        \RightLabel{$r\lnot$}
+        \UnaryInfC{$\Gamma_\square\vdLS\lnot\varphi_\square$}
+        \RightLabel{$r\square^\ddagger$}
+        \UnaryInfC{$\Gamma_\square\vdLS\square\lnot\varphi_\square$}
+      \end{prooftree}
+      alors on trouve $\pi'\concl \Gamma,\varphi\vdLS$, qui nous donne par la
+      règle $r\lnot$ que $\Gamma\vdash\varphi$.
+    \item les autres cas se traitent de façon similaire.
+    \end{itemize}
+  \end{itemize}
+
+  On en déduit l'équivalence recherchée.
 \end{proof}
 
 \begin{corollary}
