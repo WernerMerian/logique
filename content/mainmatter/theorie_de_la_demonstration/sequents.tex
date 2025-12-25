@@ -4220,7 +4220,8 @@ axiomes.
     $w\Vdash \bigvee\Delta$. Si $w\Vdash\bigvee\Delta$, alors on en
     déduit que $w\Vdash\square\varphi\lor\bigvee\Delta$, comme attendu.
     Sinon, montrons que $w\Vdash\square\varphi\lor\bigvee\Delta$.
-    Pour tout $w'$ tel que $w\leq w'$, on sait que $w'\Vdash\Gamma$, donc que
+    Pour tout $w'$ tel que $w\leq w'$, on sait que $w'\Vdash\Gamma$ car les
+    formules de $\Gamma$ sont de la forme $\square\psi$, donc que
     $w'\Vdash\varphi\lor\bigvee\Delta$. On procède alors par disjonction de cas.
 
     S'il existe $w'$ tel que $w'\Vdash\diamond\psi$, où $\diamond\psi$ est une
@@ -4247,14 +4248,118 @@ un pré-ordre, est prouvable dans $S4$.
 
 \begin{theorem}[Complétude des pré-ordres pour $S4$]
   Soit $\Gamma\vdash\Delta$ un séquent pour la logique modale $S4$. Si pour
-  toute structure $\mathcal K$ sur un pré-ordre telle que
-  $\mathcal K\models \Gamma$, alors $\mathcal K\models\bigvee\Delta$, alors
+  toute structure $\mathcal K$ sur un pré-ordre,
+  $\mathcal K\models \bigwedge\Gamma \to \bigvee\Delta$, alors
   $\Gamma\vdLS\Delta$.
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On remarque que, puisque $\Gamma\vdLS\Delta$ est prouvable si et seulement si
+  $\vdLS\bigwedge\Gamma\to\bigvee\Delta$ est prouvable, il suffit de montrer que
+  pour toute formule $\varphi$, si $\varphi$ est vraie dans tout modèle de
+  Kripke sur un pré-ordre alors $\vdLS\varphi$. On souhaite donc montrer ce
+  résultat.
+  
+  La première étape de la preuve est de construire un modèle syntaxique lié à
+  la logique modale. Pour cela, on fixe d'abord, à partir de la signature
+  $\Sigma$ de départ, une signature $\Sigma^+$ enrichie avec des témoins de
+  Henkin, et une théorie $\mathcal T_0$ contenant tous les énoncés de la forme
+  $\exists x,\varphi \to \varphi[c_\varphi/x]$, de sorte que toute théorie
+  contenant $\mathcal T_0$ a la propriété de Henkin.
+
+  On dira qu'une théorie $\mathcal T \subseteq\Prop(\Sigma^+)$ est saturée si
+  $\mathcal T\supseteq\mathcal T_0$, pour tout symboles de relation
+  $R$ d'arité $n$ et tous termes $t_1,\ldots,t_n$, si
+  $\mathcal T \vdLS R(t_1,\ldots,t_n)$ alors
+  $\mathcal T\vdLS\square R(t_1,\ldots,t_n)$, et si
+  $\mathcal T$ est complète. On va noter
+  $\satur$ l'ensemble des théories saturées sur $\Sigma^+$. Remarquons que
+  $\mathcal T \vdLS\varphi \iff \varphi \in T$, étant donné que
+  $\mathcal T$ est complète (et contient donc soit une formule, soit sa
+  négation).
+
+  On définit la relation de monde futur par
+  \[\mathcal T \leq \mathcal T' \defeq
+  \forall \varphi \in \Formula(\Sigma^+), \mathcal T \vdLS\square\varphi
+  \implies \mathcal T'\vdLS\varphi\]
+  et on a ainsi un cadre de Kripke $(\satur,\leq)$. La réflexivité est due au
+  fait que $\square\varphi\implies \varphi$, et la transitivité est due au
+  fait que $\square\varphi\implies\square\square\varphi$.
+
+  On définit maintenant les structures. \'Etant donné un monde $\mathcal T$,
+  on définit le modèle syntaxique de $\mathcal T$ comme l'ensemble des
+  termes clos sur $\Sigma^+$, quotienté par la relation d'équivalence
+  \[t\sim u \defeq \mathcal T \vdLS t = u\]
+  \'Etant donné un autre monde $\mathcal T' \geq \mathcal T$, le morphisme
+  $f_{\mathcal T,\mathcal T'}$ est défini comme associant
+  la classe d'un terme $t$ à la classe de ce même terme. On vérifie que cette
+  fonction est bien définie~:
+
+  Si $t = u$ dans $\mathcal T$, on veut vérifier que $t = u$ dans $\mathcal T'$.
+  On peut prouver que $\vdLS x = y \to \square (x = y)$ comme suit~:
+  \begin{quote}
+    puisque $\varphi\vdLS\varphi$, alors
+    $\square (x = y) \vdLS \square (x = y)$, donc
+    $x = y,\square(x = x) \vdLS\square(x=y)$, d'où
+    $\square(x=x)\vdLS x = y \to \square(x=y)$, et puisque
+    $\vdLS x = x$, par nécessitation puis coupure,
+    $\vdLS x = y \to \square(x=y)$.
+  \end{quote}
+  on en déduit donc, comme $\mathcal T \leq \mathcal T'$ et
+  $\square(t = u)$ est vrai dans $\mathcal T$, que $t = u$ dans $\mathcal T'$.
+
+  Si $R(t_1,\ldots,t_n)$ est vrai dans $\mathcal T$, alors par saturation
+  $\square R(t_1,\ldots,t_n)$ est vrai aussi dans $\mathcal T$, donc
+  $R(t_1,\ldots,t_n)$ est vrai dans $\mathcal T'$. On a donc bien un morphisme
+  de $\mathcal T$ vers $\mathcal T'$.
+
+  Il nous suffit maintenant de montrer que pour toute théorie
+  $\mathcal T \in \satur$ et toute formule $\varphi$,
+  $\varphi \in \mathcal T \iff \mathcal T\Vdash \varphi$. En négligeant les
+  environnements d'interprétation, on procède par induction sur $\varphi$~:
+  \begin{itemize}
+  \item si $\varphi$ est de la forme $\top/\bot$, le résultat est direct~;
+  \item si $\varphi$ est de la forme $R(t_1,\ldots,t_n)$, alors le résultat est
+    donné par la définition de l'interprétation de $R$ dans le monde de
+    $\mathcal T$~;
+  \item si $\varphi$ est de la forme $\lnot\psi$, alors
+    \[\varphi \in \mathcal T \iff \psi\notin\mathcal T \iff
+    \lnot\psi\in\mathcal T \iff \mathcal T \Vdash \lnot\psi\]
+    en utilisant le fait que la théorie $\mathcal T$ est complète~;
+  \item si $\varphi$ est de la forme $\psi \lor \chi$, alors
+    \[\varphi \in \mathcal T \iff \psi \lor \chi \in \mathcal T \iff
+    (\psi \in \mathcal T) \lor (\chi \in \mathcal T) \iff
+    \mathcal T\Vdash \psi\lor\chi\]
+    en utilisant le fait que la théorie $\mathcal T$ est complète (donc un
+    filtre premier)~;
+  \item les cas de $\land$ et $\to$ se déduisent de $\lor,\lnot$ et des lois
+    de De Morgan~;
+  \item de même, $\diamond$ et $\forall$ se déduisent respectivement de
+    $\square$ et de $\exists$ par les lois de De Morgan et la négation~;
+  \item si $\varphi$ est de la forme $\exists x, \psi$, alors on peut
+    trouver un témoin de Henkin $t$ tel que $\exists x, \psi \in \mathcal T$
+    est équivalent à $\psi[t/x]\in\mathcal T$, et l'hypothèse d'induction
+    permet de conclure une fois appliquée à $\psi[t/x]$~;
+  \item si $\varphi$ est de la forme $\square\psi$, alors
+    $\varphi \in \mathcal T$ si et seulement si pour tout
+    $\mathcal T' \geq \mathcal T, \psi \in \mathcal T'$, mais par hypothèse
+    d'induction cela revient à $\mathcal T'\Vdash\psi$, ce qui est
+    équivalent à $\mathcal T\Vdash\square \psi$.
+  \end{itemize}
+  Ainsi, par induction, on en déduit que $\varphi \in \mathcal T$ si et
+  seulement si $\mathcal T \Vdash \varphi$.
+
+  Pour conclure, si $\vdLS\varphi$ n'est pas prouvable, alors il existe une
+  théorie saturée qui ne contient pas $\varphi$. Par contraposée, on en déduit
+  que $\vdLS\varphi$ est prouvable.
 \end{proof}
+
+\begin{exercise}
+  En utilisant le \cref{thm.ordi.Zorn}, montrer que si $\varphi$ n'est pas
+  prouvable dans $\LS$, alors il existe une théorie saturée qui ne contient
+  pas $\varphi$. \textit{Indication~: si $\varphi$ n'est pas prouvable, alors
+    $\{\lnot\varphi\}$ constitue une théorie cohérente.}
+\end{exercise}
 
 En conclusion, on a une notion sémantique (celle de modèle de Kripke) et une
 notion syntaxique (celle de logique modale) qui permettent de construire des
