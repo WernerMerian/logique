@@ -1,0 +1,518 @@
+\chapter{Déduction naturelle}
+\label{chp.deduc.nat}
+
+\minitoc
+
+\lettrine{D}{ans} son article présentant le calcul des séquents
+\cite{Gentzen1935}, Gentzen présente aussi un deuxième formalisme de
+démonstration~: la déduction naturelle. C'est ce système qui a été présenté dans
+le \cref{chp.logpred}, mais nous allons ici étudier ses aspects structurels.
+
+Comme le relavait déjà Gentzen dans son article original, la déduction naturelle
+comporte deux variantes que sont $\NK$ et $\NJ$, respectivement la déduction
+naturelle classique et intuitionniste, mais la première est en fait un
+formalisme, en un sens, maladroit.
+
+Le chapitre présente donc les deux variantes, mais étudie principalement la
+variante intuitionniste. La variante classique peut en fait être construire de
+façon plus naturelle, mais ces considérations dépassent le cadre d'une
+introduction à la théorie de la démonstration.
+
+Nous donnons ensuite une version adaptée à la déduction naturelle de
+l'élimination des coupures, dans laquelle on introduit les notions essentielles
+de système de réécriture abstrait. La preuve de la forte normalisation des
+arbres de preuve de $\NJ$ est, elle, reportée au CHAPITRE LAMBDA CALCUL TYPE.
+
+\section{Variantes de la déduction naturelle}
+
+\subsection{Déduction naturelle intuitionniste et classique}
+
+On a déjà vu une première présentation de la déduction naturelle dans le
+\cref{chp.logpred}. Dans cette présentation, les points importants sont les
+suivants~:
+\begin{itemize}
+\item les séquents des arbres de preuve ressemblent à des séquents
+  intuitionnistes, mais contiennent exactement une formule à droite (aucune
+  formule à droite dans un séquent intuitionniste pouvant être simulé par la
+  formule $\bot$)~;
+\item les règles ne sont plus des variantes gauche/droite mais des règles dites
+  d'introduction et d'élimination, la première permettant d'introduire un
+  constructeur à droite et la seconde permettant d'utiliser une formule du
+  constructeur.
+\end{itemize}
+
+La première présentation de Gentzen du calcul en est proche, mais n'utilise pas
+de séquent. Dans le calcul des séquents, seules existent des formules dans des
+arbres, et les hypothèses d'une preuve peuvent être récupérées en considérant
+les feuilles de l'arbre. Le second point, lui, reste identique dans cette
+présentation.
+
+\begin{table}[t!]
+  \centering
+  \begin{tabular}{cc}
+    \bottomAlignProof
+    \AxiomC{$\varphi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\varphi$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{$[\varphi]^\alpha$}
+    \noLine
+    \UnaryInfC{$\vdots$}
+    \noLine
+    \UnaryInfC{$\bot$}
+    \RightLabel{$\lnot_\mathrm i,\alpha$}
+    \UnaryInfC{$\lnot\varphi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\lnot \varphi$}
+    \AxiomC{$\varphi$}
+    \RightLabel{$\lnot_\mathrm e$}
+    \BinaryInfC{$\bot$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{$\varphi$}
+    \RightLabel{$\lor_\mathrm i^1$}
+    \UnaryInfC{$\varphi\lor\psi$}
+    \DisplayProof
+    \quad
+    \bottomAlignProof
+    \AxiomC{$\psi$}
+    \RightLabel{$\lor_\mathrm i^2$}
+    \UnaryInfC{$\varphi\lor\psi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\varphi\lor\psi$}
+    \AxiomC{$[\varphi]^\alpha$}
+    \noLine
+    \UnaryInfC{$\vdots$}
+    \noLine
+    \UnaryInfC{$\chi$}
+    \AxiomC{$[\psi]^\alpha$}
+    \noLine
+    \UnaryInfC{$\vdots$}
+    \noLine
+    \UnaryInfC{$\chi$}
+    \RightLabel{$\lor_\mathrm e,\alpha$}
+    \TrinaryInfC{$\chi$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{$\varphi$}
+    \AxiomC{$\psi$}
+    \RightLabel{$\land_\mathrm i$}
+    \BinaryInfC{$\varphi\land\psi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\varphi\land\psi$}
+    \RightLabel{$\land_\mathrm e^1$}
+    \UnaryInfC{$\varphi$}
+    \DisplayProof
+    \quad
+    \bottomAlignProof
+    \AxiomC{$\varphi\land\psi$}
+    \RightLabel{$\land_\mathrm e^2$}
+    \UnaryInfC{$\psi$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{$[\varphi]^\alpha$}
+    \noLine
+    \UnaryInfC{$\vdots$}
+    \noLine
+    \UnaryInfC{$\psi$}
+    \RightLabel{$to_\mathrm i,\alpha$}
+    \UnaryInfC{$\varphi\to\psi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\varphi\to\psi$}
+    \AxiomC{$\psi$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\psi$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{$\varphi$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}
+    \UnaryInfC{$\forall x, \varphi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\forall x, \varphi$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\varphi[t/x]$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{$\varphi[t/x]$}
+    \RightLabel{$\exists_\mathrm i$}
+    \UnaryInfC{$\exists x, \varphi$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\exists x, \varphi$}
+    \AxiomC{$[\varphi]^\alpha$}
+    \noLine
+    \UnaryInfC{$\vdots$}
+    \noLine
+    \UnaryInfC{$\psi$}
+    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+    \BinaryInfC{$\psi$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \AxiomC{}
+    \RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$t=t$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$t = u$}
+    \AxiomC{$\varphi[t/x]$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\varphi[u/x]$}
+    \DisplayProof
+  \end{tabular}
+  
+  \vspace{0.2cm}
+  \hrule
+  \caption{Règles de $\NJ$}
+  \label{tbl.NJ}
+  \hrule
+\end{table}
+
+On présente d'abord la variante intuitionniste, car $\NK$ en est un système
+dérivé dans lequel on ajoute une règle.
+
+\begin{definition}[Déduction naturelle $\NJ$]
+  On définit l'ensemble $\ProofNJ$ des arbres de preuves de $\NJ$ par les
+  règles de formation données dans la \cref{tbl.NJ}. Dans un arbre de preuves,
+  les formules sur les feuilles de l'arbres sont de deux sortes~:
+  \begin{itemize}
+  \item les formules marquées, de la forme $[\varphi]^\alpha$ où $\alpha$ est
+    appelé une marque~;
+  \item les formules non marquées.
+  \end{itemize}
+  Un arbre $\pi\in \ProofNJ$ a pour conclusion le séquent $\Gamma\vdNJ \varphi$
+  si la formule à sa racine est $\varphi$ et si ses feuilles non marquées sont
+  des formules de $\Gamma$.
+
+  Les règles avec la condition $\dagger$ demandent que la variable libre $x$
+  n'apparaisse pas dans les feuilles non marquées de l'arbre, ou les feuilles
+  avec une marque liée à une règle plus bas dans l'arbre que l'instance liant
+  $x$.
+
+  On considère uniquement les arbres dont toutes les marques sont liées par
+  des règles, c'est-à-dire que pour une formule marquée $[\varphi]^\alpha$
+  dans un arbre $\pi$, il existe une règle $\mathrm r_\alpha$ dans $\pi$.
+
+  La relation de prouvabilité dans une théorie $\mathcal T$ est donnée par
+  \[\mathcal T \vdNJ \varphi \defeq \exists \Gamma \in \List(\mathcal T),
+  \exists \pi \in \ProofNJ, \pi\concl \Gamma\vdNJ\varphi\]
+\end{definition}
+
+\begin{remark}
+  Dans les règles introduisant les marques telles que $\to_\mathrm i,\alpha$,
+  il n'existe pas forcément de formule marquée par $\alpha$, et il peut y en
+  avoir plusieurs marquées par le même $\alpha$. L'intérêt de ces marques est
+  de supprimer du contexte global des hypothèses en ne les comptant plus comme
+  des feuilles d'hypothèses (c'est pour cela qu'on ne considère que les feuilles
+  non marquées).
+\end{remark}
+
+La déduction naturelle $\NK$ est simplement l'ajout d'une règle de logique
+classique. Il existe plusieurs axiomes ou règles qui permettent de passer de la
+logique intuitionniste à la logique classique~: l'\cref{exo.EDN.RAA} consiste
+par exemple à montrer qu'il est équivalent de considérer l'ajout des axiomes
+$\varphi\lor\lnot\varphi$ ou l'ajout des axiomes $\lnot\lnot\varphi\to\varphi$,
+les deux pouvant se réécrire comme des règles. On choisit alors le plus simple
+en prenant le tiers exclu comme règle pour $\NK$.
+
+\begin{definition}[Déduction naturelle $\NK$]
+  L'ensemble $\ProofNK$ des arbres de preuve de déduction naturelle classique
+  est donné par les règles de la \cref{tbl.NJ} ainsi que par la règle
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{EM}
+    \UnaryInfC{$\varphi\lor\lnot\varphi$}
+  \end{prooftree}
+  La relation $\vdNK$ est définie de façon analogue à $\vdNJ$.
+\end{definition}
+
+\begin{remark}
+  \'Etant donné un arbre $\pi\concl \psi_1,\cdots,\psi_n\vdNJ \varphi$ et
+  un arbre
+  $\pi'\concl \Delta\vdNJ\psi_i$, on peut placer l'arbre $\pi'$ au-dessus des
+  feuilles de $\pi$ étiquetées par $\psi_i$ pour obtenir un arbre
+  \[\pi \circ_i \pi' \concl \psi_1,\ldots,\psi_{i-1},\Delta,
+  \psi_{i+1},\ldots,\psi_n\vdNJ\varphi\]
+  Le lecteur ayant vu la notion d'opérade notera des similarités avec ces
+  objets.
+\end{remark}
+
+\begin{example}
+  Donnons un exemple d'arbre de preuve dans $\NJ$. On reprend l'exemple donné
+  dans le \cref{chp.logpred}, pour mettre en valeur les différences de style
+  avec la première version de déduction naturelle donnée.
+  On fixe la signature
+  $\Sigma \defeq \{f^1,R^1\}$ où $R$ est un symbole de relation et $f$ un
+  symbole de fonction. On veut prouver que
+  $\forall x, R(x)\to R(f(x))\vdNJ \forall x, R(x)\to R(f(f(x)))$~:
+  \begin{prooftree}
+    \AxiomC{$\forall x, R(x)\to R(f(x))$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$R(f(x))\to R(f(f(x)))$}
+    \AxiomC{$\forall x, R(x)\to R(f(x))$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$R(x) \to R(f(x))$}
+    \AxiomC{$[R(x)]^\alpha$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$R(f(x))$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$R(f(f(x)))$}
+    \RightLabel{$\to_\mathrm i,\alpha$}
+    \UnaryInfC{$R(x) \to R(f(f(x)))$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}
+    \UnaryInfC{$\forall x, R(x)\to R(f(f(x)))$}
+  \end{prooftree}
+\end{example}
+
+Puisque nous avons donné une nouvelle syntaxe de preuve, à la fois pour la
+logique classique et la logique intuitionniste, il convient de montrer la
+complétude de ces calculs.
+
+\subsection{Complétude de la déduction naturelle}
+
+Dans le cas de la logique classique, on peut simplement appliquer le théorème de
+complétude.
+
+\begin{exercise}
+  Montrer que $\NK$ vérifie les hypothèse du \cref{thm.completude.gen}. En
+  déduire que $\vdNK = \vDash$.
+\end{exercise}
+
+Pour la logique intuitionniste, on peut tenter de construire un théorème de
+complétude directement inspiré de celui utilisé pour prouver la complétude de
+$\LJ$ pour la sémantique de Kripke. Si cette méthode fonctionne, on propose de
+donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
+
+\begin{definition}[Construction d'arbre depuis le calcul des séquents]
+  On définit une fonction $\tradNJ - : \ProofLJ \to \ProofNJ$ par induction sur
+  les arbres, de telle sorte que si $\pi\concl \Gamma\vdLJ \varphi$ alors
+  $\tradNJ\pi\concl\Gamma\vdNJ\varphi$ et si $\pi\concl\Gamma\vdLJ$ alors
+  $\tradNJ\pi\concl\Gamma\vdNJ\bot$~:
+  \begin{itemize}
+  \item si $\pi = \bottomAlignProof\AxiomC{}\RightLabel{$ax$}
+    \UnaryInfC{$\varphi\vdLJ\varphi$}\DisplayProof$
+    alors $\tradNJ\pi \defeq \varphi$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
+    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Delta,\varphi\vdLJ[\psi]$}
+    \RightLabel{$cut$}\BinaryInfC{$\Gamma,\Delta\vdLJ[\psi]$}
+    \DisplayProof$
+    alors $\tradNJ\pi \defeq \tradNJ{\pi_1}\circ_i\tradNJ{\pi_0}$ où
+    $i$ est la position de $\varphi$ dans $\Delta,\varphi$.
+  \item pour les règles structurelles sauf $rw$, la traduction ne change pas
+    l'arbre.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ$}
+    \RightLabel{$rw$}\UnaryInfC{$\Gamma\vdLJ\varphi$}\DisplayProof$
+    alors \[\tradNJ\pi \defeq
+    \bottomAlignProof
+    \AxiomC{$\tradNJ{\pi_0}$}
+    \noLine\UnaryInfC{$\vdots$}\noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\varphi$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\Gamma\vdLJ\varphi$}
+    \RightLabel{$l\lnot$}\UnaryInfC{$\Gamma,\lnot\varphi\vdLJ$}\DisplayProof$
+    alors
+    \[\tradNJ{\pi} \defeq \bottomAlignProof
+    \AxiomC{$\lnot\varphi$}
+    \AxiomC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\varphi$}
+    \RightLabel{$\lnot_\mathrm e$}\BinaryInfC{$\bot$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ$}
+    \RightLabel{$r\lnot$}\UnaryInfC{$\Gamma\vdLJ\lnot\varphi$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi \defeq \bottomAlignProof
+    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\bot$}
+    \RightLabel{$\lnot_\mathrm i,\alpha$}\UnaryInfC{$\lnot\varphi$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ[\chi]$}
+    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Gamma,\psi\vdLJ[\chi]$}
+    \RightLabel{$l\lor$}\BinaryInfC{$\Gamma,\varphi\lor\psi\vdLJ[\chi]$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq \bottomAlignProof
+    \AxiomC{$\varphi\lor\psi$}
+    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$[\chi]$}
+    \AxiomC{$[\psi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi_1}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$[\chi]$}
+    \RightLabel{$\lor_\mathrm e,\alpha$}\TrinaryInfC{$[\chi]$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi_i$}
+    \RightLabel{$r\lor_i$}\UnaryInfC{$\Gamma\vdLJ\varphi_1\lor\varphi_2$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\varphi_i$}
+    \RightLabel{$\lor_\mathrm i^i$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi_i\vdLJ [\psi]$}
+    \RightLabel{$l\land_i$}
+    \UnaryInfC{$\Gamma,\varphi_1\land\varphi_2\vdLJ[\psi]$}\DisplayProof$,
+    alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$\varphi_1\land\varphi_2$}\RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\varphi_i$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$[\psi]$}\DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
+    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Gamma\vdLJ\psi$}
+    \RightLabel{$r\land$}\BinaryInfC{$\Gamma\vdLJ\varphi\land\psi$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq \bottomAlignProof
+    \AxiomC{$\tradNJ{\pi_0}$}
+    \noLine\UnaryInfC{$\vdots$}\noLine\UnaryInfC{$\varphi$}
+    \AxiomC{$\tradNJ{\pi_1}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\psi$}
+    \RightLabel{$\land_\mathrm i$}\BinaryInfC{$\varphi\land\psi$}\DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
+    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Gamma,\psi\vdLJ[\chi]$}
+    \RightLabel{$l\to$}\BinaryInfC{$\Gamma,\varphi\to\psi\vdLJ[\chi]$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$\varphi\to\psi$}
+    \AxiomC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\varphi$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\psi$}
+    \noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi_1}$}
+    \noLine\UnaryInfC{$\vdots$}\noLine\UnaryInfC{$[\chi]$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ\psi$}
+    \RightLabel{$r\to$}\UnaryInfC{$\Gamma\vdLJ\varphi\to\psi$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\psi$}
+    \RightLabel{$\to_\mathrm i,\alpha$}\UnaryInfC{$\varphi\to\psi$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdLJ[\psi]$}
+    \RightLabel{$l\forall$}\UnaryInfC{$\Gamma,\forall x,\varphi\vdLJ[\psi]$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$\forall x, \varphi$}\RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\varphi[t/x]$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$[\psi]$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
+    \RightLabel{$r\forall^\dagger$}\UnaryInfC{$\Gamma\vdLJ\forall x, \varphi$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\varphi$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}\UnaryInfC{$\forall x, \varphi$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ[\psi]$}
+    \RightLabel{$l\exists^\dagger$}
+    \UnaryInfC{$\Gamma,\exists x, \varphi\vdLJ[\psi]$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$\exists x, \varphi$}
+    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$[\psi]$}\RightLabel{$\exists_\mathrm e^\dagger$}
+    \BinaryInfC{$[\psi]$}\DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi[t/x]$}
+    \RightLabel{$r\exists$}\UnaryInfC{$\Gamma\vdLJ\exists x, \varphi$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq \bottomAlignProof
+    \AxiomC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\varphi[t/x]$}
+    \RightLabel{$\exists_\mathrm i$}\UnaryInfC{$\exists x, \varphi$}
+    \DisplayProof\]
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\pi'$}\noLine
+    \UnaryInfC{$\psi_1[u/x],\ldots,\psi_n[u/x]\vdLJ[\varphi[u/x]]$}
+    \RightLabel{$l=$}
+    \UnaryInfC{$\psi_1[t/x],\ldots,\psi_n[t/x], t = u \vdLJ[\varphi[t/x]]$}
+    \DisplayProof$, alors
+    \[\tradNJ\pi\defeq\bottomAlignProof
+    \AxiomC{$t = u$}
+    \AxiomC{}
+    \RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$t = t$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$u = t$}
+    \AxiomC{$t = u$}
+    \AxiomC{$\psi_1[t/x]$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\psi_1[u/x]$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$t = u$}
+    \AxiomC{$\psi_n[t/x]$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$\psi_n[u/x]$}
+    \noLine\TrinaryInfC{$\tradNJ{\pi'}$}\noLine
+    \UnaryInfC{$[\varphi[u/x]]$}
+    \RightLabel{$=_\mathrm e$}
+    \BinaryInfC{$[\varphi[t/x]]$}
+    \DisplayProof
+    \]
+  \item si $\pi = \bottomAlignProof\AxiomC{}\RightLabel{$r=$}
+    \UnaryInfC{$t =t$}\DisplayProof$, alors
+    $\tradNJ{\pi}\defeq \AxiomC{}\RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$t = t$}\DisplayProof$.
+  \end{itemize}
+\end{definition}
+
+\begin{corollary}
+  Un séquent intuitionniste est prouvable dans $\NJ$ si et seulement s'il est
+  vrai dans tout modèle de Kripke intuitionniste.
+\end{corollary}
+
+\begin{proof}
+  On vérifie par une induction sans difficulté que le calcul $\NJ$ est correct.
+  Si un séquent est vrai dans tout modèle de Kripke intuitionniste, alors il
+  est prouvable dans $\LJ$ par complétude, mais pour $\pi$ la preuve ainsi
+  obtenue, $\tradNJ\pi$ est un arbre de preuve du même séquent dans $\NJ$.
+\end{proof}
