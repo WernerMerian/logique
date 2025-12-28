@@ -134,7 +134,7 @@ présentation.
     \UnaryInfC{$\vdots$}
     \noLine
     \UnaryInfC{$\psi$}
-    \RightLabel{$to_\mathrm i,\alpha$}
+    \RightLabel{$\to_\mathrm i,\alpha$}
     \UnaryInfC{$\varphi\to\psi$}
     \DisplayProof
     &
@@ -190,9 +190,11 @@ présentation.
     \BinaryInfC{$\varphi[u/x]$}
     \DisplayProof
   \end{tabular}
-  
+
   \vspace{0.2cm}
   \hrule
+  
+  \vspace{0.4cm}
   \caption{Règles de $\NJ$}
   \label{tbl.NJ}
   \hrule
@@ -204,7 +206,9 @@ dérivé dans lequel on ajoute une règle.
 \begin{definition}[Déduction naturelle $\NJ$]
   On définit l'ensemble $\ProofNJ$ des arbres de preuves de $\NJ$ par les
   règles de formation données dans la \cref{tbl.NJ}. Dans un arbre de preuves,
-  les formules sur les feuilles de l'arbres sont de deux sortes~:
+  on va appeler feuille les formules tout en haut, qui n'ont pas de règle
+  au-dessus d'elles (en particulier, $=_\mathrm i$ ne donne pas de feuille).
+  Les feuilles de l'arbres sont donc de deux sortes~:
   \begin{itemize}
   \item les formules marquées, de la forme $[\varphi]^\alpha$ où $\alpha$ est
     appelé une marque~;
@@ -242,16 +246,18 @@ classique. Il existe plusieurs axiomes ou règles qui permettent de passer de la
 logique intuitionniste à la logique classique~: l'\cref{exo.EDN.RAA} consiste
 par exemple à montrer qu'il est équivalent de considérer l'ajout des axiomes
 $\varphi\lor\lnot\varphi$ ou l'ajout des axiomes $\lnot\lnot\varphi\to\varphi$,
-les deux pouvant se réécrire comme des règles. On choisit alors le plus simple
-en prenant le tiers exclu comme règle pour $\NK$.
+les deux pouvant se réécrire comme des règles. On choisit d'ajouter la règle du
+raisonnement par l'absurde, plus naturelle à considérer pour formaliser des
+raisonnements mathématiques.
 
 \begin{definition}[Déduction naturelle $\NK$]
   L'ensemble $\ProofNK$ des arbres de preuve de déduction naturelle classique
   est donné par les règles de la \cref{tbl.NJ} ainsi que par la règle
   \begin{prooftree}
-    \AxiomC{}
-    \RightLabel{EM}
-    \UnaryInfC{$\varphi\lor\lnot\varphi$}
+    \AxiomC{$[\lnot\varphi]$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\bot$}
+    \RightLabel{Raa}
+    \UnaryInfC{$\varphi$}
   \end{prooftree}
   La relation $\vdNK$ est définie de façon analogue à $\vdNJ$.
 \end{definition}
@@ -336,19 +342,21 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$rw$}\UnaryInfC{$\Gamma\vdLJ\varphi$}\DisplayProof$
     alors \[\tradNJ\pi \defeq
     \bottomAlignProof
-    \AxiomC{$\tradNJ{\pi_0}$}
-    \noLine\UnaryInfC{$\vdots$}\noLine\UnaryInfC{$\bot$}
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\tradNJ{\pi_0}$
+    \noLine\UnaryInfC{$\bot$}
     \RightLabel{$\bot_\mathrm e$}
     \UnaryInfC{$\varphi$}
     \DisplayProof\]
   \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \AxiomC{$\pi_0$}\noLine
     \UnaryInfC{$\Gamma\vdLJ\varphi$}
     \RightLabel{$l\lnot$}\UnaryInfC{$\Gamma,\lnot\varphi\vdLJ$}\DisplayProof$
     alors
     \[\tradNJ{\pi} \defeq \bottomAlignProof
     \AxiomC{$\lnot\varphi$}
-    \AxiomC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\varphi$}
+    \Axiom$\fCenter\tradNJ{\pi_0}$
+    \noLine\UnaryInfC{$\varphi$}
     \RightLabel{$\lnot_\mathrm e$}\BinaryInfC{$\bot$}
     \DisplayProof\]
   \item si $\pi = \bottomAlignProof
@@ -356,8 +364,10 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$r\lnot$}\UnaryInfC{$\Gamma\vdLJ\lnot\varphi$}
     \DisplayProof$, alors
     \[\tradNJ\pi \defeq \bottomAlignProof
-    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \AxiomC{$[\varphi]^\alpha$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi_0}$
+    \noLine
     \UnaryInfC{$\bot$}
     \RightLabel{$\lnot_\mathrm i,\alpha$}\UnaryInfC{$\lnot\varphi$}
     \DisplayProof\]
@@ -367,12 +377,15 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$l\lor$}\BinaryInfC{$\Gamma,\varphi\lor\psi\vdLJ[\chi]$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq \bottomAlignProof
+    \def\fCenter{\mbox{\Large$\vdots$}}
     \AxiomC{$\varphi\lor\psi$}
-    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \AxiomC{$[\varphi]^\alpha$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi_0}$
+    \noLine
     \UnaryInfC{$[\chi]$}
-    \AxiomC{$[\psi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi_1}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \AxiomC{$[\psi]^\alpha$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi_1}$
+    \noLine
     \UnaryInfC{$[\chi]$}
     \RightLabel{$\lor_\mathrm e,\alpha$}\TrinaryInfC{$[\chi]$}
     \DisplayProof\]
@@ -381,7 +394,9 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$r\lor_i$}\UnaryInfC{$\Gamma\vdLJ\varphi_1\lor\varphi_2$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
-    \AxiomC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$\varphi_i$}
     \RightLabel{$\lor_\mathrm i^i$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
     \DisplayProof\]
@@ -391,9 +406,11 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \UnaryInfC{$\Gamma,\varphi_1\land\varphi_2\vdLJ[\psi]$}\DisplayProof$,
     alors
     \[\tradNJ\pi\defeq\bottomAlignProof
+    \def\fCenter{\mbox{\Large$\vdots$}}
     \AxiomC{$\varphi_1\land\varphi_2$}\RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\varphi_i$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\varphi_i$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$[\psi]$}\DisplayProof\]
   \item si $\pi = \bottomAlignProof
     \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
@@ -401,10 +418,11 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$r\land$}\BinaryInfC{$\Gamma\vdLJ\varphi\land\psi$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq \bottomAlignProof
-    \AxiomC{$\tradNJ{\pi_0}$}
-    \noLine\UnaryInfC{$\vdots$}\noLine\UnaryInfC{$\varphi$}
-    \AxiomC{$\tradNJ{\pi_1}$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\psi$}
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\tradNJ{\pi_0}$
+    \noLine\UnaryInfC{$\varphi$}
+    \Axiom$\fCenter\tradNJ{\pi_1}$
+    \noLine\UnaryInfC{$\psi$}
     \RightLabel{$\land_\mathrm i$}\BinaryInfC{$\varphi\land\psi$}\DisplayProof\]
   \item si $\pi = \bottomAlignProof
     \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
@@ -412,22 +430,26 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$l\to$}\BinaryInfC{$\Gamma,\varphi\to\psi\vdLJ[\chi]$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
+    \def\fCenter{\mbox{\Large$\vdots$}}
     \AxiomC{$\varphi\to\psi$}
-    \AxiomC{$\tradNJ{\pi_0}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \Axiom$\fCenter\tradNJ{\pi_0}$
+    \noLine
     \UnaryInfC{$\varphi$}
     \RightLabel{$\to_\mathrm e$}
     \BinaryInfC{$\psi$}
-    \noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi_1}$}
-    \noLine\UnaryInfC{$\vdots$}\noLine\UnaryInfC{$[\chi]$}
+    \noLine
+    \UnaryInf$\fCenter\tradNJ{\pi_1}$
+    \noLine\UnaryInfC{$[\chi]$}
     \DisplayProof\]
   \item si $\pi = \bottomAlignProof
     \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ\psi$}
     \RightLabel{$r\to$}\UnaryInfC{$\Gamma\vdLJ\varphi\to\psi$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
-    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \AxiomC{$[\varphi]^\alpha$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$\psi$}
     \RightLabel{$\to_\mathrm i,\alpha$}\UnaryInfC{$\varphi\to\psi$}
     \DisplayProof\]
@@ -436,9 +458,11 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$l\forall$}\UnaryInfC{$\Gamma,\forall x,\varphi\vdLJ[\psi]$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
+    \def\fCenter{\mbox{\Large$\vdots$}}
     \AxiomC{$\forall x, \varphi$}\RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\varphi[t/x]$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\varphi[t/x]$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$[\psi]$}
     \DisplayProof\]
   \item si $\pi = \bottomAlignProof
@@ -446,7 +470,9 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$r\forall^\dagger$}\UnaryInfC{$\Gamma\vdLJ\forall x, \varphi$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
-    \AxiomC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$\varphi$}
     \RightLabel{$\forall_\mathrm i^\dagger$}\UnaryInfC{$\forall x, \varphi$}
     \DisplayProof\]
@@ -456,9 +482,11 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \UnaryInfC{$\Gamma,\exists x, \varphi\vdLJ[\psi]$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
+    \def\fCenter{\mbox{\Large$\vdots$}}
     \AxiomC{$\exists x, \varphi$}
-    \AxiomC{$[\varphi]^\alpha$}\noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \AxiomC{$[\varphi]^\alpha$}\noLine
+    \UnaryInf$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$[\psi]$}\RightLabel{$\exists_\mathrm e^\dagger$}
     \BinaryInfC{$[\psi]$}\DisplayProof\]
   \item si $\pi = \bottomAlignProof
@@ -466,7 +494,9 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \RightLabel{$r\exists$}\UnaryInfC{$\Gamma\vdLJ\exists x, \varphi$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq \bottomAlignProof
-    \AxiomC{$\tradNJ{\pi'}$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$\varphi[t/x]$}
     \RightLabel{$\exists_\mathrm i$}\UnaryInfC{$\exists x, \varphi$}
     \DisplayProof\]
@@ -477,6 +507,7 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \UnaryInfC{$\psi_1[t/x],\ldots,\psi_n[t/x], t = u \vdLJ[\varphi[t/x]]$}
     \DisplayProof$, alors
     \[\tradNJ\pi\defeq\bottomAlignProof
+    \def\fCenter{\mbox{\Large$\vdots$}}
     \AxiomC{$t = u$}
     \AxiomC{}
     \RightLabel{$=_\mathrm i$}
@@ -492,7 +523,9 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \AxiomC{$\psi_n[t/x]$}
     \RightLabel{$=_\mathrm e$}
     \BinaryInfC{$\psi_n[u/x]$}
-    \noLine\TrinaryInfC{$\tradNJ{\pi'}$}\noLine
+    \dashedLine
+    \TrinaryInf$\fCenter\tradNJ{\pi'}$
+    \noLine
     \UnaryInfC{$[\varphi[u/x]]$}
     \RightLabel{$=_\mathrm e$}
     \BinaryInfC{$[\varphi[t/x]]$}
@@ -515,4 +548,1314 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
   Si un séquent est vrai dans tout modèle de Kripke intuitionniste, alors il
   est prouvable dans $\LJ$ par complétude, mais pour $\pi$ la preuve ainsi
   obtenue, $\tradNJ\pi$ est un arbre de preuve du même séquent dans $\NJ$.
+\end{proof}
+
+Cette construction se sert crucialement du fait que les séquent sont
+intuitionnistes dans $\LJ$, car les arbres de preuves de déduction naturelle
+sont construits avec une unique conclusion. On peut donc se demander comment
+cette construction peut s'adapter au cas de $\LK$.
+
+On peut donner une première façon de gérer ce cas classique. Les possibilités
+supplémentaires lorsqu'on considère $\LK$ en comparaison de $\LJ$ sont liées à
+la capacité à avoir plusieurs formules à droite, et il est possible d'avoir
+plusieurs formules à gauche même dans un séquent intuitionniste. On peut donc
+chercher à déplacer toutes les formules à gauche, de sorte que les raisonnements
+classiques peuvent se faire de façon identique dans les deux formalismes. La
+différence principale est qu'alors, si on a par exemple
+\[\Gamma,\lnot\Delta\vdLK\]
+représentant le séquent $\Gamma\vdLK\Delta$ (la négation permettant de faire
+passer toutes les formules de $\Delta$ à gauche), on peut récupérer
+\[\Gamma\vdLK\Delta\]
+en procédant à des coupures contre $\vdLK\lnot\psi,\psi$ pour chaque
+$\psi \in \Delta$.
+
+Dans le cas intuitionniste, la seule possibilité est, d'abord, de transformer
+$\lnot\Delta$ en une seule formule $\bigwedge\lnot\Delta$, puis de la passer à
+droite avec $r\lnot$. On obtient ainsi une double négation, dans le cas d'une
+seule formule. On cherche donc à prouver un énoncé de la forme~:
+\[\Gamma\vdLK\varphi \iff \Gamma\vdLJ\lnot\lnot\varphi\]
+Cette équivalence, vraie en logique propositionnelle (\latinexpr{c.f.}
+\cref{exo.glivenko}), n'est plus vraie en logique du premier ordre. A la
+place, on donne la traduction de Gödel-Gentzen, qui remplit le rôle qu'a
+$\lnot\lnot\varphi$ ci-dessus.
+
+\begin{definition}[Traduction de Gödel-Gentzen \cite{GodelTradNot,Gentzen1936}]
+  Pour toute formule $\varphi$, on définit par induction sa traduction de
+  Gödel-Gentzen $\varphi^N$ par~:
+  \begin{itemize}
+  \item si $\varphi$ est atomique, alors $\varphi^N \defeq \lnot\lnot\varphi$.
+  \item si $\varphi = \lnot \psi$, alors $\varphi^N\defeq\lnot\psi^N$.
+  \item si $\varphi = \psi\land\chi$, alors $\varphi^N\defeq\psi^N\land\chi^N$.
+  \item si $\varphi = \psi\lor\chi$, alors
+    $\varphi^N\defeq \lnot(\lnot\psi^N\land\lnot\chi^N)$.
+  \item si $\varphi = \psi \to \chi$, alors $\varphi^N\defeq\psi^N\to\chi^N$.
+  \item si $\varphi = \forall x, \psi$, alors
+    $\varphi^N\defeq \forall x, \psi^N$.
+  \item si $\varphi = \exists x, \psi$, alors
+    $\varphi^N\defeq \lnot(\forall x, \lnot\psi^N)$.
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}
+  Pour tout contexte $\Gamma$ et toute formule $\varphi$, on a
+  \[\Gamma\vdLK\varphi \iff \Gamma^N\vdLJ\varphi^N\]
+\end{theorem}
+
+\begin{proof}
+  On peut facilement vérifier que pour toute formule $\varphi$, on a
+  $\varphi\dashv\vdLK\varphi^N$, ce qui permet de déduire directement que si
+  $\Gamma^N\vdLJ\varphi^N$, puisqu'alors $\Gamma^N\vdLK\varphi^N$, on a
+  $\Gamma\vdLK\varphi$.
+
+  A FAIRE
+\end{proof}
+
+\begin{remark}
+  La position des doubles négations est en quelque sorte duale de celle des
+  modalités $\square$ lorsqu'on définit $\varphi_\square$. Là où les modalités
+  $\square$ renforcent les constructeurs négatifs $\to, \forall$ (et $\lnot$
+  en conséquence) pour rendre les formules plus difficiles à prouver, ce sont
+  les constructeurs positifs $\lor,\exists$ qui sont affaiblis en en prenant
+  une formule de dualité de De Morgan. Justement, ce sont ces constructeurs
+  positifs qui, en logique intuitionniste, sont plus difficiles à prouver.
+  
+  Par exemple, prouver $\varphi\lor\psi$ demande d'expliciter laquelle des
+  deux formules entre $\varphi$ et $\psi$ est vraie, mais prouver
+  $\lnot(\lnot\varphi\land\lnot\psi)$ signifie qu'on se donne des
+  contre-preuves de $\varphi$ et de $\psi$, et qu'on veut en déduire une
+  contradiction~: l'information est perdue de laquelle des deux formules est
+  vraie.
+\end{remark}
+
+\begin{exercise}[Théorème de Glivenko \cite{glivenko1929}]\label{exo.glivenko}
+  Montrer que dans le cas de formules propositionnelles, l'équivalence
+  \[\Gamma\vdLK\varphi\iff\Gamma\vdLJ\lnot\lnot\varphi\]
+  est vérifiée.
+\end{exercise}
+
+On peut alors en déduire la complétude de $\NK$, en montrant que l'équivalence
+$\varphi \leftrightarrow \varphi^N$ est prouvable dans $\NK$. Le choix de la
+règle du raisonnement par l'absurde est alors le bon, puisqu'il permet d'obtenir
+l'élimination de la double négation, c'est-à-dire le schéma d'axiomes
+\[\lnot\lnot\varphi\to\varphi\]
+qui permet de passer de $\varphi^N$ à $\varphi$ (l'autre sens peut être montré
+directement dans $\NJ$).
+
+\begin{exercise}
+  Prouver que $\varphi\vdNJ\varphi^N$ et que $\varphi^N\vdNK\varphi$. En
+  déduire la complétude du système $\NK$.
+\end{exercise}
+
+\section{Coupures en déduction naturelle}
+
+Dans le calcul des séquents, le \textit{Hauptsatz} permettait de considérer que
+les preuves peuvent se réécrire sans coupure. En déduction naturelle, nous
+n'avons plus la règle de coupure, mais la coupure elle-même est dérivable~:
+\begin{prooftree}
+  \def\fCenter{\mbox{\Large$\vdots$}}
+  \AxiomC{$\Delta$}
+  \AxiomC{$[\varphi]^\alpha$}
+  \dashedLine
+  \BinaryInf$\fCenter\pi'$
+  \noLine
+  \UnaryInfC{$\psi$}
+  \RightLabel{$\to_\mathrm i,\alpha$}
+  \UnaryInfC{$\varphi\to\psi$}
+  \AxiomC{$\Gamma$}
+  \noLine\UnaryInf$\fCenter\pi$
+  \noLine\UnaryInfC{$\varphi$}
+  \RightLabel{$\to_\mathrm e$}\BinaryInfC{$\psi$}
+\end{prooftree}
+On remarque que lorsqu'on a défini la traduction $\tradNJ -$, la traduction de
+la règle de coupure était plus simple, en remplaçant la feuille marquée
+$[\varphi]^\alpha$ par l'arbre de droite, pour arriver directement à $\psi$.
+
+\`A la place, dans cette dérivation, on introduit une règle qu'on élimine tout
+de suite après. Cette situation est ce qu'on appelle, pour la déduction
+naturelle, une coupure~: dans le cas de l'implication, on coupe la preuve en
+deux pour définir un lemme $\varphi \to \psi$ dont on prouve la prémisse
+$\varphi$.
+
+On va donc étudier la suppression de ce type de coupures.
+
+\subsection{L'élimination des coupures}
+
+Commençons par définir formellement une coupure. Précisons que nous ne
+travaillons ici que dans $\NJ$.
+
+\begin{definition}[Coupure dans $\NJ$]
+  Une coupure dans un arbre de $\NJ$ est une suite de deux règles telle que
+  la règle du bas est une règle d'élimination dont la prémisse de gauche est
+  la conclusion de la règle du haut, et où cette règle haute est au choix~:
+  \begin{itemize}
+  \item une règle d'introduction du même constructeur que la règle
+    d'élimination, auquel cas on parle de coupure logique~;
+  \item la règle $\bot_\mathrm e$, auquel cas on parle de $\bot$-coupure~;
+  \item une règle $\lor_\mathrm e$ ou $\exists_\mathrm e$, auquel cas on parle
+    de coupure commutative.
+  \end{itemize}
+\end{definition}
+
+Comme dans le cas du calcul des séquents, la propriété essentielle de notre
+système est l'existence de preuves sans coupures, dès lors qu'une preuve pour
+un séquent donné existe. On donne directement la réduction permettant d'éliminer
+les coupures.
+
+\begin{definition}[Réduction des coupures]
+  La réduction des coupures $\reecr{}$ est donnée
+  par la plus petite relation compatible contenant l'union des réductions
+  logiques $\reecr{L}$, des $\bot$-réductions $\reecr{\bot}$ et des réductions
+  commutatives $\reecr{C}$, données respectivement en \cref{tbl.cut.log.NJ},
+  en \cref{tbl.cut.bot.NJ} et en \cref{tbl.cut.com.NJ}.
+\end{definition}
+
+\begin{table}[t!]
+  \centering
+  \begin{tabular}{cc}
+    \multicolumn{2}{c}{
+      %\resizebox{0.5\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine
+      \UnaryInf$\fCenter\pi$
+      \noLine\UnaryInfC{$\psi$}
+      \RightLabel{$\to_\mathrm i, \alpha$}
+      \UnaryInfC{$\varphi\to\psi$}
+      \Axiom$\fCenter\pi'$
+      \noLine\UnaryInfC{$\varphi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\psi$}
+      \DisplayProof
+      $\reecr{L^\to}$
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi'$
+      \noLine\UnaryInfC{$\varphi$}\noLine
+      \UnaryInf$\fCenter\pi$
+      \noLine\UnaryInfC{$\psi$}
+      \DisplayProof
+      %}
+    }
+    \\
+    \\
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi_1$
+    \noLine\UnaryInfC{$\varphi_1$}
+    \Axiom$\fCenter\pi_2$
+    \noLine\UnaryInfC{$\varphi_2$}
+    \RightLabel{$\land_\mathrm i$}
+    \BinaryInfC{$\varphi_1\land\psi_2$}
+    \RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\varphi_i$}
+    \DisplayProof
+    $\reecr{L^\land_i}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi_i$
+    \noLine\UnaryInfC{$\varphi_i$}
+    \DisplayProof
+    %}
+    &
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\varphi_i$}
+    \RightLabel{$\lor_\mathrm i^i$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
+    \AxiomC{$[\varphi_1]^\alpha$}
+    \noLine\UnaryInf$\fCenter\pi_1$
+    \noLine\UnaryInfC{$\chi$}
+    \AxiomC{$[\varphi_2]^\alpha$}
+    \noLine\UnaryInf$\fCenter\pi_2$
+    \noLine\UnaryInfC{$\chi$}
+    \RightLabel{$\lor_\mathrm e, \alpha$}
+    \TrinaryInfC{$\chi$}
+    \DisplayProof
+    $\reecr{L^\lor_i}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\varphi_i$}
+    \noLine\UnaryInf$\fCenter\pi_i$
+    \noLine\UnaryInfC{$\chi$}
+    \DisplayProof
+    %}
+    \\
+    \\
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\varphi$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}
+    \UnaryInfC{$\forall x, \varphi$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\varphi[t/x]$}
+    \DisplayProof
+    $\reecr{L^\forall}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi[t/x]$
+    \noLine\UnaryInfC{$\varphi[t/x]$}
+    \DisplayProof
+    %}
+    &
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\varphi[t/x]$}
+    \RightLabel{$\exists_\mathrm i$}
+    \UnaryInfC{$\exists x, \varphi$}
+    \Axiom$\fCenter\pi'$
+    \noLine\UnaryInfC{$\chi$}
+    \RightLabel{$\exists_\mathrm e^\dagger$}
+    \BinaryInfC{$\chi$}
+    \DisplayProof
+    $\reecr{L^\exists}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\varphi[t/x]$}
+    \noLine\UnaryInf$\fCenter\pi'[t/x]$
+    \noLine\UnaryInfC{$\chi$}
+    \DisplayProof
+    %}
+  \end{tabular}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.4cm}
+  \caption{Réductions logiques dans $\NJ$}
+  \label{tbl.cut.log.NJ}
+  \hrule
+\end{table}
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{cc}
+    \multicolumn{2}{c}{
+      %\resizebox{0.5\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\bot$}
+      \RightLabel{$\bot_\mathrm e$}
+      \UnaryInfC{$\varphi\to\psi$}
+      \Axiom$\fCenter\pi'$
+      \noLine\UnaryInfC{$\varphi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\psi$}
+      \DisplayProof
+      $\reecr{\bot^\to}$
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\bot$}
+      \RightLabel{$\bot$}\UnaryInfC{$\psi$}
+      \DisplayProof
+      %}
+    }
+    \\
+    \\
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\varphi_1\land\psi_2$}
+    \RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\varphi_i$}
+    \DisplayProof
+    $\reecr{\bot^\land_i}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\varphi_i$}
+    \DisplayProof
+    %}
+    &
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
+    \AxiomC{$[\varphi_1]^\alpha$}
+    \noLine\UnaryInf$\fCenter\pi_1$
+    \noLine\UnaryInfC{$\chi$}
+    \AxiomC{$[\varphi_2]^\alpha$}
+    \noLine\UnaryInf$\fCenter\pi_2$
+    \noLine\UnaryInfC{$\chi$}
+    \RightLabel{$\lor_\mathrm e, \alpha$}
+    \TrinaryInfC{$\chi$}
+    \DisplayProof
+    $\reecr{\bot^\lor_i}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\chi$}
+    \DisplayProof
+    %}
+    \\
+    \\
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\forall x, \varphi$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\varphi[t/x]$}
+    \DisplayProof
+    $\reecr{\bot^\forall}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\varphi[t/x]$}
+    \DisplayProof
+    %}
+    &
+    %\resizebox{0.5\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\exists x, \varphi$}
+    \Axiom$\fCenter\pi'$
+    \noLine\UnaryInfC{$\chi$}
+    \RightLabel{$\exists_\mathrm e^\dagger$}
+    \BinaryInfC{$\chi$}
+    \DisplayProof
+    $\reecr{\bot^\exists}$
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\bot$}
+    \RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\chi$}
+    \DisplayProof
+    %}
+  \end{tabular}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.4cm}
+  \caption{$\bot$-réductions dans $\NJ$}
+  \label{tbl.cut.bot.NJ}
+  \hrule
+\end{table}
+
+\begin{table}[t!]
+  \centering
+  \begin{tabular}{ccc}
+    \resizebox{0.4\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \AxiomC{$[\varphi_1]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\chi\to\xi$}
+      \AxiomC{$[\varphi_2]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\chi\to\xi$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\chi\to\xi$}
+      \Axiom$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\xi$}
+      \DisplayProof}
+    & $\reecr{C^\to_\lor}$ &
+    \resizebox{0.4\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \AxiomC{$[\varphi_1]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\chi\to\xi$}
+      \Axiom$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\xi$}
+      \AxiomC{$[\varphi_2]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\chi\to\xi$}
+      \Axiom$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\xi$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\xi$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \Axiom$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
+      \Axiom$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\psi_1\land\psi_2$}
+      \RightLabel{$\land_\mathrm e^i$}
+      \UnaryInfC{$\psi_i$}
+      \DisplayProof}
+    & $\reecr{C^\land_\lor}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \Axiom$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
+      \RightLabel{$\land_\mathrm e^i$}
+      \UnaryInfC{$\psi_i$}
+      \Axiom$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
+      \RightLabel{$\land_\mathrm e^i$}
+      \UnaryInfC{$\psi_i$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\psi_i$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.4\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \AxiomC{$[\varphi_1]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
+      \AxiomC{$[\varphi_2]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\psi_1\lor\psi_2$}
+      \AxiomC{$[\psi_1]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_1$
+      \noLine\UnaryInfC{$\chi$}
+      \AxiomC{$[\psi_2]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_2$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e,\beta$}
+      \TrinaryInfC{$\chi$}
+      \DisplayProof}
+    & $\reecr{C^\lor_\lor}$ &
+    \resizebox{0.4\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \AxiomC{$[\varphi_1]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
+      \AxiomC{$[\psi_1]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_1$
+      \noLine\UnaryInfC{$\chi$}
+      \AxiomC{$[\psi_2]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_2$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e,\beta$}
+      \TrinaryInfC{$\chi$}
+      \AxiomC{$[\varphi_2]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
+      \AxiomC{$[\psi_1]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_1$
+      \noLine\UnaryInfC{$\chi$}
+      \AxiomC{$[\psi_2]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_2$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e,\beta$}
+      \TrinaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e, \alpha$}
+      \TrinaryInfC{$\chi$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \Axiom$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\forall x, \psi$}
+      \Axiom$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\forall x, \psi$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\forall x, \psi$}
+      \RightLabel{$\forall_\mathrm e$}
+      \UnaryInfC{$\psi[t/x]$}
+      \DisplayProof}
+    & $\reecr{C^\forall_\lor}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \Axiom$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\forall x, \psi$}
+      \RightLabel{$\land_\mathrm e^i$}
+      \UnaryInfC{$\psi[t/x]$}
+      \Axiom$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\forall x, \psi$}
+      \RightLabel{$\land_\mathrm e^i$}
+      \UnaryInfC{$\psi[t/x]$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\psi[t/x]$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \AxiomC{$[\varphi_1]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\exists x, \psi$}
+      \AxiomC{$[\varphi_2]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\exists x, \psi$}
+      \RightLabel{$\lor_\mathrm e,\alpha$}
+      \TrinaryInfC{$\exists x, \psi$}
+      \AxiomC{$[\psi]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
+      \BinaryInfC{$\chi$}
+      \DisplayProof}
+    & $\reecr{C^\exists_\lor}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
+      \AxiomC{$[\varphi_1]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_1$
+      \noLine\UnaryInfC{$\exists x, \psi$}
+      \AxiomC{$[\psi]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
+      \BinaryInfC{$\chi$}
+      \AxiomC{$[\varphi_2]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi_2$
+      \noLine\UnaryInfC{$\exists x, \psi$}
+      \AxiomC{$[\psi]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
+      \BinaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e, \alpha$}
+      \TrinaryInfC{$\chi$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\exists x, \varphi$}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi\to\xi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+      \BinaryInfC{$\chi\to\xi$}
+      \Axiom$\fCenter\pi''$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\xi$}
+      \DisplayProof}
+    & $\reecr{C^\to_\exists}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\exists x, \varphi$}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\chi\to\xi$}
+      \Axiom$\fCenter\pi''$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\xi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+      \BinaryInfC{$\xi$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.2\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\exists x, \varphi$}
+    \Axiom$\fCenter\pi'$
+    \noLine\UnaryInfC{$\psi_1\land\psi_2$}
+    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+    \BinaryInfC{$\psi_1\land\psi_2$}
+    \RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\psi_i$}
+    \DisplayProof
+    }
+    & $\reecr{C^\land_\exists}$ &
+    \resizebox{0.2\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\exists x, \varphi$}
+    \Axiom$\fCenter\pi'$
+    \noLine\UnaryInfC{$\psi_1\land\psi_2$}
+    \RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\psi_i$}
+    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+    \BinaryInfC{$\psi_i$}
+    \DisplayProof
+    }
+    \\
+    \\
+    \resizebox{0.4\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\exists x, \varphi$}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+      \BinaryInfC{$\psi_1\lor\psi_2$}
+      \AxiomC{$[\psi_1]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_1$
+      \noLine\UnaryInfC{$\chi$}
+      \AxiomC{$[\psi_2]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_2$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e,\beta$}
+      \TrinaryInfC{$\chi$}
+      \DisplayProof}
+    & $\reecr{C^\lor_\exists}$ &
+    \resizebox{0.4\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\exists x, \varphi$}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
+      \AxiomC{$[\psi_1]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_1$
+      \noLine\UnaryInfC{$\chi$}
+      \AxiomC{$[\psi_2]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi'_2$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e,\beta$}
+      \TrinaryInfC{$\chi$}
+      \RightLabel{$\lor_\mathrm e, \alpha$}
+      \BinaryInfC{$\chi$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.2\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\exists x, \varphi$}
+    \Axiom$\fCenter\pi'$
+    \noLine\UnaryInfC{$\forall y, \psi$}
+    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+    \BinaryInfC{$\forall y, \psi$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\psi[t/y]$}
+    \DisplayProof
+    }
+    & $\reecr{C^\forall_\exists}$ &
+    \resizebox{0.2\textwidth}{!}{
+    \def\fCenter{\mbox{\Large$\vdots$}}
+    \Axiom$\fCenter\pi$
+    \noLine\UnaryInfC{$\exists x, \varphi$}
+    \Axiom$\fCenter\pi'$
+    \noLine\UnaryInfC{$\forall y, \psi$}
+    \RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\psi[t/y]$}
+    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+    \BinaryInfC{$\psi[t/y]$}
+    \DisplayProof
+    }
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\exists x, \varphi$}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\exists y, \psi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+      \BinaryInfC{$\exists y, \psi$}
+      \AxiomC{$[\psi]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi''$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
+      \BinaryInfC{$\chi$}
+      \DisplayProof}
+    & $\reecr{C^\exists_\exists}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \def\fCenter{\mbox{\Large$\vdots$}}
+      \Axiom$\fCenter\pi$
+      \noLine\UnaryInfC{$\exists x, \varphi$}
+      \AxiomC{$[\varphi]^\alpha$}
+      \noLine\UnaryInf$\fCenter\pi'$
+      \noLine\UnaryInfC{$\exists y, \psi$}
+      \AxiomC{$[\psi]^\beta$}
+      \noLine\UnaryInf$\fCenter\pi''$
+      \noLine\UnaryInfC{$\chi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
+      \BinaryInfC{$\chi$}
+      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
+      \BinaryInfC{$\chi$}
+      \DisplayProof}
+  \end{tabular}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.4cm}
+  \caption{Réductions commutatives dans $\NJ$}
+  \label{tbl.cut.com.NJ}
+  \hrule
+
+\end{table}
+
+\begin{remark}
+  La plupart des coupures logiques (si ce n'est toutes) ressemblent à de pures
+  évidences. Une coupure pour $\to$ est par exemple le fait de prouver d'abord
+  $\varphi\to\psi$ pour ensuite prouver $\varphi$ et en déduire $\psi$. On
+  pourrait penser, sous cette forme, qu'une telle situation n'arrive pas en
+  pratique puisqu'il est plus direct de prouver $\psi$ avec la version sans
+  coupure. Pourtant, c'est bien la version avec coupure qu'on utilise lorsqu'on
+  établit un théorème abstrait, souvent de la forme
+  $\forall x, \varphi \to \psi$, pour en récupérer une instance précise
+  $\psi[t/x]$.
+\end{remark}
+
+Cette réduction conserve les hypothèses et les conclusions, et permet donc de
+réécrire un arbre en un arbre prouvant le même séquent, et sans coupure. Il
+faut prouver que la réécriture termine, ce que nous verrons dans la
+\cref{subsec.ARS} et dans le CHAPITRE LAMBDA CALCUL TYPE.
+Pour l'instant, nous nous intéressons aux conséquences de cette élimination des
+coupures.
+
+\begin{theorem}[\'Elimination des coupures dans $\NJ$]
+  Pour tout arbre $\pi\in\ProofNJ$, il existe un arbre $\pi'$ tel que
+  $\pi{\reecr{}}^\star\pi'$ et $\pi'$ est sans coupure.
+
+  Un séquent $\Gamma\vdNJ\varphi$ est prouvable si et seulement s'il est
+  prouvable par un arbre de preuve sans coupure.
+\end{theorem}
+
+\begin{proof}
+  Reportée au CHAPITRE LAMBDA CALCUL TYPE.
+\end{proof}
+
+On a alors une notion d'arbre sous une forme d'intérêt, sans coupure. On peut
+vérifier que, comme pour le calcul des séquents, on a la propriété de la
+sous-formule.
+
+\begin{property}[Sous-formule]
+  Pour tout arbre $\pi\in\ProofNJ$ sans coupure et pour $\Gamma\vdNJ\varphi$
+  sa conclusion, chaque formule apparaissant dans $\pi$ est une sous-formule
+  de $\varphi$ ou de l'une des formules de $\Gamma$.
+\end{property}
+
+On peut aussi déduire directement le fait suivant~:
+
+\begin{proposition}
+  Tout arbre $\pi\in\ProofNJ$ sans coupure tel que $\pi\concl \vdNJ\varphi$ a
+  comme dernière règle une règle d'introduction.
+\end{proposition}
+
+\begin{proof}
+  Si la dernière règle est une règle d'élimination, alors la propriété de la
+  sous-formule n'est pas respectée.
+\end{proof}
+
+D'où les propriétés déjà prouvées dans $\LJ$ de la disjonction et du témoin.
+
+\begin{property}[Disjonction]
+  Pour toutes formules $\varphi,\psi$, si $\vdNJ\varphi\lor\psi$ alors
+  $\vdNJ\varphi$ ou $\vdNJ\psi$.
+\end{property}
+
+\begin{proof}
+  Si $\vdNJ\varphi\lor\psi$, alors on trouve un arbre $\pi$ sans coupure
+  tel que $\pi\concl\vdNJ\varphi\lor\psi$. On sait que $\pi$ a comme dernière
+  règle une règle d'introduction, et la seule pouvant s'appliquer à un
+  $\lor$ est une des deux règles $\lor_\mathrm i$. On en déduit le résultat.
+\end{proof}
+
+\begin{property}[Témoin]
+  Pour toute formule $\varphi$, si $\vdNJ\exists x, \varphi$ alors il existe
+  un terme $t$ tel que $\vdNJ\varphi[t/x]$.
+\end{property}
+
+\begin{proof}
+  Si $\vdNJ\exists x, \varphi$, alors on trouve $\pi$ sans coupure tel que
+  $\pi\concl\vdNJ\exists x, \varphi$. Comme $\pi$, commence par une règle
+  d'introduction, on a le résultat.
+\end{proof}
+
+Nous avons vu trois réécriture au fil des derniers chapitres, qui ont permi à
+chaque fois de faire apparaître des formes remarquables des arbres de preuves.
+Pour abstraire les propriétés et parler de façon plus génériques de systèmes de
+réécriture, on introduit les systèmes de réécriture abstraits.
+
+\subsection{Systèmes de réécriture abstraits}\label{subsec.ARS}
+
+L'idée de ce domaine est de considérer une relation $\to$,
+représentant une règle de réécriture, pour établir des propriétés d'intérêt et
+de souligner les liens entre ces propriétés.
+
+\begin{definition}[Système de réécriture abstrait]
+  Un ARS (\foreignexpr{Abstract Rewriting System}), ou système de réécriture
+  abstrait, est une paire $(A,\to)$ où $\to$ est une relation binaire sur
+  $A$.
+\end{definition}
+
+Puisque $\to$ représente une réécriture, l'intérêt de $\to$ est généralement
+d'être irréflexif, mais on s'intéresse aussi à sa clôture transitive, ou à
+d'autres clôtures construites depuis $\to$.
+
+\begin{definition}[Clôture réflexive, transitive, symétrique]
+  Pour une relation binaire $\to$ sur un ensemble $A$, on note
+  $\to^{=}$ la plus petite relation réflexive contenant $\to$, on note
+  $\to^+$ la plus petite relation transitive contenant $\to$, et on note
+  $\to^\star$ la plus petite relation réflexive et transitive contenant $\to$.
+
+  On note aussi $\leftrightarrow$ la plus petite relation symétrique contenant
+  $\to$ (ou $R^\leftrightarrow$ si la relation n'est pas notée par un symbole de
+  flèche) et $\xrightarrow{\sim}$ la plus petite relation d'équivalence
+  contenant $\to$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour chaque opération de clôture $C$, les propriétés suivantes
+  sont vérifiées~:
+  \begin{align*}
+    \forall R,R' \subseteq A^2, &R\subseteq R' \implies C(R) \subseteq C(R') \\
+    \forall R \subseteq A^2, &C(C(R)) = C(R) \\
+    \forall R \subseteq A^2, &R \subseteq C(R)
+  \end{align*}
+  Ces propriétés font de $C$ ce qu'on appelle un opérateur de clôture.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que pour toute relation binaire $to$, on a
+  $(\xrightarrow{\sim}) = (\leftrightarrow)^\star$. A-t-on
+  $(\xrightarrow{\sim}) = (\to^\star)^\leftrightarrow$ ?
+\end{exercise}
+
+\begin{exercise}
+  On définit la composée de deux relation $R,S\subseteq A^2$ par
+  \[R\circ S \defeq \{(x,z) \in A^2 \mid \exists y \in A, xRy \land yRz\}\]
+  On définit aussi les itérées d'une relation par
+  \begin{align*}
+    R^0 &\defeq \{(x,x) \mid a \in A\} \\
+    R^{n+1} &\defeq R \circ R^n
+  \end{align*}
+  Montrer que $\displaystyle R^\star = \bigcup_{n \in \bN} R^n$.
+\end{exercise}
+
+Malgré la situation particulièrement générique dans laquelle on se place, on
+souhaite généralement travailler avec des ensembles particuliers, définis
+inductivement. Dans ce cadre, on a déjà vu une propriété abstraite importante,
+qui est celle de relation compatible.
+
+\begin{definition}[Relation compatible, congruence]
+  Soit $A$ un ensemble inductif. Une relation binaire $R\subseteq A^2$ est
+  dite compatible si pour tout constructeur $c$ d'arité $n$, pour tous
+  termes $a_1,\ldots,a_n,b\in A$ et indice $i$, si
+  $a_i R b$ alors
+  \[c(a_1,\ldots,a_{i-1},a_i,a_{i+1},\ldots,a_n) R
+  c(a_1,\ldots,a_{i-1},b,a_{i+1},\ldots,a_n)\]
+
+  Une relation est dite une congruence si elle est compatible et est une
+  relation d'équivalence.
+\end{definition}
+
+Dans le cas de $\LK$, de $LJ$ et de $\NJ$, on définit chaque relation $\reecr{}$
+comme étant compatible, car il est important de pouvoir réécrire dans les
+sous-arbre pour éliminer les coupures. Cependant, la compatibilité entraine un
+certain choix dans les coupures possibles. Il arrive de n'avoir qu'une seule
+coupure à réduire, mais il est aussi fréquent que plusieurs coupures
+apparaissent, et on peut donc se demander si choisir une coupure ou une autre
+impacte le résultat.
+
+Cette invariance du résultat par le choix des coupures à réduire peut être
+résumé aux propriétés de confluence.
+
+\begin{figure}[ht!]
+  \centering
+  \hrule
+
+  \vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (q_0) {$a$};
+    \node (q_1) [below left = of q_0] {$b$};
+    \node (q_2) [below right = of q_0] {$c$};
+    \node (q_3) [below right = of q_1] {$d$};
+    \node (r_1) [right = of q_2] {$b$};
+    \node (r_0) [above right = of r_1] {$a$};
+    \node (r_2) [below right = of r_0] {$c$};
+    \node (r_3) [below right = of r_1] {$d$};
+    \node (s_1) [right = of r_2] {$b$};
+    \node (s_0) [above right = of s_1] {$a$};
+    \node (s_2) [below right = of s_0] {$c$};
+    \node (s_3) [below right = of s_1] {$d$};
+    \node (a) at (0,-3.5) {Confluence};
+    \node (b) at (5,-3.5) {Confluence locale};
+    \node (c) at (10,-3.5) {Propriété du carreau};
+    \draw[->,>=latex] (q_0) to node[very near end,below]{$\star$} (q_1);
+    \draw[->,>=latex] (q_0) to node[very near end,below]{$\star$} (q_2);
+    \draw[->,>=latex,dashed] (q_1) to node[very near end,below]{$\star$} (q_3);
+    \draw[->,>=latex,dashed] (q_2) to node[very near end,below]{$\star$} (q_3);
+    \draw[->,>=latex] (r_0) -- (r_1);
+    \draw[->,>=latex] (r_0) -- (r_2);
+    \draw[->,>=latex,dashed] (r_1) to node[very near end,below]{$\star$} (r_3);
+    \draw[->,>=latex,dashed] (r_2) to node[very near end,below]{$\star$} (r_3);
+    \draw[->,>=latex] (s_0) -- (s_1);
+    \draw[->,>=latex] (s_0) -- (s_2);
+    \draw[->,>=latex,dashed] (s_1) -- (s_3);
+    \draw[->,>=latex,dashed] (s_2) -- (s_3);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.4cm}
+  \caption{Confluence, confluence locale, propriété du carreau}
+  \label{fig.confluence}
+  \hrule
+\end{figure}
+
+\begin{definition}[Confluence]
+  Soit $(A,\to)$ un ARS. On dit que $\to$ est confluente si pour tous
+  $a,b,c \in A$, si $a\to^\star b$ et $a\to^\star c$, alors il existe
+  $d \in A$ tel que $b\to^\star d$ et $c\to^\star d$.
+\end{definition}
+
+\begin{definition}[Confluence locale]
+  Soit $(A,\to)$ un ARS. On dit que $\to$ est localement confluente si pour
+  tous $a,b,c \in A$, si $a \to b$ et $a \to c$, alors il existe
+  $d \in A$ tel que $b \to^\star d$ et $c\to^\star d$.
+\end{definition}
+
+\begin{definition}[Propriété du carreau]
+  Soit $(A,\to)$ un ARS. On dit que $\to$ a la propriété du carreau
+  (on dit aussi propriété du diamant) si pour
+  tous $a,b,c \in A$, si $a \to b$ et $a \to c$, alors il existe
+  $d \in A$ tel que $b \to d$ et $c \to d$.
+\end{definition}
+
+Ces trois propriétés se ressemblent grandement, et diffèrent uniquement de la
+position des clôtures $\star$. La \cref{fig.confluence} permet de mieux
+apprécier les différences entre chaque propriété.
+
+Le lien entre les trois propriétés n'est pas forcément intuitif~: la propriété
+du carreau est la plus forte, suivi par la confluence puis la confluence
+locale. Un point important est le fait que la confluence locale n'implique pas
+la confluence, comme le montre la \cref{fig.ctrex.confluence}.
+
+\begin{figure}[ht!]
+  \centering
+  \hrule
+
+  \vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (q_0) {$a$};
+    \node (q_1) [right of = q_0] {$b$};
+    \node (q_2) [right of = q_1] {$c$};
+    \node (q_3) [right of = q_2] {$d$};
+    \draw[->,>=latex] (q_1) -- (q_0);
+    \draw[->,>=latex] (q_2) -- (q_3);
+    \draw[->,>=latex] (q_1) to[bend left] (q_2);
+    \draw[->,>=latex] (q_2) to[bend left] (q_1);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+  
+  \vspace{0.4cm}
+  \caption{Confluence locale sans confluence}
+  \label{fig.ctrex.confluence}
+  \hrule
+\end{figure}
+
+On prouve donc que la propriété du carreau suffit à obtenir la confluence.
+En fait, cette propriété assure une encore meilleure propriété, puisqu'elle
+conserve en un sens le nombre de réductions.
+
+\begin{proposition}\label{prop.carreau.confluence}
+  Soit $(A,\to)$ un ARS. Si $\to$ a la propriété du carreau, alors $\to$ est
+  confluente.
+\end{proposition}
+
+\begin{figure}[ht!]
+  \centering
+  \hrule
+
+  \vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 1.2cm, on grid, auto]
+    \node (a) {$a$};
+    \node (a_0) [below left = of a] {$a_0$};
+    \node (a_1) [below right = of a] {$a_1$};
+    \node (a') [below right = of a_0] {$a'$};
+    \node (no) [below left = of a_0] {};
+    \node (noo) [below right = of a_1] {};
+    \node (b) [below left = of no] {$b$};
+    \node (c) [below right = of noo] {$c$};
+    \node (b_0) [below right = of b] {$b_0$};
+    \node (c_0) [below left = of c] {$c_0$};
+    \node (nooo) [below left = of c_0] {};
+    \node (d) [below left = of nooo] {$d$};
+    \draw[->,>=latex] (a) -- (a_0);
+    \draw[->,>=latex] (a) -- (a_1);
+    \draw[->,>=latex] (b) -- (b_0);
+    \draw[->,>=latex] (c) -- (c_0);
+    \draw[->,>=latex,dashed] (a_0) -- (a');
+    \draw[->,>=latex,dashed] (a_1) -- (a');
+    \draw[->,>=latex] (a_0) to node[very near end,below]{$p$} (b);
+    \draw[->,>=latex] (a_1) to node[very near end,below]{$k$} (c);
+    \draw[->,>=latex,dashed] (b_0) to node[very near end,below]{$k$} (d);
+    \draw[->,>=latex,dashed] (c_0) to node[very near end,below]{$p$} (d);
+    \draw[->,>=latex,dashed] (a') to node[very near end,below]{$p$} (b_0);
+    \draw[->,>=latex,dashed] (a') to node[very near end,below]{$k$} (c_0);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+  
+  \vspace{0.4cm}
+  \caption{Preuve de la \cref{prop.carreau.confluence}}
+  \label{fig.carreau.confluence}
+  \hrule
+\end{figure}
+
+\begin{proof}
+  On prouve par récurrence sur $\max(p,k)$ que si $a\to^p b$ et $a\to^k c$ alors
+  il existe $d$ tel que $b\to^{\leq k} d$ et $c\to^{\leq p} d$. Le cas où $p = 0$
+  ou $k = 0$ est évident en prenant respectivement $d = c$ et $d = b$.
+
+  On suppose donc la propriété vraie pour $n$, et on souhaite la
+  prouver pour $n + 1$. Soit donc $a \to^{p+1} b$, $a\to^{k+1} c$. Par définition,
+  on trouve $a_0,a_1$ tels que $a\to a_0 \to^p b$ et $a\to a_1 \to^k c$.
+
+  Par propriété du diamant, on trouve donc $a'$ tel que
+  $a_0 \to a'$ et $a_1 \to a'$. On peut alors appliquer l'hypothèse de
+  récurrence à~:
+  \begin{itemize}
+  \item $a_0 \to^p b$, $a_0 \to a'$ pour trouver $b_0$ tel que
+    $b \to b_0$ et $a' \to^{\leq p} b_0$.
+  \item $a_1 \to^k c$, $a_1 \to a'$ pour trouver $c_0$ tel que
+    $c \to c_0$ et $a' \to^{\leq k} c_0$.
+  \end{itemize}
+  mais alors, par hypothèse de récurrence sur
+  $a' \to^{\leq p} b_0$, $a' \to^{\leq k} c_0$,
+  on trouve $d$ tel que $b_0 \to^{\leq k} d$ et $c_0\to^{\leq p} d$, d'où
+  $b \to^{\leq k+1} d$ et $c\to^{\leq p+1} d$. D'où le résultat par récurrence.
+\end{proof}
+
+\begin{remark}
+  La propriété du carreau ne s'applique que sur des ARS qui ont, depuis un
+  élément $a$, ou bien une suite infinie de réductions, ou bien aucune
+  réduction partant de $a$. En effet, si on a $a \to b$, alors on peut
+  considérer $a \to b$, $a \to b$ pour trouver $c$ tel que $b \to c$, puis
+  réeffectuer cette construction pour prolonger à chaque fois la suite de
+  réductions. En pratique, les relations qui vérifient la propriété du
+  carreau sont des relations réflexives, et la suite infinie de réductions est
+  donc une suite constante.
+\end{remark}
+
+D'après la remarque précédente, la propriété du carreau n'est généralement pas
+une propriété qu'on retrouve dans une relation de réécriture, ou de réduction,
+puisqu'on veut qu'une telle relation ne crée pas de suite infinie.
+
+On peut cependant utiliser la propriété du carreau pour établir la confluence
+d'une autre relation.
+
+\begin{lemma}\label{lem.carreau.confluence.clot}
+  Soit $(A,\to)$ un ARS. S'il existe $\to'$ telle que
+  \begin{itemize}
+  \item $(\to')^\star = \to^\star$
+  \item $\to'$ a la propriété du diamant
+  \end{itemize}
+  alors $\to$ est confluente.
+\end{lemma}
+
+\begin{proof}
+  Puisque $\to'$ a la propriété du diamant, on sait que $\to'$ est confluente.
+  Cela signifie que $(\to')^\star$ a la propriété du diamant, et par
+  égalité que $\to^\star$ a la propriété du diamant, ce qui est équivalent à
+  dire que $\to$ est confluente.
+\end{proof}
+
+Définissons aussi la propriété de Church-Rosser, qui est une propriété analogue
+à la confluence mais qui ne se focalise pas sur un élément depuis lequel on
+choisit deux réductions.
+
+\begin{definition}[Propriété de Church-Rosser]
+  Soit $(A,\to)$ un ARS. On dit que $\to$ a la propriété de Church-Rosser si
+  \[\forall a,b \in A, a \xrightarrow{\sim} b \implies \exists c \in A,
+  \begin{cases} a \to^\star c \\ b \to^\star c \end{cases}\]
+\end{definition}
+
+\begin{proposition}\label{prop.CR.confl}
+  La propriété de Church-Rosser est équivalente à la confluence.
+\end{proposition}
+
+\begin{figure}[!ht]
+  \centering
+  \hrule
+
+  \vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (a_0) {$a_0$};
+    \node (a_1) [above right = of a_0] {$a_1$};
+    \node (a_2) [below right = of a_1] {$a_2$};
+    \node (bla) [right = of a_2] {$\cdots$};
+    \node (a_n2) [right = of bla] {$a_{n-2}$};
+    \node (a_n1) [above right = of a_n2] {$a_{n-1}$};
+    \node (a_n) [below right = of a_n1] {$a_n$};
+    \draw[->,>=latex] (a_1) -- (a_0);
+    \draw[->,>=latex] (a_1) -- (a_2);
+    \draw[->,>=latex] (a_n1) -- (a_n2);
+    \draw[->,>=latex] (a_n1) -- (a_n);
+    \node (b) [below left = of bla] {};
+    \draw[->,>=latex,dashed] (a_0) -- (b);
+    \draw[->,>=latex,dashed] (a_2) -- (b);
+    \node (d) [below right = of b] {};
+    \node (c) [below right = of bla] {};
+    \draw[->,>=latex,dashed] (a_n2) -- (c);
+    \draw[->,>=latex,dashed] (a_n) -- (c);
+    \draw[->,>=latex,dashed] (c) -- (d);
+    \draw[->,>=latex,dashed] (b) -- (d);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+  
+  \vspace{0.4cm}
+  \caption{Preuve de la \cref{prop.CR.confl}}
+  \label{fig.CR.confl}
+  \hrule
+
+\end{figure}
+
+\begin{proof}
+  Si $a \to^\star b$ et $a\to^\star c$, alors $a \xrightarrow\sim b$, donc la
+  propriété de Church-Rosser implique la confluence.
+
+  Réciproquement, soit $a \xrightarrow\sim b$. On sait qu'il existe une
+  suite d'éléments $a_0 = a$, $a_n = b$ et où pour tout $i$,
+  $a_i \to^\star a_{i+1}$ ou $a_{i+1} \to^\star a_i$. On procède par induction
+  sur la valeur de $n$. On suppose donc, par hypothèse d'induction, que
+  $a_{n-1} \to^\star c$ et $a\to^\star c$, et on considère la dernière réduction
+  $a_{n-1} (\to^\star)^\leftrightarrow a_n$. Deux cas sont possibles~:
+  \begin{itemize}
+  \item si $a_n \to^\star a_{n-1}$, alors $a_n \to^\star c$ d'où le résultat.
+  \item si $a_{n-1} \to a_n$, alors on sait que $a_{n-1} \to^\star c$ et que
+    $a_{n-1} \to^\star a_n$, donc par confluence on trouve un $d$ tel que
+    $a_n \to^\star d$ et $c \to^\star d$, donc $a \to^\star d$ et
+    $b \to^\star d$.
+  \end{itemize}
+  Donc, par récurrence, si $\to$ est confluente, alors $\to$ a la propriété de
+  Church-Rosser.
+\end{proof}
+
+L'intérêt essentiel de la propriété de Church-Rosser est qu'une relation $\to$
+qui la vérifie donne lieu à un algorithme simple pour tester l'égalité modulo
+$\to$~: on réduit au maximum deux termes, et on vérifie s'ils donnt le même
+résultat.
+
+Pour que cela ait un sens, encore faut-il que la réduction aboutisse à un
+résultat exploitable, ce qui demande qu'elle se termine. On s'intéresse donc
+aux propriétés de terminaison. Tout d'abord, le cas le plus élémentaire de
+terminaison est le cas d'un élément ne se réduisant pas.
+
+\begin{definition}[Forme normale]
+  Soit $(A,\to)$ un ARS. On dit qu'un élément $a \in A$ est une forme normale
+  s'il vérifie
+  \[\lnot(\exists b \in A, a\to b)\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que si $\to$ a la propriété de Church-Rosser, alors pour chaque
+  $a \in A$, il existe au plus une forme normale $b$ telle que
+  $a \to^\star b$.
+\end{exercise}
+
+\begin{notation}
+  Lorsque $a \to^\star b$ et $b$ est une forme normale, on notera
+  $a\to^! b$.
+\end{notation}
+
+Une façon pour une réduction de se terminer est alors d'aboutir à une forme
+normale, ou plus généralement de ne s'effectuer qu'un nombre fini de fois. Cela
+traduit l'idée de normalisation faible.
+
+\begin{definition}[Normalisation faible]
+  Soit $(A,\to)$ un ARS. On dit qu'un élément $a \in A$ est faiblement
+  normalisant lorsqu'il existe une suite finie maximale de réduction depuis
+  $a$, c'est-à-dire une suite de réductions depuis $a$ dont le dernier élément
+  est une forme normale.
+
+  On note $\WN$ l'ensemble des éléments faiblement normalisants. On dit que
+  $A$ est faiblement normalisant si $\WN = A$.
+\end{definition}
+
+Naturellement, il existe une normalisation forte. Celle-ci traduit l'idée que
+la relation $\to$ est bien fondée, c'est-à-dire sans suite infinie.
+
+\begin{definition}[Normalisation forte]
+  Soit $(A,\to)$ un ARS. On définit l'ensemble $\SN$ par la règle d'induction
+  \begin{prooftree}
+    \AxiomC{$\forall b, a \to b \implies b \in \SN$}
+    \UnaryInfC{$a \in \SN$}
+  \end{prooftree}
+  un terme est fortement normalisant lorsqu'il appartient à $\SN$. On dit que
+  $A$ est fortement normalisant si $\SN = A$.
+\end{definition}
+
+\begin{exercise}
+  Montrer qu'une forme normale est fortement normalisante. Montrer qu'un élément
+  fortement normalisant est faiblement normalisant.
+\end{exercise}
+
+\begin{exercise}
+  Soit $(A,\to)$ un ARS tel que $\to$ vérifie la propriété de Church-Rosser,
+  et soit $a \in A$ un élément faiblement normalisant.
+  Peut-il exister une suite infinie de réductions depuis $a$ ? Si oui, donner
+  un exemple.
+\end{exercise}
+
+Dans le cas de la normalisation forte, les propriétés de confluence locale et
+de confluence sont équivalentes.
+
+\begin{lemma}[Newman]
+  Soit $(A,\to)$ un ARS fortement normalisant et localement confluent. Il est
+  alors confluent.
+\end{lemma}
+
+\begin{proof}
+  On raisonne par induction bien fondée sur $\to$~: cette induction est possible
+  car $A$ est fortement normalisant, donc l'induction définissant $\SN$
+  s'applique à tout élément de $A$.
+
+  On choisit un élément $a \in A$, dont on suppose que $\to$ est confluente
+  pour tout $b$ tel que $a \to^+ b$. Soient $b,c \in A$ tels que
+  $a \to^\star b, a \to^\star c$. Si $b = a$ ou $c = a$, alors on vérifie
+  directement la confluence pour cette instance.
+
+  On suppose donc que $a \to b_0 \to^\star b$ et que $a \to c_0 \to^\star c$.
+  Par confluence locale, on trouve $a_0$ tel que $b_0 \to^\star a_0$ et
+  $c_0\to^\star a_0$. On peut alors fermer le carré par hypothèse d'induction
+  appliquée sur $b_0 \to^\star a_0, b_0\to^\star b$, sur
+  $c_0\to^\star a_0,c_0\to^\star c$ puis, en notant $d_0,d_1$ les deux éléments
+  obtenus, sur $a_0 \to^\star d_0, a_0\to^\star d_1$, pour obtenir un élément
+  $d$ tel que $b \to^\star d$ et $c\to^\star d$.
+\end{proof}
+
+Dans le cas des arbres de preuves de $\NJ$, on a les deux propriétés de
+confluence et de terminaison.
+
+\begin{theorem}
+  L'ARS $(\ProofNJ,\reecr{})$ est fortement normalisant et confluent.
+  L'égalité d'arbres de preuves est donc décidable.
+\end{theorem}
+
+\begin{proof}
+  Reportée au CHAPITRE LAMBDA CALCUL TYPE.
 \end{proof}
