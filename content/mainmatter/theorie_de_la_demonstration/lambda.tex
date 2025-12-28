@@ -3,4 +3,495 @@
 
 \minitoc
 
+\lettrine{D}{ans} le \cref{chp.recur}, nous avons abordé deux systèmes de
+calcul~: les fonctions récursives et les machines de Turing. Le formalisme des
+fonctions récursives a été introduit par Kleene dans \cite{Kleene1936} sur la
+base des fonctions récursives primitives mises en avant par Skolem
+\cite{skolem1923begrundung}. Cependant, Kleene utilisait aussi de son propre
+aveu des intuitions issues d'un autre formalisme, celui de son maître de thèse~:
+Church.
 
+Le formalisme du $\lambda$-calcul a en effet été introduit par Church dans
+\cite{Church1932}, en tant que formalisme équationnel et logique~: les termes
+construits par les abstractions et les applications permettent de construire des
+objets dans une certaine théorie logique (contrairement à la vision plus
+moderne dans laquelle on considère un simple ensemble de $\lambda$-termes avec
+des règles de réécriture). Relevons que Kleene et Rosser (ses élèves) ont
+participé au développement du $\lambda$-calcul, en en prouvant d'abord
+l'incohérence dans \cite{KleeneRosser1935}, mais aussi en participant à la
+preuve que les fonctions codées par le $\lambda$-calcul sont exactement les
+fonctions calculables au sens des fonctions calculables de Herbrand-Gödel.
+
+Ce formalisme est donc plus ancien que ceux que nous avons déjà présentés.
+Pourtant, le $\lambda$-calcul est encore au c\oe ur des recherches modernes en
+informatique théorique et en logique, pour son aspect combinatoire et,
+comme nous le verrons dans le \cref{chp.lambda_type}, pour la richesse des
+systèmes de types.
+
+Dans ce chapitre, nous nous concentrons sur l'aspect non typé du formalisme.
+Les ressources ne manquent pas sur le sujet, et vont plus loin que ce chapitre
+introductif~: nous conseillons \cite{Barendregt1984,krivine1993lambda,selinger},
+qui abordent aussi la version typée du calcul.
+
+Nous abordons d'abord la définition des $\lambda$-termes, de la
+$\beta$-réduction et la gestion de l'$\alpha$-équivalence. Nous donnons ensuite
+le théorème d'équivalence entre le $\lambda$-calcul et les fonctions récursives.
+Enfin, nous étudions les propriétés des réductions, en montrant par exemple le
+théorème de standardisation ou la propriété de Church-Rosser.
+
+\section{Premiers pas en $\lambda$-calcul}
+
+Pour introduire le $\lambda$-calcul, commençons par présenter un cas simple
+d'expression arithmétique~:
+\[e\defeq x + 2y\]
+l'expression $e$ comporte des variables libres, ce qui signifie qu'elle peut se
+considérer comme une fonction qui, à une valeur fixée de $x$ et de $y$,
+retourne la valeur de l'expression. On pourrait cependant souhaiter que nos
+expressions permettent aussi de parler de fonctions, de la même façon qu'elles
+parlent d'entiers.
+
+Pour travailler avec des fonctions, deux points sont essentiels~:
+\begin{itemize}
+\item avoir un moyen de construire une fonction (un constructeur)~;
+\item avoir un moyen d'appliquer une fonction à un argument (un destructeur).
+\end{itemize}
+La façon naturelle de construire une fonction est alors de considérer une
+expression, telle que $e$, et d'abstraire une de ses variables pour en faire
+un argument de fonction, ce que l'on notera
+\[e' \defeq \lambda x.e\]
+pour définir la fonction qui, à $a$ associe l'évaluation de $e$ où $x$ prend la
+valeur $a$. L'expression résultante, $e'$, est alors une fonction pour chaque
+paramètre $y$ fixé, et on pourrait donc définir encore
+\[e'' \defeq \lambda y.e'\]
+pour obtenir une fonction, retournant elle-même une fonction.
+
+On obtient donc assez naturellement un formalisme, dans lequel on se permet de
+construire à partir d'expressions, de nouvelles expressions représentant des
+fonctions. L'autre étape, l'application d'une fonction à un argument, est alors
+naturelle~: si $e$ et $e'$ sont des expressions, alors $e(e')$ est une nouvelle
+expression qui s'évalue en l'application de la fonction représentée par $e$
+en la valeur représentée par $e'$.
+
+\subsection{Termes, substitutions, réductions}
+
+Les deux principes d'abstraction et d'application nous suffisent en fait, comme
+nous allons le voir, pour définir l'ensemble des fonctions calculables, dans
+un formalisme où toutes les expressions sont des fonctions sur toutes les
+expressions possibles. Au lieu d'évaluer des expressions, on décide alors de
+travailler de façon purement syntaxique, en créant une relation représentant
+l'évaluation d'une expression, encore appelée $\lambda$-terme.
+
+\begin{definition}[$\lambda$-terme - \ordinalnumeralfeminin{1} version]
+  On fixe un ensemble $\lamVar$ dénombrable de $\lambda$-variables, dont on
+  notera les éléments $x,y,z,\ldots$ On définit l'ensemble $\lamSet_0$ des
+  $\lambda$-termes par la BNF suivante~:
+  \[t,u\Coloneq x\mid \lambda x.t\mid t\;u\]
+  Un terme de la forme $x \in \lamVar$ est appelé une variable, un terme de la
+  forme $\lambda x.t$ est appelé une abstraction, et un terme de la forme
+  $t\;u$ est appelé une application.
+\end{definition}
+
+\begin{remark}
+  Plusieurs conventions existent pour parenthéser des $\lambda$-termes. La
+  convention à la Krivine, par exemple, est d'écrire $(t)u$ pour le terme
+  $t\;u$ précédent. Donc notre cas, nous appliquons un parenthésage uniquement
+  pour supprimer des ambigüités, et définissons l'application comme associative
+  à gauche, ce qui signifie que $t\;u\;v$ doit se lire $(t\;u)\;v$.
+\end{remark}
+
+Les $\lambda$-termes représentent donc des fonctions lorsqu'ils sont de la
+forme $\lambda x.t$, mais tout terme peut s'appliquer à tout autre terme, donc
+même un terme de la forme $x$ ou $t\;u$ peut s'appliquer à un autre terme.
+
+Cependant, c'est bien pour un terme de la forme $\lambda x.t$ que l'idée de
+fonction prend tout son sens. On peut alors, naturellement, imaginer comment
+réduire (de façon purement syntaxique) une fonction appliquée à un argument~:
+si je considère $f(a)$ et que $f$ est de la forme $x \mapsto e$, alors
+$f(a)$ correspond exactement à l'expression $e$ dans laquelle $x$ a été
+substitué par $a$.
+
+La même idée permet alors de définir une réduction sur les $\lambda$-termes,
+en réduisant $(\lambda x.t)u$ en l'expression $t$ où $u$ remplace $x$. On a donc
+besoin de la notion de substitution.
+
+\begin{definition}[Substitution - \ordinalnumeralfeminin{1} version]
+  Soient $t,u\in\lamSet_0$ et $x \in \lamVar$. On définit la substitution de
+  $x$ par $u$ dans $t$, notée $t[u/x]$, par induction sur $t$~:
+  \begin{itemize}
+  \item si $t = x$, alors $t[u/x] \defeq u$.
+  \item si $t = y$ où $y \in \lamVar$ et $y \neq x$, alors $t[u/x] \defeq t$.
+  \item si $t = \lambda x.t'$, alors $t[u/x] \defeq t$.
+  \item si $t = \lambda y.t'$ où $y \neq x$, alors
+    $t[u/x] \defeq \lambda y.t'[u/x]$.
+  \item si $t = t'\;t''$, alors $t[u/x] \defeq (t'[u/x])\;(t''[u/x])$.
+  \end{itemize}
+\end{definition}
+
+En réalité, cette définition n'est pas bonne. Prenons par exemple le terme
+$t \defeq \lambda x.\lambda y.z$ et le terme $u \defeq x$. On a alors l'égalité
+\[t[u/z] = \lambda x.\lambda y.x\]
+qui correspond moralement à prendre un argument, puis retourner la fonction
+constante en cet argument. Pourtant, si on considère
+$t' \defeq \lambda a.\lambda y.z$, alors $t'[u/z]$ est un terme qui se
+comporte bien différemment, car la variable $x$ de $u$ n'est alors pas capturée.
+
+Pourtant, il est clair que la fonction $x \mapsto e(x)$ et la fonction
+$y \mapsto e(y)$ doivent être les mêmes, et la substitution ne devrait donc pas
+donner deux résultats différents. Il nous faut donc d'abord gérer les variables
+libres d'un terme.
+
+\begin{definition}[Variable libre]
+  Soit $t \in \lamSet_0$, on définit par induction sur $t$ les ensembles $\VLie$
+  de ses variables et $\VL(t)$ de ses variables libres~:
+  \begin{itemize}
+  \item si $t = x$ alors $\VLie(x) = \varnothing$ et $\VL(t) = \{x\}$.
+  \item si $t = \lambda x.t'$ alors $\VLie(t) = \{x\} \cup \VLie(t')$ et
+    $\VL(t) = \VL(t')\setminus\{x\}$.
+  \item si $t = t'\;t''$ alors $\VLie(t) = \VLie(t') \cup \VLie(t'')$ et
+    $\VL(t) = \VL(t') \cup \VL(t'')$.
+  \end{itemize}
+
+  Si $\VL(t) = \varnothing$, alors on dit que $t$ est un terme clos.
+\end{definition}
+
+Avec la notion de variable libre, on peut procéder à une correction importante~:
+si $t,u \in \lamSet$, pour effectuer la substitution $t[u/x]$ et éviter toute
+capture de variable, il nous suffit de demander que
+$\VLie(t)\cap\VL(u)=\varnothing$. Cette condition, comme on l'a vu précédemment,
+n'est pas pour autant toujours respectée, mais on remarque qu'il nous suffit
+de modifier les variables liées de $t$ pour l'assurer. Intuitivement, puisque
+$x$ est une variable muette dans $\lambda x.t$, il est parfaitement légitime
+de considérer égaux les termes $\lambda x.t$ et $\lambda y.t[y/x]$.
+
+\begin{definition}[$\alpha$-équivalence]
+  On définit la relation d'$\alpha$-équivalence $=_\alpha$ comme la plus petite
+  congruence sur $\lamSet_0$ contenant les paires
+  \[\lambda x.t =_\alpha \lambda y.t[y/x]\]
+  où $y \notin \VL(t)$.
+\end{definition}
+
+\begin{definition}[$\lambda$-terme - \ordinalnumeralfeminin{2} version]
+  L'ensemble $\lamSet$ est défini comme le quotient par l'$\alpha$-équivalence~:
+  \[\lamSet \defeq \lamSet_0 / =_\alpha\]
+\end{definition}
+
+\begin{remark}
+  Dans $\lamSet$, l'ensemble $\VL$ est bien défini mais l'ensemble $\VLie$ ne
+  l'est pas.
+\end{remark}
+
+On peut maintenant vérifier le lemme permettant d'éviter les captures de
+variables.
+
+\begin{lemma}
+  Soient $t,u \in \lamSet_0$, alors il existe $t' \in \lamSet_0$ tel que
+  $t' =_\alpha t$ et tel que $\VLie(t') \cap \VL(u) =\varnothing$.
+\end{lemma}
+
+\begin{proof}
+  Il suffit, pour chaque abstraction dans $t$ liant une variable $x$ libre dans
+  $u$, de remplacer $x$ par une variable $y \notin\VL(u)$ (comme $\lamVar$
+  est infini, il existe un tel $y$) grâce à l'$\alpha$-équivalence.
+\end{proof}
+
+On peut maintenant définir la substitution sans capture de variable.
+
+\begin{definition}[Substitution - \ordinalnumeralfeminin{2} version]
+  Soient $t,u\in\lamSet_0$ et $x \in \lamVar$. On définit la substitution sans
+  capture, de $x$ par $u$ dans $t$, notée $t[u/x]$, par induction sur $t$~:
+  \begin{itemize}
+  \item si $t = x$, alors $t[u/x] \defeq u$.
+  \item si $t = y$ où $y \in \lamVar$ et $y \neq x$, alors $t[u/x] \defeq t$.
+  \item si $t = \lambda x.t'$, alors $t[u/x] \defeq t$.
+  \item si $t = \lambda y.t'$ où $y \notin \VL(u)$, alors
+    $t[u/x] \defeq \lambda y.t'[u/x]$.
+  \item si $t = t'\;t''$, alors $t[u/x] \defeq (t'[u/x])\;(t''[u/x])$.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Pour tous $t,u \in \lamSet$ et $x \in \lamVar$, il existe au moins un
+  représentant $t_0 \in t$ et un représentant $u_0 \in u$ tels que
+  $t_0[u_0/x]$ est bien défini, et pour tous $t_1\in t, u_1\in u$,
+  $t_0[u_0/x] =_\alpha t_1[u_1/x]$ si cette dernière valeur est définie.
+\end{proposition}
+
+\begin{notation}
+  On note désormais $t[u/x]$ le résultat de cette substitution relevé en tant
+  que fonction $\lamSet\times\lamSet\times\lamVar \to \lamSet$.
+\end{notation}
+
+\begin{exercise}
+  Montrer la proposition précédente.
+\end{exercise}
+
+On peut maintenant définir correctement la notion de réduction sur des
+$\lambda$-termes.
+
+\begin{definition}[$\beta$-réduction]
+  On définit la $\beta$-réduction, notée $\bred$, comme la plus petite relation
+  $\bred\subseteq\lamSet\times\lamSet$ compatible et contenant les paires
+  \[(\lambda x.t)u\bred t[u/x]\]
+  On appelle redex (\foreignexpr{reducible expression}) les sous-termes d'un
+  terme $t$ de la forme $(\lambda x.u)v$.
+\end{definition}
+
+\begin{remark}
+  Notre définition de relation compatible ne peut techniquement plus s'appliquer
+  pusqu'on travaille ici avec des classe d'équivalences et non directement
+  avec l'ensemble inductif. Cependant, il est clair qu'on peut définir
+  $\bred$ sur l'ensemble $\lamSet_0$ puis le relever à l'ensemble $\lamSet$.
+  Ce type de procédure étant purement technique et peu profonde, on continuera
+  de travailler de la même façon sur $\lamSet$ et sur $\lamSet_0$, en
+  considérant que toutes les opérations et relations qu'on définit se relèvent
+  en pratique en des opérations et relations sur $\lamSet$.
+\end{remark}
+
+Si on considère un $\lambda$-terme comme un programme, la réduction $\bred$
+consiste à exécuter le programme, en obtenant potentiellement une valeur.
+
+\begin{exercise}
+  On définit les $\lambda$-termes~:
+  \[\omega \defeq \lambda x.x\;x \qquad \Omega\defeq \omega\;\omega\]
+  Vérifier que $\Omega\bred \Omega$. En déduire que la relation $\bred$ n'est
+  pas normalisante.
+\end{exercise}
+
+La $\beta$-réduction permet de définir un processus de calcul qui est dirigé~:
+il cherche à remplacer les redexes et poursuit ainsi autant que possible. On
+peut cependant être intéressé par une autre relation à partir de la
+$\beta$-réduction, en considérant que le processus de calcul nous donne une
+notion d'égalité de programmes.
+
+\begin{definition}[$\beta$-équivalence]
+  On définit la relation $\Beq$ comme la plus petite congruence contenant
+  $\bred$.
+\end{definition}
+
+\paragraph{La curryfication}
+Un point important est la gestion de fonctions à plusieurs variables. Pour
+l'instant, le constructeur $\lambda$ ne permet d'abstraire qu'une variable.
+Cependant, il est possible d'accumuler les abstractions, pour écrire par exemple
+\[\lambda x.\lambda y.x\]
+Comment se comporte un tel terme ? Il prend en argument un terme $t$, pour
+retourner une fonction prenant elle-même en argument un terme $u$, puis
+retourne finalement $t$. La fonction totale a donc deux arguments, en retournant
+chaque fois une fonction tant que tous les arguments ne sont pas donnés. On
+appelle ce procédé la curryfication, et on peut le décrire par l'isomorphisme
+\[((X\times Y) \to Z)\cong X \to (Y \to Z)\]
+On comprend alors l'intérêt de la notation $t\;u\;v$ pour écrire $(t\;u)\;v$,
+puisqu'alors en voyant $t$ comme une fonction à deux argument curryfiée,
+$t\;u\;v$ représente bien la fonction à laquelle on donne les deux arguments
+$u$ et $v$.
+
+\subsection{La relation $\eta$}
+
+Continuons notre exploration du $\lambda$-calcul. Le lecteur catégoricien
+peut trouver une ressemblance entre ce calcul et le langage catégorique, en ce
+qu'il se concentre sur un langage portant sur les fonctions. Dans le cadre
+catégorique, une catégorie possède des fonctions identités $\id_X$ et une
+opération de composition $\circ$. Ces fonctions peuvent s'écrire dans le
+$\lambda$-calcul.
+
+\begin{definition}[Identité et composition]
+  On définit les deux $\lambda$-termes suivants~:
+  \[\id \defeq \lambda x.x \qquad \circ \defeq
+  \lambda f.\lambda g.\lambda x.f\;(g\;x)\]
+  On notera naturellement $f\circ g$ pour $\circ\;f\;g$.
+\end{definition}
+
+Comme avec les catégories, on peut s'attendre à une théorie équationnelle
+exprimant que $\id$ est neutre pour la composition, et que la composition est
+associative.
+
+Pour la composition, il nous suffit de faire le calcul~:
+\begin{align*}
+  f\circ (g\circ h) &\bred^2 \lambda x. f\;((g\circ h) x)\\
+  &\bred^2 \lambda x. f\;(g\;(h\;x))\\
+  (f\circ g)\circ h) &\bred^2 \lambda x. (f\circ g)\;(h\;x)\\
+  &\bred^2 \lambda x. f\;(g\;(h\;x))\\
+  &\Beq f\circ (g\circ h)
+\end{align*}
+
+On veut maintenant montrer que $\id\circ f \Beq f$, mais la réduction de
+l'expression de gauche nous donne
+\[\lambda x.f\;x\]
+Cette fonction, représentant $x \mapsto f(x)$, semble parfaitement identique à
+$f$~: elle associe les mêmes valeurs aux mêmes arguments. Cette égalité n'est
+pourtant pas vérifiée dans $\Beq$ (on pourra le prouver avec la propriété de
+Church-Rosser), mais elle peut s'axiomatiser.
+
+\begin{definition}[\'Egalité extensionnelle]
+  On définit l'égalité extensionnelle $\cong$ comme la plus petite congruence
+  contenant $\Beq$ et vérifiant la règle
+  \begin{prooftree}
+    \AxiomC{$\forall u \in \lamSet, t\;u \cong t'\;u$}
+    \UnaryInfC{$t \cong t'$}
+  \end{prooftree}
+\end{definition}
+
+On peut alors vérifier que $\id\circ f \cong f$. Cependant, la relation $\cong$
+est définie de façon sémantique, et quantifie sur un ensemble infini qu'est
+$\lamSet$. On remarque pourtant que, dans le cas précédent, il nous suffit
+de réduire $\lambda x.f\;x$ pour en déduire le résultat. On introduit alors
+la règle $\eta$.
+
+\begin{definition}[$\beta\eta$-réduction]
+  On définit la $\beta\eta$-réduction comme la plus petite relation compatible
+  contenant les paires
+  \[(\lambda x.t)u \bered t[u/x] \qquad\qquad
+  \lambda x.t\;x \bered t \quad x\notin \VL(t)\]
+  On définit $\BEeq$ comme la plus petite congruence contenant ces paires.
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\BEeq$ et $\cong$ sont des relations équivalentes.
+\end{exercise}
+
+On a donc une nouvelle relation qui égalise les termes définissant les mêmes
+fonctions $\lamSet \to \lamSet$, et qui est définissable de façon purement
+syntaxique.
+
+Cependant, la relation $\Beq$ nous suffit pour l'usage de ce cours, et c'est
+donc celle que nous privilégions.
+
+\subsection{S'affranchir des $\alpha$-équivalences}
+
+La définition de $\lamSet$ en tant que quotient est insatisfaisante si on veut,
+par exemple, formaliser des résultats de $\lambda$-calcul dans un assistant de
+preuves. Devoir définir un système syntaxique par une relation d'équivalence et
+avoir une substitution partiellement définie (bien que totale sur les classes
+d'équivalence) donne lieu à des technicités si l'on souhaite raisonner de façon
+purement formelle.
+
+Heureusement, autoriser un discours légèrement informel n'est pas limitant dans
+le cadre d'un cours, mais nous souhaitons néanmoins proposer une façon de
+formaliser plus rigoureusement nos définitions, en utilisant les indices de
+De Bruijn.
+
+Cette sous-section est donc à part. En particulier, on redéfinit les opérations
+et les objets en les notant de la même façon qu'ailleurs. Hors de cette
+sous-section, toutes les définitions sont à considérer comme celles précédemment
+données.
+
+\begin{definition}[$\lambda$-termes \cite{de_bruijn_1972}]
+  On définit par induction l'ensemble $\lamSet$ des $\lambda$-termes par
+  la BNF suivante~:
+  \[t,u\Coloneq n\mid \lambda t\mid t\;u\]
+  où $n \in \bN$.
+\end{definition}
+
+Cette définition peut paraître surprenante~: au lieu de variables, on introduit
+des entiers, et n'ajoute aucune variable liante aux abstractions. Le choix des
+entiers n'est donc pas simplement une réécriture des variables en les énumérant
+par $x_0,x_1,\ldots$ mais bien une version alternative de lire des variables.
+
+La façon de lire un terme dans cette syntaxe est d'imaginer que les termes sont
+interprété dans un contexte, qui associe un objet aux variables libres. On
+pourrait par exemple imaginer le terme $x\;y$ comme s'interprétant dans le
+contexte $x \mapsto a, y \mapsto b$. Si on oublie le nom des variables, mais
+qu'on garde en mémoire le contexte, on peut encore référer à l'objet $a$ ou à
+l'objet $b$ associé, en donnant l'indice de l'objet dans le contexte.
+Précisons que cette idée de contexte n'est pas formelle~: on n'y fait référence
+que pour motiver la notation.
+
+Ainsi, le terme $0$ représente par exemple la première valeur du contexte, et
+le terme $1\;0$ représente l'application de la deuxième valeur du contexte à la
+première (on fais commencer la numérotation à $0$).
+
+Pour interpréter un terme $\lambda\;t$, on a alors besoin d'un contexte plus
+grand pour interpréter $t$. Imaginons une liste $\ell$ interprétant le contexte
+de $\lambda \;t$, on va alors interpréter $t$ par la liste $a,\ell$, où $a$ est
+en première position. On peut alors voir une variable liée comme indiquant de
+combien de $\lambda$ on remonte pour trouver son lieur.
+
+\begin{figure}[ht!]
+  \centering
+  \hrule
+
+  \vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (a0) at (0,0) {Contexte~: $[a,$};
+    \node (b0) at (1.3,0){$b$};
+    \node (c0) at (1.6,0) {$,c]$};
+    \node (a) at (0,-1) {$\lambda$};
+    \node (b) [below = of a] {$\lambda$};
+    \node (c) [below = of b] {$@$};
+    \node (d) [below left = of c] {$0$};
+    \node (e) [below right = of c] {$3$};
+    \draw (a) -- (b);
+    \draw (b) -- (c);
+    \draw (c) -- (d);
+    \draw (c) -- (e);
+    \draw[->,>=latex, color = red] (d) to[bend right] (c);
+    \draw[->,>=latex, color = red] (e) to[bend right] (b0);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.4cm}
+  \caption{Exemple de terme en indices de De Bruijn~: $\lambda\;\lambda\;0\;3$}
+  \label{fig.deBruijn.ex}
+  \hrule
+\end{figure}
+
+Dans la \cref{fig.deBruijn.ex}, on voit la différence entre une variable liée,
+dont l'indice ramène à l'intérieur du terme, et une variable libre dont l'indice
+amène à l'extérieur du terme. Remarquons aussi que la valeur d'une variable
+libre dépend du nombre de lieurs qui la précède~: si on considère le terme
+$\lambda\;\lambda\;0\;3$, la variable libre $3$ est en réalité la variable
+$1$ au sens du contexte extérieur. L'ensemble des variables libres peut donc
+être surévalué par l'indice maximal d'une variable apparaissant dans le terme,
+une fois retranché le nombre de lieurs la précédant. On peut donc définir
+$\VL$ non par comme un ensemble, mais comme un nombre.
+
+\begin{definition}[Variable libre maximale]
+  On définit pour tout $t \in \lamSet$ le nombre $\VL(t)$ par induction sur
+  $t$~:
+  \begin{itemize}
+  \item si $t = n$, alors $\VL(t) \defeq n + 1$~;
+  \item si $t = \lambda \;u$, alors $\VL(t) \defeq \VL(u) - 1$~;
+  \item si $t = u\;v$, alors $\VL(t) \defeq \max(\VL(u),\VL(v))$.
+  \end{itemize}
+  Le terme $t$ est clos lorsque $\VL(t) = 0$.
+\end{definition}
+
+La valeur de $\VL(t)$ peut s'interpréter par le fait que l'ensemble des
+variables à l'intérieur de $t$ sont strictement inférieures à $\VL(t)$ (modulo
+l'ajout des lieurs).
+
+On peut maintenant définir le relèvement d'un terme, qui correspond à une forme
+d'affaiblissement sur les contextes.
+
+\begin{definition}[Relèvement d'un terme]
+  Soient $n,k \in \bN$. On définit par induction sur $t$ le relèvement de $t$
+  par $k$ en $n$, par~:
+  \begin{itemize}
+  \item si $t = p$ et $p < k$, alors $\lift t k n \defeq p$.
+  \item si $t = p$ et $p \leq k$, alors $\lift t k n \defeq p + n$.
+  \item si $t = \lambda\;u$, alors
+    $\lift t k n \defeq \lambda (\lift u {k+1} n)$.
+  \item si $t = u\;v$, alors $\lift t k n \defeq (\lift u k n)\;(\lift v k n)$.
+  \end{itemize}
+\end{definition}
+
+Le relèvement $\lift t k n$ correspond à ajouter $n$ objets au contexte
+d'interprétation, à partir de l'indice $k$ du contexte. Son intérêt se joue dans
+la définition de la substitution~: lorsqu'on définit $(\lambda\;t)[u/n]$, on
+souhaite que la substitution de $u$ à l'intérieur de $t$ ne capture pas la
+variable déclarée par le $\lambda$, ce qui se fait en relevant $u$ de $1$
+pour que, dans le contexte de $u$, la variable du $\lambda$ soit prise en
+compte.
+
+\begin{definition}[Substitution]
+  Soient $t,u \in \lamSet$ et $n \in \bN$. On définit inductivement sur $t$
+  la substitution $t[u/n]$~:
+  \begin{itemize}
+  \item si $t = n$ alors $t[u/n] \defeq u$.
+  \item si $t = k \neq n$ alors $t[u/n] \defeq t$.
+  \item si $t = \lambda\;u$ alors
+    $t[u/n] \defeq \lambda\;(t[\lift u 0 1/n+1])$.
+  \item si $t = t'\;t''$ alors $t[u/n] \defeq (t'[u/n])\;(t''[u/n])$.
+  \end{itemize}
+\end{definition}
