@@ -268,6 +268,19 @@ notion d'égalité de programmes.
   $\bred$.
 \end{definition}
 
+\begin{exercise}\label{exo.subst.subst}
+  Soient $t,u,v \in \lamSet$, $x,y\in \lamVar$. Montrer l'égalité
+  \[t[u/x][v/y] = t[v[u/x]/y][u/x]\]
+\end{exercise}
+
+\begin{exercise}\label{exo.subst.red}
+  Soient $t,t',u\in\lamSet, x \in \lamVar$. Montrer que si $t\bred t'$ alors
+  $t[u/x] \bred t'[u/x]$. Pour $t,u,u'\in\lamSet$ tels que $u \bred u'$,
+  montrer que $t[u/x] \bred^\star t'[u/x]$. Montrer que, suivant la forme de
+  $t$, la réduction précédente peut se faire en $0$ étapes ou, au contraire
+  en plus de $2$ étapes.
+\end{exercise}
+
 \paragraph{La curryfication}
 Un point important est la gestion de fonctions à plusieurs variables. Pour
 l'instant, le constructeur $\lambda$ ne permet d'abstraire qu'une variable.
@@ -495,3 +508,671 @@ compte.
   \item si $t = t'\;t''$ alors $t[u/n] \defeq (t'[u/n])\;(t''[u/n])$.
   \end{itemize}
 \end{definition}
+
+\begin{definition}[$\beta$-réduction]
+  La relation $\bred \subseteq \lamSet\times\lamSet$ est la plus petite relation
+  compatible contenant les couples
+  \[(\lambda\;t)u\bred t[u/0]\]
+\end{definition}
+
+\section{Calculabilité dans le $\lambda$-calcul}
+
+Comme dit auparavant, le $\lambda$-calcul permet de représenter toutes les
+fonctions calculables (au sens des fonctions $\bN^k \partialto \bN$). On va
+donc prouver ce théorème de représentation.
+
+\subsection{Représenter des fonctions}
+
+Tout d'abord, comment représenter des entiers ? C'est en effet, la première
+étape pour parler de fonctions $\bN^k\partialto\bN$. Pour cela, on introduit
+les entiers de Church, qui sont une représentation des entiers en
+$\lambda$-calcul, fondée sur l'idée qu'un entier $n$ est l'application d'une
+action $n$ fois.
+
+\begin{definition}[Entiers de Church]
+  Soit $n\in\bN$, on définit l'entier de Church $\encode n$ par
+  \[\encode n \defeq \lambda f.\lambda x.f^n\;x\]
+\end{definition}
+
+\begin{remark}
+  Dans la notation $f^n\;x$, il faut lire $f\;(f\;(f\cdots(f\;x)\cdots))$, et
+  non $f\;f\;f\cdots f\;x$.
+\end{remark}
+
+\begin{exercise}
+  Montrer que pour tout $n \in \bN$, $\encode n$ est une forme normale
+  (sous-entendu pour la relation $\bred$).
+\end{exercise}
+
+Un entier $n$ est donc représenté comme un terme prenant une fonction et
+l'appliquant $n$ fois à son argument. On peut désormais définir la
+représentation des fonctions d'entiers.
+
+\begin{definition}[Représentation d'une fonction]
+  Soit $f : \bN^k \to \bN$. On dit que $t \in \lamSet$ représente $f$ si
+  \[\forall (n_1,\ldots,n_k) \in \bN^k,
+  t\;\encode{n_1}\cdots\encode{n_k} \Beq \encode{f(n_1,\ldots,n_k)}\]
+\end{definition}
+
+\begin{notation}
+  On utilisera, pour compactifier les écritures, la notation
+  $t\;\encode{\vec n}$ pour signifie $t\;\encode{n_1}\cdots\encode{n_k}$.
+\end{notation}
+
+Les fonctions récursives étant potentiellement partielles, on définit aussi la
+représentation (au sens fort) des fonctions partielles.
+
+\begin{definition}[Représentation d'une fonction partielle]
+  Soit $f : \bN^k \partialto \bN$. On dit que $t \in \lamSet$ représente $f$ si
+  pour tout $\vec n \in \bN^k$, si $f(\vec n) \convcal$ alors
+  $t\;\encode{\vec n}$ se réduit en $\encode{f(\vec n)}$ et si
+  $f(\vec n)\divcal$ alors
+  $t\;\encode{\vec n}$ ne se réduit en aucune forme normale.
+\end{definition}
+
+\begin{exercise}
+  Montrer que la fonction nulle part définie est représentable par un
+  $\lambda$-terme.
+\end{exercise}
+
+On donne aussi un encodage des tuples, de sorte à pouvoir définir des fonctions
+calculables $\bN^k\partialto \bN^p$.
+
+\begin{definition}[Représentation des paires]
+  On définit les termes $\langle-,-\rangle$, $\pi_1$ et $\pi_2$ comme suit~:
+  \begin{align*}
+    \langle-,-\rangle &\defeq \lambda t\;u.\lambda p. p\;t\;u\\
+    \pi_1 &\defeq \lambda p.p\;(\lambda x\;y.x)\\
+    \pi_2 &\defeq \lambda p.p\;(\lambda x\;y.y)
+  \end{align*}
+  On note $\langle t,u\rangle$ pour $\langle-,-\rangle\;t\;u$.
+\end{definition}
+
+On vérifie par un calcul que $\pi_1\;\langle t,u\rangle \bred t$ et que
+$\pi_2\;\langle t,u\rangle \bred u$~:
+\begin{align*}
+  \pi_1\;\langle t,u\rangle &\bred \langle t,u\rangle (\lambda x\;y.x)\\
+  &\bred^3 (\lambda x\;y.x)\;t\;u\\
+  &\bred^2 t \\
+  \pi_2\;\langle t,u\rangle &\bred \langle t,u\rangle (\lambda x\;y.y)\\
+  &\bred^3 (\lambda x\;y.y)\;t\;u\\
+  &\bred^2 u
+\end{align*}
+On peut ainsi travailler avec des paires de termes, et représenter ainsi des
+tuples d'entiers.
+
+\begin{exercise}
+  Donner un encodage des $k$-uplets de termes, avec une fonction construisant
+  ces $k$-uplets et des fonctions de projection correspondantes.
+\end{exercise}
+
+On peut aussi encoder les booléens.
+
+\begin{definition}[Représentation des booléens]
+  On définit les termes $\top$ et $\bot$ par
+  \begin{align*}
+    \top &\defeq \lambda x\;y.x\\
+    \bot &\defeq \lambda x\;y.y
+  \end{align*}
+  Une fonction $f : \{0,1\}^k \to \{0,1\}$ est représentée par $t \in \lamSet$
+  si $t\;\encode{\vec b} \Beq \encode{f(\vec b)}$ en posant
+  $\encode 1 \defeq \top$ et $\encode 0 \defeq \bot$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que les opérations booléennes $\lor,\land,\lnot$ peuvent sont
+  représentables par des $\lambda$-termes.
+\end{exercise}
+
+\begin{definition}[Représentation des ensembles d'entiers]
+  Une partie $X\subseteq \bN^k$ est représentable par un terme $t$ si
+  \[\forall \vec n \in \bN^k, \begin{cases}
+    \vec n \in X \iff t\;\encode{\vec n} \Beq \top\\
+    \vec n \notin X \iff t \;\encode{\vec n} \Beq \bot
+  \end{cases}\]
+\end{definition}
+
+\begin{proposition}
+  La partie $\{0\}\subseteq \bN$ est représentable.
+\end{proposition}
+
+\begin{proof}
+  On donne le terme représentant cette partie~:
+  \[\eqZ\defeq \lambda n.n\;(\lambda x.\bot)\;\top\]
+  On vérifie par récurrence sur $n$ que $\eqZ\;\encode{n}$ se réduit à $\top$
+  si $n = 0$, et à $\bot$ sinon~:
+  \begin{itemize}
+  \item
+    $\eqZ\;\encode 0 = (\lambda f\;x.x)\;(\lambda x.\bot)\;\top\bred^2\top$.
+  \item
+    $\eqZ\;\encode{n+1} \bred^2 (\lambda x.\bot)\;u$ où $u$ est un terme
+    qui n'importe pas, puisque ce terme se réduit dans tous les cas vers
+    $\bot$.
+  \end{itemize}
+\end{proof}
+
+On donne aussi la représentation du branchement conditionnel if/then/else.
+
+\begin{proposition}
+  Soient $f,g : \bN^k\to \bN$ des fonctions représentées respectivement par
+  $t$ et $u$, et $X \subseteq \bN^k$ une partie représentée par $v$. Alors
+  la fonction telle que, si $\vec n \in X$, renvoie $f(\vec n)$, et sinon
+  renvoie $g(\vec n)$, est représentée par
+  \[\ifrm v \thenrm t \elserm u \defeq
+  \lambda \vec n.v\;\vec n\;(t\;\vec n)\;(u\;\vec n)\]
+\end{proposition}
+
+\begin{proof}
+  Si $\vec n \in X$, alors $v\;\vec n \bred \top$, et $\top\;a\;b \bred a$,
+  donc $\ifrm v \thenrm t \elserm u \bred^\star t\;\vec n$, d'où le résultat
+  par représentation de $f$ par $t$.
+
+  Si $\vec n \notin X$, alors $v\;\vec n \bred \bot$, et $\bot\;a\;b\bred b$,
+  d'où le résultat par représentation de $g$ par $u$.
+\end{proof}
+
+\subsection{Fonctions primitives récursives}
+
+On commence par encoder les fonctions RP. Les projections se représentent
+facilement en définissant
+$\pi^k_i \defeq \lambda x_1\cdots x_k.x_i$,
+la fonction nulle est simplement
+$\lambda x.\encode 0$
+et la fonction successeur peut s'écrire par
+$S \defeq \lambda n.\lambda f.\lambda x.f\;(n\;f\;x)$.
+
+\begin{exercise}
+  Montrer que les termes donnés représentent bien les fonctions annoncées.
+\end{exercise}
+
+La composition ayant déjà été écrite dans le cas de fonctions unaires, il est
+direct de généraliser la chose. On souhaite donc encoder la récursion primitive.
+Remarquons que, naturellement, un entier $n$ représente un itérateur. On peut
+donc simplement appliquer $n$ pour obtenir le résultat attendu, en faisant
+attention à garder à l'esprit les paramètres de la récursion primitive.
+
+\begin{proposition}
+  Si $f : \bN^{k+2}\to\bN$ est représentée par $t$, que
+  $g : \bN^k \to \bN$ est représentée par $u$, alors la fonction
+  $\rec(f,g)$ est représentable, de représentation donnée par
+  \[\rec(t,u)\defeq \lambda \vec n. \lambda n. \pi_2\;(n\;
+  (\lambda x. \langle S\;(\pi_1\;x),
+  t\;\vec n\;(\pi_2\;x)\;(\pi_1\;x)\rangle)\;
+  \langle \encode 0, u\;\vec n\rangle)\]
+\end{proposition}
+
+\begin{proof}
+  Notons $\rec_0(t,u)$ le terme obtenu en enlevant la projection $\pi_2$
+  précédant le $n$. Montrons par récurrence sur $n$ que pour tout
+  $\vec n \in \bN^k$, $\rec_0(t,u)\;\encode{\vec n}\;\encode n$ se
+  réduit en $\langle \encode n,\encode{\rec(f,g)(\vec n,n)}\rangle$~:
+  \begin{itemize}
+  \item si $n = 0$, alors le terme se réduit en
+    $\langle \encode 0,u\;\vec n\rangle$ et, comme $u$ représente
+    $g$, on en déduit le résultat.
+  \item si $n = p + 1$, alors le terme se réduit en
+    $(\lambda x.\langle S\;(\pi_1\;x), t \;\vec n\;(\pi_2\;x)\;
+    (\pi_1\;x)\rangle)\;u'$
+    où $u'$, par hypothèse de récurrence, se réduit en
+    $\langle \encode p, \encode{\rec(f,g)(\vec n, p)}$ donc,
+    comme $t$ représente $f$, le terme total se réduit en
+    $\langle \encode n,\encode{\rec(f,g)(\vec n,n)}$, d'où le résultat.
+  \end{itemize}
+  On en déduit par récurrence, et en composant par $\pi_2$, que
+  $\rec(t,u)$ représente $\rec(f,g)$.
+\end{proof}
+
+\begin{remark}
+  Si on prend $f = \lambda n\;p.n$, on obtient pour $\rec_0$ une fonction qui
+  retourne $\langle 0,0\rangle$, puis $\langle n,n-1\rangle$, pour finalement
+  retourner $n-1$ une fois la projection effectuée. On peut donc obtenir
+  l'opération de prédecesseur de cette manière, puis l'opération $-$ en
+  itérant le prédecesseur.
+\end{remark}
+
+On en déduit un premier théorème de représentation.
+
+\begin{theorem}[Représentation des fonctions RP]
+  Pour toute fonction $f : \bN^k \to \bN$ RP, il existe un terme
+  $t \in \lamSet$ représentant $f$.
+\end{theorem}
+
+\subsection{Cas de la minimisation}
+
+L'opérateur $\mu$ de minimisation, permettant de passer des fonctions RP aux
+fonctions récursives, demande de construire un itérateur potentiellement
+infini (c'est la cause du passage de fonction totale à fonction partielle).
+Un moyen simple de créer une telle fonction est d'utiliser un point fixe, de
+façon analogue au \cref{thm.Kleene.fix}. On peut alors définir $\mu(f)$
+comme un point fixe~: on construit une fonctions qui appelle toutes les
+valeurs de $f$ successivement, et retourne l'indice de la première valeur
+d'annulatio de $f$. Puisqu'en $\lambda$-calcul, tous les objets sont des
+fonctions, le théorème de point fixe peut se construire bien plus facilement
+en donnant un terme construisant explicitement un point fixe.
+
+\begin{definition}[Combinateur de point fixe]
+  On définit le point fixe de Curry par~:
+  \[y \defeq \lambda x.f\;(x\;x)
+  Y \defeq \lambda f.y\;y\]
+  On définit le point fixe de Turing par~:
+  \[\theta \defeq \lambda x\;y.y\;(x\;x\;y) \qquad
+  \Theta \defeq \theta\;\theta\]
+  Pour chacun des deux termes, qu'on notera $T$, et pour tout $t \in \lamSet$,
+  on a l'égalité
+  \[T\;t \Beq t\;(T\;t)\]
+\end{definition}
+
+\begin{proof}
+  Il suffit d'effectuer la réduction~:
+  \begin{align*}
+    Y\;t &\bred (\lambda x.t\;(x\;x))\;(\lambda x.t\;(x\;x))\\
+    &\bred t\;(y[t/f]\;y[t/f]) \\
+    t(Y\;t) &\bred t\;(y[t/f]\;y[t/f])\\
+    \Theta\;t &\bred (\lambda y.y\;(\theta\;\theta\;y))\;t \\
+    &\bred t\;(\theta\;\theta\;t) \\
+    &= t\;(\Theta\;t)
+  \end{align*}
+  D'où le résultat.
+\end{proof}
+
+Le combinateur $Y$ est surement le plus naturel à considérer quand on adapte
+l'argument diagonal~: la forme du point fixe construit dans le
+\cref{thm.Kleene.fix} est exactement la même, mais où le théorème $s_m^n$ est
+nécessaire pour construire des abstractions. Dans le $\lambda$-calcul,
+le terme en devient donc d'autant plus simple.
+
+Le terme $\Theta$, lui, a l'avantage de donner un point fixe uniquement en
+réduisant, contrairement à $Y\;t$ qui n'est égal à $t\;(Y\;t)$ qu'en effectuant
+une antiréduction à la fin.
+
+On peut maintenant représenter l'opérateur $\mu$.
+
+\begin{proposition}
+  Soit $f : \bN^{k+1} \partialto \bN$ représentée par le terme $t$, alors
+  $\mu(f)$ est représentée par le terme
+  \[\mu(t) \defeq \lambda
+  \vec n.\Theta(\lambda f.\lambda m.\ifrm \eqZ t\;\vec n\;m
+  \thenrm m \elserm f\;(S\;m))\;\encode 0\]
+\end{proposition}
+
+\begin{proof}
+  Fixons le paramètre $\vec n$.
+  Supposons que $f$ admette un point d'annulation, que son plus petit
+  point d'annulation est $k \in \bN$ et que $f$ est définie pour toute valeur
+  inférieure à $k$. Notons $u$ la fonction définie par
+  le point fixe $\Theta$, et prouvons par récurrence sur $n$ que
+  $u\;\encode{k-n}$ retourne $k$~:
+  \begin{itemize}
+  \item pour $n = 0$, on considère donc $u\;\encode k$, qui se réduit en
+    $\ifrm\eqZ t\;\encode{\vec n}\;\encode k\thenrm \encode k\elserm
+    u\;(S\;\encode k)$, qui se réduit lui-même directement en
+    $\encode k$.
+  \item pour $n = p + 1$, on sait que $f(k-n)\neq 0$, donc
+    le terme $u\;\encode{k-n}$ se réduit en
+    $u\;(S\;\encode{k-n})$, mais $S\;\encode{k-n} \bred \encode{k-p}$, d'où
+    le résultat par récurrence.
+  \end{itemize}
+
+  Si $f$ n'est pas définie en un point $i$ précédent son plus petit point
+  d'annulation, alors une récurrence similaire nous permet de montrer que
+  $u\;p \bred \ifrm\eqZ t\;\encode{\vec n}\;\encode i\thenrm \encode i \elserm
+  u\;(S\;\encode i)$, et comme le terme $t\;\encode{\vec n}\;\encode i$ n'a
+  pas de forme normale et est en tête du terme, on en déduit que le terme
+  total n'a pas de forme normale.
+
+  Si $f$ n'a pas de point d'annulation, alors on peut montrer que
+  $\mu(t)$ s'exécute en au moins $n$ étapes.
+\end{proof}
+
+On en déduit la représentation des fonctions calculables.
+
+\begin{theorem}[Représentation des fonctions récursives]
+  Toute fonction récursive $f : \bN^k \partialto \bN$ est représentable au sens
+  fort par un $\lambda$-terme.
+\end{theorem}
+
+Le sens réciproque de ce théorème de représentation est laissé en exercice.
+
+\begin{exercise}
+  Soit $t\in\lamSet$. On définit son codage de Gödel par induction sur $t$
+  (pris comme écrit en indices de De Bruijn)~:
+  \begin{itemize}
+  \item si $t = n$, alors $\godcod t \defeq 3n$
+  \item si $t = \lambda\;t'$, alors $\godcod t \defeq 3\godcod{t'} + 1$
+  \item si $t = t'\;t''$, alors
+    $\godcod t \defeq 3\langle \godcod{t'},\godcod{t''}\rangle + 2$.
+  \end{itemize}
+
+  Montrer que la relation $\bred$ est calculable sur les codes de termes.
+  En déduire que toute fonction $\bN^k\partialto \bN$ représentée par un
+  terme $t$ est calculable.
+\end{exercise}
+
+\subsection{Conséquence de la représentation}
+
+Puisque le $\lambda$-calcul est un formalisme équivalent aux autre formalismes
+de calculabilité, on déduit les faits suivants~:
+
+\begin{proposition}
+  Il existe une fonction $\godcod - : \lamSet \to \bN$ et un terme
+  $U$ tels que
+  \[\forall t \in \lamSet, U\;\encode{\godcod t}
+  \Beq \encode{\godcod{n_f}}\]
+  où $n_f$ est la forme normale de $t$ si elle existe, et où le terme
+  $U\;\encode{\godcod{t}}$ n'a pas de forme normale sinon.
+\end{proposition}
+
+\begin{proposition}
+  La partie
+  \[\{\godcod t \mid t \in \lamSet, t\text{ est normalisant}\}\]
+  est r.e.-complète pour la réduction many-one.
+\end{proposition}
+
+On en déduit qu'il n'existe pas de terme $\HALT$ tel que $\HALT\;t$ se réduit
+en $\top$ si $t$ a une forme normale et en $\bot$ sinon.
+
+On peut aussi en déduire, par le théorème de Rice~:
+
+\begin{proposition}
+  Il n'existe aucun terme $e$ tel que $e\;t\;u$ se réduit en $\top$ si
+  $t \BEeq u$ et en $\bot$ sinon.
+\end{proposition}
+
+\begin{proof}
+  Si un tel terme existait, on pourrait calculer l'ensemble
+  \[\{(\godcod t,\godcod u)\mid t, u \in \lamSet, t \BEeq u\}\]
+  qui est un problème sémantique.
+\end{proof}
+
+Dans le cas de la $\beta$-équivalence, on n'a pas tout à fait ce résultat,
+puisque l'ensemble n'est pas sémantique. On définit donc des notions analogues à
+celles de calculabilité pour le cas de la $\beta$-réduction. Tout d'abord,
+on donne une version du théorème de point fixe utilisant le codage de Gödel des
+$\lambda$-termes.
+
+\begin{theorem}[Point fixe]
+  Soit $t\in\lamSet$, alors il existe $F_t$ tel que
+  \[t\;\encode{\godcod F_t} \Beq F_t\]
+\end{theorem}
+
+\begin{proof}
+  On se donne un terme $\delta$ tel que
+  \[\forall u\in \lamSet, \delta\;\encode{\godcod{u}} \bred^\star
+  \encode{\godcod{u\;\encode{\godcod{u}}}}\]
+  En posant $v \defeq \lambda x.t\;(\delta\;x)$ (où $x$ n'apparaît ni dans $t$,
+  ni dans $\delta$), on obtient
+  \[F_t \defeq v\;\encode{\godcod v}\]
+  En effet, en faisant la réduction~:
+  \begin{align*}
+    F_t &\bred t\;(\delta\;\encode{\godcod{v}})\\
+    &\bred^\star t\;\encode{\godcod{v\;\encode{\godcod{v}}}}\\
+    &= t\;\encode{\godcod{F_t}}
+  \end{align*}
+  D'où le résultat.
+\end{proof}
+
+\begin{definition}[Ensembles récursivement séparables]
+  On dit que $A,B\subseteq \lamSet$ sont récursivement séparables s'il existe
+  un terme $t$ tel que
+  \[\forall u \in \lamSet, t\;\encode{\godcod u} \bred^\star
+  \begin{cases}
+    \encode \bot\text{ si } u \in A\\
+    \encode \top\text{ si } u \in B
+  \end{cases}\]
+  $A$ et $B$ sont dit récursivement inséparables sinon.
+\end{definition}
+
+Un ensemble sémantique, mais dans le sens de $\bred$, sera dit saturé ici.
+
+\begin{definition}[Ensemble saturé]
+  Une partie $A\subseteq \lamSet$ est dite saturée si
+  \[\forall t,u \in \lamSet, t \Beq u \implies t \in A \implies u \in A\]
+\end{definition}
+
+\begin{theorem}
+  Deux ensembles disjoints saturés sont récursivement inséparables.
+\end{theorem}
+
+\begin{proof}
+  Supposons que deux ensembles $A,B$ vérifiant les hypothèses sont récursivement
+  séparables, et soit $t$ un séparateur tel que donné dans la définition.
+  Soient $t_A \in A$ et $t_B \in B$, et
+  \[u \defeq \lambda n.\eqZ\;(t\;n)\;t_A\;t_B\]
+  On utilise maintenant le théorème de point fixe pour trouver $F_u$ tel que
+  $u\;\encode{\godcod{F_u}}\Beq F_u$. On en déduit~:
+  \begin{itemize}
+  \item si $t\;\encode{\godcod{F_u}}\bred^\star \bot$, alors $F_u\bred^\star t_B$
+    donc $F_u \Beq t_B \in B$, mais alors
+    $t\;\encode{\godcod{F_u}}\bred^\star \top$
+  \item de même, si $t\;\encode{\godcod{F_u}}\bred^\star \top$, alors
+    $F_u \Beq t_A \in A$, donc
+    $t\;\encode{\godcod{F_u}}\bred^\star \bot$.
+  \end{itemize}
+  On en déduit une contradiction.
+\end{proof}
+
+\begin{remark}
+  La fonction construite est parfaitement analogue à la réduction construite
+  pour le théorème de Rice, suivi de la preuve de la non calculabilité du
+  problème de l'arrêt avec un point fixe.
+\end{remark}
+
+On peut alors prouver les résultats pour la réduction $\bred$.
+
+\begin{theorem}
+  La relation $\Beq$ est indécidable, et l'ensemble
+  \[\{\godcod t \mid t \in \lamSet, t \textit{ faiblement normalisant}\}\]
+  est indécidable.
+\end{theorem}
+
+On en déduit aussi le théorème de l'image.
+
+\begin{theorem}[Image]
+  Soit $\overline t \in \lamSet/\Beq$, $t$ définit une fonction
+  \[\makeFun{f_{\overline t}}{\lamSet/\Beq}{\lamSet/\Beq}{\overline u}{
+    \overline{t\;u}}\]
+  qui est une fonction constante ou une fonction dont l'image est infinie.
+\end{theorem}
+
+\begin{proof}
+  En effet, supposons qu'il existe deux valeurs $t_1$ et $t_2$ telles que
+  $\im(f_{\overline t}) = \{t_1,t_2\}$ (dans le cas de plus de valeurs,
+  l'argument s'adapte facilement). Les ensembles
+  \[A_{t_1} \defeq \{ u \in \lamSet\mid t\;u \Beq t_1\}\qquad
+  A_{t_2}\defeq \{ u \in \lamSet\mid t\;u \Beq t_2\}\]
+  sont alors des ensembles disjoints et saturés~: ils sont donc inséparables.
+  Pourtant, puisqu'on sait que $A_{t_1}\cup A_{t_2} = \lamSet$, que les deux
+  ensembles sont disjoints et qu'ils sont c.e., on en déduit qu'ils sont tous
+  deux décidables, ce qui est une contradiction.
+\end{proof}
+
+\section{Propriétés de la réduction}
+
+On s'attarde maintenant sur $\bred$. L'objectif de cette section est de montrer
+certaines propriétés de cette réduction, en particulier~:
+\begin{itemize}
+\item que $\bred$ a la propriété de Church-Rosser, ce qui permet de définir de
+  façon univoque la forme normale d'un terme si elle existe, et d'avoir un
+  algorithme qui, sous réserve de convergence, teste la $\beta$-équivalence de
+  deux termes (avec ce qu'on a vu avant, on sait déjà que la non convergence
+  rend l'égalité indécidable)~;
+\item que toute réduction pour $\bred$ peut se factoriser suivant deux
+  sous-réductions qui sont la réduction de tête et la réduction en profondeur~;
+\item qu'il existe un choix de réduction permettant systématiquement d'atteindre
+  une forme normale, si elle existe.
+\end{itemize}
+
+\subsection{Propriété de Church-Rosser}
+
+Pour prouver la propriété de Church-Rosser, on utilise une méthode développée
+par Tait et Martin-Löf (d'après \cite{Barendregt1984}), et affinée dans
+\cite{TAKAHASHI1995120}, impliquant la réduction parallèle.
+
+Pour prouver la confluence du $\lambda$-calcul, la difficulté principale est,
+étant donnés deux redexes dans une expression, de montrer que les deux ordres
+de réduction mènent au même résultat. Cependant, une première réduction peut
+multiplier des redexes, dont le redex de la deuxième réduction. La réduction
+parallèle permet de réduire en une seule étape ces deux redexes, de sorte
+que la propriété du carreau est vérifiée (et donc, par extension, la
+confluence).
+
+On définit donc la réduction parallèle.
+
+\begin{definition}[Réduction parallèle]
+  La réduction parallèle $\redPar$ est définie par les règles suivantes~:
+  \begin{center}
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{}
+      \UnaryInfC{$x \redPar x$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t\redPar t'$}
+      \AxiomC{$u\redPar u'$}
+      \BinaryInfC{$t\;u\redPar t'\;u'$}
+      \DisplayProof
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$t\redPar t'$}
+      \UnaryInfC{$\lambda x.t\redPar \lambda x.t'$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t\redPar t'$}
+      \AxiomC{$u\redPar u'$}
+      \BinaryInfC{$(\lambda x.t)u \redPar t'[u'/x]$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+L'objectif est donc d'utiliser le \cref{lem.carreau.confluence.clot} en montrant
+que $\bred \subseteq \redPar \subseteq \bred^\star$ et que $\redPar$ a la
+propriété du carreau.
+
+\begin{property}
+  Les propriétés suivantes sont vérifiées pour $\redPar$~:
+  \begin{itemize}
+  \item $\redPar$ est réflexive~;
+  \item $\bred\subseteq \redPar$~;
+  \item si $t\redPar t'$ et $u \redPar u'$, alors $t[u/x] \redPar t'[u'/x]$~;
+  \item $\redPar \subseteq\bred^\star$.
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Montrons les différentes propriétés~:
+  \begin{itemize}
+  \item on montre par induction sur $t$ que $t\redPar t$. Si $t = x$, le
+    résultat est évident, si on suppose que $t\redPar t$ et $u\redPar u$
+    alors $t\;u\redPar t\;u$ et $\lambda x.t\redPar \lambda x.t$.
+  \item puisque $\redPar$ est réflexive, et vu la forme des règles, on en
+    déduit que $\redPar$ est une relation compatible. La dernière règle,
+    en utilisant la réflexivité, nous indique que
+    $(\lambda x.t)u\redPar t[u/x]$, donc $\bred\subseteq \redPar$.
+  \item on raisonne par induction sur $t\redPar t'$~:
+    \begin{itemize}
+    \item si $t = t' = x$, on doit montrer que $u \redPar u'$, ce qui est vrai
+      par hypothèse.
+    \item si $t = t' = y$ où $y \neq x$, on doit montrer que $t \redPar t$,
+      ce qui est vrai par réflexivité de $\redPar$.
+    \item si $t = t_0\;t_1$, $t' = t'_0\;t'_1$, que $t_0 \redPar t'_0$ et
+      $t_1\redPar t'_1$, alors on sait par hypothèse d'induction que
+      $t_0[u/x] \redPar t'_0[u'/x]$ et $t_1[u/x] \redPar t'_1[u'/x]$, donc
+      $t[u/x] \redPar t'[u'/x]$.
+    \item si $t = \lambda y.t_0$ et $t' = \lambda y.t'_0$, où
+      $t_0[u/x]\redPar t'_0[u'/x]$, alors
+      $(\lambda y.t_0)[u/x] \redPar (\lambda y.t'_0)[u'/x]$.
+    \item si $t = (\lambda y.t_0)\;t_1$ et $t' = t'_0[t'_1/y]$, avec comme
+      hypothèse d'induction que $t_0[u/x]\redPar t'_0[u'/x]$ et
+      $t_1[u/x]\redPar t'_1[u'/x]$, alors on sait que
+      $(\lambda y.t_0[u/x]) \redPar t'_0[u'/x][t'_1[u'/x]/y]$, mais on a
+      l'égalité
+      \[t'_0[t'_1/y][u'/x] = t'_0[u'/x][t'_1[u'/x]/y]\]
+      d'après l'\cref{exo.subst.subst}, d'où le résultat.
+    \end{itemize}
+    On en déduit que $t[u/x] \redPar t'[u'/x]$.
+  \item on montre par induction sur $\redPar$ que si $t\redPar u$ alors
+    $t\bred^\star u$~:
+    \begin{itemize}
+    \item puisque $\bred^\star$ est transitive, on sait que $x\bred^\star x$.
+    \item si $t\bred^\star t'$ et $u\bred^\star u'$, alors
+      $t\;u\bred^\star t'\;u\bred^\star t'\;u'$ par compatibilité.
+    \item si $t\bred^\star t'$, alors
+      $\lambda x.t\bred^\star \lambda x.t'$ par compatibilité.
+    \item si $t\bred^\star t'$ et $u\bred^\star u'$, alors
+      $(\lambda y.t)\;u \bred t[u/x] \bred^\star t'[u/x]\bred^\star t'[u'/x]$
+      d'après l'\cref{exo.subst.red}.
+    \end{itemize}
+    Donc, par induction sur $\redPar$, on en déduit que
+    $\redPar\subseteq\bred^\star$.
+  \end{itemize}
+
+  Les propriétés sont donc toutes vérifiées.
+\end{proof}
+
+Il nous reste maintenant à prouver que la réduction parallèle a la propriété du
+carreau. Pour cela, depuis un terme $t$ ayant des redexes $r_1,\ldots,r_p$,
+on pourrait considérer que, lorsque $t \redPar u$, on choisit des redexes
+$\{r_i\}_{i \in I}$, et lorsque $t \redPar v$, on choisit des redexes
+$\{r_i\}_{i \in J}$. Un réduit commun à $u$ et $v$ est alors la réduction
+effectuée en choisissant les redexes $\{r_i\}_{i \in I \cup J}$.
+
+Cette méthode fonctionne, mais n'est pas nécessaire pour le résultat, que l'on
+souhaite montrer~: il est possible de prendre comme réduit commun, peu importe
+$u$ et $v$, le terme obtenu depuis $t$ en effectuant tous les redexes dans $t$.
+On définit pour cela le développement en un pas.
+
+\begin{definition}[Développement en un pas]
+  On définit par induction sur $t\in \lamSet$ le terme $t^* \in \lamSet$~:
+  \begin{itemize}
+  \item si $t = x$, alors $t^* \defeq t$.
+  \item si $t = \lambda x.u$, alors $t^* \defeq \lambda x. u^*$.
+  \item si $t = u\;v$ où $u$ n'est pas une abstration, alors
+    $t^* \defeq u^*\;v^*$.
+  \item si $t = (\lambda x.u)\;v$, alors $t^* \defeq u^*[v^*/x]$.
+  \end{itemize}
+\end{definition}
+
+\begin{proposition}
+  Soit $t \in \lamSet$. Pour tout $u \in \lamSet$ tel que $t\redPar u$, on a
+  $u\redPar t^*$.
+\end{proposition}
+
+\begin{proof}
+  On procède par induction sur $t\redPar u$~:
+  \begin{itemize}
+  \item le cas où $t = u = x$ est automatique.
+  \item si $t = t_0\;t_1$, $u = u_0\;u_1$, $t_0 \redPar u_0$ et
+    $t_1\redPar u_1$, on sait par hypothèse d'induction que
+    $u_0\redPar t_0^*$ et que $u_1\redPar t_1^*$, donc
+    $u_0\;u_1\redPar t_0^*\;t_1^*$. Si $t_0$ est une abstraction, alors
+    on utilise à la place la dernière règle. Dans les deux cas, on
+    en déduit que $u\redPar t^*$.
+  \item si $t = \lambda x.t_0$, $u = \lambda x.u_0$ et $t_0\redPar u_0$, alors
+    par hypothèse d'induction $u_0\redPar t_0^*$ donc
+    $\lambda x.u_0\redPar \lambda x.t^*_0$, d'où le résultat.
+  \item si $t = (\lambda x.t_0)\;t_1$, $u = u_0[u_1/x]$ et, par hypothèse
+    d'induction, $u_0\redPar t_0^*$ et $u_1\redPar t_1^*$, alors
+    par la propriété précédente, $u_0[u_1/x]\redPar t_0^*[t_1^*/x]$, donc
+    $u\redPar t^*$.
+  \end{itemize}
+  D'où, par induction, $u\redPar t^*$.
+\end{proof}
+
+\begin{corollary}
+  La relation $\bred$ est confluente. De façon équivalente, elle vérifie la
+  propriété de Church-Rosser. Il y a donc unicité de la forme normale vers
+  laquelle se réduit un terme $t$.
+\end{corollary}
+
+\begin{proof}
+  On a vérifié les hypothèses du \cref{lem.carreau.confluence.clot} pour
+  $\redPar$ et $\bred$, la propriété du diamant pour $\redPar$ étant obtenue
+  en considérant, pour $t \redPar u,v$, par $u,v\redPar t^*$. Comme la
+  propriété de Church-Rosser et la confluence sont équivalents, on en déduit
+  que $\bred$ vérifie aussi la propriété de Church-Rosser, et en conséquent
+  on a l'unicité de la forme normale.
+\end{proof}
