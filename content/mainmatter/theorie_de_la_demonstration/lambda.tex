@@ -1052,7 +1052,7 @@ L'objectif est donc d'utiliser le \cref{lem.carreau.confluence.clot} en montrant
 que $\bred \subseteq \redPar \subseteq \bred^\star$ et que $\redPar$ a la
 propriété du carreau.
 
-\begin{property}
+\begin{property}\label{proper.redPar}
   Les propriétés suivantes sont vérifiées pour $\redPar$~:
   \begin{itemize}
   \item $\redPar$ est réflexive~;
@@ -1176,3 +1176,431 @@ On définit pour cela le développement en un pas.
   que $\bred$ vérifie aussi la propriété de Church-Rosser, et en conséquent
   on a l'unicité de la forme normale.
 \end{proof}
+
+\begin{remark}
+  On déduit aussi de la propriété de Church-Rosser que le $\lambda$-calcul est
+  cohérent, c'est-à-dire qu'il existe deux termes $t,u$ tels que
+  $t \not\Beq u$. En effet, par unicité de la forme normale, deux formes
+  normales ne peuvent se réduire l'une en l'autre.
+\end{remark}
+  
+\subsection{Lemme de standardisation}
+
+Puisque nous avons prouvé que $\bred$ a la propriété de Church-Rosser, la donnée
+importante d'un terme devient sa forme normale (si elle existe). On ne peut
+cependant pas essayer de réduire un terme en en prenant des réductions
+arbitraires~: si l'on considère par exemple $(\lambda x.y.y)\;\Omega$,
+une réduction retourne $\id$ mais l'autre réduction retourne le même terme.
+
+Il est donc nécessaire de trouver une stratégie efficace pour normaliser les
+termes.
+
+\begin{definition}[Stratégie de normalisation]
+  On appelle stratégie de normalisation une sous-relation $R$ de $\bred$ qui est
+  fonctionnelle (partielle).
+
+  On dit qu'une telle stratégie est normalisante si, pour tout $t$ tel que
+  $t\bred^{!} u$, on a $tR^! u$.
+\end{definition}
+
+On cherche donc une stratégie normalisante. Pour obtenir une telle stratégie
+normalisante, on commence par étudier la forme des $\lambda$-termes.
+
+A cause de la forme de $\bred$, et des cas inductifs d'un terme, on sait qu'un
+terme $t$ peut toujours se mettre sous la forme
+\[t = \lambda x_1\cdots x_n.u\;t_1\;t_2\;\cdots\;t_k\]
+où $u,t_1,\ldots,t_k$ sont des termes, et $x_1,\ldots,x_n$ sont des variables.
+Deux choix sont alors possibles~:
+\begin{itemize}
+\item $u$ est une variable
+\item $u$ est une abstraction
+\end{itemize}
+dans le premier cas, on dit que $t$ est une forme normale de tête
+(\foreignexpr{head normal form}). Dans le
+second, on dit que $u\;t_1$ est une redex de tête.
+La redex de tête est, en quelque sorte, la redex essentielle du terme $t$.
+
+\begin{definition}[Forme normale de tête, réduction de tête]
+  Le sous-ensemble $\hnf\subseteq \lamSet$ est défini inductivement par la
+  grammaire
+  \begin{align*}
+    t_0 &\Coloneq \lambda x.t_0 | t \\
+    t &\Coloneq t\;u | x \\
+  \end{align*}
+  où $x \in \lamVar$ et $u \in \lamSet$. On définit de plus la réduction
+  $\Hred$ par les règles
+  \begin{center}
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{}
+      \UnaryInfC{$(\lambda x.t)u \Hred t[u/x]$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t\Hred t'$}
+      \UnaryInfC{$\lambda x.t\Hred \lambda x.t'$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{c}{
+        \bottomAlignProof
+        \AxiomC{$t \Hred t'$}
+        \AxiomC{$t\text{ n'est pas une abstraction}$}
+        \BinaryInfC{$t\;u\Hred t'\;u$}
+        \DisplayProof
+      }
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{exercise}
+  Montrer que $t \in \hnf$ si et seulement si $t$ est une forme normale pour
+  $\Hred$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que $\Hred$ est une relation fonctionnelle.
+\end{exercise}
+
+On peut donc séparer les réductions depuis un terme en une réduction de tête,
+et d'autres potentielles réductions. On appelle ces réductions des réductions
+internes.
+
+\begin{definition}[Réduction interne]
+  On définit la relation de réduction interne $\Ired$ par les règles
+  \begin{center}
+    \begin{tabular}{cc}
+      \multicolumn{2}{c}{
+      \bottomAlignProof
+      \AxiomC{$u\bred u'$}
+      \UnaryInfC{$t\;u'\Ired t\;u'$}
+      \DisplayProof}
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$t \Ired t'$}
+      \UnaryInfC{$\lambda x.t \Ired \lambda x.t'$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t \Ired t'$}
+      \UnaryInfC{$t\;u\Ired t'\;u$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{proposition}
+  Si $t \bred u$, alors $t \Hred u$ ou $t \Ired u$.
+\end{proposition}
+
+\begin{proof}
+  On raisonne par induction sur $t \bred u$~:
+  \begin{itemize}
+  \item si $t = (\lambda x.t_0)\;t_1$ et $u = t_0[t_1/x]$, alors
+    $t \Hred u$.
+  \item si $t = \lambda x.t'$, $u = \lambda x.u'$ et $t' \bred u'$, alors par
+    hypothèse d'induction $t' \Hred u'$ ou $t' \Ired u'$, et dans ce cas on a
+    respectivement $t \Hred u$ ou $t \Ired u$.
+  \item si $t = t_0\;t_1$, $u = u_0\;t_1$ et $t_0 \bred u_0$, alors par
+    hypothèse d'induction~:
+    \begin{itemize}
+    \item si $t_0 \Hred u_0$, alors $t \Hred u$.
+    \item si $t_0 \Ired u_0$, alors $t \Ired u$.
+    \end{itemize}
+    donc $t\Hred u$ ou $t \Ired u$.
+  \item si $t = t_0\;t_1$, $u = t_0\;u_1$ et $t_1\bred u_1$, alors
+    $t \Ired u$.
+  \end{itemize}
+  On en déduit le résultat.
+\end{proof}
+
+Le théorème de standardisation faible établit que ces deux réductions permettent
+de décomposer les suites de réduction avec une forme remarquable~: toute
+réduction $t \bred^\star u$ se décompose en $t \Hred^\star v \Ired^\star u$.
+
+Pour démontrer ce théorème, on cherche donc à construire la commutation
+suivante~: si $t \Ired u \Hred v$, alors on peut trouver $u'$ tel que
+$t \Hred^\star u' \Ired^\star v$. La difficulté est alors de trouver les bonnes
+réductions internes à effectuer pour passer de $u'$ à $v$, sachant que la
+réduction $t \Hred u'$ a pu multiplier la redex réduite dans $t \Ired u$.
+
+Comme pour la propriété de Church-Rosser, on introduit une réduction parallèle,
+ici une réduction parallèle interne.
+
+\begin{definition}[Réduction parallèle interne]
+  On définit la réduction parallèle interne $\IredPar$ par les règles
+  \begin{center}
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{}
+      \UnaryInfC{$x \IredPar x$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t \IredPar t'$}
+      \UnaryInfC{$\lambda x.t\IredPar \lambda x.t'$}
+      \DisplayProof
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$t \Ired t'$}
+      \AxiomC{$u \redPar u'$}
+      \BinaryInfC{$t\;u \IredPar t'\;u'$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t \redPar t'$}
+      \AxiomC{$u \redPar u'$}
+      \BinaryInfC{$(\lambda x.t)\;u\IredPar (\lambda x.t')\;u'$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{property}
+  Les propriétés suivantes sont vérifiées pour $\IredPar$~:
+  \begin{itemize}
+  \item $\IredPar$ est réflexive~;
+  \item $\IredPar\subseteq \redPar$~;
+  \item $\IredPar\subseteq \Ired^\star$~;
+  \item pour tous $t,u,v \in \lamSet$,
+    $t \IredPar u \Hred v \implies t \redPar v$.
+  \end{itemize}
+\end{property}
+
+\begin{proof}
+  Les trois premières propriétés se prouvent de façon parfaitement analogue à la
+  \cref{proper.redPar}, on se contente donc de prouver la dernière propriété.
+
+  Soient $t,u,v \in \lamSet$ tels que $\IredPar t'\Hred v$. Remarquons d'abord
+  que, si on peut décomposer $t$ en
+  $t = \lambda x_1\;\cdots\;x_n.t'\;u_1\;\cdots\;u_k$, alors
+  $u$ se décompose en
+  $u = \lambda x_1\;\cdots\;x_n.u'\;u'_1\;\cdots\;u'_k$, car les réductions
+  parallèles internes ne peuvent pas réduire la redex potentielle $t'\;u_1$ et
+  peuvent donc uniquement réduire les redexes à l'intérieur des $u_i$ et de
+  $t'$.
+
+  De plus, si $t'$ est une variable, alors $u'$ est aussi une variable, donc
+  $u\in\hnf$ et $u \Hred v$ n'est pas possible. On en déduit que
+  \begin{itemize}
+  \item $t'$ et $u'$ sont des abstractions, donc $t' = \lambda y.t''$ et
+    $u' = \lambda y.u''$, avec $t'' \Ired u''$, et
+  \item $v = \lambda x_1\;\cdots\;x_n.u''[u'_1/y]\;u_2\;\cdots u'_k$.
+  \end{itemize}
+
+  On en déduit, en utilisant le fait que $u_i \Ired u'_i$ et que
+  $t''\Ired u''$, que $t \redPar v$.
+\end{proof}
+
+Ainsi, on peut décomposer $t \bred^\star u$ en $t\redPar^\star u$. Il reste donc
+à prouver que $\redPar$ peut se décomposer en $\Hred^\star\IredPar$.
+
+\begin{lemma}
+  Pour tous $t,u \in \lamSet$, si $t \redPar u$ alors il existe
+  $t'$ tel que $t \Hred^\star t' \IredPar u$.
+\end{lemma}
+
+\begin{proof}
+  On prouve par induction sur $\redPar$ qu'il existe une suite de réductions
+  $t \Hred t_1 \Hred\cdots\Hred t'\IredPar u$ où pour chaque
+  $i$, $t_i \redPar t'$~:
+  \begin{itemize}
+  \item si $t = u = x \in \lamVar$, alors la propriété est évidente en prenant
+    $t' \defeq x$.
+  \item cas de
+    $t_0 \redPar u_0, t_1 \redPar u_1 \implies t_0\;t_1\redPar u_0\;u'_1$~:
+    prouvons qu'il existe $t'$ tel que $t \Hred^\star t' \IredPar u$, et tel
+    que la suite de réduction de $t$ à $t'$ est faite de termes qui se réduisent
+    pour $\redPar$ vers $t'$.
+    
+    Par hypothèse d'induction sur $t_0 \redPar u_0$, on trouve $t'_0$ et une
+    suite de termes $t_0 = v_1\Hred v_2\Hred \cdots \Hred v_k = t'_0$, où
+    $v_i \redPar t'_0$. On raisonne par disjonction de cas~:
+    \begin{itemize}
+    \item supposons qu'il existe un $k_0$ (pris minimal) tel que $v_{k_0}$ est
+      une abstraction. On sait alors que pour tout $k \geq k_0$, $v_k$ est
+      aussi une abstraction, et (puisque les réduction internes ne change pas
+      la forme du terme) $u_0$ est aussi une abstraction.
+      Posons $v_{k_0} = \lambda x.v'$ et $u_0 = \lambda x.u'$. On cherche
+      à prouver que $t \Hred^\star v_{k_0}\;t_1 \IredPar u$.
+
+      On sait que $t_1 \redPar u_1$. De plus, par hypothèse,
+      $v_{k_0} \redPar u'$, donc
+      $(\lambda x.v_{k_0})\IredPar (\lambda x.u')\;u_1$.
+    \item s'il n'existe par de tel $k_0$, alors on en déduit que
+      $t_0\;t_1 \Hred v_1\;t_1\Hred\cdots \Hred v_k\;t_1$, et
+      par hypothèse $t_1 \redPar u_1$ et $v_k = t'_0 \IredPar u_0$, donc
+      $v_k\;t_1\IredPar u$.
+    \end{itemize}
+    D'où le résultat.
+  \item cas de $t_0 \redPar u_0 \implies \lambda x.t_0\redPar \lambda x.u_0$~:
+    par hypothèse d'induction, on trouve une suite de réductions, qui
+    fonctionne pour donner le résultat en ajoutant une abstraction à chaque
+    terme.
+  \item A FAIRE
+  \end{itemize}
+  D'où le résultat par induction.
+\end{proof}
+
+On peut alors en déduire le théorème de standardisation faible.
+
+\begin{theorem}[Standardisation faible]
+  Pour tous $t,v \in \lamSet$, si $t \bred^\star v$ alors il existe $u$ tel que
+  $t\Hred^\star u \Ired^\star v$.
+\end{theorem}
+
+\begin{proof}
+  Puisque toute réduction est de tête ou interne, il suffit de montrer que
+  lorsque $t \Ired u \Hred v$, alors on peut trouver $u'$ tel que
+  $t \Hred^\star u' \Ired^\star v$. Par propriété de $\IredPar$, on sait que
+  si $t \Ired u \Hred v$, alors $t \IredPar u\Hred v$ puis
+  $t \redPar v$. Mais alors, par le lemme précédent, on peut trouver
+  $u'$ tel que $t \Hred^\star u' \IredPar v$, et par propriété de
+  $\IredPar$, $u' \Ired^\star v$.
+
+  On en déduit que $\Ired \Hred \subseteq \Hred^\star \Ired^\star$, d'où le
+  résultat par induction sur la longueur d'une réduction $t \bred^\star v$.
+\end{proof}
+
+La standardisation faible est déjà un théorème puissant, mais (comme son nom
+l'indique) on peut en donner une meilleure version.
+
+En l'état, la décomposition qu'on obtient de $\bred$ se fait en deux parties~:
+les réductions de tête, et les réductions internes. On peut chercher une
+localisation plus précise des redexes, de sorte qu'une réduction de tête donne
+un cas particulier de cette localisation.
+
+Pour cela, on définit la notion de réduction marquée.
+
+\begin{definition}[Réduction marquée]
+  On définit la relation de réduction marquée $\bred^u$, où
+  $u \in \{0,1,2\}^\star$, par les règles suivantes~:
+  \begin{center}
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{}
+      \UnaryInfC{$(\lambda x.t)v\bred^{\varepsilon}t[v/x]$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t \bred^u t'$}
+      \UnaryInfC{$\lambda x.t \bred^{0u} \lambda x.t'$}
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$t\bred^u t'$}
+      \UnaryInfC{$t\;v \bred^{1u} t'\;v$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$v\bred^u v'$}
+      \UnaryInfC{$t\;v\bred^{2u} t\;v'$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+
+  On dit qu'une réduction $t\bred^u a$ est à gauche d'une réduction
+  $s\bred^v b$ si $u$ est plus petit que $v$ pour l'ordre lexicographique.
+\end{definition}
+
+\begin{example}
+  Soit le terme
+  \[t \defeq \lambda x\;y\;z.(\lambda x.x)\;y\;((\lambda a.a\;x)\;z)\]
+  Tout redex est marqué par un certain mot, qui décrit comment on descend dans
+  le terme pour arriver au redex souhaité. Par exemple, le redex
+  $(\lambda x.x)\;y$ peut être réduit~: on doit alors passer sous les
+  abstractions $\lambda x\;y\;z$, pour prendre le sous-terme gauche. On a ainsi
+  \[t \bred^{0001} \lambda x\;y\;z.y\;((\lambda a.a\;x)\;z)\]
+  De même, on peut vérifier que
+  \[t \bred^{0002} \lambda x\;y\;z.(\lambda x.x)\;y\;(z\;x)\]
+  On en déduit que l'une des deux réductions est à la gauche de l'autre.
+\end{example}
+
+Remarquons qu'une réduction de tête est une réduction la plus à gauche possible.
+Une réduction standard est une généralisation de ce fait~: plutôt que de
+considérer des réduction de tête et internes, on considère des réductions
+toujours plus à droite les unes des autres, ce qui donne un résultat plus
+précis dans le cas des réductions internes.
+
+\begin{definition}[Réduction standard]
+  Soient deux termes $t,u \in \lamSet$. On appelle réduction standard de $t$
+  vers $u$, que l'on note $t\Sred u$, une suite de réductions
+  $t = v_0\bred^{u_0} v_1 \bred^{u_1}\cdots \bred^{u_{k-1}} v_k$
+  telle que $u_i \leq u_{i+1}$ pour l'ordre lexicographique.
+\end{definition}
+
+\begin{theorem}[Standardisation]
+  Pour tous termes $t,u\lamSet$, si $t \bred^\star u$ alors $t\Sred u$.
+\end{theorem}
+
+\begin{proof}
+  D'après la standardisation faible, il est toujours possible de considérer
+  que $t \Hred^\star t' \Ired^\star u$, et la dérivation est standard jusqu'à
+  $t'$ puisque les réductions de tête sont les plus à gauche possible. On
+  peut réécrire $t'$ sous la forme
+  \[t' = \lambda x_1\ldots x_n. v_0\;v_1\;\cdots\;v_k\]
+  si $n = k = 0$, alors $u = v_0 = t'$, et le résultat est direct.
+
+  Sinon, on peut raisonner par induction (sur la relation bien fondée de
+  sous-terme strict). Pour cela, on remarque d'abord que, puisque
+  $t'\Ired^\star u$, $u$ peut aussi s'écrire sous la forme
+  \[u = \lambda x_1\cdots x_n. v'_0\;v'_1\;\cdots\;v'_k\]
+  (car les réductions internes ne changent pas la forme d'un terme) avec
+  $v_i \bred^\star v'_i$ pour $i \in \{0,\ldots,k\}$.
+  Mais alors, par induction, on trouve des dérivations standard
+  $v_i \Sred v'_i$, donc
+  \[\lambda x_1\ldots x_n.v_0\;v_1\;\cdots v_k \Sred
+  \lambda x_1\ldots x_n.v'_0\;v'_1\;\cdots v'_k\]
+  en appliquant les réductions standard de gauche à droite.
+
+  On en déduit donc que toute réduction peut être transformée en une
+  réduction standard équivalente.
+\end{proof}
+
+Ce résultat nous permet d'exhiber une stratégie normalisante, en réduisant
+toujours le redex le plus à gauche. On donne une façon plus explicite de définir
+la stratégie.
+
+\begin{definition}[Réduction gauche]
+  La réduction gauche est définie par
+  \begin{center}
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{}
+      \UnaryInfC{$(\lambda x.t)u\Lred t[u/x]$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$t\Lred t'$}
+      \UnaryInfC{$\lambda x.t\Lred \lambda x.t'$}
+      \DisplayProof
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$t\Lred t'$}
+      \AxiomC{$t\text{ n'est pas une abstraction}$}
+      \BinaryInfC{$t\;u\Lred t'\;u$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$u\Lred u'$}
+      \AxiomC{$t \in \hnf$}
+      \BinaryInfC{$t\;u\Lred t\;u'$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{corollary}
+  La relation $\Lred$ est une stratégie normalisante pour $\bred$.
+\end{corollary}
+
+\begin{remark}
+  $\Lred$ ne décrit pas forcément toutes les réduction atteintes par $\bred$,
+  car il est possible, étant donnés $3$ redexes $a,b,c$ listés de gauche à
+  droite, de réduire $a$ puis $c$, sans réduire $b$, pour obtenir une
+  réduction standard. La relation $\Lred$, elle, doit réduire $b$ avant de
+  pouvoir réduire $c$.
+\end{remark}
