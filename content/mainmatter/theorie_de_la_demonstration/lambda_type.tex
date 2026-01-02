@@ -1,4 +1,4 @@
-\chapter{Lambda calcul typé}
+ke\chapter{Lambda calcul typé}
 \label{chp.lambda_type}
 
 \minitoc
@@ -539,9 +539,9 @@ correspondent aux quantificateurs et à l'égalité.
   les constructeurs déjà donnés pour $\STLCSet$~:
   \[t,u \Coloneq \cdots \mid \blam \bvarx. t\mid t\;\btermt
   \mid \langle \btermt, t\rangle\mid \letin{\bvarx} x t u\mid
-  \refl\;\btermt\mid \transp\;(\bvarx \leftarrow t)\;u\]
+  \refl\;\btermt\mid \transp\;(\varphi,\bvarx \leftarrow t)\;u\]
   où $\bvarx$ parcourt les variables du premier ordre et $\btermt$ les
-  termes du premier ordre.
+  termes du premier ordre et $\varphi$ les formules du premier ordre.
 \end{definition}
 
 On définit de façon naturelle la substitution du premier ordre,
@@ -560,9 +560,20 @@ $\bvarx$ dans les termes du premier ordre apparaissant dans $t$.
         u[t/x][\btermt/\bvarx]$
         \\
         \\
+        \multicolumn{2}{c}{
+          $\transp\;(\bvarx,\varphi\leftarrow (\refl\;\btermt))\;u\FOLred u$
+        }
+        \\
+        \\
         $(\delta\;t\;\{\})\;\btermt\FOLred \delta\;t\;\{\}$
         &
         $\letin{\bvarx}{x}{\delta_\bot\;t\;\{\}}{u} \FOLred \delta_\bot\;t\;\{\}$
+        \\
+        \\
+        \multicolumn{2}{c}{
+          $\transp\;(\bvarx,\varphi\leftarrow (\delta_\bot\;t\;\{\}))\;u
+          \FOLred \delta_\bot\;t\;\{\}$
+        }
         \\
         \\
         $(\letin{\bvarx}{x}{t}{u})\;v \FOLred \letin\bvarx x t {(u\;v)}$
@@ -641,7 +652,7 @@ des types.
         \AxiomC{$\Gamma\vdash t : \btermt = \btermu$}
         \AxiomC{$\Gamma\vdash u : \varphi[\btermt/\bvarx]$}
         \RightLabel{Transp}
-        \BinaryInfC{$\Gamma\vdash \transp\;(\bvarx\leftarrow t)\;u :
+        \BinaryInfC{$\Gamma\vdash \transp\;(\bvarx,\varphi\leftarrow t)\;u :
           \varphi[\btermu/\bvarx]$}
         \DisplayProof
       \end{tabular}
@@ -941,8 +952,8 @@ donner la définition suivante~:
 \begin{multline*}
   \semT{\tau + \tau'} \defeq \{t \in \STLCSet\mid
   \forall \tau'' \in \tySTLC, \forall u,v \in \STLCSet,
-  \\(u[t/x]\in \semT{\tau''}) \implies
-  (v[t/x]\in\semT{\tau''}) \implies
+  \\(\forall w \in \semT{\tau}, u[w/x]\in \semT{\tau''}) \implies\\
+  (\forall w \in \semT{\tau'},v[w/x]\in\semT{\tau''}) \implies
   \\\deltaSTLC t x u x v \in \semT{\tau''}\}
 \end{multline*}
 mais la définition de $\semT{\tau+\tau'}$ fait alors intervenir la définition de
@@ -973,5 +984,537 @@ On définit alors notre ensemble de candidats par la notion d'ensemble saturé.
   \item si $E[v[t/x]] \in A$ et $u \in \SN$, alors
     $E[\deltaSTLC{\kappa_2\;t} x u x v] \in A$
   \end{itemize}
-  On note par $\satur_\SN$ l'ensemble des parties saturées.
+  On note par $\satSN$ l'ensemble des parties saturées.
 \end{definition}
+
+\begin{proposition}
+  L'ensemble $\satSN$ est un treillis complet pour l'inclusion, dont le
+  majorant est $\top_{\satSN}\defeq \SN$ et le minorant est
+  \[\bot_{\satSN} \defeq
+  \{t\in\STLCSet\mid t\in\SN \land (\exists E[\;]\in\ElimSN, x \in \lamVar,
+  t\WHred^\star E[x])\}\]
+\end{proposition}
+
+\begin{proof}
+  Par définition, tout ensemble saturé est inclus dans $\SN$. Par l'extension
+  de tête faible, on sait que $\SN$ vérifie les différentes conditions de
+  saturation, et il est clair que $E[x] \in \SN$ si $E[\;]\in \ElimSN$.
+
+  Si $\mathcal A$ est un ensemble de parties saturées, alors l'intersection
+  $A \defeq \bigcap \mathcal A$ est inclus dans $\SN$, contient chaque
+  $E[x]$ car chaque $B \in \mathcal A$ contient ces éléments. Enfin, comme
+  chaque $B \in \mathcal A$ est clos par l'extension de tête faible telle que
+  décrite dans la condition de saturation, on en déduit que $A$ est aussi clos
+  pour cette extension. On peut montrer de même que $\bigcup \mathcal A$ est
+  saturé.
+
+  Montrons que $\bot_{\satSN}$ est saturé~:
+  \begin{itemize}
+  \item si $t \in \bot_{\satSN}$, alors $t \in \SN$, par définition~;
+  \item pour tout $E[x]$, $E[x]\WHred^\star E[x]$, donc $E[x]\in\bot_{\satSN}$~;
+  \item si $E[t[u/x]] \in \bot_{\satSN}$ et $u \in \SN$, alors
+    $E[(\lambda x.t)u] \in \SN$ par extension de tête faible, et
+    $E[(\lambda x.t)u] \WHred E[t[u/x]]$ qui se réduit lui-même en un
+    $F[x]$, d'où le résultat~;
+  \item les autres cas d'extension de tête faible se traite de façon
+    parfaitement analogue.
+  \end{itemize}
+
+  Donc $(\satSN,\top_{\satSN},\bot_{\satSN},\bigcap,\bigcup)$ est un treillis
+  complet.
+\end{proof}
+
+\begin{remark}
+  On pourrait s'attendre à avoir $\bot_{\satSN} = \varnothing$, mais une telle
+  interprétation pose deux problèmes~:
+  \begin{itemize}
+  \item en considérant l'opération $\to$ définie par
+    \[A \to B \defeq \{t \in \STLCSet\mid \forall u \in A, t\;u \in B\}\]
+    on a $\bot_{\satSN} \to A = \STLCSet$, qui contient des termes non typables
+    et non normalisant.
+  \item une fois montré que $t[u_i/x_i] \in \semT\tau$, savoir que les
+    variables appartiennent à tout ensemble saturé permet de remplacer
+    $x_i$ par $x_i$ lui-même, donnant $t \in \semT\tau$.
+  \end{itemize}
+\end{remark}
+
+Une fois la construction effectuée, il nous reste à définir les opérations
+sur les ensembles saturés permettant de construire $\semT\tau$ inductivement sur
+$\tau$.
+
+\begin{definition}[Opérations sur les ensembles saturés]
+  On définit les opérations suivantes~:
+  \begin{center}
+    \begin{tabular}{rcl}
+      $A \satTO B$ &$\defeq$&
+      $\{t \in \STLCSet\mid \forall u \in A, t\;u \in B\}$\\\\
+      $A \satAND B$ &$\defeq$&
+      $\{t \in \STLCSet\mid (\pi_1\;t \in A)\land (\pi_2\;u\in B)\}$ \\\\
+      $A \satOR B$ &$\defeq$&
+      $\{ t \in \STLCSet \mid \forall C \in \satSN, \forall u,v \in \STLCSet,$\\
+      \multicolumn{3}{r}{
+        $(\forall w \in \semT{\tau},u[w/x] \in C) \land
+        (\forall w \in \semT{\tau'},v[w/x] \in C) \implies$
+      }\\
+      \multicolumn{3}{r}{$\deltaSTLC t x u x v \in C \}$}
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{lemma}
+  Pour tous $A,B \in \satSN$, $A\satTO B \in \satSN$, $A\satAND B \in \satSN$
+  et $A\satOR B \in \satSN$.
+\end{lemma}
+
+\begin{exercise}
+  Prouver le lemme précédent.
+\end{exercise}
+
+On peut finalement définir $\semT\tau$ de sorte à ce que la preuve se déroule
+sans problème.
+
+\begin{definition}[Interprétation des types]
+  On définit inductivement sur $\tau\in\tySTLC$ l'ensemble
+  $\semT\tau \in \satSN$~:
+  \begin{itemize}
+  \item pour $\iota$ un type de base, $\semT\iota \defeq \top_{\satSN}$~;
+  \item $\semT{\unitT} \defeq \top_{\satSN}$~;
+  \item $\semT{\emptyT} \defeq \bot_{\satSN}$~;
+  \item pour $\tau = \tau_0 \to \tau_1$,
+    $\semT\tau\defeq \semT{\tau_0}\satTO\semT{\tau_1}$~;
+  \item pour $\tau = \tau_0 \times \tau_1$,
+    $\semT\tau\defeq \semT{\tau_0}\satAND\semT{\tau_1}$~;
+  \item pour $\tau = \tau_0 + \tau_1$,
+    $\semT\tau\defeq \semT{\tau_0}\satOR\semT{\tau_1}$~;
+  \end{itemize}
+\end{definition}
+
+\subsection{Preuve de la normalisation forte}
+
+Une fois toutes ces définitions données, il nous reste à prouver le lemme
+central~: le lemme d'adéquation.
+
+\begin{definition}
+  Soit $\sigma : \lamVar \partialto \STLCSet$. On dit que $\sigma$ est adéquat
+  pour un contexte de typage $\Gamma$, ce que l'on note $\sigma\models\Gamma$,
+  si toute variable de $\Gamma$ est dans le domaine de $\sigma$ et si
+  \[\forall (x : \tau) \in \Gamma, \sigma(x) \in \semT\tau\]
+\end{definition}
+
+\begin{lemma}[Adéquation]
+  Soient $\sigma : \lamVar \partialto \STLCSet$,
+  $\Gamma \in \List(\lamVar\times\tySTLC$, $t \in \STLCSet$ et
+  $\tau \in \tySTLC$ tels que $\sigma \models\Gamma$. On a l'implication
+  \[\Gamma\vdash t : \tau \implies
+  \sigma(t) \in \semT\tau\]
+\end{lemma}
+
+\begin{proof}
+  On prouve le résultat par induction sur $\Gamma\vdash t : \tau$~:
+  \begin{itemize}
+  \item cas Var~: par hypothèse sur $\sigma\models\Gamma$
+  \item cas $\unitT$~: puisque $\langle\rangle$ est une forme normale, c'est en
+    particulier un terme fortement normalisant, d'où
+    $\langle\rangle \in \SN$
+  \item cas $\emptyT$~: par hypothèse d'induction,
+    $\sigma(t) \in \bot_{\satSN}$, donc pour tout type $\tau$,
+    $\sigma(t) \in \semT\tau$, ce qui est aussi le cas de
+    $\sigma(\delta_\bot\;t\;\{\})$
+  \item cas Abs~: par hypothèse d'induction,
+    pour tout $u \in \semT{\tau}$, en notant $\sigma[x\mapsto u]$
+    l'environnement $\sigma$ enrichi par l'association $x\mapsto u$,
+    on a $\sigma[x\mapsto u](t) \in \semT{\tau'}$. Soit
+    $u \in \semT{\tau}$, montrons que $\sigma(\lambda x.t)\;u \in \semT{\tau'}$.
+    Comme $u \in \SN$ (car $\semT{\tau}\subseteq \SN$), on sait par
+    saturation que $(\lambda x.\sigma(t))u \in \semT{\tau'}$, d'où le résultat
+  \item cas App~: automatique par définition de $\semT{\tau\to\tau'}$
+  \item cas Pair~: on sait que
+    $\pi_1\;\langle \sigma(t),\sigma(u)\rangle \WHred \sigma(t)$ et
+    $\pi_2\;\langle \sigma(t),\sigma(u)\rangle\WHred \sigma(u)$
+    donc
+    $\langle \sigma(t),\sigma(u)\rangle \in \semT\tau \satAND \semT{\tau'}$
+    en utilisant l'hypothèse d'induction sur $t$ et $u$
+  \item cas Proj${}_i$~: automatique par définition de $\semT{\tau\times\tau'}$
+  \item cas Inj${}_i$~: on fixe $C$ saturé et $u_1,u_2 \in \STLCSet$ tels que
+    pour tout $w \in \semT{\tau_1}, u_1[w/x]\in C$ et pour tout
+    $w\in\semT{\tau_2}, u_2[w/x]\in C$. Alors,
+    $\deltaSTLC{\kappa_i\;\sigma(t)} x {u_1} x {u_2} \WHred u_i[\sigma(t)/x]$,
+    et $\sigma(t) \in \semT{\tau_i}$ par hypothèse d'induction,
+    donc $\kappa_i\;\sigma(t) \in \semT{\tau_1+\tau_2}$ par saturation
+  \item cas Copair~: automatique par définition de $\semT{\tau+\tau'}$
+  \end{itemize}
+  D'où le résultat par induction sur la relation de typage.
+\end{proof}
+
+\begin{theorem}[Forte normalisation]
+  Pour tout terme $t$, s'il existe un contexte $\Gamma$ et un type $\tau$
+  tels que $\Gamma\vdash t : \tau$, alors $t \in \SN$.
+\end{theorem}
+
+\begin{proof}
+  Par le lemme précédent, on sait que pour tout $\sigma\models\Gamma$,
+  $\sigma(t) \in \semT{\tau}$, et comme $\semT{\tau}\in\satSN$, on sait que
+  $\sigma(t) \in \SN$. De plus, en choisissant $\sigma : x \mapsto x$, comme
+  $x$ est dans tout ensemble saturé, on a $\sigma\models \Gamma$ et
+  $\sigma(t) = t$, d'où $t\in \SN$.
+\end{proof}
+
+\begin{corollary}
+  Le système de démonstration $\ProofNJ$ est fortement normalisant et confluent
+  pour son fragment propositionnel.
+\end{corollary}
+
+\subsection{Cas de la logique du premier ordre}
+
+Pour la logique du premier ordre, il suffit de répéter les mêmes constructions.
+Les contexte d'élimination ont désormais aussi les cas
+\[E[\;]\Coloneq \cdots\mid E[\;]\;\btermt\mid \letin\bvarx x {E[\;]} t\mid
+\transp\;(\bvarx,\varphi\leftarrow E[\;])\;t\]
+
+Les réductions $\WHred$ ont alors plus de cas, mais ceux-ci sont similaires,
+et permettent avant tout de prouver les faits suivants~:
+\begin{itemize}
+\item si $E[t[\btermt/\bvarx]] \in \SN$, alors
+  $E[(\blam x. t)\;\btermt]\in\SN$~;
+\item si $E[t[u/x][\btermt/\bvarx]]\in \SN$ et $u \in \SN$, alors
+  $E[\letin\bvarx x{\langle \btermt, u\rangle} t] \in \SN$~;
+\item si $E[t] \in \SN$, alors
+  $E[\transp\;(\bvarx, \varphi \leftarrow \refl\;\btermt)\;t]\in \SN$.
+\end{itemize}
+
+De même, la définition d'un ensemble saturé $A$ demande d'ajouter les cas
+d'extension faible de tête suivants~:
+\begin{itemize}
+\item si $E[t[\btermt/\bvarx]] \in A$, alors $E[(\blam x. t)\;\btermt]\in\SN$~;
+\item si $E[t[u/x][\btermt/\bvarx]]\in A$ et $u \in \SN$, alors
+  $E[\letin\bvarx x{\langle \btermt, u\rangle} t] \in A$~;
+\item si $E[t] \in A$, alors
+  $E[\transp\;(\bvarx, \varphi \leftarrow \refl\;\btermt)\;t]\in A$.
+\end{itemize}
+
+Pour un ensemble saturé $A$, on définit $A[\btermt/\bvarx]$ comme l'ensemble
+des termes $t[\btermt/\bvarx]$ pour $t \in A$.
+
+On définit aussi les opérations
+\begin{center}
+  \begin{tabular}{rcl}
+    $\forall A$ &$\defeq$& $\{t \in \STLCSet\mid \forall \btermt \in \Term,
+    t\;\btermt \in A\}$
+    \\
+    \\
+    $\exists \bvarx, A$ &$\defeq$& $\{t \in \STLCSet\mid \forall B \in \satSN,
+    \forall u \in \STLCSet, (\forall v \in A, u[v/x] \in B) \implies$\\
+    \multicolumn{3}{r}{$\letin \bvarx x t u \in B\}$}
+    \\
+    \\
+    $A_=$ & $\defeq$ &
+    $\{ t \in \STLCSet\mid \forall B \in \satSN,\forall \btermt \in \Term,
+    \forall \varphi \in \Formula, \forall u \in B[\btermt/\bvarx],$\\
+    \multicolumn{3}{r}{
+      $\transp\;(\bvarx,\varphi \leftarrow t)\;u \in B[\btermu/\bvarx]\}$}
+  \end{tabular}
+\end{center}
+
+Finalement, le lemme d'adéquation se déroule de la même façon, et permet ainsi
+de déduire
+
+\begin{theorem}[Forte normalisation de la logique du premier ordre]
+  Le système des termes typés de $\FOLSet$ muni de la réduction $\FOLred$
+  induite sur les termes typés, est fortement normalisante.
+\end{theorem}
+
+\begin{exercise}
+  Reprendre la construction de la preuve de forte normalisation pour le
+  $\lambda$-calcul simplement typé et implémenter les modifications discutées
+  plus haut pour prouver la forte normalisation de la logique du premier ordre.
+\end{exercise}
+
+On en déduit ainsi le \cref{thm.NJ.prop}.
+
+Ces preuves de normalisation permettent aussi de déduire que l'égalité
+$=_\beta$, pour les termes typés, est décidable.
+
+\section{Unification et algorithme d'inférence de type}
+
+On va maintenant chercher un algorithme permettant, pour un terme donné, de
+tester s'il est typable. On se contentera de travailler dans le $\lambda$-calcul
+simplement typé, mais il convient de remarquer que le choix de la syntaxe des
+termes de la logique du premier ordre, en particulier du terme
+$\transp$, permet de garder la trace des termes du premier ordre impliqués dans
+une preuve donnée. Cette trace est ce qui permet à l'algorithme de typage de
+fonctionner correctement~: il ne serait pas possible de deviner de façon
+calculable quel terme vérifie un énoncé.
+
+A FAIRE
+
+\section{Système T et arithmétique}
+
+Finalement, on s'intéresse à une variante du $\lambda$-calcul simplement typé.
+Dans cette variante, plutôt que des types de base quelconques, on se donne un
+type $\intT$ représentant les entiers, ainsi que les constructeurs usuels de
+$\bN$ (la constante $0$ et la fonction successeur) et un principe de
+récursion, $\rec$, qui agit de façon analogue à une récursion primitive.
+
+Ce formalisme est bien plus expressif que celui des fonctions RP, car la
+récursion primitive peut s'appliquer à des fonctions, permettant par exemple de
+définir la fonction d'Ackermann.
+
+\subsection{Première définitions}
+
+On donne le système de types, l'ensemble de termes, la réduction et la relation
+de typage.
+
+\begin{definition}[Types de système T]
+  L'ensemble $\tyST$ des types de système T est défini par la BNF suivante~:
+  \[T,U \Coloneq \intT\mid\unitT\mid\emptyT\mid T\to U\mid T\times U\mid T+U\]
+\end{definition}
+
+\begin{definition}[Termes de système T]
+  L'ensemble $\STSet$ des termes de système $T$ est défini par la BNF suivante~:
+  \begin{align*}
+    t,u \Coloneq& x\mid \lambda x.t\mid t\;u\mid\\
+    &\mid \langle \rangle\mid \langle t,u\rangle \mid \pi_1\;t\mid\pi_2\;t\\
+    &\mid \kappa_1\;t\mid\kappa_2\;t\mid\deltaSTLC t x u x v\mid
+    \delta_\bot\;t\;\{\}\\
+    & \mid 0 \mid S\;t \mid \rec\;t\;u\;v
+  \end{align*}
+\end{definition}
+
+\begin{definition}[Réduction]
+  La réduction $\STred$ est définie comme la plus petite relation compatible
+  contenant les paires
+  \begin{center}
+    \begin{tabular}{cc}
+      \multicolumn{2}{c}{$(\lambda x.t)u\STred t[u/x]$}
+      \\
+      \\
+      $\pi_i\;\langle t_1,t_2\rangle \STred t_i$
+      &
+      $\deltaSTLC{\kappa_i\;t}x{u_1}x{u_2}\STred u_i[t/x]$
+      \\
+      \\
+      $\rec\;t\;u\;0\STred t$
+      &
+      $\rec\;t\;u\;(S\;v)\STred u\;v\;(\rec\;t\;u\;v)$
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+\begin{definition}[Typage de système T]
+  Le système de types est donné par les règles suivantes~:
+  \begin{center}
+    \resizebox{\textwidth}{!}{
+      \begin{tabular}{cc}
+        \multicolumn{2}{c}{
+          \bottomAlignProof
+          \AxiomC{$(x : T) \in \Gamma$}
+          \RightLabel{Var}
+          \UnaryInfC{$\Gamma\vdash x : T$}
+          \DisplayProof
+        }
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{}
+        \RightLabel{$\unitT$}
+        \UnaryInfC{$\Gamma\vdash \langle\rangle : \unitT$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \emptyT$}
+        \RightLabel{$\emptyT$}
+        \UnaryInfC{$\Gamma\vdash \delta_\bot\;t\;\{\} : T$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma, x : S \vdash t : T$}
+        \RightLabel{Abs}
+        \UnaryInfC{$\Gamma\vdash \lambda x.t : S \to T$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : U \to T$}
+        \AxiomC{$\Gamma\vdash u : U$}
+        \RightLabel{App}
+        \BinaryInfC{$\Gamma\vdash t\;u : T$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : T$}
+        \AxiomC{$\Gamma\vdash u : U$}
+        \RightLabel{Pair}
+        \BinaryInfC{$\Gamma\vdash \langle t,u\rangle : T\times U$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : T_1\times T_2$}
+        \RightLabel{Proj${}_i$}
+        \UnaryInfC{$\Gamma\vdash \pi_i\;t : T_i$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : T_i$}
+        \RightLabel{Inj${}_i$}
+        \UnaryInfC{$\Gamma\vdash \kappa_i\;t : T_1 + T_2$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : T_1 + T_2$}
+        \AxiomC{$\Gamma, x : t_1\vdash u : U$}
+        \AxiomC{$\Gamma, x : t_2\vdash v : U$}
+        \RightLabel{CoPair}
+        \TrinaryInfC{$\Gamma\vdash \deltaSTLC t x u x v : U$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{}
+        \RightLabel{Zero}
+        \UnaryInfC{$\Gamma\vdash 0 : \intT$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \intT$}
+        \RightLabel{Succ}
+        \UnaryInfC{$\Gamma\vdash S\;t : \intT$}
+        \DisplayProof
+        \\
+        \\
+        \multicolumn{2}{c}{
+          \bottomAlignProof
+          \AxiomC{$\Gamma\vdash t : T$}
+          \AxiomC{$\Gamma\vdash u : \intT \to T \to T$}
+          \AxiomC{$\Gamma\vdash v : \intT$}
+          \RightLabel{Rec}
+          \TrinaryInfC{$\Gamma\vdash \rec\;t\;u\;v : T$}
+          \DisplayProof
+        }
+      \end{tabular}
+    }
+  \end{center}
+\end{definition}
+
+\begin{remark}
+  La réduction $\STred$ est plus simple que celle du $\lambda$-calcul simplement
+  typé. Du point de vue logique, les seules coupures considérées sont les
+  coupures logiques, sans réduction des coupures commutatives ou des
+  $\bot$-coupures. Ce choix se justifie par la nature calculatoire de système
+  T~: l'objectif de ce langage est avant tout de construire des fonctions, non
+  d'avoir un système de preuves.
+
+  Les coupures non logiques sont utiles dans $\ProofNJ$ pour donner la propriété
+  de la sous-formule, mais cette propriété n'est pas essentielle dans le cas
+  d'un langage de programmation.
+\end{remark}
+
+\begin{exercise}
+  Montrer que $\STred$ est confluente.
+\end{exercise}
+
+\subsection{Forte normalisation}
+
+Ce système de type est fortement normalisant, comme on peut s'y attendre par
+la forme du système considéré.
+
+La preuve de forte normalisation du $\lambda$-calcul simplement typé s'adapte
+tout à fait à ce cadre. On suppose acquis le fait d'adapter la réduction
+$\WHred$ ainsi que la définition de saturation pour y ajouter le cas des
+réductions spécifiques aux entiers. Toutes les propriétés de cette version
+adaptée sont vérifiées~: $\SN$ est toujours le majorant de $\satSN$, qui est
+toujours un treillis complet, et $\bot_{\satSN}$ est toujours défini de la même
+façon.
+
+On souhaite donc construire l'interprétation $\semT{\intT}$, les autres
+interprétations de type étant déjà construites. Si on se fie à la définition par
+la règle d'élimination, on définit donc
+\begin{multline*}
+  \semT{\intT} \defeq \{t \in \STSet \mid \forall A \in \satSN,
+  \forall u \in A, \forall v \in \STSet,\\
+  (\forall w \in \semT{\intT}, \forall a \in A, v\;w\;a \in A)\implies 
+  \rec\;u\;v\;t \in A\}
+\end{multline*}
+Cette définition est impossible, $\semT{\intT}$ intervient dans la définition
+de $\semT{\intT}$~!
+
+Heureusement, puisque $\satSN$ est un treillis complet, on peut malgré tout
+construire une telle interprétation, en considérant un point fixe.
+
+\begin{proposition}
+  Soit la fonction $f : \satSN \to \satSN$ définie par
+  \begin{multline*}
+    f(A) \defeq \{t \in \STSet \mid \forall B \in \satSN,
+    \forall u \in B, \forall v \in \STSet,\\
+    (\forall w \in A, \forall a \in B, v\;w\;a \in B)\implies
+    \rec\;u\;v\;t \in B\}
+  \end{multline*}
+  la fonction $f$ est croissante.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $A \subseteq B$ et montrons que $f(A)\subseteq f(B)$.
+  Soient $C \in \satSN, u \in C$ et $v$ tel que
+  $\forall w \in B, \forall a \in C, v\;w\;a \in C$, il nous suffit de
+  montrer que pour tout $t \in f(A)$, $\rec\;u\;v\;t \in C$.
+  On utilise la définition du fait que $t \in f(A)$~: on sait que
+  $u \in C$, et que $\forall w \in A, \forall a \in C, v\;w\;a \in C$ par
+  hypothèse sur $v$ et inclusion $A \subseteq B$, donc
+  $\rec\;u\;v\;t \in C$, donc $t \in f(B)$.
+\end{proof}
+
+En utilisant le \cref{thm.ind.KT}, on en déduit l'existence d'un plus petit
+point fixe $\fix(f)$.
+
+\begin{definition}[Interprétation des entiers]
+  L'ensemble $\semT\intT$ est défini par $\fix(f)$. Il vérifie
+  \begin{multline*}
+  t \in \semT{\intT} \iff t \in \STSet \mid \forall A \in \satSN,
+  \forall u \in A, \forall v \in \STSet,\\
+  (\forall w \in \semT{\intT}, \forall a \in A, v\;w\;a \in A)\implies
+  \rec\;u\;v\;t \in A
+\end{multline*}
+\end{definition}
+
+On a ainsi une interprétation de chaque type, donc on prouve sans problème
+l'adéquation. On en déduit la forte normalisation.
+
+\begin{theorem}[Forte normalisation de système T]
+  Pour tout contexte $\Gamma$, type $T$ et terme $t$, si $\Gamma\vdash t : T$
+  alors $t \in \SN$.
+\end{theorem}
+
+Par ce résultat, on en déduit un théorème de représentation.
+
+\begin{definition}[Représentation d'entiers et de fonctions]
+  Pour tout $n \in \bN$, on définit $\encode n \in \STSet$ par
+  \[\encode n \defeq S^n\;0\]
+  Si $f : \bN \partialto \bN$, on dit qu'un terme $t \in \STSet$ représente $f$
+  si
+  \begin{itemize}
+  \item $\vdash t : \intT \to \intT$
+  \item pour tout $n \in \bN$ tel que $f(n)\convcal$,
+    \[t\;\encode n \STred^\star \encode{f(n)}\]
+  \item pour tout $n \in \bN$ tel que $f(n)\divcal$, $t\;\encode n$ n'a pas
+    de forme normale.
+  \end{itemize}
+\end{definition}
+
+\begin{theorem}
+  Toute fonction représentable dans système T est une fonction totale.
+\end{theorem}
+
+\begin{exercise}
+  Montrer que toute fonction RP est représentable dans système T.
+\end{exercise}
+
+Le formalisme de système T est donc un formalisme plus général que celui des
+fonctions RP. Sa syntaxe étant calculable (le typage est calculable en utilisant
+les résultats de la section précédente), on sait que toutes les fonctions
+calculables totales ne sont pas représentables dans système T.
+
+On peut néanmoins se demander quelle classe est décrite exactement par les
+fonctions représentables dans système T. Cette classe a en effet une description
+importante~: les fonctions représentables dans système T sont exactement les
+fonctions prouvablement totales dans l'arithmétique du premier ordre.
