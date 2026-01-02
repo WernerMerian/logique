@@ -3,4 +3,975 @@
 
 \minitoc
 
-\lettrine{B}{la}
+\lettrine{L}{e} $\lambda$-calcul est un formalisme permettant de construire un
+langage de programmation Turing-complet. En tant que tel, le problème
+indécidable par excellence est l'arrêt, ou dans le cas des $\lambda$-termes,
+la terminaison.
+
+Pour assurer la terminaison, on peut construire une condition syntaxique
+suffisante. En considérant un programme $t \in \lamSet$, on souhaite avoir une
+condition $P(t)$ calculable qui implique la terminaison de $t$. Cette condition
+ne peut pas coïncider avec la condition d'être (faiblement ou fortement)
+normalisant, puisqu'une telle condition est sémantique et donc indécidable.
+
+Le candidat pour une telle condition est la notion de typage. L'intérêt premier
+du typage au niveau informatique est d'assurer le bon comportement des
+programmes~: l'objectif est d'ajouter à chaque terme $t$ une étiquette $A$
+(nommée type), ce que l'on notera $t : A$, de telle sorte que le type $A$
+représente une spécification de programme.
+
+Par exemple, le type $\intT$ sert à décrire les termes $t$ dont la valeur est
+un entier. De même, le type $\intT \to \intT$ décrit les fonctions qui, à un
+terme de type $\intT$, renvoie un terme de type $\intT$, représentant
+moralement une fonction $\bN \to \bN$.
+
+Cette notion, \latinexpr{a priori} liée à l'informatique et à la programmation,
+a en fait un lien étroit avec la logique. Ce lien s'incarne dans la
+correspondance de Curry-Howard, notion incontournable du pan informatique de la
+logique mathématique, et fondation de la théorie des types.
+
+On introduit dans ce chapitre un système de type avec un $\lambda$-calcul
+enrichi, de sorte à décrire par la correspondance de Curry-Howard la logique
+minimale, puis propositionnelle, et finalement la logique du premier ordre.
+
+On donne ensuite la preuve de \cite{Tait1967} de la forte normalisation du
+$\lambda$-calcul simplement typé, adaptée pour le système de types de la logique
+du premier ordre.
+
+On aborde aussi une implémentation algorithmique permettant de décider si un
+terme est typable.
+
+Finalement, on aborde un système de type annexe~: le système T. Ce système, plus
+orienté vers la programmation, permet de décrire les fonctions prouvablement
+totales au premier ordre, ce que l'on prouvera pour finir le chapitre.
+
+\section{Correspondance de Curry-Howard}
+
+\subsection{Logique minimale}
+
+Pour commencer notre étude, considérons le cas le plus naturel de terme qui ne
+se normalise pas~: $\Omega$. Le point clé poussant ce terme à ne pas se
+normaliser est l'application $x\;x$, qui permet au terme de se réduire en
+lui-même. Pourtant, dans la pratique, on peut se demander quelle est la
+pertinence d'un tel terme. En considérant une interprétation ensembliste des
+fonctions, une expression $f(f)$ signifierait qu'un élément $f$ appartient à la
+fois à un ensemble $X$ et à l'ensemble $X^X$.
+
+Une telle situation ne paraît pas immédiatement possible, puisque $X$ et $X^X$
+sont de cardinaux différents. En prenant le $\lambda$-calcul comme une théorie
+des fonctions, l'expression $f(f)$ semble donc être un \foreignexpr{bug} du
+formalisme. On propose donc de donner un système d'annotations de termes, de
+sorte qu'un terme représentant une fonction $X \to Y$ s'applique à un terme
+représentant un élément de $X$.
+
+\begin{definition}[Types simples]
+  Soit $\kappa$ un ensemble fixé de types de base.
+  On définit l'ensemble $\tyT$ par la BNF
+  \[\tau,\tau' \Coloneq \iota \mid \tau \to \tau'\]
+  où $\iota \in \kappa$.
+\end{definition}
+
+\begin{definition}[Typage simple]
+  On appelle contexte de typage un élément
+  $\Gamma \in \List(\lamVar\times\tyT)$, dont on note les éléments
+  $(x,\tau) \in \Gamma$ par $x : \tau$. On définit la relation de typage
+  $\vdash \subseteq \List(\lamVar\times\tyT)\times \lamSet\times\tyT$ par
+  les règles
+  \begin{center}
+    \begin{tabular}{cc}
+      \multicolumn{2}{c}{
+        \bottomAlignProof
+        \AxiomC{$x : \tau \in \Gamma$}
+        \RightLabel{Var}
+        \UnaryInfC{$\Gamma\vdash x : \tau$}
+        \DisplayProof
+      }
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$\Gamma, x : \tau\vdash t : \tau'$}
+      \RightLabel{Abs}
+      \UnaryInfC{$\Gamma\vdash \lambda x.t : \tau \to \tau'$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$\Gamma\vdash t : \tau \to \tau'$}
+      \AxiomC{$\Gamma\vdash u : \tau$}
+      \RightLabel{App}
+      \BinaryInfC{$\Gamma\vdash t\;u : \tau'$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+  On note $\vdash t : \tau$ dans le cas où $\Gamma$ est la liste vide.
+\end{definition}
+
+\begin{example}
+  L'identité peut se typer par le type $\tau \to \tau$ pour n'importe quel type
+  $\tau$, comme on peut s'y attendre~:
+  \begin{prooftree}
+    \AxiomC{}
+    \RightLabel{Var}
+    \UnaryInfC{$x : \tau \vdash x : \tau$}
+    \RightLabel{Abs}
+    \UnaryInfC{$\vdash \lambda x.x : \tau \to \tau$}
+  \end{prooftree}
+
+  Les entiers de Church peuvent se typer par
+  $(\tau \to \tau) \to \tau \to \tau$~:
+  \begin{prooftree}
+    \AxiomC{$\cdots$}
+    \AxiomC{}
+    \RightLabel{Var}
+    \UnaryInfC{$f : \tau \to \tau, x : \tau \vdash f : \tau \to \tau$}
+    \AxiomC{}
+    \RightLabel{Var}
+    \UnaryInfC{$f : \tau \to \tau, x : \tau \vdash x : \tau$}
+    \RightLabel{App}
+    \BinaryInfC{$f : \tau \to \tau, x : \tau \vdash f\;x : \tau$}
+    \doubleLine\RightLabel{App}
+    \BinaryInfC{$f : \tau \to \tau, x : \tau\vdash f^n\;x : \tau$}
+    \RightLabel{Abs}
+    \UnaryInfC{$f : \tau \to \tau\vdash \lambda x.f^n\;x : \tau\to\tau$}
+    \RightLabel{Abs}
+    \UnaryInfC{$\vdash \lambda f\;x.f^n\;x:(\tau\to\tau)\to\tau\to\tau$}
+  \end{prooftree}
+\end{example}
+
+Donnons un sous-système de $\NJ$ dont la forme est très similaire.
+
+\begin{definition}[$\NJ_\to$]
+  La déduction naturelle de la logique minimale, $\NJ_\to$, est définie en
+  ne considérant que le constructeur logique $\to$, les règles de
+  construction d'arbre données par
+  \begin{center}
+    \begin{tabular}{cc}
+      \multicolumn{2}{c}{
+        \AxiomC{$A$}
+        \DisplayProof
+      }
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$[A]^\alpha$}
+      \noLine{}\UnaryInfC{$\vdots$}\noLine
+      \UnaryInfC{$B$}
+      \RightLabel{$\to_\mathrm i,\alpha$}
+      \UnaryInfC{$A\to B$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$A \to B$}
+      \AxiomC{$A$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$B$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+  et la relation $\Gamma\vdNJto A$ définie par le fait qu'il existe un arbre
+  dont les feuilles non marquées appartiennent à $\Gamma$ et la racine est
+  $A$.
+\end{definition}
+
+Remarquons qu'un arbre de déduction naturelle peut aussi s'écrire avec des
+séquents, de façon similaire à la \cref{def.deduc.nat1}, pour obtenir exactement
+le même système de démonstration.
+
+En prenant des arbres de preuves par séquents, on peut alors mettre en parallèle
+les règles de déduction et les règles de typage~:
+\[
+\AxiomC{$\Gamma\vdNJto A \to B$}
+\AxiomC{$\Gamma\vdNJto A$}
+\RightLabel{$\to_\mathrm i$}
+\BinaryInfC{$\Gamma\vdNJto B$}
+\DisplayProof
+\qquad
+\AxiomC{$\Gamma\vdash t : A \to B$}
+\AxiomC{$\Gamma\vdash u : A$}
+\RightLabel{App}
+\BinaryInfC{$\Gamma\vdash t\;u : B$}
+\DisplayProof
+\]
+Ces deux règles sont presque identiques. La seule différence se trouve dans
+le fait que le typage nous donne un objet explicite, le terme $t\;u$, qui
+habite le type $B$.
+
+La correspondance de Curry-Howard (ou isomorphisme de Curry-Howard) est cette
+identification entre les termes (les programmes) et les arbres (les preuves), et
+entre les types et les propositions. On en retire les expressions
+\foreignexpr{proof as program} et \foreignexpr{proposition as type}.
+
+\begin{proposition}[Correspondance de Curry-Howard]
+  Pour toute proposition de la logique minimale sur un ensemble de propositions
+  atomiques $\Atom$, on considère l'ensemble $\tyT$ des types construits sur
+  l'ensemble de types de base $\Atom$. On a l'équivalence
+  \[A_1,\ldots,A_n \vdNJto B \iff \exists t : \lamSet,
+  x_1 : A_1,\ldots,x_n : A_n \vdash t : B\]
+  et une bijection entre d'un côté ${\ProofNJ}_\to$ et de l'autre l'ensemble
+  \[\{(A_1,\ldots,A_n,t,B)\mid x_1 : A_1,\ldots,x_n : A_n\vdash t : B\}\]
+  qui commute aux règles de déduction (respectivement de typage).
+\end{proposition}
+
+En particulier, si l'on voit un contexte $\Gamma$ d'un côté comme
+une liste de propositions et de l'autre comme la liste des mêmes propositions,
+mais auxquelles on ajoute une variable $x_i$ pour chacun (on transforme
+$A_1,\ldots,A_n$ en $x_1 : A_1,\ldots,x_n : A_n$), alors on a une correspondance
+entre les termes $t$ tels que $\Gamma \vdash t : B$ et les preuves de $B$ dans
+ce contexte.
+
+Cette correspondance s'énonce comme une bijection car les règles de typage et
+de raisonnements sont en correspondance, mais la réduction elle-même est
+parfaitement analogue dans les deux cas~: dans le cas des abres, on a
+la réécriture
+\[
+\def\fCenter{\mbox{\Large$\vdots$}}
+\AxiomC{$[A]^\alpha$}
+\noLine
+\UnaryInf$\fCenter\pi$
+\noLine\UnaryInfC{$B$}
+\RightLabel{$\to_\mathrm i, \alpha$}
+\UnaryInfC{$A \to B$}
+\Axiom$\fCenter\pi'$
+\noLine\UnaryInfC{$A$}
+\RightLabel{$\to_\mathrm e$}
+\BinaryInfC{$B$}
+\DisplayProof
+\reecr{L^\to}
+\def\fCenter{\mbox{\Large$\vdots$}}
+\Axiom$\fCenter\pi'$
+\noLine\UnaryInfC{$A$}\noLine
+\UnaryInf$\fCenter\pi$
+\noLine\UnaryInfC{$B$}
+\DisplayProof
+\]
+et de l'autre, on a la réécriture $(\lambda x.t)u\bred t[u/x]$. Dans le
+$\lambda$-terme, la substitution de $x$ par $u$ remplace les références à
+$x$, supposé de type $A$, pour y placer un terme $t$ lui aussi de type $A$.
+Ce processus est le même lorsqu'on remplace les feuilles marquées
+$\alpha$ par l'arbre de preuve $\pi'$ correspondant.
+
+L'élément clé pour permettre de conserver la correspondance de Curry-Howard
+est la préservation du typage. Cette préservation repose sur le lemme suivant.
+
+\begin{lemma}
+  Soient $t, u \in \lamSet$ tels que $\Gamma, x : \tau \vdash t : \tau'$ et
+  $\Gamma\vdash u : \tau$. Alors $\Gamma\vdash t[u/x] : \tau'$.
+\end{lemma}
+
+\begin{proof}
+  On raisonne par induction sur le typage de $t$~:
+  \begin{itemize}
+  \item si $t = x$ alors on doit prouver que $\Gamma\vdash u : \tau$, ce qui
+    est vrai par hypothèse~;
+  \item si $t = y \neq x$ alors on a $y : \tau' \in \Gamma$, puisque
+    $(y : \tau') \neq (x : \tau$, donc $\Gamma\vdash t : \tau'$~;
+  \item si $t = \lambda y.t'$, alors par hypothèse d'induction
+    $\Gamma, y : \tau_0 \vdash t'[u/x] : \tau_1$ où
+    $\tau' = \tau_0 \to \tau_1$, mais alors par typage des
+    abstractions, $\Gamma\vdash \lambda y.t'[u/x] : \tau'$~;
+  \item si $t = t_0\;t_1$, alors l'hypothèse d'induction s'applique sans
+    souci.
+  \end{itemize}
+  Ainsi, par induction, on en déduit que $\Gamma\vdash t[u/x] : \tau'$.
+\end{proof}
+
+\begin{exercise}[Préservation du typage]
+  Prouver que si $\Gamma\vdash t : A$ et $t \bred u$, alors
+  $\Gamma\vdash u : A$.
+\end{exercise}
+
+Avec cette correspondance et les résultats déjà établis sur $\bred$, on peut
+déduire des résultats sur $\NJ_\to$ muni de la réécriture
+$\reecr{L^\to}$~: la propriété de Church-Rosser, la standardisation\ldots
+
+On souhaite maintenant passer à tout le fragment propositionnel.
+
+\subsection{Interprétation BHK}
+
+Pour avoir une idée des types recherchés pour décrire le fragment
+propositionnelle de $\NJ$, on présente d'abord l'interprétation de
+Brouwer-Heyting-Kolmogorov. Cette interprétation cherche à donner un sens
+constructif aux formules et propositions. Plutôt que d'interpréter une formule
+$\varphi$ par une valeur de vérité $b \in \btwo$, ou par une valeur de vérité
+$h \in H$ avec $H$ une algèbre de Heyting, on souhaite interpréter $\varphi$
+par l'ensemble des preuves de $\varphi$. On cherche alors une façon constructive
+de définir les preuves, inductivement sur $\varphi$~:
+\begin{itemize}
+\item il existe une preuve de $\top$~;
+\item il n'existe aucune preuve de $\bot$~;
+\item une preuve de $\varphi \land \psi$ est une paire $(p,q)$ où $p$ est une
+  preuve de $\varphi$, et $q$ est une preuve de $\psi$~;
+\item une preuve de $\varphi \lor \psi$ est une paire $(i,p)$ où~:
+  \begin{itemize}
+  \item si $i = 0$ alors $p$ est une preuve de $\varphi$~;
+  \item si $i = 1$ alors $p$ est une preuve de $\psi$~;
+  \end{itemize}
+\item une preuve de $\varphi \to \psi$ est une fonction $f$, qui à une preuve
+  $p$ de $\varphi$ associe une preuve $f(p)$ de $\psi$~;
+\item une preuve de $\forall x, \varphi$ est une fonction $f$, qui à tout
+  élément $m$ du domaine d'interprétation associe une preuve $f(m)$ de
+  $\varphi$ où $x$ est interprété par $m$~;
+\item une preuve de $\exists x, \varphi$ est une paire $(m,p)$ où
+  $m$ est un élément du domaine d'interprétation, et $p$ est une preuve
+  de $\varphi$ où $x$ est interprété par $m$.
+\end{itemize}
+Cette interprétation n'est pas formelle~: elle est une spécification large de ce
+qu'il est attendu d'un système de preuves intuitionniste. Le point sur lequel
+l'interprétation est la plus imprécise est l'implication~: la notion de fonction
+$f$ peut être par exemple la classe des fonctions calculables, ou alors
+n'importe quelle fonction. Dans le cadre de la correspondance de Curry-Howard,
+la notion de fonction est celle de terme typé par un type fonctionnel.
+
+\subsection{$\lambda$-calcul simplement typé}
+
+On souhaite donc implémenter un système de types correspondant aux différentes
+notions décrites dans l'interprétation BHK. Par exemple, le cas de la
+conjonction, on a besoin d'introduire les types produits. On a déjà vu comment
+définir l'encodage des paires et des projections dans le $\lambda$-calcul
+pur et non typé, mais cela pose plusieurs problèmes d'ambiguïté. Par exemple,
+le terme $\lambda x\;y.x$ aurait le type $A\times B \to A$ et le type
+$A \to B \to A$, et des réductions seraient alors possibles entre des termes
+dont les types sont supposés incompatibles.
+
+On préfère donc introduire de nouveaux constructeurs pour chaque fragment
+logique, ce qui demande de définir un nouveau $\lambda$-calcul et une
+nouvelle réduction.
+
+\begin{definition}[$\lambda$-termes]
+  On définit l'ensemble $\STLCSet$ des $\lambda$-termes par la grammaire
+  \begin{align*}
+    t,u \Coloneq & x \mid \lambda x.t\mid t\;u \\
+    &\mid \langle\rangle \mid \langle t,u \rangle \mid \pi_1\;t\mid\pi_2\;t\\
+    &\mid \kappa_1\;t\mid\kappa_2\;t\mid \deltaSTLC t x u x v\mid
+    \delta_\bot\;t\;\{\}
+  \end{align*}
+\end{definition}
+
+\begin{remark}
+  La discussion sur l'$\alpha$-équivalence se pose à nouveau, et il faudrait
+  définir la notion de substitution à $=_\alpha$ près. On occulte tout ce
+  travail technique, qui s'adapte sans aucun problème au cas où on ajoute plus
+  de constructeurs. De même, on peut travailler en indices de De Bruijn pour
+  avoir un système syntaxiquement plus simple.
+\end{remark}
+
+Dans l'analogie entre les arbres de preuve et les termes du $\lambda$-calcul,
+on peut ici faire correspondre~:
+\begin{itemize}
+\item le terme $\langle\rangle$ à la preuve canonique de $\top$,
+  $\top_\mathrm i$~;
+\item le terme $\langle t,u\rangle$ à $\land_\mathrm i$~;
+\item les termes $\pi_i\;t$ aux règles $\land_\mathrm e$~;
+\item les termes $\kappa_i\;t$ aux règles $\lor_\mathrm i$~;
+\item le terme $\deltaSTLC t x u x v$ à
+  la règle $\lor_\mathrm e$~;
+\item le terme $\delta_\bot\;t$ à la règle $\bot_\mathrm e$.
+\end{itemize}
+
+On introduit donc un système de types permettant d'avoir les différents
+constructeurs.
+
+\begin{definition}[Types du $\lambda$-calcul simplement typé]
+  On définit l'ensemble $\tySTLC$ sur un ensemble de types de base par~:
+  \[\tau,\tau' \Coloneq \unitT\mid\emptyT\mid \iota \mid \tau \to \tau'
+  \mid \tau\times \tau' \mid \tau + \tau'\]
+  où $\iota$ parcourt les types de base.
+\end{definition}
+
+\begin{definition}[Typage du $\lambda$-calcul simplement typé]
+  On définit la relation
+  $\vdash\subseteq\List(\lamVar\times\tySTLC)\times\lamSet\times\tySTLC$ par
+  les règles suivantes~:
+  \begin{center}
+    \resizebox{\textwidth}{!}{
+      \begin{tabular}{cc}
+        \multicolumn{2}{c}{
+          \bottomAlignProof
+          \AxiomC{$x : \tau \in \Gamma$}
+          \RightLabel{Var}
+          \UnaryInfC{$\Gamma\vdash x : \tau$}
+          \DisplayProof
+        }
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{}
+        \RightLabel{$\unitT$}
+        \UnaryInfC{$\Gamma\vdash \langle\rangle : \unitT$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \emptyT$}
+        \RightLabel{$\emptyT$}
+        \UnaryInfC{$\Gamma\vdash \delta_\bot\;t\;\{\} : \tau$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma, x : \tau\vdash t : \tau'$}
+        \RightLabel{Abs}
+        \UnaryInfC{$\Gamma\vdash\lambda x.t : \tau \to \tau'$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \tau\to\tau'$}
+        \AxiomC{$\Gamma\vdash u : \tau$}
+        \RightLabel{App}
+        \BinaryInfC{$\Gamma\vdash t\;u : \tau'$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \tau$}
+        \AxiomC{$\Gamma\vdash u : \tau'$}
+        \RightLabel{Pair}
+        \BinaryInfC{$\Gamma\vdash \langle t,u\rangle : \tau \times \tau'$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \tau_1\times\tau_2$}
+        \RightLabel{Proj${}_i$}
+        \UnaryInfC{$\Gamma\vdash \pi_i\;t : \tau_i$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \tau_i$}
+        \RightLabel{Inj${}_i$}
+        \UnaryInfC{$\Gamma\vdash \kappa_i\;t : \tau_1 + \tau_2$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \tau + \tau'$}
+        \AxiomC{$\Gamma, x : \tau \vdash u : \tau''$}
+        \AxiomC{$\Gamma, x : \tau'\vdash x : \tau''$}
+        \RightLabel{Copair}
+        \TrinaryInfC{$\Gamma\vdash \deltaSTLC t x u x v : \tau''$}
+        \DisplayProof
+      \end{tabular}
+    }
+  \end{center}
+\end{definition}
+
+L'étape suivante est donc de définir la réduction, de telle sorte qu'elle
+corresponde avec la réécriture $\reecr{}$ des arbres de preuves de
+$\ProofNJ$.
+
+\begin{definition}[Réduction de termes typés]
+  On définit sur $\STLCSet$ la relation $\STLCred$ comme la plus petite relation
+  compatible contenant les paires suivantes~:
+  \begin{center}
+    \begin{tabular}{cc}
+      \multicolumn{2}{c}{$(\lambda x.t)u\STLCred t[u/x]$}
+      \\
+      \\
+      $\pi_i\;\langle t_1,t_2\rangle\STLCred t_i$
+      &
+      $\deltaSTLC{\kappa_i\;t} x {u_1} x {u_2} \STLCred u_i[t/x]$
+      \\
+      \\
+      \multicolumn{2}{c}{
+        $(\delta_\bot\;t\;\{\})\;u\STLCred \delta_\bot\;t\;\{\}$}
+      \\
+      \\
+      $\pi_i(\delta_\bot\;t\;\{\})\STLCred \delta_\bot\;t\;\{\}$
+      &
+      $\deltaSTLC{(\delta_\bot\;t\;\{\})}x u x v \STLCred \delta_\bot\;t\;\{\}$
+      \\
+      \\
+      \multicolumn{2}{c}{
+        $(\deltaSTLC t x u x v)\;w \STLCred\deltaSTLC t x {u\;w} x {v\;w}$
+      }
+      \\
+      \\
+      \multicolumn{2}{c}{
+        $\pi_i(\deltaSTLC t x u x v)
+        \STLCred\deltaSTLC t x {\pi_i\;u} x {\pi_i\;v}$
+      }
+      \\
+      \\
+      \multicolumn{2}{l}{
+        $\deltaSTLC{(\deltaSTLC t x u x v)} y {u'} y {v'} \STLCred$
+      }
+      \\
+      \multicolumn{2}{r}{
+        $\deltaSTLC t x
+        {\deltaSTLC u y {u'} y v'} x {\deltaSTLC v y {u'} y {v'}}$
+      }
+    \end{tabular}
+  \end{center}
+\end{definition}
+
+On peut vérifier que les propriétés de préservation du typage et de confluence
+sont toujours valides. On laisse cette vérification en exercice.
+
+\begin{exercise}[Préservation du typage]
+  Vérifier que si $\Gamma\vdash t : \tau$ et $t \STLCred u$, alors
+  $\Gamma\vdash u : \tau$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que $\STLCred$ est confluente. \textit{Indication : on pourra
+    introduire une relation $\STLCred_{||}$ similaire à $\redPar$ pour
+    prouver le résultat.}
+\end{exercise}
+
+La correspondance de Curry-Howard nous permet donc de déduire que la réduction
+$\reecr{}$ dans $\ProofNJ$ est confluente, prouvant dans le cas propositionnel
+une partie du \cref{thm.NJ.prop}.
+
+On adapte finalement notre calcul au cas de la logique du premier ordre.
+
+\subsection{Système de preuve de la logique du premier ordre}
+
+La différence avec le fragment propositionnel est l'apparition de termes de
+preuve appelant des termes du premier ordre. Par exemple, si on considère
+un terme $t$ dont le type est $\forall x, \varphi$, on souhaite pouvoir en
+déduire $\varphi[t/x]$ pour un certain terme du premier ordre $t$. On
+s'aperçoit ici d'une limitation assez mineure~: les variables et les termes
+sont écrits de la même façon pour le $\lambda$-calcul et le premier ordre. On
+fait donc le choix de noter en gras les termes et variables du premier ordre.
+Les constructeurs à introduire pour définir le fragment du premier ordre
+correspondent aux quantificateurs et à l'égalité.
+
+\begin{definition}[Termes de preuve pour le premier ordre]
+  On introduit l'ensemble $\FOLSet$ des termes de preuve pour la logique du
+  premier ordre par la BNF suivante, où les $\cdots$ indiquent qu'on reprend
+  les constructeurs déjà donnés pour $\STLCSet$~:
+  \[t,u \Coloneq \cdots \mid \blam \bvarx. t\mid t\;\btermt
+  \mid \langle \btermt, t\rangle\mid \letin{\bvarx} x t u\mid
+  \refl\;\btermt\mid \transp\;(\bvarx \leftarrow t)\;u\]
+  où $\bvarx$ parcourt les variables du premier ordre et $\btermt$ les
+  termes du premier ordre.
+\end{definition}
+
+On définit de façon naturelle la substitution du premier ordre,
+$t[\btermt/\bvarx]$, en substituant $\btermt$ dans chaque occurrence de
+$\bvarx$ dans les termes du premier ordre apparaissant dans $t$.
+
+\begin{definition}[Réduction des termes de preuve]
+  On définit la réduction $\FOLred$ comme la plus petite relation compatible
+  contenant les paires déjà données pour $\STLCred$, et les paires
+  \begin{center}
+    \resizebox{\textwidth}{!}{
+      \begin{tabular}{cc}
+        $(\blam \bvarx.t)\;\btermt \FOLred t[\btermt/\bvarx]$
+        &
+        $\letin{\bvarx}{x}{\langle \btermt, t\rangle}{u} \FOLred
+        u[t/x][\btermt/\bvarx]$
+        \\
+        \\
+        $(\delta\;t\;\{\})\;\btermt\FOLred \delta\;t\;\{\}$
+        &
+        $\letin{\bvarx}{x}{\delta_\bot\;t\;\{\}}{u} \FOLred \delta_\bot\;t\;\{\}$
+        \\
+        \\
+        $(\letin{\bvarx}{x}{t}{u})\;v \FOLred \letin\bvarx x t {(u\;v)}$
+        &
+        $(\letin\bvarx x t u)\;\btermt \FOLred \letin\bvarx x t {(u\;\btermt)}$
+        \\
+        \\
+        \multicolumn{2}{c}{
+          $\pi_i\;(\letin\bvarx x t u)\FOLred \letin\bvarx x t {\pi_i\;u}$
+        }
+        \\
+        \\
+        \multicolumn{2}{c}{
+          $\letin\bvary y {(\letin \bvarx x t u)} v \FOLred
+          \letin\bvarx x t {(\letin\bvary y u v)}$
+        }
+        \\
+        \\
+        \multicolumn{2}{c}{
+          $\deltaSTLC{\letin\bvarx x t u}{y}{v}{y}{w} \FOLred$
+          $\letin\bvarx x t {(\deltaSTLC u y v y w)}$
+        }
+      \end{tabular}
+    }
+  \end{center}
+\end{definition}
+
+Pour le système de types, on considère directement que $\Formula$ est l'ensemble
+des types.
+
+\begin{definition}[Typage des termes de preuve]
+  On définit la relation
+  $\vdFOL\subseteq \List(\lamVar\times\Formula)\times\FOLSet\times\Formula$
+  par les règles définissant le typage du $\lambda$-calcul simplement typé,
+  et les règles suivantes~:
+  \begin{center}
+    \resizebox{\textwidth}{!}{
+      \begin{tabular}{cc}
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \varphi$}
+        \AxiomC{$\bvarx \notin\VL(\Gamma)$}
+        \RightLabel{Abs-FO}
+        \BinaryInfC{$\Gamma\vdash \blam \bvarx.t : \forall \bvarx.\varphi$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \forall \bvarx.\varphi$}
+        \RightLabel{App-FO}
+        \UnaryInfC{$\Gamma\vdash t\;\btermt : \varphi[\btermt/\bvarx]$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \varphi[\btermt/\bvarx]$}
+        \RightLabel{Pair-FO}
+        \UnaryInfC{$\Gamma\vdash \langle \btermt,t\rangle : \exists \bvarx,
+          \varphi$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \exists \bvarx, \varphi$}
+        \AxiomC{$\Gamma, x : \varphi\vdash u : \psi$}
+        \AxiomC{$\bvarx \notin\VL(\Gamma,\psi)$}
+        \RightLabel{Proj-FO}
+        \TrinaryInfC{$\Gamma\vdash \letin\bvarx x t u : \psi$}
+        \DisplayProof
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{}
+        \RightLabel{Refl}
+        \UnaryInfC{$\Gamma\vdash \refl\;\btermt : \btermt = \btermt$}
+        \DisplayProof
+        &
+        \bottomAlignProof
+        \AxiomC{$\Gamma\vdash t : \btermt = \btermu$}
+        \AxiomC{$\Gamma\vdash u : \varphi[\btermt/\bvarx]$}
+        \RightLabel{Transp}
+        \BinaryInfC{$\Gamma\vdash \transp\;(\bvarx\leftarrow t)\;u :
+          \varphi[\btermu/\bvarx]$}
+        \DisplayProof
+      \end{tabular}
+    }
+  \end{center}
+\end{definition}
+
+On laisse en exercice les vérifications usuelles, qui s'adaptent facilement
+depuis le $\lambda$-calcul simplement typé.
+
+\begin{exercise}
+  Prouver le lemme de substitution du premier ordre~: pour toute variable
+  $\bvarx$ et tout terme $\btermt$, si $\Gamma\vdash t : \varphi$ alors
+  $\Gamma[\btermt/\bvarx]\vdash t[\btermt/\bvarx] : \varphi[\btermt/\bvarx]$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que si $\Gamma\vdash t : \varphi$ et $t \FOLred u$ alors
+  $\Gamma\vdash u : \varphi$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que $\FOLred$ est confluente.
+\end{exercise}
+
+On peut maintenant déduire la première moitié du \cref{thm.NJ.prop}. Il reste
+à montrer que la réduction est fortement normalisante.
+
+\section{Normalisation forte des termes typés}
+
+La preuve de normalisation forte se fait ici en deux étapes~: on prouve d'abord
+le cas du $\lambda$-calcul simplement typé, et seulement ensuite le cas des
+termes de preuve du premier ordre. On procède ainsi car le $\lambda$-calcul
+simplement typé a une place importante en tant que socle fondamental pour
+développer des systèmes syntaxiques.
+
+Notre langage de termes de preuve $\FOLSet$ sert à suivre le plus fidèlement
+possible la syntaxe des arbres de preuves (avec des séquents), mais fait passer
+au second plan l'aspect calculatoire du langage. La réduction devient alors
+uniquement une normalisation des preuves, de sorte qu'on en tire des conclusions
+d'ordre logique.
+
+En considérant au contraire le $\lambda$-calcul simplement typé, l'aspect
+calculatoire reste largement présent. En effet, les constructeurs de types
+(produit, somme, unit\ldots) sont des constructions raisonnables pour un
+langage de programmation.
+
+Par exemple, il est utile de considérer le type
+\[\OptionT\;\tau\defeq \tau + \unitT\]
+qui correspond au type $\tau$ auquel on ajoute une valeur supplémentaire, à
+part, décrivant par exemple une exception à relever. On construit de cette
+façon un langage de programmation dans la SECTION SYSTEM T permettant
+d'encoder une large classe de fonctions calculables totales, en choisissant une
+variant du $\lambda$-calcul simplement typé.
+
+Une autre extension importante du $\lambda$-calcul simplement typé est celle des
+types dépendants. Dans une théorie des types dépendants, on s'autorise à avoir
+des types $T(t)$ où $t$ est un $\lambda$-terme. Ainsi, on peut imaginer
+construire le type
+\[(\lambda x.x) = (\lambda x.x)\]
+La particularité de ce formalisme est qu'alors, on peut exprimer au sein de la
+théorie formelle des termes et de leurs types, à la fois les objets dont on
+souhaite parler au premier ordre, et les termes de preuve.
+Par exemple, on peut ajouter un type $\intT$ comme on le fait dans système T.
+
+Les types deviennent alors à la fois les entités contenant les termes ayant une
+certaine spécification, et les propositions portant sur ces mêmes termes.
+
+Par contraste, le langage $\FOLSet$ s'adapte beaucoup moins bien à un cadre
+plus large et permettant d'allier la logique et le calcul, c'est pourquoi on
+en donne la normalisation forte dans un second temps~: c'est un langage dont
+l'intérêt repose uniquement sur la correspondance de Curry-Howard.
+
+\subsection{Plan de la preuve}
+
+On retourne donc au formalisme du $\lambda$-calcul simplement typé. Notre
+objectif est de prouver l'énoncé suivant~:
+\begin{quote}
+  Pour tous $t \in \STLCSet, \Gamma\in\List(\lamVar\times\tySTLC)$ et
+  $\tau \in \tySTLC$, si $\Gamma\vdash t : \tau$, alors $t \in \SN$.
+\end{quote}
+
+La tentative la plus naturelle est de raisonner par induction sur
+$\Gamma\vdash t : \tau$. On est alors confronté à un premier obstacle~: la
+gestion des variables. En effet, quand on prouve la préservation du typage, on
+utilise de façon cruciale le lemme de typage des substitutions. Si l'on
+décide alors de typer uniquement $t$, on peut imaginer que la substitution
+$t[u/x]$ entraine une boucle infinie. Par exemple, $\lambda y.x\;y$ et
+$y$ sont typables, mais $\lambda y.y\;y$ ne l'est pas, bien que cela soit le
+résultat d'une substitution.
+
+Heureusement, une interprétation naturelle des $\lambda$-termes typés nous
+indique comment contourner le problème. Un typage
+\[x_1:\tau_1,\ldots,x_n : \tau_n\vdash t : \tau\]
+signifie que $t$ représente une fonction depuis les variables $x_1,\ldots,x_n$
+typées respectivement par $\tau_1,\ldots,\tau_n$ vers une valeur de type
+$\tau$. On décide de définir pour chaque type $\tau$ une interprétation
+$\semT\tau\subseteq\STLCSet$, de sorte qu'un typage comme plus haut soit associé
+à la fonction
+\[\makeFun{\Gamma\vdash t : \tau}{\prod_{i = 1}^n\semT{\tau_i}}{\semT\tau}
+{(u_1,\ldots,u_n)}{t[u_i/x_i]}\]
+La bonne définition de cette fonction est le c\oe ur de la preuve de
+normalisation forte~: il faut montrer que pour tous tels $u_1,\ldots,u_n$,
+$t[u_i/x_i] \in \semT\tau$.
+
+Cette assertion devient alors possible à prouver par induction sur le typage de
+$t$. Il suffit alors de construire une interprétation $\semT\tau$ adaptée pour
+vérifier la bonne définition de la fonction, et telle que
+$\semT\tau\subseteq\SN$.
+
+Pour définir correctement la notation $t[u_i/x_i]$, il faut introduire les
+substitutions simultanées.
+
+\begin{definition}[Substitution simultanée]
+  On appelle substitution une fonction partielle
+  $\sigma : \lamVar\partialto \lamSet$. La substitution $\sigma(t)$ est
+  définie par induction sur $t$~:
+  \begin{itemize}
+  \item si $t = x$ et $x \in \dom(\sigma)$, alors $\sigma(t) \defeq \sigma(x)$~;
+  \item si $t = x$ et $x\notin\dom(\sigma)$, alors $\sigma(t)\defeq x$~;
+  \item si $t = \lambda x.u$, alors $\sigma(t)\defeq\lambda x.\sigma(u)$~;
+  \item si $t = u\;v$, alors $\sigma(t)\defeq \sigma(u)\;\sigma(v)$.
+  \end{itemize}
+\end{definition}
+
+Supposons maintenant qu'on trouve une bonne définition de l'interprétation
+$\semT\tau$ d'un type $\tau$. Si on suppose que
+$\sigma(x_i) \in \semT{\tau_i}$, on veut montrer par induction que
+\[x_i : \tau_i\vdash t : \tau \implies \sigma(t) \in \semT\tau\]
+Le cas des variables est traité automatiquement par notre hypothèse. Pour les
+autres cas, on cherche une façon correcte de définir l'interprétation des types.
+
+La définition de $\semT\tau$ se fait, naturellement, par induction.
+Là encore, on se réfère à une interprétation naïve du sens de chaque type pour
+définir inductivement $\semT-$. Par exemple, l'interprétation
+$\semT{\tau \to \tau'}$ se définit par
+\[\semT{\tau\to\tau'}\defeq \{t \in \lamSet\mid \forall u \in \semT\tau,
+t\;u\in\tau'\}\]
+Un type fonctionnel étant interprété par une fonction qui associe les éléments
+d'une interprétation à une autre.
+
+De cette façon, il devient évident que le cas inductif de l'application est
+vérifié, puisque $\sigma(t)\in\semT{\tau\to\tau'}$ et
+$\sigma(u)\in\semT{\tau}$ impliquent que $\sigma(t)\;\sigma(u)\in\semT{\tau'}$.
+Cependant, le cas inductif de l'abstraction n'en découle pas.
+
+Dans ce cas inductif, on suppose que $\Gamma, x : \tau\vdash t : \tau'$,
+donc par hypothèse d'induction (en arrangeant correctement les variables
+libres) que $\sigma(t[u/x]) \in \semT{tau'}$ pour tout $u\in\semT{\tau}$. Le
+résultat qu'on souhaite, lui, est que
+$\sigma(\lambda x.t)u \in \semT{\tau'}$ pour en déduire que
+$\sigma(\lambda x.t)\in\semT{\tau\to\tau'}$. On remarque que la relation entre
+les deux est une antiréduction~: on suppose que $t[u/x]$ vérifie une hypothèse
+pour en déduire que $(\lambda x.t)u$ la vérifie.
+
+En fait, on n'a pas besoin de toute la réduction $\STLCred$ pour nos besoins.
+On se limite plutôt à une réduction de tête dans un cas encore plus faible.
+
+\subsection{Réduction faible de tête}
+
+La réduction faible de tête est une sous-relation de $\Hred$ dans laquelle
+on ne s'autorise à réduire que dans des sous-termes (de tête) d'un contexte
+d'élimination. Par exemple, on n'autorise pas $\lambda x.t\WHred \lambda x.u$.
+
+La notion de contexte d'élimination peut se définir formellement, et correspond
+à l'idée d'un terme à trou $E[\;]$ construit uniquement en appliquant des
+règles d'élimination sur le trou.
+
+\begin{definition}[Contexte d'élimination]
+  On définit l'ensemble $\Elim$ des contextes d'élimination par la BNF
+  suivante~:
+  \[E \Coloneq [\;]\mid E\;t\mid \pi_1\;E\mid\pi_2\;E\mid\deltaSTLC E x t x u
+  \mid \delta_\bot\;E\;\{\}\]
+
+  On notera $E[t] \in \STLCSet$ le terme obtenu en remplaçant $[\;]$ par
+  $t$ dans $E$. La réduction $\STLCred$ s'étend naturellement en une réduction
+  entre les contextes, qu'on note aussi $\STLCred$. De même, on définit
+  l'ensemble $\ElimSN$ des contextes d'évaluation qui sont fortement
+  normalisants pour la réduction de contextes.
+\end{definition}
+
+\begin{definition}[Réduction faible de tête]
+  On définit la relation $\WHred$ par les mêmes paires de réduction que
+  $\STLCred$, mais en autorisant à la place de la compatibilité, le fait que
+  pour tout contexte $E$, si $t \WHred u$ alors $E[t]\WHred E[u]$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que si $t \in \SN$ et $t \STLCred^\star u$, alors $u \in \SN$.
+\end{exercise}
+
+On donne un énoncé de standardisation faible pour $\STLCred$, permettant d'en
+déduire un lemme essentiel dans les futures constructions.
+
+\begin{theorem}[Standardisation faible]
+  On a les faits suivants~:
+  \begin{itemize}
+  \item pour tout contexte $E[\;]\in\Elim$ et termes $t,u,v \in \STLCSet$, si
+    $E[(\lambda x.t)u] \STLCred v$ alors
+    \begin{itemize}
+    \item soit $v = E[t[u/x]]$,
+    \item soit $u = E'[(\lambda x.t)u]$ où $E[\;]\STLCred E'[\;]$,
+    \item soit $v = E[(\lambda x.t')u]$ où $t \STLCred t'$,
+    \item soit $v = E[(\lambda x.t)u']$ où $u\STLCred u'$.
+    \end{itemize}
+  \item pour tout contexte $E[\;]\in\Elim$ et termes $t_1,t_2,u \in \STLCSet$,
+    si $E[\pi_i\;\langle t_1,t_2\rangle] \STLCred u$ alors
+    \begin{itemize}
+    \item soit $u = E[t_i]$,
+    \item soit
+      $u = E'[\pi_i\;\langle t_1,t_2\rangle]$ où $E[\;]\STLCred E'[\;]$,
+    \item soit $u = E[\pi_i\;\langle t_1,t'\rangle]$ où $t_2 \STLCred t'$,
+    \item soit $u = E[\pi_i\;\langle t',t_2\rangle]$ où $t_1 \STLCred t'$.
+    \end{itemize}
+  \item pour tout contexte $E[\;]\in\Elim$ et termes $t,t_1,t_2,u \in \STLCSet$,
+    si $E[\deltaSTLC{\kappa_i\;t}x{t_1}x{t_2}] \STLCred u$ alors
+    \begin{itemize}
+    \item soit $u = E[t_i[t/x]]$,
+    \item soit $u = E'[\deltaSTLC{\kappa_i\;t}x{t_1}x{t_2}]$ où
+      $E[\;]\STLCred E'[\;]$,
+    \item soit $u = E[\deltaSTLC{\kappa_i\;t'}x{t_1}x{t_2}]$ où $t \STLCred t'$,
+    \item soit $u = E[\deltaSTLC{\kappa_i\;t}x{t'}x{t_2}]$ où $t_1 \STLCred t'$,
+    \item soit $u = E[\deltaSTLC{\kappa_i\;t}x{t'}x{t_2}]$ où $t_1 \STLCred t'$,
+    \item soit $E = E'[[\;]\;v]$ et
+      $u = E'[\deltaSTLC{\kappa_i\;t}x{t_1\;v}x{t_2\;v}]$,
+    \item soit $E = E'[\pi_j\;[\;]]$ et
+      $u = E'[\deltaSTLC{\kappa_i\;t}x{\pi_j\;t_1}x{\pi_j\;t_2}]$,
+    \item soit $E = E'[\deltaSTLC{[\;]}{x}{u_1}{x}{u_2}]$ et
+      %\begin{align*}
+      $u = E'[\deltaSTLC{\kappa_i\;t}x{\deltaSTLC{t_1}x{u_1}x{u_2}}x
+      {\deltaSTLC{t_2}x{u_1}x{u_2}}]$
+      %\end{align*}
+    \end{itemize}
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  Les trois cas se prouvent de façon analogue. A chaque fois, les cas
+  correspondent aux partie du terme initial d'où peuvent venir les redex.
+  Dans le dernier cas, les redex peuvent se trouver à l'interface du contexte
+  $E$ et du $\delta$ à cause des cas de coupures commutatives.
+\end{proof}
+
+\begin{corollary}[Extension de tête faible]\label{cor.wh.expand}
+  Soient $E[\;]\in\Elim$, $t,u,v,w \in \STLCSet$, alors~:
+  \begin{itemize}
+  \item si $E[t[u/x]] \in \SN$ et $u\in\SN$, alors $E[(\lambda x.t)u]\in\SN$.
+  \item si $E[t]\in\SN$ et $u\in\SN$, alors
+    $E[\pi_1\;\langle t,u\rangle]\in\SN$.
+  \item si $E[u]\in\SN$ et $t\in\SN$, alors
+    $E[\pi_2\;\langle t,u\rangle]\in\SN$.
+  \item si $E[u[t/x]]\in \SN$ et $v \in \SN$, alors
+    $E[\deltaSTLC{\kappa_1\;t}x u x v]\in\SN$.
+  \item si $E[v[t/x]]\in \SN$ et $u \in \SN$, alors
+    $E[\deltaSTLC{\kappa_2\;t}x u x v]\in\SN$.
+  \end{itemize}
+\end{corollary}
+
+\begin{proof}
+  On prouve seulement le premier cas, qui est représentatif des autres cas.
+  On raisonne par induction sur $E[t[u/x]]\in \SN$ et $u\in\SN$. On considère
+  alors $v$ tel que $E[(\lambda x.t)u]\STLCred v$, et on veut montrer que
+  $v \in \SN$. D'après le théorème précédent, on a les cas suivants~:
+  \begin{itemize}
+  \item si $v = E[t[u/x]]$, alors on a le résultat par hypothèse~;
+  \item si $v = E'[(\lambda x.t)u]$ avec $E[\;]\STLCred E'[\;]$, alors
+    par hypothèse d'induction sur $E[t[u/x]]\in\SN$, puisque
+    $E'[t[u/x]] \in \SN$ (car c'est un réduit de $E[t[u/x]]$) et $u\in \SN$, on
+    en déduit que $E'[(\lambda x.t)u]\in\SN$~;
+  \item si $v = E[(\lambda x.t')u]$ avec $t \STLCred t'$, alors
+    par hypothèse d'induction sur $E[t[u/x]]\in\SN$, puisque
+    $E[t'[u/x]]\in\SN$ et $u \in \SN$, $E[(\lambda x.t')u] \in \SN$~;
+  \item si $v = E[(\lambda x.t)u']$ avec $u \STLCred u'$, alors
+    par hypothèse d'induction sur $u \in \SN$, puisque
+    $E[t[u'/x]] \in \SN$ et $u'\in \SN$, $E[(\lambda x.t)u'] \in \SN$.
+  \end{itemize}
+  Dans tous les cas, on sait que $E[(\lambda x.t)u]\in \SN$.
+\end{proof}
+
+Ce corollaire est essentiel pour la construction de $\semT\tau$.
+
+\subsection{Construire l'interprétation des types}
+
+Jusqu'ici, l'objectif de notre interprétation $\semT\tau$ est~:
+\begin{itemize}
+\item de définir inductivement $\semT\tau$ sur $\tau$ de telle sorte que la
+  règle d'élimination de $\tau$ soit vérifiée par définition de
+  l'interprétation~;
+\item de vérifier que $\semT\tau$ est stable par extension de tête faible, pour
+  pouvoir déduire que la règle d'introduction de $\tau$ est vérifiée aussi.
+\end{itemize}
+La définition de $\semT{\tau\to\tau'}$ ne pose pas de problème pour la première
+étape, mais la définition de $\semT{\tau + \tau'}$ en pose un.
+
+En effet, en considérant le typage du constructeur $\delta$, on est tenté de
+donner la définition suivante~:
+\begin{multline*}
+  \semT{\tau + \tau'} \defeq \{t \in \STLCSet\mid
+  \forall \tau'' \in \tySTLC, \forall u,v \in \STLCSet,
+  \\(u[t/x]\in \semT{\tau''}) \implies
+  (v[t/x]\in\semT{\tau''}) \implies
+  \\\deltaSTLC t x u x v \in \semT{\tau''}\}
+\end{multline*}
+mais la définition de $\semT{\tau+\tau'}$ fait alors intervenir la définition de
+$\semT{\tau''}$ pour $\tau''$ quelconque. On choisit alors de construire un
+ensemble $\mathscr A$ de parties $A\subseteq \STLCSet$ dont on sait qu'elles
+contiendront au moins les interprétations de types, et dont les propriétés
+suffisent à assurer notre construction.
+
+Cette technique, due à Girard pour adapter la preuve de Tait au système F,
+permet de contourner le problème d'imprédicativité où l'on souhaite définir
+une interprétation appelant toutes les interprétations de types.
+
+On définit alors notre ensemble de candidats par la notion d'ensemble saturé.
+
+\begin{definition}[Ensemble saturé]
+  Une partie $A\subseteq\STLCSet$ est dite saturée si~:
+  \begin{itemize}
+  \item $A\subseteq \SN$
+  \item pour toute variable $x$ et tout contexte $E[\;]\in\ElimSN$, $E[x]\in A$
+  \item si $E[t[u/x]] \in A$ et $u \in \SN$, alors
+    $E[(\lambda x.t)u] \in A$
+  \item si $E[t] \in A$ et $u \in \SN$, alors
+    $E[\pi_1\;\langle t,u\rangle]\in A$
+  \item si $E[u] \in A$ et $t \in \SN$, alors
+    $E[\pi_2\;\langle t,u\rangle]\in A$
+  \item si $E[u[t/x]] \in A$ et $v \in \SN$, alors
+    $E[\deltaSTLC{\kappa_1\;t} x u x v] \in A$
+  \item si $E[v[t/x]] \in A$ et $u \in \SN$, alors
+    $E[\deltaSTLC{\kappa_2\;t} x u x v] \in A$
+  \end{itemize}
+  On note par $\satur_\SN$ l'ensemble des parties saturées.
+\end{definition}
