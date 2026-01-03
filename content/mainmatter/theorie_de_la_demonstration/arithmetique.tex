@@ -1,0 +1,697 @@
+\chapter{Cohérence de l'arithmétique}
+\label{chp.coh.arith}
+
+\minitoc
+
+\lettrine{P}{armi} les questions posées par le programme de Hilbert, outre le
+problème de la décision, résolu par Church et Turing par la négative, on compte
+aussi le deuxième problème de Hilbert~:
+\begin{quote}
+  Prouver que la théorie de l'arithmétique est cohérente.
+\end{quote}
+à propos duquel le second théorème d'incomplétude impose une limite.
+
+Le second théorème d'incomplétude nous permet de dire qu'il n'existe pas de
+démonstration arithmétique de cette cohérence, mais une démonstration peut se
+faire dans un système plus fort.
+
+Une preuve de cohérence existe en considérant simplement le théorème de
+complétude, dans son sens de correction~: en exhibant un modèle de
+l'arithmétique, on sait que l'arithmétique est cohérente. Un tel modèle est
+le modèle standard. Grâce à cette démonstration, on apprend que, pour peu que
+$\ZFC$ est cohérente, l'arithmétique est cohérente.
+
+La première démonstration historique de la cohérence de l'arithmétique par
+Gentzen dans \cite{Gentzen1936}, nous donne en comparaison beaucoup plus
+d'informations. Elle est par exemple le fondement de l'analyse ordinale des
+théories logiques.
+
+L'objectif de ce chapitre est de parcourir deux preuves centrales de la
+cohérence de l'arithmétique. La première est celle de Gentzen, déjà mentionnée
+plus tôt, qui sera présentée dans une forme mise à jour et adaptée à notre
+formalisem logique moderne. La seconde est la démonstration de la cohérence de
+l'arithmétique de Heyting, ou arithmétique intuitionniste, développée par
+Kleene dans \cite{Kleene1945}. Cette démonstration fonde la théorie de la
+réalisabilité, sujet tout aussi important de la théorie de la démonstration.
+
+\section{La cohérence de l'arithmétique de Peano}
+
+Notre première démonstration de cohérence est celle de Gentzen. L'idée est assez
+directe~: on a vu que l'élimination des coupures permettait de prouver la
+cohérence du calcul des séquents, on construit donc un calcul des séquents
+encodant l'arithmétique de Peano, dont on prouve l'élimination des coupures.
+
+L'objectif est donc en premier lieu de trouver des règles qui puissent
+enrichir un calcul des séquents pour que les axiomes de $\ArithPeano$ soient
+prouvables (sans contexte gauche).
+
+\subsection{Construire un calcul des séquents arithmétique}
+
+On fixe donc comme signature celle de l'arithmétique. Rappelons les axiomes
+de la théorie $\ArithPeano$~:
+\begin{align*}
+  &\forall n, 0 \neq S\;n\\
+  &\forall n\;m, Sn =Sm\implies n = m\\
+  &\forall n, (n = 0) \lor (\exists m,n = Sm)\\
+  &\forall n, n+0 = n\\
+  &\forall n\;m, n+(Sm) = S(n+m)\\
+  &\forall n, n\times 0 = n\\
+  &\forall n\;m, n\times(Sm) = (n\times m)+n\\
+  &\forall \varphi(\vec x,y)\in\Formula, \forall \vec n,
+  \varphi(\vec n,0)\implies
+  (\forall m, \varphi(\vec n,m) \implies \varphi(\vec n,S m))\implies
+  \forall m, \varphi(\vec n,m)
+\end{align*}
+où la quantifcation $\forall \varphi$ signifie qu'on considère un schéma
+d'axiomes.
+
+On remarque d'abord que le \ordinalnumeralmale{$3$} axiome est une conséquent
+de la récurrence, en instanciant le schéma avec
+$\varphi(n) \defeq (n = 0) \lor (\exists m, n = Sm)$.
+
+Les axiomes définissant l'addition et la multiplication sont simplement des
+égalités quantifiées universellement. Pour les intégrer à notre système, on
+peut décider d'ajouter des règles telles que
+\begin{prooftree}
+  \AxiomC{}
+  \RightLabel{$+0$}
+  \UnaryInfC{$t + 0 = t$}
+\end{prooftree}
+Une telle façon de procéder suffit à prouver le résultat de cohérence, mais on
+souhaite introduire une façon plus efficace de raisonner sur les théories, qui
+permet des raisonnements plus simples et naturels~: l'introduction de règles
+de réécriture au sein d'un système de démonstration.
+
+Pour cela, supposons qu'on dispose d'une relation de réécriture $\rhd$ sur les
+termes et les formules (vérifiant naturellement que si $t \rhd u$, alors
+$\varphi[t/x] \rhd \varphi[u/x]$) qui est compatible. Un point essentiel à
+assurer, puisqu'on traite de systèmes syntaxiques, est que la réécriture d'une
+formule (ou d'un terme) en une autre est calculable. On fixe donc la réécriture
+$\rhd$ comme étant fortement normalisante et confluente (on verra que, pour
+notre usage, ces conditions sont vérifiées).
+
+On définit alors l'ensemble des arbres de preuve où les séquents à la conclusion
+d'une règle peuvent différer de la conclusion attendue par des réécritures du
+séquent.
+
+\begin{definition}[Déduction modulo théorie]
+  Soit un ensemble de règles pour le calcul des séquents et $\rhd$ une
+  relation de réécriture compatible sur les termes et les formules. On étend
+  $\rhd$ en une relation d'équivalence $\equiv$, et on l'étend sur les
+  séquents en considérant l'équivalence des formules appartenant aux séquents
+  (vu comme des listes de formules). Les arbres de déduction modulo $\rhd$ sont
+  les arbres construits par les règles modifiées suivantes~: pour chaque règle
+  $r$ de prémisses $\Gamma_1\vdLK\Delta_1,\cdots, \Gamma_n\vdLK\Delta_n$ et de
+  conclusion $\Gamma\vdLK\Delta$, si
+  $(\Gamma_i\vdLK\Delta_i)\equiv (\Theta_i\vdLK\Xi_i)$ et
+  $(\Gamma\vdLK\Delta)\equiv(\Theta\vdLK\Xi)$, alors on ajoute la règle
+  \begin{prooftree}
+    \AxiomC{$\Theta_1\vdLK\Xi_1$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$\Theta_n\vdLK\Xi_n$}
+    \RightLabel{r}
+    \TrinaryInfC{$\Theta\vdLK\Xi$}
+  \end{prooftree}
+\end{definition}
+
+Le théorème suivant permet d'assurer la validité de cette pratique, en
+montrant que les séquent prouvables n'en sont pas modifiés.
+
+\begin{theorem}
+  Soit $\rhd$ une réécriture compatible sur les termes et les formules. Un
+  séquent $\Gamma\vdLK\Delta$ est prouvable modulo $\rhd$ si et seulement
+  s'il existe un sous-ensemble fini $F$ de
+  \[\mathcal T_{\to} \defeq \{(t = u)\mid t,u\in\Term, t \equiv u\}
+  \cup \{\varphi \leftrightarrow \psi \mid \varphi,\psi\in\Formula,
+  \varphi\equiv \psi\}\]
+  tel que $\Gamma,F\vdLK\Delta$.
+\end{theorem}
+
+\begin{proof}
+  A chaque application de règle dans la construction de l'arbre modulo $\rhd$,
+  on utilise un nombre fini de réductions entre des formules et entre des
+  termes. Pour chaque substitution d'une terme $t$ par un terme $u$, il
+  suffit d'utiliser la règle $l=$. Pour chaque substitution d'une formule
+  $\varphi$ par une formule $\psi$, on utilise le fait que, si
+  $\vdLK \varphi\leftrightarrow \psi$, alors
+  $\Gamma[\varphi/\psi]\vdLK\Delta[\varphi/\psi]$ est prouvable si et seulement
+  si $\Gamma\vdLK\Delta$ l'est, ce qui est direct en passant par la sémantique.
+\end{proof}
+
+La déduction modulo théorie permet donc d'internaliser les égalités les plus
+naturelles du système, qu'on appelle parfois des égalités définitionnelles.
+
+A l'exception de la récurrence, tous les autres axiomes peuvent s'utiliser par
+une règle de réécriture.
+
+\begin{definition}[Réécriture arithmétique]
+  On définit la règle de réécriture suivante sur les expressions arithmétiques~:
+  \begin{align*}
+    t + 0 &\rhd t\\
+    t + S\;u &\rhd S\;(t + u)\\
+    t \times 0 &\rhd 0 \\
+    t \times (S\;u) &\rhd (t\times u) + t
+  \end{align*}
+\end{definition}
+
+\begin{exercise}
+  Montrer que cette réécriture est confluente et fortement normalisante.
+\end{exercise}
+
+Il est clair que travailler modulo cette réécriture arithmétique permet
+de prouver exactement les séquents prouvables avec les axiomes définissant
+l'addition et la multiplication.
+
+Pour les deux premiers axiomes, on ajoute des réécritures de formules.
+On remarque d'abord que $0\neq S\;n$ est défini comme $(0 = S\;n)\to \bot$,
+et $\bot\to \varphi$ est toujours vraie, donc on ajoute la réécriture
+$(0 = S\;t)\rhd \bot$. De même, on sait que $n = m \implies S\;n = S\;m$,
+donc on ajoute la réécriture $(S\;t = S\;u)\rhd t = u$.
+
+Finalement, il nous reste à introduire une règle pour le schéma de récurrence.
+La règle à introduire est naturelle~: les deux prémisses d'une récurrence sont
+les prémisses de la règle.
+
+\begin{definition}[Calcul des séquents arithmétique]
+  On définit le calcul des séquents arithmétique $\LKPA$ comme le calcul $\LK$
+  sur la signature de l'arithmétique, considéré modulo la réduction $\rhd$
+  définie précédemment sur les termes et les formules, et avec l'ajout de la
+  règle
+  \begin{prooftree}
+    \AxiomC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+    \AxiomC{$\Gamma,\varphi\vdPA\varphi[S\;x/x],\Delta$}
+    \RightLabel{Rec${}^\dagger$}
+    \BinaryInfC{$\Gamma\vdPA\forall x\, \varphi,\Delta$}
+  \end{prooftree}
+  où $\dagger$ indique que la variable $x$ est libre dans
+  $\Gamma,\Delta$.
+\end{definition}
+
+\begin{proposition}
+  Pour toute formule $\varphi$, $\ArithPeano\vdLK\varphi$ si et seulement si
+  $\vdPA\varphi$.
+\end{proposition}
+
+\begin{proof}
+  On sait que les formules prouvables modulo réécriture le sont sans réécriture
+  en ajoutant des hypothèses, et ces hypothèses sont choisies exactement parmi
+  les conséquences des premiers axiomes de $\ArithPeano$ (à l'exception du
+  \ordinalnumeralmale{$3$}). Pour la récurrence, il est clair que chaque
+  instance du schéma de récurrence est prouvable avec la règle Rec${}^\dagger$,
+  et que toute utilisation de la règle Rec${}^\dagger$ peut s'écrire avec une
+  instance du schéma de récurrence.
+\end{proof}
+
+\subsection{\'Elimination des coupures}
+
+Il nous reste à prouver l'élimination des coupures. \'Etudions un premier
+exemple en prenant un arbre prouvant que le successeur commute avec la somme à
+gauche~:
+\[\pi_0 \defeq \resizebox{0.8\textwidth}{!}{
+  \AxiomC{}
+  \RightLabel{$r=$}
+  \UnaryInfC{$\vdPA \forall n, S\;n + 0 = S\;(n+0)$}
+  \AxiomC{}
+  \RightLabel{$r=$}
+  \UnaryInfC{$\vdPA (S\;n)+(S\;m) = S(S\;n+m)$}
+  \RightLabel{$l=$}
+  \UnaryInfC{$S\;n+m = S\;(n+m) \vdPA (S\;n)+(S\;m) = SS(n+m)$}
+  \RightLabel{$l\forall$}
+  \UnaryInfC{$\forall n,S\;n+m = S\;(n+m) \vdPA (S\;n)+(S\;m) = S\;(n+S\;m)$}
+  \RightLabel{$r\forall^\dagger$}
+  \UnaryInfC{$\forall n,S\;n+m = S\;(n+m)\vdPA
+    \forall n, (S\;n)+(S\;m)=S\;(n+S\;m)$}
+  \RightLabel{Rec}
+  \BinaryInfC{$\vdPA \forall n\;m, S\;n+m = S\;(n+m)$}
+  \DisplayProof
+}\]
+et un arbre prouvant que $0$ est neutre à gauche pour l'addition~:
+\[\pi_1\defeq%\resizebox{\textwidth}{!}{
+  \AxiomC{}
+  \RightLabel{$r=$}
+  \UnaryInfC{$\vdPA 0 + 0 = 0$}
+  \AxiomC{}
+  \RightLabel{$r=$}
+  \UnaryInfC{$\vdPA S\;n = S\;n$}
+  \RightLabel{$l=$}
+  \UnaryInfC{$0 + n = n \vdPA 0 + S\;n = S\;n$}
+  \RightLabel{Rec}
+  \BinaryInfC{$\vdPA\forall n, 0 + n = n$}
+  \DisplayProof
+  %}
+    \]
+Avec ces deux arbres, on peut prouver par récurrence que l'addition est
+commutative~:
+\[\resizebox{\textwidth}{!}{
+  \AxiomC{$\pi_1$}
+  \noLine
+  \UnaryInfC{$\vdPA\forall n, n + 0 = 0 + n$}
+  \AxiomC{$\pi_0$}
+  \noLine
+  \UnaryInfC{$\vdPA\forall n\;m, Sn + m = S(n+m)$}
+  \AxiomC{}
+  \RightLabel{Ax}
+  \UnaryInfC{$Sn + m = S(n+m)\vdPA n + Sm = Sm + n$}
+  \RightLabel{$l\forall$}\doubleLine
+  \UnaryInfC{$\forall n\;m, Sn + m = S(n+m)\vdPA n + Sm = Sm + n$}
+  \RightLabel{$r\forall^\dagger$}
+  \UnaryInfC{$\forall n\;m, Sn + m = S(n+m)\vdPA \forall n, n + Sm = Sm + n$}
+  \RightLabel{Cut}
+  \BinaryInfC{$\vdPA\forall n, n + m = m + n \vdPA \forall n, n + Sm = Sm + n$}
+  \RightLabel{Rec}
+  \BinaryInfC{$\vdPA\forall n\;m, n + m = m + n$}
+  \DisplayProof
+}\]
+Supposons que l'on souhaite éliminer la coupure introduite dans cet arbre.
+La première étape est de faire remonter la coupure au-dessus de la règle
+$r\forall^\dagger$, de sorte qu'on obtient une coupure logique sur
+$\forall$. La coupure logique en question est alors
+\[\resizebox{\textwidth}{!}{
+  \AxiomC{$\cdots$}
+  \RightLabel{Rec}
+  \UnaryInfC{$\vdPA \forall n\;m,Sn + m = S(n+m)$}
+  \AxiomC{$\cdots$}
+  \RightLabel{$l\forall$}
+  \UnaryInfC{$\forall n\;m,Sn + m = S(n+m)\vdPA n+Sm = Sm + n$}
+  \RightLabel{Cut}
+  \BinaryInfC{$\cdots$}
+  \DisplayProof
+}\]
+L'objectif de l'élimination des coupures est donc d'éliminer cette nouvelle
+coupure logique.
+
+Avant de nous intéresser à l'élimination de cette coupure logique, on repasse
+en revue les points clés de l'élimination des coupures~:
+\begin{itemize}
+\item on doit réécrire les coupures non logiques pour atteindre des coupures
+  logiques, en effectuant des réécritures $\reecr{\nwarrow}$ puis des
+  réécriture $\reecr{\nearrow}$. On peut sans problème adapter les réécritures
+  de relèvement avec la nouvelle règle de récurrence~;
+\item puisqu'on a introduit des réécritures pour les termes et formules, il est
+  nécessaire de vérifier que la réécriture d'une formule de coupure ne
+  gêne pas la réécriture. Dans le cas de $Sn = Sm \rhd n = m$, la formule passe
+  d'une égalité à une égalité, et il suffit de remplacer la substitution des
+  termes $Sn$ par la substitution uniquement du $n$ à l'intérieur. Par exemple,
+  pour $\varphi \defeq \forall n, Sm = n$, on peut considérer qu'on fait la
+  substitution $(\forall n, x = n)[Sm/x]$ ou, après réécriture par $\rhd$,
+  qu'on fait la substitution $(\forall n, Sx = n)[n/x]$. On peut alors, pour
+  une coupure logique sur $=$, réduire la formule de coupure des deux côtés
+  pour ne pas avoir de $S$~;
+\item dans le cas de $0=St\rhd \bot$, une coupure logique sur $0 = St$ est
+  impossible puisqu'il faudrait alors avoir
+  \begin{itemize}
+  \item la règle $r=$ utilisée pour avoir une égalité dans la formule de coupure
+    de droite
+  \item une égalité $0 \equiv St$ pour que, depuis la formule $u=u$ de la règle
+    $r=$, on puisse réécrire la formule de gauche en $0$ et celle de droite en
+    $St$
+  \end{itemize}
+  mais on peut vérifier que $0\not\equiv St$, en parcourant simplement les cas
+  définissant $\rhd$ (aucun ne contient d'un côté de la réduction un $S$
+  englobant tout le terme et de l'autre côté un $0$ seul).
+\end{itemize}
+
+Ces difficultés étant résolues, le c\oe ur de la difficulté de l'élimination des
+coupures est la coupure de la récurrence~:
+\begin{prooftree}
+  \AxiomC{$\Gamma,\varphi[t/x]\vdPA\Delta$}
+  \RightLabel{$l\forall$}
+  \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
+  \AxiomC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+  \AxiomC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
+  \RightLabel{Rec}
+  \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
+  \RightLabel{Cut}
+  \BinaryInfC{$\Gamma\vdPA\Delta$}
+\end{prooftree}
+
+Pour éliminer cette coupure, on commence par considérer le cas où $t$ est un
+terme clos. Dans ce cas, on peut prouver facilement par induction que
+$t \equiv \encode n$ pour un certain entier $n \in \bN$. L'élimination de cette
+coupure repose donc sur l'élimination des entiers standards.
+
+\'Etant donnés $\pi_0 \concl \Gamma\vdPA\varphi[0/x],\Delta$,
+$\pi_S \concl \Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$, le fait que
+$\Gamma\vdPA \forall x\,\varphi,\Delta$ se déduit moralement du fait que,
+pour tout $n\in\bN$, on peut prouver $\varphi[\encode n/x]$ en utilisant
+$\pi_0$ dans le cas où $n = 0$ et $\pi_S$ pour passer du cas $n$ au cas
+$n+1$. La réduction de la coupure est donc, naturellement, la suivante~:
+\begin{center}
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{ccc}
+      \bottomAlignProof
+      \AxiomC{$\mathlarger\pi$}
+      \noLine\UnaryInfC{$\Gamma,\varphi[0/x]\vdPA\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
+      \AxiomC{$\mathlarger{\pi_0}$}
+      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+      \AxiomC{$\mathlarger{\pi_S}$}
+      \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
+      \RightLabel{Rec}
+      \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
+      \RightLabel{Cut}
+      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \DisplayProof
+      & $\reecr{Rec_0}$ &
+      \bottomAlignProof
+      \AxiomC{$\mathlarger\pi$}
+      \noLine\UnaryInfC{$\Gamma,\varphi[0/x]\vdPA\Delta$}
+      \AxiomC{$\mathlarger{\pi_0}$}
+      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+      \RightLabel{Cut}
+      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \DisplayProof
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$\mathlarger\pi$}
+      \noLine\UnaryInfC{$\Gamma,\varphi[S\;t/x]\vdPA\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
+      \AxiomC{$\mathlarger{\pi_0}$}
+      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+      \AxiomC{$\mathlarger{\pi_S}$}
+      \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
+      \RightLabel{Rec}
+      \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
+      \RightLabel{Cut}
+      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \DisplayProof
+      & $\reecr{Rec_S}$ &
+      \bottomAlignProof
+      \AxiomC{$\mathlarger\pi$}
+      \noLine\UnaryInfC{$\Gamma,\varphi[S\;t/x]\vdPA\Delta$}
+      \AxiomC{$\mathlarger{\pi_S[t/x]}$}
+      \noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdPA\varphi[S\;t/x],\Delta$}
+      \RightLabel{Cut}
+      \BinaryInfC{$\Gamma\varphi[t/x]\vdPA\Delta$}
+      \RightLabel{$l\forall$}
+      \UnaryInfC{$\Gamma\forall x\,\varphi\vdPA\Delta$}
+      \AxiomC{$\mathlarger{\pi_0}$}
+      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+      \AxiomC{$\mathlarger{\pi_S}$}
+      \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
+      \RightLabel{Rec}
+      \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
+      \RightLabel{Cut}
+      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \DisplayProof
+    \end{tabular}
+  }
+\end{center}
+
+La réécriture fait donc grossir l'arbre de gauche de la coupure, mais fait
+diminuer la valeur de $t$ jusqu'à $0$.
+
+Cependant, dans le cas où $t$ contient une variable libre, on peut avoir un
+blocage de cette réduction. Dans notre exemple précédent, c'est ce qui arrive~:
+la formule de coupure contient $m$ qui ne peut pas se réduire de cette façon.
+En considérant l'élimination des coupures comme un processus calculatoire, ce
+blocage signifie qu'on ne peut pas appliquer une fonction définie par récurrence
+une fois atteinte une valeur indéterminée par le fait qu'elle est une variable.
+Cette limitation n'est, malgré tout, pas un problème pour la cohérence. En
+effet, la cohérence est la preuve qu'il n'existe aucun arbre de dérivation du
+séquent vide $\vdPA$. Cet arbre de dérivation ne contient que des termes clos
+(puisqu'il ne contient pas de terme). Notre théorème d'élimination des coupures
+peut donc se limiter aux séquents dont tous les termes sont clos.
+
+\begin{remark}
+  Le fait que tous les termes sont clos est plus fort que le fait que les
+  formules de la conclusion sont closes, car on demande ici qu'aucune variable
+  libre n'apparaissent dans l'arbre de preuve.
+\end{remark}
+
+\begin{lemma}\label{lem.coh.PA}
+  Pour tout arbre de preuve $\pi \in \ProofPA$ sous forme normale pour
+  $\reecr{}$ et dont tous les termes sont clos est sans coupure.
+\end{lemma}
+
+\begin{proof}
+  On sait que toute coupure peut être réécriture en une coupure logique. Une
+  telle coupure logique s'élimine forcément si elle ne fait pas intervenir
+  la règle Rec (puisque $\LK$ a l'élimination des coupures). Si la coupure
+  logique utilise la règle Rec, alors le terme $t$ utilisé dans cette coupure
+  peut se réécrire en $0$ ou en $Su$ pour un certain terme $u$~: dans tous les
+  cas, une réduction existe sur cette coupure.
+\end{proof}
+
+La dernière étape est de vérifier la terminaison de notre réécriture. On définit
+donc une mesure de décroissance, permettant de l'assurer.
+
+\begin{definition}[Poids d'une coupure logique récursive]
+  Soit $\pi\in\ProofPA$ sans coupure autre que des coupures logiques utilisant
+  la règle Rec. Soit une coupure $C$ ayant la forme suivante~:
+  \begin{prooftree}
+    \AxiomC{$\mathlarger\pi$}
+    \noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdPA\Delta$}
+    \RightLabel{$l\forall$}
+    \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
+    \AxiomC{$\mathlarger{\pi_0}$}
+    \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+    \AxiomC{$\mathlarger{\pi_S}$}
+    \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
+    \RightLabel{Rec}
+    \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
+    \RightLabel{Cut}
+    \BinaryInfC{$\Gamma\vdPA\Delta$}
+  \end{prooftree}
+  On définit $w(C) \in \Ord$ et $w(\pi)$ par induction mutuelle~:
+  \[\omega^{w(\pi_S)}\times |t| + w(C) \defeq \max(w(\pi),w(\pi_0)) \qquad
+  w(\pi) \defeq 1 + \max_{C \in \pi} w(C)\]
+  où la taille $|t|$ est prise comme le minimum des $|u|$ pour $t \equiv u$.
+\end{definition}
+
+La raison pour laquelle le poids d'une coupure dans $\pi_S$ est ajouté
+exponentiellement découle du fait que, lorsqu'on réécrit une coupure récursive,
+on ajoute une fois $\pi_S$ pour chaque réécriture de $t$ le faisant décroître.
+
+\begin{lemma}
+  Pour tout arbre $\pi\in\ProofPA$ ne possédant que des coupures logiques
+  récursives, en posant $\pi'$ le résultat de $\pi$ en réduisant sa coupure
+  logique récursive de poids maximal, on a $w(\pi') < w(\pi)$.
+\end{lemma}
+
+\begin{proof}
+  Considérons que la coupure $C$ de poids maximal est donnée par le sous-arbre
+  suivant~:
+  \begin{prooftree}
+    \AxiomC{$\mathlarger\pi$}
+    \noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdPA\Delta$}
+    \RightLabel{$l\forall$}
+    \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
+    \AxiomC{$\mathlarger{\pi_0}$}
+    \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
+    \AxiomC{$\mathlarger{\pi_S}$}
+    \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
+    \RightLabel{Rec}
+    \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
+    \RightLabel{Cut}
+    \BinaryInfC{$\Gamma\vdPA\Delta$}
+  \end{prooftree}
+  Montrons que le poids décroît strictement en réduisant la coupure.
+
+  Dans le cas où $t = 0$, les deux poids sont respectivement
+  $\omega^{w(\pi_S)}\times 1 + \max(w(\pi),w(\pi_0))$ et $\max(w(\pi),w(\pi_0))$,
+  d'où la stricte décroissance.
+
+  Dans le cas où $t \equiv Su$ avec $u$ un terme, les poids sont respectivement
+  \[\omega^{w(\pi_S)}\times |u| + \omega^{w(\pi_S)} + \max(w(\pi),w(\pi_0))
+  \quad\text{et}\quad
+  \omega^{w(\pi_S)}\times |u| + \max(w(\pi),w(\pi_S),w(\pi_0))\]
+  Dans le cas où $w(\pi_S)$ n'est pas la plus grande valeur des trois dont on
+  prend le maximum, on se trouve après simplification à $\omega^{w(\pi_S)} > 0$,
+  ce qui est vrai.
+  Dans le cas où $w(\pi_S)$ est la plus grande valeur des trois, on veut
+  vérifier que $\omega^{w(\pi_S)}  > w(\pi_S)$, ce qui est vrai aussi pour
+  $w(\pi_S) < \varepsilon_0$ (et, par construction, $w(\pi_S) < \varepsilon_0$
+  est toujours vérifié).
+
+  Dans tous les cas, on voit que le poids décroît strictement.
+\end{proof}
+
+\begin{remark}
+  Le poids ne décroît pas systématiquement, avec notre définition. Pour autant,
+  en prenant comme mesure le nombre de coupures maximales avec la valeur du
+  poids maximal, on sait que (puisque la coupure de poids maximal choisit est
+  réduite en une coupure de poids strictement inférieur) le coupe de nombres
+  décroît strictement.
+\end{remark}
+
+On en déduit le résultat d'élimination des coupures (faible).
+
+\begin{theorem}[\'Elimination des coupures faible de l'arithmétique]
+  Pour tout séquent $\Gamma\vdPA \Delta$, s'il existe $\pi \in \ProofPA$ tel
+  que $\pi\concl \Gamma\vdPA\Delta$, alors il existe un arbre
+  $\pi' \in \ProofPA$ sous forme normale pour $\reecr{}$ tel que
+  $\pi'\concl\Gamma\vdPA\Delta$.
+\end{theorem}
+
+\begin{proof}
+  Il nous suffit d'appliquer l'algorithme d'élimination des coupures dans notre
+  système.
+\end{proof}
+
+\begin{theorem}[Cohérence de l'arithmétique \cite{Gentzen1936}]
+  Le séquent suivant n'est pas dérivable dans $\LK$~:
+  \[\ArithPeano\vdLK\]
+\end{theorem}
+
+\begin{proof}
+  La prouvabilité de ce séquent est équivalente à la prouvabilité du séquent
+  vide du calcul des séquents de l'arithmétique~: $\vdPA$.
+
+  Avec l'élimination des coupures, une telle preuve de $\vdPA$ doit se faire
+  sans coupure. En effet, il doit exister un arbre sous forme normale pour
+  $\reecr{}$ dont la conclusion est $\vdPA$. Mais alors, on peut vérifier que
+  tous les termes de l'arbre sont clos. Si ça n'est pas le cas, alors pour le
+  séquent le plus bas où un terme non clos apparaît, on a la propriété de la
+  sous-formule (car sur cette partie de l'arbre, tous les termes sont clos et
+  l'arbre est sous forme normale, donc sans coupure d'après le
+  \cref{lem.coh.PA}).
+
+  On a donc un arbre sans coupure et qui prouve
+  $\vdPA$, mais alors aucune règle n'a pour conclusion $\vdPA$, ce qui est
+  absurde. On en déduit $\Coher(\ArithPeano)$.
+\end{proof}
+
+\subsection{Conséquences du théorème}
+
+La cohérence de l'arithmétique est un résultat important d'un point de vue
+historique, mais on peut se demander quel est l'intérêt de donner une preuve
+aussi technique à un théorème évident par la théorie des modèles. Son intérêt
+réside dans la possibilité d'évaluer à quel point la cohérence de
+$\ArithPeano$ est difficile à prouver.
+
+Avec les définitions précédentes, tout ce qui est défini est parfaitement
+calculable (c'est en particulier pour cette raison qu'on a demandé que $\equiv$
+soit calculable). Cela signifie que n'importe quelle théorie $\Sigma$-complète,
+voire encodant à traduction près une théorie $\Sigma$-complète, permet de
+redonner l'essentiel de la démonstration.
+
+La définition du calcul des séquents ne pose pas de problème, la définition des
+étapes de réécriture non plus. Un seul fait peut limiter cette démonstration~:
+le fait que l'algorithme termine. Remarquons d'abord que, une fois définie une
+syntaxe calculable pour parler de l'ensemble $\varepsilon_0$, plus petit
+ordinal stable par l'opération $x \mapsto \omega^x$, on peut tout à fait
+définir le poids des coupures, et parfois même prouver leur décroissance.
+
+Le point limitant dans la terminaison de l'algorithme est la bonne fondation de
+l'ensemble $\varepsilon_0$, ou d'un de ses encodages dans l'arithmétique.
+
+\begin{definition}[Encodage d'un bon ordre]
+  Soit $\mathcal T$ une théorie. On dit que $\mathcal T$ encode un ensemble bien
+  ordonné strict $(X,<)$ s'il existe un prédicat $F_X(x)$, un prédicat $x <_X y$
+  et si on a
+  \begin{align*}
+    \mathcal T\vdash& \forall x^{F_X}, \lnot(x <_X x)\\
+    \mathcal T\vdash& \forall x^{F_X}\;y^{F_X}\;z^{F_X},
+    x <_X y \land y <_X z \implies x <_X z\\
+    \mathcal T\vdash& (\forall x^{F_X}, (\forall y^{F_X}, y <_X x \implies
+    \varphi(y))\implies \varphi(x))\implies \forall x^{F_X},\varphi(x)
+  \end{align*}
+  où la dernière ligne est un schéma de théorèmes, pour toute formule
+  $\varphi(x)$ (potentiellement à paramètres).
+\end{definition}
+
+On en déduit donc une première conséquence de la cohérence de l'arithmétique.
+
+\begin{corollary}
+  Soit $\mathcal T$ une théorie arithmétique $\Sigma$-complète. Si
+  $\mathcal T$ encode $\varepsilon_0$ alors
+  \[\mathcal T \vdash \Coher(\ArithPeano)\]
+\end{corollary}
+
+Prenons maintenant un point de vue plus général. Pour une théorie $\mathcal T$,
+on peut chercher quelles sont les ensembles bien ordonnés encodables dans
+$\mathcal T$. A l'encodage près, on obtient ainsi un ensemble d'ordinaux qui
+représentent en quelque sorte \og jusqu'où $\mathcal T$ arrive à prouver la
+bonne fondation de l'ordre\fg. D'après ce qui a été vu pour $\ArithPeano$, cet
+ensemble a un sens important logique à travers la normalisation de systèmes
+formels~: les ordinaux encodables sont les systèmes formels dont on peut
+prouver la terminaison d'un processus de normalisation. On donne donc un nom à
+la borne supérieure de cet ensemble~: l'ordinal de preuve de $\mathcal T$.
+
+\begin{definition}[Ordinal de preuve]
+  Soit $\mathcal T$ une théorie $\Sigma$-complète. On appelle ordinal de preuve
+  de $\mathcal T$ l'ordinal
+  \[\PTO(\mathcal T) \defeq \sup
+  \{\type(X,<)\mid (X,<)\text{ est encodable dans } \mathcal T\}\]
+\end{definition}
+
+On peut donc reformuler le corollaire précédent par
+\begin{quote}
+  Toute théorie $\Sigma$-complète dont l'ordinal de preuve est supérieur
+  strictement à $\varepsilon_0$ prouve la cohérente de $\ArithPeano$.
+\end{quote}
+et, d'après le second théorème d'incomplétude
+\begin{quote}
+  L'ordinal de preuve de $\ArithPeano$ est inférieur à $\varepsilon_0$.
+\end{quote}
+
+En réalité, l'ordinal de preuve de $\ArithPeano$ est exactement égal à
+$\varepsilon_0$.
+
+\begin{theorem}
+  On a l'égalité
+  \[\PTO(\ArithPeano) = \varepsilon_0\]
+\end{theorem}
+
+\begin{proof}
+  Il nous faut prouver l'autre inégalité, qui consiste à montrer que tout
+  ordinal $\alpha < \varepsilon_0$ est encodable dans $\ArithPeano$. Pour cela,
+  on prouve que $0$ est encodable dans $\ArithPeano$ et que si
+  $\alpha,\beta$ sont encodables dans $\ArithPeano$, alors
+  $\alpha+ \beta$ et $\omega^\alpha$ sont encodables. Le premier point est
+  évident, on se tourne donc vers le second point.
+
+  Soient $\alpha,\beta$ encodés par respectivement $F_\alpha,<_\alpha$ et
+  $F_\beta,<_\beta$. On définit alors
+  \[F_{\alpha+\beta}(x) \defeq \exists n\;m, x = \langle n,m\rangle \land
+  F_\alpha(n) \land F_\beta(m)\]
+  \[x<_{\alpha+\beta}y \defeq \forall n\;m\;n'\;m', (x = \langle n,m\rangle \land
+  y = \langle n',m'\rangle)\implies (n <_{\alpha} n')\lor (n = n'\land
+  m <_{\beta} m')\]
+  On peut vérifier sans souci que $<_{\alpha+\beta}$ est bien une relation d'ordre
+  stricte en utilisant le fait que $<_\alpha$ et $<_\beta$ en sont.
+  Pour prouver que $<_{\alpha+\beta}$ est bien fondée, on considère un élément
+  $x$ tel que
+  \[(\forall y^{F_{\alpha_\beta}}, y <_{\alpha+\beta} x \implies \varphi(y))\implies
+  \varphi(x)\]
+  on sait que $\varphi(x)$ est vérifié si et seulement si, en décomposant
+  $x = \langle n,m\rangle$, le prédicats suivant est vérifié~:
+  \[\chi(n,m) \defeq \varphi(\langle n,m\rangle)\]
+  et on peut prouver que ce prédicat est vrai pour tous $n,m$ tels que
+  $F_\alpha(n)$ et $F_\beta(m)$ en utilisant la bonne fondation de $<_\alpha$ et
+  $<_\beta$.
+
+  Pour encoder l'ordinal $\omega^\alpha$, on utilise l'encodage des listes~:
+  \[F_{\omega^\alpha}(\ell) \defeq \forall i < |\ell|, F_{\alpha}(\ell_i)\]
+  en considérant que $\ell$ est l'encodage des lites par la bijection
+  $\alpha_\star : \List(\bN) \cong \bN$, où $|\ell|$ est l'encodage sur les
+  entiers de la fonction donnant la longueur d'une liste, et que
+  $\ell_i$ est le \ordinalnumeralmale{$i$} élément de $\ell$. Pour la
+  relation d'ordre, on pose
+  \[\ell <_{\omega^\alpha} \ell' \defeq
+  \begin{cases}
+    |\ell| < |\ell'| \land \forall i < |\ell|, \ell_i = \ell'_i\\
+    \text{ou}\\
+    \exists i, \forall j < i, (\ell_i = \ell'_i)\land (\ell_j < \ell'_j)
+  \end{cases}\]
+  La vérification du fait que $<_{\omega^\alpha}$ est une relation d'ordre est
+  longue mais ne pose pas de problème.
+
+  Pour le fait que $<_{\omega^\alpha}$, on raisonne par induction sur la longueur
+  des listes, et on utilise la bonne fondation de $\alpha$ dans le cas
+  inductif.
+
+  On en déduit ainsi que l'ensemble définie inductivement par
+  \[\alpha,\beta \Coloneq 0 \mid \alpha + \beta \mid \omega^\alpha\]
+  est contenu dans les ordinaux représentables dans $\ArithPeano$. Par
+  décomposition de Cantor, on sait que tout élément strictement inférieur à
+  $\varepsilon_0$ est dans cet ensemble. On en déduit que
+  $\varepsilon_0 \leq \PTO(\ArithPeano)$.
+
+  Donc, par double inégalité, on en déduit que
+  $\PTO(\ArithPeano) = \varepsilon_0$.
+\end{proof}
