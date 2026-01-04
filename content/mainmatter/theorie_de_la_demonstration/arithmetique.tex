@@ -695,3 +695,351 @@ $\varepsilon_0$.
   Donc, par double inégalité, on en déduit que
   $\PTO(\ArithPeano) = \varepsilon_0$.
 \end{proof}
+
+Cette preuve ouvre finalement la voie à la discipline appelée l'analyse
+ordinale, qui étudie les ordinaux de preuve de différentes théories. Dans cette
+étude, la théorie $\ArithPeano$ est une théorie particulièrement simple, les
+ordinaux de preuve pouvant être beaucoup plus grands dans certaines théories des
+types.
+
+
+\section{Cohérence de l'arithmétique intuitionniste}
+
+D'après le \cref{thm.GG.trad}, un séquent $\Gamma\vdash \varphi$ est prouvable
+de façon classique si et seulement si sa traduction $\Gamma^N\vdash \varphi^N$
+est prouvable de façon intuitionniste.
+
+On remarque aussi que, comme $\varphi\implies \varphi^N$, on a pour toute
+théorie $\mathcal T$ que si $\mathcal T \vdNK \bot$, alors
+$\mathcal T \vdNJ \bot$, puisque $\mathcal T \vdNJ\mathcal T^N \vdNJ \bot$ et
+la deuxième relation de prouvabilité équivaut à $\mathcal T \vdNK \bot$.
+On verra en fait que dans le cas de l'arithmétique, un résultat encore meilleur
+peut être prouvé.
+ 
+Ainsi, pour prouver que l'arithmétique de Peano est cohérente, il suffit de
+prouver que sa version intuitionniste est cohérente. L'objectif de cette section
+est d'établir la cohérence de l'arithmétique de Heyting, variante intuitionniste
+de l'arithmétique de Peano, en utilisant la méthode développée par Kleene dans
+\cite{Kleene1945}.
+
+\subsection{Arithmétique de Heyting}
+
+La théorie logique de l'arithmétique de Heyting est simple à décrire~: les
+axiomes sont les mêmes que l'arithmétique de Peano, on se place simplement dans
+$\LJ$ au lieu de $\LK$.
+
+\begin{definition}[Arithmétique de Heyting]
+  La théorie de l'arithmétique de Heyting est la théorie du premier ordre sur
+  la signature $\mathcal L_{\mathrm{arith}}$ donnée par les mêmes axiomes que
+  $\ArithPeano$, mais dans le système formel $\LJ$ (ou de façon équivalente dans
+  le système $\NJ$). On note $\HA$ cette théorie.
+\end{definition}
+
+A FAIRE
+
+\subsection{BHK et réalisabilité}
+
+On a déjà donné l'interprétation BHK de la logique intuitionniste. Dans cette
+interprétation, la correspondance de Curry-Howard peut se lire comme une
+implémentation syntaxique de cette sémantique~: la relation de typage permet de
+donner un critère décidable pour qu'un programme soit effectivement la preuve
+d'un énoncé.
+
+La réalisabilité, introduite par \cite{Kleene1945}, permet de donner une
+implémentation plus sémantique de l'interprétation BHK. En particulier, le sens
+de la formule
+\[\varphi \implies \psi\]
+devient celui d'une fonction calculable, assignant des témoins de la vérité de
+$\psi$ à des témoins de la vérité de $\varphi$.
+
+La notion de réalisabilité repose sur la relation $x\real \varphi$, qui peut
+se lire de différentes façons~:
+\begin{itemize}
+\item $x$ est une preuve de $\varphi$
+\item $\varphi$ s'interprète en une spécification de programme que $x$ réalise
+\item $x$ force la vérité de $\varphi$
+\end{itemize}
+Dans un tel cas, on dira que $x$ réalise $\varphi$, ou que $x$ est un réaliseur
+de $\varphi$.
+
+En reprenant l'interprétation BHK avec ces notations, on propose donc de
+définir $\real$ de façon inductive comme suit~:
+\begin{itemize}
+\item $x \real \top$ pour n'importe quel $x$~;
+\item $x \real \bot$ jamais~;
+\item $x \real n = m$ si $n = m$~;
+\item $x \real \varphi \to \psi$ si $x$ s'interprète comme une fonction
+  calculable $f$ telle que pour tout $y \real \varphi$, $f(y)\real \psi$~;
+\item $x \real \varphi \land \psi$ si $x$ s'interprète comme une paire $(y,z)$
+  où $y \real \varphi$ et $z \real \psi$~;
+\item $x \real \varphi \lor \psi$ si $x$ s'interprète comme une paire $(i,y)$
+  où $i = 0$ et $y \real \varphi$, ou $i = 1$ et $y \real \psi$~;
+\item $x \real \forall a, \varphi$ si $x$ s'interprète comme une fonction
+  calculable $f$ qui à tout $m$ du domaine de discours,
+  $f(m) \real \varphi[m/a]$~;
+\item $x \real \forall a, \varphi$ si $x$ s'interprète comme une paire
+  $(m,y)$ telle que  $y \real \varphi[m/a]$.
+\end{itemize}
+L'ensemble des réaliseurs doit donc être un ensemble dans lequel on peut
+facilement interpréter des paires et des fonctions, et qui permet aussi
+d'encoder les entiers puisque le domaine du discours de l'arithmétique est
+$\bN$. Deux choix viennent naturellement en tête, compte tenu des précédents
+chapitres~:
+\begin{itemize}
+\item une énumération $\Enum$ des fonctions calculables,
+\item le $\lambda$-calcul.
+\end{itemize}
+
+On commence par montrer le modèle de réalisabilité historique, dû à Kleene, qui
+se base sur une énumération des fonctions calculables, et on construit ensuite
+une variante se basant sur le $\lambda$-calcul.
+
+\subsection{Première algèbre de Kleene}
+
+On adapte la relation de réalisabilité au cas des entiers. Pour donner une
+notion formellement satisfaisante de $\real$, on a aussi besoin d'ajouter des
+contextes aux formules qu'on interprète, de sorte que les variables libres d'une
+formule sont interprétées par des entiers du modèle standard.
+
+\begin{definition}[Réalisabilité de Kleene]
+  Soit $\sigma : \Var \partialto \bN$ un environnement pour l'arithmétique. On
+  définit, pour $n \in \bN$ et $\varphi \in \Formula$ telle que
+  $\VL(\varphi)\subseteq \dom(\sigma)$, la relation $n\real_\sigma \varphi$
+  par induction sur $\varphi$~:
+  \begin{itemize}
+  \item si $\varphi = \top$, alors $n\real_\sigma \varphi$
+  \item si $\varphi = \bot$, alors $n\nVdash_\sigma \varphi$
+  \item si $\varphi = (t = u)$ et $\sigma(t) = \sigma(u)$, alors
+    $n\real_\sigma \varphi$
+  \item si $\varphi = (t = u)$ et $\sigma(t) \neq \sigma(u)$, alors
+    $n\nVdash_\sigma \varphi$
+  \item si $\varphi = \psi \to \chi$, alors
+    \[n\real_\sigma\varphi\defeq \forall m \in \bN, m\real_\sigma\psi \implies
+    \Enum_n(m) \real_\sigma\chi\]
+  \item si $\varphi = \psi \land \chi$, alors
+    \[n\real_\sigma\varphi\defeq n = \langle p,q\rangle
+    \land p \real_\sigma\psi\land q\real_\sigma\chi\]
+  \item si $\varphi = \psi \lor \chi$, alors
+    \[n\real_\sigma\varphi \defeq n = \langle i,p\rangle \land
+    \begin{cases}
+      i = 0 \land p \real_\sigma \psi \\
+      \text{ou}\\
+      i = 1 \land p \real_\sigma \chi
+    \end{cases}\]
+  \item si $\varphi = \forall x, \psi$, alors
+    \[n\real_\sigma\varphi\defeq\forall m \in \bN,
+    \Enum_n(m) \real_{\sigma[x \mapsto m]}\varphi\]
+  \item si $\varphi = \exists x, \psi$, alors
+    \[n\real_\sigma\varphi \defeq n = \langle p,m\rangle \land
+    m\real_{\sigma[x\mapsto p]} \varphi\]
+  \end{itemize}
+  Si $\sigma = \varnothing$, on note directement $n\real \varphi$.
+\end{definition}
+
+Dans l'interprétation que nous offre la réalisabilité, il est clair que
+$\bot$ est faux, puisqu'aucun entier ne réalise $\bot$. Il faut cependant
+s'assurer qu'être réalisé est une propriété d'ordre logique, c'est-à-dire que
+les règles logiques sont valides pour cette interprétation.
+
+On se place ici dans le formalisme de $\NJ$ pour considérer les règles logiques
+(par complétude, cela revient au même que de considérer $\LJ$). D'après notre
+interprétation de l'implication, la notion d'hypothèse dans un raisonnement
+logique est ici représentée par une fonction calculable. Cela signifie,
+puisque $\Gamma\vdNJ \varphi$ représente la vérité de $\varphi$ sous les
+hypothèses de $\Gamma$, que réaliser $\Gamma\vdNJ\varphi$ demande à associer à
+des réaliseurs des formules de $\Gamma$, un réaliseur de $\varphi$. On retrouve
+la une structure étroitement liée à la preuve de forte normalisation pour le
+$\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
+
+\begin{definition}[Programme tiré d'une preuve]
+  On définit inductivement, pour chaque arbre de preuve $\pi\in\ProofNJ$ de
+  conclusion $\varphi_1,\ldots,\varphi_n\vdNJ\psi$ et dont toutes les
+  variables libres sont parmi $\{x_1,\ldots,x_k\}$, un code $e(\pi)$
+  définissant une fonction calculable totale
+  $\Enum_{e(\pi)} : \bN^{n+k} \to \psi$~:
+  \begin{itemize}
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{}\RightLabel{Ax}
+    \UnaryInfC{$\varphi_1,\ldots,\varphi_n\vdNJ\varphi_i$}
+    \DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)} \defeq \pi_i^{n+k}$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{}\RightLabel{$\top_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdNJ \top$}\DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)} = 0$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}
+    \noLine\UnaryInfC{$\Gamma\vdNJ \bot$}\RightLabel{$\bot_\mathrm e$}
+    \UnaryInfC{$\Gamma\vdNJ \varphi$}\DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)} \defeq \Enum^n_{e(\pi')}$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}
+    \noLine\UnaryInfC{$\Gamma,\varphi\vdNJ\psi$}\RightLabel{$\to_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdNJ\varphi\to\psi$}\DisplayProof$, alors
+    $e(\pi) \defeq s_{n+k}^1(e(\pi))$ où la variable abstraite est en
+    \ordinalnumeralfeminin{$n$} position.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}
+    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi\to\psi$}
+    \AxiomC{$\mathlarger{\pi''}$}
+    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi$}
+    \RightLabel{$\to_\mathrm e$}\BinaryInfC{$\Gamma\vdNJ\psi$}\DisplayProof$,
+    alors
+    $\Enum^{n+k}_{e(\pi)}(\vec n) \defeq
+    \Enum^{n+k}_{e(\pi')}(\vec n)(\Enum^{n+k}_{e(\pi'')}(\vec n))$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi_1}$}
+    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi_1$}
+    \AxiomC{$\mathlarger{\pi_2}$}
+    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi_2$}
+    \RightLabel{$\land_\mathrm i$}
+    \BinaryInfC{$\Gamma\vdNJ \varphi_1\land\varphi_2$}
+    \DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)}(\vec n) \defeq \langle-,-\rangle \circ
+    (\Enum^{n+k}_{e(\pi_1)},\Enum^{n+k}_{e(\pi_2)})$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ \varphi_1\land\varphi_2$}
+    \RightLabel{$\land_\mathrm e^i$}
+    \UnaryInfC{$\Gamma\vdNJ \varphi_i$}
+    \DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)} \defeq \pi_i\circ \Enum^{n+k}_{e(\pi')}$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ\varphi_i$}
+    \RightLabel{$\lor_\mathrm i^i$}
+    \UnaryInfC{$\Gamma\vdNJ\varphi_1\lor\varphi_2$}
+    \DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)} \defeq
+    (x \mapsto \langle i,x\rangle) \circ \Enum^{n+k}_{e(\pi')}$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ \varphi_1\lor\varphi_2$}
+    \AxiomC{$\mathlarger{\pi_1}$}\noLine
+    \UnaryInfC{$\Gamma,\varphi_1\vdNJ \chi$}
+    \AxiomC{$\mathlarger{\pi_2}$}\noLine
+    \UnaryInfC{$\Gamma,\varphi_2\vdNJ\chi$}
+    \TrinaryInfC{$\Gamma\vdNJ\chi$}
+    \DisplayProof$, alors
+    \begin{multline*}
+      \Enum^{n+k}_{e(\pi)}(\vec n) \defeq
+      \ifrm \pi_1(\Enum^{n+k}_{e(\pi')}(\vec n)) 
+      \thenrm \Enum^{n+1+k}_{e(\pi_1)}(\vec n, \pi_2(\Enum^{n+k}_{e(\pi')}(\vec n)))\\
+      \elserm \Enum^{n+1+k}_{e(\pi_2)}(\vec n, \pi_2(\Enum^{n+k}_{e(\pi')}(\vec n)))
+    \end{multline*}
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ \varphi$}
+    \RightLabel{$\forall_\mathrm i^\dagger$}
+    \UnaryInfC{$\Gamma\vdNJ\forall x, \varphi$}
+    \DisplayProof$, alors $e(\pi) \defeq s_{n+k}^1(e(\pi'))$ où la variable
+    abstrait est en \ordinalnumeralfeminin{$n+k$} position.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ \forall x, \varphi$}
+    \RightLabel{$\forall_\mathrm e$}
+    \UnaryInfC{$\Gamma\vdNJ\varphi[t/x]$}
+    \DisplayProof$, alors en considérant $f_t : \bN^k \to \bN$ la fonction
+    naturellement associée au terme $t$,
+    $\Enum^{n+k}_{e(\pi)}(\vec n,\vec k) \defeq
+    \Enum^{n+k}_{e(\pi')}(\vec n,\vec k)(f_t(\vec k))$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ\varphi[t/x]$}
+    \RightLabel{$\exists_\mathrm i$}
+    \UnaryInfC{$\Gamma\vdNJ\exists x, \varphi$}
+    \DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)}(\vec n,\vec k) \defeq \langle f_t(\vec k),
+    \Enum^{n+k}_{e(\pi')}(\vec n,\vec k)\rangle$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine
+    \UnaryInfC{$\Gamma\vdNJ\exists x, \varphi$}
+    \AxiomC{$\mathlarger{\pi''}$}\noLine
+    \UnaryInfC{$\Gamma, \varphi\vdNJ \psi$}
+    \RightLabel{$\exists_\mathrm e^\dagger$}
+    \BinaryInfC{$\Gamma\vdNJ\psi$}
+    \DisplayProof$, alors
+    \begin{center}
+      $\Enum^{n+k}_{e(\pi)}(\vec n, \vec k) \defeq
+      \Enum^{n+1+k}_{e(\pi'')}(\vec n,
+      \pi_1(\Enum^{n+k}_{e(\pi')}(\vec n, \vec k)),\vec k)$
+    \end{center}
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{}\RightLabel{$=_\mathrm i$}
+    \UnaryInfC{$\vdNJ t = t$}\DisplayProof$, alors
+    $\Enum^{n+k}_{e(\pi)}(\vec n, \vec k)\defeq 0$.
+  \item si $\pi = \bottomAlignProof
+    \AxiomC{$\mathlarger{\pi'}$}\noLine\UnaryInfC{$\Gamma\vdNJ t = u$}
+    \AxiomC{$\mathlarger{\pi''}$}\noLine\UnaryInfC{$\Gamma\vdNJ\varphi[t/x]$}
+    \RightLabel{$=_\mathrm e$} \BinaryInfC{$\Gamma\vdNJ\varphi[u/x]$}
+    \DisplayProof$, alors
+    $e(\pi) \defeq e(\pi'')$.
+  \end{itemize}
+\end{definition}
+
+\begin{lemma}[Adéquation]
+  Pour tout arbre de preuve $\pi \in \ProofNJ$ de conclusion
+  $\varphi_1,\ldots,\varphi_n \vdNJ \psi$ et dont les variables libres sont
+  $x_1,\ldots,x_k$, pour tout environnement $\sigma$ défini sur
+  $x_1,\ldots,x_k$, et pour tous entiers $e_1,\ldots,e_n$ tels que
+  \[\forall i \in \{1,\ldots,n\}, e_i\real_{\sigma} \varphi_i\]
+  on a
+  \[e(\pi)(e_1,\ldots,e_n,\sigma(x_1),\ldots,\sigma(x_k))\real_\sigma \psi\]
+\end{lemma}
+
+\begin{exercise}
+  Prouver le lemme d'adéquation.
+\end{exercise}
+
+\begin{corollary}
+  L'ensemble
+  \[\mathcal T_{\real} \defeq \{\varphi \in \Prop\mid \exists n \in \bN,
+  n\real \varphi\}\]
+  est une théorie logique cohérente.
+\end{corollary}
+
+\begin{proof}
+  Par le lemme d'adéquation, on sait que $\real$ est clos par conséquence
+  syntaxique. De plus, on a défini $\bot$ comme n'ayant aucun réaliseur, donc
+  $\bot\notin\mathcal T_{\real}$, on en déduit donc que
+  $\mathcal T_{\real}\nvdash_{\NJ} \bot$.
+\end{proof}
+
+On a donc prouvé que les formules réalisées par les fonctions calculables
+forment une théorie cohérente. Pour en déduire la cohérence de l'arithmétique de
+Heyting, il nous suffit alors de montrer que les axiomes de $\HA$ sont réalisés.
+
+\begin{lemma}
+  On a l'inclusion $\HA\subseteq\mathcal T_{\real}$.
+\end{lemma}
+
+\begin{proof}
+  Seule la récurrence demande à être précisée~: les autres axiomes sont
+  réalisés automatiquement parce qu'ils le sont sémantiquement dans $\bN$, et
+  que l'égalité ne tient compte que de cet aspect sémantique.
+
+  Pour la récurrence, on remarque que la construction de récursion primitive
+  permet d'obtenir le résultat~: supposons données deux fonctions
+  $f(\vec n)$ et $g(\vec n,m,p)$ telles que
+  \[f(\vec n)\real_{\vec n} \varphi[0/x]\quad\text{et}\quad
+  g(\vec n) \real_{\vec n} \forall x, \varphi \to \varphi[Sx/x]\]
+  Alors la fonction $\rec(f,g)$ vérifie~:
+  \begin{itemize}
+  \item $\rec(f,g)(\vec n,0) = f(\vec n)$ donc réalise $\varphi[0/x]$
+  \item $\rec(f,g)(\vec n,Sm) = g(\vec n,m,\rec(f,g)(\vec n,m))$ donc par
+    récurrence sur $m$, on obtient que
+    $\rec(f,g)(\vec n,m) \real_{\vec n} \varphi[m/x]$ puis, par
+    application de $g$, que la fonction réalise $\varphi[Sm/x]$
+  \end{itemize}
+  donc $\rec$ réalise uniformément le schéma d'axiomes de récurrence.
+\end{proof}
+
+\begin{theorem}[Cohérence de l'arithmétique de Heyting \cite{Kleene1945}]
+  La théorie $\HA$ est cohérente.
+\end{theorem}
+
+\begin{proof}
+  On a prouvé que $\HA \subseteq \mathcal T_{\real}$ et que
+  $\mathcal T_{\real}\nvdash_{\NJ} \bot$, donc $\HA$ ne peut pas prouver
+  $\bot$, donc $\HA$ est cohérente.
+\end{proof}
