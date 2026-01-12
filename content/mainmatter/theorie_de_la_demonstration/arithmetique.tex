@@ -1043,3 +1043,214 @@ Heyting, il nous suffit alors de montrer que les axiomes de $\HA$ sont réalisé
   $\mathcal T_{\real}\nvdash_{\NJ} \bot$, donc $\HA$ ne peut pas prouver
   $\bot$, donc $\HA$ est cohérente.
 \end{proof}
+
+\subsection{Cas du $\lambda$-calcul}
+
+On propose une seconde construction, très similaire à la première, mais
+utilisant le $\lambda$-calcul.
+
+On utilise dans cette sous-section $\STSet$ comme ensemble des termes. Ces
+termes ne sont pas \latinexpr{a priori} typés. On verra cependant que le lemme
+d'adéquation permet de faire un lien entre la réalisabilité et le typage. On
+commence par définir la relation de réalisabilité qu'on va utiliser. On commence
+par construire une version de logique minimale de la réalisabilité, pour cerner
+les difficultés à venir.
+
+\begin{definition}[Réalisabilité pour la logique minimale]
+  On considère la relation $\real\subseteq \lamSet\times \Formula$ définie par
+  induction sur $\varphi \in \Formula$~:
+  \begin{itemize}
+  \item $t \real \top$ toujours~;
+  \item $t \real \bot$ jamais~;
+  \item $t\real \varphi \to \psi \defeq \forall u \real \varphi, t\;u \real
+    \psi$
+  \end{itemize}
+\end{definition}
+
+D'après la correspondance de Curry-Howard, on sait que les formules peuvent
+s'interpréter comme des types. Ainsi, $\vdash t : \varphi$ et
+$t\real \varphi$ semblent fortement liés. En fait, la définition de
+$t\real \varphi \to \psi$ semble identique à la définition de
+$\semT{\varphi\to\psi}$. Cela nous mène naturellement à l'énoncé suivant~:
+\begin{quote}
+  Pour toute dérivation de typage
+  $x_1:\varphi_1,\ldots,x_n:\varphi_n\vdash t : \varphi$ si pour tous
+  $i \in\{1,\ldots,n\}$ on dispose d'un terme $t_i \real \varphi_i$ alors
+  $t[t_i/x_i] \real \varphi$.
+\end{quote}
+Comme dans le cas du lemme d'adéquation pour la forte normalisation, il est
+nécessaire d'avoir une propriété de saturation pour vérifier que la règle
+de typage de l'abstraction $\lambda$ est adéquate. Cependant, on n'a ici aucun
+problème à utiliser l'antiréduction dans toute sa généralité, sans la
+restreindre à une forme de réduction de tête faible. Comme la définition de la
+réalisation de $\lor$ par exemple demande de quantifier sur les interprétation
+de toutes les formules, on a encore besoin d'introduire un ensemble de candidats
+préalables.
+
+\begin{definition}[Ensemble saturé]
+  On appelle ensemble saturé un ensemble de termes $A \subseteq \STSet$ tel
+  que si $t \STred u$ et $u \in A$ alors $t \in A$. On note $\satur$
+  l'ensemble des parties saturées de $\STSet$.
+\end{definition}
+
+\begin{exercise}
+  Prouver que $\satur$ est un treillis complet pour l'inclusion, dont le
+  majorant est $\STSet$ et le minorant est $\varnothing$, la borne supérieure
+  est donnée par l'union et la borne inférieure donnée par l'intersection.
+\end{exercise}
+
+\begin{definition}[Réalisabilité d'une formule]
+  Soit $\rho : \Var \to \bN$ un environnement d'interprétation.
+  On définit la relation $\real_\rho\subseteq \STSet\times\Formula$ par
+  induction sur $\varphi\in\Formula$~:
+  \begin{itemize}
+  \item si $\varphi = \top$ alors $t \real_\rho \varphi$
+  \item si $\varphi = \bot$ alors $t\nVdash_\rho\varphi$
+  \item si $\varphi = (t = u)$ où $\rho(t) = \rho(u)$ alors
+    $t \real_\rho \varphi$
+  \item si $\varphi = (t = u)$ où $\rho(t) \neq \rho(u)$ alors
+    $t\nVdash_\rho \varphi$
+  \item si $\varphi = \psi \to \chi$ alors
+    \[t\real_\rho \varphi \defeq \forall u \real_\rho \psi, t\;u \real_\rho \chi\]
+  \item si $\varphi = \psi \land \chi$ alors
+    \[t\real_\rho \varphi \defeq
+    (\pi_1\;t\real_\rho \psi) \land (\pi_2\;t\real_\rho \chi)\]
+  \item si $\varphi = \psi \land \chi$ alors
+    \begin{multline*}
+      t \real_\rho \varphi \defeq
+      \forall A \in \satur,\forall u,v \in\STLCSet,\\
+      (\forall w \real_\rho \psi, u[w/x] \in A) \implies
+      (\forall w \real_\rho \chi, u[w/x] \in A)\implies \\
+      \deltaSTLC t x u x v \in A
+    \end{multline*}
+  \item si $\varphi = \forall x, \psi$ alors
+    \[t \real_\rho \varphi \defeq \forall n \in \bN,
+    t\real_{\rho[x\mapsto n]} \psi\]
+  \item si $\varphi = \exists x, \psi$ alors
+    \[t \real_\rho\varphi\defeq \exists n \in \bN,
+    t\real_{\rho[x\mapsto n]} \psi\]
+  \end{itemize}
+  
+  On définit aussi
+  $\semT{\varphi}_\rho \defeq \{t \in \STSet\mid t \real_\rho \varphi\}$.
+  Dans le cas où $\rho = \varnothing$, on écrit simplement $t \real \varphi$ et
+  $\semT{\varphi}$.
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour toute formule $\varphi$, $\semT\varphi\in\satur$. Montrer
+  que pour tout $n \in \bN$, on a
+  \[t\real_{\rho[x\mapsto n]} \varphi \iff t \real_\rho \varphi[\encode n/x]\]
+\end{exercise}
+
+On peut ainsi prouver le lemme d'adéquation.
+
+\begin{lemma}[Adéquation]
+  Pour tout typage $x_1:\varphi_1,\ldots,x_n:\varphi_n\vdash t : \varphi$, tout
+  environnement $\rho$ et termes $t_1,\ldots,t_n$ tels que
+  $t_i \real_\rho \varphi_i$, on a
+  \[t[t_i/x_i] \real_\rho\varphi\]
+\end{lemma}
+
+\begin{exercise}
+  Prouver le lemme d'adéquation.
+\end{exercise}
+
+\begin{corollary}
+  La théorie
+  \[\mathcal T_{\real} \defeq
+  \{\varphi\in\Formula\mid\semT\varphi\neq\varnothing\}\]
+  est une théorie cohérente.
+\end{corollary}
+
+On pourrait être tenté d'en déduire que $\HA$ est une théorie cohérente, comme
+on l'a fait avec les machines de Turing. Cependant, cela est faux en l'état.
+On n'a en effet pas de moyen de prouver que la récurrence est réalisée. Cela est
+dû au fait que la définition de $t\real \forall x, \varphi$ signifie ici que
+$t$ est le même terme pour réaliser uniformément toutes les instances de
+$\varphi[\encode n/x]$ avec $n \in \bN$. Dans le principe de récurrence, comme
+on a pu le voir dans l'élimination des coupures, il est nécessaire d'effectuer
+un calcul qui dépend de l'entrée en elle-même.
+
+On peut être tenté de changer la définition de $\real$, de sorte que
+$t\real \forall x, \varphi$ signifie que pour tout $n$,
+$t\;\encode n \real\varphi[\encode n/x]$. Une telle modification fonctionne,
+mais on préfère introduire une méthode plus efficace, permettant d'enrichir le
+langage plutôt que de simplement modifier la relation de réalisabilité.
+
+\begin{definition}[Formules arithmétiques relativisées]
+  On définit le langage des formules arithmétiques relativisées en ajoutant le
+  constructeur de formule
+  \[\varphi \Coloneq \cdots \mid \bN(\btermt)\]
+  où $t$ est un terme arithmétique (et tous les cas précédents définissant les
+  formules arithmétiques sont conservés).
+\end{definition}
+
+L'intérêt du prédicat $\bN(\btermt)$ est en fait d'être réalisé (dans
+l'environnement $\rho$) par le terme $\encode{\rho(\btermt)}$.
+
+\begin{definition}[Réalisation d'une formule arithmétique relativisée]
+  On définit $t\real_\rho \varphi$ comme précédemment, en ajoutant le cas
+  \[t\real_\rho \bN(\btermt) \defeq t \STred^\star \encode{\rho(\btermt)}\]
+\end{definition}
+
+On a ainsi un prédicat $\bN(x)$ à un paramètre, qui permet de décrire la classe
+des entiers. En un sens, cette classe est celle des entiers standards~: les
+$x$ vérifiant $\bN(x)$ sont ceux muni d'un entier concret réalisé par un
+programme. On peut maintenant définir considérer, plutôt que $\HA$, la version
+relativisée
+\[\HA^\bN \defeq \{\varphi^\bN\mid \varphi \in \Formula\}\]
+où $\varphi^\bN$ est la formule relativisée telle qu'introduite dans la
+\cref{def.relativisation}.
+
+\begin{lemma}[Adéquation]
+  En ajoutant les règles de typages suivantes~:
+  \begin{center}
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{}
+      \RightLabel{$0$}
+      \UnaryInfC{$\Gamma\vdash 0 : \bN(0)$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$\Gamma\vdash t : \bN(\btermt)$}
+      \RightLabel{$S$}
+      \UnaryInfC{$\Gamma\vdash S\;t : \bN(S\;\btermt)$}
+      \DisplayProof
+      \\
+      \\
+      \multicolumn{2}{c}{
+        \AxiomC{$\Gamma\vdash t : \varphi(0)$}
+        \AxiomC{$\Gamma\vdash u :
+          \forall \bvarx,\bN(\bvarx)\to\varphi(\bvarx)\to\varphi(S\;\bvarx)$}
+        \AxiomC{$\Gamma\vdash v : \bN(\btermt)$}
+        \RightLabel{$\mathrm{Rec}$}
+        \TrinaryInfC{$\Gamma\vdash \rec\;t\;u\;v : \varphi(\btermt)$}
+        \DisplayProof
+      }
+    \end{tabular}
+  \end{center}
+
+  Alors pour tout environnement d'interprétation $\rho$, pour tous
+  $\Gamma\vdash t : \varphi$, $\sigma : \lamVar \to \STSet$ tels que
+  $(x : \psi) \in \Gamma \implies \sigma(x) \real_\rho \psi$,
+  on a $\sigma(t) \real_\rho \varphi$.
+\end{lemma}
+
+Dans ce cas, cependant, il devient clair que le schéma d'axiomes de récurrence
+est vérifié par le constructeur Rec. On en déduit le théorème suivant.
+
+\begin{theorem}[Cohérence de l'arithmétique]
+  La théorie $\HA^\bN$ est cohérente.
+\end{theorem}
+
+\begin{proof}
+  Tous les axiomes de $\HA^\bN$ sont réalisés, donc
+  $\HA^\bN\subseteq \mathcal T_\real$, donc la cohérence de $\mathcal T_\real$
+  implique celle de $\HA^\bN$, d'où le résultat.
+\end{proof}
+
+\begin{exercise}
+  En déduire que $\HA$ est cohérente.
+\end{exercise}

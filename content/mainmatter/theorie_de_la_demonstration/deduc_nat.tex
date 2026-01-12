@@ -606,19 +606,222 @@ $\lnot\lnot\varphi$ ci-dessus.
   \end{itemize}
 \end{definition}
 
+On souhaite donc prouver que la prouvabilité dans $\LK$ revient à la
+prouvabilité des traductions dans $\LJ$. Pour cela, le sens difficile est
+principalement celui de montrer que si $\Gamma\vdLK\varphi$ alors
+$\Gamma^N \vdLJ \varphi^N$. Plutôt que d'en donner la preuve directement, on
+développe une classification des propositions permettant de mieux cibler le
+sens des traductions de formules.
+
+\begin{definition}[Proposition stable, dense]
+  Soit $\varphi \in \Formula$. Notons $\varphi^\lnot \defeq \lnot\lnot\varphi$.
+  On dit que $\varphi$ est stable si
+  $\vdLJ \varphi\leftrightarrow\varphi^\lnot$ et qu'elle est
+  dense si $\vdLJ \varphi^\lnot$.
+\end{definition}
+
+Une formule dense est donc une proposition vraie dans $\LK$ et une
+formule stable est une formule pour laquelle le raisonnement par l'absurde est
+admissible. Un cas important de formule stable est celui des négations de
+formule.
+
+\begin{proposition}
+  Pour toute formule $\varphi$, $\lnot\varphi$ est une proposition stable.
+\end{proposition}
+
+\begin{proof}
+  Dans le cas général, on a toujours $\varphi\to\varphi^\lnot$~:
+  \begin{prooftree}
+    \AxiomC{$[\lnot\varphi]^\beta$}
+    \AxiomC{$[\varphi]^\alpha$}
+    \RightLabel{$\to_\mathrm e$}
+    \BinaryInfC{$\bot$}
+    \RightLabel{$\lnot_\mathrm i,\beta$}
+    \UnaryInfC{$\varphi^\lnot$}
+    \RightLabel{$\to_\mathrm i, \alpha$}
+    \UnaryInfC{$\varphi \to \varphi^\lnot$}
+  \end{prooftree}
+  Dans le cas particulier où $\varphi = \lnot\psi$ pour une certaine formule
+  $\psi$, on a donc toujours ce résultat. Montrons maintenant que
+  $\lnot\lnot\lnot\varphi\to\lnot\varphi$~:
+  \begin{prooftree}
+    \AxiomC{$[\lnot\lnot\lnot\varphi]^\alpha$}
+    \AxiomC{$[\varphi]^\beta$}
+    \noLine\UnaryInfC{$\vdots$}\noLine
+    \UnaryInfC{$\lnot\lnot\varphi$}
+    \BinaryInfC{$\bot$}
+    \RightLabel{$\lnot_\mathrm i, \beta$}
+    \UnaryInfC{$\lnot\varphi$}
+    \RightLabel{$\to_\mathrm i, \alpha$}
+    \UnaryInfC{$\lnot\lnot\lnot\varphi\to\lnot\varphi$}
+  \end{prooftree}
+  d'où la stabilité de $\lnot\varphi$.
+\end{proof}
+
+\begin{remark}
+  Pour établir les équivalences intuitionnistes, on peut utiliser au choix le
+  système $\NJ$ ou le système $\LJ$, les deux étant équivalents (car complets
+  pour la sémantique de Kripke intuitionniste).
+\end{remark}
+
+Ce résultat ce généralise aux traductions.
+
+\begin{lemma}
+  Pour toute formule $\varphi$, $\varphi^N$ est stable.
+\end{lemma}
+
+\begin{proof}
+  On raisonne par induction sur $\varphi$~:
+  \begin{itemize}
+  \item si $\varphi$ est atomique, alors sa traduction est une double négation,
+    et une négation (en particulier une double négation) est stable~;
+  \item si $\varphi$ est une négation, alors sa traduction en est aussi une,
+    donc $\varphi^N$ est stable~;
+  \item si $\varphi$ est une disjonction ou une quantification existentielle,
+    sa traduction est définie par une négation aussi, d'où le résultat~;
+  \item si $\varphi = \psi_1 \land \psi_2$, montrons que $\varphi^N$ est stable~:
+    \begin{prooftree}
+      \AxiomC{}\RightLabel{HI}
+      \UnaryInfC{$\lnot\lnot\psi_i^N \to \psi_i^N$}
+      \AxiomC{$[\lnot\lnot(\psi_1^N\land\psi_2^N)]^\alpha$}
+      \RightLabel{A FAIRE}
+      \UnaryInfC{$\lnot\lnot\psi_i^N$}
+      \RightLabel{$\to_\mathrm e$}
+      \BinaryInfC{$\psi_i^N$}
+      \RightLabel{$\land_\mathrm i$}
+      \UnaryInfC{$\psi^N\land \chi^N$}
+      \RightLabel{$\to_\mathrm i, \alpha$}
+      \UnaryInfC{$\lnot\lnot\varphi^N \to \varphi^N$}
+    \end{prooftree}
+  \item A FAIRE
+  \end{itemize}
+  On en déduit le résultat par induction.
+\end{proof}
+
+Le lemme suivant est le c\oe ur du résultat qu'on recherche sur la traduction.
+
+\begin{lemma}
+  Soient $\Gamma,\Delta \in \List(\Formula)$. Si $\Gamma\vdLK\Delta$ alors
+  $\Gamma^N,\lnot\Delta^N \vdLJ$, où $\lnot\Delta^N$ signifie que pour chaque
+  formule $\varphi \in \Delta$, on considère la formule $\lnot(\varphi^N)$.
+\end{lemma}
+
+\begin{proof}
+  On procède par induction sur $\vdLK$~:
+  \begin{itemize}
+  \item cas $ax$~: on veut montrer que
+    $\varphi^N,\lnot\varphi^N\vdLJ$, ce qui se prouve par
+    \begin{prooftree}
+      \AxiomC{$\varphi^N\vdLJ\varphi^N$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\varphi^N,\lnot\varphi^N\vdLJ$}
+    \end{prooftree}
+  \item cas $cut$~: on suppose que $\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$
+    et que $\Theta^N,\varphi^N,\lnot\Xi^N\vdLJ$, et on veut prouver que
+    $\Gamma^N,\Theta^N,\lnot\Delta^N,\lnot\Xi^N\vdLJ$~:
+    \begin{prooftree}
+      \AxiomC{$\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$}
+      \AxiomC{$\Theta^N,\varphi^N,\lnot\Xi^N\vdLJ$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Theta^N,\lnot\Xi^N\vdLJ\lnot\varphi^N$}
+      \RightLabel{$cut$}
+      \BinaryInfC{$\Gamma^N,\Theta^N,\lnot\Delta^N,\lnot\Xi^N$}
+    \end{prooftree}
+  \item les règles structurelles s'appliquent par leur version intuitionniste
+    gauche sans difficulté~;
+  \item cas $l\lnot$~: on suppose que
+    $\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$ et on souhaite montrer que
+    $\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$, ce qui est tautologique~;
+  \item cas $r\lnot$~: on suppose que
+    $\Gamma^N,\varphi^N,\lnot\Delta^N\vdLJ$ et on souhaite montrer que
+    $\Gamma^N,\lnot\lnot\varphi^N,\Delta^N\vdLJ$, ce qui se fait en appliquant
+    une coupure sur une preuve de $\varphi^N\vdLJ\lnot\lnot\varphi$
+    (vrai car $\varphi\vdLJ\varphi^\lnot$ est toujours vrai)~;
+  \item cas $l\lor$~: on suppose que
+    $\Gamma^N,\varphi^N,\lnot\Delta^N\vdLJ$ et
+    $\Gamma^N,\psi^N,\lnot\Delta^N\vdLJ$, et on souhaite prouver que
+    $\Gamma^N,\lnot(\lnot\varphi^N\land\lnot\psi^N),\lnot\Delta^N\vdLJ$
+    (on note $\Theta$ le contexte $\Gamma^N,\lnot\Delta^N$)~:
+    \begin{prooftree}
+      \AxiomC{$\Theta,\varphi^N$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Theta\vdLJ \lnot\varphi^N$}
+      \AxiomC{$\Theta,\psi^N$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Theta\vdLJ \lnot\psi^N$}
+      \RightLabel{$r\land$}
+      \BinaryInfC{$\Theta\vdLJ\lnot\varphi^N\land\lnot\psi^N$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Theta,\lnot(\lnot\varphi^N\land\lnot\psi^N)\vdLJ$}
+    \end{prooftree}
+  \item cas $r\lor_i$~: on suppose que
+    $\Gamma^N,\lnot\varphi_i^N,\lnot\Delta^N\vdLJ$ et on veut montrer que
+    $\Gamma^N,\lnot\lnot(\lnot\varphi_1^N\land\lnot\varphi_2^N),
+    \lnot\Delta^N\vdLJ$
+    (on note encore $\Theta$ pour $\Gamma^N,\lnot\Delta^N$)~:
+    \begin{prooftree}
+      \AxiomC{$\Theta,\lnot\varphi_i^N\vdLJ$}
+      \RightLabel{$l\land_i$}
+      \UnaryInfC{$\Theta,\lnot\varphi_1^N\land\lnot\varphi^2\vdLJ$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Theta,\lnot(\lnot\varphi_1^N\land\lnot\varphi_2^N)\vdLJ$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Theta,
+        \lnot\lnot(\lnot\varphi_1^N\land\lnot\varphi_2^N)\vdLJ$}
+    \end{prooftree}
+  \item les cas de $l\land,r\land,l\to,r\to,l\forall,r\forall$ se traitent avec
+    peu de difficultés, le lecteur est invité à les vérifier lui-même~;
+  \item cas $l\exists^\dagger$~: on suppose que
+    $\Theta,\varphi^N\vdLJ$ et on veut montrer que
+    $\Theta,\lnot(\forall x,\lnot\varphi^N)\vdLJ$~:
+    \begin{prooftree}
+      \AxiomC{$\Theta,\varphi^N\vdLJ$}
+      \RightLabel{$r\lnot$}\UnaryInfC{$\Theta\vdLJ \lnot\varphi^N$}
+      \RightLabel{$r\forall^\dagger$}
+      \UnaryInfC{$\Theta\vdLJ\forall x, \lnot\varphi^N$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Theta,\lnot(\forall x, \lnot\varphi^N)\vdLJ$}
+    \end{prooftree}
+  \item cas $r\exists$~: on suppose que
+    $\Theta,\lnot\varphi^N[t/x]\vdLJ$ et on veut montrer que
+    $\Theta,\lnot\lnot(\forall x, \lnot\varphi^N)\vdLJ$~:
+    \begin{prooftree}
+      \AxiomC{$\Theta,\lnot\varphi^N[t/x]\vdLJ$}
+      \RightLabel{$l\forall$}\UnaryInfC{$\Theta,\forall x, \lnot\varphi^N\vdLJ$}
+      \RightLabel{$r\lnot$}
+      \UnaryInfC{$\Theta\vdLJ\lnot(\forall x, \lnot\varphi^N)$}
+      \RightLabel{$l\lnot$}
+      \UnaryInfC{$\Theta,\lnot\lnot(\forall x, \lnot\varphi^N)\vdLJ$}
+    \end{prooftree}
+  \item les cas de l'égalité demandent simplement d'utiliser le fait que
+    $t = u \to \lnot\lnot(t = u)$.
+  \end{itemize}
+  On en déduit par induction que si $\Gamma\vdLK\Delta$ alors
+  $\Gamma,\lnot\Delta^N\vdLJ$.
+\end{proof}
+
 \begin{theorem}\label{thm.GG.trad}
   Pour tout contexte $\Gamma$ et toute formule $\varphi$, on a
   \[\Gamma\vdLK\varphi \iff \Gamma^N\vdLJ\varphi^N\]
 \end{theorem}
 
 \begin{proof}
-  On peut facilement vérifier que pour toute formule $\varphi$, on a
+  On peut vérifier que pour toute formule $\varphi$, on a
   $\varphi\dashv\vdLK\varphi^N$, ce qui permet de déduire directement que si
   $\Gamma^N\vdLJ\varphi^N$, puisqu'alors $\Gamma^N\vdLK\varphi^N$, on a
   $\Gamma\vdLK\varphi$.
 
-  A FAIRE
+  Pour l'autre direction, on sait que si $\Gamma\vdLK\varphi$, alors
+  $\Gamma^N,\lnot\varphi^N\vdLJ$, mais alors
+  $\Gamma^N\vdLJ\lnot\lnot\varphi^N$ par application de $r\lnot$, et comme
+  $\varphi^N$ est stable, on en déduit que $\Gamma^N\vdLJ\varphi^N$ par coupure.
+
+  On en déduit l'équivalence.
 \end{proof}
+
+\begin{exercise}
+  Vérifier que pour toute formule $\varphi$, $\varphi\dashv\vdLK\varphi^N$.
+\end{exercise}
 
 \begin{remark}
   La position des doubles négations est en quelque sorte duale de celle des
@@ -652,8 +855,7 @@ qui permet de passer de $\varphi^N$ à $\varphi$ (l'autre sens peut être montr�
 directement dans $\NJ$).
 
 \begin{exercise}
-  Prouver que $\varphi\vdNJ\varphi^N$ et que $\varphi^N\vdNK\varphi$. En
-  déduire la complétude du système $\NK$.
+  Prouver d'une nouvlle manière la complétude du système $\NK$.
 \end{exercise}
 
 \section{Coupures en déduction naturelle}
