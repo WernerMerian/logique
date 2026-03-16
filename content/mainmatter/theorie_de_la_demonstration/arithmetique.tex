@@ -735,7 +735,166 @@ $\LJ$ au lieu de $\LK$.
   le système $\NJ$). On note $\HA$ cette théorie.
 \end{definition}
 
-A FAIRE
+Comme on l'a dit précédemment, la cohérence de $\ArithPeano$ et celle de $\HA$
+sont équivalentes, ce qui s'exprime par le fait suivant~:
+\begin{quote}
+  Si $\ArithPeano\vdLK \bot$ alors $\HA\vdLJ\bot$.
+\end{quote}
+Cette relation a déjà été présentée d'une autre façon dans un chapitre
+précédent~: il s'agit de la conservativité exprimée dans la
+\cref{def.conserv.ext}. La théorie $\ArithPeano$ est une extension conservative
+de $\HA$ sur $\bot$, ce qui signifie que $\ArithPeano$ peut être plus forte que
+$\HA$ mais que, pour la formule $\bot$, la prouvabilité dans $\ArithPeano$
+équivaut à celle dans $\HA$.
+
+Dans le cas restreint de la formule $\bot$, ce résultat est simplement une
+question de conservation de la cohérence. L'intérêt de cette notion est qu'on
+peut prouver la conservativité de $\ArithPeano$ sur une classe bien plus large
+de formules.
+
+\begin{definition}[Conservativité d'une extension sur une classe]
+  Soient $\mathcal T,\mathcal T'$ deux théories sur une même signature $\Sigma$.
+  On dit que $\mathcal T'$ est une extension conservative de $\mathcal T$ sur
+  une classe $\mathcal C \subseteq \Formula(\Sigma)$ si~:
+  \begin{itemize}
+  \item $\mathcal T \subseteq \mathcal T'$~;
+  \item pour toute formule $\varphi \in \mathcal C$, si
+    $\varphi \in \mathcal T'$ alors $\varphi \in \mathcal T$.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  \`A la différence de la notion d'extension conservative donnée en
+  \cref{def.conserv.ext}, on utilise ici des formules sur une même signature.
+  Cela est dû au fait qu'on veut conserver une partie seulement des formules,
+  mais il est possible d'adapter la définition pour prendre en compte une
+  extension $\mathcal T'$ sur un langage plus riche~: il suffit alors de traiter
+  $\mathcal T$ comme une théorie sur ce langage plus riche.
+
+  Une autre différence importante est le fait qu'on considère ici des théories
+  comme des ensembles de formules stables par des relations de prouvabilité
+  potentiellement différentes, ce qui est le cas avec $\ArithPeano$ et $\HA$ qui
+  sont des ensembles d'axiomes identiques mais dont les théorèmes sont
+  différents.
+\end{remark}
+
+Nous allons prouver que $\ArithPeano$ est une extension conservative de $\HA$
+sur la classe des formules $\HierArithP 2$.
+
+Pour ce faire, on reprend l'idée initiale de la traduction de Gödel-Gentzen
+(\cref{def.gg.trad}) mais, à la place de considérer la négation
+$\lnot \varphi$ comme étant $\varphi \to \bot$, on paramétrise la négation
+$\lnot_\psi$ par une formule $\psi$.
+
+\begin{definition}[Négation paramétrée]
+  Soit $\varphi$ une formule fixée qu'on appelle formule de retour. On définit
+  l'opération $\lnot_\varphi$ sur les formules par
+  \[\lnot_\varphi \psi \defeq \psi \to \varphi\]
+\end{definition}
+
+\begin{definition}[Traduction de Friedman]\label{def.friedman}
+  Soit $\varphi$ une formule de retour fixée. On définit par induction sur
+  $\psi$ la formule $\psi^{\lnot_\varphi}$ par~:
+  \begin{itemize}
+  \item si $\psi$ est atomique, alors
+    $\psi^{\lnot_\varphi} \defeq \lnot_\varphi\lnot_\varphi \psi$.
+  \item si $\psi = \top$ alors $\psi^{\lnot_\varphi} \defeq \top$.
+  \item si $\psi = \bot$ alors $\psi^{\lnot_\varphi} \defeq \varphi$.
+  \item si $\psi = \lnot \chi$ alors
+    $\psi^{\lnot_\varphi} \defeq \lnot_\varphi \chi^{\lnot_\varphi}$.
+  \item si $\psi = \psi_0 \land \psi_1$ alors
+    $\psi^{\lnot_\varphi} \defeq \psi_0^{\lnot_\varphi}\land\psi_1^{\lnot_\varphi}$.
+  \item si $\psi = \psi_0 \lor \psi_1$ alors
+    $\psi^{\lnot_\varphi} \defeq
+    \lnot_\varphi\lnot_\varphi(\psi_0^{\lnot_\varphi}\lor\psi_1^{\lnot_\varphi})$.
+  \item si $\psi = \psi_0 \to \psi_1$ alors
+    $\psi^{\lnot_\varphi} \defeq \psi_0^{\lnot_\varphi}\to\psi_1^{\lnot_\varphi}$.
+  \item si $\psi = \forall x, \chi$ alors
+    $\psi^{\lnot_\varphi} \defeq \forall x, \chi^{\lnot_\varphi}$.
+  \item si $\psi = \exists x, \chi$ alors
+    $\psi^{\lnot_\varphi} \defeq
+    \lnot_\varphi\forall x, \lnot_\varphi \chi^{\lnot_\varphi}$.
+  \end{itemize}
+\end{definition}
+
+Comme dans le cas de la traduction Gödel-Gentzen, on va faire un lien entre la
+traduction d'une formule dans le cas intuitionniste et la formule dans le cas
+classique. Pour prouver ce lien, on a d'abord besoin de plusieurs propriétés.
+
+\begin{property}\label{prop.friedman}
+  On a les propositions suivantes pour toute formule de retour $\varphi$
+  fixée~:
+  \begin{itemize}
+  \item pour toutes formules $\psi,\chi$,
+    $\psi \to \lnot_\varphi \chi \vdLJ \chi \to \lnot_\varphi \psi$
+  \item pour toute formule $\psi$,
+    $\psi \vdLJ \lnot_\varphi\lnot_\varphi \psi$
+  \item pour toutes formules $\psi,\chi$,
+    $\psi\to\chi \vdLJ \lnot_\varphi \chi \to \lnot_\varphi \psi$
+  \item pour toutes formules $\psi,\chi$,
+    $\psi\to\chi\vdLJ
+    \lnot_\varphi\lnot_\varphi \psi \to \lnot_\varphi\lnot_\varphi\chi$
+  \item pour toute formule $\psi$,
+    $\lnot_\varphi\lnot_\varphi\lnot_\varphi \psi \vdLJ \lnot_\varphi \psi$
+  \item pour toute formule $\psi$,
+    $\vdLJ (\psi \lor \lnot\psi)^{\lnot_\varphi}$
+  \item pour toute formule $\psi$,
+    $\varphi\vdLJ\psi^{\lnot_\varphi}$
+  \item pour toute formule $\psi$,
+    $\lnot_\varphi\lnot_\varphi\psi^{\lnot_\varphi}\vdLJ \psi^{\lnot_\varphi}$
+  \end{itemize}
+\end{property}
+
+\begin{exercise}
+  Démontrer les propositions précédentes.
+\end{exercise}
+
+\begin{lemma}[Correction de la traduction de Friedman]
+  Pour tout séquent $\Gamma\vdLK \psi$ dérivable dans lequel aucune variable
+  libre d'une formule $\varphi$ de retour n'apparaît, le séquent
+  $\Gamma^{\lnot_\varphi}\vdLJ\psi^{\lnot_\varphi}$ est dérivable.
+\end{lemma}
+
+\begin{exercise}
+  Démontrer le lemme précédent.
+\end{exercise}
+
+\begin{corollary}\label{cor.friedman}
+  Pour toute formule $\psi$, si $\ArithPeano\vdLK \psi$ alors
+  $\HA\vdLJ \psi^{\lnot_\varphi}$.
+\end{corollary}
+
+\begin{theorem}[Kreisel-Friedman
+    \cite{FriedmanTrick, Kreisel1951-KREOTI-6, Kreisel1952-KREOTI-5}]
+  La théorie $\ArithPeano$ est une extension conservative de $\HA$ sur les
+  formules $\HierArithP 2$.
+\end{theorem}
+
+\begin{proof}
+  Soit $\varphi \in \HierArithP 2$. Sans perte de généralité, on peut écrire
+  $\varphi \defeq \forall x, \exists y, f(x,y) = 0$ où $f$ est un terme
+  dépendant de $x$ et $y$.
+
+  On suppose que $\ArithPeano\vdLK \varphi$~: d'après le \cref{cor.friedman},
+  on en déduit que $\HA\vdLJ \varphi^{\lnot_\psi}$ pour n'importe quelle formule
+  $\psi$. En écrivant $\varphi^{\lnot_\psi}$, on obtient
+  \[\varphi^{\lnot_\psi} = \forall x, \lnot_\psi \forall y, \lnot_\psi
+  \lnot_\psi\lnot_\psi f(x,y) = 0\]
+  qui est une formule équivalente à
+  $\forall x, \lnot_\psi \forall y, \lnot_\psi f(x,y) = 0$ puisqu'on peut
+  éliminer les doubles négations ici (\latinexpr{c.f.} \cref{prop.friedman}).
+  Prenons alors une variable fraîche $x_0$, on a alors
+  \[\HA\vdLJ (\forall y, (f(x_0,y) = 0 \to \psi)) \to \psi\]
+  pour n'importe quelle formule $\psi$. On instancie donc
+  $\psi \defeq \exists y_0, f(x_0,y_0) = 0$, et la prémisse
+  \[\forall y, f(x_0,y) = 0 \to (\exists y_0, f(x_0,y_0) = 0)\]
+  est prouvable, d'où
+  \[\HA \vdLJ \exists y_0, f(x_0,y_0) = 0\]
+  puis, comme $x_0$ n'apparaît pas dans $\HA$,
+  \[\HA\vdLJ \forall x_0,\exists y_0, f(x_0,y_0) = 0\]
+
+  Ainsi, $\ArithPeano$ est conservative sur $\HierArithP 2$.
+\end{proof}
 
 \subsection{BHK et réalisabilité}
 
@@ -1118,7 +1277,7 @@ préalables.
   \item si $\varphi = \psi \land \chi$ alors
     \begin{multline*}
       t \real_\rho \varphi \defeq
-      \forall A \in \satur,\forall u,v \in\STLCSet,\\
+      \forall A \in \satur,\forall u,v \in\STSet,\\
       (\forall w \real_\rho \psi, u[w/x] \in A) \implies
       (\forall w \real_\rho \chi, u[w/x] \in A)\implies \\
       \deltaSTLC t x u x v \in A
@@ -1164,13 +1323,13 @@ On peut ainsi prouver le lemme d'adéquation.
 \end{corollary}
 
 On pourrait être tenté d'en déduire que $\HA$ est une théorie cohérente, comme
-on l'a fait avec les machines de Turing. Cependant, cela est faux en l'état.
-On n'a en effet pas de moyen de prouver que la récurrence est réalisée. Cela est
-dû au fait que la définition de $t\real \forall x, \varphi$ signifie ici que
-$t$ est le même terme pour réaliser uniformément toutes les instances de
-$\varphi[\encode n/x]$ avec $n \in \bN$. Dans le principe de récurrence, comme
-on a pu le voir dans l'élimination des coupures, il est nécessaire d'effectuer
-un calcul qui dépend de l'entrée en elle-même.
+on l'a fait avec les machines de Turing. Cependant, cette conclusion est fausse
+en l'état. On n'a en effet pas de moyen de prouver que la récurrence est
+réalisée. Cela est dû au fait que la définition de $t\real \forall x, \varphi$
+signifie ici que $t$ est le même terme pour réaliser uniformément toutes les
+instances de $\varphi[\encode n/x]$ avec $n \in \bN$. Dans le principe de
+récurrence, comme on a pu le voir dans l'élimination des coupures, il est
+nécessaire d'effectuer un calcul qui dépend de l'entrée en elle-même.
 
 On peut être tenté de changer la définition de $\real$, de sorte que
 $t\real \forall x, \varphi$ signifie que pour tout $n$,

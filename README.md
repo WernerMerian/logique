@@ -48,7 +48,7 @@ IV. Calculabilité
 
 15. Arithmétique et incomplétude
 
-16. Complexité
+(16. Complexité ?)
 
 V. Théorie de la démonstration
 
@@ -56,9 +56,11 @@ V. Théorie de la démonstration
 
 18. Déduction naturelle
 
-19. Lambda-calcul
+19. Lambda-calcul non typé
 
-20. Cohérence de l'arithmétique
+20. Lambda-calcul typé
+
+21. Cohérence de l'arithmétique
 
 
 ## Protocole de compilation
