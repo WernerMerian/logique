@@ -1,0 +1,323 @@
+\chapter{Ultraproduits}
+\label{chp.ultraproduits}
+
+
+
+\minitoc
+
+
+\section{Ultrafiltres}
+
+Ainsi, $\mathcal{F}_{x}$ est un exemple d'ultrafiltre. Un ultrafiltre de cette forme est appelé \defexpr{principal}. Une question naturelle est alors de savoir si des ultrafiltres non principaux existent. Le résultat suivant répond par la positive.
+
+\begin{proposition}
+	Un ensemble $X$ non vide admet un ultrafiltre non principal si et seulement si il est infini.
+\end{proposition}
+
+\begin{proof}
+\end{proof}
+
+On peut donner une interprétation géométrique de ce résultat, qui permettra au passage de mieux comprendre l'espace formé par les ultrafiltres. Si l'on se place sur un espace topologique $X$ avec sa topologie discrète, alors on peut munir $\beta X$ d'une topologie (laquelle?) qui le rend compact (voir compactification de Stone--Čech). On considère alors la fonction
+\begin{align*}
+	f\colon X&\longrightarrow\beta X \\
+	x&\longmapsto\mathcal{F}_{x}
+\end{align*}
+on peut montrer que cette fonction est continue. Les ultrafiltres qui sont non principaux sont donc les éléments de $\beta X$ qui ne sont pas dans l'image de $f$. On peut donc voir ces ultrafiltres comme des éléments ``à l'infini''. Ce qu'il faut voir ici c'est que ces éléments ``à l'infini'' sont limites d'éléments de $X$ uniquement dans le cas où $X$ n'est PAS compact. Or, si $X$ est fini, il est donc compact (sous sa topologie discrète), ce qui rend impossible les ultrafiltres non principaux. C'est une analyse assez grossière de la situation, mais elle reste assez instructive.
+
+
+
+\section{Ultraproduits d'ensembles}
+
+Nous définissons maintenant l'opération d'ultraproduit d'ensembles. Soit $\mathcal{U}$ un ultrafiltre sur $I$, et pour chaque $i\in I$, soit $A_{i}$ un ensemble non vide. Intuitivement, l'ultraproduit $\prod_{\mathcal{U}}A_{i}$ est obtenu en prenant d'abord le produit cartésien $\prod_{i\in I}A_{i}$ puis en identifiant deux éléments qui sont ``$\mathcal{U}$-presque partout'' égaux sur $I$, avec la notion de ``$\mathcal{U}$-presque partout'' qui est volontairement laissée floue pour l'instant, mais qui prendra un sens formel par la suite.
+
+\begin{definition}[$\mathcal{U}$-équivalence]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $A_{i}$ un ensemble non vide. On définit une relation $\sim_{\mathcal{F}}$ sur le produit cartésien $\prod_{i\in I}A_{i}$ de la manière suivante: deux élément $\left(a_{i}\right)_{i\in I}$ et $\left(b_{i}\right)_{i\in I}$ du produit cartésien $\prod_{i\in I}A_{i}$ sont dit \defexpr{$\mathcal{U}$-équivalents}, noté $\left(a_{i}\right)_{i\in I}\sim_{\mathcal{U}}\left(b_{i}\right)_{i\in I}$, si l'ensemble $\Set{i\in I\suchthat a_{i}=b_{i}}$ appartient à $\mathcal{U}$.
+\end{definition}
+
+\begin{exercise}
+	Vérifier que $\sim_{\mathcal{U}}$ est une relation d'équivalence sur $\prod_{i\in I}A_{i}$. Pour cela, on a juste besoin du fait que $\mathcal{U}$ est un filtre.
+\end{exercise}
+
+\begin{remark}
+	Au lieu de demander que tous les ensembles $A_{i}$ soient non vides, on peut seulement demander à ce que $\Set{i\in I\suchthat A_{i}=\varnothing}\notin\mathcal{U}$.
+\end{remark}
+
+De nombreuses notations existent pour désigner la classe d'équivalence d'un élément du produit cartésien. Ainsi, si $\left(a_{i}\right)_{i\in I}\in\prod_{i\in I}A_{i}$, alors on trouvera dans la littérature les notations $\left(a_{i}\right)_{\mathcal{U}}$, $\lim_{\mathcal{U}}a_{i}$, ou encore $\mathcal{U}\text{-}\lim a_{i}$, pour désigner sa classe d'équivalence relativement à $\sim_{\mathcal{U}}$.
+
+\begin{definition}[Ultraproduit d'ensembles]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $A_{i}$ un ensemble non vide. L'\defexpr{ultraproduit} des $A_{i}$ par l'ultrafiltre $\mathcal{U}$, noté $\prod_{\mathcal{U}}A_{i}$, est défini comme l'ensemble des classes d'équivalence de $\prod_{i\in I}A_{i}$ pour $\sim_{\mathcal{U}}$, autrement dit
+	\[
+		\prod_{\mathcal{U}}A_{i}=\Set{\left(a_{i}\right)_{\mathcal{U}}\suchthat \left(a_{i}\right)_{i\in I}\in\prod_{i\in I}A_{i}}.
+	\]
+\end{definition}
+
+\begin{remark}
+	Plus généralement, la construction précédente peut encore être effectuée si $\mathcal{U}$ n'est plus un ultrafiltre, mais seulement un filtre propre sur $I$. L'ensemble résultant est appelée un \defexpr{produit réduit}. 
+\end{remark}
+
+Lorsque $\mathcal{U}$ est un ultrafiltre principal (ce qui arrive si et seulement si $\mathcal{U}$ contient son noyau $\bigcap\mathcal{U}$) alors l'ultraproduit est isomorphe à l'un des facteurs. Généralement, c'est pour cette raison que $\mathcal{U}$ est supposé non principal, ce qui arrive si et seulement si $\mathcal{U}$ est libre (ce qui signifie $\bigcap\mathcal{U}=\varnothing$), ou de manière équivalente, si tout sous-ensemble co-finis de $I$ est un élément de $\mathcal{U}$. De plus, puisque chaque ultrafiltre sur un ensemble fini est principal, l'ensemble d'indices $I$ est par conséquent aussi généralement supposé infini.
+
+\begin{definition}[Ultrapuissance d'un ensemble]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Soit $A$ un ensemble non vide. On appelle \defexpr{ultrapuissance} de $A$ par l'ultrafiltre $\mathcal{U}$ l'ultraproduit $\prod_{\mathcal{U}}A$, autrement dit l'ultraproduit de la suite $\left(A_{i}\right)_{i\in I}$ avec $A_{i}=A$ pour tout $i\in I$.
+\end{definition}
+
+Traditionnellement, l'ultrapuissance de l'ensemble $A$ est notée $A^{\mathcal{U}}$.
+
+\begin{definition}[Plongement canonique]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Soit $A$ un ensemble non vide. On définit le \defexpr{plongement canonique} de $A$ comme l'application $d\colon A\to\prod_{\mathcal{U}}A$ telle que pour tout $a\in A$, $d(a)$ est la $\mathcal{U}$-limite de la suite constante égale à $a$.
+\end{definition}
+
+\begin{proposition}
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Soit $A$ un ensemble non vide. Alors le plongement canonique de $A$ est une application injective.
+\end{proposition}
+
+
+
+\section{Ultraproduits de structures}
+
+Nous introduisons maintenant l'opération d'ultraproduit sur les structures du premier ordre. Pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure de domaine $M_{i}$. Intuitivement, l'ultraproduit de structures $\prod_{\mathcal{U}}\mathfrak{M}_{i}$ est l'unique $\sigma$-structure dont le domaine est l'ultraproduit d'ensembles $\prod_{\mathcal{U}}M_{i}$ telle que chaque formule atomique est vraie dans l'ultraproduit si et seulement si elle est vraie dans $M_{i}$ pour $i$ dans $\mathcal{U}$-presque tout $I$.
+
+\begin{definition}[Ultraproduit de structures]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Soit $\sigma$ une signature, et pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure non vide. L'\defexpr{ultraproduit} des $\mathfrak{M}_{i}$ par l'ultrafiltre $\mathcal{U}$ est la $\sigma$-structure $\mathfrak{M}$ définie de la manière suivante:
+	\begin{itemize}
+		\item son domaine $M$ est l'ultraproduit d'ensembles $\prod_{\mathcal{U}}M_{i}$,
+		\item pour chaque symbole de relation $R$ issu $\sigma$, si on note $n$ son arité, alors on définit son interprétation $R^{\mathfrak{M}}$ par: pour tout $m^{\left(1\right)},\dots,m^{\left(n\right)}\in\prod_{\mathcal{U}}M_{i}$ où $m^{\left(j\right)}=\left(m_{i}^{\left(j\right)}\right)_{\mathcal{U}}$ pour tout $j\in\{1,\dots,n\}$, on a
+		\[
+			\left(m^{\left(1\right)},\dots,m^{\left(n\right)}\right)\in R^{\mathfrak{M}}\quad\text{ssi}\quad\Set{i\in I\suchthat \left(m_{i}^{\left(1\right)},\dots,m_{i}^{\left(n\right)}\right)\in R^{\mathfrak{M}_{i}}}\in\mathcal{U},
+		\]
+		\item pour chaque symbole de fonction $F$ issu de $\sigma$, si on note $n$ son arité, alors on définit son interprétation $F^{\mathfrak{M}}$ par: pour tout $m^{\left(1\right)},\dots,m^{\left(n\right)}\in\prod_{\mathcal{U}}M_{i}$ où $m^{\left(j\right)}=\left(m_{i}^{\left(j\right)}\right)_{\mathcal{U}}$ pour tout $j\in\{1,\dots,n\}$, on a
+		\[
+			F^{\mathfrak{M}}\left(m^{\left(1\right)},\dots,m^{\left(n\right)}\right)=\left(F^{\mathfrak{M}_{i}}\left(m_{i}^{\left(1\right)},\dots,m_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}}.
+		\]
+	\end{itemize}
+\end{definition}
+
+En utilisant les propriétés des ultrafiltres, on peut vérifier qu'il existe une $\sigma$-structure unique $\mathfrak{M}$ qui vérifie les conditions de cette définition, ce qui prouve que l'ultraproduit de structures est bien défini. Les détails sont fastidieux mais routiniers. L'ultraproduit des $\sigma$-structures $\mathfrak{M}_{i}$ est traditionnellement noté $\prod_{\mathcal{U}}\mathfrak{M}_{i}$.
+
+\begin{proposition}
+	Soit $\sigma$ une signature, $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure non vide. Si $\mathcal{U}$ est un filtre principal, alors $\prod_{\mathcal{U}}\mathfrak{M}_{i}\cong\mathfrak{M}_{i_{0}}$ pour un certain $i_{0}\in I$.
+\end{proposition}
+
+\begin{proof}
+\end{proof}
+
+\begin{definition}[Ultrapuissance d'une structure]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Soit $\sigma$ une signature et soit $\mathfrak{M}$ une $\sigma$-structure non vide. On appelle \defexpr{ultrapuissance} de $\mathfrak{M}$ par $\mathcal{U}$ l'ultraproduit $\prod_{\mathcal{U}}\mathfrak{M}$, autrement dit l'ultraproduit de la suite $\left(\mathfrak{M}_{i}\right)_{i\in I}$ avec $\mathfrak{M}_{i}=\mathfrak{M}$ pour tout $i\in I$.
+\end{definition}
+
+
+
+\section{Le théorème de Łoś}
+
+Nous prouvons maintenant le théorème fondamental relatif aux ultraproduits, qui rend cette notion utile en théorie des modèles. Il montre qu'une formule est vraie dans un ultraproduit de structures $\prod_{\mathcal{U}}\mathfrak{M}_{i}$ si seulement si elle est vraie dans $\mathfrak{M}_{i}$ pour $i$ dans $\mathcal{U}$-presque tout $I$.
+
+Le théorème de Łoś, parfois appelé \partexpr{théorème fondamental des ultraproduits}, est dû à Jerzy Łoś\footnote{Le nom \guiexpr{Łoś} doit être prononcé \textipa{[\textprimstress{}w\textopeno\textctc]}, ce qui donne approximativement \guiexpr{ou-och}.}. Il affirme que toute formule du premier ordre est vraie dans l'ultraproduit $\prod_{\mathcal{U}}\mathfrak{M}_{i}$ si et seulement si l'ensemble des indices $i$ tels que la formule soit vraie dans $\mathfrak{M}_{i}$ est un élément de $\mathcal{U}$.
+
+\begin{lemma}\label{lem.Los-terme}
+	Soit $\sigma$ une signature, $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure non vide. On note $\mathfrak{M}$ l'ultraproduit $\prod_{\mathcal{U}}\mathfrak{M}_{i}$. Alors pour tout $\sigma$-terme $t\left(x_{1},\dots,x_{n}\right)$ et pour tout $a^{\left(1\right)},\dots,a^{\left(n\right)}\in\prod_{\mathcal{U}}M_{i}$, si on explicite $a^{\left(j\right)}=\left(a_{i}^{\left(j\right)}\right)_{\mathcal{U}}$ pour tout $j\in\{1,\dots,n\}$, alors on a
+	\[
+		t^{\mathfrak{M}}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)=\left(t^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}}.
+	\]
+\end{lemma}
+
+\begin{proof}
+	Par induction structurelle sur le $\sigma$-terme $t$
+	\begin{itemize}
+		\item Si $t$ est une variable $x$, alors pour tout $a\in\prod_{\mathcal{U}}M_{i}$, si on se fixe $a=\left(a_{i}\right)_{\mathcal{U}}$, alors on a
+		\[
+			t^{\mathfrak{M}}\left(a\right)=a=\left(a_{i}\right)_{\mathcal{U}}=\left(t^{\mathfrak{M}_{i}}\left(a_{i}\right)\right)_{\mathcal{U}}.
+		\]
+		
+		\item Si $t$ est un symbole de constante $c$ issu de $\sigma$, alors par définition de l'interprétation des symboles de constantes dans un ultraproduit de structures, on a
+		\[
+			t^{\mathfrak{M}}=c^{\mathfrak{M}}=\left(c^{\mathfrak{M}_{i}}\right)_{\mathcal{U}}=\left(t^{\mathfrak{M}_{i}}\right)_{\mathcal{U}}.
+		\]
+		
+		\item Si $t\left(x_{1},\dots,x_{n}\right)=F\left(t_{1}\left(x_{1},\dots,x_{n}\right),\dots,t_{m}\left(x_{1},\dots,x_{n}\right)\right)$, alors
+		\begin{align*}
+			&t^{\mathfrak{M}}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			=&F^{\mathfrak{M}}\left(t_{1}^{\mathfrak{M}}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right),\dots,t_{m}^{\mathfrak{M}}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\right)\\
+			=&F^{\mathfrak{M}}\left(\left(t_{1}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}},\dots,\left(t_{m}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}}\right)&&\text{(par hyptohèse d'induction)}\\
+			=&\left(F^{\mathfrak{M}_{i}}\left(t_{1}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right),\dots,F^{\mathfrak{M}_{i}}\left(t_{m}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)\right)_{\mathcal{U}}&&\text{(définition de $F^{\mathfrak{M}}$)}\\
+			=&\left(t^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}}
+		\end{align*}
+	\end{itemize}
+\end{proof}
+
+\begin{theorem}[Théorème de Łoś]\label{thm.Los}
+	Soit $\sigma$ une signature, $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure non vide. On note $\mathfrak{M}$ l'ultraproduit $\prod_{\mathcal{U}}\mathfrak{M}_{i}$. Alors pour toute $\sigma$-formule $\phi\left(x_{1},\dots,x_{n}\right)$ et pour tout $a^{\left(1\right)},\dots,a^{\left(n\right)}\in\prod_{\mathcal{U}}M_{i}$, si on explicite $a^{\left(j\right)}=\left(a_{i}^{\left(j\right)}\right)_{\mathcal{U}}$ pour tout $j\in\{1,\dots,n\}$, alors on a
+	\[
+		\mathfrak{M}\vDash\phi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\quad\text{ssi}\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\phi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}.
+	\]
+\end{theorem}
+
+\begin{proof}
+	Par induction structurelle sur la $\sigma$-formule $\phi$ (on suppose que $\phi$ est seulement construite via les connecteurs $\neg$, $\land$ et le quantificateur $\exists$).
+	\begin{itemize}
+		\item Si $\phi$ est une formule atomique, on note $\phi\left(x_{1},\dots,x_{n}\right)=R\left(t_{1}\left(x_{1},\dots,x_{n}\right),\dots,t_{m}\left(x_{1},\dots,x_{n}\right)\right)$ avec $R$ un symbole de relation $m$-aire issu de $\sigma$, et $t_{1},\dots,t_{m}$ des $\sigma$-termes. Alors
+		\begin{align*}
+			&\quad\mathfrak{M}\vDash\phi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\mathfrak{M}\vDash R\left(t_{1}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right),\dots,t_{m}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\right)\\
+			\text{ssi}&\quad\left(t_{1}^{\mathfrak{M}}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right),\dots,t_{m}^{\mathfrak{M}}\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\right)\in R^{\mathfrak{M}}\\
+			\text{ssi}&\quad\left(\left(t_{1}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}},\dots,\left(t_{m}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)_{\mathcal{U}}\right)\in R^{\mathfrak{M}}&&\text{(\cref{lem.Los-terme})}\\
+			\text{ssi}&\quad\left\{i\in I:\left(t_{1}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right),\dots,t_{m}^{\mathfrak{M}_{i}}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)\in R^{\mathfrak{M}_{i}}\right\}\in\mathcal{U}&&\text{(définition de $R^{\mathfrak{M}}$)}\\
+			\text{ssi}&\quad\left\{i\in I:\mathfrak{M}_{i}\vDash R\left(t_{1}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right),\dots,t_{m}\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right)\right\}\in\mathcal{U}\\
+			\text{ssi}&\quad\left\{i\in I:\mathfrak{M}_{i}\vDash\phi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right\}\in\mathcal{U}
+		\end{align*}
+		
+		\item Si $\phi\left(x_{1},\dots,x_{n}\right)=\psi\left(x_{1},\dots,x_{n}\right)\wedge\theta\left(x_{1},\dots,x_{n}\right)$, alors on a
+		\begin{align*}
+			&\quad\mathfrak{M}\vDash\phi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\mathfrak{M}\vDash\psi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\wedge\theta\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\mathfrak{M}\vDash\psi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\text{ et }\mathfrak{M}\vDash\theta\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\Set{i\in I\suchthat \mathfrak{M}_{i}\vDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}\\
+			&\quad\text{ et }\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\theta\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}&&\text{(par hypothèse d'induction)}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\\
+			&\quad\cap\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\theta\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}&&\text{(car }\mathcal{U}\text{ filtre)}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\text{ et }\mathfrak{M}_{i}\vDash\theta\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}\\
+			\text{ssi}&\quad\left\{i\in I:\mathfrak{M}_{i}\vDash\phi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)\right\}\in\mathcal{U}
+		\end{align*}
+		
+		\item Si $\phi\left(x_{1},\dots,x_{n}\right)=\neg\psi\left(x_{1},\dots,x_{n}\right)$, alors on a
+		\begin{align*}
+			&\quad\mathfrak{M}\vDash\phi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\mathfrak{M}\vDash\neg\psi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\mathfrak{M}\nvDash\psi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\notin\mathcal{U}&&\text{(par hypothèse d'induction)}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\nvDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}&&\text{(car }\mathcal{U}\text{ \impexpr{ultra}filtre)}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\neg\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\phi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}
+		\end{align*}
+		
+		\item Si $\phi\left(x_{1},\dots,x_{n}\right)=\exists y\psi\left(x_{1},\dots,x_{n},y\right)$, alors on a
+		\begin{align*}
+			&\quad\mathfrak{M}\vDash\phi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\mathfrak{M}\vDash\exists y\psi\left(a^{\left(1\right)},\dots,a^{\left(n\right)}\right)\\
+			\text{ssi}&\quad\text{il existe }b=\left(b_{i}\right)_{\mathcal{U}}\in\prod_{\mathcal{U}}M_{i}\text{ tel que}\\
+			&\quad\mathfrak{M}\vDash\psi\left(a^{\left(1\right)},\dots,a^{\left(n\right)},b\right)\\
+			\text{ssi}&\quad\text{il existe }b=\left(b_{i}\right)_{\mathcal{U}}\in\prod_{\mathcal{U}}M_{i}\text{ tel que}\\
+			&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)},b_{i}\right)}\in\mathcal{U}&&\text{(par hypothèse d'induction)}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\exists b_{i}\in M_{i}\left(\mathfrak{M}_{i}\vDash\psi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)},b_{i}\right)\right)}\in\mathcal{U}\\
+			\text{ssi}&\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\phi\left(a_{i}^{\left(1\right)},\dots,a_{i}^{\left(n\right)}\right)}\in\mathcal{U}
+		\end{align*}
+	\end{itemize}
+\end{proof}
+
+\begin{corollary}\label{cor.Los-enonce}
+	Soit $\sigma$ une signature, $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure non vide. On note $\mathfrak{M}$ l'ultraproduit $\prod_{\mathcal{U}}\mathfrak{M}_{i}$. Si $\phi$ est un $\sigma$-énoncé, alors
+	\[
+		\mathfrak{M}\vDash\phi\quad\text{ssi}\quad\Set{i\in I\suchthat\mathfrak{M}_{i}\vDash\phi}\in\mathcal{U}.
+	\]
+\end{corollary}
+
+\begin{corollary}
+	Soit $\sigma$ une signature, et soit $T$ est une $\sigma$-théorie. Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $\mathfrak{M}_{i}$ une $\sigma$-structure non vide. On note $\mathfrak{M}$ l'ultraproduit $\prod_{\mathcal{U}}\mathfrak{M}_{i}$. Si $\mathfrak{M}_{i}\vDash T$ pour tout $i\in I$, alors $\mathfrak{M}\vDash T$.
+\end{corollary}
+
+Autrement dit, tout ultraproduit de modèles d'une théorie est lui-même modèle de cette théorie. Ceci nous délivre donc une machine de construction de nouveaux modèles d'une théorie, à partir de modèles déjà connus. Par exemple, un ultraproduit de groupes (resp. de graphes, resp. de corps) est un groupe (resp. un graphe, resp. un corps).
+
+\begin{corollary}
+	Soient $\sigma$ une signature et $\mathfrak{N}$ une $\sigma$-structure non vide. Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Alors l'application canonique
+	\begin{align*}
+		\iota\colon\mathfrak{N}&\longrightarrow\mathfrak{N}^{\mathcal{U}}\\
+		a&\longmapsto(a)_{\mathcal{U}}
+	\end{align*}
+	est un plongement élémentaire, autrement dit $\mathfrak{N}\vDash\phi\left(\bar{a}\right)$ si et seulement si $\mathfrak{N}^{\mathcal{U}}\vDash\phi\left(\iota\left(\bar{a}\right)\right)$. En particulier $\mathfrak{N}\equiv\mathfrak{N}^{\mathcal{U}}$.
+\end{corollary}
+
+
+
+\section{Preuve du théorème de compacité}
+
+On peut prouver le théorème de compacité pour la logique du premier ordre en utilisant le théorème de complétude de Gödel, qui établit qu'un ensemble d'énoncés est satisfaisable si et seulement si aucune contradiction ne peut en être prouvée. Puisque les preuves sont toujours finies et n'impliquent donc qu'un nombre fini d'énoncés, le théorème de compacité s'ensuit. En fait, le théorème de compacité est équivalent au théorème de complétude de Gödel, et tous deux sont équivalents au théorème de l'idéal premier dans une algèbre de Boole, une forme faible de l'axiome du choix.
+
+Gödel a historiquement prouvé le théorème de compacité de cette manière, mais plus tard, des preuves \guiexpr{purement sémantiques} du théorème de compacité ont été trouvées; c'est-à-dire des preuves qui font référence à la \emphexpr{vérité} plutôt qu'à la \emphexpr{prouvabilité}.
+
+L'une de ces preuves repose sur des ultraproduits. C'est ce que l'on va développer dans cette section. À noter que cette preuve dépend de l'axiome du choix, par l'intermédiaire du Théorème de Łoś qui l'utilise dans sa démonstration.
+
+\begin{theorem}[Théorème de compacité]
+	Soit $\sigma$ une signature, et soit $T$ une $\sigma$-théorie. Si $T$ est finiment satisfaisable alors $T$ est satisfaisable. 
+\end{theorem}
+
+L'idée est de construire un ultraproduit en utilisant un ultrafiltre et une famille de modèles ``finement'' sélectionnés, afin que chaque énoncé de la théorie soit réalisée en vertu du théorème de Łoś. On va construire un ultrafiltre sur un ensemble d'indices $I$ qui va être en réalité l'ensemble des formules $T$, puis construire l'ultraproduit d'une famille d'éléments de $\mathcal{P}\left(T\right)$. Le coup de génie ici est donc d'utiliser la théorie $T$ vue comme un ensemble de formules à la fois comme ensemble d'indices, et comme ensemble de base pour une famille dont on va prendre l'ultraproduit.
+
+\begin{proof}[Preuve. (Version avec la théorie supposée fermée sous conjonction finie)]
+	Supposons que $T$ soit finiment satisfaisable. Quitte à prendre sa clôture par conjonction finie, sans perte de généralité, on peut supposer que $T$ est fermée sous conjonction finie\footnote{Si $T$ est finiment satisfaisable, alors sa clôture par conjonction finie $T^{*}$ est finiment satisfaisable. Et si on montre que $T^{*}$ est satisfaisable, comme $T\subseteq T^{*}$, alors $T$ sera elle aussi satisfaisable.}.
+	
+	Comme $T$ est finiment satisfaisable, alors pour chaque $\phi\in T$, on peut se fixer une $\sigma$-structure $\mathfrak{M}_{\phi}$ telle que $\mathfrak{M}_{\phi}\vDash\phi$. On obtient donc une famille de $\sigma$-structures $\left(\mathfrak{M}_{\phi}\right)_{\phi\in T}$.
+	
+	De plus, pour chaque $\phi\in T$, on pose $J_{\phi}=\Set{\psi\in T\suchthat\mathfrak{M}_{\psi}\vDash\phi}$. Montrons que la famille $\left(J_{\phi}\right)_{\phi\in T}$ admet la propriété d'intersection finie. Pour cela, soient $\phi_{1},\dots,\phi_{n}\in T$, comme $T$ est stable par conjonction finie, alors
+	\[
+		\bigcap_{i=1}^{n}J_{\phi_{i}}=\bigcap_{i=1}^{n}\Set{\psi\in T\suchthat\mathfrak{M}_{\psi}\vDash\phi_{i}}=\Set{\psi\in T\suchthat \mathfrak{M}_{\psi}\vDash\bigwedge_{i=1}^{n}\phi_{i}}=J_{\bigwedge_{i=1}^{n}\phi_{i}}\ni\bigwedge_{i=1}^{n}\phi_{i}\]
+	Donc $\bigcap_{i=1}^{n}J_{\phi_{i}}$ est non vide.
+	
+	Par conséquent, d'après le \cref{existence-ultrafiltre-contenant-famille-avec-FIP}, il existe un ultrafiltre $\mathcal{U}$ sur $T$ tel que $J_{\phi}\in\mathcal{U}$ pour chaque $\phi\in T$. Soit maintenant $\mathfrak{M}$ l'ultraproduit de $\left(\mathfrak{M}_{\phi}\right)_{\phi\in T}$ par rapport à $\mathcal{U}$. Or:
+	\begin{align*}
+		\mathfrak{M}\vDash T
+		\quad&\text{ssi}\quad\forall\phi\in T,\quad\mathfrak{M}\vDash\phi\\
+		\quad&\text{ssi}\quad\forall\phi\in T,\quad\Set{\psi\in T\suchthat\mathfrak{M}_{\psi}\vDash\phi}\in\mathcal{U}&&\text{(d'après \cref{cor.Los-enonce})}\\
+		\quad&\text{ssi}\quad\forall\phi\in T,\quad J_{\phi}\in\mathcal{U}
+	\end{align*}
+	Et comme par construction de $\mathcal{U}$, $J_{\phi}\in\mathcal{U}$ pour chaque $\phi\in T$, alors d'après l'équivalence que l'on vient de montrer $\mathfrak{M}\vDash T$.
+\end{proof}
+
+%\begin{proof}[Version générale]
+%	Supposons que $T$ soit finiment satisfaisable. Soit $I$ l'ensemble de tous les sous-ensembles finis de $T$. Pour chaque $i\in I$, on pose $F_{\Sigma_{0}}=\Set{\Delta\in\Sigma\suchthat\Sigma_{0}\subseteq\Delta}$. Autrement dit, $F_{\Sigma_{0}}$ est la collection de tous les sous-ensembles finis de $T$ incluant $\Sigma_{0}$. Clairement, $F_{\Sigma_{0}}$ est un sous-ensemble de $\Sigma$. On pose ensuite $F=\left\{F_{\Sigma_{0}}:\Sigma_{0}\in\Sigma\right\}$ qui est un sous-ensemble de $\powerset\left(\Sigma\right)$.
+%	
+%	Montrons que $F$ possède la propriété d'intersection finie. Pour cela, prenons n'importe quelle collection finie $\left(F_{\Sigma_{k}}\right)_{k\in\left\{1,\dots,n\right\}}$ d'éléments sur $F$, et remarquons que l'ensemble $S=\bigcup_{k\in\left\{1,\dots,k\right\}}\Sigma_{k}$ est un sous-ensemble fini de $T$.
+%	
+%	Autrement dit, $S\in\Sigma$. $S\in F_{\Sigma_{k}}$ pour chaque $k\in\left\{1,\dots,n\right\}$ par construction, et se trouve donc dans leur intersection. En fait, leur intersection est $F_{S}$. Donc l'intersection de toute collection finie d'éléments de $F$ n'est pas vide comme le prétend.
+%	
+%	
+%	Depuis $F$, qui est un ensemble de sous-ensembles de $\Sigma$, a la propriété d'intersection finie, il existe un ultrafiltre $\mathcal{U}$ sur $\Sigma$ l'incluant (par le corollaire du lemme de l'ultrafiltre).
+%	
+%	Si $\Sigma_{0}\in\Sigma$, alors par hypothèse il a un modèle $\mathfrak{M}_{\Sigma_{0}}$. Définissons
+%	\[
+%		\mathfrak{M}\defeq\quotient{\left(\prod_{\Sigma_{0}\in\Sigma}\mathfrak{M}_{\Sigma_{0}}\right)}{\sim_{\mathcal{U}}}.
+%	\]
+%	
+%	On vérifie que $\mathfrak{M}\vDash T$. Prenons n'importe quel $\phi\in T$, et observer que $F_{\left\{\phi\right\}}\in\mathcal{U}$ par définition de $\mathcal{U}$. De plus, si l'on définit $\Phi=\left\{\Sigma_{0}\in\Sigma:\mathfrak{M}_{\Sigma_{0}}\vDash\phi\right\}$, on a $F_{\left\{\phi\right\}}\subseteq\Phi$. Par conséquent, puisque $\mathcal{U}$ est un filtre et $F_{\left\{\phi\right\}}\in\mathcal{U}$, alors $\Phi\in\mathcal{U}$. Alors le théorème de Łoś implique que $\mathfrak{M}\vDash\phi$.
+%\end{proof}
+
+\section{Cardinalité d'un ultraproduit}
+
+\begin{proposition}
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$, et pour chaque $i\in I$, soit $M_{i}$ un ensemble non vide. Si $I$ est dénombrable, et si $\left\lvert M_{i}\right\rvert\leq 2^{\aleph_{0}}$ pour tout $i\in I$, alors
+	\[\left\lvert\prod_{\mathcal{U}}M_{i}\right\rvert\leq\left\lvert\prod_{i\in I}M_{i}\right\rvert\leq\prod_{i\in I}2^{\aleph_{0}}\leq\left(2^{\aleph_{0}}\right)^{\aleph_{0}}=2^{\aleph_{0}}\]
+\end{proposition}
+
+\begin{definition}[Suite $\mathcal{U}$-majorée]
+	Soit $\mathcal{U}$ un ultrafiltre sur un ensemble $I$. Une famille $\left(n_{i}\right)_{i\in I}$ d'éléments de $\mathbb{N}$ est dit \defexpr{$\mathcal{U}$-majorée} s'il existe $N\in\mathbb{N}$ tel que $\left\{i\in I:n_{i}\leq N\right\}\in\mathcal{U}$.
+\end{definition}
+
+\begin{remark}
+	Si l'ultrafiltre $\mathcal{U}$ est principal, alors toute suite est $\mathcal{U}$-majorée.
+\end{remark}
+
+\begin{lemma}
+	Soit $\mathcal{U}$ un ultrafiltre non principal sur un ensemble $I$. Soit $\left(M_{i}\right)_{i\in I}$ une famille d'ensembles finis telle que $\left(\left\lvert M_{i}\right\rvert\right)_{i\in I}$ ne soit pas $\mathcal{U}$-majorée. Alors $\left\lvert\prod_{\mathcal{U}}M_{i}\right\rvert\geq 2^{\aleph_{0}}$.
+\end{lemma}
+
+\begin{proof}
+	Pour chaque $i\in I$, soit $n_{i}\in\mathbb{N}$ le plus grand entier naturel tel que $2^{n_{i}}\leq\left\lvert M_{i}\right\rvert$. Donc intuitivement, $n_{i}$ est le logarithme en base $2$ de $\left\lvert M_{i}\right\rvert$. On observe que $\left(n_{i}\right)_{i\in\mathbb{N}}$ n'est pas $\mathcal{U}$-majorée.
+	
+	Pour chaque $i\in I$, on se fixe $\left(a_{s}^{\left(i\right)}\right)_{s\in\left\{0,1\right\}^{n_{i}}}$ un uplet d'éléments distincts de $M_{i}$. Maintenant, pour chacun $f\in 2^{\omega}$, on note $m_{f}\in\prod_{\mathcal{U}}M_{i}$ l'élément défini par $m_{f}=\left(a_{f\upharpoonright n_{i}}^{\left(i\right)}\right)_{\mathcal{U}}$.
+	
+	On affirme que si $m_{f}=m_{g}$, alors $f=g$. Par suite, on alors au moins $2^{\aleph_{0}}$ éléments dans $\prod_{\mathcal{U}}M_{i}$. Si $m_{f}=m_{g}$, alors $\left\{i\in I:a_{f\upharpoonright n_{i}}^{\left(i\right)}=a_{g\upharpoonright n_{i}}^{\left(i\right)}\right\}\in\mathcal{U}$, mais on a aussi $\left\{i\in I:n_{i}>N\right\}\in\mathcal{U}$ pour tout $N\in\mathbb{N}$. Donc l'intersection de ces deux ensembles sont dans $\mathcal{U}$ et sont donc non vides. Donc pour tout $N\in\mathbb{N}$ on a $f\upharpoonright N=g\upharpoonright N$, donc $f=g$.
+\end{proof}
+
+\begin{proposition}
+	Soit $\mathcal{U}$ un ultrafiltre non principal sur un ensemble dénombrable $I$. Soit $\left(M_{i}\right)_{i\in I}$ une famille d'ensembles non vides. Si $\left\lvert M_{i}\right\rvert\leq 2^{\aleph_{0}}$ pour tout $i\in I$, alors $\prod_{\mathcal{U}}M_{i}$ est soit fini soit de cardinalité $2^{\aleph_{0}}$.
+\end{proposition}
+
+\begin{proof}
+	%	Si la suite (|Mi |)i∈I est bornée par U, alors on utilise le lemme précédent
+	%	(et la remarque). Sinon, on peut montrer qu'il existe N ∈ N tel que
+	%	{je ∈ je : |Mi | ≤ N } ∈ U (et
+	%	Q |Mi | ≤ N peut être exprimé au premier ordre
+	%	formule), donc par le théorème de Los | U Mi | ≤N.
+	%	Corollaire 4. Si ℵ0 ≤ |M0 | ≤ 2ℵ0 et U n'est pas principal sur un ensemble dénombrable,
+	%	puis |M U | = 2ℵ0 .
+\end{proof}
+
+Une application directe de cette proposition est l'observation suivante. Si l'on considère $\prod_{\mathcal{U}}\bar{\mathbb{F}_{p}}^{\text{alg}}$, alors on obtient un corps algébriquement clos, de caractéristique $0$ et de cardinalité $2^{\aleph_{0}}$. Donc, d'après le théorème de Chevaley, ce corps est nécessairement isomorphe à $\mathbb{C}$.
