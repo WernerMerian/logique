@@ -55,13 +55,27 @@ utiliserons $\mathcal L_{\mathrm{ZF}} = \{ \in^2\}$. En effet, tous les énoncé
 seront écrits seulement à l'aide du symbole de relation binaire $\in$ et de la
 relation $=$, symbole logique déjà inclus dans tout langage.
 
+%\begin{remark}
+%  En réalité, nous le verrons, notre langage sera bien plus riche~: nous
+%  ajouterons des symboles de fonctions, de constantes, et diverses relations.
+%  Cependant, tous ces ajouts doivent être considérés comme des aides à la
+%  lecture~: toute proposition formulée dans l'enrichissement que nous donnerons
+%  au fur et à mesure doit pouvoir se formuler dans $\mathcal L_{\mathrm{ZF}}$,
+%  mais avec un nombre possiblement bien plus grand de symboles.
+%\end{remark}
+
 \begin{remark}
-  En réalité, nous le verrons, notre langage sera bien plus riche~: nous
-  ajouterons des symboles de fonctions, de constantes, et diverses relations.
-  Cependant, tous ces ajouts doivent être considérés comme des aides à la
-  lecture~: toute proposition formulée dans l'enrichissement que nous donnerons
-  au fur et à mesure doit pouvoir se formuler dans $\mathcal L_{\mathrm{ZF}}$,
-  mais avec un nombre possiblement bien plus grand de symboles.
+  Si, techniquement, la théorie ensembliste est une théorie relationnelle, nous
+  utilisons abondamment l'extension par définition (\cref{def.ext.def.rel} et
+  \cref{def.ext.def.fun}) pour introduire de nouveaux symboles~:
+  $\{x,y\}, \bigcup x, x \subseteq y,$ \latinexpr{etc.}
+  Il est néanmoins important de ne pas
+  les inclure dans notre signature en première instance, car le sens des
+  nouveaux symboles est uniquement déterminé par le sens de $\in$ et des axiomes
+  de $\mathrm{ZF}$. Ainsi, dans le \cref{chp.modZFC}, nous considérons des
+  sous-modèles (en un sens large) de l'univers $\mathcal U$ mais uniquement vis
+  à vis de la relation $\in$, les autres opérations pouvant différer d'une
+  sous-modèle à un autre.
 \end{remark}
 
 \begin{axiom}[Extensionalité]\label{ax.ZF.ext}
@@ -194,7 +208,7 @@ forme et dépendant d'un paramètre que l'on quantifie sur les formules.
 
   Construire un prédicat $\varphi(x,y,z)$ tel que $\varphi(x,y,z)$ est vrai
   si et seulement si $z = (x,y)$. En déduire en considérant une partie bien
-  choisie de $\powerset (\powerset(x\cup y))$ que
+  choisie de $\powerset (\powerset (\powerset(x\cup y)))$ que
   \[x\times y \defeq \{(a,b)\mid a \in x, b \in y\}\]
   est un ensemble bien défini.
 \end{exercise}
@@ -237,16 +251,40 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
   schéma d'axiomes de remplacement.
 \end{exercise}
 
+\begin{remark}
+  Le schéma de remplacement peut être décomposé en deux schémas plus faibles~:
+  \begin{itemize}
+  \item le schéma de compréhension
+  \item le schéma de remplacement total, énonçant la même chose que le schéma
+    de remplacement mais demandant à la relation fonctionnelle d'être totale,
+    c'est-à-dire de vérifier le prédicat
+    \[\Funct_{\mathrm{tot}}(R) \defeq \forall x \exists! y, R(x,y)\]
+    plutôt que $\Funct$.
+  \end{itemize}
+
+  En pratique, on utilise plutôt ces deux schémas indépendamment. Dans le cas
+  où on a défini une fonction $f$ et pour $X$ un ensemble, on notera alors
+  \[\{f(x) \mid x \in X\}\]
+  l'ensemble construit par cet axiome qui est défini de façon unique. Dire
+  qu'un objet $y$ appartient à cet ensemble revient donc à dire qu'il existe
+  $x \in X$ tel que $y = f(x)$.
+\end{remark}
+
 \begin{exercise}\label{exo.ZF.prod2}
   En réutilisant le prédicat $\varphi$ de l'\cref{exo.ZF.prod}, montrer grâce au
   schéma d'axiomes de remplacement que pour tous ensembles $x,y$, l'ensemble
   $x\times y$ est bien défini même sans l'axiome de l'ensemble des parties.
 \end{exercise}
 
-Donnons aussi l'axiome le plus évident.
+%Comme nous l'avons fait remarquer dans le \cref{chp.logpred}, certaines
+%conventions considèrent qu'il existe un élément dans l'univers de discours.
+%Comme nous ne souhaitons pas invoquer explicitement cette convention, nous
+%ajoutons en tant qu'axiome qu'il existe bien un objet dans notre univers.
+Donnons aussi l'axiome de l'univers non vide.
 
 \begin{axiom}[Univers non vide]\label{ax.ZF.nonEmpty}
-  Il existe un ensemble.
+  Il existe un ensemble~:
+  \[\exists x, x = x\]
 \end{axiom}
 
 \begin{exercise}
@@ -275,48 +313,62 @@ naturels. Une formalisation habituelle de cet ensemble demande en général les
 trois constituants suivant:
 \begin{itemize}
 \item l'élément $0$
-\item la fonction unaire $S$, correspondant à $n \mapsto n + 1$
+\item la fonction unaire $\Ss$ (successeur), correspondant à $n \mapsto n + 1$
 \item le principe de récurrence, que l'on peut encoder dans les ensembles par le
   fait que si $F\subseteq\mathbb N$, $0 \in F$ et
-  $\forall n, n\in F \implies S\;n \in F$ alors $F = \mathbb N$.
+  $\forall n, n\in F \implies \Ss n \in F$ alors $F = \mathbb N$.
 \end{itemize}
 
 Chercher à définir $\mathbb N$ dans ZFC nous demande donc de définir ces
 éléments. Un candidat naturel à $0$ est $\varnothing$~: les deux sont les objets
 nuls par excellence, et $\varnothing$ est le premier ensemble que l'on peut
-construire. La question de savoir ce qu'est $S\;x$ pour un ensemble $x$ est
+construire. La question de savoir ce qu'est $\Ss x$ pour un ensemble $x$ est
 alors naturelle~: pour cela, nous utilisons le codage de Von Neumann consistant
 à coder l'entier naturel $n$ par $\{0,\ldots,n-1\}$. En effet, cela nous offre
 une définition simple à la fonction $S$~:
-\[S\;x\defeq x\cup \{x\}\]
+\[\Ss x\defeq x\cup \{x\}\]
 
 Remarquons que l'on peut déjà construire tous les entiers que l'on souhaite~:
-on peut construire $0$ et itérer la fonction $S$. Malheureusement, rien ne nous
-dit que la collection $\{S^n\;0\mid n \in \mathbb N\}$ est bien elle-même un
-ensemble (où le $\mathbb N$ apparaissant dans la définition est l'ensemble des
+on peut construire $0$ et itérer la fonction $\Ss$. Malheureusement, rien ne
+nous dit que la collection $\{S^n\;0\mid n \in \mathbb N\}$ est bien elle-même
+un ensemble (où le $\bN$ apparaissant dans la définition est l'ensemble
+des
 entiers naturels de notre méta-théorie, nos entiers au sens intuitif). Pour
 pallier ce problème, et pour éviter d'utiliser notre méta-théorie explicitement,
 on va à la place définir $\mathbb N$ comme le plus petit ensemble contenant $0$
-et stable par la fonction $S$. Il nous reste à savoir qu'un ensemble contenant
+et stable par la fonction $\Ss$. Il nous reste à savoir qu'un ensemble contenant
 $0$ et stable par $S$ existe bien.
 
 \begin{axiom}[Infini]\label{ax.ZF.infini}
-  Il existe un ensemble contenant $\varnothing$ et stable par $S$~:
+  Il existe un ensemble contenant $\varnothing$ et stable par $\Ss$~:
   \[\exists x, \qquad \varnothing \in x \land
-  \forall y, y \in x \implies S\;y\in x\]
+  (\forall y, y \in x \implies \Ss y\in x)\]
 \end{axiom}
 
 \begin{remark}
   On peut donc se passer de l'axiome de l'ensemble vide en prenant l'axiome de
   l'infini (et en adaptant sa définition pour ne pas appeler explicitement
-  l'ensemble vide).
+  l'ensemble vide). Donnons ainsi une version de l'axiome de l'infini ne
+  mentionnant que la relation $\in$ et l'égalité~:
+  \begin{multline*}
+    \exists x, \quad
+    (\forall y, (\forall z, \lnot z \in y) \implies y \in x) \land\\
+    (\forall y, y \in x \implies \\
+    (\forall z, (\forall a, a \in z \iff a = y \lor a \in y) \implies
+    z \in x))
+  \end{multline*}
+  On reconnait les deux parties du $\land$~: à gauche, on dit que tout ensemble
+  vide est dans $x$, et à droite que tout élément $y$ de $x$ contient tous les
+  éléments de la forme $\Ss y$ (c'est-à-dire, tous les $z$ dont les éléments
+  sont ceux de $y$ et $y$). Il est clair que cette définition est à la fois
+  longue et difficile à lire, d'où l'intérêt d'introduire de nouveaux symboles.
 \end{remark}
 
 \begin{definition}[Entiers naturels]
   Soit $X$ l'ensemble défini par l'axiome de l'infini. On définit alors
   $\mathbb N$ comme
   \[\mathbb N \defeq \{x\in X \mid \forall Y, Y\subseteq X\land
-  \varnothing \in Y \land (\forall a, a \in Y \implies S\;a\in Y) \implies
+  \varnothing \in Y \land (\forall a, a \in Y \implies \Ss a\in Y) \implies
   x\in Y\}\]
 \end{definition}
 
@@ -324,7 +376,7 @@ On vérifie maintenant le principe de récurrence.
 
 \begin{theorem}[Récurrence]
   Soit $F$ une partie de $\mathbb N$ telle que $\varnothing \in F$ et telle que
-  $\forall n, n \in F \implies S\;n \in F$, alors $F = \mathbb N$.
+  $\forall n, n \in F \implies \Ss n \in F$, alors $F = \mathbb N$.
 \end{theorem}
 
 \begin{proof}
@@ -333,10 +385,10 @@ On vérifie maintenant le principe de récurrence.
   $F\subseteq X$ pour $X$ l'ensemble à partir duquel $\mathbb N$ a été défini.
   On sait de plus que
   \[x \in \mathbb N \implies \forall Y, Y\subseteq X \land
-  \varnothing \in Y \land (\forall a, a \in Y \implies S\;a \in Y) \implies
+  \varnothing \in Y \land (\forall a, a \in Y \implies \Ss a \in Y) \implies
   x\in Y\]
   d'où, en spécialisant $Y$ en $F$, et sachant que $\varnothing\in F$ et
-  $\forall n, n \in F \implies S\;n \in F$, il vient que
+  $\forall n, n \in F \implies \Ss n \in F$, il vient que
   \[x\in \mathbb N \implies x \in F\] ce qui est exactement
   $\mathbb N\subseteq F$, d'où le résultat.
 \end{proof}
@@ -415,7 +467,7 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
 \begin{remark}
   Dire que $f$ est partielle, dans ce cadre, n'est pas bien défini. En effet, on
   peut toujours prendre une fonction $f : X \to Y$ et l'étendre en
-  $f : S\;X \to Y$~: la fonction est la même mais cette propriété change. Pour
+  $f : \Ss X \to Y$~: la fonction est la même mais cette propriété change. Pour
   éviter cela, une fonction consistera souvent plutôt en un triplet
   $(X,Y,\Gamma_f)$, mais nous nous concentrerons simplement sur $\Gamma_f$. Il y
   a donc un abus de notation ici lorsque nous construirons par exemple une
@@ -423,66 +475,98 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
   connait toujours grâce au contexte les deux autres composantes de la fonction.
 \end{remark}
 
-\begin{notation}
-  Soit une fonction $f : X \to Y$. On s'autorise à ajouter $f$ comme symbole de
-  fonction dans notre langage, dont l'argument est un élément de $X$. Cela n'est
-  pas autorisé par défaut, et nous devons donc le coder dans notre langage
-  élémentaire (de la même manière que l'on convient qu'il est possible de
-  réécrire $x\cup y$ uniquement grâce à $\in$ et $=$). Pour cela, on définit la
-  traduction d'une phrase $\varphi$ faisant potentiellement intervenir
-  l'expression $f(x)$ en une phrase $\varphi'$ sans $f(x)$, par induction sur
-  la structure de $\varphi$ :
-  \begin{itemize}
-  \item si $\varphi = R(f(x))$ où $R$ est une proposition atomique (une relation
-    avec potentiellement d'autres termes que $f(x)$), alors
-    \[\varphi' \defeq \forall y\in Y, (x,y)\in \Gamma_f \implies R(y)\]
-  \item si $\varphi = \lnot \psi$, alors $\varphi' = \lnot \psi'$.
-  \item si $\varphi = \psi \lor \chi$, alors $\varphi' = \psi'\lor \chi'$.
-  \item si $\varphi = \psi \land \chi$, alors $\varphi' = \psi'\land \chi'$.
-  \item si $\varphi = \exists a, \psi$, alors $\varphi' = \exists a, \psi'$.
-  \item si $\varphi = \forall a, \psi$, alors $\varphi' = \forall a, \psi'$.
-  \end{itemize}
+%\begin{notation}
+%  Soit une fonction $f : X \to Y$. On s'autorise à ajouter $f$ comme symbole de
+%  fonction dans notre langage, dont l'argument est un élément de $X$. Cela
+%  n'est
+%  pas autorisé par défaut, et nous devons donc le coder dans notre langage
+%  élémentaire (de la même manière que l'on convient qu'il est possible de
+%  réécrire $x\cup y$ uniquement grâce à $\in$ et $=$). Pour cela, on définit la
+%  traduction d'une phrase $\varphi$ faisant potentiellement intervenir
+%  l'expression $f(x)$ en une phrase $\varphi'$ sans $f(x)$, par induction sur
+%  la structure de $\varphi$ :
+%  \begin{itemize}
+%  \item si $\varphi = R(f(x))$ où $R$ est une proposition atomique (une
+%  relation
+%    avec potentiellement d'autres termes que $f(x)$), alors
+%    \[\varphi' \defeq \forall y\in Y, (x,y)\in \Gamma_f \implies R(y)\]
+%  \item si $\varphi = \lnot \psi$, alors $\varphi' = \lnot \psi'$.
+%  \item si $\varphi = \psi \lor \chi$, alors $\varphi' = \psi'\lor \chi'$.
+%  \item si $\varphi = \psi \land \chi$, alors $\varphi' = \psi'\land \chi'$.
+%  \item si $\varphi = \exists a, \psi$, alors $\varphi' = \exists a, \psi'$.
+%  \item si $\varphi = \forall a, \psi$, alors $\varphi' = \forall a, \psi'$.
+%  \end{itemize}
+%
+%  On considère donc qu'introduire la notation $f(x)$ est une facilité
+%  d'écriture.
+%\end{notation}
 
-  On considère donc qu'introduire la notation $f(x)$ est une facilité
-  d'écriture.
+%\begin{remark}
+%  Cet abus de notation est aussi possible dans le cas d'une relation
+%  fonctionnelle qui n'est pas donnée par une fonction (au sens ensembliste).
+%  On peut en particulier voir nos ajouts de notations tels que $\varnothing$,
+%  $\bigcup$ ou $\{ x \in X \mid \varphi(x)\}$ comme de tels abus de notation.
+%  Il est d'ailleurs possible de rendre ce procédé formel, ce qui se base sur la
+%  notion d'extension par définition, mais nous ne préciserons pas ces notions
+%  métamathématiques dans ce livre, nous renvoyons le lecteur intéressé par ces
+%  questions à \cite{Troelstra1973-TROMIO}.
+%\end{remark}
+
+\begin{notation}
+  Dans le cas d'une fonction $f : X \to Y$, il est naturel d'ajouter un
+  symbole de fonction correspondant, pour externaliser l'objet ensembliste
+  interne (et ainsi parler dans notre langage de la fonction $f$ associée).
+  Il existe plusieurs façons de traiter formallement cet ajout. On peut
+  par exemple ajouter une opération agissant sur tout $\mathcal U$ de la façon
+  suivante~:
+  \[\mathrm{App}(f,x,y) \defeq (x,y) \in \Gamma_f\]
+  Cette formule $\mathrm{App}$ définit une fonction partielle qu'on peut rendre
+  totale \latinexpr{e.g.} en ajoutant que s'il n'existe aucun $y$ tel que
+  $(x,y) \in \Gamma_f$, alors $\mathrm{App}(f,x,z)$ est vraie pour un $z$
+  quelconque. On peut ainsi ajouter un symbole de fonction $\mathrm{App}$ et
+  considérer que $f(x)$ est une réécriture plus lisible du symboles de
+  fonction associé à $\mathrm{App}(f,x)$.
 \end{notation}
 
-\begin{remark}
-  Cet abus de notation est aussi possible dans le cas d'une relation
-  fonctionnelle qui n'est pas donnée par une fonction (au sens ensembliste).
-  On peut en particulier voir nos ajouts de notations tels que $\varnothing$,
-  $\bigcup$ ou $\{ x \in X \mid \varphi(x)\}$ comme de tels abus de notation.
-  Il est d'ailleurs possible de rendre ce procédé formel, ce qui se base sur la
-  notion d'extension par définition, mais nous ne préciserons pas ces notions
-  métamathématiques dans ce livre, nous renvoyons le lecteur intéressé par ces
-  questions à \cite{Troelstra1973-TROMIO}.
-\end{remark}
+\begin{notation}
+  Pour définir une fonction, on utilisera généralement la notation
+  \[\begin{array}{ccccc}
+  f & : & X & \longrightarrow & Y \\
+  & & x & \longmapsto & t
+  \end{array}\]
+  où $t$ est un terme pouvant faire intervenir la variable $x$, permettant de
+  donner une description fiable du graphe $\Gamma_f$, ainsi que des ensembles
+  $X,Y$ respectivement de départ et d'arrivée. Dans le cas où on souhaite
+  uniquement désigner le graphe de la fonction, on pourra écrire $x \mapsto t$
+  directement.
+\end{notation}
 
 On définit de plus les notions d'injectivité, de surjectivité et de bijectivité.
 
 \begin{definition}[Injectivité, surjectivité, bijectivité]
   Une fonction $f : A \to B$ est dite injective si chaque élément $b\in B$ a au
   plus un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
-  \[\forall x,y\in A, f(x) = f(y)\implies x=y\]
+  \[\forall a_0,a_1\in A, f(a_0) = f(a_1)\implies a_0 = a_1\]
 
   Une fonction $f : A \to B$ est dite surjective si tout élément $b\in B$ a au
   moins un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
-  \[\forall y\in B, \exists x \in A, f(x)=y\]
+  \[\forall b\in B, \exists a \in A, f(a) = b\]
 
   Une fonction $f : A \to B$ est dite bijective si elle est à la fois injective
   et surjective.
 \end{definition}
 
-Donnons un exercice pour manipuler la notion de fonction et celle de récurrence.
+En combinant notre construction de $\bN$ aux considérations fonctionnelles, on
+en vient à définir le principe de récursion sur $\bN$.
 
 \begin{exercise}
   Montrer que l'on peut définir des fonctions par récursion sur $\mathbb N$,
   c'est-à-dire montrer que si l'on a un ensemble $X$, un élément $x_0\in X$ et
-  une fonction $f_S : \mathbb N \times X \to X$ alors il existe une unique
+  une fonction $f_{\Ss} : \mathbb N \times X \to X$ alors il existe une unique
   fonction $f : \mathbb N \to X$ telle que
   \[\begin{cases}
   f(0) = x_0\\
-  \forall n \in \mathbb N, f(S\;n) = f_S(n,f(n))
+  \forall n \in \mathbb N, f(\Ss n) = f_{\Ss}(n,f(n))
   \end{cases}\]
 \end{exercise}
 
@@ -495,11 +579,22 @@ en considérant seulement ses projections.
   $f\mapsto (x\mapsto y \mapsto f(x,y))$.
 \end{exercise}
 
-Donnons maintenant deux nouvelles formulations de l'axiome du choix.
+\begin{exercise}
+  Montrer que pour tout ensemble $X$, il existe une unique fonction
+  $! : \varnothing \to X$.
+\end{exercise}
+
+Donnons maintenant deux nouvelles formulations de l'axiome du choix. Dans ces
+formulations, plutôt que d'isoler un ensemble $C$ intersectant chaque élément
+d'un ensemble $X$ en des singletons, on considère directement une fonction qui
+va, à un ensemble $X$, associer à chaque $x \in X$ un élément de $x$. On appelle
+une telle fonction une fonction de choix, et l'axiome du choix peut se formuler
+en un principe d'existence de fonctions de choix.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
-  \[\forall x, \varnothing\neq x \land \varnothing\notin x \implies
+  \[\forall x, %\varnothing\neq x \land
+  \varnothing\notin x \implies
   \exists f : x \to \bigcup x, \forall y \in x, f(y) \in y\]
 \end{proposition}
 
@@ -523,23 +618,22 @@ Donnons maintenant deux nouvelles formulations de l'axiome du choix.
   pour tout $x\in X$. Soit alors $C = \im(f)$. Comme $f(x)\in x$ et tous les
   éléments de $X$ sont deux à deux disjoints, on en déduit que $C\cap x$
   contient au plus un élément, pour chaque $x\in X$. Comme de plus
-  $f(x) = x$, $C\cap x$ contient au moins un élément. Donc $C\cap x$ est un
+  $f(x) \in x$, $C\cap x$ contient au moins un élément. Donc $C\cap x$ est un
   singleton.
 \end{proof}
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
-  \[\forall x, x\neq\varnothing\implies
+  \[\forall x, %x\neq\varnothing\implies
   \exists f : \powerset (x) \backslash \{\varnothing\} \to x,
   \forall y \in \powerset(x)\backslash \{\varnothing\}, f(y)\in y\]
 \end{proposition}
 
 \begin{proof}
   Cette formulation est un cas particulier de la formulation précédente, puisque
-  $\powerset(x)\setminus\{\varnothing\}$ est non vide et ne contient que des
-  éléments non vides.
+  $\powerset(x)\setminus\{\varnothing\}$ ne contient que des éléments non vides.
 
-  Réciproquement, supposons qu'on a $x$ non vide donc les éléments sont non
+  Réciproquement, supposons qu'on a $x$ dont les éléments sont non
   vides. On a alors
   \[x\subseteq \powerset\bigg(\bigcup x\bigg)\setminus\{\varnothing\}\]
   d'où le résultat en spécialisant une fonction de choix donnée par hypothèse
@@ -554,11 +648,14 @@ simplement considérer comme une généralisation de l'opération $\times$.
   \[\prod X \defeq \Big\{f : X \to \bigcup X \;\Big|\; \forall x \in X, f(x)\in
   x\Big\}\]
 
-  Si $\{X_i\}_{i\in I}$ est une famille de fonctions (c'est-à-dire une fonction
+  Si $\{X_i\}_{i\in I}$ est une famille d'ensembles (c'est-à-dire une fonction
   $g : i \mapsto X_i$) alors on considère que
   \[\prod_{i\in I} X_i \defeq \Big\{ f : I \to \bigcup_{i\in I} X_i\;\Big|\;
   \forall i \in I, f(i) \in X_i\Big\}\]
 \end{definition}
+
+L'axiome du choix peut alors se réécrire en disant que le produit de toute
+famille non vide d'ensembles non vides est lui-même non vide.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante :
@@ -575,10 +672,12 @@ simplement considérer comme une généralisation de l'opération $\times$.
 \subsection{Axiome de fondation}
 
 Le dernier axiome de ZFC est l'axiome de fondation. Selon les auteurs, il est ou
-non ajouté à ZFC : ici, nous considérerons que ZFC le contient. Cet axiome
-empêche l'existence de cycles d'appartenance, par exemple d'ensemble $x$ tel que
+non ajouté à ZFC~: ici, nous considérerons que ZFC le contient. Cet axiome
+empêche notamment l'existence de cycles d'appartenance, par exemple d'ensemble
+$x$ tel que
 $x\in x$. Formellement, l'axiome énonce que la relation $\in$ sur l'univers
-ensembliste $\mathcal U$ est bien fondée.
+ensembliste $\mathcal U$ est bien fondée au sens de la \cref{def.wf.ord}, à ceci
+près que la relation n'est pas un ordre.
 
 \begin{axiom}[Fondation]\label{ax.ZF.AF}
   Pour tout ensemble $x$ non vide, il existe $y\in x$ tel que
@@ -586,6 +685,18 @@ ensembliste $\mathcal U$ est bien fondée.
   \[\forall x, x\neq\varnothing \implies \exists y \in x, x\cap y =
   \varnothing\]
 \end{axiom}
+
+\begin{remark}
+  La formulation précédente est une façon standard de donner l'axiome de
+  fondation. Cependant, celle-ci transmet difficilement l'idée sous-jacente.
+  La bonne fondation de $\in$ se traduit, de façon littérale, par le fait que
+  pour tout ensemble $x$ il existe un ensemble $y$ minimal pour $\in$ dans $x$.
+  Être minimal pour $\in$ dans $x$ signifie qu'il n'existe aucun élément
+  $z \in x$ tel que $z \in y$, ce qui revient à dire que
+  $x \cap y = \varnothing$. Ainsi, il existe $y$ tel que
+  $x \cap y = \varnothing$, mais cette proposition est à considérer comme
+  portant avant tout sur la relation $\in$ elle-même.
+\end{remark}
 
 Si l'on voit un ensemble $x$ comme un arbre, où chaque n\oe ud est un ensemble
 et où l'on place une arête entre $x$ et $y$ si $x\in y$, alors l'axiome de
@@ -650,6 +761,25 @@ transitif.
   \[\forall y\in x, y\subseteq x\]
 \end{exercise}
 
+La clôture transitive est l'outil par excellence permettant de prouver que
+certaines équations d'ensembles sont impossibles sous l'axiome de fondation.
+
+\begin{exercise}
+  Pour chaque définition de l'ensemble $x$, donner $\trcl(x)$ et montrer que
+  l'axiome de fondation empêche l'existence de l'ensemble $x$~:
+  \begin{enumerate}[label=(\roman*)]
+  \item $x = \{x \}$~;
+  \item $x = \{\{\{x \}\}\}$~;
+  \item $x = \{y\}$ et $y = \{x\}$.
+  \end{enumerate}
+
+  Montrer qu'il n'existe pas de suite décroissante pour l'inclusion,
+  c'est-à-dire de famille d'ensembles $(x_i)_{i \in \bN}$ vérifiant
+  \[\forall i \in \bN, x_{i+1} \in x_i\]
+  \textit{Indication~: on pourra considérer l'ensemble
+    $\{ x_i \mid i \in \bN\}$.}
+\end{exercise}
+
 Les deux propriétés de bonne fondation de $\in$ et de transitivité mènent au
 lemme d'effondrement de Mostowski. Celui-ci montre que toute classe munie d'une
 relation se comportant suffisamment comme la relation $\in$ peut en fait se
@@ -669,14 +799,14 @@ directement $\in$.
     \[\forall x,y\in \mathcal M, R^{-1}[x] = R^{-1}[y] \implies x = y\]
   \end{itemize}
 
-  Alors il existe une unique classe $\mathcal N$ et un unique isomorphisme
-  $\phi : \mathcal M\to \mathcal N$ tels que
+  Alors il existe une unique classe $\mathcal N$ transitive et un unique
+  isomorphisme $\phi : \mathcal M\to \mathcal N$ tels que
   $(\mathcal M,R) \overset{\phi}{\cong} (\mathcal N,\in)$.
 \end{lemma}
 
 \begin{remark}
   Nous n'avons pas formellement défini ce qu'est un isomorphisme entre classes.
-  Cette définition est assez naturelle : étant données deux classes $\mathcal M$
+  Cette définition est assez naturelle~: étant données deux classes $\mathcal M$
   et $\mathcal N$ avec chacune une relation $R$ (respectivement $R'$), un
   isomorphisme $\phi : (\mathcal M,R)\cong (\mathcal N,R')$ est une proposition
   $\phi$ à deux variables libres telle que, pour une proposition $\psi$
@@ -704,20 +834,45 @@ directement $\in$.
 
 \begin{proof}
   Montrons d'abord que si $M_1$ et $M_2$ sont deux classes transitives et que
-  $\theta : M_1\to M_2$ est un isomorphisme pour la rleation $\in$, alors
+  $\theta : M_1\to M_2$ est un isomorphisme pour la relation $\in$, alors
   $\theta$ est l'identité.
 
-  Par l'absurde, supposons que $\theta$ n'est pas l'identité. La classe
-  $C = \{x\mid \theta(x)\neq x\}$ n'est donc pas vide. Par l'axiome de
-  fondation, on trouve un élément minimal $x\in C$, et soit $y = \theta(x)$. On
-  peut alors remarquer que par minimalité de $x$, pour tout $z\in x$,
-  $\theta(z)=z$, et comme $\theta$ est un isomorphisme on en déduit que
-  $z\in y$. Ainsi $x\subseteq y$. Il nous reste à montrer que $y\subseteq x$~:
-  si $z\in y$, alors $z\in M_2$ comme $M_2$ est une classe transitive, donc on
-  trouve $a\in M_1$ tel que $\theta(a)=z$, mais comme $\theta(a)\in \theta(x)$,
-  on en déduit que $a\in x$, et puisque $x$ est minimal dans $C$, $\theta(a)=a$,
-  c'est-à-dire $z = a$. Donc $y\subseteq x$. On a donc une absurdité étant donné
-  que $x = \theta(x)$ : ainsi $C$ est vide, donc $\theta$ est l'identité.
+  Par l'absurde, supposons que $\theta$ n'est pas l'identité. Soit alors
+  $C = \{x\mid \theta(x)\neq x\}$, non vide par hypothèse. Soit alors
+  $x_0 \in C$~: $\trcl(\{x_0\}) \cap C$ est un ensemble non vide (il contient au
+  moins $x_0$) et, par
+  fondation, il est possible de choisir $x$ minimal, \latinexpr{i.e.}
+  $x \in \trcl(\{x_0\})\cap C$ tel que
+  $x\cap \trcl(\{x_0\})\cap C = \varnothing$. Alors,
+  pour tout $y \in x$, on sait (par minimalité de $x$) que $y\notin C$, donc
+  par définition que $\theta(y) = y$. Mais alors, comme $\theta$ est un
+  isomorphisme pour $\in$~:
+  \begin{align*}
+    \theta(x) &= \{ z \in \theta(x)\} \\
+    &= \{ \theta(y) \mid \theta(y) \in \theta(x)\} &
+    \text{en posant}\; y \defeq \theta^{-1}(z) \\
+    &= \{ \theta(y) \mid y \in x \} \\
+    &= \{ y\mid y \in x \} & \text{par la remarque précédente}\\
+    \theta(x) &= x & \text{par extensionalité}
+  \end{align*}
+  donc $\theta(x) = x$, ce qui contredit le fait que $x$ soit dans $C$.
+
+%  La classe
+%  n'est donc pas vide. On peut donc considérer
+%  $x_0 \in C$, puis par l'axiome de
+%  fondation, $x \in C$ minimal pour $\in$, en prenant $x$ un élément minimal de
+%  $\trcl(x_0)$.
+%  on trouve un élément minimal $x\in C$, et soit $y = \theta(x)$. On
+%  peut alors remarquer que par minimalité de $x$, pour tout $z\in x$,
+%  $\theta(z)=z$, et comme $\theta$ est un isomorphisme on en déduit que
+%  $z\in y$. Ainsi $x\subseteq y$. Il nous reste à montrer que $y\subseteq x$~:
+%  si $z\in y$, alors $z\in M_2$ comme $M_2$ est une classe transitive, donc on
+%  trouve $a\in M_1$ tel que $\theta(a)=z$, mais comme $\theta(a)\in \theta(x)$,
+%  on en déduit que $a\in x$, et puisque $x$ est minimal dans $C$,
+%  $\theta(a)=a$,
+%  c'est-à-dire $z = a$. Donc $y\subseteq x$. On a donc une absurdité étant
+%  donné
+%  que $x = \theta(x)$ : ainsi $C$ est vide, donc $\theta$ est l'identité.
 
   Reprenons maintenant notre classe $\mathcal M$. On définit alors la classe
   $\mathcal N$ par l'image de la fonction $\pi$ définie comme suit :
@@ -726,12 +881,12 @@ directement $\in$.
   & & x & \longmapsto & \{\pi(y)\mid y \in R^{-1}[x]\}
   \end{array}\]
   c'est-à-dire que la relation $\pi$ est définie par la proposition
-  \[\pi(y) \defeq \{\pi(z)\mid z \in R^{-1}[x]\}\]
+  \[\pi(x,z) \defeq z = \{\pi(y)\mid y \in R^{-1}[x]\}\]
   où l'on prouve par l'absurde que cette proposition vérifie les propriétés d'un
   isomorphisme entre $(\mathcal M,R)$ et $(\mathcal N,\in)$, en utilisant un
   principe analogue à la preuve précédente. La classe $\mathcal N$ est définie
   par la proposition
-  \[y \in \mathcal N \defeq \exists x\in\mathcal M, \pi(x,y)\]
+  \[z \in \mathcal N \defeq \exists x\in\mathcal M, \pi(x,z)\]
 
   L'unicité découle alors du fait que s'il existe une autre telle classe
   $\mathcal N'$, alors l'isomorphisme entre elle et $\mathcal N$ vérifie les
@@ -755,12 +910,25 @@ directement $\in$.
     (\forall a \in X, \varphi(a) \land \forall b, b R a \implies b \in X)
     \land \exists f : X \to \mathcal U, \\(\forall z\in X,
     \forall Y, (\forall a, a \in Y \iff a R z) \implies
-    f(z) = \{f(a) \mid a R z\})\\
+    f(z) = \{f(a) \mid a R z\})
     \land f(x) = y
   \end{multline*}
-
-  Et l'utilisation du \cref{thm.recur.bf} permet de conclure que cette relation
+  et l'utilisation du \cref{thm.recur.bf} permet de conclure que cette relation
   est bien fonctionnelle.
+
+  Au sein même de cette définition, on voit apparaître l'écriture
+  $f : X \to \mathcal U$, qui peut là encore sembler litigieuse. Une fonction
+  $X \to \mathcal U$ est en fait un ensemble décrivant une relation
+  fonctionnelle totale dont le domaine est $X$, sans restriction sur l'ensemble
+  d'arrivée. Ces fonctions $X \to \mathcal U$ constituent une classe, mais
+  cela n'est pas un problème lorsqu'on effectue une quantification.
+\end{remark}
+
+\begin{remark}
+  Dans la conclusion de la démonstration, dire que $\mathcal N = \mathcal N'$
+  signifie que $x \in \mathcal N \iff x \in \mathcal N'$, \latinexpr{i.e.} que
+  les formules $\varphi$ et $\varphi'$ définissant respectivement $\mathcal N$
+  et $\mathcal N'$ sont équivalentes.
 \end{remark}
 
 \subsection{Résumé~: les fragments de ZFC}\label{subsec.frag.ZFC}
@@ -784,7 +952,7 @@ axiomes d'extensionalité, de réunion, d'ensemble des parties et de l'infini).
 
 Dans la suite du chapitre, nous n'aurons besoin que de $\mathrm Z - \AxF$.
 
-\section{Construction des autres ensembles de nombres}
+\section{Construction des ensembles de nombres}
 
 Nous avons construit $\mathbb N$ directement grâce à l'axiome de l'infini, mais
 celui-ci n'est pas le seul ensemble de nombres important à construire. Dans
@@ -796,24 +964,24 @@ ensemble et le principe de récurrence.
 \subsection{Les entiers naturels}
 
 Rappelons les points essentiels à propos de $\mathbb N$~: cet ensemble contient
-$0$, une fonction $S$ unaire, et le principe de récurrence. De plus, on peut
+$0$, une fonction $\Ss$ unaire, et le principe de récurrence. De plus, on peut
 définir une fonction par récursion. Nous pouvons donc définir les fonctions
 $+$ et $\times$.
 
 \begin{definition}[Addition, multiplication]
   On définit la fonction $+ : \mathbb N \times \mathbb N \to \mathbb N$ et la
   fonction $\times : \mathbb N \times \mathbb N \to \mathbb N$ par récursion
-  sur leur premier argument~:
+  sur leur second argument~:
   \begin{itemize}
   \item $\forall n \in \mathbb N, n + 0 = n$
-  \item $\forall n,m\in \mathbb N, n + (S\;m) = S(n + m)$
+  \item $\forall n,m\in \mathbb N, n + (\Ss m) = \Ss(n + m)$
   \item $\forall n \in \mathbb N, n \times 0 = 0$
-  \item $\forall n,m\in\mathbb N, n \times (S\;m) = n\times m + n$
+  \item $\forall n,m\in\mathbb N, n \times (\Ss m) = n\times m + n$
   \end{itemize}
 \end{definition}
 
 \begin{notation}
-  On définit $1 = S\;0$, $2 = S\;S\;0$ et ainsi de suite. Plutôt que $S\;n$,
+  On définit $1 = \Ss 0$, $2 = \Ss\Ss 0$ et ainsi de suite. Plutôt que $\Ss n$,
   nous utiliserons souvent l'expression $n + 1$.
 \end{notation}
 
@@ -849,18 +1017,18 @@ $+$ et $\times$.
     $0+n = n$~:
     \begin{itemize}
     \item $0 + 0 = 0$ par définition de $+$.
-    \item supposons que $0+n = n$, alors $0+S\;n = S\;(0+n) = S\;n$.
+    \item supposons que $0+n = n$, alors $0+\Ss n = \Ss(0+n) = \Ss n$.
     \end{itemize}
     D'où le résultat par récurrence.
   \item $+$ est commutatif~: on montre d'abord par récurrence sur $m$ que pour
-    tous $n,m\in\mathbb N$, on a $S\;n+m = S\;(n+m)$~:
+    tous $n,m\in\mathbb N$, on a $\Ss n+m = \Ss (n+m)$~:
     \begin{itemize}
-    \item $S\;n+0=S\;n = S\;(n+0)$.
-    \item si $S\;(n+m) = S\;(n+m)$, alors
+    \item $\Ss n+0=\Ss n = \Ss(n+0)$.
+    \item si $\Ss (n+m) = \Ss(n+m)$, alors
       \begin{align*}
-        S\;n+S\;m &= S\;(S\;n+m)\\
-        &= S\;(S\;(n+m))\\
-        &= S\;(n+S\;n)
+        \Ss n+\Ss m &= \Ss(\Ss n+m)\\
+        &= \Ss(\Ss(n+m))\\
+        &= \Ss(n+\Ss m)
       \end{align*}
     \end{itemize}
     Nous donnant un premier résultat par récurrence. On montre maintenant que
@@ -884,10 +1052,10 @@ $+$ et $\times$.
       l'égalité.
     \item supposons la proposition pour $k$, alors
       \begin{align*}
-        n+(m+S\;k) &= n + S\;(m + k)\\
-        &= S\;(n+(m+k))\\
-        &= S\;((n+m)+k)\\
-        &= (n+m)+S\;k
+        n+(m+\Ss k) &= n + \Ss (m + k)\\
+        &= \Ss(n+(m+k))\\
+        &= \Ss((n+m)+k)\\
+        &= (n+m)+\Ss k
       \end{align*}
     \end{itemize}
     D'où le résultat par récurrence.
@@ -903,7 +1071,8 @@ $+$ et $\times$.
 La relation $\leq$ est aussi définissable grâce à notre langage ensembliste.
 
 \begin{definition}[Inégalité]
-  On définit la relation $\leq\subseteq \mathbb N \times \mathbb N$ par~:
+  On définit la relation $\mathord{\leq}\subseteq \mathbb N \times \mathbb N$
+  par~:
   \[n \leq m \defeq \exists k \in \mathbb N, m = n + k\]
 \end{definition}
 
@@ -979,7 +1148,7 @@ de congruence.
 
 \begin{definition}[Congruence]
   Soit $(X,\star)$ un magma. On appelle congruence une relation d'équivalence
-  $\sim\subseteq X \times X$ telle que
+  $\mathord{\sim}\subseteq X \times X$ telle que
   \[\forall x,y,x',y' \in X, x\sim x' \land y \sim y'
   \implies x\star y \sim x' \star y'\]
 \end{definition}
@@ -1049,8 +1218,8 @@ nous reste à prouver que c'est en fait un groupe abélien.
   $x = \overline{(n,m)}$, et on pose $-x = \overline{(m,n)}$. On montre que
   $x + (-x) \sim (0,0)$. Par définition,
   \[x + (-x) = \overline{(n + m, m + n)}\]
-  et $n + m + 0 = 0 + m + n$, donc $\overline{(n,n)}=\overline{(0,0)}$, d'où le
-  résultat.
+  et $n + m + 0 = 0 + m + n$, donc $\overline{(n+m,m+n)}=\overline{(0,0)}$,
+  d'où le résultat.
 \end{proof}
 
 On s'attarde maintenant à la structure multiplicative de $\mathbb Z$.
