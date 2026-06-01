@@ -1243,9 +1243,14 @@ déduit ainsi le théorème de représentation suivant, plus fort que le
 %théorie~: les \cref{thm.chinois}, \cref{lem.beta} et \cref{prop.beta.bis}. On
 %peut donc en déduire le théorème suivant.
 
-\begin{theorem}[Extension conservative des fonctions RP]
+\begin{theorem}[Extension conservative des fonctions RP]\label{thm.repr.Sigma1}
   Soit $\mathcal T$ une théorie $\Sigma$-complète prouvant les
-  \cref{thm.chinois} et \cref{lem.beta}. Alors pour toute fonction RP $f$,
+  \cref{thm.chinois} et \cref{lem.beta} et vérifiant le shéma de récurrence
+  $\HierArithS 0$~:
+  \[\mathcal T \vdash \varphi(0) \implies (\forall n, \varphi(n) \implies
+  \varphi(\Ss n)) \implies \forall n, \varphi(n)\]
+  pour toute formule $\varphi$ (potentiellement à paramètres) $\HierArithS 0$.
+  Alors pour toute fonction RP $f$,
   la formule du \cref{thm.repr.Sigma1} représentant $f$ est prouvablement
   une relation fonctionnelle totale.
 \end{theorem}
@@ -1255,28 +1260,81 @@ déduit ainsi le théorème de représentation suivant, plus fort que le
   fonctions RP, et le seul cas problématique est le cas des définitions par
   récursion primitive.
 
-  On reprend les notations précédentes, et on montre que la formule représentant
-  $\rec(f,g)$ est une relation fonctionnelle totale. Soient $(\vec x,n,y)$ des
-  instances de la formule représentant $\rec(f,g)$. Remarquons que par
-  construction, la suite qui sera construite comme trace du calcul sera de
-  taille $n$
+  A FAIRE
 \end{proof}
+
+\begin{exercise}
+  Montrer qu'en supposant le schéma de récurrence $\HierArithS 1$, les
+  \cref{thm.chinois} et \cref{lem.beta} sont prouvables.
+\end{exercise}
+
+\begin{corollary}
+  La théorie $\ISigma$, construite sur $\ArithRobin$ par l'ajout du schéma de
+  récurrence $\HierArithS 1$, peut représenter toute fonction RP par une
+  formule prouvablement fonctionnelle totale.
+\end{corollary}
+
+Maintenant que nous avons une théorie dans laquelle toute fonction RP est
+représentée par une formule prouvablement fonctionnelle totale, il est possible
+d'en déduire le principe suivant~:
+
+\begin{theorem}[Représentation forte des théories arithmétiques]
+  Pour toute théorie arithmétique $\mathcal T$ contenant (ou prouvant les
+  axiomes de) $\ISigma$, l'ajout pour chaque fonction RP $f : \bN^k \to \bN$
+  d'un symbole de fonction $k$-aire correspondant, et de l'axiome
+  \[\forall \vec x, \varphi_f(\vec x,f(\vec x))\]
+  est une extension conservative de $\mathcal T$.
+\end{theorem}
+
+\begin{proof}
+  On applique simplement le \cref{prop.ext.def.cons} d'extension par définition
+  au cas des formules $\varphi_f$ dont on sait qu'elles sont fonctionnelles
+  totales par le \cref{thm.repr.Sigma1}.
+\end{proof}
+
+\begin{remark}
+  La conservativité de l'extension justifie que les arguments sémantiques
+  appliqués à une théorie telle que $\ArithPeano$ (ou simplement la version
+  faible $\ISigma$) peuvent se faire en écrivant un symbole pour une fonction
+  RP. Cependant, la notion d'énoncé $\HierArithS n / \HierArithP n$ par exemple
+  est purement syntaxique~: l'ajout de symboles peut modifier ce qui est alors
+  traité. Il est même évident qu'un énoncé $\HierArithS 0$ peut, dans
+  l'extension avec les fonctions RP, décrire n'importe quelle partie
+  $\HierArithD 1$. On réservera donc les classes $\HierArithS 0 / \HierArithP 0$
+  à des théories sans symboles de fonctions RP.
+  Néanmoins, les parties $\HierArithS 1 / \HierArithP 1 / \HierArithD 1$ et
+  au-delà sont toutes identiques dans les deux cas, puisqu'un symbole
+  représentant une fonction RP peut se traduire par une formule
+  $\HierArithS 1$.
+\end{remark}
 
 \subsection{Second théorème d'incomplétude}
 
-Le premier théorème d'incomplétude d'incomplétude nous permet de montrer que
-toute théorie suffisante pour des besoins mathématiques concrets, est
-automatiquement une théorie incomplète. Pour cela, l'énoncé (qu'il s'agisse de
-$G$ ou de $G'$) est purement symbolique et logique~: cet énoncé n'énonce aucun
-fait d'intérêt en lui-même. Le second théorème d'incomplétude, lui, permet
-de donner un cas essentiel d'énoncé indémontrable.
+Abordons désormais le second théorème d'incomplétude. Dans le premier théorème
+d'incomplétude, nous avons utilisé la représentation des fonctions calculables
+pour internaliser la prouvabilité~: à l'aide du lemme de point fixe, nous avons
+alors pu construire une formule diagonale énonçant qu'elle ne se prouve pas
+elle-même.
 
-L'idée du second théorème part d'un postulat simple~: notre démonstration
-précédente du \cref{thm.godel.incompl1} pourrait être rendue formelle. C'est le
-cas de toutes les démonstration qui se veulent valides mathématiquement, et
-celle-ci particulièrement peut se formaliser en donnant des arguments purement
-finiraires. Ces arguments finitaires, eux, peuvent s'exprimer directement à
-l'aide de récurrences.
+Pour le second théorème d'incomplétude, le postulat de départ est le suivant~:
+une théorie suffisamment puissante pouvant prouver internement le bon
+comportement des fonctions calculables, il lui est alors possible de prouver
+elle-même que cet argument diagonal fonctionne. On assiste donc à une
+internalisation de la théorie, dans la théorie elle-même.
+
+%Le premier théorème d'incomplétude d'incomplétude nous permet de montrer que
+%toute théorie suffisante pour des besoins mathématiques concrets, est
+%automatiquement une théorie incomplète. Pour cela, l'énoncé (qu'il s'agisse de
+%$G$ ou de $G'$) est purement symbolique et logique~: cet énoncé n'énonce aucun
+%fait d'intérêt en lui-même. Le second théorème d'incomplétude, lui, permet
+%de donner un cas essentiel d'énoncé indémontrable.
+%
+%L'idée du second théorème part d'un postulat simple~: notre démonstration
+%précédente du \cref{thm.godel.incompl1} pourrait être rendue formelle. C'est le
+%cas de toutes les démonstration qui se veulent valides mathématiquement, et
+%celle-ci particulièrement peut se formaliser en donnant des arguments purement
+%finiraires. Ces arguments finitaires, eux, peuvent s'exprimer directement à
+%l'aide de récurrences.
 
 Pour exprimer les propriétés de cette internalisation, on introduit les
 conditions de Hilbert-Bernays.
@@ -1356,17 +1414,60 @@ pour $\square(\varphi) \defeq \ThT{\ArithPeano}(\encode{\godcod\varphi})$.
   les conditions de Hilbert-Bernays dans $\mathcal T$.
 \end{proof}
 
-Nous ne donnons pas explicitement la preuve des deux énoncés soulevés, car
-ces deux énoncés sont très techniques (et peu intéressants) à prouver. Il
-suffit simplement de décrire le processus de démonstration initial, à
-l'intérieur de la théorie $\ArithPeano$. Cela demande alors de répéter de
-nombreuses preuves par récurrence, qui justifient syntaxiquement ce que nous
-comprenons déjà intuitivement. De plus, la démonstration de ces deux
-formules dépend de l'écriture exacte de $\Th$ et de $\Dem$.
+%Nous ne donnons pas explicitement la preuve des deux énoncés soulevés, car
+%ces deux énoncés sont techniques (et peu intéressants) à prouver. Il
+%suffit simplement de décrire le processus de démonstration initial, à
+%l'intérieur de la théorie $\ArithPeano$. Cela demande alors de répéter de
+%nombreuses preuves par récurrence, qui justifient syntaxiquement ce que nous
+%comprenons déjà intuitivement. De plus, la démonstration de ces deux
+%formules dépend de l'écriture exacte de $\Th$ et de $\Dem$.
 
-Plutôt que de démontrer directement le second théorème d'incomplétude, on se
-propose d'en donner une version plus générale (dont la démonstration est presque
-identique).
+Si nous évitons de donner la preuve explicite que $\ArithPeano$ prouve les
+deux énoncés, cela est motivé par la pure technicité des résultats. La preuve
+à faire serait de revenir aux constructions des précédents chapitres, et de
+montrer que chaque théorème énoncé peut aussi être internalisé en tant que
+théorème de $\ArithPeano$ sur les codes d'objets syntaxiques. Puisque toutes
+les fonctions RP sont représentables par des symboles de fonctions, et qu'il est
+possible de montrer que ces fonctions se comportent comme attendu, ces preuves
+ne font l'effet d'aucune surprise~: elles sont des redites des énoncés dans un
+langage encore plus formel. Remarquons néanmoins que l'écriture exacte de
+$\Th$ et de $\Dem$ influe fortement sur la longueur de ces démonstrations,
+puisqu'une définition très longue pourra donner lieu à une preuve interne encore
+plus longue.
+
+Donnons d'abord une première idée de la démonstration du second théorème
+d'incomplétude~:
+\begin{itemize}
+\item on commence par montrer que l'arithmétique peut s'internaliser
+  elle-même, dans le sens où elle vérifie les conditions de Hilbert-Bernays~;
+\item le premier théorème d'incomplétude nous permet d'exhiber une formule
+  $G$ dont on sait qu'elle n'est pas prouvable~;
+\item en internalisant ce fait, on en déduit que
+  $\square G \implies \square \bot$, mais la cohérence signifie que
+  $\bot$ n'est pas prouvable (\latinexpr{i.e.}
+  $\Coher(\mathcal T) \triangleq \lnot\square \bot$), donc on a
+  \[\Coher(\mathcal T) \implies \lnot\square G\]
+  par contraposée.
+  Or, $\lnot\square G$ correspond à $G$, d'où le fait que
+  $\Coher(\mathcal T)$ implique un énoncé indémontrable~: c'est un énoncé
+  lui-même indémontrable.
+\end{itemize}
+Ce résultat peut en fait s'appliquer de façon plus générale à tout énoncé~:
+par la construction de point fixe, on peut montrer que pour toute formule
+$\varphi$ telle que $\square \varphi \implies \varphi$ est démontrable,
+$\varphi$ est 
+directement démontrable. En d'autres termes, supposer qu'une formule est
+démontrable dans une théorie n'aide pas à prouver cette formule dans la théorie.
+
+%Finalement, plutôt que de démontrer directement le second théorème
+%d'incomplétude, on se
+%propose d'en donner d'abord une version plus générale (dont la démonstration
+%est
+%presque identique). Cette version générale énonce que pour prouver qu'un
+%énoncé est vrai, on peut supposer cet énoncé prouvable. De façon alternative,
+%supposer qu'un énoncé est prouvable ne nous aide pas à le démontrer (puisqu'il
+%est toujours possible d'éliminer cette hypothèse par élimination de
+%l'implication).
 
 \begin{theorem}[Löb \cite{Lb1955SolutionOA}]\label{thm.Lob}
   Soit $\mathcal T$ une théorie r.a. et $\Sigma$-complète, et soit $\Th(x)$ une
@@ -1407,6 +1508,13 @@ identique).
   $\mathcal T \vdash \varphi$.
 \end{proof}
 
+\begin{remark}
+  Le fait que $\mathcal T$ est r.a. est nécessaire dans la démonstration
+  ci-dessus~: l'énoncé $\Th(\encode{\godcod\psi})$ est représentable pour cette
+  raison, et la construction du point fixe nécessite la représentation de cet
+  énoncé.
+\end{remark}
+
 Avec ce résultat, le second théorème d'incomplétude est obtenu simplement en
 considérant $\varphi \defeq \bot$.
 
@@ -1429,6 +1537,23 @@ considérant $\varphi \defeq \bot$.
   $\mathcal T \nvdash \Coher(\mathcal T)$.
 \end{proof}
 
+%\begin{remark}
+%  Essayons de détailler le contenu du théorème précédent~:
+%  \begin{itemize}
+%  \item on commence par montrer que l'arithmétique peut s'internaliser
+%    elle-même, dans le sens où elle vérifie les conditions de Hilbert-Bernays~;
+%  \item le premier théorème d'incomplétude nous permet d'exhiber une formule
+%    $G$ dont on sait qu'elle n'est pas prouvable~;
+%  \item en internalisant ce fait, on en déduit que
+%    $\square G \implies \square \bot$, mais la cohérence signifie que
+%    $\square \bot$ n'est pas prouvable, donc on a
+%    \[\Coher(\mathcal T) \implies \lnot\square G\]
+%    sauf que $\lnot\square G$ correspond à $G$, d'où le fait que
+%    $\Coher(\mathcal T)$ implique un énoncé indémontrable~: c'est un énoncé
+%    lui-même indémontrable.
+%  \end{itemize}
+%\end{remark}
+
 \subsection{Théories non arithmétiques}
 
 Les théorèmes tels qu'énoncés précédemment permettent de déduire que
@@ -1438,71 +1563,130 @@ directement arithmétique, comme $\ZFC$, il est nécessaire d'introduire un moye
 de transformer les énoncés arithmétiques en énoncés de $\ZFC$. Pour cela, on
 emploie la notion de traduction.
 
-\begin{definition}[Traduction de théories]
-  Soient $\Sigma, \Sigma'$ deux signatures du premier ordre, $\mathcal T$ une
-  théorie sur $\Sigma$ et $\mathcal T'$ une théorie sur $\Sigma'$. On appelle
-  traduction de $\mathcal T'$ dans $\mathcal T$ une fonction
-  \[\makeFunName{T}{\Sigma'}{\Formula(\Sigma)}\]
-  et une formule $\Psi$ unaire telles que
+\begin{definition}[Traduction de signature]
+  Soient $\Sigma,\Sigma'$ deux signatures du premier ordre. On appelle
+  traduction de $\Sigma$ vers $\Sigma'$ la donnée~:
   \begin{itemize}
-  \item pour tout symbole de relation $r \in \Sigma'$ d'arité $n$,
-    $T(r)$ est une formule à (au plus) $n$ variables libres.
-  \item pour tout symbole de fonction $f \in \Sigma'$ d'arité $n$,
-    $T(f)$ est une formule à (au plus) $n + 1$ variables libres.
-  \item pour tout symbole de fonction $f \in \Sigma'$ d'arité $n$,
-    \[\mathcal T \vdash \forall \vec x ^{\Psi},\exists ! y^{\Psi},
-    T(f)(\vec x, y)\]
-    où la relativisation $\forall \vec x^{\Psi}$ est définie en
-    \cref{def.relativisation}.
-  \item pour tout axiome $\varphi \in \mathcal T'$,
-    $\mathcal T \vdash T(\varphi)$ où $T(\varphi)$ est définie inductivement
-    depuis $\varphi$ en suivant un procédé analogue à la traduction sans
-    symbole de fonction (\cref{def.trad.sans.fun}), où la formule utilisée pour
-    traduire $f$ est $T(f)$, où on remplace $R(t_1,\ldots,t_n)$ par
-    $T(R)[x_1,\ldots,x_n/t_1,\ldots,t_n]$, et où on relativise toutes les
-    quantification par rapport à $\Psi$.
+  \item d'une formule à une variable libre $\Psi$~;
+  \item pour chaque symbole de fonction $f$ d'arité $n$ dans $\Sigma$, d'un
+    terme $t_f$ sur la signature $\Sigma'$ contenant (au plus) $n$ variables
+    libres~;
+  \item pour chaque symbole de relation $R$ d'arité $n$ dans $\Sigma$, d'une
+    formule $\varphi_R$ sur la signature $\Sigma'$ contenant (au plus) $n$
+    variables libres.
+  \end{itemize}
+
+  On étend naturellement une traduction de signature sur tous les termes
+  $t \in \Term(\Sigma)$ et toutes les formules $\varphi \in \Formula(\Sigma)$
+  pour obtenir $T(t) \in \Term(\Sigma')$ et $T(\varphi)\in\Formula(\Sigma')$~:
+  \begin{itemize}
+  \item la traduction d'une variable $x$ est $x$ lui-même
+  \item la traduction de $f(t_1,\ldots,t_n)$ est $t_f(T(t_1),\ldots,T(t_n))$
+    pour tout symbole de fonction $f$ d'arité $n$ dans $\Sigma$
+  \item la traduction de $R(t_1,\ldots,t_n)$ est $\varphi(T(t_1),\ldots,T(t_n))$
+    pour tout symbole de relation $R$ d'arité $n$ dans $\Sigma$ (l'égalité y
+    compris)
+  \item la traduction de $\top$ est $\top$ et celle de $\bot$ est $\bot$
+  \item la traduction de $\lnot \varphi$ est $\lnot T(\varphi)$
+  \item la traduction de $\varphi \oplus \psi$ est
+    $T(\varphi)\oplus T(\psi)$ pour les connecteurs binaires
+    $\oplus\in \{\lor,\land,\to\}$
+  \item la traduction de $\forall x, \varphi$ est
+    $\forall x, \Psi(x) \to T(\varphi)$
+  \item la traduction de $\exists x, \varphi$ est
+    $\exists x, \Psi(x) \land T(\varphi)$
   \end{itemize}
 \end{definition}
 
-\begin{exercise}
-  Construire une traduction de $\ArithPeano$ vers $\Zermelo$ (définie en
-  \cref{subsec.frag.ZFC}).
-\end{exercise}
+Comme la relativisation, la traduction permet de conserver la prouvabilité.
 
-\begin{proposition}
-  Soient $\Sigma, \Sigma'$ deux signature, $\mathcal T$ et $\mathcal T'$ des
-  théories respectivement sur $\Sigma$ et $\Sigma'$. Soient $(T,\Psi)$
-  une traduction de
-  $\mathcal T'$ vers $\mathcal T$, $\Gamma \in \List(\Formula(\Sigma'))$ et
-  $\varphi \in \List(\Formula(\Sigma'))$, toutes ces formules ayant leurs
-  variables libres dans $\vec x$. Alors
-  \[\Gamma \vdash \Sigma' \implies R(\Gamma), \overrightarrow{\Psi(x)} \vdash
-  R(\varphi)\]
-  Ainsi, les théorèmes de $\mathcal T'$ sont tous des théorèmes de
-  $\mathcal T$ modulo traduction.
-\end{proposition}
+\begin{theorem}
+  Soient $\Sigma,\Sigma'$ deux signatures du premier ordre,
+  $\Gamma \in \List(\Formula(\Sigma'))$ et $\varphi \in \Formula(\Sigma')$.
+  On suppose de plus que pour chaque symbole de fonction $f$ d'arité $n$, on
+  peut prouver
+  \[\Psi(x_1),\ldots,\Psi(x_n) \vdash \Psi(f(x_1),\ldots,f(x_n))\]
+  Alors on a, en notant $\VL(\Gamma,\varphi) = \{x_1,\ldots,x_k\}$~:
+  \[\Gamma\vdash \varphi \implies
+  \Psi(x_1),\ldots,\Psi(x_k),T(\Gamma)\vdash T(\varphi)\]
+\end{theorem}
 
 \begin{exercise}
-  Prouver la proposition précédente.
+  Prouver le théorème précédent.
 \end{exercise}
 
-Avec la notion de traduction, il est désormais possible d'étendre les
+\begin{remark}
+  On peut légèrement affaiblir les hypothèses~:
+  \begin{itemize}
+  \item la stabilité de $\Psi$ par $f$ peut être vérifiée seulement dans un
+    contexte logique $\Delta\in\List(\Formula(\Sigma'))$ fixé, auquel cas
+    l'implication devient
+    \[\Gamma\vdash \varphi \implies
+    \Psi(x_1),\ldots,\Psi(x_k),T(\Gamma),\Delta \vdash T(\varphi)\]
+  \item plutôt qu'utiliser une expression pour traduire un symbole de fonction,
+    il est possible d'utiliser une formule~: cela revient à intégrer dans la
+    traduction elle-même une extension par définition.
+  \end{itemize}
+\end{remark}
+
+\begin{notation}[Prouvabilité modulo traduction]
+  Soient $\Sigma,\Sigma'$ deux signatures et $T$ une traduction de $\Sigma$
+  vers $\Sigma'$. Pour tout $\Gamma \in \List(\Formula(\Sigma'))$ et
+  $\varphi \in \Formula(\Sigma)$, on note
+  \[\Gamma \vdash_T \varphi\]
+  pour $\Gamma\vdash T(\varphi)$. De même, on note
+  \[\mathcal T \vdash_T \varphi\qquad \text{et}\qquad
+  \mathcal T \vdash_T \mathcal T'\]
+  pour $\mathcal T \in \powerset(\Formula(\Sigma'))$ et
+  $\mathcal T' \in \powerset(\Formula(\Sigma))$
+  pour définir respectivement
+  \[\exists \Gamma\subfin \mathcal T, \Gamma\vdash_T \varphi
+  \qquad\text{et}\qquad
+  \forall \varphi \in \mathcal T', \mathcal T \vdash_T \varphi\]
+\end{notation}
+
+\begin{corollary}
+  Avec les notations précédentes, si $\mathcal T\vdash_T \mathcal T'$ alors
+  pour tout théorème $\varphi$ de $\mathcal T'$, $\mathcal T\vdash_T \varphi$.
+\end{corollary}
+
+Avec ces traductions, il est désormais possible d'étendre les
 théorèmes d'incomplétude de Gödel et d'indéfinissabilité de la vérité au cas de
 théories plus générales.
 
-\begin{theorem}[Incomplétude]
-  Soit $\mathcal T$ une théorie cohérente et r.a. sur une signature $\Sigma$
-  telle qu'il existe une traduction de $\ArithPeano$ dans $\mathcal T$, alors
-  $\mathcal T$ est incomplète ne peut pas prouver l'énoncé $\Coher(\mathcal T)$.
+\begin{theorem}[Premier théorème d'incomplétude]
+  Soit $\mathcal T$ une théorie cohérente et r.a. sur une signature $\Sigma$ et
+  $T$ une traduction de $\mathcal L_{\mathrm{arith}}$ vers $\Sigma$ telle que
+  $\mathcal T\vdash_T \ArithRobin^+$ (où $\ArithRobin^+$ est l'arithmétique
+  de Robinson augmentée du schéma énonçant que la comparaison avec les
+  entiers standards est totale), alors $\mathcal T$ est une théorie incomplète~:
+  il existe un énoncé $R \in \HierArithP 1$ tel que
+  $\mathcal T \nvdash_T R$ et $\mathcal T\nvdash_T \lnot R$.
+\end{theorem}
+
+\begin{theorem}[Second théorème d'incomplétude]
+  Soit $\mathcal T$ une théorie cohérente et r.a. sur une signature $\Sigma$ et
+  $T$ une traduction de $\mathcal L_{\mathrm{arith}}$ vers $\Sigma$ telle que
+  $\mathcal T \vdash_T \ISigma$, alors $\mathcal T\nvdash_T \Coher(\mathcal T)$.
 \end{theorem}
 
 \begin{theorem}[Indéfinissabilité de la vérité]
-  Soit $\mathcal T$ une théorie cohérente sur une signature finie $\Sigma$ telle
-  qu'il existe une traduction $(T,\Psi)$ de $\ArithRobin$ dans $\mathcal T$,
-  alors il n'existe aucune formule $V(x)$ à une variable libre telle que
+  Soit $\mathcal T$ une théorie cohérente sur une signature $\Sigma$ et $T$ une
+  traduction de $\mathcal L_{\mathrm{arith}}$ vers $\Sigma$, alors il n'existe
+  aucune formule $V(x)$ a une variable libre telle que
   \[\forall \varphi \in \Formula(\Sigma),
-  \mathcal T\vdash \varphi \iff V(R(\encode{\godcod{\varphi}}))\]
+  \mathcal T\vdash \varphi \iff V(T(\encode{\godcod{\varphi}}))\]
 \end{theorem}
+
+\begin{exercise}
+  \'Ecrire une traduction $T$ du langage de l'arithmétique vers le langage de la
+  théorie des ensembles. Montrer que
+  \[\Zermelo - \AxInf \vdash_T \ArithPeano\]
+  En déduire que les 3 théorèmes précédents sont vérifiés pour
+  $\ZF, \ZFC, \ZF - \AxF$ et toute autre théorie des ensembles contenant les
+  axiomes d'extensionalité, de réunion, d'ensemble des parties et le schéma de
+  compréhension.
+\end{exercise}
 
 On en déduit donc, comme annoncé dans le \cref{chp.modZFC}, qu'il n'est pas
 possible de construire dans $\ZFC$ un modèle de $\ZFC$, ou de trouver un énoncé
