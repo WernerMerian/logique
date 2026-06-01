@@ -358,7 +358,7 @@ $\HierArithS 1$, au sens suivant.
   \end{itemize}
 \end{definition}
 
-En comparaison avec la \cref{def.HA1}, on posé un cas $0$ en plus, et on a
+En comparaison avec la \cref{def.HA1}, on a posé un cas $0$ en plus, et on a
 remplacé le fait de considérer des prédicats c.e. et co-c.e. par le fait de
 considérer des formules.
 
@@ -453,7 +453,7 @@ attend~:
 \end{remark}
 
 Ainsi, si les $f_i$ sont représentées par des formules $\HierArithS 1$ et
-$g$ est représentée par une formule $\HierArithS 1$, on peut représentée
+$g$ est représentée par une formule $\HierArithS 1$, on peut représenter
 $g\circ (f_1,\ldots,f_p)$ par une formule $\HierArithS 1$ (il suffit de mettre
 la formule $\chi$ précédente sous forme prénexe pour avoir une suite de
 quantifications existentielles non bornées, puis des quantifications bornées).
@@ -547,7 +547,7 @@ besoins.
 On vérifie que $\beta$ permet bien d'encoder les
 suites finies d'entiers.
 
-\begin{proposition}
+\begin{proposition}\label{prop.beta.bis}
   Le graphe de $\beta$ est $\HierArithS 0$, et pour toute liste d'entiers
   $\ell \in \List(\bN)$ il existe deux entiers $a,d$ tels que
   \[\forall i < |\ell|, \beta(d,a,i) = \ell_i\]
@@ -745,7 +745,7 @@ fonctions par induction sur ces arbres.
 
 Avec cette proposition, on peut donc définir les arbres $\pi$ témoignant du
 fait que $\mathcal T \vdash \varphi$, puisque cela correspond exactement à
-un arbre de preuve bien formé donc la conclusion est $\Gamma\vdash \varphi$ où
+un arbre de preuve bien formé dont la conclusion est $\Gamma\vdash \varphi$ où
 $\Gamma$ n'est constitué que de formules de $\mathcal T$. On en déduit le
 lemme central permettant les théorèmes d'incomplétude.
 
@@ -787,8 +787,8 @@ l'\foreignexpr{engere Funktionenkalkül} de Hilbert.
   \[\forall n \in \bN,
   (\mathcal T \vdash K_{\mathrm{arith}}(\encode{n})) \iff \Enum_n(n)\convcal\]
   mais alors, on en déduit une réduction
-  $K \TuringRed\Th(\mathcal T)$, donc $\Th(\mathcal T)$ est
-  c.e.-difficile pour la réduction Turing.
+  $K \manyOne\Th(\mathcal T)$, donc $\Th(\mathcal T)$ est
+  c.e.-difficile pour la réduction many-one.
 \end{proof}
 
 \begin{remark}
@@ -830,7 +830,7 @@ Il manque un élément pour pouvoir arriver aux théorèmes d'incomplétude~: un
 théorème de point fixe. Le premier théorème d'incomplétude consiste globalement
 à écrire un énoncé de la forme
 \begin{quotation}
-  cet énoncé est faux.
+  Cet énoncé est faux.
 \end{quotation}
 
 Pour écrire un tel énoncé, il faut avant tout être capable d'écrire un énoncé
@@ -1035,7 +1035,7 @@ L'énoncé devient alors véritablement un énoncé d'incomplétude.
   démontrable dans $\mathcal T$ et qu'elle est vraie dans $\bN$. Comme $G$ est
   une proposition $\HierArithP 1$, $\lnot G$ est (équivalente à une proposition)
   $\HierArithS 1$ et $\bN \models \lnot\lnot G$ (puisque $\bN\models G$).
-  Par $\Sigma$-cohérence, on en déduit que $G$ n'est pas démontrable dans
+  Par $\Sigma$-cohérence, on en déduit que $\lnot G$ n'est pas démontrable dans
   $\mathcal T$.
 \end{proof}
 
@@ -1082,7 +1082,7 @@ en anglais).
   \exists x, \DemBisT{\mathcal T}(x, \encode{\godcod{G'}})\]
 \end{definition}
 
-L'énoncé $G'$ est donc une variant de l'énoncé $G$, dans lequel on ajoute une
+L'énoncé $G'$ est donc une variante de l'énoncé $G$, dans lequel on ajoute une
 condition de non démonstration. Si on fixe une énumération des preuves dans
 $\mathcal T$, l'énoncé $\DemBisT{\mathcal T}(\godcod \pi, \godcod\varphi)$
 énonce que $\pi$ est une preuve de $\varphi$, mais aussi qu'aucune autre preuve
@@ -1176,6 +1176,91 @@ $\mathcal T$ permet de comparer tout élément à un élément standard.
   Montrer que $\ArithRobin$ est $\Sigma$-complète. En déduire que
   $\ArithRobin$ et $\ArithPeano$ sont toutes les deux des théories incomplètes.
 \end{exercise}
+
+\subsection{Récurrence et extension}
+
+Avant de passer au second théorème d'incomplétude, nous allons préparer notre
+étude en montrant un théorème d'internalisation.
+En effet, la \cref{sec.metamath} nous motive à utiliser un procédé d'extension
+du langage pour rendre nos énoncés plus lisibles~: toute fonction RP (notamment)
+peut être représentée par une formule, et une formule peut être encodée par un
+nouveau symbole de fonction muni d'un axiome.
+
+Malheureusement, les choses ne sont pas aussi simple, car la représentation des
+fonctions que nous avons prouvée dans le \cref{thm.repr.Sigma1} nous dit
+seulement que la formule $\varphi_f$ représentant la fonction RP $f$ est une
+représentation pour les entiers \emphexpr{standards}. En particulier, cette
+limitation empêche de déduire \latinexpr{a priori} qu'une théorie
+$\Sigma$-complète peut prouver les équations définissant $f$. Par exemple,
+la fonction $n,m \mapsto n^m$ peut être représentée par une formule dans une
+théorie $\Sigma$-complète $\mathcal T$, mais il n'est pas possible de montrer
+\[\begin{cases} \mathcal T \vdash \forall x, x^0 = 1 \\
+\mathcal T \vdash \forall x\,y,x^{\Ss y} = x \times x^y\end{cases}\]
+qui est pourtant la relation attendue pour une telle fonction.
+
+Analysons alors ce qui peut nous empêcher de prouver de tels axiomes définissant
+les fonctions RP. Notre objectif étant de montrer que pour toute fonction RP
+$f$ représentée par une formule $\varphi$, il est prouvable que $\varphi$ est
+une relation fonctionnelle, étudions les cas d'une induction sur les fonctions
+RP~:
+\begin{itemize}
+\item La représentation d'une projection se fait simplement en considérant la
+  formule $x_i = y$ en $(x_1,\ldots,x_n,y)$. Il est clair qu'avec une telle
+  formule, on peut prouver que si $x_i = y$ et $x_i = z$ alors $y = z$. La
+  relation est donc fonctionnelle, et totale sans souci en prenant $x_i$.
+\item La représentation de la fonction $\Ss$ est donnée par la formule
+  $\Ss x = y$ en $(x,y)$, qui est là encore évidemment fonctionnelle totale.
+\item La représentation de la fonction constante nulle est donnée par la
+  formule $0 = y$, toujours fonctionnelle totale sans souci.
+\item Si $f_1,\ldots,f_k$ sont représentées par des relations fonctionnelles
+  totales et $g$ aussi, qu'on notera respectivement
+  $\varphi_1,\ldots,\varphi_k$ et $\psi$, alors la représentation de
+  $g\circ(f_1,\ldots,f_k)$, donnée par la formule
+  \[\exists y_1,\ldots,y_k,
+  \left(\bigwedge_{i = 1}^k \varphi_i(\vec x, y_i)\right) \land
+  \psi(y_1,\ldots,y_k,z)\]
+  en $(\vec x, z)$, est aussi fonctionnelle totale. En effet, la totalité des
+  $\varphi_i$ donne l'existence de chaque $y_i$, et la totalité de $\psi$
+  donne alors l'existence d'un $z$ associé à $\vec x$. De plus, si
+  $z$ et $z'$ sont associés à $\vec x$, alors ils vérifient
+  $\psi(y_1,\ldots,y_k,z)$ et $\psi(y_1,\ldots,y_k,z')$ avec les mêmes
+  $y_i$ (puisque chaque $\varphi_i$ est une relation fonctionnelle), mais
+  alors $z = z'$ puisque $\psi$ est elle-même une relation fonctionnelle.
+\item De façon peut surprenante, c'est donc le cas récursif qui n'est pas
+  automatique à prouver. Rappelons-nous que la représentation de $\rec(f,g)$ en
+  fonction des représentations $\varphi, \psi$ respectivement de $f$ et $g$ est
+  donnée, pour des variables $\vec x, y$, par le fait qu'il existe une suite
+  finie (codée par la fonction $\beta$) telle que sa première valeur est l'image
+  de $f$ par $\vec x$, et que le \ordinalnumeralmale{$i+1$} élément de la suite
+  est l'image du \ordinalnumeralmale{$i$} élément par $g(\vec x,i,\cdot)$.
+\end{itemize}
+Pour que ce dernier cas de l'induction puisse se faire de façon interne, il nous
+suffit d'avoir une théorie permettant de prouver la \cref{prop.beta.bis}. On en
+déduit ainsi le théorème de représentation suivant, plus fort que le
+\cref{thm.repr.Sigma1}~:
+
+%Il ne nous reste alors qu'un résultat à montrer de façon interne à notre
+%théorie~: les \cref{thm.chinois}, \cref{lem.beta} et \cref{prop.beta.bis}. On
+%peut donc en déduire le théorème suivant.
+
+\begin{theorem}[Extension conservative des fonctions RP]
+  Soit $\mathcal T$ une théorie $\Sigma$-complète prouvant les
+  \cref{thm.chinois} et \cref{lem.beta}. Alors pour toute fonction RP $f$,
+  la formule du \cref{thm.repr.Sigma1} représentant $f$ est prouvablement
+  une relation fonctionnelle totale.
+\end{theorem}
+
+\begin{proof}
+  Comme décrit précédemment, on procède par induction sur la structure des
+  fonctions RP, et le seul cas problématique est le cas des définitions par
+  récursion primitive.
+
+  On reprend les notations précédentes, et on montre que la formule représentant
+  $\rec(f,g)$ est une relation fonctionnelle totale. Soient $(\vec x,n,y)$ des
+  instances de la formule représentant $\rec(f,g)$. Remarquons que par
+  construction, la suite qui sera construite comme trace du calcul sera de
+  taille $n$
+\end{proof}
 
 \subsection{Second théorème d'incomplétude}
 
