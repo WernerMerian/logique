@@ -19,9 +19,11 @@
 \newcommand{\symdiff}{\triangle} % différence symétrique
 \newcommand{\subfin}{\subseteq_{\mathrm{fin}}} % inclusion d'une partie finie
 \newcommand{\lexl}{<_{\mathrm{lex}}} % ordre lexicographique
+\newcommand{\lexleq}{\leq_{\mathrm{lex}}}
 \newcommand{\leL}{<_{\mathbb L}} % ordre sur la classe L
 \newcommand{\ordbis}{\lhd} % ordre utilisé pour la démonstration de Hessenberg, et globalement symbole de relation d'ordre au cas où
 
+\newcommand{\tok}{\cdot} % placeholder pour les définitions anonyme
 
 %----- PROBLEMES ALGORITHMIQUES -----%
 
@@ -54,6 +56,7 @@
 \DeclareMathOperator{\postfix}{postfix} % ensemble des post-points fixes d'une fonction
 \newcommand{\restrict}[1]{\left.#1\right\vert} % restriction d'une fonction
 \newcommand{\makeFun}[5]{\begin{array}{ccccc} #1 & : & #2 & \longrightarrow & #3 \\ & & #4 & \longmapsto & #5\end{array}}
+\newcommand{\makeFunBis}[7]{\begin{array}{ccccc} #1 & : & #2 & \longrightarrow & #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \end{array}}
 \newcommand{\makeFunName}[3]{#1 : #2 \longrightarrow #3}
 \newcommand{\makeFunNamePartial}[3]{#1 : #2 \xrightharpoonup{\qquad} #3}
 \DeclareMathOperator{\Supp}{Supp}
@@ -75,6 +78,15 @@
 \newcommand{\vdclose}[1]{\overline{#1}^{\vdash}} % clôture par conséquence sémantique d'un ensemble de formules
 \newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}} % clôture par ajout des témoins de Henkin d'une théorie
 \DeclareMathOperator{\Th}{Th}
+
+%----- OPERATEURS DE CLOTURE -----%
+
+\newcommand{\tClot}[1]{#1^{+}}
+\newcommand{\rtClot}[1]{#1^{\star}}
+\newcommand{\rClot}[1]{#1^{=}}
+\newcommand{\rtsClot}[1]{#1^{\sim}}
+\newcommand{\sClotMin}[1]{#1^{\mathrm{sym}}_{\land}}
+\newcommand{\sClotMax}[1]{#1^{\mathrm{sym}}_{\lor}}
 
 %----- ENSEMBLES CLASSIQUES -----%
 
@@ -165,13 +177,19 @@
 
 \DeclareMathOperator{\List}{List} % ensemble des listes sur un ensemble
 \DeclareMathOperator{\cons}{cons} % ajouter un élément en tête d'une liste
+\newcommand{\Cons}{\mathbin{::}} % version opérateur de la fonction cons
 \DeclareMathOperator{\nil}{nil} % liste vide
+\newcommand{\Nil}{[\;]} % version opérateur de la constante nil
 \newcommand{\varlist}{\ell} % variable pour désigner une liste
+\newcommand{\ListLen}[1]{\left\vert#1\right\vert} % longueur d'une liste
+\newcommand{\prefOrd}{\preccurlyeq}
 
 %----- ARBRES -----%
 
 \DeclareMathOperator{\BinTree}{BinTree} % ensemble des arbres binaires
 \DeclareMathOperator{\node}{node} % noeud d'un arbre
+\DeclareMathOperator{\Tree}{Tree} % ensemble des arbres .-branchants
+\DeclareMathOperator{\PreTree}{PreTree} % ensemble des pré-arbres
 
 %----- THÉORIE DE LA DÉMONSTRATION -----%
 
@@ -290,7 +308,7 @@
 \DeclareMathOperator{\pair}{pair} % prédicat sur un entier pour qu'il soit pair
 \DeclareMathOperator{\double}{double} % fonction doublant un entier
 \DeclareMathOperator{\Ss}{S}
-\newcommand{\append}{+\!\!+} % concaténation de listes
+\newcommand{\append}{\frown} % concaténation de listes
 
 %----- CALCULABILITÉ -----%
 
@@ -420,3 +438,17 @@
 	\makebox[\textwidth]{\parbox{1.3\textwidth}{\BODY}}
 }
 \NewEnviron{centerwideequation}{\[\makebox[\displaywidth]{$\displaystyle\BODY$}\]}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%----- NOTATIONS DANS LES CHAPITRES -----%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%----- ENSEMBLES INDUCTIFS -----%
+
+\newcommand{\arite}{\alpha}
+\newcommand{\ruleR}{\mathrm{r}}
+\newcommand{\reflR}{\mathrm{refl}}
+\newcommand{\transR}{\mathrm{trans}}
+\newcommand{\foraList}{\forall_{\List}}
+\DeclareMathOperator{\mapList}{map}
+\DeclareMathOperator{\filterList}{filter}

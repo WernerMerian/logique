@@ -42,7 +42,7 @@ n'existe que pour un ensemble fini. Pourtant, l'ensemble $\bN$ tend aussi
 à être plus facilement accepté qu'un ensemble tel que $\bR / \bQ$.
 Un point essentiel qui rend le premier ensemble logiquement plus simple que le
 deuxième est qu'il est facile à engendrer~: l'ensemble $\bN$ est constitué
-de l'élément $0$ et de l'opération $S$ définie par $n \mapsto n + 1$, et tout
+de l'élément $0$ et de l'opération $\Ss$ définie par $n \mapsto n + 1$, et tout
 autre élément de $\bN$ peut être construit à partir de ces deux éléments.
 Sa structure est donc fondamentalement simple, et peut être décrite en des
 termes finis.
@@ -51,19 +51,19 @@ C'est exactement cette idée de structure générée par des termes finis qui es
 formalisée par les ensembles inductifs. Un ensemble inductif va être un ensemble
 obtenu par une liste de générateurs, chaque générateur ayant une arité (un
 nombre d'objets qu'il prend en entrée). Dans cette définition d'ensemble
-inductif, l'exemple canonique est bien sûr $\mathbb N$ lui-même, qu'on peut
+inductif, l'exemple canonique est bien sûr $\bN$ lui-même, qu'on peut
 définir par~:
 \begin{itemize}
 \item un constructeur sans argument, $0$
-\item un constructeur à un argument, $S$
+\item un constructeur à un argument, $\Ss$
 \end{itemize}
 
 Avant de donner la définition d'ensemble inductif, nous allons donner un
 formalisme pour parler des constructeurs.
 
 \begin{definition}[Signature]
-  Une signature est un couple $C,\alpha$ tel que $\alpha : C \to \mathbb N$.
-  On appelle $C$ l'ensemble des constructeurs et, pour $c \in C$, $\alpha(c)$
+  Une signature est un couple $C,\arite$ tel que $\arite : C \to \bN$.
+  On appelle $C$ l'ensemble des constructeurs et, pour $c \in C$, $\arite(c)$
   est appelé l'arité de $c$.
 \end{definition}
 
@@ -81,21 +81,15 @@ présentation se décompose de la façon suivante~:
 où $a,b,\ldots$ représentent les éléments que les constructeurs définissent,
 et où chaque cas est la définition d'un nouveau constructeur (ou d'une famille
 de constructeurs). Par exemple pour le cas de $\bN$, nous avons :
-\[n \inddefeq 0 \mid S\;n\]
+\[n \inddefeq 0 \mid \Ss n\]
 Il est fréquent d'employer des variables qui seront quantifiées hors de la
 définition à proprement parler. Par exemple, fixons un ensemble $A$, et donnons
 la BNF suivante~:
 \[\varlist \inddefeq \nil \mid \cons(a,\varlist)\]
 où $a \in A$. Cette définition doit se lire comme la signature
-$(\{\nil\} \cup A,\alpha)$ où $\alpha$
+$(\{\nil\} \cup A,\arite)$ où $\arite$
 est défini par~:
-\[
-\begin{array}{rcccl}
-  \alpha &:& C & \longrightarrow & \mathbb N\\
-  & & \mathrm{nil} & \longmapsto & 0 \\
-  & & a (\in A) & \longmapsto & 1
-\end{array}
-\]
+\[\makeFunBis{\arite}{C}{\bN}{\nil}{0}{a (\in A)}{1}\]
 Ainsi, plutôt que de considérer un constructeur à deux arguments ayant un
 argument extérieur à la signature, on définit formellement un famille de
 constructeurs à un seul argument.
@@ -105,19 +99,20 @@ constructeurs donnés dans la signature. L'ensemble généré doit être un ense
 $X$ contenant, pour chaque $x_1,\ldots,x_n \in X$ et $c \in C$ d'arité $n$,
 l'objet $c(x_1,\ldots,x_n)$, et ne doit contenir que les objets de cette forme.
 Nous procédons alors par le bas~: un premier ensemble est construit par
-l'ensemble $C_0 = \compr{c \in C}{\alpha(c) = 0}$, puis l'ensemble $C_1$ est
+l'ensemble $C_0 = \compr{c \in C}{\arite(c) = 0}$, puis l'ensemble $C_1$ est
 construit par $C_1 = C_0 \cup \compr{c(x_1,\ldots,x_n)}{c \in C, x_1,\ldots,
-x_n \in C_0, \alpha(c) = n}$ et ainsi de suite. Comme $c$ est simplement un
+x_n \in C_0, \arite(c) = n}$ et ainsi de suite. Comme $c$ est simplement un
 élément dans notre cas, écrire $c(x_1,\ldots,x_n)$ n'a pas de sens, c'est
 pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
 
 \begin{definition}[Ensemble inductif sur une signature]
-  Soit $(C,\alpha)$ une signature, on définit la suite d'ensembles
+  Soit $(C,\arite)$ une signature, on définit la suite d'ensembles
   $(X_i)_{i\in\bN}$ par :
   \begin{itemize}
-  \item $X_0 = \vide$
-  \item $X_{n+1} = \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in (X_n)^p,
-    \alpha(c) = p }$
+  \item $X_0 \defeq \vide$
+  \item $X_{n+1} \defeq
+    \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in (X_n)^p,
+    \arite(c) = p }$
   \end{itemize}
 
   L'ensemble inductif engendré par $(C,\alpha)$ est alors l'ensemble
@@ -129,16 +124,16 @@ proposition suivante assure que l'union finale génère bien le même ensemble
 avec les deux méthodes.
 
 \begin{proposition}
-  Soit $(C,\alpha)$ une signature, $X$ l'ensemble inductif engendré par cette
+  Soit $(C,\arite)$ une signature, $X$ l'ensemble inductif engendré par cette
   signature et $(X_n)$ la suite précédemment construite. Alors
-  \[\forall n,m \in \mathbb N, n \leq m \implies X_n \subseteq X_m\]
+  \[\forall n,m \in \bN, n \leq m \implies X_n \subseteq X_m\]
 \end{proposition}
 
 \begin{proof}
   On procède par récurrence sur $n$~:
   \begin{itemize}
   \item comme $X_0 = \vide$, il est évident que
-    $\varnothing \subseteq X_m$ pour tout $m \in\mathbb N$.
+    $\vide \subseteq X_m$ pour tout $m \in\bN$.
   \item supposons que $X_n \subseteq X_m$ pour tout $m \geq n$. Alors
     \[X_{n+1} = \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
     \alpha(c) = p}\]
@@ -152,31 +147,34 @@ avec les deux méthodes.
 Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
 
 \begin{lemma}[Lecture unique]\label{lem.lecture_unique}
-  Soit une signature $(C,\alpha)$ et l'ensemble $X$ engendré par cette
+  Soit une signature $(C,\arite)$ et l'ensemble $X$ engendré par cette
   signature. Alors pour tout élément $x \in X$, il existe $c\in C$ et
-  $x_1,\ldots,x_p \in X$ (possiblement une famille vide si $\alpha(c) = 0$)
-  telle que $p = \alpha(c)$ et $x = (c,x_1,\ldots,x_p)$.
+  $x_1,\ldots,x_p \in X$ (possiblement une famille vide si $\arite(c) = 0$)
+  telle que $p = \arite(c)$ et $x = (c,x_1,\ldots,x_p)$.
 \end{lemma}
 
 \begin{proof}
   Soit $(X_n)$ la suite d'ensemble définie précédemment telle que $X$ en est
-  l'union. Si $x\in X$, alors on trouve $n \in \mathbb N$ tel que $x\in X_n$.
+  l'union. Si $x\in X$, alors on trouve $n \in \bN$ tel que $x\in X_n$.
   Par disjonction de cas sur ce $n$, on prouve le résultat~:
   \begin{itemize}
   \item si $n = 0$ alors l'hypothèse $x \in X_0$ signifie qu'on a
     $x\in \vide$~: par absurdité de la prémisse, la conclusion est vraie.
   \item si $n = m+1$, alors $x\in X_n$ signifie que
-    $x \in \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
-    \alpha(c) = p\}$ d'où le résultat par définition.
+    \[x \in \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
+    \alpha(c) = p\}\]
+    d'où le résultat par définition.\qedhere
   \end{itemize}
 \end{proof}
 
 \begin{remark}
   Nous le verrons dans le \cref{chp.alg}, mais une BNF peut aussi se lire comme
   engendrant un langage, c'est-à-dire un ensemble de suites finies sur un
-  ensemble fixé à l'avance. On peut par exemple décider de lire l'entier $SSS0$
-  comme une simple suite de symboles, ici la suite $(S,S,S,0)$. Dans ce cas, le
-  lemme de lecture unique est non trivial et parfois faux, selon la forme de
+  ensemble fixé à l'avance. On peut par exemple décider de lire l'entier
+  $\Ss\Ss\Ss 0$
+  comme une simple suite de symboles, ici la suite $(\Ss,\Ss,\Ss,0)$. Dans ce
+  cas, le lemme de lecture unique est non trivial et parfois faux, selon la
+  forme de
   notre grammaire, et la structure stratifiée d'union dénombrable n'est plus
   inhérente à l'ensemble construit. Cette autre approche, qui est celle utilisée
   dans \cite{cori2003logique}, a le mérite d'être la plus syntaxique possible
@@ -193,25 +191,26 @@ Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
 Maintenant qu'une construction a été donnée d'un ensemble inductif, il faut
 vérifier que le comportement que l'on a décrit est en accord avec le
 comportement réel de l'ensemble que l'on a construit. Nous avons dit que
-l'ensemble engendré par $(C,\alpha)$ doit contenir exactement les éléments de
+l'ensemble engendré par $(C,\arite)$ doit contenir exactement les éléments de
 la forme $c(x_1,\ldots,x_n)$ où $x_i \in X$ pour tout $i\in\{1,\ldots,n\}$, mais
-une autre façon de penser le fait que l'ensemble ne contient que des
-applications de constructeurs est le fait qu'une fonction partant d'un ensemble
+une autre façon de penser ce fait
+%que l'ensemble ne contient que des applications de constructeurs
+est qu'une fonction partant d'un ensemble
 inductif est exactement spécifiée par son comportement sur les constructeurs.
-De telle fonctions sont appelées récursives, car elles peuvent faire appel à
-elles-mêmes pour s'appliquer sur les arguments d'un constructeurs, comme nous le
+De telles fonctions sont appelées récursives, car elles peuvent faire appel à
+elles-mêmes pour s'appliquer sur les arguments d'un constructeur, comme nous le
 verrons en pratique. Nous verrons ensuite que ce principe de définition
 récursive peut se modifier pour donner le principe d'induction, un analogue à
 la preuve par récurrence pour un ensemble inductif quelconque.
 
 \begin{theorem}[Propriété universelle des ensembles inductifs]\label{thm.PU.ind}
-  Soit $(C,\alpha)$ une signature, et $X$ l'ensemble associé à cette signature.
+  Soit $(C,\arite)$ une signature, et $X$ l'ensemble associé à cette signature.
   Soit un ensemble $Y$ quelconque.
   Soit une famille de fonctions $\{f_c\}_{c\in C}$ telles que pour tout $c\in C$,
-  $f_c : Y^{\alpha(c)} \to Y$ (avec la convention que $Y^0 = \{*\}$ est un
+  $f_c : Y^{\arite(c)} \to Y$ (avec la convention que $Y^0 = \{*\}$ est un
   singleton quelconque). Alors il existe une unique fonction $f : X \to Y$
   telle que
-  \[\forall c\in C, \forall (x_1,\ldots,x_p)\in X^{\alpha(c)},
+  \[\forall c\in C, \forall (x_1,\ldots,x_p)\in X^{\arite(c)},
   f((c,x_1,\ldots,x_p)) = f_c (f(x_1),\ldots,f(x_p))\]
 \end{theorem}
 
@@ -221,30 +220,32 @@ pour aller d'un coin à l'autre du carré sont égaux.
 
 \begin{center}
   \begin{tikzcd}
-    X^{\alpha(c)} \ar[r,"f^{\alpha(c)}"]\ar[d,"c"] & Y^{\alpha(c)} \ar[d,"f_c"] \\
+    X^{\arite(c)} \ar[r,"f^{\arite(c)}"]\ar[d,"c"] & Y^{\arite(c)} \ar[d,"f_c"] \\
     X \ar[r,"f"] & Y
   \end{tikzcd}
 \end{center}
 
 \begin{proof}
-  Soit $(X_n)$ la suite d'ensemble construite précédemment pour définir $X$. On
+  Soit $(X_n)$ la suite d'ensembles construite précédemment pour définir $X$. On
   va prouver par récurrence sur $n$ la proposition suivante~:
   \begin{multline*}
-    \forall n\in \mathbb N, \exists ! f_n : X_n \to Y, \forall c \in C,\\
-    \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)}, f_n((c,x_1,\ldots,x_p))
+    \forall n\in \bN, \exists ! f_n : X_n \to Y, \forall c \in C,\\
+    \forall (x_1,\ldots,x_p)\in (X_n)^{\arite(c)}, f_n((c,x_1,\ldots,x_p))
     = f_c(f_n(x_1),\ldots,f_n(x_p))
   \end{multline*}
   \begin{itemize}
-  \item Si $n = 0$, il existe une unique fonction $f_0 : \varnothing \to Y$ et
+  \item Si $n = 0$, il existe une unique fonction $f_0 : \vide \to Y$ et
     elle vérifie la propriété par vacuité.
-  \item Soit $n \in \mathbb N$. Supposons qu'il existe une unique fonction
+  \item Soit $n \in \bN$. Supposons qu'il existe une unique fonction
     $f_n : X_n \to Y$ telle que
-    \[\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\alpha(c)},
+    \[\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\arite(c)},
     f_n((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))\]
     On définit alors
-    \[\makeFun{f_{n+1}}{X_{n+1}}{Y}{(c,x_1,\ldots,x_p)}{f_c(f_n(x_1),\ldots,f_n(x_p))}\]
+    \[\makeFun{f_{n+1}}{X_{n+1}}{Y}{(c,x_1,\ldots,x_p)}
+              {f_c(f_n(x_1),\ldots,f_n(x_p))}\]
     On remarque que cette fonction vérifie bien la propriété. De plus, si une
-    autre fonction $g$ vérifie la propriété, alors pour $x\in X_{n+1}$, on trouve par
+    autre fonction $g$ vérifie la propriété, alors pour $x\in X_{n+1}$, on
+    trouve par
     le \cref{lem.lecture_unique} $c\in C$ et $x_1,\ldots,x_p \in X_n$ tels que
     $x = (c,x_1,\ldots,x_p)$. On a alors
     \begin{align*}
@@ -257,6 +258,7 @@ pour aller d'un coin à l'autre du carré sont égaux.
     $f_{n+1} = g$, d'où l'unicité de $f_{n+1}$.
   \end{itemize}
 
+  \noindent
   Soit $x \in X$, par définition on trouve $n\in \mathbb N$ tel que $x \in X_n$,
   et on peut donc définir $f(x) = f_n(x)$. Pour montrer que la fonction est
   unique, il suffit de remarquer que toute fonction $X \to Y$ vérifiant les
@@ -265,27 +267,27 @@ pour aller d'un coin à l'autre du carré sont égaux.
 \end{proof}
 
 \begin{remark}
-  Pour une signature $(C,\alpha)$ et un ensemble associé $X$, chaque $c\in C$
-  peut maintenant s'interpréter comme une fonction $c : X^{\alpha(c)}\to X$. Nous
+  Pour une signature $(C,\arite)$ et un ensemble associé $X$, chaque $c\in C$
+  peut maintenant s'interpréter comme une fonction $c : X^{\arite(c)}\to X$. Nous
   confondrons dorénavant le constructeur et la fonction associée, et écrirons
   donc sans distinction $(c,x_1,\ldots,x_p)$ et $c(x_1,\ldots,x_p)$ pour un
   constructeur $c \in C$.
 \end{remark}
 
 Cet outil nous permet maintenant de définir des fonctions dont le domaine est
-un ensemble inductif en utilisant sa structure. Lorsqu'on définira une fonction en
-utilisant le \cref{thm.PU.ind} sur un ensemble inductif $X$, on utilisera
+un ensemble inductif en utilisant sa structure. Lorsqu'on définira une fonction
+en utilisant le \cref{thm.PU.ind} sur un ensemble inductif $X$, on utilisera
 généralement la formulation \og par induction sur la structure de $X$\fg voire
-directement \og par induction sur $x$\fg si le contexte rend clair que $x$ est un
-élément de $X$.
+directement \og par induction sur $x$\fg si le contexte rend clair que $x$ est
+un élément de $X$.
 
-\begin{example}\label{ex.double}
+\begin{example}%\label{ex.double}
   Donnons un premier exemple de fonction récursive~: la fonction
   $\double :n\mapsto 2n$, définie de $\bN$ dans $\bN$. En effet, on peut
   la décrire par
   \begin{itemize}
   \item $\double(0) = 0$
-  \item $\double(S\;n) = S\;S\;\double(n)$
+  \item $\double(\Ss n) = \Ss \Ss \double(n)$
   \end{itemize}
   nous donnant alors une définition de $\double$ grâce au théorème précédent.
 \end{example}
@@ -294,15 +296,25 @@ directement \og par induction sur $x$\fg si le contexte rend clair que $x$ est u
   Un exemple à la fois d'ensemble inductif et de fonction récursive est le
   suivant. Soit $A$ un ensemble quelconque, on définit la signature des listes
   sur $A$ par la grammaire suivante~:
-  \[\ell \Coloneq \nil\mid \cons(a,\ell)\]
+  \[\varlist \inddefeq \nil\mid \cons(a,\varlist)\]
   où $a\in A$. L'ensemble $\List(A)$ est alors l'ensemble inductif
-  associé. On définit alors la fonction $|-|$ donnant la longueur d'une
+  associé. On définit alors la fonction $\ListLen{\tok}$ donnant la longueur
+  d'une
   liste~:
   \begin{itemize}
-  \item $|\nil| = 0$
-  \item $|\cons(a,\ell)| = 1 + |\ell|$
+  \item $\ListLen{\nil} = 0$
+  \item $\ListLen{\cons(a,\varlist)} = 1 + |\varlist|$
   \end{itemize}
 \end{example}
+
+\begin{notation}
+  On utilise aussi
+  la notation $\Nil$ pour $\nil$ et
+  la notation $a \Cons \varlist$ pour $\cons(a,\varlist)$. De plus,
+  on considère l'opération $\mathord{\Cons}$ comme associative à droite,
+  c'est-à-dire que $a\Cons b \Cons \varlist$ doit se lire comme
+  $a\Cons(b\Cons \varlist)$.
+\end{notation}
 
 \begin{exercise}
   Soit $A$ un ensemble. Donner une signature définissant l'ensemble
@@ -317,13 +329,13 @@ directement \og par induction sur $x$\fg si le contexte rend clair que $x$ est u
   racine de l'arbre (la première étiquette) et une feuille (un arbre vide qui est
   sous-arbre). On prend comme convention que $h(\nil) = 0$.
 
-  Définir une fonction $|-| : \mathrm{BinTree}(A) \to \bN$ donnant le
+  Définir une fonction $\ListLen{\tok} : \BinTree(A) \to \bN$ donnant le
   nombre d'étiquettes d'un arbre.
 \end{exercise}
 
 \begin{exercise}
   En utilisant la structure inductive de $\bN$, définir la fonction
-  $+ : \bN \times \bN \to \bN$. On pourra pour cela définir
+  $\tok+\tok : \bN \times \bN \to \bN$. On pourra pour cela définir
   la fonction $n \mapsto (m \mapsto n + m)$ et faire une fonction récursive sur
   l'argument $n$.
 \end{exercise}
@@ -335,9 +347,9 @@ une fonction $X \to Y$, de donner un prédicat $P \subseteq X$ et de montrer que
 $P = X$.
 
 \begin{theorem}[Principe d'induction]
-  Soit $(C,\alpha)$ une signature et $X$ l'ensemble inductif associé. Soit
+  Soit $(C,\arite)$ une signature et $X$ l'ensemble inductif associé. Soit
   $P\subseteq X$ un prédicat sur $X$. Si pour tous $c\in C$ et
-  $x_1,\ldots,x_p\in X^{\alpha(c)}$, la propriété
+  $x_1,\ldots,x_p\in X^{\arite(c)}$, la propriété
   \[x_1\in P \text{ et } x_2\in P \text{ et }\ldots \text{ et }x_p\in P \implies
   c(x_1,\ldots,x_p)\in P\] est vérifiée,
   alors $P = X$.
@@ -359,10 +371,10 @@ $P = X$.
     On en déduit que $X_{n+1}\subseteq P$.
   \end{itemize}
 
+  \noindent
   Ainsi, par récurrence, pour tout $n\in \bN$, $X_n \subseteq P$.
   Cela montre alors que
-  \[\bigcup_{n \in \bN} X_n \subseteq P\]
-  ce qu'il fallait démontrer.
+  \[\bigcup_{n \in \bN} X_n \subseteq P\qedhere\]
 \end{proof}
 
 On peut affiner ce résultat en distinguant deux sortes de constructeurs~: d'un
@@ -370,9 +382,9 @@ côté les constructeurs d'arité $0$, qui sont des constantes, et de l'autre le
 constructeurs d'arité supérieure à $1$. Le théorème précédent nous dit que pour
 prouver une proposition $P$ sur un ensemble inductif, il suffit de prouver qu'il
 contient les constantes et qu'il est stable par chaque constructeur. On remarque
-que dans le cas de $\bN$, engendré par $0$ et $S$, ce principe nous dit
+que dans le cas de $\bN$, engendré par $0$ et $\Ss$, ce principe nous dit
 qu'une partie $P$ contenant $0$ et telle que
-$\forall n\in\bN, n\in P \implies n+1\in P$ est exactement $\bN$~:
+$\forall n\in\bN, n\in P \implies \Ss n\in P$ est exactement $\bN$~:
 c'est le principe de récurrence.
 
 Ainsi, puisque nous prouvons le principe d'induction à partir du principe de
@@ -383,14 +395,14 @@ s'utiliser dans plus de cas.
 
 \begin{exercise}
   On considère $\bN$ comme un ensemble inductif, et la fonction $\double$
-  définie dans l'\cref{ex.double}. Montrer que pour tout $n \in \bN$,
+  précédemment définie. Montrer que pour tout $n \in \bN$,
   $\double(n)$ est pair. On prendra comme définition de pair le prédicat
   $\pair(n) \defeq \exists m\in\bN, n = 2 \times m$.
 \end{exercise}
 
 \begin{exercise}
   Soit un ensemble $A$. On définit
-  $\append : \List(A) \times \List(A)\to \List(A)$ par
+  $\tok \append \tok : \List(A) \times \List(A)\to \List(A)$ par
   induction sur le premier argument~:
   \begin{itemize}
   \item Pour tout $\varlist\in \List(A)$, $\nil \append \varlist = \varlist$.
@@ -398,6 +410,7 @@ s'utiliser dans plus de cas.
     $\cons(a,\varlist) \append \varlist' = \cons(a,\varlist \append \varlist')$.
   \end{itemize}
 
+  \noindent
   Montrer que
   \[\forall \varlist,\varlist'\in \List(A),
   |\varlist\append \varlist'|=|\varlist|+|\varlist'|\]
@@ -426,7 +439,7 @@ relation.
 
 \begin{definition}[Relation]
   Soit $X$ un ensemble. On appelle relation sur $X$ une partie $R\subseteq X^n$
-  où $n\in\mathbb N$ est appelé l'arité de la relation $R$.
+  où $n\in\bN$ est appelé l'arité de la relation $R$.
 \end{definition}
 
 Une règle d'inférence, elle, va relier des relations.
@@ -438,7 +451,7 @@ Une règle d'inférence, elle, va relier des relations.
     \AxiomC{$P_2$}
     \AxiomC{$\cdots$}
     \AxiomC{$P_n$}
-    \RightLabel{r}
+    \RightLabel{$\ruleR$}
     \QuaternaryInfC{$P$}
   \end{prooftree}
   Où $P_1,\ldots,P_n$ sont appelées les prémisses de la règle, et $P$ est
@@ -457,7 +470,7 @@ Une règle d'inférence, elle, va relier des relations.
   quantifiés sur un certain ensemble $A$, et la règle est donc valide lorsque
   $\forall a,b\in A, ((a = b) \text{ et } P(a)) \implies P(b)$. On dira que la
   règle est valide aussi lorsque l'on fixe un paramètre, mais on dira alors
-  \og la règle $\mathrm r$ est valide pour $X = R$\fg{}, dans le cas où l'on
+  \og la règle $\ruleR$ est valide pour $X = R$\fg{}, dans le cas où l'on
   fixe le paramètre $X$ comme valant $R$. Pour signifier qu'une assignation
   des variables $x_i$ à des objets $a_i$ vérifie un énoncé $P$, on notera
   $(x_i \mapsto a_i) \models P$.
@@ -469,10 +482,10 @@ Supposons donnée une règle de la forme
   \AxiomC{$P_2(R,x_1,\ldots,x_k)$}
   \AxiomC{$\cdots$}
   \AxiomC{$P_n(R,x_1,\ldots,x_k)$}
-  \RightLabel{r}
+  \RightLabel{$\ruleR$}
   \QuaternaryInfC{$P(R,x_1,\ldots,x_k)$}
 \end{prooftree}
-dont les paramètres sont $R$, une partie de $E^p, p \in \mathbb N$ et les
+dont les paramètres sont $R$, une partie de $E^p, p \in \bN$ et les
 variables $x_i$, des éléments de $E$. Vérifier que la règle est valide signifie
 que pour toute instance des $x_i$ vérifiant tous les $P_i$, la proposition $P$
 est valide aussi. En supposant que la conclusion est de la forme
@@ -483,28 +496,25 @@ l'ensemble des termes $t_1,\ldots,t_p$ est inclus dans $R$.
 
 Dans la suite de ce chapitre, on considérera toujours des règles se finissant
 par une clause de la forme $R(f_1(x_1,\ldots,x_k),\ldots,f_p(x_1,\ldots,x_k))$.
-Une règle $\mathrm r$ définit alors la fonction suivante, qui considère
+Une règle $\ruleR$ définit alors la fonction suivante, qui considère
 l'ensemble des $R(t_1,\ldots,t_k)$~:
 \begin{multline*}
   X \longmapsto\{(f_1(a_1,\ldots,a_k),\ldots,f_p(a_1,\ldots,a_k))\mid\\
   a_1,\ldots,a_k \in E, \forall i \in \{1,\ldots,n\},
   (R\mapsto X,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \models P_i\}
 \end{multline*}
-On note cette fonction $f_\mathrm r$. On suppose maintenant une hypothèse qui,
-en pratique, sera toujours vérifiée~: la fonction $f_\mathrm r$ est croissante.
+On note cette fonction $f_{\ruleR}$. On suppose maintenant une hypothèse qui,
+en pratique, sera toujours vérifiée~: la fonction $f_{\ruleR}$ est croissante.
 Le cas le plus fréquent est celui où les prémisses de la règle sont directement
 des instances de la forme $R(t_1,\ldots,t_n)$, auquel cas il est clair que
 notre fonction est croissante.
 
-La validité de $\mathrm r$ pour une relation $R$ revient à l'inclusion
-$f_\mathrm r(R)\subseteq R$, que l'on peut aussi exprimer par
-$f_\mathrm r(R)\cup R = R$. Cela nous pousse à définir la fonction suivante, qui
+La validité de $\ruleR$ pour une relation $R$ revient à l'inclusion
+$f_{\ruleR}(R)\subseteq R$, que l'on peut aussi exprimer par
+$f_{\ruleR}(R)\cup R = R$. Cela nous pousse à définir la fonction suivante, qui
 nous sera essentielle pour les prochaines constructions.
 
-\[\begin{array}{ccccc}
-\mathrm r &: & \powerset (E^p) & \longrightarrow & \powerset (E^p)\\
-& & X & \longmapsto & X \cup f_\mathrm r(X)
-\end{array}\]
+\[\makeFun{\ruleR}{\powerset(E^p)}{\powerset(E^p)}{X}{X\cup f_{\ruleR}(x)}\]
 
 Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
 
@@ -512,10 +522,10 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
   Prenons la règle
   \begin{prooftree}
     \AxiomC{}
-    \RightLabel{refl}
+    \RightLabel{$\reflR$}
     \UnaryInfC{$R(x,x)$}
   \end{prooftree}
-  exprimant que $R$ est réflexive. La fonction associée à $\mathrm{refl}$ est
+  exprimant que $R$ est réflexive. La fonction associée à $\reflR$ est
   alors $R \mapsto R \cup \{(x,x) \mid x \in E\}$. Remarquons que l'absence de
   prémisse signifie que la conclusion est toujours valide.
 \end{example}
@@ -526,20 +536,20 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
   \begin{prooftree}
     \AxiomC{$R(x,y)$}
     \AxiomC{$R(y,z)$}
-    \RightLabel{trans}
+    \RightLabel{$\transR$}
     \BinaryInfC{$R(x,z)$}
   \end{prooftree}
-  Dans ce cas, l'image de $R$ par $\mathrm{trans}$ est l'ensemble
+  Dans ce cas, l'image de $R$ par $\transR$ est l'ensemble
   \[R \cup \{ (x,z) \in E^2\mid \exists y \in E, R(x,y)\text{ et } R(y,z)\}\]
   En effet, même si $y$ n'apparaît pas dans la conclusion, il est nécessaire
   qu'un tel $y$ existe pour que le triplet $(x,y,z)$ vérifie la condition
-  de $f_\mathrm r$.
+  de $f_{\transR}$.
 \end{example}
 
-Supposons maintenant que nous ayons une relation $R$ et une règle $\mathrm r$,
-$R$ ne vérifiant pas forcément $\mathrm r$. Nous cherchons alors à construire à
-partir de $R$ une relation vérifiant $\mathrm r$. Une remarque essentielle~: si
-$R$ vérifie $\mathrm r$, alors $R$ est un point fixe de la fonction $\mathrm r$
+Supposons maintenant que nous ayons une relation $R$ et une règle $\ruleR$,
+$R$ ne vérifiant pas forcément $\ruleR$. Nous cherchons alors à construire à
+partir de $R$ une relation vérifiant $\ruleR$. Une remarque essentielle~: si
+$R$ vérifie $\ruleR$, alors $R$ est un point fixe de la fonction $\ruleR$
 associée. On va ainsi chercher à créer un point fixe de la fonction associée.
 Pour cela, nous allons donner un théorème essentiel en logique~: le théorème de
 Knaster-Tarski.
@@ -551,32 +561,33 @@ Knaster-Tarski.
   \[\forall A,B\in\powerset(E), A\subseteq B \implies f(A)\subseteq f(B)\]
   Alors il existe un plus petit point fixe de $f$ pour $\subseteq$, ou de façon
   équivalente il existe un élément $A\in \powerset(E)$ tel que $f(A)=A$ et tel
-  que pour tout $B\in\powerset(E)$ tel que $f(B)=B$, $A\subseteq B$.
+  que pour tout $B\in\powerset(E)$ vérifiant $f(B)=B$, on a l'inclusion
+  $A\subseteq B$.
 \end{theorem}
 \begin{proof}
   Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
   \[\prefix(f) = \{ A \in \powerset(E)\mid f(A)\subseteq A\}\]
   Cet ensemble est non vide, puisqu'il contient $E$.
-  Soit $\alpha = \bigcap \prefix(f)$, montrons que $\alpha$ est dans
+  Soit $A = \bigcap \prefix(f)$, montrons que $A$ est dans
   $\prefix(f)$~:
 
-  Pour cela, il suffit de montrer que $f(\alpha)\subseteq \alpha$, mais comme
-  $\alpha$ est une intersection, il suffit de montrer que pour tout
-  $A\in\prefix(f), f(\alpha)\subseteq A$. Pour montrer cela, on
+  Pour cela, il suffit de montrer que $f(A)\subseteq A$, mais comme
+  $A$ est une intersection, il suffit de montrer que pour tout
+  $B\in\prefix(f), f(A)\subseteq B$. Pour montrer cela, on
   remarque par transitivité de $\subseteq$ qu'il suffit de montrer que
-  $f(\alpha)\subseteq f(A)$ pour tout $A\in \prefix(f)$, mais cela est
+  $f(A)\subseteq f(B)$ pour tout $B\in \prefix(f)$, mais cela est
   direct en utilisant le fait que $f$ est croissante et que pour tout
-  $A\in \prefix(f)$, $\alpha \subseteq A$. Ainsi
-  $f(\alpha)\subseteq \alpha$.
+  $B\in \prefix(f)$, $A \subseteq B$. Ainsi
+  $f(A)\subseteq A$.
 
-  De plus, comme $f(\alpha)\subseteq \alpha$, on en déduit par croissance de
-  $f$ que $f(f(\alpha))\subseteq f(\alpha)$, c'est-à-dire que $f(\alpha)$ est
-  lui aussi un élément de $\prefix(f)$~: comme $\alpha$ en est l'intersection,
-  cela signifie que $\alpha \subseteq f(\alpha)$, d'où en
-  utilisant l'inclusion précédente, $f(\alpha) = \alpha$.
+  De plus, comme $f(A)\subseteq A$, on en déduit par croissance de
+  $f$ que $f(f(A))\subseteq f(A)$, c'est-à-dire que $f(A)$ est
+  lui aussi un élément de $\prefix(f)$~: comme $A$ en est l'intersection,
+  cela signifie que $A \subseteq f(A)$, d'où en
+  utilisant l'inclusion précédente, $f(A) = A$.
 
   De plus, si $B$ est un point fixe de $f$, alors $f(B)\subseteq B$ donc par
-  définition de $\alpha$, $\alpha \subseteq B$.
+  définition de $A$, $A \subseteq B$.
 \end{proof}
 
 \begin{exercise}
@@ -597,27 +608,29 @@ Knaster-Tarski.
 Des deux exercices précédents, on peut déduire le résultat suivant~:
 
 \begin{corollary}[Définition d'une relation inductive]
-  Soit une règle $\mathrm r$ sur un ensemble $E$ et une relation $R$. Alors il
-  existe une plus petite relation $R_r$ contenant $R$ et stable par $r$. On dit
-  alors que cette relation $R_r$ est la relation définie par $r$ sur $R$. Si
-  $R = \vide$, on dira seulement que la relation est définie par $r$.
+  Soit une règle $\ruleR$ sur un ensemble $E$ et une relation $R$. Alors il
+  existe une plus petite relation $R_{\ruleR}$ contenant $R$ et stable par
+  $\ruleR$. On dit
+  alors que cette relation $R_{\ruleR}$ est la relation définie par $\ruleR$
+  sur $R$. Si
+  $R = \vide$, on dira seulement que la relation est définie par $\ruleR$.
 \end{corollary}
 
 Cela nous permet alors de définir le principe d'induction sur les relations,
 qui est très proche de celui sur les ensembles inductifs.
 
 \begin{theorem}[Induction sur une relation]
-  Soit $E$ un ensemble, $R$ une relation $n$-aire sur $E$ et $r$ une règle
+  Soit $E$ un ensemble, $R$ une relation $n$-aire sur $E$ et $\ruleR$ une règle
   d'inférence incluant comme paramètre $X$. Soit $P \in \mathcal P(E^n)$
   un prédicat d'arité $n$ sur $E$. Supposons que $R\subseteq P$ et que
-  $(X\mapsto P)\models \mathrm r$. Alors $R_r\subseteq P$.
+  $(X\mapsto P)\models \ruleR$. Alors $R_{\ruleR}\subseteq P$.
 \end{theorem}
 
 \begin{proof}
-  Il suffit de remarquer que $P$ est un point fixe de $r$ puisque
-  $(X\mapsto P)\models \mathrm r$. Ainsi, comme $P$ est un point fixe de $r$
-  contenant $R$, on en déduit que $P$ contient le plus petit point fixe de $r$
-  contenant $R$, qui est exactement $R_r$.
+  Il suffit de remarquer que $P$ est un point fixe de $\ruleR$ puisque
+  $(X\mapsto P)\models \ruleR$. Ainsi, comme $P$ est un point fixe de $\ruleR$
+  contenant $R$, on en déduit que $P$ contient le plus petit point fixe de
+  $\ruleR$ contenant $R$, qui est exactement $R_{\ruleR}$.
 \end{proof}
 
 Ce résultat est essentiel pour prouver beaucoup de résultats~: étant donnée une
@@ -627,9 +640,10 @@ un certain prédicat $P$, il suffit de montrer que ce prédicat est stable par
 la règle définissant $R$.
 
 \begin{exercise}
-  Soient désormais $n$ règles $\mathrm r_1,\ldots,\mathrm r_n$ incluant toutes
+  Soient désormais $n$ règles $\ruleR_1,\ldots,\ruleR_n$ incluant toutes
   un paramètre $R$ d'arité $p$. Montrer qu'on peut leur associer une fonction
-  $r_{1,\ldots,n} : \mathcal P(E^p) \to \mathcal P(E^p)$ croissante. En déduire
+  $\ruleR_{1,\ldots,n} : \mathcal P(E^p) \to \mathcal P(E^p)$ croissante. En
+  déduire
   un analogue des propositions précédentes pour un nombre fini de règles.
 \end{exercise}
 
@@ -641,9 +655,9 @@ la règle définissant $R$.
 \end{remark}
 
 \begin{exercise}
-  Soit une relation $R$ et une règle $\mathrm r$. On définit la relation $R'$
-  comme la relation inductive définie par $\mathrm r$ sur $R$, et $R''$ la
-  relation inductive définie par la règle $\mathrm r$ et
+  Soit une relation $R$ et une règle $\ruleR$. On définit la relation $R'$
+  comme la relation inductive définie par $\ruleR$ sur $R$, et $R''$ la
+  relation inductive définie par la règle $\ruleR$ et
   \begin{prooftree}
     \AxiomC{$R(x_1,\ldots,x_n)$}
     \UnaryInfC{$R''(x_1,\ldots,x_n)$}
@@ -659,12 +673,14 @@ la règle définissant $R$.
   Soit $A$ un ensemble quelconque. On définit sur $\List(A)$ le prédicat
   $\pair$ par induction avec les règles suivantes :
   \begin{center}
+    \bottomAlignProof
     \AxiomC{}
     \UnaryInfC{$\pair(\nil)$}
     \DisplayProof
     \qquad
+    \bottomAlignProof
     \AxiomC{$\pair(\varlist)$}
-    \UnaryInfC{$\pair(\cons(a,\cons(b,\varlist)))$}
+    \UnaryInfC{$\pair(a \Cons b \Cons \varlist)$}
     \DisplayProof
   \end{center}
   Montrer l'assertion suivante~:
@@ -679,19 +695,20 @@ définir une dérivation, qui est une preuve purement syntaxique qu'une certaine
 relation est vérifiée.
 
 \begin{definition}[Dérivation]
-  Soit une relation $R$ définie par des règles $r_1,\ldots,r_n$. Une dérivation
+  Soit une relation $R$ définie par des règles $\ruleR_1,\ldots,\ruleR_n$. Une
+  dérivation
   de $R(x_1,\ldots,x_p)$ est un arbre dont la racine est $R(x_1,\ldots,x_p)$ et
   tel que chaque n\oe ud de l'arbre est une instance valide d'une règle parmi
-  $r_1,\ldots,r_n$.
+  $\ruleR_1,\ldots,\ruleR_n$.
 \end{definition}
 
 \begin{example}
   Soit $A = \{0\}$, dérivons $\pair([0,0,0,0])$ où $[0,0,0,0]$ est une
   abréviation pour
-  $\cons(0,\cons(0,\cons(0,\cons(0,\nil))))$ :
+  $0 \Cons 0 \Cons 0 \Cons 0 \Cons \Nil$ :
   \begin{prooftree}
     \AxiomC{}
-    \UnaryInfC{$\pair(nil)$}
+    \UnaryInfC{$\pair(\Nil)$}
     \UnaryInfC{$\pair([0,0])$}
     \UnaryInfC{$\pair([0,0,0,0])$}
   \end{prooftree}
@@ -722,18 +739,18 @@ respectivement à une règle vérifiée par une relation et à une règle dont o
 syntaxiquement prouver la correspondance avec la règle.
 
 \begin{definition}[Règle admissible]
-  Une règle $\mathrm r$ est admissible pour une relation $R$ si
-  $R\models \mathrm r$. La règle est admissible pour un ensemble de règles
-  $\mathrm r_1,\ldots,\mathrm r_n$ si la relation définie par ces règles vérifie
-  la règle $\mathrm r$.
+  Une règle $\ruleR$ est admissible pour une relation $R$ si
+  $R\models \ruleR$. La règle est admissible pour un ensemble de règles
+  $\ruleR_1,\ldots,\ruleR_n$ si la relation définie par ces règles vérifie
+  la règle $\ruleR$.
 \end{definition}
 
 \begin{definition}[Règle dérivable]
-  Soit un ensemble de règles $\mathrm r_1,\ldots,\mathrm r_n$ et une règle
-  $\mathrm r$. $\mathrm r$ est dite dérivable s'il existe une dérivation de la
-  conclusion de $\mathrm r$ utilisant (potentiellement) les règles
-  $\mathrm r_1,\ldots,\mathrm r_n$ et (potentiellement) les prémisses de
-  $\mathrm r$.
+  Soit un ensemble de règles $\ruleR_1,\ldots,\ruleR_n$ et une règle
+  $\ruleR$. $\ruleR$ est dite dérivable s'il existe une dérivation de la
+  conclusion de $\ruleR$ utilisant (potentiellement) les règles
+  $\ruleR_1,\ldots,\ruleR_n$ et (potentiellement) les prémisses de
+  $\ruleR$.
 \end{definition}
 
 \begin{exercise}
@@ -750,18 +767,37 @@ syntaxiquement prouver la correspondance avec la règle.
   \end{prooftree}
   est dérivable. Montrer que la règle
   \begin{prooftree}
-    \AxiomC{$\pair(\cons(a,\cons(b,\varlist)))$}
+    \AxiomC{$\pair(a \Cons b \Cons \varlist)$}
     \UnaryInfC{$\pair(\varlist)$}
   \end{prooftree}
-  est admissible. Est-elle dérivable ?
+  est admissible. Est-elle dérivable~?
+
+  On définit la relation $R$ par les règles suivantes~:
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$R(\nil)$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$R(\varlist)$}
+    \UnaryInfC{$R(a\Cons b \Cons \varlist)$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$R(\varlist)$}
+    \UnaryInfC{$R(a\Cons b \Cons c \Cons \varlist)$}
+    \DisplayProof
+  \end{center}
+  Montrer que la première règle est valide pour $R$, la seconde l'est-elle~?
 \end{exercise}
 
 \begin{exercise}
-  Soient des règles $\mathrm r_1,\ldots,\mathrm r_n$ et une règle $\mathrm r$.
-  Montrer que toute règle $\mathrm r'$ dérivable dans
-  $\mathrm r_1,\ldots,\mathrm r_n$ est encore dérivable dans
-  $\mathrm r_1,\ldots,\mathrm r_n,\mathrm r$. En utilisant l'\cref{exo.pair_list},
-  est-ce le cas en remplaçant l'hypothèse par $\mathrm r'$ admissible ?
+  Soient des règles $\ruleR_1,\ldots,\ruleR_n$ et une règle $\ruleR$.
+  Montrer que toute règle $\ruleR'$ dérivable dans
+  $\ruleR_1,\ldots,\ruleR_n$ est encore dérivable dans
+  $\ruleR_1,\ldots,\ruleR_n,\ruleR$. En utilisant l'\cref{exo.pair_list},
+  est-ce le cas en remplaçant l'hypothèse par $\ruleR'$ admissible ?
 \end{exercise}
 
 \begin{remark}
@@ -775,15 +811,15 @@ Enfin, donnons le lemme d'inversion, que l'on peut voir comme un affaiblissement
 de l'induction sur une relation, pour une seule étape.
 
 \begin{theorem}[Inversion]
-  Soient des règles $\mathrm r_1,\ldots,\mathrm r_n$, un ensemble $E$ et $R$ la
+  Soient des règles $\ruleR_1,\ldots,\ruleR_n$, un ensemble $E$ et $R$ la
   relation définie sur $R$ par ces règles. Si $R(x_1,\ldots,x_p)$ pour un tuple
   $(x_1,\ldots,x_p)\in E$, alors il existe $i\in\{1,\ldots,n\}$ et des instances
-  $P_1,\ldots,P_k$ des prémisses de $\mathrm r_i$ tels que
+  $P_1,\ldots,P_k$ des prémisses de $\ruleR_i$ tels que
   \begin{prooftree}
     \AxiomC{$P_1$}
     \AxiomC{$\cdots$}
     \AxiomC{$P_k$}
-    \RightLabel{$\mathrm r_i$}
+    \RightLabel{$\ruleR_i$}
     \TrinaryInfC{$R(x_1,\ldots,x_p)$}
   \end{prooftree}
   est vérifiée.
@@ -797,6 +833,239 @@ de l'induction sur une relation, pour une seule étape.
 
 Ce résultat permet de travailler par disjonction de cas lorsque l'on étudie une
 relation inductive. On peut l'assimiler au lemme de lecture unique. Par exemple,
-il permet de dire à partir de $\pair(\ell)$ que $\ell$ est soit la liste
-vide, soit $\cons(a,\cons(b,\ell))$ pour deux éléments
+il permet de dire à partir de $\pair(\varlist)$ que $\varlist$ est soit
+$\Nil$, soit $a \Cons b \Cons \varlist$ pour deux éléments
 $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
+
+\newpage
+
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
+
+\begin{exercise}[Ordres sur les listes]\label{exo.ord.list}
+  Soit $A$ un ensemble. On définit la relation
+  $\mathord{\prefOrd}\subseteq\List(A)\times\List(A)$ par les règles
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$\varlist \prefOrd \varlist$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$\varlist \prefOrd \varlist'$}
+    \UnaryInfC{$a \Cons \varlist \prefOrd \varlist'$}
+    \DisplayProof
+  \end{center}
+  Montrer que $\mathord{prefOrd}$ est une relation d'ordre sur
+  $\List(A)$. Est-elle totale~?
+
+  On suppose désormais que $A$ est muni d'une relation d'ordre totale
+  $\leq$. On définit la relation lexicographique
+  $\mathord{\lexleq}\subseteq\List(A)\times\List(A)$ par les règles
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$\nil\lexleq \varlist$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$a \leq b$}
+    \UnaryInfC{$a \Cons \varlist \lexleq b \Cons \varlist'$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$\varlist \lexleq \varlist'$}
+    \UnaryInfC{$a \Cons \varlist \lexleq a \Cons \varlist'$}
+  \end{center}
+  Montrer que $\mathord{\lexleq}$ est une relation d'ordre sur $\List(A)$.
+  Est-elle totale~?
+\end{exercise}
+
+\begin{exercise}[Clôture transitive]
+  Soit $E$ un ensemble et $R$ une relation binaire sur $E$. On définit la
+  relation $\tClot R$ par les règles
+  \begin{center}
+    \AxiomC{$x\mathbin{R}y$}
+    \UnaryInfC{$x\mathbin{\tClot R} y$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$x\mathbin{\tClot R}y$}
+    \AxiomC{$y \mathbin{R} z$}
+    \BinaryInfC{$x\mathbin{\tClot R} z$}
+    \DisplayProof
+  \end{center}
+  Montrer que $\tClot R$ est une relation transitive qui contient $R$. Montrer
+  que pour toute relation binaire $R'$ transitive telle que $R\subseteq R'$,
+  $\tClot R \subseteq R'$.
+
+  \noindent
+  Montrer que pour tous $x,y \in E$, $x\mathbin{\tClot R} y$ si et seulement
+  s'il existe une suite finie $x_0,\ldots,x_n$ telle que
+  \[\begin{cases}
+  x_0 = x \\
+  x_n = y \\
+  n \neq 0 \\
+  \forall i \in \{0,\ldots,n-1\}, x_i R x_{i+1}
+  \end{cases}\]
+\end{exercise}
+
+\begin{exercise}[Clôture transitive et réflexive]
+  Soit $E$ un ensemble et $R$ une relation binaire sur $E$. On définit la
+  relation $\rtClot R$ par les règles
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$x\mathbin{\rtClot R} y$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$x\mathbin{\rtClot R}y$}
+    \AxiomC{$y \mathbin{R} z$}
+    \BinaryInfC{$x\mathbin{\rtClot R} z$}
+    \DisplayProof
+  \end{center}
+  Montrer que $\rtClot R$ est une relation transitive qui contient $R$. Montrer
+  que pour toute relation binaire $R'$ transitive telle que $R\subseteq R'$,
+  $\rtClot R \subseteq R'$.
+
+  \noindent
+  Montrer que pour tous $x,y \in E$, $x\mathbin{\tClot R} y$ si et seulement
+  s'il existe une suite finie $x_0,\ldots,x_n$ telle que
+  \[\begin{cases}
+  x_0 = x \\
+  x_n = y \\
+  \forall i \in \{0,\ldots,n-1\}, x_i R x_{i+1}
+  \end{cases}\]
+\end{exercise}
+
+\begin{exercise}[Clôtures symétriques]
+  Soit $E$ un ensemble et $R$ une relation binaire sur $E$. On définit les deux
+  relations $\sClotMin R$ et $\sClotMax R$ respectivement par les règles
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{$x \mathbin{R} y$}
+    \UnaryInfC{$x\mathbin{\sClotMax R} y$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$y \mathbin{R} x$}
+    \UnaryInfC{$x\mathbin{\sClotMax R} y$}
+    \DisplayProof
+    \qquad
+    \text{et}
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$x \mathbin{R} y$}
+    \AxiomC{$y \mathbin{R} x$}
+    \BinaryInfC{$x \mathbin{\sClotMin R} y$}
+    \DisplayProof
+  \end{center}
+  Montrer que $\sClotMax R$ est une relation symétrique contenant $R$, et que
+  pour toute relation $R'$ symétrique contenant $R$, $\sClotMax R \subseteq R'$.
+
+  \noindent
+  La relation $\sClotMin R$ est-elle symétrique~? Contient-elle $R$~? Montrer
+  que pour toute relation $R'$ symétrique telle que $R' \subseteq R$,
+  $R'\subseteq \sClotMin R$.
+\end{exercise}
+
+\begin{exercise}[Relation d'équivalence]
+  Soit $E$ un ensemble et $R$ une relation binaire sur $E$. On définit
+  $\rtsClot R$ par les règles
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$x \mathbin{\rtsClot R} y$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$x \mathbin{\rtsClot R} y$}
+    \AxiomC{$y \mathbin{R} z$}
+    \BinaryInfC{$x \mathbin{\rtsClot R} y$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$x \mathbin{\rtsClot R} y$}
+    \AxiomC{$z \mathbin{R} y$}
+    \BinaryInfC{$x \mathbin{\rtsClot R} z$}
+    \DisplayProof
+  \end{center}
+  Montrer que $\rtsClot R$ est une relation d'équivalence, et que pour toute
+  relation d'équivalence $\sim$ sur $E$ telle que $R\subseteq\mathord{\sim}$,
+  on a l'inclusion $\rtsClot R \subseteq \mathord{\sim}$.
+
+  \noindent
+  Montrer que $\rtsClot R = \rtClot{(\sClotMax R)}$. A-t-on toujours l'égalité
+  $\rtsClot R = \sClotMax{(\rtClot R)}$~? Si non, donner un contre-exemple.
+\end{exercise}
+
+\begin{exercise}[Prédicat sur des listes]
+  Soit $A$ un ensemble et $P \in \powerset(A)$. On définit inductivement le
+  prédicat $\foraList(P) \in \powerset(\List(A))$ par les règles
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$\Nil\in\foraList(P)$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$\varlist \in \foraList(P)$}
+    \AxiomC{$a \in P$}
+    \BinaryInfC{$a\Cons \varlist \in \foraList(P)$}
+    \DisplayProof
+  \end{center}
+  \'Etudions ce prédicat~:
+  \begin{enumerate}[label = (\roman*)]
+  \item Montrer que $[2,4,6,0]\in\foraList(P)$.
+  \item Soit $f : A \to B$ une fonction. On définit la fonction
+    $\mapList_f : \List(A) \to \List(B)$ récursivement~:
+    \begin{itemize}
+    \item $\mapList_f(\Nil) \defeq \Nil$
+    \item $\mapList_f(a\Cons \varlist) \defeq f(a) \Cons \mapList_f(\varlist)$
+    \end{itemize}
+    Soient de plus $P \in \powerset(A), Q \in \powerset(B)$ tels que
+    $f(P) \subseteq Q$. Montrer que
+    $\mapList_f(\foraList(P)) \subseteq \foraList(Q)$.
+  \item On définit récursivement la fonction
+    $\filterList_P : \List(A) \to \List(A)$ par~:
+    \begin{itemize}
+    \item $\filterList_P(\Nil) \defeq \Nil$
+    \item $\filterList_P(a \Cons \varlist) \defeq \begin{cases}
+      a \Cons \filterList_P(\varlist) \text{ si } a \in P\\
+      \filterList_P(\varlist) \text{ si } a \notin P
+      \end{cases}$
+    \end{itemize}
+    Montrer que $\filterList_P(\varlist) \in \foraList(P)$ pour toute liste
+    $\varlist \in \List(A)$.
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Différents arbres]
+  Soit $A$ un ensemble. On définit l'ensemble $\Tree(A)$ des arbres
+  $A$-branchants inductivement par
+  \[T,T' \inddefeq \nil \mid \node(f)\]
+  où $f : A \to \Tree(A)$. Ainsi, un arbre $A$-branchant est soit un arbre vide,
+  soit la donnée pour chaque $a \in A$ d'un arbre lui-même $A$-branchant.
+
+  \noindent
+  On définit aussi l'ensemble $\PreTree(A)$ des pré-arbres $A$-branchants, par
+  \[\PreTree(A) \defeq \{T \subseteq \List(A) \mid \forall \varlist,\varlist',
+  \varlist \prefOrd \varlist' \land \varlist' \in T \implies \varlist \in T\}\]
+  où $\prefOrd$ est la relation de préfixe donnée dans l'\cref{exo.ord.list}.
+  Définir une injection $\Tree(A) \to \PreTree(A)$. Cette injection est-elle
+  surjective~? Existe-t-il, en général, une bijection
+  $\Tree(A) \cong \PreTree(A)$~?
+\end{exercise}
+
+\newpage
+
+\subsection{Problèmes}
+
+\begin{problem}[\'Etude des arbres binaires de recherche]
+  A FAIRE
+\end{problem}
+
+\begin{problem}[La coinduction]
+  A FAIRE
+\end{problem}
