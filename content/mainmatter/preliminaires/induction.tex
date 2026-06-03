@@ -346,7 +346,7 @@ de faire une preuve sur un ensemble inductif. Il s'agit donc, au lieu de donner
 une fonction $X \to Y$, de donner un prédicat $P \subseteq X$ et de montrer que
 $P = X$.
 
-\begin{theorem}[Principe d'induction]
+\begin{theorem}[Principe d'induction]\label{thm.ind.induct}
   Soit $(C,\arite)$ une signature et $X$ l'ensemble inductif associé. Soit
   $P\subseteq X$ un prédicat sur $X$. Si pour tous $c\in C$ et
   $x_1,\ldots,x_p\in X^{\arite(c)}$, la propriété
@@ -857,7 +857,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     \UnaryInfC{$a \Cons \varlist \prefOrd \varlist'$}
     \DisplayProof
   \end{center}
-  Montrer que $\mathord{prefOrd}$ est une relation d'ordre sur
+  Montrer que $\mathord{\prefOrd}$ est une relation d'ordre sur
   $\List(A)$. Est-elle totale~?
 
   On suppose désormais que $A$ est muni d'une relation d'ordre totale
@@ -1054,8 +1054,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   \varlist \prefOrd \varlist' \land \varlist' \in T \implies \varlist \in T\}\]
   où $\prefOrd$ est la relation de préfixe donnée dans l'\cref{exo.ord.list}.
   Définir une injection $\Tree(A) \to \PreTree(A)$. Cette injection est-elle
-  surjective~? Existe-t-il, en général, une bijection
-  $\Tree(A) \cong \PreTree(A)$~?
+  surjective~?
 \end{exercise}
 
 \newpage
@@ -1067,5 +1066,229 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 \end{problem}
 
 \begin{problem}[La coinduction]
-  A FAIRE
+  L'objectif de ce problème est d'étudier la coinduction. L'induction, présentée
+  dans ce chapitre, permet de construire le \og plus petit ensemble défini par
+  des règles $\ruleR_1,\ldots,\ruleR_n$\fg. La coinduction, elle, considère le
+  \og plus grand ensemble défini par des règles $\ruleR_1,\ldots,\ruleR_n$\fg.
+
+  \pbPart{Construction coinductive}
+
+  \noindent
+  On considère une signature $(C,\arite)$ telle que donnée pour un ensemble
+  inductif. L'objectif de cette première partie est de construire un ensemble
+  similaire à l'ensemble inductif construit par cette signature, mais où les
+  objet peuvent être potentiellement infinis. Par exemple, on souhaite que la
+  signature
+  \[\varlist \inddefeq \Nil \mid a \Cons \varlist\]
+  contienne des listes infinies telles que $1\Cons 1 \Cons 1 \Cons\cdots$.
+  Pour cela, on va considérer une construction générale appelée la complétion
+  idéale.
+
+  \noindent
+  Tout d'abord, on considère $X_\bot$, qui va être l'ensemble construit par
+  la signature inductive $(C\cup\{\bot\},\arite')$ où
+  $\arite'\restr{C} = \arite$ et $\arite'(\bot) = 0$. Ainsi, pour une
+  BNF
+  \[a \inddefeq e_1\mid \cdots\mid e_n\]
+  on associe la nouvelle BNF
+  \[a \inddefeq e_1\mid \cdots\mid e_n\mid \bot\]
+
+  \noindent
+  On définit la relation $\mathord{<}$ sur $X_\bot$ par
+  \begin{center}
+    \bottomAlignProof
+    \AxiomC{}
+    \UnaryInfC{$\bot < c(x_1,\ldots,x_k)$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$x < x'$}
+    \UnaryInfC{$c(\cdots,x,\cdots) < c(\cdots,x',\cdots)$}
+    \DisplayProof
+    \qquad
+    \bottomAlignProof
+    \AxiomC{$x < y$}
+    \AxiomC{$y < z$}
+    \BinaryInfC{$x < z$}
+    \DisplayProof
+  \end{center}
+  où la seconde règle s'applique à chaque constructeur $c \in C$.
+
+  \begin{pbQuest}
+  \item Montrer que $\mathord{<}$ est une relation d'ordre stricte,
+    c'est-à-dire qu'elle
+    est une relation irréflexive et transitive.
+  \item Cette relation est-elle totale~? \textit{Indication~: on pourra
+    considérer le cas de la signature des listes.}
+  \end{pbQuest}
+
+  \noindent
+  Un élément $x \in X_\bot$ est dit total si, en notant $X$ l'ensemble
+  construit
+  sur la signature $(C,\arite)$, $x \in X$.
+  
+  \begin{pbQuest}[resume]
+  \item Montrer que pour tout $x \in X_\bot$, $x$ est total si et seulement
+    s'il
+    n'existe pas $y \in X_\bot$ tel que $x < y$.
+  \end{pbQuest}
+
+  \noindent
+  Une partie $Y \subseteq X_\bot$ est appelée un idéal de $X_\bot$ si
+  \begin{itemize}
+  \item $Y$ est close par le bas~: si $x,y \in X_\bot$, $x < y$ et $y \in Y$
+    alors $x \in Y$
+  \item $Y$ est dirigée~: si $x,y \in Y$ alors il existe $z \in Y$ tel
+    que $x < z$ et $y < z$
+  \item $\bot \in Y$
+  \end{itemize}
+  
+  \noindent
+  On note l'ensemble des idéaux de $X_\bot$ par
+  \[\ideal(X_\bot) \defeq \{I \subseteq X_\bot \mid I \text{ est un idéal de }
+  X_\bot\}\]
+  
+  \begin{pbQuest}[resume]
+  \item Montrer que la fonction
+    \[\makeFun{\iota}{X_\bot}{\ideal(X_\bot)}{x}
+              {\{ y \in X_\bot \mid y < x\}\cup\{x\}}\]
+    est une fonction injective, et que pour tous $x,y \in X_\bot$,
+    \[x < y \iff \iota(x) \subsetneq \iota(y)\]
+  \item Montrer que si $x \in X_\bot$ est un élément total, alors $\iota(x)$
+    est
+    maximal dans $\ideal(X_\bot)$~:
+    \[\forall I \in \ideal(X_\bot), \iota(x) \subseteq I \implies I =
+    \iota(x)\]
+  \item Donner un idéal maximal $I \in \ideal(X_\bot)$ qui n'est pas de la
+    forme $\iota(x)$ pour $x \in X_\bot$.
+  \end{pbQuest}
+
+  \noindent
+  On définit désormais
+  \[X_\infty \defeq \{I \in \ideal(X) \mid \forall J \in \ideal(X),
+  I \subseteq J \implies I = J\}\]
+  comme étant l'ensemble coinductif défini par la signature $(C,\arite)$.
+  
+  \begin{pbQuest}[resume]
+  \item Construire une injection $X \to X_\infty$.
+  \end{pbQuest}
+
+  \pbPart{L'exemple des flux}
+
+  \noindent
+  Soit $A$ un ensemble. On considère la signature $(A,\arite)$ où
+  $\arite(a) = 1$ pour tout $a \in A$. On appelle ensemble des flux
+  (\foreignexpr{stream} en anglais) sur $A$ l'ensemble coinductif $\Stream(A)$
+  associé à cette signature.
+  
+  \begin{pbQuest}
+  \item Donner un élément $1^\infty \in \Stream(\bN)$ représentant la liste
+    infinie $1 \Cons 1 \Cons \cdots$.
+  \item Quel est l'ensemble inductif associé à cette signature~?
+  \end{pbQuest}
+
+  \pbPart{Algèbres et co-algèbres}
+  
+  \noindent
+  Pour exprimer un analogue des \cref{thm.PU.ind} et
+  \cref{thm.ind.induct} dans le cas des ensembles coinductifs, on commence par
+  étudier une formulation alternative de ces théorèmes offrant une version
+  dualte. C'est cette version que nous utiliserons pour la coinduction.
+  
+  \noindent
+  Tout d'abord, reprenons le \cref{thm.PU.ind}. Dans notre formulation,
+  construire une fonction $f : X \to Y$ où $X$ est inductif revient à se
+  donner,
+  pour chaque constructeur $c$, une fonction $f_c : Y^{\arite(c)} \to Y$.
+  Une façon alternative de se donner de telles fonctions est de considérer
+  d'abord l'ensemble
+  \[\sum_{c \in C} X^{\arite(c)} \defeq
+  \{(c,\vec x) \mid \vec x \in X^{\arite(c)}\}\]
+  
+  \begin{pbQuest}
+  \item Soit $X$ un ensemble et $(C,\arite)$ une signature. Construire une
+    bijection entre l'ensemble des fonctions $\sum_{c \in C} X^{\arite(c)} \to X$
+    et des familles $\{f_c\}_{c \in C}$ telles que $f_c : X^{\arite(c)} \to X$.
+  \end{pbQuest}
+  
+  \noindent
+  On appelle $(C,\arite)$-algèbre un ensemble $X$ muni d'une fonction
+  $f : \sum_{c\in C} X^{\arite(c)} \to X$. Si $(X,f)$ et $(Y,g)$ sont deux
+  $(C,\arite)$-algèbres, on appelle morphisme de $(C,\arite)$-algèbres une
+  fonction $h : X \to Y$ vérifiant
+  \[\forall (c, x_1,\ldots,x_k) \in \sum_{c \in C} X^{\arite(c)},
+  h(f(c, x_1,\ldots,x_k)) = g(c,h(x_1),\ldots,h(x_k))\]
+  ce que l'on peut représenter par le diagramme commutatif
+  \begin{center}
+    \begin{tikzcd}
+      \sum_{c \in C} X^{\arite(c)} \ar[r,"\sum h"]\ar[d,"f"] &
+      \sum_{c \in C} Y^{\arite(c)} \ar[d,"g"] \\
+      X \ar[r,"h"] & Y
+    \end{tikzcd}
+  \end{center}
+  
+  \noindent
+  Une $(C,\arite)$-algèbre $(X,f)$ est dite initiale si pour toute autre
+  $(C,\arite)$-algèbre $(Y,g)$ il existe un unique morphisme de
+  $(C,\arite)$-algèbre de $(X,f)$ vers $(Y,g)$.
+  
+  \begin{pbQuest}[resume]
+  \item Montrer que si $X$ est l'ensemble inductif associé à une signature
+    $(C,\arite)$, alors $X$ muni des constructeurs $c \in C$ est une
+    $(C,\arite)$-algèbre.
+  \item Montrer que cette $(C,\arite)$-algèbre est initiale.
+  \end{pbQuest}
+
+  \noindent
+  L'induction permet donc de construire des algèbres initiales, c'est en ce
+  sens qu'on peut considérer un ensemble inductif comme \og le plus petit
+  possible\fg~: toute autre structure se comportant bien vis à vis de la
+  signature donnée contient, en un sens, l'ensemble inductif. La coinduction
+  peut se voir comme une notion duale, c'est-à-dire une notion dans lequelle
+  on
+  inverse le sens de lecture. Ainsi, \og le plus grand possible\fg signifie
+  que
+  toute autre structure est contenu dans l'ensemble co-inductif, qui est alors
+  un objet dit terminal. De même, plutôt que de considérer des algèbres, on
+  va considérer des co-algèbres.
+  
+  \noindent
+  On introduit donc la notion de $(C,\arite)$-co-algèbre. Une co-algèbre est
+  un ensemble $X$ muni d'une fonction $f : X \to \sum_{c \in C}X^{\arite(c)}$.
+  Ainsi, plutôt que la donnée des constructeurs, ce sont les destructeurs qui
+  donnent le comportement d'un ensemble co-inductif.
+  
+  \begin{pbQuest}[resume]
+  \item Soit $(C,\arite)$ une signature et $X_\infty$ l'ensemble coinductif qui
+    lui est associé. Montrer que chaque constructeur $c \in C$ induit une
+    fonction $X_\bot^{\arite(c)} \to X_\bot$ croissante pour $\mathord{<}$.
+    En déduire que
+    $c$ induit une fonction $X_\infty^{\arite(c)} \to X_\infty$.
+  \item Montrer que pour tout $x \in X_\infty$, il existe $c \in C$ tel que
+    $x = c(x_1,\ldots,x_{\arite(c)})$. En déduire que $X_\infty$ est une
+    $(C,\arite)$-co-algèbre.
+  \end{pbQuest}
+
+  \noindent
+  Un morphisme de $(C,\arite)$-co-algèbres entre $(X,f)$ et $(Y,g)$ est alors
+  la donnée d'une fonction $h : X \to Y$ telle que, en notant la fonction
+  \[\makeFun{\sum h}{\sum_{c \in C}X^{\arite(c)}}{\sum_{c \in C}Y^{\arite(c)}}
+            {(c,x_1,\ldots,x_{\arite(c)})}{(c,h(x_1),\ldots,h(x_{\arite(c)}))}\]
+  on a la propriété
+  \[\forall x \in X, \sum h (f(x)) = g(h(x))\]
+  ce que l'on peut représenter par le diagramme commutatif
+  \begin{center}
+    \begin{tikzcd}
+      X \ar[r, "h"]\ar[d,"f"] & Y\ar[d,"g"] \\
+      \sum_{c \in C} X^{\arite(c)} \ar[r,"\sum h"] &
+      \sum_{c \in C} Y^{\arite(c)}
+    \end{tikzcd}
+  \end{center}
+  
+  \begin{pbQuest}[resume]
+  \item Montrer que $X_\infty$ tel que défini précédemment est une
+    $(C,\arite)$-co-algèbre terminale, c'est-à-dire que pour toute autre
+    $(C,\arite)$-co-algèbre $(Y,f)$ il existe un unique morphisme de
+    co-algèbre de $X_\infty$ dans $(Y,f)$.
+  \end{pbQuest}
 \end{problem}
