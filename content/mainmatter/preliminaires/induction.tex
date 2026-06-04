@@ -1290,5 +1290,136 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     $(C,\arite)$-co-algèbre terminale, c'est-à-dire que pour toute autre
     $(C,\arite)$-co-algèbre $(Y,f)$ il existe un unique morphisme de
     co-algèbre de $X_\infty$ dans $(Y,f)$.
+  \item Démontrer le théorème de co-récursion pour les ensembles coinductifs~:
+    \begin{quotation}
+      Soit $(C,\arite)$ une signature et $X_\infty$ l'ensemble coinductif
+      associé. Soit $Y$ un ensemble quelconque, $c_Y : Y \to C$ une fonction
+      associant à chaque élément de $Y$ un constructeur, et pour tout
+      $(y,c_Y(y))$, un tuple $(y_1,\ldots,y_{\arite(c_Y(c))})$.
+      Alors il existe une unique fonction $h : Y \to X_\infty$ telle que
+      \[\forall y \in Y, h(y) = c_Y(y)(h(y_1),\ldots,h(y_{\arite(c_Y(y))}))\]
+%      $c \in C$ et
+%      $f : Y \to Y^{\arite(c)}$. Alors il existe une unique fonction
+%      $h : Y \to X_\infty$ telle que pour tout $y \in Y$, en notant
+%      $y_{f,1},\ldots,y_{f,\arite(c)}$ les coordonnées de $f(y)$, on a
+%      \[h(y) = c(h(y_{f,1}),\ldots,h(y_{f,\arite(c)}))\]
+    \end{quotation}
+  \end{pbQuest}
+
+  Montrons maintenant le principe de co-induction, c'est-à-dire la version
+  duale du \cref{thm.ind.induct}. Dans l'induction, le principe est de
+  considérer un constructeur $c$ d'arité $n$ et de montrer
+  \begin{quotation}
+    Pour tous $x_1,\ldots,x_n$, si $P(x_1),\ldots,P(x_n)$ alors
+    $P(c(x_1,\ldots,x_n))$.
+  \end{quotation}
+  Dans le cas co-inductif, on cherche simplement à montrer la propriété
+  \og dans l'autre sens\fg~:
+  \begin{quotation}
+    Pour tous $x_1,\ldots,x_n$, si $P(c(x_1,\ldots,x_n))$ alors il existe
+    $i$ tel que $P(x_i)$.
+  \end{quotation}
+  Pour formaliser correctement cette idée, on commence par définir la notion
+  de prédicat productif~: pour un ensemble coinductif $X_\infty$ tel
+  qu'introduit précédemment, un prédicat $P\subseteq X_\infty$ est dit
+  productif s'il vérifie l'énoncé précédent, c'est-à-dire que pour tout
+  constructeur $c$ et éléments $x_1,\ldots,x_n$, si
+  $P(c(x_1,\ldots,x_n))$ alors il existe $i$ tel que $P(x_i)$.
+  \begin{pbQuest}[resume]
+  \item Soit $P$ productif sur $X_\infty$, on définit $\tilde P$ sur $X_\bot$
+    par
+    \[ \tilde P(x) \defeq \exists x_0 \in X_\infty, P(x_0) \land x \in x_0\]
+    Montrer que $\tilde P$ est un prédicat inductif, c'est-à-dire que si
+    $\tilde P(x_1),\ldots,\tilde P(x_n)$ et $c$ est un constructeur d'arité
+    $n$, alors $\tilde P(c(x_1,\ldots,x_n))$.
+  \item En déduire que si $P$ est productif, alors
+    \[\forall x \in X_\infty, P(x)\]
+  \end{pbQuest}
+  
+  \pbPart{Application aux flux}
+
+  \begin{pbQuest}
+  \item En utilisant les résultats précédents, construire par co-récursion une
+    fonction
+    \[\makeFunName{\fromF}{\bN}{\Stream(\bN)}\]
+    qui associe à $n$ le flux $n \Cons (n+1)\Cons (n+2) \Cons \cdots$.
+  \item Soit $A$ un ensemble. Définir par co-récursion une fonction
+    \[\makeFunName{\iota}{A^\bN}{\Stream(A)}\]
+    qui associe à $(u_n)_{n \in \bN}$ le flux $u_0 \Cons u_1 \Cons \cdots$
+  \item Montrer que $\iota$ est une bijection.
+  \end{pbQuest}
+
+  \pbPart{Relation coinductive}
+
+  \noindent
+  Nous avons étudié les ensembles définis coinductivement. Ces constructions
+  sont techniques, car il est difficile de construire correctement un objet
+  existant \latinexpr{a priori}. C'est aussi pour cette raison que nous avons
+  introduit dans notre construction l'ensemble $\powerset(X_\bot)$, permettant
+  d'avoir un surensemble dans lequel travailler.
+
+  Dans le cas des relations définies par induction, le travail est plus simple~:
+  on travail \latinexpr{a priori} dans un ensemble de parties, et le théorème
+  de Knaster-Tarski invite directement à produire un énoncé dual.
+
+  \begin{pbQuest}
+  \item Montrer la version duale du théorème de point fixe de Knaster-Tarski~:
+    \begin{quotation}
+      Soit $E$ un ensemble quelconque, et $f : \powerset(E) \to \powerset(E)$
+      une fonction croissante pour $\subseteq$. Il existe un plus grand point
+      fixe de $f$ pour $\subseteq$, c'est-à-dire une partie $A$ telle que
+      $f(A) = A$ et pour toute partie $B$ vérifiant $f(B) = B$, on a l'inclusion
+      $B \subseteq A$.
+    \end{quotation}
+  \item En déduire une construction, pour des règles d'inférences telles
+    qu'introduites plus tôt dans le chapitre, d'une plus grande relation
+    satisfaisant ces règles.
+  \end{pbQuest}
+
+  \noindent
+  L'induction sur une relation inductive peut aussi être effectuée de façon
+  duale. Pour cela, considérons une règle d'inférence
+  \begin{center}
+    \AxiomC{$P_1$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$P_n$}
+    \RightLabel{$\ruleR$}
+    \TrinaryInfC{$P$}
+    \DisplayProof
+  \end{center}
+  L'induction nous dit qu'une relation satisfaisant cette règle contient la
+  relation inductivement engendrée par cette règle. Par le même principe, une
+  telle relation est contenue dans la relation coinductivement engendrée
+  par cette règle. Ainsi, une coinduction sur une relation coinductive demande
+  de construire pour chaque élément une relation stable par une règle.
+
+  \noindent
+  Pour ce faire, introduisons la notion de co-satisfaction d'une règle. Avec les
+  notations précédente, la règle $\ruleR$ est dite co-satisfaite pour
+  l'instanciation $X \mapsto R, x_1 \mapsto a_1,\ldots, x_n \mapsto a_n$
+  lorsque, si la conclusion $P$ de $\ruleR$ sur cette instanciation des
+  paramètres,
+  alors il existe une des prémisses $P_i$ de $\ruleR$ qui est vérifiée. On
+  notera
+  $(X\mapsto R, x_1 \mapsto a_1,\ldots, x_n \mapsto a_n)\comodels \ruleR$.
+
+  \begin{pbQuest}[resume]
+  \item Soit $E$ un ensemble et
+    $\ruleR$ une règle d'inférence telle que présentée ci-dessus,
+    à paramètres $X \in \powerset(E^n), x_1,\ldots,x_n \in E$. Soit
+    $R$ une relation $n$-aire sur $E$.
+    Si $(X \mapsto R, x_1\mapsto a_1,\ldots x_n \mapsto a_n) \comodels \ruleR$
+    alors la relation inductive engendrée par $\ruleR$ sur la relation
+    $R$ est contenue dans la relation coinductivement engendrée par $\ruleR$.
+  \item En déduire le théorème de coinduction suivant~:
+    \begin{quotation}
+      Soit $E$ un ensemble et $\{\ruleR_i\}_{i \in I}$ un ensemble de règles
+      d'inférence à paramètre $X \in \powerset(E^n), x_1,\ldots,x_n \in E$.
+      Soit $R \in \powerset(E^n)$ une relation $n$-aire sur $E$.
+      Si pour tous $(a_1,\ldots,a_n)$ il existe $i \in I$ tel que
+      $(X \mapsto R, x_1\mapsto a_1,\ldots,x_n\mapsto a_n)\comodels \ruleR_i$
+      alors $R$ est incluse dans la relation coinductivement engendrée par
+      $\{\ruleR_i\}_{i \in I}$.
+    \end{quotation}
   \end{pbQuest}
 \end{problem}
