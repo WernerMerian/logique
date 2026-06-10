@@ -31,8 +31,10 @@ ensemble inductif, en ajoutant les connecteurs logiques usuels.
 \begin{definition}[Propositions]
   On définit l'ensemble $\Prop$ des propositions du calcul
   propositionnel par la grammaire suivante~:
-  \[P,Q \Coloneq x \mid \top \mid \bot \mid \lnot P \mid P \lor Q \mid P \land Q
-  \mid P \to Q\]
+  \[\varFF,\varFP \inddefeq
+  x \mid \top \mid \bot \mid \lnot \varFF \mid \varFF \lor \varFP \mid
+  \varFF \land \varFP
+  \mid \varFF \to \varFP\]
   où $x\in \Var$ est une variable propositionnelle.
 \end{definition}
 
@@ -47,16 +49,35 @@ Le sens des différents symboles est le suivant~:
 \end{itemize}
 
 Par convention, nous donnons l'ordre de priorité (du plus prioritaire au moins
-prioritaire) suivant~: $\lnot > \land > \lor > \to$. Cette convention évite
-ainsi d'écrire certaines parenthèses. De plus, comme $\land$ et $\lor$ seront
-montrés associatifs, nous ne parenthèserons pas $P\lor Q\lor R$ par exemple.
-Pour $\to$, nous associons à droite, c'est-à-dire que $P\to Q\to R$ signifie
-$P\to (Q \to R)$. Par exemple la proposition
-\[(P \to Q)\land (R \to Q) \to P\lor R \to Q\] doit se lire
-\[((P \to Q) \land (R \to Q)) \to ((P \lor R) \to Q)\]
+prioritaire) suivant~:
+$\mathord{\lnot} > \mathord{\land} > \mathord{\lor} > \mathord{\to}$.
+Cette convention évite
+ainsi d'écrire certaines parenthèses. De plus, comme $\mathord{\land}$ et
+$\mathord{\lor}$ seront
+montrés associatifs, nous ne parenthèserons pas des propositions comme
+$\varFF\lor \varFP\lor \varFC$.
+Pour $\mathord{\to}$, nous associons à droite, c'est-à-dire que
+$\varFF\to \varFP\to \varFC$
+signifie
+$\varFF\to (\varFP \to \varFC)$. Par exemple la proposition
+\[(\varFF \to \varFC)\land (\varFP \to \varFC) \to \varFF\lor
+\varFP \to \varFC\]
+doit se lire
+\[((\varFF \to \varFC) \land (\varFP \to \varFC))
+\to ((\varFF \lor \varFP) \to \varFC)\]
+
+\begin{remark}
+  Suivant les auteurs, on note les propositions $P,Q,\ldots$, $A,B,\ldots$, ou
+  $\varphi,\psi,\ldots$ Par préférence personnelle des auteurs, on utilise les
+  lettres $\varphi,\psi,\ldots$ qui sont plus souvent utilisées pour parler de
+  formules de la logique du premier ordre~: puisque c'est la logique du premier
+  ordre que nous étudierons dans le reste de cet ouvrage, nous préférons
+  unifier les notations ici.
+\end{remark}
 
 L'objectif d'une proposition est bien sûr de lui attribuer une valeur de vérité.
-\'Evidemment, la valeur de vérité d'une proposition dépend de celle des variables.
+\'Evidemment, la valeur de vérité d'une proposition dépend de celle des
+variables.
 Par exemple, $(x\lor \lnot y) \land z$ n'aura pas la même valeur de vérité
 suivant si $z$ est vrai ou faux.
 
@@ -65,12 +86,13 @@ l'ensemble des variables impliquées dans la construction d'une proposition.
 
 \begin{definition}[Variables libres]
   Par induction sur la structure inductive de $\Prop$, on définit pour
-  $P$ l'ensemble $\VL(P)$ des variables libres de $P$~:
+  $\varFF$ l'ensemble $\VL(\varFF)$ des variables libres de $\varFF$~:
   \begin{itemize}
-  \item si $P = x$ et $x\in\Var$, alors $\VL(P) = \{x\}$.
-  \item si $P = \lnot Q$ alors $\VL(P) = \VL(Q)$.
-  \item si $P = Q \lor R$ ou $P = Q \land R$ ou $P = Q \to R$,
-    alors $\VL(P) = \VL(Q)\cup\VL(R)$.
+  \item si $\varFF = x$ et $x\in\Var$, alors $\VL(\varFF) = \{x\}$.
+  \item si $\varFF = \lnot \varFP$ alors $\VL(\varFF) = \VL(\varFP)$.
+  \item si $\varFF = \varFP \lor \varFC$ ou $\varFF = \varFP \land \varFC$ ou
+    $\varFF = \varFP \to \varFC$,
+    alors $\VL(\varFF) = \VL(\varFP)\cup\VL(\varFC)$.
   \end{itemize}
 \end{definition}
 
@@ -86,7 +108,7 @@ un environnement. On utilisera l'ensemble $\{0,1\}$ pour signifier
 $\{\mathrm{Faux},\mathrm{Vrai}\}$.
 
 \begin{definition}[Environnement]
-  Un environnement est une fonction partielle $\rho : \Var \to \{0,1\}$
+  Un environnement est une fonction partielle $\rho : \Var \partialto \{0,1\}$
   dont le domaine (l'ensemble des valeurs $x\in \Var$ sur lesquelles
   $\rho$ est défini) est fini.
 \end{definition}
@@ -97,7 +119,7 @@ la valuation comme le prolongement d'un environnement par les règles inductives
 naturelles pour donner le sens voulu aux propositions.
 
 \begin{definition}[Valuation]
-  Soit $\rho$ un environnement. On définit par induction sur $\mathrm{Prop}$
+  Soit $\rho$ un environnement. On définit par induction sur $\Prop$
   la fonction partielle $\Val_\rho : \Prop \to \{0,1\}$~:
   \begin{itemize}
   \item $\Val_\rho(\top) = 1$.
@@ -105,27 +127,28 @@ naturelles pour donner le sens voulu aux propositions.
   \item pour $x\in \Var$, si $x\in \dom(\rho)$ alors
     $\Val_\rho (x)= \rho(x)$, si $x\notin \dom(\rho)$ alors
     $\Val_\rho (x)$ n'est pas défini.
-  \item soit $P$ une proposition, alors
-    $\Val_\rho(\lnot P) = 1 - \Val_\rho(P)$.
-  \item soient $P$ et $Q$ deux propositions, alors
-    $\Val_\rho(P\lor Q)=\max(\Val_\rho(P),\Val_\rho(Q))$
-  \item soient $P$ et $Q$ deux propositions, alors
-    $\Val_\rho(P\land Q)=\min(\Val_\rho(P),\Val_\rho(Q))$
-  \item soient $P$ et $Q$ deux propositions, alors
-    $\Val_\rho(P\to Q) = \max(1 - \Val_\rho(P),\Val_\rho(Q))$
+  \item soit $\varFF$ une proposition, alors
+    $\Val_\rho(\lnot \varFF) = 1 - \Val_\rho(\varFF)$.
+  \item soient $\varFF$ et $\varFP$ deux propositions, alors
+    $\Val_\rho(\varFF\lor \varFP)=\max(\Val_\rho(\varFF),\Val_\rho(\varFP))$.
+  \item soient $\varFF$ et $\varFP$ deux propositions, alors
+    $\Val_\rho(\varFF\land \varFP)=\min(\Val_\rho(\varFF),\Val_\rho(\varFP))$.
+  \item soient $\varFF$ et $\varFP$ deux propositions, alors
+    $\Val_\rho(\varFF\to \varFP) = \max(1 - \Val_\rho(\varFF),\Val_\rho(\varFP))$.
   \end{itemize}
 \end{definition}
 
 \begin{exercise}
-  Soit $\rho$ un environnement et $P$ une proposition, montrer que
-  $\Val_\rho(P)$ est définie si et seulement si
-  $\VL(P)\subseteq \dom(\rho)$.
+  Soit $\rho$ un environnement et $\varFF$ une proposition, montrer que
+  $\Val_\rho(\varFF)$ est définie si et seulement si
+  $\VL(\varFF)\subseteq \dom(\rho)$.
 \end{exercise}
 
 \begin{exercise}\label{exo.val.VL}
-  Soit $P$ une proposition. Soient $\rho$ et $\rho'$ deux environnements tels
-  que $\rho_{|\;\VL(P)}=\rho'_{|\;\VL(P)}$. Montrer que
-  $\Val_\rho(P)=\Val_{\rho'}(P)$.
+  Soit $\varFF$ une proposition. Soient $\rho$ et $\rho'$ deux environnements
+  tels
+  que $\rho\restr{\VL(\varFF)}=\rho'\restr{\VL(\varFF)}$. Montrer que
+  $\Val_\rho(\varFF)=\Val_{\rho'}(\varFF)$.
 \end{exercise}
 
 On peut donc définir la relation de vérité, dans un environnement donné, pour
@@ -133,18 +156,22 @@ une proposition.
 
 \begin{definition}[Satisfaction]
   Soit $\rho$ un environnement et $P\in\Prop$. On définit la relation
-  $\rho\models P$ par $$(\rho\models P) \defeq (\Val_\rho(P) = 1)$$
-  On dit alors que $\rho$ satisfait $P$.
+  $\rho\satisf \varFF$ par
+  \[\rho\satisf \varFF \defeq \Val_\rho(\varFF) = 1\]
+  On dit alors que $\rho$ satisfait $\varFF$.
 
-  Si pour tout environnement $\rho$ tel que $\VL(P)\subseteq\dom(\rho)$,
-  $\rho\models P$, alors on dit que $P$ est une tautologie, et on le note
-  $\models P$. Si aucun environnement ne satisfait $P$, on dit alors que $P$ est
-  une antilogie.
+  Si pour tout environnement $\rho$ tel que $\VL(\varFF)\subseteq\dom(\rho)$,
+  $\rho\satisf \varFF$, alors on dit que $\varFF$ est une
+  tautologie, et on le note
+  $\satisf \varFF$. Si aucun environnement ne satisfait $\varFF$, on dit alors
+  que $\varFF$ est une antilogie.
 \end{definition}
 
 \begin{exercise}
-  Montrer que $P$ est une antilogie si et seulement si $\lnot P$ est une
-  tautologie. En déduire que $P$ est une tautologie si et seulement si $\lnot P$
+  Montrer que $\varFF$ est une antilogie si et seulement si $\lnot \varFF$
+  est une
+  tautologie. En déduire que $\varFF$ est une tautologie si et seulement si
+  $\lnot \varFF$
   est une antilogie.
 \end{exercise}
 
@@ -152,11 +179,11 @@ Donnons un premier outil pour traiter des vérités du calcul des propositions~:
 les tables de vérité.
 
 \begin{definition}[Table de vérité]
-  Une table de vérité pour une proposition $P$ de variables libres
+  Une table de vérité pour une proposition $\varFF$ de variables libres
   $x_1,\ldots,x_n$ est un tableau contenant $2^n$ lignes et $n+1$ colonnes, où
   chaque ligne énumère un environnement différent, où la
   \ordinalnumeralfeminin{$i$} colonne représente la valeur des environnement en
-  $x_i$ et où la dernière colonne représente la valuation de $P$ pour
+  $x_i$ et où la dernière colonne représente la valuation de $\varFF$ pour
   l'environnement donné.
 \end{definition}
 
@@ -185,8 +212,10 @@ les tables de vérité.
 
 Une table de vérité permet de vérifier qu'une proposition est bien une
 tautologie puisque, grâce à l'\cref{exo.val.VL}, nous savons que tout
-environnement $\rho$ contenant les variables libres d'une proposition $P$ donnée
-ne définit $\Val_\rho(P)$ que par les valeurs des variables libres listées dans
+environnement $\rho$ contenant les variables libres d'une proposition $\varFF$
+donnée
+ne définit $\Val_\rho(\varFF)$ que par les valeurs des variables libres
+listées dans
 la table de vérité. Ainsi, une proposition est une tautologie si et seulement si
 toute la dernière colonne est remplie de $1$.
 
@@ -198,23 +227,30 @@ toute la dernière colonne est remplie de $1$.
 La notion de tautologie peut être considérée comme la bonne notion de vérité
 dans le cadre du calcul propositionnel~: une proposition vraie est une
 proposition qui s'évalue toujours en une formule vraie. Comme $\to$ sert à
-signifier l'implication logique, dire que $A \to B$ est une tautologie revient à
-dire que chaque fois que $A$ est vraie, $B$ l'est aussi. Ainsi, en notant
-$A \leftrightarrow B$ pour $(A \to B) \land (B \to A)$, dire que
-$A \leftrightarrow B$ est une tautologie revient à dire que $A$ et $B$ prennent
+signifier l'implication logique, dire que $\varFF \to \varFP$ est une
+tautologie revient à
+dire que chaque fois que $\varFF$ est vraie, $\varFP$ l'est aussi. Ainsi, en
+notant
+$\varFF \leftrightarrow \varFP$ pour
+$(\varFF \to \varFP) \land (\varFP \to \varFF)$, dire que
+$\varFF \to \varFP$ est une tautologie revient à dire que
+$\varFF$ et $\varFP$ prennent
 toujours la même valeur de vérité. Cette relation est l'équivalence logique~:
 elle traduit que deux propositions ont la même valeur.
 
 \begin{definition}[\'Equivalence logique]
-  Pour tous $P,Q\in\Prop$, on dit que $P$ et $Q$ sont logiquement équivalents,
-  ce que l'on écrit $P\equiv Q$, si $\models P \leftrightarrow Q$.
+  Pour tous $\varFF,\varFP\in\Prop$, on dit que $\varFF$ et $\varFP$ sont
+  logiquement équivalents,
+  ce que l'on écrit $\varFF\equiv \varFP$, si
+  $\satisf \varFF \leftrightarrow \varFP$.
 \end{definition}
 
 Un affaiblissement est la relation de conséquence logique.
 
 \begin{definition}[Conséquence logique]
-  Pour tous $P,Q\in\Prop$, on dit que $Q$ est conséquence logique de $P$, ce que
-  l'on note $P\vDash Q$, si $\models P\to Q$.
+  Pour tous $\varFF,\varFP\in\Prop$, on dit que $\varFP$ est conséquence
+  logique de $\varFF$, ce que
+  l'on note $\varFF\vD \varFP$, si $\satisf \varFF\to \varFP$.
 \end{definition}
 
 \begin{exercise}
@@ -246,19 +282,20 @@ théorème de compacité. Son principe est de permettre de passer d'ensembles fi
 à des ensembles infinis. Si son utilité est relativement anecdotique dans le cas
 de la logique propositionnelle, il sera un élément essentiel en logique du
 premier ordre. Pour pouvoir établir ce théorème, nous devons tout d'abord
-généraliser la relation de satisfaction $\vDash$ au cas d'un ensemble infini de
+généraliser la relation de satisfaction $\vD$ au cas d'un ensemble infini de
 propositions.
 
 \begin{definition}[Environnement infini]
-  On définit l'ensemble $\mathcal E$ des environnement potentiellement infinis
-  comme l'ensemble des fonctions partielles $\Var \to \{0,1\}$. On définit la
-  fonction $\Val : \mathcal E\times \Prop \to \{0,1\}$, pour tout
-  $\rho\in\mathcal E$, par :
-  \[\Val_\rho(P) = \Val_{\rho_{|\VL(P)}}(P)\]
+  On définit l'ensemble $\Enviro$ des environnement potentiellement infinis
+  comme l'ensemble des fonctions partielles $\Var \partialto \{0,1\}$. On
+  définit la
+  fonction $\Val : \Enviro\times \Prop \to \{0,1\}$, pour tout
+  $\rho\in\Enviro$, par :
+  \[\Val_\rho(\varFF) = \Val_{\rho\restr{\VL(\varFF)}}(\varFF)\]
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
 
-  On définit $\rho\models P$ de façon analogue à précédemment~:
-  \[\rho\models P \defeq \Val_\rho(P) = 1\]
+  On définit $\rho\satisf \varFF$ de façon analogue à précédemment~:
+  \[\rho\satisf \varFF \defeq \Val_\rho(\varFF) = 1\]
 \end{definition}
 
 \begin{exercise}
@@ -267,10 +304,10 @@ propositions.
 \end{exercise}
 
 \begin{definition}[Satisfaction infinie]
-  Soit $\mathcal P$ un ensemble (potentiellement infini) de propositions et
-  $P\in\Prop$. On définit $\mathcal P\vDash P$ par
-  \[\forall \rho\in\mathcal E, (\forall Q \in\mathcal P, \rho\models Q)
-  \implies \rho\models P\]
+  Soit $\PropSet$ un ensemble (potentiellement infini) de propositions et
+  $\varFF\in\Prop$. On définit $\PropSet\vDash \varFF$ par
+  \[\forall \rho\in\Enviro, (\forall \varFP \in\PropSet, \rho\satisf \varFP)
+  \implies \rho\satisf \varFF\]
 \end{definition}
 
 Le théorème de compacité possède plusieurs expressions différentes. Pour les
@@ -278,583 +315,698 @@ donner, nous allons introduire le vocabulaire nécessaire sur les ensembles
 (potentiellement infinis) de propositions.
 
 \begin{definition}[Satisfiabilité]
-  On dit qu'un ensemble $\mathcal P\subseteq\Prop$ est satisfiable s'il existe
-  $\rho\in\mathcal E$ telle que $\forall P\in\mathcal P, \rho\models P$. On dit
-  qu'un ensemble $\mathcal P\subseteq\Prop$ est finiment satisfiable si toutes
+  On dit qu'un ensemble $\PropSet\subseteq\Prop$ est satisfiable s'il existe
+  $\rho\in\Enviro$ telle que $\varFF\in\PropSet, \rho\satisf \varFF$. On dit
+  qu'un ensemble $\PropSet\subseteq\Prop$ est finiment satisfiable si toutes
   ses parties finies sont satisfiables.
 \end{definition}
 
 \begin{definition}[Contradiction]
-  On dit qu'un ensemble $\mathcal P\subseteq\Prop$ est contradictoire s'il
-  n'existe pas d'environnement $\rho\in\mathcal E$ tel que
-  $\forall P \in\mathcal P, \rho\models P$. Un ensemble
-  $\mathcal P\subseteq \Prop$ est finiment contradictoire si l'une de ses
+  On dit qu'un ensemble $\PropSet\subseteq\Prop$ est contradictoire s'il
+  n'existe pas d'environnement $\rho\in\Enviro$ tel que
+  $\forall \varFF \in\PropSet, \rho\satisf \varFF$. Un ensemble
+  $\PropSet\subseteq \Prop$ est finiment contradictoire si l'une de ses
   parties finies est contradictoire.
 \end{definition}
 
 Le théorème de compacité énonce alors l'équivalence entre la version finie et la
 version infinie des deux caractères, et de façon équivalente, l'équivalence de
-la relation $\vDash$ pour un ensemble infini et pour ses parties finies.
+la relation $\vD$ pour un ensemble infini et pour ses parties finies.
 Montrons d'abord que ces trois principes sont bien équivalents.
 
 \begin{proposition}
   Les trois propriétés suivantes sont équivalentes~:
   \begin{enumerate}[label=(\roman*)]
-  \item\label{enum.compac.prop1} pour tout $\mathcal P\subseteq \Prop$,
-    $\mathcal P$ est satisfiable si et seulement s'il est finiment satisfiable.
-  \item\label{enum.compac.prop2} pour tout $\mathcal P\subseteq\Prop$,
-    $\mathcal P$ est contradictoire si et seulement s'il est finiment
+  \item\label{enum.compac.prop1} pour tout $\PropSet\subseteq \Prop$,
+    $\PropSet$ est satisfiable si et seulement s'il est finiment satisfiable.
+  \item\label{enum.compac.prop2} pour tout $\PropSet\subseteq\Prop$,
+    $\PropSet$ est contradictoire si et seulement s'il est finiment
     contradictoire.
-  \item\label{enum.compac.prop3} pour tout $\mathcal P\subseteq\Prop$ et
-    $P\in\Prop$, $\mathcal P\vDash P$ si et seulement s'il existe
-    $F\subfin \mathcal P$ tel que $F\vDash P$.
+  \item\label{enum.compac.prop3} pour tout $\PropSet\subseteq\Prop$ et
+    $\varFF\in\Prop$, $\PropSet\vD \varFF$ si et seulement s'il existe
+    $F\subfin \PropSet$ tel que $F\vD \varFF$.
   \end{enumerate}
 \end{proposition}
 
 \begin{proof}
   Pour commencer, remarquons qu'un ensemble satisfiable est finiment
   satisfiable, qu'un ensemble finiment contradictoire est contradictoire, et que
-  s'il existe $F\subfin \mathcal P$ tel que $F\vDash P$, alors pour tout
-  environnement $\rho$ tel que $\rho\models \mathcal P$, on a en particulier
-  $\rho\models F$ et donc $\rho\models P$. Il nous suffit donc de travailler sur
+  s'il existe $F\subfin \PropSet$ tel que $F\vD \varFF$, alors pour tout
+  environnement $\rho$ tel que $\rho\satisf \PropSet$, on a en particulier
+  $\rho\satisf \varFF$ et donc $\rho\satisf \varFF$. Il nous suffit donc de
+  travailler sur
   un seul sens de l'équivalence à chaque fois. Nous allons maintenant montrer
   $\ref{enum.compac.prop1}\implies\ref{enum.compac.prop2}\implies
   \ref{enum.compac.prop3}\implies\ref{enum.compac.prop1}$~:
   \begin{itemize}
   \item Supposons \ref{enum.compac.prop1} et montrons \ref{enum.compac.prop2}.
-    Soit $\mathcal P\subset \Prop$ contradictoire, montrons que $\mathcal P$
-    est finiment contradictoire. Par l'absurde, supposons que $\mathcal P$ n'est
-    pas finiment contradictoire~: toute partie finie $F\subseteq \mathcal P$
-    possède donc une valuation $\rho_F$ telle que $\rho_F\models F$. Mais alors,
+    Soit $\PropSet\subset \Prop$ contradictoire, montrons que $\PropSet$
+    est finiment contradictoire. Par l'absurde, supposons que $\PropSet$ n'est
+    pas finiment contradictoire~: toute partie finie $F\subfin \PropSet$
+    possède donc une valuation $\rho_F$ telle que $\rho_F\satisf F$. Mais alors,
     en utilisant \ref{enum.compac.prop1}, on en déduit qu'il existe une
-    valuation $\rho\models \mathcal P$. Pourtant $\mathcal P$ est
+    valuation $\rho\satisf \PropSet$. Pourtant $\PropSet$ est
     contradictoire~: c'est une absurdité. Ainsi, par l'absurde, on en déduit que
-    $\mathcal P$ est finiment contradictoire.
+    $\PropSet$ est finiment contradictoire.
   \item Supposons \ref{enum.compac.prop2} et montrons \ref{enum.compac.prop3}.
-    Soient $\mathcal P\subseteq\Prop, P\in\Prop$ tels que $\mathcal P\vDash P$.
-    Montrons qu'il existe $F\subfin\mathcal P$, tel que $F\vDash P$. Comme
-    $\mathcal P\vDash P$, on en déduit que $\mathcal P \cup \{\lnot P\}$ est
+    Soient $\PropSet\subseteq\Prop, \varFF\in\Prop$ tels que
+    $\PropSet\vD \varFF$.
+    Montrons qu'il existe $F\subfin\PropSet$, tel que $F\vD \varFF$. Comme
+    $\PropSet\vD \varFF$, on en déduit que $\PropSet \cup \{\lnot \varFF\}$ est
     contradictoire. Ainsi, par \ref{enum.compac.prop2}, on trouve un ensemble
-    $F\subfin \mathcal P \cup \{\lnot P\}$ contradictoire. Deux choix se
+    $F\subfin \PropSet \cup \{\lnot \varFF\}$ contradictoire. Deux choix se
     présentent alors~:
     \begin{itemize}
-    \item si $F$ ne contient pas $\lnot P$, alors $F\subfin \mathcal P$, donc
-      il n'existe pas de valuation telle que $\rho\models F$, ce qui signifie
-      que toute valuation $\rho$ telle que $\rho\models F$ vérifie
-      $\rho\models P$, donc $F\vDash P$.
-    \item si $F$ contient $\lnot P$, alors on peut réécrire $F$ comme
-      $F = F'\sqcup\{\lnot P\}$, où $F'\subfin \mathcal P$. Comme cet ensemble
+    \item si $F$ ne contient pas $\lnot \varFF$, alors $F\subfin \PropSet$, donc
+      il n'existe pas de valuation telle que $\rho\satisf F$, ce qui signifie
+      que toute valuation $\rho$ telle que $\rho\satisf F$ vérifie
+      $\rho\satisf \varFF$, donc $F\vD \varFF$.
+    \item si $F$ contient $\lnot \varFF$, alors on peut réécrire $F$ comme
+      $F = F'\sqcup\{\lnot \varFF\}$, où
+      $F'\subfin \PropSet$. Comme cet ensemble
       est contradictoire, cela signifie que pour toute valuation $\rho$ telle
-      que $\rho\models F'$, on a $\rho\not\models \lnot P$ (car sinon cette
+      que $\rho\satisf F'$, on a $\rho\not\satisf \lnot \varFF$ (car sinon cette
       valuation serait une valuation de $F$, ce qui n'existe pas). Or,
-      $\rho\not\models \lnot P$ signifie que $\rho\models P$, donc toute
-      valuation $\rho\models F'$ vérifie $\rho\models P$. On a donc trouvé
-      $F'\subfin \mathcal P$ telle que $F'\vDash P$.
+      $\rho\not\satisf \lnot \varFF$ signifie que $\rho\satisf \varFF$, donc
+      toute
+      valuation $\rho\satisf F'$ vérifie $\rho\satisf \varFF$. On a donc trouvé
+      $F'\subfin \PropSet$ telle que $F'\vD \varFF$.
     \end{itemize}
-    Dans les deux cas, on a trouvé $F\subfin \mathcal P$ telle que $F\vDash P$.
+    Dans les deux cas, on a trouvé $F\subfin \PropSet$ telle que $F\vD \varFF$.
   \item Supposons \ref{enum.compac.prop3} et montrons \ref{enum.compac.prop1}.
-    Soit $\mathcal P\subseteq\Prop$ un ensemble finiment satisfiable, montrons
-    que $\mathcal P$ est satisfiable. Par l'absurde, supposons que $\mathcal P$
-    n'est pas satisfiable. Cela signifie que $\mathcal P\vDash \bot$~: par
-    \ref{enum.compac.prop3} on trouve donc $F\subfin \mathcal P$ tel que
-    $F\vDash \bot$, $F$ est donc finiment contradictoire, ce qui contredit le
-    fait que $\mathcal P$ est finiment satisfiable. Par l'absurde, on en déduit
-    que $\mathcal P$ est satisfiable.
+    Soit $\PropSet\subseteq\Prop$ un ensemble finiment satisfiable, montrons
+    que $\PropSet$ est satisfiable. Par l'absurde, supposons que $\PropSet$
+    n'est pas satisfiable. Cela signifie que $\PropSet\vD \bot$~: par
+    \ref{enum.compac.prop3} on trouve donc $F\subfin \PropSet$ tel que
+    $F\vD \bot$, $F$ est donc finiment contradictoire, ce qui contredit le
+    fait que $\PropSet$ est finiment satisfiable. Par l'absurde, on en déduit
+    que $\PropSet$ est satisfiable.
   \end{itemize}
 
   Les propositions sont ainsi toutes équivalentes.
 \end{proof}
 
-Il ne nous reste plus qu'à prouver le résultat en lui-même.
+Ces trois formulations étant équivalentes, on souhaite maintenant montrer l'une
+d'elles. Pour cela, on va montrer la première formulation~: un ensemble finiment
+satisfiable est satisfiable.
+
+\noindent
+Donnons d'abord l'idée de la preuve. On considère donc un ensemble
+$\PropSet$ finiment satisfiable, qu'on peut supposé énuméré par une famille
+$(\varFF_i)_{i \in \bN}$ car $\Prop$ est dénombrable et $\PropSet$ en est une
+partie (le seul cas intéressant étant celui où $\PropSet$ est infini). On
+souhaite construire une unique valuation $\rho$ qui satisfait tous les
+$\varFF_i$, sachant que chaque famille $F\subfin \bN$ induit une valuation
+$\rho_F \satisf \{\varFF_i\}_{i \in F}$. La valuation $\rho$ va être construite
+pas à pas~: on commence par une valuation $\rho_0 \defeq \vide$, puis on
+ajoute une valeur à $x_0$, donnant une valuation $\rho_1$ définie sur $\{x_0\}$,
+puis $\rho_2$ définie sur $\{x_0,x_1\}$ \latinexpr{etc.} et en vérifiant que
+$\rho_{i+1}$ prolonge $\rho_i$, c'est-à-dire que $\rho_{i+1}\restr i = \rho_i$.
+En construisant la famille des $(\rho_n)_{n \in \bN}$, on peut alors considérer
+$\rho : n \mapsto \rho_{n+1}(n)$ pour obtenir une valuation infinie totale.
 
 \begin{theorem}[Compacité de la logique propositionnelle]\label{thm.compac.prop}
-  Pour tout $\mathcal P\subseteq\Prop$, si $\mathcal P$ est finiment satisfiable
-  alors $\mathcal P$ est satisfiable.
+  Pour tout $\PropSet\subseteq\Prop$, si $\PropSet$ est finiment satisfiable
+  alors $\PropSet$ est satisfiable.
 \end{theorem}
 
 \begin{proof}
-  Soit $\mathcal P\subseteq\Prop$ finiment satisfiable, prouvons que
-  $\mathcal P$ est satisfiable. Pour construire une valuation satisfaisant
-  $\mathcal P$ entièrement, nous allons construire des valuations partielles
-  sur les premières variables seulement. On construit donc une suite de
-  valuations partielles $(\rho_n)_{n\in\mathbb N}$ chacune définie uniquement
-  sur les variables $0$ à $n-1$, de telle sorte que pour tous $i\leq j$,
-  $\rho_j(k) = \rho_i(k)$ pour tout $k < i$. De plus, on veut vérifier qu'à
-  chaque $\rho_n$, il existe une infinité de valuations partielles
-  $\rho'$ définies sur $k > n$ premières variables, étendant $\rho_n$ et
-  pouvant s'étendre en une valuation totale $\rho''$ telle que
-  $\rho''\models P_0,\ldots,P_k$. On raisonne donc par récursion~:
+  Soit $\PropSet\subseteq\Prop$ finiment satisfiable, prouvons que
+  $\PropSet$ est satisfiable. Sans perte de généralité, on peut supposer
+  $\PropSet$ infinie (si $\PropSet$ est finiment satisfiable et fini, alors
+  $\PropSet$ est satisfiable). Comme l'ensemble $\Prop$ est dénombrable, on
+  décide d'ordonner les formules de $\PropSet$~: on suppose que
+  \[\PropSet = \{\varFF_0,\ldots,\varFF_n,\ldots\}\]
+  On souhaite construire une suite de valuations partielles
+  $(\rho_n)_{n \in \bN}$ telle que~:
   \begin{itemize}
-  \item à $0$, on considère simplement la fonction vide, définie nulle part.
-    Pour vérifier la condition sur les extensions, on considère $k\in\mathbb N$.
-    Comme $\mathcal P$ est finiment satisfiable, alors on peut trouver une
-    valuation $\rho\models P_0,\ldots,P_{k-1}$~: on a donc une infinité de
-    telles valuations partielles.
-  \item supposons construite la valuation $\rho_n$, vérifiant les hypothèses
-    énoncées plus haut. Dans l'infinité de $\rho'$ étendant $\rho_n$, il y en a
-    une infinité valant $0$ en $n$, ou une infinité valant $1$ en $n$. Dans le
-    premier cas, on peut construire $\rho_{n+1}$ en valant $\rho_n$ sur
-    $\{0,\ldots,n-1\}$ et $0$ en $n$. Dans le second cas, on étend $\rho_{n+1}$
-    en associant $1$ à $n$. Dans les deux cas, l'hypothèse est encore vérifiée.
+  \item pour tout $n$, $\rho_n$ est définie sur $\{x_0,\ldots,x_{n-1}\}$~;
+  \item pour tout $n$, $\rho_{n+1}\restr n = \rho_n$, c'est-à-dire que
+    pour tout $k < n$, $\rho_{n+1}(k) = \rho_n(k)$~;
+  \item pour tous $n,k$, il existe une extension $\rho$ de
+    $\rho_n$ telle que $\rho \satisf \{\varFF_1,\ldots,\varFF_k\}$.
   \end{itemize}
-  On a donc construit une valuation $\rho$ comme la limite de ces valuations
-  partielles (une version plus formelle de cet argument serait de considérer
-  pour chaque $\rho_n$ l'ensemble
-  $\{\rho : \Var \to \{0,1\}\mid \forall i < n, \rho(i) = \rho_n(i)\}$ et de
-  prendre $\rho$ dans l'intersection de tous ces ensembles). Soit
-  $P\in\mathcal P$, par définition $P$ n'utilise qu'un nombre fini de variables,
-  dont un indice maximal qu'on notera $i$~: pour toute valuation $\rho'$
-  coïncidant avec $\rho$ jusqu'à $i$, $\rho'\models P$ si et seulement si
-  $\rho\models P$. Disons que $P = P_j$ dans notre énumération, et soit
-  $n = \max(i,j)$~: alors il existe une valuation étendant $\rho_n$ et
-  vérifiant $P$, et toute autre valuation coïncidant avec elle jusqu'à $n$
-  vérifie $P$. C'est le cas de $\rho$, qui coïncide jusqu'à $n$ avec $\rho_n$ et
-  donc avec toute extension de $\rho_n$, donc $\rho\models P$.
 
-  Ainsi on a construit $\rho$ telle que
-  \[\forall P \in\mathcal P, \rho\models P\]
-  donc $\mathcal P$ est satisfiable.
+  \noindent
+  On procède par récursion~:
+  \begin{itemize}
+  \item $\rho_0$ est la fonction définie nulle part. Comme toute valuation
+    est une extension de $\rho_0$, on se contente de relever que pour tout
+    $k$ il existe une valuation satisfaisant $\{\varFF_1,\ldots,\varFF_k\}$
+    car $\PropSet$ est finiment satisfiable.
+  \item supposons construite $\rho_n$ satisfaisant les différentes hypothèses
+    évoquées. On construit maintenant $\rho_{n+1}$ en choisissant une valeur
+    à associer à $x_n$ (ce faisant, les deux première conditions sont
+    automatiquement vérifiées). Remarquons que pour tout $k$, il existe une
+    extension $\rho$ de $\rho_n$ satisfaisant $\{\varFF_1,\ldots,\varFF_k\}$.
+    Par principe des tiroirs infinis, la valeur de $\rho(x_n)$ pouvant être soit
+    $1$, soit $0$, soit indéfinie, on sait que l'un des trois cas suivants
+    se présentent~:
+    \begin{itemize}
+    \item pour une infinité de $k$, il existe une extension $\rho$ de $\rho_n$
+      telle que $\rho(x_n) = 1$ et $\rho\satisf \{\varFF_1,\ldots,\varFF_k\}$.
+    \item pour une infinite dé $k$, il existe une extension $\rho$ de
+      $\rho_n$ telle que $\rho(x_n) = 0$ et
+      $\rho\satisf\{\varFF_1,\ldots,\varFF_k\}$.
+    \item pour une infinité de $k$, il existe une extension $\rho$ de $\rho_n$
+      telle que $\rho(x_n)$ est indéfini et
+      $\rho\satisf\{\varFF_1,\ldots,\varFF_,\}$.
+    \end{itemize}
+    Dans les deux derniers cas, on pose $\rho_{n+1}(x_n) = 0$ et dans le
+    premier cas, on pose $\rho_{n+1}(x_n) = 1$. Dans tous les cas, pour tout
+    il existe une extension $\rho$ de $\rho_{n+1}$ telle que
+    $\rho\satisf\{\varFF_1,\ldots,\varFF_k\}$. En effet, on sait qu'il existe
+    une infinité de $p$ vérifiant cette hypothèse, donc on peut choisir
+    un $p > k$, pour lequel on trouve une extension $\rho$ de $\rho_{n+1}$
+    satisfaisant $\{\varFF_1,\ldots,\varFF_p\}$, mais comme $p > k$, cet
+    ensemble de propositions contient en particulier
+    $\{\varFF_1,\ldots,\varFF_k\}$, donc
+    $\rho\satisf \{\varFF_1,\ldots,\varFF_k\}$.
+  \end{itemize}
+  On a ainsi construit la valuation $\rho : x_n \mapsto \rho_{n+1}(x_n)$.
+
+  \noindent
+  Montrons que cette valuation satisfait $\PropSet$. Pour cela, soit
+  $\varFF_i$ une des propositions de $\PropSet$. On pose
+  \[M_i \defeq \max\{\VL(\varFF_0),\ldots,\VL(\varFF_i)\}\]
+  où le $\max$ est pris comme valant $0$ si l'ensemble des variables libres est
+  vide. Par hypothèse, on sait que $\rho_{M_i}$ peut être étendu pour satisfaire
+  $\{\varFF_0,\ldots,\varFF_i\}$, mais on sait aussi que la valeur
+  $\Val_{\rho_{M_i}}(\varFF_k)$ pour $k \leq i$ est définie uniquement par la
+  valeur de $\rho_{M_i}$ sur les variables libres des différents $\varFF_k$, qui
+  est déjà déterminée dans $\rho_{M_i}$. Ainsi,
+  $\Val_{\rho}(\varFF_k) = 1$, donc en particulier
+  $\rho\satisf \varFF_i$.
+
+  On a donc construit une valuation $\rho \satisf \PropSet$.
 \end{proof}
 
 \subsection{Calcul des séquents}
 
 Ce qui manque à notre système, c'est une syntaxe~: un système simple qui va nous
 permettre de justifier des tautologies. Cette syntaxe se base sur la notion de
-séquent~: un séquent est une paire de listes de propositions, que l'on écrira
-$\Gamma\vdash \Delta$, exprimant que $\bigwedge \Gamma \to \bigvee \Delta$ est
-une tautologie. L'intérêt de la relation $\vdash$ à définir est de donner un
-système facile de preuve~: pour prouver que $P$ est une tautologie, il suffit
-de prouver $\nil\vdash \cons(P,\nil)$ en suivant les règles de base définissant
-$\vdash$.
+séquent. Un séquent est une paire de listes de propositions, que l'on écrira
+$\varCG\vdP \varCD$, exprimant que $\bigwedge \varCG \to \bigvee \varCG$ est
+une tautologie. L'intérêt de la relation $\vdP$ à définir est de donner un
+système facile de preuve~: pour prouver que $\varFF$ est une tautologie, il
+suffit
+de prouver $\nil\vdP [\varFF]$ en suivant les règles de base définissant
+$\vdP$.
 
 \begin{notation}
   Dorénavant, pour utiliser des listes, nous écrirons $a, \ell$ pour signifie
-  $\cons(a,\ell)$ et nous n'écrirons pas $\nil$ lorsque le contexte permet
+  $a\Cons \ell$ et nous n'écrirons pas $\nil$ lorsque le contexte permet
   clairement de comprendre qu'il s'agit d'une liste. Par exemple, on confondra
-  la simple proposition $P$ et la liste $\cons(P,\nil)$. La notation
-  $\Gamma,\Delta$ correspond à la concaténation, qui serait notée avec les
-  conventions précédentes $\Gamma\oplus\Delta$.
+  la simple proposition $\varFF$ et la liste $[\varFF]$. La notation
+  $\varCG,\varCD$ correspond à la concaténation, qui serait notée avec les
+  conventions précédentes $\varCG\append\varCD$.
 \end{notation}
 
 \begin{definition}[Calcul des séquents]
-  On définit la relation $\vdash \subseteq \List(\Prop)^2$ par les règles
-  suivantes:
-  \begin{center}
-    \AxiomC{$P \in \Gamma$}
-    \RightLabel{ax}
-    \UnaryInfC{$\Gamma\vdash P$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma,P\vdash \Delta$}
-    \AxiomC{$\Theta\vdash \Xi,P$}
-    \RightLabel{cut}
-    \BinaryInfC{$\Gamma,\Theta\vdash\Delta,\Xi$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,P,Q,\Gamma'\vdash \Delta$}
-    \RightLabel{le}
-    \UnaryInfC{$\Gamma,Q,P,\Gamma'\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \Delta,P,Q,\Delta'$}
-    \RightLabel{re}
-    \UnaryInfC{$\Gamma\vdash \Delta,Q,P,\Delta'$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,P,P\vdash \Delta$}
-    \RightLabel{lc}
-    \UnaryInfC{$\Gamma,P\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \Delta,P,P$}
-    \RightLabel{rc}
-    \UnaryInfC{$\Gamma\vdash \Delta,P$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash \Delta$}
-    \RightLabel{lw}
-    \UnaryInfC{$\Gamma,P\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \Delta$}
-    \RightLabel{rw}
-    \UnaryInfC{$\Gamma\vdash \Delta,P$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,\top\vdash \Delta$}
-    \RightLabel{$\top$}
-    \UnaryInfC{$\Gamma\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash\Delta,\bot$}
-    \RightLabel{$\bot$}
-    \UnaryInfC{$\Gamma\vdash \Delta$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash \Delta,P$}
-    \RightLabel{l$\lnot$}
-    \UnaryInfC{$\Gamma,\lnot P\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma,P\vdash \Delta$}
-    \RightLabel{r$\lnot$}
-    \UnaryInfC{$\Gamma\vdash \Delta,\lnot P$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,P\vdash \Delta$}
-    \AxiomC{$\Gamma,Q\vdash \Delta$}
-    \RightLabel{l$\lor$}
-    \BinaryInfC{$\Gamma,P\lor Q\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \Delta,P,Q$}
-    \RightLabel{r$\lor$}
-    \UnaryInfC{$\Gamma\vdash \Delta,P\lor Q$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,P,Q\vdash \Delta$}
-    \RightLabel{l$\land$}
-    \UnaryInfC{$\Gamma,P\land Q\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \Delta,P$}
-    \AxiomC{$\Gamma\vdash \Delta,Q$}
-    \RightLabel{r$\land$}
-    \BinaryInfC{$\Gamma\vdash \Delta,P\land Q$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,Q\vdash \Delta$}
-    \AxiomC{$\Gamma\vdash \Delta,P$}
-    \RightLabel{l$\to$}
-    \BinaryInfC{$\Gamma,P\to Q\vdash \Delta$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma,P\vdash Q,\Delta$}
-    \RightLabel{r$\to$}
-    \UnaryInfC{$\Gamma\vdash \Delta,P\to Q$}
-    \DisplayProof
-  \end{center}
-
-  On dit qu'une proposition $P$ est prouvable si $\vdash P$ est dérivable.
+  On définit la relation $\mathord{\vdP} \subseteq \List(\Prop)^2$ par les
+  règles de la \cref{tab.prop.LK}.
+  On dit qu'une proposition $\varFF$ est prouvable si $\vd\varFF$ est dérivable.
 \end{definition}
 
-L'objectif de la suite de cette section est de prouver que $\vdash$ définit en
+\begin{remark}
+  Le formalisme que nous introduisons ici, qui est celui du calcul des séquents,
+  sera étudié en profondeur dans le \cref{chp.sequents}.
+\end{remark}
+
+\begin{table}[t]
+  \centering
+
+  \begin{tabular}{cc}
+    \multicolumn{2}{l}{Axiome et coupure~:}
+    \\
+    \bottomAlignProof
+    \AxiomC{}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varFF\vdP \varFF$}
+    \DisplayProof
+    &
+    \bottomAlignProof
+    \AxiomC{$\varCG,\varFF\vdP \varCD$}
+    \AxiomC{$\varCT\vdP \varFF,\varCX$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\varCG,\varCT\vdP\varCD,\varCX$}
+    \DisplayProof
+    \\
+    \\
+    \multicolumn{2}{l}{Règles structurelles~:}
+    \\
+    \AxiomC{$\varCG,\varFF,\varFP,\varCT\vdP \varCD$}
+    \RightLabel{$\Rle$}
+    \UnaryInfC{$\varCG,\varFP,\varFF,\varCT\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varCD,\varFF,\varFP,\varCX$}
+    \RightLabel{$\Rre$}
+    \UnaryInfC{$\varCG\vdP \varCD,\varFP,\varFF,\varCX$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG,\varFF,\varFF\vdP \varCD$}
+    \RightLabel{$\Rlc$}
+    \UnaryInfC{$\varCG,\varFF\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF,\varFF,\varCD$}
+    \RightLabel{$\Rrc$}
+    \UnaryInfC{$\varCG\vdP \varFF,\varCD$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG\vdP \varCD$}
+    \RightLabel{$\Rlw$}
+    \UnaryInfC{$\varCG,\varFF\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varCD$}
+    \RightLabel{$\Rrw$}
+    \UnaryInfC{$\varCG\vdP \varFF, \varCD$}
+    \DisplayProof
+    \\
+    \\
+    \multicolumn{2}{l}{Règles logiques~:}
+    \\
+    \AxiomC{$\varCG,\top\vdP \varCD$}
+    \RightLabel{$\Rtop$}
+    \UnaryInfC{$\varCG\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP\bot,\varCD$}
+    \RightLabel{$\Rbot$}
+    \UnaryInfC{$\varCG\vdP \varCD$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG\vdP \varFF,\varCD$}
+    \RightLabel{$\Rlnot$}
+    \UnaryInfC{$\varCG,\lnot \varFF\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG,\varFF\vdP \varCD$}
+    \RightLabel{$\Rrnot$}
+    \UnaryInfC{$\varCG\vdP \lnot \varFF,\varCD$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG,\varFF\vdP \varCD$}
+    \AxiomC{$\varCG,\varFP\vdP \varCD$}
+    \RightLabel{$\Rlor$}
+    \BinaryInfC{$\varCG,\varFF\lor \varFP\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF,\varFP,\varCD$}
+    \RightLabel{$\Rror$}
+    \UnaryInfC{$\varCG\vdP \varFF\lor \varFP,\varCD$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG,\varFF,\varFP\vdP \varCD$}
+    \RightLabel{$\Rland$}
+    \UnaryInfC{$\varCG,\varFF\land \varFP\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF,\varCD$}
+    \AxiomC{$\varCG\vdP \varFP,\varCD$}
+    \RightLabel{$\Rrand$}
+    \BinaryInfC{$\varCG\vdP \varFF\land \varFP,\varCD$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG,\varFF\vdP \varCD$}
+    \AxiomC{$\varCG\vdP \varFP,\varCD$}
+    \RightLabel{$\Rlto$}
+    \BinaryInfC{$\varCG,\varFF\to \varFP\vdP \varCD$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG,\varFF\vdP \varFP,\varCD$}
+    \RightLabel{$\Rrto$}
+    \UnaryInfC{$\varCG\vdP \varFF\to \varFP,\varCD$}
+    \DisplayProof
+  \end{tabular}
+  
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles du calcul des séquents propositionnel}
+  \label{tab.prop.LK}
+\end{table}
+  
+L'objectif de la suite de cette section est de prouver que $\vdP$ caractérise en
 fait exactement les tautologies, au sens suivant~: pour toutes propositions
-$P$ et $Q$, $P\vDash Q$ si et seulement si $P\vdash Q$ (ainsi, en prenant par
-exemple $P = \top$, on peut montrer que $\vDash P$ si et seulement si
-$\vdash P$).
+$\varFF$ et $\varFP$,
+$\varFF\vD \varFP$ si et seulement si $\varFF\vdP \varFP$ (ainsi, en prenant
+par exemple $\varFF = \top$, on peut montrer que
+$\vD \varFF$ si et seulement si $\vdP \varFF$).
 
 \subsection{Correction du calcul des séquents}
 
 La première étape, qui est la plus simple, est de montrer que le calcul des
 séquents est correct, c'est-à-dire que si l'on arrive à dériver
-$\Gamma\vdash\Delta$, alors $\bigwedge \Gamma\to\bigvee \Delta$ est une
-tautologie. La preuve est simplement une induction sur la relation $\vdash$.
-Comme c'est la première longue preuve par induction, nous allons la rédiger
-complètement, mais il est d'usage pour prouver une induction dont les cas se
-ressemblent de ne prouver que quelques cas les plus significatifs.
+$\varCG\vdP\varCD$, alors $\bigwedge \varCG\to\bigvee \varCD$ est une
+tautologie. La preuve est simplement une induction sur la relation $\vdP$.
 
 Pour commencer, introduisons un lemme permettant de plus facilement travailler
 sur le résultat à prouver.
 
 \begin{lemma}\label{lem.cor.uti}
-  Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, on a
+  Soient $\varCG,\varCD\in\List(\Prop)$ et $\rho$ un environnement, on a
   l'équivalence suivante~:
-  \[ \Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1 \iff
-  \min_{P\in\Gamma}(\Val_\rho(P)) \leq \max_{P\in\Delta}(P)\]
+  \[ \Val_\rho(\bigwedge\varCG\to\bigvee\varCD) = 1 \iff
+  \min_{\varFF\in\varCG}(\Val_\rho(\varFF)) \leq \max_{\varFF\in\varCD}(\varFF)\]
 \end{lemma}
 
 \begin{proof}
-  Calculons d'abord $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta)$~:
+  Calculons d'abord $\Val_\rho(\bigwedge\varCG\to\bigvee\varCD)$~:
   \begin{align*}
-    \Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) =&
-    \max(1 - \Val_\rho(\bigwedge\Gamma), \Val_\rho(\bigvee\Delta))\\
-    =& \max(1 - \min_{P\in \Gamma}(\Val_\rho(P)),\max_{P\in\Delta}(\Val_\rho(P)))
+    \Val_\rho(\bigwedge\varCG\to\bigvee\varCD) =&
+    \max(1 - \Val_\rho(\bigwedge\varCG), \Val_\rho(\bigvee\varCD))\\
+    =& \max(1 - \min_{\varFF\in \varCG}(\Val_\rho(\varFF)),
+    \max_{\varFF\in\varCD}(\Val_\rho(\varFF)))
   \end{align*}
   Si cette valeur est $1$, alors deux cas se présentent~:
   \begin{itemize}
-  \item $\displaystyle\max_{P \in \Delta}(\Val_\rho(P)) = 1$, ce cas signifiant
-    forcément que $\max_{P\in \Delta}(P) \geq \min_{P\in \Gamma}(\Val_\rho(P))$
+  \item $\displaystyle\max_{\varFF \in \varCD}(\Val_\rho(\varFF)) = 1$,
+    ce cas signifiant
+    forcément que
+    $\max_{\varFF\in \varCD}(\varFF) \geq \min_{\varFF\in \varCG}(\Val_\rho(\varFF))$
     puisque $\Val$ est à valeurs dans $\{0,1\}$.
-  \item $1 - \min_{P \in \Gamma}(\Val_\rho(P)) = 1$, ou, de façon équivalente,
-    $\min_{P\in \Gamma}(\Val_\rho(P)) = 0$, ce cas impliquant encore l'inégalité
+  \item $1 - \min_{\varFF \in \varCG}(\Val_\rho(\varFF)) = 1$, ou,
+    de façon équivalente,
+    $\min_{\varFF\in \varCG}(\Val_\rho(\varFF)) = 0$, ce cas impliquant encore
+    l'inégalité
     puisque $\Val$ est à valeurs dans $\{0,1\}$.
   \end{itemize}
   Réciproquement, si l'inégalité est vérifiée, alors on raisonne par disjonction
-  de cas sur la valeur de $\min_{P\in\Gamma}(\Val_\rho(P))$~:
+  de cas sur la valeur de $\min_{\varFF\in\varCG}(\Val_\rho(\varFF))$~:
   \begin{itemize}
   \item si sa valeur est $0$, alors on sait déjà que
-    $1 - \min_{P \in \Gamma}(\Val_\rho(P)) = 1$, donc
-    $\Val_\rho(\bigwedge \Gamma\to \bigvee \Delta) = 1$.
+    $1 - \min_{\varFF \in \varCG}(\Val_\rho(\varFF)) = 1$, donc
+    $\Val_\rho(\bigwedge \varCG\to \bigvee \varCD) = 1$.
   \item si sa valeur est $1$, alors par notre inégalité on sait que
-    $\max_{P\in\Delta}(\Val_\rho(P)) = 1$, donc
-    $\Val_\rho(\bigwedge \Gamma\to \bigvee \Delta) = 1$.
+    $\max_{\varFF\in\varCD}(\Val_\rho(\varFF)) = 1$, donc
+    $\Val_\rho(\bigwedge \varCG\to \bigvee \varCD) = 1$.
   \end{itemize}
 
   D'où l'équivalence souhaitée.
 \end{proof}
 
 \begin{theorem}[Correction du calcul des séquents]\label{thm.cor.logprop}
-  Soient $\Gamma,\Delta\in\List(\Prop)$. Si $\Gamma\vdash\Delta$, alors
-  $\models \bigwedge \Gamma\to \bigvee \Delta$.
+  Soient $\varCG,\varCD\in\List(\Prop)$. Si $\varCG\vdP\varCD$, alors
+  $\satisf \bigwedge \varCG\to \bigvee \varCD$.
 \end{theorem}
 
 \begin{proof}
-  Soient $\Gamma,\Delta\in\List(\Prop)$ et $\rho$ un environnement, le résultat
-  à montrer est que $\Val_\rho(\bigwedge\Gamma\to\bigvee\Delta) = 1$ sachant que
-  $\Gamma\vdash \Delta$. Pour cela, on procède par induction sur $\vdash$, en
+  Soient $\varCG,\varCD\in\List(\Prop)$ et $\rho$ un environnement, le résultat
+  à montrer est que $\Val_\rho(\bigwedge\varCG\to\bigvee\varCD) = 1$ sachant que
+  $\varCG\vdP\varCD$. Pour cela, on procède par induction sur $\vdP$, en
   utilisant le \cref{lem.cor.uti} pour avoir à prouver l'inégalité de
   valuations. Comme les opérateurs $\bigvee$ et $\bigwedge$ sont commutatifs et
   idempotents, on déduit directement la validité des règles d'échange et de
   contraction. Pour alléger le nombre de cas, on ne montrera que les règles de
-  la colonne de gauche dans les règles définissant $\vdash$, le lecteur pouvant
+  la colonne de gauche dans les règles définissant $\vdP$, le lecteur pouvant
   facilement inférer comment prouver les règles de la colonne de droite à partir
-  de celles-ci (sauf pour cut, que nous traitons), et on laissera le cas de
-  $\to$ en exercice~:
+  de celles-ci (sauf pour cut, que nous traitons)~:
   \begin{itemize}
-  \item Ax~: Supposons que $P\in\Gamma$. L'inégalité à prouver se résume à
+  \item[$\Rax$~:] Supposons que $\varFF\in\varCG$.
+    L'inégalité à prouver se résume à
     \begin{align*}
-      \min_{R \in \Gamma}(\Val_\rho(R)) &\leq \Val_\rho(P) \\
-      &= \max_{R \in \{P\}}(\Val_\rho(R))
+      \min_{\varFP \in \varCG}(\Val_\rho(\varFP)) &\leq \Val_\rho(\varFF) \\
+      &= \max_{\varFP \in \{\varFF\}}(\Val_\rho(\varFP))
     \end{align*}
-  \item Cut~: On suppose que
+  \item[$\Rcut$~:] On suppose que
     \begin{equation}\label{eq.cor1}
-      \min_{R \in (\Gamma, P)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)
+      \min_{\varFP \in (\varCG, \varFF)} \Val_\rho(\varFP) \leq
+      \max_{\varFP \in \varCD} \Val_\rho(\varFP)
     \end{equation}
-    et
+    \begin{center}et\end{center}
     \begin{equation}\label{eq.cor2}
-      \min_{R \in \Theta} \Val_\rho(R) \leq \max_{R \in (\Xi, P)} \Val_\rho(R)
+      \min_{\varFP \in \varCT} \Val_\rho(\varFP) \leq
+      \max_{\varFP \in (\varFF,\varCX)} \Val_\rho(\varFP)
     \end{equation}
     Montrons que
-    $\min_{R \in (\Gamma, \Theta)} \Val_\rho(R)
-    \leq \max_{R \in (\Delta,\Xi)} \Val_\rho(R)$.
+    $\min_{\varFP \in (\varCG, \varCT)} \Val_\rho(\varFP)
+    \leq \max_{\varFP \in (\varCD,\varCX)} \Val_\rho(\varFP)$.
     On raisonne par disjonction de cas sur la valeur de $\Val_\rho(P)$~:
     \begin{itemize}
-    \item si $\Val_\rho(P) = 0$, alors en injectant cette équation dans
+    \item si $\Val_\rho(\varFF) = 0$, alors en injectant cette équation dans
       \ref{eq.cor2}, on obtient
-      \[\min_{R \in\Theta} \Val_\rho(R) \leq \max_{R\in \Xi}\Val_\rho(R)\]
+      \[\min_{\varFP \in\varCT} \Val_\rho(\varFP) \leq
+      \max_{\varFP\in \varCX}\Val_\rho(\varFP)\]
       d'où l'inégalité souhaitée (puisque rajouter des termes dans un minimum
       le fera décroître et rajouter des termes dans un maximum le fera croître).
     \item si $\Val_\rho(P) = 1$, alors on injectant cette équation dans
       \ref{eq.cor1}, on obtient
-      \[\min_{R\in \Gamma} \Val_\rho(R) \leq \max_{R\in \Delta} \Val_\rho(R)\]
+      \[\min_{\varFP\in \varCG} \Val_\rho(\varFP) \leq
+      \max_{\varFP\in \varCD} \Val_\rho(\varFP)\]
       d'où l'inégalité souhaitée.
     \end{itemize}
-  \item lw~: Supposons que
-    $\Val_\rho(\bigwedge \Gamma) \leq \Val_\rho(\bigvee \Delta)$ pour tout
+  \item[$\Rlw$~:] Supposons que
+    $\Val_\rho(\bigwedge \varCG) \leq \Val_\rho(\bigvee \varCD)$ pour tout
     $\rho$, alors comme
-    $\Val_\rho(\bigwedge (\Gamma, P)) \leq \Val_\rho(\bigwedge \Gamma)$ on voit
+    $\Val_\rho(\bigwedge (\varCG, \varFF)) \leq \Val_\rho(\bigwedge \varCG)$
+    on voit
     directement que
-    $\Val_\rho(\bigwedge(\Gamma,P)) \leq \Val_\rho(\bigvee\Delta)$.
-  \item $\top$~: Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
-    $\Val_\rho(\bigwedge(\Gamma,\top)) = \Val_\rho(\bigwedge \Gamma)$ d'où le
+    $\Val_\rho(\bigwedge(\varCG,\varFF)) \leq \Val_\rho(\bigvee\varCD)$.
+  \item[$\Rtop$~:] Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
+    $\Val_\rho(\bigwedge(\varCG,\top)) = \Val_\rho(\bigwedge \varCG)$ d'où le
     résultat.
-  \item $\mathrm l\lnot$~: Supposons que
+  \item[$\Rlnot$~:] Supposons que
     \begin{equation}\label{eq.cor3}
-      \min_{R \in \Gamma} \Val_\rho(R) \leq \max_{R \in (\Delta, P)} \Val_\rho(R)
+      \min_{\varFP \in \varCG} \Val_\rho(\varFP) \leq
+      \max_{\varFP \in (\varFF,\varCD)} \Val_\rho(\varFP)
     \end{equation}
     et montrons que
-    $\min_{R \in (\Gamma, \lnot P)} \Val_\rho(R) \leq
-    \max_{R \in \Delta} \Val_\rho(R)$. On raisonne par disjonction de cas sur
-    $\Val_\rho(P)$~:
+    $\min_{\varFP \in (\varCG, \lnot \varFF)} \Val_\rho(\varFP) \leq
+    \max_{\varFP \in \varCD} \Val_\rho(\varFP)$. On raisonne par disjonction de cas
+    sur $\Val_\rho(\varFF)$~:
     \begin{itemize}
-    \item si $\Val_\rho(P) = 0$, alors en injectant cette équation dans
+    \item si $\Val_\rho(\varFF) = 0$, alors en injectant cette équation dans
       \ref{eq.cor3}, on obtient
-      \[\min_{R \in \Gamma} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)\]
+      \[\min_{\varFP \in \varCG} \Val_\rho(\varFP) \leq
+      \max_{\varFP \in \varCD} \Val_\rho(\varFP)\]
       d'où l'inégalité souhaité en rajoutant un élément dans le minimum.
-    \item si $\Val_\rho(P) = 1$, alors
-      $\min_{R \in (\Gamma, \lnot P)} \Val_\rho(R) = 0$ donc l'inégalité est
-      vérifiée.
+    \item si $\Val_\rho(\varFF) = 1$, alors
+      $\min_{\varFP \in (\varCG, \lnot \varFF)} \Val_\rho(\varFP) = 0$ donc
+      l'inégalité est vérifiée.
     \end{itemize}
-  \item $\mathrm l\lor$~: Supposons que
+  \item[$\Rlor$~:] Supposons que
     \begin{equation}\label{eq.cor4}
-      \min_{R \in (\Gamma, P)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)
+      \min_{\varFC \in (\varCG, \varFF)} \Val_\rho(\varFC)
+      \leq \max_{\varFC \in \varCD} \Val_\rho(\varFC)
     \end{equation}
     et
     \begin{equation}\label{eq.cor5}
-      \min_{R \in (\Gamma, Q)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)
+      \min_{\varFC \in (\varCG, \varFP)} \Val_\rho(\varFC) \leq
+      \max_{\varFC \in \varCD} \Val_\rho(\varFC)
     \end{equation}
     et montrons que
-    $\min_{R \in (\Gamma, P \lor Q)} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)$.
-    On raisonne par disjonction de cas sur la valeur de $\Val_\rho(P)$~:
+    $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) \leq
+    \max_{\varFP \in \varCD} \Val_\rho(\varFC)$.
+    On raisonne par disjonction de cas sur la valeur de $\Val_\rho(\varFF)$~:
     \begin{itemize}
-    \item si $\Val_\rho(P) = 1$, alors en injectant cette égalité dans
+    \item si $\Val_\rho(\varFF) = 1$, alors en injectant cette égalité dans
       \ref{eq.cor4}, on obtient
-      \[\min_{R \in \Gamma} \Val_\rho(R) \leq \max_{R \in \Delta} \Val_\rho(R)\]
+      \[\min_{\varFC \in \varCG} \Val_\rho(\varFC) \leq
+      \max_{\varFC \in \varCD} \Val_\rho(\varFC)\]
       d'où l'inégalité souhaitée en ajoutant un terme dans le minimum.
-    \item si $\Val_\rho(P) = 0$, alors on procède par disjonction de cas sur
-      la valeur de $\Val_\rho(Q)$~:
+    \item si $\Val_\rho(\varFF) = 0$, alors on procède par disjonction de cas
+      sur la valeur de $\Val_\rho(\varFP)$~:
       \begin{itemize}
-      \item si $\Val_\rho(Q) = 1$, l'argument précédent fonctionne aussi en
+      \item si $\Val_\rho(\varFP) = 1$, l'argument précédent fonctionne aussi en
         remplaçant \ref{eq.cor4} par \ref{eq.cor5}.
-      \item si $\Val_\rho(Q) = 0$, alors on sait que $\Val_\rho(P\lor Q) = 0$
+      \item si $\Val_\rho(\varFP) = 0$, alors on sait que
+        $\Val_\rho(\varFF\lor \varFP) = 0$
         avec nos deux équations, donc
-        $\min_{R \in (\Gamma, P \lor Q)} \Val_\rho(R) = 0$, d'où l'inégalité.
+        $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) = 0$,
+        d'où l'inégalité.
       \end{itemize}
     \end{itemize}
-  \item $\mathrm l\land$~: On voit que
-    $\Val_\rho(\bigwedge(\Gamma,P,Q)) = \Val_\rho(\bigwedge(\Gamma, P \land Q))$
+  \item[$\Rland$~:] On voit que
+    $\Val_\rho(\bigwedge(\varCG,\varFF,\varFP)) =
+    \Val_\rho(\bigwedge(\varCG, \varFF \land \varFP))$
     par associativité de $\bigwedge$, donc si l'on suppose que
-    $\Val_\rho(\bigwedge(\Gamma,P,Q)) \leq \Val_\rho(\bigvee\Delta)$, on en
-    déduit directement que
-    $\Val_\rho(\bigwedge(\Gamma,P\land Q)) \leq\Val_\rho(\bigvee\Delta)$.
+    $\Val_\rho(\bigwedge(\varCG,\varFF,\varFP)) \leq \Val_\rho(\bigvee\varCD)$,
+    on en déduit directement que
+    $\Val_\rho(\bigwedge(\varCG,\varFF\land\varFP))\leq\Val_\rho(\bigvee\varCD)$.
   \end{itemize}
-  Donc, par induction, si $\Gamma\vdash \Delta$ alors
-  $\models \bigwedge\Gamma\to\bigvee\Delta$.
+  Donc, par induction, si $\varCG\vdP \varCD$ alors
+  $\satisf \bigwedge\varCG\to\bigvee\varCD$.
 \end{proof}
 
 \begin{exercise}
   Montrer les cas manquants dans la preuve précédente.
 \end{exercise}
 
-On en déduit donc, comme $\bigwedge P = P$ et $\bigvee Q = Q$, que
-$P\vdash Q \implies P \vDash Q$.
+\noindent
+On en déduit donc, comme $\bigwedge \varFF = \varFF$ et
+$\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
 
 \begin{remark}
   En utilisant le théorème de correction, on en déduit que pour
-  $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si l'on trouve
-  $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$, alors
-  $\mathcal P \vDash P$.
+  $\PropSet\subseteq \Prop$ et $\varFF\in \Prop$, si l'on trouve
+  $\varCG\in\List(\PropSet)$ tel que $\varCG\vdP \varFF$, alors
+  $\PropSet \vD \varFF$.
 
   On peut donc définir la relation
-  $\vdash \subseteq \powerset(\Prop)\times \Prop$ par
-  \[\mathcal P\vdash P \defeq \exists \Gamma\in\List(\mathcal P),
-  \Gamma\vdash P\]
-  et les résultats précédents prouvent que $\vdash\subseteq\vDash$. Nous allons
-  maintenant montrer le sens réciproque~: $\vDash\subseteq\vdash$. Ce résultat
-  s'appelle la complétude.
+  $\mathord{\vdP} \subseteq \powerset(\Prop)\times \Prop$ par
+  \[\PropSet\vdash \varFF \defeq \exists \varCG\in\List(\PropSet),
+  \varCG\vdP \varFF\]
+  et les résultats précédents prouvent que
+  $\mathord{\vdP}\subseteq\mathord{\vD}$. Nous allons
+  maintenant montrer le sens réciproque~:
+  $\mathord{\vD}\subseteq\mathord{\vdP}$. Ce résultat s'appelle la complétude.
 \end{remark}
 
-\begin{theorem}[Complétude du calcul des séquents \cite{belghiti2016clefs}]
-  Pour tous $\mathcal P\subseteq \Prop$ et $P\in \Prop$, si $\mathcal P\vDash P$
-  alors il existe $\Gamma\in\List(\mathcal P)$ tel que $\Gamma\vdash P$.
+\begin{theorem}[Complétude du calcul des séquents %\cite{belghiti2016clefs}
+  ]
+  Pour tous $\PropSet\subseteq \Prop$ et $\varFF\in \Prop$, si
+  $\PropSet\vD \varFF$
+  alors il existe $\varCG\in\List(\PropSet)$ tel que $\Gamma\vdash \varFF$.
 \end{theorem}
 
 \begin{proof}
   Tout d'abord, par théorème de compacité, il nous suffit de traiter le cas
-  fini~: pour $\Gamma\in\List(\Prop)$, en prenant $F_\Gamma$ l'ensemble de
-  formules associé, si $F_\Gamma\vDash P$ alors $F\vdash P$.
+  fini~: pour $\varCG\in\List(\Prop)$, en prenant $F_{\varCG}$ l'ensemble de
+  formules associé, si $F_{\varCG}\vD \varFF$ alors $F\vdP \varFF$.
 
-  On définit la relation $\vdash^*$ de façon analogue à $\vdash$ mais en
-  ajoutant la règle suivante~:
+  \noindent
+  On définit une nouvelle relation $\vdAbs$ de façon analogue à $\vdP$,
+  mais en ajoutant la règle suivante~:
   \begin{prooftree}
     \AxiomC{}
-    \RightLabel{ax$^\dagger$}
-    \UnaryInfC{$x_1,\ldots,x_n,\top,\ldots,\top\vdash^*
-      y_1,\ldots,y_p,\bot,\ldots,\bot$}
+    \RightLabel{$\maltese$}
+    \UnaryInfC{$x_1,\ldots,x_n,\top,\ldots,\top\vdAbs
+      \bot,\ldots,\bot,y_1,\ldots,y_p$}
   \end{prooftree}
   où $x_1,\ldots,x_n,y_1,\ldots,y_n$ sont des variables propositionnelles
   toutes deux à deux distinctes, on ajoute un nombre arbitraire de $\top$ à
   gauche et de $\bot$ à droite, et en remplaçant la règle axiome, les règles
-  d'affaiblissement et la règle cut par la règle axiomes renforcée~:
+  d'affaiblissement et la règle cut par la règle axiome renforcée~:
   \begin{prooftree}
     \AxiomC{}
-    \RightLabel{ax'}
-    \UnaryInfC{$\Gamma,P\vdash^* \Delta,P$}
+    \RightLabel{$\Rax'$}
+    \UnaryInfC{$\varCG,\varFF\vdAbs \varFF,\varCD$}
   \end{prooftree}
 
-  On prouve maintenant que pour tous $\Gamma,\Delta\in\List(\Prop)$,
-  $\Gamma\vdash^*\Delta$. On raisonne par induction sur le nombre de
-  constructeurs apparaissant au total dans le séquent $\Gamma\vdash^* \Delta$,
+  \noindent
+  On prouve maintenant que pour tous $\varCG,\varCD\in\List(\Prop)$,
+  $\varCG\vdAbs\varCD$. On raisonne par induction sur le nombre de
+  constructeurs apparaissant au total dans le séquent $\varCG\vdAbs \varCD$,
   c'est-à-dire la somme du nombre de constructeurs de chaque formule~:
   \begin{itemize}
-  \item s'il n'y a aucun constructeur dans $\Gamma,\Delta$, alors plusieurs
+  \item s'il n'y a aucun constructeur dans $\varCG,\varCD$, alors plusieurs
     séquents sont possibles. En utilisant potentiellement la règle de
     contraction pour éliminer les variables en double du même côté, il nous
     reste à traiter ces différents cas~:
     \begin{itemize}
-    \item si le séquent contient un $\top$ à droite ou un $\bot$ à gauche,
-      alors on peut prouver $\Gamma\vdash^* \Delta,\top$
-      (respectivement $\Gamma,\bot\vdash^*\Delta$)~:
+    \item si le séquent contient un $\top$ à
+      droite\footnote{A partir d'ici,
+      on raisonne modulo échange, c'est-à-dire qu'on néglige les règles le/re
+      utilisées pour réordonner les séquents.}
+      ou un $\bot$ à gauche,
+      alors on peut prouver $\varCG\vdAbs \top,\varCD$
+      (respectivement $\varCG,\bot\vdAbs\varCD$)~:
       \begin{center}
-        \AxiomC{}
-        \RightLabel{ax'}
-        \UnaryInfC{$\Gamma,\top\vdash^* \Delta,\top$}
-        \RightLabel{$\top$}
-        \UnaryInfC{$\Gamma\vdash^* \Delta,\top$}
-        \DisplayProof
-        \qquad
-        \AxiomC{}
-        \RightLabel{ax'}
-        \UnaryInfC{$\Gamma,\bot\vdash^* \Delta\bot$}
-        \RightLabel{$\bot$}
-        \UnaryInfC{$\Gamma,\bot\vdash^*\Delta$}
+        \begin{tabular}{ccc}
+          \AxiomC{}
+          \RightLabel{$\Rax'$}
+          \UnaryInfC{$\varCG,\top\vdAbs \top,\varCD$}
+          \RightLabel{$\Rtop$}
+          \UnaryInfC{$\varCG\vdAbs \top,\varCD$}
+          \DisplayProof
+          & &
+          \AxiomC{}
+          \RightLabel{$\Rax'$}
+          \UnaryInfC{$\varCG,\bot\vdAbs \bot,\varCD$}
+          \RightLabel{$\Rbot$}
+          \UnaryInfC{$\varCG,\bot\vdAbs\varCD$}
+          \DisplayProof
+        \end{tabular}
       \end{center}
     \item si le séquent est de la forme
-      $x_1,\ldots,x_n,\top,\ldots,\top\vdash y_1,\ldots,y_p,\bot,\ldots,\bot$
+      $x_1,\ldots,x_n,\top,\ldots,\top\vdAbs \bot,\ldots,\bot,y_1,\ldots,y_p$
       où toutes les variables sont deux à deux distinctes, alors la règle
-      $\mathrm{Ax}^\dagger$ donne le résultat.
-    \item si le séquent est de la forme $\Gamma,x\vdash^* \Delta,x$, alors la
-      règle ax' donne le résultat directement.
+      $\maltese$ donne le résultat.
+    \item si le séquent est de la forme $\varCG,x\vdAbs x,\varCD$, alors la
+      règle $\Rax'$ donne le résultat directement.
     \end{itemize}
     On peut donc toujours prouver un séquent ne contenant aucun constructeur.
-  \item Si $\Gamma = \Gamma', \lnot P$, alors par $\mathrm{l}\lnot$ il nous
-    suffit de prouver $\Gamma'\vdash^* \Delta, P$, ce qui est vérifié par
+  \item Si $\varCG = \varCG', \lnot \varFF$, alors par $\Rlnot$ il nous
+    suffit de prouver $\varCG'\vdAbs \varCD, \varFF$, ce qui est vérifié par
     notre hypothèse d'induction.
-  \item si $\Gamma = \Gamma', P\to Q$, alors par $\mathrm{l}\to$ il nous
-    suffit de prouver à la fois $\Gamma', Q \vdash^* \Delta$ et
-    $\Gamma'\vdash^* P$, qui ont tous les deux strictement moins de
+  \item si $\varCG = \varCG', \varFF\to \varFP$, alors par $\Rlto$ il nous
+    suffit de prouver à la fois $\varCG', \varFP \vdAbs \varCD$ et
+    $\varCG'\vdAbs \varFP,\varCD$, qui ont tous les deux strictement moins de
     constructeurs que notre séquent original~: on peut donc appliquer notre
     hypothèse d'induction.
-  \item si $\Gamma = \Gamma', P\lor Q$, alors il nous suffit de montrer
-    à la fois $\Gamma', P\vdash^* \Delta$ et $\Gamma',Q\vdash^*\Delta$ qui
+  \item si $\varCG = \varCG', \varFF\lor \varFP$, alors il nous suffit de
+    montrer
+    à la fois $\varCG', \varFF\vdAbs \varCD$ et
+    $\varCG',\varFP\vdAbs\varCD$ qui
     contiennent strictement moins de constructeurs que le séquent original.
-  \item si $\Gamma = \Gamma', P\land Q$, alors il nous suffit de
-    montrer $\Gamma', P,Q \vdash^* \Delta$ qui est vérifié par hypothèse
+  \item si $\varCG = \varCG', \varFF\land \varFP$, alors il nous suffit de
+    montrer $\varCG', \varFF,\varFP \vdP \varCD$ qui est vérifié par hypothèse
     d'induction.
-  \item les cas où on veut éliminer un constructeur qui est dans $\Delta$
+  \item les cas où on veut éliminer un constructeur qui est dans $\varCD$
     sont parfaitement analogues aux précédents.
   \end{itemize}
-  D'où le fait que tout séquent $\Gamma\vdash^* \Delta$ est dérivable.
+  D'où le fait que tout séquent $\varCG\vdAbs \varCD$ est dérivable.
 
-  Maintenant, prouvons que si $\Gamma\vdash^*\Delta$ et $\Gamma\nvdash\Delta$,
-  alors $\Gamma\nvDash\Delta$ (où $\Gamma\vDash \Delta$ signifie que pour toute
+  \noindent
+  Maintenant, prouvons que si $\varCG\vdAbs\varCD$ et $\varCG\nvdP\Delta$,
+  alors $\varCG\nvD\varCD$ (où $\varCG\vD \varCD$ signifie que pour toute
   valuation
-  $\rho$, $\Val_\rho(\bigwedge \Gamma) \leq \Val_\rho(\bigvee \Delta)$).
-  On procède par induction sur $\vdash^*$~:
+  $\rho$, $\Val_\rho(\bigwedge \varCG) \leq \Val_\rho(\bigvee \varCD)$).
+  On procède par induction sur $\vdAbs$~:
   \begin{itemize}
   \item si la dernière règle utilisée est ax', alors, puisque le séquent se
     démontre avec la règle axiome et les règles d'affaiblissement, le fait que
-    $\Gamma\nvdash \Delta$ est absurde.
-  \item si la dernière règle utilisée est $\mathrm{ax}^\dagger$, alors on
+    $\varCG\nvdP \varCD$ est absurde.
+  \item si la dernière règle utilisée est $\maltese$, alors on
     construit la valuation invalidant le séquent en mettant tous les $x_i$ à
     $1$ et tous les $y_i$ à $0$.
   \item si la dernière règle utilisée est un échange, une contraction, $\top$
     ou $\bot$, alors une valuation invalidant le séquent de départ invalide
-    aussi le séquent d'arrivée. Cela vaut aussi pour $\mathrm{r}\lor$,
-    $\mathrm{l}\land$ et $\mathrm{r}\to$.
-  \item si la dernière règle utilisée est $\mathrm{l}\lor$ (un raisonnement
-    analogue fonctionne pour $\mathrm{r}\land$ et $\mathrm{l}\to$), alors
+    aussi le séquent d'arrivée. Cela vaut aussi pour $\Rror$,
+    $\Rland$ et $\Rrto$.
+  \item si la dernière règle utilisée est $\Rlor$ (un raisonnement
+    analogue fonctionne pour $\Rrand$ et $\Rlto$), alors
     en considérant que la conclusion de la règle est
-    $\Gamma, P \lor Q \vdash^* \Delta$, on suppose que
-    $\Gamma, P \vdash^* \Delta$ et $\Gamma, Q \vdash^* \Delta$.
-    Or, comme $\Gamma, P\lor Q\nvdash \Delta$, on ne peut avoir à la fois
-    $\Gamma, P \vdash \Delta$ et $\Gamma, Q \vdash \Delta$. Sans perte de
-    généralité puisque $P$ et $Q$ jouent des rôles symétriques, on suppose que
-    $\Gamma, P \nvdash \Delta$. Alors, par hypothèse d'induction, on sait que
-    $\Gamma, P \nvDash \Delta$, donc on trouve $\rho$ telle que
-    \[\min_{R \in (\Gamma, P)} \Val_\rho(R) > \max_{S \in \Delta} \Val_\rho(S)\]
-    On en déduit qu'il existe une proposition $R \in (\Gamma, P)$ telle que
-    $\Val_\rho(R) = 1$ et que pour tout $S\in \Delta, \Val_\rho(S) = 0$.
-    Si $R \in \Gamma$, alors on en déduit directement que
-    \[\min_{R\in (\Gamma, P \lor Q)} \Val_\rho(R) > \max_{S\in\Delta} \Val_\rho(S)\]
-    et donc que $\Gamma, P \lor Q \nvDash \Delta$. Sinon, cela signifie que
-    $R = P$, donc que $\Val_\rho(P) = 1$, d'où $\Val_\rho(P\lor Q) = 1$, donc
-    \[\min_{R\in (\Gamma, P \lor Q)} \Val_\rho(R) > \max_{S\in\Delta} \Val_\rho(S)\]
-    Ainsi, dans tous les cas, $\Gamma, P \lor Q \nvDash \Delta$.
+    $\varCG, \varFF \lor \varFP \vdAbs \varCD$, on suppose que
+    $\varCG, \varFF \vdAbs* \varCD$ et $\varCG, \varFP \vdAbs \varCD$.
+    Or, comme $\varCG, \varFF\lor \varFP\nvdP \varCD$,
+    on ne peut avoir à la fois
+    $\varCG, \varFF \vdP \varCD$ et $\varCG, \varFP \vdP \varCD$. Sans perte de
+    généralité puisque $\varFF$ et $\varFP$ jouent des rôles symétriques,
+    on suppose que
+    $\varCG, \varFF \nvdP \varCD$. Alors, par hypothèse d'induction, on sait que
+    $\varCG, \varFF \nvD \varCD$, donc on trouve $\rho$ telle que
+    \[\min_{\varFC \in (\varCG, \varFF)} \Val_\rho(\varFC) >
+    \max_{\varFC \in \varCD} \Val_\rho(\varFC)\]
+    On en déduit qu'il existe une proposition $\varFC \in (\varCG, \varFF)$
+    telle que
+    $\Val_\rho(\varFC) = 1$ et que pour tout
+    $\varFC_0\in \Delta, \Val_\rho(\varFC_0) = 0$.
+    Si $\varFC \in \varCG$, alors on en déduit directement que
+    \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) >
+    \max_{\varFC\in\varCD} \Val_\rho(\varFC)\]
+    et donc que $\varCG, \varFF \lor \varFP \nvD \varCD$.
+    Sinon, cela signifie que
+    $\varFF = \varFP$, donc que $\Val_\rho(\varFF) = 1$, d'où
+    $\Val_\rho(\varFF\lor \varFP) = 1$, donc
+    \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) >
+    \max_{\varFC\in\varCD} \Val_\rho(\varFC)\]
+    Ainsi, dans tous les cas, $\varCG, \varFF \lor \varFP \nvD \varCD$.
   \end{itemize}
 
-  Ainsi, comme $\Gamma\vdash^*\Delta$ est toujours vérifié, on en déduit que
-  $\Gamma\nvdash\Delta\implies\Gamma\nvDash\Delta$, d'où par contraposée
-  $\Gamma\vDash\Delta\implies\Gamma\vdash\Delta$.
+  Ainsi, comme $\varCG\vdAbs\varCD$ est toujours vérifié, on en déduit que
+  $\varCG\nvdP\varCD\implies\varCG\nvD\varCD$, d'où par contraposée
+  $\varCG\vD\varCD\implies\varCG\vdP\varCD$.
 \end{proof}
 
 \begin{remark}
@@ -864,45 +1016,58 @@ $P\vdash Q \implies P \vDash Q$.
   fonctionner qu'avec un ensemble de règles très précis~: il faut que les règles
   conservent la fausseté en plus d'être correctes pour qu'une preuve fausse dès
   le début le reste. C'est en particulier la raison pour laquelle la définition
-  de $\vdash^*$ n'utilise pas la règle de coupure.
+  de $\vdP$ n'utilise pas la règle de coupure. Cette démonstration de la
+  complétude montre aussi que la règle de coupure est redondante~: puisque
+  le système avec coupure est correct et que le système sans coupure est
+  complet, on sait que les deux sont égaux et donc que toute preuve faite avec
+  une coupure peut en fait se faire sans coupure.
 \end{remark}
 
-Ainsi, nous avons un système syntaxique $\vdash$ permettant d'entièrement
-caractériser la relation $\vDash$, qui est une relation sémantique (elle relie
-les propositions par leur sens, là où $\vdash$ n'est qu'un système formel,
+Ainsi, nous avons un système syntaxique $\vdP$ permettant d'entièrement
+caractériser la relation $\vD$, qui est une relation sémantique (elle relie
+les propositions par leur sens, là où $\vdP$ n'est qu'un système formel,
 encodable par exemple sur un ordinateur).
 
 \newpage
 
-\section{Exercices}
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
 
 \begin{exercise}[Forme normale conjonctive, disjonctive]
   L'objectif de cet exercice est de donner une façon uniforme d'écrire des
   propositions. Pour cela, on définit plusieurs sous-ensembles~:
   \begin{itemize}
-  \item on appelle littéral une proposition de la forme $x$ ou $\lnot x$, où
-    $x$ est une variable~;
+  \item on appelle un littéral une proposition qui est $\top$, $\bot$, une
+    variable $x \in \Var$ ou une négation de variable $\lnot x$ ($x \in \Var)$~;
   \item on appelle clause disjonctive une proposition de la forme
-    \[\bigvee_{i = 1}^n \ell_i\]
+    $\displaystyle\bigvee_{i = 1}^n \ell_i$
     où chaque $\ell_i$ est un littéral, et clause conjonctive une proposition
     de la forme
-    \[\bigwedge_{i = 1}^n \ell_i\]
+    $\displaystyle\bigwedge_{i = 1}^n \ell_i$
     où, là encore, les $\ell_i$ sont des littéraux~;
   \item on appelle forme normale conjonctive une proposition de la forme
-    \[\bigwedge_{i = 1}^n d_i\]
+    $\displaystyle\bigwedge_{i = 1}^n d_i$
     où chaque $d_i$ est une clause disjonctive, et forme normale disjonctive
     une proposition de la forme
-    \[\bigvee_{i = 1}^n c_i\]
+    $\displaystyle\bigvee_{i = 1}^n c_i$
     où chaque $c_i$ est une clause conjonctive.
   \end{itemize}
   \begin{enumerate}[label=(\roman*)]
   \item Montrer les lois de distributivité suivantes, pour toutes propositions
-    $P,Q,R$~:
-    \[P\land (Q\lor R) \equiv (P\land Q) \lor (P\land R) \qquad
-    P\lor (Q \land R) \equiv (P\land Q) \land (P\lor R)\]
-  \item Montrer l'équivalence suivante, pour toutes propositions $P,Q$~:
-    \[P \to Q \equiv \lnot P \lor Q\]
+    $\varFF,\varFP,\varFC$~:
+    \[\varFF\land (\varFP\lor \varFC) \equiv
+    (\varFF\land \varFP) \lor (\varFF\land \varFC) \qquad
+    \varFF\lor (\varFC \land \varFP) \equiv
+    (\varFF\land \varFP) \land (\varFF\lor \varFC)\]
+  \item Montrer l'équivalence suivante, pour toutes propositions
+    $\varFF,\varFP$~:
+    \[\varFF \to \varFP \equiv \lnot \varFF \lor \varFP\]
   \item En déduire que toute proposition est équivalente à une forme normale
     conjonctive, et à une forme normale disjonctive.
   \end{enumerate}
 \end{exercise}
+
+\newpage
+
+\subsection{Problèmes}
