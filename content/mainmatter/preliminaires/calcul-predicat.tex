@@ -11,18 +11,26 @@ formalisation de ce langage mathématique habituel, qui est le calcul des
 prédicats de la logique du premier ordre. Le terme prédicat désigne le fait que
 nos propositions dépendent de termes, qui représentent des objets mathématiques.
 L'expression \og logique du premier ordre\fg{} désigne la capacité d'expression
-de nos propositions : celles-ci ne peuvent parler que des objets mathématiques
+de nos propositions~: celles-ci ne peuvent parler que des objets mathématiques
 désignés préalablement par l'univers de discours. Par contraste, la logique du
 deuxième ordre permet de parler, en plus de ces objets, des propositions
-elles-mêmes : on peut écrire par exemple $\forall P\in\Prop, P\to P$.
+elles-mêmes~: dans une telle logique, on peut écrire par exemple
+$\forall \varFF\in\Prop, \varFF\to \varFF$.
 
-Nous nous attarderons d'abord sur la définition, à partir d'une signature du
-premier ordre, des termes et des formules, ainsi que les notions syntaxiques de
-variables libres, liées et de substitution. Ensuite, nous introduirons les
-notions les plus élémentaires de la théorie des modèles, et la relation de
-satisfaction $\models$. Enfin, comme dans le chapitre précédent, nous allons
-définir une syntaxe pour le calcul des prédicats. La différence, cependant,
-est que nous prouverons le théorème de compacité à partir de la complétude.
+Nous nous attarderons d'abord sur la définition d'une signature du
+premier ordre puis, sur cette base, des termes et des formules, pour
+pouvoir étudier les notions syntaxiques de
+variables libres, liées et de substitution. Ensuite, nous introduirons des
+notions élémentaires de théorie des modèles comme la relation de
+satisfaction $\satisf$ ou l'enrichissement d'un langage.
+Sur ces bases, nous allons
+définir une syntaxe pour le calcul des prédicats en prouvant la complétude de
+cette syntaxe pour la sémantique définie précédemment. Remarquons que cette
+preuve de complétude aura comme corollaire le théorème de compacité,
+contrairement au chapitre précédent où la complétude utilisait la compacité.
+Finalement, nous aborderons quelques éléments de méta-mathématiques, dans le but
+premier de justifier formellement la pratique d'ajouter des symboles munis de
+définition.
 
 Ce chapitre peut être vu comme la base commune de la théorie de la démonstration
 et de la théorie des modèles. A ce titre, nous donnerons avant tout les
@@ -40,15 +48,15 @@ On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
 \subsection{Définition d'une signature}
 
 Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
-\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \lor
-(\exists m \in \mathbb N, n = 2 \times m + 1)\]
+\[\forall n \in \bN, (\exists m \in \bN, n = 2\times m) \lor
+(\exists m \in \bN, n = 2 \times m + 1)\]
 Remarquons tout d'abord que l'on remplace \og ou\fg{} par le symbole $\lor$,
 maintenant que nous connaissons le formalisme de la logique propositionnelle.
 Il nous reste cependant plusieurs points à définir formellement : tout d'abord,
 la phrase précédente contient des termes, comme $2$ ou $n$. Ceux-ci sont d'une
 nature différente d'une variable propositionnelle par exemple, puisque dans le
-premier cas, les formules ne relient pas directement des termes, mais des
-relations entre termes. Nous devons donc tout d'abord construire un ensemble de
+cas propositionnel, les propositions ne relient pas directement des termes.
+Nous devons donc tout d'abord construire un ensemble de
 termes, qui représenterons les objets dont les formules parleront. Cependant,
 comme nous cherchons en premier lieu à élaborer des phrases finies, nous
 cherchons aussi à limiter les symboles que nous utiliserons. Cela s'explique par
@@ -57,41 +65,44 @@ sont les symboles constitutifs de ce langage. En particulier, nous devons savoir
 ce que signifie chaque symbole.
 
 \begin{definition}[Signature]
-  Une signature, ou langage, du premier ordre, est un quadruplet $\mathcal L =
-  (\mathcal F,\mathcal R, \alpha,\beta)$ où $\alpha : \mathcal F \to \mathbb N$
-  et $\beta : \mathcal R \to \mathbb N$. On appelle les éléments de $\mathcal F$
-  les symboles de fonction et les éléments de $\mathcal R$ les symboles de
-  relation. Pour un symboles de fonction $f\in\mathcal F$, $\alpha(f)$ est
-  appelée l'arité de $f$, et de même $\beta(r)$ est l'arité de $r$ pour
-  $r\in\mathcal R$. Si $f\in\mathcal F$ est d'arité $0$, on dit que c'est une
-  constante.
+  Une signature, ou langage, du premier ordre, est un quadruplet
+  $\Sign = (\SigFun,\SigRel, \aritFun,\aritRel)$ où
+  $\aritFun : \SigFun \to \bN$
+  et $\aritRel : \SigRel \to \bN$. On appelle les éléments de $\SigFun$
+  les symboles de fonction et les éléments de $\SigRel$ les symboles de
+  relation. Pour un symboles de fonction $f\in\SigFun$, $\aritFun(f)$ est
+  appelée l'arité de $f$, et de même $\aritRel(R)$ est l'arité de $R$ pour
+  $R\in\SigRel$. Si $f\in\SigFun$ est d'arité $0$, on dit que c'est une
+  constante, et $R \in \SigRel$ d'arité $0$ est appelé une constante
+  propositionnelle.
 \end{definition}
 
 \begin{example}
   Un premier exemple de langage est le langage des groupes, qui est
-  \[\mathcal L_{\mathrm{Grp}} \defeq \{e^0,\times^2,((-)^{-1})^1\}\]
+  \[\SignGrp \defeq \{e^0,\times^2,(\tok^{-1})^1\}\]
   où l'on indique par un exposant l'arité d'un symbole, et où tous les symboles
   sont des symboles de fonction. De même, comme on préfère la notation additive
   pour les groupes abéliens, on peut aussi définir
-  \[\mathcal L_{\mathrm{Ab}} \defeq \{0^0,+^2,-^1\}\]
+  \[\SignAb \defeq \{0^0,+^2,(-\tok)^1\}\]
 \end{example}
 
 \begin{example}
   Un autre exemple est le langage des anneaux :
-  \[\mathcal L_{\mathrm{Ring}}\defeq \{0^0,1^0,+^2,\times^2,-^1\}\]
+  \[\SignRing\defeq \{0^0,1^0,+^2,\times^2,(-\tok)^1\}\]
 \end{example}
 
 \begin{example}
   Un autre exemple classique de langage est celui de l'arithmétique :
-  \[\mathcal L_{\mathrm{Arith}}\defeq \{0^0, S^1, +^2,\times^2,\leq^2\}\]
+  \[\SignArith\defeq \{0^0, \Ss^1, +^2,\times^2,\leq^2\}\]
   où $\leq$ est un symbole de relation, et les autres symboles sont des symboles
   de fonction.
 \end{example}
 
 L'exemple du langage de l'arithmétique permet de voir ce que nous entendons par
 termes~: avec ce langage, nous avons envie de pouvoir écrire $0$ (qui est une
-constante) mais aussi $1$, défini par $S\;0$, ou $S\;S\;0$. De plus, il doit
-être possible d'écrire $(S\;S\;0) + (S\;0)$ par exemple : l'écriture est donc
+constante) mais aussi $1$, défini par $\Ss 0$, ou $\Ss\Ss 0$.
+De plus, il doit
+être possible d'écrire $(\Ss\Ss 0) + (\Ss 0)$ par exemple~: l'écriture est donc
 naturellement donnée comme un ensemble inductif, où les arités des symboles de
 fonction nous donnent les arités des constructeurs de l'ensemble.
 
@@ -99,13 +110,13 @@ fonction nous donnent les arités des constructeurs de l'ensemble.
 
 \begin{definition}[Termes]
   Soit une signature
-  $\Sigma = (\mathcal F_\Sigma,\mathcal R_\Sigma, \alpha_\Sigma,\beta_\Sigma)$,
-  on définit $\Term(\Sigma)$ comme l'ensemble inductif engendré par
-  $\mathcal F_\Sigma\cup\Var$ où l'arité de $f\in\mathcal F_\Sigma$ est
-  $\alpha_\Sigma(f)$ et où l'arité de $x\in \Var$ est $0$. On peut représenter
+  $\Sign = (\SigFun,\SigRel, \aritFun,\aritRel)$,
+  on définit $\Term(\Sign)$ comme l'ensemble inductif engendré par
+  $\SigFun\cup\Var$ où l'arité de $f\in\SigFun$ est
+  $\aritFun(f)$ et où l'arité de $x\in \Var$ est $0$. On peut représenter
   cet ensemble par la grammaire suivante :
-  \[t,u \Coloneq x \mid f(t_1,\ldots,t_{\alpha(f)})\]
-  où $x\in \Var$ et $f\in \mathcal F_\Sigma$.
+  \[t,u \inddefeq x \mid f(t_1,\ldots,t_{\aritFun(f)})\]
+  où $x\in \Var$ et $f\in \SigFun$.
 \end{definition}
 
 Ainsi, les termes écrits dans notre langage vont représenter les objets
@@ -115,28 +126,30 @@ propositionnelle. En l'absence de variables propositionnelles, les éléments
 atomiques des formules seront construits à partir des termes.
 
 Nous donnons la définition d'une proposition atomique comme une proposition de
-la forme $r(t_1,\ldots,t_n)$ où $n$ correspond à l'arité de $r$. En plus des
-symboles de relation de la signature, on considère le symbole $=$, représentant
-l'égalité.
+la forme $R(t_1,\ldots,t_n)$ où $n$ correspond à l'arité de $R$. En plus des
+symboles de relation de la signature, on considère le symbole $\mathord{=}$,
+représentant l'égalité.
 
 \begin{definition}[Proposition atomique]
-  Soit une signature $\Sigma$. On définit l'ensemble $\Atom(\Sigma)$ des
+  Soit une signature $\Sign$. On définit l'ensemble $\Atom(\Sign)$ des
   propositions atomiques par
   \begin{multline*}
-    \Atom(\Sigma) \defeq \{(r,t_1,\ldots,t_k)\mid r\in\mathcal R_\Sigma,
-    (t_1,\ldots,t_k) \in (\Term(\Sigma))^k, k = \beta_\Sigma(r)\}\\
-    \cup\{(``=",t,u)\mid t,u\in \Term(\Sigma)\}
+    \Atom(\Sign) \defeq \{(R,t_1,\ldots,t_k)\mid R\in\SigRel,
+    (t_1,\ldots,t_k) \in (\Term(\Sign))^k, k = \aritRel(R)\}\\
+    \cup\{(``\mathord{=}",t,u)\mid t,u\in \Term(\Sign)\}
   \end{multline*}
-  où $=$ est un symbole n'appartenant pas à $\mathcal R_\Sigma$.
+  où $\mathord{=}$ est un symbole n'appartenant pas à $\SigRel$.
 \end{definition}
 
 \begin{remark}
   L'égalité est une relation, mais celle-ci n'appartient pas formellement au
   langage, car son comportement est donné par les règles logiques, de la même
   façon que $\lor$ et $\land$ ont leur sens imposés. Certains auteurs
-  considèrent au contraire que $=$ doit être ajouté au langage, en tant que
+  considèrent au contraire que $\mathord{=}$ doit être ajouté au langage,
+  en tant que
   symbole de relation binaire, et d'autres font la différence entre un langage
-  égalitaire (incluant le symbole $=$) et un langage non égalitaire. Notre choix
+  égalitaire (incluant le symbole $\mathord{=}$)
+  et un langage non égalitaire. Notre choix
   est motivé à la fois par la simplicité et par l'expressivité : l'égalité est
   clairement utile pour formaliser les mathématiques et raisonner dessus, mais
   chercher à préciser quand nous l'utilisons ne l'est pas, étant donné qu'elle
@@ -144,22 +157,24 @@ l'égalité.
 \end{remark}
 
 \begin{notation}
-  Pour un symbole de relation $r$ (pouvant être l'égalité), on écrira
-  $r(t_1,\ldots,t_k)$ plutôt que $(r,t_1,\ldots,t_k)$ dans la suite. Cela est
-  motivé par le fait que le sens donné à $r$ est d'être un prédicat atomique
-  prenant en argument des termes.
+  Pour un symbole de relation $R$ (pouvant être l'égalité), on écrira
+  $R(t_1,\ldots,t_k)$ plutôt que $(R,t_1,\ldots,t_k)$ dans la suite. Cela est
+  motivé par le fait que le sens donné à $R$ est d'être un prédicat atomique
+  prenant en argument des termes. Dans le cas des symboles binaires, on écrira
+  même $t\mathbin{R} u$ pour signifier $R(t,u)$ comme on le voit généralement
+  dans les ouvrages de mathématiques.
 \end{notation}
 
 Nous pouvons maintenant définir l'ensemble des formules sur une signature
 donnée.
 
 \begin{definition}[Formules]
-  Soit une signature $\Sigma$. On définit l'ensemble $\Formula(\Sigma)$ par
+  Soit une signature $\Sign$. On définit l'ensemble $\Formula(\Sign)$ par
   la grammaire suivante :
-  \[\varphi,\psi \Coloneq a\mid \top\mid\bot\mid\lnot\varphi
-  \mid\varphi\lor\psi\mid \varphi\land\psi\mid \varphi\to\psi\mid
-  \forall x,\varphi\mid \exists x,\varphi\]
-  où $a\in \Atom(\Sigma)$ et $x\in \Var$.
+  \[\varFF,\varFP \inddefeq a\mid \top\mid\bot\mid\lnot\varFF
+  \mid\varFF\lor\varFP\mid \varFF\land\varFP\mid \varFF\to\varFP\mid
+  \forall x,\varFF\mid \exists x,\varFF\]
+  où $a\in \Atom(\Sign)$ et $x\in \Var$.
 \end{definition}
 
 \subsection{Variables et substitution}
@@ -171,98 +186,99 @@ basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
 \begin{definition}[Variable libre, formule close]
   On définit la fonction qui étant donné un terme (respectivement une formule),
   retourne l'ensemble des variables libres y apparaissant. La fonction $\VL$ est
-  définie par induction sur $\Term(\Sigma)$ (respectivement $\Formula(\Sigma)$)
+  définie par induction sur $\Term(\Sign)$ (respectivement $\Formula(\Sign)$)
   par les équations suivantes :
   \begin{itemize}
-  \item si $t = x\in \Var$, alors $\VL(t) = \{x\}$.
-  \item si $t = f(t_1,\ldots,t_n)$ où $f\in \mathcal F_\Sigma$,
-    $t_1,\ldots,t_n\in\Term(\Sigma)$, alors
-    $\displaystyle\VL(t) =\bigcup_{k = 1}^n \VL(t_k)$.
-  \item si $\varphi = r(t_1,\ldots,t_n)$ est une proposition atomique où
-    $r\in\mathcal R_\Sigma, t_1,\ldots,t_n\in\Term(\Sigma)$, alors
-    $\displaystyle\VL(\varphi) = \bigcup_{k = 1}^n \VL(t_k)$.
-  \item si $\varphi = \top$, alors $\VL(\varphi) = \varnothing$.
-  \item si $\varphi = \bot$, alors $\VL(\varphi) = \varnothing$.
-  \item si $\varphi = \lnot \psi$, alors $\VL(\varphi) = \VL(\psi)$.
-  \item si $\varphi = \psi\lor\chi$, $\varphi = \psi\land \chi$ ou
-    $\varphi = \psi\to\chi$, alors $\VL(\varphi) = \VL(\psi)\cup\VL(\chi)$.
-  \item si $\varphi = \forall x, \psi$ ou $\varphi = \exists x, \psi$, alors
-    $\VL(\varphi) = \VL(\psi)\backslash\{x\}$.
+  \item si $t = x\in \Var$, alors $\VL(t) \defeq \{x\}$.
+  \item si $t = f(t_1,\ldots,t_n)$ où $f\in \SigFun$,
+    $t_1,\ldots,t_n\in\Term(\Sign)$, alors
+    $\displaystyle\VL(t) \defeq \bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varFF = R(t_1,\ldots,t_n)$ est une proposition atomique où
+    $R\in\SigRel, t_1,\ldots,t_n\in\Term(\Sign)$, alors
+    $\displaystyle\VL(\varFF) \defeq \bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varFF = \top$, alors $\VL(\varFF) \defeq \vide$.
+  \item si $\varFF = \bot$, alors $\VL(\varFF) \defeq \vide$.
+  \item si $\varFF = \lnot \varFP$, alors $\VL(\varFF) \defeq \VL(\varFP)$.
+  \item si $\varFF = \varFP\lor\varFC$, $\varFF = \varFP\land \varFC$ ou
+    $\varFF = \varFP\to\varFC$, alors
+    $\VL(\varFF) \defeq \VL(\varFP)\cup\VL(\varFC)$.
+  \item si $\varFF = \forall x, \varFP$ ou $\varFF = \exists x, \varFP$, alors
+    $\VL(\varFF) \defeq \VL(\varFP)\setminus\{x\}$.
   \end{itemize}
-  On dit que $\varphi$ est une formule close (ou une proposition) si
-  $\VL(\varphi) =\varnothing$. On note par $\Prop(\Sigma)$ l'ensemble des
-  formules closes (ou propositions) sur la signature $\Sigma$. De même, un
+  On dit que $\varFF$ est une formule close (ou une proposition) si
+  $\VL(\varFF) =\vide$. On note par $\Prop(\Sign)$ l'ensemble des
+  formules closes (ou propositions) sur la signature $\Sign$. De même, un
   terme $t$ est appelé un terme clos s'il n'a pas de variables libres
-  (c'est-à-dire s'il n'a pas de variable).
+  (c'est-à-dire s'il n'a pas de variable) et on note $\TermCl(\Sign)$ l'ensemble
+  des termes clos.
 \end{definition}
 
 \begin{remark}\label{rmk.alpha}
-  Une variable non libre est dite liée : les variables liées sont muettes, elles
+  Une variable non libre est dite liée~: les variables liées sont muettes, elles
   n'ont pas d'importance en elle-même et seulement sur le quantificateur qui les
-  lie. On considère implicitement que si $\varphi$ et $\psi$ diffèrent seulement
-  en remplaçant la variable liée par un quantificateur et les variables que ce
-  quantificateur lie, alors $\varphi = \psi$. Par exemple, $\forall x, x = x$ et
-  $\forall y, y = y$ sont identifiées.
+  lie. On considère implicitement que si $\varFF$ et $\varFP$ diffèrent
+  seulement en remplaçant la variable liée par un quantificateur et les
+  variables que ce quantificateur lie, alors $\varFF = \varFP$.
+  Par exemple, $\forall x, x = x$ et $\forall y, y = y$ sont identifiées.
 \end{remark}
 
 Comme pour la logique propositionnelle, la valeur de vérité d'une formule va
 dépendre de la valeur associée aux variables libres. Cependant, pour l'instant,
-nous n'avons pas de système clair d'évaluation : nous verrons comment évaluer
+nous n'avons pas de système clair d'évaluation~: nous verrons comment évaluer
 une formule quand nous aborderons la notion de modèle. Au niveau syntaxique,
 cependant, nous pouvons déjà introduire la substitution, que l'on peut voir
-comme une évaluation syntaxique : on remplace une variable libre par un terme.
+comme une évaluation syntaxique~: on remplace une variable libre par un terme.
 
 \begin{definition}[Substitution]
-  Soient une signature $\Sigma$, un terme $t\in \Term(\Sigma)$ et une variable
+  Soient une signature $\Sign$, un terme $t\in \Term(\Sign)$ et une variable
   $x\in \Var$. On définit les deux fonctions
-  \[\begin{array}{rcccc}
-  -[t/x] &: & \Term(\Sigma) & \longrightarrow & \Term(\Sigma)\\
-  & & u & \longmapsto & u[t/x] \\
-  \\
-  -[t/x] &: & \Formula(\Sigma) & \longrightarrow & \Formula(\Sigma)\\
-  & & \varphi & \longmapsto & \varphi[t/x]
-  \end{array}\]
-  par induction sur la structure de $\Term(\Sigma)$ (respectivement sur la
-  structure de $\Formula(\Sigma)$) :
+  \[
+  \makeFun{\tok[t/x]}{\Term(\Sign)}{\Term(\Sign)}{u}{u[t/x]}
+  \]
+  \[
+  \makeFun{\tok[t/x]}{\Formula(\Sign)}{\Formula(\Sign)}{\varFF}{\varFF[t/x]}
+  \]
+  par induction sur la structure de $\Term(\Sign)$ (respectivement sur la
+  structure de $\Formula(\Sign)$) :
   \begin{itemize}
-  \item si $u = x$, alors $u[t/x] = t$.
-  \item si $u = y\in \Var$ avec $y \neq x$, alors $u[t/x] = y$.
+  \item si $u = x$, alors $u[t/x] \defeq t$.
+  \item si $u = y\in \Var$ avec $y \neq x$, alors $u[t/x] \defeq y$.
   \item si $u = f(u_1,\ldots,u_n)$, alors
-    $u[t/x] = f(u_1[t/x],\ldots,u_n[t/x])$.
-  \item si $\varphi = r(u_1,\ldots,u_n)$, alors
-    $\varphi[t/x] = r(u_1[t/x],\ldots,u_n[t/x])$.
-  \item si $\varphi = \top$ alors $\varphi[t/x] = \top$.
-  \item si $\varphi = \bot$ alors $\varphi[t/x] = \bot$.
-  \item si $\varphi = \lnot \psi$ alors $\varphi[t/x] = \lnot \psi[t/x]$.
-  \item si $\varphi = \psi \lor \chi$ alors
-    $\varphi[t/x] = \psi[t/x]\lor\chi[t/x]$.
-  \item si $\varphi = \psi \land \chi$ alors
-    $\varphi[t/x] = \psi[t/x]\land\chi[t/x]$.
-  \item si $\varphi = \psi \to \chi$ alors
-    $\varphi[t/x] = \psi[t/x]\to\chi[t/x]$.
-  \item si $\varphi = \forall z, \psi$ où $z\notin \VL(t)$, alors
-    $\varphi[t/x] = \forall z, \psi[t/x]$.
-  \item si $\varphi = \exists z, \psi$ où $z\notin \VL(t)$, alors
-    $\varphi[t/x] = \exists z, \psi[t/x]$.
+    $u[t/x] \defeq f(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varFF = R(u_1,\ldots,u_n)$, alors
+    $\varFF[t/x] \defeq R(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varFF = \top$ alors $\varFF[t/x] \defeq \top$.
+  \item si $\varFF = \bot$ alors $\varFF[t/x] \defeq \bot$.
+  \item si $\varFF = \lnot \varFP$ alors $\varFF[t/x] \defeq \lnot \varFP[t/x]$.
+  \item si $\varFF = \varFP \lor \varFC$ alors
+    $\varFF[t/x] \defeq \varFP[t/x]\lor\varFC[t/x]$.
+  \item si $\varFF = \varFP \land \varFC$ alors
+    $\varFF[t/x] \defeq \varFP[t/x]\land\varFC[t/x]$.
+  \item si $\varFF = \varFP \to \varFC$ alors
+    $\varFF[t/x] \defeq \varFP[t/x]\to\varFC[t/x]$.
+  \item si $\varFF = \forall z, \varFP$ où $z\notin \VL(t)$, alors
+    $\varFF[t/x] \defeq \forall z, \varFP[t/x]$.
+  \item si $\varFF = \exists z, \varFP$ où $z\notin \VL(t)$, alors
+    $\varFF[t/x] \defeq \exists z, \varFP[t/x]$.
   \end{itemize}
 \end{definition}
 
 \begin{remark}
   La condition de $z\notin\VL(t)$ dans les derniers cas peut toujours être
-  réalisée quitte à renommer la variable liée $z$ : puisque $\Var$ est infini
+  réalisée quitte à renommer la variable liée $z$~: puisque $\Var$ est infini
   et que $\VL(t)$ est fini, on peut toujours trouver $a\notin\VL(t)$ et
-  remplacer $\forall z, \psi$ par $\forall a, \psi[a/z]$ en utilisant
+  remplacer $\forall z, \varFP$ par $\forall a, \varFP[a/z]$ en utilisant
   l'identification de la \cref{rmk.alpha}.
 
   Si l'on veut être parfaitement formel, il conviendrait de procéder dans
   l'autre sens : on définit d'abord la substitution comme donnée précédemment,
-  puis on définit la relation $\varphi \equiv \psi$ engendrée par
-  $\forall x, \psi \equiv \forall y, \psi[y/x]$ et
-  $\exists x,\psi \equiv\exists y, \psi[y/x]$ dont on prouve qu'elle est une
+  puis on définit la relation $\varFF \equiv \varFP$ engendrée par
+  $\forall x, \varFP \equiv \forall y, \varFP[y/x]$ et
+  $\exists x,\varFP \equiv\exists y, \varFP[y/x]$ dont on prouve qu'elle est une
   relation d'équivalence, puis on définit le \og vrai\fg{} ensemble
-  $\Formula(\Sigma)$ par $\Formula(\Sigma)/ \equiv$ (cela n'est pas nécessaire
-  pour $\Term(\Sigma)$ puisque toute variable est libre, dans un terme), et que
-  la fonction $-[t/x]$ est bien définie sur ce quotient. Ce processus est
+  $\Formula(\Sign)$ par $\Formula(\Sign)/ \equiv$ (cela n'est pas nécessaire
+  pour $\Term(\Sign)$ puisque toute variable est libre, dans un terme), et que
+  la fonction $\tok[t/x]$ est bien définie sur ce quotient. Ce processus est
   évidemment plus laborieux et n'apporte rien à la compréhension, c'est pourquoi
   nous ne le détaillons pas ici.
 \end{remark}
@@ -271,75 +287,76 @@ On définit aussi la notion de substitution simultanée, permettant de remplacer
 plusieurs variables à la fois par des termes.
 
 \begin{definition}[Substitution simultanée]
-    Soit une signature $\Sigma$, une fonction partielle
-    $\rho : \Var \partialto \Term(\Sigma)$, un terme $t \in \Term(\Sigma)$ et 
-    une formule $\varphi \in \Formula(\Sigma)$. On définit la substitution de $t$
-    (respectivement $\varphi$) par $\rho$, notée  $\rho(t)$
-    (respectivement $\rho(\varphi)$), par induction sur $\varphi$~:
+    Soit une signature $\Sign$, une fonction partielle
+    $\subSimul : \Var \partialto \Term(\Sign)$, un terme $t \in \Term(\Sign)$
+    et 
+    une formule $\varFF \in \Formula(\Sign)$. On définit la substitution de $t$
+    (respectivement $\varFF$) par $\subSimul$, notée  $\subSimul(t)$
+    (respectivement $\subSimul(\varFF)$), par induction sur $\varFF$~:
     \begin{itemize}
-        \item si $t = x \in \dom(\rho)$ alors $\rho(t) = \rho(x)$
+        \item si $t = x \in \dom(\rho)$ alors $\subSimul(t) \defeq \subSimul(x)$
         \item si $t = f(t_1,\ldots,t_n)$ alors
-        $\rho(t) = f(\rho(t_1),\ldots,\rho(t_n))$.
-        \item si $\varphi = r(t_1,\ldots,t_n)$ alors
-        $\rho(\varphi) = r(\rho(t_1),\ldots,\rho(t_n))$.
-        \item si $\varphi = \top$ alors $\rho(\varphi) = \top$.
-        \item si $\varphi = \bot$ alors $\rho(\varphi) = \bot$.
-        \item si $\varphi = \lnot \psi$ alors
-        $\rho(\varphi) = \lnot \rho(\psi)$.
-        \item si $\varphi = \psi \lor \chi$ alors
-        $\rho(\varphi) = \rho(\psi)\lor\rho(\chi)$.
-        \item si $\varphi = \psi \land \chi$ alors
-        $\rho(\varphi) = \rho(\psi)\land\rho(\chi)$.
-        \item si $\varphi = \psi \to \chi$ alors
-        $\rho(\varphi) = \rho(\psi)\to\rho(\chi)$.
-        \item si $\varphi = \forall z, \psi$ où
-        $\displaystyle z \notin \bigcup_{x \in \dom(\rho)}\VL(\rho(x))$,
-        alors $\rho(\varphi) = \forall z, \rho(\psi)$.
-        \item si $\varphi = \exists z, \psi$ où
-        $\displaystyle z \notin \bigcup_{x \in \dom(\rho)}\VL(\rho(x))$,
-        alors $\rho(\varphi) = \exists z, \rho(\psi)$.
+        $\subSimul(t) \defeq f(\subSimul(t_1),\ldots,\subSimul(t_n))$.
+        \item si $\varFF = R(t_1,\ldots,t_n)$ alors
+        $\subSimul(\varFF) \defeq R(\subSimul(t_1),\ldots,\subSimul(t_n))$.
+        \item si $\varFF = \top$ alors $\subSimul(\varFF) \defeq \top$.
+        \item si $\varFF = \bot$ alors $\subSimul(\varFF) \defeq \bot$.
+        \item si $\varFF = \lnot \varFP$ alors
+        $\subSimul(\varFF) \defeq \lnot \subSimul(\varFP)$.
+        \item si $\varFF = \varFP \lor \varFC$ alors
+        $\subSimul(\varFF) = \subSimul(\varFP)\lor\subSimul(\varFC)$.
+        \item si $\varFF = \varFP \land \varFC$ alors
+        $\subSimul(\varFF) = \subSimul(\varFP)\land\subSimul(\varFC)$.
+        \item si $\varFF = \varFP \to \varFC$ alors
+        $\subSimul(\varFF) = \subSimul(\varFP)\to\subSimul(\varFC)$.
+        \item si $\varFF = \forall z, \varFP$ où
+        $\displaystyle z \notin \bigcup_{x \in \dom(\subSimul)}\VL(\subSimul(x))$,
+        alors $\subSimul(\varFF) = \forall z, \subSimul(\varFP)$.
+        \item si $\varFF = \exists z, \varFP$ où
+        $\displaystyle z \notin \bigcup_{x \in \dom(\subSimul)}\VL(\subSimul(x))$,
+        alors $\rho(\varFF) = \exists z, \rho(\varFP)$.
     \end{itemize}
 \end{definition}
 
 \begin{exercise}
-  Soit $x\in \Var$, $t\in\Term(\Sigma)$ et $\varphi\in\Prop(\Sigma)$ pour une
-  signature $\Sigma$ quelconque. Montrer que $\varphi[t/x] = \varphi$.
+  Soit $x\in \Var$, $t\in\Term(\Sign)$ et $\varFF\in\Prop(\Sign)$ pour une
+  signature $\Sign$ quelconque. Montrer que $\varFF[t/x] = \varFF$.
 \end{exercise}
 
 \begin{exercise}
-  Soient $t,u,v\in\Term(\Sigma)$ et $x,y\in\Var$, montrer que
+  Soient $t,u,v\in\Term(\Sign)$ et $x,y\in\Var$, montrer que
   \[t[u/x][v/y] = (t[v/y])[u[v/y]/x]\]
 \end{exercise}
 
 \begin{exercise}
-  Soient $t,u\in\Term(\Sigma)$, $\rho : \Var \partialto \Term(\Sigma)$ et
-  $x \notin \VL(\rho)$ (cet ensemble est l'abréviation de
-  $\displaystyle\bigcup_{y \in \VL(\rho)} \VL(\rho(y))$). Montrer que
-  \[\rho(t[u/x]) = \rho(t)[\rho(u)/x]\]
+  Soient $t,u\in\Term(\Sign)$, $\subSimul : \Var \partialto \Term(\Sign)$ et
+  $x \notin \VL(\subSimul)$ (cet ensemble est l'abréviation de
+  $\displaystyle\bigcup_{y \in \VL(\subSimul)} \VL(\subSimul(y))$). Montrer que
+  \[\subSimul(t[u/x]) = \subSimul(t)[\subSimul(u)/x]\]
 \end{exercise}
 
 \section{Bases de théorie des modèles}
 
 Maintenant que nous avons défini la syntaxe élémentaire, nous allons lui donner
-un sens : une sémantique. Dans le cas de la logique propositionnelle, le sens
+un sens~: une sémantique. Dans le cas de la logique propositionnelle, le sens
 d'une proposition était simple à définir, puisqu'il s'agissait d'une valeur de
 vérité en fonction des variables propositionnelles. Dans le cas de la logique du
 premier ordre, les propositions parlent d'objets, et il faut donc fixer un
 univers ambiant sur lequel porte le discours donné par les formules. Par
 exemple, en prenant le langage de l'arithmétique, pour évaluer le terme
-$S\;S\;0 + S\;S\;0$, on peut considérer $0$ comme l'entier naturel $0$, $S$
+$\Ss\Ss 0 + \Ss\Ss 0$, on peut considérer $0$ comme l'entier naturel $0$, $\Ss$
 comme la fonction $n \mapsto n + 1$ et $+$ comme l'addition usuelle sur les
-entiers, ce qui fait que notre évaluation du terme sera $4$ ;
+entiers, ce qui fait que notre évaluation du terme sera $4$~;
 mais on peut imaginer une autre interprétation de ce terme donnant par exemple
 $5$ ou tout autre nombre.
 
 \subsection{Structure et interprétation}
 
-Nous travaillons donc sur l'interprétation d'une formule en deux parties : tout
+Nous travaillons donc sur l'interprétation d'une formule en deux parties~: tout
 d'abord, nous introduisons la notion de structure, qui offre une interprétation
 claire du langage dans lequel la formule est écrite, et c'est seulement à partir
 de cette interprétation que l'on peut évaluer une formule. Cela modifie notre
-notion de vérité : les formules closes prennent une plus grande importance que
+notion de vérité~: les formules closes prennent une plus grande importance que
 le reste des formules, mais il faut quantifier sur des structures en
 contrepartie.
 
@@ -348,7 +365,7 @@ univers de discours~: on désigne un ensemble $M$ dans lequel seront interprét�
 les formules. Par exemple, quand on parle d'arithmétique, une formule telle que
 \[\forall n,\exists m, n \leq m\]
 s'interprète naturellement comme portant sur des entiers, c'est-à-dire que $n$
-et $m$ ont alors vocation à être des éléments de $\mathbb N$. Il nous faut
+et $m$ ont alors vocation à être des éléments de $\bN$. Il nous faut
 ensuite donner un sens aux symboles~: ceux-ci n'ont, par défaut, pas de sens
 défini. On a donc besoin, pour chaque symbole de fonctions, d'associer une
 réelle fonction ensembliste, dont le domaine est l'univers de discours choisi.
@@ -356,27 +373,33 @@ De même, un symbole de relation sera associé à une vraie relation ensembliste
 sur l'univers de discours.
 
 \begin{definition}[Structure]
-  Soit une signature $\Sigma$. On appelle $\Sigma$-structure (ou simplement
-  structure) $\mathcal M$ un triplet
-  $(|\mathcal M|,-^{\mathcal M}_\mathcal F,-^{\mathcal M}_\mathcal R)$
-  (on notera les deux $-^{\mathcal M}$, sans indice) où :
+  Soit une signature $\Sign$. On appelle $\Sign$-structure (ou simplement
+  structure) $\varMM$ un triplet
+  $(\carMM,\toMFunM{\tok},\toMRelM{\tok})$
+  (on notera les deux $\toM{\tok}$, sans indice) où :
   \begin{itemize}
-  \item $|\mathcal M|$ est un ensemble.
-  \item pour chaque $f\in \mathcal F_\Sigma$ d'arité $n$,
-    $f^{\mathcal M} : |\mathcal M|^n \to |\mathcal M|$.
-  \item pour chaque $r\in\mathcal R_\Sigma$ d'arité $n$,
-    $r^{\mathcal M} \subseteq |\mathcal M|^n$.
+  \item $\carMM$ est un ensemble.
+  \item pour chaque $f\in\SigFun$ d'arité $n$, $\toM{f} : \carMM^n \to \carMM$.
+  \item pour chaque $R\in\SigRel$ d'arité $n$, $\toM{R} \subseteq \carMM^n$.
   \end{itemize}
 
-  On identifie $|\mathcal M|^0 \to |\mathcal M|$ à $|\mathcal M|$ : un symbole
-  de constante est associé directement à un élément.
+  \noindent
+  On identifie $\carMM^0 \to \carMM$ à $\carMM$~: un symbole
+  de constante est associé directement à un élément. En effet, on prend la
+  convention que $X^0 \defeq \{*\}$, c'est-à-dire que la puissance $0$
+  correspond à un singleton (dont l'élément n'est pas important). Ainsi, une
+  fonction $f : \{*\} \to \carMM$ est exactement le choix de la valeur
+  $f(*)$, c'est-à-dire le choix d'uné élément $x \in \carMM$.
+
+  \noindent
+  On nomme $\Struct(\Sign)$ la classe des structure sur la signature $\Sign$.
 \end{definition}
 
 \begin{remark}
   Si l'on définit un modèle comme un triplet, définir un modèle revient à lister
-  toutes les assignations, c'est-à-dire donner un ensemble $|\mathcal M|$ puis
-  une fonction $f^\mathcal M$ pour chaque symbole de fonction $f$, et
-  une relation $r^\mathcal M$ pour chaque symbole de relation $r$. On
+  toutes les assignations, c'est-à-dire donner un ensemble $\carMM$ puis
+  une fonction $\toM{f}$ pour chaque symbole de fonction $f$, et
+  une relation $\toM{R}$ pour chaque symbole de relation $R$. On
   notera donc, au lieu d'un triplet contenant deux fonctions, une liste de
   tous les éléments donnés par l'intérprétation. En règle générale (comme par
   exemple le modèle donné au paragraphe suivant) l'association de chaque symbole
@@ -387,179 +410,180 @@ sur l'univers de discours.
 
 \begin{example}
   En reprenant les différents langages définis précédemments, on peut voir que,
-  par exemple, $(\mathbb Z,0,+,-)$ est une structure sur le langage des groupes.
+  par exemple, $(\bZ,0,+,-\tok)$ est une structure sur le langage des groupes.
   C'est même, en incluant $1$ et $\times$, une structure sur le langage des
-  anneaux. De même, $(\mathbb N,0,n\mapsto n + 1,+,\times,\leq)$ est une
-  structure sur le langage de l'arithmétique.
+  anneaux. De même, $(\bN,0,n\mapsto n + 1,+,\times,\leq)$ est une
+  structure sur le langage de l'arithmétique (qui sera largement étudiée dans
+  le \cref{chp.arith}).
 \end{example}
 
 Avec ces nouveaux exemples, on voit qu'il devient naturel d'interpréter dans la
-structure $(\mathbb N,0,n\mapsto n+1,+,\times,\leq)$ le terme
-$S\;S\;0 + S\;S\;0$
-par l'élément $4\in\mathbb N$. Nous pouvons donc généraliser ce résultat. Pour
+structure $(\bN,0,n\mapsto n+1,+,\times,\leq)$ le terme
+$\Ss\Ss 0 + \Ss\Ss 0$
+par l'élément $4\in\bN$. Nous pouvons donc généraliser ce résultat. Pour
 cela, on définit d'abord la notion d'environnement. Un environnement permet de
 gérer les variables libres d'un terme et d'une formule pour qu'une variable $x$
-puisse être assignée à un réel objet de $|\mathcal M|$. Dans un environnement
-$\rho$ donné, dont on suppose qu'il contient les variables libres d'un certain
+puisse être assignée à un réel objet de $\carMM$. Dans un environnement
+$\env$ donné, dont on suppose qu'il contient les variables libres d'un certain
 terme $t$, on peut construire de façon canonique un élément
-$t^\mathcal M_\rho \in |\mathcal M|$~: une variable libre est associée à son
-image par $\rho$, et le reste se construit par l'interprétation des symboles
+$\toMMI{t} \in \carMM$~: une variable libre est associée à son
+image par $\env$, et le reste se construit par l'interprétation des symboles
 de fonction. De même, une formule est alors associée à une valeur de vérité,
-dépendant des valeurs de $\rho$.
+dépendant des valeurs de $\env$.
 
 \begin{definition}[Environnement]
-  Soit une signature $\Sigma$ et une structure $\mathcal M$. Un environnement
-  $\rho$ est une fonction partielle $\rho : \Var\partialto |\mathcal M|$. On
-  note $\mathcal E$ l'ensemble des environnements. Etant donnés un élément
-  $m\in|\mathcal M$|, une variable $x$ et un environnement $\rho$, on note
-  $\rho[x \mapsto m]$ l'environnement coïncidant avec $\rho$ sur
-  $\Var\backslash\{x\}$ et valant $m$ en $x$.
+  Soit une signature $\Sign$ et une structure $\varMM$. Un environnement
+  $\env$ est une fonction partielle $\env : \Var\partialto \carMM$. On
+  note $\Enviro$ l'ensemble des environnements. Etant donnés un élément
+  $m\in\carMM$, une variable $x$ et un environnement $\env$, on note
+  $\env[x \mapsto m]$ l'environnement coïncidant avec $\env$ sur
+  $\Var\setminus\{x\}$ et valant $m$ en $x$.
 \end{definition}
 
 \begin{definition}[Interprétation, valuation]
-  Soit une signature $\Sigma$, une structure $\mathcal M$ et un environnement
-  $\rho$. On définit par induction sur $t$ (respectivement sur $\varphi$), en
-  supposant que $\VL(t)\subseteq\dom(\rho)$ (respectivement
-  $\VL(\varphi)\subseteq\dom(\rho)$), les fonctions suivantes~:
-  \[\begin{array}{rcccc}
-  -_\rho^\mathcal M & : & \Term(\Sigma) & \longrightarrow & |\mathcal M|\\
-  \\
-  \Val_\rho & : & \Formula(\Sigma) & \longrightarrow & \{0,1\}\\
-  \end{array}\]
+  Soit une signature $\Sign$, une structure $\varMM$ et un environnement
+  $\env$. On définit par induction sur $t$ (respectivement sur $\varFF$), en
+  supposant que $\VL(t)\subseteq\dom(\env)$ (respectivement
+  $\VL(\varFF)\subseteq\dom(\env)$), les fonctions suivantes~:
+  \begin{center}
+    $\makeFunName{\toMMI{\tok}}{\Term(\Sign)}{\carMM}$
+    \\
+    $\makeFunName{\ValE}{\Formula(\Sign)}{\{0,1\}}$
+  \end{center}
 
   \begin{itemize}
-  \item si $t = x \in \Var$, alors $t^\mathcal M_\rho = \rho(x)$.
+  \item si $t = x \in \Var$, alors $\toMMI{t} = \env(x)$.
   \item si $t = f(t_1,\ldots,t_n)$, alors
-    $t_\rho^\mathcal M =
-    f^\mathcal M((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$.
-  \item si $\varphi = r(t_1,\ldots,t_n)$ alors
-    $\Val_\rho(\varphi) =
-    \chi_{r^\mathcal M}((t_1)^\mathcal M_\rho,\ldots,(t_n)^\mathcal M_\rho)$, l'image
-    de $((t_i)^\mathcal M_\rho)_{i = 1,\ldots,n}$ par la fonction indicatrice de
-    $r^{\mathcal M}$ (qui est, rappelons-le, une partie de $|\mathcal M|^n$).
-    On interprète le symbole $=$ de la même façon, en prenant la partie
-    $\{(m,m)\mid m\in |\mathcal M|\}$.
-  \item si $\varphi = \top$, alors $\Val_\rho(\varphi) = 1$.
-  \item si $\varphi = \bot$, alors $\Val_\rho(\varphi) = 0$.
-  \item si $\varphi = \lnot \psi$, alors
-    $\Val_\rho(\varphi) = 1 - \Val_\rho(\psi)$.
-  \item si $\varphi = \psi \lor \chi$, alors
-    $\Val_\rho(\varphi) = \max(\Val_\rho(\psi),\Val_\rho(\chi))$
-  \item si $\varphi = \psi \land \chi$, alors
-    $\Val_\rho(\varphi) = \min(\Val_\rho(\psi),\Val_\rho(\chi))$
-  \item si $\varphi = \psi \to \chi$, alors
-    $\Val_\rho(\varphi) = \max(1 - \Val_\rho(\psi),\Val_\rho(\chi))$
-  \item si $\varphi = \forall x, \psi$, alors
-    $\displaystyle\Val_\rho(\varphi) =
-    \min_{m \in |\mathcal M|}(\Val_{\rho[x\mapsto m]}(\psi))$
-  \item si $\varphi = \exists x, \psi$, alors
-    $\displaystyle\Val_\rho(\varphi) =
-    \max_{m \in |\mathcal M|}(\Val_{\rho[x\mapsto m]}(\psi))$
+    $\toMMI = \toM{f}(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})$.
+  \item si $\varFF = R(t_1,\ldots,t_n)$ alors
+    $\ValE(\varFF) = \indicP{\toM{R}}(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})$,
+    l'image
+    de $(\toMMI{(t_i)})_{i = 1,\ldots,n}$ par la fonction indicatrice de
+    $\toM{R}$ (qui est, rappelons-le, une partie de $\carMM^n$).
+    On interprète le symbole $\mathord{=}$ de la même façon, en prenant la
+    partie $\compr{(m,m)}{m\in \carMM}$.
+  \item si $\varFF = \top$, alors $\ValE(\varFF) = 1$.
+  \item si $\varFF = \bot$, alors $\ValE(\varFF) = 0$.
+  \item si $\varFF = \lnot \varFP$, alors
+    $\ValE(\varFF) = 1 - \ValE(\varFP)$.
+  \item si $\varFF = \varFP \lor \varFC$, alors
+    $\ValE(\varFF) = \max(\ValE(\varFP),\ValE(\varFC))$
+  \item si $\varFF = \varFP \land \varFC$, alors
+    $\ValE(\varFF) = \min(\ValE(\varFP),\ValE(\varFC))$
+  \item si $\varFF = \varFP \to \varFC$, alors
+    $\ValE(\varFF) = \max(1 - \ValE(\varFP),\ValE(\varFC))$
+  \item si $\varFF = \forall x, \varFP$, alors
+    $\displaystyle\ValE(\varFF) =
+    \min_{m \in \carMM}(\ValP{\env[x\mapsto m]}(\varFP))$
+  \item si $\varFF = \exists x, \varFP$, alors
+    $\displaystyle\ValE(\varFF) =
+    \max_{m \in \carMM}(\ValP{\env[x\mapsto m]}(\varFP))$
   \end{itemize}
   
-  Si $t$ est un terme clos, alors $t^{\mathcal M}$ est un élément de
-  $|\mathcal M|$. Si $\varphi$ est une formule close, alors $\Val(\varphi)$ est
+  Si $t$ est un terme clos, alors $\toM{t}$ est un élément de
+  $\carMM$. Si $\varFF$ est une formule close, alors $\Val(\varFF)$ est
   un élément de $\{0,1\}$. Ces deux éléments sont obtenus en interprétant le
   terme (respectivement la formule) dans le contexte vide, ou de façon
   équivalente dans n'importe quel contexte.
 \end{definition}
 
+\noindent
 Enfin, donnons un résultat statuant que la substitution et l'interprétation
 commutent.
 
 \begin{proposition}\label{prop.comm.subst.env}
-  Soit une signature $\Sigma$, une structure $\mathcal M$, un environnement
-  $\rho$, une variable $x$, deux termes $t,u$ et une formule $\varphi$. On
-  suppose de plus les inclusions suivantes~: $\VL(t)\subseteq \dom(\rho)$,
-  $\VL(u)\subseteq\dom(\rho)$ et $\VL(\varphi)\subseteq\dom(\rho)$. On a alors
-  les deux égalités suivantes :
-  \[(t[u/x])_\rho^\mathcal M = t^\mathcal M_{\rho[x \mapsto u^\mathcal M_\rho]} \qquad
-  \Val_\rho(\varphi[u/x]) = \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\varphi)\]
+  Soient une signature $\Sign$, une structure $\varMM$, un environnement
+  $\env$, une variable $x$, deux termes $t,u$ et une formule $\varFF$. On
+  suppose de plus les inclusions suivantes~: $\VL(t)\subseteq \dom(\env)$,
+  $\VL(u)\subseteq\dom(\env)$ et $\VL(\varFF)\subseteq\dom(\env)$. On a alors
+  les deux égalités suivantes~:
+  \[\toMMI{(t[u/x])} = \toMIP{t}{\varMM}{\env[x \mapsto \toMMI{u}]} \qquad
+  \ValE(\varFF[u/x]) = \ValP{\env[x\mapsto \toMMI{u}]}(\varFF)\]
 \end{proposition}
 
 \begin{proof}
   On montre la première égalité par induction sur $t$, et l'autre par induction
-  sur $\varphi$ :
+  sur $\varFF$ :
   \begin{itemize}
-  \item si $t = x$ alors $(t[u/x])_\rho^\mathcal M = u^\mathcal M_\rho$ d'un côté,
+  \item si $t = x$ alors $\toMMI{(t[u/x])} = \toMMI{u}$ d'un côté,
     et de l'autre
-    $t^\mathcal M_{\rho[x\mapsto u_\rho^\mathcal M]} =
-    (\rho[x\mapsto u_\rho^\mathcal M])(x)$
+    $\toMIP{t}{\varMM}{\env[x\mapsto \toMMI{u}]}=(\env[x\mapsto \toMMI{u}])(x)$
     d'où l'égalité.
   \item si $t = y$ où $y\in\Var$ et $y\neq x$, alors
-    $(t[u/x])_\rho^\mathcal M = \rho(y)$, qui est la même valeur pour l'autre
+    $\toMMI{(t[u/x])} = \env(y)$, qui est la même valeur pour l'autre
     partie de l'équation.
-  \item si $t = f(t_1,\ldots,t_n)$ où pour tout $i\in\{1,\ldots,n\}$,
-    $(t_i[u/x])^\mathcal M_\rho = (t_i)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]}$, alors
+  \item si $t = f(t_1,\ldots,t_n)$ où pour tout $i\in\intervIntB{n}$,
+    $\toMMI{(t_i[u/x])}= \toMIP{(t_i)}{\varMM}{\env[x\mapsto \toMMI{u}]}$,
+    alors
     \begin{align*}
-      (t[u/x])^\mathcal M_\rho &= f((t_1[u/x])^\mathcal M_\rho,\ldots,
-      (t_n[u/x])^\mathcal M_\rho)\\
-      &= f((t_1)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]},\ldots,
-      (t_n)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]})\\
-      &= t^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]}
+      \toMMI{(t[u/x])} &= f(\toMMI{(t_1[u/x])},\ldots,
+      \toMMI{(t_n[u/x])})\\
+      &= f(\toMIP{(t_1)}{\varMM}{\env[x\mapsto \toMMI{u}]},\ldots,
+      \toMIP{(t_n)}{\varMM}{\env[x\mapsto \toMMI{u}]})\\
+      &= \toMIP{t}{\varMM}{\env[x\mapsto \toMMI{u}]}
     \end{align*}
-  \item si $\varphi = \top$ ou $\varphi = \bot$, l'égalité est directe.
-  \item si $\varphi = r(t_1,\ldots,t_n)$ est une proposition atomique, alors
+  \item si $\varFF = \top$ ou $\varFF = \bot$, l'égalité est directe.
+  \item si $\varFF = R(t_1,\ldots,t_n)$ est une proposition atomique, alors
     \begin{align*}
-      \Val_\rho(r(t_1,\ldots,t_n)[u/x])
-      &= \Val_\rho(r(t_1[u/x],\ldots,t_n[u/x]))\\
-      &= \chi_r((t_1[u/x])^\mathcal M_\rho,\ldots,(t_n[u/x])^\mathcal M_\rho)\\
-      &= \chi_r((t_1)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]},\ldots,
-      (t_n)^\mathcal M_{\rho[x\mapsto u^\mathcal M_\rho]})\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(r(t_1,\ldots,t_n))
+      \ValE(R(t_1,\ldots,t_n)[u/x])
+      &= \ValE(R(t_1[u/x],\ldots,t_n[u/x]))\\
+      &= \indicP{\toM{R}}(\toMMI{(t_1[u/x])},\ldots,\toMMI{(t_n[u/x])})\\
+      &= \indicP{\toM{R}}(\toMIP{(t_1)}{\varMM}{\env[x\mapsto \toMMI{u}]},
+      \ldots, \toMIP{(t_n)}{\varMM}{\env[x\mapsto \toMMI{u}]})\\
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(R(t_1,\ldots,t_n))
     \end{align*}
-  \item si $\varphi = \lnot \psi$, alors
+  \item si $\varFF = \lnot \varFP$, alors
     \begin{align*}
-      \Val_\rho((\lnot \psi)[u/x]) &= \Val_\rho(\lnot (\psi[u/x]))\\
-      &= 1 - \Val_\rho(\psi[u/x])\\
-      &= 1 - \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi)\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\lnot\psi)\\
+      \ValE((\lnot \varFP)[u/x]) &= \ValE(\lnot (\varFP[u/x]))\\
+      &= 1 - \ValE(\varFP[u/x])\\
+      &= 1 - \ValP{\env[x\mapsto \toMMI{u}]}(\varFP)\\
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(\lnot\varFP)\\
     \end{align*}
-  \item si $\varphi = \psi \lor \chi$, alors
+  \item si $\varFF = \varFP \lor \varFC$, alors
     \begin{align*}
-      \Val_\rho((\psi \lor \chi)[u/x]) &= \Val_\rho(\psi[u/x] \lor \chi[u/x])\\
-      &= \max (\Val_\rho(\psi[u/x]),\Val_\rho(\chi[u/x]))\\
-      &= \max (\Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
-      \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\lor \chi)
+      \ValE((\varFP \lor \varFC)[u/x]) &= \ValE(\varFP[u/x] \lor \varFC[u/x])\\
+      &= \max (\ValE(\varFP[u/x]),\ValE(\varFC[u/x]))\\
+      &= \max (\ValP{\env[x\mapsto \toMMI{u}]}(\varFP),
+      \ValP{\env[x \mapsto \toMMI{u}]}(\varFC))\\
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(\varFP\lor \varFC)
     \end{align*}
-  \item si $\varphi = \psi \land \chi$, alors
+  \item si $\varFF = \varFP \land \varFC$, alors
     \begin{align*}
-      \Val_\rho((\psi \land \chi)[u/x]) &= \Val_\rho(\psi[u/x] \land \chi[u/x])\\
-      &= \min (\Val_\rho(\psi[u/x]),\Val_\rho(\chi[u/x]))\\
-      &= \min (\Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
-      \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\land \chi)
+      \ValE((\varFP \land \varFC)[u/x]) &= \ValE(\varFP[u/x] \land \varFC[u/x])\\
+      &= \min (\ValE(\varFP[u/x]),\ValE(\varFC[u/x]))\\
+      &= \min (\ValP{\env[x\mapsto \toMMI{u}]}(\varFP),
+      \ValP{\env[x \mapsto \toMMI{u}]}(\varFC))\\
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(\varFP\land \varFC)
     \end{align*}
-  \item si $\varphi = \psi \to \chi$, alors
+  \item si $\varFF = \varFP \to \varFC$, alors
     \begin{align*}
-      \Val_\rho((\psi to \chi)[u/x]) &= \Val_\rho(\psi[u/x] \to \chi[u/x])\\
-      &= \max (1 - \Val_\rho(\psi[u/x]),\Val_\rho(\chi[u/x]))\\
-      &= \max (1 - \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi),
-      \Val_{\rho[x \mapsto u^\mathcal M_\rho]}(\chi))\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\psi\to \chi)
+      \ValE((\varFP \to \varFC)[u/x]) &= \ValE(\varFP[u/x] \to \varFC[u/x])\\
+      &= \max (1 - \ValE(\varFP[u/x]),\ValE(\varFC[u/x]))\\
+      &= \max (1 - \ValP{\env[x\mapsto \toMMI{u}]}(\varFP),
+      \ValP{\env[x \mapsto \toMMI{u}]}(\varFC))\\
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(\varFP\to \varFC)
     \end{align*}
-  \item si $\varphi = \forall y, \psi$ (sans perte de généralité,
+  \item si $\varFF = \forall y, \varFP$ (sans perte de généralité,
     $y\notin \VL(u)$), alors
     \begin{align*}
-      \Val_\rho((\forall y,\psi)[u/x]) &= \Val_\rho(\forall y,\psi[u/x])\\
-      &= \min_{m\in|\mathcal M|}(\Val_{\rho[y \mapsto m]}(\psi[u/x]))\\
-      &= \min_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m]
-        [x\mapsto u^\mathcal M_{\rho[y\mapsto m]}]}(\psi))\\
-      &= \min_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m][x\mapsto u^\mathcal M_\rho]}(\psi))\\
-      &= \min_{m\in|\mathcal M|}(\Val_{\rho[x\mapsto u^\mathcal M_\rho][y\mapsto m]}(\psi))\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\forall y, \psi)
+      \ValE((\forall y,\varFP)[u/x]) &= \ValE(\forall y,\varFP[u/x])\\
+      &= \min_{m\in\carMM}(\ValP{\env[y \mapsto m]}(\varFP[u/x]))\\
+      &= \min_{m\in\carMM}(\ValP{\env[y\mapsto m]
+        [x\mapsto \toMIP{u}{\varMM}{\env[y\mapsto m]}]}(\varFP))\\
+      &= \min_{m\in\carMM}(\ValP{\env[y\mapsto m][x\mapsto \toMMI{u}]}(\varFP))\\
+      &= \min_{m\in\carMM}(\ValP{\env[x\mapsto \toMMI{u}][y\mapsto m]}(\varFP))\\
+      &= \ValP{\rho[x\mapsto \toMMI{u}]}(\forall y, \varFP)
     \end{align*}
-  \item si $\varphi = \exists y, \psi$ (sans perte de généralité,
+  \item si $\varFF = \exists y, \varFP$ (sans perte de généralité,
     $y\notin \VL(u)$), alors
     \begin{align*}
-      \Val_\rho((\exists y,\psi)[u/x]) &= \Val_\rho(\exists y,\psi[u/x])\\
-      &= \max_{m\in|\mathcal M|}(\Val_{\rho[y \mapsto m]}(\psi[u/x]))\\
-      &= \max_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m]
-        [x\mapsto u^\mathcal M_{\rho[y\mapsto m]}]}(\psi))\\
-      &= \max_{m\in|\mathcal M|}(\Val_{\rho[y\mapsto m][x\mapsto u^\mathcal M_\rho]}(\psi))\\
-      &= \max_{m\in|\mathcal M|}(\Val_{\rho[x\mapsto u^\mathcal M_\rho][y\mapsto m]}(\psi))\\
-      &= \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(\exists y, \psi)
+      \ValE((\exists y,\varFP)[u/x]) &= \ValE(\exists y,\varFP[u/x])\\
+      &= \max_{m\in\carMM}(\ValP{\env[y \mapsto m]}(\varFP[u/x]))\\
+      &= \max_{m\in\carMM}(\ValP{\rho[y\mapsto m]
+        [x\mapsto \toMIP{u}{\varMM}{\env[y\mapsto m]}]}(\varFP))\\
+      &= \max_{m\in\carMM}(\ValP{\env[y\mapsto m][x\mapsto \toMMI{u}]}(\varFP))\\
+      &= \max_{m\in\carMM}(\ValP{\env[x\mapsto \toMMI{u}][y\mapsto m]}(\varFP))\\
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(\exists y, \varFP)
     \end{align*}
   \end{itemize}
   D'où le résultat par induction.
@@ -567,113 +591,120 @@ commutent.
 
 \subsection{Satisfaction, modèle}
 
-La notion de valuation permet de définir la relation de satisfaction, $\models$,
+La notion de valuation permet de définir la relation de satisfaction, $\satisf$,
 d'une façon analogue à ce que nous avons fait pour la logique propositionnelle.
 
 \begin{definition}[Satisfaction]
-  Soit une signature $\Sigma$, une structure $\mathcal M$ et, une formule
-  $\varphi$ et un environnement $\rho$ tel que
-  $\VL(\varphi)\subseteq\dom(\rho)$.
-  On définit $\mathcal M,\rho\models \varphi$ par
-  \[\mathcal M,\rho\models \varphi \defeq \Val_\rho(\varphi) = 1\]
+  Soient une signature $\Sign$, une structure $\varMM$, une formule
+  $\varFF$ et un environnement $\env$ tel que
+  $\VL(\varFF)\subseteq\dom(\env)$.
+  On définit $\satMI\varFF$ par
+  \[\satMI\varFF \defeq \ValE(\varFF) = 1\]
 
-  Soit un ensemble $\mathcal F\subseteq\Formula(\Sigma)$ et un environnement
-  $\rho$ tel que
-  $\forall \varphi\in\mathcal F, \VL(\varphi)\subseteq\dom(\rho)$.
-  On dit que $\mathcal M,\rho$ satisfont $\mathcal F$, ce que l'on écrit
-  $\mathcal M,\rho\models\mathcal F$, lorsque pour toute formule
-  $\varphi\in\mathcal F$, il est vrai que $\mathcal M,\rho\models \varphi$.
+  \noindent
+  Soit un ensemble $\FormSet\subseteq\Formula(\Sign)$ et un environnement
+  $\env$ tel que
+  $\forall \varFF\in\FormSet, \VL(\varFF)\subseteq\dom(\env)$.
+  On dit que $\varMM,\env$ satisfont $\FormSet$, ce que l'on écrit
+  $\satMI\FormSet$, lorsque
+  \[\forall \varFF \in \FormSet, \satMI\varFF\]
 
+  \noindent
   Dans le cas de formules closes, on écrira directement
-  $\mathcal M\models\varphi$ et $\mathcal M\models \mathcal F$.
+  $\satMM\varFF$ et $\satMM\FormSet$.
 \end{definition}
 
+\noindent
 Cela permet alors de définir ce qu'est un modèle.
 
 \begin{definition}[Modèle]
-  Soit une signature $\Sigma$ et $\mathcal C\subseteq\Prop(\Sigma)$. On dit que
-  $\mathcal M$ est un modèle de $\mathcal C$ si $\mathcal M\models \mathcal C$.
+  Soit une signature $\Sign$ et $\PropSet\subseteq\Prop(\Sign)$. On dit que
+  $\varMM$ est un modèle de $\PropSet$ si $\satMM \PropSet$. On note
+  $\Model_{\Sign}(\PropSet)$ la classe des modèles de $\PropSet$, ou simplement
+  $\Model(\PropSet)$ lorsque $\Sign$ clair.
 \end{definition}
 
 Un modèle ne se définit qu'avec un ensemble de formules closes. On pourrait
 imaginer une définition analogue avec une formule non close, mais faire cela
 signifie qu'au lieu de donner une structure, il faudrait donner une structure et
 un environnement en même temps. Le but des modèles est plutôt, ici, de
-construire une classe particulière de structure vérifiant certaines conditions
+construire une classe particulière de structures vérifiant certaines conditions
 que l'on peut exprimer au premier ordre.
 
 Un exemple simple est la formule
 \[\forall x,\forall y, x + y = y + x\]
 Les modèles de cette formule, sur le langage $\{+^2\}$, sont les magmas
-commutatifs (ensembles munis d'une loi de composition interne commutative) :
+commutatifs (ensembles munis d'une loi de composition interne commutative)~:
 l'intérêt ici est de pouvoir décrire parmi tous les magmas possibles ceux qui
 ont une lci commutative, et donc de le faire en quelque sorte uniformément parmi
 les structures, ce qui n'est pas le cas si les formules n'étaient pas closes.
 
 \subsection{Théories et conséquence logique}
 
-Cela mène naturellement à deux notions connexes : celle de théorie, et celle
+Cela mène naturellement à deux notions connexes~: celle de théorie, et celle
 de conséquence logique. Une théorie permet de décrire des classes de modèles, et
 la conséquence logique permet de créer des liens entre les formules, de la même
-façon que nous avions $\vDash$ pour le calcul propositionnel.
+façon que nous avions construit la relation $\vD$ pour le calcul propositionnel.
 
 \begin{definition}[Théorie]
-  Une théorie axiomatique, ou simplement théorie, sur une signature $\Sigma$,
-  est une partie $\mathcal T\subseteq\Prop(\Sigma)$.
+  Une théorie axiomatique, ou simplement théorie, sur une signature $\Sign$,
+  est une partie $\varT\subseteq\Prop(\Sign)$. On note $\Theory(\Sign)$
+  l'ensemble des théories sur une signature $\Sign$.
 \end{definition}
 
 \begin{definition}[Conséquence logique, équivalence]
-  Soit un ensemble $\mathcal F \subseteq \Formula(\Sigma)$ et une formule
-  $F\in\Formula(\Sigma)$. On dit que $F$ est conséquence logique de
-  $\mathcal F$, ce que l'on écrit $\mathcal F \vDash F$, lorsque pour toute
-  structure $\mathcal M$, si $\mathcal M\models \mathcal F$ alors
-  $\mathcal M\models F$. Si deux formules $F$ et $G$ sont telles que
-  $F\vDash G$ et $G\vDash F$, alors $F$ et $G$ sont dites logiquement
-  équivalentes, ce que l'on note $F\equiv G$.
+  Soit un ensemble $\FormSet\subseteq \Formula(\Sign)$ et une formule
+  $\varFF\in\Formula(\Sign)$. On dit que $\varFF$ est conséquence logique de
+  $\FormSet$, ce que l'on écrit $\FormSet \vD \varFF$, lorsque pour toute
+  structure $\varMM$, si $\satMM \FormSet$ alors
+  $\satMM \varFF$. Si deux formules $\varFF$ et $\varFP$ sont telles que
+  $\varFF\vD \varFP$ et $\varFP\vD \varFF$,
+  alors $\varFF$ et $\varFP$ sont dites logiquement
+  équivalentes, ce que l'on note $\varFF\equiv\varFP$.
 \end{definition}
 
+\noindent
 On peut relier ces deux notions par celle de théorie saturée.
 
 \begin{definition}[Théorie saturée, clôture par conséquence]
-  Soit une théorie $\mathcal T$ sur une signature $\Sigma$. On dit que
-  $\mathcal T$ est saturée si pour toute formule $A\in\Formula(\Sigma)$,
-  si $\mathcal T\vDash A$ alors $A\in \mathcal T$.
+  Soit une théorie $\varT$ sur une signature $\Sign$. On dit que
+  $\varT$ est saturée si pour toute proposition $\varFF\in\Prop(\Sign)$,
+  si $\varT\vD \varFF$ alors $\varFF\in \varT$.
 
-  Pour une théorie $\mathcal T$, on définit sa clôture par conséquence, notée
-  $\vclose{\mathcal T}$, par
-  \[\vclose{\mathcal T} \defeq \{ A \in \Formula(\Sigma)
-  \mid \mathcal T \vDash A\}\]
+  Pour une théorie $\varT$, on définit sa clôture par conséquence, notée
+  $\vTclos$, par
+  \[\vTclos \defeq \compr{\varFF \in \Prop(\Sign)}{\varT \vD A}\]
 \end{definition}
 
 De plus, la conséquence logique permet directement de décrire une théorie
-\og fausse\fg{} : une telle théorie est une théorie dans laquelle la proposition
+\og fausse\fg: une telle théorie est une théorie dans laquelle la proposition
 fausse est considérée comme vraie. Au niveau des modèles, cela se traduit par le
 fait qu'il n'existe pas de modèle de la théorie, puisqu'un tel modèle
 associerait automatiquement à $\bot$ la valeur de vérité $0$.
 
 \begin{proposition}
-  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. Alors
-  $\mathcal T$ admet un modèle si et seulement si $\mathcal T \not\vDash \bot$.
+  Soit une signature $\Sign$ et une théorie $\varT$ sur $\Sign$. Alors
+  $\varT$ admet un modèle si et seulement si $\varT \nvD \bot$.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $\mathcal T$ admette un modèle $\mathcal M$. Alors par
-  définition de $\Val$, $\Val(\bot) = 0$ donc $\mathcal M\not\models \bot$. On
-  en déduit que $\mathcal T\nvDash\bot$.
+  Supposons que $\varT$ admette un modèle $\varMM$. Alors par
+  définition de $\Val$, $\Val(\bot) = 0$ donc $\varMM\not\satisf \bot$. On
+  en déduit que $\varT\nvD\bot$.
 
-  Dans le sens réciproque et par contraposée, supposons que $\mathcal T$ n'admet
-  pas de modèle. Alors pour tout $\mathcal M$ tel que
-  $\mathcal M\models \mathcal T$, $\mathcal M\models \bot$, par vacuité de la
-  condition : on en déduit donc que $\mathcal T \vDash \bot$, donc que si
-  $\mathcal T \nvDash\bot$, alors $\mathcal T$ a un modèle.
+  Dans le sens réciproque et par contraposée, supposons que $\varT$ n'admet
+  pas de modèle. Alors pour tout $\varMM$ tel que
+  $\varMM\satisf \varT$, $\varMM\satisf \bot$, par vacuité de la
+  condition~: on en déduit donc que $\varT \vD \bot$, donc que si
+  $\varT \nvD\bot$, alors $\varT$ a un modèle.
 \end{proof}
 
 \begin{definition}[Théorie cohérente, contradictoire]
-  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$. On dit
-  que $\mathcal T$ est cohérente quand elle admet un modèle, et qu'elle est
+  Soit une signature $\Sign$ et une théorie $\varT$ sur $\Sign$. On dit
+  que $\varT$ est cohérente quand elle admet un modèle, et qu'elle est
   contradictoire si elle n'admet pas de modèle. De façon équivalente,
-  $\mathcal T$ est cohérente si et seulement si elle n'est pas contradictoire,
-  et si et seulement si $\bot\notin\vclose{\mathcal T}$.
+  $\varT$ est cohérente si et seulement si elle n'est pas contradictoire,
+  et si et seulement si $\bot\notin\vTclos$.
 \end{definition}
 
 On voit donc qu'une théorie ne doit pas pouvoir prouver trop de choses.
@@ -681,13 +712,14 @@ Néanmoins, on peut vouloir une théorie la plus forte possible, qui reste malgr
 tout cohérente. Une telle théorie est une théorie complète~: elle est une
 théorie dans laquelle si un énoncé est faux, alors son contraire est vrai. Elle
 peut donc décider tout énoncé, et puisqu'elle est cohérente elle ne peut pas
-décider plus (sinon il serait possible de vérifier $A$ et $\lnot A$, ce qui est
-impossible).
+décider plus (sinon il serait possible de vérifier $\varFF$ et $\lnot \varFF$,
+ce qui est impossible).
 
 \begin{definition}[Théorie complète]
-  Une théorie $\mathcal T$ sur une signature $\Sigma$ est dite complète si pour
-  toute formule $A\in\Formula(\Sigma)$, soit $A\in \vclose{\mathcal T}$ soit
-  $\lnot A \in \vclose{\mathcal T}$, mais pas les deux.
+  Une théorie $\varT$ sur une signature $\Sign$ est dite complète si pour
+  toute proposition
+  $\varFF\in\Prop(\Sign)$, soit $\varFF\in \vTclos$ soit
+  $\lnot \varFF \in \vTclos$, mais pas les deux.
 \end{definition}
 
 On va voir plus tard que toute théorie cohérente, c'est-à-dire dont $\bot$ n'est
@@ -705,41 +737,41 @@ morphisme entre structures~: un morphisme commute avec les symboles de relation
 et de fonction.
 
 \begin{definition}[Morphisme de structures]
-  Soit une signature $\Sigma$ et deux structures $\mathcal M,\mathcal N$, un
-  morphisme $\varphi$ de $\mathcal M$ vers $\mathcal N$ est une application
-  \[\varphi : |\mathcal M|\longrightarrow |\mathcal N|\]
+  Soit une signature $\Sign$ et deux structures $\varMM,\varMN$, un
+  morphisme $\varMoM$ de $\varMM$ vers $\varMN$ est une application
+  \[\makeFunName{\varMoM}{\carMM}{\carMN}\]
   vérifiant les propositions suivantes~:
   \begin{itemize}
   \item pour tout symbole de fonction $f$ d'arité $n$ et tout tuple
-    $(m_1,\ldots,m_n)\in|\mathcal M|^n$~:
-    \[\varphi(f^{\mathcal M}(m_1,\ldots,m_n))
-    = f^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
-  \item pour tout symbole de relation $r$ d'arité $n$ et tout tuple
-    $(m_1,\ldots,m_n)\in|\mathcal M|^n$~:
-    \[r^{\mathcal M}(m_1,\ldots,m_n) \implies
-    r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n)) \]
+    $(m_1,\ldots,m_n)\in\carMM^n$~:
+    \[\varMoM(\toM{f}(m_1,\ldots,m_n))
+    = \toN{f}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
+  \item pour tout symbole de relation $R$ d'arité $n$ et tout tuple
+    $(m_1,\ldots,m_n)\in\carMM^n$~:
+    \[\toM{R}(m_1,\ldots,m_n) \implies
+    \toN{R}(\varMoM(m_1),\ldots,\varMoM(m_n)) \]
   \end{itemize}
 \end{definition}
 
 \begin{exercise}
-  Montrer que pour toute signature $\Sigma$ et toute structure $\mathcal M$ sur
-  $\Sigma$, la fonction $\id_{|\mathcal M|}$ induit un morphisme de $\mathcal M$
-  vers elle-même. On notera $\id_\mathcal M$ ce morphisme.
+  Montrer que pour toute signature $\Sign$ et toute structure $\varMM$ sur
+  $\Sign$, la fonction $\idP{\carMM}$ induit un morphisme de $\varMM$
+  vers elle-même. On notera $\idP{\varMM}$ ce morphisme.
 \end{exercise}
 
 \begin{exercise}
   Montre que l'opération $\circ$, de composition, s'étend en une opération sur
-  les morphismes de structures, c'est-à-dire que si $f$ et $g$ sont deux
-  morphismes tels que $\dom(g) = \im(f)$, alors $g\circ f$ est aussi un
-  morphisme.
+  les morphismes de structures, c'est-à-dire que si $\varMoM$ et $\varMoMB$
+  sont deux morphismes tels que $\dom(\varMoMB) = \im(\varMoM)$, alors
+  $\varMoMB\circ \varMoM$ est aussi un morphisme.
 \end{exercise}
 
 \begin{exercise}\label{pred.exo.morph.val}
   Montrer que pour tout morphisme de structure
-  $\varphi : \mathcal M \to \mathcal N$, terme $t$ sur la même signature et
-  environnement $\rho$ tel que $\VL(t) \subseteq \dom(\rho)$, on a l'égalité
+  $\varMoM : \varMM \to \varMN$, terme $t$ sur la même signature et
+  environnement $\env$ tel que $\VL(t) \subseteq \dom(\env)$, on a l'égalité
   suivante~:
-  \[t_\rho^\mathcal M = t_{\varphi\circ\rho}^\mathcal N\]
+  \[\varMoM(\toMMI{t}) = \toMIP{t}{\varMN}{\varMoM\circ \env}\]
 \end{exercise}
 
 Un renforcement de la notion de morphisme est celle de plongement~: un
@@ -749,27 +781,28 @@ des propositions atomiques peut s'étudier dans l'image uniquement en étudiant 
 modèle de départ.
 
 \begin{definition}[Plongement]
-  Un plongement d'une structure $\mathcal M$ vers une structure $\mathcal N$ est
-  un morphisme pour lequel la deuxième condition n'est plus une implication mais
-  une équivalence~:
-  \[\forall(m_1,\ldots,m_n)\in|\mathcal M|^n,r^{\mathcal M}(m_1,\ldots,m_n) \iff
-  r^{\mathcal N}(\varphi(m_1),\ldots,\varphi(m_n))\]
+  Un plongement d'une structure $\varMM$ vers une structure $\varMN$ est
+  un morphisme $\varMoM : \varMM \to \varMN$ pour lequel la deuxième condition
+  n'est plus une implication mais une équivalence~:
+  \[\forall(m_1,\ldots,m_n)\in\carMM^n,\toM{R}(m_1,\ldots,m_n) \iff
+  \toN{R}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
 \end{definition}
 
 \begin{remark}
-  Puisque nous avons toujours la relation $=$ dont l'interprétation est
-  l'égalité dans son sens naturel, on en déduit qu'un plongement est injectif.
+  Puisque nous avons toujours la relation $\mathord{=}$ dont
+  l'interprétation est l'égalité dans son sens naturel, on en déduit
+  qu'un plongement est injectif.
 \end{remark}
 
 Enfin, la notion d'isomorphisme est celle à laquelle on s'attend.
 
 \begin{definition}[Isomorphisme]
-  Un isomorphisme $\varphi : \mathcal M \cong \mathcal N$ est un morphisme de
-  $\mathcal M$ vers $\mathcal N$ tel qu'il existe un morphisme $\psi$ de
-  $\mathcal N$ vers $\mathcal M$ vérifiant
+  Un isomorphisme $\varMoM : \varMM \cong \varMN$ est un morphisme de
+  $\varMM$ vers $\varMN$ tel qu'il existe un morphisme $\varMoMB$ de
+  $\varMN$ vers $\varMM$ vérifiant
   \[\begin{cases}
-  \varphi\circ \psi = \id_{\mathcal N}\\
-  \psi\circ\varphi = \id_{\mathcal M}
+  \varMoM\circ \varMoMB = \id_{\varMN}\\
+  \varMoMB\circ\varMoM = \id_{\varMM}
   \end{cases}\]
 \end{definition}
 
@@ -779,72 +812,81 @@ près puisque toute formule qu'on voudrait énoncer reste stable en passant à
 travers un isomorphisme.
 
 \begin{proposition}
-  Si $\varphi : \mathcal M \cong \mathcal N$ alors pour toute formule close $A$,
-  $\mathcal M\models A$ si et seulement si $\mathcal N\models A$.
+  Si $\varMoM : \varMM \cong \varMN$ alors pour toute proposition $\varFF$,
+  $\satMM \varFF$ si et seulement si $\satMN\varFF$.
 \end{proposition}
 
 \begin{proof}
-  On montre par induction sur la structure de $A$ que pour tout environnement
-  $\rho : \Var\partialto |\mathcal M|$ tel que $\VL(A) \subseteq\dom(\rho)$,
+  On montre par induction sur la structure de $\varFF$ que pour tout
+  environnement
+  $\env : \Var\partialto \varMM$ tel que $\VL(\varFF) \subseteq\dom(\env)$,
   on a l'équivalence
-  \[\mathcal M,\rho\models A \iff \mathcal N,\varphi\circ \rho\models A\]
+  \[\satMI \varFF \iff \satMP{\varMN}{\varMoM\circ \env} \varFF\]
   \begin{itemize}
-  \item si $A$ est de la forme $r(t_1,\ldots,t_n)$ avec un symbole de relation
-    $r$, alors comme $\varphi$ est un morphisme on sait que si
-    $(t_{1,\rho}^\mathcal M,\ldots,t_{n,\rho}^\mathcal M)\in r^\mathcal M$, alors
-    $(t_{1,\varphi\circ \rho}^\mathcal N,\ldots,
-    t_{n,\varphi\circ\rho}^\mathcal N)\in r^{\mathcal N}$, comme on sait qu'on a
-    un morphisme réciproque $\psi : \mathcal N \to \mathcal M$, on peut
-    écrire $t_{i,\rho}^\mathcal M = t_{i,\psi\circ\varphi\circ\rho}^\mathcal M$, donc
-    l'argument précédent appliqué à $\psi$ permet de déduire que si
-    $\mathcal N,\varphi\circ \rho\models A$ alors $\mathcal M,\rho\models A$.
-  \item si $A$ est $\top$ ou $\bot$, le résultat est direct puisqu'indépendant
-    de la structure dans laquelle on l'évalue.
-  \item si $A$ est de la forme $\lnot B$, alors
-    \[\mathcal M, \rho\models \lnot B\iff \mathcal M, \rho\not\models B
-    \iff \mathcal N,\varphi\circ\rho\not\models B
-    \iff \mathcal N,\varphi\circ\rho\models \lnot B\]
-  \item si $A$ est de la forme $B\lor C$, alors
+  \item si $\varFF$ est de la forme
+    $R(t_1,\ldots,t_n)$ avec un symbole de relation
+    $R$, alors comme $\varMoM$ est un morphisme on sait que si
+    $(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})\in \toM{R}$, alors
+    $(\toMIP{(t_1)}{\varMN}{\varMoM\circ \env},\ldots,
+    \toMIP{(t_n)}{\varMN}{\varMoM\circ\env})\in \toN{R}$,
+    comme on sait qu'on a
+    un morphisme réciproque $\varMoMB : \varMN \to \varMM$, on peut
+    écrire
+    $\toMMI{(t_i)}= \toMIP{(t_i)}{\varMM}{\varMoMB\circ\varMoM\circ\env}$,
+    donc l'argument précédent appliqué à $\varMoMB$ permet de déduire que si
+    $\satMP{\varMN}{\varMoM\circ \env} \varFF$ alors $\satMI\varFF$.
+  \item si $\varFF$ est $\top$ ou $\bot$,
+    le résultat est direct puisqu'indépendant de la structure dans laquelle on
+    l'évalue.
+  \item si $\varFF$ est de la forme $\lnot \varFP$, alors
+    \[\satMI \lnot \varFP\iff \not\satMI\varFP
+    \iff \not\satMP{\varMN}{\varMoM\circ\env}\varFP
+    \iff \satMP{\varMN}{\varMoM\circ\env}\lnot \varFP\]
+  \item si $\varFF$ est de la forme $\varFP\lor \varFC$, alors
     \begin{align*}
-      \mathcal M, \rho \models B\lor C &\iff (\mathcal M,\rho\models B)\lor
-      (\mathcal M,\rho\models C) \\
-      &\iff (\mathcal N,\varphi\circ\rho\models B)\lor
-      (\mathcal N,\varphi\circ\rho\models C)\\
-      &\iff \mathcal N,\varphi\circ \rho \models B\lor C
+      \satMI \varFP\lor \varFC &\iff (\satMI\varFP)\lor
+      (\satMI\varFC) \\
+      &\iff (\satMP{\varMN}{\varMoM\circ\env}\varFP)\lor
+      (\satMP{\varMN}{\varMoM\circ\env} \varFC)\\
+      &\iff \satMP{\varMN}{\varMoM\circ\env}\varFP\lor\varFC
       \end{align*}
-  \item si $A$ est de la forme $B\land C$, alors
+  \item si $\varFF$ est de la forme $\varFP\land \varFC$, alors
     \begin{align*}
-      \mathcal M, \rho \models B\land C &\iff (\mathcal M,\rho\models B)\land
-      (\mathcal M,\rho\models C) \\
-      &\iff (\mathcal N,\varphi\circ\rho\models B)\land
-      (\mathcal N,\varphi\circ\rho\models C)\\
-      &\iff \mathcal N,\varphi\circ \rho \models B\land C
+      \satMI \varFP\land \varFC &\iff (\satMI \varFP)\land
+      (\satMI\varFC) \\
+      &\iff (\satMP{\varMN}{\varMoM\circ\env} \varFP)\land
+      (\satMP{\varMN}{\varMoM\circ\env} \varFC)\\
+      &\iff \satMP{\varMN}{\varMoM\circ\env} \varFP\land \varFC
       \end{align*}
-  \item si $A$ est de la forme $B\to C$, alors
+  \item si $\varFF$ est de la forme $\varFP\to \varFC$, alors
     \begin{align*}
-      \mathcal M,\rho\models B\to C &\iff
-      \mathcal M,\rho\models (\lnot B)\lor C\\
-      &\iff \mathcal N,\varphi\circ\rho\models (\lnot B) \lor C\\
-      &\iff \mathcal N,\varphi\circ\rho\models B \to C
+      \satMI \varFP\to \varFC &\iff
+      \satMI\models (\lnot \varFP)\lor \varFC\\
+      &\iff \satMP{\varMN}{\varMoM\circ\env} (\lnot \varFP) \lor \varFC\\
+      &\iff \satMP{\varMN}{\varMoM\circ\env} \varFP \to \varFC
     \end{align*}
-  \item si $A$ est de la forme $\forall x,B$, on montre le résultat par double
-    implication. Si pour tout
-    $m \in |\mathcal M|, \mathcal M,\rho[x\leftarrow m]\models B$, alors
-    pour tout $n \in |\mathcal N|$, par surjectivité de $\varphi$, on trouve
-    $m \in |\mathcal M|$ tel que $\varphi(m) = n$. On sait alors que
-    $\mathcal M,\rho[x\leftarrow m]\models B$ donc, par hypothèse d'induction,
-    que $\mathcal N,\varphi\circ(\rho[x\leftarrow m])\models B$, ce qui revient
-    à $\mathcal N,(\varphi\circ\rho)[x\leftarrow \varphi(m)]\models B$, donc
-    $\mathcal N,(\varphi\circ\rho)[x\leftarrow n]\models B$, d'où le résultat.
-    Dans le sens réciproque, si pour tout
-    $n\in|\mathcal N|, \mathcal N,(\varphi\circ\rho)[x\leftarrow n]\models B$,
-    on peut faire le même raisonnement en écrivant tout $m \in |\mathcal N|$
-    comme $\varphi(\varphi^{-1}(m))$ et utiliser l'hypothse d'induction pour en
-    déduire que $\mathcal M,\rho\models \forall x,B$.
-  \item le cas où $A$ est de la forme $\exists x, B$ est analogue au précédent.
+  \item si $\varFF$ est de la forme $\forall x,\varFP$,
+    on montre le résultat par double implication.
+    \begin{itemize}
+    \item[\fbox{$\Rightarrow$}]Si pour tout
+      $m \in \carMM, \satMP{\varMM}{\env[x\mapsto m]} \varFP$, alors
+      pour tout $n \in \carMN$, par surjectivité de $\varMoM$, on trouve
+      $m \in \carMM$ tel que $\varMoM(m) = n$. On sait alors que
+      $\satMP{\varMM}{\env[x\mapsto m]} \varFP$ donc, par hypothèse d'induction,
+      que $\satMP{\varMN}{\varMoM\circ(\env[x\leftarrow m])} \varFP$,
+      ce qui revient
+      à $\satMP{\varMN}{(\varMoM\circ\env)[x\mapsto \varMoM(m)]} \varFP$, donc
+      $\satMP{\varMN}{(\varMoM\circ\env)[x\leftarrow n]} \varFP$,
+      d'où le résultat.
+    \item[\fbox{$\Leftarrow$}] Dans le sens réciproque, si pour tout
+      $n\in\carMN, \satMP{\varMN}{(\varMoM\circ\env)[x\leftarrow n]}\varFP$,
+      on peut faire le même raisonnement en écrivant tout $m \in \carMM$
+      comme $\varMoM(\varMoM^{-1}(m))$ et utiliser l'hypothse d'induction pour
+      en déduire que $\satMI \forall x,\varFP$.
+    \end{itemize}
+  \item le cas où $\varFF$ est de la forme $\exists x, \varFP$ est analogue au
+    précédent. \qedhere
   \end{itemize}
-  D'où le résultat par induction. On a le résultat dans le cas particulier d'une
-  formule close.
 \end{proof}
 
 On a montré qu'un isomorphisme était un morphisme bijectif~: il est faux en
@@ -861,33 +903,33 @@ comme le montre l'exercice suivant.
   pas un isomorphisme.
 \end{exercise}
 
+\noindent
 Cependant, pour un plongement, ce résultat devient valide.
 
 \begin{proposition}
-  Un morphisme $\varphi : \mathcal M \to \mathcal N$ est un isomorphisme si et
+  Un morphisme $\varMoM : \varMM \to \varMN$ est un isomorphisme si et
   seulement si c'est un plongement surjectif.
 \end{proposition}
 
 \begin{proof}
-  Si $\varphi$ est un isomorphisme, alors c'est en particulier une bijection,
-  le rendant surjectif. De plus, comme $\varphi$ préserve toutes les
+  Si $\varMoM$ est un isomorphisme, alors c'est en particulier une bijection,
+  le rendant surjectif. De plus, comme $\varMoM$ préserve toutes les
   propositions dans les deux sens, ce morphisme préserve en particulier les
   propositions atomiques, c'est donc un plongement.
 
-  Si $\varphi$ est un plongement surjectif, alors c'est une bijection~: on
-  peut donc considérer la réciproque $\psi$ de $\varphi$. Il nous reste à
-  prouver que $\psi$ est bien un morphisme~: la préservation des termes est
+  Si $\varMoM$ est un plongement surjectif, alors c'est une bijection~: on
+  peut donc considérer la réciproque $\varMoMB$ de $\varMoM$. Il nous reste à
+  prouver que $\varMoMB$ est bien un morphisme~: la préservation des termes est
   automatique, et il nous faut encore montrer que pour tout symbole de relation
-  $r$ d'arité $p$ et $n_1,\ldots,n_p\in|\mathcal N|$~:
-  \[r^\mathcal N(n_1,\ldots,n_p) \implies r^\mathcal M
-  (\psi(n_1),\ldots,\psi(n_p))\]
+  $R$ d'arité $p$ et $n_1,\ldots,n_p\in\varMN$~:
+  \[\toN{R}(n_1,\ldots,n_p)\implies\toM{R}(\varMoMB(n_1),\ldots,\varMoMB(n_p))\]
   mais chaque $n_1,\ldots,n_p$ peut se réécrire
-  $\varphi(m_1),\ldots,\varphi(m_p)$, donnant
-  \[r^\mathcal N(\varphi(m_1),\ldots,\varphi(m_p)) \implies r^\mathcal M
-  (\psi(\varphi(m_1)),\ldots,\psi(\varphi(m_p)))\]
-  Or on sait que $\psi\circ \varphi = \id$, donc la condition revient à la
-  réciproque de celle disant que $\varphi$ est un morphisme~: c'est justement
-  ce que nous donne le fait que $\varphi$ est un plongement. Donc $\varphi$ est
+  $\varMoM(m_1),\ldots,\varMoM(m_p)$, donnant
+  \[\toN{R}(\varMoM(m_1),\ldots,\varMoM(m_p)) \implies \toM{R}
+  (\varMoMB(\varMoM(m_1)),\ldots,\varMoMB(\varMoM(m_p)))\]
+  Or on sait que $\varMoMB\circ \varMoM = \id$, donc la condition revient à la
+  réciproque de celle disant que $\varMoM$ est un morphisme~: c'est justement
+  ce que nous donne le fait que $\varMoM$ est un plongement. Donc $\varMoM$ est
   un isomorphisme.
 \end{proof}
 
@@ -897,20 +939,21 @@ Pour conclure cette partie introductive à propos des modèles, nous allons
 définir la notion d'enrichissement.
 
 \begin{definition}[Enrichissement]
-  Soit deux signatures $\Sigma\subseteq\Sigma'$, c'est-à-dire telles que tout
-  symbole de $\Sigma$ est un symbole de $\Sigma'$ de même arité. Soit une
-  structure $\mathcal M'$ sur $\Sigma'$, alors on dit que $\mathcal M'$ est un
-  enrichissement d'une structure $\mathcal M$ sur $\Sigma$ si~:
+  Soient deux signatures $\Sign\subseteq\Sign'$, c'est-à-dire telles que tout
+  symbole de $\Sign$ est un symbole de $\Sign'$ de même arité. Soit une
+  structure $\varMM'$ sur $\Sign'$, alors on dit que $\varMM'$ est un
+  enrichissement d'une structure $\varMM$ sur $\Sign$ si~:
   \begin{itemize}
-  \item $|\mathcal M| = |\mathcal M'|$
-  \item pour tout symbole de fonction $f\in \Sigma$,
-    $f^{\mathcal M} = f^{\mathcal M'}$
-  \item pour tout symbole de fonction $r\in \Sigma$,
-    $r^{\mathcal M} = r^{\mathcal M'}$
+  \item $\carMM = \carM{\varMM'}$~;
+  \item pour tout symbole de fonction $f\in \SigFun_{\Sign}$,
+    $\toM{f} = \toMP{f}{\varMM'}$~;
+  \item pour tout symbole de fonction $R\in \SigRel_{\Sign}$,
+    $\toM{R} = \toMP{R}{\varMM'}$.
   \end{itemize}
 
-  On définit l'appauvrissement de $\mathcal M'$ sur $\Sigma$ comme l'unique
-  structure sur $\Sigma$ dont $\mathcal M'$ est l'enrichissement.
+  \noindent
+  On définit l'appauvrissement de $\varMM'$ sur $\Sign$ comme l'unique
+  structure sur $\Sign$ dont $\varMM'$ est l'enrichissement.
 \end{definition}
 
 \begin{remark}
@@ -925,50 +968,54 @@ additif~: nous allons généraliser ce résultat pour une structure sur un
 enrichissement.
 
 \begin{proposition}
-  Soit deux signatures $\Sigma\subseteq\Sigma'$, $\mathcal M'$ une structure
-  sur $\Sigma'$ et $\mathcal M$ son appauvrissement sur $\Sigma$, alors pour
-  toute formule $A\in\Formula(\Sigma)$ et tout environnement $\rho$, on a
-  \[\mathcal M,\rho\models A \iff \mathcal M',\rho\models A\]
+  Soit deux signatures $\Sign\subseteq\Sign'$, $\varMM'$ une structure
+  sur $\Sign'$ et $\varMM$ son appauvrissement sur $\Sign$, alors pour
+  toute formule $\varFF\in\Formula(\Sign)$ et tout environnement $\env$, on a
+  \[\satMI \varFF \iff \satMP{\varMM'}{\env} \varFF\]
 \end{proposition}
 
 \begin{proof}
-  On montre d'abord que pour tout terme $t\in\Term(\Sigma)$,
-  $t_\rho^\mathcal M = t_\rho^{\mathcal M'}$. Cela se fait par induction~: pour une
-  variable $x$, on a $\rho(x) = \rho(x)$ et si l'on suppose que pour tout
-  $i\in\{1,\ldots,n\}$ on a $(t_i)_\rho^\mathcal M = (t_i)_\rho^{\mathcal M'}$ alors
-  \[(f(t_1,\ldots,t_n))_\rho^\mathcal M = (f(t_1,\ldots,t_n))_\rho^{\mathcal M'}\]
+  On montre d'abord que pour tout terme $t\in\Term(\Sign)$,
+  $\toMMI{t} = \toMIP{t}{\varMM'}{\env}$. Cela se fait par induction~: pour une
+  variable $x$, on a $\env(x) = \env(x)$ et si l'on suppose que pour tout
+  $i\in\intervIntB{1}{n}$ on a $\toMMI{(t_i)} = \toMIP{(t_i)}{\varMM'}{\env}$
+  alors
+  \[\toMMI{(f(t_1,\ldots,t_n))} = \toMIP{(f(t_1,\ldots,t_n))}{\varMM'}{\env}\]
   d'où le résultat pour tout terme $t$.
-  
-  On procède maintenant par induction sur la structure de $A$~:
+
+  \noindent
+  On procède maintenant par induction sur la structure de $\varFF$~:
   \begin{itemize}
-  \item si $A = r(t_1,\ldots,t_n)$ alors
+  \item si $\varFF = R(t_1,\ldots,t_n)$ alors
     \begin{align*}
-      \Val_\rho^\mathcal M(r(t_1,\ldots,t_n)) &= r^\mathcal M((t_1)_\rho^\mathcal M,
-      \ldots,(t_n)_\rho^\mathcal M) \\
-      &= r^{\mathcal M'}((t_1)_\rho^{\mathcal M'},\ldots,(t_n)_{\rho}^{\mathcal M'})
+      \ValE^{\varMM}(R(t_1,\ldots,t_n)) &= \toM{R}(\toMMI{(t_1)},
+      \ldots,\toMMI{(t_n)}) \\
+      &= \toMP{R}{\varMM'}(\toMIP{(t_1)}{\varMM'}{\env},\ldots,
+      \toMIP{(t_n)}{\varMM'}{\env})
     \end{align*}
-  \item si $A$ est un connecteur logique, alors le résultat est direct.
-  \item si $A = \forall x, B$ ou $A = \exists x, B$ alors la quantification se
-    fait sur le même ensemble pour $\mathcal M$ et $\mathcal M'$ donc le
+  \item si $\varFF$ est un connecteur logique, alors le résultat est direct.
+  \item si $\varFF = \forall x, \varFP$ ou $\varFF = \exists x, \varFP$
+    alors la quantification se
+    fait sur le même ensemble pour $\varMM$ et $\varMM'$ donc le
     résultat est le même dans les deux cas (en utilisant l'hypothèse
     d'induction).
   \end{itemize}
-  Donc par induction $\Val_\rho^\mathcal M(A) = \Val_\rho^{\mathcal M'}(A)$,
+  Donc par induction $\ValE^{\varMM}(\varFF) = \ValE^{\varMM'}(\varFF)$,
   ce qui est le résultat attendu.
 \end{proof}
 
 \begin{corollary}
-  Soit deux signatures $\Sigma\subseteq\Sigma'$, une structure $\mathcal M'$
-  et une théorie $\mathcal T$ sur $\Sigma$. Si $\mathcal M'\models \mathcal T$,
-  alors en prenant l'appauvrissement $\mathcal M$ de $\mathcal M'$ sur $\Sigma$,
-  $\mathcal M\models \mathcal T$.
+  Soit deux signatures $\Sign\subseteq\Sign'$, une structure $\varMM'$
+  et une théorie $\varT$ sur $\Sign$. Si $\varMM'\satisf \varT$,
+  alors en prenant l'appauvrissement $\varMM$ de $\varMM'$ sur $\Sign$,
+  $\varMM\satisf \varT$.
 \end{corollary}
 
 La notion d'enrichissement est fondamentale en théorie des modèles~: elle
 permet d'avoir un meilleur contrôle sur les modèles qu'on manipule en y ajoutant
 des informations par enrichissement, pour ensuite les appauvrir de nouveau vers
 le langage d'origine. C'est par exemple l'idée menant à la méthode des
-diagrammes, développés dans la partie dédiée à la théorie des modèles.
+diagrammes, développée dans la partie dédiée à la théorie des modèles.
 
 \section[Syntaxe de preuves]{Système de démonstration du calcul des prédicats}
 
@@ -984,15 +1031,15 @@ précédent, et il pourrait être pertinent de continuer à l'utiliser, mais le
 choix fait ici est d'introduire un nouveau formalisme~: celui de la déduction
 naturelle. Ce choix se justifie par deux raisons principales~:
 \begin{itemize}
-\item Tout d'abord, il permet d'aborder d'autres systèmes de preuves, puisque
+\item Il permet d'aborder d'autres systèmes de preuves, puisque
   nous avons déjà exploré le calcul des séquents. Cet argument est en même temps
   un contre-argument, puisque cela signifie aussi que l'on peut trouver là une
   occasion de réexplorer le calcul des séquents pour mieux le comprendre, c'est
   donc seulement une raison mineure qui nous pousse à le choisir. De plus, le
   formalisme des systèmes à la Hilbert ne sera pas exploré du tout dans cet
   ouvrage, car s'il est très simple à définir, il possède peu de propriétés
-  intéressantes à explorer contrairement aux deux autres formalismes et n'a rien
-  de naturel à manipuler.
+  intéressantes à explorer contrairement aux deux autres formalismes et se
+  trouve être laborieux à utiliser.
 \item La deuxième raison, plus importante, est que la déduction naturelle est en
   quelque sorte le raisonnement le plus primitif d'un mathématicien. Chaque
   règle exprime une règle tout à fait évidente à l'intuition, particulièrement à
@@ -1005,7 +1052,7 @@ naturelle. Ce choix se justifie par deux raisons principales~:
 \end{itemize}
 
 Il y a de nombreux avantages à définir une syntaxe pour nos preuves en calcul
-des prédicats. Le premier est évident~: avoir, comme dans le chapitre précédent,
+des prédicats. Le premier est évident au regard du précédent chapitre~: avoir
 un système efficace pour prouver des relations entre formules, ne passant pas
 par une interprétation et une quantification sur toutes les valuations (et ici,
 en plus~: tous les modèles). Le deuxième, moins évident, sera plus lourd de
@@ -1017,178 +1064,218 @@ effectivement important, philosophiquement parlant) il mène aussi à une
 conséquence importante~: le théorème de compacité. Ce théorème est un analogue
 au \cref{thm.compac.prop} dans le cas du calcul des prédicats. Simplement, au
 lieu de quantifier sur les valuations, nous quantifions sur les modèles, et
-puisque nous nous occupons en priorité des formules closes cela nous donne un
+puisque nous nous occupons en priorité des formules closes, cela nous donne un
 énoncé parlant uniquement de modèles.
 
 \subsection{Déduction naturelle}
 
-Commençons par définir la relation $\vdash$ de conséquence syntaxique. Pour
-cela, comme pour le calcul des séquents, on va définir un système travaillant
-sur des listes (par nature finies) plutôt que sur des ensembles. Une différence
-importante~: nous n'allons pas relier deux listes, mais une liste avec une
-proposition. Ainsi un séquent $\Gamma\vdash A$ signifie directement que, sous
-les hypothèses listées dans $\Gamma$, la proposition $A$ est vraie.
+Commençons par définir la relation $\vdP$ de conséquence syntaxique.
+Contrairement au chapitre précédent, ce système ne travaille pas avec deux
+listes de formules. A la place, on considère une paire $(\varCG,\varFF)$ où
+$\varCG$ est un contexte logique, et $\varFF$. Les séquents de ce système sont
+donc à lire comme \og sous les hypothèses sans $\varCG$, la formule $\varFF$
+est vraie\fg. Définissons d'abord la notion de contexte logique.
+
+\begin{definition}[Contexte logique]
+  Soit $\Sign$ une signature. On appelle contexte logique sur $\Sign$, qu'on
+  note $\Ctx(\Sign)$, l'ensemble
+  \[\Ctx(\Sign) \defeq \List(\Formula(\Sign))\]
+  On dit qu'une formule $\varFF$ appartient à un contexte $\varCG\in\Ctx(\Sign)$
+  si le contexte est de la forme $\varCG = \varCD, \varFF, \varCT$
+  pour des contextes $\varCD,\varCT$.
+\end{definition}
+
+\begin{remark}
+  La notion de contexte peut être altérée suivant l'objectif poursuivi. Par
+  exemple, on pourrait considérer des contextes donnés par des ensembles
+  finis de formules, et l'appartenance induite est l'appartenance ensembliste.
+\end{remark}
 
 \begin{definition}[Déduction naturelle]\label{def.deduc.nat1}
-  Soit une signature $\Sigma$. On définit la relation
-  $\vdash\subseteq \List(\Formula(\Sigma))\times \Formula(\Sigma)$ par induction
-  par les règles suivantes~:
-  \begin{center}
-    \AxiomC{$A \in \Gamma$}
-    \RightLabel{Ax}
-    \UnaryInfC{$\Gamma\vdash A$}
-    \DisplayProof
-    \qquad
-    \AxiomC{}
-    \RightLabel{$\top$}
-    \UnaryInfC{$\Gamma\vdash \top$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma,\lnot A\vdash \bot$}
-    \RightLabel{$\bot_\mathrm c$}
-    \UnaryInfC{$\Gamma\vdash A$}
-    \DisplayProof
+  Soit une signature $\Sign$. On définit la relation
+  $\mathord{\vdP}\subseteq \Ctx(\Sign)\times \Formula(\Sign)$ par induction
+  par les règles de la \cref{tab.deduc.nat}.
 
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,A\vdash \bot$}
-    \RightLabel{$\lnot_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdash \lnot A$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \lnot A$}
-    \AxiomC{$\Gamma\vdash A$}
-    \RightLabel{$\lnot_\mathrm e$}
-    \BinaryInfC{$\Gamma\vdash \bot$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash A$}
-    \RightLabel{$\lor_\mathrm i^\mathrm g$}
-    \UnaryInfC{$\Gamma\vdash A\lor B$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma\vdash B$}
-    \RightLabel{$\lor_\mathrm i^\mathrm d$}
-    \UnaryInfC{$\Gamma\vdash A\lor B$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash A\lor B$}
-    \AxiomC{$\Gamma,A\vdash C$}
-    \AxiomC{$\Gamma,B\vdash C$}
-    \RightLabel{$\lor_\mathrm e$}
-    \TrinaryInfC{$\Gamma\vdash C$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash A$}
-    \AxiomC{$\Gamma\vdash B$}
-    \RightLabel{$\land_\mathrm i$}
-    \BinaryInfC{$\Gamma\vdash A\land B$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash A\land B$}
-    \RightLabel{$\land_\mathrm e^\mathrm g$}
-    \UnaryInfC{$\Gamma\vdash A$}
-    \DisplayProof
-    \quad
-    \AxiomC{$\Gamma\vdash A\land B$}
-    \RightLabel{$\land_\mathrm e^\mathrm d$}
-    \UnaryInfC{$\Gamma\vdash B$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma,A\vdash B$}
-    \RightLabel{$\to_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdash A\to B$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash A\to B$}
-    \AxiomC{$\Gamma\vdash A$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\Gamma\vdash B$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash A[v/x]$}
-    \RightLabel{$\forall_\mathrm i^\dagger$}
-    \UnaryInfC{$\Gamma\vdash \forall x, A$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \forall x, A$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\Gamma\vdash A[t/x]$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{$\Gamma\vdash A[t/x]$}
-    \RightLabel{$\exists_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdash \exists x, A$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash \exists x, A$}
-    \AxiomC{$\Gamma, A[v/x]\vdash B$}
-    \RightLabel{$\exists_\mathrm e^\dagger$}
-    \BinaryInfC{$\Gamma\vdash B$}
-    \DisplayProof
-
-    \vspace{0.5cm}
-    \AxiomC{}
-    \RightLabel{$=_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdash t = t$}
-    \DisplayProof
-    \qquad
-    \AxiomC{$\Gamma\vdash A[t/x]$}
-    \AxiomC{$\Gamma\vdash t = u$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$\Gamma\vdash A[u/x]$}
-    \DisplayProof
-  \end{center}
-  Où $x,v\in \Var$ et où $t,u\in \Term(\Sigma)$.
-  
-  Les règles avec $^\dagger$ signifient que
-  $v\notin\VL(\Gamma)\cup\VL(A)\cup\VL(B)$.
-
+  \noindent
   De plus, on définit la relation
-  $\vdash\subseteq\powerset(\Formula(\Sigma))\times\Formula(\Sigma)$ par
-  $\mathcal F\vdash A$ si et seulement s'il existe $\Gamma\in\List(\mathcal F)$
-  tel que $\Gamma\vdash A$.
+  $\mathord{\vdP}\subseteq\powerset(\Formula(\Sign))\times\Formula(\Sign)$ par
+  \[\FormSet \vdP \varFF \defeq
+  \exists \varCG \in \List(\FormSet), \varCG\vdP\varFF\]
 \end{definition}
+
+\begin{table}[t]
+  \centering
+  \begin{tabular}{cc}
+    \AxiomC{$\varFF \in \varCG$}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varCG\vdP \varFF$}
+    \DisplayProof
+    &
+    \AxiomC{}
+    \RightLabel{$\RtopI$}
+    \UnaryInfC{$\varCG\vdP \top$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\varCG,\lnot \varFF\vdP \bot$}
+    \RightLabel{$\RbotC$}
+    \UnaryInfC{$\varCG\vdP \varFF$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG,\varFF\vdP \bot$}
+    \RightLabel{$\RnotI$}
+    \UnaryInfC{$\varCG\vdP \lnot \varFF$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \lnot \varFF$}
+    \AxiomC{$\varCG\vdP \varFF$}
+    \RightLabel{$\RnotE$}
+    \BinaryInfC{$\varCG\vdP \bot$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG\vdP \varFF$}
+    \RightLabel{$\RorIG$}
+    \UnaryInfC{$\varCG\vdP \varFF\lor \varFP$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\varCG\vdP \varFP$}
+    \RightLabel{$\RorID$}
+    \UnaryInfC{$\varCG\vdP \varFF\lor \varFP$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF\lor \varFP$}
+    \AxiomC{$\varCG,\varFF\vdP \varFC$}
+    \AxiomC{$\varCG,\varFP\vdP \varFC$}
+    \RightLabel{$\RorE$}
+    \TrinaryInfC{$\varCG\vdP \varFC$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG\vdP \varFF$}
+    \AxiomC{$\varCG\vdP \varFP$}
+    \RightLabel{$\RandI$}
+    \BinaryInfC{$\varCG\vdP \varFF\land \varFP$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF\land \varFP$}
+    \RightLabel{$\RandEG$}
+    \UnaryInfC{$\varCG\vdP \varFF$}
+    \DisplayProof
+    \quad
+    \AxiomC{$\varCG\vdP \varFF\land \varFP$}
+    \RightLabel{$\RandED$}
+    \UnaryInfC{$\varCG\vdP \varFP$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG,\varFF\vdP \varFP$}
+    \RightLabel{$\RtoI$}
+    \UnaryInfC{$\varCG\vdP \varFF\to \varFP$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF\to \varFP$}
+    \AxiomC{$\varCG\vdP \varFF$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varCG\vdP \varFP$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG\vdP \varFF[v/x]$}
+    \RightLabel{$\RforaI^\dagger$}
+    \UnaryInfC{$\varCG\vdP \forall x, \varFF$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \forall x, \varFF$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varCG\vdP \varFF[t/x]$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\varCG\vdP \varFF[t/x]$}
+    \RightLabel{$\RexI$}
+    \UnaryInfC{$\varCG\vdP \exists x, \varFF$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \exists x, \varFF$}
+    \AxiomC{$\varCG, \varFF[v/x]\vdP \varFP$}
+    \RightLabel{$\RexE^\dagger$}
+    \BinaryInfC{$\varCG\vdP \varFP$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{}
+    \RightLabel{$\ReqI$}
+    \UnaryInfC{$\varCG\vdP t = t$}
+    \DisplayProof
+    &
+    \AxiomC{$\varCG\vdP \varFF[t/x]$}
+    \AxiomC{$\varCG\vdP t = u$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$\varCG\vdP \varFF[u/x]$}
+    \DisplayProof
+  \end{tabular}
+
+  \noindent
+  \begin{flushleft}
+    Les règles marquées de $^\dagger$ exigent que $v \notin \VL(\varCG)$ et
+    $v \notin\VL(\varFP)$ (pour $\RexE$).
+  \end{flushleft}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Règles de la déduction naturelle du calcul des prédicats du premier
+    ordre}
+  \label{tab.deduc.nat}
+\end{table}
 
 \begin{exercise}[Sur la négation]
   Montrer que l'on peut prouver les deux séquents suivants~:
-  \[\vdash \lnot A \to (A \to \bot) \qquad \vdash (A \to \bot) \to \lnot A\]
+  \[\vdash \lnot \varFF \to (\varFF \to \bot) \qquad
+  \vdash (\varFF \to \bot) \to \lnot \varFF\]
 
-  Montrer de plus que $\lnot A \vDash A \to \bot$ et que
-  $A\to \bot\vDash \lnot A$.
+  Montrer de plus que $\lnot \varFF \vD \varFF \to \bot$ et que
+  $\varFF\to \bot\vD \lnot \varFF$.
 \end{exercise}
 
 On peut donc, sans perdre d'expressivité, redéfinir $\lnot$ comme l'opération
-$A \mapsto A \to \bot$. Cela nous permet alors de réduire le nombre de règles
-dans notre système.
+$\varFF \mapsto \varFF \to \bot$.
+Cela nous permet alors de réduire le nombre de règles dans notre système.
 
 \begin{exercise}[Sur l'implication]
   Montrer que l'équivalence suivante est prouvable~:
-  \[A \to B \dashv\vdash \lnot A \lor B\]
-  où $A \dashv\vdash B$ signifie que $A\vdash B$ et $B\vdash A$.
+  \[\varFF \to \varFP \dvvd \lnot \varFF \lor \varFP\]
+  où $\varFF \dvvd \varFP$ signifie que $\varFF\vdP \varFP$ et
+  $\varFP\vdP \varFF$.
 \end{exercise}
 
 \begin{exercise}[De Morgan]
   Montrer que les lois de De Morgan sont dérivables~:
   \begin{itemize}
-  \item $\lnot (A \lor B) \dashv\vdash \lnot A \land \lnot B$
-  \item $\lnot (A \land B) \dashv\vdash \lnot A \lor \lnot B$
-  \item $\lnot (\exists x, A) \dashv\vdash \forall x, \lnot A$
-  \item $\lnot (\forall x, A) \dashv\vdash \exists x, \lnot A$
-  \item $\lnot\lnot A \dashv\vdash A$
-  \item $\lnot (A\to B) \dashv\vdash A \land \lnot B$
+    \begin{minipage}{0.5\textwidth}
+    \item $\lnot (\varFF \lor \varFF) \dvvd \lnot \varFF \land \lnot \varFP$
+    \item $\lnot (\varFF \land \varFP) \dvvd \lnot \varFF \lor \lnot \varFP$
+    \item $\lnot (\exists x, \varFF) \dvvd \forall x, \lnot \varFF$
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+    \item $\lnot (\forall x, \varFF) \dvvd \exists x, \lnot \varFF$
+    \item $\lnot\lnot \varFF \dvvd \varFF$
+    \item $\lnot (\varFF\to \varFP) \dvvd \varFF \land \lnot \varFP$
+    \end{minipage}
   \end{itemize}
 \end{exercise}
 
 \begin{exercise}[Tiers exclu et non contradiction]
   Montrer les deux équivalences suivantes~:
   \begin{itemize}
-  \item $A \lor \lnot A \dashv\vdash \top$
-  \item $A \land \lnot A \dashv\vdash \bot$
+    \begin{minipage}{0.5\textwidth}
+    \item $\varFF \lor \lnot \varFF \dvvd \top$
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+    \item $\varFF \land \lnot \varFF \dvvd \bot$
+    \end{minipage}
   \end{itemize}
 \end{exercise}
 
@@ -1196,7 +1283,7 @@ dans notre système.
   A partir des exercices précédents, on peut être tenté de réduire l'ensemble
   des formules et des règles à un fragment tel que les propositions atomiques,
   $\lnot$, $\lor$ et $\exists$. En effet, toute formule est équivalent à une
-  formule écrite avec ce fragment : on peut donc imaginer que toute autre
+  formule écrite avec ce fragment~: on peut donc imaginer que toute autre
   formule est en fait une simple écriture plus lisible de celles constituées
   uniquement du fragment restreint.
 
@@ -1206,7 +1293,7 @@ dans notre système.
   l'on peut se ramener en utilisant certaines règles de l'un à l'autre, il
   faudrait travailler à montrer en plus que les règles à propos de $A\land B$
   peuvent se dériver des règles de $\lnot$ et $\lor$ sur
-  $\lnot (\lnot A \lor \lnot B)$. Mais cela motive aussi un déroulement plus
+  $\lnot (\lnot A \lor \lnot B)$. Cela motive aussi un déroulement plus
   lent des preuves par induction et des différents cas, qui s'ils sont
   laborieux peuvent pour autant être instructifs pour une première lecture.
 
@@ -1230,25 +1317,26 @@ dans notre système.
 \end{remark}
 
 \paragraph{A propos de la vacuité}
-Notre formalisme a un problème essentiel : on peut prouver la proposition
-$\forall x, A \implies \exists x, A$, qui est fausse dans le modèle vide. Deux
-façons permettent de régler cet écart entre la syntaxe et la sémantique :
-changer la syntaxe, ou changer la sémantique. Dans notre cas, nous changeons
-alors la sémantique en considérant que toute structure (et donc tout modèle)
-est non vide. Cette restriction n'est pas très limitante, puisque le modèle vide
-est inintéressant en général. Cependant, celle-ci parait particulièrement
-artificielle. Pour contrer cela, on peut à la place considérer des séquents
-enrichis de la forme $\Gamma\mid \Theta \vdash \varphi$ où $\Gamma$ va être un
-contexte de variables, $\Theta$ un contexte logique et $\varphi$ la conclusion.
+Notre formalisme a un problème essentiel~: on peut prouver la proposition
+$\forall x, \varFF \implies \exists x, \varFF$, qui est fausse dans le modèle
+vide. Deux façons permettent de régler cet écart entre la syntaxe et la
+sémantique~: changer la syntaxe, ou changer la sémantique. Dans notre cas, nous
+changeons alors la sémantique en considérant que toute structure (et donc tout
+modèle) est non vide. Cette restriction n'est pas très limitante, puisque le
+modèle vide est inintéressant en général. Cependant, celle-ci parait
+particulièrement artificielle. Pour contrer cela, on peut à la place considérer
+des séquents enrichis de la forme $\varCG\mid \varCX \vdP \varFF$ où
+$\varCG$ va être un
+contexte de variables, $\varCX$ un contexte logique et $\varFF$ la conclusion.
 Dans ce formalisme, les règles avec $\dagger$ ont, plutôt qu'une restriction,
 une action sur le contexte des variables, avec par exemple
 \begin{prooftree}
-  \AxiomC{$\Gamma, v\mid \Theta\vdash \varphi[v/x]$}
-  \RightLabel{$\forall_\mathrm i$}
-  \UnaryInfC{$\Gamma\mid \Theta\vdash \forall x, \varphi$}
+  \AxiomC{$\varCG, x\mid \varCX\vdP \varFF(x)$}
+  \RightLabel{$\RforaI$}
+  \UnaryInfC{$\varCG\mid \varCX\vdP \forall x, \varFF(x)$}
 \end{prooftree}
-où $\Gamma\mid\Theta\vdash \forall x, \varphi$ doit être une proposition bien
-typée, imposant ansi que $v\notin\VL(\Theta)\cup\VL(\varphi)$. On peut par
+où $\varCG\mid\varCX\vdash \forall x, \varFF(x)$ doit être une proposition bien
+typée, imposant ansi que $v\notin\VL(\varCX)$. On peut par
 exemple citer \cite{JacobsCLTT} pour trouver un traitement de la syntaxe qui
 prend en compte les variables introduites.
 
@@ -1261,88 +1349,92 @@ formalisme gagne en utilité. Dans notre cas, il parait trop lourd de devoir
 gérer les variables pour simplement pouvoir inclure le cas du modèle vide,
 c'est pourquoi nous préférons simplement modifier notre sémantique.
 
-Plutôt que de prouver directement des résultats, nous allons nous attarder sur
+Avant de prouver des résultats significatifs, nous allons nous attarder sur
 le sens de chaque règle, pour montrer en quoi elles sont intuitives (et donc
 robustes au niveau de l'évidence qu'elles énoncent) et permettent de
 retranscrire n'importe quelle preuve (en particulier, toute preuve en langage
 naturel est virtuellement équivalente à un arbre de preuve en déduction
 naturelle).
 \begin{itemize}
-\item La règle Ax est surement la plus évidente : si $A$ est une hypothèse,
-  alors on peut en déduire $A$.
-\item La règle $\top$ dit simplement que $\top$ est toujours prouvable.
-\item La règle $\bot_\mathrm c$ dit que pour prouver $A$, on peut supposer
-  $\lnot A$ est aboutir à une contradiction : c'est le raisonnement par
-  l'absurde, d'où l'indice \og c\fg{} exprimant que cette règle est propre à la
+\item La règle $\Rax$ est surement la plus évidente~: si $\varFF$ est une
+  hypothèse, alors on peut en déduire $\varFF$.
+\item La règle $\Rtop$ dit simplement que $\top$ est toujours prouvable.
+\item La règle $\RbotC$ dit que pour prouver $\varFF$, on peut supposer
+  $\lnot \varFF$ et aboutir à une contradiction~: c'est le raisonnement par
+  l'absurde, d'où l'indice \og $\mathrm{c}$\fg{}
+  exprimant que cette règle est propre à la
   logique classique (nous le verrons, remplacer cette règle par une autre plus
   faible a des conséquences particulièrement intéressantes).
-\item La règle $\lnot_\mathrm i$ dit que pour prouver $\lnot A$, il suffit de
-  prouver que $A$ aboutit à une absurdité.
-\item La règle $\lnot_\mathrm e$ dit que prouver $A$ et $\lnot A$ en même temps
+\item La règle $\RnotI$ dit que pour prouver $\lnot \varFF$, il suffit de
+  prouver que $\varFF$ aboutit à une absurdité.
+\item La règle $\RnotE$ dit que prouver $\varFF$ et $\lnot \varFF$ en même temps
   est une absurdité.
-\item Les règles $\lor_\mathrm i$ montrent que si on prouve $A$ (respectivement
-  $B$) alors on prouve $A\lor B$.
-\item La règle $\lor_\mathrm e$ montre que pour prouver $C$ à partir de
-  $A\lor B$, il suffit de montrer $A\to C$ et $B\to C$~; ou, comme nous
-  l'avons écrit, que l'on peut prouver $C$ à la fois sous l'hypothèse $A$ et
-  sous l'hypothèse $B$. C'est un raisonnement par disjonction de cas.
-\item La règle $\land_\mathrm i$ dit que pour prouver $A\land B$, il suffit de
-  prouver $A$ d'une part, et $B$ d'autre part.
-\item Les règles $\land_\mathrm e$ permettent d'affaiblir une preuve de
-  $A\land B$ en une preuve de $A$ (respectivement de $B$).
-\item La règle $\to_\mathrm i$ dit que prouver $A\to B$ signifie prouver $B$ en
-  ajoutant l'hypothèse $A$.
-\item La règle $\to_\mathrm e$ dit que si l'on a prouvé $A\to B$ et $A$, alors on
-  peut en déduire $B$. C'est la règle du \latinexpr{modus ponens}.
-\item La règle $\forall_\mathrm i$ signifie que pour prouver $\forall x, A$, il
-  suffit de prouver $A$ pour une variable $v$ quelconque à la place de $x$. La
-  nécessité que $v\notin\VL(\Gamma)\cup\VL(A)$ exprime que ce $v$ est
+\item Les règles $\RorI$ montrent que si on prouve $\varFF$ (respectivement
+  $\varFP$) alors on prouve $\varFF\lor \varFP$.
+\item La règle $\RnotE$ montre que pour prouver $\varFC$ à partir de
+  $\varFF\lor \varFP$, il suffit de montrer
+  $\varFF\to \varFC$ et $\varFP\to \varFC$~; ou, comme nous
+  l'avons écrit, que l'on peut prouver $\varFC$ à la fois sous l'hypothèse
+  $\varFF$ et
+  sous l'hypothèse $\varFP$. C'est un raisonnement par disjonction de cas.
+\item La règle $\RandI$ dit que pour prouver $\varFF\land \varFP$, il suffit de
+  prouver $\varFF$ d'une part, et $\varFP$ d'autre part.
+\item Les règles $\RandE$ permettent d'affaiblir une preuve de
+  $\varFF\land \varFP$ en une preuve de $\varFF$ (respectivement de $\varFP$).
+\item La règle $\RtoI$ dit que prouver $\varFF\to \varFP$ signifie prouver
+  $\varFP$ en ajoutant l'hypothèse $\varFF$ à notre contexte logique.
+\item La règle $\RtoE$ dit que si l'on a prouvé $\varFF\to \varFP$ et $\varFF$,
+  alors on peut en déduire $\varFF$. C'est la règle du \latinexpr{modus ponens}.
+\item La règle $\RforaI$ signifie que pour prouver $\forall x, \varFF$, il
+  suffit de prouver $\varFF$ pour une variable $v$ quelconque à la place de $x$.
+  La nécessité que $v\notin\VL(\varCG)\cup\VL(\varFF)$ exprime que ce $v$ est
   quelconque~: aucune hypothèse n'est faite sur celui-ci.
-\item La règle $\forall_\mathrm e$ signifie qu'à partir d'une preuve de
-  $\forall x, A$ on peut instancier $x$ à un terme $t$ quelconque pour obtenir
-  une preuve de $A[t/x]$.
-\item La règle $\exists_\mathrm i$ permet de déduire une preuve de $\exists x,A$
-  à partir d'une preuve de $A[t/x]$, pour n'importe quel terme $t$.
-\item La règle $\exists_\mathrm e$ dit qu'à partir d'une proposition de la forme
-  $\exists x, A$, on peut déduire une proposition $B$ en ajoutant dans le
-  contexte $A[v/x]$, où $v$ est quelconque (ce qui se traduit par la condition
-  de $v\notin\VL(\Gamma)\cup\VL(A)\cup\VL(B)$).
-\item La règle $=_\mathrm i$ est la réflexivité de l'égalité : un terme est
+\item La règle $\RforaE$ signifie qu'à partir d'une preuve de
+  $\forall x, \varFF$ on peut instancier $x$ à un terme $t$ quelconque pour
+  obtenir une preuve de $\varFF[t/x]$.
+\item La règle $\RforaI$ permet de déduire une preuve de $\exists x,\varFF$
+  à partir d'une preuve de $\varFF[t/x]$, pour n'importe quel terme $t$.
+\item La règle $\RexE$ dit qu'à partir d'une proposition de la forme
+  $\exists x, \varFF$, on peut déduire une proposition $\varFP$ en ajoutant
+  dans le contexte $\varFF[v/x]$, où $v$ est quelconque
+  (ce qui se traduit par la condition
+  de $v\notin\VL(\varCG)\cup\VL(\varFF)\cup\VL(\varFP)$).
+\item La règle $\ReqI$ est la réflexivité de l'égalité~: un terme est
   égal à lui-même.
-\item La règle $=_\mathrm e$, parfois appelée principe de Leibniz, exprime que
+\item La règle $\ReqE$, parfois appelée principe de Leibniz, exprime que
   si deux termes $t$ et $u$ sont égaux, alors ils vérifient les mêmes formules.
   On appelle aussi ce principe \og indiscernabilité des identités\fg{}.
 \end{itemize}
 
 \begin{example}
   Donnons un exemple d'arbre de preuve pour une proposition simple mais non
-  triviale. On fixe la signature $\Sigma \defeq \{f^1, R^1\}$ où $f$ est un
+  triviale. On fixe la signature $\Sign \defeq \{f^1, R^1\}$ où $f$ est un
   symbole de fonction et $R$ est un symbole de relation. Posons
-  \[\Gamma \defeq \forall x, R(x) \to R(f(x))\]
-  et prouvons que $\Gamma\vdash \forall x, R(x) \to R(f(f(x)))$~:
+  \[\varCG \defeq \forall x, R(x) \to R(f(x))\]
+  et prouvons que $\varCG\vdash \forall x, R(x) \to R(f(f(x)))$~:
   \begin{center}
   \resizebox{\textwidth}{!}{\(
     \AxiomC{}
-    \RightLabel{Ax}
-    \UnaryInfC{$\Gamma,R(x)\vdash \forall x, R(x) \to R(f(x))$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\Gamma, R(x)\vdash R(f(x)) \to R(f(f(x)))$}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varCG,R(x)\vdP \forall x, R(x) \to R(f(x))$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varCG, R(x)\vdP R(f(x)) \to R(f(f(x)))$}
     \AxiomC{}
-    \RightLabel{Ax}
-    \UnaryInfC{$\Gamma,R(x)\vdash \forall x, R(x) \to R(f(x))$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\Gamma, R(x)\vdash R(x) \to R(f(x))$}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varCG,R(x)\vdP \forall x, R(x) \to R(f(x))$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varCG, R(x)\vdP R(x) \to R(f(x))$}
     \AxiomC{}
-    \RightLabel{Ax}
-    \UnaryInfC{$\Gamma, R(x)\vdash R(x)$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\Gamma, R(x)\vdash R(f(x))$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\Gamma, R(x)\vdash R(f(f(x)))$}
-    \RightLabel{$\to_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdash R(x) \to R(f(f(x)))$}
-    \RightLabel{$\forall_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdash \forall x, R(x) \to R(f(f(x)))$}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varCG, R(x)\vdP R(x)$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varCG, R(x)\vdP R(f(x))$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varCG, R(x)\vdP R(f(f(x)))$}
+    \RightLabel{$\RtoI$}
+    \UnaryInfC{$\varCG\vdP R(x) \to R(f(f(x)))$}
+    \RightLabel{$\RforaI$}
+    \UnaryInfC{$\varCG\vdP \forall x, R(x) \to R(f(f(x)))$}
     \DisplayProof
     \)}
   \end{center}
@@ -1350,176 +1442,183 @@ naturelle).
 
 \subsection[Théorème de complétude]{Complétude de la déduction naturelle}
 
-Nous allons maintenant montrer que $\vDash$ et $\vdash$ coïncident. Un sens est
-élémentaire : montrer que $\vdash \subseteq\vDash$, nous allons donc le traiter
-en premier. C'est la propriété qu'on appelle correction. Elle énonce que ce que
-notre syntaxe dérive est valide. L'autre sens, disant que tout ce qui est
+Nous allons maintenant montrer que $\vD$ et $\vdP$ coïncident. Un sens est
+élémentaire~: montrer que $\mathord{\vdP} \subseteq\mathord{\vD}$,
+nous allons donc le traiter
+en premier. C'est la propriété qu'on appelle correction. Celle-ci énonce que ce
+que notre syntaxe dérive est valide. L'autre sens, disant que tout ce qui est
 valide est dérivable, est très souvent plus technique~: ce fut le cas pour
 la logique propositionnelle, c'est encore le cas pour le calcul des prédicats.
 
-On appelle en général, par abus de langage, complétude du système la propriété
-que $\vdash = \vDash$, plutôt que simplement la propriété
-$\vDash\subseteq\vdash$. Il est en effet peu pratique de devoir citer deux
+En général, par abus de langage, on appelle complétude du système la propriété
+que $\vdP = \vD$, plutôt que simplement la propriété
+$\vD\subseteq\vdP$. Il est en effet peu pratique de devoir citer deux
 théorèmes différents lorsque l'on parle de la correspondance des deux relations,
 c'est pourquoi on préfère englober les deux en un résultat, et comme le sens le
 plus technique est celui de complétude, c'est celui qu'on utilise pour nommer le
 théorème.
 
-Comme $\vdash$ est définie par induction, la preuve de correction est
+Comme $\vdP$ est définie par induction, la preuve de correction est
 directement une induction sur sa structure. Remarquons cependant qu'il est
 nécessaire de pouvoir prendre en compte les variables, et donc d'introduire des
 environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
 
 \begin{theorem}[Correction]\label{thm.correction}
-  Soit une signature $\Sigma$, une liste $\Gamma\in\List(\Formula(\Sigma))$ et
-  une formule $A\in\Formula(\Sigma)$. Si $\Gamma\vdash A$ alors, en notant
-  $X_\Gamma$ l'ensemble des formules dans $\Gamma$, pour toute structure
-  $\mathcal M$, tout environnement $\rho$ sur $\mathcal M$, si
-  $\mathcal M,\rho\models X_\Gamma$ alors $\mathcal M,\rho\models A$.
+  Soit une signature $\Sign$, un contexte $\varCG\in\Ctx(\Sign)$ et
+  une formule $\varFF\in\Formula(\Sign)$. Si $\varCG\vdP\varFF$ alors,
+  en identifiant un contexte avec l'ensemble de ses formules,
+  pour toute structure $\varMM$ et tout environnement $\env$ sur $\varMM$, si
+  $\satMI \varCG$ alors $\satMI \varFF$.
 \end{theorem}
 
 \begin{proof}
-  Nous allons prouver ce résultat par induction sur $\Gamma\vdash A$, en
-  supposant introduits $\mathcal M$ et $\rho$ :
+  Nous allons prouver ce résultat par induction sur $\varCG\vdP \varFF$, en
+  supposant introduits $\varMM$ et $\env$ :
   \begin{itemize}
-  \item Ax~: Si $A\in \Gamma$, alors il est évident que
-    $\mathcal M,\rho\models A$.
-  \item $\top$~: Peu importe les prémisses, $\mathcal M,\rho\models \top$.
-  \item $\bot_\mathrm c$~: Supposons qu'aucun modèle $\mathcal M$ et aucun
-    environnement $\rho$ ne sont tels que
-    $\mathcal M,\rho\models X_\Gamma\cup\{\lnot A\}$. Alors si
-    $\mathcal M,\rho\models X_\Gamma$, on ne peut pas avoir
-    $\mathcal M,\rho\models \lnot A$, donc $\Val_\rho(\lnot A) = 0$, donc
-    $\Val_\rho(A) = 1$, d'où $\mathcal M,\rho\models A$.
-  \item $\lnot_\mathrm i$~: Supposons qu'aucun $(\mathcal M,\rho)$ ne vérifie que
-    $\mathcal M,\rho\models X_\Gamma\cup\{A\}$, alors si
-    $\mathcal M,\rho\models X_\Gamma$, $\Val_\rho(A) = 0$ donc
-    $\Val_\rho(\lnot A) = 1$, d'où $\mathcal M,\rho\models \lnot A$.
-  \item $\lnot_\mathrm e$~: Supposons qu'un modèle de $\Gamma$ est un modèle à la
-    fois de $A$ et de $\lnot A$. Alors $\Val_\rho(A) = 1$ et
-    $\Val_\rho(\lnot A) = 1$, mais $\Val_\rho(\lnot A) = 1 - \Val_\rho(A)$, donc
-    $0 = 1$~: c'est absurde, donc il n'y a pas de modèle de $\Gamma$.
-  \item $\lor_\mathrm i^\mathrm g$~: Supposons que si
-    $\mathcal M,\rho\models X_\Gamma$ alors $\mathcal M,\rho\models A$. Soit
-    $\mathcal M,\rho\models X_\Gamma$, par
-    hypothèse $\Val_\rho(A) = 1$, donc
-    $\Val_\rho(A\lor B) = \max(1,\Val_\rho(B))$, donc
-    $\mathcal M,\rho\models A\lor B$.
-  \item $\lor_\mathrm i^\mathrm d$~: L'argument précédent fonctionne exactement de
+  \item[$\Rax$~:] Si $\varFF\in \varCG$, alors il est évident que
+    $\satMI \varFF$.
+  \item[$R\top$~:] Peu importe les prémisses, $\satMI \top$.
+  \item[$\RbotC$~:] Supposons qu'aucun modèle $\varMM$ et aucun
+    environnement $\env$ ne vérifient
+    $\satMI \varCG,\lnot \varFF$. Alors si
+    $\satMI \Gamma$, on ne peut pas avoir
+    $\satMI \lnot \varFF$, donc $\ValE(\lnot \varFF) = 0$, donc
+    $\ValE(\varFF) = 1$, d'où $\satMI \varFF$.
+  \item[$\RnotI$~:] Supposons qu'aucun $(\varMM,\env)$ ne vérifie que
+    $\satMI \varCG,\varFF$, alors si
+    $\satMI \varCG$, $\ValE(\varFF) = 0$ donc
+    $\ValE(\lnot \varFF) = 1$, d'où $\satMI \lnot \varFF$.
+  \item[$\RnotE$~:] Supposons qu'un modèle de $\varCG$ est un modèle à la
+    fois de $\varFF$ et de $\lnot \varFF$. Alors $\ValE(\varFF) = 1$ et
+    $\ValE(\lnot FF) = 1$, mais $\ValE(\lnot \varFF) = 1 - \ValE(\varFF)$, donc
+    $0 = 1$~: c'est absurde, donc il n'y a pas de modèle de $\varCG$.
+  \item[$\RorIG$~:] Supposons que si $\satMI \varCG$ alors $\satMI \varFF$. Soit
+    $\satMI \varCG$, par hypothèse $\ValE(\varFF) = 1$, donc
+    $\ValE(\varFF\lor \varFP) = \max(1,\ValE(\varFP))$, donc
+    $\satMI \varFF\lor \varFP$.
+  \item[$\RorID$~:] L'argument précédent fonctionne exactement de
     la même manière.
-  \item $\lor_\mathrm e$~: A partir de maintenant, nous n'expliciterons plus les
+  \item[$\RorE$~:] A partir de maintenant, nous n'expliciterons plus les
     hypothèses d'induction, ni ce que l'on cherche à prouver, pour gagner de la
-    place. Supposons que $\mathcal M,\rho\models X_\Gamma$. Alors par hypothèse
-    d'induction, $\mathcal M,\rho\models A\lor B$, donc
-    $\max(\Val_\rho(A),\Val_\rho(B)) = 1$~: on en déduit qu'au moins l'un des
-    deux entre $A$ et $B$ est tel que $\Val_\rho = 1$. Sans perte de généralité,
-    supposons que $\Val_\rho(A) = 1$. On sait donc que
-    $\mathcal M,\rho\models X_\Gamma\cup\{A\}$, donc par hypothèse d'induction
-    $\mathcal M,\rho\models C$.
-  \item $\land_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
-    alors par hypothèse d'induction $\Val_\rho(A) = 1$ et $\Val_\rho(B) = 1$,
-    donc $\Val_\rho(A\land B) = \min(1,1) = 1$, donc
-    $\mathcal M,\rho\models A\land B$.
-  \item $\land_\mathrm e^\mathrm g$~: Supposons que
-    $\mathcal M,\rho\models X_\Gamma$, alors par hypothèse d'induction
-    $\Val_\rho(A\land B) = 1$, donc $\Val_\rho(A) = 1$ car cette valeur est
-    supérieure à $\Val_\rho(A\land B)$~: donc $\mathcal M,\rho\models A$.
-  \item $\land_\mathrm e^\mathrm d$~: L'argument précédent fonctionne de la même
+    place. Supposons que $\satMI \varCG$. Alors par hypothèse
+    d'induction, $\satMI \varFF\lor \varFP$, donc
+    $\max(\ValE(\varFF),\ValE(\varFP)) = 1$~: on en déduit qu'au moins l'un des
+    deux entre $\varFF$ et $\varFP$ est tel que $\ValE = 1$. Sans perte de
+    généralité, supposons que $\ValE(\varFF) = 1$. On sait donc que
+    $\satMI \varCG,\varFF$, donc par hypothèse d'induction
+    $\satMI\varFC$.
+  \item[$\RandI$~:] Supposons que $\satMI\varCG$,
+    alors par hypothèse d'induction $\ValE(\varFF) = 1$ et $\ValE(\varFP) = 1$,
+    donc $\ValE(\varFF\land \varFP) = \min(1,1) = 1$, donc
+    $\satMI \varFF\land \varFP$.
+  \item[$\RandEG$~:] Supposons que
+    $\satMI\varCG$, alors par hypothèse d'induction
+    $\ValE(\varFF\land \varFP) = 1$, donc $\ValE(\varFF) = 1$ car cette valeur
+    est
+    supérieure à $\ValE(\varFF\land \varFP)$, d'où $\satMI \varFF$.
+  \item[$\RandED$~:] L'argument précédent fonctionne de la même
     manière.
-  \item $\to_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$. On
-    travaille par disjonction de cas sur la valeur de $\Val_\rho(A)$~:
+  \item[$\RtoI$~:] Supposons que $\satMI\varCG$. On
+    travaille par disjonction de cas sur la valeur de $\ValE(\varFF)$~:
     \begin{itemize}
-    \item si $\Val_\rho(A) = 0$ alors $\Val_\rho(A\to B) = 1$ donc
-      $\mathcal M,\rho\models A \to B$.
-    \item si $\Val_\rho(A) = 1$ alors $\mathcal M,\rho\models X_\Gamma\cup\{A\}$,
-      donc par hypothèse d'induction $\mathcal M,\rho\models B$, donc
-      $\Val_\rho(A\to B) = 1$, donc $\mathcal M,\rho\models A \to B$.
+    \item si $\ValE(\varFF) = 0$ alors $\ValE(\varFF\to \varFP) = 1$ donc
+      $\satMI \varFF \to \varFP$.
+    \item si $\ValE(\varFF) = 1$ alors
+      $\satMI \varCG,\varFF$,
+      donc par hypothèse d'induction $\satMI\varFP$, donc
+      $\ValE(\varFF\to \varFP) = 1$, donc $\satMI \varFF \to \varFP$.
     \end{itemize}
-  \item $\to_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$. On sait
-    donc que $\Val_\rho(A\to B) = 1$ et $\Val_\rho(A) = 1$. Ainsi,
-    $\max(0,\Val_\rho(B)) = 1$~: on en déduit que $\Val_\rho(B) = 1$,
-    c'est-à-dire que $\mathcal M,\rho\models B$.
-  \item $\forall_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$.
-    On veut montrer que $\Val_\rho(\forall x, A) = 1$. Pour cela, soit
-    $m \in |\mathcal M|$~: on remarque que, par hypothèse d'induction,
-    $\mathcal M,\rho\models A[v/x]$, mais comme $v$ est libre dans $\Gamma$
-    (c'est-à-dire que $v\notin\VL(\Gamma)$), on remarque que
-    $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$, soit
-    $\mathcal M,\rho[v\mapsto m]\models A[v/x]$, d'où
-    $\Val_{\rho[v\mapsto m]}(A[v/x]) = 1$, mais l'expression de gauche vaut
-    $\Val_{\rho[x\mapsto m]}(A)$. Comme cela fonctionne pour tout $m$, on en
-    déduit que $\Val_\rho(\forall x, A) = 1$.
-  \item $\forall_\mathrm e$~: Supposons que $\mathcal M, \rho\models X_\Gamma$, on
-    sait donc que $\mathcal M,\rho\models \forall x, A$, ce qui signifie en
-    particulier que pour tout $m\in\mathcal M$,
-    $\mathcal M,\rho[x\mapsto m]\models A$.
-    Mais alors, en considérant $m = t^\mathcal M_\rho$, on trouve que
-    $\Val_{\rho[x\mapsto t^\mathcal M_\rho]}(A) = 1$, mais l'expression de gauche
-    correspond exactement à $\Val_\rho(A[t/x])$, donc
-    $\mathcal M,\rho\models A[t/x]$.
-  \item $\exists_\mathrm i$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
-    alors $\mathcal M,\rho\models A[t/x]$, mais comme on sait que
-    $\Val_\rho(A[t/x])\leq\Val_\rho(\exists x,A)$, on en déduit que
-    $\Val_\rho(\exists x,A) = 1$, donc $\mathcal M,\rho\models \exists x,A$.
-  \item $\exists_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$,
-    alors $\mathcal M,\rho\models \exists x,A$, donc on peut trouver un élément
-    $m\in|\mathcal M|$ tel que $\Val_{\rho[x\mapsto m]}(A) = 1$. On a
-    $\Val_{\rho[v\mapsto m]}(A[v/x]) = \Val_{\rho[x\mapsto m]}(A)$ car
-    $v \notin\VL(A)$, et cette expression vaut $1$. On en déduit que
-    $\mathcal M,\rho[v\mapsto m]\models A[v/x]$. De plus, comme
-    $v\notin\VL(\Gamma)$, on a $\mathcal M,\rho[v\mapsto m]\models X_\Gamma$,
-    donc par hypothèse d'induction $\mathcal M,\rho[v\mapsto m]\models B$.
-    Mais $v\notin\VL(B)$, donc $\mathcal M,\rho\models B$.
-  \item $=_\mathrm i$~: Pour tout modèle $\mathcal M$ et environnement $\rho$, on
-    a forcément $\Val_\rho(t=t) = 1$ puisque
-    $(t^\mathcal M_\rho,t^\mathcal M_\rho)\in\{(m,m)\mid m\in|\mathcal M|\}$.
-  \item $=_\mathrm e$~: Supposons que $\mathcal M,\rho\models X_\Gamma$, alors
-    $\mathcal M,\rho\models A[t/x]$ et $\mathcal M,\rho\models t = u$. On en
-    déduit que $\Val_\rho(t = u) = 1$, c'est-à-dire que
-    $t^\mathcal M_\rho = u^\mathcal M_\rho$, donc
-    $\Val_{\rho[x\mapsto t^\mathcal M_\rho]}(A) = \Val_{\rho[x\mapsto u^\mathcal M_\rho]}(A)$,
-    et à partir du fait que $\mathcal M,\rho\models A[t/x]$ on en déduit donc
-    que $\mathcal M,\rho\models A[u/x]$.
+  \item[$\RtoE$~:] Supposons que $\satMI\varCG$. On sait
+    donc que $\ValE(\varFF\to \varFP) = 1$ et $\ValE(\varFF) = 1$. Ainsi,
+    $\max(0,\ValE(\varFP)) = 1$~: on en déduit que $\ValE(\varFP) = 1$,
+    c'est-à-dire que $\satMI \varFP$.
+  \item[$\RforaI$~:] Supposons que $\satMI\varCG$.
+    On veut montrer que $\ValE(\forall x, \varFF) = 1$. Pour cela, soit
+    $m \in \carMM$. On remarque que, par hypothèse d'induction,
+    $\satMI \varFF[v/x]$, mais comme $v$ est libre dans $\varCG$
+    (c'est-à-dire que $v\notin\VL(\varCG)$), il vient
+    $\satMP{\varMM}{\env[v\mapsto m]}\varCG$, soit
+    $\satMP{\varMM}{\env[v\mapsto m]} \varFF[v/x]$, d'où
+    $\ValP{\env[v\mapsto m]}(\varFF[v/x]) = 1$, mais l'expression de gauche vaut
+    $\ValP{\env[x\mapsto m]}(\varFF)$.
+    Comme cela fonctionne pour tout $m$, on en déduit que
+    $\ValE(\forall x, \varFF) = 1$.
+  \item[$\RforaE$~:] Supposons que $\satMI \varCG$, on
+    sait donc que $\satMI\forall x, \varFF$, ce qui signifie en
+    particulier que pour tout $m\in\carMM$,
+    $\satMP{\varMM}{\env[x\mapsto m]} \varFF$.
+    Mais alors, en considérant $m = \toMMI{t}$, on trouve que
+    $\ValP{\env[x\mapsto \toMMI{t}]}(\varFF) = 1$, mais l'expression de gauche
+    correspond exactement à $\ValE(\varFF[t/x])$, donc
+    $\satMI \varFF[t/x]$.
+  \item[$\RexI$~:] Supposons que $\satMI\varCG$,
+    alors $\satMI \varFF[t/x]$, mais comme on sait que
+    $\ValE(\varFF[t/x])\leq\ValE(\exists x,\varFF)$, on en déduit que
+    $\ValE(\exists x,\varFF) = 1$, donc $\satMI \exists x,\varFF$.
+  \item[$\RexE$~:] Supposons que $\satMI\varCG$,
+    alors $\satMI \exists x,\varFF$, donc on peut trouver un élément
+    $m\in\carMM$ tel que $\ValP{\env[x\mapsto m]}(\varFF) = 1$. On a
+    $\ValP{\env[v\mapsto m]}(\varFF[v/x]) = \ValP{\env[x\mapsto m]}(\varFF)$ car
+    $v \notin\VL(\varFF)$, et cette expression vaut $1$. On en déduit que
+    $\satMP{\varMM}{\env[v\mapsto m]} \varFF[v/x]$. De plus, comme
+    $v\notin\VL(\varFF)$, on a
+    $\satMP{\varMM}{\env[v\mapsto m]} \varCG$,
+    donc par hypothèse d'induction $\satMP{\varMM}{\env[v\mapsto m]} \varFP$.
+    Mais $v\notin\VL(\varFP)$, donc $\satMI \varFP$.
+  \item[$\ReqI$~:] Pour tout modèle $\varMM$ et environnement $\env$, on
+    a forcément $\ValE(t=t) = 1$ puisque
+    $(\toMMI{t},\toMMI{t})\in\compr{(m,m)}{m\in\carMM}$.
+  \item[$\ReqE$~:] Supposons que $\satMI\varCG$, alors
+    $\satMI \varFF[t/x]$ et $\satMI t = u$. On en
+    déduit que $\ValE(t = u) = 1$, c'est-à-dire que $\toMMI{t} = \toMMI{u}$,
+    donc
+    $\ValP{\env[x\mapsto\toMMI{t}]}(\varFF)=
+    \ValP{\env[x\mapsto\toMMI{u}]}(\varFF)$,
+    et à partir du fait que $\satMI \varFF[t/x]$ on en déduit donc
+    que $\satMI \varFF[u/x]$.
   \end{itemize}
 
-  Ainsi, par induction, si $\mathcal M,\rho\models X_\Gamma$, alors
-  $\mathcal M,\rho\models A$. En particulier, si $\mathcal M\models X_\Gamma$,
-  alors $\mathcal M\models A$, et si pour
-  $\mathcal F\subseteq \Formula(\Sigma)$, on a
-  $\mathcal M\models \mathcal F$ et $\mathcal F\vdash A$, cela implique donc que
-  $\mathcal M\models A$. Ainsi $\vdash\subseteq\vDash$.
+  \noindent
+  Ainsi, par induction, si $\satMI\varCG$, alors
+  $\satMI \varFF$. En particulier, si $\satMM\varCG$,
+  alors $\satMM\varFF$, et si pour
+  $\FormSet\subseteq \Formula(\Sign)$, on a
+  $\satMM \FormSet$ et $\FormSet\vdP \varFF$, cela implique donc que
+  $\satMM \varFF$. Ainsi $\mathord{\vdP}\subseteq\mathord{\vD}$.
 \end{proof}
 
 Il nous reste à prouver le sens réciproque. En réalité, le point critique pour
 la démonstration est celui de l'existence d'un modèle. Plutôt que de montrer
-réellement que $\vDash\subseteq\vdash$, nous allons montrer qu'une théorie
-consistante, c'est-à-dire une théorie $\mathcal T$ telle que
-$\mathcal T\nvdash \bot$, possède un modèle. On va donc commencer par montrer
-que notre résultat suffira à prouver $\vDash\subseteq\vdash$.
+directement que $\mathord{\vD}\subseteq\mathord{\vdP}$, nous allons montrer
+qu'une théorie
+consistante, c'est-à-dire une théorie $\varT$ telle que
+$\varT\nvdP \bot$, possède un modèle. On va donc commencer par montrer
+que notre résultat suffira à prouver $\mathord{\vD}\subseteq\mathord{\vdP}$.
 
 \begin{lemma}\label{lem.vDashvdashabs}
-  Supposons que pour toute théorie $\mathcal T$ telle que
-  $\mathcal T\nvdash\bot$, il existe une structure $\mathcal M$ telle que
-  $\mathcal M\models \mathcal T$. Alors $\vDash\subseteq\vdash$.
+  Supposons que pour toute théorie $\varT$ telle que
+  $\varT\nvdP\bot$, il existe une structure $\varMM$ telle que
+  $\varMM\satisf \varT$. Alors $\mathord{\vD}\subseteq\mathord{\vdP}$.
 \end{lemma}
 
 \begin{proof}
-  Supposons que $\mathcal F\vDash A$ pour $A\in\Formula(\Sigma)$ et
-  $\mathcal F\subseteq\Formula(\Sigma)$. On voit donc que
-  $\mathcal F\cup\{\lnot A\}$ n'a pas de modèle : par contraposée de notre
-  hypothèse, cela signifie que $\mathcal F,\lnot A\vdash \bot$. En appliquant
-  simplement $\bot_\mathrm c$, on en déduit que $\mathcal F\vdash A$. Ainsi
-  $\vDash\subseteq\vdash$.
+  Supposons que $\FormSet\vD \varFF$ pour $\varFF\in\Formula(\Sign)$ et
+  $\FormSet\subseteq\Formula(\Sign)$. On voit donc que
+  $\FormSet\cup\{\lnot \varFF\}$ n'a pas de modèle : par contraposée de notre
+  hypothèse, cela signifie que $\FormSet,\lnot \varFF\vdP \bot$. En appliquant
+  simplement $\RbotC$, on en déduit que $\FormSet\vdash \varFF$. Ainsi
+  $\mathord{\vD}\subseteq\mathord{\vdP}$.
 \end{proof}
 
 \begin{remark}
   Nous avons défini une théorie comme un ensemble de formules closes, donc la
   démonstration précédente n'est pas tout à fait exacte. Une façon de corriger
   cela est d'enrichir le langage~: pour chaque variable $x$ libre dans
-  $\mathcal F$ ou $A$, on ajoute un symbole de constante $c_x$, et on considère
-  ensuite la théorie où $x$ est remplacé par $c_x$. On a une correspondance
-  entre l'existence d'un modèle avec $x$ ou avec $c_x$, puisque notre théorie
-  sans $c_x$ pourra s'évaluer dans le modèle avec $x\mapsto c_x$.
+  $\FormSet$ ou $\varFF$, on ajoute un symbole de constante $\Cc_x$, et on
+  considère
+  ensuite la théorie où $x$ est remplacé par $\Cc_x$. On a une correspondance
+  entre l'existence d'un modèle avec $x$ ou avec $\Cc_x$, puisque notre théorie
+  sans $\Cc_x$ pourra s'évaluer dans le modèle avec $x\mapsto \Cc_x$.
 \end{remark}
 
 Il nous reste donc à démontrer qu'une théorie consistante admet bien un modèle.
@@ -1528,33 +1627,35 @@ l'idée de la preuve.
 
 L'idée principale est de construire un modèle syntaxique, c'est-à-dire un modèle
 dont les éléments sont exactement les termes (clos) du langage. Ceux-ci seront
-quotientés par l'égalité~: si $\mathcal T \vdash t = u$, alors les termes $t$ et
-$u$ seront identifiés. En construisant un tel modèle $\mathcal M$, on va
-chercher à ce que $\mathcal T \vdash \varphi$ si et seulement si
-$\mathcal M\vDash \varphi$ puisque ce que vérifie $\mathcal M$ est exactement ce
-que $\mathcal T$ peut prouver. On a alors besoin de deux caractéristiques
-essentielles :
+quotientés par l'égalité~: si $\varT \vdP t = u$, alors les termes $t$ et
+$u$ seront identifiés. En construisant un tel modèle $\varMM$, on va
+chercher à ce que $\varT \vdP \varFF$ si et seulement si
+$\varMM\vD \varFF$ puisque ce que vérifie $\varMM$ est exactement ce
+que $\varT$ peut prouver. On a alors besoin de deux caractéristiques
+essentielles~:
 \begin{itemize}
 \item tout d'abord, il nous faut résoudre un problème quant à la quantification
-  existentielle. Supposons que $\exists x,P$ soit vraie~: on veut pouvoir
-  exhiber un élément $m$ tel que $P[m/x]$ est vrai, et nos éléments sont des
-  termes. On en déduit donc qu'il faut pour chaque proposition $P$ avoir un
-  terme $t_P$ correspondant tel que $\exists x, P \implies P[t_P/x]$. Cela n'est
+  existentielle. Supposons que $\exists x,\varFF$ soit vraie~: on veut pouvoir
+  exhiber un élément $m$ tel que $\varFF[m/x]$ est vrai, et nos éléments sont
+  des termes.
+  On en déduit donc qu'il faut pour chaque proposition $\varFF$ avoir un
+  terme $t_{\varFF}$ correspondant tel que
+  $\exists x, \varFF \implies P[t_{\varFF}/x]$. Cela n'est
   pas vrai \latinexpr{a priori}, on va donc chercher à élargir notre langage
   pour ajouter à chaque fois des constantes témoignant pour une proposition
-  $\exists x,P$ vraie qu'un terme correspond~: c'est ce que l'on appelle la
+  $\exists x,\varFF$ vraie qu'un terme correspond~: c'est ce que l'on appelle la
   méthode des témoins de Henkin.
-\item ensuite, $\mathcal T$ doit être complète. L'ensemble des énoncés
+\item ensuite, $\varT$ doit être complète. L'ensemble des énoncés
   vrais dans un modèle est une théorie complète, puisqu'un énoncé est vrai dans
-  un modèle si et seulement si sa négation est fausse. Ainsi, si $\mathcal T$
+  un modèle si et seulement si sa négation est fausse. Ainsi, si $\varT$
   n'est pas complète, ça ne peut pas être la théorie d'un modèle. Moralement, on
   peut voir ça comme le fait qu'au moment de construire un modèle, il faut faire
-  des choix parmi les propositions, car certains modèles de $\mathcal T$ peuvent
-  vérifier telle proposition ou telle autre, si $\mathcal T$ n'est pas complète.
+  des choix parmi les propositions, car certains modèles de $\varT$ peuvent
+  vérifier telle proposition ou telle autre, si $\varT$ n'est pas complète.
   Nous avons donc besoin d'étendre notre théorie en une théorie complète.
 \item une fois cela fait, il ne nous restera plus qu'à appliquer la complétion
   de la théorie enrichie par témoins de Henkin pour obtenir une théorie
-  $\overline{\mathcal T}$ contenant $\mathcal T$ et qui nous permettra de
+  $\varT'$ contenant $\varT$ et qui nous permettra de
   construire un modèle.
 \end{itemize}
 
@@ -1563,14 +1664,14 @@ Gödel, dans sa thèse de doctorat \cite{GödelCompleteness}, mais la méthode q
 nous présentons ici (et celle généralement utilisée de nos jours) a été
 introduite par Henkin, dans \cite{HenkinCompleteness}.
 
-Pour pouvoir effectuer les deux premières étapes, il est important que celles-ci
-soient compatibles entre elles.
+Pour pouvoir effectuer les deux premières étapes, il est d'abord
+important que celles-ci soient compatibles entre elles.
 
 \begin{definition}[Propriété de Henkin]
-  On dit qu'une théorie $\mathcal T$ sur une signature $\Sigma$ a la propriété
-  de Henkin si pour toute formule $F$ à une variable libre $x$ telle que
-  $\mathcal T\vdash\exists x, F$, il existe un terme $t_F\in\Term(\Sigma)$ tel
-  que $\mathcal T\vdash F[t_F/x]$.
+  On dit qu'une théorie $\varT$ sur une signature $\Sign$ a la propriété
+  de Henkin si pour toute formule $\varFF(x)$ à une variable libre $x$ telle que
+  $\varT\vdP\exists x, \varFF(x)$, il existe un terme
+  $t_{\varFF}\in\Term(\Sign)$ tel que $\varT\vdP \varFF(t_{\varFF})$.
 \end{definition}
 
 Le point important de cette propriété est qu'elle peut être vérifiée, au prix
@@ -1578,55 +1679,60 @@ d'une augmentation de la théorie et du langage. Il faut cependant vérifier,
 alors, que la nouvelle théorie ne peut toujours pas prouver $\bot$.
 
 Pour créer notre nouvelle théorie, on va ajouter artificiellement, pour chaque
-formule $\exists x, F(x)$ où $x$ est la seule variable libre de $F$, un témoin
-$c_F$ ainsi qu'une formule dans notre théorie disant que, dans le cas où
-$\exists x, F(x)$ est vérifiée, il vient directement que $F(c_F)$ est vérifiée
-aussi.
+formule $\exists x, \varFF(x)$ où $x$ est la seule variable libre de $\varFF$,
+un témoin
+$\Cc_{\varFF}$ ainsi qu'une formule dans notre théorie disant que, dans le cas où
+$\exists x, \varFF(x)$ est vérifiée, il vient directement que
+$F(\Cc_{\varFF})$ est vérifiée aussi.
 
 \begin{definition}[Clôture par témoins]
-  Soit $\Sigma$ une signature, et $\mathcal T$ une théorie sur $\Sigma$. On
-  construit de façon itérative la suite $\Sigma_n$ et $\mathcal T_n$ de
-  signatures et de théories, où $\mathcal T_n$ est une théorie sur $\Sigma_n$ :
+  Soit $\Sign$ une signature, et $\varT$ une théorie sur $\Sign$. On
+  construit de façon itérative la suite $\Sign_n$ et $\varT_n$ de
+  signatures et de théories, où $\varT_n$ est une théorie sur $\Sign_n$ :
   \begin{itemize}
-  \item $\Sigma_0 = \Sigma$ et $\mathcal T_0 = \mathcal T$.
-  \item Si $\Sigma_n$ et $\mathcal T_n$ sont construits, on définit la signature
-    $\Sigma_{n+1}$ en ajoutant les éléments suivants~: pour chaque formule
-    $F \in \Formula(\Sigma_n)$ avec une unique variable libre
-    (qu'on notera $x$), on ajoute une constante $c_F$ à $\Sigma_{n+1}$ et la
-    formule close $(\exists x, F(x))\to F[c_F/x]$ à $\mathcal T_{n+1}$.
+  \item $\Sign_0 = \Sign$ et $\varT_0 = \varT$.
+  \item Si $\Sign_n$ et $\varT_n$ sont construits, on définit la signature
+    $\Sign_{n+1}$ en ajoutant les éléments suivants~: pour chaque formule
+    $\varFF \in \Formula(\Sign_n)$ avec une unique variable libre
+    (qu'on notera $x$), on ajoute une constante $\Cc_{\varFF}$ à
+    $\Sign_{n+1}$ et la
+    formule close $(\exists x, \varFF(x))\to \varFF(\Cc_{\varFF})$ à
+    $\varT_{n+1}$.
   \end{itemize}
   On définit alors
-  \[\hclose{\Sigma}\defeq \bigcup_{n\in\mathbb N}\Sigma_n
-  \qquad\hclose{\mathcal T} \defeq \bigcup_{n \in \mathbb N}\mathcal T_n\]
-  et $\hclose{\mathcal T}$ est une théorie sur $\hclose{\Sigma}$.
+  \[\hclose{\Sign}\defeq \bigcup_{n\in\bN}\Sign_n
+  \qquad\hclose{\varT} \defeq \bigcup_{n \in \bN}\varT_n\]
+  et $\hclose{\varT}$ est une théorie sur $\hclose{\Sign}$.
 \end{definition}
 
 \begin{property}
-  La théorie $\hclose{\mathcal T}$ a la propriété de Henkin.
+  La théorie $\hclose{\varT}$ a la propriété de Henkin.
 \end{property}
 
 \begin{proof}
-  Supposons que $\hclose{\mathcal T}\vdash\exists x,F$ où
-  $\exists x, F\in\Prop(\hclose{\Sigma})$. Remarquons que $F$ ne peut contenir
+  Supposons que $\hclose{\varT}\vdP\exists x,\varFF$ où
+  $\exists x, \varFF\in\Prop(\hclose{\Sign})$.
+  Remarquons que $\varFF$ ne peut contenir
   qu'un nombre fini de symboles de fonctions et de relations~: on en déduit
-  qu'il existe $n\in \mathbb N$ tel que $F\in\Formula(\Sigma_n)$. Cela signifie
+  qu'il existe $n\in \bN$ tel que $\varFF\in\Formula(\Sign_n)$. Cela signifie
   donc que
-  \[(\exists x,F(x))\to F(c_F) \in \mathcal T_{n+1}\]
-  On en déduit que $\mathcal T_{n+1}\vdash F(c_F)$.
+  \[(\exists x,\varFF(x))\to \varFF(\Cc_{\varFF}) \in \varT_{n+1}\]
+  On en déduit que $\varT_{n+1}\vdP \varFF(c_{\varFF})$.
 \end{proof}
 
+\noindent
 De plus, cette construction est stable par extension (ce qui nous servira
 lorsque nous compléterons notre théorie).
 
 \begin{property}\label{prop.henkin.ext}
-  Si $\hclose{\mathcal T}\subseteq \mathcal S$ pour une certaine théorie
-  $\mathcal S$, alors $\mathcal S$ a la propriété de Henkin.
+  Si $\hclose{\varT}\subseteq \varT'$ pour des théories $\varT,\varT'$
+  alors $\varT'$ a la propriété de Henkin.
 \end{property}
 
 \begin{proof}
-  Comme $(\exists x,F)\to F(c_F)$ appartient à $\mathcal S$, la dérivation
-  syntaxique précédente fonctionne encore en remplaçant $\hclose{\mathcal T}$
-  par $\mathcal S$.
+  Comme $(\exists x,\varFF)\to F(\Cc_\varFF)$ appartient à $\varT'$,
+  la dérivation syntaxique précédente fonctionne encore en remplaçant
+  $\hclose{\varT}$ par $\varT'$.
 \end{proof}
 
 Enfin, on veut montrer que la clôture par témoins conserve la cohérence. Pour
@@ -1635,185 +1741,212 @@ sur laquelle on ne fait aucune hypothèse revient à considérer une variable
 libre.
 
 \begin{lemma}[Simulation d'une variable par une constante]\label{lem.var.const}
-  Soit $\Sigma$ une signature contenant une constante $c$,
-  $A_1,\ldots,A_n\in\Formula(\Sigma\setminus\{c\})$, $P\in\Formula(\Sigma)$ et
-  une variable $x\notin \VL(A_1,\ldots,A_n)$.
-  Les deux propositions sont alors équivalentes~:
+  Soit $\Sign$ une signature contenant une constante $\Cc$,
+  $\varFF_1,\ldots,\varFF_n\in\Formula(\Sign\setminus\{\Cc\})$,
+  $\varFP\in\Formula(\Sign)$ et
+  une variable $x\notin \VL(\varFF_1,\ldots,\varFF_n)$.
+  Les deux propositions sont équivalentes~:
   \begin{itemize}
-  \item $A_1,\ldots,A_n\vdash P$
-  \item $A_1,\ldots,A_n\vdash P[c/x]$
+    \begin{minipage}{0.5\textwidth}
+    \item $\varFF_1,\ldots,\varFF_n\vdash \varFP$
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+    \item $\varFF_1,\ldots,\varFF_n\vdash \varFP[\Cc/x]$
+    \end{minipage}
   \end{itemize}
 \end{lemma}
 
 \begin{proof}
   On raisonne par double implication. Par induction sur
-  $A_1,\ldots,A_n\vdash P$ (on notera $\Gamma \defeq A_1,\ldots,A_n$)~:
+  $\varFF_1,\ldots,\varFF_n\vdash \varFP$
+  (on notera $\varCG \defeq \varFF_1,\ldots,\varFF_n$)~:
   \begin{itemize}
-  \item si $P\in \Gamma$, alors $x\notin\VL(P)$ donc $P[c/x]=P$ et
-    le résultat est évident.
-  \item si $P = \top$ alors $P[c/x]=P$ encore une fois.
-  \item pour toutes les règles $\bot_\mathrm c,\lnot,\lor,\land,\to$, la
+  \item si $\varFP\in \varFF$, alors $x\notin\VL(\varFF)$ donc
+    $\varFF[\Cc/x]=\varFF$ et le résultat est évident.
+  \item si $\varFP = \top$ alors $\varFP[\Cc/x]=\varFP$ encore une fois.
+  \item pour toutes les règles
+    $\RbotC,\RnotI,\RnotE,\RorI,\RorE,\RandI,\RandE,\RtoI,\RtoE$, la
     validité est immédiate puisque l'hypothèse d'induction est stable dans
     toutes les règles (les variables ne changent jamais).
-  \item si la dernière règle est $\forall_\mathrm i$, on suppose alors que
-    $P = \forall y, A$ et que $\Gamma\vdash A[v/y]$. Par hypothèse d'induction,
-    on en déduit que $\Gamma\vdash A[v/y][c/x]$, mais on remarque que
-    $A[v/y][c/x] = A[c/x][v/y]$ car $v$ est une variable différente de $x$,
-    donc $\Gamma\vdash A[c/x][v/y]$, d'où $\Gamma\vdash \forall y, A[c/x]$
-    puisque $v$ reste libre dans $\Gamma,A$.
-  \item si la dernière règle est $\forall_\mathrm e$, on suppose alors que
-    $P = A[t/y]$ pour un certain terme $t$, donc $P[c/x] = A[t/y][c/x]$ ou
-    encore $P[c/x] = A[c/x][t[c/x]/y]$. Par hypothèse d'induction, on sait que
-    $\Gamma\vdash \forall y, A[c/x]$, donc $\Gamma\vdash A[c/x][t[c/x]/y]$
-    d'où le résultat.
-  \item si la dernière règle est $\exists_\mathrm i$, on suppose alors que
-    $P = \exists y, A$ et l'hypothèse d'induction nous donne
-    $\Gamma\vdash A[t/y][c/x]$, mais on peut réécrire
-    $A[t/y][c/x] = A[c/x][t[y/x]/y]$ et appliquer la règle $\exists_\mathrm i$
-    pour avoir le résultat.
-  \item si la dernière règle est $\exists_\mathrm e$, on suppose que
-    $\Gamma\vdash \exists y, A$ et $\Gamma, A[v/x]\vdash P$ où $v$ n'apparaît
-    pas dans $\Gamma$ ou dans $P$. On utilise notre hypothèse d'induction sur
-    la première hypothèse pour en déduire que $\Gamma\vdash \exists y, A[c/x]$,
-    puis sur notre deuxième hypothèse réécrite en $\Gamma\vdash A[v/y]\to B$,
-    pour obtenir $\Gamma\vdash A[v/y][c/x]\to B[c/x]$. On peut réécrire
-    $A[v/y][c/x] = A[c/x][v/y]$, et on peut alors déduire que
-    $\Gamma,A[c/x][v/y]\vdash B[c/x]$ donc en utilisant $\exists_\mathrm e$, que
-    $\Gamma\vdash B[c/x]$.
-  \item si la dernière règle est $=_\mathrm i$, le résultat est direct.
-  \item si la dernière règle est $=_\mathrm e$, alors on suppose que $P = A[u/y]$
-    et, en utilisant l'hypothèse d'induction, que $\Gamma\vdash A[t/y][c/x]$
-    et $\Gamma\vdash t[c/x] = u[c/x]$. On peut alors montrer que
-    $A[t/y][c/x] = A[c/x][t[c/x]/y]$, d'où $\Gamma\vdash A[c/x][u[c/x]/y]$, ce
-    qui est exactement $\Gamma\vdash A[u/y][c/x]$.
+  \item si la dernière règle est $\RforaI$, on suppose alors que
+    $\varFP = \forall y, \varFC$ et que $\varCG\vdP \varFC[v/y]$.
+    Par hypothèse d'induction,
+    on en déduit que $\varCG\vdP \varFC[v/y][\Cc/x]$, mais on remarque que
+    $\varFC[v/y][\Cc/x] = \varFC[\Cc/x][v/y]$
+    car $v$ est une variable différente de $x$,
+    donc $\varCG\vdP\varFF[\Cc/x][v/y]$,
+    d'où $\varCG\vdP\forall y,\varFF[\Cc/x]$
+    puisque $v$ reste libre dans $\varCG,\varFC$.
+  \item si la dernière règle est $\RforaE$, on suppose alors que
+    $\varFP = \varFC[t/y]$ pour un certain terme $t$, donc
+    $\varFP[\Cc/x] = \varFC[t/y][\Cc/x]$ ou
+    encore $\varFP[\Cc/x] = \varFC[\Cc/x][t[\Cc/x]/y]$.
+    Par hypothèse d'induction, on sait que
+    $\varCG\vdP \forall y, \varFC[\Cc/x]$, donc
+    $\varCG\vdP \varFC[\Cc/x][t[\Cc/x]/y]$ d'où le résultat.
+  \item si la dernière règle est $\RexI$, on suppose alors que
+    $\varFP = \exists y, \varFC$ et l'hypothèse d'induction nous donne
+    $\varCG\vdP \varFC[t/y][\Cc/x]$, mais on peut réécrire
+    $\varFC[t/y][\Cc/x] = \varFC[\Cc/x][t[y/x]/y]$
+    et appliquer la règle $\RexI$ pour avoir le résultat.
+  \item si la dernière règle est $\RexE$, on suppose que
+    $\varCG\vdP \exists y, \varFC$ et $\varCG, \varFC[v/x]\vdP \varFP$
+    où $v$ n'apparaît
+    pas dans $\varCG$ ou dans $\varFP$.
+    On utilise notre hypothèse d'induction sur
+    la première hypothèse pour en déduire que
+    $\varCG\vdP \exists y, \varFC[\Cc/x]$,
+    puis sur notre deuxième hypothèse réécrite en
+    $\varCG\vdP \varFC[v/y]\to \varFP$,
+    pour obtenir $\varCG\vdP \varFC[v/y][\Cc/x]\to \varFP[c/x]$. On peut
+    réécrire
+    $\varFC[v/y][\Cc/x] = \varFC[\Cc/x][v/y]$, et on peut alors déduire que
+    $\varCG,\varFC[\Cc/x][v/y]\vdP \varFP[\Cc/x]$ donc en utilisant
+    $\RexE$, que $\varCG\vdP \varFP[\Cc/x]$.
+  \item si la dernière règle est $\ReqI$, le résultat est direct.
+  \item si la dernière règle est $\ReqE$, alors on suppose que
+    $\varFP = \varFC[u/y]$
+    et, en utilisant l'hypothèse d'induction, que $\varCG\vdP\varFC[t/y][\Cc/x]$
+    et $\varCG\vdP t[\Cc/x] = u[\Cc/x]$. On peut alors montrer que
+    $\varFC[t/y][\Cc/x] = \varFC[\Cc/x][t[\Cc/x]/y]$, d'où
+    $\varCG\vdP \varFC[\Cc/x][u[\Cc/x]/y]$, ce
+    qui est exactement $\varCG\vdP \varFC[u/y][\Cc/x]$.
   \end{itemize}
-  Ainsi si $\Gamma\vdash P$ alors $\Gamma\vdash P[c/x]$. Le sens réciproque est
-  une induction sur $\Gamma\vdash P[c/x]$ et est analogue, nous ne la détaillons
-  donc pas.
+  Ainsi si $\varCG\vdP\varFF$ alors $\varCG\vdP\varFF[\Cc/x]$.
+  Le sens réciproque est
+  une induction sur $\varCG\vdP \varFP[\Cc/x]$ et est analogue,
+  nous ne la détaillons donc pas.
 \end{proof}
 
+\noindent
 On peut maintenant prouver que la clôture par témoins de Henkin préserve la
 cohérence.
 
 \begin{property}
-  Si $\mathcal T\nvdash \bot$, alors $\hclose{\mathcal T}\nvdash\bot$.
+  Si $\varT\nvdP \bot$, alors $\hclose{\varT}\nvdP\bot$.
 \end{property}
 
 \begin{proof}
-  On suppose que $\mathcal T\nvdash\bot$, on montre alors par récurrence que
-  $\mathcal T_n\nvdash\bot$ :
+  On suppose que $\varT\nvdP\bot$, on montre alors par récurrence sur
+  $n \in \bN$ que $\varT_n\nvdP\bot$~:
   \begin{itemize}
-  \item Comme $\mathcal T_0 =\mathcal T$, le résultat est direct.
-  \item Supposons par l'absurde que $\mathcal T_{n+1}\vdash \bot$, et par
-    hypothèse de récurrence que $\mathcal T_n\nvdash \bot$. On sait donc qu'il
-    existe $A_1,\ldots,A_n \in \mathcal T_n$ et
-    $B_1,\ldots,B_p \in \mathcal T_{n+1}\setminus \mathcal T_n$
+  \item Comme $\varT_0 =\varT$, le résultat est direct.
+  \item Supposons par l'absurde que $\varT_{n+1}\vdP \bot$, et par
+    hypothèse de récurrence que $\varT_n\nvdP \bot$. On sait donc qu'il
+    existe $\varFF_1,\ldots,\varFF_n \in \varT_n$ et
+    $\varFP_1,\ldots,\varFP_p \in \varT_{n+1}\setminus \varT_n$
     tels que
-    \[A_1,\ldots,A_n,B_1,\ldots,B_p\vdash \bot\]
-    En itérant la règle $\to_\mathrm i$ et en utilisant l'équivalence
-    $A\land B \to \bot \dashv\vdash A \to (B \to \bot)$ (que le lecteur peut
+    \[\varFF_1,\ldots,\varFF_n,\varFP_1,\ldots,\varFP_p\vdP \bot\]
+    En itérant la règle $\RtoI$ et en utilisant l'équivalence
+    $\varFF\land \varFP \to \bot \dvvd \varFF \to (\varFP \to \bot)$
+    (que le lecteur peut
     montrer en exercice), on obtient le séquent équivalent
-    \[A_1,\ldots,A_n\vdash \lnot\left(\bigwedge_{i = 1}^p B_i\right)\]
-    On sait de plus que les $B_i$ sont de la forme
-    \[B_i \defeq (\exists x, F_i) \to F_i[c_{F_i}/x]\]
-    Or, comme chaque $B_i$ est dans $\mathcal T_{n+1}$ mais pas dans
-    $\mathcal T_n$, on en déduit que chaque $c_{F_i}$ n'est pas dans $\Sigma_n$.
+    \[\varFF_1,\ldots,\varFF_n\vdash
+    \lnot\left(\bigwedge_{i = 1}^p \varFP_i\right)\]
+    On sait de plus que les $\varFP_i$ sont de la forme
+    \[\varFP_i \defeq (\exists x, \varFC_i) \to \varFC_i[\Cc_{\varFC_i}/x]\]
+    Or, comme chaque $\varFP_i$ est dans $\varT_{n+1}$ mais pas dans
+    $\varT_n$, on en déduit que chaque $\Cc_{\varFC_i}$ n'est pas dans $\Sign_n$.
     Cela signifie donc, en utilisant le \cref{lem.var.const}, que prouver notre
     séquent est équivalent, en choisissant de nouvelles variables $y_i$, libres
-    dans $A_1,\ldots,A_n,B_1,\ldots,B_p$, à prouver
-    \[A_1,\ldots,A_n\vdash \lnot \left(\bigwedge_{i = 1}^p
-    (\exists x, F_i) \to F_i[y_i/x]\right)\]
+    dans $\varFF_1,\ldots,\varFF_n,\varFP_1,\ldots,\varFP_p$, à prouver
+    \[\varFF_1,\ldots,\varFF_n\vdP \lnot \left(\bigwedge_{i = 1}^p
+    (\exists x, \varFC_i) \to \varFC_i[y_i/x]\right)\]
     On peut alors généraliser chaque $y_i$ pour obtenir
-    \[A_1,\ldots,A_n\vdash \forall y_1,\ldots,y_p, \lnot \left(
-    \bigwedge_{i=1}^p(\exists x, F_i) \to F_i[y_i/x]\right)\]
+    \[\varFF_1,\ldots,\varFF_n\vdash \forall y_1,\ldots,y_p, \lnot \left(
+    \bigwedge_{i=1}^p(\exists x, \varFC_i) \to \varFC_i[y_i/x]\right)\]
     On a ensuite besoin de deux équivalences relativement naturelles à
     considérer~:
-    \[\exists x_i, \bigwedge_{i = 1}^p A_i\dashv\vdash
-    \bigwedge_{i = 1}^p(\exists x_1, A_i)\qquad
-    \exists x, (A \to B) \dashv\vdash A \to (\exists B)\]
-    si $x$ n'apparaît pas dans $A$ et dans aucun $A_j$ pour $j \neq i$.
+    \[\exists x_i, \bigwedge_{i = 1}^p \varFF_i\dvvd
+    \bigwedge_{i = 1}^p(\exists x_1, \varFF_i)\qquad
+    \exists x, (\varFF \to \varFP) \dvvd \varFF \to (\exists \varFP)\]
+    si $x$ n'apparaît pas dans $\varFF$ et dans aucun $\varFF_j$ pour
+    $j \neq i$.
 
     En utilisant les lois de De Morgan on obtient donc d'abord que le séquent
     suivant est équivalent à notre séquent d'origine~:
-    \[A_1,\ldots,A_n\vdash \lnot\left(\exists y_1,\ldots,\exists y_p,
-    \bigwedge_{i = 1}^p (\exists x, F_i) \to F_i[y_i/x]\right)\]
+    \[\varFF_1,\ldots,\varFF_n\vdP \lnot\left(\exists y_1,\ldots,\exists y_p,
+    \bigwedge_{i = 1}^p (\exists x, \varFC_i) \to \varFC_i[y_i/x]\right)\]
     puis 
-    \[A_1,\ldots,A_n\vdash \lnot\left(\bigwedge_{i = 1}^p
-    \exists y_i,(\exists x, F) \to F_i[y_i/x]\right)\]
+    \[\varFF_1,\ldots,\varFF_n\vdP \lnot\left(\bigwedge_{i = 1}^p
+    \exists y_i,(\exists x, \varFC_i) \to \varFC_i[y_i/x]\right)\]
     d'où, en utilisant la deuxième équivalence~:
-    \[A_1,\ldots,A_n\vdash \lnot\left(\bigwedge_{i = 1}^p
-    (\exists x, F) \to (\exists y_i, F_i[y_i/x])\right)\]
-    Or il est clair que chaque $(\exists x, F)\to (\exists y_i, F_i[y_i/x])$
-    est prouvable puisque de la forme $A \to A$ (à renommage des variables liées
-    près). On en déduit donc que $A_1,\ldots,A_n\vdash \bot$, ce qui est
-    absurde. Ainsi $\mathcal T_{n+1}\nvdash \bot$.
+    \[\varFF_1,\ldots,\varFF_n\vdash \lnot\left(\bigwedge_{i = 1}^p
+    (\exists x, \varFC_i) \to (\exists y_i, \varFC_i[y_i/x])\right)\]
+    Or il est clair que chaque
+    $(\exists x, \varFC_i)\to (\exists y_i, \varFC_i[y_i/x])$
+    est prouvable puisque de la forme $\varFC \to \varFC$
+    (à renommage des variables liées près).
+    On en déduit donc que $\varFF_1,\ldots,\varFF_n\vdP \bot$, ce qui est
+    absurde. Ainsi $\varT_{n+1}\nvdP \bot$.
   \end{itemize}
 
-  Ainsi, $\mathcal T_n\nvdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
-  notre preuve, car si $\hclose{\mathcal T}\vdash \bot$, alors il existe une
-  liste (finie) $\Gamma\in\List(\hclose{\mathcal T})$ telle que
-  $\Gamma\vdash\bot$, mais $\Gamma\in\List(\mathcal T_n)$ pour un certain $n$,
-  puisque cette liste est finie. Comme $\mathcal T_n\nvdash\bot$, cela est
-  absurde. Ainsi $\hclose{\mathcal T}\nvdash\bot$.
+  Finalement, $\varT_n\nvdash\bot$ pour tout $n\in \mathbb N$. Ceci suffit à
+  notre preuve, car si $\hclose{\varT}\vdP \bot$, alors il existe une
+  liste (finie) $\varCG\in\List(\hclose{\varT})$ telle que
+  $\varCG\vdP\bot$, mais $\varCG\in\List(\varT_n)$ pour un certain $n$,
+  puisque cette liste est finie. Comme $\varT_n\nvdP\bot$, cela est
+  absurde. Ainsi $\hclose{\varT}\nvdP\bot$.
 \end{proof}
 
-On va maintenant énoncer qu'on peut compléter une théorie pour $\vdash$. Pour
+\noindent
+On va maintenant énoncer qu'on peut compléter une théorie pour $\vdP$. Pour
 prouver ce théorème, on va utiliser un contexte plus adapté qui est celui du
 \cref{chp.ordres}.
 
 \begin{theorem}[Extension complète d'une théorie]\label{thm.completion}
-  Soit $\mathcal T$ une théorie telle que $\mathcal T \nvdash \bot$. Alors il
-  existe une théorie $\mathcal T' \supseteq \mathcal T$ complète pour $\vdash$,
-  c'est-à-dire telle que pour tout formule $\varphi$, on a
-  $\mathcal T'\vdash \varphi$ ou $\mathcal T'\vdash \lnot \varphi$, et
-  $\mathcal T'\nvdash\bot$.
+  Soit $\varT$ une théorie telle que $\varT \nvdP \bot$. Alors il
+  existe une théorie $\varT' \supseteq \varT$ complète pour $\vdP$,
+  c'est-à-dire telle que pour tout proposition $\varFF$, on a
+  $\varT'\vdP \varFF$ ou $\varT'\vdP \lnot \varFF$, et
+  $\varT'\nvdP\bot$.
 \end{theorem}
 
 \begin{proof}
   Retardée à la \cref{sbsct.ultrafiltre}.
 \end{proof}
 
+\noindent
 En combinant les deux propriétés sur la complétion de Henkin avec le
-\cref{thm.completion}, nous obtenons une extension de $\mathcal T$ complète et
+\cref{thm.completion}, nous obtenons une extension de $\varT$ complète et
 vérifiant la propriété de Henkin.
 
 \begin{lemma}
-  Si $\mathcal T$ est une théorie sur $\Sigma$ telle que
-  $\mathcal T\nvdash\bot$, alors il existe une signature
-  $\Sigma'\supseteq\Sigma$ et une théorie
-  $\mathcal T'\supseteq\mathcal T$ sur $\Sigma'$, complète et possédant la
+  Si $\varT$ est une théorie sur $\Sign$ telle que
+  $\varT\nvdP\bot$, alors il existe une signature
+  $\Sign'\supseteq\Sign$ et une théorie
+  $\varT'\supseteq\varT$ sur $\Sign'$, complète et possédant la
   propriété de Henkin.
 \end{lemma}
 
 \begin{proof}
-  On applique le \cref{thm.completion} à $\hclose{\mathcal T}$~: comme on sait
-  que $\hclose{\mathcal T}\nvdash\bot$, on peut effectivement compléter cette
-  théorie pour $\vdash$. Avec la \cref{prop.henkin.ext}, on sait que cette
+  On applique le \cref{thm.completion} à $\hclose{\varT}$~: comme on sait
+  que $\hclose{\varT}\nvdP\bot$, on peut effectivement compléter cette
+  théorie pour $\vdP$. Avec la \cref{prop.henkin.ext}, on sait que cette
   complétion vérifie aussi la propriété de Henkin.
 \end{proof}
 
-On fixe maintenant la théorie $\mathcal T'$ construite à partir de $\mathcal T$.
-On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
+\noindent
+On fixe maintenant la théorie $\varT'$ construite à partir de $\varT$.
+On fixe aussi la signature $\Sign'$ comme étant $\hclose{\Sign}$.
 
 \begin{definition}[Modèle syntaxique]
-  On définit le modèle syntaxique $\mathcal M_{\mathcal T'}$ par :
+  On définit le modèle syntaxique $\varMM_{\varT'}$ par~:
   \begin{itemize}
-  \item $|\mathcal M_{\mathcal T'}|$ défini comme l'ensemble des termes sur
-    $\Sigma'$ (la signature définie plus tôt) qui n'ont aucune variable libre,
-    quotienté par $\equiv$ où $\equiv$ est défini par
-    \[t\equiv u \defeq \mathcal T'\vdash t = u\]
-  \item pour chaque symbole de fonction $f\in\Sigma'$ d'arité $n$, on associe la
+  \item $\carM{\varMM_{\varT'}}$ est défini comme l'ensemble des termes clos sur
+    $\Sign'$,
+    quotienté par la relation $\mathord{\equiv}$, définie par
+    \[t\equiv u \defeq \varT'\vdP t = u\]
+  \item pour chaque symbole de fonction $f\in\Sign'$ d'arité $n$, on associe la
     fonction
-    \[\begin{array}{ccccc}
-    f^{\mathcal T'} & : & |\mathcal M_{\mathcal T'}|^n & \longrightarrow &
-    |\mathcal M_{\mathcal T'}|\\
-    & & (\overline{t_1},\ldots,\overline{t_n}) & \longmapsto &
-    \overline{f(t_1,\ldots,t_n)}
-    \end{array}\]
-  \item pour chaque symbole de relation $r\in\Sigma'$ d'arité $n$, on définit la
-    relation $r^{\mathcal T'}$ par
-    \[r^{\mathcal T'}(\overline{t_1},\ldots,\overline{t_n}) \defeq
-    \mathcal T'\vdash r(t_1,\ldots,t_n)\]
+    \[ \makeFun
+       {\toMP{f}{\varT'}}{\carM{\varMM_{\varT'}}^n}{\carM{\varMM_{\varT'}}}
+       {\overline{t_1},\ldots,\overline{t_n}}{\overline{f(t_1,\ldots,t_n)}}
+    \]
+  \item pour chaque symbole de relation $R\in\Sign'$ d'arité $n$, on définit la
+    relation $\toMP{R}{\varT'}$ par
+    \[\toMP{R}{\varT'}(\overline{t_1},\ldots,\overline{t_n}) \defeq
+    \varT'\vdP R(t_1,\ldots,t_n)\]
   \end{itemize}
 \end{definition}
 
@@ -1821,35 +1954,36 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
   Pour que cette définition ait du sens, il convient de montrer que $\equiv$ est
   une relation d'équivalence, et qu'elle est compatible avec les symboles de
   fonction et de relation (c'est-à-dire que nos définitions de
-  $f^{\mathcal T'}$ et $r^{\mathcal T'}$ ne dépendent pas du représentant choisi).
+  $\toMP{f}{\varT'}$ et $\toMP{R}{\varT'}$ ne
+  dépendent pas du représentant choisi).
 
-  Montrons d'abord que $\equiv$ est une relation d'équivalence :
+  Montrons d'abord que $\equiv$ est une relation d'équivalence~:
   \begin{itemize}
-  \item Grâce à $=_\mathrm i$, on sait que $\mathcal T'\vdash t = t$ pour tout
-    $t\in \Term(\Sigma')$, donc $\equiv$ est réflexive.
-  \item Supposons que $t\equiv u$, c'est-à-dire que $\mathcal T'\vdash t = u$,
-    on peut alors construire l'arbre de preuve suivant :
+  \item Grâce à $\ReqI$, on sait que $\varT'\vdP t = t$ pour tout
+    $t\in \TermCl(\Sign')$, donc $\equiv$ est réflexive.
+  \item Supposons que $t\equiv u$, c'est-à-dire que $\varT'\vdP t = u$,
+    on peut alors construire l'arbre de preuve suivant~:
     \begin{prooftree}
       \AxiomC{}
-      \RightLabel{$=_\mathrm i$}
-      \UnaryInfC{$\mathcal T' \vdash t = t$}
-      \AxiomC{$\mathcal T' \vdash t = u$}
-      \RightLabel{$=_\mathrm e$}
-      \BinaryInfC{$\mathcal T' \vdash u = t$}
+      \RightLabel{$\ReqI$}
+      \UnaryInfC{$\varT' \vdP t = t$}
+      \AxiomC{$\varT' \vdP t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varT' \vdP u = t$}
     \end{prooftree}
     donc $u\equiv t$ ($t=t$ peut se lire comme $(x=t)[t/x]$).
   \item Supposons que $t\equiv u$ et $u\equiv v$, montrons alors que
-    $t\equiv v$ :
+    $t\equiv v$~:
     \begin{prooftree}
-      \AxiomC{$\mathcal T'\vdash u = v$}
+      \AxiomC{$\varT'\vdP u = v$}
       \AxiomC{}
-      \RightLabel{$=_\mathrm i$}
-      \UnaryInfC{$\mathcal T' \vdash t = t$}
-      \AxiomC{$\mathcal T' \vdash t = u$}
-      \RightLabel{$=_\mathrm e$}
-      \BinaryInfC{$\mathcal T' \vdash u = t$}
-      \RightLabel{$=_\mathrm e$}
-      \BinaryInfC{$\mathcal T'\vdash t = v$}
+      \RightLabel{$\ReqI$}
+      \UnaryInfC{$\varT' \vdP t = t$}
+      \AxiomC{$\varT' \vdP t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varT' \vdP u = t$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varT'\vdP t = v$}
     \end{prooftree}
   \end{itemize}
   Ainsi $\equiv$ est bien une relation d'équivalence.
@@ -1859,145 +1993,148 @@ On fixe aussi la signature $\Sigma'$ comme étant $\hclose{\Sigma}$.
   sur $n$ pour généraliser la preuve que nous allons faire). Pour que $\equiv$
   soit compatible avec $f$, il faut que l'image de $f$ ne dépende pas du choix
   du représentant, c'est-à-dire que si $t\equiv u$ alors
-  $f^{\mathcal T'}(\overline t) = f^{\mathcal T'}(\overline u)$, c'est-à-dire que
-  $\mathcal T'\vdash f(t) = f(u)$, ce que l'on peut prouver par
+  $\toMP{f}{\varT'}(\overline t) = \toMP{f}{\varT'}(\overline u)$,
+  ou encore
+  $\varT'\vdP f(t) = f(u)$, ce que l'on peut prouver par
   \begin{prooftree}
     \AxiomC{}
-    \RightLabel{$=_\mathrm i$}
-    \UnaryInfC{$\mathcal T' \vdash f(t) = f(t)$}
-    \AxiomC{$\mathcal T'\vdash t = u$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$\mathcal T'\vdash f(t) = f(u)$}
+    \RightLabel{$\ReqI$}
+    \UnaryInfC{$\varT' \vdP f(t) = f(t)$}
+    \AxiomC{$\varT'\vdP t = u$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$\varT'\vdP f(t) = f(u)$}
   \end{prooftree}
-  donc $f^{\mathcal T'}$ est bien définie.
+  donc $\toMP{f}{\varT'}$ est bien définie.
 
-  De même, pour une relation $r$ prise pour simplifier d'arité $1$, il convient
+  De même, pour une relation $R$ prise pour simplifier d'arité $1$, il convient
   de montrer que si $t\equiv u$ alors
-  $r^{\mathcal T'}(\overline t)\to r^{\mathcal T'}(\overline u)$ (il faudrait une
+  $\toMP{R}{\varT'}(\overline t)\to \toMP{R}{\varT'}(\overline u)$
+  (il faudrait une
   équivalence, mais il suffit en fait de montrer l'implication puisque $\equiv$
-  a été montrée symétrique). L'arbre de preuve suivant nous le montre :
+  a été montrée symétrique). L'arbre de preuve suivant nous le montre~:
   \begin{prooftree}
-    \AxiomC{$\mathcal T'\vdash r(t)$}
-    \AxiomC{$\mathcal T'\vdash t = u$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$\mathcal T'\vdash r(u)$}
+    \AxiomC{$\varT'\vdP R(t)$}
+    \AxiomC{$\varT'\vdP t = u$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$\varT'\vdP R(u)$}
   \end{prooftree}
-  donc $r^{\mathcal T'}$ est bien définie.
+  donc $\toMP{R}{\varT'}$ est bien définie.
 \end{proof}
 
 Afin de montrer le théorème de complétude, on va vouloir montrer que les
-formules vérifiées par $\mathcal M_{\mathcal T'}$ sont exactement les résultats
-montrés par la théorie $\mathcal T'$. Comme l'induction se fera sur la structure
+formules vérifiées par $\varMM_{\varT'}$ sont exactement les résultats
+montrés par la théorie $\varT'$. Comme l'induction se fera sur la structure
 de la formule vérifiée, il nous faut considérer des possibles variables libres.
 On définit donc d'abord une notation pour définir un environnement sur
-$\mathcal M_{\mathcal T'}$.
+$\varMM_{\varT'}$.
 
 \begin{definition}[Valuation syntaxique]
-    Soit $\rho$ une valuation sur $\mathcal M_{\mathcal T'}$, on la notera
-    $\overline \rho$ et on notera $\rho$ une fonction
-    $\Var \partialto \Term(\Sigma')$ telle que
-    $\overline{\rho(x)} = \overline\rho(x)$.
+  Soit $\env$ une valuation sur $\varMM_{\varT'}$, on la notera
+  $\overline \env$ et on notera $\env$ une fonction
+  $\Var \partialto \Term(\Sign')$ telle que
+  $\overline{\env(x)} = \overline\env(x)$.
 \end{definition}
 
+\noindent
 On peut alors démontrer le lemme qui permettra de prouver le théorème de
 complétude.
 
 \begin{lemma}
-  Pour toute formule $\varphi \in \Formula(\Sigma')$ et toute valuation
-  $\overline\rho$ telle que $\VL(\varphi)\subseteq \dom(\rho)$, on a
+  Pour toute formule $\varFF \in \Formula(\Sign')$ et toute valuation
+  $\overline\env$ telle que $\VL(\varFF)\subseteq \dom(\env)$, on a
   l'équivalence suivante~:
-  \[\mathcal T' \vdash \rho(\varphi) \iff
-  \mathcal M_{\mathcal T'},\overline \rho\models \varphi\]
+  \[\varT' \vdP \env(\varFF) \iff
+  \varMM_{\varT'},\overline \env\satisf \varFF\]
 \end{lemma}
 
 \begin{proof}
   On peut prouver par induction sur la structure des termes que pour tout terme
-  $t \in \Term(\Sigma')$, on a $\overline{\rho(t)} = \overline \rho(t)$
+  $t \in \Term(\Sign')$, on a $\overline{\env(t)} = \overline \env(t)$
   (l'exercice est laissé au lecteur, mais il s'agit d'une induction qui ne
   présente aucune difficulté).
   
-  On démontre le résultat par induction sur la structure de $\varphi$ :
+  On démontre le résultat par induction sur la structure de $\varFF$~:
   \begin{itemize}
-  \item si $\varphi$ est $\top$ ou $\bot$, le résultat est évident (en
-    particulier $\mathcal T'\nvdash\bot$).
-  \item si $\varphi = r(t_1,\ldots,t_n)$ alors la proposition
-    $\mathcal T'\vdash r(\rho(t_1),\ldots,\rho(t_n))$ signifie exactement
-    \[r^{\mathcal T'}(\overline{\rho(t_1)},\ldots,\overline{\rho(t_n)})\]
+  \item si $\varFF$ est $\top$ ou $\bot$, le résultat est évident (en
+    particulier $\mathcal T'\nvdP\bot$).
+  \item si $\varFF = R(t_1,\ldots,t_n)$ alors la proposition
+    $\varT'\vdP R(\env(t_1),\ldots,\env(t_n))$ signifie exactement
+    \[\toMP{R}{\varT'}(\overline{\env(t_1)},\ldots,\overline{\env(t_n)})\]
     ce qui correspond à
-    \[\mathcal M_{\mathcal T'}\models 
-    r(\overline \rho (t_1),\ldots,\overline \rho(t_n))\]
+    \[\varMM_{\varT'}\satisf 
+    R(\overline \env (t_1),\ldots,\overline \env(t_n))\]
     en utilisant le résultat sur la substitution des termes.
     Ce fait est une équivalence puisqu'il provient de la définition même de
-    $r^{\mathcal T'}$.
-  \item si $\varphi = \lnot \psi$, montrons que
-    $\mathcal T'\vdash\rho(\varphi)\implies \mathcal M_{\mathcal T'},
-    \overline\rho \models \varphi$.
-    Comme $\mathcal T'\vdash \lnot \rho(\psi)$, on en déduit que
-    $\mathcal T'\nvdash \rho(\psi)$ (car $\mathcal T'\nvdash\bot$), donc par
+    $\toMP{R}{\varT'}$.
+  \item si $\varFF = \lnot \varFP$, montrons que
+    $\varT'\vdP\env(\varFF)\implies \varMM_{\varT'},
+    \overline\env \satisf\varFF$.
+    Comme $\varT'\vdP \lnot \env(\varFP)$, on en déduit que
+    $\varT'\nvdP \env(\varFP)$ (car $\varT'\nvdP\bot$), donc par
     hypothèse d'induction
-    $\mathcal M_{\mathcal T'},\overline \rho\not\models \psi$, donc
-    $\mathcal M_{\mathcal T'},\overline \rho\models \varphi$.
+    $\varMM_{\varT'},\overline \env\not\satisf \varFP$, donc
+    $\varMM_{\varT'},\overline \env\satisf \varFP$.
     Montrons la réciproque~: on suppose que
-    $\mathcal M_{\mathcal T'},\overline\rho\models \varphi$, c'est-à-dire que
-    $\mathcal M_{\mathcal T'},\overline\rho\not\models \psi$. Par hypothèse
-    d'induction, cela signifie que $\mathcal T'\nvdash \rho(\psi)$, mais
-    $\mathcal T'$ est complète donc $\mathcal T'\vdash\lnot\rho(\psi)$. On a
+    $\varMM_{\varT'},\overline\env\satisf \varFF$, c'est-à-dire que
+    $\varMM_{\varT'},\overline\env\not\satisf \varFP$. Par hypothèse
+    d'induction, cela signifie que $\varT'\nvdP \env(\varFP)$, mais
+    $\varT'$ est complète donc $\varT'\vdP\lnot\env(\varFP)$. On a
     donc l'équivalence.
-  \item si $\varphi = \psi \land \chi$, on suppose que
-    $\mathcal T'\vdash \rho(\psi)\land\rho(\chi)$. Comme $\mathcal T'$ est
-    complète, cela est équivalent à dire que $\mathcal T'\vdash \rho(\psi)$ et
-    $\mathcal T'\vdash \rho(\chi)$ (puisque ni $\lnot\rho(\psi)$ ni
-    $\lnot \rho(\chi)$ ne sont prouvables), ce qui est équivalent par hypothèse
+  \item si $\varFF = \varFP \land \varFC$, on suppose que
+    $\varT'\vdP \env(\varFP)\land\env(\varFC)$. Comme $\varT'$ est
+    complète, cela est équivalent à dire que $\varT'\vdP \env(\varFP)$ et
+    $\varT'\vdP \env(\varFC)$ (puisque ni $\lnot\env(\varFP)$ ni
+    $\lnot \rho(\varFC)$ ne sont prouvables), ce qui est équivalent par hypothèse
     d'induction à dire que
-    $\mathcal M_{\mathcal T'},\overline\rho\models\psi$ et
-    $\mathcal M_{\mathcal T'},\overline\rho\models\chi$, donc équivalent à
-    $\mathcal M_{\mathcal T'},\overline\rho\models \psi\land \chi$.
-  \item les cas de $\to$ et $\lor$ se ramènent directement à $\land$ et $\lnot$
+    $\varMM_{\varT'},\overline\env\satisf\varFP$ et
+    $\varMM_{\varT'},\overline\env\satisf\varFC$, donc équivalent à
+    $\varMM_{\varT'},\overline\env\satisf \varFP\land \varFC$.
+  \item les cas de $\mathord{\to}$ et $\mathord{\lor}$
+    se ramènent directement à $\mathord{\land}$ et $\mathord{\lnot}$
     grâce aux lois de De Morgan (sémantiquement on peut voir facilement
     l'équivalence par l'égalité des valeurs de vérité).
-  \item le cas de $\forall$ se ramène à celui de $\exists$ et $\lnot$ grâce
-    aux lois de De Morgan, nous traitons donc simplement $\exists$.
-  \item si $\varphi = \exists x, \psi$, où $x \notin \VL(\rho)$; alors supposons
-    que $\mathcal T'\vdash \exists x, \rho(\psi)$~: comme chaque terme substitué
-    par $\rho$ devient un terme clos et que toutes les variables libres de
-    $\varphi$ sont dans le domaine de $\rho$, on sai que seul $x$ est une
-    variable libre de $\rho(\psi)$, la propriété de Henkin sur $\mathcal T'$
-    nous donne done une constante $c$ telle que
-    $\mathcal T'\vdash \rho(\psi[c/x])$
-    et donc un élément $\overline c \in |\mathcal M_{\mathcal T'}|$ tel que
-    $\mathcal M_{\mathcal T'}, \overline\rho[x\mapsto \overline c]
-    \models \psi$,
+  \item le cas de $\mathord{\forall}$ se ramène à celui de $\mathord{\exists}$
+    et $\mathord{\lnot}$ grâce
+    aux lois de De Morgan, nous traitons donc simplement $\mathord{\exists}$.
+  \item si $\varFF = \exists x, \varFP$, où $x \notin \VL(\env)$, alors
+    supposons
+    que $\varT'\vdP \exists x, \env(\varFP)$~: comme chaque terme substitué
+    par $\env$ devient un terme clos et que toutes les variables libres de
+    $\varFF$ sont dans le domaine de $\env$, on sai que seul $x$ est une
+    variable libre de $\env(\varFP)$, la propriété de Henkin sur $\varT'$
+    nous donne done une constante $\Cc$ telle que
+    $\varT'\vdP \env(\varFP[\Cc/x])$
+    et donc un élément $\overline \Cc \in \carM{\varMM_{\varT'}}$ tel que
+    $\varMM_{\varT'}, \overline\env[x\mapsto \overline c] \satisf \varFP$,
     donc
-    $\mathcal M_{\mathcal T'},\overline\rho\models \exists x, \psi$.
+    $\varMM_{\varT'},\overline\env\satisf \exists x, \varFP$.
     Réciproquement, s'il existe $\overline t$ tel que
-    $\mathcal M_{\mathcal T'},\overline\rho[x\mapsto \overline t]\models \psi$,
+    $\varMM_{\varT'},\overline\env[x\mapsto \overline t]\satisf \varFP$,
     alors par hypothèse d'induction
-    $\mathcal T'\vdash \rho[x\mapsto \overline t](\psi)$ donc
-    $\mathcal T'\vdash \exists x, \psi$.
+    $\varT'\vdP \env[x\mapsto \overline t](\varFP)$ donc
+    $\varT'\vdP \exists x, \varFP$.\qedhere
   \end{itemize}
-
-  D'où le résultat par induction.
 \end{proof}
 
-On peut maintenant prouver le théorème de complétude.
+\noindent
+On peut finalement prouver le théorème de complétude.
 
 \begin{theorem}[Complétude de la déduction naturelle \cite{GödelCompleteness}]
-  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ telle que
-  $\mathcal T\nvdash\bot$. Alors il existe un modèle
-  $\mathcal M\models \mathcal T$.
+  Soit une signature $\Sign$ et une théorie $\varT$ sur $\Sign$ telle que
+  $\varT\nvdP\bot$. Alors il existe un modèle $\varMM\satisf \varT$.
 \end{theorem}
 
 \begin{proof}
-  En reprenant notre modèle $\mathcal M_{\mathcal T'}$, on sait à partir du lemme
-  précédent que $\mathcal M_{\mathcal T'}\models \mathcal T'$ grâce à la règle
-  d'axiome, et au fait que $\mathcal T'$ ne contient que des formules closes.
-  Comme $\mathcal T\subseteq\mathcal T'$, on en déduit donc que
-  $\mathcal M_{\mathcal T'}\models \mathcal T$.
+  En reprenant notre modèle $\varMM_{\varT'}$, on sait à partir du lemme
+  précédent que $\varMM_{\varT'}\satisf \varT'$ grâce à la règle
+  d'axiome, et au fait que $\varT'$ ne contient que des formules closes.
+  Comme $\varT\subseteq\varT'$, on en déduit donc que
+  $\varMM_{\varT'}\satisf \varT$.
 \end{proof}
 
 \begin{theorem}[Complétude, deuxième version]\label{thm.completude}
-  Soit $\Sigma$ une signature. Alors les deux relations
-  $\vdash,\vDash\subseteq \powerset(\Formula(\Sigma))\times\Formula(\Sigma)$
+  Soit $\Sign$ une signature. Alors les deux relations
+  $\vdP,\vD\subseteq \powerset(\Formula(\Sign))\times\Formula(\Sign)$
   coïncident.
 \end{theorem}
 
@@ -2005,19 +2142,20 @@ On récupère en tant que conséquence un théorème essentiel de la théorie de
 modèles~: le théorème de compacité.
 
 \begin{theorem}[Théorème de compacité]\label{thm.compacite}
-  Soit $\Sigma$ une signature, $\mathcal F \subseteq\Formula(\Sigma)$ et
-  $F\in\Formula(\Sigma)$, alors $\mathcal F\vDash F$ si et seulement s'il existe
-  $\mathcal A\subseteq_{\mathrm{fin}} \mathcal F$ tel que
-  $\mathcal A\vDash F$.
+  Soient $\Sign$ une signature, $\FormSet \subseteq\Formula(\Sign)$ et
+  $\varFF\in\Formula(\Sign)$, alors $\FormSet\vD \varFF$
+  si et seulement s'il existe
+  $F\subfin \FormSet$ tel que $F\vD \varFF$.
 \end{theorem}
 
 \begin{proof}
-  En effet, si $\mathcal F\vDash F$ alors $\mathcal F\vdash F$, d'où par
-  définition l'existence de $\Gamma\in\List(\mathcal F)$ tel que
-  $\Gamma\vdash A$. Il n'y a qu'un nombre fini de propositions dans $\Gamma$,
-  donc on peut trouver $\mathcal A\subseteq_{\mathrm{fin}}\mathcal F$ tel que
-  $\Gamma\in\List(\mathcal A)$ : on en déduit donc que $\mathcal A\vdash F$,
-  d'où par correction que $\mathcal A\vDash F$.
+  En effet, si $\FormSet\vD \varFF$ alors $\FormSet\vdP \varFF$, d'où par
+  définition l'existence de $\varCG\in\List(\FormSet)$ tel que
+  $\varCG\vdash \varFF$.
+  Il n'y a qu'un nombre fini de propositions dans $\varCG$,
+  donc on peut trouver $F\subfin\FormSet$ tel que
+  $\varCG\in\List(F)$~: on en déduit donc que $F\vdash \varFF$,
+  d'où par correction que $F\vD \varFF$.
 \end{proof}
 
 En étudiant un peu en détail le modèle syntaxique que nous avons construit, il
@@ -2026,51 +2164,53 @@ comme un quotient de l'ensemble des termes, il nous suffit de dénombrer cet
 ensemble. Cela mène au théorème de Löwenheim-Skolem descendant.
 
 \begin{theorem}[Löwenheim-Skolem descendant]
-  Soit $\mathcal T$ une théorie cohérente sur une signature $\Sigma$ qui
-  n'admet aucun modèle fini. Alors il existe un modèle de $\mathcal T$ de
-  cardinal inférieur à $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
+  Soit $\varT$ une théorie cohérente sur une signature $\Sign$ qui
+  n'admet aucun modèle fini. Alors il existe un modèle de $\varT$ de
+  cardinal inférieur à $\max(|\SigFun_{\Sign}|,\aleph_0)$.
 \end{theorem}
 
 \begin{proof}
-  En effet, soit le modèle $\mathcal M$ de $\mathcal T$ syntaxique, construit
-  précédemment. Comme $\mathcal T$ n'admet aucun modèle fini, le modèle est de
+  En effet, soit le modèle $\varMM$ de $\varT$ syntaxique, construit
+  précédemment. Comme $\varT$ n'admet aucun modèle fini, le modèle est de
   cardinal au moins $\aleph_0$. De plus, on a une surjection
-  $\Term(\hclose\Sigma) \to \mathcal M$ par $t\mapsto \overline t$. L'ensemble
-  $\Term(\hclose\Sigma)$ est de cardinal $\max(|\Sigma_{\mathcal F}|,\aleph_0)$.
-  En effet, en notant à nouveau $\Sigma_n$ chaque signature utilisée à chaque
-  étape de la construction de $\hclose\Sigma$, on voit qu'on ajoute un nombre
-  de $\max(|\Sigma_\mathcal F|,\aleph_0)$ de constantes $c_F$. La signature
-  $\hclose\Sigma$ est donc l'union dénombrable d'ensembles de cardinal
-  $\max(|\Sigma_\mathcal F|,\aleph_0)$, donc c'est un ensemble dénombrable.
-  On voit enfin que l'ensemble des termes sur $\hclose\Sigma$ est de même
+  $\Term(\hclose\Sign) \to \varMM$ par $t\mapsto \overline t$. L'ensemble
+  $\Term(\hclose\Sign)$ est de cardinal $\max(|\SigFun_{\Sign}|,\aleph_0)$.
+  En notant à nouveau $\Sign_n$ chaque signature utilisée à chaque
+  étape de la construction de $\hclose\Sign$, on voit qu'on ajoute un nombre
+  au plus $\max(|\SigFun_{\Sign}|,\aleph_0)$ de constantes $\Cc_{\varFF}$.
+  La signature
+  $\hclose\Sign$ est donc l'union dénombrable d'ensembles de cardinal
+  $\max(|\SigFun_{\Sign}|,\aleph_0)$, donc c'est un ensemble dénombrable.
+  On voit enfin que l'ensemble des termes sur $\hclose\Sign$ est de même
   cardinal, avec le même argument.
 
   En conclusion, on a une surjection d'un ensemble de cardinal
-  $\max(|\Sigma_\mathcal F|,\aleph_0)$ vers le modèle syntaxique, qui est donc
+  $\max(|\SigFun_{\Sign}|,\aleph_0)$ vers le modèle syntaxique, qui est donc
   un modèle vérifiant l'affirmation voulue.
 \end{proof}
 
+\noindent
 Le théorème de compacité, lui, nous permet de déduire la version ascendante du
 théorème.
 
 \begin{theorem}[Löwenheim-Skolem ascendant]
-  Soit $\mathcal T$ une théorie admettant un modèle infini, et
-  soit $\kappa$ un cardinal infini. Alors il existe un modèle
-  de $\mathcal T$ de cardinal supérieur à $\kappa$.
+  Soit $\varT$ une théorie admettant un modèle infini, et
+  soit $\varCk$ un cardinal infini. Alors il existe un modèle
+  de $\varT$ de cardinal supérieur à $\varCk$.
 \end{theorem}
 
 \begin{proof}
-  On ajoute à $\Sigma$ l'ensemble $\{c_a\mid a \in \kappa\}$ de constantes, et
-  on définit la théorie $\mathcal T'$ sur cette signature par
-  \[\mathcal T'\defeq\mathcal T\cup \bigcup_{a,b\in \kappa}(c_a\neq c_b)\]
-  ainsi un modèle de $\mathcal T'$ est naturellement un modèle de $\mathcal T$,
-  et il a au moins $\kappa$ éléments. Par le théorème de compacité, pour
-  que $\mathcal T'$ soit cohérent, il suffit que toute partie finie de
-  $\mathcal T'$ soit cohérente. Mais le modèle de $\mathcal T$, infini, est
-  un modèle de toute partie finie de $\mathcal T'$ en associant aux éléments
-  $c_a$ des éléments distincts (seul un nombre fini est considéré par la partie
-  finie de $\mathcal T'$, les autres peuvent être associés au même élément).
-  Ainsi on a un modèle de $\mathcal T'$.
+  On ajoute à $\Sign$ l'ensemble $\compr{\Cc_a}{a \in\varCk}$ de constantes, et
+  on définit la théorie $\varT'$ sur cette signature par
+  \[\varT'\defeq\varT\cup \bigcup_{a,b\in \varCk}(\Cc_a\neq \Cc_b)\]
+  ainsi un modèle de $\varT'$ est naturellement un modèle de $\varT$,
+  et il a au moins $\varCk$ éléments. Par le théorème de compacité, pour
+  que $\varT'$ soit cohérent, il suffit que toute partie finie de
+  $\varT'$ soit cohérente. Mais le modèle de $\varT$, infini, est
+  un modèle de toute partie finie de $\varT'$ en associant aux éléments
+  $\Cc_a$ des éléments distincts (seul un nombre fini est considéré par la
+  partie finie de $\varT'$, les autres peuvent être associés au même élément).
+  Ainsi on a un modèle de $\varT'$.
 \end{proof}
 
 On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une forme générale,
@@ -2079,29 +2219,27 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
 \begin{theorem}[Löwenheim-Skolem\cite{Löwenheim1915, skolem1920logisch}]
   \label{thm.LS}
-  Soit $\mathcal M$ une structure infinie sur une signature $\Sigma$ et
-  $\kappa \geq \max(|\Sigma_{\mathcal F}|,\aleph_0)$. Alors il existe une
-  structure $\mathcal N$ élémentairement équivalente à $\mathcal M$,
-  c'est-à-dire telle que pour tout énoncé clos $\varphi\in\Prop(\Sigma)$, on a
-  \[\mathcal M \models \varphi \iff \mathcal N \models \varphi\]
-  et telle que $|\mathcal N| = \kappa$.
+  Soit $\varMM$ une structure infinie sur une signature $\Sign$ et
+  $\varCk \geq \max(|\SigFun_{\Sign}|,\aleph_0)$. Alors il existe une
+  structure $\varMN$ élémentairement équivalente à $\varMM$,
+  c'est-à-dire telle que pour toute proposition $\varFF\in\Prop(\Sign)$, on a
+  \[\satMM \varFF \iff \satMN \varFF\]
+  et telle que $|\varMN| = \varCk$.
 \end{theorem}
 
 \begin{proof}
   On combine les deux résultats précédents~: on considère tout d'abord la
-  théorie $\mathcal T_{\mathcal M}$ des propositions vraies dans $\mathcal M$.
+  théorie $\varT_{\varMM}$ des propositions vraies dans $\varMM$.
   Cette théorie étant complète (un modèle vérifie un énoncé ou sa négation),
-  construire un modèle de $\mathcal T_{\mathcal M}$ de cardinal $\kappa$
-  suffit à prouver ce qu'on veut. On définit alors, comme précédemment, la
-  théorie $\mathcal T_\mathcal M'$ constituée des énoncés $c_a \neq c_b$
+  construire un modèle de $\varT_{\varMM}$ de cardinal $\varCk$
+  suffit à prouver le théorème. On définit alors, comme précédemment, la
+  théorie $\varT'_{\varMM}$ constituée des énoncés $\Cc_a \neq \Cc_b$
   (on enrichit la signature en conséquences).
 
   On sait donc qu'il existe un modèle syntaxique de cette théorie, qui est
-  donc de cardinal inférieur à $\kappa$ par la version descendante du
-  théorème, et de cardinal supérieur à $\kappa$ par la version ascendante
-  du théorème~: le modèle syntaxique est de cardinal $\kappa$.
-
-  On en déduit donc le résultat.
+  donc de cardinal inférieur à $\varCk$ par la version descendante du
+  théorème, et de cardinal supérieur à $\varCk$ par la version ascendante
+  du théorème~: le modèle syntaxique est de cardinal $\varCk$.
 \end{proof}
 
 \section{Des éléments de méta-mathématiques}\label{sec.metamath}

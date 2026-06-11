@@ -161,8 +161,8 @@ Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
   \item si $n = 0$ alors l'hypothèse $x \in X_0$ signifie qu'on a
     $x\in \vide$~: par absurdité de la prémisse, la conclusion est vraie.
   \item si $n = m+1$, alors $x\in X_n$ signifie que
-    \[x \in \{(c,x_1,\ldots,x_p)\mid c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
-    \alpha(c) = p\}\]
+    \[x \in \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
+    \alpha(c) = p}\]
     d'où le résultat par définition.\qedhere
   \end{itemize}
 \end{proof}
@@ -473,7 +473,7 @@ Une règle d'inférence, elle, va relier des relations.
   \og la règle $\ruleR$ est valide pour $X = R$\fg{}, dans le cas où l'on
   fixe le paramètre $X$ comme valant $R$. Pour signifier qu'une assignation
   des variables $x_i$ à des objets $a_i$ vérifie un énoncé $P$, on notera
-  $(x_i \mapsto a_i) \models P$.
+  $(x_i \mapsto a_i) \satisf P$.
 \end{definition}
 
 Supposons donnée une règle de la forme
@@ -499,9 +499,9 @@ par une clause de la forme $R(f_1(x_1,\ldots,x_k),\ldots,f_p(x_1,\ldots,x_k))$.
 Une règle $\ruleR$ définit alors la fonction suivante, qui considère
 l'ensemble des $R(t_1,\ldots,t_k)$~:
 \begin{multline*}
-  X \longmapsto\{(f_1(a_1,\ldots,a_k),\ldots,f_p(a_1,\ldots,a_k))\mid\\
+  X \longmapsto\compr{(f_1(a_1,\ldots,a_k),\ldots,f_p(a_1,\ldots,a_k))}{\\
   a_1,\ldots,a_k \in E, \forall i \in \{1,\ldots,n\},
-  (R\mapsto X,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \models P_i\}
+  (R\mapsto X,x_1\mapsto a_1,\ldots,x_k\mapsto a_k) \satisf P_i}
 \end{multline*}
 On note cette fonction $f_{\ruleR}$. On suppose maintenant une hypothèse qui,
 en pratique, sera toujours vérifiée~: la fonction $f_{\ruleR}$ est croissante.
@@ -514,7 +514,7 @@ $f_{\ruleR}(R)\subseteq R$, que l'on peut aussi exprimer par
 $f_{\ruleR}(R)\cup R = R$. Cela nous pousse à définir la fonction suivante, qui
 nous sera essentielle pour les prochaines constructions.
 
-\[\makeFun{\ruleR}{\powerset(E^p)}{\powerset(E^p)}{X}{X\cup f_{\ruleR}(x)}\]
+\[\makeFun{\ruleR}{\powerset(E^p)}{\powerset(E^p)}{X}{X\cup f_{\ruleR}(X)}\]
 
 Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
 
@@ -526,7 +526,7 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
     \UnaryInfC{$R(x,x)$}
   \end{prooftree}
   exprimant que $R$ est réflexive. La fonction associée à $\reflR$ est
-  alors $R \mapsto R \cup \{(x,x) \mid x \in E\}$. Remarquons que l'absence de
+  alors $R \mapsto R \cup \compr{(x,x)}{x \in E}$. Remarquons que l'absence de
   prémisse signifie que la conclusion est toujours valide.
 \end{example}
 
@@ -540,7 +540,7 @@ Donnons quelques exemples du résultat de $\mathrm r$ pour des règles simples.
     \BinaryInfC{$R(x,z)$}
   \end{prooftree}
   Dans ce cas, l'image de $R$ par $\transR$ est l'ensemble
-  \[R \cup \{ (x,z) \in E^2\mid \exists y \in E, R(x,y)\text{ et } R(y,z)\}\]
+  \[R \cup \compr{ (x,z) \in E^2}{\exists y \in E, R(x,y)\text{ et } R(y,z)}\]
   En effet, même si $y$ n'apparaît pas dans la conclusion, il est nécessaire
   qu'un tel $y$ existe pour que le triplet $(x,y,z)$ vérifie la condition
   de $f_{\transR}$.
@@ -566,7 +566,7 @@ Knaster-Tarski.
 \end{theorem}
 \begin{proof}
   Pour commencer, définissons l'ensemble des pré-points fixes de $f$, qui est
-  \[\prefix(f) = \{ A \in \powerset(E)\mid f(A)\subseteq A\}\]
+  \[\prefix(f) = \compr{A \in \powerset(E)}{f(A)\subseteq A}\]
   Cet ensemble est non vide, puisqu'il contient $E$.
   Soit $A = \bigcap \prefix(f)$, montrons que $A$ est dans
   $\prefix(f)$~:
@@ -623,12 +623,12 @@ qui est très proche de celui sur les ensembles inductifs.
   Soit $E$ un ensemble, $R$ une relation $n$-aire sur $E$ et $\ruleR$ une règle
   d'inférence incluant comme paramètre $X$. Soit $P \in \mathcal P(E^n)$
   un prédicat d'arité $n$ sur $E$. Supposons que $R\subseteq P$ et que
-  $(X\mapsto P)\models \ruleR$. Alors $R_{\ruleR}\subseteq P$.
+  $(X\mapsto P)\satisf \ruleR$. Alors $R_{\ruleR}\subseteq P$.
 \end{theorem}
 
 \begin{proof}
   Il suffit de remarquer que $P$ est un point fixe de $\ruleR$ puisque
-  $(X\mapsto P)\models \ruleR$. Ainsi, comme $P$ est un point fixe de $\ruleR$
+  $(X\mapsto P)\satisf \ruleR$. Ainsi, comme $P$ est un point fixe de $\ruleR$
   contenant $R$, on en déduit que $P$ contient le plus petit point fixe de
   $\ruleR$ contenant $R$, qui est exactement $R_{\ruleR}$.
 \end{proof}
@@ -740,7 +740,7 @@ syntaxiquement prouver la correspondance avec la règle.
 
 \begin{definition}[Règle admissible]
   Une règle $\ruleR$ est admissible pour une relation $R$ si
-  $R\models \ruleR$. La règle est admissible pour un ensemble de règles
+  $R\satisf \ruleR$. La règle est admissible pour un ensemble de règles
   $\ruleR_1,\ldots,\ruleR_n$ si la relation définie par ces règles vérifie
   la règle $\ruleR$.
 \end{definition}
@@ -1050,8 +1050,8 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 
   \noindent
   On définit aussi l'ensemble $\PreTree(A)$ des pré-arbres $A$-branchants, par
-  \[\PreTree(A) \defeq \{T \subseteq \List(A) \mid \forall \varlist,\varlist',
-  \varlist \prefOrd \varlist' \land \varlist' \in T \implies \varlist \in T\}\]
+  \[\PreTree(A) \defeq \compr{T \subseteq \List(A)}{\forall \varlist,\varlist',
+  \varlist \prefOrd \varlist' \land \varlist' \in T \implies \varlist \in T}\]
   où $\prefOrd$ est la relation de préfixe donnée dans l'\cref{exo.ord.list}.
   Définir une injection $\Tree(A) \to \PreTree(A)$. Cette injection est-elle
   surjective~?
@@ -1145,13 +1145,13 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   
   \noindent
   On note l'ensemble des idéaux de $X_\bot$ par
-  \[\ideal(X_\bot) \defeq \{I \subseteq X_\bot \mid I \text{ est un idéal de }
-  X_\bot\}\]
+  \[\ideal(X_\bot) \defeq \compr{I \subseteq X_\bot}{I \text{ est un idéal de }
+  X_\bot}\]
   
   \begin{pbQuest}[resume]
   \item Montrer que la fonction
     \[\makeFun{\iota}{X_\bot}{\ideal(X_\bot)}{x}
-              {\{ y \in X_\bot \mid y < x\}\cup\{x\}}\]
+              {\compr{ y \in X_\bot}{y < x}\cup\{x\}}\]
     est une fonction injective, et que pour tous $x,y \in X_\bot$,
     \[x < y \iff \iota(x) \subsetneq \iota(y)\]
   \item Montrer que si $x \in X_\bot$ est un élément total, alors $\iota(x)$
@@ -1165,8 +1165,8 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 
   \noindent
   On définit désormais
-  \[X_\infty \defeq \{I \in \ideal(X) \mid \forall J \in \ideal(X),
-  I \subseteq J \implies I = J\}\]
+  \[X_\infty \defeq \compr{I \in \ideal(X)}{\forall J \in \ideal(X),
+  I \subseteq J \implies I = J}\]
   comme étant l'ensemble coinductif défini par la signature $(C,\arite)$.
   
   \begin{pbQuest}[resume]
@@ -1203,7 +1203,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   Une façon alternative de se donner de telles fonctions est de considérer
   d'abord l'ensemble
   \[\sum_{c \in C} X^{\arite(c)} \defeq
-  \{(c,\vec x) \mid \vec x \in X^{\arite(c)}\}\]
+  \compr{(c,\vec x)}{\vec x \in X^{\arite(c)}}\]
   
   \begin{pbQuest}
   \item Soit $X$ un ensemble et $(C,\arite)$ une signature. Construire une
@@ -1401,14 +1401,14 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   paramètres,
   alors il existe une des prémisses $P_i$ de $\ruleR$ qui est vérifiée. On
   notera
-  $(X\mapsto R, x_1 \mapsto a_1,\ldots, x_n \mapsto a_n)\comodels \ruleR$.
+  $(X\mapsto R, x_1 \mapsto a_1,\ldots, x_n \mapsto a_n)\cosatisf \ruleR$.
 
   \begin{pbQuest}[resume]
   \item Soit $E$ un ensemble et
     $\ruleR$ une règle d'inférence telle que présentée ci-dessus,
     à paramètres $X \in \powerset(E^n), x_1,\ldots,x_n \in E$. Soit
     $R$ une relation $n$-aire sur $E$.
-    Si $(X \mapsto R, x_1\mapsto a_1,\ldots x_n \mapsto a_n) \comodels \ruleR$
+    Si $(X \mapsto R, x_1\mapsto a_1,\ldots x_n \mapsto a_n) \cosatisf \ruleR$
     alors la relation inductive engendrée par $\ruleR$ sur la relation
     $R$ est contenue dans la relation coinductivement engendrée par $\ruleR$.
   \item En déduire le théorème de coinduction suivant~:
@@ -1417,7 +1417,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
       d'inférence à paramètre $X \in \powerset(E^n), x_1,\ldots,x_n \in E$.
       Soit $R \in \powerset(E^n)$ une relation $n$-aire sur $E$.
       Si pour tous $(a_1,\ldots,a_n)$ il existe $i \in I$ tel que
-      $(X \mapsto R, x_1\mapsto a_1,\ldots,x_n\mapsto a_n)\comodels \ruleR_i$
+      $(X \mapsto R, x_1\mapsto a_1,\ldots,x_n\mapsto a_n)\cosatisf \ruleR_i$
       alors $R$ est incluse dans la relation coinductivement engendrée par
       $\{\ruleR_i\}_{i \in I}$.
     \end{quotation}

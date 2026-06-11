@@ -23,7 +23,7 @@
 \newcommand{\leL}{<_{\mathbb L}} % ordre sur la classe L
 \newcommand{\ordbis}{\lhd} % ordre utilisé pour la démonstration de Hessenberg, et globalement symbole de relation d'ordre au cas où
 
-\newcommand{\tok}{\cdot} % placeholder pour les définitions anonyme
+\newcommand{\tok}{\bullet} % placeholder pour les définitions anonyme
 
 %----- PROBLEMES ALGORITHMIQUES -----%
 
@@ -49,6 +49,7 @@
 %----- FONCTIONS -----%
 
 \DeclareMathOperator{\id}{id} % fonction identité
+\newcommand{\idP}[1]{\id_{#1}} % fonction identité pour un ensemble donné
 \DeclareMathOperator{\im}{Im} % ensemble image d'une fonction
 \DeclareMathOperator{\dom}{Dom} % domaine d'une fonction
 \DeclareMathOperator{\fix}{fix} % ensemble des points fixes d'une fonction
@@ -62,6 +63,8 @@
 \DeclareMathOperator{\Supp}{Supp}
 \newcommand{\Set}[1]{\left\{#1\right\}}
 \newcommand{\suchthat}{\;\middle\vert\;}
+\newcommand{\indic}{\mathds{1}} % fonction indicatrice
+\newcommand{\indicP}[1]{\indic_{#1}} % fonction indcatrice de quelque chose
 
 %----- PROPOSITIONS ET TERMES -----%
 
@@ -70,14 +73,17 @@
 \DeclareMathOperator{\VL}{VL} % ensemble des variables libres
 \DeclareMathOperator{\VLie}{Vliées} % ensemble des variables liées
 \DeclareMathOperator{\Term}{Term} % ensemble des termes
+\newcommand{\TermCl}{\Term_{\mathrm{cl}}}
 \DeclareMathOperator{\Formula}{Form} % ensemble des formules
+\DeclareMathOperator{\Ctx}{Ctx} % ensemble des contextes logiques
 \newcommand{\Formqf}{\Formula_{\mathrm{qf}}} % ensembles des formules sans quantificateurs
 \newcommand{\FormMod}{\Formula_{\mathrm{mod}}} % ensemble des formules de la logique modale
 \DeclareMathOperator{\Atom}{Atom} % ensemble des atomes
-\newcommand{\vclose}[1]{\overline{#1}^{\vDash}} % clôture par conséquence syntaxique d'un ensemble de formules
-\newcommand{\vdclose}[1]{\overline{#1}^{\vdash}} % clôture par conséquence sémantique d'un ensemble de formules
+\newcommand{\vclose}[1]{\overline{#1}^{\vD}} % clôture par conséquence syntaxique d'un ensemble de formules
+\newcommand{\vTclos}{\vclose{\varT}} % clôture par conséquence syntaxique de T
+\newcommand{\vdclose}[1]{\overline{#1}^{\vd}} % clôture par conséquence sémantique d'un ensemble de formules
+\newcommand{\vdTclos}{\vdclose{\varT}}
 \newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}} % clôture par ajout des témoins de Henkin d'une théorie
-\DeclareMathOperator{\Th}{Th}
 
 \newcommand{\varFF}{\varphi} % variable de formule phi
 \newcommand{\varFP}{\psi} % variable de formule psi
@@ -111,6 +117,9 @@
 \newcommand{\bV}{\mathbb V} % hiérarchie cumulative de Von Neumann
 \newcommand{\bL}{\mathbb L} % classe des constructibles de Gödel
 \newcommand{\vide}{\varnothing} % ensemble vide
+\newcommand{\intervP}[2]{\{#1,\ldots,#2\}} % ensemble de type { x1, ..., xn }
+\newcommand{\intervInt}[1]{\intervP{0}{#1 - 1}} % ensemble de type { 0 ,..., n - 1}
+\newcommand{\intervIntB}[1]{\intervP{1}{#1}} % ensemble de type {1,...,n}
 
 %----- OPERATIONS ENSEMBLISTES -----%
 
@@ -123,11 +132,40 @@
 %----- THÉORIE DES MODÈLES -----%
 
 \DeclareMathOperator{\Const}{Const} % ensemble des constantes
-\DeclareMathOperator{\Fun}{Fun} % ensemble des symboles de fonctions
-\DeclareMathOperator{\Rel}{Rel} % ensemble des symboles de relation
-\DeclareMathOperator{\ar}{ar} % arité d'un symbole
+\newcommand{\Cc}{\mathrm{c}} % symbole de constante
+%\DeclareMathOperator{\Fun}{Fun} % ensemble des symboles de fonctions
+%\DeclareMathOperator{\Rel}{Rel} % ensemble des symboles de relation
+%\DeclareMathOperator{\ar}{ar} % arité d'un symbole
 \DeclareMathOperator{\Struct}{Struct} % classe des structures
+\DeclareMathOperator{\Model}{Mod}
+\newcommand{\varMP}[1]{\mathcal{#1}} % variable quelconque pour un modèle
+\newcommand{\varMM}{\varMP{M}} % variable M pour un modèle
+\newcommand{\varMN}{\varMP{N}} % variable N pour un modèle
+\newcommand{\carM}[1]{\left\vert #1\right\vert} % ensemble "carrier" d'une structure
+\newcommand{\carMM}{\carM{\varMM}} % ensemble "carrier" de la structure M
+\newcommand{\carMN}{\carM{\varMN}} % ensemble "carrier" de la structure N
+\newcommand{\toMP}[2]{#1^{#2}} % interprétation des symboles dans une structure
+\newcommand{\toM}[1]{\toMP{#1}{\varMM}} % interprétation des symboles dans la structure M
+\newcommand{\toN}[1]{\toMP{#1}{\varMN}} % interprétation des symboles dans la structure N
+\newcommand{\toMFunP}[2]{\toMP{#1}{#2}_{\SigFun}} % interprétation des fonctions dans une structure
+\newcommand{\toMFunM}[1]{\toMFunP{#1}{\varMM}} % interprétation des fonctions dans une structure M
+\newcommand{\toMRelP}[2]{\toMP{#1}{#2}_{\SigRel}} % interprétation des relations dans une structure
+\newcommand{\toMRelM}[1]{\toMRelP{#1}{\varMM}} % interprétation des relations dans une structure M
+\newcommand{\Enviro}{\mathcal E} % ensemble des environnements
+\newcommand{\env}{\rho} % environnement d'interprétation dans une structure
+\newcommand{\envE}{\env'} % deuxième variable pour env
 \DeclareMathOperator{\Val}{Val} % valeur de vérité d'une formule dans un modèle
+\newcommand{\ValP}[1]{\Val_{#1}}
+\newcommand{\ValE}{\Val_{\env}} % valuation dans un environnement rho
+\newcommand{\ValEE}{\Val_{\envE}}
+\newcommand{\toMIP}[3]{\toMP{#1}{#2}_{#3}} % interprétation d'un terme dans une structure
+\newcommand{\toMMI}[1]{\toMIP{#1}{\varMM}{\env}} % interprétation d'un terme dans la structure M et l'environnement rho
+\newcommand{\satMP}[2]{#1,#2\satisf} % satisfaction dans un modèle et un environnement
+\newcommand{\satMI}{\satMP{\varMM}{\env}} % satisfaction dans le modèle M et l'environnement rho
+\newcommand{\satMM}{\varMM\satisf} % satisfaction dans le modèle M
+\newcommand{\satMN}{\varMN\satisf} % satisfaction dans le modèle N
+\newcommand{\varMoM}{F} % morphisme de structure
+\newcommand{\varMoMB}{G} % autre variable pour un morphisme de structure
 
 %----- EGALITES -----%
 
@@ -178,6 +216,8 @@
 \DeclareMathOperator{\Ord}{Ord} % classe des ordinaux
 \DeclareMathOperator{\Clos}{Clos} % ensemble des points de clôture
 
+\newcommand{\varCk}{\kappa} % variable de cardinal kappa
+
 %----- THEORIE DESCRIPTIVE DES ENSEMBLES -----%
 
 \newcommand{\Borel}{\mathcal{B}} % ensemble des boérliens d'un ensemble topologique
@@ -218,7 +258,8 @@
 \DeclareMathOperator{\hypo}{hypotheses}
 \newcommand{\concl}{\rhd}
 \newcommand{\vd}{\vdash} % relation de prouvabilité
-\newcommand{\vdP}{\vd} % relation de prouvabilité pour LK propositionnel
+\newcommand{\vdP}{\vd} % relation de prouvabilité pour les sytèmes des ch2 et 3
+\newcommand{\dvvd}{\mathbin{\mathord{\dashv}\mathord{\vdash}}} % équivalence prouvable
 \newcommand{\nvdP}{\nvdash}
 \newcommand{\vdLK}{\vdash_{\LK}} % relation de prouvabilité pour LK
 \newcommand{\vdLJ}{\vdash_{\LJ}} % relation de prouvabilité pour LJ
@@ -242,6 +283,57 @@
 \newcommand{\vdPA}{\vdash_{\ArithPeano}}
 \newcommand{\ProofPA}{\Proof{\ArithPeano}}
 \DeclareMathOperator{\HA}{HA} % arithmétique de Heyting
+
+
+%----- REGLES D'INFERENCE -----%
+
+\DeclareMathOperator{\Rax}{ax}
+\DeclareMathOperator{\Rcut}{cut}
+\DeclareMathOperator{\Rle}{le}
+\DeclareMathOperator{\Rre}{re}
+\DeclareMathOperator{\Rlc}{lc}
+\DeclareMathOperator{\Rrc}{rc}
+\DeclareMathOperator{\Rlw}{lw}
+\DeclareMathOperator{\Rrw}{rw}
+\newcommand{\Rtop}{\top}
+\newcommand{\Rbot}{\bot}
+\newcommand{\Rlnot}{\mathrm{l}\mathord{\lnot}}
+\newcommand{\Rrnot}{\mathrm{r}\mathord{\lnot}}
+\newcommand{\Rlor}{\mathrm{l}\mathord{\lor}}
+\newcommand{\Rror}{\mathrm{r}\mathord{\lor}}
+\newcommand{\Rland}{\mathrm{l}\mathord{\land}}
+\newcommand{\Rrand}{\mathrm{r}\mathord{\land}}
+\newcommand{\Rlto}{\mathrm{l}\mathord{\to}}
+\newcommand{\Rrto}{\mathrm{r}\mathord{\to}}
+\newcommand{\Rlfora}{\mathrm{l}\mathord{\forall}}
+\newcommand{\Rrfora}{\mathrm{r}\mathord{\forall}}
+\newcommand{\Rlex}{\mathrm{l}\mathord{\exists}}
+\newcommand{\Rrex}{\mathrm{r}\mathord{\exists}}
+\newcommand{\Rlsq}{\mathrm{l}\mathord{\square}}
+\newcommand{\Rrsq}{\mathrm{r}\mathord{\square}}
+\newcommand{\Rldia}{\mathrm{l}\mathord{\diamond}}
+\newcommand{\Rrdia}{\mathrm{r}\mathord{\diamond}}
+\newcommand{\RtopI}{\top}
+\newcommand{\RbotC}{\bot_{\mathrm{c}}}
+\newcommand{\RbotE}{\bot_{\mathrm{e}}}
+\newcommand{\RnotI}{\mathord{\lnot}_{\mathrm{i}}}
+\newcommand{\RnotE}{\mathord{\lnot}_{\mathrm{e}}}
+\newcommand{\RorI}{\mathord{\lor}_{\mathrm{i}}}
+\newcommand{\RorIG}{\RorI^{\mathrm{g}}}
+\newcommand{\RorID}{\RorI^{\mathrm{d}}}
+\newcommand{\RorE}{\mathord{\lor}_{\mathrm{e}}}
+\newcommand{\RandI}{\mathord{\land}_{\mathrm{i}}}
+\newcommand{\RandE}{\mathord{\land}_{\mathrm{e}}}
+\newcommand{\RandEG}{\RandE^{\mathrm{g}}}
+\newcommand{\RandED}{\RandE^{\mathrm{d}}}
+\newcommand{\RtoI}{\mathord{\to}_{\mathrm{i}}}
+\newcommand{\RtoE}{\mathord{\to}_{\mathrm{e}}}
+\newcommand{\RforaI}{\mathord{\forall}_{\mathrm{i}}}
+\newcommand{\RforaE}{\mathord{\forall}_{\mathrm{e}}}
+\newcommand{\RexI}{\mathord{\exists}_{\mathrm{i}}}
+\newcommand{\RexE}{\mathord{\exists}_{\mathrm{e}}}
+\newcommand{\ReqI}{\mathord{=}_{\mathrm{i}}}
+\newcommand{\ReqE}{\mathord{=}_{\mathrm{e}}}
 
 %----- REALISABILITE -----%
 
@@ -366,19 +458,27 @@
 \newcommand{\HierArithS}[1]{\Sigma^0_{#1}}
 \newcommand{\HierArithP}[1]{\Pi^0_{#1}}
 \newcommand{\HierArithD}[1]{\Delta^0_{#1}}
-\newcommand{\ArithRobin}{\mathrm{Q}}
-\newcommand{\ArithPeano}{\mathrm{PA}}
 \newcommand{\ISigma}{\mathrm{I}{\HierArithS 1}}
 \newcommand{\encode}[1]{\underline{#1}}
 \DeclareMathOperator{\Subst}{Subst}
 \DeclareMathOperator{\Not}{Not}
 \DeclareMathOperator{\Dem}{Dem}
 \DeclareMathOperator{\Imp}{Imp}
-\newcommand{\DemT}[1]{\Dem_{#1}}
 \newcommand{\DemBisT}[1]{\Dem'_{#1}}
-\newcommand{\ThT}[1]{\Th_{#1}}
 \newcommand{\Proof}[1]{\mathrm{PT}_{#1}}
 \DeclareMathOperator{\PTO}{PTO}
+
+%---- THEORIES AXIOMATIQUES -----%
+
+\newcommand{\varT}{\mathcal T} % variable T pour une théorie
+\newcommand{\varTB}{\mathcal T'} % variable T' pour une autre théorie
+\DeclareMathOperator{\Theory}{Theorie} % ensemble des théories sur une signature
+\DeclareMathOperator{\Th}{Th} % ensemble des théorèmes d'une théorie
+\newcommand{\DemT}[1]{\Dem_{#1}}
+\newcommand{\ThT}[1]{\Th_{#1}}
+\newcommand{\ArithRobin}{\mathrm{Q}}
+\newcommand{\ArithPeano}{\mathrm{PA}}
+
 
 %----- TOPOLOGIE -----%
 
@@ -471,41 +571,24 @@
 \DeclareMathOperator{\filterList}{filter}
 \DeclareMathOperator{\Stream}{Stream}
 \DeclareMathOperator{\fromF}{from}
-\newcommand{\comodels}{\models^{\mathrm{co}}}
+\newcommand{\cosatisf}{\satisf^{\mathrm{co}}}
 
 %----- LOGIQUE PROPOSITIONNELLE -----%
 
-\newcommand{\Enviro}{\mathcal E}
 \newcommand{\PropSet}{\mathcal P}
 \newcommand{\vdAbs}{\vdP^{\maltese}}
 
+%----- CALCUL DES PREDICATS -----%
 
-
-%----- REGLES D'INFERENCE -----%
-
-\DeclareMathOperator{\Rax}{ax}
-\DeclareMathOperator{\Rcut}{cut}
-\DeclareMathOperator{\Rle}{le}
-\DeclareMathOperator{\Rre}{re}
-\DeclareMathOperator{\Rlc}{lc}
-\DeclareMathOperator{\Rrc}{rc}
-\DeclareMathOperator{\Rlw}{lw}
-\DeclareMathOperator{\Rrw}{rw}
-\newcommand{\Rtop}{\top}
-\newcommand{\Rbot}{\bot}
-\newcommand{\Rlnot}{\mathrm{l}\mathord{\lnot}}
-\newcommand{\Rrnot}{\mathrm{r}\mathord{\lnot}}
-\newcommand{\Rlor}{\mathrm{l}\mathord{\lor}}
-\newcommand{\Rror}{\mathrm{r}\mathord{\lor}}
-\newcommand{\Rland}{\mathrm{l}\mathord{\land}}
-\newcommand{\Rrand}{\mathrm{r}\mathord{\land}}
-\newcommand{\Rlto}{\mathrm{l}\mathord{\to}}
-\newcommand{\Rrto}{\mathrm{r}\mathord{\to}}
-\newcommand{\Rlfora}{\mathrm{l}\mathord{\forall}}
-\newcommand{\Rrfora}{\mathrm{r}\mathord{\forall}}
-\newcommand{\Rlex}{\mathrm{l}\mathord{\exists}}
-\newcommand{\Rrex}{\mathrm{r}\mathord{\exists}}
-\newcommand{\Rlsq}{\mathrm{l}\mathord{\square}}
-\newcommand{\Rrsq}{\mathrm{r}\mathord{\square}}
-\newcommand{\Rldia}{\mathrm{l}\mathord{\diamond}}
-\newcommand{\Rrdia}{\mathrm{r}\mathord{\diamond}}
+\newcommand{\SigFun}{\mathcal F}
+\newcommand{\SigRel}{\mathcal R}
+\newcommand{\aritFun}{\arite_{\SigFun}}
+\newcommand{\aritRel}{\arite_{\SigRel}}
+\newcommand{\Sign}{\Sigma}
+\newcommand{\SignP}[1]{\Sign_{#1}}
+\newcommand{\SignArith}{\SignP{\mathrm{Arith}}}
+\newcommand{\SignAb}{\SignP{\mathrm{Ab}}}
+\newcommand{\SignGrp}{\SignP{\mathrm{Grp}}}
+\newcommand{\SignRing}{\SignP{\mathrm{Ring}}}
+\newcommand{\subSimul}{\sigma}
+\newcommand{\FormSet}{\mathcal F}

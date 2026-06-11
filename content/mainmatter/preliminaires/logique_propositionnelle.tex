@@ -6,8 +6,8 @@
 \lettrine{P}{our} commencer l'étude de la logique, nous allons étudier sa forme
 la plus élémentaire~: la logique propositionnelle. Lorsque l'on écrit une phrase
 mathématique, disons par exemple
-\[\forall n \in \mathbb N, (\exists m \in \mathbb N, n = 2\times m) \text{ ou }
-(\exists m \in \mathbb N, n = 2 \times m + 1)\]
+\[\forall n \in \bN, (\exists m \in \bN, n = 2\times m) \text{ ou }
+(\exists m \in \bN, n = 2 \times m + 1)\]
 on peut séparer plusieurs parties~:
 \begin{itemize}
 \item les quantificateurs.
@@ -108,9 +108,9 @@ un environnement. On utilisera l'ensemble $\{0,1\}$ pour signifier
 $\{\mathrm{Faux},\mathrm{Vrai}\}$.
 
 \begin{definition}[Environnement]
-  Un environnement est une fonction partielle $\rho : \Var \partialto \{0,1\}$
+  Un environnement est une fonction partielle $\env : \Var \partialto \{0,1\}$
   dont le domaine (l'ensemble des valeurs $x\in \Var$ sur lesquelles
-  $\rho$ est défini) est fini.
+  $\env$ est défini) est fini.
 \end{definition}
 
 Un environnement permet ensuite de définir la notion de valuation, qui est la
@@ -119,49 +119,49 @@ la valuation comme le prolongement d'un environnement par les règles inductives
 naturelles pour donner le sens voulu aux propositions.
 
 \begin{definition}[Valuation]
-  Soit $\rho$ un environnement. On définit par induction sur $\Prop$
-  la fonction partielle $\Val_\rho : \Prop \to \{0,1\}$~:
+  Soit $\env$ un environnement. On définit par induction sur $\Prop$
+  la fonction partielle $\ValE : \Prop \to \{0,1\}$~:
   \begin{itemize}
-  \item $\Val_\rho(\top) = 1$.
-  \item $\Val_\rho(\bot) = 0$.
-  \item pour $x\in \Var$, si $x\in \dom(\rho)$ alors
-    $\Val_\rho (x)= \rho(x)$, si $x\notin \dom(\rho)$ alors
-    $\Val_\rho (x)$ n'est pas défini.
+  \item $\ValE(\top) = 1$.
+  \item $\ValE(\bot) = 0$.
+  \item pour $x\in \Var$, si $x\in \dom(\env)$ alors
+    $\ValE (x)= \env(x)$, si $x\notin \dom(\env)$ alors
+    $\ValE (x)$ n'est pas défini.
   \item soit $\varFF$ une proposition, alors
-    $\Val_\rho(\lnot \varFF) = 1 - \Val_\rho(\varFF)$.
+    $\ValE(\lnot \varFF) = 1 - \ValE(\varFF)$.
   \item soient $\varFF$ et $\varFP$ deux propositions, alors
-    $\Val_\rho(\varFF\lor \varFP)=\max(\Val_\rho(\varFF),\Val_\rho(\varFP))$.
+    $\ValE(\varFF\lor \varFP)=\max(\ValE(\varFF),\ValE(\varFP))$.
   \item soient $\varFF$ et $\varFP$ deux propositions, alors
-    $\Val_\rho(\varFF\land \varFP)=\min(\Val_\rho(\varFF),\Val_\rho(\varFP))$.
+    $\ValE(\varFF\land \varFP)=\min(\ValE(\varFF),\ValE(\varFP))$.
   \item soient $\varFF$ et $\varFP$ deux propositions, alors
-    $\Val_\rho(\varFF\to \varFP) = \max(1 - \Val_\rho(\varFF),\Val_\rho(\varFP))$.
+    $\ValE(\varFF\to \varFP) = \max(1 - \ValE(\varFF),\ValE(\varFP))$.
   \end{itemize}
 \end{definition}
 
 \begin{exercise}
-  Soit $\rho$ un environnement et $\varFF$ une proposition, montrer que
-  $\Val_\rho(\varFF)$ est définie si et seulement si
-  $\VL(\varFF)\subseteq \dom(\rho)$.
+  Soit $\env$ un environnement et $\varFF$ une proposition, montrer que
+  $\ValE(\varFF)$ est définie si et seulement si
+  $\VL(\varFF)\subseteq \dom(\env)$.
 \end{exercise}
 
 \begin{exercise}\label{exo.val.VL}
-  Soit $\varFF$ une proposition. Soient $\rho$ et $\rho'$ deux environnements
+  Soit $\varFF$ une proposition. Soient $\env$ et $\env'$ deux environnements
   tels
-  que $\rho\restr{\VL(\varFF)}=\rho'\restr{\VL(\varFF)}$. Montrer que
-  $\Val_\rho(\varFF)=\Val_{\rho'}(\varFF)$.
+  que $\env\restr{\VL(\varFF)}=\envE\restr{\VL(\varFF)}$. Montrer que
+  $\ValE(\varFF)=\ValEE(\varFF)$.
 \end{exercise}
 
 On peut donc définir la relation de vérité, dans un environnement donné, pour
 une proposition.
 
 \begin{definition}[Satisfaction]
-  Soit $\rho$ un environnement et $P\in\Prop$. On définit la relation
-  $\rho\satisf \varFF$ par
-  \[\rho\satisf \varFF \defeq \Val_\rho(\varFF) = 1\]
-  On dit alors que $\rho$ satisfait $\varFF$.
+  Soit $\env$ un environnement et $\varFF\in\Prop$. On définit la relation
+  $\env\satisf \varFF$ par
+  \[\env\satisf \varFF \defeq \ValE(\varFF) = 1\]
+  On dit alors que $\env$ satisfait $\varFF$.
 
-  Si pour tout environnement $\rho$ tel que $\VL(\varFF)\subseteq\dom(\rho)$,
-  $\rho\satisf \varFF$, alors on dit que $\varFF$ est une
+  Si pour tout environnement $\env$ tel que $\VL(\varFF)\subseteq\dom(\env)$,
+  $\env\satisf \varFF$, alors on dit que $\varFF$ est une
   tautologie, et on le note
   $\satisf \varFF$. Si aucun environnement ne satisfait $\varFF$, on dit alors
   que $\varFF$ est une antilogie.
@@ -212,9 +212,9 @@ les tables de vérité.
 
 Une table de vérité permet de vérifier qu'une proposition est bien une
 tautologie puisque, grâce à l'\cref{exo.val.VL}, nous savons que tout
-environnement $\rho$ contenant les variables libres d'une proposition $\varFF$
+environnement $\env$ contenant les variables libres d'une proposition $\varFF$
 donnée
-ne définit $\Val_\rho(\varFF)$ que par les valeurs des variables libres
+ne définit $\ValE(\varFF)$ que par les valeurs des variables libres
 listées dans
 la table de vérité. Ainsi, une proposition est une tautologie si et seulement si
 toute la dernière colonne est remplie de $1$.
@@ -290,24 +290,24 @@ propositions.
   comme l'ensemble des fonctions partielles $\Var \partialto \{0,1\}$. On
   définit la
   fonction $\Val : \Enviro\times \Prop \to \{0,1\}$, pour tout
-  $\rho\in\Enviro$, par :
-  \[\Val_\rho(\varFF) = \Val_{\rho\restr{\VL(\varFF)}}(\varFF)\]
+  $\env\in\Enviro$, par :
+  \[\Val_\env(\varFF) = \Val_{\env\restr{\VL(\varFF)}}(\varFF)\]
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
 
-  On définit $\rho\satisf \varFF$ de façon analogue à précédemment~:
-  \[\rho\satisf \varFF \defeq \Val_\rho(\varFF) = 1\]
+  On définit $\env\satisf \varFF$ de façon analogue à précédemment~:
+  \[\env\satisf \varFF \defeq \ValE(\varFF) = 1\]
 \end{definition}
 
 \begin{exercise}
-  Montrer que si $\rho$ est un environnement fini, alors les deux définitions de
-  $\Val_\rho$ coïncident.
+  Montrer que si $\env$ est un environnement fini, alors les deux définitions de
+  $\ValE$ coïncident.
 \end{exercise}
 
 \begin{definition}[Satisfaction infinie]
   Soit $\PropSet$ un ensemble (potentiellement infini) de propositions et
   $\varFF\in\Prop$. On définit $\PropSet\vDash \varFF$ par
-  \[\forall \rho\in\Enviro, (\forall \varFP \in\PropSet, \rho\satisf \varFP)
-  \implies \rho\satisf \varFF\]
+  \[\forall \env\in\Enviro, (\forall \varFP \in\PropSet, \env\satisf \varFP)
+  \implies \env\satisf \varFF\]
 \end{definition}
 
 Le théorème de compacité possède plusieurs expressions différentes. Pour les
@@ -316,15 +316,15 @@ donner, nous allons introduire le vocabulaire nécessaire sur les ensembles
 
 \begin{definition}[Satisfiabilité]
   On dit qu'un ensemble $\PropSet\subseteq\Prop$ est satisfiable s'il existe
-  $\rho\in\Enviro$ telle que $\varFF\in\PropSet, \rho\satisf \varFF$. On dit
+  $\env\in\Enviro$ telle que $\varFF\in\PropSet, \env\satisf \varFF$. On dit
   qu'un ensemble $\PropSet\subseteq\Prop$ est finiment satisfiable si toutes
   ses parties finies sont satisfiables.
 \end{definition}
 
 \begin{definition}[Contradiction]
   On dit qu'un ensemble $\PropSet\subseteq\Prop$ est contradictoire s'il
-  n'existe pas d'environnement $\rho\in\Enviro$ tel que
-  $\forall \varFF \in\PropSet, \rho\satisf \varFF$. Un ensemble
+  n'existe pas d'environnement $\env\in\Enviro$ tel que
+  $\forall \varFF \in\PropSet, \env\satisf \varFF$. Un ensemble
   $\PropSet\subseteq \Prop$ est finiment contradictoire si l'une de ses
   parties finies est contradictoire.
 \end{definition}
@@ -352,8 +352,8 @@ Montrons d'abord que ces trois principes sont bien équivalents.
   Pour commencer, remarquons qu'un ensemble satisfiable est finiment
   satisfiable, qu'un ensemble finiment contradictoire est contradictoire, et que
   s'il existe $F\subfin \PropSet$ tel que $F\vD \varFF$, alors pour tout
-  environnement $\rho$ tel que $\rho\satisf \PropSet$, on a en particulier
-  $\rho\satisf \varFF$ et donc $\rho\satisf \varFF$. Il nous suffit donc de
+  environnement $\env$ tel que $\env\satisf \PropSet$, on a en particulier
+  $\env\satisf \varFF$ et donc $\env\satisf \varFF$. Il nous suffit donc de
   travailler sur
   un seul sens de l'équivalence à chaque fois. Nous allons maintenant montrer
   $\ref{enum.compac.prop1}\implies\ref{enum.compac.prop2}\implies
@@ -363,9 +363,9 @@ Montrons d'abord que ces trois principes sont bien équivalents.
     Soit $\PropSet\subset \Prop$ contradictoire, montrons que $\PropSet$
     est finiment contradictoire. Par l'absurde, supposons que $\PropSet$ n'est
     pas finiment contradictoire~: toute partie finie $F\subfin \PropSet$
-    possède donc une valuation $\rho_F$ telle que $\rho_F\satisf F$. Mais alors,
+    possède donc une valuation $\env_F$ telle que $\env_F\satisf F$. Mais alors,
     en utilisant \ref{enum.compac.prop1}, on en déduit qu'il existe une
-    valuation $\rho\satisf \PropSet$. Pourtant $\PropSet$ est
+    valuation $\env\satisf \PropSet$. Pourtant $\PropSet$ est
     contradictoire~: c'est une absurdité. Ainsi, par l'absurde, on en déduit que
     $\PropSet$ est finiment contradictoire.
   \item Supposons \ref{enum.compac.prop2} et montrons \ref{enum.compac.prop3}.
@@ -378,18 +378,18 @@ Montrons d'abord que ces trois principes sont bien équivalents.
     présentent alors~:
     \begin{itemize}
     \item si $F$ ne contient pas $\lnot \varFF$, alors $F\subfin \PropSet$, donc
-      il n'existe pas de valuation telle que $\rho\satisf F$, ce qui signifie
-      que toute valuation $\rho$ telle que $\rho\satisf F$ vérifie
-      $\rho\satisf \varFF$, donc $F\vD \varFF$.
+      il n'existe pas de valuation telle que $\env\satisf F$, ce qui signifie
+      que toute valuation $\env$ telle que $\env\satisf F$ vérifie
+      $\env\satisf \varFF$, donc $F\vD \varFF$.
     \item si $F$ contient $\lnot \varFF$, alors on peut réécrire $F$ comme
       $F = F'\sqcup\{\lnot \varFF\}$, où
       $F'\subfin \PropSet$. Comme cet ensemble
-      est contradictoire, cela signifie que pour toute valuation $\rho$ telle
-      que $\rho\satisf F'$, on a $\rho\not\satisf \lnot \varFF$ (car sinon cette
+      est contradictoire, cela signifie que pour toute valuation $\env$ telle
+      que $\env\satisf F'$, on a $\env\not\satisf \lnot \varFF$ (car sinon cette
       valuation serait une valuation de $F$, ce qui n'existe pas). Or,
-      $\rho\not\satisf \lnot \varFF$ signifie que $\rho\satisf \varFF$, donc
+      $\env\not\satisf \lnot \varFF$ signifie que $\env\satisf \varFF$, donc
       toute
-      valuation $\rho\satisf F'$ vérifie $\rho\satisf \varFF$. On a donc trouvé
+      valuation $\env\satisf F'$ vérifie $\env\satisf \varFF$. On a donc trouvé
       $F'\subfin \PropSet$ telle que $F'\vD \varFF$.
     \end{itemize}
     Dans les deux cas, on a trouvé $F\subfin \PropSet$ telle que $F\vD \varFF$.
@@ -415,15 +415,15 @@ Donnons d'abord l'idée de la preuve. On considère donc un ensemble
 $\PropSet$ finiment satisfiable, qu'on peut supposé énuméré par une famille
 $(\varFF_i)_{i \in \bN}$ car $\Prop$ est dénombrable et $\PropSet$ en est une
 partie (le seul cas intéressant étant celui où $\PropSet$ est infini). On
-souhaite construire une unique valuation $\rho$ qui satisfait tous les
+souhaite construire une unique valuation $\env$ qui satisfait tous les
 $\varFF_i$, sachant que chaque famille $F\subfin \bN$ induit une valuation
-$\rho_F \satisf \{\varFF_i\}_{i \in F}$. La valuation $\rho$ va être construite
-pas à pas~: on commence par une valuation $\rho_0 \defeq \vide$, puis on
-ajoute une valeur à $x_0$, donnant une valuation $\rho_1$ définie sur $\{x_0\}$,
-puis $\rho_2$ définie sur $\{x_0,x_1\}$ \latinexpr{etc.} et en vérifiant que
-$\rho_{i+1}$ prolonge $\rho_i$, c'est-à-dire que $\rho_{i+1}\restr i = \rho_i$.
-En construisant la famille des $(\rho_n)_{n \in \bN}$, on peut alors considérer
-$\rho : n \mapsto \rho_{n+1}(n)$ pour obtenir une valuation infinie totale.
+$\env_F \satisf \{\varFF_i\}_{i \in F}$. La valuation $\env$ va être construite
+pas à pas~: on commence par une valuation $\env_0 \defeq \vide$, puis on
+ajoute une valeur à $x_0$, donnant une valuation $\env_1$ définie sur $\{x_0\}$,
+puis $\env_2$ définie sur $\{x_0,x_1\}$ \latinexpr{etc.} et en vérifiant que
+$\env_{i+1}$ prolonge $\env_i$, c'est-à-dire que $\env_{i+1}\restr i = \env_i$.
+En construisant la famille des $(\env_n)_{n \in \bN}$, on peut alors considérer
+$\env : n \mapsto \env_{n+1}(n)$ pour obtenir une valuation infinie totale.
 
 \begin{theorem}[Compacité de la logique propositionnelle]\label{thm.compac.prop}
   Pour tout $\PropSet\subseteq\Prop$, si $\PropSet$ est finiment satisfiable
@@ -438,67 +438,67 @@ $\rho : n \mapsto \rho_{n+1}(n)$ pour obtenir une valuation infinie totale.
   décide d'ordonner les formules de $\PropSet$~: on suppose que
   \[\PropSet = \{\varFF_0,\ldots,\varFF_n,\ldots\}\]
   On souhaite construire une suite de valuations partielles
-  $(\rho_n)_{n \in \bN}$ telle que~:
+  $(\env_n)_{n \in \bN}$ telle que~:
   \begin{itemize}
-  \item pour tout $n$, $\rho_n$ est définie sur $\{x_0,\ldots,x_{n-1}\}$~;
-  \item pour tout $n$, $\rho_{n+1}\restr n = \rho_n$, c'est-à-dire que
-    pour tout $k < n$, $\rho_{n+1}(k) = \rho_n(k)$~;
-  \item pour tous $n,k$, il existe une extension $\rho$ de
-    $\rho_n$ telle que $\rho \satisf \{\varFF_1,\ldots,\varFF_k\}$.
+  \item pour tout $n$, $\env_n$ est définie sur $\{x_0,\ldots,x_{n-1}\}$~;
+  \item pour tout $n$, $\env_{n+1}\restr n = \env_n$, c'est-à-dire que
+    pour tout $k < n$, $\env_{n+1}(k) = \env_n(k)$~;
+  \item pour tous $n,k$, il existe une extension $\env$ de
+    $\env_n$ telle que $\env \satisf \{\varFF_1,\ldots,\varFF_k\}$.
   \end{itemize}
 
   \noindent
   On procède par récursion~:
   \begin{itemize}
-  \item $\rho_0$ est la fonction définie nulle part. Comme toute valuation
-    est une extension de $\rho_0$, on se contente de relever que pour tout
+  \item $\env_0$ est la fonction définie nulle part. Comme toute valuation
+    est une extension de $\env_0$, on se contente de relever que pour tout
     $k$ il existe une valuation satisfaisant $\{\varFF_1,\ldots,\varFF_k\}$
     car $\PropSet$ est finiment satisfiable.
-  \item supposons construite $\rho_n$ satisfaisant les différentes hypothèses
-    évoquées. On construit maintenant $\rho_{n+1}$ en choisissant une valeur
+  \item supposons construite $\env_n$ satisfaisant les différentes hypothèses
+    évoquées. On construit maintenant $\env_{n+1}$ en choisissant une valeur
     à associer à $x_n$ (ce faisant, les deux première conditions sont
     automatiquement vérifiées). Remarquons que pour tout $k$, il existe une
-    extension $\rho$ de $\rho_n$ satisfaisant $\{\varFF_1,\ldots,\varFF_k\}$.
-    Par principe des tiroirs infinis, la valeur de $\rho(x_n)$ pouvant être soit
+    extension $\env$ de $\env_n$ satisfaisant $\{\varFF_1,\ldots,\varFF_k\}$.
+    Par principe des tiroirs infinis, la valeur de $\env(x_n)$ pouvant être soit
     $1$, soit $0$, soit indéfinie, on sait que l'un des trois cas suivants
     se présentent~:
     \begin{itemize}
-    \item pour une infinité de $k$, il existe une extension $\rho$ de $\rho_n$
-      telle que $\rho(x_n) = 1$ et $\rho\satisf \{\varFF_1,\ldots,\varFF_k\}$.
-    \item pour une infinite dé $k$, il existe une extension $\rho$ de
-      $\rho_n$ telle que $\rho(x_n) = 0$ et
-      $\rho\satisf\{\varFF_1,\ldots,\varFF_k\}$.
-    \item pour une infinité de $k$, il existe une extension $\rho$ de $\rho_n$
-      telle que $\rho(x_n)$ est indéfini et
-      $\rho\satisf\{\varFF_1,\ldots,\varFF_,\}$.
+    \item pour une infinité de $k$, il existe une extension $\env$ de $\env_n$
+      telle que $\env(x_n) = 1$ et $\env\satisf \{\varFF_1,\ldots,\varFF_k\}$.
+    \item pour une infinite dé $k$, il existe une extension $\env$ de
+      $\env_n$ telle que $\env(x_n) = 0$ et
+      $\env\satisf\{\varFF_1,\ldots,\varFF_k\}$.
+    \item pour une infinité de $k$, il existe une extension $\env$ de $\env_n$
+      telle que $\env(x_n)$ est indéfini et
+      $\env\satisf\{\varFF_1,\ldots,\varFF_,\}$.
     \end{itemize}
-    Dans les deux derniers cas, on pose $\rho_{n+1}(x_n) = 0$ et dans le
-    premier cas, on pose $\rho_{n+1}(x_n) = 1$. Dans tous les cas, pour tout
-    il existe une extension $\rho$ de $\rho_{n+1}$ telle que
-    $\rho\satisf\{\varFF_1,\ldots,\varFF_k\}$. En effet, on sait qu'il existe
+    Dans les deux derniers cas, on pose $\env_{n+1}(x_n) = 0$ et dans le
+    premier cas, on pose $\env_{n+1}(x_n) = 1$. Dans tous les cas, pour tout
+    il existe une extension $\env$ de $\env_{n+1}$ telle que
+    $\env\satisf\{\varFF_1,\ldots,\varFF_k\}$. En effet, on sait qu'il existe
     une infinité de $p$ vérifiant cette hypothèse, donc on peut choisir
-    un $p > k$, pour lequel on trouve une extension $\rho$ de $\rho_{n+1}$
+    un $p > k$, pour lequel on trouve une extension $\env$ de $\env_{n+1}$
     satisfaisant $\{\varFF_1,\ldots,\varFF_p\}$, mais comme $p > k$, cet
     ensemble de propositions contient en particulier
     $\{\varFF_1,\ldots,\varFF_k\}$, donc
-    $\rho\satisf \{\varFF_1,\ldots,\varFF_k\}$.
+    $\env\satisf \{\varFF_1,\ldots,\varFF_k\}$.
   \end{itemize}
-  On a ainsi construit la valuation $\rho : x_n \mapsto \rho_{n+1}(x_n)$.
+  On a ainsi construit la valuation $\env : x_n \mapsto \env_{n+1}(x_n)$.
 
   \noindent
   Montrons que cette valuation satisfait $\PropSet$. Pour cela, soit
   $\varFF_i$ une des propositions de $\PropSet$. On pose
   \[M_i \defeq \max\{\VL(\varFF_0),\ldots,\VL(\varFF_i)\}\]
   où le $\max$ est pris comme valant $0$ si l'ensemble des variables libres est
-  vide. Par hypothèse, on sait que $\rho_{M_i}$ peut être étendu pour satisfaire
+  vide. Par hypothèse, on sait que $\env_{M_i}$ peut être étendu pour satisfaire
   $\{\varFF_0,\ldots,\varFF_i\}$, mais on sait aussi que la valeur
-  $\Val_{\rho_{M_i}}(\varFF_k)$ pour $k \leq i$ est définie uniquement par la
-  valeur de $\rho_{M_i}$ sur les variables libres des différents $\varFF_k$, qui
-  est déjà déterminée dans $\rho_{M_i}$. Ainsi,
-  $\Val_{\rho}(\varFF_k) = 1$, donc en particulier
-  $\rho\satisf \varFF_i$.
+  $\ValP{\env_{M_i}}(\varFF_k)$ pour $k \leq i$ est définie uniquement par la
+  valeur de $\env_{M_i}$ sur les variables libres des différents $\varFF_k$, qui
+  est déjà déterminée dans $\env_{M_i}$. Ainsi,
+  $\ValE(\varFF_k) = 1$, donc en particulier
+  $\env\satisf \varFF_i$.
 
-  On a donc construit une valuation $\rho \satisf \PropSet$.
+  On a donc construit une valuation $\env \satisf \PropSet$.
 \end{proof}
 
 \subsection{Calcul des séquents}
@@ -674,42 +674,41 @@ Pour commencer, introduisons un lemme permettant de plus facilement travailler
 sur le résultat à prouver.
 
 \begin{lemma}\label{lem.cor.uti}
-  Soient $\varCG,\varCD\in\List(\Prop)$ et $\rho$ un environnement, on a
+  Soient $\varCG,\varCD\in\List(\Prop)$ et $\env$ un environnement, on a
   l'équivalence suivante~:
-  \[ \Val_\rho(\bigwedge\varCG\to\bigvee\varCD) = 1 \iff
-  \min_{\varFF\in\varCG}(\Val_\rho(\varFF)) \leq \max_{\varFF\in\varCD}(\varFF)\]
+  \[ \ValE(\bigwedge\varCG\to\bigvee\varCD) = 1 \iff
+  \min_{\varFF\in\varCG}(\ValE(\varFF)) \leq \max_{\varFF\in\varCD}(\ValE(\varFF))\]
 \end{lemma}
 
 \begin{proof}
-  Calculons d'abord $\Val_\rho(\bigwedge\varCG\to\bigvee\varCD)$~:
+  Calculons d'abord $\ValE(\bigwedge\varCG\to\bigvee\varCD)$~:
   \begin{align*}
-    \Val_\rho(\bigwedge\varCG\to\bigvee\varCD) =&
-    \max(1 - \Val_\rho(\bigwedge\varCG), \Val_\rho(\bigvee\varCD))\\
-    =& \max(1 - \min_{\varFF\in \varCG}(\Val_\rho(\varFF)),
-    \max_{\varFF\in\varCD}(\Val_\rho(\varFF)))
+    \ValE(\bigwedge\varCG\to\bigvee\varCD) =&
+    \max(1 - \ValE(\bigwedge\varCG), \ValE(\bigvee\varCD))\\
+    =& \max(1 - \min_{\varFF\in \varCG}(\ValE(\varFF)),
+    \max_{\varFF\in\varCD}(\ValE(\varFF)))
   \end{align*}
   Si cette valeur est $1$, alors deux cas se présentent~:
   \begin{itemize}
-  \item $\displaystyle\max_{\varFF \in \varCD}(\Val_\rho(\varFF)) = 1$,
-    ce cas signifiant
-    forcément que
-    $\max_{\varFF\in \varCD}(\varFF) \geq \min_{\varFF\in \varCG}(\Val_\rho(\varFF))$
+  \item $\displaystyle\max_{\varFF \in \varCD}(\ValE(\varFF)) = 1$,
+    ce cas signifiant que
+    $\max_{\varFF\in \varCD}(\ValE(\varFF)) \geq \min_{\varFF\in \varCG}(\ValE(\varFF))$
     puisque $\Val$ est à valeurs dans $\{0,1\}$.
-  \item $1 - \min_{\varFF \in \varCG}(\Val_\rho(\varFF)) = 1$, ou,
+  \item $1 - \min_{\varFF \in \varCG}(\ValE(\varFF)) = 1$, ou,
     de façon équivalente,
-    $\min_{\varFF\in \varCG}(\Val_\rho(\varFF)) = 0$, ce cas impliquant encore
+    $\min_{\varFF\in \varCG}(\ValE(\varFF)) = 0$, ce cas impliquant encore
     l'inégalité
     puisque $\Val$ est à valeurs dans $\{0,1\}$.
   \end{itemize}
   Réciproquement, si l'inégalité est vérifiée, alors on raisonne par disjonction
-  de cas sur la valeur de $\min_{\varFF\in\varCG}(\Val_\rho(\varFF))$~:
+  de cas sur la valeur de $\min_{\varFF\in\varCG}(\ValE(\varFF))$~:
   \begin{itemize}
   \item si sa valeur est $0$, alors on sait déjà que
-    $1 - \min_{\varFF \in \varCG}(\Val_\rho(\varFF)) = 1$, donc
-    $\Val_\rho(\bigwedge \varCG\to \bigvee \varCD) = 1$.
+    $1 - \min_{\varFF \in \varCG}(\ValE(\varFF)) = 1$, donc
+    $\ValE(\bigwedge \varCG\to \bigvee \varCD) = 1$.
   \item si sa valeur est $1$, alors par notre inégalité on sait que
-    $\max_{\varFF\in\varCD}(\Val_\rho(\varFF)) = 1$, donc
-    $\Val_\rho(\bigwedge \varCG\to \bigvee \varCD) = 1$.
+    $\max_{\varFF\in\varCD}(\ValE(\varFF)) = 1$, donc
+    $\ValE(\bigwedge \varCG\to \bigvee \varCD) = 1$.
   \end{itemize}
 
   D'où l'équivalence souhaitée.
@@ -721,8 +720,8 @@ sur le résultat à prouver.
 \end{theorem}
 
 \begin{proof}
-  Soient $\varCG,\varCD\in\List(\Prop)$ et $\rho$ un environnement, le résultat
-  à montrer est que $\Val_\rho(\bigwedge\varCG\to\bigvee\varCD) = 1$ sachant que
+  Soient $\varCG,\varCD\in\List(\Prop)$ et $\env$ un environnement, le résultat
+  à montrer est que $\ValE(\bigwedge\varCG\to\bigvee\varCD) = 1$ sachant que
   $\varCG\vdP\varCD$. Pour cela, on procède par induction sur $\vdP$, en
   utilisant le \cref{lem.cor.uti} pour avoir à prouver l'inégalité de
   valuations. Comme les opérateurs $\bigvee$ et $\bigwedge$ sont commutatifs et
@@ -735,104 +734,103 @@ sur le résultat à prouver.
   \item[$\Rax$~:] Supposons que $\varFF\in\varCG$.
     L'inégalité à prouver se résume à
     \begin{align*}
-      \min_{\varFP \in \varCG}(\Val_\rho(\varFP)) &\leq \Val_\rho(\varFF) \\
-      &= \max_{\varFP \in \{\varFF\}}(\Val_\rho(\varFP))
+      \min_{\varFP \in \varCG}(\ValE(\varFP)) &\leq \ValE(\varFF) \\
+      &= \max_{\varFP \in \{\varFF\}}(\ValE(\varFP))
     \end{align*}
   \item[$\Rcut$~:] On suppose que
     \begin{equation}\label{eq.cor1}
-      \min_{\varFP \in (\varCG, \varFF)} \Val_\rho(\varFP) \leq
-      \max_{\varFP \in \varCD} \Val_\rho(\varFP)
+      \min_{\varFP \in (\varCG, \varFF)} \ValE(\varFP) \leq
+      \max_{\varFP \in \varCD} \ValE(\varFP)
     \end{equation}
     \begin{center}et\end{center}
     \begin{equation}\label{eq.cor2}
-      \min_{\varFP \in \varCT} \Val_\rho(\varFP) \leq
-      \max_{\varFP \in (\varFF,\varCX)} \Val_\rho(\varFP)
+      \min_{\varFP \in \varCT} \ValE(\varFP) \leq
+      \max_{\varFP \in (\varFF,\varCX)} \ValE(\varFP)
     \end{equation}
     Montrons que
-    $\min_{\varFP \in (\varCG, \varCT)} \Val_\rho(\varFP)
-    \leq \max_{\varFP \in (\varCD,\varCX)} \Val_\rho(\varFP)$.
-    On raisonne par disjonction de cas sur la valeur de $\Val_\rho(P)$~:
+    $\min_{\varFP \in (\varCG, \varCT)} \ValE(\varFP)
+    \leq \max_{\varFP \in (\varCD,\varCX)} \ValE(\varFP)$.
+    On raisonne par disjonction de cas sur la valeur de $\ValE(P)$~:
     \begin{itemize}
-    \item si $\Val_\rho(\varFF) = 0$, alors en injectant cette équation dans
+    \item si $\ValE(\varFF) = 0$, alors en injectant cette équation dans
       \ref{eq.cor2}, on obtient
-      \[\min_{\varFP \in\varCT} \Val_\rho(\varFP) \leq
-      \max_{\varFP\in \varCX}\Val_\rho(\varFP)\]
+      \[\min_{\varFP \in\varCT} \ValE(\varFP) \leq
+      \max_{\varFP\in \varCX}\ValE(\varFP)\]
       d'où l'inégalité souhaitée (puisque rajouter des termes dans un minimum
       le fera décroître et rajouter des termes dans un maximum le fera croître).
-    \item si $\Val_\rho(P) = 1$, alors on injectant cette équation dans
+    \item si $\ValE(\varFF) = 1$, alors on injectant cette équation dans
       \ref{eq.cor1}, on obtient
-      \[\min_{\varFP\in \varCG} \Val_\rho(\varFP) \leq
-      \max_{\varFP\in \varCD} \Val_\rho(\varFP)\]
+      \[\min_{\varFP\in \varCG} \ValE(\varFP) \leq
+      \max_{\varFP\in \varCD} \ValE(\varFP)\]
       d'où l'inégalité souhaitée.
     \end{itemize}
   \item[$\Rlw$~:] Supposons que
-    $\Val_\rho(\bigwedge \varCG) \leq \Val_\rho(\bigvee \varCD)$ pour tout
-    $\rho$, alors comme
-    $\Val_\rho(\bigwedge (\varCG, \varFF)) \leq \Val_\rho(\bigwedge \varCG)$
-    on voit
-    directement que
-    $\Val_\rho(\bigwedge(\varCG,\varFF)) \leq \Val_\rho(\bigvee\varCD)$.
-  \item[$\Rtop$~:] Comme $\Val_\rho(\top) = 1$ pour tout $\rho$,
-    $\Val_\rho(\bigwedge(\varCG,\top)) = \Val_\rho(\bigwedge \varCG)$ d'où le
+    $\ValE(\bigwedge \varCG) \leq \ValE(\bigvee \varCD)$ pour tout
+    $\env$, alors comme
+    $\ValE(\bigwedge (\varCG, \varFF)) \leq \ValE(\bigwedge \varCG)$
+    on voit que
+    $\ValE(\bigwedge(\varCG,\varFF)) \leq \ValE(\bigvee\varCD)$.
+  \item[$\Rtop$~:] Comme $\ValE(\top) = 1$ pour tout $\env$,
+    $\ValE(\bigwedge(\varCG,\top)) = \ValE(\bigwedge \varCG)$ d'où le
     résultat.
   \item[$\Rlnot$~:] Supposons que
     \begin{equation}\label{eq.cor3}
-      \min_{\varFP \in \varCG} \Val_\rho(\varFP) \leq
-      \max_{\varFP \in (\varFF,\varCD)} \Val_\rho(\varFP)
+      \min_{\varFP \in \varCG} \ValE(\varFP) \leq
+      \max_{\varFP \in (\varFF,\varCD)} \ValE(\varFP)
     \end{equation}
     et montrons que
-    $\min_{\varFP \in (\varCG, \lnot \varFF)} \Val_\rho(\varFP) \leq
-    \max_{\varFP \in \varCD} \Val_\rho(\varFP)$. On raisonne par disjonction de cas
-    sur $\Val_\rho(\varFF)$~:
+    $\min_{\varFP \in (\varCG, \lnot \varFF)} \ValE(\varFP) \leq
+    \max_{\varFP \in \varCD} \ValE(\varFP)$. On raisonne par disjonction de cas
+    sur $\ValE(\varFF)$~:
     \begin{itemize}
-    \item si $\Val_\rho(\varFF) = 0$, alors en injectant cette équation dans
+    \item si $\ValE(\varFF) = 0$, alors en injectant cette équation dans
       \ref{eq.cor3}, on obtient
-      \[\min_{\varFP \in \varCG} \Val_\rho(\varFP) \leq
-      \max_{\varFP \in \varCD} \Val_\rho(\varFP)\]
+      \[\min_{\varFP \in \varCG} \ValE(\varFP) \leq
+      \max_{\varFP \in \varCD} \ValE(\varFP)\]
       d'où l'inégalité souhaité en rajoutant un élément dans le minimum.
-    \item si $\Val_\rho(\varFF) = 1$, alors
-      $\min_{\varFP \in (\varCG, \lnot \varFF)} \Val_\rho(\varFP) = 0$ donc
+    \item si $\ValE(\varFF) = 1$, alors
+      $\min_{\varFP \in (\varCG, \lnot \varFF)} \ValE(\varFP) = 0$ donc
       l'inégalité est vérifiée.
     \end{itemize}
   \item[$\Rlor$~:] Supposons que
     \begin{equation}\label{eq.cor4}
-      \min_{\varFC \in (\varCG, \varFF)} \Val_\rho(\varFC)
-      \leq \max_{\varFC \in \varCD} \Val_\rho(\varFC)
+      \min_{\varFC \in (\varCG, \varFF)} \ValE(\varFC)
+      \leq \max_{\varFC \in \varCD} \ValE(\varFC)
     \end{equation}
     et
     \begin{equation}\label{eq.cor5}
-      \min_{\varFC \in (\varCG, \varFP)} \Val_\rho(\varFC) \leq
-      \max_{\varFC \in \varCD} \Val_\rho(\varFC)
+      \min_{\varFC \in (\varCG, \varFP)} \ValE(\varFC) \leq
+      \max_{\varFC \in \varCD} \ValE(\varFC)
     \end{equation}
     et montrons que
-    $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) \leq
-    \max_{\varFP \in \varCD} \Val_\rho(\varFC)$.
-    On raisonne par disjonction de cas sur la valeur de $\Val_\rho(\varFF)$~:
+    $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \ValE(\varFC) \leq
+    \max_{\varFP \in \varCD} \ValE(\varFC)$.
+    On raisonne par disjonction de cas sur la valeur de $\ValE(\varFF)$~:
     \begin{itemize}
-    \item si $\Val_\rho(\varFF) = 1$, alors en injectant cette égalité dans
+    \item si $\ValE(\varFF) = 1$, alors en injectant cette égalité dans
       \ref{eq.cor4}, on obtient
-      \[\min_{\varFC \in \varCG} \Val_\rho(\varFC) \leq
-      \max_{\varFC \in \varCD} \Val_\rho(\varFC)\]
+      \[\min_{\varFC \in \varCG} \ValE(\varFC) \leq
+      \max_{\varFC \in \varCD} \ValE(\varFC)\]
       d'où l'inégalité souhaitée en ajoutant un terme dans le minimum.
-    \item si $\Val_\rho(\varFF) = 0$, alors on procède par disjonction de cas
-      sur la valeur de $\Val_\rho(\varFP)$~:
+    \item si $\ValE(\varFF) = 0$, alors on procède par disjonction de cas
+      sur la valeur de $\ValE(\varFP)$~:
       \begin{itemize}
-      \item si $\Val_\rho(\varFP) = 1$, l'argument précédent fonctionne aussi en
+      \item si $\ValE(\varFP) = 1$, l'argument précédent fonctionne aussi en
         remplaçant \ref{eq.cor4} par \ref{eq.cor5}.
-      \item si $\Val_\rho(\varFP) = 0$, alors on sait que
-        $\Val_\rho(\varFF\lor \varFP) = 0$
+      \item si $\ValE(\varFP) = 0$, alors on sait que
+        $\ValE(\varFF\lor \varFP) = 0$
         avec nos deux équations, donc
-        $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) = 0$,
+        $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \ValE(\varFC) = 0$,
         d'où l'inégalité.
       \end{itemize}
     \end{itemize}
   \item[$\Rland$~:] On voit que
-    $\Val_\rho(\bigwedge(\varCG,\varFF,\varFP)) =
-    \Val_\rho(\bigwedge(\varCG, \varFF \land \varFP))$
+    $\ValE(\bigwedge(\varCG,\varFF,\varFP)) =
+    \ValE(\bigwedge(\varCG, \varFF \land \varFP))$
     par associativité de $\bigwedge$, donc si l'on suppose que
-    $\Val_\rho(\bigwedge(\varCG,\varFF,\varFP)) \leq \Val_\rho(\bigvee\varCD)$,
-    on en déduit directement que
-    $\Val_\rho(\bigwedge(\varCG,\varFF\land\varFP))\leq\Val_\rho(\bigvee\varCD)$.
+    $\ValE(\bigwedge(\varCG,\varFF,\varFP)) \leq \ValE(\bigvee\varCD)$,
+    on en déduit que
+    $\ValE(\bigwedge(\varCG,\varFF\land\varFP))\leq\ValE(\bigvee\varCD)$.
   \end{itemize}
   Donc, par induction, si $\varCG\vdP \varCD$ alors
   $\satisf \bigwedge\varCG\to\bigvee\varCD$.
@@ -961,7 +959,7 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
   Maintenant, prouvons que si $\varCG\vdAbs\varCD$ et $\varCG\nvdP\Delta$,
   alors $\varCG\nvD\varCD$ (où $\varCG\vD \varCD$ signifie que pour toute
   valuation
-  $\rho$, $\Val_\rho(\bigwedge \varCG) \leq \Val_\rho(\bigvee \varCD)$).
+  $\env$, $\ValE(\bigwedge \varCG) \leq \ValE(\bigvee \varCD)$).
   On procède par induction sur $\vdAbs$~:
   \begin{itemize}
   \item si la dernière règle utilisée est ax', alors, puisque le séquent se
@@ -985,22 +983,22 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
     généralité puisque $\varFF$ et $\varFP$ jouent des rôles symétriques,
     on suppose que
     $\varCG, \varFF \nvdP \varCD$. Alors, par hypothèse d'induction, on sait que
-    $\varCG, \varFF \nvD \varCD$, donc on trouve $\rho$ telle que
-    \[\min_{\varFC \in (\varCG, \varFF)} \Val_\rho(\varFC) >
-    \max_{\varFC \in \varCD} \Val_\rho(\varFC)\]
+    $\varCG, \varFF \nvD \varCD$, donc on trouve $\env$ telle que
+    \[\min_{\varFC \in (\varCG, \varFF)} \ValE(\varFC) >
+    \max_{\varFC \in \varCD} \ValE(\varFC)\]
     On en déduit qu'il existe une proposition $\varFC \in (\varCG, \varFF)$
     telle que
-    $\Val_\rho(\varFC) = 1$ et que pour tout
-    $\varFC_0\in \Delta, \Val_\rho(\varFC_0) = 0$.
+    $\ValE(\varFC) = 1$ et que pour tout
+    $\varFC_0\in \Delta, \ValE(\varFC_0) = 0$.
     Si $\varFC \in \varCG$, alors on en déduit directement que
-    \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) >
-    \max_{\varFC\in\varCD} \Val_\rho(\varFC)\]
+    \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \ValE(\varFC) >
+    \max_{\varFC\in\varCD} \ValE(\varFC)\]
     et donc que $\varCG, \varFF \lor \varFP \nvD \varCD$.
     Sinon, cela signifie que
-    $\varFF = \varFP$, donc que $\Val_\rho(\varFF) = 1$, d'où
-    $\Val_\rho(\varFF\lor \varFP) = 1$, donc
-    \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \Val_\rho(\varFC) >
-    \max_{\varFC\in\varCD} \Val_\rho(\varFC)\]
+    $\varFF = \varFP$, donc que $\ValE(\varFF) = 1$, d'où
+    $\ValE(\varFF\lor \varFP) = 1$, donc
+    \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \ValE(\varFC) >
+    \max_{\varFC\in\varCD} \ValE(\varFC)\]
     Ainsi, dans tous les cas, $\varCG, \varFF \lor \varFP \nvD \varCD$.
   \end{itemize}
 
