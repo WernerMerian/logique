@@ -45,7 +45,7 @@ On se fixe pour tout ce chapitre un ensemble $\Var$ dénombrable de variables.
 
 \section{Signatures, termes et formules}
 
-\subsection{Définition d'une signature}
+\subsection{Définition d'une signature}\label{subsec.signature}
 
 Reprenons l'exemple que nous avions donné au début du \cref{chp.logprop} :
 \[\forall n \in \bN, (\exists m \in \bN, n = 2\times m) \lor
@@ -621,7 +621,7 @@ Cela permet alors de définir ce qu'est un modèle.
   Soit une signature $\Sign$ et $\PropSet\subseteq\Prop(\Sign)$. On dit que
   $\varMM$ est un modèle de $\PropSet$ si $\satMM \PropSet$. On note
   $\Model_{\Sign}(\PropSet)$ la classe des modèles de $\PropSet$, ou simplement
-  $\Model(\PropSet)$ lorsque $\Sign$ clair.
+  $\Model(\PropSet)$ lorsque $\Sign$ est clair.
 \end{definition}
 
 Un modèle ne se définit qu'avec un ensemble de formules closes. On pourrait
@@ -639,7 +639,7 @@ l'intérêt ici est de pouvoir décrire parmi tous les magmas possibles ceux qui
 ont une lci commutative, et donc de le faire en quelque sorte uniformément parmi
 les structures, ce qui n'est pas le cas si les formules n'étaient pas closes.
 
-\subsection{Théories et conséquence logique}
+\subsection{Théories et conséquence logique}\label{subsec.theorie}
 
 Cela mène naturellement à deux notions connexes~: celle de théorie, et celle
 de conséquence logique. Une théorie permet de décrire des classes de modèles, et
@@ -652,8 +652,44 @@ façon que nous avions construit la relation $\vD$ pour le calcul propositionnel
   l'ensemble des théories sur une signature $\Sign$.
 \end{definition}
 
+\begin{example}
+  Definissons la théorie des groupes $\TGrp$, des groupes abéliens $\TAb$
+  et des anneaux $\TRing$ respectivement sur les signatures
+  $\SignGrp$, $\SignAb$ et $\SignRing$ données dans la \cref{subsec.signature}.
+  Pour cela, commençons par lister les axiomes individuellement~:
+  \begin{align*}
+    \Rax_{\Grp,\neut} &\defeq ``\forall x, x \times e = x \land
+    e \times x = x"\\
+    \Rax_{\Grp,\assoc} &\defeq ``\forall x\,y\,z, x \times (y \times z)
+    = (x \times y) \times z"\\
+    \Rax_{\Grp,\inv} &\defeq ``\forall x, x \times x^{-1} = e \land
+    x^{-1}\times x = e"\\
+    \Rax_{\Ab,\neut} &\defeq ``\forall x, x + 0 = x \land 0 + x = x"\\
+    \Rax_{\Ab,\assoc} &\defeq ``\forall x\,y\,z, x + (y + z) = (x + y) + z"\\
+    \Rax_{\Ab,\inv} &\defeq ``\forall x, x + (-x) = 0 \land (-x) + x = 0"\\
+    \Rax_{\Ab,\comm} &\defeq ``\forall x\,y, x + y = y + x"\\
+    \Rax_{\Ring,\neut} &\defeq ``\forall x, x \times 1 = x \land
+    1 \times x = x"\\
+    \Rax_{\Ring,\assoc} &\defeq ``\forall x\,y\,z, x \times(y \times z) =
+    (x \times y) \times z"\\
+    \Rax_{\Ring,\distrL} &\defeq ``\forall x\,y\,z,
+      x \times (y + z) = (x \times y) + (x \times z)"\\
+    \Rax_{\Ring,\distrR} &\defeq ``\forall x\,y\,z,
+      (x + y) \times z = (x \times z) + (y \times z)"
+  \end{align*}
+  Les trois théories sont alors
+  \begin{align*}
+    \TGrp &\defeq \{\Rax_{\Grp,\neut},\Rax_{\Grp,\assoc},\Rax_{\Grp,\inv}\}\\
+    \TAb &\defeq
+    \{\Rax_{\Ab,\neut},\Rax_{\Ab,\assoc},\Rax_{\Ab,\inv},\Rax_{\Ab,\comm}\} \\
+    \TRing &\defeq \TAb \cup
+    \{\Rax_{\Ring,\neut},\Rax_{\Ring,\assoc},\Rax_{\Ring,\distrL},\Rax_{\Ring,\distrR}\}
+  \end{align*}
+\end{example}
+
 \begin{definition}[Conséquence logique, équivalence]
-  Soit un ensemble $\FormSet\subseteq \Formula(\Sign)$ et une formule
+  Soient une signature $\Sign$, un ensemble
+  $\FormSet\subseteq \Formula(\Sign)$ et une formule
   $\varFF\in\Formula(\Sign)$. On dit que $\varFF$ est conséquence logique de
   $\FormSet$, ce que l'on écrit $\FormSet \vD \varFF$, lorsque pour toute
   structure $\varMM$, si $\satMM \FormSet$ alors
@@ -663,8 +699,11 @@ façon que nous avions construit la relation $\vD$ pour le calcul propositionnel
   équivalentes, ce que l'on note $\varFF\equiv\varFP$.
 \end{definition}
 
-\noindent
-On peut relier ces deux notions par celle de théorie saturée.
+Une théorie est ici vue comme un ensemble de propositions, prises comme des
+axiomes. L'ensemble des formules qui sont conséquences d'une théorie ne sont
+pas forcément dans ladite théorie. Néanmoins, il peut être utile d'avoir des
+théories close par la conséquence en ce sens qu'une proposition démontrable
+dans la théorie $\varT$ appartient à $\varT$.
 
 \begin{definition}[Théorie saturée, clôture par conséquence]
   Soit une théorie $\varT$ sur une signature $\Sign$. On dit que
@@ -673,8 +712,15 @@ On peut relier ces deux notions par celle de théorie saturée.
 
   Pour une théorie $\varT$, on définit sa clôture par conséquence, notée
   $\vTclos$, par
-  \[\vTclos \defeq \compr{\varFF \in \Prop(\Sign)}{\varT \vD A}\]
+  \[\vTclos \defeq \compr{\varFF \in \Prop(\Sign)}{\varT \vD \varFF}\]
 \end{definition}
+
+\begin{remark}
+  La notation $\vTclos$ n'est pas standard. Elle est basée sur la notation
+  $\vdTclos$ qui désigne l'ensemble des théorèmes de $\varT$~: un théorème
+  étant une proposition prouvable dans $\varT$, elle utilise la notion de
+  conséquence syntaxique (qu'on définira dans la \cref{sec.syntaxe.preuve}).
+\end{remark}
 
 De plus, la conséquence logique permet directement de décrire une théorie
 \og fausse\fg: une telle théorie est une théorie dans laquelle la proposition
@@ -1018,6 +1064,7 @@ le langage d'origine. C'est par exemple l'idée menant à la méthode des
 diagrammes, développée dans la partie dédiée à la théorie des modèles.
 
 \section[Syntaxe de preuves]{Système de démonstration du calcul des prédicats}
+\label{sec.syntaxe.preuve}
 
 Nous avons défini la sémantique des formules à travers la notion de modèle. Pour
 suivre ce que nous avons fait dans le chapitre précédent, nous allons maintenant
@@ -1305,7 +1352,7 @@ Cela nous permet alors de réduire le nombre de règles dans notre système.
     Avec l'écriture actuelle des formules, deux écritures utiles nous
     manquent~:
     \begin{itemize}
-        \item le connecteur $\leftrightarrow$, qui est traité dans
+        \item le connecteur $\iffS$, qui est traité dans
         l'\cref{exo.equiv}
         \item le quantificateur $\exists ! x, \varphi(x)$. Celui-ci peut
         être encodé par
@@ -2056,7 +2103,7 @@ complétude.
   On démontre le résultat par induction sur la structure de $\varFF$~:
   \begin{itemize}
   \item si $\varFF$ est $\top$ ou $\bot$, le résultat est évident (en
-    particulier $\mathcal T'\nvdP\bot$).
+    particulier $\varT'\nvdP\bot$).
   \item si $\varFF = R(t_1,\ldots,t_n)$ alors la proposition
     $\varT'\vdP R(\env(t_1),\ldots,\env(t_n))$ signifie exactement
     \[\toMP{R}{\varT'}(\overline{\env(t_1)},\ldots,\overline{\env(t_n)})\]
@@ -2202,7 +2249,7 @@ théorème.
 \begin{proof}
   On ajoute à $\Sign$ l'ensemble $\compr{\Cc_a}{a \in\varCk}$ de constantes, et
   on définit la théorie $\varT'$ sur cette signature par
-  \[\varT'\defeq\varT\cup \bigcup_{a,b\in \varCk}(\Cc_a\neq \Cc_b)\]
+  \[\varT'\defeq\varT\cup \compr{``\Cc_a\neq\Cc_b"}{a,b \in \varCk}\]
   ainsi un modèle de $\varT'$ est naturellement un modèle de $\varT$,
   et il a au moins $\varCk$ éléments. Par le théorème de compacité, pour
   que $\varT'$ soit cohérent, il suffit que toute partie finie de
@@ -2229,14 +2276,14 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
 \begin{proof}
   On combine les deux résultats précédents~: on considère tout d'abord la
-  théorie $\varT_{\varMM}$ des propositions vraies dans $\varMM$.
+  théorie $\Th(\varMM)$ des propositions vraies dans $\varMM$.
   Cette théorie étant complète (un modèle vérifie un énoncé ou sa négation),
-  construire un modèle de $\varT_{\varMM}$ de cardinal $\varCk$
-  suffit à prouver le théorème. On définit alors, comme précédemment, la
-  théorie $\varT'_{\varMM}$ constituée des énoncés $\Cc_a \neq \Cc_b$
-  (on enrichit la signature en conséquences).
+  construire un modèle de $\Th(\varMM)$ de cardinal $\varCk$
+  suffit à prouver le théorème. Définissons maintenant la théorie
+  \[\varT'\defeq \Th(\varMM) \cup\compr{``\Cc_a \neq \Cc_b"}{a,b \in \varCk}\]
 
-  On sait donc qu'il existe un modèle syntaxique de cette théorie, qui est
+  \noindent
+  On sait qu'il existe un modèle syntaxique de cette théorie, qui est
   donc de cardinal inférieur à $\varCk$ par la version descendante du
   théorème, et de cardinal supérieur à $\varCk$ par la version ascendante
   du théorème~: le modèle syntaxique est de cardinal $\varCk$.
@@ -2244,54 +2291,58 @@ pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
 
 \section{Des éléments de méta-mathématiques}\label{sec.metamath}
 
-Cette section annexe a pour objectif de donner des résultats qui permettent de rapprocher
-notre objet d'étude (la logique formelle) de la pratique mathématique.
-En effet, il manque un élément essentiel des mathématiques à notre système syntaxique
-actuel~: la notion de définition.
+Cette section annexe a pour objectif de donner des résultats qui permettent de
+rapprocher notre objet d'étude (la logique formelle) de la pratique
+mathématique.
+En effet, il manque un élément essentiel des mathématiques à notre système
+syntaxique actuel~: la notion de définition.
 
-Il est possible d'éviter ce problème en considérant qu'aucune définition n'existe. Dans
-une telle optique, on utilise uniquement des raccourcis du langage lorsqu'on désigne un
-objet défini~: par exemple, il faudrait non pas considérer un objet à part nommé
-$\varnothing$, mais un objet $x$ quelconque auquel on a donné la propriété définissant
-$\varnothing$, c'est-à-dire
+Il est possible d'éviter ce problème en considérant qu'aucune définition
+n'existe.
+Dans une telle optique, on utilise uniquement des raccourcis du langage
+lorsqu'on désigne un objet défini~: par exemple, il faudrait non pas considérer
+un objet à part nommé $\vide$, mais un objet $x$ quelconque auquel on a donné
+la propriété définissant $\vide$, c'est-à-dire
 \[\forall y, y \notin x\]
 
-L'autre choix possible est de considérer que définir un objet $A$ avec une propriété
-$\varphi(A)$ revient à ajouter à notre signature une constante $A$ et l'axiome
-$\varphi(A)$.
+L'autre choix possible est de considérer que définir un objet $A$ avec une
+propriété $\varFF(A)$ revient à ajouter à notre signature une constante
+$A$ et l'axiome $\varFF(A)$.
 
-En réalité, ces deux procédés sont équivalents, ce qui reviendra au théorème central de
-cette section. Pour pouvoir l'énoncer et le montrer, on va d'abord s'intéresser aux
-conséquences d'une extension de langage sur les théories.
+En réalité, ces deux procédés sont équivalents, ce qui reviendra au théorème
+central de cette section. Pour pouvoir l'énoncer et le montrer, on va d'abord
+s'intéresser aux conséquences d'une extension de langage sur les théories.
 
 \subsection{Extension et conservativité}
 
-Supposons donnée une signature $\Sigma$ et un enrichissement $\Sigma' \supseteq \Sigma$.
-Il existe une façon naturelle d'associer une théorie sur $\Sigma$ à une théorie sur
-$\Sigma'$ et une façon naturelle de faire l'inverse.
+Supposons donnée une signature $\Sign$ et un enrichissement
+$\Sign' \supseteq \Sign$.
+Il existe une façon naturelle d'associer une théorie sur $\Sign$ à une théorie
+sur $\Sign'$ et une façon naturelle de faire l'inverse.
 
 \begin{definition}[Trace d'une théorie dans un enrichissement]
-  Soient $\Sigma\subseteq \Sigma'$ deux signatures. Soit $\mathcal T$ une théorie sur
-  $\Sigma$ et $\mathcal T'$ une théorie sur $\Sigma'$. On appelle trace de $\mathcal T$
-  (respectivement trace de $\mathcal T'$) la théorie sur $\Sigma'$ (respectivement
-  sur $\Sigma$) suivante~:
-  \[\tr_{\Sigma'}(\mathcal T) \defeq \mathcal T
-  \qquad \tr_{\Sigma}(\mathcal T') \defeq \mathcal T' \cap \Prop(\Sigma)\]
+  Soient $\Sign\subseteq \Sign'$ deux signatures. Soit $\varT$ une théorie sur
+  $\Sign$ et $\varT'$ une théorie sur $\Sign'$. On appelle extension de $\varT$
+  sur $\Sign'$ (et on note $\ext_{\Sign'}(\varT)$)
+  la théorie $\varT$ vue comme une théorie de $\Sign'$, et
+  trace de $\varT'$ sur $\Sign$ la théorie
+  \[%\tr_{\Sign'}(\varT) \defeq \varT \qquad
+  \tr_{\Sign}(\varT') \defeq \varT' \cap \Prop(\Sign)\]
 \end{definition}
 
-Les traces permettent de facilement passer d'un modèle pour une théorie à un modèle sur
-une sous-signature ou sur un enrichissement~:
+Les traces permettent de facilement passer d'un modèle pour une théorie à un
+modèle sur une sous-signature ou sur un enrichissement~:
 
 \begin{proposition}
-  Soient $\Sigma\subseteq \Sigma'$ deux signature. Soit $\mathcal T$ une théorie sur
-  $\Sigma$ et $\mathcal M$ un modèle de $\mathcal T$, alors tout enrichissement de
-  $\mathcal M$ sur $\Sigma'$ est un modèle de $\tr_{\Sigma'}(\mathcal T)$.
+  Soient $\Sign\subseteq \Sign'$ deux signature. Soit $\varT$ une théorie sur
+  $\Sign$ et $\varMM$ un modèle de $\varT$, alors tout enrichissement de
+  $\varMM$ sur $\Sign'$ est un modèle de $\ext_{\Sign'}(\varT)$.
 \end{proposition}
 
 \begin{proposition}\label{prop.ext.trace2}
-  Soient $\Sigma\subseteq \Sigma'$ deux signature. Soit $\mathcal T'$ une théorie sur
-  $\Sigma'$ et $\mathcal M$ un modèle de $\mathcal T'$, alors l'affaiblissement de
-  $\mathcal M$ à $\Sigma$ est un modèle de $\tr_{\Sigma}(\mathcal T')$.
+  Soient $\Sign\subseteq \Sign'$ deux signature. Soit $\varT'$ une théorie sur
+  $\Sign'$ et $\varMM$ un modèle de $\varT'$, alors l'affaiblissement de
+  $\varMM$ à $\Sign$ est un modèle de $\tr_{\Sign}(\varT')$.
 \end{proposition}
 
 \begin{exercise}
@@ -2299,145 +2350,153 @@ une sous-signature ou sur un enrichissement~:
 \end{exercise}
 
 \begin{example}
-  Considérons la signature des groupes commutatifs et celle des anneaux, ainsi que leurs
-  théories associées. On peut remarquer que la trace de la théorie des anneaux à la
-  signature des groupes est exactement la théorie des groupes~: ainsi, un anneau contient
-  toujours un groupe pour sa structure additive. Cependant, dans l'autre sens, un
-  groupe qu'un munit d'une seconde opération binaire et d'une seconde constante (ce qui
-  correspond donc à prendre un modèle de la trace de la théorie des groupes dans la
+  Considérons la signature des groupes abéliens ($\SignAb$) et celle des
+  anneaux ($\SignRing$), ainsi que leurs
+  théories associées $\TAb$ et $\TRing$.
+  On peut remarquer que $\tr_{\SignAb}(\TRing) = \TAb$~: ainsi,
+  un anneau contient toujours un groupe abélien pour sa structure additive.
+  Cependant, dans l'autre sens, un groupe abélien qu'un munit d'une seconde
+  opération
+  binaire et d'une seconde constante (ce qui correspond donc à prendre un
+  modèle de la trace de la théorie des groupes dans la
   signature des anneaux) n'est pas \latinexpr{a priori} un anneau.
 \end{example}
 
-On remarque donc, par l'exemple précédent, que la trace d'une théorie dans une plus
-grande théorie fait généralement perdre une forme d'information.
+On remarque donc, par l'exemple précédent, que la trace d'une théorie dans une
+plus grande théorie fait généralement perdre une forme d'information.
 
-Notre définition de trace, cependant, est particulièrement syntaxique~: si l'on considère
-par exemple la théorie sur la signature des anneaux donnée par le seul axiome
+Notre définition de trace, cependant, est particulièrement syntaxique~: si l'on
+considère par exemple la théorie sur la signature des anneaux donnée par le seul
+axiome
 \[(\forall x, x + x = 0) \land (\forall x, x \times x = 0)\]
-alors sa trace sur la signature des groupes sera simplement $\varnothing$.
+alors sa trace sur la signature des groupes sera simplement $\vide$.
 Ce résultat n'est pas souhaitable, puisque l'axiome donne une information sur le
 comportement du groupe additif avec sa moitié gauche.
 
-On peut régler ce problème directement en considérant, au lieu d'une théorie $\mathcal T$
-dont on regarde la trace, la trace $\tr_{\Sigma}(\vdclose{\mathcal T})$. Dans un tel cas,
-l'énoncé $\forall x, x + x = 0$ appartient effectivement à la trace.
+On peut régler ce problème directement en considérant, au lieu d'une théorie
+$\varT$ dont on regarde la trace, la trace $\tr_{\Sign}(\vdTclos)$, où
+\[\vdTclos \defeq \compr{\varFF \in \Prop(\Sign')}{\varT\vdP \varFF}\]
+Dans un tel cas, l'énoncé $\forall x, x + x = 0$ appartient
+effectivement à la trace.
 
-Ainsi, la façon naturelle de plonger une théorie dans une signature plus petite est
-d'en regarder sa clôture par la relation de prouvabilité~: cela correspond donc à
-considérer l'ensemble des théorèmes qui s'écrivent dans $\Sigma$ mais peuvent se
-prouver dans $\mathcal T$ en tant que théorie sur $\Sigma'$. C'est cette vision qui
-motive la notion d'extension conservative.
+Ainsi, la façon naturelle de plonger une théorie dans une signature plus petite
+est d'en regarder sa clôture par la relation de prouvabilité~: cela correspond
+donc à considérer l'ensemble des théorèmes qui s'écrivent dans $\Sign$ mais
+peuvent se prouver dans $\varT$ en tant que théorie sur $\Sign'$. C'est cette
+vision qui motive la notion d'extension conservative.
 
 \begin{definition}[Extension conservative]\label{def.conserv.ext}
-  Soient $\Sigma\subseteq \Sigma'$ deux signatures, et $\mathcal T$ une théorie sur
-  $\Sigma$.
-  Une extension conservative (on dit aussi conservatrice) de $\mathcal T$ est
-  une théorie $\mathcal T'$ sur $\Sigma'$ telle que
-  \[\tr_\Sigma(\vdclose{\mathcal T'}) = \vdclose{\mathcal T}\]
+  Soient $\Sign\subseteq \Sign'$ deux signatures, et $\varT$ une théorie sur
+  $\Sign$.
+  Une extension conservative (on dit aussi conservatrice) de $\varT$ est
+  une théorie $\varT'$ sur $\Sign'$ telle que
+  \[\tr_\Sign(\vdclose{\varT'}) = \vdTclos\]
 \end{definition}
 
-Une extension conservative est un outil important pour la pratique mathématique. En
-effet, on ne conserve pas en pratique la même signature tout au long d'une démonstration,
-et encore moins pour développer toute une théorie~: on a besoin d'ajouter de nouveaux
-objets qu'on définit généralement à partir des anciens objets. Prouver qu'une extension
-est conservative signifie que l'on prouve qu'en ajoutant la possibilité de parler de
-nouveaux objets, on ne change pour autant pas les formules que l'on souhaite prouver.
+Une extension conservative est un outil important pour la pratique mathématique.
+En effet, on ne conserve pas en pratique la même signature tout au long d'une
+démonstration, et encore moins pour développer toute une théorie~: on a besoin
+d'ajouter de nouveaux objets qu'on définit généralement à partir des anciens
+objets. Prouver qu'une extension est conservative signifie que l'on prouve qu'en
+ajoutant la possibilité de parler de nouveaux objets, on ne change pour autant
+pas les formules que l'on souhaite prouver.
 
 \begin{example}
   On le verra dans le \cref{chp.arith}~: il est possible d'ajouter la fonction
-  \[\begin{array}{ccccc}
-  \exp & : & \mathbb N^2 & \longrightarrow & \mathbb N\\
-  & & (n,m) & \longmapsto & n^m
-  \end{array}\]
+  \[\makeFun{\exp}{\bN^2}{\bN}{(n,m)}{n^m}\]
   à la théorie de l'arithmétique de Peano en gardant une extension conservative.
   Dans un tel cas, on peut alors écrire des propositions telles que
-  \[\forall x, \forall y, \forall z, \forall n, n > 2 \implies x^n + y^n \neq z^n\]
-  et les utiliser dans des démonstrations, pour prouver des énoncés impliquant uniquement
-  les symboles $+, \times, 0, S$.
+  \[\forall x, \forall y, \forall z, \forall n, n > 2 \implies
+  x^n + y^n \neq z^n\]
+  et les utiliser dans des démonstrations, pour prouver des énoncés impliquant
+  uniquement les symboles $+, \times, 0, \Ss$.
 \end{example}
 
-On peut désormais s'intéresser au cas particulier des extensions par définition.
+Parmi les extensions conservative, une famille d'extension mérite notre
+attention~: les extensions par définition. Ces extensions sont des cas
+particulièrement naturels d'extensions, qui donne un pendant formel à la
+pratique mathématique de définir des objets à partir d'anciens.
 
 \subsection{Extensions par définitions}
 
-On fixe pour tout le reste de la section une signature $\Sigma$. L'objectif d'une
-extension par définition est le suivant~: supposons donnée une formule $\varphi(x)$ qui
-caractérise un objet $x$, nous souhaitons nommer cet objet, l'ajouter à nos symboles et
-considérer $\varphi(x)$ comme un axiome définissant ce symbole. Le théorème principal
-est alors que ce procédé, s'il ajoute effectivement des formules à notre ensemble
-$\Formula$, ne va pas changer les théorèmes que l'on peut prouver à l'origine. Ainsi,
-les définitions permettent d'ajouter des objets mais ne changent pas la théorie ambiante.
+On fixe pour tout le reste de la section une signature $\Sign$. L'objectif d'une
+extension par définition est le suivant~: supposons donnée une formule
+$\varFF(x)$ qui caractérise un objet $x$, nous souhaitons nommer cet objet,
+l'ajouter à nos symboles et considérer $\varFF(x)$ comme un axiome définissant
+ce symbole. Le théorème principal est alors que ce procédé, s'il ajoute
+effectivement des formules à notre ensemble $\Formula$, ne va pas changer les
+théorèmes que l'on peut prouver à l'origine. Ainsi, les définitions permettent
+d'ajouter des objets mais ne changent pas la théorie ambiante.
 
-Deux cas sont alors à traiter puisque les symboles sont de deux types (symboles de
-fonction et symbole de relation). Nous donnons d'abord le cas des symboles de relation
-car ceux-ci se traitent assez facilement.
+Deux cas sont alors à traiter puisque les symboles sont de deux types (symboles
+de fonction et symbole de relation). Nous donnons d'abord le cas des symboles de
+relation car ceux-ci se traitent assez facilement.
 
 \subsubsection{Définition des relations}
 
 \begin{definition}[Extension par définition d'une relation]
   \label{def.ext.def.rel}
-  Soit une théorie $\mathcal T$ et une formule $\varphi(x_1,\ldots,x_n)$, c'est-à-dire
-  telle que $\VL(\varphi) \subseteq \{x_1,\ldots,x_n\}$. On définit l'extension
-  par définition de $\varphi$ par la signature
-  \[\Sigma' \defeq \Sigma \cup \{{R_\varphi}^n\}\]
-  où $R_\varphi$ est un symbole de relation d'arité $n$, et la théorie
-  \[
-    \mathcal T' \defeq \mathcal T \cup
-    \{`` \forall x_1,\ldots,x_n, R_\varphi(x_1,\ldots,x_n)
-    \leftrightarrow \varphi(x_1,\ldots,x_n)"\}
-  \]
-  (On se réfère à l'\cref{exo.equiv} pour traiter du symbole $\leftrightarrow$.)
+  Soit une théorie $\varT$ et une formule $\varFF(x_1,\ldots,x_n)$, c'est-à-dire
+  telle que $\VL(\varFF) \subseteq \{x_1,\ldots,x_n\}$. On définit l'extension
+  par définition de $\varFF$ par la signature
+  \[\Sign' \defeq \Sign \cup \{{\symbRF}^n\}\]
+  où $\symbRF$ est un symbole de relation d'arité $n$, et la théorie
+  \[\varT' \defeq \varT \cup
+    \{`` \forall x_1,\ldots,x_n, \symbRF(x_1,\ldots,x_n)
+    \iffS \varFF(x_1,\ldots,x_n)"\}\]
+  (On se réfère à l'\cref{exo.equiv} pour traiter du symbole $\iffS$.)
 \end{definition}
 
-Le symbole $R_\varphi$ joue exactement le rôle de $\varphi$~: la raison pour laquelle
-$\mathcal T'$ est une extension conservative de $\mathcal T$ est donc simplement
-que dans toutes les démonstrations, on peut remplacer $R_\varphi$ par $\varphi$. On
-souhaite donc~:
+Le symbole $\symbRF$ joue exactement le rôle de $\varFF$~: la raison pour
+laquelle $\varT'$ est une extension conservative de $\varT$ est donc simplement
+que dans toutes les démonstrations, on peut remplacer $\symbRF$ par $\varFF$.
+On souhaite donc~:
 \begin{itemize}
-\item construire pour chaque formule $\psi$ une nouvelle formule $\psi_{-R_\varphi}$ qui
-  remplace les occurrences de $R_\varphi$ par $\varphi$~;
-\item prouver que $\mathcal T' \vdash \psi \leftrightarrow \psi_{-R_\varphi}$ pour toute
-  formule $\psi$~;
-\item prouver que $\mathcal T' \vdash \psi$ si et seulement si
-  $\mathcal T \vdash \psi_{-R_\varphi}$.
+\item construire pour chaque formule $\varFP$ une nouvelle formule $\minRFP$ qui
+  remplace les occurrences de $\symbRF$ par $\varFF$~;
+\item prouver que $\varT' \vdP \varFF \iffS \minRFP$ pour toute
+  formule $\varFF$~;
+\item prouver que $\varT' \vdP \varFF$ si et seulement si
+  $\varT \vdP \minRFP$.
 \end{itemize}
 
-\begin{definition}[Traduction sans $R_\varphi$]
-  Soit une formule $\psi \in \Formula(\Sigma')$. On définit sa traductions sans
-  $R_\varphi$ par inductino sur la structure des formules~:
+\begin{definition}[Traduction sans $\symbRF$]
+  Soit une formule $\varFF \in \Formula(\Sign')$. On définit sa traductions sans
+  $\symbRF$ par induction sur la structure des formules~:
   \begin{itemize}
-  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R_\varphi$, alors
-    $\psi_{-R_\varphi} \defeq \psi$~;
-  \item si $\psi = R_\varphi(t_1,\ldots,t_n)$, alors
-    $\psi_{-R_\varphi} \defeq \varphi(t_1,\ldots,t_n)$~;
-  \item si $\psi = \lnot \psi'$, alors $\psi_{-R_\varphi} \defeq \lnot \psi'_{-R_\varphi}$~;
-  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\land,\lor,\to\}$,
-    alors $\psi_{-R_\varphi} \defeq \psi'_{-R_\varphi} \oplus \psi''_{-R_\varphi}$~;
-  \item si $\psi = Q x, \psi'$ où $Q$ est un quantificateur, alors
-    $\psi_{-R_\varphi} \defeq Q x, \psi'_{-R_\varphi}$.
+  \item si $\varFP = \top, \bot, t = u, R(t_1,\ldots,t_k)$ où $R \neq \symbRF$,
+    alors $\minRFP \defeq \varFF$~;
+  \item si $\varFP = \symbRF(t_1,\ldots,t_n)$, alors
+    $\minRFP \defeq \varFF(t_1,\ldots,t_n)$~;
+  \item si $\varFF = \lnot \varFC$, alors $\minRFP\defeq\lnot\minRF{\varFC}$~;
+  \item si $\varFF = \varFC_1 \oplus \varFC_2$ où
+    $\oplus \in \{\land,\lor,\to\}$,
+    alors $\minRFP \defeq \minRF{\varFC_1} \oplus \minRF{\varFC_2}$~;
+  \item si $\varFF = \quant x, \varFC$ où $Q$ est un quantificateur, alors
+    $\minRFP \defeq \quant x, \minRF{\varFC}$.
   \end{itemize}
 \end{definition}
 
 \begin{proposition}
-  Pour toute formule $\psi \in \Formula(\Sigma')$, on a
-  \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-R_\varphi}\]
+  Pour toute formule $\varFF \in \Formula(\Sign')$, on a
+  \[\varT' \vdP \varFF \iffS \minRFP\]
 \end{proposition}
 
 \begin{proof}
-  On raisonne par induction sur $\psi$~:
+  On raisonne par induction sur $\varFF$~:
   \begin{itemize}
-  \item si $\psi = \top, \bot, t = u, S(t_1,\ldots,t_k)$ où $S \neq R_\varphi$, alors
-    on veut prouver que $\mathcal T' \vdash \psi \leftrightarrow \psi$ ce qui est
-    automatique~;
-  \item si $\psi = R_\varphi(t_1,\ldots,t_n)$, alors on veut prouver que
-    $\mathcal T' \vdash R_\varphi(t_1,\ldots,t_n) \leftrightarrow \varphi(t_1,\ldots,t_n)$
-    ce qui s'obtient exactement en spécialisant l'axiome ajouté dans $\mathcal T'$
-    grâce à la règle $\forall_\mathrm e$.
-  \item pour tous les cas suivants, la preuve est la conséquence d'un lemme que l'on
-    donne en exercice.
+  \item si $\varFF = \top, \bot, t = u, R(t_1,\ldots,t_k)$ où $R \neq \symbRF$,
+    alors on veut prouver que $\varT' \vdP \varFF \iffS \varFF$ ce
+    qui est automatique~;
+  \item si $\varFF = \symbRF(t_1,\ldots,t_n)$, alors on veut prouver que
+    $\varT' \vdP \symbRF(t_1,\ldots,t_n) \iffS \varFF(t_1,\ldots,t_n)$
+    ce qui s'obtient exactement en spécialisant l'axiome ajouté dans
+    $\varT'$ grâce à la règle $\RforaE$.
+  \item pour tous les cas suivants, la preuve est la conséquence d'un lemme que
+    l'on donne en exercice.
   \end{itemize}
 
-  Ainsi $\mathcal T' \vdash \psi \leftrightarrow \psi_{-R\varphi}$.
+  Ainsi $\varT' \vdP \varFF \iffS \minRFP$.
 \end{proof}
 
 \begin{exercise}
@@ -2446,216 +2505,224 @@ souhaite donc~:
     On se donne une signature et des formules sur ces signatures, montrer les
     implications suivantes~:
     \[\begin{array}{ccc}
-      (\vdash \varphi \leftrightarrow \varphi') &\implies&
-      \vdash \lnot \varphi \leftrightarrow \lnot \varphi'\\
-      (\vdash \varphi \leftrightarrow \varphi') \land
-      (\vdash \psi \leftrightarrow \psi) &\implies&
-      \vdash (\varphi \land \psi) \leftrightarrow (\varphi' \land \psi') \\
-      (\vdash \varphi \leftrightarrow \varphi') \land
-      (\vdash \psi \leftrightarrow \psi) &\implies&
-      \vdash (\varphi \lor \psi) \leftrightarrow (\varphi' \lor \psi') \\
-      (\vdash \varphi \leftrightarrow \varphi') \land
-      (\vdash \psi \leftrightarrow \psi) &\implies&
-      \vdash (\varphi \to \psi) \leftrightarrow (\varphi' \to \psi') \\
-      (\vdash \varphi \leftrightarrow \varphi') &\implies&
-      \vdash \exists x, \varphi \leftrightarrow \exists x, \varphi'\\
-      (\vdash \varphi \leftrightarrow \varphi') &\implies&
-      \vdash \forall x, \varphi \leftrightarrow \forall x, \varphi'\\
+      (\vdP \varFF \iffS \varFF') &\implies&
+      \vdP \lnot \varFF \iffS \lnot \varFF'\\
+      (\vdP \varFF \iffS \varFF') \land
+      (\vdP \varFP \iffS \varFP') &\implies&
+      \vdP (\varFF \land \varFP) \iffS (\varFF' \land \varFP') \\
+      (\vdP \varFF \iffS \varFF') \land
+      (\vdP \varFP \iffS \varFP') &\implies&
+      \vdP (\varFF \lor \varFP) \iffS (\varFF' \lor \varFP') \\
+      (\vdP \varFF \iffS \varFF') \land
+      (\vdP \varFP \iffS \varFP') &\implies&
+      \vdP (\varFF \to \varFP) \iffS (\varFF' \to \varFP') \\
+      (\vdP \varFF \iffS \varFF') &\implies&
+      \vdP (\exists x, \varFF) \iffS (\exists x, \varFF')\\
+      (\vdP \varFF \iffS \varFF') &\implies&
+      \vdP (\forall x, \varFF) \iffS (\forall x, \varFF')\\
     \end{array}\]
   \end{lemma}
 \end{exercise}
 
 \begin{proposition}
-  La théorie $\mathcal T'$ est une extension conservative de $\mathcal T$.
+  La théorie $\varT'$ est une extension conservative de $\varT$.
 \end{proposition}
 
 \begin{exercise}
-  Montrer, par induction sur la relation $\vdash$, qu'on a l'implication suivante pour
-  tout contexte $\Gamma \in \List(\Formula(\Sigma'))$ et formule
-  $\psi \in \Formula(\Sigma')$~:
-  \[(\mathcal T', \Gamma \vdash \psi) \implies
-  \mathcal T, \Gamma_{-R_\varphi} \vdash \psi_{-R_\varphi}\]
+  Montrer, par induction sur la relation $\vdP$, qu'on a l'implication suivante
+  pour tout contexte $\varCG \in \Ctx(\Sign')$ et formule
+  $\varFP \in \Formula(\Sign')$~:
+  \[(\varT', \varCG \vdP \varFP) \implies
+  \varT, \minRF{\varCG} \vdP \minRFP\]
   En déduire la proposition.
 \end{exercise}
 
-On a ainsi traité le cas des symboles de relation~: il est toujours possible, sans
-changer l'ensemble des théorèmes de notre langage d'origine, d'ajouter de nouveaux
-symboles de relation définis par une formule paramétrée.
+On a ainsi traité le cas des symboles de relation~: il est toujours possible,
+sans changer l'ensemble des théorèmes de notre langage d'origine, d'ajouter de
+nouveaux symboles de relation définis par une formule paramétrée.
 
 \subsubsection{Définition des fonctions}
 
-Le cas des fonctions est plus complexe. Tout d'abord, qu'est-ce que signifie le fait de
-définir une fonction ? Si l'on est habitué à la théorie des ensembles, on sait qu'il
-suffit de montrer que, pour une instance de l'entrée donnée, il existe une unique
-instance de sortie. Si l'on écrit cela à partir du graphe $\Gamma$ de notre fonction,
-cela signifie
-\[\forall x_1,\ldots,x_n, \exists! y, (x_1,\ldots,x_n,y) \in \Gamma\]
-Ainsi, une formule $\varphi$ définit une fonction dès lors qu'on peut prouver un tel
-énoncé en remplaçant l'appartenance à $\Gamma$ par la formule $\varphi$. Il est donc
-nécessaire d'ajouter une contrainte aux formules pour lesquelles on souhaite ajouter un
-symbole de fonction.
+Le cas des fonctions est plus complexe. Tout d'abord, qu'est-ce que signifie le
+fait de définir une fonction~? Si l'on est habitué à la théorie des ensembles,
+on sait qu'il suffit de montrer, pour une instance de l'entrée donnée, qu'il
+existe une unique instance de sortie. Si l'on écrit cela à partir du graphe
+$\funGraph{f}$ de notre fonction $f$, cela signifie
+\[\forall x_1,\ldots,x_n, \exists! y, (x_1,\ldots,x_n,y) \in \funGraph{f}\]
+Ainsi, une formule $\varFF$ définit une fonction dès lors qu'on peut prouver un
+tel énoncé en remplaçant l'appartenance à $\funGraph{f}$ par la formule
+$\varFF$. Il est donc nécessaire d'ajouter une contrainte aux formules pour
+lesquelles on souhaite ajouter un symbole de fonction.
 
 \begin{definition}[Extension par définition d'une fonction]
   \label{def.ext.def.fun}
-  Soit une théorie $\mathcal T$ et une formule $\varphi(x_1,\ldots,x_n,y)$ telle que
-  \[\mathcal T \vdash \forall x_1,\ldots,x_n, \exists! y, \varphi(x_1,\ldots,x_n,y)\]
-  On définit l'extension par définition de $\varphi$ par la signature
-  \[\Sigma' \defeq \Sigma \cup \{{f_\varphi}^n\}\]
-  où $f_\varphi$ est un symbole de fonction d'arité $n$, et la théorie
-  \[
-    \mathcal T' \defeq \mathcal T \cup \\
-    \{`` \forall x_1,\ldots,x_n, \varphi(x_1,\ldots,x_n,f_\varphi(x_1,\ldots,x_n))"\}
+  Soit une théorie $\varT$ et une formule $\varFF(x_1,\ldots,x_n,y)$ telle que
+  \[\varT \vdP \forall x_1,\ldots,x_n, \exists! y, \varFF(x_1,\ldots,x_n,y)\]
+  On définit l'extension par définition de $\varFF$ par la signature
+  \[\Sign' \defeq \Sign \cup \{{\symbFF}^n\}\]
+  où $\symbFF$ est un symbole de fonction d'arité $n$, et la théorie
+  \[\varT' \defeq \varT \cup \\
+    \{``\forall x_1,\ldots,x_n,\varFF(x_1,\ldots,x_n,\symbFF(x_1,\ldots,x_n))"\}
   \]
 \end{definition}
 
-Comme précédemment, on souhaite définir une traduction $\psi_{-f_\varphi}$, prouver que
-$\mathcal T' \vdash \psi \leftrightarrow \psi_{-f_\varphi}$ et prouver que l'extension est
-conservative. Cependant, la définition de la traduction est moins immédiate~: l'idée
-de la traduction est de remplacer toute occurrence de $f(t_1,\ldots,t_n)$ par une
-variable $y$ dont on vérifie, à part, qu'on a bien $\varphi(t_1,\ldots,t_n,y)$.
+Comme précédemment, on souhaite définir une traduction $\minFFP$, prouver que
+$\varT' \vdP \varFP \iffS \minFFP$ et prouver que l'extension est
+conservative. Cependant, la définition de la traduction est moins immédiate~:
+l'idée de la traduction est de remplacer toute occurrence de
+$\symbFF(t_1,\ldots,t_n)$ par une
+variable $y$ dont on vérifie, à part, qu'on a bien $\varFF(t_1,\ldots,t_n,y)$.
 Il est donc nécessaire de faire attention aux variables. En particulier, il est
-nécessaire de garder en mémoire toutes les variables introduites et les termes auxquels
-elles sont associées lorsqu'on transforme un terme. On crée donc d'abord l'environnement
-de traduction d'un terme $t$ qui nous permet ensuite de définir la traduction
-$\psi_{-f_\varphi}$ d'une formule $\psi$.
+nécessaire de garder en mémoire toutes les variables introduites et les termes
+auxquels elles sont associées lorsqu'on transforme un terme. On crée donc
+d'abord l'environnement de traduction d'un terme $t$ qui nous permet ensuite de
+définir la traduction $\minFFP$ d'une formule $\varFP$.
 
-\begin{definition}[Traduction sans $f_{\varphi}$]\label{def.trad.sans.fun}
-  Pour tout terme $t$, on définit par induction la liste $\mathcal V_t$ et le terme
-  $t_{-f_\varphi}$~:
+\begin{definition}[Traduction sans $\symbFF$]\label{def.trad.sans.fun}
+  Pour tout terme $t$, on définit par induction l'ensemble d'associations
+  $\memMinT{t}$ et le terme $\minFF{t}$~:
   \begin{itemize}
-  \item si $t = x$, alors $\mathcal V_t \defeq \varnothing$ et $t_{-f_\varphi} \defeq t$.
-  \item si $t = g(t_1,\ldots,t_n)$ où $g \neq f$, alors
-    \[\mathcal V_t \defeq \bigcup_{i = 1}^n \mathcal V_{t_i} \quad\text{et}\quad
-    t_{-f_\varphi} \defeq g(t_{1,-f_\varphi},\ldots,t_{n,-f_\varphi})\]
-  \item si $t = f(t_1,\ldots,t_n)$ alors
-    \[\mathcal V_t \defeq \left(\bigcup_{i = 1}^n \mathcal V_{t_i}\right) \cup
-    \{(t_{1,-f_\varphi},\ldots,t_{n,-f_\varphi})\} \quad\text{et}\quad
-    t_{-f_\varphi} \defeq z\]
+  \item si $t = x$, alors $\memMinT{t} \defeq \vide$ et
+    $\minFF{t} \defeq t$.
+  \item si $t = f(t_1,\ldots,t_n)$ où $f \neq \symbFF$, alors
+    \[\memMinT{t} \defeq \bigcup_{i = 1}^n \memMinT{t_i} \quad\text{et}\quad
+    \minFF{t} \defeq g(\minFF{(t_1)},\ldots,\minFF{(t_n)})\]
+  \item si $t = \symbFF(t_1,\ldots,t_n)$ alors
+    \[\memMinT{t} \defeq \left(\bigcup_{i = 1}^n \memMinT{t_i}\right) \cup
+    \{(\minFF{(t_1)},\ldots,\minFF{(t_n)},z)\} \quad\text{et}\quad
+    \minFF{t} \defeq z\]
     où $z$ est une variable fraîche (non apparue jusqu'alors).
   \end{itemize}
 
-  On définit maintenant pour toute formule $\psi \in \Formula(\Sigma')$ une formule
-  $\psi_{-f_\varphi}$ par induction sur la structure des formules~:
+  On définit maintenant pour toute formule $\varFP \in \Formula(\Sign')$ une
+  formule $\minFFP$ par induction sur la structure des formules~:
   \begin{itemize}
-  \item si $\psi = \top,\bot$ alors $\psi_{-f_\varphi} \defeq \psi$~;
-  \item si $\psi = R(t_1,\ldots,t_n)$ où $R$ est un symbole de relation ou le symbole
-    $=$, alors
-    \[\psi_{-f_\varphi} \defeq \mathop{\forall}_{i = 1}^n
-    \mathop{\forall}_{(u_1,\ldots,u_k,x)\in \mathcal V_{t_i}}x,
-    \varphi(u_1,\ldots,u_k,x) \to R(t_{1,-f_\varphi},\ldots,t_{n,-f_\varphi})\]
+  \item si $\varFP = \top,\bot$ alors $\minFFP \defeq \varFP$~;
+  \item si $\varFP = R(t_1,\ldots,t_k)$ où $R$ est un symbole de relation ou le
+    symbole $=$, alors
+    \[\minFFP \defeq \mathop{\forall}_{i = 1}^k
+    \mathop{\forall}_{(u_1,\ldots,u_n,x)\in \memMinT{t_i}} x,
+    \varFF(u_1,\ldots,u_n,x) \to R(\minFF{(t_1)},\ldots,\minFF{(t_n)})\]
     où les indices des $\forall$ signifient que pour chaque $i$ et chaque
-    $(u_1,\ldots,u_k,x) \in \mathcal V_{t_1}$, on ajoute
-    $\forall x, \varphi(u_1,\ldots,u_k,x) \to$ avant le reste de la formule~;
-  \item si $\psi = \lnot \psi'$, alors $\psi_{-f_\varphi} \defeq \lnot \psi'_{-f_\varphi}$~;
-  \item si $\psi = \psi' \oplus \psi''$ où $\oplus \in \{\lor,\land,\to\}$, alors
-    $\psi_{-f_\varphi} \defeq \psi'_{-f_\varphi} \oplus \psi''_{-f_\varphi}$~;
-  \item si $\psi = Q x, \psi'$ où $Q$ est une quantification, alors
-    $\psi_{-f_\varphi} \defeq Q x,\psi'_{-f_\varphi}$.
+    $(u_1,\ldots,u_n,x) \in \memMinT{t_i}$, on ajoute
+    $\forall x, \varFF(u_1,\ldots,u_n,x) \to$ avant le reste de la formule~;
+  \item si $\varFP = \lnot \varFC$, alors $\minFFP\defeq\lnot\minFF{\varFC}$~;
+  \item si $\varFP = \varFC_1 \oplus \varFC_2$ où
+    $\oplus \in \{\lor,\land,\to\}$, alors
+    $\minFFP \defeq \minFF{\varFC_1} \oplus \minFF{\varFC_2}$~;
+  \item si $\psi = \quant x, \varFC$ où $\quant$ est une quantification, alors
+    $\minFFP \defeq \quant x,\minFF{\varFC}$.
   \end{itemize}
 \end{definition}
 
-Il reste maintenant à prouver les deux propriétés. Les preuves sont les mêmes que pour
-le cas d'un symbole de relation, à ceci près que la conservativité va être
-plus technique à prouver. On mentionne en particulier les cas suivants~:
+Il reste maintenant à prouver les deux propriétés. Les preuves sont les mêmes
+que pour le cas d'un symbole de relation, à ceci près que la conservativité va
+être plus technique à prouver. On mentionne en particulier les cas suivants~:
 \begin{itemize}
-\item pour le cas $\exists_\mathrm i$, on suppose qu'on peut prouver pour un certain
-  terme $t \in \Term(\Sigma')$ que
-  \[\mathcal T',\Gamma \vdash \psi[t/x]\]
+\item pour le cas $\RexI$, on suppose qu'on peut prouver pour un certain
+  terme $t \in \Term(\Sign')$ que
+  \[\varT',\varCG \vdP \varFF[t/x]\]
   et notre hypothèse d'induction, elle, nous permet de supposer
-  \[\mathcal T, \Gamma_{-f_\varphi} \vdash (\psi[t/x])_{-f_\varphi}\]
-  Cependant, comme $t$ fait potentiellement apparaitre $f$, cette formule est différente
-  de $\psi_{-f_\varphi}[t/x]$ puisqu'elle contient aux formules atomiques de nouvelles
-  quantifications de la forme $\forall x, \varphi(t_1,\ldots,t_n,x) \to$.
+  \[\varT, \minFF{\varCG} \vdP \minFF{(\varFP[t/x])}\]
+  Cependant, comme $t$ fait potentiellement apparaitre $\symbFF$, cette formule
+  est différente de $\minFFP[t/x]$ puisqu'elle contient aux formules atomiques
+  de nouvelles quantifications de la forme
+  $\forall x, \varFF(t_1,\ldots,t_n,x) \to$.
   Il faut donc montrer qu'il est possible de prouver l'un à partir de l'autre.
-  Si ce lemme peut se prouver par induction sur $\psi$, on en donne ici une idée
-  globale.
+  Si ce lemme peut se prouver par induction sur $\varFP$, on en donne ici une
+  idée globale.
 
-  Le cas qui nous intéresse est le cas atomique, dans lequel on a donc dans notre
-  hypothèse $\forall x, \varphi(t_1,\ldots,t_n,x) \to \chi$ où $\chi$ est le reste de
-  la formule (on se contente du cas où $t = f_\varphi(t_1,\ldots,t_n)$ pour donner une
-  idée de l'argument à employer). Comme on sait prouvable dans $\mathcal T$ que
-  $\forall x_1,\ldots,x_n, \exists! y, \varphi(x_1,\ldots,x_n,y)$, on peut donc
-  appliquer $\forall_\mathrm e$ jusqu'à avoir $\exists! y, \varphi(t_1,\ldots,t_n,y)$
-  et, alors, utiliser $\exists_\mathrm e$ pour extraire ce $y$. Il suffit
+  Le cas qui nous intéresse est le cas atomique, dans lequel on a donc dans
+  notre hypothèse $\forall x, \varFF(t_1,\ldots,t_n,x) \to \varFC$ où $\varFC$
+  est le reste de la formule (on se contente du cas où
+  $t = \symbFF(t_1,\ldots,t_n)$ pour donner une
+  idée de l'argument à employer). Comme on sait prouvable dans $\varT$ que
+  $\forall x_1,\ldots,x_n, \exists! y, \varFF(x_1,\ldots,x_n,y)$, on peut donc
+  appliquer $\RforaE$ jusqu'à avoir $\exists! y, \varFF(t_1,\ldots,t_n,y)$
+  et, alors, utiliser $\RexE$ pour extraire ce $y$. Il suffit
   désormais de spécialiser la formule initiale en $y$, dont on sait que la
-  prémisse de l'implication $\varphi(t_1,\ldots,t_n,y)$ est vérifiée.
+  prémisse de l'implication $\varFF(t_1,\ldots,t_n,y)$ est vérifiée.
 
-  Dans le cas où $t$ contient plusieurs appels à $f$, il suffit de répéter cet
-  argument autant de fois que nécessaire.
+  Dans le cas où $t$ contient plusieurs appels à $\symbFF$, il suffit de répéter
+  cet argument autant de fois que nécessaire.
 
-\item pour le cas $=_\mathrm i$, il nous faut prouver pour n'importe quel terme
-  $t\in\Term(\Sigma')$ la formule $(t = t)_{-f_\varphi}$. Dans le cas où
-  $t = f(t_1,\ldots,t_n)$, la formule $(t = t)_{-f_\varphi}$ correspond à
-  $\forall x, \varphi(t_1,\ldots,t_n,x) \to \forall y, \varphi(t_1,\ldots,t_n,y) \to
-  x = y$
-  ce qui se prouve en utilisant l'unicité pour $\exists! y, \varphi(x_1,\ldots,x_n,y)$.
+\item pour le cas $\ReqI$, il nous faut prouver pour n'importe quel terme
+  $t\in\Term(\Sign')$ la formule $\minFF{(t = t)}$. Dans le cas où
+  $t = \symbFF(t_1,\ldots,t_n)$, la formule $\minFF{(t = t)}$ correspond à
+  $\forall x,\varFF(t_1,\ldots,t_n,x)\to
+  \forall y,\varFF(t_1,\ldots,t_n,y)\to x = y$
+  ce qui se prouve en utilisant l'unicité pour
+  $\exists! y, \varFF(x_1,\ldots,x_n,y)$.
 
-\item pour le cas $=_\mathrm e$, notre hypothèse d'induction donne les deux séquents
+\item pour le cas $\ReqE$, notre hypothèse d'induction donne les deux séquents
   suivants~:
-  \[\mathcal T, \Gamma_{-f_\varphi}\vdash (t=u)_{-f_\varphi} \qquad
-  \mathcal T, \Gamma_{-f_\varphi}\vdash (\psi[t/x])_{-f_\varphi}\]
+  \[\varT, \minFF{\varCG}\vdP \minFF{(t=u)} \qquad
+  \varT, \minFF{\varCG}\vdP \minFF{(\varFP[t/x])}\]
   On a déjà vu comment passer de la seconde hypothèse à l'hypothèse
-  $\mathcal T, \Gamma_{-f_\varphi}\vdash \psi_{-f_\varphi}[t/x]$. La première hypothèse
+  $\varT, \minFF{\varCG}\vdP (\minFF{\varFP})[t/x]$. La première hypothèse
   fonctionne d'une façon similaire, en supprimant les occurrences de
-  $\forall x, \varphi(t_1,\ldots,t_n,x) \to$ en extrayant des témoins de
-  $\exists!y, \varphi(t_1,\ldots,t_n,y)$.
+  $\forall x, \varFF(t_1,\ldots,t_n,x) \to$ en extrayant des témoins de
+  $\exists!y, \varFF(t_1,\ldots,t_n,y)$.
 \end{itemize}
 
 \begin{proposition}
-  Pour toute formule $\psi \in \Formula(\Sigma')$, on a
-  \[\mathcal T' \vdash \psi \leftrightarrow \psi_{-f_\varphi}\]
+  Pour toute formule $\varFP \in \Formula(\Sign')$, on a
+  \[\varT' \vdP \varFP \iffS \minFFP\]
 \end{proposition}
 
 \begin{proposition}\label{prop.ext.def.cons}
-  La signature la théorie $\mathcal T'$ est une extension conservative de $\mathcal T$.
+  La signature la théorie $\varT'$ est une extension conservative de $\varT$.
 \end{proposition}
 
 \begin{exercise}
   Prouver les deux propositions précédentes.
-  \textit{On pourra montrer pour la seconde proposition l'implication suivante~:}
-  \[\forall \Gamma\in\List(\Formula(\Sigma')), \forall \psi \in \Formula(\Sigma'),
-  \mathcal T', \Gamma\vdash \psi \implies \mathcal T',
-  \Gamma_{-f_\varphi}\vdash \psi_{-f_\varphi}\]
+  \textit{On pourra montrer pour la seconde proposition l'implication
+    suivante~:}
+  \[\forall \varCG\in\Ctx(\Sign'), \forall \varFP \in \Formula(\Sign'),
+  \varT', \varCG\vdP \varFP \implies \varT',\minFF{\varCG}\vdP \minFF{\varFP}\]
 \end{exercise}
 
 On vient donc de prouver deux choses~:
 \begin{itemize}
-\item si l'on donne une définition d'un objet par une formule univoque (dont l'objet
-  vérifiant la formule est unique), alors donner un nom à l'objet défini ne change
-  pas les formules que l'on prouve~;
-\item mieux encore, on peut trouver pour toute formule $\psi$ une formule $\psi'$
-  qui a le même sens que $\psi$ mais qui n'emploie pas ce raccourci. Le symbole ajouté
-  peut donc être vu comme un raccourci d'écriture que l'on peut remplacer à la volée par
-  la formule le définissant, ce qui donnera une formule équivalente.
+\item si l'on donne une définition d'un objet par une formule univoque (dont
+  l'objet vérifiant la formule est unique), alors donner un nom à l'objet
+  défini ne change pas les formules que l'on prouve~;
+\item mieux encore, on peut trouver pour toute formule $\varFP$ une formule
+  $\varFP'$ qui a le même sens que $\varFP$ mais qui n'emploie pas ce raccourci.
+  Le symbole ajouté peut donc être vu comme un raccourci d'écriture que l'on
+  peut remplacer à la volée par la formule le définissant, ce qui donnera une
+  formule équivalente.
 \end{itemize}
 
-Les propositions précédentes justifient donc que l'on donne des définitions dans nos
-théories formelles. En effet, une formulation telle que
+Les propositions précédentes justifient donc que l'on donne des définitions
+dans nos théories formelles. En effet, une formulation telle que
 \begin{quote}
   On définit l'objet $X(t_1,\ldots,t_n)$ par
-  \[X(t_1,\ldots,t_n) \defeq \varphi(t_1,\ldots,t_n)\]
+  \[X(t_1,\ldots,t_n) \defeq \varFF(t_1,\ldots,t_n)\]
 \end{quote}
-signifie que l'on applique notre théorème d'extension par définition dans le cas de
-$\varphi$. Généralement, lorsque $X$ est l'ajout d'un nouveau symbole de fonction,
-il n'est pas nécessaire d'écrire la formule le caractérisant et il suffit d'écrire
-un terme $T(t_1,\ldots,t_n)$~: la formule associée est alors
-\[\varphi(t_1,\ldots,t_n,y) \defeq `` y = T(t_1,\ldots,t_n)"\]
-Dans un tel cas, la preuve de l'existence et de l'unicité de $T$ est évidente, puisque
-$T$ (en tant que terme) est une fonction totale. On remarque que cela justifie néanmoins
-les précautions d'usage de vérifier en cas de situation litigieuse que l'image est
-bien définie et est unique (par exemple lorsqu'on définit une fonction depuis un
-ensemble quotient en donnant l'image en fonction d'un représentant).
+signifie que l'on applique notre théorème d'extension par définition dans le cas
+de $\varFF$. Généralement, lorsque $X$ est l'ajout d'un nouveau symbole de
+fonction, il n'est pas nécessaire d'écrire la formule le caractérisant et il
+suffit d'écrire un terme $T(t_1,\ldots,t_n)$~: la formule associée est alors
+\[\varFF(t_1,\ldots,t_n,y) \defeq `` y = T(t_1,\ldots,t_n)"\]
+Dans un tel cas, la preuve de l'existence et de l'unicité de $T$ est évidente,
+puisque $T$ (en tant que terme) est une fonction totale. On remarque que cela
+justifie néanmoins les précautions d'usage de vérifier en cas de situation
+litigieuse que l'image est bien définie et est unique (par exemple lorsqu'on
+définit une fonction depuis un ensemble quotient en donnant l'image en fonction
+d'un représentant).
 
 \begin{remark}
-  L'utilisation d'un symbole différent entre $\defeq$ et $=$ permet ici de faire une
-  différence entre le fait d'attribuer le nom (dans l'exemple ci-dessus, $X$) à un
-  symbole dont on donne la sémantique (dans l'exemple ci-dessus, la formule $\varphi$)
-  et le fait d'identifier la sémantique de deux objets de part et d'autre du $=$.
+  L'utilisation d'un symbole différent entre $\mathord{\defeq}$ et $\mathord{=}$
+  permet ici de faire une différence entre le fait d'attribuer le nom (dans
+  l'exemple ci-dessus, $X$) à un symbole dont on donne la sémantique
+  (dans l'exemple ci-dessus, la formule $\varFF$) et le fait d'identifier la
+  sémantique de deux objets de part et d'autre du $\mathord{=}$.
 
-  On peut aussi noter une différence de statut entre les deux symboles~: le symbole
-  $=$ appartient réellement à la syntaxe des formules et des preuves, tandis que le
-  symbole $\defeq$ fait appelle à un théorème de méta-mathématiques pour construire une
-  nouvelle notation.
+  On peut aussi noter une différence de statut entre les deux symboles~: le
+  symbole $\mathord{=}$ appartient réellement à la syntaxe des formules et des
+  preuves, tandis que le symbole $\mathord{\defeq}$ fait appel à un théorème
+  de méta-mathématiques pour construire une nouvelle notation.
 \end{remark}
 
 \newpage
@@ -2665,30 +2732,40 @@ ensemble quotient en donnant l'image en fonction d'un représentant).
 \subsection{Exercices}
 
 \begin{exercise}[Mise en jambes]
+  
   \begin{enumerate}[label=(\roman*)]
-      \item Prouver les formules suivantes~:
-      \[\begin{array}{cc}
-      (\exists x, \forall y, R(x,y)) \to (\forall y, \exists x, R(x,y)) &
-      \exists x, (\varphi(x) \to \forall y, \varphi(y)) \\
-      (\varphi \to \psi) \lor (\psi \to \varphi) &
-      \lnot\lnot(\varphi \land \psi) \leftrightarrow \lnot\lnot\varphi\land
-      \lnot\lnot\psi
-      \end{array}\]
-      \item Soit la signature $\Sigma = \{f^1, R^1\}$ (où l'exposant
-      représente l'arité) où $f$ est un symbole de fonction et
-      $R$ est un symbole de relation. Montrer la proposition
-      \[(\forall x, R(f(x)) \to \forall x, R(f(f(x)))\]
-      \item On considère la signature des groupes $\mathcal L_{\mathrm{Grp}}$
-      donnée au début du chapitre
-      et la théorie $\mathrm{Grp}$ des groupes abéliens définie par les axiomes~:
-      \[\begin{array}{ccc}
-          \forall x,y,z, x \times (y \times z) = (x \times y) \times z
-          & \forall x, x \times e = x & \forall x, e \times x = x\\
-          \forall x, x \times x^{-1} = e &  \forall x, x^{-1} \times x = e \\
-      \end{array}\]
-      Montrer dans cette théorie les deux formules suivantes~:
-      \[\forall x, (\forall y, (x \times y = y) \land (y \times x = y)) \to 
-      x = e \qquad \forall x,y, (x\times y)^{-1} = y^{-1} \times x^{-1}\]
+  \item Ecrire un arbre de dérivation pour chaque cas~:
+    \begin{itemize}
+      \begin{minipage}{0.5\textwidth}
+      \item $(\exists x, \forall y, \varFF(x,y)) \vdP
+        (\forall y, \exists x, \varFF(x,y))$
+      \item $\vdP\exists x, (\varFF(x) \to \forall y, \varFF(y))$
+      \end{minipage}
+      \begin{minipage}{0.5\textwidth}
+      \item $\vdP(\varFF \to \varFP) \lor (\varFP \to \varFF)$
+      \item $
+      \lnot\lnot(\varFF \land \varFP) \dvvd \lnot\lnot\varFF\land
+      \lnot\lnot\varFP$
+      \end{minipage}
+    \end{itemize}
+    %      \item Soit la signature $\Sigma = \{f^1, R^1\}$ (où l'exposant
+    %      représente l'arité) où $f$ est un symbole de fonction et
+    %      $R$ est un symbole de relation. Montrer la proposition
+    %      \[(\forall x, R(f(x)) \to \forall x, R(f(f(x)))\]
+  \item On considère la signature des groupes $\mathcal L_{\mathrm{Grp}}$
+    donnée au début du chapitre
+    et la théorie $\TGrp$ des groupes abéliens définie dans la
+    \cref{subsec.theorie}.
+    Montrer dans cette théorie les deux propositions suivantes~:
+    \begin{itemize}
+      \begin{minipage}{0.5\textwidth}
+      \item
+        $\forall x,(\forall y,(xy = y)\land(yx = y)) \to x = e$
+      \end{minipage}
+      \begin{minipage}{0.5\textwidth}
+      \item $\forall x,y, (xy)^{-1} = y^{-1}x^{-1}$
+      \end{minipage}
+    \end{itemize}
   \end{enumerate}
 \end{exercise}
 
@@ -2698,177 +2775,180 @@ ensemble quotient en donnant l'image en fonction d'un représentant).
 
 \begin{exercise}[Le connecteur d'équivalence]\label{exo.equiv}
   Dans notre définition actuelle des formules, nous n'avons pas le connecteur
-  $\leftrightarrow$, permettant d'exprimer que deux formules sont équivalentes.
-  Il est possible d'encoder
-  \[\varphi\leftrightarrow\psi \defeq
-  (\varphi \to \psi)\land (\psi \to \varphi)\]
+  $\mathord{\iffS}$, permettant d'exprimer que deux formules sont
+  équivalentes. Il est possible d'encoder
+  \[\varFF\iffS\varFP \defeq
+  (\varFF \to \varFP)\land (\varFP \to \varFF)\]
   mais aussi d'ajouter ce constructeur, et les règles
-  \[\begin{array}{cc}
-  \AxiomC{$\Gamma, \varphi\vdash \psi$}
-  \AxiomC{$\Gamma, \psi \vdash \varphi$}
-  \RightLabel{$\leftrightarrow_\mathrm i$}
-  \BinaryInfC{$\Gamma\vdash \varphi\leftrightarrow\psi$}
-  \DisplayProof &
-  \AxiomC{$\Gamma \vdash \varphi \leftrightarrow \psi$}
-  \AxiomC{$\Gamma\vdash \varphi$}
-  \RightLabel{$\leftrightarrow_\mathrm e^\mathrm g$}
-  \BinaryInfC{$\Gamma\vdash \psi$}
-  \DisplayProof
-  \quad
-  \AxiomC{$\Gamma \vdash \varphi \leftrightarrow \psi$}
-  \AxiomC{$\Gamma\vdash \psi$}
-  \RightLabel{$\leftrightarrow_\mathrm e^\mathrm d$}
-  \BinaryInfC{$\Gamma\vdash \varphi$}
-  \end{array}\]
+  \begin{center}
+    \begin{tabular}{cc}
+      \multicolumn{2}{c}{
+        \AxiomC{$\varCG, \varFF\vdP \varFP$}
+        \AxiomC{$\varCG, \varFP \vdP \varFF$}
+        \RightLabel{$\RiffI$}
+        \BinaryInfC{$\varCG\vdP \varFF\iffS\varFP$}
+        \DisplayProof}
+      \\
+      \\
+      \AxiomC{$\varCG \vdP \varFF \iffS \varFP$}
+      \AxiomC{$\varCG\vdP \varFF$}
+      \RightLabel{$\RiffEG$}
+      \BinaryInfC{$\varCG\vdP \varFP$}
+      \DisplayProof
+      &
+      \AxiomC{$\varCG \vdP \varFF \iffS \varFP$}
+      \AxiomC{$\varCG\vdP \varFP$}
+      \RightLabel{$\RiffED$}
+      \BinaryInfC{$\varCG\vdP \varFP$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
   Montrer que les deux systèmes sont équivalents~: un séquent avec de possibles
-  connecteurs $\leftrightarrow$ est prouvable si et seulement si sa traduction
+  connecteurs $\iffS$ est prouvable si et seulement si sa traduction
   avec uniquement $\to$ et $\land$ est prouvable.
 \end{exercise}
 
 \begin{exercise}[Des formules utiles pour les cardinaux]
-  Soit une signature $\Sigma$ fixée. Cet exercice vise à construire plusieurs
+  Soit une signature $\Sign$ fixée. Cet exercice vise à construire plusieurs
   formules simples et utiles pour évaluer le cardinal d'un modèle.
   \begin{enumerate}[label = (\roman*)]
-  \item Soit $x_1,\ldots,x_n$ des variables. Construire une formule
-    $\mathrm{Ineq}_{x_1,\ldots,x_n}$ exprimant que toutes les variables
+  \item Soient $x_1,\ldots,x_n$ des variables. Construire une formule
+    $\IneqP{x_1,\ldots,x_n}$ exprimant que toutes les variables
     $x_1,\ldots,x_n$ sont deux à deux différentes.
-  \item En déduire pour tout $n$ une proposition $\varphi_n$ telle que pour
-    toute $\Sigma$-structure $\mathcal M$, on a
-    \[\mathcal M \models \varphi_n \iff \Card(\mathcal M) \geq n\]
-    ainsi qu'une proposition $\psi_n$ telle que pour toute $\Sigma$-structure
-    $\mathcal M$, on a
-    \[\mathcal M \models \psi_n \iff \Card(\mathcal M) = n\]
-  \item Pour un cardinal $\kappa$ infini, peut-on trouver une formule
-    similaire ? \textit{Indication~: utiliser un théorème du cours.}
+  \item En déduire pour tout $n$ une proposition $\varFF_n$ telle que pour
+    toute $\Sign$-structure $\varMM$, on a
+    \[\satMM \varFF_n \iff \Card(\varMM) \geq n\]
+    ainsi qu'une proposition $\varFP_n$ telle que pour toute $\Sign$-structure
+    $\varMM$, on a
+    \[\satMM \varFP_n \iff \Card(\varMM) = n\]
+  \item Pour un cardinal $\varCk$ infini, peut-on trouver une formule
+    similaire~? \textit{Indication~: utiliser un théorème du cours.}
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[Les axiomes des ordres]
     On considère la signature relationnelle
-    \[\Sigma \defeq \{\leq^2\}\]
+    \[\Sign \defeq \{\leq^2\}\]
     \begin{enumerate}[label=(\roman*)]
-        \item Donner une théorie $\mathcal T_{\mathrm{poset}}$ décrivant les
+        \item Donner une théorie $\varT_{\poset}$ décrivant les
         ensembles ordonnés.
-        \item Donner une théorie $\mathcal T_{\mathrm{toset}}$ décrivant les
+        \item Donner une théorie $\varT_{\toset}$ décrivant les
         ensembles totalement ordonnés.
     \end{enumerate}
     On considère maintenant la signature relationnelle
-    \[\Sigma \defeq \{<^2\}\]
+    \[\Sign \defeq \{<^2\}\]
     et les axiomes suivants~:
     \begin{align*}
-        A_1 & \defeq \exists x,y, x < y\\
-        A_2 & \defeq \forall x,y,z, (x < y) \land (y < z) \to (x < y)\\
-        A_3 & \defeq \forall x, \lnot (x < x)\\
-        A_4 & \defeq\forall x,y, ((x < y) \to
+        \Rax_1 & \defeq \exists x,y, x < y\\
+        \Rax_2 & \defeq \forall x,y,z, (x < y) \land (y < z) \to (x < y)\\
+        \Rax_3 & \defeq \forall x, \lnot (x < x)\\
+        \Rax_4 & \defeq\forall x,y, ((x < y) \to
         \exists z, (x < z) \land (z < y))
     \end{align*}
-    Soit $\mathcal T = \{ A_1,A_2,A_3,A_4\}$.
+    Soit $\varT = \{ \Rax_1,\Rax_2,\Rax_3,\Rax_4\}$.
     \begin{enumerate}[label=(\roman*),resume]
-        \item Donner deux modèles non isomorphes de $\mathcal T$.
-        \item Donner une proposition $\varphi$ telle que
-        $\mathcal T\nvdash \varphi$ et $\mathcal T \nvdash \lnot\varphi$,
-        on en déduit que $\mathcal T$ n'est pas complète.
+        \item Donner deux modèles non isomorphes de $\varT$.
+        \item Donner une proposition $\varFF$ telle que
+        $\varT\nvdP \varFF$ et $\varT \nvdP \lnot\varFF$,
+        on en déduit que $\varT$ n'est pas complète.
         \item Montrer que pour n'importe quel choix de $3$ axiomes parmi les
         $4$ donnés, il existe un modèle fini de cet ensemble de $3$
-        axiomes. Montrer que tout modèle de $\mathcal T$ est infini.
+        axiomes. Montrer que tout modèle de $\varT$ est infini.
     \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[Formes prénexes]\label{exo.prenexe}
-  Soit une signature $\Sigma$ fixée. On définit l'ensemble des formules sans
-  quantificateurs $\Formqf(\Sigma)\subseteq \Formula(\Sigma)$ inductivement par
-  \[\varphi, \psi \Coloneq a\mid \top \mid \bot \mid
-  \lnot \varphi \mid \varphi \lor \psi \mid \varphi \land \psi \mid
-  \varphi \to \psi\]
-  où $a \in \Atom(\Sigma)$.
+  Soit une signature $\Sign$ fixée. On définit l'ensemble des formules sans
+  quantificateurs $\Formqf(\Sign)\subseteq \Formula(\Sign)$ inductivement par
+  \[\varFF, \varFP \inddefeq a\mid \top \mid \bot \mid
+  \lnot \varFF \mid \varFF \lor \varFP \mid \varFF \land \varFP \mid
+  \varFF \to \varFP\]
+  où $a \in \Atom(\Sign)$.
 
   On définit ensuite inductivement l'ensemble
-  $\Formula_{\mathrm{pren}}(\Sigma)\subseteq \Formula(\Sigma)$
+  $\FormPren(\Sign)\subseteq \Formula(\Sign)$
   des formules sous forme prénexe par
-  \[\varphi\Coloneq \varphi_0\mid \forall x, \varphi \mid \exists x, \varphi\]
-  où $\varphi_0 \in \Formqf(\Sigma)$.
+  \[\varFF\inddefeq \varFF_0\mid \forall x, \varFF \mid \exists x, \varFF\]
+  où $\varFF_0 \in \Formqf(\Sign)$.
 
   \begin{enumerate}[label=(\roman*)]
-  \item Soient $\varphi, \psi$ deux formules. Montrer qu'on a les deux
+  \item Soient $\varFF, \varFP$ deux formules. Montrer qu'on a les deux
     équivalences
-    \[\forall x, (\varphi \land \psi) \dashv\vdash
-    (\forall x, \varphi) \land (\forall x, \psi) \qquad
-    \exists x, (\varphi \lor \psi) \dashv\vdash
-    (\exists x, \varphi) \lor (\exists x, \psi)\]
-  \item Montrer que pour toutes formules $\varphi, \psi$ et variable $x$
-    tel que $x$ n'apparait pas dans $\psi$, on a les deux équivalences
-    \[(\exists x,\varphi) \land \psi\dashv\vdash
-    \exists x, (\varphi \land \psi) \qquad
-    (\forall x, \varphi) \lor \psi \dashv\vdash
-    \forall x, (\varphi \lor \psi)\]
+    \[\forall x, (\varFF \land \varFP) \dvvd
+    (\forall x, \varFF) \land (\forall x, \varFP) \qquad
+    \exists x, (\varFF \lor \varFP) \dvvd
+    (\exists x, \varFF) \lor (\exists x, \varFP)\]
+  \item Montrer que pour toutes formules $\varFF, \varFP$ et variable $x$
+    tel que $x$ n'apparait pas dans $\varFP$, on a les deux équivalences
+    \[(\exists x,\varFF) \land \varFP\dvvd
+    \exists x, (\varFF \land \varFP) \qquad
+    (\forall x, \varFF) \lor \varFP \dvvd
+    \forall x, (\varFF \lor \varFP)\]
   \item En déduire que toute formule est équivalente à une formule sous forme
     prénexe~:
-    \[\forall \varphi \in \Formula(\Sigma),
-    \exists \psi \in \Formula_{\mathrm{pren}}(\Sigma),
-    \varphi \dashv\vdash \psi\]
+    \[\forall \varFF \in \Formula(\Sign), \exists \varFP \in \FormPren(\Sign),
+    \varFF \dvvd \varFP\]
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[La skolémisation]
   L'objectif de cet exercice est d'utiliser des symboles de fonction pour
   simuler des quantifications.
-
-  On se donne une signature $\Sigma$ et une formule $\varphi$ sur $\Sigma$.
+  On se donne une signature $\Sign$ et une formule $\varFF$ sur $\Sign$.
 
   \begin{enumerate}[label=(\roman*)]
-  \item Montrer que la formule $\exists x, \varphi$ est satisfiable dans une
-    $\Sigma$-structure si et seulement si, en notant $c$ un nouveau
-    symbole de constante et $\Sigma' \defeq \Sigma \cup \{c\}$, la
-    formule $\varphi[c/x]$
-    est satisfiable dans une $\Sigma'$-structure.
+  \item Montrer que la formule $\exists x, \varFF$ est satisfiable dans une
+    $\Sign$-structure si et seulement si, en notant $\Cc$ un nouveau
+    symbole de constante et $\Sign' \defeq \Sign \cup \{\Cc\}$, la
+    formule $\varFF[\Cc/x]$
+    est satisfiable dans une $\Sign'$-structure.
   \item Plus généralement, montrer que la formule
-    $\forall x_1,\ldots,\forall x_n, \exists y, \varphi$ est satisfiable dans
-    une $\Sigma$-structure si et seulement si, en notant $f$ un nouveau
-    symbole de fonction d'arité $n$ et $\Sigma' \defeq \Sigma\cup \{f\}$, la
+    $\forall x_1,\ldots,\forall x_n, \exists y, \varFF$ est satisfiable dans
+    une $\Sign$-structure si et seulement si, en notant $\Ff$ un nouveau
+    symbole de fonction d'arité $n$ et $\Sign' \defeq \Sign\cup \{\Ff\}$, la
     formule
-    $\forall x_1,\ldots,\forall x_n,(\varphi[f(x_1,\ldots,x_n)/y])$ est
-    satisfiable dans une $\Sigma'$-structure.
-  \item En déduire que pour toute proposition $\varphi$, on peut trouver une
-    formule $\psi$ prénexe sans quantification existentielle sur un
-    enrichissement de $\Sigma$ telle qu'une
-    structure satisfait $\varphi$ si et seulement si elle admet un
-    enrichissement satisfaisant $\psi$.
+    $\forall x_1,\ldots,\forall x_n,(\varFF[\Ff(x_1,\ldots,x_n)/y])$ est
+    satisfiable dans une $\Sign'$-structure.
+  \item En déduire que pour toute proposition $\varFF$, on peut trouver une
+    formule $\varFP$ prénexe sans quantification existentielle sur un
+    enrichissement de $\Sign$ telle qu'une
+    structure satisfait $\varFF$ si et seulement si elle admet un
+    enrichissement satisfaisant $\varFP$.
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[La théorie des relations d'équivalence]
   On fixe pour cet exercice le langage relationnel
-  \[\Sigma \defeq \{\sim^2\}\]
+  \[\Sign \defeq \{\sim^2\}\]
   On définit aussi la théorie
-  \[\mathcal T_{\mathrm{equiv}}\defeq \{``\forall x, x \sim x"\}\cup
-  \{``\forall x, y, x \sim y \to y \sim x"\}\cup
-  \{``\forall x,y,z, x \sim y \to y \sim z \to x \sim z"\}\]
+  \[\varT_{\Requiv}\defeq \{``\forall x, x \sim x",%\}\cup \{
+  ``\forall x, y, x \sim y \to y \sim x",%\}\cup \{``
+  \forall x,y,z, x \sim y \to y \sim z \to x \sim z"\}\]
 
   \begin{enumerate}[label=(\roman*)]
-  \item Donner un ensemble d'axiomes $\mathrm{nb}_{\infty}$ tel que
-    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{nb}_\infty$ détermine la classe des
+  \item Donner un ensemble d'axiomes $\nbr_{\infty}$ tel que
+    $\varT_{\Requiv}\cup \nbr_\infty$ détermine la classe des
     ensembles munis d'une relation d'équivalence $\sim$ avec une infinité de
     classes d'équivalences.
-  \item Donner un ensemble d'axiomes $\mathrm{cl}_\infty$ tel que
-    $\mathcal T_{\mathrm{equiv}}\cup \mathrm{cl}_\infty$ détermine la classe des
+  \item Donner un ensemble d'axiomes $\cl_\infty$ tel que
+    $\varT_{\Requiv}\cup \cl_\infty$ détermine la classe des
     ensembles munis d'une relation d'équivalence $\sim$ dont toutes les classes
     d'équivalence sont infinies.
   \item On définit
-    \[\mathcal T_{\mathrm{equiv},\infty} \defeq
-    \mathcal T_{\mathrm{equiv}}\cup \mathrm{nb}_\infty \cup \mathrm{cl}_\infty\]
-    Donner un modèle dénombrable de $\mathcal T_{\mathrm{equiv},\infty}$. Montrer
-    que tout modèle dénombrable de $\mathcal T_{\mathrm{equiv},\infty}$ est
+    \[\varT_{\Requiv,\infty} \defeq
+    \varT_{\Requiv}\cup \nbr_\infty \cup \cl_\infty\]
+    Donner un modèle dénombrable de $\varT_{\Requiv,\infty}$. Montrer
+    que tout modèle dénombrable de $\varT_{\Requiv,\infty}$ est
     isomorphe à ce modèle.
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[Une application du théorème de compacité]
-  Un graphe (orienté) est un couple $(V,E)$ où $V$ est un ensemble et $E$ est
-  une relation binaire sur $V$ qui, étant donnés $x,y \in V$ témoigne si
+  Un graphe (orienté) est un couple $(S,A)$ où $S$ est un ensemble et $A$ est
+  une relation binaire sur $S$ qui, étant donnés $x,y \in S$ témoigne si
   $x$ et $y$ sont voisins ou non. Il est donc possible de considérer un graphe
-  comme une structure pour le langage relationnel $\{E^2\}$.
-
-  On fixe donc \[\Sigma \defeq \{E^2\}\] le langage des graphes.
+  comme une structure pour le langage relationnel $\{A^2\}$.
+  On fixe donc \[\Sign \defeq \{A^2\}\] le langage des graphes.
   \begin{enumerate}[label = (\roman*)]
   \item Donner une théorie dont les modèles sont exactement la classe des
     graphes ayant un cycle de taille $n$.
@@ -2877,15 +2957,15 @@ ensemble quotient en donnant l'image en fonction d'un représentant).
     où la relation de voisinage est symétrique.
   \end{enumerate}
   L'objectif des questions suivantes est de prouver qu'il n'existe pas de
-    théorie (du premier ordre) représentant la classe des graphes connexes.
-    On suppose donc qu'il existe une théorie dont les modèles sont exactement
-    les graphes connexes~; on notera cette théorie $\mathcal T$. On introduit
-    alors deux nouvelles constantes, $v$ et $w$.
+  théorie (du premier ordre) représentant la classe des graphes connexes.
+  On suppose donc qu'il existe une théorie dont les modèles sont exactement
+  les graphes connexes~; on notera cette théorie $\varT$. On introduit
+  alors deux nouvelles constantes, $v$ et $w$.
   \begin{enumerate}[label=(\roman*),resume]
-  \item Construire pour tout $n$ une formule $\varphi_n$ exprimant que $v$ et $w$
+  \item Construire pour tout $n$ une formule $\varFF_n$ exprimant que $v$ et $w$
     ne sont reliés par aucun chemin de taille $n$.
   \item En appliquant le théorème de compacité à la théorie
-    \[\mathcal T' \defeq \mathcal T \cup \bigcup_{n \in \mathbb N } \{\varphi_n\}\]
+    \[\varT' \defeq \varT \cup \bigcup_{n \in \bN} \{\varFF_n\}\]
     montrer qu'on a une contradiction.
   \end{enumerate}
 \end{exercise}

@@ -65,6 +65,7 @@
 \newcommand{\suchthat}{\;\middle\vert\;}
 \newcommand{\indic}{\mathds{1}} % fonction indicatrice
 \newcommand{\indicP}[1]{\indic_{#1}} % fonction indcatrice de quelque chose
+\newcommand{\funGraph}[1]{\Gamma_{#1}}
 
 %----- PROPOSITIONS ET TERMES -----%
 
@@ -79,9 +80,9 @@
 \newcommand{\Formqf}{\Formula_{\mathrm{qf}}} % ensembles des formules sans quantificateurs
 \newcommand{\FormMod}{\Formula_{\mathrm{mod}}} % ensemble des formules de la logique modale
 \DeclareMathOperator{\Atom}{Atom} % ensemble des atomes
-\newcommand{\vclose}[1]{\overline{#1}^{\vD}} % clôture par conséquence syntaxique d'un ensemble de formules
+\newcommand{\vclose}[1]{\Th_{\vD}(#1)} % clôture par conséquence sémantique d'un ensemble de formules
 \newcommand{\vTclos}{\vclose{\varT}} % clôture par conséquence syntaxique de T
-\newcommand{\vdclose}[1]{\overline{#1}^{\vd}} % clôture par conséquence sémantique d'un ensemble de formules
+\newcommand{\vdclose}[1]{\Th(#1)} % clôture par conséquence syntaxique d'un ensemble de formules
 \newcommand{\vdTclos}{\vdclose{\varT}}
 \newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}} % clôture par ajout des témoins de Henkin d'une théorie
 
@@ -133,12 +134,13 @@
 
 \DeclareMathOperator{\Const}{Const} % ensemble des constantes
 \newcommand{\Cc}{\mathrm{c}} % symbole de constante
+\newcommand{\Ff}{\mathrm{f}} % symbole de fonction
 %\DeclareMathOperator{\Fun}{Fun} % ensemble des symboles de fonctions
 %\DeclareMathOperator{\Rel}{Rel} % ensemble des symboles de relation
 %\DeclareMathOperator{\ar}{ar} % arité d'un symbole
 \DeclareMathOperator{\Struct}{Struct} % classe des structures
 \DeclareMathOperator{\Model}{Mod}
-\newcommand{\varMP}[1]{\mathcal{#1}} % variable quelconque pour un modèle
+\newcommand{\varMP}[1]{\mathfrak{#1}} % variable quelconque pour un modèle
 \newcommand{\varMM}{\varMP{M}} % variable M pour un modèle
 \newcommand{\varMN}{\varMP{N}} % variable N pour un modèle
 \newcommand{\carM}[1]{\left\vert #1\right\vert} % ensemble "carrier" d'une structure
@@ -334,6 +336,11 @@
 \newcommand{\RexE}{\mathord{\exists}_{\mathrm{e}}}
 \newcommand{\ReqI}{\mathord{=}_{\mathrm{i}}}
 \newcommand{\ReqE}{\mathord{=}_{\mathrm{e}}}
+\newcommand{\iffS}{\leftrightarrow} % ssi dans sa version syntaxique
+\newcommand{\RiffI}{\mathord{\iffS}_{\mathrm{i}}}
+\newcommand{\RiffE}{\mathord{\iffS}_{\mathrm{e}}}
+\newcommand{\RiffEG}{\RiffE^{\mathrm{g}}}
+\newcommand{\RiffED}{\RiffE^{\mathrm{d}}}
 
 %----- REALISABILITE -----%
 
@@ -468,17 +475,32 @@
 \newcommand{\Proof}[1]{\mathrm{PT}_{#1}}
 \DeclareMathOperator{\PTO}{PTO}
 
-%---- THEORIES AXIOMATIQUES -----%
+%----- SIGNATURES DU PREMIER ORDRE -----%
 
-\newcommand{\varT}{\mathcal T} % variable T pour une théorie
-\newcommand{\varTB}{\mathcal T'} % variable T' pour une autre théorie
+\newcommand{\SigFun}{\mathcal F}
+\newcommand{\SigRel}{\mathcal R}
+\newcommand{\aritFun}{\arite_{\SigFun}}
+\newcommand{\aritRel}{\arite_{\SigRel}}
+\newcommand{\Sign}{\Sigma}
+\newcommand{\SignP}[1]{\Sign_{#1}}
+\newcommand{\SignArith}{\SignP{\Arith}}
+\newcommand{\SignAb}{\SignP{\Ab}}
+\newcommand{\SignGrp}{\SignP{\Grp}}
+\newcommand{\SignRing}{\SignP{\Ring}}
+
+%----- THEORIES AXIOMATIQUES -----%
+
+\newcommand{\varT}{\mathscr T} % variable T pour une théorie
+\newcommand{\varTB}{\mathscr T'} % variable T' pour une autre théorie
 \DeclareMathOperator{\Theory}{Theorie} % ensemble des théories sur une signature
 \DeclareMathOperator{\Th}{Th} % ensemble des théorèmes d'une théorie
-\newcommand{\DemT}[1]{\Dem_{#1}}
-\newcommand{\ThT}[1]{\Th_{#1}}
-\newcommand{\ArithRobin}{\mathrm{Q}}
-\newcommand{\ArithPeano}{\mathrm{PA}}
-
+\newcommand{\DemT}[1]{\Dem_{#1}} % être le code d'une preuve d'un énoncé dans une théorie
+\newcommand{\ThT}[1]{\Th_{#1}} % être démontrable dans une théorie
+\newcommand{\ArithRobin}{\mathrm{Q}} % théorie de l'arithmétique de Robinson
+\newcommand{\ArithPeano}{\mathrm{PA}} % théorie de l'arithmétique de Peano
+\newcommand{\TAb}{\varT_{\Ab}} % théorie des groupes abéliens
+\newcommand{\TGrp}{\varT_{\Grp}} % théorie des groupes
+\newcommand{\TRing}{\varT_{\Ring}} % théorie des anneaux
 
 %----- TOPOLOGIE -----%
 
@@ -580,15 +602,31 @@
 
 %----- CALCUL DES PREDICATS -----%
 
-\newcommand{\SigFun}{\mathcal F}
-\newcommand{\SigRel}{\mathcal R}
-\newcommand{\aritFun}{\arite_{\SigFun}}
-\newcommand{\aritRel}{\arite_{\SigRel}}
-\newcommand{\Sign}{\Sigma}
-\newcommand{\SignP}[1]{\Sign_{#1}}
-\newcommand{\SignArith}{\SignP{\mathrm{Arith}}}
-\newcommand{\SignAb}{\SignP{\mathrm{Ab}}}
-\newcommand{\SignGrp}{\SignP{\mathrm{Grp}}}
-\newcommand{\SignRing}{\SignP{\mathrm{Ring}}}
+\newcommand{\Arith}{\mathrm{Arith}}
+\newcommand{\Grp}{\mathrm{Grp}}
+\newcommand{\Ab}{\mathrm{Ab}}
+\newcommand{\Ring}{\mathrm{Ring}}
 \newcommand{\subSimul}{\sigma}
 \newcommand{\FormSet}{\mathcal F}
+\DeclareMathOperator{\assoc}{assoc}
+\DeclareMathOperator{\neut}{neutre}
+\DeclareMathOperator{\inv}{inv}
+\DeclareMathOperator{\comm}{comm}
+\DeclareMathOperator{\distrL}{distribL}
+\DeclareMathOperator{\distrR}{distribR}
+\newcommand{\symbRF}{\mathrm{R}_{\varFF}}
+\newcommand{\symbFF}{\mathrm{f}_{\varFF}}
+\newcommand{\minRF}[1]{{#1}^{-\symbRF}}
+\newcommand{\minRFP}{\minRF{\varFP}}
+\newcommand{\minFF}[1]{{#1}^{-\symbFF}}
+\newcommand{\minFFP}{\minFF{\varFP}}
+\newcommand{\quant}{\mathrm{Q}}
+\newcommand{\memMinT}[1]{\mathcal V_{#1}}
+\DeclareMathOperator{\Ineq}{Ineq}
+\newcommand{\IneqP}[1]{\Ineq_{#1}}
+\DeclareMathOperator{\poset}{poset}
+\DeclareMathOperator{\toset}{toset}
+\newcommand{\FormPren}{\Formula_{\mathrm{pren}}}
+\newcommand{\Requiv}{\mathrm{equiv}}
+\newcommand{\nbr}{\mathrm{nbr}}
+\newcommand{\cl}{\mathrm{cl}}
