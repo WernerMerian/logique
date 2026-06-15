@@ -69,7 +69,7 @@ doit se lire
 \begin{remark}
   Suivant les auteurs, on note les propositions $P,Q,\ldots$, $A,B,\ldots$, ou
   $\varphi,\psi,\ldots$ Par préférence personnelle des auteurs, on utilise les
-  lettres $\varphi,\psi,\ldots$ qui sont plus souvent utilisées pour parler de
+  lettres $\varFF,\varFP,\ldots$ qui sont plus souvent utilisées pour parler de
   formules de la logique du premier ordre~: puisque c'est la logique du premier
   ordre que nous étudierons dans le reste de cet ouvrage, nous préférons
   unifier les notations ici.
@@ -104,11 +104,11 @@ l'ensemble des variables impliquées dans la construction d'une proposition.
 \end{remark}
 
 Une attribution de valeurs de vérité aux variables propositionnelles est appelée
-un environnement. On utilisera l'ensemble $\{0,1\}$ pour signifier
+un environnement. On utilisera l'ensemble $\intB$ pour signifier
 $\{\mathrm{Faux},\mathrm{Vrai}\}$.
 
 \begin{definition}[Environnement]
-  Un environnement est une fonction partielle $\env : \Var \partialto \{0,1\}$
+  Un environnement est une fonction partielle $\env : \Var \partialto \intB$
   dont le domaine (l'ensemble des valeurs $x\in \Var$ sur lesquelles
   $\env$ est défini) est fini.
 \end{definition}
@@ -120,7 +120,7 @@ naturelles pour donner le sens voulu aux propositions.
 
 \begin{definition}[Valuation]
   Soit $\env$ un environnement. On définit par induction sur $\Prop$
-  la fonction partielle $\ValE : \Prop \to \{0,1\}$~:
+  la fonction partielle $\ValE : \Prop \to \intB$~:
   \begin{itemize}
   \item $\ValE(\top) = 1$.
   \item $\ValE(\bot) = 0$.
@@ -287,9 +287,9 @@ propositions.
 
 \begin{definition}[Environnement infini]
   On définit l'ensemble $\Enviro$ des environnement potentiellement infinis
-  comme l'ensemble des fonctions partielles $\Var \partialto \{0,1\}$. On
+  comme l'ensemble des fonctions partielles $\Var \partialto \intB$. On
   définit la
-  fonction $\Val : \Enviro\times \Prop \to \{0,1\}$, pour tout
+  fonction $\Val : \Enviro\times \Prop \to \intB$, pour tout
   $\env\in\Enviro$, par :
   \[\Val_\env(\varFF) = \Val_{\env\restr{\VL(\varFF)}}(\varFF)\]
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
@@ -693,12 +693,12 @@ sur le résultat à prouver.
   \item $\displaystyle\max_{\varFF \in \varCD}(\ValE(\varFF)) = 1$,
     ce cas signifiant que
     $\max_{\varFF\in \varCD}(\ValE(\varFF)) \geq \min_{\varFF\in \varCG}(\ValE(\varFF))$
-    puisque $\Val$ est à valeurs dans $\{0,1\}$.
+    puisque $\Val$ est à valeurs dans $\intB$.
   \item $1 - \min_{\varFF \in \varCG}(\ValE(\varFF)) = 1$, ou,
     de façon équivalente,
     $\min_{\varFF\in \varCG}(\ValE(\varFF)) = 0$, ce cas impliquant encore
     l'inégalité
-    puisque $\Val$ est à valeurs dans $\{0,1\}$.
+    puisque $\Val$ est à valeurs dans $\intB$.
   \end{itemize}
   Réciproquement, si l'inégalité est vérifiée, alors on raisonne par disjonction
   de cas sur la valeur de $\min_{\varFF\in\varCG}(\ValE(\varFF))$~:
@@ -860,17 +860,17 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
   $\mathord{\vD}\subseteq\mathord{\vdP}$. Ce résultat s'appelle la complétude.
 \end{remark}
 
-\begin{theorem}[Complétude du calcul des séquents %\cite{belghiti2016clefs}
-  ]
+\begin{theorem}[Complétude du calcul des séquents]%\cite{belghiti2016clefs}
+  \label{thm.compl.prop}
   Pour tous $\PropSet\subseteq \Prop$ et $\varFF\in \Prop$, si
   $\PropSet\vD \varFF$
-  alors il existe $\varCG\in\List(\PropSet)$ tel que $\Gamma\vdash \varFF$.
+  alors il existe $\varCG\in\List(\PropSet)$ tel que $\varCG\vdP \varFF$.
 \end{theorem}
 
 \begin{proof}
   Tout d'abord, par théorème de compacité, il nous suffit de traiter le cas
   fini~: pour $\varCG\in\List(\Prop)$, en prenant $F_{\varCG}$ l'ensemble de
-  formules associé, si $F_{\varCG}\vD \varFF$ alors $F\vdP \varFF$.
+  formules associé, si $F_{\varCG}\vD \varFF$ alors $\varCG\vdP \varFF$.
 
   \noindent
   On définit une nouvelle relation $\vdAbs$ de façon analogue à $\vdP$,
@@ -956,7 +956,7 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
   D'où le fait que tout séquent $\varCG\vdAbs \varCD$ est dérivable.
 
   \noindent
-  Maintenant, prouvons que si $\varCG\vdAbs\varCD$ et $\varCG\nvdP\Delta$,
+  Maintenant, prouvons que si $\varCG\vdAbs\varCD$ et $\varCG\nvdP\varCD$,
   alors $\varCG\nvD\varCD$ (où $\varCG\vD \varCD$ signifie que pour toute
   valuation
   $\env$, $\ValE(\bigwedge \varCG) \leq \ValE(\bigvee \varCD)$).
@@ -989,7 +989,7 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
     On en déduit qu'il existe une proposition $\varFC \in (\varCG, \varFF)$
     telle que
     $\ValE(\varFC) = 1$ et que pour tout
-    $\varFC_0\in \Delta, \ValE(\varFC_0) = 0$.
+    $\varFC_0\in \varCD, \ValE(\varFC_0) = 0$.
     Si $\varFC \in \varCG$, alors on en déduit directement que
     \[\min_{\varFC\in (\varCG, \varFF \lor \varFP)} \ValE(\varFC) >
     \max_{\varFC\in\varCD} \ValE(\varFC)\]
@@ -1008,12 +1008,13 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
 \end{proof}
 
 \begin{remark}
-  Même si cette démonstration est grandement inspirée de celle proposée dans
+  Cette démonstration est grandement inspirée de celle proposée dans
   \cite{belghiti2016clefs} et adaptée pour prendre en compte les autres
-  constructeurs propositionnels, relevons que cette démonstration ne peut
+  constructeurs propositionnels. Relevons que cette démonstration ne peut
   fonctionner qu'avec un ensemble de règles très précis~: il faut que les règles
-  conservent la fausseté en plus d'être correctes pour qu'une preuve fausse dès
-  le début le reste. C'est en particulier la raison pour laquelle la définition
+  conservent la fausseté en plus d'être correctes pour que la dernière étape de
+  la démonstration puisse fonctionner par induction sur $\vdAbs$.
+  C'est en particulier la raison pour laquelle la définition
   de $\vdP$ n'utilise pas la règle de coupure. Cette démonstration de la
   complétude montre aussi que la règle de coupure est redondante~: puisque
   le système avec coupure est correct et que le système sans coupure est
@@ -1066,6 +1067,239 @@ encodable par exemple sur un ordinateur).
   \end{enumerate}
 \end{exercise}
 
+\begin{exercise}[Systèmes de connecteurs]
+  Dans ce chapitre, nous avons vu les constructeurs
+  $\top,\bot,\mathord{\lnot},\mathord{\lor},\mathord{\land},\mathord{\to}$.
+  Nous allons étudier le cas d'autres constructeurs possibles pour les
+  propositions, en nous concentrant sur une propriété de complétude.
+
+  Commençons par prouver que notre système actuel a la propriété de complétude.
+  \begin{enumerate}[label=(\roman*)]
+  \item Soit une fonction $f : \intB^n \to \intB$. Montrer qu'il existe une
+    formule $\varFF_f$ dont les variables libres sont parmi $x_1,\ldots,x_n$ et
+    telle que pour tout $n$-uplet $(b_1,\ldots,b_n)$~:
+    \[f(b_1,\ldots,b_n) = \ValP{(b_1,\ldots,b_n)}(\varFF_f)\]
+  \end{enumerate}
+  Ainsi, toute fonction booléenne peut se représenter par une formule utilisant
+  les constructeurs qu'on a introduits.
+
+  On définit un système de connecteurs comme la donnée d'un ensemble $\Symbol$
+  et, pour chaque élément $s \in \Symbol$, d'une arité $\arite(s) \in \bN$ et
+  d'une fonction $\Ff_s : \intB^{\arite(s)} \to \intB$.
+  Etant donné un système de connecteurs $S = (\Symbol,\arite,\Ff)$, on
+  définit l'ensemble inductif des $S$-propositions comme étant composé des
+  variables (d'arité nulle) et des symboles $s \in \Symbol$ (dont l'arité
+  est donnée par $\arite$).
+  \begin{enumerate}[resume,label=(\roman*)]
+  \item Définir une fonction $\Val$ pour l'ensemble des $S$-propositions avec
+    $S$ un système de connecteurs donné.
+  \end{enumerate}
+
+  On dit qu'un système de connecteurs $S$ est complet si pour toute fonction
+  $f : \intB^n \to \intB$ il existe une formule $\varFF$ telle que, pour tout
+  $n$-uplet $(b_1,\ldots,b_n)$~:
+  \[f(b_1,\ldots,b_n) = \ValP{(b_1,\ldots,b_n)}(\varFF_f)\]
+  \begin{enumerate}[resume,label=(\roman*)]
+  \item Montrer que le système de connecteurs $\{\lnot,\lor\}$ (induit pas les
+    connecteurs déjà introduits dans le chapitre) est un système complet de
+    connecteurs.
+  \end{enumerate}
+
+  Soit la fonction de la barre de Sheffer \cite{Sheffer1913}, donnée par
+  \[\makeFun{\tok\Sheffer\tok}{\intB^2}{\intB}{(b,b')}
+            {\begin{cases}
+                0 \text{ si } b = b' = 1 \\
+                1 \text{ sinon}
+            \end{cases}}\]
+  \begin{enumerate}[resume,label=(\roman*)]
+  \item Montrer que pour tout $b \in \intB$,
+    $b \Sheffer b = \lnot b$
+  \item Montrer que pour tout $b,b' \in \intB$,
+    $(\lnot b) \Sheffer (\lnot b') = b \land b'$
+  \item En déduire que $\{\mathord{\Sheffer}\}$ est un système complet de
+    connecteurs.
+  \item Ecrire une proposition (au sens usuel) dont la
+    valuation correspond à la barre de Sheffer.
+  \end{enumerate}
+\end{exercise}
+
+%\begin{exercise}[Interpolation de propositions]
+%  
+%\end{exercise}
+
 \newpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Théorème de compacité]
+  L'objectif de ce problème est de prouver d'une façon différente le
+  \cref{thm.compac.prop}, en passant par un théorème célèbre de la théorie des
+  graphes~: le lemme (faible) de König.
+
+  \pbPart{Arbres et chemins}
+
+  \noindent
+  On utilise ici le formalisme des arbres introduit dans
+  l'\cref{exo.ind.arbres}~: un arbre binaire est un sous-ensemble
+  $\varTree\subseteq \List(\intB)$ tel que si $\varlist' \in \varTree$ et
+  $\varlist \prefOrd \varlist'$ alors $\varlist \in \varTree$. On appelle chemin
+  fini dans un arbre binaire $\varTree$ une liste $\varlist \in \varTree$. On
+  notera dans ce problème $\Tree \defeq \Tree(2)$, car on se limite aux arbres
+  binaires.
+
+  \begin{pbQuest}
+  \item Montrer que pour tout arbre $\varTree \in \Tree$, $\varTree$ est un
+    ensemble infini si et seulement si la propriété suivante est vérifiée~:
+    \[\forall n \in \bN, \exists \varlist \in \varTree, \ListLen{\varlist} = n\]
+  \end{pbQuest}
+
+  \noindent
+  Si $\varTree \in \Tree$ et $\varlist \in \varTree$, on définit l'ensemble
+  \[\varTree_{\varlist} \defeq
+  \compr{\varlist' \in \List(\intB)}{\varlist' \prefOrd \varlist \lor
+    \varlist \prefOrd \varlist'}\]
+  qu'on appelle l'arbre $\varTree$ au-dessus de $\varlist$. Ses chemins sont
+  exactement les chemins coïncidant avec $\varTree$.
+  \begin{pbQuest}[resume]
+  \item Montrer que $\varTree_{\varlist}$ est un arbre.
+  \item\label{item.ind.pb1}
+    On suppose que $\varTree_{\varlist}$ est infini. Montrer qu'un des deux
+    arbres parmi $\varTree_{0 \Cons \varlist}$ et $\varTree_{1 \Cons \varlist}$ est
+    infini.
+  \end{pbQuest}
+
+  \noindent
+  On souhaite maintenant parler de chemins infinis. Pour l'instant, un arbre
+  est un ensemble de chemins finis, sur lesquels on peut donc facilement tester
+  s'ils appartiennent à un arbre donné. On construit donc d'abord une fonction
+  permettant de passer d'une suite binaire à une liste, liste sur laquelle on
+  pourra tester l'appartenance à un arbre. Un chemin infini sera ainsi
+  simplement une suite binaire $\makeFunName{\varPath}{\bN}{\intB}$.
+
+  \begin{pbQuest}[resume]
+  \item Soit $\varPath : \bN \to \intB$. Définir une fonction
+    \[\makeFunName{\varPath\restr\tok}{\bN}{\List(\intB)}\]
+    telle que $\varPath\restr{n}$ est la liste des $n$ premières valeurs de
+    $\varPath$ (pour $n = 0$, on retournera la liste vide $\nil$).
+  \item Soient $\varTree\in \Tree$ et $n \in \bN$, on définit la relation
+    \[\varPath \inTreeP{n} \varTree \defeq \varPath\restr{n} \in \varTree\]
+    Montrer que si $\varPath\inTreeP{n} \varTree$ alors pour tout $k < n$,
+    $\varPath\inTreeP{k}\varTree$.
+  \end{pbQuest}
+
+  \noindent
+  Finalement, on définit la relation $\inTreeInf$ par
+  \[\varPath\inTreeInf \varTree \defeq \forall n \in \bN,
+  \varPath\inTreeP{n}\varTree\]
+  L'énoncé du lemme (faible) de König est
+  \begin{quotation}
+    Si $\varTree \in \Tree$ est un arbre infini, alors il existe
+    $\varPath : \bN \to \intB$ tel que $\varPath \inTreeInf \varTree$.
+  \end{quotation}
+
+  \begin{pbQuest}[resume]
+  \item Prouver le lemme faible de König. \textit{Indication~: On pourra
+    construire une suite de listes en utilisant la question \ref{item.ind.pb1}.}
+  \end{pbQuest}
+
+  \pbPart{Application à la compacité}
+
+  \noindent
+  On souhaite maintenant démontrer le \cref{thm.compac.prop} en utilisant le
+  lemme faible de König. Pour cela, on cherche à assimiler les environnements
+  partiels à des arbres. On commence par identifier les deux objets
+  suivants~:
+  \begin{itemize}
+  \item les environnements partiels dont le domaine est de la forme
+    $\{x_0,\ldots,x_{n-1}\}$ pour un certain $n \in \bN$~;
+  \item les listes $\varlist \in \List(\intB)$.
+  \end{itemize}
+  Un tel environnement $\env$ est associé à la liste
+  $\env(n-1) \Cons \cdots\Cons\env(0) \Cons \nil$. On se permet donc d'écrire
+  $\varlist \satisf \varFF$, $\varlist \satisf \PropSet$ \latinexpr{etc}.
+
+  \begin{pbQuest}
+  \item Montrer qu'un ensemble infini $\{\varFF_1,\ldots,\varFF_n,\ldots\}$
+    de propositions est finiment satisfiable
+    si et seulement si pour tout $k \in \bN$, il existe un $\env$
+    tel que $\env \satisf \varFF_1,\ldots,\varFF_k\}$.
+  \end{pbQuest}
+
+  \noindent
+  Soit $\PropSet$ un ensemble infini de propositions, énuméré par
+  $\PropSet = \{\varFF_i\}_{i \in \bN}$. On définit l'arbre
+  \[\varTree_{\PropSet} \defeq \compr{\varlist \in \List(\intB)}{
+    \exists \varlist', \varlist \prefOrd \varlist' \land
+    \varlist' \satisf \varFF_1 \land \cdots \land \varFF_{\ListLen{\varlist}} }\]
+  \begin{pbQuest}[resume]
+  \item Vérifier que $\varTree_{\PropSet}$ est un arbre. A quelle condition est-il
+    infini~?
+  \item En utilisant le lemme faible de König, montrer
+    que si $\PropSet$ est finiment satisfiable, alors il existe une valuation
+    totale $\env$ telle que $\env \satisf \PropSet$.
+  \end{pbQuest}
+\end{problem}
+
+\begin{problem}[Le théorème de complétude]
+  L'objectif de ce problème est de démontrer d'une autre manière le
+  \cref{thm.compl.prop}.
+
+  \pbPart{Formulations équivalentes}
+
+  \begin{pbQuest}
+  \item Montrer que le \cref{thm.compl.prop} est équivalent à l'énoncé
+    suivant~:
+    \[\forall \varFF \in \Prop, \satisf \varFF \implies \vdP \varFF\]
+  \item Montrer qu'il est aussi équivalent à l'énoncé
+    \[\forall \varCG \in \List(\Prop), \varCG\nvdP \implies
+    \exists \env \in \Enviro, \env \satisf \varCG\]
+  \end{pbQuest}
+
+  \pbPart{Contextes d'environnement}
+
+  \noindent
+  On cherche donc à montrer que toute proposition valide est prouvable. Pour
+  cela, on va raisonner en quelque sorte sur la table de vérité d'une
+  proposition. En effet, une proposition $\varFF$ sémantiquement vraie peut
+  être décrite comme une proposition pour laquelle, pour chaque
+  $x \in \VL(\varFF)$, la valeur de $\Val(\varFF)$ est $1$ qu'on mette $x$ à
+  $0$ ou à $1$. Il se dessine alors le schéma de preuve suivant~:
+  \begin{itemize}
+  \item associer à un environnement $\env$ un contexte logique $\varCG_{\env}$~;
+  \item montrer que $\varCG_{\env} \vdP \varFF$ si et seulement si
+    $\env \satisf \varFF$~;
+  \item pour un ensemble de variables $\{x_1,\ldots,x_n\}$, en notant
+    $\Enviro_{\{x_1,\ldots,x_n\}}$ l'ensemble des environnements définis uniquement
+    sur $\{x_1,\ldots,x_n\}$, montrer que
+    \[\vdP \bigvee_{\env \in \Enviro_{\{x_1,\ldots,x_n\}}} \bigwedge \varCG_{\env}\]
+  \item utiliser le fait qu'une proposition $\varFF$ est une tautologie et
+    suffisamment de coupures pour éliminer la disjonction précédente, et en
+    déduire $\vdP \varFF$.
+  \end{itemize}
+
+  \noindent
+  On considère ici des environnements finis. Pour un environnement
+  $\env : \Var \partialto \intB$, on définit le contexte $\varCG_{\env}$ par~:
+  \begin{itemize}
+  \item si $x \in \dom(\env)$ et $\env(x) = 1$, alors on ajoute $x$ dans
+    $\varCG_{\env}$~;
+  \item si $x \in \dom(\env)$ et $\env(x) = 0$, alors on ajoute $\lnot x$ dans
+    $\varCG_{\env}$.
+  \end{itemize}
+
+  \begin{pbQuest}
+  \item Soient $\env \in \Enviro, \varFF \in \Prop$ tels que
+    $\VL(\varFF)\subseteq \dom(\env)$, montrer que
+    \begin{itemize}
+    \item si $\ValE(\varFF) = 0$ alors $\varCG_{\env} \vdP \lnot \varFF$
+    \item si $\ValE(\varFF) = 1$ alors $\varCG_{\env} \vdP \varFF$
+    \end{itemize}
+  \item Montrer que pour toute variable $x \in \Var$, $\vdP x \lor \lnot x$.
+  \item En déduire que pour tout ensemble fini de variables
+    $\{x_1,\ldots,x_n\}$, le séquent suivant est prouvable~:
+    \[\vdP \compr{\bigwedge \varCG_{\env}}{\env \in \Enviro_{\{x_1,\ldots,x_n\}}}\]
+    où l'ensemble est à lire comme une liste de tous ses éléments (on peut par
+    exemple ordonner les environnement par ordre lexicographique).
+  \item En déduire le théorème de complétude.
+  \end{pbQuest}
+\end{problem}

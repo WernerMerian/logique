@@ -1041,20 +1041,51 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[Différents arbres]
-  Soit $A$ un ensemble. On définit l'ensemble $\Tree(A)$ des arbres
-  $A$-branchants inductivement par
-  \[T,T' \inddefeq \nil \mid \node(f)\]
-  où $f : A \to \Tree(A)$. Ainsi, un arbre $A$-branchant est soit un arbre vide,
-  soit la donnée pour chaque $a \in A$ d'un arbre lui-même $A$-branchant.
+\begin{exercise}[Différents arbres]\label{exo.ind.arbres}
+
+  \begin{figure}[t]
+    \centering
+    \begin{tikzpicture}
+      \node[circle] (nil) at (0,0) {$\Nil$};
+      \node[circle] (0) at (-1,1.5) {$[0]$};
+      \node[circle] (1) at (1,1.5) {$[1]$};
+      \node[circle] (10) at (-0.5,3) {$[0,1]$};
+      \node[circle] (00) at (-1.5,3) {$[0,0]$};
+      \node[circle] (11) at (1.5,3) {$[1,1]$};
+      \draw (nil) -- (0);
+      \draw (nil) -- (1);
+      \draw (0) -- (10);
+      \draw (0) -- (00);
+      \draw (1) -- (11);
+    \end{tikzpicture}
+
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Illustration d'un arbre dont les chemins sont
+      $\Nil,[0],[1],[0,0],[0,1],[1,1]$}
+    \label{fig.ind.arbre}
+  \end{figure}
+  
+  Soit $n \in \bN$. On définit l'ensemble $\WfTree(n)$ des arbres
+  $n$-branchants bien fondés, inductivement par
+  \[\varTree,\varTree' \inddefeq \nil \mid \node(\varTree_1,\ldots,\varTree_n)\]
+  Ainsi, un arbre $n$-branchant bien fondé est soit un arbre vide,
+  soit la donnée de $n$ arbres eux-mêmes $n$-branchants bien fondés.
 
   \noindent
-  On définit aussi l'ensemble $\PreTree(A)$ des pré-arbres $A$-branchants, par
-  \[\PreTree(A) \defeq \compr{T \subseteq \List(A)}{\forall \varlist,\varlist',
-  \varlist \prefOrd \varlist' \land \varlist' \in T \implies \varlist \in T}\]
-  où $\prefOrd$ est la relation de préfixe donnée dans l'\cref{exo.ord.list}.
-  Définir une injection $\Tree(A) \to \PreTree(A)$. Cette injection est-elle
-  surjective~?
+  On définit aussi l'ensemble $\Tree(n)$ des pré-arbres $n$-branchants, par
+  \[\Tree(n) \defeq
+  \compr{\varTree \subseteq \List(\intervInt{n})}
+        {\forall \varlist,\varlist',
+          \varlist \prefOrd \varlist' \land
+          \varlist' \in \varTree \implies \varlist \in \varTree}\]
+  où $\prefOrd$ est la relation d'ordre donnée dans l'\cref{exo.ord.list}.
+  Définir une injection $\WfTree(n) \to \Tree(n)$.
+  \textit{Indication~: la \cref{fig.ind.arbre} donne un exemple d'arbre
+  représenté par un élément de l'ensemble $\Tree$.}
+  Cette injection est-elle surjective~?
 \end{exercise}
 
 \newpage
@@ -1062,7 +1093,120 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 \subsection{Problèmes}
 
 \begin{problem}[\'Etude des arbres binaires de recherche]
-  A FAIRE
+  Ce problème se concentre sur l'étude d'une structure de données. Une structure
+  de données est un objet mathématique (ou informatique) muni de fonctions
+  lui permettant de stocker des informations, et de les retourner ensuite.
+
+  \pbPart{Définition des arbres binaires de recherche}
+  
+  Parmi ces structures de données, celle qui nous intéresse est celle des arbres
+  binaires de recherche. Soit $(A,\leq)$ un ensemble totalement ordonné,
+  l'ensemble des arbres binaires de
+  étiquetés par $A$, noté $\BinTree(A)$, est l'ensemble inductif
+  défini par
+  \[\varTree,\varTree' \inddefeq \nil \mid \node(a,\varTree,\varTree')\]
+  où $a \in A$. L'intérêt d'un tel arbre est de contenir des valeurs appartenant
+  à $A$. On appelle n\oe ud un arbre $\varTree \in \BinTree(A)$ qui n'est pas
+  $\nil$, ses composantes sont alors appelées respectivement étiquette, fils
+  gauche et fils droit. Pour un arbre $\varTree$, les n\oe ud de $\varTree$
+  désigne l'ensemble des sous-arbres de $\varTree$ qui ne sont pas $\nil$.
+
+  \begin{pbQuest}
+  \item Construire inductivement un prédicat $\isABR \subseteq \BinTree(A)$
+    exprimant la propriété suivante sur $\varTree$~:
+    \begin{quotation}
+      Pour tout n\oe ud $\node(a,g,d)$ de $\varTree$, l'ensemble des étiquettes
+      apparaissant dans $g$ sont inférieures à $a$ et l'ensemble des étiquettes
+      apparaissant dans $d$ sont supérieures à $a$.
+    \end{quotation}
+    On définit ainsi l'ensemble
+    $\ABR(A) \defeq \compr{\varTree \in \BinTree(A)}{\isABR(\varTree)}$.
+  \item Définir une fonction $\lookup$ qui, étant donnés un élément $a \in A$
+    et un arbre $\varTree \in \ABR(A)$, retourne $1$ s'il existe un n\oe ud de
+    $\varTree$ dont l'étiquette est $a$ et $0$ sinon.
+  \item Définir une fonction $\add$ qui, étant donné un arbre
+    $\varTree \in \BinTree(A)$ et un élément $a \in A$, retourne un nouvel arbre
+    $\add(\varTree,a) \in \BinTree(A)$ dont les étiquettes sont celles de
+    $\varTree$ et $a$.
+  \item Définir une fonction $\remove$ qui, étant donné un arbre
+    $\varTree\in\BinTree(A)$ et un élément $a \in A$, retourne un nouvel arbre
+    $\remove(\varTree,a) \in \BinTree(A)$ dont les étiquettes sont celles de
+    $\varTree$ à l'exception de $a$, si cette étiquette apparaissait dans
+    $\varTree$.
+  \end{pbQuest}
+
+  \noindent
+  On souhaite désormais implémenter des fonctions $\add$ et $\remove$ en tant
+  que fonctions sur
+  les $\ABR$. Pour cela, il est nécessaire de préserver la propriété (aussi
+  appelé un invariant) d'être un $\ABR$.
+
+  \pbPart{Ajout d'une valeur}
+
+  \noindent
+  Commençons par nous concentrer sur l'ajout d'une valeur. Considérons l'arbre
+  $\node(a,\node(b,g_1,d_1),\node(c,g_2,d_2))$, comment ajouter une valeur
+  $e$ dans cet arbre~? On peut d'abord ordonner les différents sous-arbres
+  vis-à-vis des éléments $a,b$ et $c$.
+  \begin{pbQuest}
+  \item Montrer que dans cette situation, on a la suite d'inégalités
+    \[g_1 \leq b \leq d_1 \leq a \leq g_2 \leq c \leq d_2\]
+    où le sens de \latinexpr{e.g.} $g_1 \leq b$ est que toutes les étiquettes
+    dans $g_1$ sont inférieures à $b$.
+  \item En déduire, suivant la position relative de $e$ par rapport à
+    $a,b$ et $c$, dans quel sous-arbre sera ajouté $e$.
+  \item En remarquant que $\node(b,g_1,d_1)$ et $\node(c,g_2,d_2)$ constituent
+    eux-mêmes des sous-arbres, donner une définition de
+    $\add(\node(a,g,d),e)$ en fonction de $\add(g,e)$ et $\add(d,e)$.
+  \item Donner une définition de $\add$ par induction qui préserve l'invariant
+    $\isABR$.
+  \end{pbQuest}
+
+  \pbPart{Suppression d'une valeur}
+
+  \noindent
+  Dans le cas où l'on souhaite supprimer une valeur, on peut commencer par
+  traiter les cas simples.
+  \begin{pbQuest}
+  \item Définir $\remove(\varTree,e)$ dans le cas où $\varTree$ est~:
+    \begin{itemize}
+    \item l'arbre vide $\nil$~;
+    \item une feuille $\node(e,\nil,\nil)$~;
+    \item une feuille $\node(a,\nil,\nil)$ où $a \neq e$~;
+    \item un arbre à un fils $\node(a,g,\nil)$ ou $\node(a,\nil,d)$.
+    \end{itemize}
+  \end{pbQuest}
+
+  \noindent
+  On se place donc dans le cas où l'$\ABR$ est de la forme
+  $\node(a,g,d)$ où $g$ et $d$ sont non vides et où l'on souhaite supprimer
+  une valeur $b$.
+  \begin{pbQuest}
+  \item Définir la fonction $\min$ (resp. $\max$) qui, à un arbre
+    $\varTree \in \ABR(A)$ non vide associe l'étiquette la plus élevée
+    (resp. la plus petite) apparaissant dans $\varTree$.
+  \item Montrer que, si $\remove(g,\max(g))$ est un $\ABR$, alors
+    $\node(\max(g),\remove(g,\max(g)),d)$ est aussi un $\ABR$. Symétriquement,
+    montrer que si $\remove(d,\min(d))$ est un $\ABR$, alors
+    $\node(\min(d),g,\remove(d,\min(d)))$ est aussi un $\ABR$.
+    \textit{Indication~: On pourra raisonner par induction sur le nombre
+      de sommets de l'arbre.}
+  \item Donner une définition de $\remove$ qui préserve l'invariant $\isABR$.
+  \end{pbQuest}
+
+  \pbPart{Faire un tri}
+
+  \noindent
+  Nos fonctions permettent de construire un arbre en y ajoutant pas à pas des
+  étiquettes, et d'en récupérer le minimum (respectivement le maximum). A l'aide
+  de ces fonctions, il est possible de trier une liste.
+  \begin{pbQuest}
+  \item Soit $\varlist \in \List(A)$. Construire une fonction $\sort$ telle
+    que $\sort(\varlist)$ contient les éléments de $\varlist$ dans l'ordre
+    croissant~: si
+    $\sort(\varlist) = a_1\Cons a_2\Cons \cdots \Cons a_n \Cons \nil$
+    alors $a_1 \leq \cdots \leq a_n$.
+  \end{pbQuest}
 \end{problem}
 
 \begin{problem}[La coinduction]
