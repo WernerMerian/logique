@@ -56,26 +56,30 @@ En fait, un pré-ordre peut se ramener à un ordre par un quotient.
 
 \begin{property}
   Soit $(X,\leq)$ un ensemble pré-ordonné, alors la relation
-  $\sim\subseteq X \times X$ définie par
+  $\mathord{\sim}\subseteq X \times X$ définie par
   \[x\sim y \defeq x\leq y \land y \leq x\]
-  est une relation d'équivalence, et $\leq$ induit un ordre sur $X/\sim$.
+  est une relation d'équivalence, et $\leq$ induit un ordre sur
+  $\quot{X}{\sim}$.
 \end{property}
 
 \begin{proof}
   Vérifions que $\sim$ est une relation d'équivalence~:
   \begin{itemize}
-  \item $\sim$ est réflexive~: $x\leq x$ et $x\leq x$, donc $x\sim x$.
-  \item $\sim$ est symétrique~: supposons que $x\sim y$, alors $x\leq y$ et
+  \item $\sim$ est réflexive~:
+    $x\leq x$ et $x\leq x$, donc $x\sim x$.
+  \item $\sim$ est symétrique~:
+    supposons que $x\sim y$, alors $x\leq y$ et
     $y\leq x$, donc $y\leq x$ et $x\leq y$, donc $y\sim x$.
-  \item $\sim$ est transitive~: supposons que $x\sim y$ et $y\sim z$, alors
+  \item $\sim$ est transitive~:
+    supposons que $x\sim y$ et $y\sim z$, alors
     $x\leq y$ et $y\leq z$, donc $x\leq z$, et de même $z\leq y$ et $y\leq x$
     donc $z\leq z$, ainsi $x\sim z$.
   \end{itemize}
 
-  Pour vérifier que $\leq$ induit un ordre sur $X/\sim$, il suffit de vérifier
+  Pour vérifier que $\leq$ induit un ordre sur $\quot{X}{\sim}$,
+  il suffit de vérifier
   que si $x\sim x'$ et $y\sim y'$, alors $x\leq y$ si et seulement si
   $x'\leq y'$.
-
   Si $x\leq y$ alors comme $x'\leq x$ et $y\leq y'$, on en déduit que
   $x'\leq y'$
   et réciproquement, comme $x\leq x'$ et $y'\leq y$, il vient que
@@ -83,18 +87,18 @@ En fait, un pré-ordre peut se ramener à un ordre par un quotient.
 \end{proof}
 
 \begin{exercise}
-  Soit une signature $\Sigma$, montrer que la relation
-  $\vdash\subseteq\Formula(\Sigma)\times\Formula(\Sigma)$ définie comme
-  restriction de la relation $\vdash$ que nous avons vue précédemment, mais où
+  Soit une signature $\Sign$, montrer que la relation
+  $\mathord{\vdP}\subseteq\Formula(\Sign)\times\Formula(\Sign)$ définie comme
+  restriction de la relation $\vdP$ que nous avons vue précédemment, mais où
   la liste de gauche ne contient qu'une proposition, est un pré-ordre.
 \end{exercise}
 
 \begin{remark}
-  La relation $\dashv\vdash$ s'écrit aussi $\equiv$, ce qui est cohérent avec
+  La relation $\dvvd$ s'écrit aussi $\equiv$, ce qui est cohérent avec
   notre définition sémantique de $\equiv$, étant donné que l'on sait que
-  $\vdash$ et $\vDash$ coïncident.
+  $\vdP$ et $\vD$ coïncident.
 
-  L'ensemble ordonné construit par $\Formula(\Sigma)/\dashv\vdash$ est appelé
+  L'ensemble ordonné construit par $\quot{\Formula(\Sigma)}{\dvvd}$ est appelé
   l'algèbre de Lindenbaum-Tarski (cette construction a été introduite dans
   \cite{LindenbaumTarski}). Nous la verrons plus en détail plus tard.
 \end{remark}
@@ -123,9 +127,11 @@ réciproquement).
 \begin{proof}
   On définit, dans l'autre sens, la relation $\leq$ à partir de $<$ par
   \[x\leq y \defeq x < y \lor x = y\]
-  Le fait que $((x \leq y)\land x \neq y) \lor x = y$ est équivalent à $x\leq y$
-  et que $(x < y\lor x = y) \land x \neq y$ est équivalent à $x < y$ se
-  vérifient directement.
+  Les deux faits suivants se vérifient directement~:
+  \begin{itemize}
+  \item  $((x \leq y)\land x \neq y) \lor x = y$ est équivalent à $x\leq y$~;
+  \item $(x < y\lor x = y) \land x \neq y$ est équivalent à $x < y$.
+  \end{itemize}
 
   Montrons que $<$ défini à partir de $\leq$ est un ordre strict~:
   \begin{itemize}
@@ -148,13 +154,14 @@ réciproquement).
     directement que $x\leq z$, soit $x < y$. En utilisant le fait que
     $y \leq z$, on en déduit que soit $y = z$, soit $y < z$. Dans le premier
     cas, il est évident que $x \leq z$. Dans le deuxième cas, par transitivité,
-    on en déduit que $x < z$.
+    on en déduit que $x < z$.\qedhere
   \end{itemize}
 \end{proof}
 
 On définira donc des propriétés indifféremment sur un ordre ou sur un ordre
-strict (si on dit qu'une propriété $P$ définie sur les ordres strictes est
-vérifiée pour un ordre $\leq$, cela signifie que $<$ vérifie $P$).
+strict (si on dit qu'une propriété $P$ définie sur les ordres stricts est
+vérifiée pour un ordre $\leq$, cela signifie que l'ordre strict $<$
+associé vérifie $P$).
 
 Intéressons-nous d'abord aux éléments~: comme un ordre est (sauf indication du
 contraire) partiel, deux éléments peuvent ne pas être mis en relation. Dans ces
@@ -204,8 +211,8 @@ proposition duale est souvent aussi importante que la proposition de base.
 
 \subsection{Bornes et majorations}
 
-On peut voir la théorie des ordres sous deux primes~: le prisme algébrique et le
-prisme analytique.
+On peut voir la théorie des ordres sous deux prismes~: le prisme algébrique et
+le prisme analytique.
 
 Suivant le prisme algébrique, nous étudions des structures
 munies d'une relation (on peut voir cela comme de la théorie des modèles), et
@@ -217,59 +224,59 @@ $x$ et $y$, voire d'un ensemble fini d'éléments.
 Suivant le prisme analytique, nous nous intéressons aux parties de l'ensemble
 ordonné (potentiellement infinie). Nous parlons donc par exemple de la borne
 supérieure d'un ensemble quelconque. Les structures pour lesquelles on peut
-appliquer le point de vue analytique sont donc moins nombreuses, mais nous
-allons étudier les définitions basiques de ces principes de bornes supérieures,
-de majorant ou autre.
+appliquer le point de vue analytique sont donc moins nombreuses.
+Etudions les définitions basiques de ces principes de bornes supérieures,
+de majorant \latinexpr{etc}.
 
 \begin{definition}[Majorant, minorant]
-  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
-  dit que $x$ est un majorant de $F$ si
-  \[\forall y\in F, y \leq x\]
-  et que $x$ est un minorant de $F$ si
-  \[\forall y\in F, x \leq y\]
+  Soit $(X,\leq)$ un ensemble ordonné et $Y\subseteq X$ une partie de $X$. On
+  dit que $x$ est un majorant de $Y$ si
+  \[\forall y\in Y, y \leq x\]
+  et que $x$ est un minorant de $Y$ si
+  \[\forall y\in Y, x \leq y\]
 
-  Par abus de notation, on écrira $F\leq x$ (respectivmeent $x\leq F$) pour dire
-  que $x$ est un majorant (respectivement un minorant) de $F$.
+  Par abus de notation, on écrira $Y\leq x$ (respectivmeent $x\leq Y$) pour dire
+  que $x$ est un majorant (respectivement un minorant) de $Y$.
 \end{definition}
 
 \begin{definition}[Borne supérieure, borne inférieure]
-  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$ une partie de $X$. On
-  dit que $x$ est la borne supérieure de $F$ si
-  \[F\leq x \land (\forall y\in X, F\leq y \implies x \leq y)\]
+  Soit $(X,\leq)$ un ensemble ordonné et $Y\subseteq X$ une partie de $X$. On
+  dit que $x$ est la borne supérieure de $Y$ si
+  \[Y\leq x \land (\forall y\in X, Y\leq y \implies x \leq y)\]
   et que $x$ est la borne inférieure de $F$ si
-  \[x\leq F \land (\forall y\in X, x\leq F \implies y \leq x)\]
+  \[x\leq Y \land (\forall y\in X, x\leq Y \implies y \leq x)\]
 \end{definition}
 
 \begin{proof}
   Puisque nous avons dit \og la\fg{} il est nécessaire de montrer l'unicité de
   la borne supérieure (l'unicité de la borne inférieure se prouver par dualité).
 
-  Supposons que $x,y$ sont des bornes supérieures de $F$. Comme $F\leq x$ et
-  $y$ est une borne supérieure, $y\leq x$. De même, comme $F\leq y$ et $x$ est
+  Supposons que $x,y$ sont des bornes supérieures de $Y$. Comme $Y\leq x$ et
+  $y$ est une borne supérieure, $y\leq x$. De même, comme $Y\leq y$ et $x$ est
   une borne supérieure, $x\leq y$. Donc $x = y$ par antisymétrie.
 \end{proof}
 
 \begin{notation}
-  Si la borne supérieure de $F$ existe, on la notera $\bigvee F$. Si la borne
-  inférieure de $F$ existe, on la notera $\bigwedge F$.
+  Si la borne supérieure de $Y$ existe, on la notera $\bigvee Y$. Si la borne
+  inférieure de $Y$ existe, on la notera $\bigwedge Y$.
 \end{notation}
 
 \begin{exercise}
   Soit $(X,\leq)$ un ensemble ordonné et $A\subseteq \powerset X$ une partie
   telle que $\bigcup A$ admet une borne supérieure et tout élément de $A$ admet
   une borne supérieure, montrer alors que
-  \[\bigvee (\bigcup A) =
-  \bigvee\Big(\Big\{ \bigvee a \;\Big|\; a \in A\Big\}\Big)\]
+  \[\bigvee \left(\bigcup A\right) =
+  \bigvee\compr{\bigvee a}{a \in A}\]
 \end{exercise}
 
 \begin{definition}[Maximum, minimum]
-  Soit $(X,\leq)$ un ensemble ordonné et $F\subseteq X$. On dit que $x$ est le
-  maximum de $F$ si $F\leq x$ et $x\in F$. On dit que $x$ est le minimum de $F$
-  si $x\leq F$ et $x\in F$.
+  Soit $(X,\leq)$ un ensemble ordonné et $Y\subseteq X$. On dit que $x$ est le
+  maximum de $Y$ si $Y\leq x$ et $x\in Y$. On dit que $x$ est le minimum de $Y$
+  si $x\leq Y$ et $x\in Y$.
 \end{definition}
 
 \begin{notation}
-  On notera $\max F$ et $\min F$ le maximum (respectivement le minimum) de $F$.
+  On notera $\max Y$ et $\min Y$ le maximum (respectivement le minimum) de $Y$.
 \end{notation}
 
 \begin{property}
@@ -278,14 +285,14 @@ de majorant ou autre.
 \end{property}
 
 \begin{proof}
-  Si $x$ est un majorant de $F$, alors comme $\max F \in F$, on en déduit que
-  $\max F \leq x$, d'où le résultat.
+  Si $x$ est un majorant de $Y$, alors comme $\max Y \in Y$, on en déduit que
+  $\max Y \leq x$, d'où le résultat.
 \end{proof}
 
 \begin{definition}[\'Elément maximal, minimal]
-  Soit un ensemble ordonné $(X,\leq)$ et une partie $F\subseteq X$. On dit que
-  $x \in F$ est un élément maximal (respectivement minimal) dans $F$ s'il
-  n'existe pas $y\in F$ tel que $x < y$ (respectivement tel que $y < x$).
+  Soit un ensemble ordonné $(X,\leq)$ et une partie $Y\subseteq X$. On dit que
+  $x \in Y$ est un élément maximal (respectivement minimal) dans $Y$ s'il
+  n'existe pas $y\in Y$ tel que $x < y$ (respectivement tel que $y < x$).
 \end{definition}
 
 \begin{exercise}
@@ -316,6 +323,14 @@ en donner l'énoncé. La preuve est donnée dans la \cref{sbsct.Zorn}.
   Un ensemble ordonné $(X,\leq)$ est dit inductif si toute chaîne admet un
   majorant.
 \end{definition}
+
+\begin{remark}
+  On peut remarquer que le nom \og ensemble inductif\fg est aussi utilisé dans
+  le \cref{chp.induction}. Dans la littérature, la notion d'ensemble inductif
+  se réfère principalement à un ensemble ordonné tel que décrit plus haut, mais
+  ce nom reste le plus evocateur pour décrire les ensembles définis dans le
+  \cref{chp.induction}.
+\end{remark}
 
 \begin{theorem}[Lemme de Zorn \cite{ZornLemma}]\label{thm.Zorn}
   Si $(X,\leq)$ est un ensemble inductif et $x\in X$, alors il existe un élément
@@ -348,21 +363,21 @@ fondés sont utiles pour étendre le théorème d'induction.
 
 \begin{definition}[Ordre bien fondé]\label{def.wf.ord}
   Soit $(X,\leq)$ un ensemble ordonné. On dit que $\leq$ est bien fondé si toute
-  partie $F\subseteq X$ non vide possède un élément minimal, c'est-à-dire si
-  \[\forall F \subseteq X, F\neq \varnothing \implies \exists x\in F,
-  \forall y\in F, (y\leq x \implies x = y)\]
+  partie $Y\subseteq X$ non vide possède un élément minimal, c'est-à-dire si
+  \[\forall Y \subseteq X, Y\neq \vide \implies \exists x\in Y,
+  \forall y\in Y, (y\leq x \implies x = y)\]
 \end{definition}
 
 \begin{remark}
   Une définition équivalente, sur les ordres stricts, est que $<$ est bien fondé
   si~:
-  \[\forall F \subseteq X, F\neq \varnothing \implies \exists x \in F,
-  \forall y \in F, y\nless x\]
+  \[\forall Y \subseteq X, Y\neq \vide \implies \exists x \in Y,
+  \forall y \in Y, y\nless x\]
 \end{remark}
 
 \begin{definition}[Bon ordre]
   Un ensemble ordonné $(X,\leq)$ est un bon ordre lorsque toute partie non vide
-  $F\subseteq X$ possède un minimum.
+  $Y\subseteq X$ possède un minimum.
 \end{definition}
 
 Une première conséquence évidente est qu'un bon ordre est un ordre bien fondé.
@@ -375,21 +390,20 @@ fondés.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $(X,\leq)$ est un ordre bien fondé total. Soit $F\subseteq X$
+  Supposons que $(X,\leq)$ est un ordre bien fondé total. Soit $Y\subseteq X$
   non vide, comme $\leq$ est un ordre bien fondé, on trouve $m$ un élément
-  minimal de $F$. Soit $x\in F$, alors soit $x \leq m$ soit $m\leq x$. Dans le
+  minimal de $Y$. Soit $x\in Y$, alors soit $x \leq m$ soit $m\leq x$. Dans le
   premier cas, par minimalité de $m$, on en déduit que $m = x$, donc que
-  $m\leq x$. Ainsi, dans tous les cas, $m$ est un minorant de $F$~: $F$ admet
+  $m\leq x$. Ainsi, dans tous les cas, $m$ est un minorant de $Y$~: $Y$ admet
   donc un minimum.
-
   Donc $(X,\leq)$ est un bon ordre.
 \end{proof}
 
 Nous avons vu que la notion de structure inductive nous offre le principe
-d'induction, qui dans le cas particulier de $\mathbb N$ correspond au principe
+d'induction, qui dans le cas particulier de $\bN$ correspond au principe
 de récurrence. Le principe de récurrence forte, lui, est de nature légèrement
 différente~: il se base sur la notion d'ordre. Il dit que si pour tout
-$k\in\mathbb N$, on peut prouver
+$k\in\bN$, on peut prouver
 \[(\forall i < k, P(i)) \implies P(k)\]
 alors on peut en déduire que $\forall n, P(n)$.
 
@@ -413,7 +427,7 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
   $<$. Comme $x$ est minimal pour $<$ dans $X\setminus P$, on en déduit que pour
   tout $y < x$, $y \notin X\setminus P$, c'est-à-dire $y\in P$. Par hypothèse,
   puisque $\forall y < x, y\in P$, on en déduit que $x\in P$~: c'est absurde.
-  Ainsi, par l'absurde, on a prouvé que $X\setminus P = \varnothing$, donc que
+  Ainsi, par l'absurde, on a prouvé que $X\setminus P = \vide$, donc que
   $P = X$.
 \end{proof}
 
@@ -422,10 +436,10 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
   prenant une suite d'ensembles $(X_i)_{i\in \mathbb N}$, on peut définir un ordre
   canonique bien fondé, l'ordre de sous-terme, par récurrence sur $i$~:
   \begin{itemize}
-  \item pour $X_0$, on a facilement un ordre bien fondé sur $\varnothing$.
+  \item pour $X_0$, on a facilement un ordre bien fondé sur $\vide$.
   \item supposons qu'on possède un ordre bien fondé sur $X_n$, alors on définit
     notre ordre sur $X_{n+1}$ par $x_i < c(x_1,\ldots,x_n)$ pour tout
-    $i \in \{1,\ldots,n\}$, et en en prenant la clôture transitive.
+    $i \in \intervIntB{n}$, et en en prenant la clôture transitive.
   \end{itemize}
 
   Cet ordre, en particulier, permet de généraliser l'hypothèse d'induction de
@@ -436,20 +450,21 @@ moyen d'ordonner les éléments de sorte qu'on peut prouver $P$ élément par
   Montrer que l'ordre défini plus tôt est bien un ordre bien fondé.
 \end{exercise}
 
+\noindent
 Cela nous permet aussi de généraliser la récursion en la récursion bien fondée.
 
 \begin{notation}
   Pour gagner en lisibilité, si $(X,<)$ est un ensemble strictement ordonné et
   $x \in X$, on notera
-  \[x\!\downarrow \defeq \{y \in X \mid y < x\}\]
+  \[\downcl{x} \defeq \compr{y \in X}{y < x}\]
 \end{notation}
 
 \begin{theorem}[Récursion bien fondée]\label{thm.recur.bf}
   Soient $X,Y$ deux ensembles, et $<$ un ordre bien fondé sur $X$. Soit
   une fonction
-  \[f : \powerset (X) \to Y\]
+  \[\makeFunName{f}{\powerset(Y)}{Y}\]
   alors il existe une unique fonction $g : X \to Y$ telle que
-  \[\forall x \in X, g(x) = f(g(x\!\downarrow))\]
+  \[\forall x \in X, g(x) = f(\compr{g(x_0)}{x_0 \in \downcl{x}})\]
 \end{theorem}
 
 \begin{proof}
@@ -463,9 +478,10 @@ Cela nous permet aussi de généraliser la récursion en la récursion bien fond
 On peut donc définir une fonction $g : X \to Y$ avec $(X,<)$ bien fondé en la
 définissant en $x$ grâce à ses valeurs pour tous les $y < x$. On verra dans le
 \cref{chp.ordinaux} une version plus générale de ce principe dans le cas des
-ensembles bien ordonnés. En utilisant la notation $f\restr E$ pour \og $f$
-restreinte à $E$\fg, on aurait pu renforcer ce théorème en utilisant comme
-condition que $g(x) = f(g\restr{x\!\downarrow})$, permettant non seulement
+ensembles bien ordonnés. %En utilisant la notation $f\restr E$ pour \og $f$
+%restreinte à $E$\fg,
+On aurait pu renforcer ce théorème en utilisant comme
+condition que $g(x) = f(g\restr{\downcl{x}})$, permettant non seulement
 d'utiliser les $g(y)$ mais aussi les $y$ associés.
 
 \section{Treillis}
@@ -480,7 +496,7 @@ nous souhaitons avoir sur une structure avant de passer à la suivante.
 
 Commençons par étudier les demi-treillis~: ceux-ci sont des ensembles ordonnés
 avec une direction privilégiée, selon laquelle il existe toujours une borne
-supérieure pour un ensemble fini.
+pour un ensemble fini.
 
 \begin{definition}[Demi-treillis]
   Un ensemble $(X,\leq)$ est un sup demi-treillis si toute partie $F\subfin X$
@@ -489,7 +505,7 @@ supérieure pour un ensemble fini.
 \end{definition}
 
 \begin{property}
-  De manière équivalent, un ensemble $(X,\leq)$ est un sup demi-treillis si et
+  De manière équivalente, un ensemble $(X,\leq)$ est un sup demi-treillis si et
   seulement s'il admet un élément $\bot$ et une opération
   $\lor : X \times X \to X$ tels que $\bot$ est un minorant de $X$ et
   $x\lor y$ est la borne supérieure de $x$ et $y$.
@@ -501,18 +517,16 @@ supérieure pour un ensemble fini.
 
 \begin{proof}
   Si $(X,\leq)$ est un sup demi-treillis, on trouve $\bot$ en prenant
-  $\bigvee\varnothing$ et $x\lor y$ en prenant $\bigvee\{x,y\}$.
+  $\bigvee\vide$ et $x\lor y$ en prenant $\bigvee\{x,y\}$.
 
   Réciproquement, montrons par récurrence sur le cardinal de $F\subfin X$ qu'il
   existe une borne supérieure à $F$~:
   \begin{itemize}
-  \item si $F = \varnothing$, alors $\bigvee F = \bot$.
+  \item si $F = \vide$, alors $\bigvee F = \bot$.
   \item si $F = F' \cup \{x\}$ et $\bigvee F'$ existe, alors
     $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F' \lor x$
-    donc $\bigvee F$ existe.
+    donc $\bigvee F$ existe. \qedhere
   \end{itemize}
-
-  On a donc l'équivalence.
 \end{proof}
 
 Cela nous donne une caractérisation plus algébrique d'un demi-treillis~: c'est
@@ -524,11 +538,16 @@ c'est-à-dire n'utilisant que des opérations finies et des égalités.
 \begin{definition}[Monoïde commutatif idempotent]
   Un ensemble $X$ muni d'une opération $\cdot$ et d'un élément $e$ est un
   monoïde idempotent commutatif si les propriétés suivantes sont vérifiées~:
+  
   \begin{itemize}
-  \item $\forall x\in X, x\cdot e = e \cdot x = x$
-  \item $\forall x,y,z\in X, x \cdot (y \cdot z) = (x \cdot y) \cdot z$
-  \item $\forall x,y\in X, x\cdot y = y \cdot x$
-  \item $\forall x\in X, x\cdot x = x$
+    \begin{minipage}{0.5\textwidth}
+    \item $\forall x\in X, x\cdot e = e \cdot x = x$
+    \item $\forall x,y,z\in X, x \cdot (y \cdot z) = (x \cdot y) \cdot z$
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+    \item $\forall x,y\in X, x\cdot y = y \cdot x$
+    \item $\forall x\in X, x\cdot x = x$
+    \end{minipage}
   \end{itemize}
 
   On définit sur un monoïde commutatif idempotent $(X,\cdot,e)$ les relations
@@ -556,18 +575,18 @@ c'est-à-dire n'utilisant que des opérations finies et des égalités.
     $y \lor x = x$
     donc
     \begin{align*}
-      x &= y \lor x \\
-      &= x \lor y \qquad\text{par commutativité}\\
-      &= y
+      x &= y \lor x &\text{car } y \leq_{\lor} x\\
+      &= x \lor y &\text{par commutativité}\\
+      &= y & \text{car } x \leq_{\lor} y
     \end{align*}
   \item si $x\leq_\lor y$ et $y\leq_\lor z$, alors $x\lor y = y$ et
     $y \lor z = z$
     donc
     \begin{align*}
-      x\lor z &= x \lor (y \lor z) \\
-      &= (x \lor y) \lor z \\
-      &= y \lor z \\
-      &= z
+      x\lor z &= x \lor (y \lor z) &\text{car } y \leq_\lor z\\
+      &= (x \lor y) \lor z &\text{par associativité}\\
+      &= y \lor z &\text{car } x \leq_\lor y\\
+      &= z &\text{car } y \leq_\lor z
     \end{align*}
   \end{itemize}
 
