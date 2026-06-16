@@ -26,7 +26,8 @@ donné dans ce chapitre aux multiples variantes qui seront utilisées sans le di
 par la suite.
 
 On peut trouver plus de détails sur les définitions par induction dans
-\cite{winskell1996formal}, au chapitre $3$.
+\cite{winskell1996formal}, au chapitre $3$, dans une forme plus orientée vers
+l'application aux langages de programmation.
 
 \section{Ensemble inductif}
 
@@ -62,7 +63,7 @@ Avant de donner la définition d'ensemble inductif, nous allons donner un
 formalisme pour parler des constructeurs.
 
 \begin{definition}[Signature]
-  Une signature est un couple $C,\arite$ tel que $\arite : C \to \bN$.
+  Une signature est un couple $(C,\arite)$ tel que $\arite : C \to \bN$.
   On appelle $C$ l'ensemble des constructeurs et, pour $c \in C$, $\arite(c)$
   est appelé l'arité de $c$.
 \end{definition}
@@ -86,7 +87,7 @@ Il est fréquent d'employer des variables qui seront quantifiées hors de la
 définition à proprement parler. Par exemple, fixons un ensemble $A$, et donnons
 la BNF suivante~:
 \[\varlist \inddefeq \nil \mid \cons(a,\varlist)\]
-où $a \in A$. Cette définition doit se lire comme la signature
+où $a \in A$. Il faut lire cette définition comme étant la signature
 $(\{\nil\} \cup A,\arite)$ où $\arite$
 est défini par~:
 \[\makeFunBis{\arite}{C}{\bN}{\nil}{0}{a (\in A)}{1}\]
@@ -1025,7 +1026,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     \item $\mapList_f(a\Cons \varlist) \defeq f(a) \Cons \mapList_f(\varlist)$
     \end{itemize}
     Soient de plus $P \in \powerset(A), Q \in \powerset(B)$ tels que
-    $f(P) \subseteq Q$. Montrer que
+    $f(P) \subseteq Q$. Montrer qu'on a toujours l'inclusion
     $\mapList_f(\foraList(P)) \subseteq \foraList(Q)$.
   \item On définit récursivement la fonction
     $\filterList_P : \List(A) \to \List(A)$ par~:
@@ -1145,7 +1146,8 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 
   \noindent
   Commençons par nous concentrer sur l'ajout d'une valeur. Considérons l'arbre
-  $\node(a,\node(b,g_1,d_1),\node(c,g_2,d_2))$, comment ajouter une valeur
+  \[\node(a,\node(b,g_1,d_1),\node(c,g_2,d_2))\]
+  comment ajouter une valeur
   $e$ dans cet arbre~? On peut d'abord ordonner les différents sous-arbres
   vis-à-vis des éléments $a,b$ et $c$.
   \begin{pbQuest}
@@ -1185,10 +1187,12 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   \item Définir la fonction $\min$ (resp. $\max$) qui, à un arbre
     $\varTree \in \ABR(A)$ non vide associe l'étiquette la plus élevée
     (resp. la plus petite) apparaissant dans $\varTree$.
-  \item Montrer que, si $\remove(g,\max(g))$ est un $\ABR$, alors
-    $\node(\max(g),\remove(g,\max(g)),d)$ est aussi un $\ABR$. Symétriquement,
+  \item Montrer que si $\remove(g,\max(g))$ est un $\ABR$, alors
+    \[\node(\max(g),\remove(g,\max(g)),d)\]
+    est aussi un $\ABR$. Symétriquement,
     montrer que si $\remove(d,\min(d))$ est un $\ABR$, alors
-    $\node(\min(d),g,\remove(d,\min(d)))$ est aussi un $\ABR$.
+    \[\node(\min(d),g,\remove(d,\min(d)))\]
+    est aussi un $\ABR$.
     \textit{Indication~: On pourra raisonner par induction sur le nombre
       de sommets de l'arbre.}
   \item Donner une définition de $\remove$ qui préserve l'invariant $\isABR$.

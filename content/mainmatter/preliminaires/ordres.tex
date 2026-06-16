@@ -98,7 +98,7 @@ En fait, un pré-ordre peut se ramener à un ordre par un quotient.
   notre définition sémantique de $\equiv$, étant donné que l'on sait que
   $\vdP$ et $\vD$ coïncident.
 
-  L'ensemble ordonné construit par $\quot{\Formula(\Sigma)}{\dvvd}$ est appelé
+  L'ensemble ordonné construit par $\quot{\Prop(\Sigma)}{\dvvd}$ est appelé
   l'algèbre de Lindenbaum-Tarski (cette construction a été introduite dans
   \cite{LindenbaumTarski}). Nous la verrons plus en détail plus tard.
 \end{remark}
@@ -257,16 +257,16 @@ de majorant \latinexpr{etc}.
 \end{proof}
 
 \begin{notation}
-  Si la borne supérieure de $Y$ existe, on la notera $\bigvee Y$. Si la borne
-  inférieure de $Y$ existe, on la notera $\bigwedge Y$.
+  Si la borne supérieure de $Y$ existe, on la notera $\opJn Y$. Si la borne
+  inférieure de $Y$ existe, on la notera $\opMt Y$.
 \end{notation}
 
 \begin{exercise}
   Soit $(X,\leq)$ un ensemble ordonné et $A\subseteq \powerset X$ une partie
   telle que $\bigcup A$ admet une borne supérieure et tout élément de $A$ admet
   une borne supérieure, montrer alors que
-  \[\bigvee \left(\bigcup A\right) =
-  \bigvee\compr{\bigvee a}{a \in A}\]
+  \[\opJn \left(\bigcup A\right) =
+  \opJn\compr{\Join a}{a \in A}\]
 \end{exercise}
 
 \begin{definition}[Maximum, minimum]
@@ -500,32 +500,32 @@ pour un ensemble fini.
 
 \begin{definition}[Demi-treillis]
   Un ensemble $(X,\leq)$ est un sup demi-treillis si toute partie $F\subfin X$
-  admet une borne supérieure $\bigvee F$. C'est un inf demi-treillis si toute
-  partie $F\subfin X$ admet une borne inférieure $\bigwedge F$.
+  admet une borne supérieure $\opJn F$. C'est un inf demi-treillis si toute
+  partie $F\subfin X$ admet une borne inférieure $\opMt F$.
 \end{definition}
 
 \begin{property}
   De manière équivalente, un ensemble $(X,\leq)$ est un sup demi-treillis si et
-  seulement s'il admet un élément $\bot$ et une opération
-  $\lor : X \times X \to X$ tels que $\bot$ est un minorant de $X$ et
-  $x\lor y$ est la borne supérieure de $x$ et $y$.
+  seulement s'il admet un élément $\opB$ et une opération
+  $\opjn : X \times X \to X$ tels que $\opB$ est un minorant de $X$ et
+  $x\opjn y$ est la borne supérieure de $x$ et $y$.
 
-  C'est un inf demi-treillis si et seulement s'il admet un majorant $\top$ et
-  une opération $\land : X \times X \to X$ prenant la borne inférieure de deux
+  C'est un inf demi-treillis si et seulement s'il admet un majorant $\opT$ et
+  une opération $\opmt : X \times X \to X$ prenant la borne inférieure de deux
   éléments.
 \end{property}
 
 \begin{proof}
-  Si $(X,\leq)$ est un sup demi-treillis, on trouve $\bot$ en prenant
-  $\bigvee\vide$ et $x\lor y$ en prenant $\bigvee\{x,y\}$.
+  Si $(X,\leq)$ est un sup demi-treillis, on trouve $\opB$ en prenant
+  $\opJn\vide$ et $x\opjn y$ en prenant $\opJn\{x,y\}$.
 
   Réciproquement, montrons par récurrence sur le cardinal de $F\subfin X$ qu'il
   existe une borne supérieure à $F$~:
   \begin{itemize}
-  \item si $F = \vide$, alors $\bigvee F = \bot$.
-  \item si $F = F' \cup \{x\}$ et $\bigvee F'$ existe, alors
-    $\bigvee F = \bigvee \{\bigvee F',\bigvee \{x\}\} = \bigvee F' \lor x$
-    donc $\bigvee F$ existe. \qedhere
+  \item si $F = \vide$, alors $\opJn F = \opB$.
+  \item si $F = F' \cup \{x\}$ et $\opJn F'$ existe, alors
+    $\opJn F = \opJn \{\opJn F',\opJn \{x\}\} = \opJn F' \opjn x$
+    donc $\opJn F$ existe. \qedhere
   \end{itemize}
 \end{proof}
 
@@ -540,11 +540,11 @@ c'est-à-dire n'utilisant que des opérations finies et des égalités.
   monoïde idempotent commutatif si les propriétés suivantes sont vérifiées~:
   
   \begin{itemize}
-    \begin{minipage}{0.5\textwidth}
+    \begin{minipage}{0.4\textwidth}
     \item $\forall x\in X, x\cdot e = e \cdot x = x$
     \item $\forall x,y,z\in X, x \cdot (y \cdot z) = (x \cdot y) \cdot z$
     \end{minipage}
-    \begin{minipage}{0.5\textwidth}
+    \begin{minipage}{0.4\textwidth}
     \item $\forall x,y\in X, x\cdot y = y \cdot x$
     \item $\forall x\in X, x\cdot x = x$
     \end{minipage}
@@ -553,82 +553,76 @@ c'est-à-dire n'utilisant que des opérations finies et des égalités.
   On définit sur un monoïde commutatif idempotent $(X,\cdot,e)$ les relations
   $\leq_\lor$ et $\leq_\land$ par
   \begin{align*}
-    x \leq_\lor y &\defeq x \cdot y = y \\
-    x \leq_\land y &\defeq x \cdot y = x
+    x \leq_{\opjn} y &\defeq x \cdot y = y \\
+    x \leq_{\opmt} y &\defeq x \cdot y = x
   \end{align*}
 \end{definition}
 
 \begin{proposition}
-  L'ensemble $(X,\bot,\lor)$ est un sup demi-treillis pour $\leq_\lor$ si et
-  seulement si $(X,\bot,\lor)$ est un monoïde commutatif idempotent.
+  L'ensemble $(X,\opB,\opjn)$ est un sup demi-treillis pour $\leq_{\opjn}$ si et
+  seulement si $(X,\opB,\opjn)$ est un monoïde commutatif idempotent.
 
-  L'ensemble $(X,\top,\land)$ est inf demi-treillis pour $\leq_\land$ si et
-  seulement si $(X,\top,\land)$ est un monoïde commutatif idempotent.
+  L'ensemble $(X,\opT,\opmt)$ est inf demi-treillis pour $\leq_{\opmt}$ si et
+  seulement si $(X,\opT,\mathord{\opmt})$ est un monoïde commutatif idempotent.
 \end{proposition}
 
 \begin{proof}
-  Montrons d'abord que $\leq_\lor$ est bien un ordre pour un monoïde commutatif
-  idempotent~:
+  Montrons d'abord que $\leq_{\opjn}$ est bien un ordre pour un monoïde
+  commutatif idempotent~:
   \begin{itemize}
-  \item par idempotence, $x\lor x = x$ donc $x\leq_\lor x$.
-  \item si $x\leq_\lor y$ et $y\leq_\lor x$, alors $x\lor y = y$ et
-    $y \lor x = x$
-    donc
+  \item par idempotence, $x\opjn x = x$ donc $x\leq_{\opjn} x$.
+  \item si $x\leq_{\opjn} y$ et $y\leq_{\opjn} x$, alors 
     \begin{align*}
-      x &= y \lor x &\text{car } y \leq_{\lor} x\\
-      &= x \lor y &\text{par commutativité}\\
-      &= y & \text{car } x \leq_{\lor} y
+      x &= y \opjn x &\text{car } y \leq_{\opjn} x\\
+      &= x \opjn y &\text{par commutativité}\\
+      &= y & \text{car } x \leq_{\opjn} y
     \end{align*}
-  \item si $x\leq_\lor y$ et $y\leq_\lor z$, alors $x\lor y = y$ et
-    $y \lor z = z$
-    donc
+  \item si $x\leq_{\opjn} y$ et $y\leq_{\opjn} z$, alors
     \begin{align*}
-      x\lor z &= x \lor (y \lor z) &\text{car } y \leq_\lor z\\
-      &= (x \lor y) \lor z &\text{par associativité}\\
-      &= y \lor z &\text{car } x \leq_\lor y\\
-      &= z &\text{car } y \leq_\lor z
+      x\opjn z &= x \opjn (y \opjn z) &\text{car } y \leq_{\opjn} z\\
+      &= (x \opjn y) \opjn z &\text{par associativité}\\
+      &= y \opjn z &\text{car } x \leq_{\opjn} y\\
+      &= z &\text{car } y \leq_{\opjn} z
     \end{align*}
   \end{itemize}
 
-  Supposons maintenant que $(X,\bot,\lor)$ est un sup demi-treillis, alors tout
-  d'abord $x\leq y$ si et seulement si $y = \bigvee\{x,y\}$, si et seulement si
-  $y = x \lor y$, d'où le fait que $\leq_\lor$ coïncide avec $\leq$. Montrons
-  maintenant que $(X,\bot,\lor)$ est un monoïde commutatif idempotent~:
+  Supposons maintenant que $(X,\opB,\opjn)$ est un sup demi-treillis, alors tout
+  d'abord $x\leq y$ si et seulement si $y = \opJn\{x,y\}$, si et seulement si
+  $y = x \opjn y$, d'où le fait que $\leq_{\opjn}$ coïncide avec $\leq$. Montrons
+  maintenant que $(X,\opB,\opjn)$ est un monoïde commutatif idempotent~:
   \begin{itemize}
-  \item $\bot$ est un élément neutre pour $\lor$~: pour tout $x\in X$,
-    $\bot\leq x$ donc $\bot \vee x = x$, et de même pour $x\vee\bot$.
-  \item $\lor$ est associatif~:
-    $x\lor (y \lor z) = \bigvee\{x,y,z\} = (x\lor y)\lor z$.
-  \item $\lor$ est commutatif~: $x\lor y = \bigvee\{x,y\}=y\lor x$.
-  \item $\lor$ est idempotent~: $x\lor x = \bigvee\{x\}=x$.
+  \item $\opB$ est un élément neutre pour $\opjn$~: pour tout $x\in X$,
+    $\opB\leq x$ donc $\opB \opjn x = x$, et de même pour $x\opjn\opB$.
+  \item $\opjn$ est associatif~:
+    $x\opjn (y \opjn z) = \opJn\{x,y,z\} = (x\opjn y)\opjn z$.
+  \item $\opjn$ est commutatif~: $x\opjn y = \opJn\{x,y\}=y\opjn x$.
+  \item $\opjn$ est idempotent~: $x\opjn x = \opJn\{x\}=x$.
   \end{itemize}
 
-  Réciproquement, montrons que si $(X,\bot,\lor)$ est un monoïde commutatif
-  idempotent, alors $\bot$ est un minorant de $X$ pour $\leq_\lor$ et $\lor$ est
-  la borne supérieure de deux éléments pour $\leq_\lor$~:
+  Réciproquement, montrons que si $(X,\opB,\opjn)$ est un monoïde commutatif
+  idempotent, alors $\opB$ est un minorant de $X$ pour $\leq_{\opjn}$ et
+  $\opjn$ est la borne supérieure de deux éléments pour $\leq_{\opjn}$~:
   \begin{itemize}
-  \item pour tout $x$, $\bot \lor x = x$ donc $\bot \leq_\lor x$.
-  \item pour tous $x,y$, $x\lor (x\lor y) = (x\lor x)\lor y = x\lor y$ donc
-    $x\lor y$ est un majorant de $x$ (de même on prouve que $x\lor y$ est un
-    majorant de $y$). Supposons que $z$ est un majorant de $\{x,y\}$ pour
-    $\leq_\lor$. Cela signifie que $x\lor z = z$ et $y\lor z = z$. Alors
-    $(x\lor y)\lor z = x\lor (y\lor z) = x\lor z = z$ donc
-    $x\lor y \leq_\lor z$, donc $x\lor y$ est inférieur à tout majorant de
-    $\{x,y\}$~: c'est la borne supérieure de $\{x,y\}$.
+  \item pour tout $x\in X$, $\opB \opjn x = x$ donc $\opB \leq_{\opjn} x$.
+  \item pour tous $x,y\in X$, $x\opjn (x\opjn y) = (x\opjn x)\opjn y = x\opjn y$
+    donc $x\opjn y$ est un majorant de $x$ (de même on prouve que $x\opjn y$
+    est un majorant de $y$). Supposons que $z$ est un majorant de $\{x,y\}$ pour
+    $\leq_{\opjn}$. Cela signifie que $x\opjn z = z$ et $y\opjn z = z$. Alors
+    $(x\opjn y)\opjn z = x\opjn (y\opjn z) = x\opjn z = z$ donc
+    $x\opjn y \leq_{\opjn} z$, donc $x\opjn y$ est inférieur à tout majorant de
+    $\{x,y\}$~: c'est la borne supérieure de $\{x,y\}$.\qedhere
   \end{itemize}
-
-  Le cas des inf demi-treillis se déduit par dualité.
 \end{proof}
 
 Ainsi on parlera de sup demi-treillis (respectivement inf demi-treillis) en
-utilisant $\leq$ et les opérations $\bot,\lor$ (respectivement $\top,\land$)
+utilisant $\leq$ et les opérations $\opB,\opjn$ (respectivement $\opT,\opmt$)
 sans souci, puisque toutes les définitions nous donnent l'ensemble de ces
 notions.
 
 \begin{exercise}
-  Soit $\Sigma$ une signature, on rappelle que l'algèbre de Lindenbaum-Tarski
-  sur $\Sigma$, notée $\mathcal L(\Sigma)$, est l'ensemble quotient
-  $\Formula(\Sigma)/\dashv\vdash$ muni de l'ordre $\vdash$. Montrer que
+  Soit $\Sign$ une signature, on rappelle que l'algèbre de Lindenbaum-Tarski
+  sur $\Sign$, notée $\LinTar(\Sign)$, est l'ensemble quotient
+  $\quot{\Prop(\Sign)}{\dvvd}$ muni de l'ordre $\vdP$. Montrer que
   cette structure est un inf demi-treillis et un sup demi-treillis où le
   majorant est $\top$, le minorant $\bot$, la borne supérieure $\lor$ et la
   borne inférieure $\land$.
@@ -636,7 +630,7 @@ notions.
 
 \begin{exercise}
   Soit un ensemble $X$, montrer que $(\powerset(X),\subseteq)$ est à la fois un
-  sup et un inf demi-treillis, où $X$, $\varnothing$, $\cup$ et $\cap$ sont
+  sup et un inf demi-treillis, où $X$, $\vide$, $\cup$ et $\cap$ sont
   respectivement le majorant, le minorant, la borne supérieure et la borne
   inférieure.
 \end{exercise}
@@ -647,10 +641,11 @@ entre structures au sens attendu.
 \begin{definition}[Morphisme de demi-treillis]
   Soient $(X,\leq)$ et $(Y,\leq)$ deux sup demi-treillis (respectivement deux
   inf demi-treillis). Un morphisme de sup demi-treillis (respectivement d'inf
-  demi-treillis) est une fonction $f : X \to Y$ croissante telle que
-  $f(\bot_X) = \bot_Y$ (respectivement $f(\top_X) = \top_Y$) et telle que pour
-  tous $x,y\in X$, $f(x\lor y) = f(x)\lor f(y)$ (respectivement telle que pour
-  tous $x,y\in X$, $f(x\land y) = f(x)\land f(y)$).
+  demi-treillis) est une fonction $f : X \to Y$ croissante vérifiant
+  l'égalité
+  $f(\opB_X) = \opB_Y$ (respectivement $f(\opT_X) = \opT_Y$) et telle que, pour
+  tous éléments $x,y\in X$, $f(x\opjn y) = f(x)\opjn f(y)$
+  (respectivement $f(x\opmt y) = f(x)\opmt f(y)$).
 \end{definition}
 
 \subsection{Treillis}
@@ -661,60 +656,69 @@ des deux demi-treillis à la fois.
 
 \begin{definition}[Treillis]
   Un ensemble ordonné $(X,\leq)$ est un treillis si toute partie finie
-  $F\subfin X$ possède à la fois une borne supérieure $\bigvee F$ et une borne
-  inférieure $\bigwedge F$.
+  $F\subfin X$ possède à la fois une borne supérieure $\opJn F$ et une borne
+  inférieure $\opMt F$.
 \end{definition}
 
 En théorie des ordres, il est direct de voir qu'être un treillis est équivalent
 à être à la fois un inf demi-treillis et un sup demi-treillis, mais cela n'est
 pas aussi évident algébriquement, car un inf demi-treillis est défini
-algébriquement par la relation $\leq_\land$ et un sup demi-treillis par la
-relation $\leq_\lor$~: il faut vérifier que ces deux relations coïncident.
+algébriquement par la relation $\leq_{\opmt}$ et un sup demi-treillis par la
+relation $\leq_{\opjn}$~: il faut vérifier que ces deux relations coïncident.
 
 \begin{proposition}
-  Un bimonoïde $(X,\bot,\lor,\top,\land)$ est un treillis pour $\leq_\lor$
-  (respectivement pour $\leq_\land$) si et seulement si $(X,\bot,\lor)$ est un
-  inf demi-treillis, $(X,\top,\land)$ est un inf demi-treillis, $\leq_\lor$ et
-  $\leq_\land$ coïncident, cette dernière condition étant équivalente aux
-  deux identités d'absorption suivantes~:
+  Un bimonoïde $(X,\opB,\opjn,\opT,\opmt)$ est un treillis pour $\leq_{\opjn}$
+  (respectivement pour $\leq_{\opmt}$) si et seulement si les trois conditions
+  suivantes sont vérifiées~:
   \begin{itemize}
-  \item $\forall x,y\in X, (x\lor y)\land x = x$
-  \item $\forall x,y\in X, (x\land y)\lor x = x$
+  \item $(X,\opB,\opjn)$ est un inf demi-treillis,
+  \item $(X,\opT,\opmt)$ est un inf demi-treillis,
+  \item $\leq_{\opjn}$ et $\leq_{\opmt}$ coïncident
+  \end{itemize}
+  cette dernière condition étant équivalente aux deux identités d'absorption
+  suivantes~:
+  \begin{itemize}
+    \begin{minipage}{0.4\textwidth}
+    \item $\forall x,y\in X, (x\opjn y)\opmt x = x$
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+    \item $\forall x,y\in X, (x\opmt y)\opjn x = x$
+    \end{minipage}
   \end{itemize}
 \end{proposition}
 
 \begin{proof}
-  Soit $(X,\bot,\lor,\top,\land)$ un bimonoïde commutatif idempotent. On
-  suppose de plus que $\leq_\lor = \leq_\land$, montrons les deux identités~:
+  Soit $(X,\opB,\opjn,\opT,\opmt)$ un bimonoïde commutatif idempotent. On
+  suppose de plus que $\mathord{\leq_{\opjn}} = \mathord{\leq_{\opmt}}$,
+  montrons les deux identités~:
   \begin{itemize}
-  \item Soient $x,y\in X$, comme $x\leq_\lor x\lor y$, on en déduit que
-    $x\leq_\land x\lor y$, c'est-à-dire que $x\land (x\lor y) = x$ d'où
-    l'égalité par commutativité de $\land$.
-  \item Soient $x,y\in X$, comme $x\land y\leq_\land x$, on en déduit que
-    $x\land y \leq_\lor x$, c'est-à-dire que $(x\land y)\lor x = x$.
+  \item Soient $x,y\in X$, comme $x\leq_{\opjn} x\opjn y$, on en déduit que
+    $x\leq_{\opmt} x\lor y$, c'est-à-dire que $x\opmt (x\opjn y) = x$ d'où
+    l'égalité par commutativité de $\opmt$.
+  \item Soient $x,y\in X$, comme $x\opmt y\leq_{\opmt} x$, on en déduit que
+    $x\opmt y \leq_{\opjn} x$, c'est-à-dire que $(x\opmt y)\opjn x = x$.
   \end{itemize}
 
   Réciproquement, supposons vraies les identités. Montrons par double inclusion
-  que $\leq_\lor = \leq_\land$~:
+  que $\mathord{\leq_{\opjn}} = \mathord{\leq_{\opmt}}$~:
   \begin{itemize}
-  \item soient $x,y$ tels que $x\leq_\lor y$, alors $x\lor y = y$, montrons que
-    $x\land y = x$~:
+  \item soient $x,y$ tels que $x\leq_{\opjn} y$, alors $x\opjn y = y$,
+    montrons que $x\opmt y = x$~:
     \begin{align*}
-      x \land y &= x \land (x \lor y)\\
+      x \opmt y &= x \opmt (x \opjn y)\\
       &= x
     \end{align*}
-    par la première identité. Ainsi $x\leq_\land y$, donc
-    $\leq_\lor\subseteq\leq_\land$.
-  \item soient $x,y$ tels que $x\leq_\land y$, alors $x\land y = x$, montrons que
-    $x\lor y = y$~:
+    par la première identité. Ainsi $x\leq_{\opmt} y$, donc
+    $\mathord{\leq_{\opjn}}\subseteq\mathord{\leq_{\opmt}}$.
+  \item soient $x,y$ tels que $x\leq_{\opmt} y$, alors $x\opmt y = x$,
+    montrons que $x\opjn y = y$~:
     \begin{align*}
-      x \lor y &= (x\land y) \lor y\\
+      x \opjn y &= (x\opmt y) \opjn y\\
       &= y
     \end{align*}
-    par la deuxième identité. Ainsi $x\leq_\lor y$, donc
-    $\leq_\land\subseteq\leq_\lor$.
+    par la deuxième identité. Ainsi $x\leq_{\opjn} y$, donc
+    $\mathord{\leq_{\opmt}}\subseteq\mathord{\leq_{\opjn}}$.\qedhere
   \end{itemize}
-  Donc $\leq_\lor = \leq_\land$.
 \end{proof}
 
 Cela nous donne donc une définition purement algébrique d'un treillis (en
@@ -728,7 +732,7 @@ l'égalité comme symbole de relation).
 \end{definition}
 
 \begin{exercise}
-  Soit une signature $\Sigma$, montrer que $\mathcal L(\Sigma)$ est un treillis.
+  Soit une signature $\Sign$, montrer que $\LinTar(\Sign)$ est un treillis.
 \end{exercise}
 
 \begin{exercise}
@@ -736,20 +740,18 @@ l'égalité comme symbole de relation).
 \end{exercise}
 
 \begin{exercise}
-  Soit une signature $\Sigma$. Soit $\mathcal M$ une structure sur $\Sigma$.
+  Soit une signature $\Sign$. Soit $\varMM$ une structure sur $\Sign$.
   Montrer que la fonction
-  \[\begin{array}{ccccc}
-  \Phi & : & \mathcal L(\Sigma) & \longrightarrow &
-  \powerset(\mathcal M)\\
-  & & \varphi(x) & \longmapsto &
-  \{x \in |\mathcal M| : \mathcal M\models \varphi(x)\}
-  \end{array}\]
+  \[
+  \makeFun{\Phi}{\LinTar_1(\Sign)}{\powerset(\carMM)}
+          {\clas{\varFF(x)}}{\compr{x \in \carMM}{\varMM\satisf\varFF(x)}}
+  \]
   est un morphisme de treillis.
 \end{exercise}
 
 Cependant, la partie sup et la partie inf d'un treillis n'interagissent pas
 suffisamment bien en général, c'est pourquoi il est nécessaire d'ajouter la
-distributivité de $\lor$ sur $\land$ et de $\land$ sur $\lor$, si l'on veut
+distributivité de $\opjn$ sur $\opmt$ et de $\opmt$ sur $\opjn$, si l'on veut
 pouvoir l'utiliser.
 
 \begin{definition}[Treillis distributif]
@@ -757,9 +759,9 @@ pouvoir l'utiliser.
   plus l'une des deux propositions équivalentes est vraie~:
   \begin{enumerate}[label=(\roman*)]
   \item \label{enum.tr.distr1}
-    $\forall x,y,z\in X, x\land (y\lor z) = (x\land y)\lor (x\land z)$
+    $\forall x,y,z\in X, x\opmt (y\opjn z) = (x\opmt y)\opjn (x\opmt z)$
   \item \label{enum.tr.distr2}
-    $\forall x,y,z\in X, x\lor (y\land z) = (x\lor y)\land (x\lor z)$
+    $\forall x,y,z\in X, x\opjn (y\opmt z) = (x\opjn y)\opmt (x\opjn z)$
   \end{enumerate}
 \end{definition}
 
@@ -769,21 +771,20 @@ pouvoir l'utiliser.
   On suppose donc \ref{enum.tr.distr1}. Soient $x,y,z\in X$, par un calcul~:
 
   \begin{align*}
-    (x\lor y) \land (x \lor z) &= (x \land x) \lor (y \land x)
-    \lor (x \land z) \lor (y \land z)\\
-    &= x\lor (y\land x) \lor (x \land z) \lor (y \land z)\\
-    &= x\lor (y\land z) \lor ((x\land y)\lor (x\land z))\\
-    &= x\lor (y\land z) \lor (x\land (y \lor z))\\
-    &= (x\lor (x\land (y \lor z)))\lor (y \land z)\\
-    (x\lor y)\land (x\lor z)&= x\lor (y \land z)
+    (x\opjn y) \opmt (x \opjn z) &= (x \opmt x) \opjn (y \opmt x)
+    \opjn (x \opmt z) \opjn (y \opmt z)\\
+    &= x\opjn (y\opmt x) \opjn (x \opmt z) \opjn (y \opmt z)\\
+    &= x\opjn (y\opmt z) \opjn ((x\opmt y)\opjn (x\opmt z))\\
+    &= x\opjn (y\opmt z) \opjn (x\opmt (y \opjn z))\\
+    &= (x\opjn (x\opmt (y \opjn z)))\opjn (y \opmt z)\\
+    (x\opjn y)\opmt (x\opjn z)&= x\opjn (y \opmt z)\qedhere
   \end{align*}
-
-  D'où l'équivalence.
+%  D'où l'équivalence.
 \end{proof}
 
 \begin{exercise}
-  Montrer que $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des treillis
-  distributifs.
+  Montrer que $\LinTar(\Sign)$ et $\powerset(X)$ sont des treillis
+  distributifs (où $\Sign$ est une signature et $X$ un ensemble).
 \end{exercise}
 
 \subsection{Algèbre de Boole}
@@ -796,19 +797,20 @@ l'implication pouvant se coder grâce à l'équivalence logique
 $a\to b \equiv \lnot a \lor b$.
 
 Nous souhaitons donc avoir, en plus de ce que nous avons déjà défini, une
-fonction $\lnot : X \to X$ permettant de jouer le rôle de la négation. En
+fonction $\opng : X \to X$ permettant de jouer le rôle de la négation. En
 logique classique, qui est notre cadre de travail pour l'instant, deux
 propriétés en particulier décrivent le comportement de $\lnot$~: le tiers exclu
 et le principe de non contradiction, disant que $x\lor \lnot x$ est vraie et que
 $x\land \lnot x$ est fausse. La notion de \og vrai\fg et de \og faux\fg sont
-assez naturellement encodées par $\top$ et $\bot$, respectivement, d'où la
+assez naturellement encodées par $\opT$ et $\opB$, respectivement, d'où la
 définition suivante.
 
 \begin{definition}[Complément]
   Soit un treillis $(X,\leq)$. On dit que $y$ est un complément de $x$ si
-  \[x\lor y = \top \qquad x \land y = \bot\]
+  \[x\opjn y = \opT \qquad x \opmt y = \opB\]
 \end{definition}
 
+\noindent
 En fait, ceci suffit à caractériser la négation. En particulier, il n'y a qu'un
 complément par élément, pour un treillis distributif.
 
@@ -820,71 +822,75 @@ complément par élément, pour un treillis distributif.
 \begin{proof}
   Supposons que $y,z$ soient deux compléments de $x$. Alors
   \begin{align*}
-    z &= \top \land z\\
-    &= (x \lor y) \land z\\
-    &= (x \land z) \lor (y \land z)\\
-    &= \bot \lor (y \land z)\\
-    &= y \land z
+    z &= \opT \opmt z\\
+    &= (x \opjn y) \opmt z\\
+    &= (x \opmt z) \opjn (y \opmt z)\\
+    &= \opB \opjn (y \opmt z)\\
+    &= y \opmt z
   \end{align*}
   d'où $z\leq y$. En inversant le rôle de $y$ et $z$, on trouve aussi que
   $y\leq z$, d'où $y = z$.
 \end{proof}
 
+\noindent
 Une algèbre de Boole peut ainsi se décrire grâce à cette notion de complément.
 
 \begin{definition}[Algèbre de Boole]
-  Une algèbre de Boole $(B,\leq)$ est un treillis distributif complémenté. Pour
-  un élément $x\in B$, on notera $\lnot x$ sont complément.
+  Une algèbre de Boole $(\varBB,\leq)$ est un treillis distributif complémenté.
+  Pour un élément $x\in \varBB$, on notera $\opng x$ sont complément.
 \end{definition}
 
 \begin{exercise}
-  Soit une signature $\Sigma$ et un ensemble $X$. Montrer que
-  $\mathcal L(\Sigma)$ et $\powerset(X)$ sont des algèbres de Boole.
+  Soit une signature $\Sign$ et un ensemble $X$. Montrer que
+  $\LinTar(\Sign)$ et $\powerset(X)$ sont des algèbres de Boole.
 \end{exercise}
 
 \begin{remark}
-  En particulier, pour $X = \{\varnothing\}$, on obtient une algèbre de Boole
-  de cardinal $2$, qui correspond en fait au corps $\mathbb Z/2\mathbb Z$.
-  On notera cette algèbre de Boole $B_2$, celle-ci a la particularité d'être
-  la plus petite algèbre de Boole non dégénérée (telle que $\bot \neq \top$) et
-  d'être la seule algèbre de Boole qui a une structure de corps.
+  En particulier, pour $X = \{\vide\}$, on obtient une algèbre de Boole
+  de cardinal $2$, qui correspond en fait au corps $\quot{\bZ}{2\bZ}$.
+  On notera cette algèbre de Boole $\varBB_2$, celle-ci a la particularité
+  d'être la plus petite algèbre de Boole non dégénérée (telle que
+  $\opB \neq \opT$) et d'être la seule algèbre de Boole qui a une structure de
+  corps.
 \end{remark}
 
 \begin{exercise}
   Montrer que les identités de De Morgan sont vérifiées~:
-  \[\lnot \top = \bot \qquad \lnot\lnot x = x
-  \qquad \lnot (x \lor y) = \lnot x \land \lnot y
-  \qquad \lnot (x \land y) = \lnot x \lor \lnot y\]
+  \[\opng \opT = \opB \qquad \opng\opng x = x
+  \qquad \opng (x \opjn y) = \opng x \opmt \opng y
+  \qquad \opng (x \opmt y) = \opng x \opjn \opng y\]
 \end{exercise}
 
 \begin{exercise}
-  Montrer que si $B$ et $B'$ sont deux algèbres de Boole, alors un morphisme $f$
-  de treillis entre $B$ et $B'$ est en particulier un morphisme d'algèbre de
-  Boole, au sens où la propriété suivante est vérifiée~:
-  \[\forall x \in B, f(\lnot x) = \lnot f(x)\]
+  Montrer que si $\varBB$ et $\varBB'$ sont deux algèbres de Boole, alors un
+  morphisme $f$ de treillis entre $\varBB$ et $\varBB'$ est en particulier un
+  morphisme d'algèbre de Boole, au sens où la propriété suivante est vérifiée~:
+  \[\forall x \in \varBB, f(\opng x) = \opng f(x)\]
 \end{exercise}
 
 L'exercice suivant donne une caractérisation purement algébrique d'une algèbre
 de Boole~: on peut le voir comme un anneau idempotent.
 
 \begin{exercise}
-  Soit $(B,\leq)$ une algèbre de Boole. On définit $\oplus$ sur $B$ par
-  \[x\oplus y \defeq (x\lor y) \land (\lnot x \lor \lnot y)\]
-  Montrer que $(B,\bot,\top,\oplus,\land)$ est un anneau (où $\bot$ est le
-  neutre additif et $\top$ le neutre multiplicatif).
+  Soit $(\varBB,\leq)$ une algèbre de Boole. On définit $\opXOR$ sur $\varBB$
+  par
+  \[x\opXOR y \defeq (x\opjn y) \opmt (\opng x \opjn \opng y)\]
+  Montrer que $(\varBB,\opB,\opT,\opXOR,\opmt)$ est un anneau (où $\opB$ est le
+  neutre additif et $\opT$ le neutre multiplicatif).
 
   Réciproquement, soit $(A,0,1,+,\times)$ un anneau idempotent, c'est-à-dire
   vérifiant
   \[\forall x\in A, a\times a = a\]
   montrer les propositions suivantes~:
   \begin{enumerate}[label=(\roman*)]
+  \item $A$ est un anneau commutatif.
   \item $A$ est un anneau de caractéristique $2$.
-  \item la relation $\leq_\land$ définie par
-    \[x\leq_\land y \defeq x\times y = x\]
+  \item la relation $\leq_{\opmt}$ définie par
+    \[x\leq_{\opmt} y \defeq x\times y = x\]
     est une relation d'ordre.
-  \item $(A,\leq_\land)$ est une algèbre de Boole, de majorant $1$, de minorant
+  \item $(A,\leq_{\opmt})$ est une algèbre de Boole, de majorant $1$, de minorant
     $0$, où $\times$ est la borne inférieure et où la borne supérieure est
-    \[x\lor y \defeq x + y + x \times y\]
+    \[x\opjn y \defeq x + y + x \times y\]
   \end{enumerate}
 \end{exercise}
 
@@ -910,23 +916,25 @@ montrer mais apportent plus d'information).
 
 La logique intuitionniste naît d'une volonté de travailler sans le tiers exclu.
 D'un point de vue algorithmique, par exemple, ce principe peut être remis en
-question~: comment pouvons-nous effectivement décider toute proposition ? Il
+question~: comment pouvons-nous effectivement décider toute proposition~? Il
 est en effet difficile d'imaginer une machinerie finie qui pourrait décider,
 par exemple, si tel objet est infini. Ainsi une part des mathématiques n'a ni
 besoin, ni envie du principe du tiers exclu, qui est équivalent au raisonnement
 par l'absurde. Nous étudierons en détail cette logique lors de notre étude de la
-théorie de la démonstration, mais nous donnons ici la définition de la logique
-intuitionniste.
+théorie de la démonstration (notamment aux \cref{chp.sequents} et
+\cref{chp.deduc.nat}), mais nous donnons ici une définition élémentaire de la
+logique intuitionniste.
 
 \begin{definition}
-  Soit une signature $\Sigma$. On définit la relation de déduction syntaxique
-  $\vdNJ\subseteq\List(\Formula(\Sigma))\times\Formula(\Sigma)$ par les mêmes
-  règles que pour $\vdash$, à l'exception de $\bot_\mathrm c$ que l'on remplace
+  Soit une signature $\Sign$. On définit la relation de déduction syntaxique
+  $\mathord{\vdNJ}\subseteq\Ctx(\Sign)\times\Formula(\Sign)$
+  par les mêmes
+  règles que pour $\vdP$, à l'exception de $\RbotC$ que l'on remplace
   par la règle suivante~:
   \begin{prooftree}
-    \AxiomC{$\Gamma\vdNJ \bot$}
-    \RightLabel{$\bot_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdNJ A$}
+    \AxiomC{$\varCG\vdNJ \bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varCG\vdNJ \varFF$}
   \end{prooftree}
   appelée communément principe d'explosion, ou bien par sa dénomination latine
   \latinexpr{ex falso quodlibet} (version raccourcie de
@@ -937,23 +945,23 @@ intuitionniste.
   Soit la règle
   \begin{center}
     \AxiomC{}
-    \RightLabel{EDN}
-    \UnaryInfC{$\Gamma\vdash A\lor \lnot A$}
+    \RightLabel{$\RLEM$}
+    \UnaryInfC{$\varCG\vdP \varFF\lor \lnot \varFF$}
     \DisplayProof
   \end{center}
-  Montrer que celle-ci est équivalente à $\bot_\mathrm c$ modulo $\vdNJ$,
+  Montrer que celle-ci est équivalente à $\RbotE$ modulo $\vdNJ$,
   c'est-à-dire que si l'on considère $\vdNJ$ et qu'on rajoute l'une des deux
   règles, alors la seconde est dérivable.
 \end{exercise}
 
 \begin{exercise}\label{exo.LinTar.LJ}
   Vérifier que dans le cas intuitionniste aussi, la relation $\vdNJ$ est une
-  relation de pré-ordre. On notera $\mathcal L_\mathrm i(\Sigma)$ l'algèbre de
-  Lindenbaum-Tarski intuitionniste associée à $\Sigma$.
+  relation de pré-ordre. On notera $\LinTarInt(\Sign)$ l'algèbre de
+  Lindenbaum-Tarski intuitionniste associée à $\Sign$.
 \end{exercise}
 
 \begin{exercise}
-  Montrer que $\mathcal L_\mathrm i(\Sigma)$ est un treillis distributif.
+  Montrer que $\LinTarInt(\Sign)$ est un treillis distributif.
 \end{exercise}
 
 On peut alors se demander quelle est la différence entre ce que nous pouvons
@@ -966,51 +974,55 @@ qu'un objet existe en prouvant simplement qu'il ne peut pas ne pas exister.
 
 Une conséquence de cet effet est que certaines tautologies ne sont plus valides,
 en particulier la tautologie
-\[\lnot(\forall x, \lnot A) \implies \exists x, A\]
-exprimant qu'à partir de l'impossibilité que tous les $x$ rejettent $A$, on peut
-extraire un certain $x$ acceptant $A$.
+\[\lnot(\forall x, \lnot \varFF) \implies \exists x, \varFF\]
+exprimant qu'à partir de l'impossibilité que tous les $x$ rejettent $\varFF$,
+on peut extraire un certain $x$ acceptant $A$.
 
 De même pour la tautologie
-\[\lnot (A \land B) \implies \lnot A \lor \lnot B\]
-car pour la prouver, il faudrait de façon uniforme décider si $\lnot A$ est
-vraie ou si $\lnot B$ est vraie. Comme cela dépend directement que la valeur de
-vérité de $A$ et de celle de $B$, il est impossible de conclure en logique
-intuitionniste. En échange, si l'on prouve $\vdNJ A \lor B$, cela signifie qu'on
-peut soit prouver $\vdNJ A$, soit prouver $\vdNJ B$.
+\[\lnot (\varFF \land \varFP) \implies \lnot \varFF \lor \lnot \varFP\]
+car pour la prouver, il faudrait de façon uniforme décider si $\lnot \varFF$ est
+vraie ou si $\lnot \varFP$ est vraie. Comme cela dépend directement que la
+valeur de vérité de $\varFF$ et de celle de $\varFP$, il est impossible de
+conclure en logique intuitionniste. En échange, si l'on prouve
+$\vdNJ \varFF \lor \varFP$, cela signifie qu'on
+peut soit prouver $\vdNJ \varFF$, soit prouver $\vdNJ \varFP$
+(\latinexpr{c.f.} \cref{prop.disjonction.NJ}).
 
 La question, maintenant, est de savoir s'il existe une structure similaire aux
 algèbre de Boole, mais dans laquelle la logique appliquée est la logique
 intuitionniste. C'est le cas des algèbres de Heyting, dont la définition repose
-avant tout sur celle de l'opération $\to$, d'où l'on dérive le sens de $\lnot$
-par $\lnot x = x \to \bot$, comme nous l'avons déjà fait.
+avant tout sur celle de l'opération $\opimp$, d'où l'on dérive le sens de
+$\opng$ par $\opng x = x \opimp \opB$, comme nous l'avons déjà fait.
 
 \begin{definition}[Pseudo-complément relatif]
   Soit un treillis distributif $(X,\leq)$, et deux éléments $a,b\in X$. On dit
   que $x$ est le pseudo-complément de $a$ relatif à $b$ si $x$ est le
-  maximum de l'ensemble $\{x \in X \mid a \land x \leq b\}$. Si le
-  pseudo-complément de $a$ relatif à $b$ existe, on le note $a\to b$. On appelle
-  pseudo-complément de $a$ le pseudo complément de $a$ relatif à $\bot$, s'il
-  existe, et on le note alors $\lnot x$.
+  maximum de l'ensemble $\compr{x \in X}{a \opmt x \leq b}$. Si le
+  pseudo-complément de $a$ relatif à $b$ existe, on le note $a\opimp b$.
+  On appelle pseudo-complément de $a$ le pseudo complément de $a$ relatif à
+  $\opB$, s'il existe, et on le note alors $\opng x$.
 \end{definition}
 
 \begin{definition}[Algèbre de Heyting]
-  Un treillis distributif $(X,\leq)$ est une algèbre de Heyting si tout élément
+  Un treillis distributif $(\varBH,\leq)$ est une algèbre de Heyting si tout
+  élément
   admet un pseudo-complément relatif à tout autre élément, c'est-à-dire si
-  pour tous $a,b\in X$, l'ensemble $\{x\in X \mid a \land x \leq b\}$ admet un
+  pour tous $a,b\in \varBH$, l'ensemble
+  $\compr{x\in \varBH}{a \opmt x \leq b}$ admet un
   maximum.
 \end{definition}
 
 \begin{remark}
   Une inégalité par rapport à un pseudo-complément peut se réécrire par une
-  conjonction~: $a\leq b \to c$ revient directement à $a\land b \leq c$ étant
+  conjonction~: $a\leq b \opimp c$ revient directement à $a\opmt b \leq c$ étant
   donné que $b \to c$ est le maximum des éléments $x$ tels que
-  $x\land b \leq c$. On peut donc formaliser le modus ponens~: si l'on a
-  $a\leq b \to c$ et $a\leq b$, alors $a\land b \leq c$ et $a\land b = a$, donc
-  $a\leq c$.
+  $x\opmt b \leq c$. On peut donc formaliser le modus ponens~: si l'on a
+  $a\leq b \opimp c$ et $a\leq b$, alors $a\opmt b \leq c$ et $a\opmt b = a$,
+  donc $a\leq c$.
 \end{remark}
 
 \begin{exercise}
-  Soit une signature $\Sigma$. Montrer que $\mathcal L_\mathrm i(\Sigma)$ est
+  Soit une signature $\Sign$. Montrer que $\LinTarInt(\Sign)$ est
   bien une algèbre de Heyting.
 \end{exercise}
 
@@ -1028,7 +1040,7 @@ ensuite étendre en l'existence d'une borne supérieure et d'une borne inférieu
 pour toute partie finie (en raisonnant juste par récurrence). A l'inverse,
 lorsque l'on part de la définition de treillis comme ensemble ordonné possédant
 toutes les bornes sur des parties finies, une question naît immédiatement~:
-pourquoi ne pas autoriser des parties infinies ? C'est pour intégrer cette
+pourquoi ne pas autoriser des parties infinies~? C'est pour intégrer cette
 possibilité que nous introduisons la notion de treillis complet.
 
 \begin{definition}[Treillis complet]
@@ -1051,14 +1063,14 @@ complet peut se caractériser par l'existence d'une seule borne.
   Un sens est évident. Pour l'autre, supposons que toute partie de $X$ possède
   une borne supérieure, et montrons alors qu'elle possède une borne inférieure.
 
-  Soit $Y\subseteq X$, on définit $Y\convcal$ par
-  \[Y\convcal \defeq \{x\in X \mid \forall y \in Y, x \leq y\}\]
-  et soit $y_0$ la borne supérieure de $Y\convcal$. Montrons que $y_0$ est la
+  Soit $Y\subseteq X$, on définit $\downcl{Y}$ par
+  \[\downcl{Y} \defeq \compr{x\in X}{\forall y \in Y, x \leq y}\]
+  et soit $y_0$ la borne supérieure de $\downcl{Y}$. Montrons que $y_0$ est la
   borne inférieure de $Y$. Tout d'abord, si $y\in Y$, alors par définition,
-  $y$ est un majorant de $Y\convcal$, donc puisque $y_0$ est le plus petit
+  $y$ est un majorant de $\downcl{Y}$, donc puisque $y_0$ est le plus petit
   majorant, $y_0$ est un minorant de $Y$. De plus, si $y$ est un minorant
-  de $Y$, cela signifie que $y\in Y\convcal$, donc comme $y_0$ est un majorant
-  de $Y\convcal$, on en déduit que $y\leq y_0$. Ainsi $y_0$ est le plus grand
+  de $Y$, cela signifie que $y\in \downcl{Y}$, donc comme $y_0$ est un majorant
+  de $\downcl{Y}$, on en déduit que $y\leq y_0$. Ainsi $y_0$ est le plus grand
   minorant de $Y$~: c'est la borne inférieure de $Y$.
 \end{proof}
 
@@ -1069,29 +1081,29 @@ plus forte et générale.
 \begin{theorem}[Knaster-Tarski \cite{KTFull}]\label{thm.KT}
   Soit $(X,\leq)$ un treillis complet et $f : X \to X$ une fonction croissante.
   Alors l'ensemble
-  \[\fix(f) \defeq \{x\in X \mid f(x) = x\}\]
+  \[\fix(f) \defeq \compr{x\in X}{f(x) = x}\]
   est un treillis complet pour l'ordre induit par $\leq$.
 \end{theorem}
 
 \begin{proof}
   On définit tout d'abord l'ensemble des pré points fixes de $f$~:
-  \[\prefix(f) \defeq \{x\in X\mid f(x)\leq x\}\]
+  \[\prefix(f) \defeq \compr{x\in X}{f(x)\leq x}\]
   et on montre qu'il est un treillis complet pour $\leq$. Soit une partie
   $Y\subseteq\prefix(f)$, montrons que $Y$ possède une borne inférieure. Nous
   prenons pour candidat de la borne inférieure de $Y$ dans $\prefix(f)$, la
-  borne inférieure $\bigwedge Y$ dans $X$~: montrons donc que $\bigwedge Y$ est
+  borne inférieure $\opMt Y$ dans $X$~: montrons donc que $\opMt Y$ est
   bien un pré point fixe de $f$ (cela suffira à montrer qu'on a une borne
   inférieure, puisque la borne inférieure dans $Y$ est aussi la borne inférieure
   dans $\prefix(f)$, à partir du moment où la borne appartient effectivement à
   $\prefix(f)$).
 
-  On montre que $f\big(\bigwedge Y\big) \leq \bigwedge Y$. Pour cela, il nous
-  suffit de montrer que $f\big(\bigwedge Y\big)$ est un minorant de $Y$, puisque
-  l'on sait que $\bigwedge Y$ est le plus grand minorant. Soit $y\in Y$, on
-  remarque que $\bigwedge Y \leq y$, donc $f\big(\bigwedge Y\big) \leq f(y)$,
+  On montre que $f\left(\opMt Y\right) \leq \opMt Y$. Pour cela, il nous
+  suffit de montrer que $f\left(\opMt Y\right)$ est un minorant de $Y$, puisque
+  l'on sait que $\opMt Y$ est le plus grand minorant. Soit $y\in Y$, on
+  remarque que $\opMt Y \leq y$, donc $f\left(\opMt Y\right) \leq f(y)$,
   mais comme par définition $f(y)\leq y$ et par transitivité, on en déduit que
-  $f\big(\bigwedge Y\big) \leq y$. Ainsi
-  $f\big(\bigwedge Y\big) \leq \bigwedge Y$.
+  $f\left(\opMt Y\right) \leq y$. Ainsi
+  $f\left(\opMt Y\right) \leq \opMt Y$.
 
   On sait donc que toute partie de $\prefix(f)$ admet une borne inférieure. Par
   la propriété précédente (son dual, plus précisément), $\prefix(f)$ est donc
@@ -1101,10 +1113,10 @@ plus forte et générale.
 
   Montrons maintenant que $\postfix(\prefix(f)) = \fix(f)$. Par définition,
   \[\postfix(\prefix(f)) =
-  \{x\in \{x\in X \mid f(x)\leq x\} \mid x \leq f(x)\}\]
+  \compr{x\in \compr{x\in X}{f(x)\leq x}}{x \leq f(x)}\]
   ce qui correspond exactement à l'ensemble
-  $\{x\in X\mid (f(x) \leq x) \land (x \leq f(x))\}$. Comme $\leq$ est
-  transitif, cet ensemble est $\fix(f)$. Ainsi $\fix(f)$ est un treillis
+  $\compr{x\in X}{(f(x) \leq x) \land (x \leq f(x))}$. Comme $\leq$ est
+  antisymétrique, cet ensemble est $\fix(f)$. Ainsi $\fix(f)$ est un treillis
   complet.
 \end{proof}
 
@@ -1124,16 +1136,16 @@ Enfin, donnons deux mots à propos des algèbre de Heyting complètes. Donnons
 d'abord la définition de cette structure~:
 
 \begin{definition}[Algèbre de Heyting complète]
-  Un ensemble ordonné $(H,\leq)$ est une algèbre de Heyting complète si
-  $(H,\leq)$ est un treillis complet et si toute paire $(a,b)\in H^2$ possède
-  un pseudo-complément relatif.
+  Un ensemble ordonné $(\varBH,\leq)$ est une algèbre de Heyting complète si
+  $(\varBH,\leq)$ est un treillis complet et si toute paire
+  $(a,b)\in \varBH^2$ possède un pseudo-complément relatif.
 \end{definition}
 
 Un point important pour ces structure est que l'existence des pseudo-compléments
 apporte une nouvelle loi de distributivité, infinie. En effet, étant donnée une
-algèbre de Heyting complète $H$, une partie $X\subseteq H$ et un élément
-$y\in H$, on a l'identité~:
-\[\left(\bigvee_{x\in X} x\right)\land y = \bigvee_{x \in X}(x \land y)\]
+algèbre de Heyting complète $\varBH$, une partie $X\subseteq \varBH$ et un
+élément $y\in \varBH$, on a l'identité~:
+\[\left(\opJn_{x\in X} x\right)\opmt y = \opJn_{x \in X}(x \opmt y)\]
 Cette identité permet de récupérer directement la distributivité, et fonctionne
 en fait aussi dans le cas d'une algèbre de Heyting non complète (sous réserve
 d'existence des bornes supérieures), ce qui fait qu'on peut affaiblir les
@@ -1163,17 +1175,18 @@ Commençons par définir ce qu'est un filtre.
 
 \begin{definition}[Filtre]
   Soit $(X,\leq)$ un ensemble ordonné. Un filtre est une partie
-  $\mathcal F\subseteq X$ vérifiant~:
+  $\varFil\subseteq X$ vérifiant~:
   \begin{itemize}
-  \item $\mathcal F$ est non vide~: $\mathcal F \neq\varnothing$.
-  \item $\mathcal F$ est clos par le haut~: pour tout $x\in \mathcal F$ et
-    $y\in X$, si $x\leq y$ alors $y\in \mathcal F$.
-  \item tous les éléments de $\mathcal F$ sont compatibles vers le bas~: pour
-    tous $x,y\in\mathcal F$, il existe $z\in\mathcal F$ tel que $z\leq x$ et
+  \item $\varFil$ est non vide~: $\varFil \neq\vide$.
+  \item $\varFil$ est clos par le haut~: pour tout $x\in \varFil$ et
+    $y\in X$, si $x\leq y$ alors $y\in \varFil$.
+  \item tous les éléments de $\varFil$ sont compatibles vers le bas~: pour
+    tous $x,y\in\varFil$, il existe $z\in\varFil$ tel que $z\leq x$ et
     $z\leq y$.
   \end{itemize}
 
-  Un filtre $\mathcal F$ est dit propre si $\mathcal F \neq X$.
+  \noindent
+  Un filtre $\varFil$ est dit propre si $\varFil \neq X$.
 \end{definition}
 
 Un filtre peut donc être vu comme une description d'une notion de grandeur~:
@@ -1185,23 +1198,25 @@ d'idéal.
 
 \begin{definition}[Idéal]
   Soit $(X,\leq)$ un ensemble ordonné. Un idéal est une partie
-  $\mathcal I \subseteq X$ vérifiant~:
+  $\varId \subseteq X$ vérifiant~:
   \begin{itemize}
-  \item $\mathcal I$ est non vide~: $\mathcal I \neq\varnothing$.
-  \item $\mathcal I$ est clos par le bas~: pour tout $x\in \mathcal I$ et
-    $y\in X$, si $y\leq x$ alors $y\in \mathcal I$.
-  \item tous les éléments de $\mathcal I$ sont compatibles vers le haut~:
-    pour tous $x,y\in \mathcal I$, il existe $z\in \mathcal I$ tel que
+  \item $\varId$ est non vide~: $\varId \neq\vide$.
+  \item $\varId$ est clos par le bas~: pour tout $x\in \varId$ et
+    $y\in X$, si $y\leq x$ alors $y\in \varId$.
+  \item tous les éléments de $\varId$ sont compatibles vers le haut~:
+    pour tous $x,y\in \varId$, il existe $z\in \varId$ tel que
     $x\leq z$ et $y\leq z$.
   \end{itemize}
 
-  Un idéal $\mathcal I$ est dit propre si $\mathcal I \neq X$.
+  \noindent
+  Un idéal $\varId$ est dit propre si $\varId \neq X$.
 \end{definition}
 
 \begin{definition}
-  Soit une algèbre de Boole $(B,\leq)$. Montrer qu'une partie
-  $\mathcal I \subseteq B$ est un idéal de $B$ si et seulement si c'est un idéal
-  au sens algébrique de l'anneau associé $(B,\bot,\top,\oplus,\land)$.
+  Soit une algèbre de Boole $(\varBB,\leq)$. Montrer qu'une partie
+  $\varId \subseteq \varBB$ est un idéal de $\varBB$ si et seulement si c'est
+  un idéal au sens algébrique de l'anneau associé
+  $(\varBB,\opB,\opT,\opXOR,\opmt)$.
 \end{definition}
 
 Nous ne travaillerons par sur les idéaux, mais donnons la définition car
@@ -1209,10 +1224,10 @@ celle-ci reste importante.
 
 \begin{example}
   Soit un ensemble $X$ et un élément $x\in X$. On peut définir le filtre
-  principal sur $\powerset(X)$ en $x$, $\mathcal F_x$, par
-  \[\mathcal F_x \defeq \{A\subseteq X\mid x \in A\}\]
+  principal sur $\powerset(X)$ en $x$, $\FilPrinc{x}$, par
+  \[\FilPrinc{x} \defeq \compr{A\subseteq X}{x \in A}\]
 
-  On voit que $X\in \mathcal F_x$, que si $A\subseteq B$ et $x\in A$ alors
+  On voit que $X\in \FilPrinc{x}$, que si $A\subseteq B$ et $x\in A$ alors
   $x\in B$, et que si $x\in A$ et $x\in B$ alors $x\in A\cap B$. Ainsi
   l'ensemble ordonné $\powerset(X)$ contient au moins autant de filtres que
   d'éléments dans $X$.
@@ -1222,69 +1237,71 @@ On peut donner une première caractérisation des filtres, dans le cas d'un
 inf demi-treillis.
 
 \begin{property}
-  Soit $(X,\leq)$ un inf demi-treillis de majorant $\top$ et de borne inf
-  $\land$. Alors $\mathcal F\subseteq X$ est un filtre sur $X$ si et seulement
+  Soit $(X,\leq)$ un inf demi-treillis de majorant $\opT$ et de borne inf
+  $\opmt$. Alors $\varFil\subseteq X$ est un filtre sur $X$ si et seulement
   si les conditions suivantes sont vérifiées~:
   \begin{itemize}
-  \item $\top \in X$.
-  \item $\mathcal F$ est clos par le haut.
-  \item si $x,y\in \mathcal F$, alors $x\land y\in \mathcal F$.
+  \item $\opT \in X$.
+  \item $\varFil$ est clos par le haut.
+  \item si $x,y\in \varFil$, alors $x\opmt y\in \varFil$.
   \end{itemize}
 \end{property}
 
 \begin{proof}
-  Supposons que $\mathcal F$ vérifie les propriétés listées. Le fait d'être
-  clos par le haut est par définition. Comme $\top\in\mathcal F$,
-  $\mathcal F$ est non vide. Si $x,y\in\mathcal F$, alors il existe
-  effectivement $z\in \mathcal F$ tel que $z\leq x$ et $z\leq y$, en prenant
-  $z = x\land y$.
+  Supposons que $\varFil$ vérifie les propriétés listées. Le fait d'être
+  clos par le haut est par définition. Comme $\opT\in\varFil$,
+  $\varFil$ est non vide. Si $x,y\in\varFil$, alors il existe
+  effectivement $z\in \varFil$ tel que $z\leq x$ et $z\leq y$, en prenant
+  $z = x\opmt y$.
 
-  Réciproquement, supposons que $\mathcal F$ est un filtre. Alors, puisqu'il
-  possède un élément, disons $x$, et que $x\leq \top$, on en déduit par clôture
-  par le haut que $\top\in\mathcal F$. Le fait que $\mathcal F$ est clos par le
-  haut est par hypothèse. Soient $x,y\in \mathcal F$, alors par hypothèse il
-  existe $z\in \mathcal F$ tel que $z\leq x$ et $z\leq y$. Par définition de la
-  borne supérieure, on a donc que $z\leq x\land y$, et par clôture par le haut
-  on en déduit que $x\land y \in \mathcal F$.
+  Réciproquement, supposons que $\varFil$ est un filtre. Alors, puisqu'il
+  possède un élément, disons $x$, et que $x\leq \opT$, on en déduit par clôture
+  par le haut que $\opT\in\varFil$. Le fait que $\varFil$ est clos par le
+  haut est par hypothèse. Soient $x,y\in \varFil$, alors par hypothèse il
+  existe $z\in \varFil$ tel que $z\leq x$ et $z\leq y$. Par définition de la
+  borne inférieure, on a donc que $z\leq x\opmt y$, et par clôture par le haut
+  on en déduit que $x\opmt y \in \varFil$.
 \end{proof}
 
-Les inf demi-treillis permettent donc de mieux caractériser les treillis. En
+Les inf demi-treillis permettent donc de mieux caractériser les filtres. En
 quelque sorte, puisqu'ils permettent de délimiter le fait de devenir plus petit,
 il est plus aisé d'y définir ce qui est grand (c'est-à-dire ce qui arrive à
 rester grand quand on le rend plus petit). Les sup demi-treillis, eux, ne
-permettent pas de mieux définir un treillis, mais permettent de décrire ses
-propriétés.
+permettent pas de mieux définir un treillis, mais de mieux en délimiter les
+caractéristiques.
 
 \begin{property}
-  Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F \subseteq X$ un filtre.
-  Alors $\mathcal F$ est propre si et seulement si $\bot\notin\mathcal F$.
+  Soit $(X,\leq)$ un sup demi-treillis et $\varFil \subseteq X$ un filtre.
+  Alors $\varFil$ est propre si et seulement si $\opB\notin\varFil$.
 \end{property}
 
 \begin{proof}
-  Puisque $\mathcal F$ est clos par le haut, si $\bot\in\mathcal F$ alors tout
-  élément est dans $\mathcal F$, donc $\mathcal F$ n'est pas propre (et si
-  $\mathcal F$ n'est pas propre, alors il contient $\bot$).
+  Puisque $\varFil$ est clos par le haut, si $\opB\in\varFil$ alors tout
+  élément est dans $\varFil$, donc $\varFil$ n'est pas propre (et si
+  $\varFil$ n'est pas propre, alors il contient $\opB$).
 \end{proof}
 
-Les sup demi-treillis permettent de définir la propriété d'être premier~:
+\noindent
+Les sup demi-treillis permettent de définir la primalité, propriété d'intérêt
+pour les filtres~:
 
 \begin{definition}[Filtre premier]
-  Soit $(X,\leq)$ un sup demi-treillis et $\mathcal F$ un filtre sur $X$. On dit
-  que $\mathcal F$ est premier s'il est propre et si pour tous $x,y\in X$, si
-  $x\lor y \in \mathcal F$ alors $x\in F$ ou $y\in F$.
+  Soit $(X,\leq)$ un sup demi-treillis et $\varFil$ un filtre sur $X$. On dit
+  que $\varFil$ est premier s'il est propre et si pour tous $x,y\in X$, si
+  $x\opjn y \in \varFil$ alors $x\in F$ ou $y\in F$.
 \end{definition}
 
 On peut voir une analogie ici avec un idéal dans un anneau~: un idéal premier
 est un idéal tel que, lorsqu'on a un produit $a\times b$ dedans, celui-ci doit
 nécessairement provenir du produit par un élément de l'idéal. De la même façon,
-ici, on sait naturellement que si $x\in\mathcal F$ alors
-$x\lor y \in\mathcal F$, et la notion de primalité signifie que tout élément de
-la forme $x\lor y$ doit provenir d'un cas de ce type, où $x$ (ou $y$) était déjà
-dans $\mathcal F$.
+ici, on sait naturellement que si $x\in\varFil$ alors
+$x\opjn y \in\varFil$, et la notion de primalité signifie que tout élément de
+la forme $x\opjn y$ doit provenir d'un cas de ce type, où $x$ (ou $y$) était déjà
+dans $\varFil$.
 
 Pour synthétiser les différentes propriétés dans le cas d'un treillis~: les
 filtres propres (qui sont les filtres intéressants) sont les parties closes par
-le haut qui possèdent $\top$ mais pas $\bot$, et qui sont closes par
+le haut qui possèdent $\opT$ mais pas $\opB$, et qui sont closes par
 intersection finie.
 
 Supposons maintenant qu'on possède une partie $X$ (non vide) qui n'est pas un
@@ -1293,14 +1310,15 @@ Premièrement, il nous faut d'abord clore $X$ par le haut~: on prend l'ensemble
 des éléments supérieurs à au moins un élément de $X$. Il nous faut aussi nous
 assurer que pour tout $x,y$ dans notre filtre, un élément inférieur à $x$ et $y$
 soit dans le filtre. Le plus simple ici est de considérer un inf demi-treillis~:
-on veut ajouter tous les $x\land y$, mais comme il est possible d'itérer ces
-bornes inférieures, il nous faut ajouter tous les $\bigwedge F$ pour
+on veut ajouter tous les $x\opmt y$, mais comme il est possible d'itérer ces
+bornes inférieures, il nous faut ajouter tous les $\opMt F$ pour
 $F\subfin X$. On obtient ainsi la construction suivante~:
 
 \begin{definition}[Filtre engendré par une partie]
   Soit $(X,\leq)$ un inf demi-treillis et $Y\subseteq X$ une partie de $X$. On 
   définit alors
-  \[\filclose{Y} \defeq \{x\in X \mid \exists F\subfin Y, \bigwedge F \leq x\}\]
+  \[\filclose{Y} \defeq
+  \compr{x\in X}{\exists F\subfin Y, \opMt F \leq x}\]
 \end{definition}
 
 \begin{proposition}
@@ -1309,34 +1327,34 @@ $F\subfin X$. On obtient ainsi la construction suivante~:
 \end{proposition}
 
 \begin{proof}
-  Tout d'abord, on remarque que $\top = \filclose \varnothing$ et
-  $\varnothing\subfin Y$, donc $\filclose Y$ est non vide. Soit
+  Tout d'abord, on remarque que $\opT = \opMt \vide$ et
+  $\vide\subfin Y$, donc $\filclose Y$ est non vide. Soit
   $x\in \filclose Y$ et $y\in X$ tel que $x\leq y$. On trouve $F\subfin Y$ tel
-  que $\bigwedge F\leq x$, alors $\bigwedge F \leq y$ par
+  que $\opMt F\leq x$, alors $\opMt F \leq y$ par
   transitivité, donc $y\in \filclose F$. Soient $x$ et $y$ des éléments de
   $\filclose Y$, on trouve $F$ et $F'$ des parties finies de $Y$ telles que
-  $\bigwedge F \leq x$ et $\bigwedge F' \leq y$. Alors
-  \[\bigwedge (F\cup F') = \Bigg(\bigwedge F\Bigg)\land\Bigg(\bigwedge F\Bigg)
-  \leq x\land y\]
-  donc $x\land y \in \filclose Y$. Ainsi $\filclose Y$ est un filtre.
+  $\opMt F \leq x$ et $\opMt F' \leq y$. Alors
+  \[\opMt (F\cup F') = \left(\opMt F\right)\land\left(\opMt F\right)
+  \leq x\opmt y\]
+  donc $x\opmt y \in \filclose Y$. Ainsi $\filclose Y$ est un filtre.
 \end{proof}
 
 \begin{remark}
-  Dans le cas où $Y = \varnothing$, $\filclose Y = \{\top\}$.
+  Dans le cas où $Y = \vide$, $\filclose Y = \{\opT\}$.
 \end{remark}
 
 Par défaut, le filtre engendré par une partie peut tout à fait contenir tous
 les éléments. Prenons par exemple une algèbre de Boole $X$, un élément $x$ et le
-filtre engendré par $\{x,\lnot x\}$~: il est évident que ce filtre n'est pas
+filtre engendré par $\{x,\opng x\}$~: il est évident que ce filtre n'est pas
 propre. Cependant, il existe une propriété assurant qu'un filtre engendré est
-propre, et qui est tout à fait naturelle~: on veut que les $\bigwedge F$ soient
+propre, et qui est tout à fait naturelle~: on veut que les $\opMt F$ soient
 tous différents de l'élément minimum. \'Evidemment, cette propriété n'a
 de sens que dans le cas d'un treillis.
 
 \begin{definition}[Propriété de l'intersection finie]
   Soit $(X,\leq)$ un treillis et $Y\subseteq X$. On dit que $Y$ a la propriété
   de l'intersection finie si
-  \[\forall F\subfin Y, \bigwedge F\neq \bot\]
+  \[\forall F\subfin Y, \opMt F\neq \opB\]
 \end{definition}
 
 \begin{proposition}
@@ -1346,36 +1364,36 @@ de sens que dans le cas d'un treillis.
 \end{proposition}
 
 \begin{proof}
-  Par définition, $\bot\in \filclose Y$ si et seulement s'il existe $F\subfin Y$
-  tel que $\bigwedge F \leq \bot$, mais la condition que $\bigwedge F\leq \bot$
-  est équivalente à ce que $\bigwedge F = \bot$, étant donné que l'autre
-  inégalité est toujours vérifiée. Ainsi $\bot\in\filclose Y$ si et seulement
-  s'il existe $F\subfin Y$ tel que $\bigwedge F = \bot$, donc $\filclose Y$ est
+  Par définition, $\opB\in \filclose Y$ si et seulement s'il existe $F\subfin Y$
+  tel que $\opMt F \leq \bot$, mais la condition que $\opMt F\leq \opB$
+  est équivalente à ce que $\opMt F = \bot$, étant donné que l'autre
+  inégalité est toujours vérifiée. Ainsi $\opB\in\filclose Y$ si et seulement
+  s'il existe $F\subfin Y$ tel que $\opMt F = \opB$, donc $\filclose Y$ est
   propre si et seulement si $Y$ possède la propriété de l'intersection finie.
 \end{proof}
 
 \begin{exercise}
-  Soit $\Sigma$ une signature. On considère $\mathcal T\subseteq\Prop(\Sigma)$
-  une théorie. Montrer que $\mathcal T$ est cohérente (c'est-à-dire que
-  $\mathcal T\nvdash \bot$) si et seulement si $\mathcal T'$, la projection
-  de $\mathcal T$ dans $\mathcal L(\Sigma)$, a la propriété de l'intersection
+  Soit $\Sign$ une signature. On considère $\varT\in\Theory(\Sign)$
+  une théorie. Montrer que $\varT$ est cohérente (c'est-à-dire que
+  $\varT\nvdP \bot$) si et seulement si $\varT'$, la projection
+  de $\varT$ dans $\LinTar(\Sign)$, a la propriété de l'intersection
   finie.
 \end{exercise}
 
 \begin{exercise}
-  Soit $\Sigma$ une signature. Soit $\mathcal T\subseteq\Prop(\Sigma)$ une
-  théorie. Montrer que la projection de $\vclose{\mathcal T}$ dans
-  $\mathcal L(\Sigma)$ est le filtre engendré par la projection de $\mathcal T$
-  dans $\mathcal L(\Sigma)$.
+  Soit $\Sign$ une signature. Soit $\varT\in\Theory(\Sign)$ une
+  théorie. Montrer que la projection de $\vdTclos$ dans
+  $\LinTar(\Sign)$ est le filtre engendré par la projection de $\varT$
+  dans $\LinTar(\Sign)$.
 \end{exercise}
 
 \begin{exercise}
   On se place maintenant sur un ensemble $X$ infini quelconque, et on considère
   le filtre de Fréchet sur $X$~:
-  \[\mathcal F_F \defeq \{Y\subseteq X \mid X \setminus Y\text{ est fini}\}\]
+  \[\Frechet \defeq \compr{Y\subseteq X}{X \setminus Y\text{ est fini}}\]
 
   Montrer que le filtre de Fréchet est bien un filtre. Montrer que pour tout
-  $x \in X$, $\mathcal F_x$ ne contient pas $\mathcal F_F$.
+  $x \in X$, $\FilPrinc{x}$ ne contient pas $\Frechet$.
 \end{exercise}
 
 \subsection{Ultrafiltre}\label{sbsct.ultrafiltre}
@@ -1384,69 +1402,70 @@ On définit maintenant la notion d'ultrafiltre, qui est la notion duale de celle
 d'idéal maximal, souvent rencontrée en algèbre.
 
 \begin{definition}[Ultrafiltre]
-  Soit $(X,\leq)$ un ensemble ordonné. On dit qu'un filtre $\mathcal F$ est un
+  Soit $(X,\leq)$ un ensemble ordonné. On dit qu'un filtre $\varFil$ est un
   ultrafiltre s'il est un filtre propre maximal pour l'inclusion, c'est-à-dire
-  si pour tout autre filtre propre $\mathcal H$ de $X$, si
-  $\mathcal F \subseteq\mathcal H$ alors $\mathcal F = \mathcal H$.
+  si pour tout autre filtre propre $\varFilB$ de $X$, si
+  $\varFil \subseteq\varFilB$ alors $\varFil = \varFilB$.
 \end{definition}
 
 \begin{remark}
   L'inclusion entre filtres est aussi appelée \og finesse\fg~: un filtre
-  $\mathcal F$ est dit plus fin qu'un filtre $\mathcal H$ si
-  $\mathcal F\supseteq\mathcal H$. L'idée derrière cette appellation est qu'un
+  $\varFil$ est dit plus fin qu'un filtre $\varFilB$ si
+  $\varFil\supseteq\varFilB$. L'idée derrière cette appellation est qu'un
   filtre plus gros va définir une notion de grandeur plus petite (puisque les
   éléments que l'on peut ajouter à un filtre seront par définition plus petits).
   Un ultrafiltre est donc un filtre propre le plus fin possible.
 \end{remark}
 
+\noindent
 Dans le cas d'un treillis distributif, un ultrafiltre est en particulier
 premier.
 
 \begin{proposition}
-  Soit $(X,\leq)$ un treillis distributif. Si un filtre $\mathcal F$ est un
+  Soit $(X,\leq)$ un treillis distributif. Si un filtre $\varFil$ est un
   ultrafiltre, alors c'est un filtre premier.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $\mathcal F$ est un ultrafiltre, montrons que c'est alors un
+  Supposons que $\varFil$ est un ultrafiltre, montrons que c'est alors un
   filtre premier. Supposons par l'absurde qu'il existe $x,y\in X$ tels que
-  $x\lor y \in \mathcal F$, $x\notin\mathcal F$ et $y\notin\mathcal F$.
-  Montrons alors que soit $\mathcal F\cup\{x\}$ soit $\mathcal F\cup\{y\}$ a la
+  $x\opjn y \in \varFil$, $x\notin\varFil$ et $y\notin\varFil$.
+  Montrons alors que soit $\varFil\cup\{x\}$ soit $\varFil\cup\{y\}$ a la
   propriété de l'intersection finie.
 
-  Supposons qu'on trouve $F\subfin \mathcal F$ tel que
-  $\bigwedge F \land x =\bot$ et qu'on trouve $F'\subfin\mathcal F$ tel que
-  $\bigwedge F' \land y = \bot$. En prenant $G = F \cup F'$, on a donc
-  \[\bigwedge G \land x = \bot \qquad \bigwedge G \land y = \bot\]
-  donc $\big(\bigwedge G \land x\big)\lor\big(\bigwedge G\land y\big) = \bot$,
+  Supposons qu'on trouve $F\subfin \varFil$ tel que
+  $\opMt F \opmt x =\opB$ et qu'on trouve $F'\subfin\varFil$ tel que
+  $\opMt F' \opmt y = \opB$. En prenant $G \defeq F \cup F'$, on a donc
+  \[\opMt G \land x = \opB \qquad \opMt G \opmt y = \opB\]
+  donc $\left(\opMt G \opmt x\right)\opjn\left(\opMt G\opmt y\right) = \opB$,
   et en développant par distributivité on obtient donc
-  \[\Bigg(\bigwedge G \lor y\Bigg)\land\Bigg(\bigwedge G\lor \bigwedge G\Bigg)
-  \land \Bigg(x\lor \bigwedge G\Bigg)\land(x\lor y) = \bot\]
-  comme $\bigwedge G\in \mathcal F$, on en déduit que
-  $\bigwedge G \lor y \in \mathcal F$ et $\bigwedge G \lor x \in \mathcal F$,
-  et par hypothèse $x\lor y \in \mathcal F$. Ainsi, par stabilité de
-  $\mathcal F$ par $\land$, et grâce à l'égalité, on en déduit que
-  $\bot\in\mathcal F$, ce qui contredit l'hypothèse que $\mathcal F$ est un
+  \[\left(\opMt G \opjn y\right)\opmt\left(\opMt G\opjn \opMt G\right)
+  \opmt \left(x\opjn \opMt G\right)\opmt(x\opjn y) = \opB\]
+  comme $\opMt G\in \varFil$, on en déduit que
+  $\opMt G \opjn y \in \varFil$ et $\opMt G \opjn x \in \varFil$,
+  et par hypothèse $x\opjn y \in \varFil$. Ainsi, par stabilité de
+  $\varFil$ par $\opmt$, et grâce à l'égalité, on en déduit que
+  $\opB\in\varFil$, ce qui contredit l'hypothèse que $\varFil$ est un
   ultrafiltre (donc propre).
 
-  On en déduit, sans perte de généralité, que $\mathcal F\cup\{x\}$ a la
+  On en déduit, sans perte de généralité, que $\varFil\cup\{x\}$ a la
   propriété de l'intersection finie, ce qui signifie que
-  $\filclose{\mathcal F\cup\{x\}}$ est un filtre, contenant par définition
-  $\mathcal F$~: comme $\mathcal F$ est supposé maximal, on en déduit que
-  $x\in \mathcal F$. Ainsi $\mathcal F$ est premier.
+  $\filclose{\varFil\cup\{x\}}$ est un filtre, contenant par définition
+  $\varFil$~: comme $\varFil$ est supposé maximal, on en déduit que
+  $x\in \varFil$. Ainsi $\varFil$ est premier.
 \end{proof}
 
 On a, de plus, une caractérisation encore meilleure dans le cas d'une algèbre de
 Boole.
 
 \begin{proposition}
-  Soit $(B,\leq)$ une algèbre de Boole et $\mathcal F$ un filtre. Les conditions
-  suivantes sont équivalentes~:
+  Soit $(\varBB,\leq)$ une algèbre de Boole et $\varFil$ un filtre. Les
+  conditions suivantes sont équivalentes~:
   \begin{enumerate}[label=(\roman*)]
-  \item \label{enum.ultra.prim1} $\mathcal F$ est un ultrafiltre.
-  \item \label{enum.ultra.prim2} $\mathcal F$ est premier.
-  \item \label{enum.ultra.prim3} pour tout $x\in B$,
-    $x\in \mathcal F \iff \lnot x \notin\mathcal F$.
+  \item \label{enum.ultra.prim1} $\varFil$ est un ultrafiltre.
+  \item \label{enum.ultra.prim2} $\varFil$ est premier.
+  \item \label{enum.ultra.prim3} pour tout $x\in \varBB$,
+    $x\in \varFil \iff \opng x \notin\varFil$.
   \end{enumerate}
 \end{proposition}
 
@@ -1457,24 +1476,24 @@ Boole.
   dont on a déjà prouvé la première implication. Il nous reste à montrer les
   deux autres.
   
-  Si $\mathcal F$ est un filtre premier, alors comme $\top \in \mathcal F$ et
-  $\top = x \lor \lnot x$, on sait que soit $x$ soit $\lnot x$ est dans
-  $\mathcal F$. Comme par définition $\bot\notin\mathcal F$ et que
-  $x\land\lnot x = \bot$, on en déduit qu'un seul des deux est dans
-  $\mathcal F$, ce qui est le résultat qu'on veut démontrer.
+  Si $\varFil$ est un filtre premier, alors comme $\opT \in \varFil$ et
+  $\opT = x \opjn \opng x$, on sait que soit $x$ soit $\opng x$ est dans
+  $\varFil$. Comme par définition $\opB\notin\varFil$ et que
+  $x\opmt\opng x = \opB$, on en déduit qu'un seul des deux est dans
+  $\varFil$, ce qui est le résultat qu'on veut démontrer.
 
-  Si pour tout $x\in B$, $x\in\mathcal F\iff\lnot x\notin\mathcal F$ et
-  si $\mathcal H$ est tel que $\mathcal F\subseteq\mathcal H$ et $\mathcal H$
+  Si pour tout $x\in \varBB$, $x\in\varFil\iff\opng x\notin\varFil$ et
+  si $\varFilB$ est tel que $\varFil\subseteq\varFilB$ et $\varFilB$
   est un filtre propre, alors si l'inclusion est stricte, on trouve $x$ un
-  élément de $\mathcal H$ qui n'est pas dans $\mathcal F$. Mais par définition,
-  puisque $x\notin\mathcal F$, $\lnot x\in\mathcal F$, donc $x\in \mathcal H$ et
-  par inclusion $\lnot x \in \mathcal H$, donc $\bot\in \mathcal H$, ce qui
-  contredit le fait que $\mathcal H$ est propre. On en déduit que
-  $\mathcal H = \mathcal F$, et donc que $\mathcal F$ est un ultrafiltre.
+  élément de $\varFilB$ qui n'est pas dans $\varFil$. Mais par définition,
+  puisque $x\notin\varFil$, $\opng x\in\varFil$, or $x\in \varFilB$ et
+  par inclusion $\opng x \in \varFilB$, donc $\opB\in \varFilB$, ce qui
+  contredit le fait que $\varFilB$ est propre. On en déduit que
+  $\varFilB = \varFil$, et donc que $\varFil$ est un ultrafiltre.
 \end{proof}
 
 \begin{exercise}
-  Soit $X$ un ensemble et $x\in X$. Montrer que $\mathcal F_x$ est un
+  Soit $X$ un ensemble et $x\in X$. Montrer que $\FilPrinc{x}$ est un
   ultrafiltre dans l'algèbre de Boole $(\powerset(X),\subseteq)$.
 \end{exercise}
 
@@ -1483,103 +1502,104 @@ conséquence du lemme de Zorn. Il dit que tout filtre propre peut être étendu 
 un ultrafiltre.
 
 \begin{theorem}[Lemme de l'ultrafiltre]\label{thm.ultrafilter.lemma}
-  Soit $(X,\leq)$ un treillis. Soit $\mathcal F$ un filtre sur $X$. Alors il
-  existe un ultrafiltre $\mathcal U$ contenant $\mathcal F$.
+  Soit $(X,\leq)$ un treillis. Soit $\varFil$ un filtre propre sur $X$. Alors il
+  existe un ultrafiltre $\varUlF$ contenant $\varFil$.
 \end{theorem}
 
 \begin{proof}
   On définit l'ensemble ordonné
-  \[\mathcal X \defeq \{\mathcal H \subseteq X\mid \mathcal H
-  \text{ est un filtre propre}\}\]
+  \[\varXX \defeq \compr{\varFilB \subseteq X}{\varFilB
+  \text{ est un filtre propre}}\]
   muni de l'inclusion ensembliste.
 
   On veut appliquer le lemme de Zorn sur cet ensemble. Pour cela, on vérifie
-  que $\mathcal X$ est inductif.
+  que $\varXX$ est inductif.
 
-  Soit $\{\mathcal F_i\}_{i\in I}$ une chaîne d'éléments de $\mathcal X$,
-  montrons que $\mathcal F_0 = \displaystyle\bigcup_{i\in I} \mathcal F_i$ est un
-  majorant de cette chaîne (si $I \neq \varnothing$, car sinon n'importe quel
+  Soit $\{\varFil_i\}_{i\in I}$ une chaîne d'éléments de $\varXX$,
+  montrons que $\varFilB \defeq \displaystyle\bigcup_{i\in I} \varFil_i$ est un
+  majorant de cette chaîne (si $I \neq \vide$, car sinon n'importe quel
   élément est un majorant de la chaîne). Il nous suffit pour cela de vérifier
-  que $\mathcal F_0$ est bien un filtre propre~:
+  que $\varFilB$ est bien un filtre propre~:
   \begin{itemize}
-  \item soit $i\in I$, comme $\top \in \mathcal F_i$, on en déduit que
-    $\top \in \mathcal F_0$.
-  \item soit $x\in \mathcal F_0$ et $y\in X$ tel que $x\leq y$. Par définition
-    de $\mathcal F_0$, on trouve $i\in I$ tel que $x\in \mathcal F_i$, et comme
-    $\mathcal F_i$ est un filtre on en déduit que $y\in \mathcal F_i$, d'où
-    $y\in\mathcal F_0$.
-  \item soient $x,y\in \mathcal F_0$. On trouve $i,j\in I$ tels que
-    $x\in \mathcal F_i$ et $y\in \mathcal F_j$. Comme $\{\mathcal F_i\}$ est une
-    chaîne pour l'inclusion, alors soit $\mathcal F_i \subseteq \mathcal F_j$,
-    soit $\mathcal F_j\subseteq \mathcal F_i$. Sans perte de généralité, on
-    suppose donc que $\mathcal F_i\subseteq \mathcal F_j$, donc que
-    $x\in \mathcal F_j$. Comme $\mathcal F_j$ est un filtre, on en déduit que
-    $x\land y \in \mathcal F_j$, donc que $x\land y \in \mathcal F_0$.
-  \item supposons que $\bot\in \mathcal F_0$. Alors on trouve $i\in I$ tel que
-    $\bot\in \mathcal F_i$, mais comme tous les $\mathcal F_i$ sont supposés
-    propres, $\bot\notin\mathcal F_i$. Par contradiction, on en déduit que
-    $\mathcal F_0$ est propre.
+  \item soit $i\in I$, comme $\opT \in \mathcal F_i$, on en déduit que
+    $\opT \in \varFilB$.
+  \item soit $x\in \varFilB$ et $y\in X$ tel que $x\leq y$. Par définition
+    de $\varFilB$, on trouve $i\in I$ tel que $x\in \varFil_i$, et comme
+    $\varFil_i$ est un filtre on en déduit que $y\in \varFil_i$, d'où
+    $y\in\varFilB$.
+  \item soient $x,y\in \varFilB$. On trouve $i,j\in I$ tels que
+    $x\in \varFil_i$ et $y\in \varFil_j$. Comme $\{\varFil_i\}_{i \in I}$ est une
+    chaîne pour l'inclusion, alors soit $\varFil_i \subseteq \varFil_j$,
+    soit $\varFil_j\subseteq \varFil_i$. Sans perte de généralité, on
+    suppose donc que $\varFil_i\subseteq \varFil_j$, donc que
+    $x\in \varFil_j$. Comme $\varFil_j$ est un filtre, on en déduit que
+    $x\opmt y \in \varFil_j$, donc que $x\opmt y \in \varFilB$.
+  \item supposons que $\opB\in \varFilB$. Alors on trouve $i\in I$ tel que
+    $\opB\in \varFil_i$, mais comme tous les $\varFil_i$ sont supposés
+    propres, $\opB\notin\varFil_i$. Par contradiction, on en déduit que
+    $\varFilB$ est propre.
   \end{itemize}
 
   On applique donc le \cref{thm.Zorn}~: on trouve un élément maximal
-  $\mathcal U$ de $\mathcal X$ qui est supérieur à $\mathcal F$, c'est-à-dire
-  qui contient $\mathcal F$. Il ne nous reste qu'à vérifier que $\mathcal U$ est
-  bien un ultrafiltre~: si $\mathcal G$ est un filtre propre contenant
-  $\mathcal U$, alors il contient $\mathcal F$, donc il appartient à
-  $\mathcal X$. Par maximalité de $\mathcal U$ dans $\mathcal X$, on en déduit
-  que $\mathcal U = \mathcal G$~: $\mathcal U$ est un ultrafiltre sur $X$
-  contenant $\mathcal F$.
+  $\varUlF$ de $\varXX$ qui est supérieur à $\varFil$, c'est-à-dire
+  qui contient $\varFil$. Il ne nous reste qu'à vérifier que $\varUlF$ est
+  bien un ultrafiltre~: si $\varFilBB$ est un filtre propre contenant
+  $\varUlF$, alors il contient $\varFil$, donc il appartient à
+  $\varXX$. Par maximalité de $\varUlF$ dans $\varXX$, on en déduit
+  que $\varUlF = \varFilBB$~: $\varUlF$ est un ultrafiltre sur $X$
+  contenant $\varFil$.
 \end{proof}
 
 On peut maintenant montrer le \cref{thm.completion}~:
 
 \begin{proof}
-  Soit une signature $\Sigma$ et une théorie $\mathcal T$ sur $\Sigma$ supposée
-  cohérente, donc telle que pour toute partie finie $\Gamma\subfin \mathcal T$,
-  $\bigwedge \Gamma \nvdash \bot$. On redonne l'algèbre de Lindenbaum-Tarski~:
-  \[\mathcal L(\Sigma) \defeq \Formula(\Sigma)/\dashv\vdash\]
+  Soit une signature $\Sign$ et une théorie $\varT$ sur $\Sign$ supposée
+  cohérente, donc telle que pour toute partie finie $\varCG\subfin \varT$,
+  $\bigwedge \varCG \nvdP \bot$. On redonne l'algèbre de Lindenbaum-Tarski~:
+  \[\LinTar(\Sign) \defeq \quot{\Prop(\Sign)}{\dvvd}\]
   (comme on prouve ce théorème avant le théorème de complétude, on montre bien
-  la proposition pour la relation $\vdash$ et non la relation $\vDash$).
+  la proposition pour la relation $\vdP$ et non la relation $\vD$).
 
-  La théorie $\mathcal T$ induit sur $\mathcal L(\Sigma)$ une partie vérifiant
+  La théorie $\varT$ induit sur $\LinTar(\Sign)$ une partie vérifiant
   la propriété d'intersection finie, et la théorie
-  \[\vdclose{\mathcal T} \defeq \{\varphi\mid \mathcal T \vdash \varphi\}\]
+  \[\vdclose{\varT} \defeq \compr{\varFF\in\Prop(\Sign)}{\varT \vdP \varFF}\]
   est ainsi un filtre propre~: on peut donc grâce au
-  \cref{thm.ultrafilter.lemma} trouver un ultrafiltre $\mathcal S$ contenant
-  $\vdclose{\mathcal T}$.
+  \cref{thm.ultrafilter.lemma} trouver un ultrafiltre $\varUlF$ contenant
+  $\vdTclos$.
 
-  Soit alors la théorie $\mathcal T' = \bigcup\mathcal S$, qui contient donc
-  toutes les formules appartenant à une classe d'équivalence de $\mathcal S$.
-  On remarque que $\mathcal T'$ est close par $\vdash$, donc puisque
-  $\overline\bot \notin\mathcal S$, cela signifie que $\bot\notin\mathcal T'$.
-  Il nous reste à vérifier que $\mathcal T'$ est complète~: pour toute
-  formule $\varphi$, on sait que $\varphi\lor\lnot\varphi \in \mathcal T'$, donc
-  $\overline{\varphi}\lor\overline{\lnot\varphi}\in\mathcal S$, mais
-  comme $\mathcal S$ est un ultrafiltre, il est en particulier premier. On
-  en déduit que soit $\overline\varphi \in \mathcal S$, soit
-  $\overline{\lnot\varphi}\in \mathcal S$~: dans le premier cas,
-  $\varphi\in \mathcal T'$ et dans le deuxième cas,
-  $\lnot\varphi\in \mathcal T'$. Ainsi pour toute formule $\varphi$, soit
-  $\varphi\in \mathcal T'$ soit $\lnot\varphi\in \mathcal T'$.
+  Soit alors la théorie $\varT' = \bigcup\varUlF$, qui contient donc
+  toutes les formules appartenant à une classe d'équivalence de $\varUlF$.
+  On remarque que $\varT'$ est close par $\vdP$, donc puisque
+  $\clas{\bot} \notin\varUlF$, cela signifie que $\bot\notin\varT'$.
+  Il nous reste à vérifier que $\varT'$ est complète~: pour toute
+  formule $\varFF$, on sait que $\varFF\lor\lnot\varphi \in \varT'$, donc
+  $\clas{\varFF}\lor\clas{\lnot\varFF}\in\varUlF$, mais
+  comme $\varUlF$ est un ultrafiltre, il est en particulier premier. On
+  en déduit que soit $\clas\varFF \in \varUlF$, soit
+  $\clas{\lnot\varFF}\in \varUlF$~: dans le premier cas,
+  $\varFF\in \varT'$ et dans le deuxième cas,
+  $\lnot\varFF\in \varT'$. Ainsi pour toute formule $\varFF$, soit
+  $\varFF\in \varT'$ soit $\lnot\varFF\in \varT'$.
 
-  Donc il existe une théorie complète $\mathcal T'$ qui contient la théorie
-  $\mathcal T$.
+  Donc il existe une théorie complète $\varT'$ qui contient la théorie
+  $\varT$.
 \end{proof}
 
+\noindent
 On peut de plus étendre le filtre de Fréchet sur un ensemble en un ultrafiltre.
 
 \begin{proposition}
-  Soit $X$ un ensemble infini. Alors il existe un ultrafiltre $\mathcal U$ sur
-  $\powerset(X)$ qui est différent de tous les $\mathcal F_x$. On appelle un
+  Soit $X$ un ensemble infini. Alors il existe un ultrafiltre $\varUlF$ sur
+  $\powerset(X)$ qui est différent de tous les $\FilPrinc{x}$. On appelle un
   ultrafiltre qui n'est pas principal un ultrafiltre libre.
 \end{proposition}
 
 \begin{proof}
   On sait que le filtre de Fréchet sur $X$ n'est inclus dans aucun des
-  ultrafiltres $\mathcal F_x$, et d'après le lemme de l'ultrafiltre on peut
-  trouver un ultrafiltre $\mathcal U$ qui contient le filtre de Fréchet. Si
-  $\mathcal U = \mathcal F_x$ pour un certain $x\in X$, alors le filtre de
-  Fréchet serait inclus dans ce $\mathcal F_x$, donc $\mathcal U$ n'est pas
+  ultrafiltres $\FilPrinc{x}$, et d'après le lemme de l'ultrafiltre on peut
+  trouver un ultrafiltre $\varUlF$ qui contient le filtre de Fréchet. Si
+  $\varUlF = \FilPrinc{x}$ pour un certain $x\in X$, alors le filtre de
+  Fréchet serait inclus dans ce $\FilPrinc{x}$, donc $\varUlF$ n'est pas
   principal.
 \end{proof}
 
@@ -1595,185 +1615,190 @@ Nous allons donc voir comment des morphismes sur les différents treillis
 permettent de définir de nouveaux filtres.
 
 \begin{definition}[Rétrotirette d'un filtre]
-  Soient $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
+  Soient $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\varFil$ un filtre
   sur $Y$ et $f : X \to Y$ une fonction croissante. On définit la rétrotirette
-  de $\mathcal F$ par $f$ comme~:
-  \[f^* \mathcal F \defeq \{x\mid f(x) \in \mathcal F\}\]
+  de $\varFil$ par $f$ comme~:
+  \[\pulba{f} \varFil \defeq \compr{x\in X}{f(x) \in \varFil}\]
 \end{definition}
 
 \begin{property}
-  Soit $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\mathcal F$ un filtre
-  sur $Y$ et $f$ un morphisme d'inf demi-treillis, alors $f^*\mathcal F$ est un
-  filtre sur $X$.
+  Soit $(X,\leq)$, $(Y,\leq)$ deux inf demi-treillis, $\varFil$ un filtre
+  sur $Y$ et $f$ un morphisme d'inf demi-treillis, alors $\pulba{f}\varFil$
+  est un filtre sur $X$.
 \end{property}
 
 \begin{proof}
   On vérifie les propriétés d'un filtre~:
   \begin{itemize}
-  \item comme $f(\top_X) = \top_Y$ et $\top_Y \in \mathcal F$, on en déduit que
-    $\top_X\in f^*\mathcal F$.
-  \item si $x\in f^*\mathcal F$ et $y\in X$ tel que $x\leq y$, alors par
-    on sait que $f(x)\in\mathcal F$, donc par croissance $f(x)\leq f(y)$ et,
-    par clôture par le haut de $\mathcal F$, $f(y)\in \mathcal F$, donc
-    $y\in f^*\mathcal F$.
-  \item si $x\in f^*\mathcal F$ et $y\in f^*\mathcal F$, alors
-    $f(x)\in\mathcal F$ et $f(y)\in\mathcal F$, donc
-    $f(x)\land f(y)\in\mathcal F$ et comme $f$ est un morphisme,
-    $f(x\land y)\in\mathcal F$. Donc $x\land y\in f^*\mathcal F$.
+  \item comme $f(\opT_X) = \opT_Y$ et $\opT_Y \in \varFil$, on en déduit que
+    $\opT_X\in \pulba{f}\varFil$.
+  \item si $x\in \pulba{f}\varFil$ et $y\in X$ tel que $x\leq y$, alors par
+    on sait que $f(x)\in\varFil$, donc par croissance $f(x)\leq f(y)$ et,
+    par clôture par le haut de $\varFil$, $f(y)\in \varFil$, donc
+    $y\in \pulba{f}\varFil$.
+  \item si $x\in \pulba{f}\varFil$ et $y\in \pulba{f}\varFil$, alors
+    $f(x)\in\varFil$ et $f(y)\in\varFil$, donc
+    $f(x)\opmt f(y)\in\varFil$ et comme $f$ est un morphisme,
+    $f(x\opmt y)\in\varFil$. Donc $x\opmt y\in \pulba{f}\varFil$.\qedhere
   \end{itemize}
 \end{proof}
 
 Dans le cas d'un treillis, on peut aussi caractériser un filtre propre grâce à
-l'existence de $\bot$.
+l'existence de $\opB$.
 
 \begin{property}
-  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\mathcal F$ un filtre propre
-  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $f^*\mathcal F$ est
-  lui-même un filtre propre.
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\varFil$ un filtre propre
+  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $\pulba{f}\varFil$
+  est lui-même un filtre propre.
 \end{property}
 
 \begin{proof}
-  Nous avons déjà vérifié que $f^*\mathcal F$ est un filtre. Il nous reste à
-  montrer que celui-ci est propre. Mais comme on sait que $f(\bot_X)=\bot_Y$
-  et que $\bot_Y\notin\mathcal F$, on en déduit que
-  $\bot_X\notin f^*\mathcal F$, donc $f^* \mathcal F$ est propre.
+  Nous avons déjà vérifié que $\pulba{f}\varFil$ est un filtre. Il nous reste à
+  montrer que celui-ci est propre. Mais comme on sait que $f(\opB_X)=\opB_Y$
+  et que $\opB_Y\notin\varFil$, on en déduit que
+  $\opB_X\notin \pulba{f}\varFil$, donc $\pulba{f}\varFil$ est propre.
 \end{proof}
 
+\noindent
 Un morphisme de treillis préserve aussi le fait d'être premier.
 
 \begin{property}
-  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\mathcal F$ un filtre premier
-  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $f^*\mathcal F$ est
-  un filtre premier.
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux treillis, $\varFil$ un filtre premier
+  sur $Y$ et $f : X \to Y$ un morphisme de treillis. Alors $\pulba{f}\varFil$
+  est un filtre premier.
 \end{property}
 
 \begin{proof}
-  Là encore, il nous suffit de montrer le caractère premier de $f^*\mathcal F$.
-  Soient $x,y\in X$ tels que $x\lor y \in f^*\mathcal F$, donc par définition
-  $f(x\lor y)\in \mathcal F$, mais comme $\mathcal F$ est premier et que
-  $f(x\lor y) = f(x)\lor f(y)$, on en déduit que $f(x)\in\mathcal F$ ou
-  $f(y)\in\mathcal F$, c'est-à-dire que $x\in f^*\mathcal F$ ou que
-  $y\in f^*\mathcal F$. Donc $f^*\mathcal F$ est premier.
+  Là encore, il nous suffit de montrer le caractère premier de
+  $\pulba{f}\varFil$.
+  Soient $x,y\in X$ tels que $x\opjn y \in \pulba{f}\varFil$, donc par
+  définition
+  $f(x\opjn y)\in \varFil$, mais comme $\varFil$ est premier et que
+  $f(x\opjn y) = f(x)\opjn f(y)$, on en déduit que $f(x)\in\varFil$ ou
+  $f(y)\in\varFil$, c'est-à-dire que $x\in \pulba{f}\varFil$ ou que
+  $y\in \pulba{f}\varFil$. Donc $\pulba{f}\varFil$ est premier.
 \end{proof}
 
-Une conséquence directe est que si $\mathcal F$ est un filtre premier et que $X$
-est une algèbre de Boole, $f^*\mathcal F$ est un ultrafiltre sur $X$.
+Une conséquence directe est que si $\varFil$ est un filtre premier et que $X$
+est une algèbre de Boole, $\pulba{f}\varFil$ est un ultrafiltre sur $X$.
 
-D'un point de vue plus algébrique, si $f : B \to B'$ est un morphisme entre
-algèbres de Boole, alors le quotient de $B$ par $\ker(f)$ nous donne encore une
-algèbre de Boole (en tant que quotient d'anneau), mais une propriété importante
-sur les anneaux est que le quotient par un idéal maximal donne un corps. Dans le
-cas de nos algèbres de Boole, le seul corps possible est $\mathbb Z/2\mathbb Z$,
+D'un point de vue plus algébrique, si $f : \varBB \to \varBB'$ est un morphisme
+entre algèbres de Boole, alors le quotient de $\varBB$ par $\ker(f)$ nous donne
+encore une algèbre de Boole (en tant que quotient d'anneau), mais une propriété
+importante sur les anneaux est que le quotient par un idéal maximal donne un
+corps. Dans le cas de nos algèbres de Boole, le seul corps possible est
+$\quot{\bZ}{2\bZ}$,
 ce qui signifie qu'un ultrafiltre correspond exactement au complémentaire du
-noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
+noyau d'un morphisme d'algèbre de Boole vers $\quot{\bZ}{2\bZ}$.
 
 \begin{proposition}
-  Soit $(B,\leq)$ une algèbre de Boole. Alors on a une bijection entre
-  $\Hom(B,\mathbb Z/2\mathbb Z)$, l'ensemble des morphismes de $B$ vers
-  $\mathbb Z/2\mathbb Z$, et l'ensemble $\Spec(B)$ des ultrafiltres sur $B$.
+  Soit $(\varBB,\leq)$ une algèbre de Boole. Alors on a une bijection entre
+  $\Hom(\varBB,\varBB_2)$, l'ensemble des morphismes de $\varBB$ vers
+  $\quot{\bZ}{2\bZ}$, et l'ensemble $\Spec(\varBB)$ des ultrafiltres sur
+  $\varBB$.
 \end{proposition}
 
 \begin{proof}
-  Soit $\mathcal U$ un ultrafiltre, on lui associe la fonction
-  \[\begin{array}{ccccc}
-  \chi_{\mathcal U} & : & B & \longrightarrow & \{\bot,\top\}\\
-  & & x &\longmapsto& \begin{cases}
-    \top\text{ si } x\in \mathcal U\\
-    \bot\text{ si } x\notin\mathcal U
-  \end{cases}
-  \end{array}\]
+  Soit $\varUlF$ un ultrafiltre, on lui associe la fonction
+  \[
+  \makeFun{\indicP{\varUlF}}{\varBB}{\varBB_2}{x}
+          {\begin{cases}
+              \opT \text{ si } x \in \varUlF \\
+              \opB \text{ si } x \notin \varUlF
+          \end{cases}}\]
 
   Vérifions qu'on a bien un morphisme de treillis~:
   \begin{itemize}
-  \item comme $\top\in\mathcal U$, $\chi_\mathcal U(\top) = \top$, de même
-    $\chi_\mathcal U(\bot) = \bot$.
+  \item comme $\opT\in\varUlF$, $\indicP{\varUlF}(\opT) = \opT$, de même
+    $\indicP{\varUlF}(\opB) = \opB$.
   \item pour montrer que
-    $\chi_\mathcal U(x\land y) = \chi_\mathcal U(x)\land\chi_\mathcal U(y)$, il
-    suffit de montrer que
-    \[x\land y \in \mathcal U \iff x\in\mathcal U \text{ et }y\in\mathcal U\]
-    Si $x\in \mathcal U$ et $y\in\mathcal U$, alors par compatibilité
-    $x\land y \in \mathcal U$. Si $x\land y \in \mathcal U$, alors par clôture
-    par le haut $x\in \mathcal U$ et $y\in \mathcal U$.
+    $\indicP{\varUlF}(x\opmt y) = \indicP{\varUlF}(x)\opmt\indicP{\varUlF}(y)$,
+    il suffit de montrer que
+    \[x\opmt y \in \varUlF \iff x\in\varUlF \text{ et }y\in\varUlF\]
+    Si $x\in \varUlF$ et $y\in\varUlF$, alors par compatibilité
+    $x\opmt y \in \varUlF$. Si $x\opmt y \in \varUlF$, alors par clôture
+    par le haut $x\in \varUlF$ et $y\in \varUlF$.
   \item pour montrer que
-    $\chi_\mathcal U(x\lor y) = \chi_\mathcal U(x)\lor\chi_\mathcal U(y)$, il
-    suffit de montrer que
-    \[x\lor y \in \mathcal U \iff x\in\mathcal U \text{ ou }y\in\mathcal U\]
-    Si $x\in \mathcal U$ (respectivement $y\in \mathcal U$) alors comme
-    $x\leq x\lor y$ (respectivement $y\leq x\lor y$) et par clôture par le haut,
-    $x\lor y \in \mathcal U$. Si $x\lor y \in \mathcal U$, alors comme un
-    ultrafiltre est premier, on en déduit que soit $x\in\mathcal U$, soit
-    $y\in \mathcal U$.
+    $\indicP{\varUlF}(x\opjn y) = \indicP{\varUlF}(x)\opjn\indicP{\varUlF}(y)$,
+    il suffit de montrer que
+    \[x\opjn y \in \varUlF \iff x\in\varUlF \text{ ou }y\in\varUlF\]
+    Si $x\in \varUlF$ (respectivement $y\in \varUlF$) alors comme
+    $x\leq x\opjn y$ (respectivement $y\leq x\opjn y$) et par clôture par le
+    haut,
+    $x\opjn y \in \varUlF$. Si $x\opjn y \in \varUlF$, alors comme un
+    ultrafiltre est premier, on en déduit que soit $x\in\varUlF$, soit
+    $y\in \varUlF$.
   \end{itemize}
 
-  Dans l'autre sens, étant donné un morphisme $f : B \to \{\bot,\top\}$, on lui
+  Dans l'autre sens, étant donné un morphisme $f : \varBB \to \intB$, on lui
   associe
-  \[\mathcal U_f \defeq \{x\in B \mid f(x) = \top\}\]
-  On vérifie que $\mathcal U_f$ est un ultrafiltre~:
+  \[\varUlF_f \defeq \compr{x\in \varBB}{f(x) = \opT}\]
+  On vérifie que $\varUlF_f$ est un ultrafiltre~:
   \begin{itemize}
-  \item comme $f(\top_B) = \top$, $\top\in \mathcal U_f$.
-  \item si $x\leq y$ et $f(x)=\top$ alors $f(y)\geq \top$ donc $f(y)=\top$.
-  \item si $f(x) = \top$ et $f(y)=\top$ alors
-    $f(x)\land f(y) = \top\land\top =\top$, et comme
-    $f(x)\land f(y)=f(x\land y)$ on en déduit que $x\land y \in \mathcal U_f$.
-  \item $f(\bot_B)=\bot\neq\top$ donc $f(\bot_B)\notin\mathcal U_f$.
-  \item si $x\lor y \in \mathcal U_f$ alors $f(x)\lor f(y) = \top$. Si
-    $f(x) = \bot$ et $f(y) = \bot$ alors $f(x)\lor f(y) \neq \top$, donc par
-    l'absurde on en déduit que $x\in \mathcal U_f$ ou $y\in \mathcal U_f$.
+  \item comme $f(\opT_B) = \opT$, $\opT\in \varUlF_f$.
+  \item si $x\leq y$ et $f(x)=\opT$ alors $f(y)\geq \opT$ donc $f(y)=\opT$.
+  \item si $f(x) = \opT$ et $f(y)=\opT$ alors
+    $f(x)\opmt f(y) = \opT\opmt\opT =\opT$, et comme
+    $f(x)\opmt f(y)=f(x\opmt y)$ on en déduit que $x\opmt y \in \varUlF_f$.
+  \item $f(\opB_B)=\opB\neq\opT$ donc $f(\opB_B)\notin\varUlF_f$.
+  \item si $x\opjn y \in \varUlF_f$ alors $f(x)\opjn f(y) = \opT$. Si
+    $f(x) = \opB$ et $f(y) = \opB$ alors $f(x)\opjn f(y) \neq \opT$, donc par
+    l'absurde on en déduit que $x\in \varUlF_f$ ou $y\in \varUlF_f$.
   \end{itemize}
 
-  On vérifie aisément que $\mathcal U \mapsto \chi_\mathcal U$ et
-  $f\mapsto \mathcal U_f$ sont des fonctions réciproques l'une de l'autre.
+  On vérifie aisément que $\varUlF \mapsto \indicP{\varUlF}$ et
+  $f\mapsto \varUlF_f$ sont des fonctions réciproques l'une de l'autre.
   On a donc notre bijection.
 \end{proof}
 
 \begin{exercise}
   Soient $X,Y$ deux ensembles et $f : X \to Y$ une fonction. On définit la
   fonction
-  \[\begin{array}{ccccc}
-  f^{-1} & : & \powerset(Y) & \longrightarrow & \powerset(X)\\
-  & & A & \longmapsto & \{x\in X \mid f(x) \in A\}
-  \end{array}\]
-
+  \[
+  \makeFun{f^{-1}}{\powerset(Y)}{\powerset(X)}{A}{\compr{x \in X}{f(x)\in A}}
+  \]
   Montrer que cette fonction est un morphisme d'algèbre de Boole.
 \end{exercise}
 
 \begin{notation}
-  Pour une fonction $f : X \to Y$ entre deux ensembles et un filtre $\mathcal F$
-  sur $\powerset(X)$, on notera $f\mathcal F$ la rétrotirette de $\mathcal F$
+  Pour une fonction $f : X \to Y$ entre deux ensembles et un filtre $\varFil$
+  sur $\powerset(X)$, on notera $f\varFil$ la rétrotirette de $\varFil$
   par $f^{-1}$. On n'a pas d'ambiguïté car, par défaut, $f$ n'est pas un
   morphisme d'algèbre de Boole entre les ensembles de parties.
 
-  Donnons une description rapide de $f\mathcal F$~:
-  \[f\mathcal F = \{A \subseteq Y \mid f^{-1}(A) \in \mathcal F\}\]
+  Donnons une description rapide de $f\varFil$~:
+  \[f\varFil = \compr{A \subseteq Y}{f^{-1}(A) \in \varFil}\]
 \end{notation}
 
 \newpage
 
-\section{Exercices}
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
 
 \begin{exercise}[Algèbre de Boole engendrée]
-  Soit $(B,\leq)$ une algèbre de Boole et $X\subseteq B$.
+  Soit $(\varBB,\leq)$ une algèbre de Boole et $X\subseteq \varBB$.
   \begin{enumerate}[label=(\roman*)]
-  \item Montrer qu'il existe une plus petite algèbre de Boole $B(X)\subseteq B$
-    contenant $X$.
+  \item Montrer qu'il existe une plus petite algèbre de Boole
+    $\varBB(X)\subseteq \varBB$ contenant $X$.
   \item On définit une expression booléenne en $X$ par la grammaire
-    \[e,e'\Coloneq x \mid \lnot e \mid e\lor e' \mid e \land e'\]
+    \[e,e'\inddefeq x \mid \opng e \mid e\opjn e' \mid e \opmt e'\]
     où $x \in X$. On confond ici l'expression définie par induction et son
-    interprétation évidente comme un élément de $B$. Montrer que $B(X)$ est
-    exactement l'ensemble des expressions booléennes en $B$.
+    interprétation évidente comme un élément de $\varBB$. Montrer que
+    $\varBB(X)$ est l'ensemble des expressions booléennes en $\varBB$.
   \item Pour tout ensemble $X$, on dit qu'une partie $Y \subseteq X$ est
     cofinie s'il existe un ensemble fini $F \subfin X$ tel que
     $Y = X \setminus F$. Montrer que l'ensemble des parties $Y\subseteq X$
     telles que $Y$ est finie ou cofinie forme une sous-algèbre de Boole de
     $\powerset(X)$. Montrer que cette sous-algèbre de Boole est engendrée par
-    l'ensemble $\{\{x\}\mid x \in X\}$.
+    l'ensemble $\compr{\{x\}}{x \in X}$.
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[Atomes d'une algèbre de Boole]
-  On appelle atome d'une algèbre de Boole $B$ un élément $a \in B$ tel que
-  $a > \bot$ et tel qu'il n'existe pas d'élément $b \in B$ tel que
-  $\bot < b < a$.
+  On appelle atome d'une algèbre de Boole $\varBB$ un élément $a \in \varBB$
+  tel que $a > \opB$ et tel qu'il n'existe pas d'élément $b \in \varBB$ tel que
+  $\opB < b < a$.
   \begin{enumerate}[label=(\roman*)]
   \item Montrer que pour tout ensemble $X$ et élément $x \in X$,
     $\{x\}$ est un atome dans l'algèbre de Boole $\powerset(X)$.
@@ -1790,50 +1815,51 @@ noyau d'un morphisme d'algèbre de Boole vers $\mathbb Z/2\mathbb Z$.
   ajoutant en particulier des propriétés que vérifient les quantificateurs et
   l'égalité.
   
-  On se fixe dans cet exercise une signature $\Sigma$. Pour tout
-  $n \in \mathbb N$, on dénote par $\Formula_n(\Sigma)$ l'ensemble des formules
-  de $\Sigma$ dont les variables libres appartiennent à
-  $\{x_0,\ldots,x_{n-1}\}$ (ainsi $\Prop(\Sigma) = \Formula_0(\Sigma)$).
+  On se fixe dans cet exercise une signature $\Sign$. Pour tout
+  $n \in \bN$, on dénote par $\Formula_n(\Sign)$ l'ensemble des formules
+  de $\Sign$ dont les variables libres appartiennent à
+  $\{x_0,\ldots,x_{n-1}\}$ (ainsi $\Prop(\Sign) = \Formula_0(\Sign)$).
 
-  On définit aussi $\mathcal L_n(\Sigma)$, l'algèbre de Lindenbaum-Tarski des
-  formules à $n$ variables libres, comme le quotient de $\Formula_n(\Sigma)$
-  par la relation $\dashv\vdash$.
+  On définit aussi $\LinTar_n(\Sign)$, l'algèbre de Lindenbaum-Tarski des
+  formules à $n$ variables libres, comme le quotient de $\Formula_n(\Sign)$
+  par la relation $\dvvd$.
   \begin{enumerate}[label=(\roman*)]
-  \item Montrer que chaque $\mathcal L_n(\Sigma)$ est une algèbre de Boole.
-  \item Soit $\iota_n : \Formula_n(\Sigma) \to \Formula_{n+1}(\Sigma)$
+  \item Montrer que chaque $\LinTar_n(\Sign)$ est une algèbre de Boole.
+  \item Soit $\iota_n : \Formula_n(\Sign) \to \Formula_{n+1}(\Sign)$
     l'injection canonique des formules à $n$ variables libres dans les formules
     à $n+1$ variables libres. Justifier que $\iota_n$ est compatible avec
-    $\dashv\vdash$. On note alors aussi $\iota_n$ la fonction canoniquement
-    associée $\mathcal L_n(\Sigma) \to \mathcal L_{n+1}(\Sigma)$~: montrer que
+    $\dvvd$. On note alors aussi $\iota_n$ la fonction canoniquement
+    associée $\LinTar_n(\Sign) \to \LinTar_{n+1}(\Sign)$~: montrer que
     cette fonction est un morphisme d'algèbre de Boole.
   \item De même, montrer que
-    \[\begin{array}{ccccc}
-    \forall & : & \Formula_{n+1}(\Sigma) & \longrightarrow &
-    \Formula_n(\Sigma)\\
-    & & \varphi &\longmapsto & \forall x, \varphi
-    \end{array}\]
-    induit une fonction croissante entre $\mathcal L_{n+1}(\Sigma)$ et
-    $\mathcal L_n(\Sigma)$. Faire de même avec le quantificateur $\exists$.
-  \item Montrer que pour tous $i,j < n$,
-    \[\begin{array}{ccccc}
-    \delta_{i,j} & : & \Formula_{n+1}(\Sigma) & \longrightarrow &
-    \Formula_n(\Sigma)\\
-    & & \varphi & \longmapsto & \varphi[x_j/x_i][x_{k+1}/x_k]_{k > i}
-    \end{array}\]
-    induit un morphisme d'algèbre de Boole entre $\mathcal L_{n+1}(\Sigma)$ et
-    $\mathcal L_n(\Sigma)$.
+    \[
+    \makeFun{\mathord{\forall}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
+            {\varFF}{\forall x_n,\varFF}
+    \]
+    induit une fonction croissante entre $\LinTar_{n+1}(\Sign)$ et
+    $\LinTar_n(\Sign)$. Faire de même avec le quantificateur
+    $\mathord{\exists}$.
+  \item Montrer que pour tous $i,j < n$, la fonction
+    \[
+    \makeFunName{\kron{i}{j}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
+    \]
+    définie en substituant $x_i$ par $x_j$ et chaque $x_{k+1}$ par $x_k$ pour
+    $k > i$ (pour assurer que les variables sont dans $\{x_0,\ldots,x_n\}$),
+    induit un morphisme d'algèbre de Boole entre $\LinTar_{n+1}(\Sign)$ et
+    $\LinTar_n(\Sign)$.
   \item Montrer l'équivalence suivante pour
-    $\varphi \in \mathcal L_n(\Sigma)$ et
-    $\psi \in \mathcal L_{n+1}(\Sigma)$~:
-    \[\varphi \vdash \forall \psi \iff \iota_n(\varphi)\vdash \psi\]
-    ainsi que, pour $\varphi \in \mathcal L_{n+1}(\Sigma)$ et
-    $\psi \in \mathcal L_n(\Sigma)$~:
-    \[\exists \varphi \vdash \psi \iff \varphi\vdash \iota_n(\psi)\]
+    $\varFF \in \LinTar_n(\Sign)$ et
+    $\varFP \in \LinTar_{n+1}(\Sign)$~:
+    \[\varFF \vdP \forall \varFP \iff \iota_n(\varFF)\vdP \varFP\]
+    ainsi que, pour $\varFF \in \LinTar_{n+1}(\Sign)$ et
+    $\varFP \in \LinTar_n(\Sign)$~:
+    \[\exists \varFF \vdP \varFP \iff \varFF\vdP \iota_n(\varFP)\]
     Ces équivalences caractérisent en un sens les quantificateurs $\forall$ et
     $\exists$.
-  \item Montrer l'équivalence suivante, pour $\varphi \in \mathcal L_n(\Sigma)$
-    et $\psi \in \mathcal L_{n+1}(\Sigma)$~:
-    \[\varphi \land x_i = x_j \vdash \psi \iff \varphi\vdash \delta_{i,j}(\psi)\]
+  \item Montrer l'équivalence suivante, pour $\varFF \in \LinTar_n(\Sign)$
+    et $\varFP \in \LinTar_{n+1}(\Sign)$~:
+    \[\iota_n(\varFF) \land x_i = x_j \vdP \varFP \iff
+    \varFF\vdP \kron{i}{j}(\varFP)\]
     Cet équivalence caractérise en un sens l'égalité.
   \end{enumerate}
 \end{exercise}
