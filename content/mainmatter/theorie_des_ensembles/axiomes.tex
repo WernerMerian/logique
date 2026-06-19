@@ -13,47 +13,47 @@ habituellement.
 Nous devons ici faire quelques éclaircissements d'ordre philosophique. Tout
 d'abord, sur la méta-théorie~: nous considérons que l'univers ambiant dans
 lequel nous pratiquons les mathématiques est lui-même un modèle de la théorie
-ZFC. Plus précisément, en notant $\mathcal U$ l'objet mathématique qui sera la
+ZFC. Plus précisément, en notant $\unZF$ l'objet mathématique qui sera la
 collection de tous les objets mathématiques, ZFC peut être vu comme une théorie
-donnant une approximation du comportement de $\mathcal U$.
+donnant une approximation du comportement de $\unZF$.
 
-En particulier, $\mathcal U$ contient des collections, que nous appelons
-d'habitude ensembles, et si un objet $X$ apparait dans une collection $C$, on
-écrit $X\in C$. Cependant, les objets que nous manipulerons ne seront pas ces
-collections, et la relation $\in$ utilisée dans ZFC ne sera pas \og être un
-objet mathématique apparaissant dans cette collection intuitive\fg{}~: nous
-utiliserons des outils purement formels pour étudier ZFC, et devons donc les
+En particulier, $\unZF$ contient des collections, que nous appelons
+d'habitude ensembles, et si un objet $X$ apparait dans une collection $\varCC$,
+on écrit $X\in\varCC$. Cependant, les objets que nous manipulerons ne seront pas
+ces collections, et la relation $\in$ utilisée dans $\ZFC$ ne sera pas \og être
+un objet mathématique apparaissant dans cette collection intuitive\fg{}~: nous
+utiliserons des outils purement formels pour étudier $\ZFC$, et devons donc les
 distinguer des objets intuitifs associés. Aussi nous appellerons \og ensemble\fg
-un objet de la théorie ZFC, et \og collection\fg un ensemble au sens intuitif,
-dans $\mathcal U$. De même, les objets formels seront associés à la notion
+un objet de la théorie $\ZFC$, et \og collection\fg un ensemble au sens
+intuitif, dans $\unZF$. De même, les objets formels seront associés à la notion
 d'appartenance, et les collections à la notion d'occurrence.
 
 Remarquons cependant qu'un ensemble donne de fait naissance à une
 collection~: l'ensemble $X$ définit la collection
-$\{ x \in\mathcal U\mid x \in X \}$.
+$\compr{ x \in\unZF}{x \in X}$.
 
 Enfin, nous traiterons régulièrement des classes. S'il est possible de ne se
-restreindre qu'aux ensembles pour l'étude de ZFC, nous verrons qu'il est bien
+restreindre qu'aux ensembles pour l'étude de $\ZFC$, nous verrons qu'il est bien
 plus pratique d'énoncer certaines constructions en terme de classes. Une classe
 est une collection qui ne peut pas être représentée par un ensemble (par exemple
 la classe des ensembles, \latinexpr{cf}. le paradoxe de Russell), mais que l'on
 peut décrire par un prédicat. Ainsi, une classe peut se représenter par le
-prédicat lui correspondant. Si une classe $C$ est décrite par un prédicat
-$\varphi(x)$, alors $x\in C$ doit se lire comme une reformulation plus lisible
-de $\varphi(x)$. Un léger défaut vient avec cette approche~: certains théorèmes,
-se référant aux classes, doivent se lire comme des schémas de théorèmes,
-c'est-à-dire des théorèmes paramétrés par le prédicat $\varphi$ définissant une
-classe.
+prédicat lui correspondant. Si une classe $\varCC$ est décrite par un prédicat
+$\varFF(x)$, alors $x\in\varCC$ doit se lire comme une reformulation plus
+lisible de $\varFF(x)$. Un léger défaut vient avec cette approche~: certains
+théorèmes, se référant aux classes, doivent se lire comme des schémas de
+théorèmes, c'est-à-dire des théorèmes paramétrés par le prédicat $\varFF$
+définissant une classe.
 
 \section{Axiomes de ZFC}
 
 \subsection[Premiers axiomes]{Extensionalité, paire, union, ensemble de parties}
 
-Commençons par étudier la théorie ZFC en en listant les axiomes. Un premier
+Commençons par étudier la théorie $\ZFC$ en en listant les axiomes. Un premier
 point important est de définir le langage sur lequel nous travaillerons~: nous
-utiliserons $\mathcal L_{\mathrm{ZF}} = \{ \in^2\}$. En effet, tous les énoncés
-seront écrits seulement à l'aide du symbole de relation binaire $\in$ et de la
-relation $=$, symbole logique déjà inclus dans tout langage.
+utiliserons $\SignP{\ZF} = \{ \in^2\}$. En effet, tous les énoncés seront écrits
+seulement à l'aide du symbole de relation binaire $\in$ et de la relation $=$,
+symbole logique déjà inclus dans tout langage.
 
 %\begin{remark}
 %  En réalité, nous le verrons, notre langage sera bien plus riche~: nous
@@ -66,14 +66,15 @@ relation $=$, symbole logique déjà inclus dans tout langage.
 
 \begin{remark}
   Si, techniquement, la théorie ensembliste est une théorie relationnelle, nous
-  utilisons abondamment l'extension par définition (\cref{def.ext.def.rel} et
+  utilisons abondamment des extensions par définition
+  (\latinexpr{c.f.} \cref{def.ext.def.rel} et
   \cref{def.ext.def.fun}) pour introduire de nouveaux symboles~:
   $\{x,y\}, \bigcup x, x \subseteq y,$ \latinexpr{etc.}
   Il est néanmoins important de ne pas
   les inclure dans notre signature en première instance, car le sens des
   nouveaux symboles est uniquement déterminé par le sens de $\in$ et des axiomes
-  de $\mathrm{ZF}$. Ainsi, dans le \cref{chp.modZFC}, nous considérons des
-  sous-modèles (en un sens large) de l'univers $\mathcal U$ mais uniquement vis
+  de $\ZF$. Ainsi, dans le \cref{chp.modZFC}, nous considérons des
+  sous-modèles (en un sens large) de l'univers $\unZF$ mais uniquement vis
   à vis de la relation $\in$, les autres opérations pouvant différer d'une
   sous-modèle à un autre.
 \end{remark}
@@ -95,14 +96,14 @@ ensembles.
 \begin{axiom}[Paire]\label{ax.ZF.pair}
   L'axiome de la paire exprime que si deux ensembles $x$ et $y$ ont été
   construits, alors l'ensemble $\{x,y\}$ peut être construit à partir d'eux~:
-  \[\forall x \forall y \exists z, \qquad \forall a, a \in z \iff
+  \[\forall x \forall y \exists z, \qquad\forall a, a \in z \iff
   a = x \lor a = y\]
 \end{axiom}
 
 \begin{exercise}
   Montrer que pour tous ensembles $x,y$, il existe un unique ensemble $z$ tel
   que décrit dans l'\cref{ax.ZF.pair}. Cela justifie donc la notation $\{x,y\}$
-  pour cet ensemble, puisqu'il n'y a pas d'ambigüité sur lequel il est.
+  pour cet ensemble.
 \end{exercise}
 
 En utilisant l'axiome de la paire, on peut ainsi construire des collections
@@ -159,34 +160,34 @@ Les axiomes précédemment donnés constituent les briques de base pour construi
 des ensembles, mais sont en général trop grossiers. L'intérêt de la théorie des
 ensembles est de pouvoir construire des ensembles correspondant à des
 collections, ce qui manque pour l'instant à notre système. C'est pour cela que
-nous ajoutons l'axiome de compréhension~: étant donnée une formule $\varphi$ et
-un ensemble $X$, on peut construire l'ensemble $\{x \in X\mid \varphi(x)\}$ des
-éléments de $x$ vérifiant $\varphi$.
+nous ajoutons l'axiome de compréhension~: étant donnée une formule $\varFF$ et
+un ensemble $X$, on peut construire l'ensemble $\compr{x \in X}{\varFF(x)}$ des
+éléments de $x$ vérifiant $\varFF$.
 
 La restriction de la compréhension à des parties d'un ensemble s'explique par le
 paradoxe de Russell~: si l'on pouvait construire un ensemble pour chaque
-formule, on pourrait construire $\{ x \mid x\notin x\}$, qui appartient à
+formule, on pourrait construire $\compr{x}{x\notin x}$, qui appartient à
 lui-même si et seulement s'il n'appartient pas à lui-même.
 
 Un autre problème doit être contourné, et il est la raison pour laquelle on
 parle de schéma d'axiomes et non d'axiome. Si l'on voulait définir le schéma
-avec ce qui a été dit, celui-ci commencerait moralement par $\forall \varphi$~:
+avec ce qui a été dit, celui-ci commencerait moralement par $\forall \varFF$~:
 cela n'est pas une quantification du premier ordre, et il n'est donc pas
-possible de donner un axiome pour toutes les formules. A la place, on introduit
-un schéma d'axiomes, c'est-à-dire une infinité d'axiomes ayant tous la même
-forme et dépendant d'un paramètre que l'on quantifie sur les formules.
+possible de donner un axiome pour toutes les formules. \'A la place, on
+introduit un schéma d'axiomes, c'est-à-dire une infinité d'axiomes ayant tous
+la même forme et dépendant d'un paramètre que l'on quantifie sur les formules.
 
 \begin{axiom}[Schéma de compréhension]\label{ax.ZF.compre}
-  Soit $\varphi(x_0,\ldots,x_n)$ une formule sur $\mathcal L_{\mathrm{ZF}}$
+  Soit $\varFF(x_0,\ldots,x_n)$ une formule sur $\SignP{\ZF}$
   à $n$ variables libres. Alors pour tous ensembles $X$ et $a_1,\ldots,a_n$, il
-  existe l'ensemble $\{x\in X \mid \varphi(x,a_1,\ldots,a_n)\}$, ce qui s'écrit
+  existe l'ensemble $\compr{x\in X}{\varFF(x,a_1,\ldots,a_n)}$, ce qui s'écrit
   formellement
   \[\forall X\forall a_1\;\cdots\;a_n\exists y,\qquad
-    \forall x, x \in y \iff (x\in X\land \varphi(x,a_1,\ldots,a_n))\]
+    \forall x, x \in y \iff (x\in X\land \varFF(x,a_1,\ldots,a_n))\]
 \end{axiom}
 
 \begin{notation}
-  On définit donc la notation $\{x\in X\mid \varphi(x,a_1,\ldots,a_n)\}$ pour
+  On définit donc la notation $\compr{x\in X}{\varFF(x,a_1,\ldots,a_n)}$ pour
   l'ensemble précédent.
 \end{notation}
 
@@ -206,14 +207,14 @@ forme et dépendant d'un paramètre que l'on quantifie sur les formules.
   Montrer que pour tous $x,y,x',y'$, $(x,y) = (x',y')$ si et seulement si
   $x=x'$ et $y=y'$.
 
-  Construire un prédicat $\varphi(x,y,z)$ tel que $\varphi(x,y,z)$ est vrai
+  Construire un prédicat $\varFF(x,y,z)$ tel que $\varFF(x,y,z)$ est vrai
   si et seulement si $z = (x,y)$. En déduire en considérant une partie bien
   choisie de $\powerset (\powerset (\powerset(x\cup y)))$ que
-  \[x\times y \defeq \{(a,b)\mid a \in x, b \in y\}\]
+  \[x\times y \defeq \compr{(a,b)}{a \in x, b \in y}\]
   est un ensemble bien défini.
 \end{exercise}
 
-Le second axiome, le schéma d'axiomes de remplacement, peut être vu comme une
+Le second schéma, le schéma d'axiomes de remplacement, peut être vu comme une
 version plus forte de la compréhension. Plutôt que de s'intéresser à filtrer des
 éléments dans un ensemble plus gros, le but de ce schéma d'axiomes est de
 construire un ensemble par une fonction. Comme la notion de fonction n'est pas
@@ -221,27 +222,27 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
 
 \begin{definition}[Relation fonctionnelle]
   Une relation binaire est ici une formule à deux variables libres. On dit
-  qu'une relation $R(x,y)$ est fonctionnelle si pour chaque $x$, il existe au
-  plus un $y$ tel que $R(x,y)$. On écrira pour raccourcir
-  \[\Funct(R) \defeq \forall x\forall y\forall z, R(x,y)\land R(x,z)\implies
-  y = z\]
+  qu'une relation $\varRR(x,y)$ est fonctionnelle si pour chaque $x$, il existe
+  au plus un $y$ tel que $\varRR(x,y)$. On écrira pour raccourcir
+  \[\Funct(\varRR) \defeq \forall x\forall y\forall z,
+  \varRR(x,y)\land \varRR(x,z)\implies y = z\]
 
-  Pour une relation fonctionnelle $R(x,y)$, on définit la collection du domaine
-  de $R$~:
-  \[\dom(R)(x)\defeq \exists y. R(x,y)\]
-  et la collection de l'image de $R$~:
-  \[\im(R)(y)\defeq \exists x. R(x,y)\]
+  Pour une relation fonctionnelle $\varRR(x,y)$, on définit la collection du
+  domaine de $\varRR$~:
+  \[\dom(\varRR)(x)\defeq \exists y, \varRR(x,y)\]
+  et la collection de l'image de $\varRR$~:
+  \[\im(\varRR)(y)\defeq \exists x, \varRR(x,y)\]
 \end{definition}
 
 \begin{axiom}[Schéma de remplacement]\label{ax.ZF.repl}
-  Pour toute formule $R(x_0,\ldots,x_{n+1})$, pour tous ensembles
-  $X,a_1,\ldots,a_n$, si $R(a_1,\ldots,a_n)$ est une relation fonctionnelle en
-  ses deux dernières variables libres alors l'ensemble image de
-  $R(a_1,\ldots,a_n)$ par $X$ est aussi un ensemble~:
+  Pour toute formule $\varFF(x_0,\ldots,x_{n+1})$, pour tous ensembles
+  $X,a_1,\ldots,a_n$, si $\varFF(a_1,\ldots,a_n)$ est une relation fonctionnelle
+  en ses deux dernières variables libres alors l'ensemble image de
+  $\varFF(a_1,\ldots,a_n)$ par $X$ est aussi un ensemble~:
   \begin{multline*}
-    \forall a_1\;\cdots\;a_n, \Funct(R(a_1,\ldots,a_n))\implies \forall X,
+    \forall a_1\;\cdots\;a_n, \Funct(\varFF(a_1,\ldots,a_n))\implies \forall X,
     \exists y,\\
-    \forall x, x \in y \iff (\exists z, z\in X \land R(a_1,\ldots,a_n,z,x))
+    \forall x, x \in y \iff (\exists z, z\in X \land \varFF(a_1,\ldots,a_n,z,x))
   \end{multline*}
 \end{axiom}
 
@@ -258,20 +259,21 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
   \item le schéma de remplacement total, énonçant la même chose que le schéma
     de remplacement mais demandant à la relation fonctionnelle d'être totale,
     c'est-à-dire de vérifier le prédicat
-    \[\Funct_{\mathrm{tot}}(R) \defeq \forall x \exists! y, R(x,y)\]
+    \[\FunTot(\varRR) \defeq \forall x \exists! y, \varRR(x,y)\]
     plutôt que $\Funct$.
   \end{itemize}
 
+  \noindent
   En pratique, on utilise plutôt ces deux schémas indépendamment. Dans le cas
   où on a défini une fonction $f$ et pour $X$ un ensemble, on notera alors
-  \[\{f(x) \mid x \in X\}\]
+  \[\remplx{f}{X}\]
   l'ensemble construit par cet axiome qui est défini de façon unique. Dire
   qu'un objet $y$ appartient à cet ensemble revient donc à dire qu'il existe
   $x \in X$ tel que $y = f(x)$.
 \end{remark}
 
 \begin{exercise}\label{exo.ZF.prod2}
-  En réutilisant le prédicat $\varphi$ de l'\cref{exo.ZF.prod}, montrer grâce au
+  En réutilisant le prédicat $\varFF$ de l'\cref{exo.ZF.prod}, montrer grâce au
   schéma d'axiomes de remplacement que pour tous ensembles $x,y$, l'ensemble
   $x\times y$ est bien défini même sans l'axiome de l'ensemble des parties.
 \end{exercise}
@@ -289,14 +291,15 @@ Donnons aussi l'axiome de l'univers non vide.
 
 \begin{exercise}
   Montrer que l'axiome précédent est équivalent à l'existence de l'ensemble vide
-  $\varnothing$ défini par \[\forall z, z\notin \varnothing\]
+  $\vide$ défini par
+  \[\forall z, z\notin \vide\]
   (où $x\notin y$ signifie $\lnot(x\in y)$) 
 \end{exercise}
 
 \begin{remark}
   Le fait d'ajouter ou non cet axiome dépend de si l'on considère qu'un modèle
   est nécessairement non vide (de façon équivalente, que l'énoncé
-  $(\forall x, \varphi(x)) \implies (\exists x,\varphi(x))$ est vérifié). Avec
+  $(\forall x, \varFF(x)) \implies (\exists x,\varFF(x))$ est vérifié). Avec
   la syntaxe de preuves donnée dans le \cref{chp.logpred}, cet axiome n'est pas
   nécessaire. Nous verrons de toute façon que l'axiome de l'infini nous donnera
   automatiquement un ensemble dans notre univers, mais nous présentons cet
@@ -308,40 +311,39 @@ Donnons aussi l'axiome de l'univers non vide.
 
 Pour introduire l'axiome suivant, il nous faut d'abord motiver l'utilisation de
 ses éléments constitutifs. L'ensemble mathématique le plus élémentaire que l'on
-est amené à étudier est certainement $\mathbb N$, l'ensemble des entiers
+est amené à étudier est certainement $\bN$, l'ensemble des entiers
 naturels. Une formalisation habituelle de cet ensemble demande en général les
-trois constituants suivant:
+trois constituants suivant~:
 \begin{itemize}
 \item l'élément $0$
 \item la fonction unaire $\Ss$ (successeur), correspondant à $n \mapsto n + 1$
 \item le principe de récurrence, que l'on peut encoder dans les ensembles par le
-  fait que si $F\subseteq\mathbb N$, $0 \in F$ et
-  $\forall n, n\in F \implies \Ss n \in F$ alors $F = \mathbb N$.
+  fait que si $F\subseteq\bN$, $0 \in F$ et
+  $\forall n, n\in F \implies \Ss n \in F$ alors $F = \bN$.
 \end{itemize}
 
-Chercher à définir $\mathbb N$ dans ZFC nous demande donc de définir ces
-éléments. Un candidat naturel à $0$ est $\varnothing$~: les deux sont les objets
-nuls par excellence, et $\varnothing$ est le premier ensemble que l'on peut
+Chercher à définir $\bN$ dans $\ZFC$ nous demande donc de définir ces
+éléments. Un candidat naturel à $0$ est $\vide$~: les deux sont les objets
+nuls par excellence, et $\vide$ est le premier ensemble que l'on peut
 construire. La question de savoir ce qu'est $\Ss x$ pour un ensemble $x$ est
 alors naturelle~: pour cela, nous utilisons le codage de Von Neumann consistant
-à coder l'entier naturel $n$ par $\{0,\ldots,n-1\}$. En effet, cela nous offre
+à coder l'entier naturel $n$ par $\intervInt{n}$. Cet encodage nous offre
 une définition simple à la fonction $S$~:
 \[\Ss x\defeq x\cup \{x\}\]
 
 Remarquons que l'on peut déjà construire tous les entiers que l'on souhaite~:
 on peut construire $0$ et itérer la fonction $\Ss$. Malheureusement, rien ne
-nous dit que la collection $\{S^n\;0\mid n \in \mathbb N\}$ est bien elle-même
+nous dit que la collection $\compr{\Ss^n\;0}{n \in \bN}$ est bien elle-même
 un ensemble (où le $\bN$ apparaissant dans la définition est l'ensemble
-des
-entiers naturels de notre méta-théorie, nos entiers au sens intuitif). Pour
+des entiers naturels de notre méta-théorie, nos entiers au sens intuitif). Pour
 pallier ce problème, et pour éviter d'utiliser notre méta-théorie explicitement,
-on va à la place définir $\mathbb N$ comme le plus petit ensemble contenant $0$
+on va à la place définir $\bN$ comme le plus petit ensemble contenant $0$
 et stable par la fonction $\Ss$. Il nous reste à savoir qu'un ensemble contenant
-$0$ et stable par $S$ existe bien.
+$0$ et stable par $\Ss$ existe bien.
 
 \begin{axiom}[Infini]\label{ax.ZF.infini}
-  Il existe un ensemble contenant $\varnothing$ et stable par $\Ss$~:
-  \[\exists x, \qquad \varnothing \in x \land
+  Il existe un ensemble contenant $\vide$ et stable par $\Ss$~:
+  \[\exists x, \qquad \vide \in x \land
   (\forall y, y \in x \implies \Ss y\in x)\]
 \end{axiom}
 
@@ -351,9 +353,9 @@ $0$ et stable par $S$ existe bien.
   l'ensemble vide). Donnons ainsi une version de l'axiome de l'infini ne
   mentionnant que la relation $\in$ et l'égalité~:
   \begin{multline*}
-    \exists x, \quad
-    (\forall y, (\forall z, \lnot z \in y) \implies y \in x) \land\\
-    (\forall y, y \in x \implies \\
+    \exists x,
+    (\forall y, (\forall z, \lnot z \in y) \implies y \in x) \mathrel{\land}\\
+    (\forall y, y \in x \implies
     (\forall z, (\forall a, a \in z \iff a = y \lor a \in y) \implies
     z \in x))
   \end{multline*}
@@ -366,51 +368,52 @@ $0$ et stable par $S$ existe bien.
 
 \begin{definition}[Entiers naturels]
   Soit $X$ l'ensemble défini par l'axiome de l'infini. On définit alors
-  $\mathbb N$ comme
-  \[\mathbb N \defeq \{x\in X \mid \forall Y, Y\subseteq X\land
-  \varnothing \in Y \land (\forall a, a \in Y \implies \Ss a\in Y) \implies
-  x\in Y\}\]
+  $\bN$ comme
+  \[\bN \defeq \compr{x\in X}{\forall Y, Y\subseteq X\land
+  \vide \in Y \land (\forall a, a \in Y \implies \Ss a\in Y) \implies
+  x\in Y}\]
 \end{definition}
 
+\noindent
 On vérifie maintenant le principe de récurrence.
 
 \begin{theorem}[Récurrence]
-  Soit $F$ une partie de $\mathbb N$ telle que $\varnothing \in F$ et telle que
-  $\forall n, n \in F \implies \Ss n \in F$, alors $F = \mathbb N$.
+  Soit $F$ une partie de $\bN$ telle que $\vide \in F$ et telle que
+  $\forall n, n \in F \implies \Ss n \in F$, alors $F = \bN$.
 \end{theorem}
 
 \begin{proof}
-  Comme $F$ est une partie de $\mathbb N$, il nous suffit de montrer que
-  $\mathbb N \subseteq F$. Par transitivité de l'inclusion,
-  $F\subseteq X$ pour $X$ l'ensemble à partir duquel $\mathbb N$ a été défini.
+  Comme $F$ est une partie de $\bN$, il nous suffit de montrer que
+  $\bN \subseteq F$. Par transitivité de l'inclusion,
+  $F\subseteq X$ pour $X$ l'ensemble à partir duquel $\bN$ a été défini.
   On sait de plus que
-  \[x \in \mathbb N \implies \forall Y, Y\subseteq X \land
-  \varnothing \in Y \land (\forall a, a \in Y \implies \Ss a \in Y) \implies
+  \[x \in \bN \implies \forall Y, Y\subseteq X \land
+  \vide \in Y \land (\forall a, a \in Y \implies \Ss a \in Y) \implies
   x\in Y\]
-  d'où, en spécialisant $Y$ en $F$, et sachant que $\varnothing\in F$ et
+  d'où, en spécialisant $Y$ en $F$, et sachant que $\vide\in F$ et
   $\forall n, n \in F \implies \Ss n \in F$, il vient que
-  \[x\in \mathbb N \implies x \in F\] ce qui est exactement
-  $\mathbb N\subseteq F$, d'où le résultat.
+  \[x\in \bN \implies x \in F\] ce qui est exactement
+  $\bN\subseteq F$, d'où le résultat.
 \end{proof}
 
 \begin{notation}
   A partir de maintenant, pour fluidifier l'écriture, on adoptera un style plus
   laxiste sur l'écriture des propositions. Par exemple on se permettra d'écrire
-  $\forall x \in X, \psi$ pour $\forall x, x\in X \implies \psi$ et tous les
+  $\forall x \in X, \varFP$ pour $\forall x, x\in X \implies \varFP$ et tous les
   légers abus de notations du même genre.
 \end{notation}
 
 \begin{remark}
-  Pour que la définition de $\mathbb N$ soit robuste, il convient de vérifier
+  Pour que la définition de $\bN$ soit robuste, il convient de vérifier
   que le $X$ utilisé ne change pas le résultat final~: c'est le cas. En effet,
-  si deux ensembles $X$ et $Y$ contiennent $\varnothing$ et sont stables par
-  successeur, alors notons $\mathbb N_X$ et $\mathbb N_Y$ les deux versions de
-  $\mathbb N$ obtenues respectivement avec $X$ et avec $Y$. Alors $X\cap Y$
-  contient $\varnothing$ et est stable par successeur, donc $X\cap Y$ contient
-  $\mathbb N_X$ et $\mathbb N_Y$, mais alors on en déduit que $\mathbb N_Y$ est
-  une partie de $X$ contenant $\varnothing$ et stable par successeur, donc
-  $\mathbb N_X \subseteq \mathbb N_Y$. De même $\mathbb N_Y\subseteq\mathbb N_X$
-  donc, finalement, $\mathbb N_X = \mathbb N_Y$.
+  si deux ensembles $X$ et $Y$ contiennent $\vide$ et sont stables par
+  successeur, alors notons $\bN_X$ et $\bN_Y$ les deux versions de
+  $\bN$ obtenues respectivement avec $X$ et avec $Y$. Alors $X\cap Y$
+  contient $\vide$ et est stable par successeur, donc $X\cap Y$ contient
+  $\bN_X$ et $\bN_Y$, mais alors on en déduit que $\bN_Y$ est
+  une partie de $X$ contenant $\vide$ et stable par successeur, donc
+  $\bN_X \subseteq \bN_Y$. De même $\bN_Y\subseteq\bN_X$ donc, finalement,
+  $\bN_X = \bN_Y$.
 \end{remark}
 
 \subsection{Axiome du choix et fonctions}
@@ -433,30 +436,33 @@ définition de cet axiome.
 
 \begin{axiom}[Choix]\label{ax.ZF.AC}
   Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
-  disjoints. Alors il existe un ensemble $C$ tel que pour tout $x\in X$,
-  $C\cap x$ est un singleton. \'Ecrit formellement~:
+  disjoints. Alors il existe un ensemble $\varCh$ tel que pour tout $x\in X$,
+  $\varCh\cap x$ est un singleton. \'Ecrit formellement~:
   \begin{multline*}
-  \forall X, \varnothing\neq X \land \varnothing\notin X \land
+  \forall X, \vide\notin X \land
   (\forall x,y \in X, x \cap y \neq
-  \varnothing \implies x = y)
-  \\\implies \exists C, \forall x \in X, \exists y, C \cap x = \{y\}
+  \vide \implies x = y)
+  \\\implies \exists \varCh, \forall x \in X, \exists y, \varCh \cap x = \{y\}
   \end{multline*}
 \end{axiom}
 
+\noindent
 Il existe plusieurs reformulations naturelles de l'axiome du choix. Pour
 celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
 
 \begin{definition}[Fonction]
-  Soient $X,Y$ deux ensembles. Une fonction $f : X \to Y$ est une partie
-  $\Gamma_f\subseteq X \times Y$ (appelée graphe de $f$)  telle que le prédicat
-  $(x,y)\in \Gamma$, défini pour $x\in X$ et $y\in Y$, est une relation
-  fonctionnelle. On désigne par $\dom(f)$ et $\im(f)$ les ensembles associés à
-  la relation fonctionnelle. On dit que $f$ est partielle si $\dom(f) \neq X$,
-  et totale si $\dom(f) = X$.
+  Soient $X,Y$ deux ensembles. Une fonction partielle $f : X \partialto Y$ est
+  une partie $\varGrP{f}\subseteq X \times Y$ (appelée graphe de $f$) telle que
+  le prédicat $(x,y)\in \varGrP{f}$, défini pour $x\in X$ et $y\in Y$, est une
+  relation fonctionnelle. On désigne par $\dom(f)$ et $\im(f)$ les ensembles
+  associés à la relation fonctionnelle. On dit que $f$ est partielle si
+  $\dom(f) \neq X$, et totale si $\dom(f) = X$. Pour une fonction totale
+  $f$, on notera $f : X \to Y$, et on appellera simplement \og fonction\fg
+  les fonctions totales.
 
   Pour deux ensembles $X,Y$, on note par $\Funct(X,Y)$ l'ensemble des fonctions
-  de $X$ dans $Y$~:
-  \[\Funct(X,Y) \defeq \{f : X \to Y\}\]
+  (totales) de $X$ dans $Y$~:
+  \[\Funct(X,Y) \defeq \compr{f \subseteq X \times Y}{\FunTot(``(x,y)\in f")}\]
 \end{definition}
 
 \begin{exercise}
@@ -465,14 +471,13 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
 \end{exercise}
 
 \begin{remark}
-  Dire que $f$ est partielle, dans ce cadre, n'est pas bien défini. En effet, on
-  peut toujours prendre une fonction $f : X \to Y$ et l'étendre en
-  $f : \Ss X \to Y$~: la fonction est la même mais cette propriété change. Pour
-  éviter cela, une fonction consistera souvent plutôt en un triplet
-  $(X,Y,\Gamma_f)$, mais nous nous concentrerons simplement sur $\Gamma_f$. Il y
-  a donc un abus de notation ici lorsque nous construirons par exemple une
-  fonction en construisant juste son graphe, mais celui-ci reste léger car on
-  connait toujours grâce au contexte les deux autres composantes de la fonction.
+  Dans la présentation faite ici, la notion de totalité est relative à des
+  ensembles de départ et d'arrivée fixés. On considère que si $f$ et $g$ ont
+  le même graphe, alors $f = g$. Suivant les auteurs, on peut croiser un
+  formalisme considérant qu'une fonction $f : X \to Y$ est un triplet
+  $(X,Y,\varGrP{f})$. \'Etant donné que nous étudierons presque toujours des
+  fonctions dont l'ensemble de départ et d'arrivée sont précisés, ces deux
+  présentations sont interchangeables.
 \end{remark}
 
 %\begin{notation}
@@ -517,42 +522,40 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
   symbole de fonction correspondant, pour externaliser l'objet ensembliste
   interne (et ainsi parler dans notre langage de la fonction $f$ associée).
   Il existe plusieurs façons de traiter formallement cet ajout. On peut
-  par exemple ajouter une opération agissant sur tout $\mathcal U$ de la façon
+  par exemple ajouter une opération agissant sur tout $\unZF$ de la façon
   suivante~:
-  \[\mathrm{App}(f,x,y) \defeq (x,y) \in \Gamma_f\]
-  Cette formule $\mathrm{App}$ définit une fonction partielle qu'on peut rendre
-  totale \latinexpr{e.g.} en ajoutant que s'il n'existe aucun $y$ tel que
-  $(x,y) \in \Gamma_f$, alors $\mathrm{App}(f,x,z)$ est vraie pour un $z$
-  quelconque. On peut ainsi ajouter un symbole de fonction $\mathrm{App}$ et
-  considérer que $f(x)$ est une réécriture plus lisible du symboles de
-  fonction associé à $\mathrm{App}(f,x)$.
+  \[\App(X,Y,f,x,y) \defeq x \in X \land y \in Y \land (x,y) \in \varGrP{f}\]
+  Cette formule $\App$ définit une fonction partielle qu'on peut rendre
+  totale \latinexpr{e.g.} en ajoutant que s'il n'existe aucun $y$ correspodnant
+  à un $x$ donné, alors $\App(X,Y,f,x,z)$ est vraie pour un $z$
+  quelconque (typiquement $\vide$). On peut ainsi ajouter un symbole de fonction
+  $\App$ et considérer que $f(x)$ est une réécriture plus lisible du symboles de
+  fonction associé à $\App(X,Y,f,x)$.
 \end{notation}
 
 \begin{notation}
   Pour définir une fonction, on utilisera généralement la notation
-  \[\begin{array}{ccccc}
-  f & : & X & \longrightarrow & Y \\
-  & & x & \longmapsto & t
-  \end{array}\]
+  \[\makeFun{f}{X}{Y}{x}{t}\]
   où $t$ est un terme pouvant faire intervenir la variable $x$, permettant de
-  donner une description fiable du graphe $\Gamma_f$, ainsi que des ensembles
+  donner une description fiable du graphe $\varGrP{f}$, ainsi que des ensembles
   $X,Y$ respectivement de départ et d'arrivée. Dans le cas où on souhaite
   uniquement désigner le graphe de la fonction, on pourra écrire $x \mapsto t$
   directement.
 \end{notation}
 
+\noindent
 On définit de plus les notions d'injectivité, de surjectivité et de bijectivité.
 
 \begin{definition}[Injectivité, surjectivité, bijectivité]
-  Une fonction $f : A \to B$ est dite injective si chaque élément $b\in B$ a au
+  Une fonction $f : X \to Y$ est dite injective si chaque élément $y\in Y$ a au
   plus un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
-  \[\forall a_0,a_1\in A, f(a_0) = f(a_1)\implies a_0 = a_1\]
+  \[\forall x_0,x_1\in X, f(x_0) = f(x_1)\implies x_0 = x_1\]
 
-  Une fonction $f : A \to B$ est dite surjective si tout élément $b\in B$ a au
+  Une fonction $f : X \to Y$ est dite surjective si tout élément $y\in Y$ a au
   moins un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
-  \[\forall b\in B, \exists a \in A, f(a) = b\]
+  \[\forall y\in Y, \exists x \in X, f(x) = y\]
 
-  Une fonction $f : A \to B$ est dite bijective si elle est à la fois injective
+  Une fonction $f : X \to Y$ est dite bijective si elle est à la fois injective
   et surjective.
 \end{definition}
 
@@ -560,13 +563,13 @@ En combinant notre construction de $\bN$ aux considérations fonctionnelles, on
 en vient à définir le principe de récursion sur $\bN$.
 
 \begin{exercise}
-  Montrer que l'on peut définir des fonctions par récursion sur $\mathbb N$,
+  Montrer que l'on peut définir des fonctions par récursion sur $\bN$,
   c'est-à-dire montrer que si l'on a un ensemble $X$, un élément $x_0\in X$ et
-  une fonction $f_{\Ss} : \mathbb N \times X \to X$ alors il existe une unique
-  fonction $f : \mathbb N \to X$ telle que
+  une fonction $f_{\Ss} : \bN \times X \to X$ alors il existe une unique
+  fonction $f : \bN \to X$ telle que
   \[\begin{cases}
   f(0) = x_0\\
-  \forall n \in \mathbb N, f(\Ss n) = f_{\Ss}(n,f(n))
+  \forall n \in \bN, f(\Ss n) = f_{\Ss}(n,f(n))
   \end{cases}\]
 \end{exercise}
 
@@ -581,61 +584,62 @@ en considérant seulement ses projections.
 
 \begin{exercise}
   Montrer que pour tout ensemble $X$, il existe une unique fonction
-  $! : \varnothing \to X$.
+  $\mathord{!} : \vide \to X$.
 \end{exercise}
 
 Donnons maintenant deux nouvelles formulations de l'axiome du choix. Dans ces
-formulations, plutôt que d'isoler un ensemble $C$ intersectant chaque élément
-d'un ensemble $X$ en des singletons, on considère directement une fonction qui
-va, à un ensemble $X$, associer à chaque $x \in X$ un élément de $x$. On appelle
-une telle fonction une fonction de choix, et l'axiome du choix peut se formuler
-en un principe d'existence de fonctions de choix.
+formulations, plutôt que d'isoler un ensemble $\varCh$ intersectant chaque
+élément d'un ensemble $X$ en des singletons, on considère directement une
+fonction qui va, à un ensemble $X$, associer à chaque $x \in X$ un élément de
+$x$. On appelle une telle fonction une fonction de choix, et l'axiome du choix
+peut se formuler en un principe d'existence de fonctions de choix.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
   \[\forall x, %\varnothing\neq x \land
-  \varnothing\notin x \implies
+  \vide\notin x \implies
   \exists f : x \to \bigcup x, \forall y \in x, f(y) \in y\]
 \end{proposition}
 
 \begin{proof}
   Supposons l'axiome du choix. On considère un ensemble $x$ dont tous les
   éléments sont non vides. On définit alors l'ensemble
-  \[C_0\defeq \{\{(y,z)\mid z \in y\}\mid y \in x\}\]
-  Comme $x$ n'a pas d'élément vide, chaque élément de $C_0$ est non vide. De
-  plus, si $a \neq b \in C_0$, alors
-  $a = \{(a,y)\mid y \in a\}$ et $b = \{(b,y)\mid y \in b\}$, donc
-  $a\cap b = \varnothing$. On peut donc appliquer l'axiome du choix sur
-  $C_0$ pour trouver $C$ tel que pour tout $y\in x$,
-  \[\{(y,z)\mid z \in y\}\cap C = \{(y,f(y))\}\]
-  donc $C\cap \bigcup C_0$ définit exactement une relation fonctionnelle $f$
-  (à $y$ on n'associe qu'une seule image), et par définition de $C_0$ on sait
-  que $f(y)\in y$.
+  \[\varCh_0\defeq \compr{\compr{(y,z)}{z \in y}}{y \in x}\]
+  Comme $x$ n'a pas d'élément vide, chaque élément de $\varCh_0$ est non vide.
+  De plus, si $a \neq b \in \varCh_0$, alors
+  $a = \compr{(a_0,y)}{y \in a_0}$ et $b = \compr{(b_0,y)}{y \in b_0}$, donc
+  $a\cap b = \vide$ en considérant la première coordonnée de chaque élément.
+  On peut donc appliquer l'axiome du choix sur
+  $\varCh_0$ pour trouver $\varCh$ tel que pour tout $y\in x$,
+  \[\compr{(y,z)}{z \in y}\cap \varCh = \{(y,y_0)\}\]
+  donc $\varCh\cap \bigcup \varCh_0$ définit exactement une relation
+  fonctionnelle $f$ (à $y$ on n'associe qu'une seule image $y_0$), et par
+  définition de $\varCh_0$ on sait que $f(y)\in y$.
 
   Supposons qu'on possède une fonction de choix pour tout ensemble sans élément
   vide. Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
   disjoints. On peut alors trouver $f : X \to \bigcup X$ telle que $f(x)\in x$
-  pour tout $x\in X$. Soit alors $C = \im(f)$. Comme $f(x)\in x$ et tous les
-  éléments de $X$ sont deux à deux disjoints, on en déduit que $C\cap x$
-  contient au plus un élément, pour chaque $x\in X$. Comme de plus
-  $f(x) \in x$, $C\cap x$ contient au moins un élément. Donc $C\cap x$ est un
-  singleton.
+  pour tout $x\in X$. Soit alors $\varCh = \im(f)$. Comme $f(x)\in x$ et tous
+  les éléments de $X$ sont deux à deux disjoints, on en déduit que
+  $\varCh\cap x$ contient au plus un élément, pour chaque $x\in X$. Comme de
+  plus $f(x) \in x$, $\varCh\cap x$ contient au moins un élément. Donc
+  $\varCh\cap x$ est un singleton.
 \end{proof}
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
   \[\forall x, %x\neq\varnothing\implies
-  \exists f : \powerset (x) \backslash \{\varnothing\} \to x,
-  \forall y \in \powerset(x)\backslash \{\varnothing\}, f(y)\in y\]
+  \exists f : \powerset (x) \setminus \{\vide\} \to x,
+  \forall y \in \powerset(x)\setminus \{\vide\}, f(y)\in y\]
 \end{proposition}
 
 \begin{proof}
   Cette formulation est un cas particulier de la formulation précédente, puisque
-  $\powerset(x)\setminus\{\varnothing\}$ ne contient que des éléments non vides.
+  $\powerset(x)\setminus\{\vide\}$ ne contient que des éléments non vides.
 
   Réciproquement, supposons qu'on a $x$ dont les éléments sont non
   vides. On a alors
-  \[x\subseteq \powerset\bigg(\bigcup x\bigg)\setminus\{\varnothing\}\]
+  \[x\subseteq \powerset\bigg(\bigcup x\bigg)\setminus\{\vide\}\]
   d'où le résultat en spécialisant une fonction de choix donnée par hypothèse
   sur $x$.
 \end{proof}
@@ -645,13 +649,13 @@ simplement considérer comme une généralisation de l'opération $\times$.
 
 \begin{definition}[Produit cartésien quelconque]
   Soit $X$ un ensemble, on définit $\prod X$ par
-  \[\prod X \defeq \Big\{f : X \to \bigcup X \;\Big|\; \forall x \in X, f(x)\in
-  x\Big\}\]
+  \[\prod X \defeq \compr{f : X \to \bigcup X}{\forall x \in X, f(x)\in x}\]
 
   Si $\{X_i\}_{i\in I}$ est une famille d'ensembles (c'est-à-dire une fonction
-  $g : i \mapsto X_i$) alors on considère que
-  \[\prod_{i\in I} X_i \defeq \Big\{ f : I \to \bigcup_{i\in I} X_i\;\Big|\;
-  \forall i \in I, f(i) \in X_i\Big\}\]
+  $g : i \mapsto \unZF$, \textit{i.e.} une relation fonctionnelle entre un
+  ensemble $I$ et des ensembles quelconques) alors on considère que
+  \[\prod_{i\in I} X_i \defeq
+  \compr{ f : I \to \bigcup_{i\in I} X_i}{\forall i \in I, f(i) \in X_i}\]
 \end{definition}
 
 L'axiome du choix peut alors se réécrire en disant que le produit de toute
@@ -659,8 +663,8 @@ famille non vide d'ensembles non vides est lui-même non vide.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante :
-  \[\forall x, x\neq \varnothing \land (\forall y \in x, y \neq \varnothing)
-  \implies \prod x \neq \varnothing\]
+  \[\forall x, x\neq \vide \land (\forall y \in x, y \neq \vide)
+  \implies \prod x \neq \vide\]
 \end{proposition}
 
 \begin{proof}
@@ -676,14 +680,13 @@ non ajouté à ZFC~: ici, nous considérerons que ZFC le contient. Cet axiome
 empêche notamment l'existence de cycles d'appartenance, par exemple d'ensemble
 $x$ tel que
 $x\in x$. Formellement, l'axiome énonce que la relation $\in$ sur l'univers
-ensembliste $\mathcal U$ est bien fondée au sens de la \cref{def.wf.ord}, à ceci
+ensembliste $\unZF$ est bien fondée au sens de la \cref{def.wf.ord}, à ceci
 près que la relation n'est pas un ordre.
 
 \begin{axiom}[Fondation]\label{ax.ZF.AF}
   Pour tout ensemble $x$ non vide, il existe $y\in x$ tel que
-  $x\cap y = \varnothing$. Formellement, cela s'écrit :
-  \[\forall x, x\neq\varnothing \implies \exists y \in x, x\cap y =
-  \varnothing\]
+  $x\cap y = \vide$. Formellement, cela s'écrit :
+  \[\forall x, x\neq\vide \implies \exists y \in x, x\cap y = \vide\]
 \end{axiom}
 
 \begin{remark}
@@ -692,10 +695,9 @@ près que la relation n'est pas un ordre.
   La bonne fondation de $\in$ se traduit, de façon littérale, par le fait que
   pour tout ensemble $x$ il existe un ensemble $y$ minimal pour $\in$ dans $x$.
   Être minimal pour $\in$ dans $x$ signifie qu'il n'existe aucun élément
-  $z \in x$ tel que $z \in y$, ce qui revient à dire que
-  $x \cap y = \varnothing$. Ainsi, il existe $y$ tel que
-  $x \cap y = \varnothing$, mais cette proposition est à considérer comme
-  portant avant tout sur la relation $\in$ elle-même.
+  $z \in x$ tel que $z \in y$, ce qui revient à dire que $x \cap y = \vide$.
+  Ainsi, il existe $y$ tel que $x \cap y = \vide$, mais cette proposition est à
+  considérer comme portant avant tout sur la relation $\in$ elle-même.
 \end{remark}
 
 Si l'on voit un ensemble $x$ comme un arbre, où chaque n\oe ud est un ensemble
@@ -727,21 +729,21 @@ transitif.
 
 \begin{proof}
   Pour construire $\trcl(x)$, on construit la suite d'ensembles
-  $(x_i)_{i\in\mathbb N}$ suivante :
+  $(x_i)_{i\in\bN}$ suivante :
   \begin{itemize}
   \item $x_0 = x$
   \item $x_{i+1} = \bigcup x_i$
   \end{itemize}
-  L'ensemble $\trcl(x)$ est alors $\displaystyle\bigcup_{n\in \mathbb N} x_n$.
+  L'ensemble $\trcl(x)$ est alors $\displaystyle\bigcup_{n\in \bN} x_n$.
 
   Vérifions que $\trcl(x)$ est bien transitif et contient $x$. Comme
   $x_0\subseteq \trcl(x)$ par définition de l'union, $\trcl(x)$ contient $x$.
-  Soient $y\in \trcl(x)$ et $z\in y$. Par définition, il existe $n\in \mathbb N$
+  Soient $y\in \trcl(x)$ et $z\in y$. Par définition, il existe $n\in \bN$
   tel que $y\in x_n$. Alors $z\in x_{n+1}$ puisque $z\in y \in x_n$ et
   $x_{n+1}=\bigcup x_n$. Ainsi $z\in \trcl(x)$.
 
   Soit un ensemble transitif $y$ contenant $x$. Alors par récurrence sur $n$,
-  $x_n\subseteq y$ :
+  $x_n\subseteq y$~:
   \begin{itemize}
   \item par hypothèse, $x\subseteq y$.
   \item si $x_n\subseteq y$, alors soit $z\in x_{n+1}$, par définition on trouve
@@ -749,7 +751,7 @@ transitif.
     Mais $y$ est transitif, donc $z\in y$ : on en déduit que
     $x_{n+1}\subseteq y$.
   \end{itemize}
-  Par récurrence, on en déduit que $\forall n\in\mathbb N, x_n\subseteq y$,
+  Par récurrence, on en déduit que $\forall n\in\bN, x_n\subseteq y$,
   d'où $\trcl(x)\subseteq y$. Comme on a une inclusion, si deux ensembles ont la
   même propriété d'être les plus petits ensembles transitifs contenant $x$,
   alors ils sont inclus l'un dans l'autre et donc égaux, d'où l'unicité.
@@ -757,7 +759,7 @@ transitif.
 
 \begin{exercise}
   Montrer qu'un ensemble $x$ est transitif si et seulement si la propriété
-  suivante est vérifiée :
+  suivante est vérifiée~:
   \[\forall y\in x, y\subseteq x\]
 \end{exercise}
 
@@ -777,7 +779,7 @@ certaines équations d'ensembles sont impossibles sous l'axiome de fondation.
   c'est-à-dire de famille d'ensembles $(x_i)_{i \in \bN}$ vérifiant
   \[\forall i \in \bN, x_{i+1} \in x_i\]
   \textit{Indication~: on pourra considérer l'ensemble
-    $\{ x_i \mid i \in \bN\}$.}
+    $\compr{x_i}{i \in \bN}$.}
 \end{exercise}
 
 Les deux propriétés de bonne fondation de $\in$ et de transitivité mènent au
@@ -787,41 +789,40 @@ simuler par une unique classe transitive bien fondée où la relation est
 directement $\in$.
 
 \begin{lemma}[Effondrement de Mostowski \cite{Mostovski}]\label{lem.most}
-  Soit $\mathcal M$ une classe et $R$ une relation vérifiant :
+  Soit $\varCC$ une classe et $\varRR$ une relation vérifiant :
   \begin{itemize}
-  \item $R$ définit des ensembles, c'est-à-dire que pour tout $x\in \mathcal M$,
-    la collection définie par $R^{-1}[x] \defeq \{y\mid y R x\}$ est un
-    ensemble.
-  \item $R$ est bien fondée, c'est-à-dire :
-    \[\forall X\subseteq \mathcal M, \exists x \in X, R^{-1}[x]\cap X =
-    \varnothing\]
-  \item $R$ est extensionnelle, c'est-à-dire :
-    \[\forall x,y\in \mathcal M, R^{-1}[x] = R^{-1}[y] \implies x = y\]
+  \item $\varRR$ définit des ensembles, c'est-à-dire que pour tout $x\in\varCC$,
+    la collection définie par $\LclR{x} \defeq \compr{y}{y \varRR x}$ est
+    un ensemble.
+  \item $\varRR$ est bien fondée, c'est-à-dire :
+    \[\forall X\subseteq \varCC, \exists x \in X, \LclR{x}\cap X = \vide\]
+  \item $\varRR$ est extensionnelle, c'est-à-dire :
+    \[\forall x,y\in \varRR, \LclR{x} = \LclR{y} \implies x = y\]
   \end{itemize}
 
-  Alors il existe une unique classe $\mathcal N$ transitive et un unique
-  isomorphisme $\phi : \mathcal M\to \mathcal N$ tels que
-  $(\mathcal M,R) \overset{\phi}{\cong} (\mathcal N,\in)$.
+  Alors il existe une unique classe $\varCM$ transitive et un unique
+  isomorphisme $\varCol : \varCC\to \varCM$ tels que
+  $(\varCC,\varRR) \overset{\varCol}{\cong} (\varCM,\in)$.
 \end{lemma}
 
 \begin{remark}
   Nous n'avons pas formellement défini ce qu'est un isomorphisme entre classes.
-  Cette définition est assez naturelle~: étant données deux classes $\mathcal M$
-  et $\mathcal N$ avec chacune une relation $R$ (respectivement $R'$), un
-  isomorphisme $\phi : (\mathcal M,R)\cong (\mathcal N,R')$ est une proposition
-  $\phi$ à deux variables libres telle que, pour une proposition $\psi$
-  définissant $\mathcal M$ et une proposition $\chi$ définissant $\mathcal N$,
-  les propositions suivantes peuvent être prouvées :
+  Cette définition est assez naturelle~: étant données deux classes $\varCC$
+  et $\varCC'$ avec chacune une relation $\varRR$ (respectivement $\varRR'$), un
+  isomorphisme $\varFunCl: (\varCC,\varRR)\cong (\varCC',\varRR')$ est une
+  formule $\varFunCl(x,y)$ à deux variables libres telle que, pour une
+  proposition $\varFP$ définissant $\varCC$ et une proposition $\varFC$
+  définissant $\varCC'$, les propositions suivantes peuvent être prouvées :
   \begin{itemize}
-  \item $\forall x,\forall y,\forall z, \psi(x)\land \chi(y)\land\chi(z)\land
-    \phi(x,y)\land\phi(x,z) \implies y = z$
-  \item $\forall x,\psi(x)\implies \exists y, \chi(y)\land \phi(x,y)$
-  \item $\forall x,\forall y,\forall z, \psi(x)\land\psi(y)\land\chi(z)\land
-    \phi(x,z)\land\phi(y,z)\implies x = y$
-  \item $\forall y,\chi(y)\implies \exists x, \psi(x)\land \phi(x,y)$
-  \item $\forall x,\forall x',\forall y, \forall y', \psi(x)\land\psi(x')\land
-    \chi(y)\land\chi(y')\land\phi(x,y)\land\phi(x',y')\implies
-    (xR x'\iff yR' y')$
+  \item $\forall x,\forall y,\forall z, \varFP(x)\land \varFC(y)\land\varFC(z)
+    \land\varFunCl(x,y)\land\varFunCl(x,z) \implies y = z$
+  \item $\forall x,\varFP(x)\implies \exists y, \varFC(y)\land\varFunCl(x,y)$
+  \item $\forall x,\forall y,\forall z, \varFP(x)\land\varFP(y)\land\varFC(z)
+    \land\varFunCl(x,z)\land\varFunCl(y,z)\implies x = y$
+  \item $\forall y,\varFC(y)\implies \exists x, \varFP(x)\land\varFunCl(x,y)$
+  \item $\forall x,\forall x',\forall y, \forall y', \varFP(x)\land\varFP(x')\land
+    \varFC(y)\land\varFC(y')\land\varFunCl(x,y)\land\varFunCl(x',y')\implies
+    (x\varRR x'\iff y\varRR' y')$
   \end{itemize}
 
   Cependant, nous allons simplement travailler sur les classes comme sur les
@@ -829,106 +830,87 @@ directement $\in$.
   arguments ensemblistes habituels sont les mêmes que celles que nous allons
   faire sur nos classes. Remarquons simplement que ce lemme est, puisqu'il parle
   de classe, un schéma de lemmes paramétré par les propositions définissant
-  $\mathcal M$ et $R$.
+  $\varCC$ et $\varRR$.
 \end{remark}
 
 \begin{proof}
-  Montrons d'abord que si $M_1$ et $M_2$ sont deux classes transitives et que
-  $\theta : M_1\to M_2$ est un isomorphisme pour la relation $\in$, alors
-  $\theta$ est l'identité.
+  Montrons d'abord que si $\varCC_1$ et $\varCC_2$ sont deux classes transitives
+  et que $\varFunCl : \varCC_1\to \varCC_2$ est un isomorphisme pour la relation
+  $\in$, alors $\varFunCl$ est l'identité.
 
-  Par l'absurde, supposons que $\theta$ n'est pas l'identité. Soit alors
-  $C = \{x\mid \theta(x)\neq x\}$, non vide par hypothèse. Soit alors
-  $x_0 \in C$~: $\trcl(\{x_0\}) \cap C$ est un ensemble non vide (il contient au
-  moins $x_0$) et, par
+  Par l'absurde, supposons que $\varFunCl$ n'est pas l'identité. On pose
+  $\varCC_0 \defeq \compr{x}{\varFunCl(x)\neq x}$, non vide par hypothèse. Soit
+  alors $x_0 \in \varCC_0$~: $\trcl(\{x_0\}) \cap \varCC_0$ est un ensemble non
+  vide (il contient au moins $x_0$) et, par
   fondation, il est possible de choisir $x$ minimal, \latinexpr{i.e.}
-  $x \in \trcl(\{x_0\})\cap C$ tel que
-  $x\cap \trcl(\{x_0\})\cap C = \varnothing$. Alors,
-  pour tout $y \in x$, on sait (par minimalité de $x$) que $y\notin C$, donc
-  par définition que $\theta(y) = y$. Mais alors, comme $\theta$ est un
-  isomorphisme pour $\in$~:
+  $x \in \trcl(\{x_0\})\cap \varCC_0$ tel que
+  $x\cap \trcl(\{x_0\})\cap \varCC_0 = \vide$. Alors,
+  pour tout $y \in x$, on sait (par minimalité de $x$) que $y\notin \varCC_0$,
+  donc par définition que $\varFunCl(y) = y$. Mais alors, comme $\varFunCl$ est
+  un isomorphisme pour $\in$~:
   \begin{align*}
-    \theta(x) &= \{ z \in \theta(x)\} \\
-    &= \{ \theta(y) \mid \theta(y) \in \theta(x)\} &
+    \varFunCl(x) &= \{z \in \varFunCl(x)\} \\
+    &= \compr{\varFunCl(y)}{\varFunCl(y) \in \varFunCl(x)} &
     \text{en posant}\; y \defeq \theta^{-1}(z) \\
-    &= \{ \theta(y) \mid y \in x \} \\
-    &= \{ y\mid y \in x \} & \text{par la remarque précédente}\\
-    \theta(x) &= x & \text{par extensionalité}
+    &= \compr{\varFunCl(y)}{y \in x} \\
+    &= \compr{y}{y \in x} & \text{par la remarque précédente}\\
+    \varFunCl(x) &= x & \text{par extensionalité}
   \end{align*}
-  donc $\theta(x) = x$, ce qui contredit le fait que $x$ soit dans $C$.
+  donc $\varFunCl(x) = x$, ce qui contredit le fait que $x$ soit dans $C$.
 
-%  La classe
-%  n'est donc pas vide. On peut donc considérer
-%  $x_0 \in C$, puis par l'axiome de
-%  fondation, $x \in C$ minimal pour $\in$, en prenant $x$ un élément minimal de
-%  $\trcl(x_0)$.
-%  on trouve un élément minimal $x\in C$, et soit $y = \theta(x)$. On
-%  peut alors remarquer que par minimalité de $x$, pour tout $z\in x$,
-%  $\theta(z)=z$, et comme $\theta$ est un isomorphisme on en déduit que
-%  $z\in y$. Ainsi $x\subseteq y$. Il nous reste à montrer que $y\subseteq x$~:
-%  si $z\in y$, alors $z\in M_2$ comme $M_2$ est une classe transitive, donc on
-%  trouve $a\in M_1$ tel que $\theta(a)=z$, mais comme $\theta(a)\in \theta(x)$,
-%  on en déduit que $a\in x$, et puisque $x$ est minimal dans $C$,
-%  $\theta(a)=a$,
-%  c'est-à-dire $z = a$. Donc $y\subseteq x$. On a donc une absurdité étant
-%  donné
-%  que $x = \theta(x)$ : ainsi $C$ est vide, donc $\theta$ est l'identité.
-
-  Reprenons maintenant notre classe $\mathcal M$. On définit alors la classe
-  $\mathcal N$ par l'image de la fonction $\pi$ définie comme suit :
-  \[\begin{array}{rcccl}
-  \pi & : & \mathcal M & \longrightarrow & \mathcal U\\
-  & & x & \longmapsto & \{\pi(y)\mid y \in R^{-1}[x]\}
-  \end{array}\]
-  c'est-à-dire que la relation $\pi$ est définie par la proposition
-  \[\pi(x,z) \defeq z = \{\pi(y)\mid y \in R^{-1}[x]\}\]
+  Reprenons maintenant notre classe $\varCC$. On définit alors la classe
+  $\varCM$ par l'image de la fonction $\varCol$ définie comme suit :
+  \[
+  \makeFun{\varCol}{\varCC}{\unZF}{x}{\compr{\varCol(y)}{y\in\LclR{x}}}
+  \]
+  c'est-à-dire que la relation $\varCM$ est définie par la proposition
+  \[\varCM(x,z) \defeq z = \compr{\varCol(y)}{y \in \LclR{x}}\]
   où l'on prouve par l'absurde que cette proposition vérifie les propriétés d'un
-  isomorphisme entre $(\mathcal M,R)$ et $(\mathcal N,\in)$, en utilisant un
-  principe analogue à la preuve précédente. La classe $\mathcal N$ est définie
+  isomorphisme entre $(\varCC,\varRR)$ et $(\varCM,\in)$, en utilisant un
+  principe analogue à la preuve précédente. La classe $\varCM$ est définie
   par la proposition
-  \[z \in \mathcal N \defeq \exists x\in\mathcal M, \pi(x,z)\]
+  \[z \in \varCM \defeq \exists x\in\varCC, \varCol(x,z)\]
 
   L'unicité découle alors du fait que s'il existe une autre telle classe
-  $\mathcal N'$, alors l'isomorphisme entre elle et $\mathcal N$ vérifie les
+  $\varCM'$, alors l'isomorphisme entre elle et $\varCM$ vérifie les
   hypothèses du résultat intermédiaire, et est donc l'identité. D'où
-  $\mathcal N = \mathcal N'$.
+  $\varCM = \varCM'$.
 \end{proof}
 
 \begin{remark}
-  Notre définition de $\pi$ peut sembler illégitime, étant donné que le
+  Notre définition de $\varCol$ peut sembler illégitime, étant donné que le
   \cref{thm.recur.bf} ne couvre que le cas où le domaine est un ensemble (et
   qu'il est un ordre bien fondé, mais il est assez clair que cela se déroule de
   la même façon pour une relation bien fondée qui n'est pas forcément un ordre).
-  Cependant, on voit que pour définir $\pi(y)$, il suffit de le définir sur
-  un ensemble, celui des éléments inférieurs (comme $R$ définit des ensembles,
-  cela fonctionne bien).
+  Cependant, on voit que pour définir $\varCol(y)$, il suffit de le définir sur
+  un ensemble, celui des éléments inférieurs (comme $\varRR$ définit des
+  ensembles, cela fonctionne bien).
 
-  Ainsi la version purement formelle de $\pi$ devrait être, avec $\varphi$ le
-  prédicat définissant $\mathcal M$~:
+  Ainsi la version purement formelle de $\varCol$ devrait être, avec $\varFF$ le
+  prédicat définissant $\varCC$~:
   \begin{multline*}
-    \pi(x,y) \defeq \exists X,
-    (\forall a \in X, \varphi(a) \land \forall b, b R a \implies b \in X)
-    \land \exists f : X \to \mathcal U, \\(\forall z\in X,
-    \forall Y, (\forall a, a \in Y \iff a R z) \implies
-    f(z) = \{f(a) \mid a R z\})
-    \land f(x) = y
+    \varCol(x,y) \defeq \exists X,
+    (\forall a \in X, \varFF(a) \land \forall b, b\varRR a \implies b \in X)
+    \land \exists f : X \to \unZF, \\(\forall z\in X,
+    \forall Y, (\forall a, a \in Y \iff a \varRR z) \implies
+    f(z) = \compr{f(a)}{a \varRR z})\land f(x) = y
   \end{multline*}
   et l'utilisation du \cref{thm.recur.bf} permet de conclure que cette relation
   est bien fonctionnelle.
 
   Au sein même de cette définition, on voit apparaître l'écriture
-  $f : X \to \mathcal U$, qui peut là encore sembler litigieuse. Une fonction
-  $X \to \mathcal U$ est en fait un ensemble décrivant une relation
+  $f : X \to \unZF$, qui peut là encore sembler litigieuse. Une fonction
+  $X \to \unZF$ est en fait un ensemble décrivant une relation
   fonctionnelle totale dont le domaine est $X$, sans restriction sur l'ensemble
-  d'arrivée. Ces fonctions $X \to \mathcal U$ constituent une classe, mais
+  d'arrivée. Ces fonctions $X \to \unZF$ constituent une classe, mais
   cela n'est pas un problème lorsqu'on effectue une quantification.
 \end{remark}
 
 \begin{remark}
-  Dans la conclusion de la démonstration, dire que $\mathcal N = \mathcal N'$
-  signifie que $x \in \mathcal N \iff x \in \mathcal N'$, \latinexpr{i.e.} que
-  les formules $\varphi$ et $\varphi'$ définissant respectivement $\mathcal N$
-  et $\mathcal N'$ sont équivalentes.
+  Dans la conclusion de la démonstration, dire que $\varCM = \varCM'$
+  signifie que $x \in \varCM \iff x \in \varCM'$, \latinexpr{i.e.} que
+  les formules $\varFF$ et $\varFF'$ définissant respectivement $\varCM$
+  et $\varCM'$ sont équivalentes.
 \end{remark}
 
 \subsection{Résumé~: les fragments de ZFC}\label{subsec.frag.ZFC}
@@ -949,28 +931,27 @@ $\ZF - \AxF$ par exemple. De plus, la théorie $\Zermelo$, de Zermelo, est la
 théorie contenant le schéma d'axiomes de compréhension mais pas de remplacement,
 ne contenant pas l'axiome de fondation et contenant l'axiome de la paire (et les
 axiomes d'extensionalité, de réunion, d'ensemble des parties et de l'infini).
-
-Dans la suite du chapitre, nous n'aurons besoin que de $\mathrm Z - \AxF$.
+Dans la suite du chapitre, nous n'aurons besoin que de $\Zermelo - \AxF$.
 
 \section{Construction des ensembles de nombres}
 
-Nous avons construit $\mathbb N$ directement grâce à l'axiome de l'infini, mais
+Nous avons construit $\bN$ directement grâce à l'axiome de l'infini, mais
 celui-ci n'est pas le seul ensemble de nombres important à construire. Dans
-cette section, nous allons voir la construction de $\mathbb Z, \mathbb Q$ et
-$\mathbb R$, ainsi que leurs propriétés essentielles. Nous allons commencer
-notre étude par celle de $\mathbb N$, puisque nous avons simplement défini cet
+cette section, nous allons voir la construction de $\bZ, \bQ$ et
+$\bR$, ainsi que leurs propriétés essentielles. Nous allons commencer
+notre étude par celle de $\bN$, puisque nous avons simplement défini cet
 ensemble et le principe de récurrence.
 
 \subsection{Les entiers naturels}
 
-Rappelons les points essentiels à propos de $\mathbb N$~: cet ensemble contient
+Rappelons les points essentiels à propos de $\bN$~: cet ensemble contient
 $0$, une fonction $\Ss$ unaire, et le principe de récurrence. De plus, on peut
 définir une fonction par récursion. Nous pouvons donc définir les fonctions
 $+$ et $\times$.
 
 \begin{definition}[Addition, multiplication]
-  On définit la fonction $+ : \mathbb N \times \mathbb N \to \mathbb N$ et la
-  fonction $\times : \mathbb N \times \mathbb N \to \mathbb N$ par récursion
+  On définit la fonction $+ : \bN \times \bN \to \bN$ et la
+  fonction $\times : \bN \times \bN \to \bN$ par récursion
   sur leur second argument~:
   \begin{itemize}
   \item $\forall n \in \mathbb N, n + 0 = n$
@@ -986,25 +967,25 @@ $+$ et $\times$.
 \end{notation}
 
 \begin{property}
-  Les propriétés suivantes sont vérifiées :
+  Les propriétés suivantes sont vérifiées~:
   \begin{itemize}
-  \item $0$ est un élément neutre pour $+$ : pour tout $n\in \mathbb N$,
+  \item $0$ est un élément neutre pour $+$~: pour tout $n\in \bN$,
     $0 + n = n$ et $n + 0 = n$.
-  \item $+$ est commutatif : pour tous $n,m\in\mathbb N$, $n+m=m+n$.
-  \item $+$ est associatif : pour tous $n,m,p\in\mathbb N$,
+  \item $+$ est commutatif~: pour tous $n,m\in\bN$, $n+m=m+n$.
+  \item $+$ est associatif~: pour tous $n,m,p\in\bN$,
     $n+(m+p) = (n+m)+p$.
-  \item $+$ est régulier : pour tous $n,p,m\in\mathbb N$, si $n+m = n+p$ alors
+  \item $+$ est régulier~: pour tous $n,p,m\in\bN$, si $n+m = n+p$ alors
     $m=p$.
-  \item pour tous $n,m\in \mathbb N$, si $n + m = 0$ alors $n=0$ et $m = 0$.
-  \item $+$ distribue sur $\times$ : pour tous $n,m,p\in\mathbb N$,
+  \item pour tous $n,m\in \bN$, si $n + m = 0$ alors $n=0$ et $m = 0$.
+  \item $+$ distribue sur $\times$~: pour tous $n,m,p\in\bN$,
     $n\times(m+p) = n\times m + n \times p$ et
     $(n+m)\times p = n\times p + m \times p$.
   \item $1$ est un élément neutre pour $\times$.
-  \item $0$ est absorbant pour $\times$ : pour tout $n\in \mathbb N$,
+  \item $0$ est absorbant pour $\times$~: pour tout $n\in \bN$,
     $0\times n = 0$.
   \item $\times$ est commutatif.
   \item $\times$ est associatif.
-  \item La structure est intègre : pour tous $n,m\in \mathbb N$, si
+  \item La structure est intègre~: pour tous $n,m\in \bN$, si
     $n\times m = 0$ alors $n = 0$ ou $m = 0$.
   \end{itemize}
 \end{property}
@@ -1021,7 +1002,7 @@ $+$ et $\times$.
     \end{itemize}
     D'où le résultat par récurrence.
   \item $+$ est commutatif~: on montre d'abord par récurrence sur $m$ que pour
-    tous $n,m\in\mathbb N$, on a $\Ss n+m = \Ss (n+m)$~:
+    tous $n,m\in\bN$, on a $\Ss n+m = \Ss (n+m)$~:
     \begin{itemize}
     \item $\Ss n+0=\Ss n = \Ss(n+0)$.
     \item si $\Ss (n+m) = \Ss(n+m)$, alors
@@ -1045,8 +1026,7 @@ $+$ et $\times$.
     \end{itemize}
     Donc $+$ est commutatif.
   \item $+$ est associatif. On prouve par récurrence sur $k$ la proposition
-    \[\forall k\in\mathbb N,\forall n\in\mathbb N,\forall m\in \mathbb N,
-    n + (m + k) = (n + m) + k\]
+    \[\forall k\in\bN,\forall n\in\bN,\forall m\in\bN,n+(m+k)=(n+m)+k\]
     \begin{itemize}
     \item si $k = 0$ alors $n + (m + 0) = n + m$ et $(n+m)+0=n+m$, d'où
       l'égalité.
@@ -1060,7 +1040,7 @@ $+$ et $\times$.
     \end{itemize}
     D'où le résultat par récurrence.
   \end{itemize}
-  L'ensemble des propriétés confère à $(\mathbb N,0,1,+,\times)$ une structure
+  L'ensemble des propriétés confère à $(\bN,0,1,+,\times)$ une structure
   de demi-anneau intègre.
 \end{proof}
 
@@ -1068,12 +1048,13 @@ $+$ et $\times$.
   Démontrer les autres propriétés non démontrées ci-dessus.
 \end{exercise}
 
+\noindent
 La relation $\leq$ est aussi définissable grâce à notre langage ensembliste.
 
 \begin{definition}[Inégalité]
-  On définit la relation $\mathord{\leq}\subseteq \mathbb N \times \mathbb N$
+  On définit la relation $\mathord{\leq}\subseteq \bN \times \bN$
   par~:
-  \[n \leq m \defeq \exists k \in \mathbb N, m = n + k\]
+  \[n \leq m \defeq \exists k \in \bN, m = n + k\]
 \end{definition}
 
 \begin{property}
@@ -1083,18 +1064,18 @@ La relation $\leq$ est aussi définissable grâce à notre langage ensembliste.
 \begin{proof}
   Prouvons que la relation est réflexive, antisymétrique et transitive~:
   \begin{itemize}
-  \item soit $n\in \mathbb N$, alors $n = n + 0$, d'où $n\leq n$.
-  \item soient $n,m\in \mathbb N$, supposons que $n \leq m$ et $m \leq n$. On
+  \item soit $n\in \bN$, alors $n = n + 0$, d'où $n\leq n$.
+  \item soient $n,m\in \bN$, supposons que $n \leq m$ et $m \leq n$. On
     trouve alors $k,k'$ tels que $n = m + k$ et $m = n + k'$. En substituant
     la deuxième inégalté dans la première, on obtient alors
     \begin{align*}
       n &= (n + k') + k\\
       &= n + (k' + k)\\
       n + 0 &= n + (k' + k)\\
-      0 &= k + k'\qquad\text{par régularité de }+\\
+      0 &= k + k'&\text{par régularité de }+\\
     \end{align*}
     d'où $0 = k$, donc $n = m$.
-  \item soient $n,m,p\in \mathbb N$ tels que $n\leq m$ et $m\leq p$. On trouve
+  \item soient $n,m,p\in \bN$ tels que $n\leq m$ et $m\leq p$. On trouve
     donc $k,k'$ tels que $m = n + k$ et $p = m + k'$. Par substitution, on en
     déduit que $p = (n + k) + k'$, et par associativité $p = n + (k + k')$, d'où
     $n \leq p$.
@@ -1105,21 +1086,21 @@ La relation $\leq$ est aussi définissable grâce à notre langage ensembliste.
 \subsection{Les entiers relatifs}
 
 Nous allons maintenant construire les entiers relatifs, dont l'ensemble est
-noté $\mathbb Z$, avec la construction classique~: on cherche à transformer
-le monoïde $(\mathbb N,0,+)$ en un groupe. Cette construction se généralise
+noté $\bZ$, avec la construction classique~: on cherche à transformer
+le monoïde $(\bN,0,+)$ en un groupe. Cette construction se généralise
 en fait en une construction sur n'importe quel monoïde commutatif.
 
-Nous allons donc voir d'abord la construction de $\mathbb Z$, puis la
+Nous allons donc voir d'abord la construction de $\bZ$, puis la
 construction plus générale du symétrisé d'un monoïde commutatif.
 
-L'ensemble $\mathbb Z$ sera vu comme un quotient de l'ensemble
-$\mathbb N \times \mathbb N$. L'idée est de considérer une paire $(n,m)$ comme
+L'ensemble $\bZ$ sera vu comme un quotient de l'ensemble
+$\bN \times \bN$. L'idée est de considérer une paire $(n,m)$ comme
 l'entier $n - m$. On voit alors que pour avoir $(n,m) = (p,q)$, il faut et il
 suffit que $n - m = p - q$, c'est-à-dire que $n + q = p + m$. Cela motive la
 définition de notre relation $\sim$.
 
 \begin{definition}[Congruence additive]
-  On définit la relation binaire $\sim$ sur $\mathbb N \times \mathbb N$ par~:
+  On définit la relation binaire $\sim$ sur $\bN \times \bN$ par~:
   \[(n,m)\sim (p,q) \defeq n + q = p + m\]
 \end{definition}
 
@@ -1158,9 +1139,9 @@ quotient.
 
 \begin{proposition}
   Soit $(X,\star)$ un magma et $\sim$ une congruence sur $(X,\star)$. Alors
-  il existe une unique opération de magma $\star'$ définie sur $X/\sim$
+  il existe une unique opération de magma $\star'$ définie sur $\quot{X}{\sim}$
   vérifiant
-  \[\forall x,y \in X, \overline{x\star y} = \overline x\star' \overline y\]
+  \[\forall x,y \in X, \clas{x\star y} = \clas{x}\star' \clas{y}\]
 \end{proposition}
 
 \begin{proof}
@@ -1169,13 +1150,13 @@ quotient.
   l'opération est bien définie~: soient $x,x',y,y'\in X$ tels que
   $x\sim x'$ et $y\sim y'$, alors comme $\sim$ est une congruence, on en
   déduit que $x\star y \sim x' \star y'$, donc que
-  \[\overline x \star' \overline y = \overline{x'}\star' \overline{y'}\]
+  \[\clas{x} \star' \clas{y} = \clas{x'}\star' \clas{y'}\]
   c'est-à-dire que le résultat de $\star'$ ne dépend pas du représentant choisi.
 \end{proof}
 
 \begin{exercise}
   Montrer que si les propriétés suivantes sont vraies pour $(X,\star)$ alors
-  elles le sont aussi pour $(X/\sim,\star')$~:
+  elles le sont aussi pour $(\quot{X}{\sim},\star')$~:
   \begin{itemize}
   \item associativité
   \item commutativité
@@ -1185,13 +1166,13 @@ quotient.
   \end{itemize}
 \end{exercise}
 
-En revenant sur le cas de notre construction de $\mathbb Z$, on voit que
-$\mathbb N\times\mathbb N$ peut être muni d'une structure de monoïde en
+En revenant sur le cas de notre construction de $\bZ$, on voit que
+$\bN\times\bN$ peut être muni d'une structure de monoïde en
 considérant l'addition coordonnée par coordonnée~: $(n,m)+(p,q) = (n+p,m+q)$.
 Il se trouve que $\sim$ est une congruence sur cette opération.
 
 \begin{proposition}
-  $\sim$ est une congruence sur $\mathbb N \times \mathbb N$ avec la structure
+  $\sim$ est une congruence sur $\bN \times \bN$ avec la structure
   de monoïde coordonnée par coordonnée.
 \end{proposition}
 
@@ -1205,29 +1186,30 @@ Il se trouve que $\sim$ est une congruence sur cette opération.
   \end{align*}
 \end{proof}
 
-Ainsi, en notant $\mathbb Z = (\mathbb N \times \mathbb N) / \sim$, on a
+Ainsi, en notant $\bZ = \quot{(\bN \times \bN)}{\sim}$, on a
 défini une opération $+$ lui conférant une structure de monoïde commutatif. Il
 nous reste à prouver que c'est en fait un groupe abélien.
 
 \begin{proposition}
-  $(\mathbb Z,+)$ est un groupe abélien.
+  $(\bZ,+)$ est un groupe abélien.
 \end{proposition}
 
 \begin{proof}
-  Soit $x \in \mathbb Z$, par définition on trouve $n,m\in\mathbb N$ tels que
-  $x = \overline{(n,m)}$, et on pose $-x = \overline{(m,n)}$. On montre que
+  Soit $x \in \bZ$, par définition on trouve $n,m\in\bN$ tels que
+  $x = \clas{(n,m)}$, et on pose $-x = \clas{(m,n)}$. On montre que
   $x + (-x) = 0_{\bZ}$. Par définition,
-  \[x + (-x) = \overline{(n + m, m + n)}\]
-  et $n + m + 0 = 0 + m + n$, donc $\overline{(n+m,m+n)}=\overline{(0,0)}$,
+  \[x + (-x) = \clas{(n + m, m + n)}\]
+  et $n + m + 0 = 0 + m + n$, donc $\clas{(n+m,m+n)}=\clas{(0,0)}$,
   d'où le résultat.
 \end{proof}
 
-On s'attarde maintenant à la structure multiplicative de $\mathbb Z$.
+\noindent
+On s'attarde maintenant à la structure multiplicative de $\bZ$.
 
 \begin{definition}
-  On définit sur $\mathbb N\times \mathbb N$ l'opération $\times$ par
+  On définit sur $\bN\times \bN$ l'opération $\times$ par
   \[(n,m)\times(p,q) = (n\times p + m \times q, m \times p + n \times q)\]
-  et $\times$ est définie sur $\mathbb Z$ par passage au quotient de cette
+  et $\times$ est définie sur $\bZ$ par passage au quotient de cette
   opération par $\sim$.
 \end{definition}
 
@@ -1236,77 +1218,76 @@ On s'attarde maintenant à la structure multiplicative de $\mathbb Z$.
 \end{exercise}
 
 \begin{exercise}
-  Montrer que $(\mathbb Z,0,+,1,\times)$ est un anneau.
+  Montrer que $(\bZ,0,+,1,\times)$ est un anneau.
 \end{exercise}
 
-On montre qu'on peut injecter le demi-anneau $(\mathbb N,0,+,1,\times)$ dans
-l'anneau $(\mathbb Z,0,+,1,\times)$.
+On montre qu'on peut injecter le demi-anneau $(\bN,0,+,1,\times)$ dans
+l'anneau $(\bZ,0,+,1,\times)$.
 
 \begin{proposition}
   La fonction
-  \[\begin{array}{ccccc}
-  \iota & : & \mathbb N & \longrightarrow & \mathbb Z\\
-  & & n & \longmapsto & \overline{(n,0)}
-  \end{array}\]
+  \[
+  \makeFun{\iota}{\bN}{\bZ}{n}{\clas{(n,0)}}
+  \]
   est un morphisme de demi-anneau injectif.
 \end{proposition}
 
 \begin{proof}
   On vérifie chaque axiome~:
   \begin{itemize}
-  \item pour tous $n,m\in\mathbb N$~:
+  \item pour tous $n,m\in\bN$~:
     \begin{align*}
-      \iota(n) + \iota(m) &= \overline{(n,0)} + \overline{(m,0)}\\
-      &= \overline{(n+m,0+0)}\\
+      \iota(n) + \iota(m) &= \clas{(n,0)} + \clas{(m,0)}\\
+      &= \clas{(n+m,0+0)}\\
       &= \iota(n+m)
     \end{align*}
-  \item pour tous $n,m\in\mathbb N$~:
+  \item pour tous $n,m\in\bN$~:
     \begin{align*}
-      \iota(n)\times \iota(m) &= \overline{(n,0)} \times \overline{(m,0)}\\
-      &= \overline{(n \times m + 0, 0 + 0)}\\
-      &= \overline{(n\times m,0)}\\
+      \iota(n)\times \iota(m) &= \clas{(n,0)} \times \clas{(m,0)}\\
+      &= \clas{(n \times m + 0, 0 + 0)}\\
+      &= \clas{(n\times m,0)}\\
       &= \iota(n+m)
     \end{align*}
-  \item le neutre de l'anneau $\mathbb Z$ est $\overline{(1,0)}$, qui est bien
+  \item le neutre de l'anneau $\bZ$ est $\clas{(1,0)}$, qui est bien
     $\iota(1)$.
-  \item si $\iota(n) = \iota(m)$, alors $\overline{(n,0)} = \overline{(m,0)}$,
-    donc $(n,0)\sim (m,0)$, c'est-à-dire $n = m$.
+  \item si $\iota(n) = \iota(m)$, alors $\clas{(n,0)} = \clas{(m,0)}$,
+    donc $(n,0)\sim (m,0)$, c'est-à-dire $n = m$.\qedhere
   \end{itemize}
-  On en déduit que $\iota$ est un morphisme de demi-anneau injectif.
 \end{proof}
 
-Enfin, sur $\mathbb Z$, on peut caractériser les éléments comme des entiers
+Enfin, sur $\bZ$, on peut caractériser les éléments comme des entiers
 naturels ou des opposés d'entiers naturels.
 
 \begin{proposition}
-  Pour tout $k \in \mathbb Z$, il existe $n \in \mathbb N$ tel que soit
+  Pour tout $k \in \bZ$, il existe $n \in \bN$ tel que soit
   $k = \iota(n)$, soit $k = (-\iota(1)) \times \iota(n)$, que l'on écrira
   plus rapidement $k = n$ (respectivement $k = -n$).
 \end{proposition}
 
 \begin{proof}
-  Soit $k \in \mathbb Z$. Par définition, on trouve $n,m\in\mathbb N$ tels que
-  $k = \overline{(n,m)}$. Comme $\leq$ est total, on sait que soit
+  Soit $k \in \bZ$. Par définition, on trouve $n,m\in\bN$ tels que
+  $k = \clas{(n,m)}$. Comme $\leq$ est total, on sait que soit
   $n \leq m$, soit $m \leq n$. Deux cas se présentent alors~:
   \begin{itemize}
-  \item si $n \leq m$, alors $m = (m - n) + n$, donc $k = \overline{(0,m - n)}$,
+  \item si $n \leq m$, alors $m = (m - n) + n$, donc $k = \clas{(0,m - n)}$,
     nous donnant $k = (-\iota(1))\times \iota(m-n)$.
   \item si $m \leq n$, alors $n = (n - m) + m$, donc
-    $k = \overline{(n - m, 0)}$, nous donnant $k = \iota(n-m)$.
+    $k = \clas{(n - m, 0)}$, nous donnant $k = \iota(n-m)$.\qedhere
   \end{itemize}
-  D'où le résultat.
 \end{proof}
 
+\noindent
 Passons maintenant à la construction générale sur un monoïde commutatif.
 
 \begin{definition}
-  Soit $(M,\star,e)$ un monoïde commutatif. On définit sur $M\times M$ muni des
-  opérations coordonnée par coordonnée la congruence suivante~:
-  \[(m,m') \sim (a,a') \defeq \exists k \in M, m \star a' \star k
-  = m' \star a \star k\]
+  Soit $(\varMon,\star,e)$ un monoïde commutatif. On définit sur
+  $\varMon\times\varMon$ muni des opérations coordonnée par coordonnée la
+  congruence suivante~:
+  \[(m,m') \sim (a,a') \defeq \exists k \in M,
+  m \star a' \star k = m' \star a \star k\]
 
-  On appelle symétrisé de $(M,\star,e)$ le groupe abélien obtenu à partir de
-  $M\times M$ par quotient par $\sim$.
+  On appelle symétrisé de $(\varMon,\star,e)$ le groupe abélien obtenu à partir
+  de $\varMon\times \varMon$ par quotient par $\sim$.
 \end{definition}
 
 \begin{proof}
@@ -1318,10 +1299,10 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
   \item $\sim$ est transitive~: supposons qu'on a $(m,m')\sim (a,a')\sim(b,b')$
     et montrons qu'alors $(m,m')\sim (b,b')$. D'après les définitions, on trouve
     $k,k'\in M$ tels que
-    \[\left\{\begin{array}{l}
+    \[\begin{cases}
     m \star a' \star k = m' \star a \star k\\
     a \star b' \star k' = a' \star b \star k'
-    \end{array}\right.\]
+    \end{cases}\]
     En \og additionnant\fg les deux lignes, on obtient
     \[m \star (a \star a' \star k \star k') \star b' =
     m' \star (a \star a' \star k \star k') \star b\]
@@ -1330,10 +1311,10 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
     $(n,n')\sim(b,b')$, alors
     $(m\star n, m' \star n') \sim(a\star b,a'\star b')$. En effet, si on
     considère $k,k'\in M$ tels que
-    \[\left\{\begin{array}{l}
+    \[\begin{cases}
     m \star a' \star k = m' \star a \star k\\
     n \star b' \star k' = n' \star b \star k'
-    \end{array}\right.\]
+    \end{cases}\]
     alors on obtient en \og additionnant\fg les deux lignes
     \[(m \star n) \star (a' \star b') \star (k \star k') =
     (m' \star n') \star (a \star b) \star (k \star k')\]
@@ -1342,12 +1323,12 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
   On en déduit que $\sim$ est une congruence. Ainsi le symétrisé est un monoïde
   commutatif.
 
-  Il nous reste à prouver que c'est un groupe. Soit $\overline{(m,m')}$ un
-  élément du symétrisé. On définit son inverse par $\overline{(m',m)}$~:
-  \[\overline{(m,m')}\star \overline{(m',m)} =
-  \overline{(m\star m',m'\star m)}\]
+  Il nous reste à prouver que c'est un groupe. Soit $\clas{(m,m')}$ un
+  élément du symétrisé. On définit son inverse par $\clas{(m',m)}$~:
+  \[\clas{(m,m')}\star \clas{(m',m)} =
+  \clas{(m\star m',m'\star m)}\]
   or $(m,m)\sim (e,e)$ assez directement, d'où le fait que leur produit vaut
-  $\overline{(e,e)}$, le neutre du symétrisé.
+  $\clas{(e,e)}$, le neutre du symétrisé.
 \end{proof}
 
 \begin{remark}
@@ -1357,24 +1338,26 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
 \end{remark}
 
 \begin{exercise}
-  Soit $M$ un monoïde commutatif et $A$ son symétrisé. Montrer que la fonction
-  \[\begin{array}{ccccc}
-  \iota & : & M & \longrightarrow & A\\
-  & & m & \longmapsto & \overline{(m,e)}
-  \end{array}\]
+  Soit $\varMon$ un monoïde commutatif et $\varMon^\dagger$ son symétrisé.
+  Montrer que la fonction
+  \[
+  \makeFun{\iota}{\varMon}{\varMon^\dagger}{m}{\clas{(m,e)}}
+  \]
   est un morphisme de monoïde.
 \end{exercise}
 
 \begin{exercise}
-  Soit $M$ un monoïde commutatif et $A$ son symétrisé. Montrer que pour tout
-  groupe $G$ et tout morphisme de monoïde $f : M \to G$ il existe un unique
-  morphisme de groupe $\hat f : A \to G$ tel que $f = \hat f \circ \iota$, ce
+  Soit $\varMon$ un monoïde commutatif et $\varMon^\dagger$ son symétrisé.
+  Montrer que pour tout groupe $\varGrp$ et tout morphisme de monoïde
+  $f : \varMon \to \varGrp$ il existe un unique
+  morphisme de groupe $\relev{f} : \varMon^\dagger \to \varGrp$ tel que
+  $f = \relev{f} \circ \iota$, ce
   que l'on peut représenter par le fait que tout diagramme comme suit peut être
   complété en un diagramme commutatif~:
   \begin{center}
     \begin{tikzcd}
-      M \ar[r,"f"]\ar[d,"\iota"] & G\\
-      A \ar[ur,"\hat f",dashed]
+      \varMon \ar[r,"f"]\ar[d,"\iota"] & \varGrp\\
+      \varMon^\dagger \ar[ur,"\hat f",dashed]
     \end{tikzcd}
   \end{center}
 \end{exercise}
@@ -1382,28 +1365,27 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
 \subsection{Les nombres rationnels}
 
 Nous avons vu comment construire les nombres entiers en tant que cas particulier
-de symétrisation~: $\mathbb Z$ est $\mathbb N$ auquel on a ajouté des inverses
-pour la loi $+$. Pour le cas de $\mathbb Q$, on va montrer qu'on peut construire
-cet ensemble comme cas particulier du procédé dit de localisation, qui permet
-d'inverser pour la loi $\times$ dans un anneau. Comme précédemment, on commence
-par construire le cas particulier de $\mathbb Q$ et sa structure de corps avant
-d'étudier le cas plus général de la localisation.
+de symétrisation~: $\bZ$ est $\bN$ auquel on a ajouté des inverses pour la loi
+$+$. Pour le cas de $\bQ$, on va montrer qu'on peut construire cet ensemble
+comme cas particulier du procédé dit de localisation, qui permet d'inverser pour
+la loi $\times$ dans un anneau. Comme précédemment, on commence par construire
+le cas particulier de $\bQ$ et sa structure de corps avant d'étudier le cas plus
+général de la localisation.
 
-Si la construction de $\mathbb Z$ peut paraître assez difficile à visualiser
-au début, celle de $\mathbb Q$ sera au contraire très naturelle~: elle
-consiste simplement à étudier les fractions. On sait en effet manipuler les
-fractions comme des \og couples\fg de la forme $\dfrac{p}{q}$ où plusieurs
-règles nous permettent de transformer un couple en un autre. Ces règles peuvent
-se synthétiser en
+Si la construction de $\bZ$ peut paraître assez difficile à visualiser au début,
+celle de $\bQ$ sera au contraire très naturelle~: elle consiste simplement à
+étudier les fractions. On sait en effet manipuler les fractions comme des
+\og couples\fg de la forme $\dfrac{p}{q}$ où plusieurs règles nous permettent de
+transformer un couple en un autre. Ces règles peuvent se synthétiser en
 \[\frac{p}{q} = \frac{p'}{q'} \defeq p\times q' = p' \times q\]
 
-\'A partir de là, le procédé est très similaire au précédent~: on considère cela
+\`A partir de là, le procédé est très similaire au précédent~: on considère cela
 comme une relation d'équivalence sur des couples, et on en déduit la
 construction du corps des fractions.
 
 \begin{definition}
   On définit la relation d'équivalence $\sim$ sur
-  $\mathbb Z \times (\mathbb N\setminus\{0\})$ par~:
+  $\bZ \times (\bN\setminus\{0\})$ par~:
   \[(p,q) \sim (p',q') \defeq p\times q' = p'\times q\]
 \end{definition}
 
@@ -1414,13 +1396,13 @@ construction du corps des fractions.
   \item pour tous $(p,q)\sim (p',q')$, la symétrie de l'égalité nous fait
     déduire que $(p',q')\sim(p,q)$.
   \item si $(p,q)\sim(p',q')\sim(p'',q'')$, alors on sait que
-    \[\left\{\begin{array}{l}
+    \[\begin{cases}
     p\times q' = p' \times q\\
     p' \times q'' = p'' \times q'
-    \end{array}\right.\]
+    \end{cases}\]
     si l'un des nombres parmi $p,p',p''$ est nul, alors tous les autres le sont
     (puisque $q,q',q''$ sont tous les trois non nuls). On en déduit donc qu'on
-    peut simplifier (puisque $\mathbb Z$ est un anneau intègre) le produit des
+    peut simplifier (puisque $\bZ$ est un anneau intègre) le produit des
     deux lignes par $q'\times p'$, nous donnant~:
     \[p\times q'' = p'' \times q\]
     donc $(p,q)\sim(p'',q'')$.
@@ -1429,14 +1411,15 @@ construction du corps des fractions.
 \end{proof}
 
 \begin{exercise}\label{exo.ax.Qring}
-  Montrer qu'on peut munir $\mathbb Z\times (\mathbb N\setminus\{0\})$ d'une
+  Montrer qu'on peut munir $\bZ\times (\bN\setminus\{0\})$ d'une
   structure d'anneau en définissant les opérations
   \[(p,q)+(p',q') \defeq (p\times q' + p' \times q, q\times q')\qquad
   (p,q)\times(p',q')\defeq (p\times p',q\times q')\]
 \end{exercise}
 
+\noindent
 Cette structure passe au quotient par $\sim$, ce qui nous donnera la structure
-souhaitée pour $\mathbb Q$.
+souhaitée pour $\bQ$.
 
 \begin{proposition}
   La relation $\sim$ est une congruence pour les deux opérations définies dans
@@ -1466,19 +1449,19 @@ souhaitée pour $\mathbb Q$.
 \end{proof}
 
 \begin{notation}
-  On notera $p/q$ ou $\dfrac{p}{q}$ pour noter $\overline{(p,q)}$.
+  On notera $p/q$ ou $\dfrac{p}{q}$ pour noter $\clas{(p,q)}$.
 \end{notation}
 
-On peut donc définir $\mathbb Q$~: c'est l'anneau quotient obtenu à partir de
-$\sim$. On montre maintenant que cet anneau est un corps.
+On peut donc définir $\bQ$~: c'est l'anneau quotient obtenu à partir de $\sim$.
+On montre maintenant que cet anneau est un corps.
 
 \begin{proposition}
-  $(\mathbb Q,0,+,1,\times)$ est un corps.
+  $(\bQ,0,+,1,\times)$ est un corps.
 \end{proposition}
 
 \begin{proof}
   On a déjà prouvé qu'on avait un anneau commutatif, il nous reste à montrer que
-  c'est un corps. Pour cela, soit $p/q\in\mathbb Q$ non nul. Cela signifie en
+  c'est un corps. Pour cela, soit $p/q\in\bQ$ non nul. Cela signifie en
   particulier que $p \neq 0$. Si $p > 0$, alors on définit l'inverse
   de $p/q$ par $q/p$, et on voit que
   \[\frac{p}{q}\times\frac{p}{q} = \frac{pq}{pq} = 1\]
@@ -1486,36 +1469,33 @@ $\sim$. On montre maintenant que cet anneau est un corps.
   trouve alors
   \[\frac{p}{q}\times\frac{-q}{-p} = \frac{-pq}{-pq} = 1\]
 
-  Dans les deux cas, si $r\in \mathbb Q$ est non nul, alors il est inversible
+  Dans les deux cas, si $r\in \bQ$ est non nul, alors il est inversible
   pour $\times$.
 \end{proof}
 
 \begin{exercise}
   Montrer que la fonction
-  \[\begin{array}{ccccc}
-  \iota &: & \mathbb Z & \longrightarrow & \mathbb Q \\
-  & & k & \longmapsto & \frac{k}{1}
-  \end{array}\]
+  \[\makeFun{\iota}{\bZ}{\bQ}{k}{\frac{k}{1}}\]
   est un morphisme d'anneau injectif.
 \end{exercise}
 
-Ainsi $\mathbb Q$ peut se voir comme le plus petit corps contenant $\mathbb Z$,
-voire comme le plus petit corps contenant $\mathbb N$.
+Ainsi $\bQ$ peut se voir comme le plus petit corps contenant $\bZ$,
+voire comme le plus petit corps contenant $\bN$.
 
 On passe maintenant au cas général. Tout d'abord, on peut voir que la
 construction ne demande, pour être effectuée, que d'avoir une partie stable
-par $\times$ dans $\mathbb Z$. Si l'on imagine prendre l'ensemble
-$\{2^n\mid n \in \mathbb N\}$, par exemple, on peut vérifier que la
+par $\times$ dans $\bZ$. Si l'on imagine prendre l'ensemble
+$\compr{2^n}{n \in \bN}$, par exemple, on peut vérifier que la
 construction précédente donne encore une structure, qui ne sera cependant pas
-un corps~: ce sera un anneau contenant $\mathbb Z$ dans lequel chaque élément
-de $\{2^n \mid n \in \mathbb N\}$ devient inversible. C'est ce procédé qu'on
+un corps~: ce sera un anneau contenant $\bZ$ dans lequel chaque élément
+de $\compr{2^n}{n \in \bN}$ devient inversible. C'est ce procédé qu'on
 appelle localisation.
 
 \begin{definition}
-  Soit $A$ un anneau commutatif intègre. On considère une partie $S\subseteq A$
-  close par produit, c'est-à-dire telle que
+  Soit $\varAA$ un anneau commutatif intègre. On considère une partie
+  $S\subseteq \varAA$ close par produit, c'est-à-dire telle que
   \[\forall x,y\in S, x \times y \in S\]
-  On définit la relation $\sim_S$ sur $A\times S$ par
+  On définit la relation $\sim_S$ sur $varAA\times S$ par
   \[(a,s) \sim (a',s') \defeq a\times s' = a' \times s\]
 \end{definition}
 
@@ -1528,100 +1508,101 @@ appelle localisation.
 \begin{proof}
   On montre les différents axiomes~:
   \begin{itemize}
-  \item pour tout $(a,s)$, on a $a\times s = a \times s$ donc $(a,s)\sim(a,s)$.
+  \item pour tout $(a,s)$, on a $a\times s = a \times s$ donc
+    $(a,s)\sim_S(a,s)$.
   \item la symétrie vient de celle de l'égalité.
-  \item si $(a,s)\sim(a',s')\sim(a'',s'')$, alors $(a,s)\sim(a'',s'')$. En
+  \item si $(a,s)\sim_S(a',s')\sim_S(a'',s'')$, alors $(a,s)\sim_S(a'',s'')$. En
     effet, l'hypothèse nous dit que
-    \[\left\{\begin{array}{l}
+    \[\begin{cases}
     a \times s' = a' \times s\\
     a' \times s'' = a'' \times s'
-    \end{array}\right.\]
+    \end{cases}\]
     d'où, en multipliant les deux lignes~:
     \[a\times (s'\times a') \times s'' = a''\times (s'\times a') \times s\]
     si l'un parmi $a,a',a''$ est nul, les trois sont nuls et le résultat est
     direct. Sinon, par intégrité, on peut simplifier la multiplication par
     $s'\times a'$, nous donnant $a\times s'' = a'' \times s$, donc
-    $(a,s) \sim (a'',s'')$.
-  \item si $(a,s)\sim(a',s')$ et $(b,t)\sim(b',t')$, pour montrer que
-    $(a,s)\times(b,t)\sim (a',s')\times (b',t')$, il nous faut montrer
+    $(a,s) \sim_S (a'',s'')$.
+  \item si $(a,s)\sim_S(a',s')$ et $(b,t)\sim_S(b',t')$, pour montrer que
+    $(a,s)\times(b,t)\sim_S (a',s')\times (b',t')$, il nous faut montrer
     l'égalité
     \[(a\times t + b \times s)\times s' \times t' =
     (a'\times t' + b' \times s')\times s \times t\]
-    et le raisonnement donné plus tôt dans le cas de $\mathbb Q$ fonctionne
+    et le raisonnement donné plus tôt dans le cas de $\bQ$ fonctionne
     encore.
-  \item si $(a,s)\sim(a',s')$ et $(b,t)\sim(b',t')$, on veut montrer que
+  \item si $(a,s)\sim_S(a',s')$ et $(b,t)\sim_S(b',t')$, on veut montrer que
     \[a\times b \times s' \times t' = a' \times b' \times s \times t\]
     ce qui se déduit directement des hypothèses.
   \end{itemize}
-  Ainsi $\sim$ est bien une congruence pour les opérations considérées.
+  Ainsi $\sim_S$ est bien une congruence pour les opérations considérées.
 \end{proof}
 
-On peut alors montrer que $A/\sim$, qu'on note en général $S^{-1}A$, contient
-$A$ et des inverses pour chaque élément de $S$. En réalité, on peut construire
-la localisation sans avoir l'intégrité, en prenant une définition analogue à
-celle où on ajoute $k$ dans la définition de la symétrisation.
+On peut alors montrer que $\quot{\varAA}{\sim_S}$, qu'on note en général
+$S^{-1}\varAA$, contient $\varAA$ et des inverses pour chaque élément de $S$.
+En réalité, on peut construire la localisation sans avoir l'intégrité, en
+prenant une définition analogue à celle où on ajoute $k$ dans la définition de
+la symétrisation.
 
 \subsection{Les nombres réels}
 
 Nous abordons notre dernière construction avec celle des réels. Il existe deux
-constructions classiques de $\mathbb R$~: celle par suites de Cauchy et celle
+constructions classiques de $\bR$~: celle par suites de Cauchy et celle
 par coupures de Dedekind. Comme nous avons abordé la complétion dans le cadre
 général dans le \cref{chp.topo}, nous allons étudier ici la construction par
-les coupures de Dedekind, qui se base sur la structure ordonnée de $\mathbb Q$.
-Plutôt que de simplement donner la construction historique de \cite{DedekindCut},
-nous adoptons une construction adaptée de la complétion
+les coupures de Dedekind, qui se base sur la structure ordonnée de $\bQ$.
+Plutôt que de simplement donner la construction historique de
+\cite{DedekindCut}, nous adoptons une construction adaptée de la complétion
 idéale, présentée par exemple dans \cite{DBLP:books/daglib/0093287}.
 
-La relation $\leq$, en effet, peut s'étendre de $\mathbb N$ à $\mathbb Z$ puis
-à $\mathbb Q$, conférant à $\mathbb Q$ une structure de corps ordonné. Il nous
-faut donc commencer par donner les définitions d'ordre sur $\mathbb Z$ et
-$\mathbb Q$~:
+La relation $\leq$, en effet, peut s'étendre de $\bN$ à $\bZ$ puis à $\bQ$,
+conférant à $\bQ$ une structure de corps ordonné. Il nous faut donc commencer
+par donner les définitions d'ordre sur $\bZ$ et $\bQ$~:
 
 \begin{definition}
-  On définit sur $\mathbb Z$ la relation $\leq$ par~:
-  \[a \leq b \defeq b - a \in \mathbb N\]
-  où $\mathbb N$ est identifié à $\iota(\mathbb N) \subseteq \mathbb Z$.
+  On définit sur $\bZ$ la relation $\leq$ par~:
+  \[a \leq b \defeq b - a \in \bN\]
+  où $\bN$ est identifié à $\iota(\bN) \subseteq \bZ$.
 \end{definition}
 
 \begin{exercise}
   Montrer que $\leq$ est une relation d'ordre totale compatible avec l'addition,
   c'est-à-dire que pour tous $a\leq b$ et $c\leq d$, on a $a+c\leq b+d$.
   Montrer de plus que si $a \geq 0$ et $b\geq 0$ alors $a\times b \geq 0$.
-  La structure $(\mathbb Z,0,+,1,\times,\leq)$ est alors appelée un anneau
+  La structure $(\bZ,0,+,1,\times,\leq)$ est alors appelée un anneau
   totalement ordonné.
 \end{exercise}
 
 \begin{definition}
-  On définit la partie de $\mathbb Q$ suivante~:
-  \[\mathbb Q_+ \defeq \left\{\frac{p}{q}\mid p,q\in \mathbb N\right\}\]
-  On définit alors la relation $\leq$ sur $\mathbb Q$ par~:
-  \[r \leq s \defeq s - r \in \mathbb Q_+\]
+  On définit la partie de $\bQ$ suivante~:
+  \[\bQ_+ \defeq \compr{\frac{p}{q}}{p,q\in \bN}\]
+  On définit alors la relation $\leq$ sur $\bQ$ par~:
+  \[r \leq s \defeq s - r \in \bQ_+\]
 \end{definition}
 
 \begin{exercise}
-  Montrer que $(\mathbb Q,0,+,1,\times,\leq)$ est aussi un anneau totalement
+  Montrer que $(\bQ,0,+,1,\times,\leq)$ est aussi un anneau totalement
   ordonné. On dit alors que c'est un corps totalement ordonné.
 \end{exercise}
 
 De plus, toutes ces structures ordonnées ont la propriété d'être archimédiennes,
-ce qui signifie que $\mathbb Z$ et $\mathbb Q$ vérifient la proposition
+ce qui signifie que $\bZ$ et $\bQ$ vérifient la proposition
 suivante~:
-\[\forall k\in A, \exists n \in\mathbb N, n \geq k\]
+\[\forall k\in A, \exists n \in\bN, n \geq k\]
 
-On veut désormais compléter $\mathbb Q$, ce qui signifie moralement qu'on veut
+On veut désormais compléter $\bQ$, ce qui signifie moralement qu'on veut
 supprimer tous les trous que contient cet ensemble. Dans le contexte des suites
 de Cauchy, cela signifie qu'on veut qu'une suite de Cauchy, devant converger en
 terme d'à quel point ses points se rapprochent, doit converger effectivement
 vers un point donné. Dans le contexte de l'ordre, la notion naturelle de limite
 est celle de borne supérieure ou inférieure. On peut voir cela par exemple avec
-l'intervalle $(0,1)$~: il ne contient ni $0$ ni $1$, mais on pense à $1$ comme à
-un point limite de l'intervalle. Pour une suite croissante, d'ailleurs, la
-limite coïncide avec la borne supérieure (dans $\mathbb R$).
+l'intervalle $\intOO{0}{1}$~: il ne contient ni $0$ ni $1$, mais on pense à
+$1$ comme à un point limite de l'intervalle. Pour une suite croissante,
+d'ailleurs, la limite coïncide avec la borne supérieure (dans $\bR$).
 
-On souhaite donc ajouter à notre ensemble $\mathbb Q$ toutes les bornes
-supérieures de parties de $\mathbb Q$. Une construction générale de théorie des
+On souhaite donc ajouter à notre ensemble $\bQ$ toutes les bornes
+supérieures de parties de $\bQ$. Une construction générale de théorie des
 ordres existe pour cela~: c'est la complétion idéale. Elle consiste à étudier,
-à la place d'un ensemble ordonné $(X,\leq)$, l'ensemble $\mathcal I(X)$ de ses
+à la place d'un ensemble ordonné $(X,\leq)$, l'ensemble $\ideal(X)$ de ses
 idéaux muni de l'inclusion. La construction des coupures de Dedekind est très
 proche, mais considère au lieu des idéaux des paires $(L,U)$ d'un idéal et d'un
 filtre. Dans notre cas, nous allons traiter le cas général de la complétion
@@ -1632,7 +1613,7 @@ similaire à celle de la complétion idéale pour les ordres partiels complets,
 mais nous nous plaçons directement dans le cadre des ordres totaux. On parle
 donc d'ordre total complet, et on considère une variante qui nous rapproche
 directement de la propriété de la borne supérieure, qu'on veut vérifier dans
-$\mathbb R$.
+$\bR$.
 
 \begin{definition}[Ordre total complet]
   On dit qu'un ensemble totalement ordonné $(X,\leq)$ est complet si toute
@@ -1640,27 +1621,27 @@ $\mathbb R$.
   non vide admet une borne inférieure.
 \end{definition}
 
-Notre objectif est donc, à partir de $(\mathbb Q,\leq)$, de construire
-l'ensemble ordonné $(\mathbb R,\leq)$ qui est complet et contient, en un sens,
-$\mathbb Q$. On veut donc \og ajouter les bornes supérieures\fg de $\mathbb Q$,
+Notre objectif est donc, à partir de $(\bQ,\leq)$, de construire
+l'ensemble ordonné $(\bR,\leq)$ qui est complet et contient, en un sens,
+$\bQ$. On veut donc \og ajouter les bornes supérieures\fg de $\bQ$,
 les bornes inférieures en étant conséquences du fait que $x\mapsto -x$ envoie
 les bornes supérieures sur les bornes inférieures et inversement (on le verra
 après notre construction).
 
 Partons d'une remarque essentielle~: les bornes supérieures existent toujours
 quand on étudie des ensembles d'ensembles, grâce à l'union. Cela nous motive à
-plonger $\mathbb Q$ dans un ensemble d'ensembles. En l'occurrence, il existe une
-façon assez naturelle d'associer une partie de $\mathbb Q$ à un rationnel $r$~:
-il suffit de considérer l'ensemble $\{r' \in \mathbb Q \mid r' \leq r\}$. Cette
+plonger $\bQ$ dans un ensemble d'ensembles. En l'occurrence, il existe une
+façon assez naturelle d'associer une partie de $\bQ$ à un rationnel $r$~:
+il suffit de considérer l'ensemble $\compr{r' \in \bQ}{r' \leq r}$. Cette
 association tient compte de l'ordre, ce qui est souhaité vu notre objectif.
 
 On veut donc caractériser les parties qui se comportent comme celle définie plus
 haut. Une propriété évidente est qu'une telle partie est close par le bas, par
 transitivité de l'ordre $\leq$. Une telle partie est aussi non vide, dans le cas
-de $\mathbb Q$, puisque $\mathbb Q$ n'est pas minoré. Elle n'est pas non plus
+de $\bQ$, puisque $\bQ$ n'est pas minoré. Elle n'est pas non plus
 l'ensemble tout entier. Ces conditions sont exactement celles définissant un
-idéal dans un ensemble totalement ordonné (car la propriété à propos de $\land$
-est alors automatiquement vérifiée), et ne pas être $\mathbb Q$ signifie être un
+idéal dans un ensemble totalement ordonné (car la propriété à propos de $\opmt$
+est alors automatiquement vérifiée), et ne pas être $\bQ$ signifie être un
 idéal propre.
 
 Cependant, on voit que deux idéaux peuvent sembler coder le même rationnel~:
@@ -1674,9 +1655,9 @@ partie ayant une borne supérieure doit la contenir.
   $Y\in \ideal(X)$ si et seulement si~:
   \begin{itemize}
   \item pour tout $x,y\in X$, si $x\leq y$ et $y \in Y$ alors $x\in Y$.
-  \item $Y\neq \varnothing$
+  \item $Y\neq \vide$
   \item $Y\neq X$
-  \item si $\bigvee Y$ existe, alors $\bigvee Y \in Y$.
+  \item si $\opJn Y$ existe, alors $\opJn Y \in Y$.
   \end{itemize}
   muni de l'inclusion comme ordre.
 \end{definition}
@@ -1684,10 +1665,11 @@ partie ayant une borne supérieure doit la contenir.
 \begin{remark}
   On aurait aussi pu caractériser cet ensemble comme l'ensemble des idéaux de
   $X$ fermés pour la topologie de l'ordre, qui est la topologie engendrée par
-  les intervalles ouverts, c'est-à-dire de la forme $\{x \in X\mid y < x < z\}$
+  les intervalles ouverts, c'est-à-dire de la forme $\compr{x \in X}{y < x < z}$
   pour $y,z\in X$.
 \end{remark}
 
+\noindent
 On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
 
 \begin{proposition}
@@ -1707,25 +1689,25 @@ On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
   Soit maintenant une partie $A\subseteq \ideal(X)$ non vide majorée, on
   construit la borne supérieure de $A$ en deux temps. On pose d'abord
   $B = \bigcup A$. Si $B$ admet une borne supérieure (dans $X$), alors on
-  considère comme borne supérieure de $A$ l'ensemble $B \cup\{\bigvee B\}$,
+  considère comme borne supérieure de $A$ l'ensemble $B \cup\{\opJn B\}$,
   sinon on considère simplement $B$. On note cet ensemble $C$. On vérifie que
   $C\in \ideal(X)$~:
   \begin{itemize}
-  \item soient $x,y\in X$ tels que $x < y$ et $y\in C$. Si $y = \bigvee B$,
-    alors comme $x < \bigvee B$, on en déduit qu'il existe $z \in B$ tel que
+  \item soient $x,y\in X$ tels que $x < y$ et $y\in C$. Si $y = \opJn B$,
+    alors comme $x < \opJn B$, on en déduit qu'il existe $z \in B$ tel que
     $x < z$, et par définition de $z\in B$ on trouve $Z\in A$ tel que $z\in Z$,
     donc $x \in Z$, donc $x \in B$. Si $y \in B$, alors on trouve $Z\in A$ tel
     que $y \in Z$ et on en déduit que $x\in Z$, donc que $x \in B$.
-  \item comme $A\neq \varnothing$, on trouve $Y\in A$, et $Y\neq\varnothing$
+  \item comme $A\neq \vide$, on trouve $Y\in A$, et $Y\neq\vide$
     donc on trouve $y\in Y$, on en déduit que $y\in C$, donc que
-    $C\neq\varnothing$.
+    $C\neq\vide$.
   \item comme $A$ est majorée, on trouve $Y \in \ideal(X)$ tel que pour tout
     $z\in C$, $z\in Y$. Comme $Y\neq X$, on trouve $x\in X\setminus Y$,
     et par totalité de $\leq$ on en déduit que $x$ est un majorant de $Y$, c'est
     de plus un majorant strict puisque la borne supérieure de $Y$ doit
     appartenir à $Y$. On remarque que $C\subseteq Y$, donc $x\notin C$, donc
     $C\neq X$.
-  \item si $\bigvee C$ existe, alors par construction c'est $\bigvee B$ qui est
+  \item si $\opJn C$ existe, alors par construction c'est $\opJn B$ qui est
     un élément de $C$.
   \end{itemize}
   Donc $C\in\ideal(X)$.
@@ -1734,24 +1716,25 @@ On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
   \begin{itemize}
   \item $C$ contient l'union de $A$ donc pour tout $Y\in A, Y\subseteq C$.
   \item soit $Z\in\ideal(X)$ tel que pour tout $Y\in A, Y\subseteq Z$. Alors
-    $B\subseteq Z$, il nous faut donc montrer que si $\bigvee B$ existe alors
-    $\bigvee B \in Z$. Supposons que cet élément existe et qu'il n'appartient
+    $B\subseteq Z$, il nous faut donc montrer que si $\opJn B$ existe alors
+    $\opJn B \in Z$. Supposons que cet élément existe et qu'il n'appartient
     pas à $Z$. Alors il est un majorant de $Z$. Soit $z$ un autre majorant de
-    $Z$, alors si $z < \bigvee B$, on en déduit qu'il existe $Y\in A$ tel que
+    $Z$, alors si $z < \opJn B$, on en déduit qu'il existe $Y\in A$ tel que
     $z\in Y$, donc $z \in Z$, donc $z$ est le maximum de $Z$, qui est une borne
-    supérieure~: on en déduit que $\bigvee B = z$, donc que $\bigvee B \in Z$,
-    ce qui est absurde. Ainsi $\bigvee B \in Z$, donc $C\subseteq Z$.
+    supérieure~: on en déduit que $\opJn B = z$, donc que $\opJn B \in Z$,
+    ce qui est absurde. Ainsi $\opJn B \in Z$, donc $C\subseteq Z$.
   \end{itemize}
   Ainsi $C$ est le plus petit majorant de $A$, donc $C$ est la borne supérieure
   de $A$ dans $(\ideal(X),\subseteq)$.
 
+  \noindent
   Le cas des bornes inférieures est laissé en exercice.
 \end{proof}
 
 \begin{exercise}
   Montrer qu'une partie minorée non vide $A$ possède une borne inférieure dans
-  $(\ideal(X),\subseteq)$. \textit{Indication~:} on considère comme candidat de
-  cette borne inférieure de $A$ l'ensemble $\bigcap A$.
+  $(\ideal(X),\subseteq)$. \textit{Indication~: on considère comme candidat de
+  cette borne inférieure de $A$ l'ensemble $\bigcap A$.}
 \end{exercise}
 
 \begin{exercise}\label{exo.ide.maj}
@@ -1768,17 +1751,14 @@ On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
   assurée.
 \end{remark}
 
-On veut aussi montrer que $\ideal(X)$ est un prolongement, en un sens, naturel,
+On veut aussi montrer que $\ideal(X)$ est un prolongement naturel, en un sens,
 de $X$. Cela se traduit par deux faits~: on peut plonger $X$ dans $\ideal(X)$,
 et $\ideal(X)$ est le plus petit ensemble contenant $X$ et étant stable par
 sups de parties bornées non vides.
 
 \begin{proposition}
   Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. La fonction
-  \[\begin{array}{ccccc}
-  \iota & : & X & \longrightarrow & \ideal(X)\\
-  & & x &\mapsto & \{y \in X \mid y \leq x\}
-  \end{array}\]
+  \[\makeFun{\iota}{X}{\ideal(X)}{x}{\compr{y \in X}{y \leq x}}\]
   est une fonction strictement croissante.
 \end{proposition}
 
@@ -1788,10 +1768,10 @@ sups de parties bornées non vides.
   \begin{itemize}
   \item si $y,z\in X$ tels que $y\leq z$ et $z\in \iota(x)$, alors $z \leq x$
     donc $y\leq x$ par transitivité, donc $y\in \iota(x)$.
-  \item $x\in\iota(x)$ donc $\iota(x)\neq\varnothing$.
+  \item $x\in\iota(x)$ donc $\iota(x)\neq\vide$.
   \item $X$ n'est pas majoré, donc on trouve $y > x$, ce qui signifie que
     $y\notin\iota(x)$, donc $\iota(x)\neq X$.
-  \item $\bigvee\iota(x) = x$ et $x\in\iota(x)$ donc la borne supérieure  de
+  \item $\opJn\iota(x) = x$ et $x\in\iota(x)$ donc la borne supérieure  de
     $\iota(x)$ existe et appartient bien à $\iota(x)$.
   \end{itemize}
   On en déduit que $\iota$ est bien définie.
@@ -1808,7 +1788,7 @@ sups de parties bornées non vides.
   pour $x\in X$, donc tout $X$, ce qui n'est pas possible. En réalité, on
   pourrait simplement considérer l'ensemble des idéaux et non l'ensemble des
   idéaux propres (un idéal est propre s'il est différent de $X$), mais dans
-  notre construction de $\mathbb R$ cela introduirait un point à l'infini.
+  notre construction de $\bR$ cela introduirait un point à l'infini.
 \end{remark}
 
 \begin{lemma}\label{lem.id.cup}
@@ -1833,67 +1813,69 @@ sups de parties bornées non vides.
   Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. Soit $(Y,\leq)$
   un ensemble totalement ordonné complet et $f : X \to Y$ une fonction
   croissante préservant les bornes inférieures et supérieures. Il existe une
-  unique fonction $\hat f : \ideal(X) \to Y$ qui préserve les bornes supérieures
-  et les bornes inférieures et telle que $f = \hat f \circ \iota$.
+  unique fonction $\relev{f} : \ideal(X) \to Y$ qui préserve les bornes
+  supérieures et les bornes inférieures et telle que
+  $f = \relev{f} \circ \iota$.
 \end{theorem}
 
 \begin{proof}
   On procède par analyse-synthèse~:
   \begin{itemize}
-  \item si une telle fonction $\hat f$ existe, alors par définition, on sait
-    que pour tout $x\in X$, $\hat f(\iota(x)) = f(x)$. De plus, par le
+  \item si une telle fonction $\relev{f}$ existe, alors par définition, on sait
+    que pour tout $x\in X$, $\relev{f}(\iota(x)) = f(x)$. De plus, par le
     \cref{lem.id.cup}, on sait que pour tout $Y\in \iota(x)$,
     $\displaystyle Y = \bigcup_{x\in Y} \iota(x)$, donc par préservation des
     bornes supérieures on en déduit que
-    \[\hat f(Y) = \bigvee_{x\in Y} f(x)\]
-    ce qui définit de façon unique $\hat f$.
-  \item Montrons que notre candidat $\hat f$ est une fonction croissante qui
+    \[\relev{f}(Y) = \bigvee_{x\in Y} f(x)\]
+    ce qui définit de façon unique $\relev{f}$.
+  \item Montrons que notre candidat $\relev{f}$ est une fonction croissante qui
     préserve les bornes supérieures et inférieures~:
     \begin{itemize}
     \item Tout d'abord, si
       $Y\subseteq Z$, comme la borne supérieure est croissante pour l'inclusion,
-      on en déduit que $\bigvee f(Y) \leq \bigvee f(Z)$, d'où
-      $\hat f(Y)\leq \hat f(Z)$.
+      on en déduit que $\opJn f(Y) \leq \opJn f(Z)$, d'où
+      $\relev{f}(Y)\leq \relev{f}(Z)$.
       
     \item Soit $A\subseteq \ideal(X)$ admettant une borne supérieure, qu'on note
       $a$. On a vu que cette borne supérieure est $\bigcup A$, en ajoutant si
       nécessaire la borne supérieure (dans $X$) de $\bigcup A$, ce qui nous
       donne donc
-      \[\hat f(a) = \bigvee_{x \in a} f(x)\]
-      on veut montrer que cette valeur est la borne supérieure de $\hat f(A)$.
-      Comme la borne supérieure est croissante vis à vis de l'inclusion, on sait
-      déjà que $\hat f(a)$ est un majorant de $\hat f(A)$.
-      Soit $b$ un majorant de $\hat f(A)$, cela signifie que pour tout
-      $Y\in A, \bigvee_{x \in Y} f(x) \leq b$, donc pour tout
-      $x \in \bigcup A, f(x) \leq b$. Il nous reste donc, si $\bigvee a$ existe,
-      à montrer que $f(\bigvee a) \leq b$. Mais cela est dû au fait que $f$
+      \[\relev{f}(a) = \opJn_{x \in a} f(x)\]
+      on veut montrer que cette valeur est la borne supérieure de
+      $\relev{f}(A)$. Comme la borne supérieure est croissante vis à vis de
+      l'inclusion, on sait déjà que $\relev{f}(a)$ est un majorant de
+      $\relev{f}(A)$.
+      Soit $b$ un majorant de $\relev{f}(A)$, cela signifie que pour tout
+      $Y\in A, \opJn_{x \in Y} f(x) \leq b$, donc pour tout
+      $x \in \bigcup A, f(x) \leq b$. Il nous reste donc, si $\opJn a$ existe,
+      à montrer que $f(\opJn a) \leq b$. Mais cela est dû au fait que $f$
       préserve les bornes supérieures.
     \item Le cas de la borne inférieure est laissé en exercice.
     \end{itemize}
   \end{itemize}
-  Ainsi il existe une unique fonction $\hat f$ vérifiant les conditions
+  Ainsi il existe une unique fonction $\relev{f}$ vérifiant les conditions
   imposées.
 \end{proof}
 
 \begin{exercise}
-  Montrer que $\hat f$ préserve bien les bornes inférieures.
+  Montrer que $\relev{f}$ préserve bien les bornes inférieures.
 \end{exercise}
 
 \begin{remark}
   On peut représenter la propriété précédente par le fait qu'il existe une
-  unique flèche $\hat f$ faisant commuter le diagramme suivant~:
+  unique flèche $\relev{f}$ faisant commuter le diagramme suivant~:
   \begin{center}
     \begin{tikzcd}
       X \ar[r,"f"]\ar[d,"\iota"] & Y\\
-      \ideal(X) \ar[ur,dashed,"\hat f"]
+      \ideal(X) \ar[ur,dashed,"\relev{f}"]
     \end{tikzcd}
   \end{center}
 \end{remark}
 
-On peut donc construire l'ensemble ordonné $(\mathbb R,\leq)$, mais nous
+On peut donc construire l'ensemble ordonné $(\bR,\leq)$, mais nous
 souhaitons aussi définir les opérations sur cet ensemble. Pour l'addition, nous
 avons besoin d'un simple lemme car l'addition est compatible avec l'ordre de
-$\mathbb Q$. Cependant, il nous est ici nécessaire de supposer un résultat
+$\bQ$. Cependant, il nous est ici nécessaire de supposer un résultat
 proche d'une caractérisation de la borne supérieure, dans le cas où cette borne
 n'existe pas forcément.
 
@@ -1921,11 +1903,11 @@ n'existe pas forcément.
 
     Rajouter la borne supérieure à cet ensemble ne change pas la clôture par le
     bas, puisque tout élément inférieur à la borne supérieure de $Y + Z$ est
-    inférieur à un élément de $Y + Z$. En effet, si $x \leq \bigvee(Y + Z)$ et
+    inférieur à un élément de $Y + Z$. En effet, si $x \leq \opJn(Y + Z)$ et
     $x > a$ pour tout $a \in Y + Z$, alors $x$ est un majorant de $Y + Z$ donc
-    $\bigvee(Y + Z) \leq x$, donc $x = \bigvee (Y + Z)$.
+    $\opJn(Y + Z) \leq x$, donc $x = \opJn (Y + Z)$.
   \item comme $Y$ et $Z$ sont non vides, on trouve $y\in Y$ et $z\in Z$. Comme
-    $y + z \in Y + Z$, $Y + Z \neq \varnothing$.
+    $y + z \in Y + Z$, $Y + Z \neq \vide$.
   \item $Y + Z \neq X$~: en utilisant l'\cref{exo.ide.maj}, on trouve
     $y$ un majorant de $Y$ et $z$ un majorant de $Z$. On sait donc que
     $y + z$ est un majorant de $Y + Z$ puisque $+$ est compatible avec $\leq$.
@@ -1941,26 +1923,26 @@ n'existe pas forcément.
   \begin{itemize}
   \item pour tous $Y,Z,A\in\ideal(X)$, on a
     \begin{align*}
-      Y + (Z + A) &= \{ y + (z + a) \mid y \in Y, z \in Z, a \in A\}\\
-      &= \{ (y + z) + a \mid y \in Y, z \in Z, a \in A\}\\
+      Y + (Z + A) &= \compr{y + (z + a)}{y \in Y, z \in Z, a \in A}\\
+      &= \compr{(y + z) + a}{y \in Y, z \in Z, a \in A}\\
       &= (Y + Z) + A
     \end{align*}
   \item en notant $0$ le neutre de $X$, on a pour tout $Y \in \ideal(X)$~:
     \begin{align*}
-      Y + \iota(0) &= \{ y + 0 \mid y \in Y \}\\
-      &= \{y \mid y \in Y \}\\
+      Y + \iota(0) &= \compr{ y + 0}{y \in Y}\\
+      &= \compr{y}{y \in Y}\\
       &= Y
     \end{align*}
   \item pour tout $Y\in \ideal(X)$, on définit
-    \[-Y \defeq X \setminus \{ - y \mid y \in Y \}\]
+    \[-Y \defeq X \setminus \compr{- y}{y \in Y}\]
     augmenté si besoin de sa borne supérieure. C'est un élément de $\ideal(X)$~:
     \begin{itemize}
     \item si $x,y \in X$, $x\leq y$ et $y \in -Y$, alors on sait que
       $-y\notin Y$, et $-y \leq -x$. Si $-x \in Y$, alors $-y \in Y$ par clôture
       par le bas, donc on en déduit que $-x \notin Y$, donc $x \in -Y$.
     \item comme $Y \neq X$, on trouve $y\notin Y$, et alors $-y \in -Y$, donc
-      $-Y\neq \varnothing$.
-    \item comme $Y \neq \varnothing$, on trouve $y\in Y$, et alors
+      $-Y\neq \vide$.
+    \item comme $Y \neq \vide$, on trouve $y\in Y$, et alors
       $-y \notin -Y$, donc $-Y\neq X$.
     \item ajouter la borne supérieure si elle existe assure la dernière
       condition.
@@ -1975,73 +1957,76 @@ n'existe pas forcément.
     $x = (x - y) + y \in Y + (-Y)$.
   \item enfin, $+$ est commutatif~: pour tout $Y,Z \in \ideal(X)$, on a~:
     \begin{align*}
-      Y + Z &= \{ y + z \mid y \in Y, z \in Z \}\\
-      &= \{ z + y \mid z \in Z, y \in Y \}\\
+      Y + Z &= \compr{y + z}{y \in Y, z \in Z}\\
+      &= \compr{z + y}{z \in Z, y \in Y}\\
       &= Z + Y
     \end{align*}
   \end{itemize}
   Ainsi $(\ideal(X),+,\subseteq)$ est un groupe abélien ordonné.
 \end{proof}
 
-On peut donc utiliser ce fait pour munir $\mathbb R$ de la loi $+$. Cependant,
+On peut donc utiliser ce fait pour munir $\bR$ de la loi $+$. Cependant,
 pour la loi $\times$, cela pose un problème~: $\times$ n'est pas compatible avec
-$\leq$ dans $\mathbb Q$. Pour contourner ce problème, on peut définir d'abord
-$\times$ sur $\mathbb R_+^\star$~: la loi $\times$ est en effet compatible
-avec $\leq$ sur $\mathbb Q_+^\star$ et donne un groupe.
+$\leq$ dans $\bQ$. Pour contourner ce problème, on peut définir d'abord
+$\times$ sur $\bR_+^\star$~: la loi $\times$ est en effet compatible
+avec $\leq$ sur $\bQ_+^\star$ et donne un groupe.
 
 \begin{definition}[Ensemble des réels]
-  On définit $(\mathbb R,+,\leq)$ comme la complétion idéale de $\mathbb Q$.
-  On définit de plus $(\mathbb R_+^\star,\times, \leq)$ comme la complétion
-  idéale de $(\mathbb Q_+^\star,\times)$.
+  On définit $(\bR,+,\leq)$ comme la complétion idéale de $\bQ$.
+  On définit de plus $(\bR_+^\star,\times, \leq)$ comme la complétion
+  idéale de $(\bQ_+^\star,\times)$.
 \end{definition}
 
 \begin{remark}
-  Ces constructions peuvent être définies grâce au fait que $\mathbb Q$ et
-  $\mathbb Q_+^\star$ sont non majorés.
+  Ces constructions peuvent être définies grâce au fait que $\bQ$ et
+  $\bQ_+^\star$ sont non majorés.
 \end{remark}
 
 \begin{definition}[Produit de réels]
   On définit maintenant le produit de nombres réels par
-  \[x \times y \defeq \left\{\begin{array}{l}
+  \[x \times y \defeq \begin{cases}
   0 \text{ si } x = 0 \lor y = 0 \\
-  x \times_{\mathbb Q_+^\star} y \text{ si } x > 0 \land y > 0\\
-  - (x \times_{\mathbb Q_+^\star} (-y)) \text{ si } x > 0 \land y < 0\\
-  - ((-x) \times_{\mathbb Q_+^\star} y) \text{ si } x < 0 \land y > 0\\
-  - ((-x) \times_{\mathbb Q_+^\star} (-y)) \text{ si } x < 0 \land y < 0
-  \end{array}\right.\]
+  x \times_{\bQ_+^\star} y \text{ si } x > 0 \land y > 0\\
+  - (x \times_{\bQ_+^\star} (-y)) \text{ si } x > 0 \land y < 0\\
+  - ((-x) \times_{\bQ_+^\star} y) \text{ si } x < 0 \land y > 0\\
+  - ((-x) \times_{\bQ_+^\star} (-y)) \text{ si } x < 0 \land y < 0
+  \end{cases}\]
 \end{definition}
 
 \begin{exercise}
-  Montrer que $(\mathbb R,+,\times,\leq)$ est un corps totalement ordonné.
+  Montrer que $(\bR,+,\times,\leq)$ est un corps totalement ordonné.
 \end{exercise}
 
 \begin{corollary}
-  Toute partie non vide majorée (respectivement, minorée) de $\mathbb R$ admet
+  Toute partie non vide majorée (respectivement, minorée) de $\bR$ admet
   une borne supérieure (respectivement, inférieure).
 \end{corollary}
 
 \begin{remark}
   On aurait pu, au lieu de faire cette disjonction de cas, construire nos
   ensembles de nombres dans un ordre plus efficace en vu de la construction par
-  complétion idéale. En construisant $\mathbb N$, puis $\mathbb Q_+$ (en
-  inversant $\times$ dans $\mathbb N^\star$), on peut directement considérer le
-  demi-anneau $(\mathbb R,+,\times,\leq)$ complet, puis le symétriser pour la
+  complétion idéale. En construisant $\bN$, puis $\bQ_+$ (en
+  inversant $\times$ dans $\bN^\star$), on peut directement considérer le
+  demi-anneau $(\bR,+,\times,\leq)$ complet, puis le symétriser pour la
   loi $+$ pour obtenir un corps totalement ordonné complet.
 
   Cette construction, cependant, demande d'affiner le \cref{lem.R.compat} pour
-  le cas d'un monoïde régulier, puisque $(\mathbb Q_+,+)$ n'a pas une structure
+  le cas d'un monoïde régulier, puisque $(\bQ_+,+)$ n'a pas une structure
   de groupe.
 \end{remark}
 
 \begin{remark}
-  L'autre construction de $\mathbb R$ n'exige pas de construction
+  L'autre construction de $\bR$ n'exige pas de construction
   \textit{ad hoc} comme la disjonction de cas précédente. Elle utilise la
-  complétion par les suites de Cauchy~: il se trouve que si $(A,+,\times)$ est
-  un anneau, alors les suites de Cauchy à valeurs dans $A$ ont naturellement une
-  structure d'anneau en considérant les opérations termes à termes. L'ensemble
-  des suites de Cauchy de limite nulle est alors un idéal de cet anneau~: on
-  peut donc directement construire l'anneau quotient. Cette construction de
-  $\mathbb R$ est plus directe et plus naturelle depuis $\mathbb Q$, mais nous
-  souhaitions traiter de cette autre construction que sont les coupures de
-  Dedekind (dans une version éloignée de la construction historique).
+  complétion par les suites de Cauchy~: il se trouve que si $(\varAA,+,\times)$
+  est un anneau, alors les suites de Cauchy à valeurs dans $\varAA$ ont
+  naturellement une structure d'anneau en considérant les opérations termes à
+  termes. L'ensemble des suites de Cauchy de limite nulle est alors un idéal de
+  cet anneau~: on peut donc directement construire l'anneau quotient. Cette
+  construction de $\bR$ est plus directe et plus naturelle depuis $\bQ$, mais
+  cette construction alternative est historiquement importante, et revêt aussi
+  une grande importance dans le cas des mathématiques constructives, où les
+  deux constructions de $\bR$ ne sont plus équivalentes (il est notamment
+  possible dans ce cadre d'avoir une construction des réels de Dedekind qui
+  donne un ensemble dénombrable \cite{BauerCountReal}).
 \end{remark}

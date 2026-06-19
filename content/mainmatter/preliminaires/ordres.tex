@@ -26,6 +26,7 @@ complète.
 
 \section{Ensembles ordonnés}
 
+\noindent
 Commençons par donner les définitions les plus élémentaires.
 
 \subsection{Définitions}
@@ -1776,22 +1777,63 @@ noyau d'un morphisme d'algèbre de Boole vers $\quot{\bZ}{2\bZ}$.
 
 \subsection{Exercices}
 
+\begin{exercise}[Sur l'implication]
+  On se place dans une algèbre de Heyting $\varBH$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer que pour tous $a,x,y \in \varBH$, si $x \leq y$ alors
+    $a \opimp x \leq a \opimp y$.
+  \item Montrer que pour tous $x,y,a \in \varBH$, si $x \leq y$ alors
+    $y \opimp a \leq x \opimp a$.
+  \item En déduire que pour tous $x,y \in \varBH$, si $x \leq y$ alors
+    $\opng y \leq \opng x$.
+  \item Si $\varBH$ est aussi une algèbre de Boole, montrer que la réciproque
+    de la question précédente est vraie aussi~: si $\opng y \leq \opng x$
+    alors $x \leq y$.
+  \item Montrer que pour tous $x,y,z \in \varBH$,
+    $x \opimp (y \opmt z) = (x \opimp y) \opmt (x \opimp z)$.
+  \item Montrer que pour tous $x,y,z \in \varBH$,
+    $(x\opjn y) \opimp z = (x \opimp z) \opjn (y \opimp z)$.
+  \end{enumerate}
+\end{exercise}
+
+\begin{exercise}[Sur la négation]
+  On se place dans une algèbre de Heyting $\varBH$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer que pour tout $x \in \varBH$,
+    $\opng(\opng(\opng x)) = \opng x$.
+  \item Montrer que pour tous $x,y \in \varBH$,
+    $(x \to y) \leq (\opng y \opimp \opng x)$.
+  \item Montrer que dans une algèbre de Boole, l'inégalité précédente est
+    une égalité.
+  \end{enumerate}
+\end{exercise}
+
 \begin{exercise}[Algèbre de Boole engendrée]
   Soit $(\varBB,\leq)$ une algèbre de Boole et $X\subseteq \varBB$.
   \begin{enumerate}[label=(\roman*)]
   \item Montrer qu'il existe une plus petite algèbre de Boole
     $\varBB(X)\subseteq \varBB$ contenant $X$.
-  \item On définit une expression booléenne en $X$ par la grammaire
-    \[e,e'\inddefeq x \mid \opng e \mid e\opjn e' \mid e \opmt e'\]
-    où $x \in X$. On confond ici l'expression définie par induction et son
-    interprétation évidente comme un élément de $\varBB$. Montrer que
-    $\varBB(X)$ est l'ensemble des expressions booléennes en $\varBB$.
-  \item Pour tout ensemble $X$, on dit qu'une partie $Y \subseteq X$ est
-    cofinie s'il existe un ensemble fini $F \subfin X$ tel que
-    $Y = X \setminus F$. Montrer que l'ensemble des parties $Y\subseteq X$
-    telles que $Y$ est finie ou cofinie forme une sous-algèbre de Boole de
-    $\powerset(X)$. Montrer que cette sous-algèbre de Boole est engendrée par
-    l'ensemble $\compr{\{x\}}{x \in X}$.
+  \end{enumerate}
+
+  \noindent
+  On définit une expression booléenne en $X$ par la grammaire
+  \[e,e'\inddefeq x \mid \opng e \mid e\opjn e' \mid e \opmt e'\]
+  où $x \in X$. On confond ici l'expression définie par induction et son
+  interprétation évidente comme un élément de $\varBB$.
+  \begin{enumerate}[label=(\roman*),resume]
+  \item Montrer que $\varBB(X)$ est l'ensemble des expressions booléennes en
+    $\varBB$.
+  \end{enumerate}
+
+  \noindent
+  Pour tout ensemble $X$, on dit qu'une partie $Y \subseteq X$ est
+  cofinie s'il existe un ensemble fini $F \subfin X$ tel que
+  $Y = X \setminus F$. Montrer que l'ensemble des parties $Y\subseteq X$
+  telles que $Y$ est finie ou cofinie forme une sous-algèbre de Boole de
+  $\powerset(X)$.
+  \begin{enumerate}[label=(\roman*),resume]
+  \item Montrer que cette sous-algèbre de Boole est engendrée par l'ensemble
+    $\compr{\{x\}}{x \in X}$.
   \end{enumerate}
 \end{exercise}
 
@@ -1803,63 +1845,350 @@ noyau d'un morphisme d'algèbre de Boole vers $\quot{\bZ}{2\bZ}$.
   \item Montrer que pour tout ensemble $X$ et élément $x \in X$,
     $\{x\}$ est un atome dans l'algèbre de Boole $\powerset(X)$.
   \end{enumerate}
-  A FAIRE : construire un exo pour montrer que toute algèbre de Boole finie est
-  engendrée par l'ensemble de ses atomes.
-\end{exercise}
 
-\begin{exercise}[Une structure algébrique pour le calcul des prédicats]
-  Nous avons vu qu'il est possible d'axiomatiser grâce à la théorie des ordres
-  la structure de la logique propositionnelle (à équivalence logique près).
-  L'objectif de cet exercice est d'étendre cette idée en donnant des structures
-  qui se comportent comme l'ensemble des formules du calcul des prédicats, en
-  ajoutant en particulier des propriétés que vérifient les quantificateurs et
-  l'égalité.
-  
-  On se fixe dans cet exercise une signature $\Sign$. Pour tout
-  $n \in \bN$, on dénote par $\Formula_n(\Sign)$ l'ensemble des formules
-  de $\Sign$ dont les variables libres appartiennent à
-  $\{x_0,\ldots,x_{n-1}\}$ (ainsi $\Prop(\Sign) = \Formula_0(\Sign)$).
-
-  On définit aussi $\LinTar_n(\Sign)$, l'algèbre de Lindenbaum-Tarski des
-  formules à $n$ variables libres, comme le quotient de $\Formula_n(\Sign)$
-  par la relation $\dvvd$.
-  \begin{enumerate}[label=(\roman*)]
-  \item Montrer que chaque $\LinTar_n(\Sign)$ est une algèbre de Boole.
-  \item Soit $\iota_n : \Formula_n(\Sign) \to \Formula_{n+1}(\Sign)$
-    l'injection canonique des formules à $n$ variables libres dans les formules
-    à $n+1$ variables libres. Justifier que $\iota_n$ est compatible avec
-    $\dvvd$. On note alors aussi $\iota_n$ la fonction canoniquement
-    associée $\LinTar_n(\Sign) \to \LinTar_{n+1}(\Sign)$~: montrer que
-    cette fonction est un morphisme d'algèbre de Boole.
-  \item De même, montrer que
+  \noindent
+  L'objectif de cet exercice est de montrer que toute algèbre de Boole finie
+  $\varBB$ peut s'écrire comme un ensemble de parties. Pour ce faire, on va
+  considérer l'ensemble $\At(\varBB)$ des atomes d'une algèbre de Boole.
+  \begin{enumerate}[label=(\roman*),resume]
+  \item Pour tout $x \in \varBB$, en notant
+    \[\At(\varBB,x) \defeq \compr{y \in \At(\varBB)}{y < x}\]
+    montrer que pour tout $x \in \varBB$, si $x \neq \opB$ alors
+    $\At(\varBB,x) \neq \vide$.
+  \item Montrer que $x = \opJn \At(\varBB,x)$.
+    \textit{Indication~: en partant du fait que $x$ est un majorant de
+      $\At(\varBB,x)$, montrer que l'égalité n'est pas stricte.}
+  \item Montrer que
     \[
-    \makeFun{\mathord{\forall}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
-            {\varFF}{\forall x_n,\varFF}
+    \makeFun{f}{\varBB}{\powerset(\At(\varBB))}{x}{\At(\varBB,x)}
     \]
-    induit une fonction croissante entre $\LinTar_{n+1}(\Sign)$ et
-    $\LinTar_n(\Sign)$. Faire de même avec le quantificateur
-    $\mathord{\exists}$.
-  \item Montrer que pour tous $i,j < n$, la fonction
-    \[
-    \makeFunName{\kron{i}{j}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
-    \]
-    définie en substituant $x_i$ par $x_j$ et chaque $x_{k+1}$ par $x_k$ pour
-    $k > i$ (pour assurer que les variables sont dans $\{x_0,\ldots,x_n\}$),
-    induit un morphisme d'algèbre de Boole entre $\LinTar_{n+1}(\Sign)$ et
-    $\LinTar_n(\Sign)$.
-  \item Montrer l'équivalence suivante pour
-    $\varFF \in \LinTar_n(\Sign)$ et
-    $\varFP \in \LinTar_{n+1}(\Sign)$~:
-    \[\varFF \vdP \forall \varFP \iff \iota_n(\varFF)\vdP \varFP\]
-    ainsi que, pour $\varFF \in \LinTar_{n+1}(\Sign)$ et
-    $\varFP \in \LinTar_n(\Sign)$~:
-    \[\exists \varFF \vdP \varFP \iff \varFF\vdP \iota_n(\varFP)\]
-    Ces équivalences caractérisent en un sens les quantificateurs $\forall$ et
-    $\exists$.
-  \item Montrer l'équivalence suivante, pour $\varFF \in \LinTar_n(\Sign)$
-    et $\varFP \in \LinTar_{n+1}(\Sign)$~:
-    \[\iota_n(\varFF) \land x_i = x_j \vdP \varFP \iff
-    \varFF\vdP \kron{i}{j}(\varFP)\]
-    Cet équivalence caractérise en un sens l'égalité.
+    est un isomorphisme d'algèbres de Boole.
+  \item Une algèbre de Boole infinie est-elle encore isomorphe à l'ensemble
+    des parties d'un ensemble~?
+    \textit{Indication~: trouver une algèbre de Boole infinie sans atome.}
   \end{enumerate}
 \end{exercise}
+
+\begin{exercise}[Quotient d'algèbres de Heyting]
+  Dans le cas des algèbre de Boole, le complémentaire d'un filtre étant un
+  idéal, on possède une façon naturelle de construire une algèbre de Boole
+  quotient. \'Etudions le cas d'une algèbre de Heyting.
+
+  Soit $\varBH$ une algèbre de Heyting et $\varFil$ un filtre sur $\varBH$.
+  On définit la relation $\sim_{\varFil}$ par
+  \[x\sim_{\varFil} y \defeq (x \opimp y) \opmt (y\opimp x) \in \varFil\]
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer que $\sim_{\varFil}$ est une relation d'équivalence.
+  \item Montrer que si $x \sim_{\varFil} x' $ et $y \sim_{\varFil} y'$, alors
+    $x\opjn y \sim_{\varFil} x'\opjn y'$, $x\opmt y \sim_{\varFil} x'\opmt y$
+    et $x\opimp y \sim_{\varFil} x' \opimp y'$.
+  \item Vérifier que $\quot{\varBH}{\sim_{\varFil}}$ est bien une algèbre de
+    Heyting avec les opérations induites sur celles de $\varBH$.
+  \item Montrer que si $\varBB$ est une algèbre de Boole et $\varFil$ est un
+    filtre sur $\varBB$, alors en posant
+    \[\varId \defeq \compr{\varBB \setminus F}{F \in \varFil}\]
+    on a une pour tous $x,y \in \varBB$ l'équivalence
+    \[x \sim_{\varFil} y \iff x \opXOR y \in \varId\]
+  \end{enumerate}
+
+  \noindent
+  On peut aussi construire un analogue du \ordinalnumeralmale{1} théorème
+  d'isomorphisme. Pour cela, la première étape est de définir la notion de
+  morphisme adaptée aux algèbres de Heyting. Pour deux algèbres de Heyting
+  $\varBH,\varBH'$, on dit que $f : \varBH \to \varBH'$ est un morphisme
+  lorsque $f$ est un morphisme de treillis qui, de plus, commute avec
+  l'implication~:
+  \[\forall x,y \in \varBH, f(x \opimp y) = f(x) \opimp f(y)\]
+  Dans le reste de l'exercice, on fixe $\varBH,\varBH'$ deux algèbres de Heyting
+  et $f : \varBH \to \varBH'$ un morphisme entre les deux.
+  \begin{enumerate}[label=(\roman*),resume]
+    \item Montrer que l'ensemble
+    \[\ker(f) \defeq \compr{x \in \varBH}{f(x) = \opT}\]
+    est un filtre sur $\varBH$.
+  \item Montrer que si $\varBH_0\subseteq \varBH$ est une sous-algèbre de
+    Heyting de $\varBH$, alors $f(\varBH_0)$ (l'image directe de
+    $\varBH_0$ par $f$) est une sous-algèbre de Heyting de $\varBH'$. En
+    déduire que $\im(f)$ est une algèbre de Heyting. Montrer de même que
+    si $\varBH'_0\subseteq\varBH'$ est une sous-algèbre de Heyting de
+    $\varBH'$, alors $f^{-1}(\varBH'_0)$ est une sous-algèbre de Heyting de
+    $\varBH$.
+  \item Montrer que la fonction induite par $f$
+    \[\makeFun{\relev{f}}{\quot{\varBH}{\ker(f)}}{\im(f)}{\cl(x)}{f(x)}\]
+    est bien définie et est un isomorphisme d'algèbres de Heyting (c'est-à-dire
+    un isomorphisme de treillis).
+    \textit{Note~: le quotient par l'ensemble $\ker(f)$ est à lire comme
+      le quotient par la relation associée au filtre $\ker(f)$.}
+  \end{enumerate}
+\end{exercise}
+
+\newpage
+
+\subsection{Problèmes}
+
+%\begin{problem}[Une structure algébrique pour le calcul des prédicats]
+%  Nous avons vu qu'il est possible d'axiomatiser grâce à la théorie des ordres
+%  la structure de la logique propositionnelle (à équivalence logique près).
+%  L'objectif de cet exercice est d'étendre cette idée en donnant des structures
+%  qui se comportent comme l'ensemble des formules du calcul des prédicats, en
+%  ajoutant en particulier des propriétés que vérifient les quantificateurs et
+%  l'égalité.
+%  
+%  On se fixe dans cet exercise une signature $\Sign$. Pour tout
+%  $n \in \bN$, on dénote par $\Formula_n(\Sign)$ l'ensemble des formules
+%  de $\Sign$ dont les variables libres appartiennent à
+%  $\{x_0,\ldots,x_{n-1}\}$ (ainsi $\Prop(\Sign) = \Formula_0(\Sign)$).
+%
+%  On définit aussi $\LinTar_n(\Sign)$, l'algèbre de Lindenbaum-Tarski des
+%  formules à $n$ variables libres, comme le quotient de $\Formula_n(\Sign)$
+%  par la relation $\dvvd$.
+%  \begin{enumerate}[label=(\roman*)]
+%  \item Montrer que chaque $\LinTar_n(\Sign)$ est une algèbre de Boole.
+%  \item Soit $\iota_n : \Formula_n(\Sign) \to \Formula_{n+1}(\Sign)$
+%    l'injection canonique des formules à $n$ variables libres dans les formules
+%    à $n+1$ variables libres. Justifier que $\iota_n$ est compatible avec
+%    $\dvvd$. On note alors aussi $\iota_n$ la fonction canoniquement
+%    associée $\LinTar_n(\Sign) \to \LinTar_{n+1}(\Sign)$~: montrer que
+%    cette fonction est un morphisme d'algèbre de Boole.
+%  \item De même, montrer que
+%    \[
+%    \makeFun{\mathord{\forall}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
+%            {\varFF}{\forall x_n,\varFF}
+%    \]
+%    induit une fonction croissante entre $\LinTar_{n+1}(\Sign)$ et
+%    $\LinTar_n(\Sign)$. Faire de même avec le quantificateur
+%    $\mathord{\exists}$.
+%  \item Montrer que pour tous $i,j < n$, la fonction
+%    \[
+%    \makeFunName{\kron{i}{j}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
+%    \]
+%    définie en substituant $x_i$ par $x_j$ et chaque $x_{k+1}$ par $x_k$ pour
+%    $k > i$ (pour assurer que les variables sont dans $\{x_0,\ldots,x_n\}$),
+%    induit un morphisme d'algèbre de Boole entre $\LinTar_{n+1}(\Sign)$ et
+%    $\LinTar_n(\Sign)$.
+%  \item Montrer l'équivalence suivante pour
+%    $\varFF \in \LinTar_n(\Sign)$ et
+%    $\varFP \in \LinTar_{n+1}(\Sign)$~:
+%    \[\varFF \vdP \forall \varFP \iff \iota_n(\varFF)\vdP \varFP\]
+%    ainsi que, pour $\varFF \in \LinTar_{n+1}(\Sign)$ et
+%    $\varFP \in \LinTar_n(\Sign)$~:
+%    \[\exists \varFF \vdP \varFP \iff \varFF\vdP \iota_n(\varFP)\]
+%    Ces équivalences caractérisent en un sens les quantificateurs $\forall$ et
+%    $\exists$.
+%  \item Montrer l'équivalence suivante, pour $\varFF \in \LinTar_n(\Sign)$
+%    et $\varFP \in \LinTar_{n+1}(\Sign)$~:
+%    \[\iota_n(\varFF) \land x_i = x_j \vdP \varFP \iff
+%    \varFF\vdP \kron{i}{j}(\varFP)\]
+%    Cet équivalence caractérise en un sens l'égalité.
+%  \end{enumerate}
+%\end{problem}
+
+\begin{problem}[Logique temporelle linéaire \cite{LTL77}]
+  Ce problème étudie une variante de logique appelée logique temporelle linéaire
+  (\foreignexpr{Linear Time Logic} en anglais, abrégé en $\LTL$).
+  On la verra dans le cas d'une logique propositionnelle~: son objectif est de
+  traduire des propositions qui peuvent évoluer dans le temps.
+
+  \pbPart{Logique modale linéaire}
+
+  Pour commencer cette étude, on travaille dans une logique simplifiée, qu'on
+  appelle Logique Modale Linéaire ($\LML$). Dans cette logique, les propositions
+  ne sont pas à interpréter comme étant une valeur de vérité
+  \og Vrai\fg{} / \og Faux\fg mais comme une valeur de vérité évoluant dans le
+  temps~: la sémantique d'une proposition sera un prédicat sur l'ensemble des
+  fonctions $\bN \to \intB$.
+  On notera $\infWd$ l'ensemble des fonctions $\bN \to \intB$ (cette notation
+  aura plus de sens à partir du \cref{chp.ordinaux}).
+
+  Donnons la syntaxe des propositions de $\LML$. L'ensemble $\Prop_{\LML}$ est
+  construit inductivement par la grammaire suivante~:
+  \[\varFF,\varFP\inddefeq x \mid \vara \mid \top\mid \bot \mid \varFF\land
+  \varFP \mid \varFF\lor \varFP \mid \lnot \varFF\mid \modNext\varFF\]
+  où $x \in \Var$. La constante $\vara$ est utilisée comme une proposition
+  atomique. On définit récursivement, pour un environnement d'évaluation
+  $\env : \Var \partialto \powerset(\infWd)$ et une proposition
+  $\varFF\in\Prop_{\LML}$ telle que $\VL(\varFF) \subseteq \dom(\env)$, la
+  valuation $\ValE(\varFF)$~:
+  \begin{itemize}
+  \item $\ValE(x) = \env(x)$
+  \item $\ValE(\vara) = \compr{\varstr \in \infWd}{\varstr(0) = 1}$
+  \item $\ValE(\top) = \powerset(\infWd)$
+  \item $\ValE(\bot) = \vide$
+  \item $\ValE(\varFF \land \varFP) = \ValE(\varFF) \cap \ValE(\varFP)$
+  \item $\ValE(\varFF \lor  \varFP) = \ValE(\varFF) \cup \ValE(\varFP)$
+  \item $\ValE(\lnot\varFF) = \powerset(\infWd)\setminus \ValE(\varFF)$
+  \item $\ValE(\modNext\varFF)=
+    \comprB{\varstr\in\infWd}{\upstr\in\ValE(\varFF)}$
+  \end{itemize}
+  Où $\upstrPP{\varstr}{k}$ est la fonction $n \mapsto \varstr(n+k)$, qui est
+  donc la suite $\varstr$ décalée vers la gauche.
+  Si $\varFF$ est close, on note directement
+  $\Val(\varFF)$ pour la valeur commune à tous les $\ValE(\varFF)$.
+
+  \begin{pbQuest}
+  \item Soit une suite binaire finie $b \defeq b_0\ldots b_{n-1} \in \intB^n$.
+    Construire une formule $\varFF_b$ telle que
+    $\Val(\varFF_b) = \compr{\varstr\in\infWd}{\varstr\restr n = b}$.
+  \end{pbQuest}
+
+  \noindent
+  On définit l'équivalence de formules par
+  \[\varFF\equiv\varFP \defeq \forall \env\supset \VL(\varFF)\cup\VL(\varFP),
+  \ValE(\varFF) = \ValE(\varFP)\]
+  \begin{pbQuest}[resume]
+  \item Montrer que l'algèbre de Lindenbaum-Tarski
+    \[\LinTar(\LML) = \quot{\Prop_{\LML}}{\equiv}\]
+    est une algèbre de Boole, avec les opérations induites par les constructeurs
+    des formules.
+  \item Montrer que $\modNext$ induit la fonction
+    \[
+    \makeFun{\modNext}{\LinTar(\LML)}{\LinTar(\LML)}
+            {\clas{\varFF}}{\clas{\modNext\varFF}}
+    \]
+    qui est un morphisme d'algèbre de Boole.
+  \end{pbQuest}
+
+  \noindent
+  On désigne par $\LinTar_0(\LML)$ le sous-ensemble de $\LinTar(\LML)$
+  constitué des classes de propositions sans variables.
+  \begin{pbQuest}[resume]
+  \item Montrer que $\LinTar_0(\LML)$ est une sous-algèbre de Boole de
+    $\LinTar(\LML)$.
+  \item Montrer que $\Val$ est un morphisme d'algèbre de Boole de
+    $\LinTar_0(\LML)$ dans $\powerset(\infWd)$.
+  \end{pbQuest}
+
+  \noindent
+  On souhaite maintenant montrer que $\Val$ ne constitue pas un isomorphisme.
+  \begin{pbQuest}[resume]
+  \item Montrer que $\Val$ est, en tant que fonction de domaine
+    $\LinTar_0(\LML)$, une injection.
+  \end{pbQuest}
+
+  \noindent
+  On cherche donc à prouver que $\Val$ n'est pas surjective. Pour cela, le
+  moyen le plus immédiat est de trouver des éléments de $\powerset(\infWd)$
+  sans antécédent.
+  \begin{pbQuest}[resume]
+  \item Montrer que pour toute formule $\varFF$ ne contenant pas de variable,
+    $\Val(\varFF)$ est un ensemble infini ou $\vide$.
+  \item En déduire que $\{0^\infty\}$ contenant uniquement la suite constante
+    nulle, n'est pas définissable dans $\LML$.
+  \end{pbQuest}
+
+  \pbPart{La logique $\LTL$}
+
+  On considère maintenant la logique $\LTL$, dans laquelle on ajoute
+  l'opérateur binaire $\modU$, dont on définit la sémantique par
+  \[\ValE(\varFF\modU\varFP) \defeq
+  \comprB{\varstr\in\infWd}{\exists i \in \bN,
+    \begin{array}{l}
+      \upstrPP{\varstr}{i} \in\ValE(\varFF)\\
+      \forall j < i, \upstrPP{\varstr}{j}\in\ValE(\varFP)
+    \end{array}
+  }\]
+  On appelle \og $\varFF$ jusqu'à $\varFP$\fg la proposition
+  $\varFF\modU\varFP$.
+  L'ensemble des propositions $\Prop_{\LTL}$ est alors
+  \[\varFF,\varFP\inddefeq\cdots\mid \varFF\modU\varFP\]
+
+  \begin{pbQuest}
+  \item Montrer les équivalences suivantes pour toutes propositions
+    $\varFF,\varFP,\varFC$~:
+    \begin{center}
+      \begin{tabular}{cc}
+        $\modNext(\varFF\modU\varFP) \equiv
+        (\modNext\varFF)\modU(\modNext\varFP)$
+        &
+        $\varFF\modU(\varFP\lor\varFC)\equiv
+        (\varFF\modU\varFP)\lor(\varFF\modU\varFP)$
+        \\
+        \\
+        \multicolumn{2}{c}{
+          $(\varFF\land\varFP)\land\varFC\equiv
+          (\varFF\modU\varFC)\lor(\varFP\modU\varFC)$}
+      \end{tabular}
+    \end{center}
+  \item On définit $\modR$, le dual de De Morgan de $\modU$, par
+    \[\varFF\modR\varFP\defeq \lnot(\lnot\varFF\modU\lnot\varFP)\]
+    Décrire $\ValE(\varFF\modR\varFP)$.
+  \end{pbQuest}
+
+  \noindent
+  On souhaite d'abord proposer deux autres modalités, dont on va montrer
+  qu'elles peuvent être définies dans $\LTL$. On pose la modalité
+  \og un jour \fg et la modalité \og toujours \fg, notées respectivement
+  $\modDia\varFF$ et $\modSq\varFF$ avec la sémantique
+  \begin{align*}
+    \ValE(\modDia\varFF) &\defeq
+    \comprB{\varstr\in\infWd}
+           {\exists i\in\bN,\upstrPP{\varstr}{i}\in\ValE(\varFF)}
+    \\
+    \ValE(\modSq\varFF) &\defeq
+    \comprB{\varstr\in\infWd}
+           {\forall i\in\bN,\upstrPP{\varstr}{i}\in\ValE(\varFF)}
+  \end{align*}
+  \begin{pbQuest}[resume]
+  \item Pour une proposition $\varFF\in\Prop_{\LTL}$, construire une proposition
+    $\varFF'$ équivalente à $\modDia\varFF$, c'est-à-dire telle que
+    $\ValE(\varFF') = \ValE(\modDia\varFF)$. Faire de même avec la modalité
+    $\modSq$.
+  \item Montrer que pour toute proposition $\varFF$, on a les équivalences
+    \[\modDia\varFF \equiv \varFF\lor\modNext(\modDia\varFF)\qquad
+    \modSq\varFF \equiv \varFF\land\modNext(\modSq\varFF)\]
+  \item Montrer pour toute proposition les deux équivalences
+    \[\modDia\varFF \equiv \lnot(\modSq(\lnot\varFF))
+    \modSq\varFF \equiv \lnot(\modDia(\lnot\varFF))\]
+  \item Quel est le sens de la proposition $\modSq\modDia\varFF$~? Et de la
+    proposition $\modDia\modSq\varFF$~?
+  \item Montrer qu'il existe une proposition $\varFF\in\Prop_{\LTL}$ telle que
+    pour toute proposition $\varFP\in\Prop_{\LML}$, $\varFF\not\equiv\varFP$.
+  \end{pbQuest}
+
+  \pbPart{$\LTL$ et la logique du premier ordre}
+
+  Dans cette partie, on donne une autre présentation d'un langage pour parler de
+  propriétés au cours du temps. On considère ici la logique du premier ordre,
+  telle que décrite dans le \cref{chp.logpred}. On fixe la signature
+  \[\Sign \defeq \{<^2, \vara^1\}\]
+  où $<$ et $\vara$ sont des symboles de relation. Pour une suite
+  $\varstr\in\infWd$, on définit le modèle $\varMM_{\varstr}$ par
+  \begin{itemize}
+  \item L'ensemble $\carM{\varMM_{\varstr}}$ est l'ensemble des couples
+    $(n,\varstr(n))$, c'est-à-dire le graphe de $\varstr$ vu comme une
+    fonction.
+  \item La relation $(n,\varstr(n)) < (m,\varstr(m))$ est donnée par
+    $n < m$.
+  \item La relation $\vara((n,\varstr(n)))$ est donnée par
+    $\varstr(n) = 1$.
+  \end{itemize}
+
+  \noindent
+  Pour une suite $\varstr\in\infWd$, on définit $\varstr\satisf\varFF$ par
+  $\varMM_{\varstr}\satisf\varFF$.
+
+  \begin{pbQuest}
+  \item Construire une formule $\Ss(x,y)$ telle que
+    \[\varstr,(x\mapsto (n,\varstr(n)),y\mapsto(m,\varstr(m)))\satisf\Ss(x,y)
+    \iff m = n + 1\]
+  \end{pbQuest}
+
+  \noindent
+  On définit la sémantique d'une proposition $\varFF\in\Prop(\Sign)$ par
+  \[\semFOL{\varFF}\defeq \compr{\varstr\in \infWd}{\varstr\satisf\varFF}\]
+  \begin{pbQuest}
+  \item Construire une proposition $\varFF$ telle que $\semFOL{\varFF}$ est
+    l'ensemble des suite commençant par $0$.
+  \item \'Etant donnée une proposition $\varFF$, construire une proposition
+    $\modNext\varFF$ telle que
+    \[\semFOL{\modNext\varFF} \defeq
+    \compr{\varstr\in\infWd}{\upstr\satisf\varFF}\]
+  \item Montrer que
+    $\semFOL{\varFF\lor\varFP} = \semFOL{\varFF}\lor\semFOL{\varFP}$,
+    $\semFOL{\varFF\land\varFP} = \semFOL{\varFF}\land\semFOL{\varFP}$ et
+    $\semFOL{\lnot\varFF} = \powerset(\infWd)\setminus \semFOL{\varFF}$
+  \item En déduire que pour toute proposition $\varFF\in\Prop_{\LML}$ ne
+    contenant pas de variable, il existe $\varFP \in \Prop(\Sign)$ telle que
+    $\semFOL{\varFP} = \Val(\varFF)$.
+  \item \'Etendre le résultat précédent à $\LTL$.
+  \end{pbQuest}
+\end{problem}
