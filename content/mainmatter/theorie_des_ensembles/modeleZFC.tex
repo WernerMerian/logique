@@ -10,39 +10,40 @@ de parler de modèle de $\ZFC$, puisqu'un tel modèle est en quelque sorte un
 modèle de toutes les mathématiques que l'on connaît.
 
 Une première conséquence de cette expressivité est un certain flou entre ce que
-l'on exprime dans $\ZFC$ et dans les maths usuelles. Puisque tout peut se
-définir en terme d'ensembles, il semble que tout ce dont nous avons parlé jusque
-là puisse se formaliser dans $\ZFC$. C'est le cas, mais il faut faire attention
-à ce qu'on manipule.
+l'on exprime dans $\ZFC$ et dans les mathématiques usuelles. Puisque tout peut
+se définir en terme d'ensembles, il semble que tout ce dont nous avons parlé
+jusque là puisse se formaliser dans $\ZFC$. C'est le cas, mais il faut faire
+attention à ce qu'on manipule.
 
-En particulier, un modèle de $\ZFC$, nommons-le $\mathcal M$, contient lui-même
-un ensemble $\Formula(\Sigma)$ pour une signature $\Sigma$ donnée. On pourrait
+En particulier, un modèle de $\ZFC$, nommons-le $\varMM$, contient lui-même
+un ensemble $\Formula(\Sign)$ pour une signature $\Sign$ donnée. On pourrait
 alors se dire que, comme on peut formaliser nos résultats de logique en terme
 d'ensembles, on peut travailler au sein de $\ZFC$ pour faire de la logique.
-Malheureusement, les propositions de $\Formula(\Sigma)$ ne sont pas les mêmes
+Malheureusement, les propositions de $\Formula(\Sign)$ ne sont pas les mêmes
 que celles que nous connaissons~: on peut facilement interpréter une proposition
-habituelle par un élément de $\Formula(\Sigma)$, mais l'inverse n'a pas de
+habituelle par un élément de $\Formula(\Sign)$, mais l'inverse n'a pas de
 raison d'être vrai.
 
 Cela mène à deux résultats essentiels pour décrire les limitations de cette
-approche formelle de la logique~: les théorèmes d'incomplétudes de Gödel et le
-théorème d'indéfinissabilité de la vérité de Tarski, que nous abordons dans le
-\cref{chp.arith}. Ceux-ci ont pour conséquence que si l'on considère un codage
-$\ceil -$ qui à une formule au sens habituel associe une formule de notre
-modèle $\mathcal M$, alors il n'existe pas de formule $\varphi_{\mathcal M}$
-telle que
-\[\forall \psi \in \Formula(\Sigma), \mathcal M \models \psi
-\iff \mathcal \varphi_{\mathcal M}(\ceil \psi)\]
+approche formelle de la logique~: les théorèmes d'incomplétudes de Gödel
+(\cref{thm.Godel1.ZFC} et \cref{thm.Godel2.ZFC}) et le théorème
+d'indéfinissabilité de la vérité de Tarski (\cref{thm.Tarski.ZFC}), que nous
+abordons dans le \cref{chp.arith}. Ceux-ci ont pour conséquence que si l'on
+considère un codage $\godcod{\tok}$ qui à une formule au sens habituel associe
+une formule de notre modèle $\varMM$, alors il n'existe pas de formule
+$\varFF_{\varMM}$ à l'intérieur de $\varMM$ telle que
+\[\forall \varFP \in \Formula(\Sign),
+\varMM \satisf \varFF_{\varMM}(\godcod{\varFP}) \iff \varFP\]
 
 Cette limitation implique que l'on ne peut pas à strictement
-parler écrire une formule comme $\mathcal U\models \ZFC$ pour notre univers
-ensembliste $\mathcal U$. Par contre, il est possible d'écrire par exemple
-$\ZFC\vdash \varphi$, qui en utilisant le théorème de complétude permet de dire
-que $\mathcal U \models \varphi$~: ainsi, l'écriture de $\mathcal U\models\ZFC$
+parler écrire une formule comme $\unZF\satisf \ZFC$ pour notre univers
+ensembliste $\unZF$. Par contre, il est possible d'écrire par exemple
+$\ZFC\vdP \varFF$, qui en utilisant le théorème de complétude permet de dire
+que $\unZF\satisf \varFF$~: ainsi, l'écriture de $\unZF\satisf\ZFC$
 se traduit en fait par une infinité de théorèmes de la forme
-$\ZFC\vDash \varphi$ pour chaque axiome $\varphi \in \ZFC$.
+$\ZFC\vD\varFF$ pour chaque axiome $\varFF \in \ZFC$.
 
-S'il est assez clair que $\ZFC\vDash\ZFC$ est un constat assez vide, cela nous
+S'il est assez clair que $\ZFC\vD\ZFC$ est un constat assez vide, cela nous
 permet ensuite d'introduire la relativisation, qui permet d'exprimer la notion
 de modèle classe de $\ZFC$.
 
@@ -52,7 +53,7 @@ puis nous aborderons l'absoluité, qui permet d'étudier la conservation entre d
 modèles de $\ZFC$.
 
 Nous verrons ensuite la théorie des modèles intérieurs, et son exemple le plus
-connu~: l'univers constructible de Gödel $\mathbb L$.
+connu~: l'univers constructible de Gödel $\bL$.
 
 \section{Premiers pas}
 
@@ -61,407 +62,426 @@ connu~: l'univers constructible de Gödel $\mathbb L$.
 On commence par introduire la notion de relativisation d'une formule. Comme on
 l'a dit, il est impossible de représenter de façon interne à un modèle de $\ZFC$
 que celui-ci vérifie une formule~: il faut donc parler de façon externe au
-modèle. Pour exprimer que $\varphi$ est vraie dans l'univers ambiant, il suffit
+modèle. Pour exprimer que $\varFF$ est vraie dans l'univers ambiant, il suffit
 alors de travailler normalement, en utilisant les axiomes de $\ZFC$. Cependant,
 cette approche est très limitée, et on aimerait s'autoriser à parler d'autres
-classes que l'univers $\mathcal U$ tout entier. Pour ce faire, comme on doit
+classes que l'univers $\unZF$ tout entier. Pour ce faire, comme on doit
 procéder de façon purement syntaxique, on modifie la formule même qu'on veut
 prouver en y incluant l'information de la classe qu'on utilise.
 
-Disons qu'on veuille montrer qu'une formule $\varphi$ est vraie dans la classe
+Disons qu'on veuille montrer qu'une formule $\varFF$ est vraie dans la classe
 des ordinaux, l'idée est simplement de modifier tous les quantificateurs pour
 que ceux-ci ne parlent que d'éléments de $\Ord$. La relativisation est
 précisément ce procédé de réduire la portée des quantificateurs par une formule,
 exprimant en général l'appartenance à une classe qui nous intéresse.
 
 \begin{definition}[Relativisation d'une formule]\label{def.relativisation}
-  Soient $\varphi,\psi\in\Formula(\mathcal L_{\ZF})$ où $\psi$ possède une
-  variable libre. On appelle relativisation de $\varphi$ à $\psi$ la formule
-  $\varphi^\psi$ définie par induction sur $\varphi$ par~:
+  Soient $\varFF,\varFP\in\Formula(\SignP{\ZF})$ où $\varFP$ possède une
+  variable libre. On appelle relativisation de $\varFF$ à $\varFP$ la formule
+  $\varFF^\varFP$ définie par induction sur $\varFF$ par~:
   \begin{itemize}
-  \item si $\varphi$ est atomique alors $\varphi^\psi = \varphi$.
-  \item si $\varphi = \top$ alors $\varphi^\psi = \top$.
-  \item si $\varphi = \bot$ alors $\varphi^\psi = \bot$.
-  \item si $\varphi = \lnot \chi$ alors $\varphi^\psi = \lnot \chi^\psi$.
-  \item si $\varphi = \chi \lor \xi$ alors
-    $\varphi^\psi = \chi^\psi \lor \xi^\psi$.
-  \item si $\varphi = \chi \land \xi$ alors
-    $\varphi^\psi = \chi^\psi \land \xi^\psi$.
-  \item si $\varphi = \chi \to \xi$ alors
-    $\varphi^\psi = \chi^\psi \to \xi^\psi$.
-  \item si $\varphi = \exists x, \chi$ alors
-    $\varphi^\psi = \exists x, \psi(x) \land \chi^\psi$.
-  \item si $\varphi = \forall x, \chi$ alors
-    $\varphi^\psi = \forall x, \psi(x) \to \chi^\psi$.
+  \item si $\varFF$ est atomique alors $\varFF^\varFP \defeq \varFF$.
+  \item si $\varFF = \top$ alors $\varFF^\varFP \defeq \top$.
+  \item si $\varFF = \bot$ alors $\varFF^\varFP \defeq \bot$.
+  \item si $\varFF = \lnot \varFC$ alors
+    $\varFF^\varFP \defeq \lnot \varFC^\varFP$.
+  \item si $\varFF = \varFC_1 \lor \varFC_2$ alors
+    $\varFF^\varFP \defeq {\varFC_1}^\varFP \lor {\varFC_2}^\varFP$.
+  \item si $\varFF = \varFC_1 \land \varFC_2$ alors
+    $\varFF^\varFP \defeq {\varFC_1}^\varFP \land {\varFC_2}^\varFP$.
+  \item si $\varFF = \varFC_1 \to \varFC_2$ alors
+    $\varFF^\varFP \defeq {\varFC_1}^\varFP \to {\varFC_2}^\varFP$.
+  \item si $\varFF = \exists x, \varFC$ alors
+    $\varFF^\varFP \defeq \exists x, \varFP(x) \land \varFC^\varFP$.
+  \item si $\varFF = \forall x, \varFC$ alors
+    $\varFF^\varFP \defeq \forall x, \varFP(x) \to \varFC^\varFP$.
   \end{itemize}
 \end{definition}
 
-Le théorème central pour l'étude des modèles classes est que la cohérence est
-préservée par ceux-ci.
+Ce procédé de relativisation se comporte bien vis à vis de la dérivation~: si
+$\varCG\vdP\varFF$ est dérivable, alors $\varCG^\varFP\vdP\varFF^\varFP$ aussi.
+Cependant, il faut faire attention ici à la gestion des variables libres~:
+pour que l'induction fonctionne correctement, on doit ajouter au contexte
+$\varCG$ les hypothèses $\varFP(x_1),\ldots,\varFP(x_n)$ pour $x_1,\ldots,x_n$
+les variables libres dans le séquent.
 
 \begin{lemma}\label{lem.relat.deduc}
-  Pour $\Gamma\in\List(\Formula(\mathcal L_{\ZF}))$ et
-  $\varphi,\psi\in\Formula(\mathcal L_{\ZF})$, si $\Gamma\vdash \varphi$ alors
-  $\Gamma^\psi \vdash \varphi^\psi$ où $\Gamma^\psi$ est l'application de la
-  relativisation à $\psi$ de tous les éléments de $\Gamma$, augmentée de la
-  formule $\psi(x)$ pour toute variable $x\in \VL(\Gamma)\cup \VL(\varphi)$.
+  Pour $\varCG\in\Ctx(\SignP{\ZF})$ et
+  $\varFF,\varFP\in\Formula(\SignP{\ZF})$, si $\varCG\vdP \varFF$ alors, en
+  notant $\{x_1,\ldots,x_n\}$ l'ensemble $\VL(\varCG)\cup\VL(\varFF)$, et
+  $\varFP(\vec x)$ le contexte $\varFP(x_1),\ldots,\varFP(x_n)$, on a
+  $\varFP(\vec x),\varCG^\varFP\vdP\varFF^\varFP$.
 \end{lemma}
 
 \begin{proof}
-  On procède par induction sur la relation $\Gamma \vdash \varphi$~:
+  On procède par induction sur la relation $\varCG \vdP \varFF$~:
   \begin{itemize}
-  \item cas Ax~: si $\varphi \in \Gamma$, alors $\varphi^\psi \in \Gamma^\psi$,
-    d'où le résultat.
-  \item cas $\top$~: peu importe $\Gamma$, on a toujours
-    $\Gamma^\psi \vdash \top$.
-  \item cas $\bot_\mathrm c$~: on suppose que
-    $\Gamma^\psi, \lnot A^\psi \vdash \bot$, alors on peut appliquer
-    $\bot_\mathrm c$ pour en déduire que $\Gamma^\psi \vdash A^\psi$.
-  \item cas $\lor_\mathrm i^\mathrm g$~: on suppose que
-    $\Gamma^\psi \vdash A^\psi$, donc $\Gamma^\psi \vdash A^\psi\lor B^\psi$,
-    c'est-à-dire $\Gamma^\psi \vdash (A\lor B)^\psi$.
-  \item le cas $\lor_\mathrm i^\mathrm d$ est analogue.
-  \item cas $\lor_\mathrm e$~: on suppose que
-    $\Gamma^\psi\vdash A^\psi\lor B^\psi$, que $\Gamma^\psi, A^\psi \vdash C^\psi$
-    et que $\Gamma^\psi,B^\psi\vdash C^\psi$, alors on peut appliquer la règle
-    $\lor_\mathrm e$ pour en déduire que $\Gamma^\psi \vdash C^\psi$.
-  \item cas $\land_\mathrm i$~: on suppose que $\Gamma^\psi\vdash A^\psi$ et
-    $\Gamma^\psi \vdash B^\psi$, alors $\Gamma^\psi \vdash A^\psi \land B^\psi$.
-  \item cas $\land_\mathrm e^\mathrm g$~: on suppose que
-    $\Gamma^\psi\vdash (A\land B)^\psi$, c'est-à-dire que
-    $\Gamma^\psi\vdash A^\psi \land B^\psi$, alors on peut en déduire que
-    $\Gamma^\psi \vdash A^\psi$.
-  \item le cas $\land_\mathrm e^\mathrm d$ est analogue.
-  \item cas $\to_\mathrm i$~: si $\Gamma^\psi,A^\psi\vdash B^\psi$ alors
-    $\Gamma^\psi\vdash A^\psi \to B^\psi$, et par définition
-    $A^\psi\to B^\psi = (A\to B)^\psi$, d'où le résultat.
-  \item cas $\to_\mathrm e$~: si $\Gamma^\psi \vdash (A\to B)^\psi$ et
-    $\Gamma^\psi \vdash A^\psi$, alors $\Gamma^\psi\vdash B^\psi$.
-  \item cas $\forall_\mathrm i$~: si $\Gamma^\psi\vdash A[v/x]^\psi$, où $v$ est
-    libre dans $\Gamma$ et $A$, alors par affaiblissement on sait que
-    $\Gamma^\psi, \psi(v)\vdash A[v/x]^\psi$, donc que
-    $\Gamma^\psi\vdash \psi(v)\to A[v/x]^\psi$, d'où par la règle
-    $\forall_\mathrm i$ le fait que $\Gamma^\psi \vdash (\forall x, A)^\psi$.
-  \item cas $\forall_\mathrm e$~: si $\Gamma^\psi \vdash (\forall x,A)^\psi$, et
+  \item[$\Rax$~:] si $\varFF \in \varCG$, alors $\varFF^\varFP \in \varCG^\varFP$,
+    d'où le résultat par affaiblissement.
+  \item[$\RtopI$~:] peu importe $\varCG$, on a toujours
+    $\varFP(\vec x),\varCG^\varFP \vdP \top$.
+  \item[$\RbotC$~:] on suppose que
+    $\varFP(\vec x),\varCG^\varFP, \lnot \varFF^\varFP \vdP \bot$, alors on peut
+    appliquer $\RbotC$ pour en déduire que
+    $\varFP(\vec x), \varCG^\varFP \vdP \varFF^\varFP$.
+  \item[$\RorI$~:] on suppose que
+    $\varFP(\vec x),\varCG^\varFP \vdP {\varFF_i}^\varFP$ pour $i \in \{1,2\}$,
+    donc
+    $\varFP(\vec x),\varCG^\varFP \vdP {\varFF_1}^\varFP\lor {\varFF_2}^\varFP$,
+    c'est-à-dire
+    $\varFP(\vec x),\varCG^\varFP \vdP (\varFF_1\lor \varFF_2)^\varFP$.
+  \item[$\RorE$~:] on suppose que
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_1}^\varFP\lor {\varFF_2}^\varFP$,
+    que $\varFP(\vec x),\varCG^\varFP, {\varFF_1}^\varFP \vdP \varFC^\varFP$
+    et que $\varFP(\vec x),\varCG^\varFP,{\varFF_2}^\varFP\vdP \varFC^\varFP$,
+    alors on peut appliquer la règle
+    $\RorE$ pour en déduire que
+    $\varFP(\vec x),\varCG^\varFP \vdP \varFC^\varFP$.
+  \item[$\RandI$~:] on suppose que
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_1}^\varFP$ et
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_2}^\varFP$, alors
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_1}^\varFP \land {\varFF_2}^\varFP$.
+  \item[$\RandE$~:] on suppose que
+    $\varFP(\vec x),\varCG^\varFP\vdP (\varFF_1\land \varFF_2)^\varFP$,
+    c'est-à-dire que
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_1}^\varFP \land {\varFF_2}^\varFP$,
+    alors on peut en déduire que
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_i}^\varFP$ pour
+    $i \in \{1,2\}$.
+  \item[$\RtoI$~:] si
+    $\varFP(\vec x),\varCG^\varFP,{\varFF_1}^\varFP\vdP \varFF^\varFP$ alors
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_1}^\varFP \to {\varFF_2}^\varFP$, et
+    par définition on sait que
+    ${\varFF_1}^\varFP\to {\varFF_2}^\varFP = (\varFF_1\to \varFF_2)^\varFP$, d'où
+    le résultat.
+  \item[$\RtoE$~:] si
+    $\varFP(\vec x),\varCG^\varFP \vdP (\varFF_1\to\varFF_2)^\varFP$ et
+    $\varFP(\vec x),\varCG^\varFP \vdP {\varFF_1}^\varFP$, alors
+    $\varFP(\vec x),\varCG^\varFP\vdP {\varFF_2}^\varFP$.
+  \item[$\RforaI$~:] si
+    $\varFP(\vec x),\varCG^\varFP\vdP \varFF[v/x]^\varFP$, où $v$ est
+    libre dans $\varCG$ et $\varFF$, alors par affaiblissement on sait que
+    $\varFP(v),\varFP(\vec x),\varCG^\varFP\vdP\varFF[v/x]^\varFP$, donc que
+    $\varFP(\vec x),\varCG^\varFP\vdP\varFP(v)\to \varFF[v/x]^\varFP$, d'où par la
+    règle
+    $\RforaI$ le fait que
+    $\varFP(\vec x),\varCG^\varFP \vdP (\forall x,\varFF)^\varFP$.
+  \item[$\RforaE$~:] si
+    $\varFP(\vec x),\varCG^\varFP \vdP (\forall x,\varFF)^\varFP$, et
     pour une variable $y \in \VL(\Gamma)\cup \VL(A)$ (puisque tout terme dans
-    $\mathcal L_{\ZF}$ est une variable et que la relativisation n'ajoute pas
+    $\SignP{\ZF}$ est une variable et que la relativisation n'ajoute pas
     de variable libre), on peut spécialiser notre séquent en
-    $\Gamma^\psi \vdash \psi(y)\to A[y/x]$, puis utiliser l'hypothèse
-    $\psi(y)\in\Gamma^\psi$ pour en déduire que $\Gamma^\psi \vdash A[t/x]$.
-  \item cas $\exists_\mathrm i$~: si $\Gamma^\psi \vdash A[y/x]$ alors on sait
-    que $\Gamma^\psi\vdash \psi(y)$, donc
-    $\Gamma^\psi\vdash \psi(y)\land A[y/x]$, d'où
-    $\Gamma^\psi \vdash (\exists x, A)^\psi$.
-  \item cas $\exists_\mathrm e$~: si $\Gamma^\psi \vdash (\exists x, A)^\psi$ et
-    $\Gamma^\psi, \psi(x) \land A^\psi \vdash B^\psi$, alors la règle
-    $\exists_\mathrm e$ nous donne directement $\Gamma^\psi \vdash B^\psi$. On
-    remarque qu'on peut effectivement utiliser l'hypothèse d'induction sur
-    $\Gamma^\psi, \psi(x)\land A^\psi\vdash B^\psi$ car ce séquent est équivalent
-    à $\Gamma^\psi, \psi(x), A^\psi \vdash B^\psi$, qui contient bien $\psi(a)$
-    pour chaque $a \in \VL(\Gamma)\cup\VL(A)$.
-  \item cas $=_\mathrm i$~: si $t$ est un terme, alors $\Gamma^\psi\vdash t = t$
-  \item cas $=_\mathrm e$~: si $\Gamma^\psi \vdash t = u$ et
-    $\Gamma^\psi \vdash A[t/x]^\psi$, alors on peut vérifier par induction sur
-    $A$ que $(A[t/x])^\psi = A^\psi [t/x]$, donc on peut directement appliquer
-    $=_\mathrm e$ pour obtenir le résultat.
+    $\varFP(\vec x),\varCG^\varFP\vdP\varFP(y)\to\varFF[y/x]$ et, comme
+    $y$ est une variable libre, on sait que
+    $\varFP(\vec x),\varCG^\varFP\vdP\varFP(y)$, d'où le résultat.
+  \item[$\RexI$~:] si $\varFP(\vec x),\varCG^\varFP \vdP \varFF[y/x]$ alors on
+    sait que $\varFP(\vec x), \varCG^\varFP\vdP \varFP(y)$, d'où le résultat par
+    la règle $\RandI$.
+  \item[$\RexE$~:] si
+    $\varFP(\vec x),\varCG^\varFP \vdP (\exists x, \varFF)^\varFP$ et
+    $\varFP(\vec x),\varCG^\varFP, \varFP(x)\land\varFF^\varFP\vdP\varFC^\varFP$,
+    alors la règle $\RexE$ nous donne directement
+    $\varFP(\vec x),\varCG^\varFP \vdP \varFC^\varFP$. On
+    remarque qu'on peut effectivement utiliser l'hypothèse d'induction, car
+    $\varFP(x)\land\varFF^\varFP$ est $\varFP(x),\varFF^\varFP$ sont des
+    contextes équivalents.
+  \item[$\ReqI$~:] si $t$ est un terme, alors
+    $\varFP(\vec x),\varCG^\varFP\vdP t = t$.
+  \item[$\ReqE$~:] si $\varFP(\vec x),\varCG^\varFP \vdP t = u$ et
+    $\varFP(\vec x), \varCG^\varFP \vdP \varFF[t/x]^\varFP$, alors on peut
+    vérifier par induction sur $\varFF$ que
+    $(\varFF[t/x])^\varFP = \varFF^\varFP [t/x]$, donc on peut directement
+    appliquer $\ReqE$ pour obtenir le résultat.
   \end{itemize}
-  Ainsi, par induction, on sait que $\Gamma^\psi \vdash \varphi^\psi$.
+  Ainsi, par induction, on sait que
+  $\varFP(\vec x),\varCG^\varFP \vdP \varFF^\varFP$.
 \end{proof}
 
 \begin{remark}
-  La preuve ci-dessus n'est pas parfaitement rigoureuse, principalement à cause
-  du choix fait plus tôt de ne pas détailler les règles de déduction naturelle
-  prenant en compte des variables. Pour être plus précis, étant donné un séquent
-  $\Gamma\vdash \varphi$ bien typé en considérant une liste de variables
-  $x_1,\ldots,x_n$, on veut montrer que
-  $\Gamma^\psi, \psi(x_1),\ldots,\psi(x_n) \vdash \varphi^\psi$. Sans gestion des
-  variables du premier ordre, ce lemme serait faux~: en prenant pour $\psi$ un
-  prédicat toujours faux, tel que $x\neq x$, on peut prouver
-  $\vdash (\forall x, A)\to (\exists x, A)$ mais pas
-  $\vdash (\forall x,A)^\psi \to (\exists x, A)^\psi$ puisque le $x$ invoqué par
-  la première formule ne vérifie pas $\psi$. Dans un tel cas, en ajoutant la
-  gestion des variables, on a une hypothèse absurde donc la conclusion est
-  forcément vraie.
+  La preuve précédente serait bien plus naturelle dans le cas de séquents
+  avec variables explicites. Sans gestion des variables du premier ordre, ce
+  lemme serait faux~: en prenant pour $\varFP$ un prédicat toujours faux, tel
+  que $x\neq x$, on peut prouver
+  $\vdP (\forall x, \varFF)\to (\exists x, \varFF)$ mais pas
+  $\vdP (\forall x,\varFF)^\varFP \to (\exists x, \varFF)^\varFP$ puisque le $x$
+  invoqué par la première formule ne vérifie pas $\varFP$. Dans un tel cas, en
+  ajoutant la gestion des variables, on a une hypothèse absurde donc la
+  conclusion est forcément vraie.
 \end{remark}
 
 \begin{remark}
-  Il est possible de généraliser ce lemme à une signature $\Sigma$ quelconque.
-  Cependant, pour cela, il est nécessaire que $\psi$ vérifie une propriété de
+  Il est possible de généraliser ce lemme à une signature $\Sign$ quelconque.
+  Cependant, pour cela, il est nécessaire que $\varFP$ vérifie une propriété de
   stabilité~: il faut que pour chaque symbole de fonction $f$ d'arité $n$,
   on puisse prouver
-  \[\vdash\forall x_1,\ldots,x_n, \left(\bigwedge_{i = 1}^n \psi(x_i)\right)
-  \to \psi(f(x_1,\ldots,x_n))\]
-  Ce faisant, on peut montrer que tout terme vérifie $\psi$ (en supposant que
-  les variables vérifient $\psi$), et ainsi vérifier les parties de l'induction
-  liées à l'élimination du $\forall$ et l'introduction du $\exists$.
+  \[\vdP\forall x_1,\ldots,x_n, \left(\bigwedge_{i = 1}^n \varFP(x_i)\right)
+  \to \varFP(f(x_1,\ldots,x_n))\]
+  Ce faisant, on peut montrer que tout terme vérifie $\varFP$ (en supposant que
+  les variables vérifient $\varFP$), et ainsi vérifier les parties de
+  l'induction liées à l'élimination du $\forall$ et l'introduction du $\exists$.
 \end{remark}
 
+On peut considérer le cas particulier de la cohérence, qui correspond à la
+preuve de $\bot$, pour montrer la propriété suivante.
+
 \begin{theorem}[Préservation de la cohérence]
-  Soit $\mathcal T$ et $\mathcal S$ deux théories sur $\mathcal L_{\ZF}$ et
-  $\psi(x)$ une formule à une variable libre dans ce même langage telles que
-  pour toute formule
-  $\varphi \in \mathcal S$, $\mathcal T\vdash \varphi^\psi$. Alors
-  \[\Coher(\mathcal T) \implies \Coher(\mathcal S)\]
+  Soient $\varT$ et $\varT'$ deux théories sur $\SignP{\ZF}$ et
+  $\varFP(x)$ une formule à une variable libre dans ce même langage telles que
+  pour toute formule $\varFF \in \varT'$, $\varT\vdP \varFF^\varFP$. Alors
+  \[\Coher(\varT) \implies \Coher(\varT')\]
 \end{theorem}
 
 \begin{proof}
   On donne deux preuves, l'une syntaxique et l'autre sémantique.
   \begin{itemize}
-  \item supposons $\lnot\Coher(\mathcal S)$, cela signifie donc qu'il existe une
-    preuve $\mathcal S\vdash \bot$, et comme cette preuve est finie on peut
-    extraire une partie finie $F\subfin \mathcal S$ telle que $F\vdash \bot$.
+  \item supposons $\lnot\Coher(\varT')$, cela signifie donc qu'il existe une
+    preuve $\varT'\vdP \bot$, et comme cette preuve est finie on peut
+    extraire une partie finie $F\subfin \varT'$ telle que $F\vdP \bot$.
     En utilisant le \cref{lem.relat.deduc}, il vient donc que
-    $F^\psi\vdash \bot^\psi$ (comme les énoncés sont clos, on n'a pas à rajouter
-    de $\psi(x)$ pour des variables $x$). Or, $\bot^\psi = \bot$, donc on en
-    déduit que $F^\psi\vdash \bot$. Comme $\mathcal T\vdash \varphi^\psi$ pour
-    chaque $\varphi \in F$, on en déduit que $\mathcal T\vdash \bot$, donc que
-    $\lnot\Coher(\mathcal T)$. Par contraposée, on en déduit l'implication
+    $F^\varFP\vdP \bot^\varFP$ (comme les énoncés sont clos, on n'a pas à rajouter
+    de $\varFP(x)$ pour des variables $x$). Or, $\bot^\varFP = \bot$, donc on en
+    déduit que $F^\varFP\vdP \bot$. Comme $\varT\vdP \varFF^\varFP$ pour
+    chaque $\varFF \in F$, on en déduit que $\varT\vdP \bot$, donc que
+    $\lnot\Coher(\varT)$. Par contraposée, on en déduit l'implication
     voulue.
-  \item supposons $\Coher(\mathcal T)$. On trouve donc un modèle $\mathcal M$
-    de $\mathcal T$. Soit $\mathcal N$ le sous-modèle de $\mathcal M$ défini
+  \item supposons $\Coher(\varT)$. On trouve donc un modèle $\varMM$
+    de $\varT$. Soit $\varMN$ le sous-modèle de $\varMM$ défini
     par
-    \[|\mathcal N|\defeq \{x \mid x\in |\mathcal M|,
-    \mathcal M\models \psi(x)\}\]
-    Par hypothèse, on sait que $\mathcal M\models \mathcal S^\psi$, donc
-    $\mathcal N\models \mathcal S$, d'où $\Coher(\mathcal S)$.
+    \[\carM{\varMN}\defeq \compr{x\in\carMM}{\varMM\satisf\varFP(x)}\]
+    Par hypothèse, on sait que $\varMM\satisf{\varT'}^\varFP$, donc
+    $\varMN\satisf \varT$, d'où $\Coher(\varT)$.
   \end{itemize}
 
   Les deux approches nous donnent donc que
-  $\Coher(\mathcal T) \implies \Coher(\mathcal S)$.
+  $\Coher(\varT)\implies\Coher(\varT')$.
 \end{proof}
 
 On peut par exemple appliquer ce théorème à $\ZFC - \AxF$ et $\ZFC$ pour dire
-que s'il existe une classe $\mathbb V$ telle que
-$\ZFC - \AxF\vdash \ZFC^\mathbb V$, alors les deux théories sont équicohérentes
+que s'il existe une classe $\bV$ telle que
+$\ZFC - \AxF\vdP \ZFC^{\bV}$, alors les deux théories sont équicohérentes
 (puisque dans l'autre sens, il est évident qu'enlever des axiomes ne change pas
 la cohérence).
 
 \subsection{L'univers bien fondé de Von Neumann}
 
-On peut maintenant introduire l'univers $\mathbb V$, qui est d'une certaine
-façon l'univers ensembliste au sens intuitif~: il est un modèle de $\ZFC$
-présent dans tout modèle de $\ZFC - \AxF$.
+On peut maintenant introduire l'univers $\bV$, qui est d'une certaine façon
+l'univers ensembliste au sens intuitif~: il est un modèle de $\ZFC$ présent dans
+tout modèle de $\ZFC - \AxF$.
 
 Historiquement, même si le nom de cet univers est attribué à Von Neumann,
 il semble (d'après \cite{moore2012zermelo}) que celui-ci date des travaux de 
 Zermelo, notamment \cite{Zermelo1930}.
 
 \begin{definition}[L'univers bien fondé]
-  On définit la hiérarchie d'ensembles $\mathbb V_{\alpha}$, pour
-  $\alpha \in \Ord$, par induction transfinie~:
+  On définit la hiérarchie d'ensembles $\bV_{\varOa}$, pour $\varOa \in \Ord$,
+  par induction transfinie~:
   \begin{itemize}
-  \item $\mathbb V_0 = \varnothing$.
-  \item $\mathbb V_{\alpha + 1} = \powerset(\mathbb V_{\alpha})$
-  \item pour tout ordinal limite $\lambda$,
-    $\displaystyle\mathbb V_\lambda = \bigcup_{\beta < \lambda}\mathbb V_\beta$
+  \item $\bV_0 \defeq \vide$.
+  \item $\bV_{\varOa + 1} = \powerset(\bV_{\varOa})$
+  \item pour tout ordinal limite $\varOl$,
+    $\displaystyle\bV_\varOl = \bigcup_{\varOb < \varOl}\bV_\varOb$
   \end{itemize}
 
-  On définit maintenant la classe $\mathbb V$ par
-  \[\mathbb V \defeq \bigcup_{\alpha \in \Ord} \mathbb V_\alpha\]
+  On définit maintenant la classe $\bV$ par
+  \[\bV \defeq \bigcup_{\varOa \in \Ord} \bV_\varOa\]
 \end{definition}
 
 \begin{remark}
-  Par une union indicée par $\alpha \in \Ord$, il faut en fait comprendre que le
-  prédicat $\mathbb V(x)$ est défini comme
-  \[\mathbb V(x) \defeq \exists \alpha \in \Ord, \mathbb V(\alpha,x)\]
+  Par une union indicée par $\varOa \in \Ord$, il faut en fait comprendre que le
+  prédicat $\bV(x)$ est défini comme
+  \[\bV(x) \defeq \exists \varOa \in \Ord, x \in \bV_{\varOa}\]
   On préfère une approche sémantique que syntaxique ici, car celle-ci est bien
   plus facile à appréhender.
 \end{remark}
 
-Un premier résultat important~: chaque $\mathbb V_\alpha$ est transitif, et
-$\mathbb V$ tout entier l'est donc aussi.
+Un premier résultat important~: chaque $\bV_\varOa$ est transitif, et
+$\bV$ tout entier l'est donc aussi.
 
 \begin{property}
-  Pour chaque $\alpha\in\Ord$, $\mathbb V_\alpha$ est un ensemble transitif. De
-  plus, $\mathbb V$ est une classe transitive.
+  Pour chaque $\varOa\in\Ord$, $\bV_\varOa$ est un ensemble transitif. De
+  plus, $\bV$ est une classe transitive.
 \end{property}
 
 \begin{proof}
   On raisonne par induction transfinie~:
   \begin{itemize}
-  \item si $x\in \varnothing$, alors $x\subseteq\varnothing$.
-  \item supposons que $\mathbb V_\alpha$ est transitif. Soit
-    $x\in\mathbb V_{\alpha+1}$. Par définition, cela signifie que
-    $x\subseteq \mathbb V_\alpha$. Soit $y\in x$~: par inclusion,
-    $y\in \mathbb V_\alpha$, donc (comme $\mathbb V_\alpha$ est transitif)
-    $y\subseteq \mathbb V_\alpha$, c'est-à-dire $y\in \mathbb V_{\alpha + 1}$,
-    donc $x\subseteq \mathbb V_{\alpha + 1}$.
-  \item si pour tous $\beta < \lambda$, $\mathbb V_\beta$ est transitif, alors
-    pour $x\in \mathbb V_\lambda$, on trouve $\alpha < \lambda$ tel que
-    $x\in V_\alpha$, donc $x\subseteq V_\alpha$. De plus,
-    $V_\alpha \subseteq V_\lambda$ donc $x\subseteq V_\lambda$.
+  \item si $x\in \vide$, alors $x\subseteq\vide$.
+  \item supposons que $\bV_\varOa$ est transitif. Soit $x\in\bV_{\varOa+1}$. Par
+    définition, cela signifie que $x\subseteq \bV_\varOa$. Soit $y\in x$~: par
+    inclusion, $y\in \bV_\varOa$, donc (comme $\bV_\varOa$ est transitif)
+    $y\subseteq \bV_\varOa$, c'est-à-dire $y\in \bV_{\varOa + 1}$,
+    donc $x\subseteq \bV_{\varOa + 1}$.
+  \item si pour tous $\varOb < \varOl$, $\bV_\varOb$ est transitif, alors
+    pour $x\in \bV_\varOl$, on trouve $\varOa < \varOl$ tel que $x\in \bV_\varOa$,
+    donc $x\subseteq \bV_\varOa$. De plus, $\bV_\varOa \subseteq \bV_\varOl$ donc
+    $x\subseteq \bV_\varOl$.
   \end{itemize}
-  Ainsi tous les $\mathbb V_\alpha$ sont transitifs. Le fait que $\mathbb V$ est
-  une classe transitive est une conséquence directe.
+  Ainsi tous les $\bV_\varOa$ sont transitifs. Le fait que $\bV$ est une classe
+  transitive est une conséquence directe.
 \end{proof}
 
 Une conséquence première est que la hiérarchie est cumulative, ce qui signifie
 que les ensembles sont de plus en plus grands.
 
 \begin{property}
-  Si $\alpha \leq \beta$, alors $\mathbb V_\alpha\subseteq \mathbb V_\beta$.
+  Si $\varOa \leq \varOb$, alors $\bV_\varOa\subseteq \bV_\varOb$.
 \end{property}
 
 \begin{proof}
-  On prouve ce résultat par induction sur l'ordinal $\gamma$ tel que
-  $\alpha + \gamma = \beta$~:
+  On prouve ce résultat par induction sur l'ordinal $\varOc$ tel que
+  $\varOa + \varOc = \varOb$~:
   \begin{itemize}
-  \item pour tout $\alpha$, $\mathbb V_\alpha \subseteq \mathbb V_\alpha$.
-  \item supposons que $\mathbb V_\alpha \subseteq \mathbb V_\beta$, alors
-    montrons que $\mathbb V_\alpha \subseteq \mathbb V_{\beta+1}$~: il nous
-    suffit pour cela de montrer que pour tout $\beta$,
-    $\mathbb V_\beta \subseteq \mathbb V_{\beta + 1}$. Si $x \in \mathbb V_\beta$,
-    alors comme $\mathbb V_\beta$ est transitif, $x\subseteq \mathbb V_\beta$,
-    donc $x\in \mathbb V_{\beta + 1}$ par définition.
-  \item supposons que pour tout $\delta < \gamma$ et $\gamma$ ordinal limite,
-    $\mathbb V_\alpha \subseteq \mathbb V_{\alpha + \delta}$. Alors
+  \item pour tout $\varOa$, $\bV_\varOa \subseteq \bV_\varOa$.
+  \item supposons que $\bV_\varOa \subseteq \bV_\varOb$, alors montrons que
+    $\bV_\varOa \subseteq \bV_{\varOb+1}$~: il nous suffit pour cela de montrer que
+    pour tout $\varOb$, $\bV_\varOb\subseteq\bV_{\varOb+1}$. Si $x\in\bV_\varOb$,
+    alors comme $\bV_\varOb$ est transitif, $x\subseteq \bV_\varOb$, donc
+    $x\in \bV_{\varOb + 1}$ par définition.
+  \item supposons que pour tout $\varOd < \varOc$ et $\varOc$ ordinal limite,
+    $\bV_\varOa \subseteq \bV_{\varOa + \varOd}$. Alors
     comme
-    \[\mathbb V_{\alpha + \gamma} =
-    \bigcup_{\delta < \gamma} \mathbb V_{\alpha + \delta}\]
-    on en déduit que $\mathbb V_\alpha \subseteq \mathbb V_{\alpha + \gamma}$.
+    \[\bV_{\varOa + \varOc} =
+    \bigcup_{\varOd < \varOc} \bV_{\varOa + \varOd}\]
+    on en déduit que $\bV_\varOa \subseteq \bV_{\varOa + \varOc}$.\qedhere
   \end{itemize}
-  D'où le résultat par induction transfinie.
 \end{proof}
 
-Notre premier objectif est de montrer que $\mathbb V$ constitue un premier
-modèle classe de $\ZFC$. Pour cela, on donne d'abord un lemme essentiel pour
-prouver de tels axiomes.
+Notre premier objectif est de montrer que $\bV$ constitue un premier modèle
+classe de $\ZFC$. Pour cela, on donne d'abord un lemme essentiel pour prouver de
+tels axiomes.
 
 \begin{lemma}\label{lem.axZFC}
-  Soit $M$ une classe, alors on a les propriétés suivantes~:
+  Soit $\varCM$ une classe, alors on a les propriétés suivantes~:
   \begin{itemize}
-  \item si $M$ est une classe transitive, alors $M$ vérifie l'axiome
+  \item si $\varCM$ est une classe transitive, alors $\varCM$ vérifie l'axiome
     d'extensionalité.
-  \item si $M$ est clos par sous-ensemble, c'est-à-dire si pour tout ensemble
-    $x \in M$ et $y \subseteq x$, on a $y \in M$, alors $M$ vérifie l'axiome
-    de compréhension.
-  \item si pour tout $x,y \in M$, $\{x,y\} \in M$ alors $M$ vérifie l'axiome de
-    la paire.
-  \item si pour tout $x \in M, \bigcup x \in M$ alors $M$ vérifie l'axiome de la
-    réunion.
-  \item si $M$ est une classe transitive vérifiant la proposition suivante~:
-    pour toute fonction partielle $f$ (non obligatoirement dans $M$) telle que
-    $\dom(f) \in M$ et $\im(f) \subseteq M$, on a $\im(f) \in M$ ; alors $M$
-    vérifie l'axiome de remplacement.
+  \item si $\varCM$ est clos par sous-ensemble, c'est-à-dire si pour tout
+    ensemble $x \in \varCM$ et $y \subseteq x$, on a $y \in \varCM$, alors
+    $\varCM$ vérifie l'axiome de compréhension.
+  \item si pour tous $x,y \in \varCM$, $\{x,y\} \in \varCM$ alors $\varCM$
+    vérifie l'axiome de la paire.
+  \item si pour tout $x \in \varCM, \bigcup x \in \varCM$ alors $\varCM$ vérifie
+    l'axiome de la réunion.
+  \item si $\varCM$ est une classe transitive vérifiant la proposition
+    suivante~:
+    \begin{quotation}
+      \noindent
+      Pour toute fonction partielle $f$ (non obligatoirement dans $\varCM$)
+      vérifiant à la fois $\dom(f) \in \varCM$ et $\im(f) \subseteq \varCM$,
+      on a $\im(f) \in \varCM$.
+    \end{quotation}
+    alors $\varCM$ vérifie l'axiome de remplacement.
   \end{itemize}
 \end{lemma}
 
 \begin{proof}
   On prouve chaque propriété~:
   \begin{itemize}
-  \item soient $x,y \in M$ deux ensembles tels que
-    $\forall z \in M, z \in x \iff z \in y$. Alors pour tout $z \in x$, comme
-    $M$ est transitive, $z \in M$, donc par notre hypothèse $z \in y$, donc
-    $x \subseteq y$. L'argument fonctionne symétriquement pour nous assurer que
-    $y \subseteq x$, donc $x = y$.
-  \item supposons que $M$ est clos par sous-ensemble. Soient $a_1,\ldots,a_n,a$
-    des éléments de $M$ et $\psi(x_1,\ldots,x_n,a)$ une formule sur
-    $\mathcal L_{\ZF}$. Alors on sait que
-    $\{ y \in a \mid \psi(a_1,\ldots,a_n,y)\} \subseteq a \in M$,
-    donc il existe bien dans $M$ un ensemble $A$ tel que
-    $y \in A \iff \psi(a_1,\ldots,a_n,y)$.
-  \item soient $x,y \in M$, alors $\{x,y\} \in M$, donc il existe dans $M$ un
-    ensemble $A$ tel que $z \in A \iff z = x \lor z = y$.
-  \item de même, si $M$ est stable par réunion, on a directement un candidat
-    pour être l'union d'un ensemble $x$, donné par $\bigcup x$ lui-même~: on
-    voit qu'un élément $z$ est dans $\bigcup x$ si et seulement s'il existe
-    $y$ tel que $z \in y \in x$.
-  \item soit une formule fonctionnelle $\psi^M(x_1,\ldots,x_n,x,y)$,
-    $a_1,\ldots,a_n,a \in M$ des paramètrs. Par l'axiome de remplacement (dans
-    l'univers ambiant), on sait qu'il existe un ensemble $b$, image de $a$
-    par $\psi^M(a_1,\ldots,a_n)$, et une fonction $f : a \to b$ (partielle).
-    Alors, par le \cref{lem.relat.deduc}, pour tout $y \in b$, comme on sait que
-    $\psi^M(a_1,\ldots,a_n,x,y)$ pour un certain $x \in a$ (donc $x \in M$
-    d'après le fait que $M$ est transitif), on en déduit que $y \in M$.
-    Ainsi, $f : a \to b$, dont le domaine est $a \in M$, a une image
-    $b \subseteq M$. Par notre hypothèse, $b \in M$, donc l'axiome de
-    remplacement est vérifié.
+  \item soient $x,y \in \varCM$ deux ensembles tels que
+    $\forall z \in \varCM, z \in x \iff z \in y$. Alors pour tout $z \in x$,
+    comme $\varCM$ est transitive, $z \in \varCM$, donc par notre hypothèse
+    $z \in y$, donc $x \subseteq y$. L'argument fonctionne symétriquement pour
+    nous assurer que $y \subseteq x$, donc $x = y$.
+  \item supposons que $\varCM$ est clos par sous-ensemble. Soient
+    $a_1,\ldots,a_n,b$ (on notera $\vec a$ pour $a_1,\ldots,a_n$)
+    des éléments de $\varCM$ et $\varFP(\vec x,y)$ une formule sur
+    $\SignP{\ZF}$. Alors on sait que
+    $\compr{y \in b}{\varFP(\vec a,y)} \subseteq b \in \varCM$,
+    donc il existe bien dans $\varCM$ un ensemble $A$ tel que
+    $\forall y, y \in A \iff y \in b \land \varFP^{\varCM}(\vec x,y)$.
+  \item soient $x,y \in \varCM$, alors $\{x,y\} \in \varCM$, donc il existe dans
+    $\varCM$ un ensemble $A$ tel que $z \in A \iff z = x \lor z = y$.
+  \item de même, si $\varCM$ est stable par réunion, on a directement un
+    candidat pour être l'union d'un ensemble $x$, donné par $\bigcup x$
+    lui-même~: on voit qu'un élément $z$ est dans $\bigcup x$ si et seulement
+    s'il existe $y$ tel que $z \in y \in x$.
+  \item soit une formule fonctionnelle $\varFP^\varCM(\vec z,x,y)$,
+    $\vec a,b \in \varCM$ des paramètres. Par l'axiome de remplacement (dans
+    l'univers ambiant), on sait qu'il existe un ensemble $c$, image de $a$
+    par $\varFP^\varCM(\vec a)$, et une fonction $f : b \partialto c$.
+    Alors, par le \cref{lem.relat.deduc}, pour tout $y \in c$, comme on sait que
+    $\varFP^\varCM(\vec a,x,y)$ pour un certain $x \in b$ (donc $x \in \varCM$
+    d'après le fait que $\varCM$ est transitif), on en déduit que $y\in\varCM$.
+    Ainsi, $f : b \partialto c$, dont le domaine est $a \in \varCM$, a une image
+    $c \subseteq \varCM$. Par notre hypothèse, $c \in \varCM$, donc l'axiome de
+    remplacement est vérifié.\qedhere
   \end{itemize}
-  D'où les propriétés énoncées.
 \end{proof}
 
+\begin{remark}
+  Si $\varCM$ est une classe transitive, alors elle vérifie l'axiome
+  d'extensionalité mais aussi l'union, puisque $\bigcup x \subseteq \trcl(x)$.
+\end{remark}
+
 \begin{theorem}\label{thm.V.ZFCAF}
-  Pour tout $\varphi \in \ZFC$, on a $\ZFC - \AxF \vdash \varphi^\mathbb V$.
+  Pour tout $\varFF \in \ZFC$, on a $\ZFC - \AxF \vdP \varFF^\bV$.
 \end{theorem}
 
 \begin{proof}
   On vérifie chaque axiome relativisé à l'aide du \cref{lem.axZFC}~:
   \begin{itemize}
-  \item vérifions l'axiome d'extensionalité. Soient $x,y\in \mathbb V$ tels que
-    $\forall z\in \mathbb V, z\in x\iff z \in y$. Comme $\mathbb V$ est une
-    classe transitive, pour tous $z\in x, z\in \mathbb V$ et de même pour les
-    éléments de $y$. On en déduit que $\forall z, z\in x \iff z \in y$, donc
-    l'axiome d'extensionalité peut s'appliquer directement pour conclure que
-    $x = y$.
-  \item vérifions l'axiome de la réunion~: si $x\in \mathbb V$ alors on trouve
-    $\alpha$ tel que $x \in \mathbb V_\alpha$. On sait que $\mathbb V_\alpha$ est
-    transitif, donc pour tout $y \in x$, $y \in \mathbb V_\alpha$ et, pour tout
-    $z \in y \in x$, $z \in \mathbb V_\alpha$~: on en déduit que $\bigcup x$
-    est une partie de $\mathbb V_\alpha$, donc
-    $\bigcup x\in \mathbb V_{\alpha + 1}$.
-  \item vérifions l'axiome de l'ensemble des parties~: soit $x\in \mathbb V$,
-    on trouve $\alpha$ tel que $x \in\mathbb V_\alpha$. Alors pour tout
-    $y\subseteq x$, $y\subseteq \mathbb V_\alpha$ donc
-    $y\in\mathbb V_{\alpha +1}$. On en déduit que pour tout $y\in \powerset(x)$,
-    $y\in \mathbb V$, donc $\powerset(x)\in\mathbb V$.
+  \item $\bV$ est transitive, donc $\bV$ vérifie l'extensionalité et la réunion.
+  \item vérifions l'axiome de l'ensemble des parties~: soit $x\in \bV$,
+    on trouve $\varOa$ tel que $x \in\bV_\varOa$. Alors pour tout $y\subseteq x$,
+    $y\subseteq \bV_\varOa$ donc $y\in\bV_{\varOa +1}$. On en déduit que pour tout
+    $y\in \powerset(x)$, $y\in \bV$, donc $\powerset(x)\in\bV$.
   \item vérifions l'axiome de remplacement~: soit $f$ une fonction partielle
-    dont le domaine est un ensemble $x \in \mathbb V_\alpha$, et dont l'image
-    est $y \subseteq \mathbb V$. On peut alors considérer pour chaque $z \in y$
-    un $\beta_z$ tel que $z \in \mathbb V_{\beta_z}$. Alors en prenant
-    $\beta = \sup_{z\in y} \beta_z$, on a $y \subseteq \mathbb V_\beta$, donc
-    $y\in \mathbb V_{\beta + 1}$ par définition, donc $y \in \mathbb V$.
-  \item vérifions l'axiome de l'infini~: on sait que $\Ord\subseteq\mathbb V$,
-    donc il existe bien un ensemble $\omega^\mathbb V \in \mathbb V$
-    contenant $0$ et stable par successeur, c'est $\omega$ lui-même.
+    dont le domaine est un ensemble $x \in \bV_\varOa$, et dont l'image
+    est $y \subseteq \bV$. On peut alors considérer pour chaque $z \in y$
+    un $\varOb_z$ tel que $z \in \bV_{\varOb_z}$. En prenant
+    $\varOb = \sup_{z\in y} \varOb_z$, on a $y \subseteq \bV_\varOb$, donc
+    $y\in \bV_{\varOb + 1}$ par définition, donc $y \in \BV$.
+  \item vérifions l'axiome de l'infini~: on sait que $\Ord\subseteq\bV$, donc il
+    existe bien un ensemble $\Ow^\bV \in \bV$
+    contenant $0$ et stable par successeur, c'est $\Ow$ lui-même.
   \item vérifions l'axiome de fondation~: par l'absurde, supposons qu'il existe
-    un élément $x \in \mathbb V$ non vide tel que pour tout $y \in x$
-    $x \cap y \neq \varnothing$. Soit $\alpha$ l'ordinal minimal tel que
-    $x \in \mathbb V_\alpha$. On sait que pour tout $y \in x$, il existe
-    $\beta < \alpha$ tel que $y \in \mathbb V_\beta$~: prenons le $\beta$ minimal
+    un élément $x \in \bV$ non vide tel que pour tout $y \in x$
+    $x \cap y \neq \vide$. Soit $\varOa$ l'ordinal minimal tel que
+    $x \in \bV_\varOa$. On sait que pour tout $y \in x$, il existe
+    $\varOb < \varOa$ tel que $y \in \bV_\varOb$~: prenons le $\varOb$ minimal
     contenant au moins un $y \in x$ et $y$ un tel élément de $x$ associé. On
     sait alors, par hypothèse, qu'il existe $z \in x \cap y$. On en déduit,
-    comme $z \in y$, qu'il existe $\gamma < \beta$ tel que
-    $z \in \mathbb V_\gamma$, mais comme $z \in x$, cela contredit la minimalité
-    de $\beta$. C'est donc absurde, donc $x$ est bien fondé pour $\in$.
+    comme $z \in y$, qu'il existe $\varOc < \varOb$ tel que
+    $z \in \bV_\varOc$, mais comme $z \in x$, cela contredit la minimalité
+    de $\varOb$. C'est donc absurde, donc $x$ est bien fondé pour $\in$.
   \item vérifions l'axiome du choix~: soit un ensemble $X$ non vide, dont les
-    éléments sont non vides et deux à deux disjoints. Soit $\alpha$ tel que
-    $X \in \mathbb V_\alpha$, on sait donc que tous les éléments de $X$ sont
-    des éléments de $\mathbb V_\alpha$. Par l'axiome du choix, on trouve
-    $C$ tel que $C \cap x$ est un singleton pour tout $x \in X$. Quitte à
-    restreindre $C$ aux éléments d'éléments de $X$, on a donc un ensemble
-    dont les éléments sont des éléments de $\mathbb V_\alpha$, donc
-    $C\in\mathbb V_{\alpha + 1}$, d'où le réstultat.
+    éléments sont non vides et deux à deux disjoints. Soit $\varOa$ tel que
+    $X \in \bV_\varOa$, on sait donc que tous les éléments de $X$ sont
+    des éléments de $\bV_\varOa$. Par l'axiome du choix, on trouve
+    $\varCh$ tel que $\varCh \cap x$ est un singleton pour tout $x \in X$.
+    Quitte à restreindre $\varCh$ aux éléments d'éléments de $X$, on a donc un
+    ensemble dont les éléments sont des éléments de $\bV_\varOa$, donc
+    $\varCh\in\bV_{\varOa + 1}$, d'où le réstultat.\qedhere
   \end{itemize}
-  D'où le résultat.
 \end{proof}
 
 On a donc notre premier modèle classe de $\ZFC$. Un point important lorsque l'on
-ne travaille pas \emph{a priori} avec l'axiome de fondation est que la classe
-$\mathbb V$ correspond exactement à la classe des éléments bien fondés de
+ne travaille pas \latinexpr{a priori} avec l'axiome de fondation est que la
+classe $\bV$ correspond exactement à la classe des éléments bien fondés de
 l'univers ambiant.
 
 \begin{proposition}
   Soit un ensemble $x$, alors on a l'équivalence suivante dans $\ZFC-\AxF$~:
-  \[x\in \mathbb V \iff
-  \forall y \in \trcl(x), \exists z \in y, y \cap z = \varnothing\]
+  \[x\in \bV \iff
+  \forall y \in \trcl(x), \exists z \in y, y \cap z = \vide\]
 \end{proposition}
 
 \begin{proof}
-  L'implication directe est une conséquence du fait que $\mathbb V\models \AxF$.
+  L'implication directe est une conséquence du fait que $\bV\models \AxF$.
   Pour le sens réciproque, on raisonne par induction bien fondée sur $\in$~:
-  si pour tout $x \in X$, $x \in \mathbb V$, alors en considérant
-  \[\alpha_x \defeq \min\{\alpha \in \Ord\mid x \in \mathbb V_\alpha\}\]
+  si pour tout $x \in X$, $x \in \bV$, alors en considérant
+  \[\rank(x) \defeq \min\compr{\varOa \in \Ord}{x \subseteq\bV_\varOa}\]
   puis
-  \[\alpha \defeq \sup_{x \in X} \alpha_x\]
-  on sait que $x\in \mathbb V_\alpha$ pour tout $x \in X$, donc
-  $X\subseteq \mathbb V_\alpha$, donc $X \in \mathbb V_{\alpha + 1}$.
+  \[\varOa \defeq \sup_{x \in X} \rank(x)\]
+  on sait que $x\in \bV_{\varOa+1}$ pour tout $x \in X$, donc
+  $X\subseteq \bV_\varOa$, donc $X \in \bV_{\varOa + 2}$.
   Ainsi, pour tout ensemble $X$ tel que $\in$ est bien fondé sur $X$,
-  $X \in \mathbb V$.
+  $X \in \bV$.
 \end{proof}
 
-On voit donc que dans le cas d'un univers ensembliste $\mathcal U$, celui-ci
-vérifie $\AxF$ si et seulement si $\mathbb V = \mathcal U$. On utilisera donc en
-général $\mathbb V$ pour parler de l'univers ensembliste.
+On voit donc que dans le cas d'un univers ensembliste $\unZF$, celui-ci
+vérifie $\AxF$ si et seulement si $\bV = \unZF$. On utilisera donc en
+général $\bV$ pour parler de l'univers ensembliste.
 
 \section{Vers le théorème de réflexion}
 

@@ -8,73 +8,73 @@ ordinaux. L'objectif du chapitre est d'aborder les ensembles stationnaires et
 les clubs, en en voyant les principales propriétés.
 
 Nous verrons avant tout ce qu'est un ensemble stationnaire, dont l'utilisation
-est omniprésente en théorie des ensembles modernes. Nous donnerons ensuite le
+est essentielle en théorie des ensembles modernes. Nous donnerons ensuite le
 lemme de Fodor.
 
 \section{Clubs et ensembles stationnaires}
 
 Pour pouvoir étudier les ensembles stationnaires, il est nécessaire de définir
 avant les clubs, qui sont une notion liée à la topologie des ordinaux, que nous
-abordons donc en premier lieu.
+devons donc aborder en premier lieu.
 
 \subsection{Topologie des ordinaux}
 
 La topologie des ordinaux commence par la notion plus générale de topologie de
-l'ordre, qui peut se définir pour tout ensemble ordonné.
+l'ordre, déjà mentionnée dans le \cref{chp.ordres} mais que nous donnons
+plus explicitement ici.
 
 \begin{definition}[Topologie de l'ordre]
-  Soit $(X,\leq)$ un ensemble ordonné. On définit, pour tous $a,b\in X$, le
-  segment ouvert
-  \[(a,b) \defeq \{x \in X \mid a < x < b\}\]
+  Soit $(X,\leq)$ un ensemble ordonné. On définit, pour tous
+  $a,b\in X\cup\{-\infty,+\infty\}$, le segment ouvert
+  \[\intOO{a}{b} \defeq \compr{x \in X}{a < x < b}\]
   La topologie de l'ordre sur $X$ est alors la topologie engendrée par la
-  famille de parties $\{(a,b)\}_{a,b\in X\cup\{\pm\infty\}}$, où un segment ouvert de
-  la forme $(-\infty,a)$ signifie $\{x \mid x < a\}$ (les autres cas sont
-  traités de façon analogue).
+  famille de parties $\{\intOO{a}{b}\}_{a,b\in X\cup\{\pm\infty\}}$, où un segment
+  ouvert de la forme $\intOO{-\infty}{a}$ signifie $\compr{x}{x < a}$ (les
+  autres cas sont définis de façon analogue).
 \end{definition}
 
-On peut donc définir naturellement une topologie sur un ordinal $\alpha$, en
-considérant la topologie de l'ordre pour $\in$ sur $\alpha$.
+On peut donc définir naturellement une topologie sur un ordinal $\varOa$, en
+considérant la topologie de l'ordre pour $\in$ sur $\varOa$.
 
 \begin{example}
-  Considérons l'ordinal $\omega + 3$, la partie $\omega$ en est un ouvert
-  puisqu'elle peut s'écrire $(-\infty, \omega)$. De plus, $\omega + 1$ est aussi
-  un ouvert~: il vaut $(-\infty, \omega+1)$ mais il est aussi un fermé,
-  puisque son complémentaire est $(\omega + 1, +\infty)$.
+  Considérons l'ordinal $\Ow + 3$, la partie $\Ow$ en est un ouvert
+  puisqu'elle peut s'écrire $\intOO{-\infty}{\Ow}$. De plus, $\Ow + 1$ est aussi
+  un ouvert~: il vaut $\intOO{-\infty}{\Ow+1}$ mais il est aussi un fermé,
+  puisque son complémentaire est $\intOO{\Ow + 1}{+\infty}$.
 \end{example}
 
 Ces exemples nous montrent que les ordinaux successeurs ont un comportement
-relativement dégénéré.
+relativement pathologique.
 
 \begin{proposition}
-  Soit $\alpha$ un ordinal. Pour tout $\beta \in \alpha$, $\beta + 1$ est un
-  point isolé dans $\alpha$, c'est-à-dire que $\{\beta + 1\}$ est un ouvert
-  dans $\alpha$. C'est aussi le cas de $0$.
+  Soit $\varOa$ un ordinal. Pour tout $\varOb \in \varOa$, $\varOb + 1$ est un
+  point isolé dans $\varOa$, c'est-à-dire que $\{\varOb + 1\}$ est un ouvert
+  dans $\varOa$. C'est aussi le cas de $0$.
 \end{proposition}
 
 \begin{proof}
-  Il suffit de voir que $\{\beta + 1\} = (\beta, \beta + 2)$. Pour $0$, on a
-  $\{0\} = (-\infty, 1)$.
+  Il suffit de voir que $\{\varOb + 1\} = \intOO{\varOb}{\varOb + 2}$. Pour $0$,
+  on a $\{0\} = \intOO{-\infty}{1}$.
 \end{proof}
 
 \begin{proposition}
-  Soit $\alpha$ un ordinal. Pour tout $\beta \in \alpha$, $\beta$ (en tant que
-  partie de $\alpha$) est un ouvert de $\alpha$.
+  Soit $\varOa$ un ordinal. Pour tout $\varOb \in \varOa$, $\varOb$ (en tant que
+  partie de $\varOa$) est un ouvert de $\varOa$.
 \end{proposition}
 
 \begin{proof}
-  $\beta$ est simplement $(-\infty, \beta)$.
+  $\varOb$ est simplement $\intOO{-\infty}{\varOb}$.
 \end{proof}
 
-On remarque donc que $\omega$ est muni de la topologie discrète. Par contre,
-$\omega$ dans $\omega + 1$ par exemple n'est pas un point isolé. En effet,
-si on veut qu'un ouvert de base contienne $\omega$, alors il doit contenir un
-élément strictement inférieur à $\omega$, qui est donc un élément
-$n \in \omega$. On a alors tous les éléments $m > n$ dans notre partie,
-puisqu'ils sont entre $n$ et $\omega$. Sachant qu'un ouvert est une union
-d'ouverts de base, il sera donc impossible de ne pas contenir au moins un
-segment finissant de $\omega$ si on veut contenir $\omega$. Plus généralement,
-pour contenir un ordinal limite dans un ouvert, il faut en contenir un segment
-finissant.
+On remarque donc que $\Ow$ est muni de la topologie discrète. Par contre, $\Ow$
+dans $\Ow + 1$ par exemple n'est pas un point isolé. En effet, si on veut qu'un
+ouvert de base contienne $\Ow$, alors il doit contenir un élément strictement
+inférieur à $\Ow$, qui est donc un élément $n \in \Ow$. On a alors tous les
+éléments $m > n$ dans notre partie, puisqu'ils sont entre $n$ et $\Ow$. Sachant
+qu'un ouvert est une union d'ouverts de base, il sera donc impossible de ne pas
+contenir au moins un segment finissant de $\Ow$ si on veut contenir $\Ow$. Plus
+généralement, pour contenir un ordinal limite dans un ouvert, il faut en
+contenir un segment finissant.
 
 Cependant, c'est ici la notion de fermé qui nous intéressera. On a vu qu'un
 ouvert ne peut pas contenir une limite sans contenir ce qu'il y a en-dessous.
@@ -85,143 +85,149 @@ convergente reste dans la partie. Ici, plutôt qu'une suite, on prend une famill
 quelconque, et plutôt que la limite on utilise la borne supérieure.
 
 \begin{proposition}
-  Soit $\alpha$ un ordinal. Une partie $C\subseteq \alpha$ est un fermé si et
-  seulement si pour toute partie $X\subseteq C$, si $\sup X \in \alpha$ alors
-  $\sup X \in C$.
+  Soit $\varOa$ un ordinal. Une partie $\varCl\subseteq \varOa$ est un fermé si
+  et seulement si pour toute partie $X\subseteq \varCl$, si $\sup X \in \varOa$
+  alors $\sup X \in \varCl$.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $C$ est un fermé et soit $X\subseteq C$ tel que
-  $\sup X \in \alpha$. On veut montrer que $\sup X$ est dans l'adhérence de $C$
-  (qui est $C$ lui-même par hypothèse). Soit $U$ un ouvert contenant
-  $\sup X$, sans perte de généralité (quitte à prendre une plus petite partie)
-  on peut considérer que $U = (\beta, \gamma)$ où $\beta < \sup X < \gamma$,
-  mais alors par définition de $\sup X$, on trouve $\delta \in X$ tel que
-  $\beta < \delta < \sup X$, donc $U \cap X \neq\varnothing$, ce qui signifie
-  que $\sup X \in X$.
+  Supposons que $\varCl$ est un fermé et soit $X\subseteq \varCl$ tel que
+  $\sup X \in \varOa$. On veut montrer que $\sup X$ est dans l'adhérence de
+  $\varCl$ (qui est $\varCl$ lui-même par hypothèse). Soit $\varOp$ un ouvert
+  contenant $\sup X$, sans perte de généralité (quitte à prendre une plus petite
+  partie) on peut considérer que $U = \intOO{\varOb}{\varOc}$ où
+  $\varOb < \sup X < \varOc$, mais alors par définition de $\sup X$, on trouve
+  $\varOd \in X$ tel que $\varOb < \varOd < \sup X$, donc
+  $\varOp \cap X \neq\vide$, ce qui signifie que $\sup X \in X$.
 
-  Réciproquement, supposons que pour tout $X\subseteq C$, si $\sup X \in \alpha$
-  alors $\sup X \in C$. On veut montrer que $C$ est fermé. Pour cela, on va
-  montrer que tout point adhérent de $X$ est dans $X$. Soit $x \in \adher X$~:
-  si $x$ est un successeur ou $0$ alors il est un point isolé, donc il
-  appartient directement à $X$ en considérant le fait que $\{x\}\cap X$ est non
-  vide. On suppose donc que $x$ est une limite, et on construit une famille
-  $\{x_\beta\}$ d'éléments de $X$ dont le sup est $x$~:
+  Réciproquement, supposons que pour tout $X\subseteq \varCl$, si
+  $\sup X \in \varOa$ alors $\sup X \in \varCl$. On veut montrer que $\varCl$
+  est fermé. Pour cela, on va montrer que tout point adhérent de $X$ est dans
+  $X$. Soit $x \in \adher X$~: si $x$ est un successeur ou $0$ alors il est un
+  point isolé, donc il appartient directement à $X$ en considérant le fait que
+  $\{x\}\cap X$ est non vide. On suppose donc que $x$ est une limite, et on
+  construit une famille $(x_\varOb)$ d'éléments de $X$ dont le sup est $x$~:
   \begin{itemize}
-  \item on définit $x_0$ comme un élément de $(-\infty, x)\cap X$, qui est non
-    vide car $x$ est adhérent à $X$.
-  \item si on a défini $x_\alpha$, alors $x_{\alpha + 1}$ est un élément de
-    $(x_\alpha,x)\cap X$.
-  \item si $\lambda$ est limite, alors
-    $x_{\lambda}=\sup_{\beta < \lambda}x_\beta$, qui est un élément de $X$ car
-    tous les $x_\beta$ sont inférieurs à $x$, donc $\sup x_\beta\in \alpha$,
+  \item on définit $x_0$ comme un élément de $\intOO{-\infty}{x}\cap X$, qui est
+    non vide car $x$ est adhérent à $X$.
+  \item si on a défini $x_\varOa$, alors $x_{\varOa + 1}$ est un élément de
+    $\intOO{(x_\varOa}{x}\cap X$.
+  \item si $\varOl$ est limite, alors
+    $x_{\varOl}=\sup_{\varOb < \varOl}x_\varOb$, qui est un élément de $X$ car
+    tous les $x_\varOb$ sont inférieurs à $x$, donc $\sup x_\varOb\in \varOa$,
     et en utilisant notre hypothèse sur $X$.
   \end{itemize}
   On a donc créé une suite strictement croissante de $\Ord$ dans
-  $(-\infty,x)\cap X$, ce qui est impossible. Notre famille finit donc à un
-  certain $\gamma$, et $\sup_{\beta < \gamma} x_\beta = x$, donc en utilisant
+  $\intOO{-\infty}{x}\cap X$, ce qui est impossible. Notre famille finit donc à
+  un certain $\varOc$, et $\sup_{\varOb < \varOc} x_\varOb = x$, donc en utilisant
   notre hypothèse sur $X$ on en déduit que $x\in X$.
 \end{proof}
 
+\noindent
 Enfin, donnons un résultat caractérisant les ordinaux compacts.
 
 \begin{proposition}\label{prop.compac.succ}
-  Soit $\alpha$ un ordinal, celui-ci est compact pour la topologie de l'ordre si
+  Soit $\varOa$ un ordinal, celui-ci est compact pour la topologie de l'ordre si
   et seulement s'il est un successeur ou $0$.
 \end{proposition}
 
 \begin{proof}
   On va d'abord montrer qu'un ordinal compact est successeur ou $0$ par
-  contraposée. Supposons que $\alpha$ est un ordinal limite. Alors on considère
+  contraposée. Supposons que $\varOa$ est un ordinal limite. Alors on considère
   le recouvrement
-  \[\mathcal F \defeq \{(-\infty,\beta)\}_{\beta \in \alpha}\]
-  Pour toute partie $F\subfin\mathcal F$, on trouve un plus grand $\beta$ tel
-  que $\bigcup F = (-\infty,\beta)$, donc $\beta + 1 \notin\bigcup F$. On a
-  donc un recouvrement dont on ne peut extraire un recouvrement fini~: $\alpha$
-  n'est pas compact.
+  \[\varRecouv \defeq \{\intOO{-\infty}{\varOb}\}_{\varOb \in \varOa}\]
+  Pour toute partie $F\subfin\varRecouv$, on trouve un plus grand $\varOb$ tel
+  que $\bigcup F = \intOO{-\infty}{\varOb}$, donc $\varOb + 1 \notin\bigcup F$.
+  On a donc un recouvrement dont on ne peut extraire un recouvrement fini~:
+  $\varOa$ n'est pas compact.
 
   Montrons maintenant qu'un ordinal successeur est compact. Par l'absurde,
-  supposons qu'il existe un plus petit ordinal $\alpha$ non compact et
-  successeur, et soit $\beta$ tel que $\alpha = \beta + 1$. Soit
-  \[\mathcal F \defeq \{(\gamma_i,\delta_i)\mid i \in \kappa\}\]
-  un recouvrement de $\alpha$ par des ouverts de base, où $\kappa$ est le
-  cardinal de $\mathcal F$. Soit $j \in \kappa$ tel que
-  $\beta \in (\gamma_j,\delta_j)$ et $\gamma = \min((\gamma_j,\delta_j))$,
-  c'est-à-dire $\gamma_j + 1 = \gamma$. Comme on sait que $\mathcal F$ est un
-  recouvrement de $\alpha$, on en déduit que
-  \[\mathcal F' \defeq \{(\gamma_i,\delta_i) \cap \gamma\mid i \in \kappa\}\]
-  est un recouvrement de $\gamma$ constitué d'ouverts de base. Par hypothèse de
-  minimalité de $\alpha$, et comme $\gamma < \alpha$
-  (puisque $\beta \in (\gamma_j,\delta_j)$) et est un successeur, on en déduit
-  qu'il existe un sous-recouvrement $F\subfin \mathcal F'$ de $\gamma$. Alors en
-  posant $J\subfin \kappa$ tel que
-  $F = \{(\gamma_i,\delta_i)\cap \gamma \mid i \in J\}$, on en déduit que
-  $F' = \{(\gamma_i,\delta_i)\mid i \in J\} \cup \{(\gamma_j,\delta_j)\}$ est
-  un sous-recouvrement fini de $\mathcal F$. Donc $\alpha$ est compact, ce qui
+  supposons qu'il existe un plus petit ordinal $\varOa$ non compact et
+  successeur, et soit $\varOb$ tel que $\varOa = \varOb + 1$. Soit
+  \[\varRecouv \defeq \compr{\intOO{\varOc_i}{\varOd_i}}{i \in \varCk}\]
+  un recouvrement de $\varOa$ par des ouverts de base, où $\varCk$ est le
+  cardinal de $\varRecouv$. Soit $j \in \varCk$ tel que
+  $\varOb \in \intOO{\varOc_j}{\varOd_j}$ et
+  $\varOc = \min(\intOO{\varOc_j}{\varOd_j})$,
+  c'est-à-dire $\varOc_j + 1 = \varOc$. Comme on sait que $\varRecouv$ est un
+  recouvrement de $\varOa$, on en déduit que
+  \[\varRecouv' \defeq
+  \compr{\intOO{\varOc_i}{\varOd_i} \cap \varOc}{i \in \varCk}\]
+  est un recouvrement de $\varOc$ constitué d'ouverts de base. Par hypothèse de
+  minimalité de $\varOc$, et comme $\varOc < \varOa$
+  (puisque $\varOb \in \intOO{\varOc_j}{\varOd_j}$) et est un successeur, on en
+  déduit qu'il existe un sous-recouvrement $F\subfin \varRecouv'$ de $\varOc$.
+  Alors en posant $J\subfin \varCk$ tel que
+  $F = \compr{\intOO{\varOc_i}{\varOd_i}\cap \varOc}{i \in J}$, on en déduit que
+  $F' = \compr{\intOO{\varOc_i}{\varOd_i}}{i \in J} \cup
+  \{\intOO{\varOd_j}{\varOd_j}\}$ est
+  un sous-recouvrement fini de $\varRecouv$. Donc $\varOa$ est compact, ce qui
   contredit notre hypothèse. Par l'absurde, on en déduit que tout ordinal
   successeur est compact.
 \end{proof}
 
 \subsection{Filtre des clubs}
 
-On a vu dans le chapitre précédent qu'on pouvait considérer des parties
-cofinales dans un ordinal $\alpha$. \'Etant données deux parties cofinales,
-il est possible de différencier celles qui sont \og suffisament pleines\fg dans
-$\alpha$ de celles qui ont de nombreux trous (en un certain sens). On introduit
-donc une nouvelle notion, combinant la cofinalité (s'étendre assez haut dans
-l'ordinal $\alpha$) et la topologie (être assez non dispersé) pour définir ce
-qu'est un club.
+Le chapitre précédent a présenté la notion de cofinalité. Dans un ordinal
+$\varOa$ donné, on peut trouver de très nombreuses parties cofinales~: celles
+qui vont nous intéresser ici sont les parties à la fois cofinales et, en un
+sens, \og suffisamment pleines\fg. Cette notion, combinant la cofinalité
+(s'étendre assez haut dans l'ordinal $\varOa$) et la topologie (être
+suffisamment plein), est celle de club.
 
 \begin{definition}[Club]
-  Soit $\alpha$ un ordinal. Un club (abréviation de l'anglais
-  \emph{closed unbounded}) est une partie $C\subseteq \alpha$ qui est fermée
-  dans $\alpha$ muni de la topologie de l'ordre, et cofinale dans $\alpha$.
+  Soit $\varOa$ un ordinal. Un club (abréviation de l'anglais
+  \foreignexpr{closed unbounded}) est une partie $\varClub\subseteq\varOa$ qui
+  est fermée dans $\varOa$ muni de la topologie de l'ordre, et cofinale dans
+  $\varOa$.
 \end{definition}
 
-Un club est donc une grosse partie de $\alpha$. En particulier, en suivant
-l'intuition que l'on a donné dans le \cref{chp.ordres}, une telle notion de
-grosse partie devrait former un filtre. On peut imaginer une partie contenant
-un club mais n'étant pas un club, donc on voudra plutôt considérer le filtre
-engendré par cette famille de parties.
+Un club est donc une grosse partie de $\varOa$. En suivant l'intuition que l'on
+a donnée dans le \cref{chp.ordres}, une telle notion de grosse partie devrait
+former un filtre. On peut imaginer une partie contenant un club mais n'étant pas
+un club, donc on voudra plutôt considérer le filtre engendré par cette famille
+de parties.
 
 Cependant, pour construire ce filtre, il est nécessaire (pour que le filtre ne
 soit pas trivial) que les clubs soient stables par intersection finie. En
 l'occurrence, ça n'est pas le cas dans le cas général, mais c'est le cas à
-partir du moment où la cofinalité de $\alpha$ est indénombrable.
+partir du moment où la cofinalité de $\varOa$ est indénombrable.
 
 \begin{proposition}
-  Soit $\alpha$ un ordinal infini. Alors $\cof(\alpha) > \aleph_0$ si et
+  Soit $\varOa$ un ordinal infini. Alors $\cof(\varOa) > \Cal_0$ si et
   seulement si l'intersection de deux clubs est encore un club.
 \end{proposition}
 
 \begin{proof}
-  Commençons par le cas où $\cof(\alpha) \leq \aleph_0$. Dans ce cas, on peut
-  trouver une suite $(\alpha_n)$ strictement croissante cofinale dans $\alpha$.
-  Soient alors $(\alpha_{2n})$ et $(\alpha_{2n+1})$ deux suites extraites. Les
-  images $B$ et $C$, respectivement, de $(\alpha_{2n})$ et $(\alpha_{2n+1})$, sont
-  cofinales dans $\alpha$ et disjointes. De plus, $B$ et $C$ sont des parties
-  fermées de $\alpha$. On a donc trouvé deux parties disjointes de $\alpha$ qui
+  Commençons par le cas où $\cof(\varOa) \leq \Cal_0$. Dans ce cas, on peut
+  trouver une suite $(\varOa_n)$ strictement croissante cofinale dans $\varOa$.
+  Soient alors $(\varOa_{2n})$ et $(\varOa_{2n+1})$ deux suites extraites. Les
+  images $B$ et $C$, respectivement, de $(\varOa_{2n})$ et $(\varOa_{2n+1})$, sont
+  cofinales dans $\varOa$ et disjointes. De plus, $B$ et $C$ sont des parties
+  fermées de $\varOa$. On a donc trouvé deux parties disjointes de $\varOa$ qui
   sont des clubs.
 
-  Supposons maintenant que $\cof(\alpha) > \aleph_0$. Soient alors $C_1$ et
-  $C_2$ deux clubs de $\alpha$. Montrons que $C_1\cap C_2$ est encore un club~:
+  Supposons maintenant que $\cof(\varOa) > \Cal_0$. Soient alors $\varClub_1$ et
+  $\varClub_2$ deux clubs de $\varOa$. Montrons que $\varClub_1\cap \varClub_2$
+  est encore un club~:
   \begin{itemize}
   \item c'est une intersection de fermés, donc c'est un fermé.
-  \item soit $\beta \in \alpha$, montrons qu'il existe $\gamma \in C_1\cap C_2$
-    tel que $\beta \leq \gamma$. Pour cela, on construit une suite $(\gamma_n)$
-    d'éléments supérieurs à $\beta$~: comme $C_1$ est cofinal dans $\alpha$,
-    on définit $\gamma_{2n+2}$ comme un élément supérieur à $\gamma_{2n+1}$ qui
-    est dans $C_1$ et $\gamma_{2n+1}$ comme un élément supérieur à
-    $\gamma_{2n}$ qui est dans $C_2$, et on fixe $\gamma_0 = \beta$.
+  \item soit $\varOb \in \varOa$, montrons qu'il existe
+    $\varOc \in \varClub_1\cap \varClub_2$ tel que $\varOb \leq \varOc$. Pour
+    cela, on construit une suite $(\varOc_n)$ d'éléments supérieurs à $\varOb$~:
+    comme $\varClub_1$ est cofinal dans $\varOa$, on définit $\varOc_{2n+2}$
+    comme un élément supérieur à $\varOc_{2n+1}$ qui est dans $\varClub_1$ et
+    $\varOc_{2n+1}$ comme un élément supérieur à $\varOc_{2n}$ qui est dans
+    $\varClub_2$, et on fixe $\varOc_0 = \varOb$.
 
-    Comme $\cof(\alpha) > \aleph_0$, $\sup \gamma_n \in \alpha$, donc comme
-    $(\gamma_{2n+2})$ est une suite à valeurs dans $C_1$ qui est fermé,
-    $\sup \gamma_n \in C_1$ et de même $\sup \gamma_n \in C_2$ car
-    $(\gamma_{2n+1})$ est une suite à valeurs dans $C_2$.
+    Comme $\cof(\varOa) > \Cal_0$, $\sup \varOc_n \in \varOa$, donc comme
+    $(\varOc_{2n+2})$ est une suite à valeurs dans $\varClub_1$ qui est fermé,
+    $\sup \varOc_n \in C_1$ et de même $\sup \varOc_n \in \varClub_2$ car
+    $(\varOc_{2n+1})$ est une suite à valeurs dans $\varClub_2$.
 
-    Ainsi $C_1\cap C_2$ est bien cofinal dans $\alpha$.
+    Ainsi $\varClub_1\cap \varClub_2$ est bien cofinal dans $\varOa$.
   \end{itemize}
-  On en déduit donc que si $\cof(\alpha) > \aleph_0$, alors l'intersection de
+  On en déduit donc que si $\cof(\varOa) > \Cal_0$, alors l'intersection de
   deux clubs est encore un club.
 \end{proof}
 
@@ -232,63 +238,65 @@ traduisant les conditions sur sa cofinalité, mais parler uniquement de cardinau
 réguliers simplifie les énoncés et suffit en pratique.
 
 \begin{definition}[Filtre des clubs]
-  Soit $\kappa \geq \aleph_1$ un cardinal régulier. On définit le filtre propre
-  des clubs de $\kappa$ par
-  \[\Club_\kappa \defeq \filclose{\{C\subseteq \kappa
-    \mid C\text{ est un club}\}}\]
+  Soit $\varCk \geq \Cal_1$ un cardinal régulier. On définit le filtre propre
+  des clubs de $\varCk$ par
+  \[\Club(\varCk) \defeq
+  \filclose{\compr{\varClub\subseteq \kappa}{\varClub\text{ est un club}}}\]
 \end{definition}
 
 \begin{proof}
   On a vérifié que l'intersection de deux clubs est encore un clubs, donc
   l'intersection d'un nombre fini de clubs est encore un club. En particulier,
   l'intersection d'un nombre fini de clubs est non vide, donc le filtre engendré
-  par la famille des clubs de $\kappa$ est un filtre propre.
+  par la famille des clubs de $\varCk$ est un filtre propre.
 \end{proof}
 
+\noindent
 Donnons d'abord une famille d'éléments de ce filtre.
 
 \begin{property}
-  Soit $\kappa$ un cardinal régulier indénombrable. L'ensemble $\Club_\kappa$
+  Soit $\varCk$ un cardinal régulier indénombrable. L'ensemble $\Club(\varCk)$
   contient toutes les parties de la forme
-  $\{\beta \in\kappa\mid \alpha\leq\beta\}$ pour $\alpha \in \kappa$.
+  $\compr{\varOb \in\varCk}{\varOa\leq\varOb}$ pour $\varOa \in \varCk$.
 \end{property}
 
 \begin{proof}
-  Soit $\alpha \in \kappa$, montrons que $\{\beta\in\kappa\mid\alpha\leq\beta\}$
-  est un club~:
+  Soit $\varOa \in \varCk$, montrons que
+  $\compr{\varOb\in\varCk}{\varOa\leq\varOb}$ est un club~:
   \begin{itemize}
-  \item il est fermé car le complémentaire de l'ouvert $\alpha$.
-  \item il est cofinal dans $\kappa$ puisque si $\alpha \leq \beta$, alors
-    $\alpha \leq \beta + 1$.
+  \item il est fermé car le complémentaire de l'ouvert $\varOa$.
+  \item il est cofinal dans $\varCk$ puisque si $\varOa \leq \varOb$, alors
+    $\varOa \leq \varOb + 1$.
   \end{itemize}
-  $\Club_\kappa$ contient donc toutes les parties co-bornées.
+  $\Club(\varCk)$ contient donc toutes les parties co-bornées.
 \end{proof}
 
-Définissons maintenant les parties non stationnaires et stationnaires.
+Introduisons maintenant la notion de partie stationnaire et non stationnaire.
 
 \begin{definition}[Parties stationnaires, non stationnaires]
-  Soit $\kappa$ un cardinal régulier indénombrable. Une partie
-  $X\subseteq\kappa$ est dite non stationnaire si elle est le complémentaire
-  d'un élément de $\Club_\kappa$. Elle est dite stationnaire si elle n'est pas
-  non stationnaire.
+  Soit $\varCk$ un cardinal régulier indénombrable. Une partie
+  $\varSt\subseteq\varCk$ est dite non stationnaire si elle est le
+  complémentaire d'un élément de $\Club(\varCk)$. Elle est dite stationnaire si
+  elle n'est pas non stationnaire.
 \end{definition}
 
-De la même façon que les parties de $\mathbb R$ de complémentaire négligeable
-forment un filtre dont le complémentaire forme l'idéal des parties négligeables
-(de mesure nulle), on a ici les parties non stationnaires qui sont négligeables
-en un sens. Une partie stationnaire est alors l'analogue d'une partie de mesure
-non nulle dans $\mathbb R$. On donne une caractérisation des parties
-stationnaires, qui peut largement être prise comme définition.
+De la même façon que les parties de $\bR$ de complémentaire négligeable forment
+un filtre dont le complémentaire forme l'idéal des parties négligeables (de
+mesure nulle), on a ici les parties non stationnaires qui sont négligeables en
+un sens. Une partie stationnaire est alors l'analogue d'une partie de mesure non
+nulle dans $\bR$. On donne une caractérisation des parties stationnaires, qui
+peut largement être prise comme définition.
 
 \begin{proposition}
-  Une partie $X$ est stationnaire si et seulement si elle intersecte tous les
-  clubs de $\kappa$.
+  Une partie $\varSt$ est stationnaire si et seulement si elle intersecte tous
+  les clubs de $\varCk$.
 \end{proposition}
 
 \begin{proof}
-  $X$ est non stationnaire si et seulement si $\kappa\setminus X$ contient
-  un club $C$, ce qui est équivalent à dire que $X$ est disjoint avec au moins
-  un club de $\kappa$~: on en déduit l'équivalence annoncée.
+  $\varSt$ est non stationnaire si et seulement si $\varCk\setminus \varSt$
+  contient un club $\varClub$, ce qui est équivalent à dire que $\varSt$ est
+  disjoint avec au moins un club de $\varCk$~: on en déduit l'équivalence
+  annoncée.
 \end{proof}
 
 \subsection{Exemples importants}
@@ -301,17 +309,17 @@ Pour commencer, un exemple important de club est celui des points de fermeture,
 que l'on va définir d'abord.
 
 \begin{definition}[Point de fermeture]
-  Soit $\alpha$ un ordinal et $f : \alpha \to \alpha$. On dit qu'un point
-  $\beta \in \alpha$ est un point de fermeture de $f$ lorsque
-  \[\forall \gamma < \beta, f(\gamma) < \beta\]
-  ou, de façon équivalence, lorsque $f(\beta) \subseteq \beta$ en considérant
-  l'image directe pour $f(\beta)$ (et non l'image de $\beta$). On notera
+  Soit $\varOa$ un ordinal et $f : \varOa \to \varOa$. On dit qu'un point
+  $\varOb \in \varOa$ est un point de fermeture de $f$ lorsque
+  \[\forall \varOc < \varOb, f(\varOc) < \varOb\]
+  ou, de façon équivalence, lorsque $f(\varOb) \subseteq \varOb$ en considérant
+  l'image directe pour $f(\varOb)$ (et non l'image de $\varOb$). On notera
   $\Clos(f)$ l'ensemble des points de fermeture de $f$.
 \end{definition}
 
 \begin{proposition}
-  Soit $\kappa$ un ordinal régulier indénombrable et $f : \kappa \to \kappa$,
-  alors $\Clos(f)$ est un club de $\kappa$.
+  Soit $\varCk$ un ordinal régulier indénombrable et $f : \varCk \to \varCk$,
+  alors $\Clos(f)$ est un club de $\varCk$.
 \end{proposition}
 
 \begin{proof}
@@ -319,225 +327,229 @@ que l'on va définir d'abord.
   \begin{itemize}
   \item soit $X\subseteq \Clos(f)$, montrons que $\sup X \in \Clos(f)$. Si
     $\sup X \in X$ le résultat est évident. On suppose donc que $\sup X$ est un
-    ordinal limite. Soit $\beta \in \sup X$, comme $\sup X$ est limite,
-    on trouve $\alpha \in X$ tel que $\beta + 1 \leq \alpha$, et comme
-    $\beta < \alpha$ et $\alpha \in \Clos(f)$, on en déduit que
-    $f(\beta) < \alpha < \sup X$, donc pour tout
-    $\beta \in \sup X, f(\beta) < \sup X$, d'où $X\in \Clos(f)$.
-  \item de plus $\Clos(f)$ est cofinal dans $\kappa$. Soit $\beta\in\kappa$, on
+    ordinal limite. Soit $\varOb \in \sup X$, comme $\sup X$ est limite,
+    on trouve $\varOa \in X$ tel que $\varOb + 1 \leq \varOa$, et comme
+    $\varOb < \varOa$ et $\varOa \in \Clos(f)$, on en déduit que
+    $f(\varOb) < \varOa < \sup X$, donc pour tout
+    $\varOb \in \sup X, f(\varOb) < \sup X$, d'où $X\in \Clos(f)$.
+  \item de plus $\Clos(f)$ est cofinal dans $\varCk$. Soit $\varOb\in\varCk$, on
     définit la suite
     \[\begin{cases}
-    \alpha_0 \defeq \beta + 1 \\
-    \alpha_{n+1} \defeq \displaystyle
-    \Big(\sup_{\delta \leq \alpha_n} f(\delta)\Big) + 1
+    \varOa_0 \defeq \varOb + 1 \\
+    \varOa_{n+1} \defeq \displaystyle
+    \Big(\sup_{\varOd \leq \varOa_n} f(\varOd)\Big) + 1
     \end{cases}\]
     Comme on a une suite dans un ordinal régulier indénombrable, on en déduit
-    que $\sup \alpha_n \in \kappa$ et $\sup \alpha_n > \beta$. Il nous reste à
-    montrer que $\sup \alpha_n \in \Clos(f)$. Soit $\gamma < \sup \alpha_n$, on
-    trouve $n \in \mathbb N$ tel que $\beta \leq \alpha_n$, dont on déduit par
-    définition de $\alpha_{n+ 1}$ que $f(\beta) < \alpha_{n+1}\leq \sup\alpha_n$,
-    donc $\sup\alpha_n\in\Clos(f)$.
+    que $\sup \varOa_n \in \varCk$ et $\sup \varOa_n > \varOb$. Il nous reste à
+    montrer que $\sup \varOa_n \in \Clos(f)$. Soit $\varOc < \sup \varOa_n$, on
+    trouve $n \in \bN$ tel que $\varOb \leq \varOa_n$, dont on déduit par
+    définition de $\varOa_{n+ 1}$ que $f(\varOb) < \varOa_{n+1}\leq \sup\varOa_n$,
+    donc $\sup\varOa_n\in\Clos(f)$.\qedhere
   \end{itemize}
 \end{proof}
 
-Dans cet exemple précis, il est essentiel que $\kappa$ soit régulier. En effet,
-en prenant $f : \aleph_{\omega_1} \to \aleph_{\omega_1}$ tel que
-$f(\alpha) = \aleph_\alpha$ pour $\alpha < \omega_1$ et $f(\alpha) = 0$ sinon,
+Dans cet exemple précis, il est essentiel que $\varCk$ soit régulier. En effet,
+en prenant $f : \Cal_{\Ow_1} \to \Cal_{\Ow_1}$ tel que
+$f(\varOa) = \Cal_\varOa$ pour $\varOa < \Ow_1$ et $f(\varOa) = 0$ sinon,
 on a un exemple de fonction sans point de fermeture.
 
 Un autre exemple important de club est celui des limites. On peut le voir comme
-un cas particulier de point de fermeture, pour la fonction $S$, mais cela ne
+un cas particulier de point de fermeture, pour la fonction $\Ss$, mais cela ne
 fonctionne que dans le cas d'un cardinal régulier.
 
 \begin{definition}[Ensemble des limites]
-  Soit $\alpha$ un ordinal, on définit l'ensemble des limites de $\alpha$ comme
-  \[\Lim_\alpha \defeq
-  \left\{\beta \in \alpha \mid \bigcup \beta = \beta\right\}\]
+  Soit $\varOa$ un ordinal, on définit l'ensemble des limites de $\varOa$ comme
+  \[\Lim_\varOa \defeq
+  \comprB{\varOb \in \varOa}{\bigcup \varOb = \varOb}\]
 \end{definition}
 
 \begin{proposition}
-  Pour $\kappa$ un cardinal régulier indénombrable, $\Lim_\kappa$ est un club
-  de $\kappa$.
+  Pour $\varCk$ un cardinal régulier indénombrable, $\Lim_\varCk$ est un club
+  de $\varCk$.
 \end{proposition}
 
 \begin{proof}
-  On vérifie que $\Lim_\kappa$ est un club~:
+  On vérifie que $\Lim_\varCk$ est un club~:
   \begin{itemize}
-  \item Soit $X\subseteq \Lim_\kappa$ tel que $\sup X \in \kappa$, alors
+  \item Soit $X\subseteq \Lim_\varCk$ tel que $\sup X \in \varCk$, alors
     \begin{align*}
-      \bigcup (\sup X) &= \bigcup_{\alpha \in \sup X} \alpha \\
-      &= \bigcup_{\alpha \in \bigcup X} \alpha \\
-      &= \bigcup_{\alpha \in X} \left(\bigcup \alpha\right)\\
-      &= \bigcup_{\alpha \in X} \alpha\\
+      \bigcup (\sup X) &= \bigcup_{\varOa \in \sup X} \varOa \\
+      &= \bigcup_{\varOa \in \bigcup X} \varOa \\
+      &= \bigcup_{\varOa \in X} \left(\bigcup \varOa\right)\\
+      &= \bigcup_{\varOa \in X} \varOa\\
       &= \sup X
     \end{align*}
-    donc $\sup X \in \Lim_\kappa$, donc $\Lim_\kappa$ est fermé.
-  \item Soit $\alpha \in \kappa$, alors $\alpha + \omega$ est un ordinal limite
-    et il est supérieur à $\alpha$, donc $\Lim_\kappa$ est non borné.
+    donc $\sup X \in \Lim_\varCk$, donc $\Lim_\varCk$ est fermé.
+  \item Soit $\varOa \in \varCk$, alors $\varOa + \Ow$ est un ordinal limite
+    et il est supérieur à $\varOa$, donc $\Lim_\varCk$ est non borné.
   \end{itemize}
-  Donc $\Lim_\kappa$ est un club de $\kappa$.
+  Donc $\Lim_\varCk$ est un club de $\varCk$.
 \end{proof}
 
 Parmi ces limites, dans un ordinal donné, on peut faire une distinction sur la
-cofinalité. Dans le cas de $\aleph_2$ par exemple, les ordinaux limites peuvent
-avoir une cofinalité de $\aleph_0$ ou de $\aleph_1$. Comme toute limite a l'une
+cofinalité. Dans le cas de $\Cal_2$ par exemple, les ordinaux limites peuvent
+avoir une cofinalité de $\Cal_0$ ou de $\Cal_1$. Comme toute limite a l'une
 des deux cofinalités, il est clair qu'au moins l'ensemble des ordinaux limites
-de cofinalité $\aleph_0$ ou celui des ordinaux limites de cofinalité $\aleph_1$
+de cofinalité $\Cal_0$ ou celui des ordinaux limites de cofinalité $\Cal_1$
 est stationnaire, comme l'union des deux est un club. En réalité, ils sont
 tous les deux stationnaires, et on peut généraliser ce résultat, en utilisant
-la notation $E_\kappa^\lambda$ introduite dans la \cref{sct.cof}.
+la notation $\Eij{\varCk}{\varCCl}$ introduite dans la \cref{sct.cof}.
 
 \begin{proposition}
-  Soient $\kappa$ et $\lambda$ deux cardinaux réguliers infinis tels que
-  $\kappa < \lambda$. Alors l'ensemble $E_\kappa^\lambda$ est stationnaire.
+  Soient $\varCk$ et $\varCCl$ deux cardinaux réguliers infinis tels que
+  $\varCk < \varCCl$. Alors l'ensemble $\Eij{\varCk}{\varCCl}$ est stationnaire.
 \end{proposition}
 
 \begin{proof}
-  On va montrer que tout club contient un élément de cofinalité $\kappa$. Soit
-  $C$ un club de $\lambda$. On définit $f : \lambda \to C$ par récursion
-  transfinie~:
+  On va montrer que tout club contient un élément de cofinalité $\varCk$. Soit
+  $\varClub$ un club de $\varCCl$. On définit $f : \varCCl \to \varClub$ par
+  récursion transfinie~:
   \begin{itemize}
-  \item $f(0) = \min C$
-  \item pour tout $\alpha \in \lambda$,
-    $f(\alpha + 1) = \min C\setminus f(\alpha)$
-  \item pour tout $\alpha \in \Lim_\lambda$,
-    $f(\alpha) = \sup_{\beta < \alpha} f(\beta)$
+  \item $f(0) = \min \varClub$
+  \item pour tout $\varOa \in \varCCl$,
+    $f(\varOa + 1) = \min \varClub\setminus \compr{\varOb}{\varOb < f(\varOa)}$
+  \item pour tout $\varOa \in \Lim_\varCCl$,
+    $f(\varOa) = \sup_{\varOb < \varOa} f(\varOb)$
   \end{itemize}
 
-  $f$ est bien définie. En effet, pour $\alpha \in \lambda$, comme $\lambda$ est
-  régulier, $f\restr\alpha$ est bornée, et $C$ ne l'est pas donc on peut bien
-  trouver un minimum dans $C\setminus f(\alpha)$. Dans le cas limite, comme $C$
-  est un club, on en déduit que $\sup f(\beta)$ est effectivement un élément de
-  $C$.
+  $f$ est bien définie. En effet, pour $\varOa \in \varCCl$, comme $\varCCl$ est
+  régulier, $f\restr\varOa$ est bornée, et $\varClub$ ne l'est pas donc on peut
+  bien trouver un minimum dans
+  $\varClub\setminus \compr{\varOb}{\varOb < f(\varOa)}$. Dans le cas limite,
+  comme $\varClub$ est un club, on en déduit que $\sup f(\varOb)$ est
+  effectivement un élément de $\varClub$.
 
-  En fait, on peut même montrer que $f$ est une bijection entre $\lambda$ et
-  $C$, de façon analogue à la preuve que $\aleph$ établit une bijection entre
-  les ordinaux et les cardinaux infinis.
+  En fait, on peut même montrer que $f$ est une bijection entre $\varCCl$ et
+  $\varClub$, de façon analogue à la preuve que $\Cal$ établit une bijection
+  entre les ordinaux et les cardinaux infinis.
 
-  On voit alors que $f(\kappa)$ est un élément de cofinalité $\kappa$, donc que
-  $C\cap E_\kappa^\lambda \neq \varnothing$. $E_\kappa^\lambda$ est donc bien
-  stationnaire.
+  On voit alors que $f(\varCk)$ est un élément de cofinalité $\varCk$, donc que
+  $\varClub\cap \Eij{\varCk}{\varCCl} \neq \vide$. $\Eij{\varCk}{\varCCl}$ est
+  donc bien stationnaire.
 \end{proof}
 
 \begin{corollary}\label{cor.al2.deuxdis}
-  Il existe deux ensembles stationnaires disjoints dans $\aleph_2$.
+  Il existe deux ensembles stationnaires disjoints dans $\Cal_2$.
 \end{corollary}
 
 \begin{proof}
-  On vient de voir que $E_{\aleph_0}^{\aleph_2}$ et $E_{\aleph_1}^{\aleph_2}$ sont
+  On vient de voir que $\Eij{\Cal_0}{\Cal_2}$ et $\Eij{\Cal_1}{\Cal_2}$ sont
   stationnaires, et ils sont évidemment disjoints, d'où le résultat.
 \end{proof}
 
 Pour revenir sur un point précédent, on sait que dans le cas d'une cofinalité
 indénombrable, la famille des clubs est stable par intersection finie. Est-il
 possible d'aller plus loin et de montrer une stabilité pour des intersections
-plus grandes ? C'est effectivement le cas, comme nous le montrons maintenant.
+plus grandes~? C'est effectivement le cas, comme nous le montrons maintenant.
 
 \begin{proposition}\label{prop.inter.club.k}
-  Soit $\kappa$ un cardinal régulier indénombrable. Alors l'intersection d'une
-  famille de cardinal $\lambda < \kappa$ de clubs est encore un club.
+  Soit $\varCk$ un cardinal régulier indénombrable. Alors l'intersection d'une
+  famille de cardinal $\varCCl < \varCk$ de clubs est encore un club.
 \end{proposition}
 
 \begin{proof}
   On raisonne par l'absurde. Supposons qu'il existe un cardinal
-  $\lambda < \kappa$ tel qu'il existe une famille $\mathcal C$ de cardinal
-  $\lambda$ dont les éléments sont des clubs et dont l'intersection n'est pas
-  un club. Prenons $\lambda$ minimal, et soit $(C_\alpha)$ une énumération de
-  $\mathcal C$~:
-  \[\mathcal C \defeq \{C_\alpha \mid \alpha < \lambda\}\]
-  On souhaite montrer que $\bigcap \mathcal C$ est un club. Pour cela, on
+  $\varCCl < \varCk$ tel qu'il existe une famille $\varFam$ de cardinal
+  $\varCCl$ dont les éléments sont des clubs et dont l'intersection n'est pas
+  un club. Prenons $\varCCl$ minimal, et soit $(A_\varOa)$ une énumération de
+  $\varFam$~:
+  \[\varFam \defeq \compr{A_\varOa}{\varOa < \varCCl}\]
+  On souhaite montrer que $\bigcap \varFam$ est un club. Pour cela, on
   définit d'abord la famille suivante~:
-  \[D_\alpha \defeq \bigcup_{\beta < \alpha} C_\beta\]
+  \[B_\varOa \defeq \bigcup_{\varOb < \varOa} A_\varOb\]
   On remarque que
-  $\displaystyle\bigcap_{\alpha < \lambda} D_\alpha = \bigcap\mathcal C$, donc il
+  $\displaystyle\bigcap_{\varOa < \varCCl} B_\varOa = \bigcap\varFam$, donc il
   nous suffit de montrer que cette intersection est un club. De plus, on sait
-  que chaque $D_\alpha$ est un club, car il est l'intersection
-  d'une famille de cardinal strictement inférieur à $\lambda$ de club (et
-  $\lambda$ est supposé minimal). Comme chaque $D_\alpha$ est un fermé,
-  $\bigcap D_\alpha$ aussi. Il nous reste donc à montrer que $\bigcap D_\alpha$
+  que chaque $B_\varOa$ est un club, car il est l'intersection
+  d'une famille de cardinal strictement inférieur à $\varCCl$ de clubs (et
+  $\varCCl$ est supposé minimal). Comme chaque $B_\varOa$ est un fermé,
+  $\bigcap B_\varOa$ aussi. Il nous reste donc à montrer que $\bigcap B_\varOa$
   est cofinal.
 
-  Soit $\beta < \kappa$, on veut construire une famille $(\beta_\gamma)$ de
-  taille $\lambda$ d'éléments supérieurs à $\beta$ par induction transfinie~:
+  Soit $\varOb < \varCk$, on veut construire une famille $(\varOb_\varOc)$ de
+  taille $\varOc$ d'éléments supérieurs à $\varOb$ par induction transfinie~:
   \begin{itemize}
-  \item on sait que $D_0 = C_0$ est cofinal, donc on peut trouver
-    $\beta_0 \geq \beta$ un élément de $D_0$.
-  \item si on a défini $\beta_\gamma$, alors on peut utiliser le fait que
-    $D_{\gamma + 1}$ est un club pour trouver
-    $\beta_{\gamma + 1}\in D_{\gamma+ 1}$ supérieur à $\beta_\gamma$.
-  \item si on a défini $\beta_\gamma$ pour tout $\gamma < \delta$ et $\delta$
-    est un ordinal limite, alors comme $\delta < \cof(\kappa) = \kappa$, on
-    sait que $\sup_{\gamma < \delta} \beta_\gamma < \kappa$, donc on peut prendre
-    $\beta_\delta \in D_\delta$ supérieur à ce suprémum.
+  \item on sait que $B_0 = A_0$ est cofinal, donc on peut trouver
+    $\varOb_0 \geq \varOb$ un élément de $B_0$.
+  \item si on a défini $\varOb_\varOc$, alors on peut utiliser le fait que
+    $B_{\varOc + 1}$ est un club pour trouver
+    $\varOb_{\varOc + 1}\in B_{\varOc+ 1}$ supérieur à $\varOb_\varOc$.
+  \item si on a défini $\varOb_\varOd$ pour tout $\varOd < \varOc$ et $\varOc$
+    est un ordinal limite, alors comme $\varOc < \cof(\varCk) = \varCk$, on
+    sait que $\sup_{\varOd < \varOc} \beta_\varOd < \varCk$, donc on peut prendre
+    $\varOb_\varOc \in B_\varOc$ supérieur à ce suprémum.
   \end{itemize}
   On considère maintenant
-  \[\gamma \defeq \sup_{\gamma < \lambda} \beta_\gamma\]
-  Comme $\kappa$ est régulier et $\lambda < \kappa$, on sait que
-  $\gamma < \kappa$, et cet élément est dans tous les $D_\alpha$. En effet, il
-  est la borne supérieure d'une famille d'éléments de $D_\alpha$, donc comme
-  $D_\alpha$ est fermé, $\gamma \in D_\alpha$.
+  \[\varOc \defeq \sup_{\varOc < \varCCl} \varOb_\varOc\]
+  Comme $\varCk$ est régulier et $\varCCl < \varCk$, on sait que
+  $\varOc < \varCk$, et cet élément est dans tous les $B_\varOa$. En effet, il
+  est la borne supérieure d'une famille d'éléments de $B_\varOa$, donc comme
+  $B_\varOa$ est fermé, $\varOc \in B_\varOa$.
 
-  Ainsi $\displaystyle\bigcap_{\alpha < \lambda} D_\alpha$ est un club, ce qui est
+  Ainsi $\displaystyle\bigcap_{\varOa < \varCCl} B_\varOa$ est un club, ce qui est
   absurde. On en déduit que l'intersection d'une famille de cardinal
-  $\lambda < \kappa$ de clubs est encore un club.
+  $\varCCl < \varCk$ de clubs est encore un club.
 \end{proof}
 
-L'autre question naturelle, se basant sur les $E_\kappa^\lambda$, est de savoir
-s'il existe de plus grandes familles de parties stationnaires disjointes, car
-$2$ ensembles stationnaires disjoints dans $\aleph_2$ peut sembler peu. On va
+L'autre question naturelle, se basant sur les $\Eij{\varCk}{\varCCl}$, est de
+savoir s'il existe de plus grandes familles de parties stationnaires disjointes,
+car $2$ ensembles stationnaires disjoints dans $\Cal_2$ peut sembler peu. On va
 ici simplement donner un résultat légèrement plus fort.
 
 \begin{proposition}\label{prop.al1.deuxdis}
-  Il existe deux ensembles stationnaires dans $\aleph_1$ qui sont disjoints.
+  Il existe deux ensembles stationnaires dans $\Cal_1$ qui sont disjoints.
 \end{proposition}
 
 \begin{proof}
-  Pour commencer, on pose $f : \omega_1 \to [0,1]\setminus \mathbb Q$ une
+  Pour commencer, on pose $f : \Ow_1 \to \intFF{0}{1}\setminus \bQ$ une
   injection (qui existe par un simple argument de cardinalité). On va
-  construire, pour chaque $u \in \{0,1\}^*$ de taille $n$, un ensemble
-  $C_u\subseteq \omega_1$ tel que $f(C_u)$ est de diamètre inférieur à
-  $2^{-n}$.
+  construire, pour chaque $\varwd \in \toSt{\intB}$\footnote{On se réfère au
+  \cref{chp.auto} pour une description détaillée des ensembles de mots.}
+  de taille $n$, un ensemble
+  $\varSt_{\varwd}\subseteq \Ow_1$ tel que $f(\varSt_{\varwd})$ est de diamètre
+  inférieur à $2^{-n}$.
 
   Pour cela, on pose
   \[\begin{cases}
-  C_0 \defeq \{\alpha \mid f(\alpha) < 1/2\}\\
-  C_1 \defeq \omega_1\setminus C_0
+  \varSt_0 \defeq \compr{\varOa}{f(\varOa) < 1/2}\\
+  \varSt_1 \defeq \Ow_1\setminus \varSt_0
   \end{cases}\]
-  Si $C_u$ a été défini pour $u$ de taille $n$, alors on considère $r$ le
-  milieu de $f(C_u)$
+  Si $\varSt_{\varwd}$ a été défini pour $\varwd$ de taille $n$, alors on
+  considère $I$ le milieu de $f(\varSt_{\varwd})$
   (la moyenne entre la borne supérieure et la borne inférieure) et on pose
   \[\begin{cases}
-  C_{u\star 0} \defeq \{\alpha \in C_u \mid f(\alpha) < r\}\\
-  C_{u\star 1} \defeq C_u \setminus C_{u0}
+  \varSt_{\varwd\wdPt 0} \defeq \compr{\varOa \in \varSt_u}{f(\varOa) < I}\\
+  \varSt_{\varwd\wdPt 1} \defeq \varSt_\varwd \setminus \varSt_{\varwd\wdPt 0}
   \end{cases}\]
-  (où $u\star i$ est le mot constitué de $u$ et de la lettre $i$).
-  On a ainsi notre famille de parties $C_u$ pour tout $u \in \mathbb N^*$, dont
-  le diamètre est inférieur à $2^{-n}$ pour un mot $u$ de taille $n$.
+  (où $\varwd\wdPt b$ est le mot constitué de $\varwd$ et de la lettre $b$).
+  On a ainsi notre famille de parties $\varSt_\varwd$ pour tout
+  $\varwd \in \toSt{\intB}$, dont le diamètre est inférieur à $2^{-n}$ pour un
+  mot $\varwd$ de taille $n$.
 
   On raisonne maintenant par l'absurde~: supposons qu'il n'existe pas deux
-  ensembles stationnaires disjoints dans $\omega_1$. On va alors construire une
-  suite $g : \omega \to 2$ de telle sorte que $C_{g\restr n}$ contienne toujours
-  un club. Ce faisant, $\displaystyle\bigcap_{n\in \mathbb N} C_{g\restr n}$
-  contient un club puisque chaque $C_{g\restr n}$ contient un club et que,
+  ensembles stationnaires disjoints dans $\Ow_1$. On va alors construire une
+  suite $g : \Ow \to \intB$ de telle sorte que $\varSt_{g\restr n}$ contienne
+  toujours un club. Ce faisant, $\displaystyle\bigcap_{n\in \bN} \varSt_{g\restr n}$
+  contient un club puisque chaque $\varSt_{g\restr n}$ contient un club et que,
   grâce à la \cref{prop.inter.club.k}, on sait qu'une intersection dénombrable
-  de clubs de $\omega_1$ est encore un club de $\omega_1$. Comme
-  $f(C_{g\restr n})$ est de diamètre inférieur à $2^{-n}$, on sait que
-  $\displaystyle f\left(\bigcap_{n \in \mathbb N} C_{g\restr n}\right)$
+  de clubs de $\Ow_1$ est encore un club de $\Ow_1$. Comme
+  $f(\varSt_{g\restr n})$ est de diamètre inférieur à $2^{-n}$, on sait que
+  $\displaystyle f\left(\bigcap_{n \in \bN} \varSt_{g\restr n}\right)$
   ne contient qu'un élément, donc par injectivité de $f$,
-  $\displaystyle \bigcap_{n \in \mathbb N} C_{g\restr n}$ ne contient qu'un élément.
+  $\displaystyle \bigcap_{n \in \bN} \varSt_{g\restr n}$ ne contient qu'un élément.
   La construction de la suite $g$ mène donc à une contradiction, puisqu'un
   club ne peut pas contenir qu'un seul élément.
 
-  On construit donc $g$ par récurrence~: on sait que $C_{g\restr n\star 0}$ et
-  $C_{g\restr n\star 1}$ sont disjoints, et par hypothèse il n'existe
-  pas deux ensembles stationnaires dans $\omega_1$ disjoints, donc l'un des
+  On construit donc $g$ par récurrence~: on sait que $\varSt_{g\restr n\wdPt 0}$ et
+  $\varSt_{g\restr n\wdPt 1}$ sont disjoints, et par hypothèse il n'existe
+  pas deux ensembles stationnaires dans $\Ow_1$ disjoints, donc l'un des
   deux ensembles est non stationnaire~: cela signifie que l'autre ensemble
-  contient un club. On choisit alors $i$ tel que $C_{g\restr n \star i}$
-  contient un club. A l'étape $0$, on sait que $\omega_1$ entier contient un
+  contient un club. On choisit alors $i$ tel que $\varSt_{g\restr n \wdPt i}$
+  contient un club. A l'étape $0$, on sait que $\Ow_1$ entier contient un
   club, nous permettant donc de faire ce raisonnement.
 
   On en déduit donc, avec les arguments précédents, qu'il existe au moins deux
-  ensembles stationnaires disjoints dans $\aleph_1$.
+  ensembles stationnaires disjoints dans $\Cal_1$.
 \end{proof}
 
 \section{Lemme de Fodor et applications}
@@ -558,42 +570,45 @@ Le lemme de Fodor s'applique sur des fonctions dites régressives, commençons
 donc par en donner la définition.
 
 \begin{definition}[Fonction régressive]
-  Soit $\kappa$ un cardinal, $S\subseteq \kappa$ et $f : S \to \kappa$. On
-  dit que $f$ est régressive si la propriété suivante est vérifiée~:
-  \[\forall \alpha \in S\setminus\{0\}, f(\alpha) < \alpha\]
+  Soit $\varCk$ un cardinal, $\varSt\subseteq \varCk$ et
+  $f : \varSt \to \varCk$. On dit que $f$ est régressive si la propriété
+  suivante est vérifiée~:
+  \[\forall \varOa \in \varSt\setminus\{0\}, f(\varOa) < \varOa\]
 \end{definition}
 
-On donne alors la version faible du lemme de Fodor~:
+\noindent
+Donnons la version faible du lemme de Fodor suivante~:
 
 \begin{lemma}[Fodor, version faible]\label{lem.fodor.faible}
-  Soit $\lambda$ un cardinal régulier indénombrable et $S\subseteq \lambda$ un
-  ensemble stationnaire. Soit $f : S \to \lambda$ régressive, alors $f$ est
-  constante sur un ensemble de taille $\lambda$, c'est-à-dire qu'il existe
-  $T\subseteq S$ et $\alpha \in \lambda$ tels que
+  Soit $\varCCl$ un cardinal régulier indénombrable et $\varSt\subseteq \varCCl$
+  un ensemble stationnaire. Soit $f : \varSt \to \varCCl$ régressive, alors $f$
+  est constante sur un ensemble de taille $\varCCl$, c'est-à-dire qu'il existe
+  $\varStT\subseteq \varSt$ et $\varOa \in \varCCl$ tels que
   \[\begin{cases}
-  \forall \beta \in T, f(\beta) = \alpha\\
-  \Card(T) = \lambda
+  \forall \varOb \in \varStT, f(\varOb) = \varOa\\
+  \Card(\varStT) = \varCCl
   \end{cases}\]
 \end{lemma}
 
 \begin{proof}
-  On procède par l'absurde. Supposons que pour tout $\beta \in \lambda$,
-  $f^{-1}(\{\beta\})$ est de cardinal strictement inférieur à $\lambda$. On sait
-  donc, comme $\lambda$ est régulier, que $\sup f^{-1}(\{\beta\})\in \lambda$.
+  On procède par l'absurde. Supposons que pour tout $\varOb \in \varCCl$,
+  $f^{-1}(\{\varOb\})$ est de cardinal strictement inférieur à $\varCCl$. On
+  sait donc, comme $\varCCl$ est régulier, que
+  $\sup f^{-1}(\{\varOb\})\in \varCCl$.
   Soit alors
-  \[\begin{array}{ccccc}
-  g & : & \lambda & \longrightarrow & \lambda\\
-  & & \alpha & \longmapsto & \sup f^{-1}(\{\alpha\})
-  \end{array}\]
-  On va étudier $\Clos(f)$~: si $\alpha \in S$, alors comme pour tout $\beta$,
-  $f(\beta) < \beta$, on en déduit que pour tout $\beta < \alpha$,
-  $f(\beta) < \beta < \alpha$, donc $g(f(\alpha)) \geq \alpha$, d'où
-  $\alpha \notin \Clos(g\circ f)$. Pourtant, on sait que $\Clos(f)$ est un club,
-  donc $S$ doit intersecter $\Clos(f)$, ce qui est absurde.
+  \[
+  \makeFun{g}{\varCCl}{\varCCl}{\varOa}{\sup f^{-1}(\{\varOa\})}
+  \]
+  On va étudier $\Clos(f)$~: si $\varOa \in \varSt$, alors comme pour tout
+  $\varOb$,
+  $f(\varOb) < \varOb$, on en déduit que pour tout $\varOb < \varOa$,
+  $f(\varOb) < \varOb < \varOa$, donc $g(f(\varOa)) \geq \varOa$, d'où
+  $\varOa \notin \Clos(g\circ f)$. Pourtant, on sait que $\Clos(f)$ est un club,
+  donc $\varSt$ doit intersecter $\Clos(f)$, ce qui est absurde.
 
-  On en déduit donc qu'il existe $\alpha \in \lambda$ tel que
-  $|f^{-1}(\{\alpha\})| = \lambda$, d'où le résultat en prenant ce tel $\alpha$
-  et $T = f^{-1}(\{\alpha\})$.
+  On en déduit donc qu'il existe $\varOa \in \varCCl$ tel que
+  $|f^{-1}(\{\varOa\})| = \varCCl$, d'où le résultat en prenant ce tel $\varOa$
+  et $\varStT = f^{-1}(\{\varOa\})$.
 \end{proof}
 
 On va maintenant définir un outil combinatoire de théorie des ensembles~: les
@@ -601,168 +616,175 @@ matrices d'Ulam. Celles-ci vous nous servir pour prouver le théorème sur les
 ensembles stationnaires disjoints de façon particulièrement élégante.
 
 \begin{definition}[Matrices d'Ulam \cite{Ulam1930}]
-  Soit $\kappa$ un cardinal infini et $\lambda = \kappa^+$. Pour chaque
-  $\alpha < \lambda$, on se donne une injection $f_\alpha : \alpha \to\kappa$.
-  On définit la matrice d'Ulam en $\alpha < \lambda$ et $\beta < \kappa$ par
-  \[X_\alpha^\beta \defeq
-  \{\xi \mid \alpha < \xi < \lambda, f_\xi(\alpha) = \beta\}\]
-  (chaque $X_\alpha^\beta$ est donc une partie de $\lambda$).
+  Soit $\varCk$ un cardinal infini et $\varCCl = \SsC{\varCk}$. Pour chaque
+  $\varOa < \varCCl$, on se donne une injection $f_{\varOa} : \varOa \to\varCk$.
+  On définit la matrice d'Ulam en $\varOa < \varCCl$ et $\varOb < \varCk$ par
+  \[\UlM{\varOa}{\varOb} \defeq
+  \compr{\varOx}{\varOa < \varOx < \varCCl, f_{\varOx}(\varOa) = \varOb}\]
+  (chaque $\UlM{\varOa}{\varOb}$ est donc une partie de $\varCCl$).
 \end{definition}
 
 \begin{property}
-  Soient $\kappa$ un cardinal infini et $\lambda = \kappa^+$. Alors la matrice
-  d'Ulam a les propriétés suivantes~:
+  Soient $\varCk$ un cardinal infini et $\varCCl = \SsC{\varCk}$. Alors les
+  matrices d'Ulam ont les propriétés suivantes~:
   \begin{enumerate}[label=(\roman*)]
-  \item\label{enum.ulam1} pour tout $\beta < \kappa$, la famille
-    $\{X_\alpha^\beta\}_{\alpha < \lambda}$ est constituée d'ensembles deux à deux
-    disjoints.
-  \item\label{enum.ulam2} pour tout $\alpha < \lambda$, on a l'identité
-    \[\bigcup_{\beta < \kappa} X_\alpha^\beta = \lambda \setminus (\alpha + 1)\]
-  \item pour tout $\alpha$ il existe $\beta(\alpha)$ tel que
-    $X_\alpha^{\beta(\alpha)}$ est stationnaire.
-  \item il existe $\beta < \kappa$ tel que
-    $Y = \{\alpha \mid \beta(\alpha) = \beta\}$ est de taille $\lambda$.
-  \item pour le $\beta$ ci-dessus, la famille
-    $\{X_\alpha^\beta\}_{\alpha \in Y}$ est constituée d'ensembles stationnaires
-    deux à deux disjoints.
+  \item\label{enum.ulam1} pour tout $\varOb < \varCk$, la famille
+    $\{\UlM{\varOa}{\varOb}\}_{\varOa < \varCCl}$ est constituée d'ensembles deux
+    à deux disjoints.
+  \item\label{enum.ulam2} pour tout $\varOa < \varCCl$, on a l'identité
+    \[\bigcup_{\varOb < \varCk} \UlM{\varOa}{\varOb} =
+    \varCCl \setminus (\varOa + 1)\]
+  \item pour tout $\varOa$ il existe $\varOb(\varOa)$ tel que
+    $\UlM{\varOa}{\varOb(\varOa)}$ est stationnaire.
+  \item il existe $\varOb < \varCk$ tel que
+    $Y \defeq \compr{\varOa}{\varOb(\varOa) = \varOb}$ est de taille $\varCCl$.
+  \item pour le $\varOb$ ci-dessus, la famille
+    $\{\UlM{\varOa}{\varOb}\}_{\varOa \in Y}$ est constituée d'ensembles
+    stationnaires deux à deux disjoints.
   \end{enumerate}
 \end{property}
 
 \begin{proof}
   On vérifie chaque propriété~:
   \begin{enumerate}[label=(\roman*)]
-  \item Soit $\beta < \kappa$ et $\alpha, \gamma \in\lambda$. Si
-    $x\in X_\alpha^\beta \cap X_\gamma^\beta$, alors $f_x(\alpha) = f_x(\gamma)$
-    donc, comme $f_x$ est une injection, $\alpha = \gamma$.
-  \item Soit $\xi \in \lambda \setminus (\alpha + 1)$. Comme $\xi > \alpha$,
-    $f_\xi$ est définie en $\alpha$, et $f_\xi : \xi \to \kappa$, donc
-    $\xi \in X_\alpha^{f_\xi(\alpha)}$, d'où
+  \item Soit $\varOb < \varCk$ et $\varOa, \varOc \in\varCCl$. Si
+    $x\in \UlMa{\varOb} \cap \UlM{\varOc}{\varOb}$, alors
+    $f_x(\varOa) = f_x(\varOc)$ donc, comme $f_x$ est une injection,
+    $\varOa = \varOc$.
+  \item Soit $\varOx \in \varCCl \setminus (\varOa + 1)$. Comme
+    $\varOx > \varOa$, $f_\varOx$ est définie en $\varOa$, et
+    $f_\varOx : \varOx \to \varCk$, donc
+    $\varOx \in \UlMa{f_\varOx(\varOa)}$, d'où
     $\displaystyle
-    \lambda\setminus(\alpha+1)\subseteq\bigcup_{\beta < \kappa} X_\alpha^\beta$
+    \varCCl\setminus(\varOa+1)\subseteq\bigcup_{\varOb < \varCk} \UlMa{\varOb}$
 
-    Dans le sens réciproque, si $\xi \in X_\alpha^\beta$ pour $\beta <\kappa$,
-    alors par définition $\alpha < \xi < \lambda$ donc
-    $\xi \in \lambda\setminus(\alpha + 1)$.
-  \item Soit $\alpha < \lambda$. Par l'absurde, supposons que tous les
-    $X_\alpha^\beta$ pour $\beta < \kappa$ sont non stationnaires. En utilisant
-    la \cref{prop.inter.club.k} sous la forme complémentaire (en utilisant des
-    ensembles non stationnaires plutôt que des clubs), on en déduit que
-    $\displaystyle\bigcup_{\beta < \kappa} X_\alpha^\beta$ est non stationnaire.
-    Pourtant, on sait que cette union vaut $\lambda \setminus(\alpha + 1)$ qui
-    est, en tant que partie co-bornée de $\lambda$, un club. C'est donc une
-    absurdité, donc il existe au moins un indice $\beta(\alpha)$ tel que
-    $X_\alpha^{\beta(\alpha)}$ est stationnaire.
+    Dans le sens réciproque, si $\varOx \in \UlMa{\varOb}$ pour
+    $\varOb <\varCk$, alors par définition $\varOa < \varOx < \varCCl$ donc
+    $\varOx \in \varCCl\setminus(\varOa + 1)$.
+  \item Soit $\varOa < \varCCl$. Par l'absurde, supposons que tous les
+    $\UlMa{\varOb}$ pour $\varOb < \varCk$ sont non stationnaires. En
+    utilisant la \cref{prop.inter.club.k} sous la forme complémentaire (en
+    utilisant des ensembles non stationnaires plutôt que des clubs), on en
+    déduit que
+    $\displaystyle\bigcup_{\varOb < \varCk} \UlMa{\varOb}$ est non stationnaire.
+    Pourtant, on sait que cette union vaut $\varCCl \setminus(\varOa + 1)$ qui
+    est, en tant que partie co-bornée de $\varCCl$, un club. C'est donc une
+    absurdité, donc il existe au moins un indice $\varOb(\varOa)$ tel que
+    $\UlMa{\varOb(\varOa)}$ est stationnaire.
   \item On utilise maintenant le \cref{lem.fodor.faible}~: la fonction
-    $g : \alpha \mapsto \beta(\alpha)$ est régressive sur
-    $\lambda\setminus\kappa$ comme $\beta(\alpha) \in \kappa$, et la partie
-    $\lambda\setminus\kappa$ est un club (donc stationnaire). On en déduit
-    l'existence de $Y$ de cardinal $\lambda$ et $\beta \in \kappa$ tels que
-    \[\forall \alpha \in Y, \beta(\alpha) = \beta\]
-  \item On sait que pour tout $\alpha \in Y$, $\beta(\alpha) = \beta$, et
-    que $X_\alpha^{\beta(\alpha)}$ est stationnaire, donc la famille
-    $\{X_\alpha^\beta\}_{\alpha \in Y}$ est constituée d'ensembles stationnaires. De
-    plus, en utilisant \ref{enum.ulam1}, on en déduit que les ensembles sont
-    deux à deux disjoints.
+    $g : \varOa \mapsto \varOb(\varOa)$ est régressive sur
+    $\varCCl\setminus\varCk$ comme $\varOb(\varOa) \in \varCk$, et la partie
+    $\varCCl\setminus\varCk$ est un club (donc stationnaire). On en déduit
+    l'existence de $Y$ de cardinal $\varCCl$ et $\varOb \in \varCk$ tels que
+    \[\forall \varOa \in Y, \varOb(\varOa) = \varOb\]
+  \item On sait que pour tout $\varOa \in Y$, $\varOb(\varOa) = \varOb$, et
+    que $\UlMa{\varOb(\varOa)}$ est stationnaire, donc la famille
+    $\{\UlMa{\varOb}\}_{\varOa\in Y}$ est constituée d'ensembles stationnaires.
+    De plus, en utilisant \ref{enum.ulam1}, on en déduit que les ensembles sont
+    deux à deux disjoints.\qedhere
   \end{enumerate}
 \end{proof}
 
-On en déduit le résultat voulu.
-
 \begin{theorem}
-  Soit $\lambda$ un cardinal successeur, il existe une famille de taille
-  $\lambda$ de parties stationnaires dans $\lambda$ deux à deux disjointes.
+  Soit $\varCCl$ un cardinal successeur, il existe une famille de taille
+  $\varCCl$ de parties stationnaires dans $\varCCl$ deux à deux disjointes.
 \end{theorem}
 
 \begin{proof}
-  Par définition, il existe $\kappa$ tel que $\lambda = \kappa^+$, on prend
+  Par définition, il existe $\varCk$ tel que $\varCCl = \SsC{\varCk}$, on prend
   alors comme famille celle précédemment exhibée.
 \end{proof}
 
 En fait, on voit que tout le raisonnement sur les matrices d'Ulam peut se faire
-relativement à un ensemble stationnaire $S$ donné, en définissant
-\[S_\alpha^\beta \defeq \{\xi \in S\mid \alpha < \xi < \lambda,
-f_\xi(\alpha) = \beta\}\]
+relativement à un ensemble stationnaire $\varSt$ donné, en définissant
+\[\UlMB{\varOa}{\varOb} \defeq
+\compr{\varOx \in \varSt}{\varOa < \varOx < \varCCl,f_\varOx(\varOa) = \varOb}\]
 le \cref{enum.ulam2} devient alors
-\[\bigcup_{\beta < \kappa} S_\alpha^\beta = (\lambda \setminus (\alpha +1))\cap S\]
+\[\bigcup_{\varOb < \varCk} \UlMB{\varOa}{\varOb} =
+(\varCCl \setminus (\varOa +1))\cap \varSt\]
 
-On peut alors en déduire une version plus forte du théorème.
+On peut ainsi redonner le même théorème, dans une version plus forte.
 
 \begin{theorem}
-  Soit $\lambda$ un cardinal successeur et $S\subseteq\lambda$ un ensemble
-  stationnaire. Il existe alors une famille de taille $\lambda$ de parties
-  stationnaires de $S$ deux à deux disjointes.
+  Soit $\varCCl$ un cardinal successeur et $\varSt\subseteq\varCCl$ un ensemble
+  stationnaire. Il existe alors une famille de taille $\varCCl$ de parties
+  stationnaires de $\varSt$ deux à deux disjointes.
 \end{theorem}
 
 Revenons maintenant au lemme de Fodor. Si l'on souhaite naïvement intersecter
-$\kappa$ clubs dans un cardinal régulier indénombrable $\kappa$, on peut
-se retrouver dans le cas des segments terminaux de $\kappa$ où l'on obtient une
+$\varCk$ clubs dans un cardinal régulier indénombrable $\varCk$, on peut
+se retrouver dans le cas des segments terminaux de $\varCk$ où l'on obtient une
 intersection vide. On doit donc définir une intersection plus subtile~: c'est
 l'intersection diagonale.
 
 \begin{definition}[Intersection diagonale]
-  Soit $\kappa$ un cardinal et $\{C_\alpha\}_{\alpha < \kappa}$ une famille de
-  parties de $\kappa$. On définit l'intersection diagonale de $\{C_\alpha\}$ par
-  \[\diagcap_{\alpha < \kappa} C_\alpha \defeq \{\beta <\kappa\mid
-  \beta\in\bigcap_{\alpha < \beta} C_\alpha\}\]
+  Soit $\varCk$ un cardinal et $\{\varClub_\varOa\}_{\varOa < \varCk}$ une famille
+  de parties de $\varCk$. On définit l'intersection diagonale de
+  $\{\varClub_\varOa\}$ par
+  \[\diagcap_{\varOa < \varCk} \varClub_\varOa \defeq
+  \compr{\varOa <\varCk}{\varOb\in\bigcap_{\varOa < \varOb} \varClub_\varOa}\]
 \end{definition}
 
 \begin{proposition}
-  Soit $\kappa$ un cardinal régulier indénombrable et
-  $\{C_\alpha\}_{\alpha < \kappa}$ une famille de $\kappa$ clubs. Alors
-  $\displaystyle\diagcap_{\alpha < \kappa} C_\alpha$ est un club.
+  Soit $\varCk$ un cardinal régulier indénombrable et
+  $\{\varClub_\varOa\}_{\varOa < \varCk}$ une famille de $\varCk$ clubs. Alors
+  $\displaystyle\diagcap_{\varOa < \varCk} \varClub_\varOa$ est un club.
 \end{proposition}
 
 \begin{proof}
   Nommons $D$ cette intersection diagonale et vérifions les axiomes d'un club~:
   \begin{itemize}
   \item Soit $X\subseteq D$ borné, montrons que $\sup X \in D$. Soit
-    $\beta < \sup X$, par définition pour tout $\delta$ tel que
-    $\beta<\delta<\sup X$ et $\delta \in X$, $\delta \in C_\beta$. On en déduit,
-    comme $\sup X$ est une limite d'éléments de $X$ supérieurs à $\beta$,
-    que $\sup X$ est une limite d'éléments de $C_\beta$, donc un élément de
-    $C_\beta$ puisque $C_\beta$ est un club (en particulier un fermé). Donc
-    $\sup X\in C_\beta$ pour tout $\beta < \sup X$, donc $\sup X \in D$.
+    $\varOb < \sup X$, par définition pour tout $\varOd$ tel que
+    $\varOb<\varOd<\sup X$ et $\varOd \in X$, $\varOd \in \varClub_\varOb$. On en
+    déduit, comme $\sup X$ est une limite d'éléments de $X$ supérieurs à
+    $\varOb$, que $\sup X$ est une limite d'éléments de $\varClub_\varOb$, donc
+    un élément de $\varClub_\varOb$ puisque $\varClub_\varOb$ est un club (en
+    particulier un fermé). Donc $\sup X\in \varClub_\varOb$ pour tout
+    $\varOb < \sup X$, donc $\sup X \in D$.
   \item On utilise un argument développé dans la preuve de la
     \cref{prop.inter.club.k} pour montrer que $D$ est cofinal. On pose
-    \[D_\alpha \defeq \bigcap_{\beta < \alpha} C_\alpha\]
-    Chaque $D_\alpha$ est un club d'après la \cref{prop.inter.club.k}.
-    Soit $\beta < \kappa$, on construit une suite $(\alpha_n)$ par
+    \[D_\varOa \defeq \bigcap_{\varOb < \varOa} \varClub_\varOa\]
+    Chaque $D_\varOa$ est un club d'après la \cref{prop.inter.club.k}.
+    Soit $\varOb < \varCk$, on construit une suite $(\varOa_n)$ par
     récurrence~:
     \begin{itemize}
-    \item $\alpha_0 = \beta + 1$
-    \item pour tout $n \in \mathbb N$, si $\alpha_n$ a été défini, alors on
-      sait que $D_{\alpha_n}$ est un club, donc on peut trouver
-      $\alpha_{n+1}\in D_{\alpha_n}$ tel que $\alpha_{n+1} > \alpha_n$.
+    \item $\varOa_0 \defeq \varOb + 1$
+    \item pour tout $n \in \bN$, si $\varOa_n$ a été défini, alors on
+      sait que $D_{\varOa_n}$ est un club, donc on peut trouver
+      $\varOa_{n+1}\in D_{\varOa_n}$ tel que $\varOa_{n+1} > \varOa_n$.
     \end{itemize}
     On définit alors
-    \[\alpha \defeq \sup_{n \in \mathbb N} \alpha_n\]
-    Alors, pour tout $n \in \mathbb N$, on sait que $\alpha_m \in D_{\alpha_n}$
-    pour tout $m \geq n$, donc $\alpha \in D_{\alpha_n}$. Comme
-    $\displaystyle D_{\alpha} =\bigcap_{n \in \mathbb N} D_{\alpha_n}$,
-    on en déduit que $\alpha \in D_\alpha$, c'est-à-dire
-    $\alpha \in \bigcap_{\beta < \alpha} C_\alpha$, donc
-    $\alpha \in D$ et $\alpha > \beta$.
+    \[\varOa \defeq \sup_{n \in \bN} \varOa_n\]
+    Alors, pour tout $n \in \bN$, on sait que $\varOa_m \in D_{\varOa_n}$
+    pour tout $m \geq n$, donc $\varOa \in D_{\varOa_n}$. Comme
+    $\displaystyle D_{\varOa} =\bigcap_{n \in \bN} D_{\varOa_n}$,
+    on en déduit que $\varOa \in D_\varOa$, c'est-à-dire
+    $\varOa \in \bigcap_{\varOb < \varOa} \varClub_\varOa$, donc
+    $\varOa \in D$ et $\varOa > \varOb$.
   \end{itemize}
   Ainsi $D$ est bien un club.
 \end{proof}
 
+\noindent
 On en déduit le lemme de Fodor.
 
 \begin{lemma}[Fodor \cite{Fodor}]
-  Soit $\kappa$ un cardinal régulier indénombrable, $S \subseteq \kappa$ une
-  partie stationnaire et $f : S \to \kappa$ une fonction régressive. Alors
-  $f$ est constante sur un ensemble stationnaire.
+  Soit $\varCk$ un cardinal régulier indénombrable, $\varSt \subseteq \varCk$
+  une partie stationnaire et $f : \varSt \to \varCk$ une fonction régressive.
+  Alors $f$ est constante sur un ensemble stationnaire.
 \end{lemma}
 
 \begin{proof}
-  Supposons que pour tout $\beta \in \kappa$, $f^{-1}(\{\beta\})$ est non
-  stationnaire. On trouve alors $C_\beta$ un club disjoint de
-  $f^{-1}(\{\beta\})$. Comme $\displaystyle\diagcap_{\beta < \kappa} C_\beta$ est un
-  club et $S$ est stationnaire, on peut trouver
-  $\gamma \in S\cap \diagcap_{\beta < \kappa} C_\beta$. On sait donc que
-  $\gamma \in C_\beta$ pour tout $\beta < \gamma$, c'est-à-dire que
-  $f(\gamma) \neq \beta$ pour tout $\beta < \gamma$. On en déduit que
-  $f(\gamma) \geq \gamma$, ce qui est impossible car $f$ est supposée
+  Supposons que pour tout $\varOb \in \varCk$, $f^{-1}(\{\varOb\})$ est non
+  stationnaire. On trouve alors $\varClub_\varOb$ un club disjoint de
+  $f^{-1}(\{\varOb\})$. Comme
+  $\displaystyle\diagcap_{\varOb<\varCk}\varClub_\varOb$ est un club et $\varSt$
+  est stationnaire, on peut trouver
+  $\varOc \in \varSt\cap \diagcap_{\varOb < \varCk} \varClub_\varOb$. On sait donc
+  que $\varOc \in \varClub_\varOb$ pour tout $\varOb < \varOc$, c'est-à-dire que
+  $f(\varOc) \neq \varOb$ pour tout $\varOb < \varOc$. On en déduit que
+  $f(\varOc) \geq \varOc$, ce qui est impossible car $f$ est supposée
   régressive.
 \end{proof}
 
@@ -770,306 +792,305 @@ On en déduit le lemme de Fodor.
 
 Dans cette partie, on va montrer le théorème de Silver. On a vu dans le
 \cref{chp.ordinaux} que sur les cardinaux réguliers, on dispose de très peu
-d'informations sur le comportement de $\kappa \mapsto X^\kappa$. Le théorème de
+d'informations sur le comportement de $\kappa \mapsto 2^\kappa$. Le théorème de
 Silver montre que, dans le cas des cardinaux singuliers, la situation est très
 différent. Ce que nous allons montrer est, plus précisément, que si l'hypothèse
 généralisée du continu est vraie jusqu'à un certain cardinal singulier
-$\lambda$ de cofinalité indénombrable, alors celle-ci est vraie aussi en ce
+$\varCCl$ de cofinalité indénombrable, alors celle-ci est vraie aussi en ce
 cardinal.
 
 On va d'abord introduire la notion de suite cofinale continue, qui est un
 renforcement naturel de la notion de suite cofinale.
 
 \begin{definition}[Suite cofinale continue]
-  Soit $\alpha$ un ordinal et $(\alpha_\beta)$ une suite d'éléments de $\alpha$.
-  On dit que $(\alpha_\beta)$ est une suite cofinale continue si c'est une
-  suite strictement croissante, que $\sup\alpha_\beta = \alpha$ et que pour
-  tout $\gamma \in\Lim_\alpha$, $\sup_{\beta < \gamma} \alpha_\beta = \alpha_\gamma$.
+  Soit $\varOa$ un ordinal et $(\varOa_\varOb)$ une suite d'éléments de $\varOa$.
+  On dit que $(\varOa_\varOb)$ est une suite cofinale continue si c'est une
+  suite strictement croissante, que $\sup\varOa_\varOb = \varOa$ et que pour
+  tout $\varOc \in\Lim_\varOa$, $\sup_{\varOb < \varOa} \varOa_\varOb = \varOa_\varOc$.
 \end{definition}
 
 \begin{exercise}
-  Montrer que si $\alpha$ est un ordinal limite, alors il existe une suite
-  cofinale continue de taille $\cof(\alpha)$.
+  Montrer que si $\varOa$ est un ordinal limite, alors il existe une suite
+  cofinale continue de taille $\cof(\varOa)$.
 \end{exercise}
 
 On aura aussi besoin de la notion de famille éventuellement différentes, qui
 peut se voir comme une généralisation de celle de famille presque disjointe pour
-un cardinal autre que $\omega$.
+un cardinal autre que $\Ow$.
 
 \begin{definition}
-  Soit $X$ un ensemble et $\kappa$ un cardinal. Une famille
-  $\mathcal F\subseteq\Funct(\kappa,X)$ est dite éventuellement différente si
+  Soit $X$ un ensemble et $\varCk$ un cardinal. Une famille
+  $\varFam\subseteq\Funct(\varCk,X)$ est dite éventuellement différente si
   la condition suivante est vérifiée~:
-  \[\forall f,g \in \mathcal F, f \neq g \implies
-  \Card(\{\xi\mid f(\xi) = g(\xi)\}) < \kappa\]
+  \[\forall f,g \in \varFam, f \neq g \implies
+  \Card(\compr{\varOx}{f(\varOx) = g(\varOx)}) < \varCk\]
 \end{definition}
 
 \begin{notation}
-  Dans le suite de cette sous-section, on pose $\lambda$ un cardinal singulier
-  de cofinalité indénombrable, $\alpha$ l'ordinal tel que
-  $\lambda = \aleph_\alpha$ et $\kappa = \cof(\alpha)$ (avec, donc,
-  $\kappa > \omega$). On suppose aussi
-  \[\HCG_\lambda \defeq \forall \beta < \lambda, 2^{\aleph_\beta} = \aleph_{\beta + 1}
-  \]
-
-  Comme nous allons procéder par l'absurde, on supposera de plus que
-  $2^\lambda > \lambda^+$.
-
-  On se fixe une suite cofinale continue $(\alpha_{\beta})_{\beta < \kappa}$ dans
-  $\alpha$.
+  Dans le suite de cette sous-section, on pose $\varCCl$ un cardinal singulier
+  de cofinalité indénombrable, $\varOa$ l'ordinal tel que
+  $\varCCl = \Cal_\varOa$ et $\varCk = \cof(\varOa)$ (avec, donc,
+  $\varCk > \Ow$). On suppose aussi $\HCG_\varCCl$.
+  Comme nous allons procéder par l'absurde, on supposera enfin que
+  $2^\varCCl > \SsC{\varCCl}$.
 \end{notation}
+
+On se fixe une suite cofinale continue $(\varOa_{\varOb})_{\varOb < \varCk}$ dans
+$\varOa$.
 
 \begin{proposition}
   Il existe une famille éventuellement différente
-  $\mathcal F\subseteq\Funct(\kappa,\lambda)$ de taille $2^\lambda$ telle que
-  \[\forall f\in\mathcal F, \forall \beta < \kappa,
-  f(\beta) < \aleph_{\alpha_\beta + 1}\]
+  $\varFam\subseteq\Funct(\varCk,\varCCl)$ de taille $2^\varCCl$ telle que
+  \[\forall f\in\varFam, \forall \varOb < \varCk,
+  f(\varOb) < \Cal_{\varOa_\varOb + 1}\]
 \end{proposition}
 
 \begin{proof}
-  On se donne, pour chaque $\beta < \kappa$, une bijection
-  \[\iota_\beta : \powerset(\aleph_{\alpha_\beta}) \xrightarrow[]{\cong}
-  \aleph_{\alpha_\beta + 1}\]
-  donnée par $\HCG_\alpha$.
+  On se donne, pour chaque $\varOb < \varCk$, une bijection
+  \[\makeFunNameIso{\iota_\varOb}{\powerset(\Cal_{\varOa_\varOb})}
+                   {\Cal_{\varOa_\varOb + 1}}\]
+  donnée par $\HCG_\varCCl$.
 
-  Pour chaque $X\subseteq \lambda$, on définit la fonction
-  \[\begin{array}{ccccc}
-  f_X & : & \kappa & \longrightarrow & \lambda\\
-  & & \beta &\longmapsto & \iota_\beta(X \cap \aleph_{\alpha_\beta})
-  \end{array}\]
+  Pour chaque $X\subseteq \varCCl$, on définit la fonction
+  \[\makeFun{f_X}{\varCk}{\varCCl}{\varOb}
+            {\iota_\varOb(X\cap\Cal_{\varOa_\varOb})}\]
   Remarquons que cette fonction est bien définie, car
-  $X\cap \aleph_{\alpha_\beta}$ est une partie de $\aleph_{\alpha_\beta}$ et elle est
-  donc à valeur dans $\aleph_{\alpha_\beta + 1} < \lambda$. Montrons maintenant que
-  $\{f_X\}_{X\subseteq \lambda}$ est une famille éventuellement différente~:
+  $X\cap \Cal_{\varOa_\varOb}$ est une partie de $\Cal_{\varOa_\varOb}$ et elle est
+  donc à valeur dans $\Cal_{\varOa_\varOb + 1} < \varCCl$. Montrons maintenant que
+  $\{f_X\}_{X\subseteq \varCCl}$ est une famille éventuellement différente~:
 
-  Soient $X,Y\subseteq \lambda$ tels que $X\neq Y$. On veut montrer que
-  $\{\xi \mid f_X(\xi) = f_Y(\xi)\}$ est de cardinal strictement inférieur à
-  $\kappa$. Comme $X\neq Y$, on trouve $\delta = \min X \triangle Y$. La suite
-  $(\alpha_\beta)$ est cofinale dans $\alpha$, donc on peut trouver
-  $\gamma\in \kappa$ tel que $\aleph_{\alpha_\gamma} > \delta$. Comme
-  $(\alpha_\beta)$ est strictement croissante, on en déduit que pour tout
-  $\gamma' > \gamma, \aleph_{\gamma'} > \delta$.
+  Soient $X,Y\subseteq \varCCl$ tels que $X\neq Y$. On veut montrer que
+  $\compr{\varOx}{f_X(\varOx) = f_Y(\varOx)}$ est de cardinal strictement
+  inférieur à $\varCk$. Comme $X\neq Y$, on trouve
+  $\varOd = \min X \diffsym Y$. La suite $(\varOa_\varOb)$ est cofinale dans
+  $\varOa$, donc on peut trouver $\varOc\in \varCk$ tel que
+  $\Cal_{\varOa_\varOc} > \varOd$. Comme $(\varOa_\varOb)$ est strictement
+  croissante, on en déduit que pour tout
+  $\varOc' > \varOc, \Cal_{\varOc'} > \varOd$.
 
   En remarquant que
-  $(X\triangle Y) \cap \aleph_{\alpha_\beta} =
-  (X\cap \aleph_{\alpha_\beta})\triangle (Y\cap \aleph_{\alpha_\beta})$,
-  si $\beta \in \kappa$ est tel que $\delta \in \aleph_{\alpha_\beta}$, alors
-  $\delta\in(X\cap \aleph_{\alpha_\beta})\triangle (Y\cap \aleph_{\alpha_\beta})$
-  donc $X\cap \aleph_{\alpha_\beta}\neq Y\cap \aleph_{\alpha_\beta}$,
-  d'où par injectivité de $\iota_\beta$, $f_X(\beta) \neq f_Y(\beta)$.
+  $(X\diffsym Y) \cap \Cal_{\varOa_\varOb} =
+  (X\cap \Cal_{\varOa_\varOb})\diffsym (Y\cap \Cal_{\varOa_\varOb})$,
+  si $\varOb \in \varCk$ est tel que $\varOd \in \Cal_{\varOa_\varOb}$, alors
+  $\varOd\in(X\cap \Cal_{\varOa_\varOb})\triangle (Y\cap \Cal_{\varOa_\varOb})$
+  donc $X\cap \Cal_{\varOa_\varOb}\neq Y\cap \Cal_{\varOa_\varOb}$,
+  d'où par injectivité de $\iota_\varOb$, $f_X(\varOb) \neq f_Y(\varOb)$.
 
-  On voit donc que l'ensemble $\{\xi\mid f_X(\xi) = f_Y(\xi)\}$ est borné par
-  $\gamma$ tel que $\delta \in \aleph_\gamma$, c'est donc un ensemble de
-  cardinal inférieur à $\gamma$ et $\gamma < \kappa$, donc $\{f_X\}$ est une
+  On voit donc que l'ensemble
+  $\compr{\varOx}{f_X(\varOx) = f_Y(\varOx)}$ est borné par $\varOc$ tel que
+  $\varOd \in \Cal_\varOc$, c'est donc un ensemble de cardinal inférieur à
+  $\varOc$ et $\varOc < \varCk$, donc $\{f_X\}$ est une
   famille éventuellement différente.
 \end{proof}
 
-On définit maintenant une relation entre les parties de $\lambda$.
+\noindent
+On définit maintenant une relation entre les parties de $\varCCl$.
 
 \begin{definition}
   Pour deux parties $X,Y\subseteq \lambda$, on définit la relation
-  $\mathcal R$ par
-  \[X \mathcal R Y\defeq \{\gamma\mid f_X(\gamma) < f_Y(\gamma)\}
-  \text{ est stationnaire dans }\kappa\]
+  $\varRR$ par
+  \[X \varRR Y\defeq \compr{\varOc}{f_X(\varOc) < f_Y(\varOc)}
+  \text{ est stationnaire dans }\varCk\]
 \end{definition}
 
 \begin{property}
-  Soient $X\neq Y$ deux parties de $\lambda$. Alors $X\mathcal R Y$ ou
-  $Y\mathcal R X$.
+  Soient $X\neq Y$ deux parties de $\varCCl$. Alors $X\varRR Y$ ou
+  $Y\varRR X$.
 \end{property}
 
 \begin{proof}
   Comme $\{f_X\}$ est une famille éventuellement différente, on peut trouver
-  $\kappa' < \kappa$ tel que $\{\xi \mid f_X(\xi) =f_Y(\xi)\}\subseteq\kappa'$
-  donc $\{\xi\mid f_X(\xi)\neq f_Y(\xi)\}$ contient un club (la partie
-  $\kappa\setminus \kappa$). De plus on a l'égalité
-  \[\{\xi \mid f_X(\xi) \neq f_Y(\xi)\} = \{\xi\mid f_X(\xi) < f_Y(\xi)\}
-  \cup \{\xi\mid f_X(\xi) > f_Y(\xi)\}\]
+  $\varCk' < \varCk$ tel que
+  $\compr{\varOx}{f_X(\varOx) =f_Y(\varOx)}\subseteq\varCk'$
+  donc $\compr{\varOx}{f_X(\varOx)\neq f_Y(\varOx)}$ contient un club (la
+  partie $\varCk\setminus \varCk'$). De plus on a l'égalité
+  \[\compr{\varOx}{f_X(\varOx) \neq f_Y(\varOx)} =
+  \compr{\varOx}{f_X(\varOx) < f_Y(\varOx)}
+  \cup \compr{\varOx}{f_X(\varOx) > f_Y(\varOx)}\]
   donc l'union des deux ensembles est un ensemble stationnaire. On en déduit
   qu'au moins l'un des deux ensembles est stationnaire, ce qui signifie que
-  $X\mathcal R Y$ ou $Y\mathcal R X$.
+  $X\varRR Y$ ou $Y\varRR X$.
 \end{proof}
 
 \begin{proposition}
-  Il existe une partie $X\subseteq \lambda$ telle que
-  $\Card(\mathcal R^{-1}[X]) \geq \lambda^+$.
+  Il existe une partie $X\subseteq \varCCl$ telle que
+  $\Card(\LclR{X}) \geq \SsC{\varCCl}$.
 \end{proposition}
 
 \begin{proof}
-  Soit $A\subseteq \powerset(\lambda)$ tel que $\Card(A) = \lambda^+$. On
-  définit alors, pour tout $X\in A$~:
-  \[A_X\defeq \mathcal R^{-1}[X]\cup \{X\}\]
+  Soit $\varFam\subseteq \powerset(\varCCl)$ tel que
+  $\Card(\varFam) = \SsC{\varCCl}$. On définit, pour tout $X\in \varFam$~:
+  \[\varFam_X\defeq \LclR{X}\cup \{X\}\]
   Il y a alors deux possibilités à traiter~:
   \begin{itemize}
-  \item s'il existe $X\in A$ tel que $\Card(A_X)\geq \lambda^+$, alors en
-    prenant ce tel $X$, on a bien prouvé l'affirmation souhaitée.
-  \item sinon, alors on sait que pour tout $X\in A$, $\Card(A_X)< \lambda^+$,
+  \item s'il existe $X\in \varFam$ tel que $\Card(\varFam_X)\geq \SsC{\varCCl}$,
+    alors en prenant ce tel $X$, on a bien prouvé l'affirmation souhaitée.
+  \item sinon, alors on sait que pour tout $X\in \varFam$,
+    $\Card(\varFam_X)< \SsC{\varCCl}$,
     donc en utilisant le \cref{thm.Konig}, on en déduit que~:
-    \[\Card\left(\bigcup_{X\in A}A_X\right) \leq \lambda^+\]
-    donc, comme on a supposé que $2^\lambda > \lambda^+$, on peut trouver une
+    \[\Card\left(\bigcup_{X\in \varFam}\varFam_X\right) \leq \SsC{\varCCl}\]
+    donc, comme on a supposé que $2^\varCCl > \SsC{\varCCl}$, on peut trouver une
     partie
-    \[X\in \powerset(\lambda)\setminus\left(\bigcup_{X\in A}A_X\right)\]
-    Comme on sait que pour tous $X\neq Y$, $X\mathcal R Y$ ou $Y\mathcal R X$,
-    le fait que $X\notin A_Y$ pour tout $Y\in A$ signifie que
-    $\mathcal R^{-1}[X]\supseteq A$, donc que
-    $\Card(\mathcal R^{-1}[X]) \geq\lambda^+$.
+    \[X\in \powerset(\varCCl)\setminus
+    \left(\bigcup_{X\in \varFam}\varFam_X\right)\]
+    Comme on sait que pour tous $X\neq Y$, $X\varRR Y$ ou $Y\varRR X$,
+    le fait que $X\notin \varFam_Y$ pour tout $Y\in \varFam$ signifie que
+    $\LclR{X}\supseteq A$, donc que
+    $\Card(\LclR{X}) \geq\SsC{\varCCl}$.\qedhere
   \end{itemize}
-  Dans les deux cas, on a donc trouvé $X$ tel que
-  $\Card(\mathcal R^{-1}[X]) \geq \lambda^+$.
 \end{proof}
 
 \begin{notation}
   On fixe maintenant $X$ tel que défini dans la proposition précédente. De plus,
-  pour tout $\gamma \in \kappa$, comme
-  $f_X(\gamma) \in \aleph_{\alpha_\gamma + 1}$, on se donne une injection
-  $g_\gamma : f_X(\gamma) \to \aleph_{\alpha_\gamma}$.
+  pour tout $\varOc \in \varCk$, comme
+  $f_X(\varOc) \in \Cal_{\varOa_\varOc + 1}$, on se donne une injection
+  $g_\varOc : f_X(\varOc) \to \Cal_{\varOa_\varOc}$.
 
-  Pour tout $Y\in\mathcal R^{-1}[X]$, on définit
-  $S_Y = \{\gamma\mid f_Y(\gamma) < f_X(\gamma)\}$.
+  Pour tout $Y\in\LclR{X}$, on définit
+  $\varSt_Y = \compr{\varOc}{f_Y(\varOc) < f_X(\varOc)}$.
 \end{notation}
 
 On va maintenant introduire une variant du lemme de Fodor pour traiter notre
 famille éventuellement différente.
 
 \begin{lemma}[Fodor, variante]
-  Soit $\alpha_\beta$ une suite cofinale continue dans $\alpha$. Soit
-  $S\subseteq\kappa$ une partie stationnaire et $f : S \to \aleph_\alpha$ telle
-  que
-  \[\forall \beta < \kappa, f(\beta) < \aleph_{\alpha_\beta}\]
-  On peut alors trouver $\gamma < \alpha$ et une partie $T\subseteq S$
+  Soit $\varOa_\varOb$ une suite cofinale continue dans $\varOa$. Soit
+  $\varSt\subseteq\varCk$ une partie stationnaire et
+  $f : \varSt \to \Cal_\varOa$ telle que
+  \[\forall \varOb < \varCk, f(\varOb) < \Cal_{\varOa_\varOb}\]
+  On peut alors trouver $\varOc < \varOa$ et une partie $\varStT\subseteq\varSt$
   stationnaire telle que
-  \[\forall \beta \in T, f(\beta) < \aleph_\gamma\]
+  \[\forall \varOb \in \varStT, f(\varOb) < \Cal_\varOc\]
 \end{lemma}
 
 \begin{proof}
   On commence par considérer
-  \[S' \defeq S \cap \Lim_\kappa\]
-  qui, comme $\Lim_\kappa$ est un club, est encore une partie stationnaire.
-  Soit maintenant, pour $\beta \in S'$, l'ensemble
-  \[A_\beta \defeq \{\gamma \mid f(\beta) < \aleph_{\alpha_\gamma}\}\]
-  On sait que pour tout $\beta \in A_\beta$, $f(\beta) < \aleph_{\alpha_\beta}$,
-  donc $A_\beta$ est toujours non vide. On définit la fonction
-  \[\begin{array}{ccccc}
-  g & : & S' & \longrightarrow & \kappa\\
-  & & \beta & \longmapsto & \min A_\beta
-  \end{array}\]
+  \[\varSt' \defeq varSt \cap \Lim_\varCk\]
+  qui, comme $\Lim_\varCk$ est un club, est encore une partie stationnaire.
+  Soit maintenant, pour $\varOb \in \varSt'$, l'ensemble
+  \[\varFam_\varOb \defeq \compr{\varOb}{f(\varOb) < \Cal_{\varOa_\varOc}}\]
+  On sait que pour tout $\varOb \in \varFam_\varOb$,
+  $f(\varOb) < \Cal_{\varOa_\varOb}$,
+  donc $\varFam_\varOb$ est toujours non vide. On définit la fonction
+  \[\makeFun{g}{\varSt'}{\varCk}{\varOb}{\min\varFam_\varOb}\]
 
   Montrons que $g$ est régressive pour pouvoir y appliquer le lemme de Fodor.
-  Soit $\beta \in S'$, montrons que $g(\beta) < \beta$. $(\alpha_\beta)$ est
-  une suite continue, et $\aleph$ est aussi continue (par définition), donc
-  (comme $f(\beta) < \aleph_{\alpha_\beta}$) on en déduit que
-  $f(\beta) < \sup_{\gamma < \beta} \aleph_{\alpha_\gamma}$
-  On peut donc trouver $\delta \in \beta$ tel que
-  $f(\beta) < \aleph_{\alpha_\delta}$, puisque sinon
-  $f(\beta) \geq \sup_{\gamma < \beta} \aleph_{\alpha_\gamma}$.
-  Il vient donc que $\delta < \beta$ et $\delta \in A_\beta$, donc
-  $\min A_\beta < \beta$, d'où $g(\beta) < \beta$.
+  Soit $\varOb \in \varSt'$, montrons que $g(\varOb) < \varOb$.
+  $(\varOa_\varOb)$ est une suite continue, et $\Cal$ est aussi continue (par
+  définition), donc (comme $f(\varOb) < \Cal_{\varOa_\varOb}$) on en déduit que
+  $f(\varOb) < \sup_{\varOc < \varOb} \Cal_{\varOa_\varOc}$
+  On peut donc trouver $\varOd \in \varOb$ tel que
+  $f(\varOb) < \Cal_{\varOa_\varOd}$, puisque sinon
+  $f(\varOb) \geq \sup_{\varOc < \varOb} \Cal_{\varOa_\varOc}$.
+  Il vient donc que $\varOd < \varOb$ et $\varOd \in \varFam_\varOb$, donc
+  $\min \varFam_\varOb < \varOb$, d'où $g(\varOb) < \varOb$.
 
   On applique donc le lemme de Fodor à $g$~: on trouve un ensemble stationnaire
-  $T\subseteq S$ et $\delta \in \kappa$ tel que
-  \[\forall \beta \in T, g(\beta) = \delta\]
-  ce qui signifie que $f(\beta) < \aleph_{\alpha_\delta}$. En prenant pour
-  $\gamma$ notre $\alpha_\delta$ ainsi trouvé, on a bien une partie $T$
+  $\varStT\subseteq\varSt$ et $\varOd \in \varCk$ tel que
+  \[\forall \varOb \in \varStT, g(\varOb) = \varOd\]
+  ce qui signifie que $f(\varOb) < \Cal_{\varOa_\varOd}$. En prenant pour
+  $\varOc$ notre $\varOa_\varOd$ ainsi trouvé, on a bien une partie $\varStT$
   vérifiant la condition attendue.
 \end{proof}
 
 En utilisant cette variante, on peut prouver le résultat suivant, qui nous
 permettra finalement de conclure le théorème de Silver.
 
-\begin{lemma}
-  Pour tout $Y\in\mathcal R^{-1}[X]$, on peut trouver $T_Y\subseteq S_Y$
-  stationnaire et $\overline\gamma_Y$ tels que
-  \[\forall \gamma \in T_Y, g_\gamma(f_Y(\gamma)) <
-  \aleph_{\overline\gamma_Y}\]
+\begin{lemma}\label{lem.Silver.F}
+  Pour tout $Y\in\LclR{X}$, on peut trouver $\varStT_Y\subseteq \varSt_Y$
+  stationnaire et $\overline\varOc_Y$ tels que
+  \[\forall \varOc \in \varStT_Y,
+  g_\varOc(f_Y(\varOc)) < \Cal_{\overline\varOc_Y}\]
 \end{lemma}
 
 \begin{proof}
-  Soit $Y\in\mathcal R^{-1}[X]$. On applique la variante du lemme de Fodor en
-  considérant la suite cofinale continue $(\alpha_\beta)$, l'ensemble
-  stationnaire $S_Y$ et la fonction $\gamma\mapsto g_\gamma(f_Y(\gamma))$.
+  Soit $Y\in\LclR{X}$. On applique la variante du lemme de Fodor en
+  considérant la suite cofinale continue $(\varOa_\varOb)$, l'ensemble
+  stationnaire $\varSt_Y$ et la fonction $\varOc\mapsto g_\varOc(f_Y(\varOc))$.
 
   La fonction
-  \[\begin{array}{ccccc}
-  F_Y & : & S_Y & \longrightarrow & \lambda\\
-  & & \gamma & \longmapsto & g_\gamma(f_Y(\gamma))
-  \end{array}\]
-  est bien définie car sur $S_Y, f_Y < f_X$. De plus,
-  $g_\gamma : f_X(\gamma) \to \aleph_{\alpha_\gamma}$ donc $F_Y$ vérifie bien
-  les condition de la variant du lemme de Fodor.
+  \[\makeFun{F_Y}{\varSt_Y}{\varCCl}{\varOc}{g_\varOc(f_Y(\varOc))}\]
+  est bien définie car sur $\varSt_Y, f_Y < f_X$. De plus,
+  $g_\varOc : f_X(\varOc) \to \Cal_{\varOa_\varOc}$ donc $F_Y$ vérifie bien
+  les condition de la variante du lemme de Fodor.
 
-  On trouve donc $\overline\gamma_Y$ et $T_Y\subseteq S_Y$ tels que
-  \[\forall \gamma \in T_Y, g_\gamma(f_Y(\gamma)) < \aleph_{\overline\gamma_Y}\]
+  On trouve donc $\overline\varOc_Y$ et $\varStT_Y\subseteq \varSt_Y$ tels que
+  \[\forall \varOc \in \varStT_Y, g_\varOc(f_Y(\varOc)) < \Cal_{\overline\varOc_Y}\]
 \end{proof}
 
-On généralise ce lemme pour avoir un $T$ et un $\overline\gamma$ indépendants
-de $Y$.
+On généralise ce lemme pour avoir un $\varStT$ et un $\overline\varOc$
+indépendants de $Y$.
 
 \begin{lemma}
-  Il existe $T\subseteq \kappa$ stationnaire et un ordinal $\overline\gamma$
-  tels que
-  \[\Card\left(\{Y\mid T_Y = T \land \overline\gamma_Y = \overline\gamma\right)
-  \geq\lambda^+\]
+  Il existe $\varStT\subseteq \varCk$ stationnaire et un ordinal
+  $\overline\varOc$ tels que
+  \[\Card\left(
+  \compr{Y}{\varStT_Y = \varStT \land \overline\varOc_Y = \overline\varOc}
+  \right) \geq\SsC{\varCCl}\]
 \end{lemma}
 
 \begin{proof}
   Soit la fonction
-  \[\begin{array}{ccccc}
-  h & : & \mathcal R^{-1}[X] & \longrightarrow & \powerset(\kappa)\times\alpha\\
-  & & Y & \longmapsto & (T_Y,\overline\gamma_Y)
-  \end{array}\]
-  On peut donc écrire $\mathcal R^{-1}[X]$ comme l'union des
-  $h^{-1}(\{(T,\overline\gamma)\})$ pour tous
-  $(T,\overline\gamma)\in\powerset(\kappa)\times\alpha$. Par l'absurde,
-  supposons que chacun de ces ensembles $h^{-1}(\{(T,\overline\gamma)\})$ est
-  de cardinal strictement inférieur à $\lambda^+$. Comme
-  $\Card(\powerset(\kappa)) < \lambda^+$ et $\Card(\alpha) < \lambda^+$, on
+  \[\makeFun{h}
+            {\LclR{X}}{\powerset(\varCk)\times\varOa}
+            {Y}{(\varStT_Y,\overline\varOc_Y)}\]
+  On peut donc écrire $\LclR{X}$ comme l'union des
+  $h^{-1}(\{(\varStT,\overline\varOc)\})$ pour tous
+  $(\varStT,\overline\varOc)\in\powerset(\varCk)\times\varOa$. Par l'absurde,
+  supposons que chacun de ces ensembles $h^{-1}(\{(\varStT,\overline\varOc)\})$
+  est de cardinal strictement inférieur à $\SsC{\varCCl}$. Comme
+  $\Card(\powerset(\varCk))<\SsC{\varCCl}$ et $\Card(\varOa)<\SsC{\varCCl}$, on
   peut utiliser le \cref{thm.Konig} pour en déduire que
   \[\Card\left(
-  \bigcup_{\genfrac{}{}{0pt}{2}{T\subseteq \kappa}{\overline\gamma\in \alpha}}
-  h^{-1}(\{(T,\overline\gamma)\})\right) < \lambda^+\]
-  ce qui contredit le fait que cette union vaut $\mathcal R^{-1}[X]$, qui est
-  de cardinal supérieur ou égal à $\lambda^+$.
+  \bigcup_{\genfrac{}{}{0pt}{2}{\varStT\subseteq\varCk}{\overline\varOc\in\varOa}}
+  h^{-1}(\{(\varStT,\overline\varOc)\})\right) < \SsC{\varCCl}\]
+  ce qui contredit le fait que cette union vaut $\LclR{X}$, qui est
+  de cardinal supérieur ou égal à $\SsC{\varCCl}$.
 
-  On en déduit donc qu'il existe un certain $(T,\overline\gamma)$ tel que
-  $h^{-1}(\{(T,\overline\gamma)\})$ est de taille $\lambda^+$, nous donnant le
-  résultat attendu.
+  On en déduit donc qu'il existe un certain $(\varStT,\overline\varOc)$ tel que
+  $h^{-1}(\{(\varStT,\overline\varOc)\})$ est de taille $\SsC{\varCCl}$, nous
+  donnant le résultat attendu.
 \end{proof}
 
 \begin{theorem}[Silver \cite{Silver1981-SILOTS}]
-  Soit $\lambda$ un cardinal singulier de cofinalité indénombrable. Si
-  $\HCG_\lambda$ est vraie, alors $2^\lambda = \lambda^+$.
+  Soit $\varCCl$ un cardinal singulier de cofinalité indénombrable. Si
+  $\HCG_\varCCl$ est vraie, alors $2^\varCCl = \SsC{\varCCl}$.
 \end{theorem}
 
 \begin{proof}
-  On suppose donc que $2^\lambda > \lambda$ et on veut arriver à une
+  On suppose donc que $2^\varCCl > \varCCl$ et on veut arriver à une
   contradiction, on reprend les constructions et notations précédentes.
 
   Soit
-  \[\mathcal Y \defeq \{Y\subseteq \lambda\mid T_Y = T \land
-  \overline\gamma_Y = \overline\gamma\}\]
+  \[\famY \defeq \compr{Y\subseteq \varCCl}
+          {\varStT_Y=\varStT\land\overline\varOc_Y=\overline\varOc}\]
 
-  On commence par trouver $Y_1\neq Y_2$ deux éléments de $\mathcal Y$ tels que
-  \[\forall \gamma \in T, g_\gamma(f_{Y_1}(\gamma)) = g_\gamma(f_{Y_2}(\gamma))\]
+  On commence par trouver $Y_1\neq Y_2$ deux éléments de $\famY$ tels que
+  \[\forall \varOc \in \varStT,
+  g_\varOc(f_{Y_1}(\varOc)) = g_\varOc(f_{Y_2}(\varOc))\]
 
   Un argument de dénombrement suffit. En effet, la condition précédente revient
-  à dire que $F_{Y_1} = F_{Y_2}$, et ces deux fonctions sont des éléments de
-  $\Funct(T,\aleph_{\overline\gamma})$. On sait que
-  $\Card(T) < \aleph_{\overline\gamma}$, donc
+  à dire que, pour la famille de fonctions $F_Y$ définies dans le
+  \cref{lem.Silver.F}, on a l'égalité $F_{Y_1} = F_{Y_2}$, et ces deux fonctions
+  sont des éléments de
+  $\Funct(\varStT,\Cal_{\overline\varOc})$. On sait que
+  $\Card(\varStT) < \Cal_{\overline\varOc}$, donc
   \begin{align*}
-    \Card(\Funct(S,\aleph_{\overline\gamma})) &
-    \leq \aleph_{\overline\gamma}^{\aleph_{\overline\gamma}}\\
-    &\leq 2^{\aleph_{\overline\gamma}} \\
-    &\leq \aleph_{\overline\gamma + 1}
+    \Card(\Funct(\varSt,\Cal_{\overline\varOc})) &
+    \leq \Cal_{\overline\varOc}^{\Cal_{\overline\varOc}}\\
+    &\leq 2^{\Cal_{\overline\varOc}} \\
+    &\leq \Cal_{\overline\varOc + 1}
   \end{align*}
-  Comme $\Card(\mathcal Y) = \lambda^+$, on en déduit qu'il existe au moins
+  Comme $\Card(\famY) = \SsC{\varCCl}$, on en déduit qu'il existe au moins
   deux parties $Y_1,Y_2$ telles que $F_{Y_1} = F_{Y_2}$ et $Y_1\neq Y_2$.
 
-  Maintenant, comme on sait que chaque $g_\gamma$ est injective, et qu'on sait
+  Maintenant, comme on sait que chaque $g_\varOc$ est injective, et qu'on sait
   que
-  \[\forall \gamma\in T, g_\gamma(f_{Y_1}(\gamma)) = g_\gamma(f_{Y_2}(\gamma))\]
-  on en déduit que $f_{Y_1}$ et $f_{Y_2}$ coïncident sur $T$. Pourtant, on sait
-  que $\{\xi\mid f_{Y_1}(\xi) = f_{Y_2}(\xi)\}$ est de cardinal strictement
-  inférieur à $\kappa$, et est donc non stationnaire. C'est absurde, donc
-  notre hypothèse de départ, que $2^\lambda > \lambda^+$, est fausse. Comme
-  $2^\lambda \leq \lambda^+$, on en déduit que $2^\lambda = \lambda^+$.
+  \[\forall \varOc\in \varStT,
+  g_\varOc(f_{Y_1}(\varOc)) = g_\varOc(f_{Y_2}(\varOc))\]
+  on en déduit que $f_{Y_1}$ et $f_{Y_2}$ coïncident sur $\varStT$. Pourtant, on
+  sait que $\compr{\varOx}{f_{Y_1}(\varOx) = f_{Y_2}(\varOx)}$ est de cardinal
+  strictement inférieur à $\varCk$, et est donc non stationnaire. C'est absurde,
+  donc notre hypothèse de départ, que $2^\varCCl > \SsC{\varCCl}$, est fausse.
+  Comme $2^\varCCl\leq\SsC{\varCCl}$, on en déduit que $2^\varCCl=\SsC{\varCCl}$.
 \end{proof}

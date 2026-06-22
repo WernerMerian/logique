@@ -1195,7 +1195,7 @@ précise de la taille d'un ensemble, ce qui revient au final à munir un ensembl
 quelconque d'un bon ordre~: c'est le théorème de Zermelo.
 
 Quand nous aurons traité de la définition des cardinaux, nous verrons les
-fonctions $\aleph$ et $\beth$, ainsi que l'hypothèse du continu.
+fonctions $\varOa$ et $\Cbe$, ainsi que l'hypothèse du continu.
 
 \subsection{Axiome du choix et dichotomie cardinale}
 
@@ -1204,11 +1204,11 @@ qui correspond intuitivement à dire qu'un ensemble est plus petit qu'un autre.
 
 \begin{definition}[Subpotence]
   Soient $X,Y$ deux ensembles. On dit que $X$ est subpotent à $Y$, ce que l'on
-  notera $X\preceq Y$, lorsqu'il existe une injection $f : X \to Y$.
+  notera $X\subpo Y$, lorsqu'il existe une injection $f : X \to Y$.
 \end{definition}
 
 \begin{property}
-  La relation $\preceq$ est une relation de pré-ordre.
+  La relation $\subpo$ est une relation de pré-ordre.
 \end{property}
 
 \begin{proof}
@@ -1216,9 +1216,9 @@ qui correspond intuitivement à dire qu'un ensemble est plus petit qu'un autre.
   \begin{itemize}
   \item pour tout ensemble $X$, $\id_X$ est une injection de $X$ dans $X$.
   \item si $f : X \to Y$ et $g : Y \to Z$ sont des injections, alors
-    $g\circ f : X \to Z$ est une injection, donc $\preceq$ est transitive.
+    $g\circ f : X \to Z$ est une injection, donc $\subpo$ est transitive.
   \end{itemize}
-  Ainsi $\preceq$ est une relation d'ordre.
+  Ainsi $\subpo$ est une relation d'ordre.
 \end{proof}
 
 La relation d'équipotence est alors la relation d'équivalence associée à ce
@@ -1228,7 +1228,7 @@ immédiate~: c'est le théorème de Cantor-Bernstein.
 
 Le nom de Georg Cantor vient du fait qu'il a donné ce résultat dans 
 \cite{Cantor1887}, mais sans y apporter de preuve. Felix Bernstein démontre
-ensuite ce théorème en 1897 (cf \cite{deiser2004einführung}).
+ensuite ce théorème en 1897 (\latinexpr{c.f.} \cite{deiser2004einführung}).
 
 \begin{theorem}[Cantor-Bernstein]
   Soient $X,Y$ des ensembles. S'il existe une injection $f : X \to Y$ et une
@@ -1241,23 +1241,20 @@ ensuite ce théorème en 1897 (cf \cite{deiser2004einführung}).
   donc de montrer que si $X \subseteq Y$ et qu'il existe $g : Y \to X$
   injective, alors $X \cong Y$.
 
-  On définit une suite de parties $(Z_n)_{n\in\mathbb N}$ de $Y$ comme suit~:
-  \[\left\{\begin{array}{l}
+  On définit une suite de parties $(Z_n)_{n\in\bN}$ de $Y$ comme suit~:
+  \[\begin{cases}
   Z_0 = Y \setminus X\\
-  \forall n \in \mathbb N, Z_{n+1} = g(Z_n)
-  \end{array}\right.\]
+  \forall n \in \bN, Z_{n+1} = g(Z_n)
+  \end{cases}\]
   et on définit
-  \[Z \defeq \bigcup_{n \in \mathbb N} Z_n\]
+  \[Z \defeq \bigcup_{n \in \bN} Z_n\]
   la fonction $g$ est alors stable sur $Z$, par construction. On décide donc de
   définir la fonction
-  \[\begin{array}{ccccc}
-  h & : & Y & \rightarrow & X \\
-  & & x & \longmapsto & \left\{
-  \begin{array}{l}
-    g(x) \text{ si } x \in Z\\
-    x \text{ si } x \notin Z
-  \end{array}\right.
-  \end{array}\]
+  \[\makeFun{h}{Y}{X}{x}{
+    \begin{cases}
+      g(x)\text{ si } x \notin Z \\
+      x \text{ si } x \notin Z
+  \end{cases}}\]
   $h$ est bien à valeurs dans $X$~: si $x \in Z$, alors $h(x) = g(x)$ et
   $g$ est à valeurs dans $X$~; sinon, $x \notin Z$, donc $x\notin Z_0$, donc
   $x \in X$.
@@ -1265,29 +1262,28 @@ ensuite ce théorème en 1897 (cf \cite{deiser2004einführung}).
   On montre que $h$ est une bijection~: c'est une injection sur $Z$ et une
   injection sur $X\setminus Z$ et ces deux parties sont stables par $h$, donc
   $h$ est injective. $h$ est surjective~: si $x \in X$, alors soit $x \in Z$,
-  auquel cas on trouve $i \in \mathbb N$ tel que $x \in Z_i$. $i$ ne peut
+  auquel cas on trouve $i \in \bN$ tel que $x \in Z_i$. $i$ ne peut
   pas être nul, puisque $x \in X$, donc on peut trouver $z \in Z_0$ tel que
   $x = g^i(z)$~: cela signifie alors que $x = h(g^{i-1}(z))$. Si $x \notin Z$,
   alors $h(x) = x$. Ainsi $h$ est injective et surjective~: c'est une bijection
   entre $X$ et $Y$.
 \end{proof}
 
-La relation $\preceq$ est donc une relation d'ordre sur les classes
+La relation $\subpo$ est donc une relation d'ordre sur les classes
 d'équipotence, mis à part l'impossibilité de décrire ces classes par des
 ensembles. On peut prouver que cette relation est totale si et seulement si
 l'axiome du choix est vrai. Nous montrons ici que l'axiome du choix implique
-que $\preceq$ est totale, et nous verrons ensuite avec le théorème de Zermelo
+que $\subpo$ est totale, et nous verrons ensuite avec le théorème de Zermelo
 que c'est en fait une équivalence.
 
 \begin{property}
   L'axiome du choix implique la proposition suivante~:
-  \[\forall X,Y,(\exists f : X \to Y, \mathrm{inj}(f))\lor(\exists f : Y \to X,
-  \mathrm{inj}(f))\]
+  \[\forall X,Y,(\exists f : X\to Y,\inj(f))\lor(\exists f : Y\to X,\inj(f))\]
 \end{property}
 
 \begin{proof}
   On utilise le lemme de Zorn sur l'ensemble
-  \[\{f : A \to B \mid A \subseteq X, B \subseteq Y, \mathrm{inj}(f)\}\]
+  \[\compr{f : A \to B}{A \subseteq X, B \subseteq Y, \inj(f)}\]
   ordonné par $\subseteq$. Si on a une chaîne $\{f_i\}_{i\in I}$ d'éléments,
   alors on veut montrer que
   \[g\defeq \bigcup_{i\in I} f_i\]
@@ -1307,7 +1303,7 @@ que c'est en fait une équivalence.
   construire $g\cup\{(x,y)\}$ qui est une injection strictement plus grande
   que $f$. On en déduit que $A = X$ ou $B = Y$. Si $A = X$, alors on a trouvé
   une injection de $X$ dans $Y$. Si $B = Y$, alors la transposée de $f$,
-  c'est-à-dire l'ensemble $\{(y,x)\mid (x,y)\in f\}$, est une injection de
+  c'est-à-dire l'ensemble $\compr{(y,x)}{(x,y)\in f}$, est une injection de
   $Y$ dans $X$.
 \end{proof}
 
@@ -1320,8 +1316,8 @@ d'un bon ordre.
 
 \begin{proof}
   Ce théorème est une conséquence de la proposition précédente~: on sait que
-  $\alpha_X$ ne s'injecte pas dans $X$, donc $X$ s'injecte dans $\alpha_X$,
-  donc l'ordre induit par $\alpha_X$ est un bon ordre sur $X$.
+  $\Hart{X}$ ne s'injecte pas dans $X$, donc $X$ s'injecte dans $\Hart{X}$,
+  donc l'ordre induit par $\Hart{X}$ est un bon ordre sur $X$.
 \end{proof}
 
 \begin{property}
@@ -1332,16 +1328,12 @@ d'un bon ordre.
   Soit $X$ un ensemble non vide dont tous les éléments sont non vides.
   On trouve, par Zermelo, un bon ordre $<$ sur $X$. On définit alors la
   fonction de choix
-  \[\begin{array}{ccccc}
-  \varphi & : & \powerset(X)\setminus\{\varnothing\} & \longrightarrow
-  & X\\
-  & & Y &\longmapsto & \min_{<} Y
-  \end{array}\]
+  \[\makeFun{f}{\powerset(X)\setminus\{\vide\}}{X}{Y}{\min_{<} Y}\]
   et comme $\min Y\in Y$, on en déduit que cette fonction vérifie bien l'énoncé
   de l'axiome du choix.
 \end{proof}
 
-Comme on a prouvé que la dichotomie cardinale ($\preceq$ est un ordre total)
+Comme on a prouvé que la dichotomie cardinale ($\subpo$ est un ordre total)
 implique le théorème de Zermelo, on en déduit que les deux énoncés impliquent
 l'axiome du choix.
 
@@ -1349,7 +1341,7 @@ On a donc plusieurs énoncés utiles équivalents à l'axiome du choix~:
 \begin{itemize}
 \item le lemme de Zorn.
 \item le théorème de Zermelo.
-\item le fait que $\preceq$ est un pré-ordre total.
+\item le fait que $\subpo$ est un pré-ordre total.
 \end{itemize}
 
 \subsection{Nombre cardinal}
@@ -1359,15 +1351,15 @@ bijection avec un ordinal, puisqu'un isomorphisme d'ensembles ordonné est en
 particulier une bijection, et que tout ensemble bien ordonné est isomorphe à
 un unique ordinal. Cependant, on n'a pas unicité du bon ordre, et donc de
 l'ordinal auquel un ensemble quelconque est isomorphe. Même au sein des ordinaux
-il y a un défaut d'unicité, puisque $\omega \cong \omega + 1$ (il suffit
-d'envoyer $\omega$ sur $0$ et $n$ sur $n + 1$). On veut donc représenter une
-classe d'équipotence sur la hiérarchie ordinale en prenant un unique
-représentant, ce qui se fait en utilisant le plus petit ordinal de la classe.
-Cela motive donc notre définition de la hiérarchie cardinale.
+il y a un défaut d'unicité, puisque $\Ow \cong \Ow + 1$ (il suffit d'envoyer
+$\Ow$ sur $0$ et $n$ sur $n + 1$). On veut donc représenter une classe
+d'équipotence sur la hiérarchie ordinale en prenant un unique représentant, ce
+qui se fait en utilisant le plus petit ordinal de la classe. Cela motive donc
+notre définition de la hiérarchie cardinale.
 
 \begin{definition}[Cardinal]
-  Soit $\alpha \in \Ord$. On dit que $\alpha$ est un cardinal si pour tout
-  $\beta < \alpha$, $\alpha\not\preceq \beta$. On dénote la classe des cardinaux
+  Soit $\varOa \in \Ord$. On dit que $\varOa$ est un cardinal si pour tout
+  $\varOb < \varOa$, $\varOa\not\subpo\varOb$. On dénote la classe des cardinaux
   par $\Card$.
 
   Pour un ensemble quelconque $X$, on définit son cardinal, noté $\Card(X)$,
@@ -1391,35 +1383,35 @@ même un cardinal est peu étonnant, puisqu'on l'énonce par le fait qu'il ne
 s'injecte pas dans un plus petit ensemble.
 
 \begin{property}
-  Pour tout ensemble $X$, l'ordinal de Hartogs $\alpha_X$ est un cardinal.
+  Pour tout ensemble $X$, l'ordinal de Hartogs $\Hart{X}$ est un cardinal.
   Il est le plus petit cardinal ne s'injectant pas dans $X$.
 \end{property}
 
 \begin{proof}
-  Si $\beta\in\alpha_X$ alors $\beta$ s'injecte dans $X$, donc $\alpha_X$ ne
-  peut pas s'injecter dans $\beta$ (parce qu'alors il s'injecte dans $X$). Si
-  un cardinal $\kappa$ ne s'injecte pas dans $X$, alors $X$ s'injecte dans ce
-  cardinal. Par trichotomie sur les ordinaux, $\kappa = \alpha_X$ ou
-  $\kappa \in \alpha_X$ ou $\alpha_X \in \kappa$. Seul le cas
-  $\kappa\in\alpha_X$ est à traiter (les autres nous donnent bien que
-  $\alpha_X$ est le plus petit cardinal possible). Si $\kappa\in\alpha_X$,
-  alors $\kappa$ est associé à un certain bon ordre partiel $(Y,R)\in\Ord(X)$,
-  donc $\kappa$ s'injecte dans $X$, ce qui est faux par hypothèse.
+  Si $\varOb\in\Hart{X}$ alors $\varOb$ s'injecte dans $X$, donc $\Hart{X}$ ne
+  peut pas s'injecter dans $\varOb$ (parce qu'alors il s'injecte dans $X$). Si
+  un cardinal $\varCk$ ne s'injecte pas dans $X$, alors $X$ s'injecte dans ce
+  cardinal. Par trichotomie sur les ordinaux, $\varCk = \Hart{X}$ ou
+  $\varCk \in \Hart{X}$ ou $\Hart{X} \in \varCk$. Seul le cas
+  $\varCk\in\Hart{X}$ est à traiter (les autres nous donnent bien que
+  $\Hart{X}$ est le plus petit cardinal). Si $\varCk\in\Hart{X}$, alors $\varCk$
+  est associé à un certain bon ordre partiel $(Y,\mathord{\varRR})\in\Ord(X)$,
+  donc $\varCk$ s'injecte dans $X$, ce qui est faux par hypothèse.
 \end{proof}
 
 \begin{definition}[Cardinal successeur]
-  On définit le cardinal successeur d'un cardinal $\kappa\in\Card$ comme
-  $\kappa^+ = \alpha_\kappa$, l'ordinal de Hartogs de $\kappa$. C'est le plus
-  petit cardinal strictement supérieur à $\kappa$.
+  On définit le cardinal successeur d'un cardinal $\varCk\in\Card$ comme
+  $\SsC{\varCk} = \Hart{\varCk}$, l'ordinal de Hartogs de $\varCk$. C'est le
+  plus petit cardinal strictement supérieur à $\varCk$.
 \end{definition}
 
 \begin{example}
   Donnons quelques exemples de cardinaux~:
   \begin{itemize}
-  \item tous les ordinaux finis, c'est-à-dire les éléments de $\omega$, sont
-    des cardinaux.
-  \item $\omega$ lui-même est un cardinal.
-  \item $\omega_1 = \omega^+$, l'ensemble des ordinaux dénombrables, est un
+  \item tous les ordinaux finis, c'est-à-dire les éléments de $\Ow$, sont des
+    cardinaux.
+  \item $\Ow$ lui-même est un cardinal.
+  \item $\Ow_1 = \SsC{\Ow}$, l'ensemble des ordinaux dénombrables, est un
     cardinal.
   \end{itemize}
 \end{example}
@@ -1428,129 +1420,140 @@ s'injecte pas dans un plus petit ensemble.
   Montrer qu'un cardinal infini est un ordinal limite.
 \end{exercise}
 
-On définit maintenant la fonction $\aleph$, qui décrit les cardinaux infinis à
+On définit maintenant la fonction $\Cal$, qui décrit les cardinaux infinis à
 partir des ordinaux. Pour que notre définition ait du sens, on va montrer un
 premier lemme.
 
 \begin{lemma}
-  Soit $(\kappa_i)_{i\in I}$ une famille de cardinaux. Alors
-  $\displaystyle\bigcup_{i\in I} \kappa_i$ est un cardinal.
+  Soit $(\varCk_i)_{i\in I}$ une famille de cardinaux. Alors
+  $\displaystyle\bigcup_{i\in I} \varCk_i$ est un cardinal.
 \end{lemma}
 
 \begin{proof}
-  Soit $\beta < \bigcup_{i\in I}\kappa_i$, par définition on trouve un
-  $i \in I$ tel que $\beta < \kappa_i$, donc il n'existe pas d'injection
-  $\kappa_i \to \beta$, et en particulier pas d'injection
-  $\bigcup_{i\in I}\kappa_i\to\beta$.
+  Soit $\varOb < \bigcup_{i\in I}\varCk_i$, par définition on trouve un
+  $i \in I$ tel que $\varOb < \varCk_i$, donc il n'existe pas d'injection
+  $\varCk_i \to \varOb$, et en particulier pas d'injection
+  $\bigcup_{i\in I}\varCk_i\to\varOb$.
 \end{proof}
 
 \begin{definition}[Fonction aleph]
   On définit par induction transfinie la fonction entre classes
-  $\aleph : \Ord \to \Card$~:
+  $\Cal : \Ord \to \Card$~:
   \begin{itemize}
-  \item $\aleph_0 = \omega$
-  \item $\aleph_{\alpha + 1} = \aleph_\alpha^+$
-  \item pour $\lambda$ limite,
-    $\displaystyle\aleph_\lambda = \bigcup_{\beta < \lambda}\aleph_\beta$
+  \item $\Cal_0 = \Ow$
+  \item $\Cal_{\varOa + 1} = \SsC{\Cal_\varOa}$
+  \item pour $\varOl$ limite,
+    $\displaystyle\Cal_\varOl = \bigcup_{\varOb < \varOl}\Cal_\varOb$
   \end{itemize}
 \end{definition}
 
-Montrons plusieurs propriétés de la fonction $\aleph$~: elle est strictement
+Montrons plusieurs propriétés de la fonction $\Cal$~: elle est strictement
 croissante, supérieure à l'identité et bijective entre $\Ord$ et la classe des
 cardinaux infinis.
 
 \begin{property}
   Les propositions suivantes sont vérifiées~:
   \begin{enumerate}[label=(\roman*)]
-  \item pour tous $\alpha < \beta$, $\aleph_\alpha < \aleph_\beta$.
-  \item pour tout $\alpha \in \Ord$, $\alpha \leq \aleph_\alpha$.
-  \item pour tout $\kappa \in \Card$ infini, il existe $\alpha \in \Ord$ tel
-    que $\kappa = \aleph_\alpha$.
+  \item pour tous $\varOa < \varOb$, $\Cal_\varOa < \Cal_\varOb$.
+  \item pour tout $\varOa \in \Ord$, $\varOa \leq \Cal_\varOa$.
+  \item pour tout $\varCk \in \Card$ infini, il existe $\varOa \in \Ord$ tel
+    que $\varCk = \Cal_\varOa$.
   \end{enumerate}
 \end{property}
 
 \begin{proof}
   On prouve chaque assertion.
   \begin{enumerate}[label=(\roman*)]
-  \item On montre par induction transfinie sur $\gamma$ que pour tous
-    $\alpha,\gamma \in \Ord$, $\gamma\neq 0$, on a
-    $\aleph_{\alpha} < \aleph_{\alpha + \gamma}$, puisque tout $\beta > \alpha$ peut
+  \item On montre par induction transfinie sur $\varOc$ que pour tous
+    $\varOa,\varOc \in \Ord$, $\varOc\neq 0$, on a
+    $\Cal_{\varOa} < \Cal_{\varOa + \varOc}$, puisque tout $\varOb > \varOa$ peut
     s'écrire sous cette forme~:
     \begin{itemize}
-    \item on sait que pour tout cardinal $\kappa, \kappa^+ > \kappa$, donc si
-      $\gamma = S\;\gamma'$, on a
-      \[\aleph_{\alpha} < \aleph_{\alpha + \gamma'}
-      < \aleph_{\alpha + \gamma}\]
+    \item on sait que pour tout cardinal $\varCk, \SsC{\varCk}>\varCk$, donc si
+      $\varOc = \Ss\varOc'$, on a
+      \[\Cal_{\varOa} < \Cal_{\varOa + \varOc'} < \Cal_{\varOa + \varOc}\]
       d'où le résultat par transitivité de $<$.
-    \item si $\gamma$ est limite et que pour tout $\delta < \gamma$,
-      $\aleph_{\alpha} < \aleph_{\alpha + \delta}$, alors
-      $\aleph_{\alpha + \gamma} = \bigcup_{\delta < \gamma} \aleph_{\alpha + \delta}$
+    \item si $\varOc$ est limite et que pour tout $\varOd < \varOc$,
+      $\Cal_{\varOa} < \Cal_{\varOa + \varOd}$, alors
+      $\Cal_{\varOa + \varOc} = \bigcup_{\varOd < \varOc} \Cal_{\varOa + \varOd}$
       donc, par hypothèse d'induction,
-      $\aleph_{\alpha} < \aleph_{\alpha + \delta} \leq \aleph_{\alpha + \gamma}$
+      $\Cal_{\varOa} < \Cal_{\varOa + \varOd} \leq \Cal_{\varOa + \varOc}$
       d'où le résultat.
     \end{itemize}
-    Ainsi par induction transfinie, on en déduit que $\aleph$ est strictement
+    Ainsi par induction transfinie, on en déduit que $\Cal$ est strictement
     croissante.
-  \item Par induction transfinie sur $\alpha$~:
+  \item Par induction transfinie sur $\varOa$~:
     \begin{itemize}
-    \item si $\alpha = 0$, l'inégalité est $0\leq \omega$, ce qui est vrai.
-    \item si $\alpha \leq \aleph_\alpha$, alors par croissance de
-      $x\mapsto x + 1$, on sait que $S\;\alpha \leq S\;\aleph_\alpha$, mais
-      comme $\aleph_\alpha$ est un cardinal infini, on sait que
-      $S\;\aleph_\alpha \cong \aleph_\alpha$, donc
-      $S\;\aleph_\alpha < \aleph_\alpha^+ = \aleph_{S\;\alpha}$, donc
-      $S\;\alpha < \aleph_{S\;\alpha}$.
-    \item si $\alpha$ est limite et que pour tout $\beta < \alpha$,
-      $\beta \leq \aleph_\beta$, alors
+    \item si $\varOa = 0$, l'inégalité est $0\leq \Ow$, ce qui est vrai.
+    \item si $\varOa \leq \Cal_\varOa$, alors par croissance de
+      $x\mapsto x + 1$, on sait que $\Ss\varOa \leq \Ss\Cal_\varOa$, mais
+      comme $\Cal_\varOa$ est un cardinal infini, on sait que
+      $\Ss\Cal_\varOa \cong \Cal_\varOa$, donc
+      $\Ss\Cal_\varOa < \SsC{\Cal_\varOa} = \Cal_{\Ss\varOa}$, donc
+      $\Ss\varOa < \Cal_{\Ss\varOa}$.
+    \item si $\varOa$ est limite et que pour tout $\varOb < \varOa$,
+      $\varOb \leq \Cal_\varOb$, alors
       \begin{align*}
-        \alpha &= \bigcup_{\beta < \alpha} \beta\\
-        &\leq \bigcup_{\beta < \alpha} \aleph_\beta\\
-        &\leq \aleph_\alpha
+        \varOa &= \bigcup_{\varOb < \varOa} \varOb\\
+        &\leq \bigcup_{\varOb < \varOa} \Cal_\varOb\\
+        &\leq \Cal_\varOa
       \end{align*}
       d'où le résultat.
     \end{itemize}
     Le résultat est donc vérifié par induction transfinie.
-  \item Par l'absurde, supposons qu'il existe des valeurs non atteintes. Soit la
-    plus petite valeur non atteinte, $\kappa$. On pose alors
-    \[\alpha = \{\gamma \in \Ord \mid \aleph_\gamma < \kappa\}\]
+  \item Par l'absurde, supposons qu'il existe des valeurs non atteintes. Soit
+    $\varCk$ la plus petite valeur non atteinte. On pose alors
+    \[\varOa = \compr{\varOc \in \Ord}{\Cal_\varOc < \varCk}\]
     qui est un ordinal.
     
-    Si $\alpha = \beta + 1$ pour un certain $\beta$, alors on sait que
-    $\aleph_{\alpha}$ est le plus petit cardinal strictement supérieur à
-    $\aleph_\beta$, c'est-à-dire $\kappa$.
+    Si $\varOa = \varOb + 1$ pour un certain $\varOb$, alors on sait que
+    $\Cal_{\varOa}$ est le plus petit cardinal strictement supérieur à
+    $\Cal_\varOb$, c'est-à-dire $\varCk$.
     
-    Si $\alpha$ est limite, alors
-    $\displaystyle\kappa = \bigcup_{\beta \in \alpha} \aleph_\alpha$
-    donc $\kappa = \aleph_\alpha$.
+    Si $\varOa$ est limite, alors
+    $\displaystyle\varCk = \bigcup_{\varOb \in \varOa} \Cal_\varOa$
+    donc $\varCk = \Cal_\varOa$.
 
-    Par l'absurde, $\aleph$ est surjective.
+    Par l'absurde, $\Cal$ est surjective.\qedhere
   \end{enumerate}
 \end{proof}
 
 \begin{remark}
-  Dans la preuve que $\alpha \leq \aleph_\alpha$, on voit que le cas successeur
+  Dans la preuve que $\varOa \leq \Cal_\varOa$, on voit que le cas successeur
   et le cas nul donnent une inégalité stricte. On pourrait s'attendre à ce que
-  $\alpha < \aleph_\alpha$, mais on peut en réalité construire une infinité de
-  points fixes de $\alpha$, en considérant pour chaque ordinal $\alpha$ la suite
-  \[\alpha_n \defeq \left\{\begin{array}{l}
-  \alpha \text{ si } n = 0\\
-  \aleph_{\alpha_n} \text{ sinon}
-  \end{array}\right.\]
-  l'ordinal $\displaystyle\bigcup_{n \in \mathbb N} \alpha_n$ est alors un
-  point fixe de $\aleph$ au-dessus de $\alpha$.
+  $\varOa < \Cal_\varOa$, mais on peut en réalité construire une infinité de
+  points fixes de $\varOa$, en considérant pour chaque ordinal $\varOa$ la suite
+  \[\begin{cases}
+  \varOa_0 \defeq \varOa \\
+  \varOa_{n+1} \defeq \Cal_{\varOa_n}
+  \end{cases}\]
+  l'ordinal $\displaystyle\bigcup_{n \in \bN} \varOa_n$ est alors un point fixe de
+  $\Cal$ au-dessus de $\varOa$.
 \end{remark}
 
 \begin{definition}[Cardinal limite]
-  On dit qu'un cardinal $\kappa$ est limite s'il est un cardinal de la forme
-  $\aleph_{\lambda}$ pour $\lambda$ limite. De façon équivalente, cela signifie
+  On dit qu'un cardinal $\varCk$ est limite s'il est un cardinal de la forme
+  $\Cal_{\varOl}$ pour $\varOl$ limite. De façon équivalente, cela signifie
   qu'il n'est pas un cardinal successeur.
 \end{definition}
 
 \begin{remark}
-  Le fait de considérer que $\omega$ est ou non un cardinal limite dépend des
+  Le fait de considérer que $\Ow$ est ou non un cardinal limite dépend des
   conventions, mais les cardinaux limite d'intérêt sont surtout les cardinaux
   non dénombrables.
 \end{remark}
+
+\begin{exercise}
+  En reprenant les arguments précédents, montrer que si une sous-classe des
+  ordinaux $\varCC\subseteq\Ord$ est non bornée (c'est-à-dire que pour tout
+  $\varOa \in \Ord$, il existe $\varOb \in \varCC$ tel que $\varOa < \varOb$)
+  alors il existe une bijection croissante $f : \Ord \to \varCC$. Montrer de
+  plus que si $f : \Ord \to \Ord$ est une fonction vérifiant pour tout
+  ensemble $X\subseteq \Ord$ l'égalité
+  \[\bigcup_{\varOa \in X} f(\varOa) = f\left(\bigcup X\right)\]
+  alors l'ensemble des points fixes de $f$ est une sous-classe non bornée de
+  $\Ord$.
+\end{exercise}
 
 \subsection{Arithmétique cardinale}
 
@@ -1564,18 +1567,18 @@ qui rend l'arithmétique cardinale si simple.
 \end{theorem}
 
 \begin{proof}
-  On prouve ce résultat pour un cardinal $\kappa$ (supposé infini), et on peut
+  On prouve ce résultat pour un cardinal $\varCk$ (supposé infini), et on peut
   étendre ce résultat par bijection entre un ensemble $X$ et son cardinal.
 
-  On veut d'abord définir un bon ordre sur tout ordinal $\alpha \times \alpha$.
+  On veut d'abord définir un bon ordre sur tout ordinal $\varOa \times \varOa$.
   Pour cela, on définit plus généralement un bon ordre sur $\Ord\times\Ord$,
   qu'on note $\ordbis$, par~:
-  \[(\alpha,\alpha')\ordbis(\beta,\beta') \defeq
+  \[(\varOa,\varOa')\ordbis(\varOb,\varOb') \defeq
   \left\{\begin{array}{ccc}
-  \max(\alpha,\alpha') < \max(\beta,\beta') & &\\
+  \max(\varOa,\varOa') < \max(\varOb,\varOb') & &\\
   \text{ou} & &\\
-  \max(\alpha,\alpha') = \max(\beta,\beta')&\text{et}&
-  (\alpha,\alpha')\lexl (\beta,\beta')
+  \max(\varOa,\varOa') = \max(\varOb,\varOb')&\text{et}&
+  (\varOa,\varOa')\lexl (\varOb,\varOb')
   \end{array}\right.\]
   (où $\lexl$ est l'ordre lexicographique sur les paires).
 
@@ -1583,47 +1586,50 @@ qui rend l'arithmétique cardinale si simple.
   c'est un ordre total découle directement du fait que $<$ et $\lexl$ le sont.
   On considère donc un ensemble $S\subseteq \Ord\times \Ord$, et on veut montrer
   qu'il existe un minimum à $S$ pour $\ordbis$. Soit
-  \[S'\defeq \{\max(a\alpha,\beta)\mid (\alpha,\beta) \in S\}\]
+  \[S'\defeq \compr{\max(\varOa,\varOb)}{(\varOa,\varOb) \in S}\]
   Par l'axiome de remplacement, $S'$ est un ensemble, et ses éléments sont des
-  ordinaux~: on peut donc lui trouver un minimum $\gamma$. Soit alors
-  \[S'' \defeq \{(\alpha,\beta) \in S\mid \max(\alpha,\beta) = \gamma\}\]
+  ordinaux~: on peut donc lui trouver un minimum $\varOc$. Soit alors
+  \[S'' \defeq \compr{(\varOa,\varOb) \in S}{\max(\varOa,\varOb) = \varOc}\]
   Cet ensemble est une partie non vide de $S$. De plus, on voit que puisque
-  $\max(\alpha,\beta)$ est constant sur $S''$, $\lexl$ et $\ordbis$ coïncident
-  sur $S''$. Puisque $\gamma$ est choisi minimal, cela signifie que le minimum
+  $\max(\varOa,\varOb)$ est constant sur $S''$, $\lexl$ et $\ordbis$ coïncident
+  sur $S''$. Puisque $\varOc$ est choisi minimal, cela signifie que le minimum
   de $S''$ pour $\lexl$ est le minimum de $S$ pour $\ordbis$. Ainsi, $\ordbis$
   est un bon ordre sur $\Ord\times \Ord$.
 
-  On veut maintenant prouver que $\type(\kappa\times\kappa,\ordbis) = \kappa$
-  pour tout cardinal infini $\kappa$. Par l'absurde, supposons que cela n'est
-  pas le cas, et que $\kappa$ est le tel cardinal minimum. On peut remarquer que
-  $\kappa > \omega$.
+  On veut maintenant prouver que
+  $\type(\varCk\times\varCk,\mathord{\ordbis}) = \varCk$
+  pour tout cardinal infini $\varCk$. Par l'absurde, supposons que cela n'est
+  pas le cas, et que $\varCk$ est le tel cardinal minimum. On peut remarquer que
+  $\varCk > \Ow$.
 
-  Soit $\alpha < \kappa$ un ordinal. On sait que
-  $|\alpha \times \alpha| < \kappa$ puisque $\kappa$ est choisi minimal, donc
-  pour tout $\alpha < \kappa$ on sait que
-  $\type(|\alpha| \times |\alpha|,\ordbis) = |\alpha|$. Soit
-  $\delta = \type(\kappa\times\kappa,\ordbis)$. Par hypothèse,
-  $\delta \neq \kappa$. Soit $f : \delta \to \kappa \times \kappa$
-  l'isomorphisme entre $(\delta,\in)$ et $(\kappa\times\kappa,\ordbis)$.
+  Soit $\varOa < \varCk$ un ordinal. On sait que
+  $|\varOa \times \varOa| < \varCk$ puisque $\varCk$ est choisi minimal, donc
+  pour tout $\varOa < \varCk$ on sait que
+  $\type(|\varOa| \times |\varOa|,\mathord{\ordbis}) = |\varOa|$. Soit
+  $\varOd = \type(\varCk\times\varCk,\mathord{\ordbis})$. Par hypothèse,
+  $\varOd \neq \varCk$. Soit $f : \varOd \to \varCk \times \varCk$
+  l'isomorphisme entre $(\varOd,\in)$ et
+  $(\varCk\times\varCk,\mathord{\ordbis})$.
 
-  Si $\delta > \kappa$, alors soient $(\eta,\xi) = f(\kappa)$ et
-  $\alpha = \max(\eta,\xi) + 1$. $\kappa$ est un cardinal infini, donc un
-  ordinal limite~: on en déduit que $\alpha < \kappa$, donc on peut majorer pour
-  tout $\beta < \kappa$, $f(\beta) \leq \alpha \times \alpha$ (puisqu'on sait
-  que $f$ est un isomorphisme et que $f(\kappa) < (\alpha,\alpha)$). On a donc
-  trouvé une injection de $\kappa$ vers $\alpha \times \alpha$, donc
-  $\kappa \preceq \alpha\times \alpha < \kappa$, qui est une contradiction.
+  Si $\varOd > \varCk$, alors soient $(\varOn,\varOx) = f(\varCk)$ et
+  $\varOa = \max(\varOn,\varOx) + 1$. $\varCk$ est un cardinal infini, donc un
+  ordinal limite~: on en déduit que $\varOa < \varCk$, donc on peut majorer pour
+  tout $\varOb < \varCk$, $f(\varOb) \leq \varOa \times \varOa$ (puisqu'on sait
+  que $f$ est un isomorphisme et que $f(\varCk) < (\varOa,\varOa)$). On a donc
+  trouvé une injection de $\varCk$ vers $\varOa \times \varOa$, donc
+  $\varCk \subpo \varOa\times \varOa < \varCk$, qui est une contradiction.
 
-  Si $\delta < \kappa$, alors $\kappa \preceq \kappa \times \kappa$ par
-  l'injection $\alpha \mapsto (\alpha, 0)$, et $\kappa\times\kappa \cong \delta$
-  par définition, donc par transitivité $\kappa \prec \delta < \kappa$, ce
+  Si $\varOd < \varCk$, alors $\varCk \subpo \varCk \times \varCk$ par
+  l'injection $\varOa \mapsto (\varOa, 0)$, et $\varCk\times\varCk \cong \varOd$
+  par définition, donc par transitivité $\varCk \subpoS \varOd < \varCk$, ce
   qui est encore une contradiction.
 
-  Ainsi, le seul cas possible est $\delta = \kappa$, donc on peut trouver un
-  bon ordre de type $\kappa$ sur $\kappa\times\kappa$, ce qui revient à dire que
-  $\kappa \cong \kappa\times\kappa$.
+  Ainsi, le seul cas possible est $\varOd = \varCk$, donc on peut trouver un
+  bon ordre de type $\varCk$ sur $\varCk\times\varCk$, ce qui revient à dire que
+  $\varCk \cong \varCk\times\varCk$.
 \end{proof}
 
+\noindent
 A partir de ce théorème, on peut montrer ce que l'on souhaite sur l'addition
 et le produit.
 
@@ -1643,37 +1649,37 @@ et le produit.
   les deux égalités.
 \end{proof}
 
+\noindent
 On peut montrer qu'en fait ce résultat se généralise pour des unions bien plus
 grandes.
 
 \begin{proposition}\label{prop.card.union}
   Soit $(X_i)_{i\in I}$ une famille d'ensembles de cardinaux inférieurs à
-  $\kappa$ indicée par un ensemble $I$ de cardinal inférieur à $\kappa$, où
-  $\kappa$ est un certain cardinal. Alors
-  \[\Card\Big(\bigcup_{i\in I} X_i\Big)\leq \kappa\]
+  $\varCk$ indicée par un ensemble $I$ de cardinal inférieur à $\varCk$, où
+  $\varCk$ est un certain cardinal. Alors
+  \[\Card\left(\bigcup_{i\in I} X_i\right)\leq \varCk\]
 \end{proposition}
 
 \begin{proof}
   On considère que $I$ est non vide et que chaque $X_i$ est aussi non vide
   (les cas d'ensembles vides sont strictement plus simples à traiter). Comme
-  $\Card(I) \leq \kappa$, on peut trouver une injection $\Card(I) \to \kappa$
-  et donc une surjection $g : \kappa \to \Card(I)$. Il y a aussi, pour chaque
-  $i \in I$, une surjection $\kappa \to X_i$ par le même argument. On peut
-  réécrire cela en disant que pour tout $\alpha < \kappa$, il existe une
-  surjection $\kappa \to X_{g(\alpha)}$.
+  $\Card(I) \leq \varCk$, on peut trouver une injection $\Card(I) \to \varCk$
+  et donc une surjection $g : \varCk \to \Card(I)$. Il y a aussi, pour chaque
+  $i \in I$, une surjection $\varCk \to X_i$ par le même argument. On peut
+  réécrire cela en disant que pour tout $\varOa < \varCk$, il existe une
+  surjection $\varCk \to X_{g(\varOa)}$.
 
   On utilise alors le \cref{thm.Zermelo} pour fixer un bon ordre $<_1$ sur
-  $\displaystyle\Funct(\kappa,\bigcup_{i \in I} X_i)$. Pour $\alpha < \kappa$,
-  on définit $g_\alpha$ l'élément minimal pour $<_1$ tel que
-  $\im(g_\alpha) = X_{g(\alpha)}$~: c'est donc une surjection
-  $\kappa\to X_{g(\alpha)}$. On définit maintenant
-  \[\begin{array}{ccccc}
-  h & : & \kappa \times \kappa & \longrightarrow & \bigcup_{i \in I} X_i\\
-  & & (\alpha, \beta) &\longmapsto & g_\alpha(b)
-  \end{array}\]
-  $h$ est surjective, donc comme $|\kappa \times \kappa| = \kappa$, on en
+  $\displaystyle\Funct(\varCk,\bigcup_{i \in I} X_i)$. Pour $\varOa < \varCk$,
+  on définit $g_\varOa$ l'élément minimal pour $<_1$ tel que
+  $\im(g_\varOa) = X_{g(\varOa)}$~: c'est donc une surjection
+  $\varCk\to X_{g(\varOa)}$. On définit maintenant
+  \[
+  \makeFun{h}{\varCk}{\bigcup_{i \in I} X_i}{(\varOa,\varOb)}{g_{\varOa}(\varOb)}
+  \]
+  $h$ est surjective, donc comme $|\varCk \times \varCk| = \varCk$, on en
   déduit qu'il existe une surjection
-  $\displaystyle\kappa \to \bigcup_{i \in I} X_i$, donc une injection dans l'autre
+  $\displaystyle\varCk \to \bigcup_{i \in I} X_i$, donc une injection dans l'autre
   sens (par un corollaire de l'axiome du choix).
 \end{proof}
 
@@ -1685,9 +1691,9 @@ un bon ordre grâce au théorème de Zermelo, mais on verra que celui-ci ne se
 comporte pas aussi bien qu'on le voudrait.
 
 \begin{definition}[Exponentiation cardinale]
-  Soient $\kappa$ et $\kappa'$ deux ordinaux. On définit l'exponentiation
+  Soient $\varCk$ et $\varCk'$ deux ordinaux. On définit l'exponentiation
   par
-  \[\kappa^{\kappa'} \defeq \Card(\Funct(\kappa,\kappa'))\]
+  \[\varCk^{\varCk'} \defeq \Card(\Funct(\varCk,\varCk'))\]
 \end{definition}
 
 \begin{exercise}
@@ -1696,16 +1702,15 @@ comporte pas aussi bien qu'on le voudrait.
 \end{exercise}
 
 \begin{notation}
-  On a ici une ambigüité~: $\omega^\omega$ peut vouloir dire deux choses
+  On a ici une ambigüité~: $\Ow^\Ow$ peut vouloir dire deux choses
   suivants si on considère l'exponentiation ordinale ou cardinale. Pour lever
-  cette ambigüité, on notera chaque fois $\aleph_0$ (respectivement
-  $\aleph_\alpha$) pour montrer qu'on utilise les opérations ordinales, ou on
-  utilisera les lettres $\kappa$ et $\lambda$ réservées implicitement aux
-  cardinaux.
+  cette ambigüité, on notera chaque fois $\Cal_0$ (respectivement
+  $\Cal_\varOa$) pour montrer qu'on utilise les opérations ordinales, ou on
+  utilisera la lettres $\varCk$ réservée implicitement aux cardinaux.
 \end{notation}
 
 \begin{remark}
-  Le cardinal $2^\kappa$ est exactement le cardinal de $\powerset(\kappa)$.
+  Le cardinal $2^\varCk$ est exactement le cardinal de $\powerset(\varCk)$.
 \end{remark}
 
 \begin{proposition}
@@ -1726,24 +1731,25 @@ comporte pas aussi bien qu'on le voudrait.
 \end{proof}
 
 On voit donc que l'exponentiation est surtout utile pour considérer le cardinal
-de l'ensemble des parties. On va donc définir la hiérarchie $\beth$ de façon
-analogue à $\aleph$, mais en itérant l'exponentiation.
+de l'ensemble des parties. On va donc définir la hiérarchie $\Cbe$ de façon
+analogue à $\Cal$, mais en itérant l'exponentiation.
 
 \begin{definition}[Fonction beth]
-  On définit la fonction $\beth : \Ord \to \Card$ par récursion transfinie~:
+  On définit la fonction $\Cbe : \Ord \to \Card$ par récursion transfinie~:
   \begin{itemize}
-  \item $\beth_0 = \aleph_0$
-  \item $\beth_{\alpha + 1} = 2^{\beth_\alpha}$
-  \item pour tout ordinal $\lambda$ limite,
-    $\displaystyle\beth_\lambda = \bigcup_{\beta < \lambda} \beth_\beta$
+  \item $\Cbe_0 = \Cal_0$
+  \item $\Cbe_{\varOa + 1} = 2^{\Cbe_\varOa}$
+  \item pour tout ordinal $\varOl$ limite,
+    $\displaystyle\Cbe_\varOl = \bigcup_{\varOb < \varOl} \Cbe_\varOb$
   \end{itemize}
 \end{definition}
 
+\noindent
 La fonction $\beth$ est strictement croissante grâce au théorème de Cantor.
 
 \begin{theorem}[Cantor \cite{Cantor1891}]\label{thm.Cantor}
-  Soit $X$ un ensemble, alors $X \prec \powerset(X)$ (il y a une injection mais
-  pas de surjection de $X$ dans $\powerset(X)$).
+  Soit $X$ un ensemble, alors $X \subpoS \powerset(X)$ (il y a une injection
+  mais pas de surjection de $X$ dans $\powerset(X)$).
 \end{theorem}
 
 \begin{proof}
@@ -1751,46 +1757,53 @@ La fonction $\beth$ est strictement croissante grâce au théorème de Cantor.
 
   Supposons qu'il existe une surjection $f : X \to \powerset(X)$. Soit alors
   l'ensemble
-  \[Y\defeq \{x\in X\mid x\notin f(x)\}\]
-  Comme $f$ est surjective, on trouve $y$ tel que $f(y) = Y$. Alors si
-  $y\in Y$, on en déduit que $y\in f(y)$ et donc que $y\notin Y$. Si
-  $y\notin Y$ alors $y\notin f(y)$ donc $y\in Y$. La situation est donc absurde,
+  \[D\defeq \compr{x\in X}{x\notin f(x)}\]
+  Comme $f$ est surjective, on trouve $d$ tel que $f(d) = D$. Alors si
+  $d\in D$, on en déduit que $d\in f(d)$ et donc que $d\notin D$. Si
+  $d\notin D$ alors $d\notin f(d)$ donc $d\in D$. La situation est donc absurde,
   donc il n'existe pas de telle surjection.
 \end{proof}
 
 La question vient donc naturellement~: à quel point les deux hiérarchies
-coïncident-elles ? Cette question mène à deux énoncés.
+coïncident-elles~? \'A $0$, les deux hiérarchies coïncident par définition.
+Pour le cas de $\Cal_1$ et $\Cbe_1$ (qu'on note aussi $\Ccont$), l'égalité des
+deux cardinaux correspond à l'hypothèse du continue. Le cas général, lui,
+est désigné sous le nom d'hypothèse du continu généralisée
 
 \begin{definition}[Hypothèse du continu]
   On appelle hypothèse du continu l'assertion
-  \[\HC \defeq \aleph_1 = \beth_1\]
+  \[\HC \defeq \Cal_1 = \Cbe_1\]
   et l'hypothèse du continu généralisée l'assertion
-  \[\HCG \defeq \forall \alpha \in \Ord, \aleph_\alpha = \beth_\alpha\]
+  \[\HCG \defeq \forall \varOa \in \Ord, \Cal_\varOa = \Cbe_\varOa\]
+  Pour un ordinal $\varOa$, on appelle hypothèse du continu relativisée à
+  $\varOa$ l'assertion
+  \[\HCG_\varOa \defeq \forall \varOb < \varOa, \Cal_{\varOb} = \Cbe_{\varOb}\]
 \end{definition}
 
-Le fait est assez connu que $\HC$ et $\HCG$ sont en fait des énoncés
+Tous ces énoncés, $\HC$ comme $\HCG$, sont en fait des énoncés
 indépendants de $\ZFC$, c'est-à-dire que si $\ZFC$ est cohérent, alors
-$\ZFC + \HC$ comme $\ZFC + \lnot\HC$ sont cohérents (et de même pour $\HCG$).
+$\ZFC + \HC$ comme $\ZFC + \lnot\HC$ sont cohérents (et de même pour $\HCG$ ou
+$\HCG_\varOa$).
 
 \section{Cofinalité}\label{sct.cof}
 
 Pour introduire la notion de cofinalité, commençons par observer deux exemples.
 Tout d'abord, étant donnée une famille finie $(n_i)_{i\in F}$ d'entiers, la borne
-supérieure de cette famille est un entier. Ainsi si $(\alpha_i)_{i\in \beta}$ est
-une famille d'ordinaux tous inférieurs strictement à $\omega$, et où
-$\beta < \omega$, alors $\sup \alpha_i < \omega$.
+supérieure de cette famille est un entier. Ainsi si $(\varOa_i)_{i\in \varOb}$ est
+une famille d'ordinaux tous inférieurs strictement à $\Ow$, et où
+$\varOb < \Ow$, alors $\sup \varOa_i < \Ow$.
 
 Ce phénomène n'a rien de surprenant et, écrit comme ça, ne nous apporte pas
-vraiment d'informations. Cependant, en le généralisant à $\omega_1$, la chose
-devient alors moins intuitive. En effet, si $(\alpha_i)_{i\in \beta}$ est une
-famille d'ordinaux dénombrables, et $\beta$ est dénombrable, alors
-$\sup \alpha_i$ est dénombrable, donc pour une famille
-$(\alpha_i)_{i\in \beta}$ où $\alpha_i < \omega_1$ pour tout $i$ et
-$\beta < \omega_1$, $\sup \alpha_i < \omega_1$. Le cardinal $\omega_1$ ne peut
-donc pas être atteint par une suite.
+vraiment d'informations. Cependant, en le généralisant à $\Ow_1$, la chose
+devient alors moins intuitive. En effet, si $(\varOa_i)_{i\in \varOb}$ est une
+famille d'ordinaux dénombrables, et $\varOb$ est dénombrable, alors
+$\sup \varOa_i$ est dénombrable, donc pour une famille
+$(\varOa_i)_{i\in \varOb}$ où $\varOa_i < \Ow_1$ pour tout $i$ et
+$\varOb < \Ow_1$, $\sup \varOa_i < \Ow_1$. Le cardinal $\Ow_1$ ne peut donc pas
+être atteint par une suite.
 
-Au contraire, le cardinal $\aleph_\omega$ peut parfaitement être atteint par
-une suite, dénombrable~: $n \mapsto \aleph_n$ est une telle suite. On voit donc
+Au contraire, le cardinal $\Cal_\Ow$ peut parfaitement être atteint par
+une suite, dénombrable~: $n \mapsto \Cal_n$ est une telle suite. On voit donc
 apparaître une nouvelle propriété sur les ordinaux, qui n'est pas simplement
 liée à la taille.
 
@@ -1803,284 +1816,282 @@ d'un ensemble de parties.
 
 Nous avons parlé ci-dessus d'atteindre un ordinal. Une façon plus formelle de
 définir cette idée est d'avoir une partie non strictement majorée, c'est-à-dire
-une partie $X\subseteq \alpha$ telle que pour tout $\beta \in \alpha$ il existe
-$\gamma \in X$ tel que $\beta \leq \gamma$.
+une partie $X\subseteq \varOa$ telle que pour tout $\varOb \in \varOa$ il existe
+$\varOc \in X$ tel que $\varOb \leq \varOc$.
 
 \begin{definition}[Cofinalité]
-  Soit $\alpha\in\Ord$, on dit qu'une partie $X\subseteq \alpha$ est cofinale si
-  \[\forall \beta \in \alpha, \exists \gamma \in X, \beta \leq \gamma\]
+  Soit $\varOa\in\Ord$, on dit qu'une partie $X\subseteq \varOa$ est cofinale si
+  \[\forall \varOb \in \varOa, \exists \varOc \in X, \varOb \leq \varOc\]
 
-  On définit la cofinalité d'un ordinal $\alpha$ par~:
-  \[\cof(\alpha) \defeq \min \{\type(X)
-  \mid X\subseteq\alpha, X\text{ est cofinale}\}\]
+  On définit la cofinalité d'un ordinal $\varOa$ par~:
+  \[\cof(\varOa) \defeq
+  \min \compr{\type(X)}{X\subseteq\varOa, X\text{ est cofinale}}\]
 \end{definition}
 
-Remarquons que, par définition, $\alpha$ est une partie cofinale dans lui-même,
-on a donc l'inégalité $\cof(\alpha) \leq \alpha$.
+Remarquons que, par définition, $\varOa$ est une partie cofinale dans lui-même,
+on a donc l'inégalité $\cof(\varOa) \leq \varOa$.
 
 \begin{definition}[Ordinal régulier, cardinal singulier]
-  Un ordinal $\alpha$ tel que $\cof(\alpha) = \alpha$ est un ordinal régulier.
+  Un ordinal $\varOa$ tel que $\cof(\varOa) = \varOa$ est un ordinal régulier.
   Un cardinal qui n'est pas régulier est dit singulier.
 \end{definition}
 
 \begin{example}
-  $\omega$ est un ordinal régulier, et $\omega_1$ aussi, comme nous l'avons dit
-  au début. $\aleph_\omega$ est un cardinal singulier, puisqu'il a une partie
-  cofinale de type $\omega$.
+  $\Ow$ est un ordinal régulier, et $\Ow_1$ aussi, comme nous l'avons dit
+  au début. $\Cal_\Ow$ est un cardinal singulier, puisqu'il a une partie
+  cofinale de type $\Ow$.
 \end{example}
 
 \'Eliminons maintenant le cas de la cofinalité finie. Le cas de la cofinalité
-nulle n'est possible que pour l'ordinal nul, qui n'est pas très intéressant.
+nulle n'est possible que pour l'ordinal nul, qui n'est pas très intéressant non
+plus.
 
 \begin{proposition}
-  Un ordinal $\alpha$ a une cofinalité finie non nulle si et seulement si
-  $\cof(\alpha) = 1$, si et seulement si $\alpha$ est un ordinal successeur.
+  Un ordinal $\varOa$ a une cofinalité finie non nulle si et seulement si
+  $\cof(\varOa) = 1$, si et seulement si $\varOa$ est un ordinal successeur.
 \end{proposition}
 
 \begin{proof}
-  Si $\alpha$ a une cofinalité finie non nulle, alors soit $X$ une partie
+  Si $\varOa$ a une cofinalité finie non nulle, alors soit $X$ une partie
   cofinale de type $n$. On peut en prendre le maximum, qui est une partie
-  cofinale, donc $\cof(\alpha) = 1$. Si $\cof(\alpha) = 1$ alors on trouve
-  $\beta$ tel que $\forall \gamma \in \alpha, \gamma \leq \beta$, donc
-  $\alpha = \beta + 1$. Si $\alpha$ est successeur, alors en prenant $\{\beta\}$
-  tel que $\alpha = \beta + 1$ on trouve une partie cofinale finie.
+  cofinale, donc $\cof(\varOa) = 1$. Si $\cof(\varOa) = 1$ alors on trouve
+  $\varOb$ tel que $\forall \varOc \in \varOa, \varOc \leq \varOb$, donc
+  $\varOa = \varOb + 1$. Si $\varOa$ est successeur, alors en prenant
+  $\{\varOb\}$ tel que $\varOa = \varOb + 1$ on trouve une partie cofinale
+  finie.
 \end{proof}
 
 On va maintenant s'intéresser à l'effet des opérations ordinales sur la
-cofinalité, mais nous avons d'abord besoin d'un lemme assez naturel.
+cofinalité, étude pour laquelle on introduit d'abord le lemme suivant.
 
 \begin{lemma}\label{lem.cof.type}
-  Soit $\alpha$ un ordinal limite et $X$ une partie cofinale dans $\alpha$.
-  Alors on a l'égalité $\cof(\alpha) = \cof(\type(X))$.
+  Soit $\varOa$ un ordinal limite et $X$ une partie cofinale dans $\varOa$.
+  Alors on a l'égalité $\cof(\varOa) = \cof(\type(X))$.
 \end{lemma}
 
 \begin{proof}
   Soit $Y\subseteq X$ telle que $\type(Y) = \cof(\type(X))$. Comme $X$ est
-  cofinale dans $\alpha$ et $Y$ est cofinale dans $X$, $Y$ est cofinale dans
-  $\alpha$, donc $\cof(\alpha) \leq \type(Y)$, donc
-  $\cof(\alpha) \leq \cof(\type(X))$.
+  cofinale dans $\varOa$ et $Y$ est cofinale dans $X$, $Y$ est cofinale dans
+  $\varOa$, donc $\cof(\varOa) \leq \type(Y)$, donc
+  $\cof(\varOa) \leq \cof(\type(X))$.
 
-  Réciproquement, soit $Y\subseteq \alpha$ cofinale telle que
-  $\type(Y) = \cof(\alpha)$. On définit alors la fonction
-  \[\begin{array}{ccccc}
-  f & : & Y & \longmapsto & X\\
-  & & y &\longmapsto &\min (X\setminus y)
-  \end{array}\]
-  L'image de $f$ dans $X$ est cofinale. En effet, si on prend $\beta \in X$,
-  alors on peut trouver $\gamma \in \alpha$ tel que $\beta < \gamma$ (car
-  $\alpha$ est limite). Comme $Y$ est cofinale dans $\alpha$, on trouve
-  $\delta \in Y$ tel que $\beta < \delta$, mais alors $f(\delta) > \delta$
-  par définition, donc $\beta < f(\delta)$, donc on trouve un élément dans
-  $\im(f)$ qui est supérieur à $\beta$. Comme $\im(f)$ est cofinale, on en
+  Réciproquement, soit $Y\subseteq \varOa$ cofinale telle que
+  $\type(Y) = \cof(\varOa)$. On définit alors la fonction
+  \[\makeFun{f}{Y}{X}{y}{\min (X \setminus y)}\]
+  L'image de $f$ dans $X$ est cofinale. En effet, si on prend $\varOb \in X$,
+  alors on peut trouver $\varOc \in \varOa$ tel que $\varOb < \varOc$ (car
+  $\varOa$ est limite). Comme $Y$ est cofinale dans $\varOa$, on trouve
+  $\varOd \in Y$ tel que $\varOb < \varOd$, mais alors $f(\varOd) > \varOd$
+  par définition, donc $\varOb < f(\varOd)$, donc on trouve un élément dans
+  $\im(f)$ qui est supérieur à $\varOb$. Comme $\im(f)$ est cofinale, on en
   déduit que $\cof(\type(X)) \leq \type(Y)$, donc que
-  $\cof(\alpha) = \cof(\type(X))$ par double inégalité.
+  $\cof(\varOa) = \cof(\type(X))$ par double inégalité.
 \end{proof}
 
-\begin{remark}
-  Une partie $X$ cofinale à un ordinal $\alpha$ est une partie non strictement
-  bornée de $\alpha$. Dans le cas d'une fonction $f : X \to \alpha$, on dira
+\begin{notation}
+  Une partie $X$ cofinale à un ordinal $\varOa$ est une partie non strictement
+  bornée de $\varOa$. Dans le cas d'une fonction $f : X \to \varOa$, on dira
   qu'elle est cofinale lorsque son image est une partie cofinale.
-\end{remark}
+\end{notation}
 
 On peut maintenant comprendre quel effet a une somme sur la cofinalité.
-Moralement, l'ordinal $\alpha + \beta$ peut se voir comme la droite représentant
-$\alpha$ à laquelle on a accolé la droite représentant $\beta$ à sa fin. Ainsi,
-pour avoir une partie non bornée de $\alpha + \beta$, la partie en $\alpha$
-n'importe pas, puisqu'il suffit de dépasser les éléments de $\beta$. De même
-$\alpha \times \beta$ peut se voir comme $\beta$ successions de l'ordinal
-$\alpha$. Si $\beta$ est successeur, alors il suffit d'avoir une cofin à
-$\alpha$ et de l'appliquer au dernier segment de $\alpha\times\beta$. Si
-$\beta$ est limite, alors il faut au contraire avoir une cofin à $\beta$ pour
-l'appliquer à chaque copie de $\alpha$.
+Moralement, l'ordinal $\varOa+\varOb$ peut se voir comme la demi-droite
+représentant $\varOa$ à laquelle on a accolé la demi-droite représentant
+$\varOb$ à sa fin. Ainsi, pour avoir une partie non bornée de $\varOa + \varOb$,la partie en $\varOa$ n'importe pas, puisqu'il suffit de dépasser les éléments
+de $\varOb$. De même $\varOa \times \varOb$ peut se voir comme $\varOb$
+successions de l'ordinal $\varOa$. Si $\varOb$ est successeur, alors il suffit
+d'avoir une cofin à $\varOa$ et de l'appliquer au dernier segment de
+$\varOa\times\varOb$. Si $\varOb$ est limite, alors il faut au contraire avoir
+une cofin à $\varOb$ pour l'appliquer à chaque copie de $\varOa$.
 
 \begin{proposition}\label{prop.cof.oper}
-  Soit $\alpha$ un ordinal limite, et $\beta$ un ordinal. Alors
+  Soit $\varOa$ un ordinal limite, et $\varOb$ un ordinal. Alors
   \begin{itemize}
-  \item $\cof(\alpha + \beta) = \cof(\beta)$
-  \item si $\beta$ est successeur, $\cof(\alpha \times \beta) = \cof(\alpha)$
-  \item si $\beta$ est limite, $\cof(\alpha\times\beta) = \cof(\beta)$
+  \item $\cof(\varOa + \varOb) = \cof(\varOb)$
+  \item si $\varOb$ est successeur, $\cof(\varOa \times \varOb) = \cof(\varOa)$
+  \item si $\varOb$ est limite, $\cof(\varOa\times\varOb) = \cof(\varOb)$
   \end{itemize}
 \end{proposition}
 
 \begin{proof}
   On prouve chaque point.
   \begin{itemize}
-  \item On a vu qu'une autre façon d'écrire $\alpha + \beta$ était comme
-    $\type(\{0\}\times\alpha \cup \{1\}\times\beta, \lexl)$. Ainsi $\beta$ est
-    cofinal dans $\alpha + \beta$, à l'encodage près, donc
-    $\cof(\beta) = \cof(\alpha + \beta)$.
-  \item Par définition, $\alpha \times \beta = \alpha \times \gamma + \alpha$
-    où $\beta = \gamma + 1$, donc avec l'argument précédent,
-    $\cof(\alpha\times\beta) = \cof(\alpha)$.
-  \item Dans le cas où $\beta$ est limite, en utilisant la représentation de
-    $\alpha \times \beta$ comme étant égal à $\type(\alpha\times\beta,\lexl)$
+  \item On a vu qu'une autre façon d'écrire $\varOa + \varOb$ était comme
+    $\type(\{0\}\times\varOa \cup \{1\}\times\varOb, \lexl)$. Ainsi $\varOb$ est
+    cofinal dans $\varOa + \varOb$, à l'encodage près, donc
+    $\cof(\varOb) = \cof(\varOa + \varOb)$.
+  \item Par définition, $\varOa \times \varOb = \varOa \times \varOc + \varOa$
+    où $\varOb = \varOc + 1$, donc avec l'argument précédent,
+    $\cof(\varOa\times\varOc) = \cof(\varOa)$.
+  \item Dans le cas où $\varOb$ est limite, en utilisant la représentation de
+    $\varOa \times \varOc$ comme étant égal à
+    $\type(\varOa\times\varOb,\mathord{\lexl})$
     avec le produit cartésien, on remarque que
-    \[F \defeq \{(0,\gamma) \mid \gamma \in \beta\}\]
-    est cofinal dans $\alpha \times \beta$. Donc
-    $\cof(\alpha\times \beta) = \cof(\type(F))$ et $\type(F) = \beta$, d'où le
-    résultat.
+    \[F \defeq \compr{(0,\varOc)}{\varOc \in \varOb}\]
+    est cofinal dans $\varOa \times \varOb$. Donc
+    $\cof(\varOa\times \varOb) = \cof(\type(F))$ et $\type(F) = \varOb$, d'où le
+    résultat.\qedhere
   \end{itemize}
-  Chaque point est donc prouvé.
 \end{proof}
 
 Pour donner les propriétés essentielles de la cofinalité, nous allons avoir
 besoin d'un lemme technique pour comparer des cofinalités à partir de fonctions.
 
 \begin{proposition}\label{prop.cof.compar.surj}
-  Soient $\alpha,\beta$ deux ordinaux, $f : \beta \to \alpha$ une fonction telle
-  que l'image de $f$ est cofinale dans $\alpha$. Alors
-  $\cof(\alpha) \leq \beta$.
+  Soient $\varOa,\varOb$ deux ordinaux, $f :\varOb\to\varOa$ une fonction telle
+  que l'image de $f$ est cofinale dans $\varOa$. Alors
+  $\cof(\varOa) \leq \varOb$.
 \end{proposition}
 
 \begin{proof}
   On pose
-  \[C \defeq \{\gamma \in \beta \mid
-  \forall \delta < \gamma, f(\delta) < f(\gamma)\}\]
+  \[C \defeq
+  \compr{\varOc \in \varOb}{\forall \varOd < \varOc, f(\varOd) < f(\varOc)}
+    \]
   et
   \[B \defeq f(C)\]
-  Comme $C\subseteq \beta$, on sait que $\type(B)\leq \type(C) \leq \beta$.
-  On veut maintenant prouver que $B$ est cofinal dans $\alpha$, ce qui nous
-  permettra alors d'en déduire que $\cof(\alpha) \leq \beta$.
+  Comme $C\subseteq \varOb$, on sait que $\type(B)\leq \type(C) \leq \varOb$.
+  On veut maintenant prouver que $B$ est cofinal dans $\varOa$, ce qui nous
+  permettra alors d'en déduire que $\cof(\varOa) \leq \varOb$.
 
-  Soit $\xi \in \alpha$, comme $f$ est cofinale dans $\alpha$, on sait que
-  $\{\gamma \in \beta \mid \xi \leq f(\gamma)\}$ est non vide, donc on peut en
-  trouver un minimum $\gamma_0$. Pour $\delta < \gamma_0$, par minimalité de
-  $\gamma_0$ on sait que $f(\delta) < \xi\leq f(\gamma_0)$, donc
-  $\gamma_0 \in C$. On en déduit que $f(\gamma_0)\in B$ et que
-  $f(\gamma_0) \geq \xi$, donc $B$ est cofinal dans $\alpha$.
+  Soit $\varOx \in \varOa$, comme $f$ est cofinale dans $\varOa$, on sait que
+  $\compr{\varOc \in \beta}{\varOx \leq f(\varOc)}$ est non vide, donc on peut
+  en trouver un minimum $\varOc_0$. Pour $\varOd < \varOc_0$, par minimalité de
+  $\varOc_0$ on sait que $f(\varOd) < \varOx\leq f(\varOc_0)$, donc
+  $\varOc_0 \in C$. On en déduit que $f(\varOc_0)\in B$ et que
+  $f(\varOc_0) \geq \varOx$, donc $B$ est cofinal dans $\varOa$.
 \end{proof}
 
-On en déduit une version plus précise dans le cas d'une fonction croissante.
+\noindent
+Dans le cas où la fonction $f$ est croissante, le résultat peut être renforcé.
 
 \begin{proposition}
-  Soient $\alpha,\beta$ deux ordinaux, $f : \beta \to \alpha$ une fonction
+  Soient $\varOa,\varOb$ deux ordinaux, $f : \varOb \to \varOa$ une fonction
   croissante (au sens large) telle que l'image de $f$ est cofinale dans
-  $\alpha$. Alors $\cof(\alpha)\leq\cof(\beta)$.
+  $\varOa$. Alors $\cof(\varOa)\leq\cof(\varOb)$.
 \end{proposition}
 
 \begin{proof}
-  Soient $\gamma = \cof(\beta)$ et $g : \gamma \to \beta$ une fonction
-  strictement croissante témoignant du fait que $\gamma$ est cofinal à $\beta$.
-  On remarque alors que $f\circ g : \gamma \to \alpha$ est cofinale à $\alpha$.
-  En effet, pour tout $\xi \in \alpha$, on peut trouver $\delta \in \beta$
-  tel que $f(\delta) \geq \xi$, puis $\eta$ tel que $g(\eta) \geq \delta$, d'où
-  par croissance $f(g(\eta)) \geq \xi$.
+  Soient $\varOc = \cof(\varOb)$ et $g : \varOc \to \varOb$ une fonction
+  strictement croissante témoignant du fait que $\varOc$ est cofinal à $\varOb$.
+  On remarque alors que $f\circ g : \varOc \to \varOa$ est cofinale à $\varOa$.
+  En effet, pour tout $\varOx \in \varOa$, on peut trouver $\varOd \in \varOb$
+  tel que $f(\varOd) \geq \varOx$, puis $\varOn$ tel que $g(\varOn) \geq\varOd$,
+  d'où par croissance $f(g(\varOn)) \geq \varOx$.
   
   Ainsi, en utilisant la \cref{prop.cof.compar.surj}, on sait que
-  $\cof(\alpha)\leq \gamma$, c'est-à-dire que $\cof(\alpha)\leq\cof(\beta)$.
+  $\cof(\varOa)\leq \varOc$, c'est-à-dire que $\cof(\varOa)\leq\cof(\varOb)$.
 \end{proof}
 
 On peut maintenant prouver les propriétés essentielles sur la cofinalité, et en
 particulier qu'un ordinal régulier est en fait un cardinal.
 
 \begin{proposition}
-  Soit $\alpha$ un ordinal limite. Alors on a la suite d'inégalités~:
-  \[\omega\leq \cof(\alpha) \leq |\alpha|\leq \alpha\]
+  Soit $\varOa$ un ordinal limite. Alors on a la suite d'inégalités~:
+  \[\Ow\leq \cof(\varOa) \leq |\varOa|\leq \varOa\]
 \end{proposition}
 
 \begin{proof}
-  Le fait que $|\alpha|\leq \alpha$ est par définition, de même
-  $\omega\leq\cof(\alpha)$ se déduit du résultat sur la cofinalité finie. On
-  veut donc montrer que $\cof(\alpha) \leq|\alpha|$. On sait par définition
-  qu'on dispose d'une fonction $f : |\alpha|\to \alpha$ surjective, donc
+  Le fait que $|\varOa|\leq \varOa$ est par définition, de même
+  $\Ow\leq\cof(\varOa)$ se déduit du résultat sur la cofinalité finie. On
+  veut donc montrer que $\cof(\varOa) \leq|\varOa|$. On sait par définition
+  qu'on dispose d'une fonction $f : |\varOa|\to \varOa$ surjective, donc
   cofinale. En utilisant le \cref{prop.cof.compar.surj}, on en déduit donc que
-  $\cof(\alpha)\leq|\alpha|$.
+  $\cof(\varOa)\leq|\varOa|$.
 \end{proof}
 
 \begin{property}
-  Soit $\alpha$ un ordinal régulier, alors $\alpha$ est un cardinal.
+  Soit $\varOa$ un ordinal régulier, alors $\varOa$ est un cardinal.
 \end{property}
 
 \begin{proof}
-  On sait que $\cof(\alpha) \leq |\alpha| \leq \alpha$, donc dans le cas où
-  $\alpha = \cof(\alpha)$ on en déduit que $|\alpha| = \alpha$, donc $\alpha$
+  On sait que $\cof(\varOa) \leq |\varOa| \leq \varOa$, donc dans le cas où
+  $\varOa = \cof(\varOa)$ on en déduit que $|\varOa| = \varOa$, donc $\varOa$
   est un cardinal.
 \end{proof}
 
 \begin{property}
-  Soit $\alpha\in\Ord$, $\cof(\alpha)$ est un cardinal régulier.
+  Soit $\varOa\in\Ord$, $\cof(\varOa)$ est un cardinal régulier.
 \end{property}
 
 \begin{proof}
-  On trouve une partie $X\subseteq\alpha$ de type $\cof(\alpha)$ cofinale dans
-  $\alpha$, par définition de $\cof(\alpha)$. Alors en utilisant le
-  \cref{lem.cof.type}, on en déduit que $\cof(\alpha) = \cof(\cof(\alpha))$.
+  On trouve une partie $X\subseteq\varOa$ de type $\cof(\varOa)$ cofinale dans
+  $\varOa$, par définition de $\cof(\varOa)$. Alors en utilisant le
+  \cref{lem.cof.type}, on en déduit que $\cof(\varOa) = \cof(\cof(\varOa))$.
 \end{proof}
 
-On a vu dans le cas de $\omega$ et $\omega_1$ que des suites finies
+On a vu dans le cas de $\Ow$ et $\Ow_1$ que des suites finies
 (respectivement dénombrables) d'éléments finis (respectivement dénombrables)
 ont une limite finie (respectivement dénombrable). Cette propriété se généralise
 pour caractériser les inégalités sur les cofinalités.
 
 \begin{proposition}\label{prop.ineg.bounded}
-  Soient $\kappa$ et $\lambda$ deux cardinaux infinis. L'inégalité
-  $\kappa < \cof(\lambda)$ est vraie si et seulement si toute fonction
-  $f : \kappa \to \lambda$ est bornée.
+  Soient $\varCk$ et $\varCCl$ deux cardinaux infinis. L'inégalité
+  $\varCk < \cof(\varCCl)$ est vraie si et seulement si toute fonction
+  $f : \varCk \to \varCCl$ est bornée.
 \end{proposition}
 
 \begin{proof}
   On prouve les deux sens de l'équivalence par contraposée.
-  Si $\kappa \geq \cof(\lambda)$, alors on trouve une partie $X\subseteq\lambda$
-  telle que $\type(X)=\cof(\lambda)$, cofinale dans $\lambda$. On pose alors
-  une énumération strictement croissante $(x_\alpha)_{\alpha < \cof(\lambda)}$ de
+  Si $\varCk \geq \cof(\varCCl)$, alors on trouve une partie $X\subseteq\varCCl$
+  telle que $\type(X)=\cof(\varCCl)$, cofinale dans $\varCCl$. On pose alors
+  une énumération strictement croissante $(x_\varOa)_{\varOa < \cof(\varCCl)}$ de
   $X$~:
-  \[X = \{x_\alpha\mid \alpha < \cof(\lambda)\}\]
+  \[X = \compr{x_\varOa}{\varOa < \cof(\varCCl)}\]
   On considère alors la fonction
-  \[\begin{array}{ccccc}
-  f & : & \kappa & \longrightarrow & \lambda\\
-  & & \gamma & \longmapsto &
-  \begin{cases}
-  x_\alpha \text{ si } \alpha < \cof(\lambda)\\
-  0 \text{ sinon}
-  \end{cases}
-  \end{array}\]
-  qui est cofinale dans $\lambda$.
+  \[\makeFun{f}{\varCk}{\varCCl}{\varOc}{\begin{cases}
+      x_\varOa\text{ si } \varOa < \cof(\varCCl)\\
+      0 \text{ sinon }
+    \end{cases}}\]
+  qui est cofinale dans $\varCCl$.
 
-  Réciproquement, s'il existe $f : \kappa \to \lambda$ cofinale, alors on sait
-  que $f(\kappa)$ est de cardinal au plus $\kappa$, donc de type d'ordre
-  strictement inférieur à $\kappa^+$. Comme on sait que $f(\kappa)$ est
-  cofinale dans $\lambda$, on en déduit que
-  $\kappa^+ > \type(f(\kappa)) \geq \cof(\lambda)$, donc
-  $\kappa \geq \cof(\lambda)$ car $\cof(\lambda)$ est un cardinal.
+  Réciproquement, s'il existe $f : \varCk \to \varCCl$ cofinale, alors on sait
+  que $f(\varCk)$ est de cardinal au plus $\varCk$, donc de type d'ordre
+  strictement inférieur à $\SsC{\varCk}$. Comme on sait que $f(\varCk)$ est
+  cofinale dans $\varCCl$, on en déduit que
+  $\SsC{\varCk} > \type(f(\varCk)) \geq \cof(\varCCl)$, donc
+  $\varCk \geq \cof(\varCCl)$ car $\cof(\varCCl)$ est un cardinal.
 \end{proof}
 
 On va maintenant affiner le critère de régularité. Tout d'abord, un cardinal
 successeur est régulier.
 
 \begin{theorem}
-  Soit $\kappa$ un cardinal infini. Alors $\kappa^+$ est régulier.
+  Soit $\varCk$ un cardinal infini. Alors $\SsC{\varCk}$ est régulier.
 \end{theorem}
 
 \begin{proof}
-  Par l'absurde, supposons qu'on trouve $X$ une partie cofinale de $\kappa^+$
-  de cardinal inférieur à $\kappa$. Comme $X$ est une partie cofinale,
-  $\sup X = \kappa^+$, or on sait que chaque élément de $X$ est de cardinal
-  inférieur à $\kappa$, donc en utilisant le \cref{prop.card.union}, on sait
-  que $\Card(\sup X) \leq \kappa$, ce qui est absurde. On en déduit que
-  $\kappa^+$ est régulier.
+  Par l'absurde, supposons qu'on trouve $X$ une partie cofinale de
+  $\SsC{\varCk}$ de cardinal inférieur à $\varCk$. Comme $X$ est une partie
+  cofinale, $\sup X = \SsC{\varCk}$, or on sait que chaque élément de $X$ est de
+  cardinal inférieur à $\varCk$, donc en utilisant la \cref{prop.card.union}, on
+  sait que $\Card(\sup X) \leq \varCk$, ce qui est absurde. On en déduit que
+  $\SsC{\varCk}$ est régulier.
 \end{proof}
 
+\noindent
 Pour les cardinaux limites, on a un résultat beaucoup plus faible.
 
 \begin{proposition}
-  Soit $\kappa = \aleph_\gamma$ où $\gamma$ est un ordinal limite. Alors
-  $\cof(\kappa) = \cof(\gamma)$.
+  Soit $\varCk = \Cal_\varOc$ où $\varOc$ est un ordinal limite. Alors
+  $\cof(\varCk) = \cof(\varOc)$.
 \end{proposition}
 
 \begin{proof}
-  Soit $X = \{\aleph_\beta \mid \beta < \gamma\}$, alors $\type(X) = \gamma$,
-  donc par le \cref{lem.cof.type}, $\cof(\kappa) = \cof(\type(X))$.
+  Soit $X = \compr{\Cal_\varOb}{\varOb < \varOc}$, alors $\type(X) = \varOc$,
+  donc par le \cref{lem.cof.type}, $\cof(\varCk) = \cof(\type(X))$.
 \end{proof}
 
-On voit en particulier que dans le cas d'un point fixe de $\aleph$, cette
-propriété ne donne pas d'information. En particulier, il est possible d'imaginer
-un cardinal qui est à la fois un cardinal limite et un cardinal régulier, mais
+On voit en particulier que dans le cas d'un point fixe de $\Cal$, cette
+propriété ne donne pas d'information. Il est difficile d'imaginer
+un cardinal qui est à la fois un cardinal limite et un cardinal régulier~:
 celui-ci ne pourra donc pas s'écrire comme construction à partir de nos
-opérations cardinales et ordinales habituelles.
+opérations cardinales et ordinales habituelles. Un tel cardinal est dit
+faiblement inaccessible.
 
 \begin{definition}[Cardinal faiblement inaccessible]
-  On dit qu'un cardinal $\kappa > \aleph_0$ est faiblement inaccessible si
-  $\kappa$ est à la fois un cardinal limite et un cardinal régulier.
+  On dit qu'un cardinal $\varCk > \Cal_0$ est faiblement inaccessible si
+  $\varCk$ est à la fois un cardinal limite et un cardinal régulier.
 \end{definition}
 
 \subsection{Répartition des cofinalités}
@@ -2090,73 +2101,73 @@ inattendue avec les opérations. En particulier, celle-ci n'est pas croissante,
 et la répartition des cofinalités en-dessous d'un cardinal donné est assez
 anarchique.
 
-Nous allons voir dans cette sous-section qu'en fait, dans un cardinal $\kappa$
-fixé, toutes les cofinalités en-dessous de $\kappa$ sont représentées
+Nous allons voir dans cette sous-section qu'en fait, dans un cardinal $\varCk$
+fixé, toutes les cofinalités en-dessous de $\varCk$ sont représentées
 arbitrairement haut.
 
 \begin{proposition}
-  Soient $\kappa$ et $\mu$ deux cardinaux infinis. On peut trouver $\lambda$ tel
-  que $\mu \leq \lambda$, $\cof(\lambda) = \cof(\kappa)$, et même tel que
-  $\aleph_\lambda = \lambda$.
+  Soient $\varCk$ et $\varCm$ deux cardinaux infinis. On peut trouver
+  $\varCCl$ tel que $\varCm \leq \varCCl$, $\cof(\varCCl) = \cof(\varCk)$, et
+  même tel que $\Cal_\varCCl = \varCCl$.
 \end{proposition}
 
 \begin{proof}
   Pour commencer, on définit la classe $C$ suivante~:
-  \[C \defeq \{\alpha \in \Ord\mid \alpha = \aleph_\alpha\}\]
+  \[C \defeq \compr{\varOa \in \Ord}{\varOa = \Cal_\varOa}\]
   Une première remarque est que si $X\subseteq C$ est un ensemble, alors
-  $\sup X \in C$. En effet, comme $\aleph$ est continue, on peut faire le calcul
+  $\sup X \in C$. En effet, comme $\Cal$ est continue, on peut faire le calcul
   suivant~:
   \begin{align*}
-    \aleph_{\sup X} &= \sup_{\gamma \in X} \aleph_\gamma\\
-    &= \sup_{\gamma \in X} \gamma\\
+    \Cal_{\sup X} &= \sup_{\varOc \in X} \Cal_\varOc\\
+    &= \sup_{\varOc \in X} \varOc\\
     &= \sup X
   \end{align*}
   Où le passage de la deuxième à la troisième ligne est donné par le fait que
-  $X\subseteq C$. De plus, $C$ est non borné dans $\Ord$. En effet, si $\alpha$
-  est un ordinal, alors on peut construire la suite $(\alpha_n)$ définie par
-  \[\left\{\begin{array}{c}
-  \alpha_0 = \alpha + 1\\
-  \alpha_{n+1} = \aleph_{\alpha_n}
-  \end{array}\right.\]
-  On voit alors que $\sup_{n \in \mathbb N} \alpha_n$ est un ordinal strictement
-  supérieur à $\alpha$ qui est un point fixe de $\aleph$.
+  $X\subseteq C$. De plus, $C$ est non borné dans $\Ord$. En effet, si $\varOa$
+  est un ordinal, alors on peut construire la suite $(\varOa_n)$ définie par
+  \[\begin{cases}
+  \varOa_0 \defeq \varOa + 1\\
+  \varOa_{n+1} \defeq \Cal_{\varOa_n }
+  \end{cases}\]
+  On voit alors que $\sup_{n \in \bN} \varOa_n$ est un ordinal strictement
+  supérieur à $\varOa$ et un point fixe de $\Cal$.
 
   On construit maintenant une fonction $f : \Ord \to C$ par induction
   transfinie~:
   \begin{itemize}
   \item $f(0) = \min C$.
-  \item si $f(\alpha)$ est défini, alors
-    $f(\alpha + 1) = \min(C \setminus (f(\alpha) + 1))$, qui est bien défini car
+  \item si $f(\varOa)$ est défini, alors
+    $f(\varOa + 1) = \min(C \setminus (f(\varOa) + 1))$, qui est bien défini car
     $C$ est non borné, donc la classe dont on prend le minimum est non vide.
-  \item si $\beta$ est un ordinal limite, alors
-    $f(\beta) = \sup_{\alpha \in \beta} f(\alpha)$, qui est bien défini car
+  \item si $\varOb$ est un ordinal limite, alors
+    $f(\varOb) = \sup_{\varOa \in \varOb} f(\varOa)$, qui est bien défini car
     on a vérifié que $C$ était stable par borne supérieure.
   \end{itemize}
   On a ainsi une fonction $f$, strictement croissante, dont on peut prouver
   qu'elle atteint tout élément de $C$ (par un argument similaire à ce qui a été
-  fait pour la surjectivité de $\aleph$).
+  fait pour la surjectivité de $\varOa$).
 
   On pose maintenant
-  \[\lambda \defeq f(\mu + \kappa)\qquad
-  X \defeq \{f(\mu + \alpha)\mid \alpha < \kappa\}\]
-  On sait que $X$ est une partie de $\lambda$ de type d'ordre $\kappa$, puisque
-  c'est l'image par une fonction strictement croissante de $\kappa$. De plus,
-  comme $\kappa$ est un ordinal limite (car c'est un cardinal infini), $X$ est
-  cofinale dans $\lambda$. On en déduit donc, par le \cref{lem.cof.type}, que
-  $\cof(\lambda) = \cof(\type(X))$, c'est-à-dire que
-  $\cof(\lambda) = \cof(\kappa)$. On en déduit donc le résultat souhaité.
+  \[\varCCl \defeq f(\varCm + \varCk)\qquad
+  X \defeq \compr{f(\varCm + \varOa)}{\varOa < \varCk}\]
+  On sait que $X$ est une partie de $\varCCl$ de type d'ordre $\varCk$, puisque
+  c'est l'image par une fonction strictement croissante de $\varCk$. De plus,
+  comme $\varCk$ est un ordinal limite (car c'est un cardinal infini), $X$ est
+  cofinale dans $\varCCl$. On en déduit donc, par le \cref{lem.cof.type}, que
+  $\cof(\varCCl) = \cof(\type(X))$, c'est-à-dire que
+  $\cof(\varCCl) = \cof(\varCk)$. On en déduit donc le résultat souhaité.
 \end{proof}
 
 \begin{proposition}
-  Soient $\kappa, \lambda$ deux ordinaux réguliers infinis, avec
-  $\kappa < \lambda$. Alors
-  \[E_\kappa^\lambda \defeq \{\alpha < \lambda \mid \cof(\alpha) = \kappa\}\]
-  est un ensemble cofinal dans $\lambda$.
+  Soient $\varCk, \varCCl$ deux ordinaux réguliers infinis, avec
+  $\varCk < \varCCl$. Alors
+  \[\Eij{\varCk}{\varCCl} \defeq \compr{\varOa<\varCCl}{\cof(\varOa) = \varCk}\]
+  est un ensemble cofinal dans $\varCCl$.
 \end{proposition}
 
 \begin{proof}
-  Soit $\beta < \lambda$. Alors $\beta + \kappa < \lambda$ et
-  $\cof(\beta + \kappa) = \cof(\kappa) = \kappa$.
+  Soit $\varOb < \varCCl$. Alors $\varOb + \varCk < \varCCl$ et
+  $\cof(\varOb + \varCk) = \cof(\varCk) = \varCk$.
 \end{proof}
 
 \subsection{Théorème de König}
@@ -2166,14 +2177,15 @@ utilisations de la cofinalité. Nous allons en voir les principales conséquence
 mais commençons par le théorème lui-même.
 
 \begin{theorem}[König \cite{König}]\label{thm.Konig}
-  Soit $\kappa$ un cardinal. Alors~:
+  Soit $\varCk$ un cardinal. Alors~:
   \begin{itemize}
-  \item si $\kappa$ est régulier, alors pour toute famille $\mathcal F$
-    d'ensembles telle que $|\mathcal F| < \kappa$ et pour tout $X\in\mathcal F$,
-    $|X| < \kappa$, on a $\displaystyle\Big|\bigcup \mathcal F\Big| < \kappa$.
-  \item si $\cof(\kappa) < \kappa$, alors il existe une famille $\mathcal F$
-    de parties de $\kappa$ telle que $|\mathcal F| = \cof(\kappa)$, pour tout
-    $X\in\mathcal F$, $|X|<\kappa$, et $\displaystyle\bigcup\mathcal F =\kappa$.
+  \item si $\varCk$ est régulier, alors pour toute famille $\varFam$
+    d'ensembles telle que $|\varFam| < \varCk$ et pour tout $X\in\varFam$,
+    $|X| < \varCk$, on a
+    $\displaystyle\left\vert\bigcup \varFam\right\vert < \varCk$.
+  \item si $\cof(\varCk) < \varCk$, alors il existe une famille $\varFam$
+    de parties de $\varCk$ telle que $|\varFam| = \cof(\varCk)$  et
+    $\displaystyle\bigcup\varFam =\varCk$.
   \end{itemize}
 \end{theorem}
 
@@ -2181,73 +2193,73 @@ mais commençons par le théorème lui-même.
   On prouve les deux points~:
   \begin{itemize}
   \item soit
-    \[Y \defeq \{\Card(X) \mid X \in \mathcal F\}\]
-    On sait que $Y\subseteq \kappa$ et $|Y| < \kappa$, donc $Y$ est bornée
-    d'après la \cref{prop.ineg.bounded} et le fait que $\kappa$ est régulier.
-    Soit $\lambda = \max(|\mathcal F|, \sup Y)$. D'après ce qui a été dit,
-    $\lambda < \kappa$, et on sait que $\bigcup \mathcal F$ est l'union d'un
-    nombre inférieur à $\lambda$ de parties de cardinal inférieur à $\lambda$,
+    \[Y \defeq \compr{\Card(X)}{X \in \varFam}\]
+    On sait que $Y\subseteq \varCk$ et $|Y| < \varCk$, donc $Y$ est bornée
+    d'après la \cref{prop.ineg.bounded} et le fait que $\varCk$ est régulier.
+    Soit $\varCCl = \max(|\varFam|, \sup Y)$. D'après ce qui a été dit,
+    $\varCCl < \varCk$, et on sait que $\bigcup \varFam$ est l'union d'un
+    nombre inférieur à $\varCCl$ de parties de cardinal inférieur à $\varCCl$,
     donc d'après la \cref{prop.card.union}, on en déduit que le cardinal de
-    $\bigcup \mathcal F$ est inférieur à $\lambda$, donc strictement inférieur
-    à $\kappa$.
-  \item si $\cof(\kappa) < \kappa$, on peut trouver une partie
-    $\mathcal F\subseteq \kappa$ de taille $\cof(\kappa)$ cofinale dans
-    $\kappa$. Comme $\kappa$ est un cardinal et que tout élément de $\mathcal F$
-    est un élément de $\kappa$, on en déduit
-    \[\forall \alpha \in \mathcal F, |\alpha| < \kappa\]
-    Ainsi, comme $\bigcup \mathcal F = \kappa$, on en déduit le résultat.
+    $\bigcup \varFam$ est inférieur à $\varCCl$, donc strictement inférieur
+    à $\varCk$.
+  \item si $\cof(\varCk) < \varCk$, on peut trouver une partie
+    $\varFam\subseteq \varCk$ de taille $\cof(\varCk)$ cofinale dans
+    $\varCk$. Comme $\varCk$ est un cardinal et que tout élément de $\varFam$
+    est un élément de $\varCk$, on en déduit
+    \[\forall \varOa \in \varFam, |\varOa| < \varCk\]
+    Ainsi, comme $\bigcup \varFam = \varCk$, on en déduit le résultat.\qed
   \end{itemize}
-  D'où le résultat.
 \end{proof}
 
+\noindent
 On peut maintenant en tirer deux conséquences sur l'exponentiation cardinale.
 
 \begin{proposition}
-  Soit $\kappa$ un cardinal infini. Alors $\kappa^{\cof(\kappa)} > \kappa$.
+  Soit $\varCk$ un cardinal infini. Alors $\varCk^{\cof(\varCk)} > \varCk$.
 \end{proposition}
 
 \begin{proof}
-  Soit $f : \cof(\kappa) \to \kappa$ une fonction cofinale (qui existe par
-  définition de $\cof(\kappa)$). Supposons par l'absurde qu'il existe une
-  surjection $g : \kappa \to \kappa^{\cof(\kappa)}$. On définit
-  \[\begin{array}{ccccc}
-  h & : & \cof(\kappa) & \longrightarrow & \kappa \\
-  & & \alpha & \longmapsto &
-  \min(\kappa \setminus\{g(\beta)(\alpha)\mid \beta < f(\alpha)\})
-  \end{array}\]
-  Comme $g$ est une surjection, on trouve $\beta$ tel que $h = g(\beta)$. On
-  trouve $\alpha < \cof(\kappa)$ tel que $f(\alpha) > \beta$, par définition de
-  la cofinalité de $f$ (et le fait que $\cof(\kappa)$ et $\kappa$ sont des
-  ordinaux limites). On sait alors que $h(\alpha) > g(\beta)(\alpha)$, donc
-  $h\neq g(\beta)$, ce qui est une contradiction.
+  Soit $f : \cof(\varCk) \to \varCk$ une fonction cofinale (qui existe par
+  définition de $\cof(\varCk)$). Supposons par l'absurde qu'il existe une
+  surjection $g : \varCk \to \varCk^{\cof(\varCk)}$. On définit
+  \[
+  \makeFun{h}{\cof(\varCk)}{\varCk}{\varOa}
+          {\min(\varCk\setminus\compr{g(\varOb)(\varOa)}{\varOb < f(\varOa)})}\]
+  Comme $g$ est une surjection, on trouve $\varOb$ tel que $h = g(\varOb)$. On
+  trouve $\varOa < \cof(\varCk)$ tel que $f(\varOa) > \varOb$, par définition de
+  la cofinalité de $f$ (et le fait que $\cof(\varCk)$ et $\varCk$ sont des
+  ordinaux limites). On sait alors que $h(\varOa) > g(\varOb)(\varOa)$, donc
+  $h\neq g(\varOb)$, ce qui est une contradiction.
 
-  Ainsi $g$ ne peut être surjective, donc $\kappa^{\cof(\kappa)} > \kappa$.
+  Ainsi $g$ ne peut être surjective, donc $\varCk^{\cof(\varCk)} > \varCk$.
 \end{proof}
 
 \begin{theorem}
-  Soit $\kappa \geq 2$ et $\lambda$ un cardinal infini. Alors
-  $\cof(\kappa^\lambda) > \lambda$.
+  Soit $\varCk \geq 2$ et $\varCCl$ un cardinal infini. Alors
+  $\cof(\varCl^\varCCl) > \varCCl$.
 \end{theorem}
 
 \begin{proof}
-  Supposons par l'absurde que $\cof(\kappa^\lambda) \leq \lambda$. On a alors la
+  Supposons par l'absurde que $\cof(\varCk^\varCCl) \leq \varCCl$. On a alors la
   chaîne d'inégalités suivante~:
-  \[\kappa^\lambda < (\kappa^\lambda)^{\cof(\kappa^\lambda)} \leq
-  (\kappa^\lambda)^\lambda = \kappa^{\lambda \times \lambda} = \kappa^\lambda\]
+  \[\varCk^\varCCl < (\varCk^\varCCl)^{\cof(\varCk^\varCCl)} \leq
+  (\varCk^\varCCl)^\varCCl = \varCk^{\varCCl \times \varCCl} = \varCk^\varCCl\]
   ce qui est absurde.
 \end{proof}
 
 On sait donc que la fonction $\kappa \mapsto 2^\kappa$ vérifie les propriétés
 suivantes~:
 \begin{itemize}
-\item $\kappa < 2^\kappa$ (théorème de Cantor)
-\item si $\kappa < \lambda$ alors $2^\kappa \leq 2^\lambda$ (croissance)
-\item $\kappa < \cof(2^\kappa)$ (théorème de König)
+\item $\varCk < 2^\varCk$ (théorème de Cantor)
+\item si $\varCk < \varCCl$ alors $2^\varCk \leq 2^\varCCl$ (croissance)
+\item $\varCk < \cof(2^\varCk)$ (théorème de König)
 \end{itemize}
 
 En fait, on peut prouver qu'il est impossible d'être plus précis que ces trois
 conditions dans le cas des cardinaux réguliers~: c'est le théorème d'Easton
-\cite{Easton}. Plus précisément, pour toute fonction $f : C \to \Card$
-croissante, où $C$ est un ensemble de cardinaux réguliers, qui vérifie
-$\kappa < \cof(f(\kappa))$, il existe un modèle de $\ZFC$ vérifiant que
-$\kappa \mapsto 2^\kappa$ coïncide avec $f$.
+\cite{Easton}. Plus précisément, pour toute classe $\varCC$ de cardinaux
+réguliers et toute fonction $f : \varCC \to \Card$
+croissante, supérieure strictement à l'identité et vérifiant
+\[\forall \varCk \in \varCC, \varCk < \cof(f(\varCk))\]
+il existe un modèle de $\ZFC$ vérifiant que $\varCk \mapsto 2^\varCk$ coïncide
+avec $f$.
