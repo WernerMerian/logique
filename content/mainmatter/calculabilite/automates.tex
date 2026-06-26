@@ -24,9 +24,9 @@ rationnelless et des monoïdes.
 Ce chapitre commence par la base de la théorie des langages~: les définitions
 de ce qu'est un alphabet, un mot, un langage\ldots Nous abordons ensuite la
 classe des langages rationnels en considérant les formalismes que sont les
-automates et les expressions rationnelles, ont on prouve leur équivalence.
+automates et les expressions rationnelles, dont on prouve leur équivalence.
 Nous étudions après cela les théorèmes de structure sur ces
-langages~: le lemme de pompage et le théorème de Myhill-Nérode, ainsi que ses
+langages~: le lemme de l'étoile et le théorème de Myhill-Nérode, ainsi que ses
 conséquences. Nous traitons en dernier le cas de l'équivalence des langages
 rationnels avec les langages reconnus par des monoïdes, pour ainsi revenir sur
 un aspect plus algébrique, proche du début du chapitre.
@@ -35,22 +35,22 @@ un aspect plus algébrique, proche du début du chapitre.
 
 Pour étudier de façon plus systématique les langages, nous étudions d'abord de
 l'algèbre avec la structure de monoïde, qui est intimement liée à celle
-d'ensemble de mots. Tout d'abord, nous donnons une descriptoin concrète de ce
+d'ensemble de mots. Tout d'abord, nous donnons une description concrète de ce
 qu'est un mot et un langage, avant d'aborder l'aspect théoriques de l'étude des
 monoïdes.
 
 \subsection{Premières définitions}
 
-Définissons donc la notion d'alphabet. Intuitivement, l'alphabet
-désigne l'ensemble des symboles que nous utilisons pour écrire. Pour avoir un
-trairement uniforme, on considère que des symboles comme \og ( \fg font aussi
-partie de l'alphabet. C'est alors un objet particulièrement quelconque~: on peut
-imaginer écrire avec à peu près n'importe quel ensemble de symboles. D'où la
-définition semblant inutile d'un alphabet~: parler d'alphabet permet surtout de
-situer le contexte d'étude.
+Définissons donc la notion d'alphabet. Intuitivement, l'alphabet désigne
+l'ensemble des symboles que nous utilisons pour écrire. Pour avoir un traitement
+uniforme, on considère que des symboles comme \og ( \fg font aussi partie de
+l'alphabet. C'est alors un objet particulièrement quelconque~: on peut imaginer
+écrire avec à peu près n'importe quel ensemble de symboles. D'où la définition
+semblant inutile d'un alphabet~: parler d'alphabet permet surtout de situer le
+contexte d'étude.
 
 \begin{definition}[Alphabet]
-  Un alphabet $\Sigma$ est un ensemble fini non vide.
+  Un alphabet $\ABA$ est un ensemble fini non vide.
 \end{definition}
 
 L'intérêt d'un alphabet est avant tout de pouvoir écrire des mots avec. La
@@ -58,39 +58,42 @@ notion de mot est la notion finie par excellence~: un mot est donc simplement
 une suite finie de lettres.
 
 \begin{definition}[Mot]
-  Un mot $u$ sur un alphabet $\Sigma$ est une suite finie à valeurs dans
-  $\Sigma$, c'est-à-dire
-  $u = (u_0,\ldots,u_{n-1})\in \Sigma^n$ pour un certain entier $n\in\mathbb N$.
+  Un mot $\varwd$ sur un alphabet $\ABA$ est une suite finie à valeurs dans
+  $\ABA$, c'est-à-dire $\varwd = (\varwd_0,\ldots,\varwd_{n-1})\in \ABA^n$ pour
+  un certain entier $n\in\bN$.
 
-  On note $\Sigma^\star$ l'ensemble des mots sur $\Sigma$~:
-  \[\Sigma^\star \defeq \bigcup_{n\in \mathbb N} \Sigma^n\]
+  On note $\toStA$ l'ensemble des mots sur $\ABA$~:
+  \[\toStA \defeq \bigcup_{n\in \bN} \ABA^n\]
 \end{definition}
 
 \begin{notation}
-  Pour tout mot $u\in\Sigma^n$, on note $u_i$ pour la
-  \ordinalnumeralfeminin{$i$} lettre, c'est-à-dire l'image de $u$ par la
-  projection $\pi_i : \Sigma^n \to \Sigma$.
+  Pour tout mot $\varwd\in\ABA^n$, on note $\varwd_i$ pour la
+  \ordinalnumeralfeminin{$i$} lettre, c'est-à-dire l'image de $\varwd$ par la
+  projection $\projP{i}{} : \ABA^n \to \ABA$.
 
-  Pour tout mot $u\in\Sigma^\star$, on note $|u|\in\mathbb N$ l'entier $n$ tel
-  que $u\in \Sigma^n$.
+  Pour tout mot $\varwd\in\toStA$, on note $\wul\in\bN$ l'entier $n$ tel que
+  $\varwd\in \ABA^n$.
 \end{notation}
 
 \begin{remark}
-  On aurait aussi pu définir $\Sigma^\star$ comme l'ensemble inductif (au sens
-  du \cref{chp.induction}) des listes d'éléments de $\Sigma$. Les deux
-  formalismes sont équivalents, mais la théorie des automates et plus
-  généralement celle des langages formels utilisent habituellement plutôt le
-  formalisme des suites finies.
+  On aurait aussi pu définir $\toStA$ comme l'ensemble inductif (au sens du
+  \cref{chp.induction}) des listes d'éléments de $\ABA$. Les deux formalismes
+  sont équivalents, mais la théorie des automates et plus généralement celle des
+  langages formels utilisent habituellement plutôt le formalisme des suites
+  finies. On peut aussi remarquer une inversion dans le sens de lecture. Dans
+  le formalisme des listes, l'élément en tête d'une liste $a\Cons \varlist$ est
+  à gauche, tandis que la lecture d'un mot $\varwd \in \toStA$ se fait de gauche
+  à droite.
 \end{remark}
 
 Remarquons qu'une suite vide est une suite finie~: on peut donc définir le mot
-vide, qu'on notera $\varepsilon$.
+vide, qu'on notera $\Ewd$.
 
 On peut désormais définir un langage~: c'est un ensemble de mots.
 
 \begin{definition}[Langage]
-  Soit $\Sigma$ un alphabet. Un langage $\mathcal L$ sur $\Sigma$ est une partie
-  $\mathcal L\subseteq\Sigma^\star$.
+  Soit $\ABA$ un alphabet. Un langage $\varLL$ sur $\ABA$ est une partie
+  $\varLL\subseteq\toStA$.
 \end{definition}
 
 Parlons dès maintenant de stabilité, qui est une notion importante dans le
@@ -98,47 +101,44 @@ contexte de l'algèbre~: elle permet de décrire une structure dans laquelle
 une opération donnée est interne à la structure.
 
 \begin{definition}[Stabilité]
-  Soit $\Sigma$ un alphabet et $\diamond$ une opération binaire sur
-  $\Sigma^\star$. On dit qu'un langage $\mathcal L$ sur $\Sigma$ est stable
-  par $\diamond$ si
-  \[\forall u,v\in \mathcal L, u\diamond v \in \mathcal L\]
+  Soit $\ABA$ un alphabet et $\varOpe$ une opération binaire sur $\toStA$. On
+  dit qu'un langage $\varLL$ sur $\ABA$ est stable par $\varOpe$ si
+  \[\forall \varwd,\varwv\in \varLL, \varwd\varOpe \varwv \in \varLL\]
 \end{definition}
 
 Une autre façon de parler de stabilité est de commencer par étendre une
 opération binaire sur les mots en une opération sur les langages.
 
 \begin{definition}[Extension sur les langages]
-  Soit $\Sigma$ un alphabet et $\diamond$ une opération binaire sur
-  $\Sigma^\star$. On étend l'opération $\diamond$ sur les langages sur
-  $\Sigma$ par, pour tous langages $\mathcal L,\mathcal M$~:
-  \[\mathcal L\diamond \mathcal M \triangleq
-  \{u\diamond v \mid u \in \mathcal L, v \in \mathcal M\}\]
+  Soit $\ABA$ un alphabet et $\varOpe$ une opération binaire sur $\toStA$. On
+  étend l'opération $\varOpe$ sur les langages sur $\ABA$ par, pour tous
+  langages $\varLL,\varLLB$~:
+  \[\varLL\varOpe \varLLB \defeq
+  \compr{\varwd\varOpe\varwv}{\varwd \in \varLL, \varwv \in \varLLB}\]
 \end{definition}
 
 \begin{exercise}
-  Montrer qu'un langage $\mathcal L$ est stable par une opération $\diamond$ si
-  et seulement si $\mathcal L \diamond \mathcal L \subseteq \mathcal L$.
+  Montrer qu'un langage $\varLL$ est stable par une opération $\varOpe$ si et
+  seulement si $\varLL \varOpe \varLL \subseteq \varLL$.
 \end{exercise}
 
 Cette notion de stabilité se généralise très bien à des classes de langages,
 dont il convient donc d'introduire la définition.
 
 \begin{definition}[Classe de langages]
-  Soit un alphabet $\Sigma$. On appelle classe de langages une partie
-  $\mathcal C\subseteq \powerset(\Sigma^\star)$ (ses éléments sont donc des
-  langages).
+  Soit un alphabet $\ABA$. On appelle classe de langages une partie
+  $\varCC\subseteq \powerset(\toStA)$ (ses éléments sont donc des langages).
 \end{definition}
 
 \begin{definition}[Stabilité d'une classe de langages]
-  Soit $\Sigma$ un alphabet et $\diamond$ une opération binaire sur
-  $\powerset(\Sigma^\star)$. On dit qu'une classe de langages $\mathcal C$ sur
-  $\Sigma$ est stable par $\diamond$ si
-  \[\forall \mathcal L,\mathcal M\in\mathcal C,
-  \mathcal L\diamond \mathcal M\in\mathcal C\]
+  Soit $\ABA$ un alphabet et $\varOpe$ une opération binaire sur
+  $\powerset(\ABA)$. On dit qu'une classe de langages $\varCC$ sur $\ABA$ est
+  stable par $\varOpe$ si
+  \[\forall \varLL,\varLLB\in\varCC, \varLL\varOpe \varLLB\in\varCC\]
 \end{definition}
 
 \begin{remark}
-  Si on dispose d'une opération binaire $\diamond$ sur les langages, il est
+  Si on dispose d'une opération binaire $\varOpe$ sur les langages, il est
   possible de l'étendre sur les classes en faisant une construction analogue
   à celle étendant les opérations sur les mots en des opérations sur les
   langages. On peut ainsi passer d'une opération sur les mots en une opération
@@ -150,100 +150,103 @@ d'opérations et de classes de langages.
 
 \begin{example}
   Nous allons dès maintenant définir l'alphabet qui nous sera le plus utile~:
-  \[\btwo \defeq \{0,1\}\]
+  \[\btwo \defeq \intB\]
 
-  Voici quelques langages sur $\btwo$ ou un alphabet $\Sigma$ quelconque~:
+  Voici quelques langages sur $\btwo$ ou un alphabet $\ABA$ quelconque~:
   \begin{itemize}
   \item le langage des mots commençant par $0$~:
-    \[\mathcal L_0 \defeq \{u\in\Sigma^\star\mid u_0 = 0\}\]
+    \[\varLL_0 \defeq \compr{\varwd\in\toStA}{\varwd_0 = 0}\]
   \item le langage des mots ayant une taille paire~:
-    \[\mathcal L_{\mathrm{pair}} \defeq \{u\in\Sigma^\star
-    \mid |u|\in2\mathbb N\}\]
+    \[\varLL_{\pair} \defeq \compr{\varwd\in\toStA}{\wul\in 2\bN}\]
   \item le langage des mots dont le début et la fin sont la même lettre~:
-    \[\mathcal L_{\mathrm{debut}=\mathrm{fin}}\defeq
-    \{u\in\Sigma^\star\mid u_0 = u_{|u| - 1}\}\]
-  \item pour un langage $\mathcal L$, le langage $\overline{\mathcal L}$ des
-    mots pris dans l'autre sens~:
-    \[\overline{\mathcal L}\defeq
-    \{u\in\Sigma^\star\mid u_{|u|-1}\ldots u_0 \in \mathcal L\}\]
-  \item étant donnés deux langages $\mathcal L$ et $\mathcal L'$ l'intersection
-    des deux langages $\mathcal L \cap \mathcal L'$.
-  \item étant donnés deux langages $\mathcal L$ et $\mathcal L'$, l'union des
-    deux langages $\mathcal L\cup\mathcal L'$.
+    \[\varLL_{\mathrm{debut}=\mathrm{fin}}\defeq
+    \compr{\varwd\in\toStA}{\varwd_0 = \varwd_{\wul - 1}}\]
+  \item pour un langage $\varLL$, le langage $\mirL{\varLL}$ des mots pris dans
+    l'autre sens~:
+    \[\mirL\varLL\defeq
+    \compr{\varwd\in\toStA}{\varwd_{\wul-1}\ldots\varwd_0\in\varLL}\]
+  \item étant donnés deux langages $\varLL$ et $\varLLB$, l'intersection des
+    deux langages $\varLL \cap \varLLB$.
+  \item étant donnés deux langages $\varLL$ et $\varLLB$, l'union des deux
+    langages $\varLL\cup\varLLB$.
   \end{itemize}
 \end{example}
 
 Nous allons définir une nouvelle opération, fortement liée à la structure de
-$\Sigma^\star$, qui nous permettra de donner plus d'exemples de langages.
+$\toStA$, qui nous permettra de donner plus d'exemples de langages.
 
 \begin{definition}[Concaténation]
-  Soit un alphabet $\Sigma$. On définit l'opération de concaténation
-  $\star : \Sigma^\star\times\Sigma^\star\to\Sigma^\star$ comme le fait, étant
-  donnés deux mots $u,v\in\Sigma^\star$, de lire les deux mots à la suite.
-  Formellement, on définit
-  \[u\star v \defeq (u_0,\ldots,u_{|u|-1},v_0,\ldots,v_{|v|-1})\]
+  Soit un alphabet $\ABA$. On définit l'opération de concaténation
+  $\makeFunName{\tok\wdPt\tok}{\toStA\times\toStA}{\toStA}$ comme le fait,
+  étant donnés deux mots $\varwd,\varwv\in\toStA$, de lire les deux mots l'un à
+  la suite de l'autre. Formellement, on définit
+  \[\varwd\wdPt\varwv \defeq
+  (\varwd_0,\ldots,\varwd_{\wul-1},\varwv_0,\ldots,\varwd_{\wvl-1})\]
 
-  Pour tout $n\in \mathbb N$, on notera $u^n$ pour l'itération de l'opération
-  $\star$~:
-  \[u^0 \defeq \varepsilon \qquad
-  \forall n \in \mathbb N, u^{n+1} = u^n \star u\]
+  Pour tout $n\in \bN$, on notera $\varwd^n$ pour l'itération de l'opération
+  $\wdPt$~:
+  \[\begin{cases}
+  \varwd^0 \defeq \Ewd \\
+  \forall n \in \bN, \varwd^{n+1} = \varwd^n \wdPt \varwd
+  \end{cases}\]
 \end{definition}
 
 \begin{remark}
-  Le mot vide, $\varepsilon$, est neutre pour $\star$~: $u\star\varepsilon = u$
-  et $\varepsilon \star u = u$.
+  Le mot vide, $\Ewd$, est neutre pour $\wdPt$~: $\varwd\wdPt\Ewd = \varwd$
+  et $\Ewd \wdPt \varwd = \varwd$.
 \end{remark}
 
 \begin{notation}
   Il nous arrivera régulièrement de ne pas écrire l'opération de concaténation.
-  La notation $uv$ où $u,v\in \Sigma^\star$, doit donc se lire $u\star v$.
+  La notation $\varwd\varwv$ où $\varwd,\varwv\in\toStA$, doit donc se lire
+  $\varwd\wdPt\varwv$.
 \end{notation}
 
 \begin{example}
-  Voici plusieurs autres langages possibles sur un alphabet $\Sigma$~:
+  Voici plusieurs autres langages possibles sur un alphabet $\ABA$~:
   \begin{itemize}
-  \item pour deux langages $\mathcal L, \mathcal L'$, le langage concaténé des
-    deux langages~:
-    \[\mathcal L\star\mathcal L'\defeq
-    \{u\star u'\mid u \in \mathcal L, u' \in \mathcal L' \}\]
-  \item pour un langage $\mathcal L$, l'itération de concaténation sur ce
-    langage~:
-    \[\mathcal L^{\star 0} \defeq \{\varepsilon\}\qquad
-    \forall n \in \mathbb N, \mathcal L^{\star(n+1)} \defeq
-    \mathcal L^{\star n}\star\mathcal L\]
-  \item pour un langage $\mathcal L$, le langage des mots dont toutes les
-    concaténations sont encore dans $\mathcal L$~:
-    \[\mathcal L_{\mathrm{stable}\star}\defeq
-    \{u\in \Sigma^\star\mid \forall n \in \mathbb N, u^n \in \mathcal L\}\]
-  \item pour un langage $\mathcal L$, le langage des itérations de mots de
-    $\mathcal L$~:
-    \[\mathcal L^\star \defeq
-    \{u_0\star\cdots\star u_{n-1}\mid
-    n \in \mathbb N, \forall i\in \{0,\ldots,n -1\}, u_i \in \mathcal L\}\]
+  \item pour deux langages $\varLL,\varLLB$, le langage concaténé des deux
+    langages~:
+    \[\varLL\wdPt\varLLB\defeq
+    \compr{\varwd\wdPt\varwv}{\varwd\in\varLL,\varwv\in \varLLB}\]
+  \item pour un langage $\varLL$, l'itération de concaténation sur ce langage~:
+    \[\begin{cases}
+    \varLL^{\wdPt 0} \defeq \{\Ewd\}\\
+    \forall n \in \bN, \varLL^{\wdPt(n+1)} \defeq \varLL^{\wdPt n}\wdPt\varLL
+    \end{cases}\]
+  \item pour un langage $\varLL$, le langage des mots dont toutes les
+    concaténations sont encore dans $\varLL$~:
+    \[\varLL_{\stab\mathord{\wdPt}}\defeq
+    \compr{\varwd\in\toStA}{\forall n \in \bN, \varwd^n \in \varLL}\]
+  \item pour un langage $\varLL$, le langage des itérations de mots de
+    $\varLL$~:
+    \[\toSt{\varLL} \defeq
+    \compr{\varwd_0\wdPt\cdots\wdPt\varwd_{n-1}}{n \in \bN,
+      \forall i\in \intervInt{n}, \varwd_i \in \varLL}\]
   \end{itemize}
 \end{example}
 
 \begin{exercise}
-  Montrer que pour tout langage $\mathcal L$ sur un alphabet $\Sigma$, on a
-  l'égalité suivante~:
-  \[\mathcal L^\star = \bigcup_{n \in \mathbb N} \mathcal L^{\star n}\]
+  Montrer que pour tout langage $\varLL$ sur un alphabet $\ABA$, on a l'égalité
+  suivante~:
+  \[\toSt{\varLL} = \bigcup_{n \in \bN} \varLL^{\wdPt n}\]
 \end{exercise}
 
 \begin{exercise}
-  Montrer que pour tout langage $\mathcal L$ sur un alphabet $\Sigma$, on a
-  $\varepsilon \in \mathcal L^\star$ et $\mathcal L^\star$ est stable par
-  $\star$.
+  Montrer que pour tout langage $\varLL$ sur un alphabet $\ABA$, on a
+  $\Ewd \in \varLL^{\wdPt}$ et $\varLL^{\wdPt}$ est stable par $\wdPt$.
 \end{exercise}
 
 \begin{example}
-  Donnons quelques exemples de classes de langages sur un alphabet $\Sigma$~:
+  Donnons deux exemples de classes de langages sur un alphabet $\ABA$~:
   \begin{itemize}
-  \item la classe des langages contenant $\varepsilon$~:
-    \[\mathcal C_\varepsilon \defeq \{\mathcal L \subseteq \Sigma^\star\mid
-    \varepsilon \in \mathcal L\}\]
-  \item la classe des langages stables par $\star$~:
-    \[\mathcal C_\star \defeq \{\mathcal L \subseteq \Sigma^\star\mid
-    \forall u,v\in\mathcal L, u\star v \in \mathcal L\}\]
+  \item la classe des langages contenant $\Ewd$~:
+    \[\varCC_\Ewd \defeq \compr{\varLL \subseteq \toStA}{\Ewd\in\varLL}\]
+  \item la classe des langages stables par $\wdPt$~:
+    \[\varCC_{\wdPt} \defeq
+    \compr{\varLL \subseteq\toStA}
+          {\forall \varwd,\varwv\in\varLL, \varwd\wdPt\varwv \in \varLL}
+    \]
   \end{itemize}
 \end{example}
 
@@ -251,108 +254,112 @@ $\Sigma^\star$, qui nous permettra de donner plus d'exemples de langages.
 
 Nous nous intéressons maintenant à l'aspect algébrique des langages. L'objectif
 de cette sous-section est d'aboutir à la caractérisation de l'ensemble des mots
-comme construction universelle (celle du monoïde libre). Pour cela, commençons
-par voir ce qu'est un monoïde.
+comme construction universelle (celle du monoïde libre). La
+\cref{def.monoid.ci} permet déjà de deviner la définition d'un monoïde~: on
+demande simplement moins de conditions.
 
 \begin{definition}[Monoïde]
-  Un monoïde est un ensemble $M$ muni d'une opération binaire
-  $\cdot : M \times M \to M$ et d'un élément neutre $e$,
-  c'est-à-dire un élément $e\in M$ tel que
-  \[\forall x\in M, x\cdot e = e \cdot x = x\]
-  et tel que $\cdot$ est associative, c'est-à-dire
-  \[\forall x,y,z\in M, x\cdot (y\cdot z) = (x\cdot y) \cdot z\]
+  Un monoïde est un ensemble $\varMMo$ muni d'une opération binaire
+  $\tok\opM\tok : \varMMo \times \varMMo \to \varMMo$ et d'un élément neutre
+  $\neuMM$, c'est-à-dire un élément $\neuMM\in \varMMo$ tel que
+  \[\forall x\in\varMMo, x\opM\neuMM = \neuMM\opM x = x\]
+  et tel que $\opM$ est associative, c'est-à-dire
+  \[\forall x,y,z\in\varMMo, x\opM (y\opM z) = (x\opM y) \opM z\]
 \end{definition}
 
+\begin{example}
+  L'exemple le plus évident de monoïde est $(\bN,+,0)$.
+\end{example}
+
+\noindent
 Définissons la notion de morphisme associée à la structure de monoïde.
 
 \begin{definition}[Morphisme de monoïde]
-  Soient $(M,\cdot,e)$ et $(N,\diamond,e')$ deux monoïdes. Un morphisme entre
-  ces deux monoïdes est une fonction $f : M \to N$ vérifiant les deux conditions
-  \begin{equation}
-    \forall x,y\in M, f(x\cdot y) = f(x)\diamond f(y)
-  \end{equation}
-  \begin{equation}
-    f(e) = e'
-  \end{equation}
+  Soient $(\varMMo,\opM,\neuMM)$ et $(\varMNo,\opN,\neuMN)$ deux monoïdes. Un
+  morphisme entre ces deux monoïdes est une fonction $f : \varMMo \to \varMNo$
+  vérifiant les deux conditions
+  \begin{equation*}
+    \forall x,y\in \varMMo, f(x\opM y) = f(x)\opN f(y)
+  \end{equation*}
+  \begin{equation*}
+    f(\neuMM) = \neuMN
+  \end{equation*}
 \end{definition}
 
 Remarquons que contrairement au cas des groupes, les morphismes de monoïdes ont
 besoin de stabiliser l'élément neutre.
 
-L'exemple le plus évident de monoïde est $(\mathbb N,+,0)$, mais nous allons
-voir que la structure des mots généralise de façon naturelle ce cas.
-
 \begin{exercise}
-  Soit $\Sigma$ un alphabet, vérifier que $(\Sigma^\star, \star,\varepsilon)$
-  est un monoïde.
+  Soit $\ABA$ un alphabet, vérifier que $(\toStA, \wdPt,\Ewd)$ est un monoïde.
 \end{exercise}
 
-Le cas de $\Sigma^\star$ générale le cas de $\mathbb N$~: il est en effet
-possible de considérer un entier dans sa représentation unaire (comme une
+Le cas de $\toStA$ généralise le cas de $\bN$~: il est en effet possible de
+considérer un entier dans sa représentation unaire (comme une
 succession d'applications de la fonction $n \mapsto n + 1$ à $0$) comme un mot
 sur l'alphabet $\{*\}$ où $*$ est un objet quelconque. La seule information
 que contient un tel mot est alors sa longueur.
 
 L'étude des monoïdes permet donc d'inclure l'étude de la structure de
-$\Sigma^\star$. Nous allons maintenant voir qu'en fait, $\Sigma^\star$ peut être
-construit comme la structure de monoïde la plus simple engendrée par $\Sigma$.
-Cela se traduit par la propriété universelle du monoïde libre.
+$\toStA$. Nous allons maintenant voir qu'en fait, $\toStA$ peut être construit
+comme la structure de monoïde la plus simple engendrée par $\ABA$. Cela se
+traduit par la propriété universelle du monoïde libre.
 
 \begin{theorem}[Propriété universelle du monoïde libre]\label{thm.PU.monoid}
-  Soit $\Sigma$ un alphabet, $(M,\diamond,e)$ un monoïde et $f : \Sigma \to M$
-  une fonction (quelconque). Alors il existe un unique morphisme de monoïde
-  $\tilde f$ entre $\Sigma^\star$ et $M$ tel que $\tilde f (x) = f(x)$ pour tout
-  $x \in \Sigma$.
+  Soit $\ABA$ un alphabet, $(\varMMo,\opM,\neuMM)$ un monoïde et
+  $f :\ABA\to\varMMo$ une fonction (quelconque). Alors il existe un unique
+  morphisme de monoïde $\relev{f}$ entre $\toStA$ et $\varMMo$ tel que
+  $\relev{f}(x) = f(x)$ pour tout $x \in \ABA$.
 \end{theorem}
 
 \begin{proof}
   On procède par analyse-synthèse~:
   \begin{itemize}
-  \item supposons que $\tilde f$ existe et vérifie les conditions décrites.
-    Alors pour tout mot $u = u_0\ldots u_{n-1}$, on peut vérifier par récurrence
-    sur $n$ que $\tilde f(u) = f(u_0)\diamond \cdots \diamond f(u_{n-1})$, où
-    le cas où $u$ est de longueur nulle correspond à
-    $\tilde f(\varepsilon) = e$. La fonction ainsi définie est unique, étant
-    donnée la construction.
+  \item supposons que $\relev{f}$ existe et vérifie les conditions décrites.
+    Alors pour tout mot $\varwd = \varwd_0\ldots \varwd_{n-1}$, on peut vérifier
+    par récurrence sur $n$ que
+    $\relev{f}(u) = f(\varwd_0)\opM \cdots \opM f(\varwd_{n-1})$, où le cas où
+    $\varwd$ est de longueur nulle correspond à $\relev{f}(\Ewd) = \neuMM$. La
+    fonction ainsi définie est unique, étant donnée la construction.
   \item en considérant la fonction proposée précédemment, on voit d'abord que
-    $\tilde f(x) = f(x)$ pour $x\in \Sigma$, et que si $u = v\star w$ alors
-    $\tilde f(u) = \tilde f(v)\diamond \tilde f(w)$, où l'associativité est
-    nécessaire pour pouvoir couper le produit au milieu sans changer le
-    résultat.
+    $\relev{f}(x) = f(x)$ pour $x\in \ABA$, et que si $\varwd=\varwv\star\varww$
+    alors $\relev{f}(\varwd) = \relev{f}(\varwv)\opM \relev{f}(\varww)$, où
+    l'associativité est nécessaire pour pouvoir couper le produit au milieu sans
+    changer le résultat.
   \end{itemize}
   On voit donc qu'un seul candidat est possible pour la fonction donnée, et que
   ce candidat vérifie la proposition attendue.
 \end{proof}
 
-Remarquons qu'en choisissant une fonction $f : \Sigma \to M$ sans propriété
-particulière, on peut potentiellement atteindre avec $\tilde f$ des valeurs qui
+Remarquons qu'en choisissant une fonction $f : \ABA \to \varMMo$ sans propriété
+particulière, on peut potentiellement atteindre avec $\relev{f}$ des valeurs qui
 ne sont pas atteintes par $f$ directement. Par exemple si on prend la fonction
-\[\begin{array}{ccccc}
-f & : & \Sigma & \longrightarrow & \mathbb N\\
-& & \alpha & \longmapsto & 1
-\end{array}\]
+\[\makeFun{f}{\ABA}{\bN}{\varla}{1}\]
 alors l'image d'un mot de taille $n$ est $n$. De cette façon, on vient de voir
 que l'ensemble des mots de taille $n$ peut être décrit à partir du monoïde
-$(\mathbb N,+,1)$ en considérant une partie du monoïde et une fonction
-$f : \Sigma \to \mathbb N$.
+$(\bN,+,1)$ en considérant une partie du monoïde et une fonction
+$f : \ABA \to \bN$.
 
 Plus généralement, on définit ce qu'est le langage induit par une fonction
 depuis un alphabet vers un monoïde possédant une partie distinguée.
 
 \begin{definition}
-  Soit $\Sigma$ un alphabet, $(M,\cdot,e)$ un monoïde, $h : \Sigma \to M$ une
-  fonction et $S\subseteq M$. On dit que $\mathcal L(\Sigma,M,\cdot,e,h,S)$ est
-  le langage induit par $(\Sigma,M,\cdot,e,h,S)$, qui est défini par~:
-  \[\mathcal L(\Sigma,M,\cdot,e,h,S)\defeq
-  \{u\in\Sigma^\star\mid \tilde h(u)\in S\}\]
+  Soit $\ABA$ un alphabet, $(\varMMo,\opM,\neuMM)$ un monoïde,
+  $h : \ABA \to \varMMo$ une fonction et $S\subseteq\varMMo$. On dit que
+  $\varLL(\ABA,\varMMo,\opM,\neuMM,h,S)$ est le langage induit par
+  $(\ABA,\varMMo,\opM,\neuMM,h,S)$, qui est défini par~:
+  \[\varLL(\ABA,\varMMo,\opM,\neuMM,h,S)\defeq
+  \compr{\varwd\in\toStA}{\relev{h}(\varwd)\in S}\]
 \end{definition}
 
-En reprenant l'exemple de $\alpha \mapsto 1$, on voit qu'en prenant $S = \{n\}$,
-on induit le langage $\Sigma^n$.
+\noindent
+En reprenant l'exemple de $\varla \mapsto 1$, on voit qu'en prenant $S = \{n\}$,
+on induit le langage $\ABA^n$.
 
 \section{Automate fini et langage reconnaissable}
 
-On s'intéresse désormais aux automates finis et aux langages reconnaissables.
+\noindent
+Tournons-nous maintenant vers les automates finis et les langages qu'ils
+reconnaissent.
 
 \subsection{Définition d'un automate}
 
@@ -369,62 +376,66 @@ Le formalisme derrière cette définion est lourd, mais nécessaire, nous donnon
 donc la définition formelle d'un automate.
 
 \begin{definition}[Automate fini déterministe]
-  Soit un alphabet $\Sigma$. Un automate fini déterministe $\mathcal A$ sur
-  $\Sigma$ est un quadruplet $(Q,q_0,\delta,F)$ où~:
+  Soit un alphabet $\ABA$. Un automate fini déterministe $\varAuA$ sur $\ABA$
+  est un quadruplet $(\varQQ,\varqZ,\trA,\varAF)$ où~:
   \begin{itemize}
-  \item $Q$ est un ensemble fini appelé ensemble des états de $\mathcal A$,
-  \item $q_0 \in Q$ est appelé l'état initial,
-  \item $\delta : Q\times \Sigma \partialto Q$ est une fonction partielle
+  \item $\varQQ$ est un ensemble fini appelé ensemble des états de $\varAuA$,
+  \item $\varqZ \in \varQQ$ est appelé l'état initial,
+  \item $\trA : \varQQ\times \ABA \partialto \varQQ$ est une fonction partielle
     appelée la fonction (ou table) de transitions,
-  \item $F \subseteq Q$ est appelé l'ensemble des états terminaux.
+  \item $\varAF \subseteq \varQQ$ est appelé l'ensemble des états terminaux.
   \end{itemize}
 
-  On notera $\mathcal A_\Sigma$ l'ensemble des automates sur $\Sigma$.
+  On notera $\auto(\ABA)$ l'ensemble des automates sur $\ABA$.
 \end{definition}
 
 Le processus de lecture décrit plus haut, en reprenant les notations
-introduites, consiste à prendre un mot $u = u_0\ldots u_n$ et calculer
-$\delta(\delta(\cdots\delta(q_0,u_0)\cdots),u_n)$ puis vérifier que cette
-valeur appartient à $F$.
+introduites, consiste à prendre un mot $\varwd = \varwd_0\ldots \varwd_n$ et
+calculer $\trA(\trA(\cdots\trA(\varqZ,\varwd_0)\cdots),\varwd_n)$ puis vérifier
+que cette valeur appartient à $\varAF$.
 
 \begin{definition}[Fonction de transition étendue]
-  Soit un automate fini déterministe $\mathcal A$ sur un alphabet $\Sigma$ et
-  $\delta$ sa fonction de transition. On appelle fonction de transition
-  étendue la fonction $\delta^\star : Q \times \Sigma^\star \partialto Q$ définie
-  par induction sur $\Sigma^\star$ par~:
-  \[\delta^\star (q,\varepsilon) = q \qquad
-  \delta^\star (q,u\star a) = \delta(\delta^\star(q,u),a)\]
-  pour tout état $q \in Q$, mot $u \in \Sigma^\star$ et lettre $a \in \Sigma$.
+  Soit un automate fini déterministe $\varAuA$ sur un alphabet $\ABA$ et $\trA$
+  sa fonction de transition. On appelle fonction de transition étendue la
+  fonction $\trAS : \varQQ \times \toStA \partialto \varQQ$ définie par
+  induction sur $\toStA$ par~:
+  \[\begin{cases}
+  \trAS(\varq,\Ewd) = \varq \\
+  \trAS(\varq,\varwd\wdPt \varla) = \trA(\trAS(\varq,\varwd),\varla)
+  \end{cases}\]
+  pour tout état $q \in \varQQ$, mot $\varwd \in \toStA$ et lettre
+  $\varla \in \ABA$.
 \end{definition}
 
 \begin{definition}[Langage accepté par un automate]
-  Soit $\mathcal A$ un automate sur un alphabet $\Sigma$. On dit que
-  $\mathcal A$ accepte (ou reconnait) le mot $u \in \Sigma^\star$ si
-  $\delta^\star(q_0,u) \in F$, ce qu'on note $\mathcal A \models u$. On définit
-  le langage reconnu par $\mathcal A$ par~:
-  \[\mathcal L_\mathcal A \defeq \{u \in \Sigma^\star
-  \mid \mathcal A \models u\}\]
+  Soit $\varAuA$ un automate sur un alphabet $\ABA$. On dit que $\varAuA$
+  accepte (ou reconnait) le mot $\varwd \in \toStA$ si
+  $\trAS(\varqZ,\varwd) \in \varAF$, ce qu'on note $\varAuA \satisf \varwd$. On
+  définit le langage reconnu par $\varAuA$ par~:
+  \[\varLL_\varAuA \defeq \compr{\varwd \in \toStA}{\varAuA\satisf\varwd}\]
 \end{definition}
 
 Maintenant que les définitions ont été introduites, donnons une intuition
 graphique de ce qu'il se passe (intuition largement indispensable pour
-comprendre les automates). Pour représenter un automate $\mathcal A$, la
-convention est de dessiner un graphe donc les sommets sont les états (l'ensemble
-$Q$), et où $\delta$ est représentée par des arcs dirigés et étiquetés par
-$\Sigma$. Par exemple, entre deux états $q$ et $q'$, s'il existe $a$ tel que
-$\delta(a,q) = q'$, alors on aura une flèche $q \xrightarrow{a} q'$. L'état
-initial est représenté avec une flèche entrante, et les états terminaux sont
-représentés par des doubles cercles.
+comprendre les automates). Pour représenter un automate $\varAuA$, la convention
+est de dessiner un graphe donc les sommets sont les états (l'ensemble $\varQQ$),
+et où $\trA$ est représentée par des arcs dirigés et étiquetés par $\ABA$. Par
+exemple, entre deux états $\varq$ et $\varq'$, s'il existe $\varla$ tel que
+$\trA(\varq,\varla) = \varq'$, alors on aura une flèche
+$\varq \xrightarrow{\varla} \varq'$. L'état initial est représenté avec une
+flèche entrante, et les états terminaux sont représentés par des doubles
+cercles.
 
-Prenons par exemple un premier automate sur $\btwo$~:
+Prenons par exemple un premier automate $\varAuA_0$ sur $\btwo$ donné dans la
+\cref{fig.A0}.
 
-\begin{figure}[H]
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[state, initial] (q_0) {$q_0$};
-    \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
-    \node[state] (q_2) [above right = of q_1] {$q_2$};
-    \node[state, accepting] (q_3) [below right = of q_1] {$q_3$};
+    \node[state, initial] (q_0) {$\varqP{0}$};
+    \node[state,accepting] (q_1) [right = of q_0] {$\varqP{1}$};
+    \node[state] (q_2) [above right = of q_1] {$\varqP{2}$};
+    \node[state, accepting] (q_3) [below right = of q_1] {$\varqP{3}$};
     \path[->,>=latex]
     (q_0) edge node {0,1} (q_1)
     (q_1) edge node {1} (q_2)
@@ -433,21 +444,27 @@ Prenons par exemple un premier automate sur $\btwo$~:
     edge [loop above] node {$1$} ()
     (q_3) edge node {1} (q_0);
   \end{tikzpicture}
+  
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automate $\varAuA_0$ sur l'alphabet $\btwo$}
+  \label{fig.A0}
+  
 \end{figure}
 
-En lisant simplement ce dessin, on peut voir que l'automate reconnaît, par
-exemple, $00$. Cette représentation a l'avantage, en plus de la lisibilité,
-de donner l'ensemble des informations nécessaires pour retrouver l'objet
-mathématique représenté associé.
-
-\begin{figure}[h]
+\begin{figure}[t]
   \centering
+  \hrule
+
+  \vspace{0.2cm}
   \begin{tikzpicture}[node distance = 2cm, on grid, auto,
       scale=0.65, transform shape]
-    \node[state, initial, color = red] (q_0) {$q_0$};
-    \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
-    \node[state] (q_2) [above right = of q_1] {$q_2$};
-    \node[state, accepting] (q_3) [below right = of q_1] {$q_3$};
+    \node[state, initial, color = red] (q_0) {$\varqP{0}$};
+    \node[state,accepting] (q_1) [right = of q_0] {$\varqP{1}$};
+    \node[state] (q_2) [above right = of q_1] {$\varqP{2}$};
+    \node[state, accepting] (q_3) [below right = of q_1] {$\varqP{3}$};
     \path[->,>=latex]
     (q_0) edge node {0,1} (q_1)
     (q_1) edge node {1} (q_2)
@@ -458,12 +475,12 @@ mathématique représenté associé.
 
     \node (a) [right = of q_1] {};
     \node (b) [right = of a] {};
-    \path[|->, >=latex] (a) edge node {$\delta(0,q_0)$} (b);
+    \path[|->, >=latex] (a) edge node {$\trA(\varqZ,0)$} (b);
 
-    \node[state, initial] (p_0) [right = of b] {$q_0$};
-    \node[state,accepting, color = red] (p_1) [right = of p_0] {$q_1$};
-    \node[state] (p_2) [above right = of p_1] {$q_2$};
-    \node[state, accepting] (p_3) [below right = of p_1] {$q_3$};
+    \node[state, initial] (p_0) [right = of b] {$\varqP{0}$};
+    \node[state,accepting, color = red] (p_1) [right = of p_0] {$\varqP{1}$};
+    \node[state] (p_2) [above right = of p_1] {$\varqP{2}$};
+    \node[state, accepting] (p_3) [below right = of p_1] {$\varqP{3}$};
     \path[->,>=latex]
     (p_0) edge node {0,1} (p_1)
     (p_1) edge node {1} (p_2)
@@ -474,12 +491,13 @@ mathématique représenté associé.
 
     \node (aa) [right = of p_1] {};
     \node (bb) [right = of aa] {};
-    \path[|->, >=latex] (aa) edge node {$\delta(0,q_1)$} (bb);
+    \path[|->, >=latex] (aa) edge node {$\trA(\varqP{1},0)$} (bb);
 
-    \node[state, initial] (r_0) [ right = of bb] {$q_0$};
-    \node[state,accepting] (r_1) [right = of r_0] {$q_1$};
-    \node[state] (r_2) [above right = of r_1] {$q_2$};
-    \node[state, accepting, color = red] (r_3) [below right = of r_1] {$q_3$};
+    \node[state, initial] (r_0) [ right = of bb] {$\varqZ$};
+    \node[state,accepting] (r_1) [right = of r_0] {$\varqP{1}$};
+    \node[state] (r_2) [above right = of r_1] {$\varqP{2}$};
+    \node[state, accepting, color = red] (r_3) [below right = of r_1]
+         {$\varqP{3}$};
     \path[->,>=latex]
     (r_0) edge node {0,1} (r_1)
     (r_1) edge node {1} (r_2)
@@ -488,34 +506,51 @@ mathématique représenté associé.
     edge [loop above] node {$1$} ()
     (r_3) edge node {1} (r_0);
   \end{tikzpicture}
-  \caption{Lecture du mot $00$ par l'automate précédent}
+  
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Lecture du mot $00$ par l'automate $\varAuA_0$}
   \label{fig.ex.reco}
 \end{figure}
+
+En lisant simplement ce dessin, on peut voir que l'automate reconnaît, par
+exemple, $00$ (la lecture de ce mot est donnée en \cref{fig.ex.reco}). Cette
+représentation a l'avantage, en plus de la lisibilité, de donner l'ensemble des
+informations nécessaires pour retrouver l'objet mathématique représenté associé.
 
 On a ainsi construit une classe de langages~: la classe des langages
 reconnaissables.
 
 \begin{definition}[Langage reconnaissable]
-  Soit $\Sigma$ un alphabet. On appelle classe des langages reconnaissbles sur
-  $\Sigma$ l'ensemble des langages reconnus par les automates sur $\Sigma$~:
-  \[\Reco(\Sigma) \defeq \{\mathcal L_\mathcal A \mid
-  \mathcal A \in \mathcal A_\Sigma\}\]
+  Soit $\ABA$ un alphabet. On appelle classe des langages reconnaissbles sur
+  $\ABA$ l'ensemble des langages reconnus par les automates sur $\ABA$~:
+  \[\Reco(\ABA) \defeq \compr{\varLL_{\varAuA}}{\varAuA\in\auto(\ABA)}\]
 \end{definition}
 
 \begin{exercise}
-  Trouver le langage reconnu par l'automate suivant sur $\btwo$ (et prouver que
-  le langage reconnu est bien celui attendu)~:
-  \begin{figure}[H]
+  Trouver le langage reconnu par l'automate $\varAuA_1$ sur $\btwo$
+  donné en \cref{fig.auto.exo1} (et prouver que le langage reconnu est bien
+  celui attendu)~:
+  \begin{figure}[t]
     \centering
     \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-      \node[state, initial,accepting] (q_0) {$q_0$};
-      \node[state] (q_1) [right = of q_0] {$q_1$};
+      \node[state, initial,accepting] (q_0) {$\varqP{0}$};
+      \node[state] (q_1) [right = of q_0] {$\varqP{1}$};
       \path[->,>=latex]
       (q_0) edge [bend left] node {0} (q_1)
       edge [loop above] node {1} (q_0)
       (q_1) edge [bend left] node {0} (q_0)
       edge [loop above] node {1} (q_1);
     \end{tikzpicture}
+  
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automate $\varAuA_1$}
+  \label{fig.auto.exo1}
   \end{figure}
 \end{exercise}
 
@@ -533,25 +568,23 @@ Avant de donner notre dernier formalisme, décrivons une autre classe de
 langages, qui s'avérera en fait être la même classe.
 
 \begin{definition}[Langage rationnel]
-  La classe des langages rationnels sur un alphabet $\Sigma$ est la plus petite
-  classe $\mathcal R$ de langages sur $\Sigma$ telle que~:
+  La classe des langages rationnels sur un alphabet $\ABA$ est la plus petite
+  classe $\varCR$ de langages sur $\ABA$ telle que~:
   \begin{itemize}
-  \item $\varnothing \in \mathcal R$
-  \item pour tout $a \in \Sigma$, $\{a\}\in \mathcal R$
-  \item si $\mathcal L,\mathcal L' \in \mathcal R$ alors
-    $\mathcal L\cup \mathcal L' \in \mathcal R$
-  \item si $\mathcal L,\mathcal L' \in \mathcal R$ alors
-    $\mathcal L\star \mathcal L' \in \mathcal R$
-  \item si $\mathcal L \in \mathcal R$ alors $\mathcal L^\star \in \mathcal R$.
+  \item $\vide \in \varCR$
+  \item pour tout $\varla \in \ABA$, $\{\varla\}\in \varCR$
+  \item si $\varLL,\varLLB \in \varCR$ alors $\varLL\cup \varLLB \in \varCR$
+  \item si $\varLL,\varLLB \in \varCR$ alors $\varLL\wdPt \varLLB \in \varCR$
+  \item si $\varLL \in \varCR$ alors $\toSt{\varLL} \in \varCR$.
   \end{itemize}
 
-  On note $\Ratio(\Sigma)$ cette classe $\mathcal R$.
+  On note $\Ratio(\ABA)$ cette classe $\varCR$.
 \end{definition}
 
 \begin{remark}
-  Le langage $\{\varepsilon\}$ est rationnel, car il peut s'écrire
-  $\varnothing^\star$. On peut donc ajouter si on le souhaite le mot vide tout
-  en gardant la rationnalité d'un langage.
+  Le langage $\{\Ewd\}$ est rationnel, car il peut s'écrire $\toSt{\vide}$. On
+  peut donc ajouter si on le souhaite le mot vide tout en gardant la
+  rationnalité d'un langage.
 \end{remark}
 
 Cette définition est une définition par induction, comme on en a rencontré
@@ -565,11 +598,11 @@ on obtient un langage rationnel à partir de ces opérations inductives, c'est c
 qu'on appelle les expressions rationnelles.
 
 \begin{definition}[Expression rationnelle]
-  Soit un alphabet $\Sigma$. On définit l'ensemble des expressions rationnelles
+  Soit un alphabet $\ABA$. On définit l'ensemble des expressions rationnelles
   par la grammaire suivante~:
-  \[e,e' \Coloneq \varnothing\mid a \mid e + e' \mid e e' \mid e^\star\]
-  où $a \in \Sigma$. On note $\Regex(\Sigma)$ l'ensemble des expressions
-  rationnelles sur $\Sigma$.
+  \[e,e' \inddefeq \vide\mid \varla \mid e + e' \mid e e' \mid \toSt{e}\]
+  où $\varla \in \ABA$. On note $\Regex(\ABA)$ l'ensemble des expressions
+  rationnelles sur $\ABA$.
 \end{definition}
 
 \begin{remark}
@@ -578,25 +611,24 @@ qu'on appelle les expressions rationnelles.
   lieu à \foreignexpr{regex}.
 \end{remark}
 
-La correspondance est assez naturelle~: une expression de la forme $a$
-représente le langage $\{a\}$, $\varnothing$ le langage vide et les trois
+La correspondance est assez naturelle~: une expression de la forme $\varla$
+représente le langage $\{\varla\}$, $\vide$ le langage vide et les trois
 opérations représentent les opérations par lesquelles est stable la classe des
 langages rationnels.
 
 On définit donc une fonction d'interprétation des expressions rationnelles. De
-plus, on ajoute $\varepsilon$ dans nos expressoins rationnelles, par souci de
+plus, on ajoute $\Ewd$ dans nos expressoins rationnelles, par souci de
 lisbilité.
 
 \begin{definition}[Interprétation d'une expression rationnelle]
-  On définit la fonction $\Val : \Regex(\Sigma)\to\Ratio(\Sigma)$ par
-  induction~:
+  On définit la fonction $\Val : \Regex(\ABA)\to\Ratio(\ABA)$ par induction~:
   \begin{itemize}
-  \item $\Val(\varnothing) = \varnothing$
-  \item $\Val(a) = \{a\}$
+  \item $\Val(\vide) = \vide$
+  \item $\Val(\varla) = \{\varla\}$
   \item $\Val(e+e') = \Val(e) \cup \Val(e')$
-  \item $\Val(ee') = \Val(e) \star \Val(e')$
-  \item $\Val(e^\star) = (\Val(e))^\star$
-  \item $\Val(\varepsilon) = \{\varepsilon\}$
+  \item $\Val(ee') = \Val(e) \wdPt \Val(e')$
+  \item $\Val(\toSt{e}) = \toSt{(\Val(e))}$
+  \item $\Val(\Ewd) = \{\Ewd\}$
   \end{itemize}
 \end{definition}
 
@@ -607,12 +639,12 @@ lisbilité.
 \begin{exercise}
   Trouver le langage interprété par l'expression rationnelle suivante sur
   $\btwo$~:
-  \[(01^\star 0)^\star\]
+  \[\toSt{(0\toSt{1} 0)}\]
 \end{exercise}
 
 \begin{remark}
   Cette surjection n'est pas pour autant injective, et ce même en retirant
-  $\varepsilon$ des expressions rationnelles. Par exemple, $a + a$ a la même
+  $\Ewd$ des expressions rationnelles. Par exemple, $a + a$ a la même
   interprétation que $a$.
 \end{remark}
 
@@ -621,8 +653,8 @@ Notre première équivalence va donc consister en deux étapes~:
 \begin{itemize}
 \item montrer que les langages reconnaissables sont stables par les
   constructions de la classe des langages rationnels.
-\item étant donnée un automate $\mathcal A$, construire une expression
-  rationnelle $e$ dont l'interprétation est le langage reconnu par $\mathcal A$.
+\item étant donné un automate $\varAuA$, construire une expression rationnelle
+  $e$ dont l'interprétation est le langage reconnu par $\varAuA$.
 \end{itemize}
 
 Pour la première étape, nous aurons besoin de faire des constructions sur les
@@ -641,49 +673,71 @@ l'ensemble vide et sont stables par trois opérations~:
 Il nous faut donc construire des automates représentant tous ces cas. Traitons
 d'abord les cas les plus simples.
 
-Il est clair qu'on peut construire des automates pour les singletons~:
+Il est clair qu'on peut construire des automates pour les singletons
+(\latinexpr{c.f.} \cref{fig.auto.a}) et pour l'ensemble vide
+(\latinexpr{c.f.} \cref{fig.auto.vide}).
 
-\begin{figure}[h]
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-      \node[state, initial] (q_0) {$q_0$};
-      \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
+      \node[state, initial] (q_0) {$\varqP{0}$};
+      \node[state,accepting] (q_1) [right = of q_0] {$\varqP{1}$};
       \path[->,>=latex]
-      (q_0) edge [bend left] node {$a$} (q_1);
+      (q_0) edge [bend left] node {$\varla$} (q_1);
   \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automate $\varAuA_{\varla}$ reconnaissant exactement $\varla$}
+  \label{fig.auto.a}
 \end{figure}
 
-et pour l'ensemble vide~:
-
-\begin{figure}[h]
+\begin{figure}[t]
   \centering
+  \hrule
+
+  \vspace{0.2cm}
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-      \node[state, initial] (q_0) {$q_0$};
+      \node[state, initial] (q_0) {$\varqP{0}$};
   \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automate $\varAuA_{\vide}$ reconnaissant $\vide$}
+  \label{fig.auto.vide}
 \end{figure}
 
 Le point essentiel est, par conséquent, la stabilité par les trois opérations.
-Il nous faut donc introduire deux constructions d'automates~: l'automate union,
-et les $\varepsilon$-transitions.
+Il nous faut pour cela introduire deux constructions d'automates~: l'automate
+union, et les $\Ewd$-transitions.
 
 \begin{definition}[Automate union]
-  Soient $\mathcal A = (Q,q_0,\delta,F)$ et
-  $\mathcal A' = (Q',q'_0,\delta',F')$ deux automates sur un alphabet
-  $\Sigma$. On définit l'automate union $\mathcal A \sqcup \mathcal A'$ par~:
+  Soient deux automates finis déterministes
+  $\varAuA = (\varQA,\varqZ,\trAA,\varAAF)$ et
+  $\varAuB = (\varQB,\varqZ',\trAB,\varABF)$ deux automates sur un alphabet
+  $\ABA$. On définit l'automate union $\UnAuB$ par~:
   \begin{itemize}
-  \item $Q_{\mathcal A\sqcup \mathcal A'} \defeq Q\times Q'$
-  \item $q_{0,\mathcal A\sqcup \mathcal A'} \defeq (q_0,q'_0)$
-  \item $\delta_{\mathcal A \sqcup \mathcal A'}(q,a) \defeq (\delta_{\mathcal A}(q,a),
-    \delta_{\mathcal A'}(q,a))$
-  \item $F_{\mathcal A \sqcup \mathcal A'} \defeq F\times Q' \cup Q\times F'$
+    \begin{minipage}{0.5\textwidth}
+    \item $\varQP{\UnAuB} \defeq \varQA\times\varQB$
+    \item $\varqP{0,\UnAuB} \defeq (\varqZ,\varqZ')$
+    \end{minipage}
+    \begin{minipage}{0.4\textwidth}
+    \item
+      $\trAP{\UnAuB}(\varq,\varla)\defeq
+      (\trAA(\varq,\varla),\trAB(\varq,\varla))$
+    \item $\varAFP{\UnAuB} \defeq \varAAF\times\varQB \cup \varQA\times \varABF$
+    \end{minipage}
   \end{itemize}
 \end{definition}
 
 \begin{proposition}\label{prop.union.ratio}
-  Pour tous automates $\mathcal A, \mathcal A'$ sur un alphabet $\Sigma$ donné,
-  on a l'équation
-  \[\mathcal L_{\mathcal A} \cup \mathcal L_{\mathcal A'} =
-  \mathcal L_{\mathcal A \sqcup \mathcal A'}\]
+  Pour tous automates $\varAuA, \varAuB$ sur un alphabet $\ABA$ donné, on a
+  l'équation
+  \[\varLL_{\varAuA} \cup \varLL_{\varAuB} = \varLL_{\UnAuB}\]
 \end{proposition}
 
 \begin{proof}
@@ -710,8 +764,7 @@ et les $\varepsilon$-transitions.
   De plus, $(q,q') \in F\times Q' \cup Q\times F'$ signifie que $q \in F$ ou
   $q' \in F'$. On en déduit donc, en utilisant le résultat précédent, que
   \[\mathcal A \sqcup \mathcal A'\models u \iff
-  \mathcal A \models u \lor \mathcal A'\models u\]
-  D'où l'égalité des deux langages.
+  \mathcal A \models u \lor \mathcal A'\models u\qedhere\]
 \end{proof}
 
 \begin{exercise}[Automate produit]

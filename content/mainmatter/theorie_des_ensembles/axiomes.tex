@@ -1280,53 +1280,52 @@ naturels ou des opposés d'entiers naturels.
 Passons maintenant à la construction générale sur un monoïde commutatif.
 
 \begin{definition}
-  Soit $(\varMon,\star,e)$ un monoïde commutatif. On définit sur
-  $\varMon\times\varMon$ muni des opérations coordonnée par coordonnée la
+  Soit $(\varMMo,\opM,\neuMM)$ un monoïde commutatif. On définit sur
+  $\varMMo\times\varMMo$ muni des opérations coordonnée par coordonnée la
   congruence suivante~:
-  \[(m,m') \sim (a,a') \defeq \exists k \in M,
-  m \star a' \star k = m' \star a \star k\]
+  \[(m,m') \sim (a,a') \defeq \exists k \in \varMMo,
+  m \opM a' \opM k = m' \opM a \opM k\]
 
-  On appelle symétrisé de $(\varMon,\star,e)$ le groupe abélien obtenu à partir
-  de $\varMon\times \varMon$ par quotient par $\sim$.
+  On appelle symétrisé de $(\varMMo,\opM,\neuMM)$ le groupe abélien obtenu à
+  partir de $\varMMo\times \varMMo$ par quotient par $\sim$.
 \end{definition}
 
 \begin{proof}
   Montrons que $\sim$ est une congruence~:
   \begin{itemize}
   \item $\sim$ est réflexive~: pour $(m,m')$, on a
-    $m \star m' \star e = m \star m' \star e$.
+    $m \opM m' \star \neuMM = m \opM m' \opM \neuMM$.
   \item $\sim$ est symétrique par symétrie de l'égalité.
   \item $\sim$ est transitive~: supposons qu'on a $(m,m')\sim (a,a')\sim(b,b')$
     et montrons qu'alors $(m,m')\sim (b,b')$. D'après les définitions, on trouve
-    $k,k'\in M$ tels que
+    $k,k'\in \varMMo$ tels que
     \[\begin{cases}
-    m \star a' \star k = m' \star a \star k\\
-    a \star b' \star k' = a' \star b \star k'
+    m \opM a' \opM k = m' \opM a \opM k\\
+    a \opM b' \opM k' = a' \opM b \opM k'
     \end{cases}\]
     En \og additionnant\fg les deux lignes, on obtient
-    \[m \star (a \star a' \star k \star k') \star b' =
-    m' \star (a \star a' \star k \star k') \star b\]
-    d'où le résultat en prenant $k'' = a \star a' \star k \star k'$.
+    \[m\opM(a\opM a'\opM k\opM k')\opM b'=m'\opM(a\opM a'\opM k\opM k')\opM b\]
+    d'où le résultat en prenant $k'' = a \opM a' \opM k \opM k'$.
   \item $\sim$ est une congruence~: supposons que $(m,m')\sim(a,a')$ et
     $(n,n')\sim(b,b')$, alors
-    $(m\star n, m' \star n') \sim(a\star b,a'\star b')$. En effet, si on
-    considère $k,k'\in M$ tels que
+    $(m\opM n, m' \opM n') \sim(a\opM b,a'\opM b')$. En effet, si on
+    considère $k,k'\in \varMMo$ tels que
     \[\begin{cases}
-    m \star a' \star k = m' \star a \star k\\
-    n \star b' \star k' = n' \star b \star k'
+    m \opM a' \opM k = m' \opM a \opM k\\
+    n \opM b' \opM k' = n' \opM b \opM k'
     \end{cases}\]
     alors on obtient en \og additionnant\fg les deux lignes
-    \[(m \star n) \star (a' \star b') \star (k \star k') =
-    (m' \star n') \star (a \star b) \star (k \star k')\]
-    nous donnant le résultat en prenant $k'' = k \star k'$.
+    \[(m \opM n) \opM (a' \opM b') \opM (k \opM k') =
+    (m' \opM n') \opM (a \opM b) \opM (k \opM k')\]
+    nous donnant le résultat en prenant $k'' = k \opM k'$.
   \end{itemize}
   On en déduit que $\sim$ est une congruence. Ainsi le symétrisé est un monoïde
   commutatif.
 
   Il nous reste à prouver que c'est un groupe. Soit $\clas{(m,m')}$ un
   élément du symétrisé. On définit son inverse par $\clas{(m',m)}$~:
-  \[\clas{(m,m')}\star \clas{(m',m)} =
-  \clas{(m\star m',m'\star m)}\]
+  \[\clas{(m,m')}\opM \clas{(m',m)} =
+  \clas{(m\opM m',m'\opM m)}\]
   or $(m,m)\sim (e,e)$ assez directement, d'où le fait que leur produit vaut
   $\clas{(e,e)}$, le neutre du symétrisé.
 \end{proof}
@@ -1334,30 +1333,30 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
 \begin{remark}
   On ajoute dans notre définition de $\sim$ un terme $k$~: celui-ci est
   nécessaire pour le cas où notre monoïde n'est pas régulier. On voit en effet
-  que ce $k$ absorbe le terme $a \star a'$ pour la transitivité.
+  que ce $k$ absorbe le terme $a \opM a'$ pour la transitivité.
 \end{remark}
 
 \begin{exercise}
-  Soit $\varMon$ un monoïde commutatif et $\varMon^\dagger$ son symétrisé.
+  Soit $\varMMo$ un monoïde commutatif et $\varMMo^\dagger$ son symétrisé.
   Montrer que la fonction
   \[
-  \makeFun{\iota}{\varMon}{\varMon^\dagger}{m}{\clas{(m,e)}}
+  \makeFun{\iota}{\varMMo}{\varMMo^\dagger}{m}{\clas{(m,e)}}
   \]
   est un morphisme de monoïde.
 \end{exercise}
 
 \begin{exercise}
-  Soit $\varMon$ un monoïde commutatif et $\varMon^\dagger$ son symétrisé.
+  Soit $\varMMo$ un monoïde commutatif et $\varMMo^\dagger$ son symétrisé.
   Montrer que pour tout groupe $\varGrp$ et tout morphisme de monoïde
-  $f : \varMon \to \varGrp$ il existe un unique
-  morphisme de groupe $\relev{f} : \varMon^\dagger \to \varGrp$ tel que
+  $f : \varMMo \to \varGrp$ il existe un unique
+  morphisme de groupe $\relev{f} : \varMMo^\dagger \to \varGrp$ tel que
   $f = \relev{f} \circ \iota$, ce
   que l'on peut représenter par le fait que tout diagramme comme suit peut être
   complété en un diagramme commutatif~:
   \begin{center}
     \begin{tikzcd}
-      \varMon \ar[r,"f"]\ar[d,"\iota"] & \varGrp\\
-      \varMon^\dagger \ar[ur,"\hat f",dashed]
+      \varMMo \ar[r,"f"]\ar[d,"\iota"] & \varGrp\\
+      \varMMo^\dagger \ar[ur,"\hat f",dashed]
     \end{tikzcd}
   \end{center}
 \end{exercise}
