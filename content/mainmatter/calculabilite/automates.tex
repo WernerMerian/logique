@@ -72,7 +72,9 @@ une suite finie de lettres.
   projection $\projP{i}{} : \ABA^n \to \ABA$.
 
   Pour tout mot $\varwd\in\toStA$, on note $\wul\in\bN$ l'entier $n$ tel que
-  $\varwd\in \ABA^n$.
+  $\varwd\in \ABA^n$. On définit aussi, pour $\varwd\in\toStA$ et
+  $\varla\in\ABA$, l'entier $\wul_\varla \in \bN$ comme le nombre d'occurrences
+  de $\varla$ dans $\wul$.
 \end{notation}
 
 \begin{remark}
@@ -321,7 +323,7 @@ traduit par la propriété universelle du monoïde libre.
     $\varwd$ est de longueur nulle correspond à $\relev{f}(\Ewd) = \neuMM$. La
     fonction ainsi définie est unique, étant donnée la construction.
   \item en considérant la fonction proposée précédemment, on voit d'abord que
-    $\relev{f}(x) = f(x)$ pour $x\in \ABA$, et que si $\varwd=\varwv\star\varww$
+    $\relev{f}(x) = f(x)$ pour $x\in \ABA$, et que si $\varwd=\varwv\wdPt\varww$
     alors $\relev{f}(\varwd) = \relev{f}(\varwv)\opM \relev{f}(\varww)$, où
     l'associativité est nécessaire pour pouvoir couper le produit au milieu sans
     changer le résultat.
@@ -381,8 +383,8 @@ donc la définition formelle d'un automate.
   \begin{itemize}
   \item $\varQQ$ est un ensemble fini appelé ensemble des états de $\varAuA$,
   \item $\varqZ \in \varQQ$ est appelé l'état initial,
-  \item $\trA : \varQQ\times \ABA \partialto \varQQ$ est une fonction partielle
-    appelée la fonction (ou table) de transitions,
+  \item $\makeFunNamePartial{\trA}{\varQQ\times \ABA}{\varQQ}$ est une fonction
+    partielle appelée la fonction (ou table) de transitions,
   \item $\varAF \subseteq \varQQ$ est appelé l'ensemble des états terminaux.
   \end{itemize}
 
@@ -397,7 +399,7 @@ que cette valeur appartient à $\varAF$.
 \begin{definition}[Fonction de transition étendue]
   Soit un automate fini déterministe $\varAuA$ sur un alphabet $\ABA$ et $\trA$
   sa fonction de transition. On appelle fonction de transition étendue la
-  fonction $\trAS : \varQQ \times \toStA \partialto \varQQ$ définie par
+  fonction $\makeFunNamePartial{\trAS}{\varQQ\times\toStA}{\varQQ}$ définie par
   induction sur $\toStA$ par~:
   \[\begin{cases}
   \trAS(\varq,\Ewd) = \varq \\
@@ -621,7 +623,8 @@ plus, on ajoute $\Ewd$ dans nos expressoins rationnelles, par souci de
 lisbilité.
 
 \begin{definition}[Interprétation d'une expression rationnelle]
-  On définit la fonction $\Val : \Regex(\ABA)\to\Ratio(\ABA)$ par induction~:
+  On définit la fonction $\makeFunName{\Val}{\Regex(\ABA)}{\Ratio(\ABA)}$ par
+  induction~:
   \begin{itemize}
   \item $\Val(\vide) = \vide$
   \item $\Val(\varla) = \{\varla\}$
@@ -644,8 +647,8 @@ lisbilité.
 
 \begin{remark}
   Cette surjection n'est pas pour autant injective, et ce même en retirant
-  $\Ewd$ des expressions rationnelles. Par exemple, $a + a$ a la même
-  interprétation que $a$.
+  $\Ewd$ des expressions rationnelles. Par exemple, $\varla + \varla$ a la même
+  interprétation que $\varla$.
 \end{remark}
 
 On a ainsi une façon plus simple de manipuler la classe des langages rationnels.
@@ -662,8 +665,8 @@ automates.
 
 \subsection{Constructions d'automates}
 
-Les langages rationnels contiennent les singletons $\{a\}$ pour $a \in \Sigma$,
-l'ensemble vide et sont stables par trois opérations~:
+Les langages rationnels contiennent les singletons $\{\varla\}$ pour
+$\varla \in \ABA$, l'ensemble vide et sont stables par trois opérations~:
 \begin{itemize}
 \item l'union,
 \item la concaténation de langage,
@@ -721,14 +724,14 @@ union, et les $\Ewd$-transitions.
   $\varAuB = (\varQB,\varqZ',\trAB,\varABF)$ deux automates sur un alphabet
   $\ABA$. On définit l'automate union $\UnAuB$ par~:
   \begin{itemize}
-    \begin{minipage}{0.5\textwidth}
+    \begin{minipage}{0.45\textwidth}
     \item $\varQP{\UnAuB} \defeq \varQA\times\varQB$
     \item $\varqP{0,\UnAuB} \defeq (\varqZ,\varqZ')$
     \end{minipage}
-    \begin{minipage}{0.4\textwidth}
+    \begin{minipage}{0.45\textwidth}
     \item
-      $\trAP{\UnAuB}(\varq,\varla)\defeq
-      (\trAA(\varq,\varla),\trAB(\varq,\varla))$
+      $\trAP{\UnAuB}((\varq,\varq'),\varla)\defeq
+      (\trAA(\varq,\varla),\trAB(\varq',\varla))$
     \item $\varAFP{\UnAuB} \defeq \varAAF\times\varQB \cup \varQA\times \varABF$
     \end{minipage}
   \end{itemize}
@@ -741,63 +744,65 @@ union, et les $\Ewd$-transitions.
 \end{proposition}
 
 \begin{proof}
-  On montre d'abord par récurrence sur $u$ que pour tout $u \in \Sigma^\star$,
-  on a
-  \[\delta_{\mathcal A\sqcup\mathcal A'}^\star((q_0,q'_0),u) =
-  (\delta_\mathcal A^\star(q_0,u),\delta_{\mathcal A'}^\star(q'_0,u))\]
+  On montre d'abord par récurrence sur $\varwd$ que pour tout
+  $\varwd \in \toStA$, on a
+  \[\trASP{\UnAuB}((\varqZ,\varqZ'),\varwd) =
+  (\trAAS(\varqZ,\varwd),\trABS(\varqZ',\varwd))\]
   \begin{itemize}
-  \item pour $u = \varepsilon$, le résultat est par définition.
-  \item si l'égalité est vraie pour $u$ et pour tout $a \in \Sigma$, on a
+  \item pour $\varwd = \Ewd$, le résultat est par définition.
+  \item si l'égalité est vraie pour $\varwd$ et pour tout $\varla \in \ABA$, on
+    a
     \begin{align*}
-      \delta_{\mathcal A\sqcup\mathcal A'}^\star ((q_0,q'_0),u\star a) &=
-      \delta_{\mathcal A\sqcup \mathcal A'}(
-      \delta_{\mathcal A\sqcup \mathcal A'}^\star(q_0,q'_0),a)\\
-      &= \delta_{\mathcal A\sqcup\mathcal A'}(
-      (\delta_\mathcal A^\star(q_0,u),\delta_{\mathcal A'}^\star(q'_0,u)),a)\\
-      &= (\delta_\mathcal A(\delta_\mathcal A^\star(q_0,u)),\delta_{\mathcal A'}(
-      \delta_{\mathcal A'}^\star(q'_0,u)))\\
-      &= (\delta_\mathcal A^\star(q_0,u\star a),
-      \delta_{\mathcal A'}^\star(q'_0,u\star a))
+      \trASP{\UnAuB}((\varqZ,\varqZ'),\varwd\wdPt\varla) &=
+      \trAP{\UnAuB}(\trASP{\UnAuB}((\varqZ,\varqZ'),\varwd),\varla)\\
+      &= \trAP{\UnAuB}((\trAAS(\varqZ,\varwd),\trABS(\varqZ',\varwd)),\varla)\\
+      &= (\trAA(\trAAS(\varqZ,\varwd),\varla),
+      \trAB(\trABS(\varqZ',\varwd),\varla))\\
+      &= (\trAAS(\varqZ,\varwd\wdPt\varla),\trABS(\varqZ',\varwd\wdPt\varla))
     \end{align*}
   \end{itemize}
 
-  De plus, $(q,q') \in F\times Q' \cup Q\times F'$ signifie que $q \in F$ ou
-  $q' \in F'$. On en déduit donc, en utilisant le résultat précédent, que
-  \[\mathcal A \sqcup \mathcal A'\models u \iff
-  \mathcal A \models u \lor \mathcal A'\models u\qedhere\]
+  De plus, $(\varq,\varq') \in \varAAF\times \varQB \cup \varQA\times\varABF$
+  signifie que $\varq \in \varAAF$ ou $\varq' \in \varABF$. On en déduit donc,
+  en utilisant le résultat précédent, que
+  \[\UnAuB\satisf \varwd \iff
+  \varAuA \satisf \varwd \lor \varAuB\satisf \varwd\qedhere\]
 \end{proof}
 
 \begin{exercise}[Automate produit]
-  Soient $\mathcal A$ et $\mathcal A'$ deux automates sur un alphabet $\Sigma$.
-  On définit l'automate produit $\mathcal A \times \mathcal A'$ par~:
-  \begin{itemize}
-  \item $Q_{\mathcal A\sqcup \mathcal A'} \defeq Q\times Q'$
-  \item $q_{0,\mathcal A\sqcup \mathcal A'} \defeq (q_0,q'_0)$
-  \item $\delta_{\mathcal A \sqcup \mathcal A'}(q,a) \defeq (\delta_{\mathcal A}(q,a),
-    \delta_{\mathcal A'}(q_a))$
-  \item $F_{\mathcal A \sqcup \mathcal A'} \defeq F\times F'$
-  \end{itemize}
+  Soient $\varAuA$ et $\varAuB$ deux automates sur un alphabet $\ABA$. On
+  définit l'automate produit $\varAuA \times \varAuB$ de la même façon que
+  pour l'automate $\UnAuB$ à l'exception de l'ensemble des états terminaux,
+  qui est donné par
+  \[\varAFP{\varAuA\times\varAuB} \defeq \varAAF \times \varABF\]
+  Montrer que cet automate reconnait $\varLL_{\varAuA} \cap \varLL_{\varAuB}$, en
+  déduire que les langages reconnaissables sont stables par intersection
+  (binaire).
 
-  Montrer que cet automate reconnait
-  $\mathcal L_\mathcal A \cap \mathcal L_{\mathcal A'}$, en déduire que les
-  langages reconnaissables sont stables par intersection (binaire).
+  En s'inspirant de la construction précédente, montrer que pour toute opération
+  booléenne $\makeFunName{f}{\intB^2}{\intB}$ et tous langages $\varLL,\varLL'$
+  reconnaissables par automates, le langage
+  \[f(\varLL,\varLL') \defeq
+  \compr{\varwd \in \toStA}
+        {f(\indicP{\varLL}(\varwd),\indicP{\varLL'}(\varwd)) = 1}\]
+  est aussi un langage reconnaissable.
 \end{exercise}
 
 On veut maintenant montrer la stabilité par concaténation de deux langages et
-par étoile d'un langage. L'idée derrière ces deux constructions est relativement
-simple~: pour deux automates $\mathcal A,\mathcal A'$, l'automate reconnaissant
-la concaténation est une copie de chacun des deux automates, en ajoutant des
-transitions entre les états acceptants de $\mathcal A$ et l'état initial de
-$\mathcal A'$. De même pour l'étoile d'un langage, on ajoute un nouvel état
-initial, acceptant, on le relie à l'ancien état initial et on crée une
+la stabilité par étoile d'un langage. L'idée derrière ces deux constructions est
+relativement simple~: pour deux automates $\varAuA,\varAuB$, l'automate
+reconnaissant la concaténation est une copie de chacun des deux automates, en
+ajoutant des transitions entre les états acceptants de $\varAuA$ et l'état
+initial de $\varAuB$. De même pour l'étoile d'un langage, on ajoute un nouvel
+état initial, acceptant, on le relie à l'ancien état initial et on crée une
 transition entre chaque état acceptant et le nouvel état initial.
 
-Cependant, ces transitions demandent à pouvoir être effectuées automatiquement,
-en ayant la possibilité pour un état de faire (ou non) cette transition avant
-la lecture d'une nouvelle lettre. Cela nous pousse à ajouter deux choses~: le
-non déterminisme, pour pouvoir choisir ou non si l'on fait une transition, et
-les $\varepsilon$-transitions, qui sont des transitions qui, comme décrites
-précédemment, peuvent s'exécuter ou non et sans lecture de lettre.
+Cependant, ces transitions peuvent être effectuées automatiquement, en ayant la
+possibilité pour un état de faire (ou non) cette transition avant la lecture
+d'une nouvelle lettre. Cela nous pousse à ajouter deux choses~: le non
+déterminisme, pour pouvoir choisir ou non si l'on fait une transition, et les
+$\Ewd$-transitions, qui sont des transitions qui, comme décrites précédemment,
+peuvent s'exécuter ou non et sans lecture de lettre.
 
 Commençons par présenter un automate non déterministe~: celui-ci est un automate
 dans lequel, au lieu d'une fonction de transition indiquant à partir d'un état
@@ -808,39 +813,45 @@ présentation équivalente~: à un état et une lettre on associe l'ensemble des
 états possibles à atteindre.
 
 \begin{definition}[Automate fini non déterministe]
-  Soit $\Sigma$ un alphabet. On appelle automate fini non déterministe
-  $\mathcal A$ un quadruplet $(Q,Q_0,\delta,F)$ où~:
+  Soit $\ABA$ un alphabet. On appelle automate fini non déterministe $\varAuA$
+  un quadruplet $(\varQQ,\varQZ,\trA,\varAF)$ où~:
   \begin{itemize}
-  \item $Q$ est un ensemble fini appelé ensemble des états de $\mathcal A$,
-  \item $Q_0\subseteq Q$ est l'ensemble des états initiaux,
-  \item $\delta : Q\times \Sigma \partialto \powerset(Q)$ est la fonction de
-    transition non déterministe,
-  \item $F\subseteq Q$ est l'ensemble des états terminaux.
+  \item $\varQQ$ est un ensemble fini appelé ensemble des états de $\varAuA$,
+  \item $\varQZ\subseteq\varQQ$ est l'ensemble des états initiaux,
+  \item $\makeFunName{\trA}{\varQQ\times\ABA}{\powerset(\varQQ)}$ est la
+    fonction de transition non déterministe,
+  \item $\varAF\subseteq\varQQ$ est l'ensemble des états terminaux.
   \end{itemize}
 \end{definition}
+
+\begin{remark}
+  Dans le cas d'un automate non déterministe, la partialité de la fonction de
+  transition se traduit par le fait que $\trA(\varq) = \vide$, ce qui rend la
+  fonction (de codomaine $\powerset(\varQQ)$) totale.
+\end{remark}
 
 On peut définir la fonction de transition étendue, dont le principe est de
 considérer l'union à chaque fois qu'on prend un ensemble d'états possibles.
 
 \begin{definition}[Fonction de transition étendue]
-  Soit un automate fini non déterministe $\mathcal A$ sur un alphabet $\Sigma$,
-  on note $\delta^\star : Q \times \Sigma^\star \to \powerset(Q)$ sa fonction de
-  transition étendue, définie par induction par~:
+  Soit un automate fini non déterministe $\varAuA$ sur un alphabet $\ABA$,
+  on note $\makeFunName{\trAS}{\varQQ \times \toStA}{\powerset(\varQQ)}$ sa
+  fonction de transition étendue, définie par induction par~:
   \begin{itemize}
-  \item $\delta^\star(q,\varepsilon) = \{q\}$
-  \item $\displaystyle\delta^\star(q,u\star a) =
-    \bigcup_{q' \in \delta^\star(q,u)} \delta(q',a)$
+  \item $\trAS(\varq,\Ewd) = \{\varq\}$
+  \item $\displaystyle\trAS(\varq,\varwd\wdPt\varla) =
+    \bigcup_{\varq' \in \trAS(\varq,\varwd)} \trA(\varq',\varla)$
   \end{itemize}
 \end{definition}
 
 \begin{definition}[Langage accepté]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini non déterministe
-  sur $\Sigma$. On dit que $\mathcal A$ accepte (ou reconnaît) le mot
-  $u \in \Sigma^\star$ s'il existe $q_0 \in Q_0$ tel que
-  $\delta^\star(q_0,u) \cap F\neq\varnothing$, ce qu'on note
-  $\mathcal A \models u$.
-  On définit le langage reconnu par $\mathcal A$ par~:
-  \[\mathcal L_\mathcal A\defeq \{u \in \Sigma^\star \mid \mathcal A \models u\}\]
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate fini non déterministe sur
+  $\ABA$. On dit que $\varAuA$ accepte (ou reconnaît) le mot $\varwd\in\toStA$
+  s'il existe $\varqZ \in \varQZ$ tel que
+  $\trAS(\varqZ,\varwd) \cap \varAF\neq\vide$, ce qu'on note
+  $\varAuA \satisf \varwd$.
+  On définit le langage reconnu par $\varAuA$ par~:
+  \[\varLL_{\varAuA}\defeq \compr{\varwd \in \toStA}{\varAuA \satisf\varwd}\]
 \end{definition}
 
 Un automate fini non déterministe se représente comme un automate fini
@@ -856,63 +867,73 @@ de l'exécution d'une entrée sur une machine~: ici, la trace d'un automate est
 alors la suite des états dans lesquels est la machine en lisant un mot.
 
 \begin{exercise}\label{exo.traces.auto}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini non déterministe
-  sur $\Sigma$. On définit, pour tout $u \in \Sigma^\star$, l'ensemble $\tr(u)$
-  des traces de $u$ sur $\mathcal A$, comme l'ensemble des suites finies
-  $(q_0,\ldots,q_n)$ d'états de $\mathcal A$ dont le premier élément est un
-  élément de $Q_0$ et tel que $\delta(q_i,u_i) = q_{i+1}$ pour tout
-  $i \in \{0,\ldots,n-1\}$. Montrer que $\mathcal A \models u$ si et seulement
-  s'il existe un élément $p \in \tr(u)$ dont le dernier état est un état
-  terminal.
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate fini non déterministe sur
+  $\ABA$. On définit, pour tout $\varwd \in \toStA$, l'ensemble $\tr(\varwd)$
+  des traces de $\varwd$ sur $\varAuA$, comme l'ensemble des suites finies
+  $(\varqP{0},\ldots,\varqP{n})$ d'états de $\varAuA$ dont le premier élément
+  est un élément de $\varQZ$ et tel que $\trA(\varqP{i},\varwd_i) = \varqP{i+1}$
+  pour tout $i \in \intervInt{n}$. Montrer que $\varAuA \satisf\varwd$ si et
+  seulement s'il existe un élément $p \in \tr(\varwd)$ dont le dernier état est
+  un état terminal.
 \end{exercise}
 
 On pourrait s'attendre à ce que relâcher tant de contraintes augmente la
 puissance des automates, mais ce n'est en réalité pas le cas. Il est clair qu'un
 automate déterministe peut être transformé en un automate non déterministe, en
-prenant $Q_0 \defeq \{q_0\}$ et pour fonction de transition non déterministe le
-singleton de l'image par la fonction de transition déterministe. La réciproque,
-elle, demande une construction plus subtile, appelée l'automate des parties.
+prenant $\varQZ \defeq \{\varqZ\}$ et pour fonction de transition non
+déterministe le singleton de l'image par la fonction de transition déterministe.
+La réciproque, elle, demande une construction plus subtile, appelée l'automate
+des parties.
 
 \begin{definition}[Automate des parties]
-  Soit un alphabet $\Sigma$ et un automate fini non déterministe $\mathcal A$
-  sur $\Sigma$. On définit l'automate des parties de $\mathcal A$, noté
-  $\powerset(\mathcal A)$, par~:
+  Soit un alphabet $\ABA$ et un automate fini non déterministe $\varAuA$ sur
+  $\ABA$. On définit l'automate des parties de $\varAuA$, noté
+  $\powerset(\varAuA)$, par~:
   \begin{itemize}
-  \item $Q_{\powerset(\mathcal A)} \defeq \powerset(Q_\mathcal A)$
-  \item $q_0 \defeq Q_0$
-  \item $\delta_{\powerset(\mathcal A)} (R,a) \defeq
-    \bigcup_{q \in R} \delta_{\mathcal A}(q,a)$
-  \item $F_{\powerset(\mathcal A)} \defeq \{R \subseteq Q\mid
-    R\cap F \neq \varnothing\}$
+    \begin{minipage}{0.45\textwidth}
+    \item $\varQP{\powerset(\varAuA)} \defeq \powerset(\varQP{\varAuA})$
+    \item $\varqP{0,\powerset(\varAuA)} \defeq \varQP{0,\varAuA}$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+      \item $\trAP{\powerset(\varAuA)} (P,\varla) \defeq
+        \bigcup_{\varq \in P} \trAP{\varAuA}(\varq,\varla)$
+      \item $\varAFP{\powerset(\varAuA)} \defeq
+        \compr{P \subseteq \varQP{\varAuA}}{P\cap \varAFP{\varAuA} \neq \vide}$
+    \end{minipage}
   \end{itemize}
 \end{definition}
 
 \begin{proposition}
-  Soit un automate non déterministe $\mathcal A$ sur un alphabet $\Sigma$, on a
+  Soit un automate non déterministe $\varAuA$ sur un alphabet $\ABA$, on a
   l'égalité
-  \[\mathcal L_{\mathcal A} = \mathcal L_{\powerset(\mathcal A)}\]
+  \[\varLL_{\varAuA} = \varLL_{\powerset(\varAuA)}\]
 \end{proposition}
 
 \begin{proof}
-  On prouve par induction sur $u$ que pour tout $u \in \Sigma^\star$, on a
-  l'égalité suivante pour tout $R \subseteq Q$~:
-  \[\delta^\star_{\powerset(\mathcal A)}(R,u) = \delta^\star_{\mathcal A}(R,u)\]
+  On prouve par induction sur $\varwd$ que pour tout $\varwd \in \toStA$, on a
+  l'égalité suivante pour tout $P \subseteq \varQP{\varAuA}$~:
+  \[\trASP{\powerset(\varAuA)}(P,\varwd) =
+  \bigcup_{\varq \in P}\trAAS(q,\varwd)\]
+  (où le deuxième terme est une image direct).
   \begin{itemize}
-  \item dans le cas où $u = \varepsilon$, le résultat est direct.
-  \item supposons que l'hypothèse d'induction est valide pour $u$ et montrons
-    le cas $u \star a$~:
+  \item dans le cas où $\varwd = \Ewd$, le résultat est direct.
+  \item supposons que l'hypothèse d'induction est valide pour $\varwd$ et
+    montrons le cas $\varwd\wdPt\varla$~:
     \begin{align*}
-      \delta^\star_{\powerset(\mathcal A)}(R,u\star a) &=
-      \bigcup_{q \in \delta^\star_{\powerset(\mathcal A)}(R,u)}
-      \delta_{\mathcal A}(q,a)\\
-      &= \bigcup_{q \in \delta^\star_\mathcal A(R,u)} \delta_\mathcal A(q,a)\\
-      &= \delta_\mathcal A^\star(R,u\star a)
+      \trASP{\powerset(\varAuA)}(P,\varwd\wdPt\varla) &=
+      \bigcup_{\varq \in \trASP{\powerset(\varAuA)}(P,\varwd)}
+      \trAP{\varAuA}(\varq,\varla)\\
+      &= \bigcup_{\varq \in \bigcup_{\varq' \in P}\trAAS(\varq',\varwd)}
+      \trAA(\varq,\varla)\\
+      &= \bigcup_{\varq' \in P}\bigcup_{\varq \in \trAAS(\varq',\varwd)}
+      \trAA(\varq,\varla)\\
+      &= \bigcup_{\varq \in P}\trAAS(\varq,\varwd\wdPt\varla)
     \end{align*}
   \end{itemize}
   D'où le résultat par induction. On voit alors que la condition pour que
-  $u$ soit accepté, dans les deux automates, revient à
-  \[\delta_{\powerset(\mathcal A)}^\star (Q_0,u) \cap F \neq \varnothing\]
-  donc $\mathcal L_{\powerset(\mathcal A)} = \mathcal L_\mathcal A$.
+  $\varwd$ soit accepté, dans les deux automates, revient à
+  \[\trASP{\powerset(\varAuA)} (\varQZ,\varwd) \cap\varAAF \neq \vide\]
+  donc $\varLL_{\powerset(\varAuA)} = \varLL_{\varAuA}$.
 \end{proof}
 
 \begin{remark}
@@ -922,199 +943,194 @@ elle, demande une construction plus subtile, appelée l'automate des parties.
 \end{remark}
 
 On peut donc utiliser des automates non déterministes pour étudier les langages
-reconnaissables. On introduit maintenant les $\varepsilon$-transitions, qui
+reconnaissables. On introduit maintenant les $\Ewd$-transitions, qui
 ont plus de sens dans le contexte des automates non déterministes.
 
-\begin{definition}[Automate avec $\varepsilon$-transitions]
-  On définit un automate fini non déterministe avec $\varepsilon$-transitions
-  comme un automate fini non déterministe, mais dans lequel la fonction de
-  transition est de la forme
-  $\delta : Q\times (\Sigma \cup \{\varepsilon\}) \partialto Q$.
+\begin{definition}[Automate avec $\Ewd$-transitions]
+  On définit un automate fini non déterministe avec $\Ewd$-transitions comme un
+  automate fini non déterministe, mais dans lequel la fonction de transition est
+  de la forme
+  $\makeFunName{\trA}{\varQQ\times(\ABA \cup \{\Ewd\})}{\powerset(\varQQ)}$.
 \end{definition}
 
-Pour définir l'acceptation d'un mot par un automate avec
-$\varepsilon$-transitions, on utilisera le formalisme des traces, introduit dans
-l'\cref{exo.traces.auto}.
+Pour définir l'acceptation d'un mot par un automate avec $\Ewd$-transitions, on
+utilisera le formalisme des traces, introduit dans l'\cref{exo.traces.auto}.
 
-\begin{definition}[Langage reconnu par un automate avec
-    $\varepsilon$-transitions]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate non déterministe avec
-  $\varepsilon$-transitions sur $\Sigma$. On définit l'ensemble $\tr(u)$ des
-  traces sur un mot $u$ comme l'ensemble des suites finies $(q_0,\ldots,q_n)$
-  d'états de $Q$ où $q_0 \in Q_0$ et telles qu'il existe pour tout
-  $i \in \{0,\ldots,n-1\}$ une lettre (possiblement $\varepsilon$)
-  $a_i \in \Sigma\cup\{\varepsilon\}$ telle que les deux conditions
+\begin{definition}[Langage reconnu par un automate avec $\Ewd$-transitions]
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate non déterministe avec
+  $\Ewd$-transitions sur $\ABA$. On définit l'ensemble $\tr(\varwd)$ des
+  traces sur un mot $\varwd$ comme l'ensemble des suites finies
+  $(\varqZ,\ldots,\varqP{n})$ d'états de $\varQQ$ où $\varqZ \in \varQZ$ et
+  telles qu'il existe pour tout $i \in \intervInt{n}$ une lettre (possiblement
+  $\Ewd$) $\varla_i \in \ABA\cup\{\Ewd\}$ telle que les deux conditions
   suivantes sont vérifiées~:
   \begin{itemize}
-  \item $\delta(q_i,a_i) = q_{i+1}$
-  \item $u = a_0\star\cdots\star a_{n-1}$
+  \item $\varqP{i+1} \in \trA(\varqP{i},\varla_i)$
+  \item $\varwd = \varla_0\wdPt\cdots\wdPt \varla_{n-1}$
   \end{itemize}
-  On dit que $\mathcal A$ accepte le mot $u$
-  s'il existe une suite $(q_0,\ldots,q_n) \in \tr(u)$ telle que $q_n \in F$.
+  On dit que $\varAuA$ accepte le mot $\varwd$ s'il existe une suite
+  $(\varqZ,\ldots,\varqP{n}) \in \tr(\varwd)$ telle que $\varqP{n} \in \varAF$.
 
-  On définit le langage reconnu par $\mathcal A$ comme l'ensemble des mots
-  reconnus par $\mathcal A$.
+  On définit le langage reconnu par $\varAuA$ comme l'ensemble des mots reconnus
+  par $\varAuA$.
 \end{definition}
 
-Les traces dans un automate avec $\varepsilon$-transitions représentent juste
-les exécutions possibles lors de la lecture d'un mot, mais où il est possible
-d'effectuer gratuitement des transitions étiquetées par $\varepsilon$.
+Les traces dans un automate avec $\Ewd$-transitions représentent simplement les
+exécutions possibles lors de la lecture d'un mot, mais où il est possible
+d'effectuer gratuitement des transitions étiquetées par $\Ewd$.
 
-Là encore, il est clair qu'un automate sans $\varepsilon$-transition peut être
-simulé par un automate avec $\varepsilon$-transition, en n'ajoutant aucune
-$\varepsilon$-transition.
+Là encore, il est clair qu'un automate sans $\Ewd$-transition peut être simulé
+par un automate avec $\Ewd$-transition, en n'ajoutant aucune $\Ewd$-transition.
 
-On introduit donc maintenant l'élimination des $\varepsilon$-transitions,
-permettant de construire un automate sans $\varepsilon$-transition mais
-reconnaissant le même langage.
+On introduit maintenant l'élimination des $\Ewd$-transitions, permettant de
+construire un automate sans $\Ewd$-transition mais reconnaissant le même
+langage.
 
-L'idée de l'élimination des $\varepsilon$-transitions est assez simple~: au lieu
-de faire des sauts spontanés dans une $\varepsilon$-transition, on décide de
-faire une grande transition contenant toutes les $\varepsilon$-transitions ainsi
-que la transition qui suit. Il nous faut aussi modifier l'ensemble des états
-terminaux pour ajouter les états qui peuvent atteindre un état terminal
-uniquement en effectuant des $\varepsilon$-transitions.
+L'idée de l'élimination des $\Ewd$-transitions est assez naturelle~: au lieu
+de faire des sauts spontanés dans une $\Ewd$-transition, on décide de faire une
+grande transition contenant toutes les $\Ewd$-transitions ainsi que la
+transition qui suit. Il nous faut aussi modifier l'ensemble des états terminaux
+pour ajouter les états qui peuvent atteindre un état terminal uniquement en
+effectuant des $\Ewd$-transitions.
 
-\begin{definition}[\'Elimination des $\varepsilon$-transitions]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate avec
-  $\varepsilon$-transitions sur $\Sigma$. On définit la relation $\to^\star$ sur
-  les états de $\mathcal A$ comme la plus petite relation  réflexive et
-  transitive contenant la relation
-  \[q\to q' \defeq q' \in \delta(q,\varepsilon)\]
+\begin{definition}[\'Elimination des $\Ewd$-transitions]
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate avec $\Ewd$-transitions sur
+  $\ABA$. On définit la relation $\rtClot{\to}$ sur les états de $\varAuA$ comme
+  la plus petite relation  réflexive et transitive contenant la relation
+  \[\varq\to \varq' \defeq \varq' \in \trA(\varq,\Ewd)\]
 
-  On définit l'automate $\mathcal A_{\not\varepsilon}$ non déterministe sans
-  $\varepsilon$-transition par la construction suivante~:
+  On définit l'automate $\varAuP{\nEwd}$ non déterministe sans $\Ewd$-transition
+  par la construction suivante~:
   \begin{itemize}
-  \item $Q_{\mathcal A_{\not\varepsilon}} \defeq Q_\mathcal A$
-  \item $Q_{0,\mathcal A_{\not\varepsilon}} \defeq Q_{0,\mathcal A}$
-  \item $\displaystyle\delta_{\mathcal A_{\not\varepsilon}}(q,a) \defeq
-    \bigcup_{\genfrac{}{}{0pt}{1}{q' \in Q}{q\to^\star q'}} \delta_{\mathcal A}(q',a)$
-  \item $F_{\mathcal A_{\not\varepsilon}} =\{q \in Q
-    \mid \exists q' \in Q, q \to^\star q' \land q' \in F_\mathcal A\}$
+  \item $\varQP{\varAuP{\nEwd}} \defeq \varQP{\varAuA}$
+  \item $\varQP{0,\varAuP{\nEwd}} \defeq \varQP{0,\varAuA}$
+  \item $\displaystyle\trAP{\varAuP{\nEwd}}(\varq,\varla) \defeq
+    \bigcup_{\genfrac{}{}{0pt}{1}{\varq' \in \varQP{\varAuA}}{\varq\rtClot{\to}\varq'}}
+    \trAP{\varAuA}(\varq',\varla)$
+  \item $\varAFP{\varAuP{\nEwd}} =
+    \compr{\varq \in \varQQ}
+          {\exists \varq'\in\varQQ, \varq \rtClot{\to}\varq' \land
+            \varq' \in \varAFP{\varAuA}}$
   \end{itemize}
 \end{definition}
 
 \begin{proposition}\label{prop.epsi.equiv}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate avec
-  $\varepsilon$-transitions sur $\Sigma$. Alors
-  \[\mathcal L_{\mathcal A} = \mathcal L_{\mathcal A_{\not\varepsilon}}\]
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate avec $\Ewd$-transitions sur
+  $\ABA$. Alors
+  \[\varLL_{\varAuA} = \varLL_{\varAuP{\nEwd}}\]
 \end{proposition}
 
 \begin{proof}
-  On prouve d'abord que $q'\in \delta_{\mathcal A_{\not\varepsilon}}(q,a)$ si et
-  seulement s'il existe une suite finie $(q_0,\ldots,q_n)$ telle que~:
+  On prouve d'abord que $\varq'\in \trAP{\varAuP{\nEwd}}(\varq,\varla)$ si et
+  seulement s'il existe une suite finie $(\varqZ,\ldots,\varqP{n})$ telle que~:
   \begin{itemize}
-  \item $q_0 = q$
-  \item $\forall i \in \{0,\ldots,n-2\}, q_{i+1} \in
-    \delta_{\mathcal A}(q_i,\varepsilon)$
-  \item $q_n \in \delta_{\mathcal A}(q_{n-1},a)$
-  \item $q_n = q'$
+  \item $\varqZ = \varq$
+  \item $\forall i \in \{0,\ldots,n-2\}, \varqP{i+1} \in \trAA(\varqP{i},\Ewd)$
+  \item $\varqP{n} \in \trAA(\varqP{n-1},\varla)$
+  \item $\varqP{n} = \varq'$
   \end{itemize}
-  Pour un sens, on remarque que dans une telle suite, $q_1 \to^\star q_{n-1}$
-  donc $\delta_{\mathcal A_{\not\varepsilon}}(q,a)\supseteq \delta_\mathcal A(q_{n-1},a)$.
-  Pour l'autre sens, on sait par définition qu'il existe $q''$ tel que
-  $q\to^\star q''$ et $q'\in\delta_\mathcal A (q'',a)$, donc il nous reste à
-  vérifier que si $q\to^\star q''$ alors il existe une suite d'états uniquement
-  reliés par des $\varepsilon$-transition, ce qui se fait par induction sur
-  $\to^\star$ (on laisse la vérification au lecteur).
+  Pour un sens, on remarque que dans une telle suite,
+  $\varqZ \rtClot{\to} \varqP{n-1}$, ce qui nous donne l'inclusion
+  $\trAP{\varAuP{\nEwd}}(\varq,\varla)\supseteq \trAA(\varqP{n-1},\varla)$.
+  Pour l'autre sens, on sait par définition qu'il existe $\varq''$ tel que
+  $\varq\rtClot{\to} \varq''$ et $\varq'\in\trAA (\varq'',\varla)$, donc il nous
+  reste à vérifier que si $\varq\rtClot{\to}\varq''$ alors il existe une suite
+  d'états uniquement reliés par des $\Ewd$-transition, ce qui se fait par
+  induction sur $\rtClot{\to}$ (on laisse la vérification au lecteur).
 
-  Ainsi, on a une trace $(q_0,\ldots,q_n)$ dans $\mathcal A$ pour un mot $u$
-  donné si et seulement si $(q'_0,\ldots,q'_p)$, obtenue en supprimant les
-  états reliés par des $\varepsilon$-transitions, est une trace pour $u$ dans
-  $\mathcal A_{\not\varepsilon}$ (réciproquement si on peut ajouter des états
-  reliés par des $\varepsilon$-transitions).
+  Ainsi, on a une trace $(\varqZ,\ldots,\varqP{n})$ dans $\varAuA$ pour un mot
+  $\varwd$ donné si et seulement si $(\varqZ',\ldots,\varqP{p}')$, obtenue en
+  supprimant les états reliés par des $\Ewd$-transitions, est une trace pour
+  $\varwd$ dans $\varAuP{\nEwd}$ (réciproquement si on peut ajouter des états
+  reliés par des $\Ewd$-transitions).
 
-  De plus, un état $q_n$ est terminal dans $\mathcal A_{\not\varepsilon}$ si et
-  seulement s'il existe une suite d'$\varepsilon$-transitions menant à un état
-  terminal~: ainsi une trace terminant sur un tel état dans $\mathcal A$ donne
-  une trace acceptante en ajoutant des $\varepsilon$-transitions.
-  Réciproquement, on récupère une trace acceptante dans
-  $\mathcal A_{\not\varepsilon}$ en supprimant ces $\varepsilon$-transitions.
-
-  Ainsi,
-  \[\mathcal L_{\mathcal A} = \mathcal L_{\mathcal A_{\not\varepsilon}}\]
+  De plus, un état $\varqP{n}$ est terminal dans $\varAuP{\nEwd}$ si et
+  seulement s'il existe une suite d'$\Ewd$-transitions menant à un état
+  terminal~: ainsi une trace terminant sur un tel état dans $\varAuA$ donne une
+  trace acceptante en ajoutant des $\Ewd$-transitions. Réciproquement, on
+  récupère une trace acceptante dans $\varAuP{\nEwd}$ en supprimant ces
+  $\Ewd$-transitions. Ainsi,
+  \[\varLL_{\varAuA} = \varLL_{\varAuP{\nEwd}}\qedhere\]
 \end{proof}
 
-On sait donc maintenant que les automates déterministes, non déterministes et
-non déterministes avec $\varepsilon$-transitions, sont tous équivalents du
+On sait donc que les automates déterministes, non déterministes et
+non déterministes avec $\Ewd$-transitions, sont tous équivalents du
 point de vue de la classe de langage qu'ils reconnaissent.
 
 On peut maintenant prouver la stabilité des langages reconnaissables par
 concaténation de langages et par étoile.
 
 \begin{proposition}\label{prop.concat.ratio}
-  Soit $\Sigma$ un alphabet et $\mathcal A, \mathcal A'$ deux automates non
-  déterministes avec $\varepsilon$-transitions sur $\Sigma$. Alors il existe
-  un automate reconnaissant
-  \[\mathcal L_\mathcal A \star \mathcal L_{\mathcal A'}\]
+  Soit $\ABA$ un alphabet et $\varAuA, \varAuB$ deux automates non déterministes
+  avec $\Ewd$-transitions sur $\ABA$. Alors il existe un automate reconnaissant
+  \[\varLL_{\varAuA} \wdPt \varLL_{\varAuB}\]
 \end{proposition}
 
 \begin{proof}
-  On construit l'automate $\mathcal A''$ dont les états est la somme directe des
-  états de $\mathcal A$ et $\mathcal A'$ (pour simplifier les notations on va
-  considérer les deux ensembles d'états disjoints et considérer leur union), les
-  transitions sont uniquement celles définies au sein de $\mathcal A$ et
-  $\mathcal A'$ sauf entre chaque état $q_f$ de $\mathcal A$ et chaque état
-  initial $q_i$ de $\mathcal A'$ où l'on rajoute une transition
-  $q_f\xrightarrow{\varepsilon} q_i$. Les états initiaux sont ceux de
-  $\mathcal A$ et les états terminaux ceux de $\mathcal A'$.
+  On construit l'automate $\varAuA''$ dont l'ensemble des états est la somme
+  directe des états de $\varAuA$ et $\varAuB$ (pour simplifier les notations on
+  va supposer les deux ensembles d'états disjoints et prendre leur union), les
+  transitions sont uniquement celles définies au sein de $\varAuA$ et $\varAuB$
+  sauf entre chaque état $\varqP{f}$ de $\varAuA$ et chaque état initial
+  $\varqP{i}$ de $\varAuB$ où l'on rajoute une transition
+  $\varqP{f}\xrightarrow{\Ewd}\varqP{i}$. Les états initiaux sont ceux de
+  $\varAuA$ et les états terminaux ceux de $\varAuB$.
 
   Accepter un mot dans cet automate signifie donc avoir une trace
-  $(q_0,\ldots,q_n)$ commençant en un état initial de $\mathcal A$ et terminant
-  dans un état terminal de $\mathcal A'$. Comme la seule façon de passer d'un
-  état de $\mathcal A$ a un état de $\mathcal A'$ est d'utiliser une des
-  $\varepsilon$-transitions ajoutées, on sait que la trace peut se décomposer
-  en $(q_0,\ldots,q_p)$ et $(q_{p+1},\ldots,q_n)$ et ces deux traces sont
-  acceptantes respectivement pour un mot dans $\mathcal L_\mathcal A$ et pour un
-  mot dans $\mathcal L_{\mathcal A'}$, donc la trace est acceptant pour un
-  mot dans $\mathcal L_\mathcal A \star \mathcal L_{\mathcal A'}$.
+  $(\varqZ,\ldots,\varqP{n})$ commençant en un état initial de $\varAuA$ et
+  terminant dans un état terminal de $\varAuB$. Comme la seule façon de passer
+  d'un état de $\varAuA$ a un état de $\varAuB$ est d'utiliser une des
+  $\Ewd$-transitions ajoutées, on sait que la trace peut se décomposer en
+  $(\varqZ,\ldots,\varqP{p})$ et $(\varqP{{p+1}},\ldots,\varqP{n})$ et ces deux
+  traces sont acceptantes respectivement pour un mot dans $\varLL_{\varAuA}$ et
+  pour un mot dans $\varLL_{\varAuB}$, donc la trace est acceptant pour un mot
+  dans $\varLL_{\varAuA} \wdPt \varLL_{\varAuB}$.
 
-  Réciproquement, si on a deux traces $(q_0,\ldots,q_p)$ et
-  $(q_{p+1},\ldots,q_n)$ pour respectivement $u \in \mathcal L_{\mathcal A}$ et
-  $v\in\mathcal L_{\mathcal A'}$, alors $(q_0,\ldots,q_n)$ est une trace
-  acceptante pour $u\star v$.
+  Réciproquement, si on a deux traces $(\varqZ,\ldots,\varqP{p})$ et
+  $(\varqP{p+1},\ldots,\varqP{n})$ pour respectivement
+  $\varwd \in \varLL_{\varAuA}$ et $\varwv\in\varLL_{\varAuB}$, alors
+  $(\varqZ,\ldots,\varqP{n})$ est une trace acceptante pour $\varwd\wdPt\varwv$.
 \end{proof}
 
 On prouve de même qu'ajouter simplement des transitions entre les états
-terminaux et initiaux d'un automate donne le langage de l'étoile. Comme la
+terminaux et initiaux d'un automate donne le l'étoile du langage. Comme la
 preuve est très proche de la preuve précédente, nous préférons la donner en
 exercice.
 
 \begin{definition}[Automate étoile]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$. On définit
-  l'automate étoile $\mathcal A^\star$ par~:
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate non déterministe sur $\ABA$.
+  On définit l'automate étoile $\toSt{\varAuA}$ par~:
   \begin{itemize}
-  \item $Q_{\mathcal A^\star} \defeq Q_\mathcal A \sqcup \{p\}$
-  \item $Q_{0,\mathcal A^\star} \defeq \{p\}$
-  \item $\delta_{\mathcal A^\star}$ est définie comme $\delta_\mathcal A$ mais en
-    ajoutant des $\varepsilon$-transitions entre $p$ et chaque
-    $q_0\in Q_{0,\mathcal A}$, ainsi qu'entre chaque $q_f \in F_\mathcal A$ et
-    $p$.
-  \item $F_{\mathcal A^\star} \defeq \{p\}$.
+  \item $\varQP{\toSt{\varAuA}} \defeq \varQA \sqcup \{p\}$
+  \item $\varQP{0,\toSt{\varAuA}} \defeq \{p\}$
+  \item $\trAP{\toSt{\varAuA}}$ est définie comme $\trAA$ mais en ajoutant des
+    $\Ewd$-transitions entre $p$ et chaque $\varqZ\in\varQP{0,\varAuA}$, ainsi
+    qu'entre chaque $\varqP{f} \in \varAAF$ et $p$.
+  \item $\varAFP{\toSt{\varAuA}} \defeq \{p\}$.
   \end{itemize}
 \end{definition}
 
 \begin{exercise}\label{prop.etoile.ratio}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$, montrer
-  que
-  \[\mathcal L_{\mathcal A^\star} = \mathcal L_{\mathcal A}^\star\]
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate sur $\ABA$, montrer que
+  \[\varLL_{\toSt{\varAuA}} = \toSt{\varLL_{\varAuA}}\]
 \end{exercise}
 
+\noindent
 On déduit donc des constructions effectuées la stabilité par les opérations
 rationnelles.
 
 \begin{corollary}
-  Soit $\Sigma$ un alphabet. La classe $\Reco(\Sigma)$ contient la classe
-  $\Ratio(\Sigma)$.
+  Soit $\ABA$ un alphabet. La classe $\Reco(\ABA)$ contient la classe
+  $\Ratio(\ABA)$.
 \end{corollary}
 
 \begin{proof}
-  On a déjà dit que $\varnothing \in \Reco(\Sigma)$ et que
-  $\{a\}\in \Reco(\Sigma)$ pour tout $a \in \Sigma$. De plus, en utilisant la
-  \cref{prop.union.ratio}, la \cref{prop.concat.ratio} et
-  l'\cref{prop.etoile.ratio}, on en déduit que $\Reco$ est stable par union,
-  concaténation et étoile. On en déduit donc, puisque $\Ratio(\Sigma)$ est la
-  plus petite telle classe, que $\Ratio(\Sigma)\subseteq\Reco(\Sigma)$.
+  On a déjà dit que $\vide \in \Reco(\ABA)$ et que $\{\varla\}\in \Reco(\ABA)$
+  pour tout $\varla \in \ABA$. De plus, en utilisant la \cref{prop.union.ratio},
+  la \cref{prop.concat.ratio} et l'\cref{prop.etoile.ratio}, on en déduit que
+  $\Reco(\ABA)$ est stable par union, concaténation et étoile. On en déduit
+  donc, puisque $\Ratio(\ABA)$ est la plus petite telle classe, que
+  $\Ratio(\ABA)\subseteq\Reco(\ABA)$.
 \end{proof}
 
 Avant de montrer l'inclusion réciproque, il nous faut nous attarder sur les
@@ -1128,8 +1144,8 @@ présenter des propriétés basiques à leur propos. La première est celle
 d'avoir une table de transition totale plutôt que partielle.
 
 \begin{definition}[Automate complet]
-  Un automate $\mathcal A$ est dit complet si la fonction de transition $\delta$
-  est une fonction totale.
+  Un automate $\varAuA$ est dit complet si la fonction de transition $\trA$ est
+  une fonction totale.
 \end{definition}
 
 Il est facile d'assurer cette propriété en ajoutant un état dit \og puits\fg
@@ -1137,63 +1153,77 @@ vers lequel pointent toutes les transitions à ajouter, et les transitions
 partant de cet état.
 
 \begin{proposition}
-  Soit $\mathcal A$ un automate sur un alphabet $\Sigma$, il existe un automate
-  $\mathcal A'$ qui est complet et reconnaît le même langage que $\mathcal A$.
+  Soit $\varAuA$ un automate sur un alphabet $\ABA$, il existe un automate
+  $\varAuB$ qui est complet et reconnaît le même langage que $\varAuA$.
 \end{proposition}
 
 \begin{proof}
-  On construit l'automate $\mathcal A'$ comme décrit ci-dessus~:
+  On construit l'automate $\varAuB$ comme décrit ci-dessus~:
   \begin{itemize}
-  \item $Q' \defeq Q \sqcup \{p\}$
-  \item $q'_0 \defeq q_0$
-  \item $\delta' : Q' \times \Sigma \to Q'$ est défini par disjonction de cas~:
+    \begin{minipage}{0.3\textwidth}
+    \item $\varQQ' \defeq \varQQ \sqcup \{p\}$
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \item $\varqZ' \defeq \varqZ$
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \item $\varAF' \defeq \varAF$
+    \end{minipage}
+  \item $\makeFunName{\trA'}{\varQQ'\times\ABA}{\varQQ'}$ est définie par
+    disjonction de cas~:
     \begin{itemize}
-    \item si $(q,a) \in \dom(\delta)$, alors $\delta'(q,a) = \delta(q,a)$
-    \item sinon, $\delta'(q,a) = p$
+    \item si $(\varq,\varla) \in \dom(\trA)$, alors
+      $\trA'(\varq,\varla) \defeq \trA(\varq,\varla)$
+    \item sinon, $\trA'(\varq,\varla) \defeq p$
     \end{itemize}
-  \item $F' = F$
   \end{itemize}
 
   On veut maintenant prouver que les deux automates reconnaissent le même
-  langage. Soit $u \in \Sigma^\star$, montrons que $\delta^\star(q_0,u)$ est
-  indéfini si et seulement si $\delta'^\star(q_0,u) = p$ et que sinon
-  $\delta'^\star(q_0,u) = \delta^\star(q_0,u)$, par induction sur $u$~:
+  langage. Soit $\varwd \in \toStA$, montrons que $\trAS(\varqZ,\varwd)$ est
+  indéfini si et seulement si $\toSt{\trA'}(\varqZ,\varwd) = p$ et que, sinon,
+  $\toSt{\trA'}(\varqZ,\varwd) = \trAS(\varqZ,\varwd)$, par induction sur
+  $\varwd$~:
   \begin{itemize}
-  \item dans le cas de $\varepsilon$, on sait que
-    $\delta'^\star(q_0,\varepsilon) = \delta^\star(q_0,\varepsilon) = q_0$.
-  \item supposons l'hypothèse vraie pour $u$, et soit $a \in \Sigma$. Supposons
-    que $\delta^\star(q_0,u\star a)$ est indéfinie, on a alors deux cas
-    possibles~:
+  \item dans le cas de $\Ewd$, on sait que
+    $\toSt{\trA'}(\varqZ,\Ewd) = \trA(\varqZ,\Ewd) = \varqZ$.
+  \item supposons l'hypothèse vraie pour $\varwd$, et soit $\varla \in \ABA$.
+    
+    Montrons d'abord que si $\trAS(\varqZ,\varwd)$ est indéfinie, alors
+    $\toSt{\trA'}(\varqZ,\varwd) = p$.
+    La valeur $\trAS(\varqZ,\varwd)$ peut être définie ou indéfinie, nous
+    donnant deux cas~:
     \begin{itemize}
-    \item Si $\delta^\star(q_0,u)$ est indéfinie, alors par hypothèse
-      d'induction $\delta'^\star(q_0,u) = p$ et comme $\delta'(p,a) = p$, on en
-      déduit que $\delta'^\star(q_0,u\star a) = p$.
-    \item Si $\delta^\star(q_0,u) = q$ et $\delta(q,a)$ est indéfini, alors
-      par hypothèse d'induction $\delta'^\star(q_0,u) = q$ et, par définition,
-      $\delta'(q,a) = p$.
+    \item Si $\trAS(\varqZ,\varwd)$ est indéfinie, alors par hypothèse
+      d'induction $\toSt{\trA'}(\varqZ,\varwd) = p$ et comme
+      $\trA'(p,\varla) = p$, on en déduit que
+      $\toSt{\trA'}(\varqZ,\varwd\wdPt\varla) = p$.
+    \item Si $\trAS(\varqZ,\varwd) = \varq$ et $\trA(\varq,\varla)$ est
+      indéfini, alors  $\toSt{\trA'}(\varqZ,\varwd) = \varq$ par hypothèse
+      d'induction puis, par définition, $\toSt{\trA'}(\varq,\varla) = p$.
     \end{itemize}
     
-    Réciproquement, si $\delta'^\star(q_0,u\star a) = p$ alors c'est que la
-    transition a atteint un état puits à un moment, et cela correspondait à
-    une transition non définie dans $\delta$ (la preuve est parfaitement
+    Réciproquement, si $\toSt{\trA'}(\varqZ,\varwd\wdPt\varla) = p$ alors c'est
+    que la transition a atteint un état puits à un moment, et cela correspondait
+    à une transition non définie dans $\trA$ (la preuve est parfaitement
     analogue à celle du sens direct).
 
-    Dans l'autre cas, si $\delta'^\star(q_0,u\star a) = q$ où $q \in Q$, alors
-    on sait que $\delta'^\star(q_0,u) = \delta(q_0,u) = q'$ par hypothèse
-    d'induction, et que $\delta'(q,a) = \delta(q,a)$ par définition,
-    donc $\delta'^\star(q_0,u\star a) = \delta^\star(q_0,u\star a)$.
+    Dans l'autre cas, si $\toSt{\trA'}(\varqZ,\varwd\wdPt\varla) = \varq$ où
+    $\varq \in \varQQ$, alors par hypothèse d'induction on trouve $\varq'$ tel
+    que $\toSt{\trA'}(\varqZ,\varwd) = \trA(\varqZ,\varwd) = \varq'$, donc
+    $\trA'(\varq',\varla) = \trA(\varq',\varla)$ par définition, d'où
+    $\toSt{\trA'}(\varqZ,\varwd\wdPt\varla)=\trAS(\varqZ,\varwd\wdPt\varla)$.
   \end{itemize}
 
   On en déduit donc~:
-  \[\delta^\star(q_0,u) \in F \iff \delta'^\star(q_0,u)\in F\]
-  ce qui est le résultat voulu.
+  \[\trAS(\varqZ,\varwd) \in \varAF \iff \toSt{\trA'}(\varqZ,\varwd)\in \varAF
+  \qedhere\]
 \end{proof}
 
-Une autre propriété importante sur un automate est celle d'automate émondé.
+Une autre propriété importante sur un automate est celle d'être émondé.
 Pour donner une idée de leur intérêt, reprenons la construction précédente.
 En complétant un automate, on ajoute un état puits, mais arriver à cet état
 signifie forcément que la lecture du mot n'arrivera jamais à un état acceptant.
-On peut donc, si on préfère minimiser le nombre d'états qui interviennent
+On peut donc, si on préfère minimiser le nombre d'états qui apparaissent
 effectivement dans l'automate, décider de supprimer notre état puits, mais aussi
 tous les états qui n'arriveront jamais à un état acceptant. De tels états sont
 dits co-accessibles. De façon duale, un état accessible est un état qu'on peut
@@ -1210,21 +1240,20 @@ automate émondé, en ne gardant que les états traversés lors de traces
 acceptantes.
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$. Alors
-  il existe un automate $\mathcal A'$ émondé qui reconnaît le même langage que
-  $\mathcal A$.
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate sur $\ABA$. Alors il existe
+  un automate $\varAuB$ émondé qui reconnaît le même langage que $\varAuA$.
 \end{proposition}
 
 \begin{proof}
-  On remarque que pour toute trace $(q_0,\ldots,q_n)$ acceptante, les états
-  $q_i, i \in \{0,\ldots,n\}$ sont à la fois accessibles et co-accessibles.
-  Ainsi, si une trace contient un état non accessible ou non co-accessible,
-  alors elle n'est pas acceptante. Puisqu'un mot $u$ n'est accepté que lorsqu'il
-  existe une trace acceptante pour $u$, l'ensemble des mots acceptés n'est pas
-  changé en ne gardant que les états à la fois accessibles et co-accessibles. On
-  en déduit que l'automate $\mathcal A'$ induit par $\mathcal A$ en ne prenant
-  que les états intervenant dans des traces acceptantes reconnaît le même
-  langage que $\mathcal A$.
+  On remarque que pour toute trace $(\varqZ,\ldots,\varqP{n})$ acceptante, les
+  états $\varqP{i}, i \in \{0,\ldots,n\}$ sont à la fois accessibles et
+  co-accessibles. Ainsi, si une trace contient un état non accessible ou non
+  co-accessible, alors elle n'est pas acceptante. Puisqu'un mot $\varwd$ n'est
+  accepté que lorsqu'il existe une trace acceptante pour $\varwd$, l'ensemble
+  des mots acceptés n'est pas changé en ne gardant que les états à la fois
+  accessibles et co-accessibles. On en déduit que l'automate $\varAuB$ induit
+  par $\varAuA$ en ne prenant que les états intervenant dans des traces
+  acceptantes reconnaît le même langage que $\varAuA$.
 \end{proof}
 
 Enfin, parlons de la notion d'automate normalisé. Un tel automate est un
@@ -1233,51 +1262,50 @@ unique, le c\oe ur de l'automate et l'état terminal. Celui-ci permet d'avoir
 une forme plus linéaire à un automate.
 
 \begin{definition}[Automate normalisé]
-  Soit $\Sigma$ un alphabet. Un automate normalisé sur $\Sigma$ est un automate
-  sur $\Sigma$ tel qu'il existe un unique état initial, un unique état terminal,
-  tel qu'il n'existe aucune transition d'un état vers l'état initial et aucune
+  Soit $\ABA$ un alphabet. Un automate normalisé sur $\ABA$ est un automate sur
+  $\ABA$ tel qu'il existe un unique état initial, un unique état terminal, tel
+  qu'il n'existe aucune transition d'un état vers l'état initial et aucune
   transition depuis l'état terminal.
 \end{definition}
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate sur $\Sigma$, il existe
-  alors un automate non déterministe avec $\varepsilon$-transitions, normalisé,
-  reconnaissant le même langage que $\mathcal A$.
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate sur $\ABA$, il existe alors
+  un automate non déterministe avec $\Ewd$-transitions, normalisé, reconnaissant
+  le même langage que $\varAuA$.
 \end{proposition}
 
 \begin{proof}
-  On construit l'automate simplement en ajoutant un nouvel état initial $q_0$
-  et un nouvel état terminal $q_f$ et des $\varepsilon$-transitions depuis
-  $q_0$ vers tout état anciennement initial, et de tout état anciennement
-  terminal vers $q_f$.
+  On construit l'automate simplement en ajoutant un nouvel état initial $\varqZ$
+  et un nouvel état terminal $\varqP{f}$ et des $\Ewd$-transitions depuis
+  $\varqZ$ vers tout état anciennement initial, et de tout état anciennement
+  terminal vers $\varqP{f}$.
 \end{proof}
 
 \begin{exercise}
   Montrer que l'automate construit précédemment reconnaît le même langage que
-  $\mathcal A$.
+  $\varAuA$.
 \end{exercise}
 
-On peut aussi procéder à l'élimination des $\varepsilon$-transitions sur un
-tel automate, mais on remarque alors un problème~: si le langage contient
-$\varepsilon$, alors il doit y avoir une transition de $q_0$ à $q_f$ étiquetée
-par $\varepsilon$, ce qui ne peut pas s'éliminer en gardant $q_0$ et $q_f$
-distincts. On a donc besoin d'ajouter que le langage reconnu par $\mathcal A$
-ne contient par $\varepsilon$, si l'on veut renforcer le résultat en donnant un
-automate sans $\varepsilon$-transitions normalisé.
+On peut aussi procéder à l'élimination des $\Ewd$-transitions sur un tel
+automate, mais on remarque alors un problème~: si le langage contient $\Ewd$,
+alors il doit y avoir une transition de $\varqZ$ à $\varqP{f}$ étiquetée par
+$\Ewd$, ce qui ne peut pas s'éliminer en gardant $\varqZ$ et $\varqP{f}$
+distincts. On a donc besoin d'ajouter que le langage reconnu par $\varAuA$ ne
+contient par $\Ewd$, si l'on veut renforcer le résultat en donnant un automate
+sans $\Ewd$-transitions normalisé.
 
-On montre maintenant que $\Reco(\Sigma)\subseteq \Ratio(\Sigma)$. Pour montrer
-cette inclusion, on va construire une expression rationnelle par un processus
-d'élimination d'états depuis un automate. \'Etant donné un automate
-$\mathcal A$, on peut considérer les étiquettes comme des expressions
-rationnelles limitées à un caractère. Avec cette considération, effectuer deux
-transitions $\xrightarrow a \xrightarrow b$ correspond à une seule transition
+On montre maintenant que $\Reco(\ABA)\subseteq \Ratio(\ABA)$. Pour montrer cette
+inclusion, on va construire une expression rationnelle par un processus
+d'élimination d'états depuis un automate. \'Etant donné un automate $\varAuA$,
+on peut considérer les étiquettes comme des expressions rationnelles limitées à
+un caractère. Avec cette considération, effectuer deux transitions
+$\xrightarrow a \xrightarrow b$ correspond à une seule transition
 $\xrightarrow{ab}$. Cela nous donne alors une procédure pour regrouper des
 transitions, et ainsi éliminer des états (puisque l'état du milieu entre la
 transition $a$ et la transition $b$ peut alors être supprimé). On a ainsi un
 algorithme qui construit un expression rationnelle pour un automate. On remarque
-que les $\varepsilon$-transitions sont parfaitement adaptées dans ce contexte,
-puisque $\Val(\varepsilon e) = \Val(e)$, comme on l'attend d'une
-$\varepsilon$-transition.
+que les $\Ewd$-transitions sont parfaitement adaptées dans ce contexte, puisque
+$\Val(\Ewd e) = \Val(e)$, comme on l'attend d'une $\Ewd$-transition.
 
 La procédure à suivre est donc la suivante~:
 \begin{itemize}
@@ -1288,60 +1316,65 @@ La procédure à suivre est donc la suivante~:
 \end{itemize}
 
 \begin{definition}[Automate fini généralisé]
-  Soit $\Sigma$ un alphabet, on appelle un automate fini généralisé un
-  quadruplet $(Q,Q_0,\delta,F)$ tel que~:
+  Soit $\ABA$ un alphabet, on appelle un automate fini généralisé un
+  quadruplet $(\varQQ,\varQZ,\trA,\varAF)$ tel que~:
   \begin{itemize}
-  \item $Q$ est l'ensemble fini des états,
-  \item $Q_0\subseteq Q$ est l'ensemble des états initiaux,
-  \item $\delta : Q \times \Regex(\Sigma) \partialto \powerset(Q)$ est la
-    fonction de transition généralisée,
-  \item $F\subseteq Q$ est l'ensemble des terminaux.
+  \item $varQQ$ est l'ensemble fini des états,
+  \item $\varQZ\subseteq\varQQ$ est l'ensemble des états initiaux,
+  \item $\makeFunName{\trA}{\varQQ \times \Regex(\ABA)}{\powerset(\varQQ)}$
+    est la fonction de transition généralisée,
+  \item $\varAF\subseteq\varQQ$ est l'ensemble des états terminaux.
   \end{itemize}
 \end{definition}
 
 \begin{definition}[Acceptation d'un mot par un automate généralisé]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate généralisé sur $\Sigma$.
-  On dit qu'un mot $u\in \Sigma^\star$ est accepté (ou reconnu) par $\mathcal A$
-  s'il existe une décomposition $u = u_0\star\cdots\star u_{p-1}$ et une suite
-  d'états $(q_0,\ldots,q_p)$ telles que~:
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate généralisé sur $\ABA$. On dit
+  qu'un mot $\varwd\in \toStA$ est accepté (ou reconnu) par $\varAuA$ s'il
+  existe une décomposition de $\varwd$ en une suite de mots
+  $\varwd = \varwd_0\wdPt\cdots\wdPt \varwd_{p-1}$ et une suite d'états
+  $(\varqZ,\ldots,\varqP{p})$ telles que~:
   \begin{itemize}
-  \item $q_0 \in Q_0$
-  \item $q_p \in F$
-  \item $\forall i \in \{0,\ldots,p-1\}, \exists e \in \Regex(\Sigma),
-    u_i \in \Val(e) \land q_{i+1}\in \delta(q_i,e)$
+    \begin{minipage}{0.45\textwidth}
+    \item $\varqZ \in \varQZ$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\varqP{p} \in \varAF$
+    \end{minipage}
+  \item $\forall i \in \intervInt{p}, \exists e \in \Regex(\ABA),
+    \varwd_i \in \Val(e) \land \varqP{i+1}\in \trA(\varqP{i},e)$
   \end{itemize}
 \end{definition}
 
 On voit ici qu'une inclusion évidente existe entre les automates non
 déterministes et les automates généralisés~: il suffit de transformer
-l'étiquette $a$ par le regex $a$. On veut donc maintenant construire le
-processus d'élimination. On a dit précédemment qu'une suite de deux transitions
-peut se transformer en une seule concaténation, ce qui donne l'idée suivante de
-transformation~:
+l'étiquette $\varla$ par le regex $\varla$. On veut donc maintenant construire
+le processus d'élimination. On a dit précédemment qu'une suite de deux
+transitions peut se transformer en une seule concaténation, ce qui donne l'idée
+suivante de transformation~:
 
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[state] (q_0) {$q_0$};
-    \node[state] (q_1) [right = of q_0] {$q_1$};
-    \node[state] (q_2) [right = of q_1] {$q_2$};
+    \node[state] (q_0) {$\varqZ$};
+    \node[state] (q_1) [right = of q_0] {$\varqP{1}$};
+    \node[state] (q_2) [right = of q_1] {$\varqP{2}$};
     \node (use) [right = of q_2] {$\longmapsto$};
-    \node[state] (q_3) [right = of use] {$q_0$};
+    \node[state] (q_3) [right = of use] {$\varqZ$};
     \node (use2) [right = of q_3] {};
-    \node[state] (q_4) [right = of use2] {$q_2$};
+    \node[state] (q_4) [right = of use2] {$\varqP{2}$};
     \path[->,>=latex]
-    (q_0) edge node {$a$} (q_1)
-    (q_1) edge node {$b$} (q_2)
-    (q_3) edge node {$ab$} (q_4);
+    (q_0) edge node {$\varla$} (q_1)
+    (q_1) edge node {$\varlb$} (q_2)
+    (q_3) edge node {$\varla\varlb$} (q_4);
   \end{tikzpicture}
 \end{figure}
 
 En effectuant cette transformation entre chaque paire de transitions passant par
-$q_1$, il semble donc possible d'éliminer l'état $q_1$. Cependant, un cas
-important reste possible~: on peut avoir une boucle sur $q_1$. Dans ce cas, il
-est nécessaire d'ajouter pour chaque expression $e$ étiquetant une boucle,
-l'expression $ae^\star b$ au lieu de simplement $ab$, comme on peut le voir dans
-le diagramme suivant~:
+$\varqP{1}$, il semble donc possible d'éliminer l'état $\varqP{1}$. Cependant,
+un cas important reste possible~: on peut avoir une boucle sur $\varqP{1}$. Dans
+ce cas, il est nécessaire d'ajouter pour chaque expression $e$ étiquetant une
+boucle, l'expression $\varla \toSt{e}\varlb$ au lieu de simplement
+$\varla\varlb$, comme on peut le voir dans le diagramme suivant~:
 
 \begin{figure}[H]
   \centering
@@ -1361,51 +1394,54 @@ le diagramme suivant~:
   \end{tikzpicture}
 \end{figure}
 
-Il reste un souci~: il est possible qu'il existe plusieurs transitions
+Il reste un dernier souci~: il est possible qu'il existe plusieurs transitions
 distinctes entre deux états donnés. Pour contrer ça, on s'assure d'abord qu'on
 peut, sans perte de généralité, considérer qu'un automate généralisé n'a qu'au
 plus une transition d'un état à un autre.
 
-On introduit une nouvelle notation~: on décrit les transitions avec $R_\delta$
-définie par la formule suivante~:
-\[R_\delta(q,e,q') \defeq q' \in \delta(q,e)\]
+On introduit une nouvelle notation~: on décrit la relation de transition avec
+$\varRR_{\trA}$ définie par la formule suivante~:
+\[\varRR_{\trA}(\varq,e,\varq') \defeq \varq' \in \trA(\varq,e)\]
 On définit aussi la notation $\sum e_i$ pour des expressions rationnelles
-$e_1,\ldots,e_n$, comme $\varnothing$ si $n = 0$ et de façon naturelle en
+$e_1,\ldots,e_n$, comme $\vide$ si $n = 0$ et de façon naturelle en
 itérant l'opération $+$ sinon.
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate généralisé sur $\Sigma$.
-  Il existe alors un automate généralisé $\mathcal A'$, équivalent à
-  $\mathcal A$, tel que pour tous états $q,q'$ il existe exactement une
-  expression $e$ telle que $R_\delta(q,e,q')$.
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate généralisé sur $\ABA$. Il
+  existe alors un automate généralisé $\varAuB$, équivalent à $\varAuA$, tel que
+  pour tous états $\varq,\varq'$ il existe exactement une expression $e$ telle
+  que $\varRR_{\trA}(\varq,e,\varq')$.
 \end{proposition}
 
 \begin{proof}
-  On construit $\mathcal A'$ en remplaçant pour tous états $q,q'$ les
+  On construit $\varAuB$ en remplaçant pour tous états $\varq,\varq'$ les
   expressions les reliant par l'unique expressions
-  \[\sum_{\genfrac{}{}{0pt}{1}{e \in \Regex(\Sigma)}{R_\delta(q,e,q')}} e\]
-  Soit un mot $u\in \Sigma^\star$. On considère une trace $(q_0,\ldots,q_n)$
-  pour $u$, une décomposition $u = u_0\star\cdots\star u_{n-1}$ et une suite
-  $e_0,\ldots, e_{n-1}$ telles que $u_i \in \Val(e_i)$ et
-  $R_\delta(q_i,e_i,e_{i+1})$, pour tous $i \in \{0,\ldots,n-1\}$.
-  Cette décomposition est aussi valide dans $\mathcal A'$, puisque si
-  $a_i \in \Val(e_i)$, $u_i$ appartient à la somme des $e$ pour
-  $R_\delta(q_i,e,q_{i+1})$. Réciproquement, appartenir à la somme signifie qu'on
-  peut trouver $e$ tel que $R_\delta(q_i,e,q_{i+1})$ telle que
-  $a_i \in \Val(e_i)$. On en déduit donc que les traces acceptantes sont
-  identiques dans les deux automates, et comme les états initiaux et terminaux
-  sont les mêmes, $\mathcal A$ et $\mathcal A'$ sont équivalents.
+  \[\sum_{\genfrac{}{}{0pt}{1}{e \in \Regex(\ABA)}{\varRR_{\trA}(\varq,e,\varq')}} e\]
+  Soit un mot $\varwd\in \toStA$. On considère une trace
+  $(\varqZ,\ldots,\varqP{n})$ pour $\varwd$, une décomposition
+  $\varwd = \varwd_0\wdPt\cdots\wdPt \varwd_{n-1}$ et une suite
+  $e_0,\ldots, e_{n-1}$ telles que $\varwd_i \in \Val(e_i)$ et
+  $\varRR_{\trA}(\varqP{i},e_i,\varqP{i+1})$, pour tous $i \in \intervInt{n}$.
+  Cette décomposition est aussi valide dans $\varAuB$, puisque si
+  $\varwd_i \in \Val(e_i)$, $u_i$ appartient à la somme des $e$ pour
+  $\varRR_{\trA}(\varqP{i},e,\varqP{i+1})$. Réciproquement, appartenir à la somme
+  signifie qu'on peut trouver $e$ tel que
+  $\varRR_{\trA}(\varqP{i},e,\varqP{i+1})$ telle que $\varwd_i \in \Val(e_i)$. On
+  en déduit donc que les traces acceptantes sont identiques dans les deux
+  automates, et comme les états initiaux et terminaux sont les mêmes, $\varAuA$
+  et $\varAuB$ sont équivalents.
 \end{proof}
 
 \begin{remark}
   On ajoute potentiellement de nombreuses transitions en considérant des
-  transitions de la forme $a\xrightarrow \varnothing b$, mais celles-ci ont le
-  même rôle que l'absence de transition (puisque $u \in \Val(\varnothing)$ n'est
+  transitions de la forme $\varq\xrightarrow\vide\varq'$, mais celles-ci ont le
+  même rôle que l'absence de transition (puisque $\varwd \in \Val(\vide)$ n'est
   pas possible). On peut donc maintenant définir l'unique expression reliant
-  deux états, ce qu'on écrit $e(q,q')$. Ainsi accepter un mot $u$ signifie
-  obtenir une trace $(q_0,\ldots,q_n)$ où $q_0$ est initial, $q_n$ terminal et
-  une décomposition $u = u_1\star \cdots u_{n-1}$ où
-  $u_i \in \Val(e(q_i,q_{i+1}))$.
+  deux états, ce qu'on écrit $e(\varq,\varq')$. Ainsi accepter un mot $\varwd$
+  signifie obtenir une trace $(\varqZ,\ldots,\varqP{n})$ où $\varqZ$ est
+  initial, $\varqP{n}$ terminal et avoir une décomposition
+  $\varwd = \varwd_1\wdPt \cdots\wdPt \varwd_{n-1}$ où
+  $\varwd_i \in \Val(e(\varqP{i},\varqP{i+1}))$.
 \end{remark}
 
 On introduit maintenant le lemme essentiel menant au théorème souhaité~:
@@ -1413,82 +1449,88 @@ On introduit maintenant le lemme essentiel menant au théorème souhaité~:
 calculé.
 
 \begin{lemma}\label{lem.elim.state}
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate généralisé contenant
-  exactement une transition entre chaque deux états. Soit $q$ un état ni initial
-  ni terminal. On définit l'automate $\mathcal A'$ par~:
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate généralisé contenant
+  exactement une transition entre chaque deux états. Soit $\varq$ un état ni
+  initial ni terminal. On définit l'automate $\varAuB$ par~:
   \begin{itemize}
-  \item $Q_{\mathcal A'} \defeq Q_{\mathcal A} \setminus \{q\}$
-  \item $Q_{0,\mathcal A'} \defeq Q_{0,\mathcal A'}$
-  \item $e(q_1,q_2) \defeq e(q_1,q) (e(q,q))^\star e(q,q_2) + e(q_1,q_2)$
-  \item $F_{\mathcal A'} \defeq F_{\mathcal A}$
+  \item $\varQB \defeq \varQA \setminus \{q\}$
+  \item $\varQP{0,\varAuB} \defeq \varQP{0,\varAuA}$
+  \item $e(\varqP{1},\varqP{2}) \defeq e(\varqP{1},\varq)
+    \toSt{(e(\varq,\varq))} e(\varq,\varqP{2}) + e(\varqP{1},\varqP{2})$
+  \item $\varAFP{\varAuB} \defeq \varAFP{\varAuA}$
   \end{itemize}
-  Alors $\mathcal A'$ reconnaît le même langage que $\mathcal A$.
+  Alors $\varAuB$ reconnaît le même langage que $\varAuA$.
 \end{lemma}
 
 \begin{proof}
-  Si on trouve une trace $(q_0,\ldots,q_n)$ acceptante pour un mot $u$ dans
-  $\mathcal A$, alors en supprimant les occurrences de $q$ dans cette trace
-  on obtient une trace acceptante pour $u$ dans $\mathcal A'$, puisque pour
-  $q_{i-1},q,q_{i+1}$ et deux facteurs $u_{i-1},u_i$ apparaissant dans la trace
-  (respectivement la décomposition de $u$), on peut les remplacer par
-  $q_i,q_{i+1}$ et $u_{i-1}\star u_i$, et cela donnera une transition valide pour
-  $\mathcal A'$. Entre deux états $q_{i-1},q_i$ où $q$ n'apparaît pas, comme
-  on sait que
-  $\Val(e_{\mathcal A}(q_{i-1},q_i))\subseteq \Val(e_{\mathcal A'}(q_{i-1},q_i))$
+  Si on trouve une trace $(\varqZ,\ldots,\varqP{n})$ acceptante pour un mot
+  $\varwd$ dans $\varAuA$, alors en supprimant les occurrences de $\varq$ dans
+  cette trace on obtient une trace acceptante pour $\varwd$ dans $\varAuB$,
+  puisque pour $\varqP{i-1},\varq,\varqP{i+1}$ et deux facteurs
+  $\varwd_{i-1},\varwd_i$ apparaissant dans la trace (respectivement la
+  décomposition de $\varwd$), on peut les remplacer par
+  $\varqP{i},\varqP{i+1}$ et $\varwd_{i-1}\wdPt \varwd_i$, et cela donnera une
+  transition valide pour $\varAuB$. Entre deux états $\varqP{i-1},\varqP{i}$ où
+  $\varq$ n'apparaît pas, comme on sait que
+  $\Val(e_{\varAuA}(\varqP{i-1},\varqP{i}))\subseteq
+  \Val(e_{\varAuB}(\varqP{i-1},\varqP{i}))$
   (car on a une union), on en déduit le résultat pour le reste de la trace.
 
-  Réciproquement, si on a une trace valide pour $\mathcal A'$ alors, entre deux
-  états $q_{i},q_{i+1}$, on a soit un mot $u_i$ qui est dans
-  $\Val(e_{\mathcal A}(q_i,q_{i+1}))$, soit on peut remplacer ces deux états par
-  $(q_i,q,q_{i+1})$ pour faire une trace valide pour $\mathcal A$.
+  Réciproquement, si on a une trace valide pour $\varAuB$ alors, entre deux
+  états $\varqP{i},\varqP{i+1}$, on a soit un mot $\varwd_i$ qui est dans
+  $\Val(e_{\varAuA}(\varqP{i},\varqP{i+1}))$, soit on peut remplacer ces deux
+  états par $(\varqP{i},\varq,\varqP{i+1})$ pour faire une trace valide pour
+  $\varAuA$.
 \end{proof}
 
+\noindent
 On peut donc enfin construire une expression rationnelle à partir d'un automate.
 
 \begin{proposition}
-  Soit un langage reconnaissable $\mathcal L$, alors il existe une expression
-  rationnelle $e$ telle que $\Val(e) = \mathcal L$.
+  Soit un langage reconnaissable $\varLL$, alors il existe une expression
+  rationnelle $e$ telle que $\Val(e) = \varLL$.
 \end{proposition}
 
 \begin{proof}
   On sait qu'un langage reconnaissable peut être reconnu par un automate non
-  déterministe avec $\varepsilon$-transitions. On pose donc $\mathcal A$ un
-  tel automate, reconnaissant $\mathcal L$. On le normalise et lui associe
-  naturellement un automate généralisé $\mathcal A'$ qui contient exactement une
-  transition entre deux de ses états. En utilisant le \cref{lem.elim.state},
-  on sait donc qu'on peut éliminer n'importe quel état qui n'est ni initial ni
-  terminal~: on peut donc itérer ce lemme pour obtenir un automate généralisé
-  $\mathcal A''$ qui reconnait le même langage $\mathcal L$ que $\mathcal A'$,
-  et qui ne contient qu'un état initial et un état terminal (car l'automate
-  a été choisi normalisé). Notre automate est donc de la forme~:
+  déterministe avec $\Ewd$-transitions. On pose donc $\mathcal A$ un tel
+  automate, reconnaissant $\varLL$. On le normalise et lui associe naturellement
+  un automate généralisé $\varAuB$ qui contient exactement une transition entre
+  deux de ses états. En utilisant le \cref{lem.elim.state}, on sait donc qu'on
+  peut éliminer n'importe quel état qui n'est ni initial ni terminal~: on peut
+  donc itérer ce lemme pour obtenir un automate généralisé $\varAuA''$ qui
+  reconnait le même langage $\varLL$ que $\varAuB$, et qui ne contient qu'un
+  état initial et un état terminal (car l'automate a été choisi normalisé).
+  Notre automate est donc de la forme~:
   \begin{figure}[h]
     \centering
     \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-      \node[state,initial] (q_0) {$q_0$};
-      \node[state,accepting] (q_1) [right = of q_0] {$q_1$};
+      \node[state,initial] (q_0) {$\varqZ$};
+      \node[state,accepting] (q_1) [right = of q_0] {$\varqP{1}$};
       \path[->,>=latex]
       (q_0) edge node {$e$} (q_1);
     \end{tikzpicture}
   \end{figure}
   
-  On en déduit donc que pour tout mot $u \in \Sigma^\star$, on a l'équvalence
+  On en déduit donc que pour tout mot $\varwd \in \toStA$, on a l'équvalence
   suivante~:
-  \[u \in \mathcal L \iff u \in \Val(e)\]
-  Donc il existe $e$ tel que $\mathcal L = \Val(e)$.
+  \[\varwd \in \varLL \iff \varwd \in \Val(e)\]
+  Donc il existe $e$ tel que $\varLL = \Val(e)$.
 \end{proof}
 
-On en déduit donc le théorème de Kleene~:
+\noindent
+On a ainsi les deux sens du théorème de Kleene.
 
 \begin{theorem}[Kleene \cite{Kleene1951RepresentationOE}]
-  Soit $\Sigma$ un alphabet. Les classes $\Ratio(\Sigma)$ et $\Reco(\Sigma)$
-  sont égales.
+  Soit $\ABA$ un alphabet. Les classes $\Ratio(\ABA)$ et $\Reco(\ABA)$ sont
+  égales.
 \end{theorem}
 
 \begin{remark}
   Ces deux équivalences sont algorithmiques~: elles permettent de construire
-  de manière effective, étant donné un automate $\mathcal A$, une expression
-  rationnelle $e(\mathcal A)$ reconnaissant le même langage, et inversement de
-  construire un automate $\mathcal A(e)$ depuis une expression rationnelle $e$
+  de manière effective, étant donné un automate $\varAuA$, une expression
+  rationnelle $e(\varAuA)$ reconnaissant le même langage, et inversement de
+  construire un automate $\varAuA(e)$ depuis une expression rationnelle $e$
   (il faut alors utiliser l'automate union, la concaténation et l'étoile
   d'automates pour obtenir l'automate depuis une expression rationnelle).
 \end{remark}
@@ -1518,52 +1560,64 @@ lemme de l'étoile. Celui-ci nous indique une condition nécessaire à ce qu'un
 langage soit rationnel, mais non suffisante.
 
 \begin{lemma}[de l'étoile]
-  Soit un langage rationnel $\mathcal L$ sur un alphabet $\Sigma$. Alors il
-  existe un entier $N \in \mathbb N$ tel que pour tout mot $u\in\mathcal L$ de
-  longueur supérieure à $N$, il existe une décomposition $u = vws$ telle que
-  \[\forall n \in \mathbb N, vw^ns \in \mathcal L\]
+  Soit un langage rationnel $\varLL$ sur un alphabet $\ABA$. Alors il existe un
+  entier $N \in \bN$ tel que pour tout mot $\varwd\in\varLL$ de longueur
+  supérieure à $N$, il existe une décomposition $\varwd = \varwx\varwv\varwy$
+  telle que
+  \[\begin{cases}
+  |\varwv| > 0\\
+  |\varwx\varwv| \leq N\\
+  \forall n \in \bN, \varwx\varwv^n\varwy \in \mathcal L
+  \end{cases}\]
 \end{lemma}
 
 La preuve de ce résultat se base principalement sur l'idée de trouver une boucle
 dans la lecture d'un mot~: si un mot est assez long, alors il finira par
 repasser par un état, et on pourra alors itérer cette boucle. En prenant
-une trace $(q_0,\ldots,q_f)$, passant deux fois par $q_i$, on voudra avoir
-le chemin suivant~:
+une trace $(\varqZ,\ldots,\varqP{f})$, passant deux fois par $\varqP{i}$, on
+voudra avoir le chemin suivant~:
 
 \begin{figure}[H]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-      \node[state,initial] (q_0) {$q_0$};
-      \node[state] (q_1) [right = of q_0] {$q_i$};
-      \node[state] (q_2) [right = of q_1] {$q_i$};
-      \node[state,accepting] (q_3) [right = of q_2] {$q_f$};
+      \node[state,initial] (q_0) {$\varqZ$};
+      \node[state] (q_1) [right = of q_0] {$\varqP{i}$};
+      \node[state] (q_2) [right = of q_1] {$\varqP{i}$};
+      \node[state,accepting] (q_3) [right = of q_2] {$\varqP{f}$};
       \path[->,>=latex]
-      (q_0) edge node {$v$} (q_1)
-      (q_1) edge node {$w$} (q_2)
-      (q_2) edge node {$s$} (q_3);
+      (q_0) edge node {$\varwx$} (q_1)
+      (q_1) edge node {$\varwv$} (q_2)
+      (q_2) edge node {$\varwy$} (q_3);
   \end{tikzpicture}
 \end{figure}
 
 \begin{proof}
-  Puisque $\mathcal L$ est un langage rationnel, on pose $\mathcal A$ un
-  automate (déterministe, sans $\varepsilon$-transitions) reconnaissant
-  $\mathcal L$. On pose $N = |Q| + 1$, prouvons que la propriété souhaitée est
-  vraie pour ce choix de $N$~:
+  Puisque $\varLL$ est un langage rationnel, on pose $\varAuA$ un automate
+  (déterministe, sans $\Ewd$-transitions) reconnaissant $\varLL$. On pose
+  $N = \Card(\varQQ) + 1$, prouvons que la propriété souhaitée est vraie pour ce
+  choix de $N$~:
 
-  Soit $u\in\mathcal L$ de longueur $n \geq N$. Comme $u \in \mathcal L$, on
-  peut trouver une trace acceptante $(q_0,\ldots,q_n)$ pour $u$ dans
-  $\mathcal A$. Comme $n \geq N$, on en déduit que $n > |Q|$, donc par le
-  principe des tiroirs, on trouve $q$ tel qu'il existe au moins deux occurrences
-  de $q$ dans notre trace. On coupe alors notre trace selon deux telles
-  occurrences~: $(q_0,\ldots,q_i)$, $(q_i,\ldots,q_j)$ et $(q_j,\ldots,q_n)$
-  où $q_i = q_j = q$. De même, on peut découper $u = vws$ de telle sorte que
-  $(q_0,\ldots,q_i)$ est une trace pour $v$ de $q_0$ à $q$,
-  $(q_i,\ldots,q_j)$ est une trace pour $w$ de $q$ à $q$
-  et $(q_j,\ldots,q_n)$ est une trace pour $s$ de $q$ à $q_n$. On en déduit
-  alors qu'en concaténant $p$ fois la suite $(q_i,\ldots,q_j)$ au milieu, on
-  obtient une trace acceptante pour $vw^ps$. Ainsi on en déduit~:
-  \[\forall p \in \mathbb N, vw^ps\in \mathcal L\]
-  D'où le résultat souhaité pour $N = |Q| + 1$.
+  Soit $\varwd\in\varLL$ de longueur $n \geq N$. Comme $\varwd \in \varLL$, on
+  peut trouver une trace acceptante $(\varqZ,\ldots,\varqP{n})$ pour $\varwd$
+  dans $\varAuA$. Comme $n \geq N$, on en déduit que $n > |\varQQ|$, donc par le
+  principe des tiroirs, on trouve $\varq$ tel qu'il existe au moins deux
+  occurrences de $\varq$ dans notre trace. On coupe alors notre trace selon deux
+  telles occurrences~: $(\varqZ,\ldots,\varqP{u})$,
+  $(\varqP{i},\ldots,\varqP{j})$ et $(\varqP{j},\ldots,\varqP{n})$ où
+  $\varqP{i} = \varqP{j} = \varq$. De même, on peut découper
+  $\varwd = \varwx\varwv\varwy$ de telle sorte que
+  $(\varqZ,\ldots,\varqP{i})$ est une trace pour $\varwx$ de $\varqZ$ à $\varq$,
+  $(\varqP{i},\ldots,\varqP{j})$ est une trace pour $\varwv$ de $\varq$ à
+  $\varq$ et
+  $(\varqP{j},\ldots,\varqP{n})$ est une trace pour $\varwy$ de $\varq$ à
+  $\varqP{n}$. Ce raisonnement peut s'appliquer en considérant uniquement les
+  $N$ premier élément de la trace totale, donc on peut trouver cette
+  décomposition avec $|\varwx\varwv| \leq N$. De plus, puisque $\varq$ a deux
+  occurrences distinctes, on sait que $\varwv \neq \Ewd$.
+  Enfin, on remarque qu'en concaténant $p$ fois la suite
+  $(\varqP{i},\ldots,\varqP{j})$ au milieu, on obtient une trace acceptante pour
+  $\varwx\varwv^p\varwy$. Le résultat est donc vérifié pour
+  $N = \Card(\varq+1)$.
 \end{proof}
 
 \begin{remark}
@@ -1573,22 +1627,24 @@ le chemin suivant~:
   lemme est alors vrai par vacuité.
 
   Un autre point à relever concerne le fait que, dans notre décomposition, on a
-  aussi le fait que $vs \in \mathcal L$, car supprimer la boucle conserve aussi
-  la validité de la trace.
+  aussi le fait que $\varwx\varwy \in \varLL$, car supprimer la boucle conserve
+  aussi la validité de la trace.
 
-  Enfin, un point plus important~: ce nombre $N$ existe pour un langage
-  $\mathcal L$ donné, mais il n'est pas uniforme puisqu'il dépend du choix de
-  l'automate. On pourrait considérer le $N$ minimal pour tous les automates
-  possibles, mais celui-ci n'a pas de construction explicite
-  \latinexpr{a priori}. On va en fait pouvoir montrer que ce $N$ minimal
-  correspond au $N$ associé à un automate particulier, et qu'on peut donc
-  choisir un $N$ de façon uniforme en fonction de $\mathcal L$.
+  Enfin, un point plus important~: ce nombre $N$ existe pour un langage $\varLL$
+  donné, mais il n'est pas uniforme puisqu'il dépend du choix de l'automate. On
+  pourrait considérer le $N$ minimal pour tous les automates possibles, mais
+  celui-ci n'a pas de construction explicite \latinexpr{a priori}. On va en fait
+  pouvoir montrer que ce $N$ minimal correspond au $N$ associé à un automate
+  particulier, et qu'on peut donc choisir un $N$ de façon uniforme en fonction
+  de $\varLL$.
 \end{remark}
 
 \begin{exercise}
-  En utilisant le lemme précédent, montrer que le langage suivante n'est pas
+  En utilisant le lemme précédent, montrer que le langage suivant n'est pas
   rationnel~:
-  \[\mathcal L \defeq \{0^n1^n\mid n \in \mathbb N\}\]
+  \[\varLL \defeq \compr{0^n1^n}{n \in \bN}\]
+  Faire de même pour le langage
+  \[\varLL' \defeq \compr{\varwd\in\toSt{\btwo}}{\wul_0 = \wul_1}\]
 \end{exercise}
 
 On souhaite maintenant affiner le résultat en cherchant une condition non
@@ -1598,71 +1654,100 @@ langages rationnels.
 Pour y arriver, on a besoin d'une premier définition~: celle de quotient gauche.
 
 \begin{definition}[Quotient gauche]
-  Soit $\Sigma$ un alphabet et $\mathcal L$ un langage. Pour tout
-  $u \in \Sigma^\star$, on définit le quotient gauche (ou résiduel) de
-  $\mathcal L$ par $u$ comme~:
-  \[u^{-1}\mathcal L\defeq \{v \in \Sigma^\star\mid u\star v \in \mathcal L\}\]
+  Soit $\ABA$ un alphabet et $\varLL$ un langage. Pour tout $\varwd \in \toStA$,
+  on définit le quotient gauche (ou résiduel) de $\varLL$ par $\varwd$ comme~:
+  \[\luLq\defeq \compr{\varwv \in \toStA}{\varwd\wdPt\varwv \in \varLL}\]
 \end{definition}
 
-Le quotient gauche par $u$ peut se voir au niveau des automates~: si on prend
-un automate qui reconnaît $\mathcal L$, la lecture de $u$ depuis l'état
-initial mène à un état $q$, et l'ensemble $u^{-1}\mathcal L$ est l'ensemble des
-mots acceptés si l'on remplace l'état initial par $q$, c'est-à-dire l'ensemble
-des mots qui finissent la lecture de $u$ en une lecture acceptante. On remarque
-en particulier que $\varepsilon \in u^{-1}\mathcal L$ si et seulement si
-$u \in \mathcal L$.
+Le quotient gauche par $\varwd$ peut se voir au niveau des automates~: si on
+prend un automate qui reconnaît $\varLL$, la lecture de $\varwd$ depuis l'état
+initial mène à un état $\varq$, et l'ensemble $\luLq$ est l'ensemble des mots
+acceptés si l'on remplace l'état initial par $\varq$, c'est-à-dire l'ensemble
+des mots qui finissent la lecture de $\varwd$ en une lecture acceptante. On
+remarque en particulier que $\Ewd \in \luLq$ si et seulement si
+$\varwd \in \varLL$.
 
-Cela motive notre construction syntaxique~: les différents $u^{-1}\mathcal L$
-peuvent naturellement former une structure d'automates, puisque les transitions
-peuvent se définir par $\delta(u^{-1}\mathcal L,a) = (u\star a)^{-1}\mathcal L$.
-On a aussi défini les états terminants avec la remarque précédente, et l'état
-initial est simplement $\mathcal L = \varepsilon^{-1}\mathcal L$. Un tel
-automate, qu'on appelle automate syntaxique, respecte notre définition
-d'automate lorsque le nombre d'états est fini, ce qui nous donne en fait le
-théorème de Myhill-Nérode.
+Cela motive notre construction syntaxique~: les différents $\luLq$ peuvent
+naturellement former une structure d'automates, puisque les transitions peuvent
+se définir comme étant la transition
+$\trA(\luLq,\varla) \defeq \luLP{(\varwd\wdPt\varla)}$. On a aussi défini les
+états terminants avec la remarque précédente, et l'état initial est simplement
+$\varLL = \luLP{\Ewd}$. Un tel automate, qu'on appelle automate syntaxique,
+respecte notre définition d'automate lorsque le nombre d'états est fini, ce qui
+nous donne en fait le théorème de Myhill-Nérode.
 
 \begin{theorem}[Myhill-Nérode \cite{Nerode1963-NERLAT-2}]
-  Soit $\Sigma$ un alphabet et $\mathcal L$ un langage sur $\Sigma$. Le langage
-  $\mathcal L$ est rationnel si et seulement si l'ensemble
-  $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$ est fini.
+  Soit $\ABA$ un alphabet et $\varLL$ un langage sur $\ABA$. Le langage $\varLL$
+  est rationnel si et seulement si l'ensemble $\compr{\luLq}{\varwd\in\toStA}$
+  est fini.
 \end{theorem}
 
 \begin{proof}
-  Supposons que $\mathcal L$ est rationnel. On trouve un automate $\mathcal A$
-  déterministe reconnaissant $\mathcal L$. On construit alors une surjection de
-  l'ensemble des états vers l'ensemble des $u^{-1}\mathcal L$ pour
-  $u\in \Sigma^\star$. Pour cela, pour chaque état $q \in Q$ on définit
-  l'automate $\mathcal A_q$ où l'état initial est remplacé par $q$. On définit
-  alors l'ensemble
-  \[f(q) \defeq \{u \in \Sigma^\star\mid \mathcal A_q \models u\}\]
-  La fonction $f$ est surjective~: pour tout $u$, en prenant
-  $q_u \defeq \delta(q_0,u)$, on voit que $f(q_u) = u^{-1}\mathcal L$. Ainsi,
-  comme $Q$ est fini, on en déduit que
-  $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$ est fini aussi.
+  Supposons que $\varLL$ est rationnel. On trouve un automate $\varAuA$
+  déterministe reconnaissant $\varLL$. On construit alors une surjection de
+  l'ensemble des états vers l'ensemble des $\luLq$ pour $\varwd\in \toStA$. Pour
+  cela, pour chaque état $\varq \in \varQQ$ on définit l'automate
+  $\varAuP{\varq}$ où l'état initial est remplacé par $\varq$. On définit alors
+  l'ensemble
+  \[f(\varq) \defeq \compr{\varwd\in\toStA}{\varAuP{\varq} \satisf\varwd}\]
+  La fonction $f$ est surjective~: pour tout $\varwd$, en prenant
+  $\varqP{\varwd} \defeq \trA(\varqZ,\varwd)$, on voit que
+  $f(\varqP{\varwd}) = \luLq$. Ainsi, comme $\varQQ$ est fini, on en déduit que
+  $\compr{\luLq}{\varwd\in\toStA}$ est lui aussi fini.
 
-  Réciproquement, supposons que $\{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$
-  est fini. On construit alors l'automate syntaxique $\mathcal A_{\mathcal L}$~:
+  Réciproquement, supposons que $\compr{\luLq}{\varwd\in\toStA}$ est fini. On
+  construit alors l'automate syntaxique $\varAuP{\varLL}$~:
   \begin{itemize}
-  \item $Q \defeq \{u^{-1}\mathcal L\mid u \in \Sigma^\star\}$
-  \item $q_0 \defeq \mathcal L$
-  \item $\delta(u^{-1}\mathcal L, a) \defeq (u\star a)^{-1}\mathcal L$
-  \item $F \defeq \{q \in Q\mid \varepsilon \in q\}$
+    \begin{minipage}{0.45\textwidth}
+    \item $\varQQ \defeq \compr{\luLq}{\varwd\in\toStA}$
+    \item $\varqZ \defeq \varLL$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\trA(\luLq,\varla) \defeq \luLP{(\varwd\wdPt\varla)}$
+    \item $\varAF \defeq \compr{\varq \in \varQQ}{\Ewd \in \varq}$
+    \end{minipage}
   \end{itemize}
-  On veut vérifier que cet automate reconnaît bien $\mathcal L$. Par une
-  induction directe sur $u \in \Sigma^\star$, on prouve que
-  \[\forall u \in \Sigma^\star, \delta^\star(q_0,u) = u^{-1}\mathcal L\]
-  donc $\mathcal A_\mathcal L \models u$ si et seulement si
-  $\varepsilon \in u^{-1}\mathcal L$, ce qui signifie exactement que
-  $u \in \mathcal L$ d'après la remarque précédente.
+  On veut vérifier que cet automate reconnaît bien $\varLL$. Par une induction
+  directe sur $\varwd\in\toStA$, on prouve que
+  \[\forall \varwd \in \toStA, \trAS(\varqZ,\varwd) = \luLq\]
+  donc $\varAuP{\varLL} \satisf\varwd$ si et seulement si $\Ewd \in \luLq$, ce
+  qui signifie exactement que $\varwd\in\varLL$ d'après la remarque précédente.
 \end{proof}
 
-Il existe donc, pour tout langage rationnel $\mathcal L$, un automate
-naturellement associé.
+Il existe donc, pour tout langage rationnel $\varLL$, un automate naturellement
+associé.
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[node distance = 3cm, on grid, auto]
+    \node[state,initial] (q_0) {$\varqP{s}$};
+    \node[state] (q_1) [above = of q_0] {$\varqZ$};
+    \node[state] (q_2) [right = of q_0] {$\varqP{1}$};
+    \node[state,accepting] (q_3) [right = of q_1] {$\varqP{f}$};
+    \node[state] (q_p) [below left = of q_0] {$\varqP{p}$};
+    \path[->,>=latex]
+    (q_0) edge node {$0$} (q_1)
+    (q_0) edge node {$1$} (q_2)
+    (q_1) edge node {$0$} (q_3)
+    (q_2) edge node {$0$} (q_3)
+    (q_3) edge[loop right] node {$0,1$} ()
+    (q_p) edge[loop left] node {$0,1$} ()
+    (q_1) edge[bend right] node {$1$} (q_p)
+    (q_2) edge[bend left] node {$1$} (q_p);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automate $\varAuA_2$}
+  \label{fig.auto.2}
+\end{figure}
 
 \begin{remark}
-  L'une des formulation équivalentes de l'axiome du choix est que toute
-  surjection $f : E \to F$ admet une section, c'est-à-dire une fonction
-  $g : F \to E$ telle que $f\circ g = \id_F$. Pour cette raison, montrer un
+  L'une des formulations équivalentes de l'axiome du choix est que toute
+  surjection $f : X \to Y$ admet une section, c'est-à-dire une fonction
+  $g : Y \to X$ telle que $f\circ g = \id_Y$. Pour cette raison, montrer un
   résultat de finitude (et plus généralement de cardinalité) en utilisant une
   surjection est moins fort que d'utiliser une injection, puisqu'on définit
   la subpotence par l'existence d'une injection.
@@ -1670,40 +1755,19 @@ naturellement associé.
   Dans notre cas, il est donc légitime de se demander s'il n'est pas possible
   de considérer une injection, et la première idée qui vient en tête pour une
   telle injection est alors, étant donné un automate qui reconnait
-  $\mathcal L$~:
-  \[\begin{array}{ccccc}
-  f & : & \{u^{-1}\mathcal L\mid u \in \Sigma^\star\} & \longrightarrow &
-  Q \\
-  & & \overline u & \longmapsto & \delta^\star (q_0,u)
-  \end{array}\]
+  $\varLL$~:
+  \[\makeFun{f}{\compr{\luLq}{\varwd\in\toStA}}{\varQQ}
+            {\clas{\varwd}}{\trAS(\varqZ,\varwd)}\]
   Malheureusement, cette fonction n'est pas bien définie, car deux mots peuvent
-  être dans le même résiduel pour $\mathcal L$ et pour autant être associé à
-  des états différents. Un exemple d'une telle situation est l'automate
-  suivant~:
+  être dans le même résiduel pour $\varLL$ et pour autant être associé à des
+  états différents. Un exemple d'une telle situation est l'automate $\varAuA_2$
+  donné en \cref{fig.auto.2}.
   
-  \begin{figure}[H]
-    \centering
-    \begin{tikzpicture}[node distance = 3cm, on grid, auto]
-      \node[state,initial] (q_0) {$q_s$};
-      \node[state] (q_1) [above = of q_0] {$q_0$};
-      \node[state] (q_2) [right = of q_0] {$q_1$};
-      \node[state,accepting] (q_3) [right = of q_1] {$q_f$};
-      \node[state] (q_p) [below left = of q_0] {$q_p$};
-      \path[->,>=latex]
-      (q_0) edge node {$0$} (q_1)
-      (q_0) edge node {$1$} (q_2)
-      (q_1) edge node {$0$} (q_3)
-      (q_2) edge node {$0$} (q_3)
-      (q_3) edge[loop right] node {$0,1$} ()
-      (q_p) edge[loop left] node {$0,1$} ()
-      (q_1) edge[bend right] node {$1$} (q_p)
-      (q_2) edge[bend left] node {$1$} (q_p);
-    \end{tikzpicture}
-  \end{figure}
-  Où les états $q_0$ et $q_1$ sont associés au même résiduel. Heureusement,
-  comme dans notre cas $Q$ est fini, il est possible (par récurrence sur le
-  cardinal de $Q$) de choisir un état pour chaque résiduel, et donc de
-  construire une fonction $f$ comme ci-dessus sur un sous-ensemble de $Q$.
+  En effet, les états $\varqZ$ et $\varqP{1}$ sont associés au même résiduel.
+  Heureusement, comme dans notre cas $\varQQ$ est fini, il est possible (par
+  récurrence sur le cardinal de $\varQQ$) de choisir un état pour chaque
+  résiduel, et donc de construire une fonction $f$ comme ci-dessus sur un
+  sous-ensemble de $\varQQ$.
 
   Remarquons aussi que cette fonction $f$ est bien définie exactement lorsque
   l'automate est isomorphe à l'automate syntaxique.
@@ -1716,7 +1780,7 @@ précis que le lemme de l'étoile puisqu'il est exact.
 
 \begin{exercise}
   On considère l'alphabet $\{a,b,c\}$, montrer que le langage
-  \[\mathcal L \defeq \{a^nb^mc^p\mid (n,m,p)\in \mathbb N^3\}\]
+  \[\varLL \defeq \compr{a^nb^mc^p}{(n,m,p)\in (\bN^*)^3}\]
   vérifie le lemme de l'étoile, mais n'est pas rationnel.
 \end{exercise}
 
@@ -1731,28 +1795,32 @@ d'automates et d'automate quotient. Pour simplifier, on ne parlera que
 d'automates finis déterministes complets et accessibles.
 
 \begin{definition}[Morphisme d'automate]
-  Soit $\Sigma$ et $\mathcal A$, $\mathcal A'$ deux automates finis déterminstes
-  sur $\Sigma$. On appelle morphisme d'automate $f : \mathcal A \to \mathcal A'$
-  une fonction $f : Q_{\mathcal A} \to Q_{\mathcal A'}$ telle que~:
+  Soit $\ABA$ et $\varAuA$, $\varAuB$ deux automates finis déterminstes sur
+  $\ABA$. On appelle morphisme d'automate $\makeFunName{f}{\varAuA}{\varAuB}$
+  une fonction $\makeFunName{f}{\varQA}{\varQB}$ telle que~:
   \begin{itemize}
-  \item $f(q_{0,\mathcal A}) = q_{0,\mathcal A'}$
-  \item pour tous $q \in Q_{\mathcal A}, a \in \Sigma$,
-    $f(\delta_\mathcal A(q,a)) = \delta_{\mathcal A'}(f(q),a)$
-  \item pour tout $q \in F_\mathcal A, f(q) \in F_{\mathcal A'}$
+  \item $f(\varqP{0,\varAuA}) = \varqP{0,\varAuB}$
+  \item pour tous $\varq \in \varQA, \varla \in \ABA$,
+    $f(\trAA(\varq,\varla)) = \trAB(f(\varq),\varla)$
+  \item pour tout $\varq \in \varAAF, f(q) \in \varABF$
   \end{itemize}
 \end{definition}
 
-Un morphisme d'automate est donc une façon de transformer l'automate
-$\mathcal A$ en l'automate $\mathcal A'$. Remarquons que généralement, il est
-tout à fait possible de n'avoir des morphismes que dans un sens, par exemple
-pour
+Un morphisme d'automate est donc une façon de transformer l'automate $\varAuA$
+en l'automate $\varAuB$. Remarquons que généralement, il est tout à fait
+possible de n'avoir des morphismes que dans un sens, par exemple entre
+l'automate $\varAuA_3$ et l'automate $\varAuA_4$, donnés en \cref{fig.auto.3}.
+On peut trouver un morphisme de l'automate de gauche vers l'automate de droite,
+en prenant $f(\varqP{1}) = f(\varqP{2}) = \varqP{1}'$. Cependant, dans l'autre
+sens, on ne peut pas conserver la transition $0,1$ entre $\varqZ'$ et
+$\varqP{1}'$ en associant une image à $\varqP{1}'$.
 
-\begin{figure}[H]
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-      \node[state,initial] (q_0) {$q_0$};
-      \node[state,accepting] (q_1) [above right = of q_0] {$q_1$};
-      \node[state, accepting] (q_2) [below right = of q_0] {$q_2$};
+      \node[state,initial] (q_0) {$\varqZ$};
+      \node[state,accepting] (q_1) [above right = of q_0] {$\varqP{1}$};
+      \node[state, accepting] (q_2) [below right = of q_0] {$\varqP{2}$};
       \path[->,>=latex]
       (q_0) edge node {$0$} (q_1)
       (q_0) edge node {$1$} (q_2)
@@ -1760,85 +1828,91 @@ pour
       (q_2) edge [loop right] node {$0,1$} ();
       \node (use) [right = of q_0] {};
       \node (use2) [right = of use] {};
-      \node[state, initial] (q_3) [right = of use2] {$q'_0$};
-      \node[state, accepting] (q_4) [right = of q_3] {$q'_1$};
+      \node[state, initial] (q_3) [right = of use2] {$\varqZ'$};
+      \node[state, accepting] (q_4) [right = of q_3] {$\varqP{1}'$};
       \path[->,>=latex]
       (q_3) edge node {$0,1$} (q_4)
       (q_4) edge [loop right] node {$0,1$} ();
   \end{tikzpicture}
-\end{figure}
-on peut trouver un morphisme de l'automate de gauche vers l'automate de droite,
-en prenant $f(q_1) = f(q_2) = q'_1$. Cependant, dans l'autre sens, on ne peut
-pas conserver la transition $0,1$ entre $q'_0$ et $q'_1$ en associant une image
-à $q'_1$.
 
-Un premier théorème nous dit qu'au niveau des langages reconnus, un morphisme
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automates $\varAuA_3$ et $\varAuA_4$}
+  \label{fig.auto.3}
+\end{figure}
+
+Un premier résultat nous dit qu'au niveau des langages reconnus, un morphisme
 donne une inclusion.
 
 \begin{proposition}
-  Soient $\mathcal A, \mathcal A'$ deux automates sur un alphabet $\Sigma$, et
-  $f : \mathcal A \to \mathcal A'$ un morphisme d'automates. Alors
-  \[\mathcal L_{\mathcal A} \subseteq \mathcal L_{\mathcal A'}\]
+  Soient $\varAuA, \varAuB$ deux automates sur un alphabet $\ABA$, et
+  $\makeFunName{f}{\varAuA}{\varAuB}$ un morphisme d'automates. Alors
+  \[\varLL_{\varAuA} \subseteq \varLL_{\varAuB}\]
 \end{proposition}
 
 \begin{proof}
-  On va noter $q,q_0,\ldots$ les états de $\mathcal A$ et $q',q'_0,\ldots$ les
-  états de $\mathcal A'$, de même $F$ et $F'$ pour respectivement l'ensemble des
-  états terminaux de $\mathcal A$ et ceux de $\mathcal A'$.
+  On va noter $\varq,\varqZ,\ldots$ les états de $\varAuA$ et
+  $\varq',\varqZ',\ldots$ les états de $\varAuB$.
   
-  On voit tout d'abord que pour tout mot $u\in\Sigma^\star$, on a
-  \[\delta^\star(f(q_0),u) = f(\delta^\star(q_0,u))\]
-  et $f(q_0) = q'_0$. De plus, comme $f$ est un morphisme, $f(F)\subseteq F'$,
-  donc
-  \[\delta^\star(q_0,u) \in F \implies f(\delta^\star(q_0,u))\in F'\]
-  d'où le résultat.
+  On voit tout d'abord que pour tout mot $\varwd\in\toStA$, on a
+  \[\trAS(f(\varqZ),\varwd) = f(\trAS(\varqZ,\varwd))\]
+  et $f(\varqZ) = \varqZ'$. De plus, comme $f$ est un morphisme,
+  $f(\varAAF)\subseteq \varABF$, donc
+  \[\trAS(\varqZ,\varwd)\in\varAAF\implies f(\trAS(\varqZ,\varwd))\in\varABF
+  \qedhere\]
 \end{proof}
 
 Un autre résultat, peut-être moins intuitif, est que l'inclusion devient une
-égalité dès lors que $f(F) = F'$ (en réutilisant les notations précédentes).
+égalité dès lors que $f(\varAAF) = \varABF$.
 
 \begin{proposition}
-  Si un morphisme d'automates $f : \mathcal A \to \mathcal A'$ est tel que
-  $f(F) = F'$, alors $\mathcal L_\mathcal A = \mathcal L_{\mathcal A'}$.
+  Si un morphisme d'automates $\makeFunName{f}{\varAuA}{\varAuB}$ est tel que
+  $f(\varAAF) = \varABF$, alors $\varLL_{\varAuA} = \varLL_{\varAuB}$.
 \end{proposition}
 
 \begin{proof}
   On réutilise les notations de la preuve précédente. Par contraposée, supposons
-  que $u \notin \mathcal L_\mathcal A$. Cela signifie donc que
-  $\delta^\star(q_0,u) \notin F$, donc $f(\delta^\star(q_0,u)) \notin F'$ puisque
-  $F' = f(F)$, donc $\delta^\star(q'_0,u)\notin F'$ par l'argument précédent.
+  que $\varwd \notin \varLL_{\varAuA}$. Cela signifie donc que
+  $\trAS(\varqZ,\varwd) \notin \varAAF$, donc
+  $f(\trAS(\varqZ,\varwd)) \notin \varABF$ puisque
+  $\varABF = f(\varAAF)$, donc $\trAS(\varqZ',\varwd)\notin \varABF$ par
+  l'argument précédent.
 
-  Par contraposée, $\mathcal A'\models u \implies \mathcal A \models u$, d'où
+  Par contraposée, $\varAuB\satisf \varwd \implies \varAuA \satisf \varwd$, d'où
   le résultat.
 \end{proof}
 
 On dit qu'un tel morphisme est surjectif (attention, cela ne signifie pas que le
-morphisme est surjectif en tant que fonction $Q \to Q'$).
-
-On peut alors prouver que l'automate syntaxique est minimal.
+morphisme est surjectif en tant que fonction $\varQA \to \varQB$).
+On peut alors prouver que l'automate syntaxique est minimal en un sens précis.
 
 \begin{proposition}
-  Soit $\mathcal A$ un automate fini déterministe complet et accessible sur un
-  alphabet $\Sigma$. Il existe un morphisme surjectif
-  $\mathcal A \to \mathcal A_{\mathcal L_\mathcal A}$ et surjectif sur les états.
+  Soit $\varAuA$ un automate fini déterministe complet et accessible sur un
+  alphabet $\ABA$. Il existe un morphisme surjectif
+  $\varAuA \to \varAuA_{\varLL_{\varAuA}}$ qui est aussi surjectif sur les états.
 \end{proposition}
 
 \begin{proof}
-  Comme on sait que $\mathcal A$ est accessible, on peut trouver pour tout état
-  $q \in Q$ un mot $u(q)$ tel que $\delta(q_0,u(q)) = q$. On définit alors
-  l'image de $q$ comme $(u(q))^{-1}\mathcal L_\mathcal A$. On montre d'abord que
-  ce choix d'image ne dépend pas du mot $u(q)$ choisi. En effet, si
-  $\delta(q_0,u) = \delta(q_0,v)$ alors pour tout $w \in \Sigma^\star$~:
-  \[\mathcal A \models u\star w \iff \mathcal A \models v \star w\]
-  donc $u^{-1}\mathcal L_\mathcal A = v^{-1}\mathcal L_\mathcal A$.
+  Comme on sait que $\varAuA$ est accessible, on peut trouver pour tout état
+  $\varq \in \varQQ$ un mot $\varwd(\varq)$ tel que
+  $\trAS(\varqZ,u(\varq)) = \varq$. On définit alors l'image de $\varq$ comme
+  $\lQuot{(\varwd(\varq))}{\varLL_{\varAuA}}$. On montre d'abord que
+  ce choix d'image ne dépend pas du mot $\varwd(\varq)$ choisi. En effet, si
+  $\trAS(\varqZ,\varwd) = \trAS(\varqZ,\varwv)$ alors pour tout
+  $\varww \in \toStA$~:
+  \[\varAuA \satisf \varwd\wdPt\varww \iff \varAuA \satisf\varwv\wdPt\varww\]
+  donc $\lQuot{\varwd}{\varLL_{\varAuA}}= \lQuot{\varwv}{\varLL_{\varAuA}}$.
 
   Pour un état terminant dans l'automate syntaxique donné, on trouve un mot
-  $u$ tel que cet état vaut $u^{-1}\mathcal L$. On peut alors considérer
-  $\delta(q_0,u)$ pour obtenir un état qui est associé à cet état, et puisque
-  $\varepsilon \in u^{-1}\mathcal L$, on en déduit que $\delta(q_0,u)\in F$,
-  donc notre morphisme est surjectif. Il est même surjectif en tant que fonction
-  entre états, puisque l'argument précédent donne pour tout $u^{-1}\mathcal L$
-  un antécédent par le morhpisme~: $\delta(q_0,u)$.
+  $\varwd$ tel que cet état vaut $\lQuot{\varwd}{\varLL_{\varAuA}}$. On peut
+  alors considérer $\trAS(\varqZ,\varwd)$ pour obtenir un état qui est associé à
+  cet état, et puisque $\Ewd \in \lQuot{\varwd}{\varLL_{\varAuA}}$, on en déduit
+  que $\trAS(\varqZ,\varwd)\in \varAAF$, donc notre morphisme est surjectif. Il
+  est même surjectif en tant que fonction entre états, puisque l'argument
+  précédent donne pour tout $\lQuot{\varwd}{\varLL_{\varAuA}}$ un antécédent par
+  le morphisme~: $\trAS(\varqZ,\varwd)$.
 \end{proof}
 
 \begin{remark}
@@ -1855,153 +1929,169 @@ congruences d'automates, qui sont des relations d'équivalence compatibles avec
 la structure d'automate.
 
 \begin{definition}[Congruence d'automate]
-  Soit $\Sigma$ un alphabet, et $\mathcal A$ un automate fini déterministe sur
-  $\Sigma$. Une relation $\sim \subseteq Q \times Q$ est appelée une congruence
-  d'automate si toutes les conditions suivantes sont vérifiées~:
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate fini déterministe sur $\ABA$.
+  Une relation $\mathord{\sim} \subseteq \varQQ \times \varQQ$ est appelée une
+  congruence d'automate si toutes les conditions suivantes sont vérifiées~:
   \begin{itemize}
   \item $\sim$ est une relation d'équivalence.
-  \item $\sim$ est compatible avec $\delta$~:
-    \[\forall q,q' \in Q, q \sim q' \implies \forall a \in \Sigma,
-    \delta(q,a) \sim \delta(q',a)\]
-  \item $\sim$ sature $F$~:
-    \[\forall q,q' \in Q, q \sim q' \implies (q \in F \iff q' \in F)\]
+  \item $\sim$ est compatible avec $\trA$~:
+    \[\forall \varq,\varq' \in \varQQ, \varq \sim \varq' \implies
+    \forall \varla \in \ABA, \trA(\varq,\varla) \sim \trA(\varq',\varla)\]
+  \item $\sim$ sature $\varAF$~:
+    \[\forall \varq,\varq' \in \varQQ, \varq \sim \varq' \implies
+    (\varq \in \varAF \iff \varq' \in \varAF)\]
   \end{itemize}
 
-  On peut alors définir l'automate quotient $\mathcal A/\sim$ par~:
+  On peut alors définir l'automate quotient $\quot{\varAuA}{\sim}$ par~:
   \begin{itemize}
-  \item son ensemble d'états est $Q/\sim$.
-  \item son état initial est la classe de $q_0$.
-  \item pour tout $q \in Q$ et $a \in \Sigma$,
-    $\delta(\overline q,a) =\delta(q,a)$
-  \item l'ensemble des états terminaux est $\{\overline q_f \mid q_f \in F\}$.
+  \item son ensemble d'états est $\quot{\varQQ}{\sim}$.
+  \item son état initial est la classe de $\varqZ$.
+  \item pour tout $\varq \in \varQQ$ et $\varla \in \ABA$,
+    $\trA(\clas{\varq},\varla)=\clas{\trA(\varq,\varla)}$
+  \item l'ensemble des états terminaux est
+    $\compr{\clas{\varqP{f}}}{\varqP{f} \in F}$.
   \end{itemize}
 \end{definition}
 
 \begin{remark}
   La compatibilité est essentielle pour que cette définition ait du sens,
-  puisque l'on veut que le choix de $q$ dans une classe ne change pas le
-  résultat de $\delta(q,a)$~: c'est le cas ici puisque si $q\sim q'$ alors
-  $\delta(q,a) \sim \delta(q',a)$. Pour les états terminaux, dire qu'un ensemble
-  d'états est terminal semble changer le sens de l'automate lorsque l'ensemble
-  n'est pas constitué que d'états terminaux, ce qui motive notre propriété de
-  saturation (remarquons que la condition de saturation aurait pu se limiter à
-  une implication, puisque la relation est symétrique dans tous les cas).
+  puisque l'on veut que le choix de $\varq$ dans une classe ne change pas le
+  résultat de $\trA(\varq,\varla)$~: c'est le cas ici puisque si
+  $\varq\sim \varq'$ alors $\trA(\varq,\varla) \sim \trA(\varq',\varla)$. Pour
+  les états terminaux, dire qu'un ensemble d'états est terminal semble changer
+  le sens de l'automate lorsque l'ensemble n'est pas constitué que d'états
+  terminaux, ce qui motive notre propriété de saturation (remarquons que la
+  condition de saturation aurait pu se limiter à une implication, puisque la
+  relation est symétrique dans tous les cas).
 \end{remark}
 
 On prouve alors que le quotient, comme attendu puisqu'on regroupe des états de
 même comportement, ne change pas le langage reconnu.
 
 \begin{proposition}
-  Soit un automate $\mathcal A$ et une congruence d'automate sur $\mathcal A$.
+  Soit un automate $\varAuA$ et une congruence d'automate sur $\varAuA$.
   Alors
-  \[\mathcal L_\mathcal A = \mathcal L_{\mathcal A/\sim}\]
+  \[\varLL_{\varAuA} = \varLL_{\quot{\varAuA}{\sim}}\]
 \end{proposition}
 
 \begin{proof}
-  Par une récurrence sur $u$ qu'on ne détaille pas, on vérifie que
-  \[\forall u \in \Sigma^\star,
-  \delta^\star_{\mathcal A/\sim}(\overline{q_0},u)=
-  \overline{\delta^\star(q_0,u)}\]
-  Si $\delta^\star(q_0,u) \in F$ alors
-  $\overline{\delta^\star(q_0,u)} \in F_{\mathcal A/\sim}$.
-  Réciproquement, si $\overline{\delta^\star(q_0,u)}$, alors on sait qu'il
-  existe $q$ dans cette classe tel que $q \in F$, et comme $\sim$ sature $F$,
-  on en déduit que $\delta^\star(q_0,u) \in F$.
+  Par une récurrence sur $\varwd$ qu'on ne détaille pas, on vérifie que
+  \[\forall \varwd \in \toStA,
+  \trASP{\quot{\varAuA}{\sim}}(\clas{\varqZ},\varwd)=
+  \clas{\trAAS(\varqZ,\varwd)}\]
+  Si $\trAAS(\varqZ,\varwd) \in \varAAF$ alors
+  $\clas{\trAAS(\varqZ,\varwd)} \in \varAFP{\quot{\varAuA}{\sim}}$.
+  Réciproquement, si
+  $\clas{\trAAS(\varqZ,\varwd)} \in \varAFP{\quot{\varAuA}{\sim}}$, alors on
+  sait qu'il existe $\varq$ dans cette classe tel que $\varq \in \varAAF$, et
+  comme $\sim$ sature $\varAAF$, on en déduit que
+  $\trAA(\varqZ,\varwd) \in \varAAF$.
 
   On a donc l'égalité des deux langages.
 \end{proof}
 
-On donne un second résultat, reliant la congruence et les morphismes.
+On peut en fait relier directement les morphismes et les congruences~: comme
+en algèbre, un morphisme donne lieu à une congruence par laquelle on peut
+quotienter notre objet pour obtenir un objet plus petit, et plus \og exact\fg
+vis à vis de ce morphisme.
 
 \begin{proposition}
-  Soient $\mathcal A, \mathcal A'$ deux automates sur le même alphabet $\Sigma$
-  et $f : \mathcal A \to \mathcal A'$ un morphisme surjectif. Alors $f$ définit
-  sur $\mathcal A$ une congruence d'automate par~:
-  \[q\sim_f q' \defeq f(q) = f(q')\]
+  Soient $\varAuA, \varAuB$ deux automates sur le même alphabet $\ABA$ et
+  $\makeFunName{f}{\varAuA}{\varAuB}$ un morphisme surjectif. Alors $f$ définit
+  sur $\varAuA$ une congruence d'automate par~:
+  \[\varq\sim_f \varq' \defeq f(\varq) = f(\varq')\]
 \end{proposition}
 
 \begin{proof}
   On veut montrer que $\sim_f$ définit une congruence. Il est clair que c'est
   une relation d'équivalence, on prouve donc les deux autres points~:
   \begin{itemize}
-  \item si $f(q) = f(q')$ et $a \in \Sigma$, alors
+  \item si $f(\varq) = f(\varq')$ et $\varla \in \ABA$, alors
     \begin{align*}
-      f(\delta(q,a)) &= \delta(f(q),a)\\
-      &= \delta(f(q'),a)\\
-      &= f(\delta(q',a))
+      f(\trA(\varq,\varla)) &= \trA(f(\varq),\varla)\\
+      &= \trA(f(\varq'),\varla)\\
+      f(\trA(\varq,\varla)) &= f(\trA(\varq',\varla))
     \end{align*}
-    donc $\sim_f$ est compatible avec $\delta$.
-  \item si $f(q) = f(q')$ et $q \in F$, alors $f(q) \in f(F)$, donc
-    $f(q') \in f(F)$, d'où par surjectivité de $f$ que $q' \in F$.
+    donc $\sim_f$ est compatible avec $\trA$.
+  \item si $f(\varq) = f(\varq')$ et $\varq \in \varAF$, alors
+    $f(\varq) \in f(\varAF)$, donc $f(\varq') \in f(\varAF)$, d'où par
+    surjectivité de $f$ que $\varq' \in \varAF$.
   \end{itemize}
   Ainsi $\sim_f$ est une congruence.
 \end{proof}
 
-Vu la forme de $\sim_f$, il est clair que $\mathcal A/{\sim_f}$ est isomorphe à
-$\mathcal A'$ (en prenant pour notion d'isomorphisme l'existence d'un morphisme
-réciproque). On en déduit donc qu'on peut construire
-$\mathcal A_{\mathcal L_\mathcal A}$ directement depuis $\mathcal A$ par un
-quotient~: il se trouve que ce quotient peut être décrit de façon très concrète.
+Vu la forme de $\sim_f$, il est clair que $\quot{\varAuA}{\sim_f}$ est isomorphe
+à une partie de $\varAuB$ (en prenant pour notion d'isomorphisme l'existence
+d'un morphisme réciproque). On en déduit donc qu'on peut construire
+$\varAuP{\varLL_{\varAuA}}$ directement depuis $\varAuA$ par un quotient~: il se
+trouve que ce quotient peut être décrit de façon très concrète.
 
 \begin{definition}[Congruence de Nérode \cite{Nerode1963-NERLAT-2}]
-  Soit $\mathcal A$ un automate sur un alphabet $\Sigma$. On définit la
-  congruence de Nérode sur $\mathcal A$ par~:
-  \[q \equiv q' \defeq \forall u \in \Sigma^\star,
-  \delta^\star(q,u) \in F \iff \delta^\star(q',u) \in F\]
+  Soit $\varAuA$ un automate sur un alphabet $\ABA$. On définit la congruence de
+  Nérode sur $\varAuA$ par~:
+  \[\varq \equiv \varq' \defeq \forall \varwd \in \toStA,
+  \trAS(\varq,\varwd) \in \varAF \iff \trAS(\varq',\varwd) \in \varAF\]
 \end{definition}
 
-On voit déjà que si on prend un mot $u$ tel que $\delta(q_0,u) = q$ et $v$ tel
-que $\delta(q_0,v) = q'$, alors $q \equiv q'$ revient à dire que
-$u^{-1}\mathcal L_\mathcal A = v^{-1}\mathcal L_\mathcal A$, ce qui confirme que
-le quotient de $\mathcal A$ par $\equiv$ nous donne l'automate syntaxique. Pour
-l'instant, notre construction de l'automate ne peut pas être automatisée~: on a
-besoin de tester tous les mots pour déterminer si $q\sim q'$. Pour combler
-cette lacune, on définit les approximations de la congruence de Nérode~:
+On voit déjà que si on prend deux mots $\varwd$ et $\varwv$ tels que
+$\trAS(\varqZ,\varwd)=\varq$ et $\trAS(\varqZ,\varwv) = \varq'$, alors
+$\varq \equiv \varq'$ revient à dire que
+$\lQuot{\varwd}{\varLL_{\varAuA}}= \lQuot{\varwv}{\varLL_{\varAuA}}$, ce qui
+confirme que le quotient de $\varAuA$ par $\equiv$ nous donne l'automate
+syntaxique. Pour l'instant, notre construction de l'automate ne peut pas être
+automatisée~: on a besoin de tester tous les mots pour déterminer si
+$\varq\sim \varq'$. Pour combler cette lacune, on définit les approximations de
+la congruence de Nérode~:
 
 \begin{definition}[Approximation de la congruence de Nérode]
   On définit l'approximation $n$ de la congruence de Nérode, notée $\equiv_n$,
   par
-  \[q\equiv_n q' \defeq \forall u \in \Sigma^{<n}, \delta^\star(q,u)\in F \iff
-  \delta^\star(q',u) \in F\]
+  \[\varq\equiv_n \varq' \defeq \forall \varwd \in \ABA^{<n},
+  \trAS(\varq,\varwd)\in \varAF \iff \trAS(\varq',\varwd) \in \varAF\]
 \end{definition}
 
 L'approximation consiste donc en la considération des premiers mots seulement.
-On introduit maintenant un lemme essentiel, permettant de calculer effectivement
-cette congruence pour tout $n$.
+On introduit maintenant un lemme permettant de calculer effectivement cette
+congruence pour tout $n$.
 
 \begin{lemma}\label{lem.nerode.succ}
-  Soit un automate $\mathcal A$ sur un alphabet $\Sigma$, deux états $q,q'$ de
-  $\mathcal A$ et $n \in \mathbb N$. On a la relation suivante~:
-  \[q \equiv_{n+1} q' \iff q\equiv_n q' \land \forall a \in \Sigma,
-  \delta^\star(q,a)\equiv_n \delta^\star(q',a)\]
+  Soit un automate $\varAuA$ sur un alphabet $\ABA$, deux états $\varq,\varq'$
+  de $\varAuA$ et $n \in \bN$. On a la relation suivante~:
+  \[\varq \equiv_{n+1} \varq' \iff \varq\equiv_n \varq' \land
+  \forall \varla \in \ABA,
+  \trA(\varq,\varla)\equiv_n \trA(\varq',\varla)\]
 \end{lemma}
 
 \begin{proof}
-  Si $q\equiv_{n+1} q'$, alors pour tout $a\in \Sigma$ et $u \in \Sigma^{<n}$,
-  on a l'équivalence $\delta(q,u\star a) \in F \iff \delta(q',u\star a) \in F$
+  Si $\varq\equiv_{n+1}\varq'$, alors pour tout $\varla\in \ABA$ et
+  $\varwd \in \ABA^{<n}$, on a l'équivalence
+  $\trAS(\varq,\varwd\wdPt \varla) \in \varAF \iff
+  \trAS(\varq',\varwd\wdPt \varla) \in \varAF$
   par hypothèse. Mais alors, cela se réécrit en
-  \[\delta^\star(\delta(q,a),u)\in F \iff \delta^\star(\delta(q',a),u)\in F\]
-  On en déduit que $\delta(q,a)\equiv_n \delta(q',a)$. Réciproquement, pour
-  $u \in \Sigma^{< n + 1}$, on peut éliminer le cas où $u = \varepsilon$ qui est
-  direct et considérer que $u = v\star a$ où $|v| < n$, ce qui nous permet
-  d'utiliser l'hypothèse pour déduire que
-  \[\delta^\star(q,v\star a)\in F \iff \delta^\star(q',v\star a)\]
-  c'est-à-dire $q\equiv_{n+1} q'$.
+  \[\trAS(\trA(\varq,\varla),\varwd)\in\varAF \iff
+  \trAS(\trA(\varq',\varla),\varwd)\in\varAF\]
+  On en déduit que $\trA(\varq,\varla)\equiv_n \trA(\varq',\varla)$.
+  Réciproquement, pour $\varwd \in \ABA^{< n + 1}$, on peut éliminer le cas où
+  $\varwd = \Ewd$ qui est direct et considérer que $\varwd = \varwv\wdPt\varla$
+  où $\wvl < n$, ce qui nous permet d'utiliser l'hypothèse pour déduire que
+  \[\trAS(\varq,\varwv\wdPt \varla)\in \varAF \iff
+  \trAS(\varq',\varwv\wdPt \varla)\]
+  c'est-à-dire $\varq\equiv_{n+1} \varq'$.
 \end{proof}
 
-Le deuxième lemme essentiel nous dit que l'algorithme effectué en construisant
-cette suite de congruence, lorsqu'il atteint un point stationnaire, donne en
-résultat la congruence de Nérode.
+Le deuxième lemme nous dit que l'algorithme effectué en construisant cette suite
+de congruence, lorsqu'il atteint un point stationnaire, donne en résultat la
+congruence de Nérode.
 
 \begin{lemma}
-  Soit un automate $\mathcal A$ sur un alphabet $\Sigma$. Si pour
-  $n \in \mathbb N$, les relations $\equiv_n$ et $\equiv_{n+1}$ coïncident,
-  alors pour tout $k \in \mathbb N$, $\equiv_{n+k}$ et $\equiv$ coïncident.
+  Soit un automate $\varAuA$ sur un alphabet $\ABA$. Si pour $n \in \bN$, les
+  relations $\equiv_n$ et $\equiv_{n+1}$ coïncident, alors pour tout $k \in \bN$,
+  $\equiv_{n+k}$ et $\equiv$ coïncident.
 \end{lemma}
 
 \begin{proof}
-  Supposons que pour tous $q,q'$, on ait
-  \[q\equiv_n q' \iff q\equiv_{n+1} q'\]
+  Supposons que pour tous $\varq,\varq'$, on ait
+  \[\varq\equiv_n \varq' \iff \varq\equiv_{n+1} \varq'\]
   alors par induction sur $k$, on prouve que $\equiv_{n+k}$ coïncide avec
   $\equiv_n$~:
   \begin{itemize}
@@ -2013,16 +2103,17 @@ résultat la congruence de Nérode.
   \end{itemize}
 
   On veut maintenant prouver que $\equiv_n$ et $\equiv$ coïncident. Soit deux
-  états $q,q'$ tels que $q\equiv_n q'$ et un mot $u \in \Sigma^\star$. Si
-  $|u| < n$ alors par définition $\delta(q,u) \in F \iff \delta(q',u) \in F$.
-  Sinon, alors $q\equiv_{|u|} q'$ puisque $\equiv_n$ coïncide avec $\equiv_k$
-  pour tout $k > n$, d'où le résultat. La réciproque est immédiate.
+  états $\varq,\varq'$ tels que $\varq\equiv_n \varq'$ et un mot
+  $\varwd \in \toStA$. Si $\wul < n$ alors par définition
+  $\trAS(\varq,\varwd) \in \varAF \iff \trAS(\varq',\varwd) \in \varAF$.
+  Sinon, alors $\varq\equiv_{\wul} \varq'$ puisque $\equiv_n$ coïncide avec
+  $\equiv_k$ pour tout $k > n$, d'où le résultat. La réciproque est immédiate.
 \end{proof}
 
 On a donc un algorithme permettant de calculer l'automate minimal d'un automate
-complet~: on construit la congruence de Nérode par approximations successives
-grâce au \cref{lem.nerode.succ} jusqu'à obtenir une partition stable des états,
-et le quotient est alors directement l'automate minimal.
+complet et accessible~: on construit la congruence de Nérode par approximations
+successives grâce au \cref{lem.nerode.succ} jusqu'à obtenir une partition stable
+des états, et le quotient est alors directement l'automate minimal.
 
 \subsection{Les langages reconnus par monoïde}
 
@@ -2036,95 +2127,100 @@ On commence par prouver un premier sens~: les langages reconnus par monoïdes
 sont aussi reconnus par automates.
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet, $M$ un monoïde (de produit $\cdot$ et de neutre
-  $e$) et $\mathcal L$ un langage reconnu par une fonction $h : \Sigma \to M$
-  et $S\subseteq M$. Alors $\mathcal L \in \Reco(\Sigma)$.
+  Soit $\ABA$ un alphabet, $\varMMo$ un monoïde et $\varLL$ un langage reconnu
+  par une fonction $h : \ABA \to \varMMo$ et $S\subseteq \varMMo$. Alors
+  $\varLL \in \Reco(\ABA)$.
 \end{proposition}
 
 \begin{proof}
-  On construit l'automate $\mathcal A$ suivant~:
+  On construit l'automate $\varAuA$ suivant~:
   \begin{itemize}
-  \item $Q = M$
-  \item $q_0 = e$
-  \item $\delta(q,a) = q\cdot f(a)$
-  \item $F = S$
+    \begin{minipage}{0.45\textwidth}
+    \item $\varQQ \defeq \varMMo$
+    \item $\varqZ \defeq \neuMM$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\trA(\varq,\varla) \defeq \varq\opM f(\varla)$
+    \item $\varAF \defeq S$
+    \end{minipage}
   \end{itemize}
 
-  Une récurrence immédiate sur $u$ permet de prouver que
-  \[\forall u \in \Sigma^\star, \delta(q_0,u) = \prod_{i = 0}^{|u|-1} u_i\]
-  Cette valeur est exactement celle de $\tilde h(u)$, et être reconnu par
-  $\mathcal A$ correspond exactement à appartenir à $S$, d'où l'égalité de
-  langage.
+  Une récurrence immédiate sur $\varwd$ permet de prouver que
+  \[\forall\varwd\in\toStA,\trAS(\varqZ,\varwd)=\prod_{i = 0}^{\wul-1}\varwd_i\]
+  Cette valeur est exactement celle de $\relev{h}(\varwd)$, et être reconnu par
+  $\varAuA$ correspond exactement à appartenir à $S$, d'où l'égalité de langage.
 \end{proof}
 
 Il nous reste donc à construire un monoïde à partir d'un automate. Pour cela,
 on va utiliser la construction du monoïde des transitions.
 
 \begin{definition}[Monoïde des transitions]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate fini déterministe
-  complet reconnaissant un langage $\mathcal L$. On définit le monoïde des
-  transitions de $\mathcal A$, qu'on notera $M_\mathcal A$, par~:
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate fini déterministe
+  complet reconnaissant un langage $\varLL$. On définit le monoïde des
+  transitions de $\varAuA$, qu'on notera $\varMMo_{\varAuA}$, par~:
   \begin{itemize}
   \item les éléments du monoïde sont les relations binaires
-    $R\subseteq Q\times Q$.
+    $\mathord{\varRR}\subseteq \varQQ\times \varQQ$.
   \item la multiplication est la composition de relations~:
-    \[R\cdot R' \defeq \{(x,z) \mid \exists y \in Q, xRy\land yRz\}\]
+    \[\mathord{\varRR}\neuMM \mathord{\varRR'} \defeq
+    \compr{(x,z)}{\exists y \in \varQQ, x\varRR y\land y\varRR z}\]
   \item l'élément neutre est la relation
-    \[\Delta_Q \defeq \{(q,q)\mid q \in Q\}\]
+    \[\Delta_{\varQQ} \defeq \compr{(\varq,\varq)}{\varq \in \varQQ}\]
   \end{itemize}
 \end{definition}
 
 \begin{exercise}
-  Prouver que $\mathcal M_{\mathcal A}$ est bien un monoïde.
+  Prouver que $\varMMo_{\varAuA}$ est bien un monoïde.
 \end{exercise}
 
 Les éléments du monoïde sont les relations binaires. Cependant, les éléments
 d'importances sont plus précisément les relations telles que pour tout couple
-$(q,q')$, on a un chemin de $q$ vers $q'$ dans $\mathcal A$. On peut donc
-simplement prendre la relation $(q,q') \defeq \delta(q,a) = q'$ paramétrée par
-$a$ pour obtenir à travers $\delta^\star$ les relations contenant les chemins
-entre états paramétrés par un mot $u$ donné. Un mot est acceptant quand l'état
-$q_0$ est relié à un état terminal, donc le choix de $S$ est celui des
-relations incluant un couple $(q_0,q_f)$ où $q_f \in F$. On en vient donc au
-résultat à proprement parler.
+$(\varq,\varq')$, on a un chemin de $\varq$ vers $\varq'$ dans $\varAuA$. On
+peut donc simplement prendre la relation
+$(\varq,\varq') \defeq \trA(\varq,\varla) = \varq'$ paramétrée par $\varla$ pour
+obtenir à travers $\trAS$ les relations contenant les chemins entre états
+paramétrés par un mot $\varwd$ donné. Un mot est acceptant quand l'état
+$\varqZ$ est relié à un état terminal, donc le choix de $S$ est celui des
+relations incluant un couple $(\varqZ,\varqP{f})$ où $\varqP{f} \in \varAF$. On
+en vient donc au résultat à proprement parler.
 
 \begin{proposition}
-  Soit un automate fini déterministe complet $\mathcal A$ reconnaissant un
-  langage $\mathcal L$ sur un alphabet $\Sigma$, alors la fonction
-  \[\begin{array}{ccccc}
-  h & : & \Sigma & \longrightarrow & M_\mathcal A\\
-  & & a &\longmapsto & \{(q,q') \mid \delta(q,a) = q'\}
-  \end{array}\]
+  Soit un automate fini déterministe complet $\varAuA$ reconnaissant un
+  langage $\varLL$ sur un alphabet $\ABA$, alors la fonction
+  \[\makeFun{h}{\ABA}{\varMMo_{\varAuA}}{\varla}
+            {\compr{(\varq,\varq')}{\trA(\varq,\varla) = \varq'}}\]
   et la partie
-  \[S \defeq \{R \in M_\mathcal A\mid
-  R \cap (\{q_0\}\times F)\neq\varnothing\}\]
-  reconnaissent le langage $\mathcal L$.
+  \[S \defeq \compr{\mathord{\varRR} \in \varMMo_{\varAuA}}{
+    \mathord{\varRR} \cap (\{\varqZ\}\times \varAF)\neq\vide}\]
+  reconnaissent le langage $\varLL$.
 \end{proposition}
 
 \begin{proof}
-  Par induction sur la longueur de $u$, on montre que~:
-  \[\forall u\in \Sigma^\star, \tilde h(u) =
-  \{(q,q') \mid \delta^\star(q,u) = q'\}\]
+  Par induction sur la longueur de $\varwd$, on montre que~:
+  \[\forall \varwd\in \toStA, \relev{h}(\varwd) =
+  \compr{(\varq,\varq')}{\trAS(\varq,\varwd) = \varq'}\]
   \begin{itemize}
-  \item on sait que $\tilde h(\varepsilon)$ est l'élément neutre du monoïde,
-    et que cet élément est $\{(q,q)\}$, or c'est aussi l'ensemble décrit par
-    $\delta^\star(q,\varepsilon) = q'$.
-  \item supposons que l'égalité est vraie pour un mot $u$, et soit
-    $a \in \Sigma$. Alors
+  \item on sait que $\relev{h}(\Ewd)$ est l'élément neutre du monoïde,
+    et que cet élément est $\{(\varq,\varq)\}$, or c'est aussi l'ensemble décrit
+    par $\trAS(\varq,\Ewd) = \varq'$.
+  \item supposons que l'égalité est vraie pour un mot $\varwd$, et soit
+    $\varla \in \ABA$. Alors
     \begin{align*}
-      \tilde h(u\star a) &= h(u) \cdot \{(q,q')\mid \delta(q,a) = q'\}\\
-      &= \{(q,q')\mid \delta^\star(q,u) = q'\}\cdot
-      \{(q,q')\mid \delta(q,a) = q'\}\\
-      &= \{(q,q'')\mid \exists q',
-      \delta^\star(q,u) = q' \land \delta(q',a) = q''\}\\
-      &= \{(q,q'')\mid \delta(\delta^\star(q,u),a) = q''\}\\
-      &= \{(q,q')\mid \delta^\star(q,u\star a) = q'\}
+      \relev{h}(\varwd\wdPt\varla)
+      &= \relev{h}(\varwd) \opM
+      \compr{(\varq,\varq')}{\trA(\varq,\varla) = \varq'}\\
+      &= \compr{(\varq,\varq')}{\trAS(\varq,\varwd) = \varq'}\opM
+      \compr{(\varq,\varq')}{\trA(\varq,\varla) = \varq'}\\
+      &= \compr{(\varq,\varq'')}{\exists \varq',
+      \trAS(\varq,\varwd) = \varq' \land \trA(\varq',\varla) = \varq''}\\
+      &= \compr{(\varq,\varq'')}{\trA(\trAS(\varq,\varwd),\varla) = \varq''}\\
+      &= \compr{(\varq,\varq')}{\trAS(\varq,\varwd\wdPt \varla) = \varq'}
     \end{align*}
   \end{itemize}
-  D'où le résultat par induction. On sait donc que $\tilde h(u) \in S$ est
+  D'où le résultat par induction. On sait donc que $\relev{h}(\varwd) \in S$ est
   équivalent à ce qu'il existe un couple
-  $(q_0,q_f) \in \{(q,q')\mid \delta^\star(q,u) = q'\}$ où $q_f \in F$, ce
-  qui revient à dire que $\delta^\star(q_0,u) \in F$, donc à ce que $\mathcal A$
-  accepte $u$. Ainsi $M_\mathcal A$ reconnaît le même langage que
-  $\mathcal A$.
+  $(\varqZ,\varqP{f}) \in \compr{(\varq,\varq')}{\trAS(\varq,\varwd) = \varq'}$
+  où $\varqP{f} \in \varAF$, ce qui revient à dire que
+  $\trAS(\varqZ,\varwd) \in \varAF$, donc à ce que $\varAuA$ accepte $\varwd$.
+  Ainsi $\varMMo_{\varAuA}$ reconnaît le même langage que $\varAuA$.
 \end{proof}
