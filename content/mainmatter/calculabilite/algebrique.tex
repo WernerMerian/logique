@@ -6,16 +6,16 @@
 \lettrine{D}{ans} le chapitre précédent, nous avons étudié les expressions
 rationnelles. Celles-ci sont particulièrement simples~: leur forme est limitée
 à l'étoile, l'union et la concaténation. On a vu par exemple que le langage
-$\{a^nb^n\}_{n\in\mathbb N}$ n'est pas rationnel. Un tel langage paraît pourtant
+$\{a^nb^n\}_{n\in\bN}$ n'est pas rationnel. Un tel langage paraît pourtant
 intéressant, d'où la volonté de construire un formalisme plus riche que celui
 des expressions rationnelles.
 
-Les langages algébriques, encore appelés langages hors contextes, sont les
+Les langages algébriques, encore appelés langages hors contextes, sont des
 langages nés d'un tel formalisme. Ce chapitre est dédié à l'étude de ce
 formalisme, qui est celui des grammaires hors contexte. Nous verrons ces
 grammaires ainsi que les automates associés aux langages algébrique~: les
 automates à pile. Contrairement aux automates finis, les automates à pile ont
-une forme de mémoire, sous la forme d'une pile de symboles.
+une forme de mémoire, grâce à une pile de symboles.
 
 \section{Grammaire hors contexte}\label{sec.alg1}
 
@@ -28,7 +28,7 @@ règles de formation. Pour donner un exemple, essayons de générer une expressi
 arithmétique~: une telle expression est une somme, un produit ou un entier. Une
 première tentative est donc d'utiliser des BNF, comme au \cref{chp.induction},
 ce qui donne alors~:
-\[e,e' \Coloneq n \mid e + e' \mid e \times e'\]
+\[e,e' \inddefeq n \mid e + e' \mid e \times e'\]
 Un souci apparaît alors~: comment lire $2 + 3 \times 4$ ? Dans les premiers
 chapitres, nous avons décidé de considérer que dans un tel cas, il y a deux
 expressions possibles $(2 + 3) \times 4$ et $2 + (3 \times 4)$ et l'une des deux
@@ -36,7 +36,7 @@ est privilégiée par des règles de priorité. Une autre façon de faire, qui e
 celle que l'on formalise à l'aide des grammaires hors contexte, est d'inclure
 explicitement le parenthésage dans la construction d'une expression. En faisant
 cela, on souhaite obtenir une description de nos expressions uniquement comme
-un sous-ensemble de $(\mathbb N \cup \{(,),+,\times\})^\star$.
+un sous-ensemble de $(\bN \cup \{(,),+,\times\})^\star$.
 
 \begin{remark}
   En réalité, on parle aussi de BNF dans le cas de la présentation qui sera
@@ -55,100 +55,131 @@ n'utiliserons par d'autres grammaires ici, on parlera directement de grammaire
 pour signifier \og grammaire hors contexte\fg{}.
 
 \begin{definition}[Grammaire hors contexte]
-  Soit $\Sigma$ un alphabet. On appelle grammaire hors contexte sur $\Sigma$ un
-  triplet $(\Gamma,\to,S)$ où $\Gamma$ est un alphabet disjoint de $\Sigma$,
-  $\to\subseteq \Gamma\times (\Gamma \cup \Sigma)^\star$ et $S \in \Gamma$. Dans
-  ce cadre, on appelle les éléments de $\Gamma$ des symboles non terminaux
-  (ou simplement des non terminaux) et les éléments de $\Sigma$ des symboles
-  terminaux (ou simplement des terminaux). On appelle $\to$ les règles de la
-  grammaire.
+  Soit $\ABA$ un alphabet. On appelle grammaire hors contexte sur $\ABA$ un
+  triplet $(\ABB,\to,\StGr)$ où $\ABB$ est un alphabet disjoint de $\ABA$,
+  $\mathord{\to}\subseteq \ABB\times \toSt{(\ABA \cup \ABB)}$ et
+  $\StGr \in \ABB$. Dans ce cadre, on appelle les éléments de $\ABB$ des
+  symboles non terminaux (ou simplement des non terminaux) et les éléments de
+  $\ABA$ des symboles terminaux (ou simplement des terminaux). On appelle $\to$
+  les règles de la grammaire. Chaque élément $(\varwd,\varwv)\in\mathord{\to}$
+  est appelé une règle de la grammaire. On note $\Gram(\ABA)$ l'ensemble des
+  grammaires hors contexte sur $\ABA$.
 \end{definition}
 
+\begin{notation}
+  Dans le contexte des grammaires formelles, on va noter les non terminaux par
+  des majuscules $\nTA,\nTB\ldots$ et conserver les symboles
+  $\varla,\varlb\ldots$ pour désigner les terminaux.
+\end{notation}
+
 Une grammaire hors contexte consiste donc en la donnée des symboles qui seront
-d'intérêt, d'un symboles donné et de règles permettant de construire des mots
-en remplaçant des symboles non terminaux. On souhaite donc pouvoir, par exemple,
-faire la réécriture
-\[E + 3 \to 2 + 3\]
-pour remplacer le non terminal $E$ (représentant une expression) en le terminal
-$2$. Cela nous mène donc à la notion de dérivation.
+d'intérêt, d'un symboles de départ donné et de règles permettant de construire
+des mots en remplaçant des symboles non terminaux. On souhaite pouvoir, par
+exemple, faire la réécriture
+\[\nTE + 3 \to 2 + 3\]
+pour remplacer le non terminal $\nTE$ (représentant une expression) en le
+terminal $2$. Cela nous mène donc à la notion de dérivation.
 
 \begin{definition}[Dérivation]
-  Soit une grammaire $G$. On appelle dérivation en un pas de
-  $u \in (\Sigma\cup \Gamma)^\star$ vers $u' \in (\Sigma\cup\Gamma)^\star$ la
-  relation, qu'on notera $u \to u'$, définie par le fait qu'il existe une
-  décomposition de $u$ et $u'$ de la forme
-  \[u = vAw\qquad u' = vbw\]
-  où $A \to b$, c'est-à-dire $(A,b) \in \to$. On appelle dérivation de $u$ vers
-  $u'$ la clôture réflexive et transitive $\to^\star$ de la dérivation en un pas.
+  Soit une grammaire $\varGG$. On appelle dérivation en un pas de
+  $\varwd \in \toSt{(\ABA\cup \ABB)}$ vers
+  $\varwd' \in \toSt{(\ABA\cup\ABB)}$ la
+  relation, qu'on notera aussi $\varwd \to \varwd'$, définie par le fait qu'il
+  existe une décomposition de $\varwd$ et $\varwd'$ de la forme
+  \[\begin{cases}
+  \varwd = \varwv \nTA\varww\\
+  \varwd' =\varwv \varwx\varww
+  \end{cases}\]
+  où $\nTA \to \varwx$, c'est-à-dire $(\nTA,\varwx) \in \mathord{\to}$. On
+  appelle dérivation de $\varwd$ vers $\varwd'$ la clôture réflexive et
+  transitive $\rtClot{\to}$ de la dérivation en un pas.
 \end{definition}
 
 \begin{remark}
-  On parlera indifféremment de dérivation de $u$ vers $v$ pour la relation
-  $u \to^\star v$ et pour une suite $u_0,\ldots,u_n$ telle que $u_0 = u$,
-  $u_n = v$ et $\forall i \in \{0,\ldots,n-1\},u_i \to u_{i+1}$. L'existence
-  d'une telle suite étant équivalente à $u \to^\star v$, cet abus de langage ne
-  pose aucun problème au niveau logique.
+  On parlera indifféremment de dérivation de $\varwd$ vers $\varwv$ pour la
+  relation $\varwd \rtClot{\to} \varwv$ et pour une suite
+  $\varwd_0,\ldots,\varwd_n$ telle que $\varwd_0 = \varwd$,
+  $\varwd_n = \varwv$ et $\forall i \in \intervInt{n},\varwd_i \to \varwd_{i+1}$.
+  L'existence d'une telle suite étant équivalente à $\varwd \rtClot{\to}\varwv$,
+  cet abus de langage ne pose aucun problème au niveau logique.
 \end{remark}
+
+\begin{exercise}[Définition alternative d'une dérivation]
+  Soit $\ABA$ un alphabet et $\varRR$ une relation sur $\toStA$. On dit que
+  $\varRR$ est compatible si cette relation vérifie
+  \[\forall \varwd_0,\varwv,\varwv',\varwd_1\in\toStA,
+  \varwv\varRR\varwv' \implies
+  \varwd_0\varwv\varwd_1\varRR\varwd_0\varwv'\varwd_1\]
+  Montrer que la relation de dérivation est la plus petite relation sur
+  $\toSt{(\ABA\cup\ABB)}$ compatible et contenant les règles de la grammaire.
+\end{exercise}
 
 Nous introduisons quelques règles de notations pour rendre les définitions de
 grammaires plus lisibles.
 
 \begin{notation}
-  Pour décrire une grammaire, on précisera son alphabet $\Sigma$, mais $\Gamma$
-  restera implicite~: on déduit $\Gamma$ de l'ensemble des non terminaux
-  utilisés lors de l'écriture des règles. Pour écrire les règles, on donnera la
-  syntaxe suivante~:
+  Pour décrire une grammaire, on précisera son alphabet $\ABA$, mais $\ABB$
+  restera implicite~: on déduit $\ABB$ de l'ensemble des non terminaux utilisés
+  lors de l'écriture des règles. Pour écrire les règles, on donnera la syntaxe
+  suivante~:
   \begin{align*}
-    S &\to u_1\mid \cdots\mid u_n\\
-    A &\to v_1\mid\cdots\mid u_p\\
+    \StGr &\to \varwd_1\mid \cdots\mid \varwd_n\\
+    \nTA &\to \varwv_1\mid\cdots\mid \varwv_p\\
     &\vdots
   \end{align*}
-  On notera toujours $S$ pour l'élément $S \in \Gamma$. De plus, en pratique, on
-  pourra utiliser des mots-clés plutôt que des lettres comme éléments de
-  $\Gamma$~: cela permet de clarifier les constructions, mais du côté théorique
-  on suppose que ces mots-clés sont simplement des symboles.
+  On notera toujours $\StGr$ pour l'élément $\StGr \in \ABB$. De plus, en
+  pratique, on pourra utiliser des mots-clés plutôt que des lettres comme
+  éléments de $\ABB$~: cela permet de clarifier les constructions, mais du côté
+  théorique on suppose que ces mots-clés sont simplement des symboles.
 \end{notation}
 
 Donnons maintenant deux exemples fondamentaux~: les expressions arithmétiques et
 les mots de Dyck.
 
 \begin{example}
-  On définit la grammaire $G_{\mathrm{arith}}$ comme suit~:
+  On définit la grammaire $\varGG_{\Arith}$ comme suit~:
   \begin{itemize}
-  \item $\Sigma = \mathbb N \cup \{(,),+,\times\}$
+  \item $\ABA = \{0,\Ss,(,),+,\times\}$
   \item Les règles sont~:
     \[\begin{array}{lcl}
-    S & \to & \MultExp + S \mid \MultExp\\
+    \StGr & \to & \MultExp + \StGr \mid \MultExp\\
     \MultExp & \to & \Atom \times \MultExp \mid \Atom\\
-    \Atom & \to & n \mid (S)
+    \Atom & \to & 0 \mid \Ss\Atom \mid (\StGr)
     \end{array}\]
   \end{itemize}
   
-  On définit la grammaire $G_D$ comme suit~:
+  On définit la grammaire $\varGG_D$ comme suit~:
   \begin{itemize}
-  \item $\Sigma = \btwo$
+  \item $\ABA = \btwo$
   \item Les règles sont~:
     \begin{align*}
-      S &\to S0S1\mid\varepsilon
+      \StGr &\to \StGr 0\StGr 1\mid\Ewd
     \end{align*}
   \end{itemize}
 \end{example}
 
 Donnons aussi des exemples de dérivations, en utilisant nos deux premières
-grammaires. Une première dérivation, dans $G_{\mathrm{arith}}$~:
+grammaires. Une première dérivation, dans $\varGG_{\mathrm{arith}}$~:
 \begin{align*}
-  S &\to \MultExp + S \to \MultExp + \MultExp \\
+  \StGr &\to \MultExp + \StGr \to \MultExp + \MultExp \\
   &\to \Atom + \MultExp \to \Atom + \Atom \times \MultExp \\
-  &\to 2 + \Atom\times \MultExp \\
-  &\to 2 + (S)\times \MultExp \to 2 + (S) \times \Atom \to 2 + (S) \times 3\\
+  &\to \Ss\Atom + \Atom\times \MultExp \\
+  &\to \Ss\Ss\Atom + \Atom\times \MultExp \\
+  &\to \Ss\Ss 0 + \Atom\times\MultExp \\
+  &\to 2 + (\StGr)\times \MultExp \to
+  2 + (\StGr) \times \Atom \to^4 2 + (\StGr) \times 3\\
   &\to 2 + (\MultExp) \times 3 \to 2 + (\Atom \times \MultExp) \times 3\\
-  &\to 2 + (4 \times \MultExp) \times 3\\
-  &\to 2 + (4 \times 5) \times 3
+  &\to^5 2 + (4 \times \MultExp) \times 3\\
+  &\to^6 2 + (4 \times 5) \times 3
 \end{align*}
-Une autre dérivation, dans $G_D$~:
+où on remplace $\Ss^n 0$ par $n$, pour garder une forme de lisibilité.
+
+Une autre dérivation, dans $\varGG_D$~:
 \begin{align*}
-  S &\to S0S1 \to S0S10S1 \to 0S10S1\to 0S0S110S1 \to 00S110S1 \\
-  &\to 00S110S0S11 \to 00S1100S11 \to 00S1100S0S111\to 00S11000S111\\
+  \StGr &\to \StGr 0\StGr 1 \to \StGr 0\StGr 10\StGr 1 \to 0\StGr 10\StGr 1
+  \to 0\StGr 0\StGr 110\StGr 1 \to 00\StGr 110\StGr 1 \\
+  &\to 00\StGr 110\StGr 0\StGr 11 \to 00\StGr 1100\StGr 11
+  \to 00\StGr 1100\StGr 0\StGr 111\to 00\StGr 11000\StGr 111\\
   &\to^2 0011000111
 \end{align*}
 
@@ -158,36 +189,37 @@ terminal (d'où l'utilisation du mot \og terminal\fg). On a ainsi deux notions d
 langages qui sont naturellement associées à une grammaire.
 
 \begin{definition}[Langage engendré par une grammaire]
-  Soit $G$ une grammaire. On définit les deux langages engendrés par $G$~:
-  \[\widehat{\mathcal L_G}\defeq \{u \in (\Sigma\cup\Gamma)^\star\mid
-  S\to^\star u\}
-  \qquad \mathcal L_G \defeq \widehat{\mathcal L_G}\cap \Sigma^\star\]
-  Lorsque l'on parle du langage engendré par $G$, on désigne l'ensemble
-  $\mathcal L_G$.
+  Soit $\varGG$ une grammaire. On définit les deux langages engendrés par
+  $\varGG$~:
+  \[\widehat{\varLL_{\varGG}}\defeq
+  \compr{\varwd \in \toStAB}{\StGr\rtClot{\to} \varwd} \qquad
+  \varLL_{\varGG} \defeq \widehat{\varLL_{\varGG}}\cap \toStA\]
+  Lorsque l'on parle du langage engendré par $\varGG$, on désigne l'ensemble
+  $\varLL_{\varGG}$.
 \end{definition}
 
 \begin{definition}[Langage hors contexte]
-  Soit $\Sigma$ un alphabet. On appelle classe des langages algébrique (ou hors
-  contexte) la classe de langages sur $\Sigma$ définie par
-  \[\mathcal C_{\mathrm{alg}}\defeq \{\mathcal L_G\mid
-  G \text{ grammaire sur }\Sigma\}\]
+  Soit $\ABA$ un alphabet. On appelle classe des langages algébrique (ou hors
+  contexte) la classe de langages sur $\ABA$ définie par
+  \[\varCC_{\alg}\defeq \compr{\varLL_{\varGG}}{\varGG\in\Gram(\ABA)}\]
 \end{definition}
 
 \begin{remark}
-  L'expressoin \og hors contexte\fg vient du fait que les grammaires que nous
+  L'expression \og hors contexte\fg vient du fait que les grammaires que nous
   utilisons n'utilisent que des règles sans contexte d'application~: on se
   contente de remplacer des non terminaux dès qu'ils apparaissent, mais on n'a
   pas de règles telles que, par exemple~:
-  \[uAB \to CBA\]
+  \[\varwd\nTA\nTA \to \nTC\nTB\nTA\]
   où plusieurs symboles apparaissent à gauche de $\to$ et forcent donc à avoir
   un contexte de dérivation.
 \end{remark}
 
 \begin{exercise}
-  Soit un alphabet $\Sigma$. Montrer que le langage des palindromes sur
-  $\Sigma$, c'est-à-dire l'ensemble
-  \[\mathcal L_{\mathrm{palindrome}} \defeq \{u \in \Sigma^\star \mid
-  \forall i \in \{0,\ldots,|u|-1\}, u_i = u_{|u|-i}\}\]
+  Soit un alphabet $\ABA$. Montrer que le langage des palindromes sur $\ABA$,
+  c'est-à-dire l'ensemble
+  \[\varLL_{\palindrome} \defeq
+  \compr{\varwd \in \toStA}
+        {\forall i \in \intervInt{\wul},\varwd_i = \varwd_{\wul - i}}\]
   est un langage algébrique. Est-il rationnel ?
 \end{exercise}
 
@@ -198,41 +230,48 @@ mot. Cela nous mène au lemme suivant, qualifié de fondamental dans
 \cite{carton2008langages}.
 
 \begin{lemma}
-  Soit un alphabet $\Sigma$, une grammaire $G$ sur $\Sigma$ et
-  $u \in (\Sigma\cup\Gamma)^\star$. Il existe alors une dérivation $u \to^k v$
-  de longueur $k$ vers un mot $v \in (\Sigma\cup\Gamma)^\star$ si et seulement
-  s'il existe deux décompositions
-  \[\begin{cases}u = u_1\star u_2 \\ v = v_1\star v_2\end{cases}\]
+  Soit un alphabet $\ABA$, une grammaire $\varGG$ sur $\ABA$ et
+  $\varwd \in \toStAB$. Il existe alors une dérivation $\varwd \to^k \varwv$
+  de longueur $k$ vers un mot $\varwv \in \toStAB$ si et seulement s'il existe
+  deux décompositions
+  \[\begin{cases}
+  \varwd = \varwd_1\wdPt \varwd_2 \\
+  \varwv = \varwv_1\wdPt \varwv_2
+  \end{cases}\]
   et deux dérivations
-  \[ u_1 \to^{k_1} v_1 \qquad u_2 \to^{k_2} v_2\]
+  \[ \varwd_1 \to^{k_1} \varwv_1 \qquad \varwd_2 \to^{k_2} \varwv_2\]
   telles que $k_1 + k_2 = k$.
 \end{lemma}
 
 \begin{proof}
-  Dans un sens, prenons deux dérivations $u_1 \to v_1$ et $u_2\to v_2$. Comme on
-  peut former la dérivation $u_1 \star u_2 \to v_1 \star u_2 \to v_1 \star v_2$,
+  Dans un sens, prenons deux dérivations $\varwd_1 \rtClot{\to} \varwv_1$ et
+  $\varwd_2\rtClot{\to} \varwv_2$. Comme on peut former la dérivation
+  $\varwd_1 \wdPt \varwd_2 \rtClot{\to} \varwv_1 \wdPt \varwd_2\rtClot{\to}
+  \varwv_1 \wdPt \varwv_2$,
   une récurrence sur $k_1$ et $k_2$ nous permet de déduire qu'on peut composer
   deux dérivations parallèles.
 
   Dans l'autre sens, on procède par récurrence sur $k$ pour montrer que si
-  $u \to^k v$ alors il existe une décomposition $v = v_1\star v_2$ et $k_1,k_2$
-  tels que $k_1+k_2 = k$, $u_1\to^{k_1} v_1$ et $u_2\to^{k_2}v_2$~:
+  $\varwd \to^k \varwv$ alors il existe une décomposition
+  $\varwv = \varwv_1\wdPt \varwv_2$ et $k_1,k_2$
+  tels que $k_1+k_2 = k$, $\varwd_1\to^{k_1} \varwv_1$ et
+  $\varwd_2\to^{k_2}\varwv_2$~:
   \begin{itemize}
-  \item dans le cas où $u \to^0 u$, alors on pose
-    \[v_1\defeq u_1 \qquad v_2 \defeq u_2\]
+  \item dans le cas où $\varwd \to^0 \varwd$, on pose
+    \[\varwv_1\defeq \varwd_1 \qquad \varwv_2 \defeq \varwd_2\]
     et on a le résultat.
   \item supposons que l'implication est vraie pour $k$. Si on a une dérivation
-    $u \to^{k+1} v$, alors on peut trouver $w$ tel que $u \to^k w \to v$, et
-    décomposer $w$ en $w_1\star w_2$, de telle sorte que
-    \[u_1 \to^{k_1} w_1 \qquad u_2 \to^{k_2} w_2\]
-    et $k_1 + k_2 = k$. De plus, on sait par définition de $w \to v$ qu'il
-    existe une lettre de $w$ qui sera remplacée en appliquant une règle de notre
-    grammaire. Cette lettre est soit dans $w_1$, auquel cas on pose $v_1$ le
-    résultat de cette dérivation en $w_1$ et $v_2 \defeq w_2$ pour obtenir le
-    résultat, soit dans $w_2$ et un raisonnement analogue s'applique.
+    $\varwd \to^{k+1} \varwv$, alors on peut trouver $\varww$ tel que
+    $\varwd \to^k \varww \to \varwv$, et décomposer $\varww$ en
+    $\varww_1\wdPt \varww_2$, de telle sorte que
+    \[\varwd_1 \to^{k_1} \varww_1 \qquad \varwd_2 \to^{k_2} \varww_2\]
+    et $k_1 + k_2 = k$. De plus, on sait par définition de $\varww \to \varwv$
+    qu'il existe une lettre de $\varww$ qui sera remplacée en appliquant une
+    règle de notre grammaire. Cette lettre est soit dans $\varww_1$, auquel cas
+    on pose $\varwv_1$ le résultat de cette dérivation en $\varww_1$ et
+    $\varwv_2 \defeq \varww_2$ pour obtenir le résultat, soit dans $\varww_2$ et
+    un raisonnement analogue s'applique.\qedhere
   \end{itemize}
-
-  On en déduit l'équivalence souhaitée.
 \end{proof}
 
 \subsection{Grammaires sous formes particulières}
@@ -249,217 +288,232 @@ possibilité d'implémenter de vrais algorithmes à partir des preuves données.
 Dans le cas des automates, nous avons vu qu'il était possible de considérer des
 automates émondés, c'est-à-dire tels que tout état est à la fois accessible et
 co-accessible. Dans le cas d'une grammaire, la notion analogue est celle de
-forme réduite~: toute variable dans $\Gamma$ peut apparaître dans une dérivation
+forme réduite~: toute variable dans $\ABB$ peut apparaître dans une dérivation
 produisant un mot.
 
 \begin{definition}[Forme réduite]
-  Soit $\Sigma$ un alphabet. On dit qu'une grammaire $(\Gamma,\to,S)$ sur
-  $\Sigma$ est sous forme réduite si les deux conditions suivantes sont
-  vérifiées~:
+  Soit $\ABA$ un alphabet. On dit qu'une grammaire $(\ABB,\to,\StGr)$ sur $\ABA$
+  est sous forme réduite si les deux conditions suivantes sont vérifiées~:
   \begin{itemize}
-  \item pour tout $A \in \Gamma$, il existe $u$ tel que $A \to^\star u$.
-  \item pour tout $A \in \Gamma$, il existe $u,v$ tels que $S \to^\star uAv$.
+  \item pour tout $\nTA \in \ABB$, il existe $\varwd\in\toStA$ tel que
+    $\nTA \toSt{\to} \varwd$.
+  \item pour tout $\nTA \in \ABB$, il existe $\varwd,\varwv\in\toStAB$ tels que
+    $\StGr \toSt{\to} \varwd\nTA\varwv$.
   \end{itemize}
 \end{definition}
 
 Comme avec les automates, il est possible de se ramener à une grammaire sous
-forme réduite sans changer le langage engendré.
+forme réduite sans changer le langage engendré.Cela justifie aussi notre
+présentation des grammaire dans laquelle l'alphabet $\ABB$ se déduit des
+symboles utilisés dans les règles.
 
 \begin{proposition}\label{prop.alg.reduc}
-  Soit un alphabet $\Sigma$ et une grammaire $G = (\Gamma,\to,S)$. Il existe
-  $\Gamma'\subseteq \Gamma$ tel que, en notant $G' = (\Gamma', \to, S)$,
-  $G$ est sous forme réduite et $\mathcal L_G = \mathcal L_{G'}$.
+  Soit un alphabet $\ABA$ et une grammaire $\varGG=(\ABB,\to,\StGr)$. Il existe
+  $\ABB'\subseteq\ABB$ tel que, en notant $\varGG'=(\ABB',\to,\StGr)$, $\varGG'$
+  est sous forme réduite et $\varLL_{\varGG} = \varLL_{\varGG'}$.
 \end{proposition}
 
 \begin{proof}
-  Pour construire notre nouvelle grammaire, on procède en éliminant des
-  symboles ne respectant pas la condition de réduction. On construit donc un
-  nouvel ensemble de symboles $\Delta \subseteq \Sigma\cup\Gamma$ par la suite
-  suivante~:
+  Pour construire notre nouvelle grammaire, on procède en éliminant des symboles
+  ne respectant pas la condition de réduction. On construit donc un nouvel
+  ensemble de symboles $\ABD \subseteq \ABA\cup\ABB$ par la suite suivante~:
   \[\begin{cases}
-  \Delta_0 \defeq \Sigma \\
-  \Delta_{n+1} \defeq \Delta_n \cup \{A \in \Gamma\mid A \to w \text{ et }
-  w \in(\Delta_n)^\star\}
+  \ABD_0 \defeq \ABA \\
+  \ABD_{n+1} \defeq \ABD_n \cup
+  \compr{\nTA \in \ABB}{\nTA \to \varwd \land \varwd \in \toSt{(\ABD_n)}}
   \end{cases}\]
-  Il est clair que $(\Delta_n)$ est une suite d'ensembles finis croissante et
-  majorée par $\Sigma\cup \Gamma$, donc elle est stationnaire. On définit donc
-  $\Delta$ comme l'union des $\Delta_n$.
+  Il est clair que $(\ABD_n)$ est une suite d'ensembles finis croissante et
+  majorée par $\ABA\cup \ABB$, donc elle est stationnaire. On définit donc
+  $\ABD$ comme l'union des $\ABD_n$.
 
-  On peut prouver par récurrence sur $n$ que pour tout $A \in \Gamma$,
-  $A \in \Delta_n$ si et seulement s'il existe $u \in \Sigma^\star$ tel que
-  $A \to^\star u$ avec une réduction de taille inférieure à $n$, en utilisant la
-  définition de $\Delta_{n+1}$~: ainsi, tout symbole dans $\Delta$ peut produire
-  un mot de $\Sigma^\star$.
+  On peut prouver par récurrence sur $n$ que pour tout $\nTA \in \ABB$,
+  $\nTA \in \ABD_n$ si et seulement s'il existe $\varwd \in \toStA$ tel que
+  $nTA \rtClot{\to} \varwd$ avec une réduction de taille inférieure à $n$, en
+  utilisant la définition de $\ABD_{n+1}$~: ainsi, tout symbole dans $\ABD$ peut
+  produire un mot de $\toStA$.
 
-  On construit maintenant une deuxième suite, à partir de $\Delta$, pour
+  On construit maintenant une deuxième suite, à partir de $\ABD$, pour
   ne considérer que les variables qui peuvent être atteintes par des dérivations
-  depuis $S$. On définit la suite d'ensembles finis $(\Theta_n)$ suivantes~:
+  depuis $\StGr$. On définit la suite d'ensembles finis $(\ABT_n)$ suivantes~:
   \[\begin{cases}
-  \Theta_0 \defeq \{S\}\\
-  \Theta_{n+1} \defeq \Theta_n \cup
-  \{A \in \Delta\mid \exists S' \in \Theta_n,
-  \exists u,v \in \Delta^\star, S' \to uAv\}
+  \ABT_0 \defeq \{\StGr\}\\
+  \ABT_{n+1} \defeq \ABT_n \cup
+  \compr{\nTA \in \ABD}{\exists \nTB \in \ABT_n,
+  \exists \varwd,\varwv \in \toSt{\ABD}, \nTB \to \varwd\nTA\varwv}
   \end{cases}\]
-  Comme précédemment, on considère $\Theta$ l'union finie des $\Theta_n$ car on
-  a une suite croissante majorée d'ensembles finis.
+  Comme précédemment, on considère $\ABT$ l'union finie des $\ABT_n$ car on a
+  une suite croissante majorée d'ensembles finis.
 
-  On peut prouver que pour tout $A \in \Sigma\setminus\Delta$, $A \in \Theta_n$
-  si et seulement s'il existe deux mots $u,v \in \Delta^\star$ et une dérivation
-  $S \to^\star uAv$ de taille inférieure à $n$, dont tous les mots de la
-  dérivation appartiennent à $\Delta^\star$, là encore par récurrence sur $n$.
+  On peut prouver que pour tout $\nTA \in \ABA\setminus\ABD$, $\nTA \in \ABT_n$
+  si et seulement s'il existe deux mots $\varwd,\varwv \in \toSt{\ABD}$ et une
+  dérivation $\StGr \rtClot{\to} \varwd\nTA\varwv$ de taille inférieure à $n$,
+  dont tous les mots de la dérivation appartiennent à $\toSt{\ABD}$, là encore
+  par récurrence sur $n$.
 
   On définit donc
-  \[\Gamma' \defeq \Theta\setminus \Sigma\]
+  \[\ABB' \defeq \ABT\setminus \ABA\]
   et par les deux arguments précédents on sait que la grammaire induite sur
-  $\Gamma'$ est sous forme réduite.
+  $\ABB'$ est sous forme réduite.
 
   Pour montrer que les deux grammaires engendrent les mêmes mots, il nous suffit
-  de montrer que toute dérivation $S \to^\star u$ faite dans $(\Gamma,\to,S)$
-  fonctionne aussi dans $(\Gamma',\to,S)$ (l'autre étant vraie par inclusion).
-  On remarque que puisque la dérivation ne contient que des non terminaux qui
-  peuvent produire un mot, tous les non terminaux apparaissant dans la
-  dérivation $S \to^\star u$ sont des éléments de $\Delta$. De plus, ils sont
-  clairement dans $\Theta$, donc ils sont dans $\Gamma'$. On en déduit l'égalité
-  des deux langages.
+  de montrer que toute dérivation $\StGr \rtClot{\to} \varwd$ faite dans
+  $(\ABB,\to,\StGr)$ fonctionne aussi dans $(\ABB',\to,\StGr)$ (l'autre étant
+  vraie par inclusion). On remarque que puisque la dérivation ne contient que
+  des non terminaux qui peuvent produire un mot, tous les non terminaux
+  apparaissant dans la dérivation $\StGr \rtClot{\to} \varwd$ sont des éléments
+  de $\ABD$. De plus, ils sont clairement dans $\ABT$, donc ils sont dans
+  $\ABB'$. On en déduit l'égalité des deux langages.
 \end{proof}
 
 \begin{remark}
-  Les définitions de $(\Delta_n)$ et $(\Theta_n)$ donnent un algorithme pour
-  trouver les états à conserver pour avoir une grammaire sous forme réduite. Si
-  l'on souhaite implémenter ces suites d'ensembles, il faut aussi se demander
-  comment tester à quel moment ces deux suites se stabilisent~: on voit en fait
-  que dès que $\Delta_{n+1} = \Delta_n$ (respectivement $\Theta_{n+1}=\Theta_n$)
-  alors la suite devient stationnaire. Il suffit donc de vérifier lors de la
-  construction de $\Delta_{n+1}$ (respectivement de $\Theta_{n+1}$) si des
-  éléments ont été ajoutés ou non.
+  Les définitions de $(\ABD_n)$ et $(\ABT_n)$ donnent un algorithme pour trouver
+  les états à conserver pour avoir une grammaire sous forme réduite. Si l'on
+  souhaite implémenter ces suites d'ensembles, il faut aussi se demander comment
+  tester à quel moment ces deux suites se stabilisent~: on voit en fait que dès
+  que $\ABD_{n+1} = \ABD_n$ (respectivement $\ABT_{n+1}=\ABT_n$) alors la suite
+  devient stationnaire. Il suffit donc de vérifier lors de la construction de
+  $\ABD_{n+1}$ (respectivement de $\ABT_{n+1}$) si des éléments ont été ajoutés ou
+  non.
 \end{remark}
 
-La deuxième forme à introduire est la forme propre.
+La deuxième forme à introduire est la forme propre. Celle-ci permet d'éliminer
+des règles qui rallongent artificiellement les dérivations. On peut y voir un
+analogue d'un automate sans $\Ewd$-transition~: chaque règle dans une grammaire
+sous forme propre produit effectivement un terminal ou deux non terminaux.
 
 \begin{definition}[Forme propre]
-  Soit $\Sigma$ un alphabet. Une grammaire $(\Gamma,\to,S)$ sur $\Sigma$ est
-  dite sous forme propre s'il n'existe aucune règle de la forme
-  $A \to \varepsilon$ ni $A \to B$ où $A,B\in \Gamma$.
+  Soit $\ABA$ un alphabet. Une grammaire $(\ABB,\to,\StGr)$ sur $\ABA$ est dite
+  sous forme propre s'il n'existe aucune règle de la forme $\nTA \to \Ewd$ ni
+  $\nTA \to \nTB$ où $\nTA,\nTB\in\ABB$.
 \end{definition}
 
 Si l'on souhaite mettre une grammaire sous forme propre, il semble que dériver
-le mot $\varepsilon$ devient impossible~: c'est effectivement le cas, mais il
-est possible de passer une grammaire sous forme propre en ne perdant que ce
-potentiel mot. Pour le prouver, nous avons d'abord besoin d'introduire la notion
-de substitution.
+le mot $\Ewd$ devient impossible~: c'est effectivement le cas, mais il est
+possible de passer une grammaire sous forme propre en ne perdant que ce
+potentiel mot. Nous utilisons la notion de substitution pour rendre plus lisible
+la construction d'une grammaire sous forme propre.
 
 \begin{definition}[Substitution]\label{def.ghc.subst}
-  Soient $\Sigma, \Gamma$ deux alphabets. On appelle substitution de $\Sigma$
-  vers $\Gamma$ un morphisme de monoïde
-  $\sigma : \Sigma^\star \to \powerset (\Gamma^\star)$ où $\powerset(\Gamma^\star)$
-  est muni de la loi de produit des langages (et du langage $\{\varepsilon\}$
-  comme élément neutre).
+  Soient $\ABA, \ABB$ deux alphabets. On appelle substitution de $\ABA$ vers
+  $\ABB$ un morphisme de monoïde
+  $\makeFunName{\subSimul}{\toStA}{\powerset (\toStB)}$ où $\powerset(\toStB)$
+  est muni de la loi de produit des langages (et du langage $\{\Ewd\}$ comme
+  élément neutre).
 \end{definition}
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $G = (\Gamma,\to,S)$ une grammaire sur $\Sigma$.
-  Alors il existe une grammaire $G'$ sur $\Sigma$ sous forme propre telle que
-  $\mathcal L_{G'} = \mathcal L_G \setminus \{\varepsilon\}$.
+  Soit $\ABA$ un alphabet et $\varGG=(\ABB,\to,\StGr)$ une grammaire sur $\ABA$.
+  Alors il existe une grammaire $\varGG'$ sur $\ABA$ sous forme propre telle que
+  $\varLL_{\varGG'} = \varLL_{\varGG} \setminus \{\Ewd\}$.
 \end{proposition}
 
 \begin{proof}
   Tout d'abord, on suppose (quitte à utiliser la \cref{prop.alg.reduc}) que
   notre grammaire est sous forme réduite.
 
-  On commence par chercher à supprimer les règles de la forme
-  $A \to \varepsilon$. Pour cela, on introduit d'abord l'ensemble $\Delta$ des
-  symboles qui peuvent produire $\varepsilon$, en donnant la suite
-  $(\Delta_n)$ suivante~:
+  On commence par chercher à supprimer les règles de la forme $\nTA \to \Ewd$.
+  Pour cela, on introduit d'abord l'ensemble $\ABD$ des symboles qui peuvent
+  produire $\Ewd$, en donnant la suite $(\Delta_n)$ suivante~:
   \[\begin{cases}
-  \Delta_0 \defeq \{ A \in \Gamma\mid A \to \varepsilon\}\\
-  \Delta_{n+1} \defeq \Delta_n \cup \{A\in \Gamma\mid \exists u \in
-  (\Delta_n)^\star, A \to u\}
+  \ABD_0 \defeq \compr{\nTA \in \ABB}{\nTA \to \Ewd}\\
+  \ABD_{n+1} \defeq \ABD_n \cup
+  \compr{\nTA\in\ABB}{\exists \varwd \in\toSt{(\ABD_n)}, \nTA \to \varwd}
   \end{cases}\]
   Comme cette suite est stationnaire (toujours par les mêmes arguments), on
-  définit $\Delta$ l'union croissante finie de ces ensembles. On peut montrer
-  par récurrence que $\Delta_n$ est exactement l'ensemble des symboles
-  $A \in \Gamma$ tels que $A \to^\star \varepsilon$. On définit maintenant la
-  substitution de $\Sigma\cup\Gamma$ dans lui-même en donnant l'image de
-  chaque élément de $\Sigma\cup\Gamma$ (et en étendant cette fonction à
-  $(\Sigma\cup\Gamma)^\star$ par le \cref{thm.PU.monoid})~:
+  définit $\ABD$ l'union croissante finie de ces ensembles. On peut montrer par
+  récurrence que $\Delta_n$ est exactement l'ensemble des symboles $\nTA\in\ABB$
+  tels que $\nTA \rtClot{\to} \Ewd$. On définit maintenant la substitution de
+  $\ABA\cup\ABB$ dans lui-même en donnant l'image de chaque élément de
+  $\ABA\cup\ABB$ (et en étendant cette fonction à $\toSt{(\ABA\cup\ABB)}$ par le
+  \cref{thm.PU.monoid})~:
   \[\begin{cases}
-  \sigma(a) \defeq \{a\} \text{ si } a \in \Sigma\\
-  \sigma(A) \defeq \{A , \varepsilon\} \text{ si } A \in \Delta\\
-  \sigma(A) \defeq \{A\} \text{ si } A \in\Gamma\setminus \Delta
+  \subSimul(\varla) \defeq \{\varla\} \text{ si } \varla \in \ABA\\
+  \subSimul(\nTA) \defeq \{\nTA , \Ewd\} \text{ si } \nTA \in \ABD\\
+  \subSimul(\nTA) \defeq \{\nTA\} \text{ si } \nTA \in\ABB\setminus\ABD
   \end{cases}\]
 
   Cette substitution nous permet de retenir quels mots doivent être ajoutés
-  lorsque l'on supprime les règles $\varepsilon$. En effet, si l'on supprime
-  directement chaque règle de la forme $A \to \varepsilon$, on risque de perdre
-  des dérivations qui feraient intervenir une dérivation de cette forme,
-  entourée d'autres dérivations. On décide donc d'ajouter à nos règles toutes
-  les règles de la forme $A \to u$ où $u$ a été obtenu par une dérivation depuis
-  $A$ qui fait potentiellement apparaître un $\varepsilon$.
+  lorsque l'on supprime les règles $\Ewd$. En effet, si l'on supprime
+  directement chaque règle de la forme $\nTA \to \Ewd$, on risque de perdre des
+  dérivations qui feraient intervenir une dérivation de cette forme, entourée
+  d'autres dérivations. On décide donc d'ajouter à nos règles toutes les règles
+  de la forme $\nTA\to\varwd$ où $\varwd$ a été obtenu par une dérivation depuis
+  $\nTA$ qui fait potentiellement apparaître un $\Ewd$.
 
   On définit donc la relation $\to'$ comme la plus petite relation qui contient
-  $\to$ privé de l'ensemble $\{(A,\varepsilon) \mid A \in \Gamma\}$, et qui
-  contient chaque règle $A \to' u$ où $A \to w$ et
-  $u \in \sigma(w)\setminus\{\varepsilon\}$ (comme l'ensemble des règles
-  $A \to w$ est fini, l'ensemble des règles ajoutées dans $\to'$ est lui aussi
-  fini).
+  $\to$ privé de l'ensemble $\compr{(\nTA,\Ewd)}{\nTA\in\ABB}$, et qui contient
+  chaque règle $\nTA \to' \varwd$ où $\nTA \to \varww$ et
+  $\varwd \in \subSimul(\varww)\setminus\{\Ewd\}$ (comme l'ensemble des règles
+  $\nTA \to \varww$ est fini, l'ensemble des règles ajoutées dans $\to'$ est lui
+  aussi fini).
 
   On veut prouver qu'un mot non vide est dérivable pour une relation si et
   seulement s'il l'est pour l'autre.
 
-  Commençons par prouver que si $A \to' u$, alors $A \to^\star u$ dans le cas
-  où $u \neq \varepsilon$. Pour cela, il nous suffit de montrer que pour toute
-  règle $A \to w$ et $u \in \sigma(w)\setminus \{\varepsilon\}$, on a
-  $A \to^\star u$. Pour cela, on procède par récurrence sur la taille de $w$~:
+  Commençons par prouver que si $\nTA \to' \varwd$, alors
+  $\nTA \rtClot{\to} \varwd$ dans le cas où $\varwd \neq \Ewd$. Pour cela, il
+  nous suffit de montrer que pour toute règle $\nTA \to \varww$ et
+  $\varwd\in\subSimul(\varww)\setminus\{\Ewd\}$, on a $\nTA\rtClot{\to}\varwd$.
+  Pour cela, on procède par récurrence sur la taille de $\varww$~:
   \begin{itemize}
-  \item si $A \to w$ et $w = \varepsilon$, alors
-    $u \in \sigma(w) \setminus\{\varepsilon\}$ est absurde, donc le cas est
+  \item si $\nTA \to \varww$ et $\varww = \Ewd$, alors
+    $\varwd \in \subSimul(\varww)\setminus\{\Ewd\}$ est absurde, donc le cas est
     traité.
-  \item supposons que $A \to^\star u$ pour tout $A$ et tout
-    $u \in \sigma(w)\setminus\{\varepsilon\}$ avec $w$ de taille $n$. Soit
-    $w' = w\star a$, où $a$ est une lettre, $A$ un non terminal et
-    $u \in \sigma(w')\setminus\{\varepsilon\}$ tels que $A \to u$. On distingue
-    deux cas~:
+  \item supposons que $\nTA \rtClot{\to}\varwd$ pour tout $\nTA$ et tout
+    $\varwd \in \subSimul(\varww)\setminus\{\Ewd\}$ avec $\varww$ de taille $n$
+    et $\nTA\to \varww$. Soit $\varww' = \varww\wdPt \varla$, où $\varla$ est
+    une lettre, $\nTA$ un non terminal et
+    $\varwd \in \subSimul(\varww')\setminus\{\Ewd\}$ tels que $\nTA \to\varww'$.
+    On distingue deux cas~:
     \begin{itemize}
-    \item si $a \in \Delta$, alors $\sigma(w') = \sigma(w) \cup\sigma(w)\{a\}$,
-      et on en déduit donc que soit $u \in \sigma(w)\setminus\{\varepsilon\}$
+    \item si $\varla \in \ABD$, alors
+      $\subSimul(\varww') = \subSimul(\varww) \cup\subSimul(\varww)\{\varla\}$,
+      et on en déduit donc que soit
+      $\varwd \in \subSimul(\varww)\setminus\{\Ewd\}$
       (auquel cas la propriété est vérifiée par hypothèse de récurrence), soit
-      $u = u'a$ et $u' \in \sigma(w) \setminus\{\varepsilon\}$, et la propriété
-      est alors encore vérifiée.
-    \item si $a \notin \Delta$, alors $\sigma(w')=\sigma(w)$, donc l'hypothèse
-      de récurrence s'applique directement.
+      $\varwd=\varwd'\varla$ et $\varwd'\in\subSimul(\varww)\setminus\{\Ewd\}$,
+      et la propriété est alors encore vérifiée.
+    \item si $\varla \notin \ABD$, alors $\subSimul(\varww')=\subSimul(\varww)$,
+      donc l'hypothèse de récurrence s'applique directement.
     \end{itemize}
   \end{itemize}
   Ainsi $\to'$ ne rajoute pas de mots dérivés.
 
   Pour le sens réciproque, il nous faut procéder par induction sur la longueur
-  d'une dérivation pour prouver que si $A \to^\star u$ alors
-  $A {\to'}^\star u$, où $u$ est non vide~:
+  d'une dérivation pour prouver que si $\nTA \rtClot{\to} \varwd$ alors
+  $\nTA \rtClot{\to'} \varwd$, où $\varwd$ est non vide~:
   \begin{itemize}
-  \item le seul mot dérivable en $0$ étape est $S$ dans les deux cas
+  \item le seul mot dérivable en $0$ étape est $\StGr$ dans les deux cas
   \item supposons l'implication prouvée pour le cas d'une dérivation en $n$
-    étapes, et soient $A,u$ tels que $A \to^{n+1} u$, montrons que
-    $A {\to'}^\star u$. Par construction on peut considérer que
-    $A \to^n vA'w \to vuw$ avec $A' \to u$. Par hypothèse d'induction, on sait
-    donc que $A {\to'}^n vA'w$~; deux cas se présentent alors~:
+    étapes, et soient $\nTA,\varwd$ tels que $\nTA \to^{n+1} \varwd$, montrons
+    que $\nTA \toSt{\to'} \varwd$. Par construction on peut considérer que
+    $\nTA \to^n \varwv\nTB\varww \to \varwv\varwx\varww$ avec $\nTB \to \varwx$
+    et $\varwd = \varwv\varwx\varww$. Par hypothèse d'induction, on sait
+    donc que $\nTA \rtClot{\to'} \varwv\nTB\varww$~; deux cas se présentent
+    alors~:
     \begin{itemize}
-    \item si $u = \varepsilon$, alors considérons le mot $\alpha$ tel que
-      $\alpha \to vA'w$. On peut le décomposer en $\alpha = \beta A''\gamma$ et
-      décomposer nos deux mots $v,w$ en $v = \beta v'$ et $w = w'\gamma$.
-      On voit alors que $v'w' \in \sigma(v'A'w')$, donc $A''\to' v'A'w'$. Il
-      vient finalement que $\alpha \to' u$.
-    \item si $u$ est non vide, alors comme $u \in \sigma(u)$ (le résultat se
-      prouve par une induction directe sur $u$, puisque $\sigma(a)$ contient $a$
-      pour toute lettre $a$), on en déduit que $vA'w \to u$.
+    \item si $\varwx = \Ewd$, alors considérons le mot $\varwd_0$ tel que
+      $\varwd_0 \to \varwv\nTB\varww$. On peut le décomposer en
+      $\varwd_0 = \varwv_0 \nTC\varww_0$ et décomposer nos deux mots
+      $\varwv,\varww$ en $\varwv = \varwv_0 \varwv_1$ et
+      $\varww = \varww_1\varww_0$.
+      On voit alors que $\varwv_1\varww_1 \in \sigma(\varwv_1\nTB\varww_1)$,
+      donc $\nTC\to' \varwv_1\nTB\varww_1$. Il vient finalement que
+      $\varwd_0 \to' \varwx$.
+    \item si $\varwx$ est non vide, alors comme $\varwx \in \subSimul(\varwd)$
+      (le résultat se prouve par une induction directe sur $\varwd$, puisque
+      $\subSimul(\varla)$ contient $\varla$ pour toute lettre $\varla$), on en
+      déduit que $\varwv\nTB\varwv \to \varwd$.
     \end{itemize}
   \end{itemize}
 
   Les deux langages engendrés sont donc les mêmes, à l'exception potentielle de
-  $\varepsilon$.
+  $\Ewd$.
 
-  Il nous reste maintenant à supprimer les règles de la forme $A \to BC$. Pour
-  cela, on supprime simplement les telles règles, et on ajoute toutes les
-  règles de la forme $A \to w$ où $A \to^\star B$ et $B \to w$. Le langage
-  reconnu ne change donc pas.
+  Il nous reste maintenant à supprimer les règles de la forme $\nTA \to \nTB$.
+  Pour cela, on supprime simplement les telles règles, et on ajoute toutes les
+  règles de la forme $\nTA \to \varww$ où $\nTA \rtClot{\to} \nTB$ et
+  $\nTB \to \varww$. Le langage reconnu ne change donc pas.
 \end{proof}
 
 \begin{remark}
@@ -470,52 +524,61 @@ de substitution.
   relever des langages comme celui de Dyck contenant le mot vide.
 \end{remark}
 
-Introduisons aussi la forme normale de Chomsky.
+Une autre forme normale importante est celle de Chomsky. Dans la forme
+précédente, on exige qu'une règle ne puisse pas avoir à droite un seul non
+terminal ou $\Ewd$. Dans le forme normale de Chomsky, on impose une structure
+encore plus rigide en demandant à ce les membres de droite soient toujours
+un seul terminal, ou exactement deux non terminaux. On appelle aussi cette forme
+la forme normale quadratique, à cause de la restriction d'avoir deux non
+terminaux à droite.
 
 \begin{definition}[Forme normale de Chomsky \cite{CHOMSKY1959137}]
-  Soit un alphabet $\Sigma$ et une grammaire $G \defeq (\Gamma, \to, S)$ sur
-  $\Sigma$. On dit que $G$ est sous forme normale de Chomsky (ou forme normale
+  Soientt un alphabet $\ABA$ et une grammaire $\varGG=(\ABB,\to,\StGr)$ sur
+  $\ABA$.
+  On dit que $\varGG$ est sous forme normale de Chomsky (ou forme normale
   quadratique) lorsque toutes ses règles sont de l'une des deux formes~:
   \begin{itemize}
-  \item $A \to BC$ avec $B,C\in \Gamma$
-  \item $A \to a$ où $a \in \Sigma$
+  \item $\nTA \to \nTB\nTC$ avec $\nTB,\nTC\in \ABB$
+  \item $\nTA \to \varla$ où $\varla \in \ABA$
   \end{itemize}
 \end{definition}
 
 \begin{proposition}\label{prop.chom}
-  Soit $\Sigma$ un alphabet et $G \defeq (\Gamma,\to,S)$ une grammaire sur
-  $\Sigma$.
-  Il existe une grammaire $G'$ sous forme normale de Chomsky telle que
-  $\mathcal L_{G'} = \mathcal L_G\setminus \{\varepsilon\}$.
+  Soient $\ABA$ un alphabet et $\varGG = (\ABA,\to,\StGr)$ une grammaire sur
+  $\ABA$.
+  Il existe une grammaire $\varGG'$ sous forme normale de Chomsky telle que
+  $\varLL_{\varGG'} = \varLL_{\varGG}\setminus \{\Ewd\}$.
 \end{proposition}
 
 \begin{proof}
-  On commence par supposer que $G$ est sous forme propre (d'où le fait qu'on
-  perde potentiellement $\varepsilon$). Nous allons maintenant procéder en deux
+  On commence par supposer que $\varGG$ est sous forme propre (d'où le fait
+  qu'on perde potentiellement $\Ewd$). Nous allons maintenant procéder en deux
   étapes~: le premier objectif est de transformer toutes les règles en des
   règles avec un terminal ou uniquement des non terminaux.
 
-  On pose un ensemble $\Gamma' \defeq \{A_a\mid a \in \Sigma\}$ avec une
-  bijection avec l'ensemble $\Sigma$. Soit la substitution $\sigma$ définie par
-  $\sigma(A) = \{A\}$ pour $A \in \Gamma$ et $\sigma(a) = \{A_a\}$ pour
-  $a \in \Sigma$. Cette substitution indique, étant donné un mot $u$, la version
-  de $u$ où tous les $a \in \Sigma$ ont été remplacés par les non terminaux
-  $A_a$ respectifs.
-  Notre grammaire modifiée est alors $(\Gamma\cup\Gamma',\to',S)$ où $\to'$ est
+  On pose un ensemble $\ABB' \defeq \compr{\nTA_{\varla}}{\varla \in \ABA}$ en
+  bijection avec l'ensemble $\ABA$. Soit la substitution $\subSimul$ définie par
+  $\subSimul(\nTA) = \{\nTA\}$ pour $\nTA \in \ABB$ et
+  $\subSimul(\varla) = \{\nTA_{\varla}\}$ pour $\varla \in \ABA$. Cette
+  substitution indique, étant donné un mot $\varwd$, la version de $\varwd$ où
+  tous les $\varla \in \ABA$ ont été remplacés par les non terminaux
+  $\nTA_{\varla}$ respectifs.
+  Notre grammaire modifiée est alors $(\ABB\cup\ABB',\to',\StGr)$ où $\to'$ est
   définie par~:
   \[\begin{cases}
-  A_a \to' a\\
-  A \to' \sigma(u)
+  \nTA_{\varla} \to' \varla\\
+  \nTA \to' \subSimul(\varwd)
   \end{cases}\]
-  pour tout $a \in \sigma$ et $(A,u)\in \to$. On peut vérifier que les mots
-  engendrés ne changent pas, puisque $\sigma(u){\to}^\star u$.
+  pour tout $\varla \in \ABA$ et $(\nTA,\varwd)\in \mathord{\to}$. On peut
+  vérifier que les mots engendrés ne changent pas, puisque
+  $\subSimul(\varwd)\rtClot{\to}\varwd$.
 
-  Pour finir, il nous suffit pour chaque règle $A \to' A_1\cdots A_k$ de
-  rajouter des non terminaux $A'_1,\cdots,A'_{k-2}$ et les règles
-  \[A \to'' A_1 A'_1\quad A'_1 \to'' A_2 A'_2 \quad\cdots
-  \quad A'_{k-2} \to'' A_{k-1}A_k\]
-  et de supprimer les règles de la forme $A \to' A_1\cdots A_k$. On obtient
-  ainsi une grammaire en forme normale de Chomsky.
+  Pour finir, il nous suffit pour chaque règle $\nTA \to' \nTA_1\cdots\nTA_k$ de
+  rajouter des non terminaux $\nTA'_1,\cdots,\nTA'_{k-2}$ et les règles
+  \[\nTA \to'' \nTA_1 \nTA'_1\quad \nTA'_1 \to'' \nTA_2 \nTA'_2 \quad\cdots
+  \quad \nTA'_{k-2} \to'' \nTA_{k-1}A_k\]
+  et de supprimer les règles de la forme $\nTA \to' \nTA_1\cdots \nTA_k$. On
+  obtient ainsi une grammaire en forme normale de Chomsky.
 \end{proof}
 
 \begin{remark}
@@ -523,16 +586,19 @@ Introduisons aussi la forme normale de Chomsky.
   pour calculer l'appartenance d'un mot au langage engendré par une grammaire.
 \end{remark}
 
-La dernière forme que nous étudions est la forme normale de Greibach.
+La dernière forme que nous étudions est la forme normale de Greibach. Celle-ci
+restreint le membre de droite en obligeant chaque règle appliquée à être
+productive, au sens où le mot de droite commence par un terminal.
 
 \begin{definition}[Forme normale de Greibach \cite{Greibach:def}]
-  Soit un alphabet $\Sigma$ et une grammaire $G \defeq (\Gamma,\to,S)$ sur
-  $\Sigma$.
-  On dit que $G$ est sous forme normale de Greibach si toutes ses règles sont
-  de la forme $A \to aU$ où $a \in \Sigma$ et $U \in \Gamma^\star$. On dira que
-  $G$ est sous forme normale de Greibach quadratique si les règles sont, de
-  plus, de la forme $A \to a$, $A \to aB$ ou $A \to aBC$ avec
-  $a\in\Sigma, B,C \in \Gamma$.
+  Soient un alphabet $\ABA$ et une grammaire $\varGG=(\ABA,\to,\StGr)$ sur
+  $\ABA$.
+  On dit que $\varGG$ est sous forme normale de Greibach si toutes ses règles
+  sont de la forme $\nTA \to \varla\varwd$ où $\varla \in \ABA$ et
+  $\varwd \in \toStB$. On dira que $\varGG$ est sous forme normale de Greibach
+  quadratique si les règles sont, de plus, de la forme $\nTA \to \varla$,
+  $\nTA \to \varla\nTB$ ou $\nTA \to \varla\nTB\nTC$ avec
+  $\varla\in\ABA$ et $\nTB,\nTC \in \ABB$.
 \end{definition}
 
 \begin{proposition}[\cite{Greibach:proof}]
@@ -541,85 +607,92 @@ La dernière forme que nous étudions est la forme normale de Greibach.
 \end{proposition}
 
 \begin{proof}
-  Soit $\Sigma$ un alphabet et $G$ une grammaire. Notons
-  \[G \defeq (\{X_1,\ldots,X_n\}, \to, X_1)\]
-  On pose $G(X_i)$ l'ensemble des mots directement dérivés de chaque
+  Soit $\ABA$ un alphabet et $\varGG$ une grammaire. Notons
+  \[\varGG = (\{X_1,\ldots,X_n\}, \to, X_1)\]
+  On pose $\varGG(X_i)$ l'ensemble des mots directement dérivés de chaque
   $X_i$.
 
   Un mot engendré par une lettre $X_i$ est dans l'un des deux cas suivants~:
   \begin{itemize}
-  \item le mot est de la forme $X_j w$ pour un certain $j$
-  \item le mot est dans $\Sigma (\Sigma \cup \Gamma)^\star$
+  \item le mot est de la forme $X_j \varww$ pour un certain $j$
+  \item le mot est dans $\ABA\toStAB$
   \end{itemize}
-  dans le premier cas, le mot $w$ appartient à $X_j^{-1}G(X_i)$ et dans le
-  deuxième cas, le mot appartient à $G(X_i) \cap \Sigma(\Sigma\cup\Gamma)^\star$.
+  dans le premier cas, le mot $\varww$ appartient à $X_j^{-1}\varGG(X_i)$ et dans
+  le deuxième cas, le mot appartient à $\varGG(X_i) \cap \ABA\toStAB$.
 
   Pour améliorer la lisibilité de ces manipulations, employons un vocabulaire
   matriciel~: on pose
-  \[ M_{i,j} \defeq X_j^{-1}G(X_i) \qquad
-  S_{i} \defeq G(X_i) \cap \Sigma(\Sigma\cup\Gamma)^\star\]
+  \[ M_{i,j} \defeq X_j^{-1}\varGG(X_i) \qquad
+  N_{i} \defeq \varGG(X_i) \cap \ABA\toStAB\]
   on peut alors réécrire notre grammaire par
-  \[X_i \to \sum_{j} X_j M_{i,j} + S_i\]
+  \[X_i \to \sum_{j} X_j M_{i,j} + N_i\]
   ou, matriciellement~:
-  \[X \to X M + S\]
+  \[X \to X M + N\]
   
   Remarquons que le langage engendré par une grammaire de la forme
-  $X \to XM + S$
-  (en oubliant que les objets sont ici des matrices) est exactement $SM^\star$.
+  $X \to XM + N$
+  (en oubliant que les objets sont ici des matrices) est exactement $N\toSt{M}$.
   Les deux cas dans ce langage sont l'ajout d'un $M$ à droite et la dérivation
-  en $S$.
-  On peut de plus remarquer que $M^\star = \{\varepsilon\} + MM^\star$, ce qui
+  en $N$.
+  On peut de plus remarquer que $\toSt{M} = \{\Ewd\} + M\toSt{M}$, ce qui
   motive à
-  introduire une nouvelle matrice $Y$ avec les règles $Y \to I + RY$ (où $I$
-  représente une matrice identité).
+  introduire une nouvelle matrice $Y$ avec des règles de la forme $Y \to I + RY$
+  (où $I$ représente une matrice identité).
   On introduit donc une famille $(Y_{i,j})$ de nouveaux symboles non terminaux
-  et on considère la grammaire $G'$ suivante (où le symbole
-  $S$ est toujours $X_1$)~:
+  et on considère la grammaire $\varGG'$ suivante (où le symbole de départ est
+  toujours $X_1$)~:
   \begin{align*}
-    X &\to' SY \\
+    X &\to' NY \\
     Y &\to' MY \\
-    Y_{i,i} &\to' \varepsilon
+    Y_{i,i} &\to' \Ewd
   \end{align*}
-  Cette grammaire engendre le même langage que $G$. En effet, il nous suffit de
-  montrer que chaque dérivation pour $\to$ depuis un $X_i$ et arrivant en un mot
-  $u \in \Sigma^\star$ correspond à une dérivation pour $\to'$.
+  Cette grammaire engendre le même langage que $\varGG$. En effet, il nous
+  suffit de montrer que chaque dérivation pour $\to$ depuis un $X_i$ et arrivant
+  en un mot $\varwd \in \toStA$ correspond à une dérivation pour $\to'$.
 
   Pour cela, on va commencer par étiqueter les dérivations en un pas
-  $u_0 X_i u_1 \to u_0 v' u_1$ de la façon suivante~:
+  $\varwd_0 X_i \varwd_1 \to \varwd_0 \varwv' \varwd_1$ de la façon suivante~:
   \begin{itemize}
-  \item si $v' \in S_i$, alors on étiquette la dérivation
-    $u_0 X_i u_1 \to_i u_0 v' u_1$
-  \item si $v' = X_j w$ où $w \in M_{i,j}$, alors on étiquette la dérivation
-    $u_0 X_i u_1 \to_{i,j} u_0 v' u_1$
+  \item si $\varwv' \in N_i$, alors on étiquette la dérivation
+    $\varwd_0 X_i \varwd_1 \to_i \varwd_0 \varwv' \varwd_1$
+  \item si $\varwv' = X_j \varww$ où $\varww \in M_{i,j}$, alors on étiquette la
+    dérivation $\varwd_0 X_i \varwd_1 \to_{i,j} \varwd_0 \varww' \varwd_1$
   \end{itemize}
+  Naturellement, une dérivation avec étiquettes existe si et seulement si une
+  dérivation sans étiquettes existe.
   On transforme maintenant les dérivations pour $\to$ (supposées étiquetées) en
-  des dérivations pour $\to'$. Si $u \to_{i,j} v$, alors on remplace les
-  occurrences de $X_i$ dans $u$ par des occurrences de $Y_{i,j}$. On prouve alors
-  que la transformation effectuée donne une dérivation pour $\to'$, par
-  induction sur la longueur de la dérivation. Supposons que
-  $u \to v \to^\star w$ et montrons que $u' {\to'}^\star w'$ (où
-  $u'$ et $w'$ respectivement sont les mots $u$ et $w$ après transformation)~:
+  des dérivations pour $\to'$. Si $\varwd \to_{i,j} \varww$, alors on remplace
+  les occurrences de $X_i$ dans $\varwd$ par des occurrences de $Y_{i,j}$. On
+  prouve alors que la transformation effectuée donne une dérivation pour $\to'$,
+  par induction sur la longueur de la dérivation. Supposons que
+  $\varwd \to \varwv \rtClot{\to}\varww$ et montrons que
+  $\varwd' rtClot{\to'} \varww'$ (où $\varwd'$ et $\varww'$ respectivement sont
+  les mots $\varwd$ et $\varww$ après transformation)~:
   \begin{itemize}
-  \item si $u \to_i v$, alors $u' = u$ et $u \to' v Y_{i,i} \to' v$, d'où le
-    résultat par hypothèse d'induction.
-  \item si $u \to_{i,j} v$, alors on peut réécrire $v = X_j v_0$ et on a
-    $u' \to' Y_{i,j} v_0$, mais alors $Y_{i,j} (v_0)' = v'$ et, par hypothèse
-    d'induction, $v' {\to'}^\star w'$, donc $u' {\to'}^\star w'$.
+  \item si $\varwd \to_i \varwv$, alors $\varwd' = \varwd$ et
+    $\varwd \to' \varwv Y_{i,i} \to' \varwv$, d'où le résultat par hypothèse
+    d'induction.
+  \item si $\varwd \to_{i,j} \varwv$, alors on peut réécrire
+    $\varwv = X_j \varwv_0$ et on a $\varwd' \to' Y_{i,j} \varwv_0$, mais alors
+    $Y_{i,j} (\varwv_0)' = \varwv'$ et, par hypothèse d'induction,
+    $\varwv' \rtClot{\to'} \varww'$, donc $\varwd' \rtClot{\to'}\varww'$.
   \end{itemize}
   On remarque qu'il est possible d'effectuer la transformation réciproque, et
-  que la seule différence entre un mot $u$ et sa transformée $u'$ se trouve dans
-  les symboles non terminaux~: en particulier, si $u \in \Sigma^\star$, alors
-  $X_i \to^\star u$ si et
-  seulement si $X_i {\to'}^\star u$. Les deux grammaires sont donc équivalentes.
+  que la seule différence entre un mot $\varwd$ et sa transformée $\varwd'$ se
+  trouve dans les symboles non terminaux~: en particulier, si $\varwd\in\toStA$,
+  alors $X_i \rtClot{\to} \varwd$ si et seulement si $X_i \rtClot{\to'}\varwd$.
+  Les deux grammaires sont donc équivalentes.
 
-  Finalement, on crée une nouvelle grammaire $G''$ en faisant la modification
-  suivante~: pour chaque règle $Y_{i,j} \to' uY_{j,k}$ où $u \in M_{i,j}$, si $u$
-  commence par le non terminal $X_p$, alors on remplace la règle par l'ensemble
-  de règles $Y_{i,j} \to' S_p(X_p^{-1}u)Y_{j,k}$. Cela ne change pas la grammaire
+  Finalement, on crée une nouvelle grammaire $\varGG''$ en faisant la
+  modification suivante~: pour chaque règle $Y_{i,j} \to' \varwd Y_{j,k}$ où
+  $\varwd \in M_{i,j}$, si $\varwd$ commence par le non terminal $X_p$, alors on
+  remplace la règle par l'ensemble de règles
+  $Y_{i,j} \to' N_p(X_p^{-1}\varwd)Y_{j,k}$. Cela ne change pas la grammaire
   engendrée, puisque chaque règle modifiée ici correspond à une suite de deux
-  règles de dérivation $\to' X_pu' \to' S_pu'$ dans l'ancienne grammaire.
+  règles de dérivation $\to' X_p\varwd' \to' N_p\varwd'$ dans l'ancienne
+  grammaire.
 
-  En éliminant les $\varepsilon$-transitions dans la grammaire $G''$, on obtient
+  En éliminant les $\Ewd$-transitions dans la grammaire $\varGG''$, on obtient
   ainsi une grammaire sous forme normale de Greibach. De plus, si la grammaire
   est sous forme normale de Chomsky (ce qu'on peut supposer sans perte de
   généralité d'après la
@@ -638,160 +711,187 @@ la construction d'un mot depuis une grammaire.
 
 Pour introduire cette sous-section, il nous faut d'abord présenter la notion
 d'arbre de dérivation. Comme nous l'avons vu, les mots engendrés par une
-grammaire sont obtenus par une dérivation depuis un mot de départ $S$. On
+grammaire sont obtenus par une dérivation depuis un mot de départ $\StGr$. On
 remarque que, à moins de cas particulièrement élémentaires, plusieurs
-dérivations sont possibles. Par exemple, en reprenant la grammaire $G_D$
+dérivations sont possibles. Par exemple, en reprenant la grammaire $\varGG_D$
 définie dans les exemples précédents, on peut construire les deux dérivations
 suivantes~:
 \[\begin{cases}
-S \to S0S1 \to 0S1 \to 01\\
-S \to S0S1 \to S01 \to 01
+\StGr \to \StGr 0\StGr 1 \to 0\StGr 1 \to 01\\
+\StGr \to \StGr 0\StGr1 \to \StGr 01 \to 01
 \end{cases}\]
 Ces deux dérivations donnent le même mot, mais plus que ça elles semblent
 fonctionner exactement de la même façon, à un choix près de l'ordre dans
-lequel on effectue les dérivations $S \to \varepsilon$ depuis $S0S1$. Remarquons
-de plus que ce choix n'a aucune incidence en général~: si l'on considère deux
-dérivations partant de symboles non terminaux distincts, on pourrait aussi bien
-exécuter les dérivations \og en parallèle\fg sans changer le résultat.
+lequel on effectue les dérivations $\StGr \to \Ewd$ depuis $\StGr 0\StGr 1$.
+Remarquons de plus que ce choix n'a aucune incidence en général~: si l'on
+considère deux dérivations partant de symboles non terminaux distincts, on
+pourrait aussi bien exécuter les dérivations \og en parallèle\fg sans changer le
+résultat.
 
 Cela nous motive donc à définir la notion d'arbre de dérivation dans lequel,
 plutôt que de considérer la dérivation d'un mot de façon linéaire, on la
 considère comme une arborescence procédant à chaque dérivation parallèle
 simultanément.
 
-Introduisons donc les arbres en tant que structure à part.
+On peut ici faire le lien avec les ensembles inductifs introduits dans le
+\cref{chp.induction}. Un arbre de dérivation peut en effet être interprété
+comme une version arborescente de la dérivation d'un mot donné. Ici,
+on souhaite construire pour chaque symbole non terminal $\nTA$ un ensemble
+d'arbres de dérivation $\derTr(\nTA)$ correspondant aux arbres qu'on peut
+produire en partant de $\nTA$ (les dérivations utilisées dans la grammaire sont
+alors celles correspondant aux arbres de $\derTr(\StGr)$).
 
-\begin{definition}[Arbre enraciné, feuille, étiquetage]
-  Un arbre enraciné est un triplet $(V,r,d)$ avec~:
-  \begin{itemize}
-  \item un ensemble $V$ de sommets~;
-  \item un sommet $r \in V$ appelé racine~;
-  \item une fonction $d : V \to \List(V)$ associant à un sommet $s$
-    la liste de ses fils, qui vérifie que~:
-    \begin{itemize}
-    \item pour tous $s,s'\in V$, si $d(s) \cap d(s')\neq\varnothing$ alors
-      $s = s'$~;
-    \item pour tous $s,s' \in V$ tels que $s \in d(s')$, il n'existe qu'une
-      occurrence de $s$ dans $d(s')$~;
-    \item pour tout $s \in V$, il existe une suite finie $s_0,\ldots,s_n$ telle
-      que $s_0 = r$, $s_n = s$ et
-      $\forall i \in \{0,\ldots,n-1\},s_{i+1} \in d(s_i)$.
-    \end{itemize}
-  \end{itemize}
+On donne donc d'abord une structure généralisant celle d'ensemble inductif,
+pour avoir des famille d'ensembles mutuellement inductifs.
 
-  On appelle feuille un sommet n'ayant aucun fils.
-
-  Un arbre $(V,r,d)$ est dit étiqueté par un ensemble $X$ s'il est muni d'une
-  fonction $V \to X$.
+\begin{definition}[Signature inductive généralisée]
+  On appelle une signature inductive généralisée la donnée d'un ensemble
+  $\varSup$, appelé le \og support\fg de la signature, d'un ensemble $C$ de
+  constructeurs et d'une fonction
+  $\makeFunName{\arite}{C}{\toSt{\varSup}\times\varSup}$
+  appelée arité.
 \end{definition}
 
-\begin{remark}
-  La définition que nous donnons ici n'est pas consensuelle~: le mot
-  \og arbre\fg est particulièrement polysémique en mathématiques et informatique
-  théorique, et la définition que nous donnons nous sert uniquement pour avoir
-  une définition formelle simplifiée pour notre usage, qui est une déformation
-  de la définition qu'on peut trouver par exemple en théorie des graphes, où un
-  arbre est un graphe connexe acyclique. A la place de définir une relation de
-  voisinage, nous donnons une fonction donnant les fils d'un sommet, qui nous
-  permet de mettre en avant la direction générale qu'a un arbre, allant de la
-  racine aux feuilles. On décide aussi d'imposer un ordre dans l'énumération des
-  fils d'un sommet pour simplifier la suite.
-\end{remark}
+Une signature généralisée permet de définir plusieurs ensembles à la fois~:
+une telle signature permet d'engendrer une famille $(X_s)_{s\in\varSup}$
+d'ensembles construits inductivement par les constructeurs. Par exemple, on
+peut construire une paire d'ensembles $(X,Y)$ avec un constructeur
+$c_0 \in X$, un constructeur $\makeFunName{c_1}{X}{Y}$ et un constructeur
+$\makeFunName{c_2}{Y}{X}$.
 
-On définit la hauteur d'un arbre comme la longueur de la plus grande suite
-allant de la racine à une feuille de l'arbre (la hauteur d'un arbre limité à une
-racine étant $0$). Il est alors possible de définir et raisonner par récurrence
-sur la hauteur de l'arbre.
-
-\begin{definition}[Arbre de dérivation]
-  Soit $\Sigma$ un alphabet, et $(\Gamma,\to,S)$ une grammaire sur $\Sigma$.
-  On appelle arbre de dérivation sur $(\Gamma,\to,S)$ un arbre $(V,r,d)$ dont
-  les sommets sont étiquetés par $\Sigma\cup\Gamma$ (on notera $e$ la fonction
-  d'étiquetage) et tel que~:
-  \begin{itemize}
-  \item $e(r) = S$
-  \item si $s$ est une feuille de l'arbre, alors $e(s) \in \Sigma$.
-  \item pour tout sommet $s$ de l'arbre, il existe une règle $e(s) \to u$ telle
-    que $u$ est l'application de $e$ à chaque élément de $d(s)$.
-  \end{itemize}
-
-  On appelle frontière d'un arbre de dérivation $T$ le mot
-  $u \in \Sigma^\star$ obtenu en concaténant toutes les étiquettes
-  des feuilles de $T$, dans l'ordre.
+\begin{definition}[Famille inductivement engendrée]
+  Soit une signature généralisée $(\varSup,C,\arite)$. On définit la famille
+  $(X_{s,n})_{s \in \varSup,n \in \bN}$ par
+  \[
+  X_{s,n} \defeq
+  \comprB{(c,x_1,\ldots,x_n)}{\begin{array}{l}
+      \arite(c) = ((s_1\cdots s_k),s)\\
+      \forall i \in \intervIntB{k}, \exists m < n, x_i \in X_{s_i,m}
+      \end{array}}
+  \]
+  La famille $(X_s)_{s\in\varSup}$ est alors définie par
+  \[X_s \defeq \bigcup_{n \in \bN} X_{s,n}\]
 \end{definition}
 
-\begin{remark}
-  Si l'on veut définir la frontière formellement, on peut définir inductivement
-  sur $V$ la fonction $\partial : V \to \Sigma^\star$ par~:
+On donne en une fois les résultats attendus de cette construction, qui
+généralisent directement les \cref{thm.PU.ind} et \cref{thm.ind.induct}.
+
+\begin{theorem}[Récursion, induction]\label{thm.ind.rec.gen}
+  Soit $(\varSup,C,\arite)$ une signature généralisée et $(X_s)_{s\in\varSup}$
+  la famille inductivement engendrée par cette signature. Les deux propriétés
+  suivantes sont vérifiées~:
   \begin{itemize}
-  \item si $s$ est une feuille, $\partial s \defeq e(s)$
-  \item sinon,
-    $\displaystyle\partial s \defeq \underset{{s' \in d(s)}}{\bigstar}
-    \partial s'$
+  \item pour toute famille d'ensembles $(Y_s)_{s\in\varSup}$ et toute famille
+    $(f_c)_{c\in C}$ telle que
+    \[\forall c \in C, \arite(c) = ((s_1\cdots s_k),s) \implies
+    \makeFunName{f}{\prod_{i = 1}^k Y_{s_k}}{Y_s}\]
+    il existe une famille de fonctions $(f_s)_{s\in\varSup}$ telle que
+    $\forall s \in \varSup, \makeFunName{f_s}{X_s}{Y_s}$ et
+    \begin{multline*}
+    \forall c \in C, \arite(c) = ((s_1\cdots s_k),s) \implies\\
+    \forall x_1 \in X_{s_1}\cdots x_k\in X_{s_k},
+    f_s(c(x_1,\ldots,x_k)) = f_c(f_{s_1}(x_1),\ldots,f_{s_k}(x_k))
+    \end{multline*}
+  \item pour toute famille $(P_s)_{s\in \varSup}$ de parties de
+    $(X_s)_{s\in\varSup}$, si pour tout $c \in C$ et en prenant la décomposition
+    $\arite(c) = ((s_1,\ldots,s_k),s)$ on a
+    \[\forall x_1\in P_{s_1}\cdots x_k\in P_{s_k},
+    c(x_1,\ldots,x_k) \in P_s\]
+    alors pour tout $s \in \varSup$, $P_s = X_s$.
   \end{itemize}
-  et définir $\partial T$, la frontière de l'arbre $T = (V,r,d)$, comme
-  $\partial T \defeq \partial r$.
-
-  Relevons qu'au niveau des définitions, $\partial$ est une fonction à valeurs
-  dans $(\Sigma\cup\Gamma)^\star$, mais que le fait que les étiquettes des
-  feuilles sont des éléments de $\Sigma$ nous assure que $\partial s$ est
-  dans $\Sigma^\star$.
-\end{remark}
-
-\begin{remark}
-  En réutilisant les notions du \cref{chp.induction}, on peut considérer
-  l'ensemble des arbres de dérivation comme une famille d'ensembles
-  inductifs $(X_A)_{A \in \Sigma}$ indicé par les règles données par la
-  grammaire où chaque terminal est une constante, et chaque non terminal
-  appartient à un ensemble distinct~: une règle $r : A \to aBC$ par
-  exemple donne lieu à un constructeur binaire $r_a(B,C)$ appartenant à
-  l'ensemble $X_A$ et prenant en argument un élément de $X_B$ et un élément de
-  $X_C$.
-
-  Nous ne détaillons pas la construction formelle qu'il faudrait effectuer
-  pour obtenir une telle famille. L'ensemble des arbres de dérivation depuis
-  une lettre $A$ est alors $X_A$, et $X_S$ est l'ensemble des arbres de
-  dérivation de la grammaire.
-\end{remark}
-
-\begin{example}
-  Les deux dérivations précédentes de $01$ dans le langage de Dyck peuvent être
-  associées à l'arbre de dérivation suivant~:
-  \begin{figure}[h]
-    \centering
-    \begin{tikzpicture}
-      \node (q_0) at (0,0) {$S$};
-      \node (q_1) at (-1.5,-1) {$S$};
-      \node (q_2) at (-0.5,-1) {$0$};
-      \node (q_3) at (0.5,-1) {$S$};
-      \node (q_4) at (1.5,-1) {$1$};
-      \node (q_5) at (-1.5,-2) {$\varepsilon$};
-      \node (q_6) at (0.5,-2) {$\varepsilon$};
-      \draw[->, >=latex] (q_0) -- (q_1);
-      \draw[->, >=latex] (q_0) -- (q_2);
-      \draw[->, >=latex] (q_0) -- (q_3);
-      \draw[->, >=latex] (q_0) -- (q_4);
-      \draw[->, >=latex] (q_1) -- (q_5);
-      \draw[->, >=latex] (q_3) -- (q_6);
-    \end{tikzpicture}
-  \end{figure}
-\end{example}
-
-Le fait suivant est plutôt intuitif. Nous le laissons en exercice pour le
-lecteur le plus dubitatif.
+\end{theorem}
 
 \begin{exercise}
-  Soit un alphabet $\Sigma$ et une grammaire $G$ sur $\Sigma$. Montrer que
-  pour tout $u \in \Sigma^\star$, $u \in \mathcal L_G$ si et seulement s'il
-  existe un arbre de dérivation $T$ sur $G$ tel que $\partial T = u$.
+  Prouver le théorème précédent.
+\end{exercise}
+
+\begin{definition}[Famille des arbres de dérivation]
+  Soient $\ABA$ un alphabet et $\varGG = (\ABB,\to,\StGr)$ une grammaire sur
+  $\ABA$.
+  On définit la signature généralisée suivante~:
+  \begin{itemize}
+  \item le support est $\ABB$
+  \item pour toute règle $\nTA \to \varwd$, on peut décomposer $\varwd$ en
+    $\varwd_1\nTA_1\cdots \nTA_{n}\varwd_{n+1}$ avec pour tout $i$,
+    $\varwd_i \in \toStA$ (cette décomposition est unique). On ajoute
+    $c_{\nTA,\varwd}$ dans $C$ et on définit
+    $\arite(c_{\nTA,\varwd}) = (\nTA_1\cdots\nTA_n,\nTA)$.
+  \end{itemize}
+  La famille $(\derTr(\nTA))_{\nTA\in\ABB}$ est la famille inductivement
+  engendrée par cette signature.
+\end{definition}
+
+\begin{example}
+  En reprenant le langage de Dyck donné par la grammaire $\varGG_D$ sur
+  $\btwo$, le seul symbole existant est $\StGr$ et l'ensemble des arbres de
+  dérivation est alors donné par la BNF
+  \[T,T' \inddefeq c_{\Ewd} \mid c_{\StGr 0\StGr 1}(T,T')\]
+  ce qui, à renommage près, correspond à
+  \[T,T' \inddefeq \nil\mid \node(T,T')\]
+  c'est-à-dire aux arbres binaires.
+
+  En reprenant l'exemple de dérivation dans cette grammaire du mot
+  $0011000111$, on peut construire l'arbre
+  \[\node(\node(\nil,\node(\nil,\nil)),\node(\nil,\node(\nil,\nil)))\]
+  qui, de façon plus lisible, s'écrit
+  \begin{center}
+    \begin{tikzpicture}
+      \node (a) at (0,0) {$\node$};
+      \node (b) at (-2,-1) {$\node$};
+      \node (c) at (-3,-2) {$\nil$};
+      \node (d) at (-1,-2) {$\node$};
+      \node (e) at (-2,-3) {$\nil$};
+      \node (f) at (0,-3) {$\nil$};
+      \node (g) at (2,-1) {$\node$};
+      \node (h) at (1,-2) {$\nil$};
+      \node (i) at (3,-2) {$\node$};
+      \node (j) at (2,-3) {$\nil$};
+      \node (k) at (4,-3) {$\nil$};
+      \draw (a) -- node [below right] {$0$} (b);
+      \draw (a) -- node [above right] {$1$} (g);
+      \draw (b) -- node [below right] {$0$} (c);
+      \draw (b) -- node [above right] {$1$} (d);
+      \draw (d) -- node [below right] {$0$} (e);
+      \draw (d) -- node [above right] {$1$} (f);
+      \draw (g) -- node [below right] {$0$} (h);
+      \draw (g) -- node [above right] {$1$} (i);
+      \draw (i) -- node [below right] {$0$} (j);
+      \draw (i) -- node [above right] {$1$} (k);
+    \end{tikzpicture}
+  \end{center}
+  Les étiquettes sur les arêtes de l'arbre permettent de reconstituer le mot~:
+  si on parcourt les arêtes en faisant le tour de l'arbre, en partant de la
+  gauche de la racine et en descendant dans l'arbre, alors le mot obtenu le long
+  du parcours est $0011000111$, celui décrit à l'origine.
+\end{example}
+
+Définissons maintenant le mot associé à un arbre de dérivation, grâce à
+l'opération de frontière d'un arbre de dérivation.
+
+\begin{definition}[Frontière d'un arbre de dérivation]
+  Soient $\ABA$ un alphabet de $\varGG$ une grammaire sur $\ABA$. On définit
+  inductivement la famille de fonctions de frontière (on laissera le domaine
+  sous-entendu) $\makeFunName{\front}{\derTr(\nTA)}{\toStA}$ par~:
+  \begin{itemize}
+  \item pour une règle $\nTA \to \varwd$, on décompose $\varwd$ en
+    $\varwd = \varwd_1 \nTA_1\cdots \nTA_n\varwd_{n+1}$, et on pose
+    \[\front(c_{\nTA,\varwd}(T_1,\ldots,T_n)) \defeq
+    \varwd_1 \wdPt \front(T_1)\wdPt\cdots\wdPt \front(T_n)\wdPt\varwd_{n+1}\]
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour tout mot $\varwd\in\toStA$ et toute grammaire $\varGG$ sur
+  $\ABA$, $\varwd \in \varLL_{\varGG}$ si et seulement s'il existe
+  $T \in \derTr(\StGr)$ tel que $\front(T) = \varwd$.
 \end{exercise}
 
 Supposons qu'on dispose d'un arbre de dérivation $T$ partant d'un non terminal
-$S$ et d'un arbre de dérivation $T'$ partant d'un non terminal $A$. Il est alors
-possible de \og greffer\fg notre arbre $T'$ à un sommet de $T$ étiqueté par $A$.
-On obtient alors un nouveau mot dans notre langage, si $T$ et $T'$ sont des
-arbres sur une grammaire du langage (à l'exception près du fait que la racine
-de $T'$ peut avoir une étiquette autre que $S$).
+$\nTA$ et d'un arbre de dérivation $T'$ partant d'un non terminal $\nTA$. Il est
+alors possible de \og greffer\fg notre arbre $T'$ à un sommet de $T$ étiqueté
+par $\nTA$. On obtient alors un nouveau mot dans notre langage, si $T$ et $T'$
+sont des arbres sur une grammaire du langage (à l'exception près du fait que la
+racine de $T'$ peut avoir une étiquette autre que $\nTA$).
 
 Cela nous mène à un nouveau résultat, analogue à celui du lemme de l'étoile.
 Dans le lemme de l'étoile, on a considéré un automate pour dire que celui-ci va
@@ -799,67 +899,72 @@ devoir boucler lorsqu'il reconnait un mot suffisamment long. Ici, plutôt que de
 considérer les états d'un automate, on considère les symboles utilisés dans
 l'arbre de dérivation~: si l'arbre de dérivation est suffisamment haut, alors
 il va exister une branche (un chemin de la racine à une feuille) qui va passer
-deux fois par le même symbole non terminal, disons $A$. On a alors, pour notre
-arbre $T$, un sous-arbre $T'$ dont la racine est $A$ et qui passe par $A$. En
-nommant $T''$ le sous-arbre obtenu depuis la deuxième apparition de $A$, on peut
-alors greffer $T'$ à $T''$, pour obtenir un nouvel arbre, sur lequel on peut
-encore répéter cette opération autant de fois que l'on le souhaite. Au niveau
-des mots engendrés par ces itérations d'arbres où $T''$ est remplacé par $T'$,
-cela se traduit par le lemme suivant~:
+deux fois par le même symbole non terminal, disons $\nTA$. On a alors, pour
+notre arbre $T$, un sous-arbre $T'$ dont la racine est $\nTA$ et qui passe par
+$\nTA$. En nommant $T''$ le sous-arbre obtenu depuis la deuxième apparition de
+$\nTA$, on peut alors greffer $T'$ à $T''$, pour obtenir un nouvel arbre, sur
+lequel on peut encore répéter cette opération autant de fois que l'on le
+souhaite. Au niveau des mots engendrés par ces itérations d'arbres où $T''$ est
+remplacé par $T'$, cela se traduit par le lemme suivant~:
 
 \begin{lemma}[Itération]
-  Soit $\Sigma$ un alphabet, $G = (\Gamma,\to,S)$ une grammaire sur $\Sigma$.
-  Il existe alors un entier $N$ tel que pour tout $u \in \mathcal L_G$ de
-  longueur supérieure à $N$, il existe une décomposition
-  \[u = \alpha v \beta w \gamma\]
+  Soient $\ABA$ un alphabet, $\varGG = (\ABB,\to,\StGr)$ une grammaire sur
+  $\ABA$.
+  Il existe alors un entier $N \in \bN$ tel que pour tout
+  $\varwd \in \varLL_{\varGG}$ de longueur supérieure à $N$, il existe une
+  décomposition
+  \[\varwd = \varwx \varwv \varwy \varww \varwz\]
   telle que
   \[\begin{cases}
-  \forall n \in \mathbb N, \alpha v^n \beta w^n \gamma \in \mathcal L_G\\
-  |vw| > 0
+  |\varwv\varww| > 0\\
+  |\varwv\varwy\varww| \leq N\\
+  \forall n \in \bN, \varwx \varwv^n \varwy \varww^n \varwz \in \varLL_{\varGG}
   \end{cases}\]
 \end{lemma}
 
 \begin{proof}
+  Sans perte de généralité, on considère $\varGG$ propre.
   On sait que $\to$ contient un nombre fini de règles. On définit
-  \[d \defeq \max \{|u| \mid (A,u) \in \to\}\]
-  et
-  \[N \defeq d^{|\Gamma|+2}\]
-  D'après les conditions dans la définition d'un arbre de dérivation, on sait
-  que pour tout arbre de dérivation sur $G$ et sommet $s$, on a l'inégalité
-  \[|d(s)| \leq d\]
-  Si un arbre de dérivation $T$ sur $G$ possède une hauteur strictement
-  inférieure à $|\Gamma| + 2$, alors (par induction sur la hauteur de l'arbre)
-  sa frontière sera de taille strictement inférieure à $d^{|\Gamma| + 2}$, donc
-  par contraposition tout arbre de dérivation engendrant un mot $u$ de taille
-  supérieure à $N$ doit avoir une hauteur supérieure à $|\Gamma| + 2$. Il existe
-  donc une branche $(s_0,\ldots,s_n)$ de longueur supérieure à $|\Gamma| + 2$
-  dans cet arbre.
+  \[d \defeq \max \compr{|\varwd|}{(\nTA,\varwd) \in \mathord{\to}}\qquad
+  \text{et}
+  \qquad N \defeq d^{\Card(\ABB)+2}\]
+  Par définition de nos arbres de dérivation, on sait que tout arbre de
+  dérivation $T$ est de la forme $c(T_1,\ldots,T_k)$ où $k \leq d$. Si un arbre
+  de dérivation a une hauteur strictement inférieure à $\Card(\ABB)+2$, alors
+  (par une induction structurelle) sa frontière sera de taille strictement
+  inférieure à $d^{\Card(\ABB)+2}$, donc par contrposée tout arbre de dérivation
+  engendrant un mot de taille supérieure à $N$ doit avoir une hauteur supérieure
+  à $\Card(\ABB)+2$. On peut donc trouver une branche dans cet arbre de
+  dérivation de longueur supérieure à $\Card(\ABB)+2$, dont on note
+  $(\nTA_1,\ldots,\nTA_{h})$ la suite des non terminaux étiquetant les
+  sous-arbres de la branche.
 
-  On utilise maintenant le principe des tiroirs sur la branche
-  $(s_0,\ldots,s_{n-1})$ de longueur supérieure à $|\Gamma| + 1$~: il existe
-  deux indices $i,j$ tels que $i\neq j$ et $e(s_i) = e(s_j)$. Soient alors les
-  arbres $T_0,T_1$ et $T_2$ définis respectivement comme le sous-arbre de $T$
-  dont la racine est $s_j$, comme le sous-arbre de $T'$ dont la racine est $e_i$
-  et privé de l'arbre $T_0$ et comme $T$ privé de l'arbre $T_0\cup T_1$.
+  Soit un tel arbre $T$, on utilise maintenant le principe des tiroirs sur une
+  branche de longueur supérieure à $\Card(\ABB) + 1$ comme définie
+  précédemment~: il existe deux indices $i < j$ tels que $\nTA_i = \nTA_j$.
+  Quitte à choisir de tels indices à la fin de la branche, on peut assurer que
+  $h - i \leq \Card(\ABB) + 1$. Soient alors les arbres $T_0,T_1$ et $T_2$
+  définis respectivement comme
+  \begin{itemize}
+  \item l'arbre $T$ auquel on retire, dans la branche étudiée, le sous-arbre
+    correspondant au n\oe ud $\nTA_i$, et où on remplace ce n\oe ud par le
+    non terminal $\nTA_i$~;
+  \item le sous-arbre correspondant au n\oe ud $\nTA_i$, dans lequel on
+    retire le sous-arbre correspond au n\oe ud $\nTA_j$, et où on remplace ce
+    n\oe ud par le non terminale $\nTA_j$~;
+  \item le sous-arbre correspondant au n\oe ud $\nTA_j$.
+  \end{itemize}
 
-  Soit
-  \[A \defeq e(s_i)\]
-  On décide de nommer les frontières de nos différents arbres~:
-  \[\partial T_0 \defeq \beta \qquad \partial T_1 \defeq vAw \qquad
-  \partial T_2 \defeq \alpha A \gamma\]
-  Il est dont possible de greffer $T_1$ à $T_2$ un nombre $k$ quelconque de
-  fois, puis de greffer $T_0$ à $T_1$, pour obtenir un arbre de dérivation
-  valide. On en déduit donc, en prenant la frontière de chacun de ces arbres de
-  dérivation itérée~:
-  \[\begin{cases}
-  \forall n \in \mathbb N, \alpha v^n \beta w^n \gamma \in \mathcal L_G\\
-  |vw| > 0
-  \end{cases}\]
-
-  On en déduit le résultat souhaité.
+  On remarque d'abord que la frontière de $T_0$ est exactement
+  $\varwx\nTA_i\varwz$, que la frontière de $T_1$ est exactement
+  $\varwv\nTA_j\varww$ et que la frontière de $T_2$ est $\varwy$. De par notre
+  choix, on sait déjà que $|\varwv\varww| > 0$ et que
+  $|\varwv\varwy\varww| \leq N$. Le dernier point se vérifie en considérant
+  l'arbre $T_0 T_1^n T_2$, c'est-à-dire l'arbre dans lequel on itère l'arbre
+  $T_1$ autant de fois que souhaité.
 \end{proof}
 
-\begin{figure}[ht]
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}
     \node (q0) at (0,0) [above]{$S$};
@@ -880,24 +985,30 @@ cela se traduit par le lemme suivant~:
     \node (q9) at (2,-5) [below]{$w$};
     \node (q10) at (4,-5) [below]{$\gamma$};
   \end{tikzpicture}
-  \caption{Illustration de la décomposition précédente}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Illustration du lemme d'itération}
 \end{figure}
 
 \subsection{Ambiguïté et propriété universelle}
 
 Un problème se présente cependant, avec les arbres de dérivation. Dans le cas
-des dérivations d'un mot, de la forme $S\to^\star u$, on sait qu'il existe en
-général de nombreuses dérivations, mais qu'en est-il des arbres de dérivation ?
+des dérivations d'un mot, de la forme $\nTA\rtClot{\to} \varwd$, on sait qu'il
+existe en général de nombreuses dérivations, mais qu'en est-il des arbres de
+dérivation ?
 
 Une grammaire peut en fait, ou non, posséder un unique arbre de dérivation pour
 chaque mot~: c'est ce qu'on appelle une grammaire non ambiguë.
 
 \begin{definition}[Ambiguïté]
-  Soit $\Sigma$ un alphabet et $G$ une grammaire sur $\Sigma$. On dit que $G$
-  est ambiguë lorsqu'il existe deux arbres de dérivation sur $G$ distincts mais
-  de même frontière. On dit qu'un langage algébrique $\mathcal L$ est
+  Soit $\ABA$ un alphabet et $\varGG$ une grammaire sur $\ABA$. On dit que
+  $\varGG$ est ambiguë lorsqu'il existe deux arbres de dérivation sur $\varGG$
+  distincts mais de même frontière. On dit qu'un langage algébrique $\varLL$ est
   inhéremment ambigu s'il n'existe aucune grammaire non ambiguë engendrant
-  $\mathcal L$.
+  $\varLL$.
 \end{definition}
 
 La notion d'ambiguïté, ou plutôt de non ambiguïté, nous permet de définir une
@@ -905,44 +1016,32 @@ propriété universelle, analogue au \cref{thm.PU.ind}.
 
 \begin{proposition}[Propriété universelle d'une grammaire non ambiguë]
   \label{prop.PU.gram}
-  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,S)$ une grammaire non ambiguë sur
-  $\Sigma$. Soit un ensemble $X$ et une famille $(f_{A,u})_{(A,u) \in \to}$ de
-  fonctions telles que pour tout $(A,u) \in \to$, $f_{A,u} : X^n \to X$ où $n$
-  est le nombre de non terminaux appartenant à $u$. Il existe alors une unique
-  fonction $f : \mathcal L_G \to X$ telle que pour toute règle
-  $A \to u_1A_1\cdots A_nu_{n+1}$ et mots $v_1,\ldots,v_n\in\Sigma^\star$ tels que
-  $A_i \to^\star v_i$, on a l'égalité
-  \[f(u_1\star v_1\star\cdots\star v_n u_{n+1}) =
-  f_{A,u_1A_1\cdots A_nu_{n+1}}(f(v_1),\ldots,f(v_n))\]
+  Soit $\ABA$ un alphabet et $\varGG=(\ABB,\to,\StGr)$ une grammaire non ambiguë
+  sur $\ABA$. Soit un ensemble $X$ et une famille
+  $(f_{\nTA,\varwd})_{(\nTA,\varwd) \in \mathord{\to}}$ de
+  fonctions telles que pour tout $(\nTA,\varwd) \in \mathord{\to}$, en
+  décomposant $\varwd = \varwd_1\nTA_1\cdots\varwd_k\nTA_k\varwd_{k+1}$, on a
+  $\makeFunName{f_{\nTA,\varwd}}{X^k}{X_{\nTA}}$.
+  Il existe alors une unique fonction $f : \varLL_{\varGG} \to X$ telle que pour
+  toute règle $\nTA \to \varwd_1\nTA_1\cdots \nTA_k\varwd_{k+1}$ et mots
+  $\varwv_1,\ldots,\varwv_k\in\toStA$ tels que
+  $\nTA_i \rtClot{\to} \varwv_i$, on a l'égalité
+  \[f(\varwd_1\wdPt \varwv_1\wdPt\cdots\wdPt \varwv_k \varwd_{k+1}) =
+  f_{\nTA,\varwd_1\nTA_1\cdots \nTA_k\varwd_{k+1}}(f(\varwv_1),\ldots,f(\varwv_k))\]
 \end{proposition}
 
 \begin{proof}
-  On raisonne par induction sur la hauteur d'un arbre de dérivation d'un mot
-  $u$, en supposant que la racine de l'arbre est un non terminal $A$
-  quelconque. Formellement, on prouve qu'il existe une unique fonction dont
-  le domaine est l'ensemble des mots s'obtenant par un arbre de dérivation de
-  hauteur au plus $n$ depuis un non terminal quelconque~:
-  \begin{itemize}
-  \item si la dérivation est de la forme $A \to u$ où $u\in\Sigma^\star$, alors
-    notre condition est que $f(u) = f_{A,u} \in X$, et cette fonction convient
-    bien
-  \item supposons qu'un mot $u$ soit obtenu par un arbre de dérivation dont la
-    racine est $A$ suivi des sous-arbres $T_1,\ldots,T_k$, où l'on ignore les
-    terminaux (on notera $u_1,\ldots,u_{k+1}$ les mots constitués des terminaux
-    entre chaque non terminal). On sait alors que $f$ est définie de façon
-    unique sur les mots issus de $T_1,\ldots,T_k$ par hypothèse d'induction, et
-    alors il existe une unique valeur à $u$ qui est donnée par la condition.
-  \end{itemize}
-
-  Ainsi, par induction, tout arbre de dérivation d'un mot est associé à un
-  élément de $X$ de sorte de respecter la condition souhaitée, d'où le
-  résultat dans le cas des arbres de dérivation dont la racine est $S$.
+  On applique simplement le \cref{thm.ind.rec.gen} à la famille de fonctions
+  $(f_{\nTA,\varwd})$, et on applique la fonction ainsi construite~: pour
+  un mot $\varwd\in\varLL_{\varGG}$, il existe par non ambigüité un unique arbre
+  de dérivation $T\in\derTr(\StGr)$ tel que $\front(T) = \varwd$, et on
+  associe alors $f(\varwd) = f_{\StGr}(T)$.
 \end{proof}
 
 \begin{remark}
-  En réalité, on aurait pu définir un ensemble $X_A$ pour chaque non terminal
-  $A$, ce qui donne une fonction $f$ de codomaine différent pour chaque
-  non terminal pris comme symbole de départ.
+  On peut bien sûr construire des familles de fonctions non homogènes, dans
+  lesquels chaque non terminal donne une fonction vers un ensemble différent,
+  mais la propriété universelle serait encore plus lourde à écrire.
 \end{remark}
 
 Nous profitons de ces définitions pour donner la bijection de Cantor, qui
@@ -952,16 +1051,14 @@ avec une première version de codage de Gödel.
 
 \begin{definition}[Bijection de Cantor \cite{Cantor1877}]\label{def.bij.Cantor}
   On appelle bijection de Cantor, ou polynôme de Cantor, la fonction
-  \[\begin{array}{ccccc}
-  \alpha_2 & : & \mathbb N \times \mathbb N & \longrightarrow & \mathbb N\\
-  & & (n,m) & \displaystyle\longmapsto &
-  \displaystyle\left(\sum_{k = 1}^{n+m} k\right)+m
-  \end{array}\]
+  \[\makeFunIso{\BijCB}{\bN\times\bN}{\bN}
+               {(n,m)}{\displaystyle\left(\sum_{k = 1}^{n+m} k\right)+m}
+  \]
 \end{definition}
 
 \begin{exercise}
-  Montrer que la bijection de Cantor est effectivement une bijection et
-  croissante strictement en chaque coordonnée.
+  Montrer que la bijection de Cantor est effectivement une bijection, et qu'elle
+  est croissante strictement en chacun de ses arguments.
 \end{exercise}
 
 L'intérêt de cette fonction est de nous donner un encodage des paires d'entiers
@@ -969,84 +1066,88 @@ avec les entiers eux-mêmes. On peut en fait généraliser cette idée avec les
 $k$-uplets d'entiers, et même les listes d'entiers.
 
 \begin{definition}\label{def.bij.pairing}
-  On définit la \ordinalnumeralfeminin{$n$} bijection, $\alpha_n$, par
+  On définit la \ordinalnumeralfeminin{$n$} bijection, $\BijCn$, par
   récursion sur $n$~:
   \begin{itemize}
-  \item la bijection $\alpha_1 : \mathbb N \cong \mathbb N$ est définie par
+  \item la bijection $\BijCP{1} : \bN \cong \bN$ est définie par
     l'identité.
-  \item si $\alpha_n$ est définie, alors on définit
-    \[\begin{array}{ccccc}
-    \alpha_{n+1} & : & \mathbb N^{n+1} & \longrightarrow & \mathbb N\\
-    & & (p_1,\ldots,p_{n+1}) & \longmapsto &
-    \alpha_2(\alpha_n(p_1,\ldots,p_n),p_{n+1})
-    \end{array}\]
+  \item si $\BijCn$ est définie, alors on définit
+    \[\makeFunIso{\BijCP{n+1}}{\bN^{n+1}}{\bN}
+                 {(p_1,\ldots,p_{n+1})}{\BijCB(\BijCn(p_1,\ldots,p_n),p_{n+1})}\]
   \end{itemize}
 
-  On définit aussi la bijection $\alpha_\star : \mathbb N^\star \cong \mathbb N$
+  On définit aussi la bijection $\makeFunNameIso{\BijCs}{\toSt{\bN}}{\bN}$
   par récursion sur les listes~:
   \begin{itemize}
-  \item $\alpha_\star (\varepsilon) = 0$
-  \item $\alpha_\star (u\star a) = 1 + \alpha_2(\alpha_\star(u),a)$
+    \begin{minipage}{0.3\textwidth}
+    \item $\BijCs(\Ewd) = 0$
+    \end{minipage}
+    \begin{minipage}{0.65\textwidth}
+    \item $\BijCs(\varwd\wdPt n) = 1 + \BijCB(\BijCs(\varwd),n)$
+    \end{minipage}
   \end{itemize}
 \end{definition}
 
 \begin{exercise}
-  Montrer que $\alpha_n$ et $\alpha_\star$ sont des bijections croissantes
-  strictement en chaque coordonnée.
+  Montrer que $\BijCn$ et $\BijCs$ sont des bijections croissantes strictement
+  en chaque coordonnée.
 \end{exercise}
 
 \begin{notation}
-  On notera en général $\langle n,m\rangle$ pour $\alpha_2(n,m)$, et de même
-  $\langle n_1,\ldots,n_p\rangle$ pour $\alpha_p(n_1,\ldots,n_p)$.
+  On notera en général $\langle n,m\rangle$ pour $\BijCB(n,m)$, et de même
+  $\langle n_1,\ldots,n_p\rangle$ pour $\BijCP{n}(n_1,\ldots,n_p)$.
 \end{notation}
 
-\begin{definition}[Codage de Gödel - version 1 \cite{Godel1931-GDEBFU}]
-  Soit $\Sigma$ un alphabet et $G=(\Gamma,\to,V)$ une grammaire non ambiguë sur
-  $\Sigma$. Pour chaque $A \in \Gamma$, on numérote les règles $(A,u) \in \to$
-  pour les ordonner, on note $e(A,u)$ le numéro de la règle $A,u$. Soit
-  $u = u_1A_1\cdots A_nu_{n+1}$ où $u_1,\ldots,u_{n+1}\in\Sigma^\star$, on définit
-  \[f_{A,u}(x_1,\ldots,x_n)\defeq \langle e(A,u),x_1,\ldots,x_n\rangle\]
+\begin{definition}[Codage de Gödel - version 1 \cite{cori1993logique}]
+  Soit $\ABA$ un alphabet et $\varGG=(\ABB,\to,\StGr)$ une grammaire non ambiguë
+  sur $\ABA$. Pour chaque $\nTA \in \ABB$, on numérote les règles
+  $(\nTA,\varwd) \in \mathord{\to}$ pour les ordonner, on note $e(\nTA,\varwd)$
+  le numéro de la règle $\nTA\to \varwd$. Soit
+  $\varwd = \varwd_1\nTA_1\cdots \nTA_n\varwd_{n+1}$, on définit
+  \[f_{\nTA,\varwd}(x_1,\ldots,x_n)\defeq
+  \langle e(\nTA,\varwd),x_1,\ldots,x_n\rangle\]
   La fonction obtenue est ce qu'on appelle un codage de Gödel de
-  $\mathcal L_G$~:
-  \[\godcod{-} : \mathcal L_G \to \mathbb N\]
+  $\varLL_{\varGG}$~:
+  \[\makeFunName{\godcod{\tok}}{\varLL_{\varGG}}{\bN}\]
 \end{definition}
 
 \begin{example}
-  On fixe une signature du premier ordre $\Delta$ et un ensemble de variables
-  du premier ordre $\mathcal X$. On peut définir les formules sur la signature
-  $\Delta$ par la grammaire suivante~:
+  On fixe une signature du premier ordre $\Sign$ et un ensemble de variables
+  du premier ordre $\Var$. On peut définir les formules sur la signature $\Sign$
+  par la grammaire suivante~:
   \begin{align*}
-    S &\Coloneq \forall x, S \mid \exists x, S\mid T\\
-    T &\Coloneq U \to T \mid U\\
-    U &\Coloneq V \lor U \mid V\\
-    V &\Coloneq W \land V \mid W\\
-    W &\Coloneq \lnot W \mid \top \mid \bot \mid Y = Y \mid
-    R^p(Y,\ldots,Y)\mid (S)\\
-    Y &\Coloneq x \mid f^p(Y,\ldots,Y)
+    \StGr &\inddefeq \forall x, \StGr \mid \exists x, \StGr\mid \Imp\\
+    \Imp &\inddefeq \Disj \to \Imp \mid \Disj\\
+    \Disj &\inddefeq \Conj \lor \Disj \mid \Conj\\
+    \Conj &\inddefeq \Atom \land \Disj \mid \Atom\\
+    \Atom &\inddefeq \lnot \Atom \mid \top \mid \bot \mid \Term = \Term \mid
+    R^p(\Term,\ldots,\Term)\mid (\StGr)\\
+    \Term &\inddefeq x \mid f^p(\Term,\ldots,\Term)
   \end{align*}
-  où $x \in \mathcal X$, $R^p$ décrit l'ensemble des symboles de relation
+  où $x \in \Var$, $R^p$ décrit l'ensemble des symboles de relation
   d'arité $p$ et $f^p$ les symboles de fonctions d'arité $p$. Les tuples
-  $Y,\ldots,Y$ sont des $p$-uplets~: en particulier pour $p = 0$ on a simplement
-  $R^0$ (respectivement $f^0$).
+  $\Term,\ldots,\Term$ sont des $p$-uplets~: en particulier pour $p = 0$ on a
+  simplement $R^0$ (respectivement $f^0$).
   
   On peut vérifier que la grammaire est sans ambiguïté. Ainsi, pour une formule
-  $\varphi$ donnée, on peut lui associer un entier naturel $\godcod\varphi$, en
+  $\varFF$ donnée, on peut lui associer un entier naturel $\godcod\varFF$, en
   prenant comme numérotation l'ordre dans lequel on a présenté les règles venant
   d'un même non terminal.
 
-  En particulier, lorsque $\Delta$ est la signature de l'arithmétique
-  $\mathcal L_{\mathrm{Arith}}$ dont nous avons parlé dans le
-  \cref{chp.logpred}, on peut de plus associer à une formule $\varphi$ son
-  code de Gödel $\godcod\varphi$, puis le terme dans le langage de
-  l'arithmétique $S^{\godcod\varphi}0$. On a ainsi une façon de représenter une
-  formule de l'arithmétique à l'intérieur même de l'arithmétique. Nous verrons
-  que ce processus est au c\oe ur des théorèmes d'incomplétude de Gödel.
+  En particulier, lorsque $\Sign$ est la signature de l'arithmétique
+  $\SignP{\Arith}$ dont nous avons parlé dans le \cref{chp.logpred}, on peut de
+  plus associer à une formule $\varFF$ son code de Gödel $\godcod\varFF$, puis
+  le terme dans le langage de l'arithmétique $\Ss^{\godcod\varFF}0$. On a ainsi une
+  façon de représenter une formule de l'arithmétique à l'intérieur même de
+  l'arithmétique. Nous verrons que ce processus est au c\oe ur des théorèmes
+  d'incomplétude de Gödel.
 \end{example}
 
 \begin{remark}
   Le terme \og codage de Gödel\fg sert à désigner une fonction des formules
-  logiques dans les entiers. Dans notre cas, nous avons défini une fonction plus
-  générale, mais il reste que cette fonction, dans le cas particulier de
+  logiques dans les entiers (ou, plus généralement, d'un ensemble d'objets
+  syntaxiques dans les entiers). Dans notre cas, nous avons défini une fonction
+  plus générale, mais il reste que cette fonction, dans le cas particulier de
   l'arithmétique, correspond à nos attentes. Cependant, nous n'allons pas
   faire usage de ce codage, car nous aurons l'occasion d'en définir un plus
   pratique sur le long terme. En effet, dans le \cref{chp.recur}, nous allons
@@ -1057,21 +1158,21 @@ $k$-uplets d'entiers, et même les listes d'entiers.
   Relevons qu'historiquement, le premier codage de Gödel dans son article
   \cite{Godel1931-GDEBFU} utilisait la décomposition en facteurs premiers, pour
   encoder un tuple $(n_1,\ldots,n_k)$ par l'entier
-  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)_{n \in \mathbb N}$
+  $2^{n_1}\times 3^{n_2}\times\cdots \times p_k^{n_k}$ où $(p_n)_{n \in \bN}$
   est l'énumération canonique des nombres premiers.
 \end{remark}
 
 \begin{remark}
   Dans notre description des propositions, nous avons un ensemble infini de
-  symboles avec $x \in \mathcal X$. Pour correspondre à notre paradigme où les
+  symboles avec $x \in \Var$. Pour correspondre à notre paradigme où les
   règles sont en nombre fini, il suffit de considérer $x$ comme un symbole non
   terminal et la règle
-  \[x \Coloneq x_0\mid x_s(x)\]
+  \[x \inddefeq x_0\mid x_{\Ss}(x)\]
   décrivant une variable initiale $x_0$ et une fonction injective non surjective
-  $x_s : \mathcal X \to \mathcal X$. Ainsi la variable $x_n$ est remplacée par
-  la variable $(x_s)^n(x_0)$ et on a alors bien un langage algébrique. Cela
+  $x_{\Ss} : \Var \to \Var$. Ainsi la variable $x_n$ est remplacée par la
+  variable $(x_{\Ss})^n(x_0)$ et on a alors bien un langage algébrique. Cela
   nous donne d'ailleurs un codage plus explicite des termes (les expressions
-  dérivées de $Y$ dans notre grammaire).
+  dérivées de $\Term$ dans notre grammaire).
 \end{remark}
 
 \section{Automates à pile}
@@ -1087,11 +1188,15 @@ d'un mot par un automate à pile. Nous verrons dans la seconde sous-section les
 conséquences de ces automates, en particulier un théorème de clôture et le cas
 des automates à pile déterministes.
 
-\subsection{Premières définitions}
+Précisons dès maintenant que si nous étudions le cas des automates à pile
+déterministes, cela est dû au fait que ceux-ci ne sont pas équivalents aux
+automates à pile non déterministes (contrairement au cas des automates finis).
+Les automates déterministes reconnaissent une sous-classe stricte de la classe
+des langages algébriques (qui, eux, sont reconnus par les automates à pile non
+déterministes). On considère donc par défaut les automates comme non
+déterministes.
 
-Cependant, là où les automates finis admettent de nombreuses formulations
-équivalentes, ce n'est pas toujours le cas pour les automates à pile. En
-particulier, les automates à pile sont par défaut non déterministes.
+\subsection{Premières définitions}
 
 Un automate à pile peut se voir comme un automate fini auquel on adjoint une
 liste de symboles que l'automate peut lire pour avoir une forme de mémoire.
@@ -1100,39 +1205,49 @@ Cette liste de symboles fonctionne suivant le principe LIFO
 de pile (d'où le nom)~: le symbole lu est le dernier symbole ajouté.
 
 \begin{definition}[Automate à pile]
-  Soit un alphabet $\Sigma$. Un automate à pile sur $\Sigma$ est la donnée
-  d'un $5$-uplet $(Q,q_0,\Gamma,\alpha_0,R)$ où~:
+  Soit un alphabet $\ABA$. Un automate à pile sur $\ABA$ est la donnée d'un
+  $5$-uplet $(\varQQ,\varqZ,\ABB,\varla_0,\mathord{\varRR})$ où~:
   \begin{itemize}
-  \item $Q$ est l'ensemble (fini) d'états
-  \item $q_0 \in Q$ est l'état initial
-  \item $\Gamma$ est l'alphabet de pile
-  \item $\alpha_0 \in \Gamma$ est le symbole initial
+    \begin{minipage}{0.45\textwidth}
+    \item $\varQQ$ est l'ensemble (fini) d'états
+    \item $\varqZ \in \varQQ$ est l'état initial
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\ABB$ est l'alphabet de pile
+    \item $\varla_0 \in \ABB$ est le symbole initial
+    \end{minipage}
   \item 
-    $R \subseteq Q \times \Gamma\times (\Sigma\cup \{\varepsilon\})\times
-    Q \times \Gamma^\star$ est la relation de transition.
-    On notera $q,\alpha \xrightarrow{\beta} q',u$ pour signifier
-    $(q,\alpha,\beta,q',u) \in R$ et on appellera $\beta$ l'étiquette de
-    la transition.
+    $\mathord{\varRR} \subseteq \varQQ \times \ABB\times
+    (\ABA\cup \{\Ewd\})\times \varQQ \times \toStB$
+    est la relation de transition. On notera
+    $\varq,\varla \xrightarrow{\varlb} \varq',\varwd$ pour signifier
+    $(\varq,\varla,\varlb,\varq',\varwd) \in \mathord{\varRR}$ et on appellera
+    $\varlb$ l'étiquette de la transition.
   \end{itemize}
 \end{definition}
 
-\begin{figure}[h]
+\begin{figure}[t]
   \centering
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[state, initial] (q_0) {$q_0$};
+    \node[state, initial] (q_0) {$\varqZ$};
     \path[->,>=latex]
     (q_0) edge [loop right] node
-         {$\genfrac{}{}{0pt}{0}{*,0,**}{*,1,\varepsilon}$} ();
+         {$\genfrac{}{}{0pt}{0}{*,0,**}{*,1,\Ewd}$} ();
   \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
   \caption{Exemple d'automate à pile}
   \label{fig.auto.pile1}
 \end{figure}
 
 \begin{notation}
   Comme dans le cas des automates finis, on considère par défaut qu'un automate
-  dont on ne spécifie pas les composantes a pour ensemble d'état $Q$, pour état
-  initial $q_0$, et de plus que $\Gamma$ est son alphabet de pile et $\alpha_0$
-  son symbole initial.
+  dont on ne spécifie pas les composantes a pour ensemble d'état $\varQQ$, pour
+  état initial $\varqZ$, et de plus que $\ABB$ est son alphabet de pile et
+  $\varla_0$ son symbole initial.
 \end{notation}
 
 Contrairement au cas d'un automate fini déterministe ou non, utiliser un
@@ -1142,24 +1257,25 @@ de la pile qu'il lit. On introduit donc la notion de configuration, qui est une
 description totale du calcul lors de l'exécution d'un automate à pile.
 
 \begin{definition}[Configuration]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile sur $\Sigma$. On
-  appelle configuration sur $\mathcal A$ une paire $(q,u)$ où $q \in Q$ et
-  $u \in \Gamma^\star$.
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate à pile sur $\ABA$. On appelle
+  configuration sur $\varAuA$ une paire $(\varq,\varwd)$ où $\varq \in \varQQ$
+  et $\varwd \in \toStB$.
 \end{definition}
 
 Comme dans le chapitre précédent, on définir une notion de trace, qui correspond
 à un historique de l'exécution de l'automate.
 
 \begin{definition}[Trace de l'exécution d'un automate à pile]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile sur $\Sigma$.
-  On appelle trace sur $\mathcal A$ une suite finie $(C_p)$ de
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate à pile sur $\ABA$.
+  On appelle trace sur $\varAuA$ une suite finie $(C_p)$ de
   configurations telle que, pour tout indice $p$ où $C_p$ et $C_{p+1}$ sont
-  définies, en notant $C_p = (q,u)$ et $C_{p+1} = (q',v)$, on peut trouver deux
-  lettres $\alpha,\beta$ et deux mots $u',v'$ tels que
+  définies, en notant $C_p = (\varq,\varwd)$ et $C_{p+1} = (\varq',\varwv)$, on
+  peut trouver deux lettres $\varla,\varlb$ et deux mots $\varwd',\varwv'$ tels
+  que
   \[\begin{cases}
-  u = \alpha u'\\
-  v = v'u'\\
-  q,\alpha \xrightarrow \beta q',v'
+  \varwd = \varla \varwd'\\
+  \varwv = \varwv'\varwd'\\
+  \varq,\varla \xrightarrow{\varlb} \varq',\varwv'
   \end{cases}\]
   
   Soit une trace $(C_p)_{p = 0,\ldots,k}$. On dit que cette trace est valide pour
@@ -1172,10 +1288,10 @@ Comme dans le chapitre précédent, on définir une notion de trace, qui corresp
 
 \begin{example}\label{ex.pile.trace}
   L'exemple de la \cref{fig.auto.pile1} nous fournit un automate à pile sur
-  $\Sigma = \btwo$. On donne en exemple une trace d'exécution du mot $011$
+  $\ABA = \btwo$. On donne en exemple une trace d'exécution du mot $011$
   par cet automate, en prenant comme symbole initial $*$~:
-  \[(q_0,*) \xrightarrow{0} (q_0,**) \xrightarrow{1} (q_0,*)
-  \xrightarrow{1} (q_0,\varepsilon)\]
+  \[(\varqZ,*) \xrightarrow{0} (\varqZ,**) \xrightarrow{1} (\varqZ,*)
+  \xrightarrow{1} (\varqZ,\Ewd)\]
 \end{example}
 
 Remarquons que pour l'instant, si on a effectivement défini ce qu'est un calcul
@@ -1187,9 +1303,9 @@ calcul qui se termine.
 
 Plusieurs tels critères existent. Nous en donnons deux~:
 \begin{itemize}
-\item par état final~: on définit un ensemble $F$ d'états finaux, et la trace
-  termine si l'état $q_k$ appartient à l'ensemble $F$~;
-\item par pile vide~: la trace termine lorsque $u_k = \varepsilon$.
+\item par état final~: on définit un ensemble $\varAF$ d'états finaux, et la
+  trace termine si l'état $q_k$ appartient à l'ensemble $\varAF$~;
+\item par pile vide~: la trace termine lorsque $\varwd_k = \Ewd$.
 \end{itemize}
 
 \begin{remark}
@@ -1199,42 +1315,39 @@ Plusieurs tels critères existent. Nous en donnons deux~:
 
 Ces deux critères définissent la même classe de langages reconnus (celle des
 langages algébriques, comme on s'y attend).
-
 Pour vérifier cela, on commence par définir la notion de fond de pile testable.
 
 \begin{definition}[Fond de pile testable]
-  Soit $\Sigma$ un alphabet et $\mathcal A$ un automate à pile. On dit que cet
+  Soit $\ABA$ un alphabet et $\varAuA$ un automate à pile. On dit que cet
   automate est à fond de pile testable s'il existe une partition
-  $\Gamma = \Gamma_0 \sqcup \Gamma_1$ telle que pour toute configuration
-  accessible depuis la configuration $(q_0,\alpha_0)$, c'est-à-dire toute
-  configuration appartenant à une trace dont la configuration précédente est
-  la configuration de départ, en notant cette configuration $(q,u)$, alors
-  $u$ peut se décomposer en $u'\alpha$ où $u' \in \Gamma_0$ et
-  $\alpha \in \Gamma_1$. Dit autrement, un fond de pile est testable si pour
+  $\ABB = \ABB_0 \sqcup \ABB_1$ telle que pour toute configuration accessible
+  depuis la configuration $(\varqZ,\varla_0)$, c'est-à-dire toute configuration
+  appartenant à une trace dont la configuration précédente est la configuration
+  de départ, en notant cette configuration $(\varq,\varwd)$, alors
+  $\varwd$ peut se décomposer en $\varwd'\varla$ où $\varwd' \in \ABB_0$ et
+  $\varla \in \ABB_1$. Dit autrement, un fond de pile est testable si pour
   toute exécution de l'automate, il est toujours possible à partir du mot en
   tête de pile de savoir si la pile est réduite à une lettre ou non.
 \end{definition}
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet, et $\mathcal A$ un automate sur $\Sigma$. Alors
-  il existe un automate à fond de pile testable reconnaissant le même langage
-  que $\mathcal A$, que $\mathcal A$ reconnaisse par état final ou par pile
-  vide.
+  Soit $\ABA$ un alphabet, et $\varAuA$ un automate sur $\ABA$. Alors il existe
+  un automate à fond de pile testable reconnaissant le même langage que
+  $\varAuA$, que $\varAuA$ reconnaisse par état final ou par pile vide.
 \end{proposition}
 
 \begin{proof}
-  L'idée de la démonstration est de doubler l'alphabet $\Gamma$~: on crée une
+  L'idée de la démonstration est de doubler l'alphabet $\ABB$~: on crée une
   nouvelle copie
-  \[\Gamma' \defeq \{ \alpha_{\mathrm{bis}}\mid \alpha \in \Gamma\}\]
-  disjointe avec $\Gamma$ de sorte que le fond de pile est toujours occupé par
-  une lettre de $\Gamma'$. Il nous suffit ensuite d'ajouter des transitions de
-  sorte à garder en mémoire si la lettre correspond ou non à une lettre de fond
-  de pile.
+  \[\ABB' \defeq \compr{\varla_{\bis}}{\varla \in \ABB}\]
+  disjointe avec $\ABB$ de sorte que le fond de pile est toujours occupé par une
+  lettre de $\ABB'$. Il nous suffit ensuite d'ajouter des transitions de sorte à
+  garder en mémoire si la lettre correspond ou non à une lettre de fond de pile.
 \end{proof}
 
 \begin{theorem}
-  Soit $\Sigma$ un alphabet, un langage $\mathcal L$ est reconnu par un automate
-  à pile par état final si et seulement s'il est reconnu par un automate à pile
+  Soit $\ABA$ un alphabet, un langage $\varLL$ est reconnu par un automate à
+  pile par état final si et seulement s'il est reconnu par un automate à pile
   par pile vide.
 \end{theorem}
 
@@ -1242,31 +1355,33 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
   Le théorème contient deux parties~: on veut construire un automate à pile par
   état final à partir d'un automate à pile par pile vide, et inversement.
 
-  On suppose donc, pour commencer, que le langage $\mathcal L$ est reconnu par
-  un automate à pile à fond de pile testable par état final $\mathcal A$. On
-  veut maintenant construire un automate à pile par pile vide. Pour cela, on
-  ajoute deux états $q_+$ et $q_-$ représentant respectivement le cas où on
+  On suppose donc, pour commencer, que le langage $\varLL$ est reconnu par un
+  automate à pile à fond de pile testable par état final $\varAuA$. On veut
+  maintenant construire un automate à pile par pile vide. Pour cela, on ajoute
+  deux états $\varqP{+}$ et $\varqP{-}$ représentant respectivement le cas où on
   atteint un état final, et le cas où la pile se vide avant d'atteindre un état
   final.
 
   Dans le premier cas, on ajoute une transition de la forme
-  $q,\alpha\xrightarrow \beta q_+,\varepsilon$ pour chaque transition de la
-  forme $q,\alpha\xrightarrow \beta q',\gamma$ où $q' \in F$, ainsi que toutes
-  les transitions $q_+,\alpha \xrightarrow\varepsilon q_+,\varepsilon$,
+  $\varq,\varla\xrightarrow{\varlb}\varq{+},\Ewd$ pour chaque transition de la
+  forme $\varq,\varla\xrightarrow{\varlb} \varq',\varwv$ où $\varq' \in \varAF$,
+  ainsi que toutes les transitions
+  $\varqP{+},\varla \xrightarrow{\Ewd} \varqP{+},\Ewd$,
   permettant ainsi de transformer une trace pour le premier automate en une
-  trace du nouvel automate identique jusqu'à l'état final, remplacé par $q_+$ où
-  la pile se vide alors.
-  Pour le cas de $q_-$, on ajoute toutes les transitions
-  $q,\alpha \xrightarrow \beta q_-,\alpha$ pour $\alpha$ une lettre de fond de
-  pile ne menant pas à un état final. Ainsi les traces sur l'automate initial
-  sont associées soit à une trace vidant sa pile dans l'état $q_+$, soit par une
-  trace bloquante en $q_-$ où aucune transition ne peut être exécutée mais où la
-  pile n'est pas vide.
+  trace du nouvel automate identique jusqu'à l'état final, remplacé par
+  $\varqP{+}$ où la pile se vide alors.
+  Pour le cas de $\varqP{-}$, on ajoute toutes les transitions
+  $\varq,\varla \xrightarrow{\varlb} \varqP{-},\varla$ pour $\varla$ une lettre
+  de fond de pile ne menant pas à un état final. Ainsi les traces sur l'automate
+  initial sont associées soit à une trace vidant sa pile dans l'état
+  $\varqP{+}$, soit par une trace bloquante en $\varqP{-}$ où aucune transition
+  ne peut être exécutée mais où la pile n'est pas vide.
 
   Réciproquement, si le langage est reconnu par un automate à pile à fond de
-  pile testable par pile vide, alors on peut ajouter un unique état final $q_f$
-  et une transition $q,\alpha\xrightarrow\beta q_f,\alpha$ pour toute lettre
-  $\alpha$ de fond de pile.
+  pile testable par pile vide, alors on peut ajouter un unique état final
+  $\varqP{f}$ et une transition
+  $\varq,\varla\xrightarrow{\varlb} \varqP{f},\varla$ pour toute lettre
+  $\varla$ de fond de pile.
 \end{proof}
 
 \begin{remark}
@@ -1276,11 +1391,10 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
 \end{remark}
 
 \begin{definition}[Langage reconnaissable par pile]
-  Un langage $\mathcal L \subseteq \Sigma^\star$ est reconnaissable par automates
-  à pile lorsqu'il existe un critère parmi ceux cités précédemment et un
-  automate à pile $\mathcal A$ tel que pour tout $u \in \Sigma^\star$,
-  $u \in L$
-  si et seulement s'il existe une trace valide pour $u$ dont la dernière
+  Un langage $\varLL \subseteq \toStA$ est reconnaissable par automates à pile
+  lorsqu'il existe un critère parmi ceux cités précédemment et un automate à
+  pile $\varAuA$ tel que pour tout $\varwd \in \toStA$, $\varwd \in \varLL$ si
+  et seulement s'il existe une trace valide pour $\varwd$ dont la dernière
   configuration est une configuration d'arrêt pour le critère choisi.
 \end{definition}
 
@@ -1288,7 +1402,7 @@ Nous concluons maintenant la sous-section en montrant l'équivalence entre les
 grammaires hors contextes et les automates à pile.
 
 \begin{theorem}\label{thm.reco.alg}
-  Soit $\Sigma$ un alphabet. On a égalité entre la classe des langages
+  Soit $\ABA$ un alphabet. On a égalité entre la classe des langages
   algébriques et celle des langages reconnaissable par un automate à pile.
 \end{theorem}
 
@@ -1296,27 +1410,32 @@ grammaires hors contextes et les automates à pile.
   Commençons par montrer qu'un langage algébrique est reconnaissable par un
   automate à pile pour le critère de pile vide et état final.
 
-  Soit une grammaire $G \defeq \{\Gamma, \{A_i \to w_i\}_{i \in I}, S\}$, on
-  construit l'automate $\mathcal A_G$ suivant~:
+  Soit une grammaire $\varGG=\{\ABB,\{\nTA_i\to\varww_i\}_{i \in I},\StGr\}$, on
+  construit l'automate $\varAuP{\varGG}$ suivant~:
   \begin{itemize}
-  \item $Q \defeq q_0 \cup q_f \cup \{q_{i,j} \mid i \in I, w \in
-    \{1,\ldots,|w_i|\}\}$
-  \item $\Gamma_{\mathcal A} \defeq \Sigma \cup \Gamma$
+    \begin{minipage}{0.65\textwidth}
+    \item $\varQQ \defeq \{\varqZ\} \cup \{\varqP{f}\} \cup
+      \compr{\varqP{i,j}}{i \in I, \varww \in \intervIntB{\wdl{\varww_i}}}$
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \item $\ABB_{\varAuP{\varGG}} \defeq \ABA \cup \ABB$
+    \end{minipage}
   \item le symbole initial est vide (quitte à créer une transition le
     supprimant au début de l'automate)
-  \item l'unique état final est $q_f$
-  \item la relation $R$ est définie par les faits suivants~:
+  \item l'unique état final est $\varqP{f}$
+  \item la relation $\varRR$ est définie par les faits suivants~:
     \begin{itemize}
-    \item on a une transition $q_0,S\xrightarrow\varepsilon q_f,\varepsilon$
-    \item pour toute règle $A_i \to w_i$, on ajoute les transitions
-      (en considérant que $q_{i,0} = q_0$)
-      \[\forall j < |w_i|, q_{i,j}, (w_{i})_{|w_i| - j} \xrightarrow\varepsilon
-      q_{i,j+1},\varepsilon\]
-      ainsi que $q_{i,|w_i|},\varepsilon\xrightarrow\varepsilon q_0,A_i$
-    \item pour toute lettre $\alpha \in \Sigma$, on ajoute la transition
-      \[q_0,\varepsilon \xrightarrow\alpha q_0,\alpha\]
-      (que l'on peut encoder par, pour tout symbole de pile $\beta$,
-      $q_0,\beta\xrightarrow\alpha q_0,\alpha\beta$)
+    \item on a une transition
+      $\varqZ,\StGr\xrightarrow{\Ewd} \varqP{f},\Ewd$
+    \item pour toute règle $\nTA_i \to \varww_i$, on ajoute les transitions
+      (en considérant que $\varqP{i,0} = q_0$)
+      \[\forall j < \wdl{\varww_i}, \varqP{i,j}, (\varww{i})_{\wdl{\varww_i}- j}
+      \xrightarrow{\Ewd} \varqP{i,j+1},\Ewd\]
+      ainsi que $\varqP{i,\wdl{\varww_i}},\Ewd\xrightarrow{\Ewd} \varqZ,\nTA_i$
+    \item pour toute lettre $\varla \in \ABA$, on ajoute la transition
+      \[\varqZ,\Ewd \xrightarrow{\varla} \varqZ,\varla\]
+      (que l'on peut encoder par, pour tout symbole de pile $\varlb$,
+      $\varqZ,\varlb\xrightarrow{\varla} \varqZ,\varla\varlb$)
     \end{itemize}
   \end{itemize}
   On ne montrera pas rigoureusement l'équivalence des deux langages, mais on
@@ -1325,62 +1444,67 @@ grammaires hors contextes et les automates à pile.
   deux types de blocs de configurations~:
   \begin{itemize}
   \item des blocs augmentant la taille de la pile, où toutes les transitions
-    sont de la forme $q_0,\varepsilon \xrightarrow\alpha q_0,\alpha$
+    sont de la forme $\varqZ,\Ewd \xrightarrow{\varla}\varqZ,\varla$
   \item des blocs diminuant la taille de la pile, où le bloc commence à l'état
-    $q_0$ puis dépile toutes les lettres correspondant au mot $w_i$ d'une règle
-    $A_i \to w_i$, puis revient à l'état $q_0$ en empilant la lettre $A_i$
+    $\varqZ$ puis dépile toutes les lettres correspondant au mot $\varww_i$
+    d'une règle $\nTA_i \to \varww_i$, puis revient à l'état $\varqZ$ en
+    empilant la lettre $\nTA_i$
   \end{itemize}
-  Suite à cette alternance, on obtient une pile constituée uniquement par $S$
-  sur l'état $q_0$, permettant d'aller à l'état $q_f$. Pour une dérivation d'un
-  mot $u$ depuis $S$, on remarque qu'il est possible d'effectuer le parcourt de
-  l'automate à l'envers~: si la première règle utilisée est $S \to w$, alors on
-  a un bloc de transitions de $q_0$ à $q_0$ tel que la pile vaut d'abord $w$,
-  puis finit par valoir $S$. Ainsi, les dérivations correspondent à des traces
-  valides, et inversement puisqu'un bloc va toujours correspondre à une
-  dérivation.
+  Suite à cette alternance, on obtient une pile constituée uniquement par
+  $\StGr$ sur l'état $\varqZ$, permettant d'aller à l'état $\varqP{f}$. Pour une
+  dérivation d'un mot $\varwd$ depuis $\StGr$, on remarque qu'il est possible
+  d'effectuer le parcourt de l'automate à l'envers~: si la première règle
+  utilisée est $\StGr \to \varww$, alors on a un bloc de transitions de $\varqZ$
+  à $\varqZ$ tel que la pile vaut d'abord $\varww$, puis finit par valoir
+  $\StGr$. Ainsi, les dérivations correspondent à des traces valides, et
+  inversement puisqu'un bloc va toujours correspondre à une dérivation.
 
   Montrons le sens réciproque. Pour cela, on utilise la méthode des triplets de
-  Ginsburg \cite{ginsburg1966mathematical}. Soit un automate à pile $\mathcal A$
-  reconnaissant le langage $\mathcal L$ par pile vide. On suppose sans perte de
+  Ginsburg \cite{ginsburg1966mathematical}. Soit un automate à pile $\varAuA$
+  reconnaissant le langage $\varLL$ par pile vide. On suppose sans perte de
   généralité (quitte à ajouter des états et des transitions) que toute
   transition n'empile qu'au plus deux symboles.
 
-  Pour tous états $q,q'$ et symbole de pile $\alpha$, on définit
-  $\mathcal L_{q,q',\alpha}$ l'ensemble des mots $u$ des tels qu'il existe un
-  calcul valide pour $u$ entre la configuration $(q,\alpha)$ et la configuration
-  $(q',\varepsilon)$. On remarque que si $u \in \mathcal L_{q,q',\alpha}$, alors
-  pour tout mot $w$, il existe un calcul valide pour $u$ entre
-  $(q,\alpha w)$ et $(q',w)$. On donne les égalités~:
+  Pour tous états $\varq,\varq'$ et symbole de pile $\varla$, on définit
+  $\varLL_{\varq,\varq',\varla}$ l'ensemble des mots $\varwd$ des tels qu'il existe
+  un calcul valide pour $\varwd$ entre la configuration $(\varq,\varla)$ et la
+  configuration $(\varq',\Ewd)$. On remarque que si
+  $\varwd \in \varLL_{\varq,\varq',\varla}$, alors pour tout mot $\varww$, il existe
+  un calcul valide pour $\varwd$ entre $(\varq,\varla \varww)$ et
+  $(\varq',\varww)$. On donne les égalités~:
   \begin{align*}
-    \mathcal L &= \displaystyle\bigcup_{q' \in Q} \mathcal L_{q_0,q',\alpha_0} \\
-    \mathcal L_{q,q',\alpha} &= \{\beta \mid q,\alpha \xrightarrow \beta q',
-    \varepsilon\}
-    \cup\displaystyle\bigcup_{q,\alpha\xrightarrow\beta p,\gamma}
-    \beta\mathcal L_{p,q',\gamma}
-    \cup\bigcup_{q,\alpha\xrightarrow\beta p,\gamma\delta}
-    \beta\mathcal L_{p,p',\gamma}\mathcal L_{p',q',\delta}
+    \varLL &=
+    \displaystyle\bigcup_{\varq' \in \varQQ} \varLL_{\varqZ,\varq',\varla_0} \\
+    \varLL_{\varq,\varq',\varla} &=
+    \compr{\varlb}{\varq,\varla \xrightarrow{\varlb} \varq',\Ewd}
+    \cup\displaystyle\bigcup_{\varq,\varla\xrightarrow{\varlb} \varq'',\varlc}
+    \varlb\varLL_{\varq'',\varq',\varlc}
+    \cup\bigcup_{\varq,\varla\xrightarrow{\varlb} \varqP{1},\varlc\varld}
+    \varlb\varLL_{\varqP{1},\varqP{2},\varlc}\varLL_{\varqP{2},\varq',\varld}
   \end{align*}
   La première égalité signifie simplement que reconnaître par pile vide un mot
-  $u$ peut se réécrire en l'existence d'un calcul valide pour $u$ entre
-  $(q_0,\alpha_0)$ et $(q',\varepsilon)$ pour un état $q'$.
+  $\varwd$ peut se réécrire en l'existence d'un calcul valide pour $\varwd$
+  entre $(\varqZ,\varla_0)$ et $(\varq',\Ewd)$ pour un état $\varq'$.
 
   La seconde égalité, elle, contient trois termes. En effet, si l'on veut faire
-  un calcul entre $(q,\alpha)$ et $(q',\varepsilon)$, trois cas sont possibles~:
+  un calcul entre $(\varq,\varla)$ et $(\varq',\Ewd)$, trois cas sont
+  possibles~:
   \begin{itemize}
-  \item soit on supprime simplement la $\alpha$ dans une transition d'étiquette
-    $\beta$~;
-  \item soit on a une transition d'étiquette $\beta$ jusqu'à une configuration
-    $(p,\gamma)$, puis un calcul de $(p,\gamma)$ à $(q',\varepsilon)$~;
-  \item soit on a une transition d'étiquette $\beta$ jusqu'à une configuration
-    $(p,\gamma\delta)$, puis un calcul de $(p,\gamma,\delta)$ à
-    $(p',\delta)$, puis un calcul de $(p',\delta)$ à $(q',\varepsilon)$.
+  \item soit on supprime simplement la $\varla$ dans une transition d'étiquette
+    $\varlb$~;
+  \item soit on a une transition d'étiquette $\varlb$ jusqu'à une configuration
+    $(\varq'',\varlc)$, puis un calcul de $(\varq'',\varlc)$ à $(\varq',\Ewd)$~;
+  \item soit on a une transition d'étiquette $\varlb$ jusqu'à une configuration
+    $(\varqP{1},\varlc\varld)$, puis un calcul de $(\varqP{1},\varlc,\varld)$ à
+    $(\varqP{2},\varld)$, puis un calcul de $(\varqP{2},\varld)$ à
+    $(\varq',\Ewd)$.
   \end{itemize}
   On peut ainsi construire naturellement une grammaire correspondant à ces
   langages~:
   \begin{itemize}
-  \item $\Gamma$ est pris comme l'ensemble des triplets $(q,q',\alpha)$
-  \item le non terminal de départ est $S$ muni d'une transition vers chaque
-    $\mathcal L_{q_0,q',\alpha_0}$ pour $q' \in Q$
+  \item $\ABB$ est pris comme l'ensemble des triplets $(\varq,\varq',\varla)$
+  \item le non terminal de départ est $\StGr$ muni d'une transition vers chaque
+    $\varLL_{\varqZ,\varq',\varla_0}$ pour $\varq' \in \varQQ$
   \item les transitions sont celles indiquées par la seconde équations (on
     remplace simplement les unions par des $+$ et le $=$ par une flèche $\to$)
   \end{itemize}
@@ -1398,23 +1522,24 @@ Pour les automates finis, comme chaque étape de calcul correspond à la lecture
 d'une lettre, le déterminisme ou non d'un automate se caractérise simplement par
 le fait que sa relation de transition est fonctionnelle. Dans le cas présent,
 cependant, cette distinction n'est pas aussi simple~: il est par exemple permis
-d'utiliser des $\varepsilon$-transitions dans un automate à pile déterministe,
-tant que cette transition n'intervient pas sur un état où d'autres transitions
-avec des lettres sont possibles (ceci pour permettre de mieux gérer l'empilement
-et le dépilement).
+d'utiliser des $\Ewd$-transitions dans un automate à pile déterministe, tant que
+cette transition n'intervient pas sur un état où d'autres transitions avec des
+lettres sont possibles (ceci pour permettre de mieux gérer l'empilement et le
+dépilement).
 
 \begin{definition}[Automate à pile déterministe]
-  Un automate à pile $\mathcal A = (Q,q_0,\Gamma,\alpha_0,R)$ sur un alphabet
-  $\Sigma$ est dit déterministe si pour chaque configuration $(q,\alpha)$, l'une
-  des deux conditions suivantes est vérifiée~:
+  Un automate à pile $\varAuA = (\varQQ,\varqZ,\ABB,\varla_0,\varRR)$ sur un
+  alphabet $\ABA$ est dit déterministe si pour chaque configuration
+  $(\varq,\varla)$, l'une des deux conditions suivantes est vérifiée~:
   \begin{itemize}
   \item soit il existe une unique transition
-    $q,\alpha\xrightarrow\varepsilon q',\beta$
-    et il n'y a aucune transition $q,\alpha\xrightarrow a q',\beta$ pour un
-    élément $a \in \Sigma$
+    $\varq,\varla\xrightarrow{\Ewd} \varq',\varlb$ et il n'y a aucune transition
+    $\varq,\varla\xrightarrow{\varlb} \varq',\varlc$ pour un
+    élément $\varlb \in \ABA$
   \item soit il n'existe aucune transition de la forme
-    $q,\alpha\xrightarrow\varepsilon q',\beta$ et pour chaque $a \in \Sigma$, il
-    existe au plus une transition de la forme $q,\alpha\xrightarrow a q',\beta$.
+    $\varq,\varla\xrightarrow{\Ewd} \varq',\varlb$ et pour chaque
+    $\varla \in \ABA$, il existe au plus une transition de la forme
+    $\varq,\varla\xrightarrow{\varlb} \varq',\varlc$.
   \end{itemize}
 
   Un langage algébrique est dit déterministe s'il est reconnaissable par un
@@ -1425,8 +1550,8 @@ La proposition principale qui justifie l'introduction de la version déterminist
 des automates à pile est la suivante~:
 
 \begin{proposition}[Non ambiguïté des langages algébriques déterministes]
-  Un langage $\mathcal L\subseteq \Sigma^\star$ algébrique déterministe est un
-  langage non ambigu.
+  Un langage $\varLL\subseteq \toStA$ algébrique déterministe est un langage non
+  ambigu.
 \end{proposition}
 
 \begin{proof}
@@ -1434,11 +1559,10 @@ des automates à pile est la suivante~:
   reconnaissant le langage, on obtient une correspondance entre les calculs de
   l'automate et les dérivations de la grammaire. Il nous suffit donc d'avoir
   l'unicité des calculs de l'automate~: l'obstacle majeur à cette unicité est la
-  possibilité de faire des $\varepsilon$-transitions à la fin du calcul, ou une
-  infinité d'$\varepsilon$-transitions au milieu du calcul. Il est possible de
-  modifier l'automate pour assurer ce fait, mais nous l'admettons ici (la preuve
-  peut se trouver dans
-  \cite{carton2008langages} à la proposition 2.77).
+  possibilité de faire des $\Ewd$-transitions à la fin du calcul, ou une
+  infinité d'$\Ewd$-transitions au milieu du calcul. Il est possible de modifier
+  l'automate pour assurer ce fait, mais nous l'admettons ici (la preuve peut se
+  trouver dans \cite{carton2008langages} à la proposition 2.77).
 \end{proof}
 
 \newpage
@@ -1448,11 +1572,11 @@ des automates à pile est la suivante~:
 \subsection{Exercices}
 
 \begin{exercise}[Un lemme classique sur les langages algébriques]
-  Montrer que si $\mathcal L$ est un langage algébrique et $\mathcal L'$ est un
-  langage rationnel, alors $\mathcal L \cap \mathcal L'$ est un langage
+  Montrer que si $\varLL$ est un langage algébrique et $\varLL'$ est un
+  langage rationnel, alors $\varLL \cap \varLL'$ est un langage
   algébrique.
 
-  En supposant $\mathcal L'$ algébrique, le résultat est-il toujours vrai ?
+  En supposant $\varLL'$ algébrique, le résultat est-il toujours vrai ?
 \end{exercise}
 
 \begin{exercise}[Complémentaire d'un langage déterministe]
