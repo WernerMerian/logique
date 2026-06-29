@@ -5,13 +5,13 @@
 
 \lettrine{C}{e} chapitre est celui commençant à traiter la calculabilité à
 proprement parler. Jusque là, nous avons vu des versions simples d'automates, et
-de langages traités par ces automates, pour introduire donner une meilleure
-connaissance du traitement des mots par des automates.
+de langages traités par ces automates, pour donner une meilleure connaissance du
+traitement des mots par des automates.
 
 Les langages algébriques (et encore plus les langages rationnels) restent
-restreints. Par exemple, un langage tel que $\{a^nb^nc^n\mid n \in \mathbb N\}$
-n'est pas algébrique, bien qu'il existe clairement un algorithme permettant de
-le reconnaître. On souhaite donc trouver une notion plus forte et expressive de
+restreints. Par exemple, un langage tel que $\compr{a^nb^nc^n}{n \in \bN}$ n'est
+pas algébrique, bien qu'il existe clairement un algorithme permettant de le
+reconnaître. On souhaite donc trouver une notion plus forte et expressive de
 fonction.
 
 Cette notion plus forte est celle de fonction calculable, que nous allons voir
@@ -33,12 +33,12 @@ Avant d'introduire les fonctions récursives, nous en donnons une version faible
 mais très importante~: les fonctions primitives récursives (abrégées en
 fonctions RP).
 
-Si l'on imagine une fonction calculable comme un programme
-C ou Python, une fonction RP est un programme n'employant comme seule boucle que
-la boucle \texttt{for}. Comme nous le verrons, ces
-fonctions ne donnent pas une expressivité aussi forte qu'on pourrait le
-souhaiter, d'où l'introduction plus tard des fonctions récursives. Cependant,
-cette première notion de calcul est centrale pour plusieurs raisons~:
+Si l'on imagine une fonction calculable comme un programme C ou Python, une
+fonction RP est un programme n'employant comme seule boucle que la boucle
+\texttt{for}. Comme nous le verrons, ces fonctions ne donnent pas une
+expressivité aussi forte qu'on pourrait le souhaiter, d'où l'introduction plus
+tard des fonctions récursives. Cependant, cette première notion de calcul est
+centrale pour plusieurs raisons~:
 \begin{itemize}
 \item elle permet en fait d'exprimer toutes les fonctions qu'un ordinateur peut
   programmer à l'exception d'une unique instruction, que l'on peut rapprocher
@@ -57,61 +57,59 @@ fonctions RP non comme un pur objet logique mais bien comme un modèle de calcul
 intermédiaire entre les langages algébriques et les langages récursifs (que nous
 verrons ensuite).
 
-Historiquement, la notion de fonction primitive récursive est apparue avant celle des
-fonctions calculables, notamment dans \cite{skolem1923begrundung} qui a mis en avant
-l'importance et la polyvalence des définitions par récurrence. \`A l'époque, de telles
-fonctions étaient simplement appelées \og fonctions définies par récurrence\fg car, du
-fait de l'absence de la notion de fonction récursive générale, l'adjectif
-\og primitive\fg n'avait pas encore de raison d'être introduit. Notons malgré tout que
-durant une assez longue période, les fonctions que l'on appelle maintenant récursives
-primitives étaient appelées récursives, et les fonctions que l'on appelle maintenant
-récursives étaient appelées récursives générales, comme introduites dans
+Historiquement, la notion de fonction primitive récursive est apparue avant
+celle des fonctions calculables, notamment dans \cite{skolem1923begrundung} qui
+a mis en avant l'importance et la polyvalence des définitions par récurrence.
+\`A l'époque, de telles fonctions étaient simplement appelées \og fonctions
+définies par récurrence\fg car, du fait de l'absence de la notion de fonction
+récursive générale, l'adjectif \og primitive\fg n'avait pas encore de raison
+d'être introduit. Notons malgré tout que durant une assez longue période, les
+fonctions que l'on appelle maintenant récursives primitives étaient appelées
+récursives, et les fonctions que l'on appelle maintenant récursives étaient
+appelées récursives générales, comme introduites dans
 \cite{godel1934undecidable}.
 
 \subsection{Définitions et premières fonctions}
 
-Donnons dès maintenant la définition de la classe RP.
+\noindent
+Commençons par donner la définition de la classe $\RecP$.
 
 \begin{definition}[Fonctions primitives récursives \cite{skolem1923begrundung}]
   On définit la classe
-  $\RecP\subseteq \bigcup_{n \in \mathbb N}\Funct(\mathbb N^n,\mathbb N)$
+  $\RecP\subseteq \bigcup_{n \in \bN}\Funct(\bN^n,\bN)$
   comme la plus petite classe telle que~:
   \begin{itemize}
-  \item pour toutes les projections
-    \[\begin{array}{ccccc}
-    \pi_k^n &:& \mathbb N^n &\longrightarrow& \mathbb N\\
-    & & (x_1,\ldots,x_n) & \longmapsto & x_k
-    \end{array}\]
-    avec $n,k\in \mathbb N, \pi_k^n \in \RecP$.
-  \item pour tout $n \in \mathbb N$, en notant
-    $\mathrm k_0^n : \mathbb N^p \to \mathbb N$ la fonction nulle,
-    $\mathrm k_0^n \in \RecP$.
+  \item $\RecP$ contient, pour tous $n,k \in \bN$ avec $k < n$, les fonctions
+    \[\makeFun{\projP{k}{n}}{\bN^n}{\bN}{(x_1,\ldots,x_n)}{x_k}\]
+  \item $\RecP$ contient, pour tout $n \in \bN$, la fonction
+    \[\makeFun{\csKZ{n}}{\bN^n}{\bN}{(x_1,\ldots,x_n)}{0}\]
   \item la fonction $n \mapsto n + 1$ est primitive récursive~: $\sucs\in\RecP$.
-  \item si $f_1,\ldots,f_n : \mathbb N^k \to \mathbb N$ sont des fonctions RP
-    et $g : \mathbb N^n \to \mathbb N$ est une fonction RP, alors la fonction
-    \[\begin{array}{ccccc}
-    g \circ (f_1,\ldots,f_n) & : & \mathbb N^k &\longrightarrow & \mathbb N\\
-    & & (x_1,\ldots,x_k) & \longmapsto &
-    g(f_1(x_1,\ldots,x_k),\ldots,f_n(x_1,\ldots,x_k))
-    \end{array}\]
+  \item si $f_1,\ldots,f_n : \bN^k \to \bN$ sont des fonctions RP et
+    $g : \bN^n \to \bN$ est une fonction RP, alors la fonction
+    \[\makeFun{g\circ(f_1,\ldots,f_n)}{\bN^k}{\bN}
+              {(x_1,\ldots,x_k)}
+              {g(f_1(x_1,\ldots,x_k),\ldots,f_n(x_1,\ldots,x_k))}\]
     est elle aussi RP.
-  \item si $f : \mathbb N^k \to \mathbb N$ et
-    $g : \mathbb N^{k+2} \to \mathbb N$ sont des fonctions RP, alors la fonction
-    \[\begin{array}{ccccc}
-    \rec(f,g) & : & \mathbb N^{k+1} &\longrightarrow & \mathbb N \\
-    & & (x_1,\ldots,x_k,0) &\longmapsto & f(x_1,\ldots,x_k)\\
-    & & (x_1,\ldots,x_k,y+1) & \longmapsto &
-    g(x_1,\ldots,x_k,y,\rec(f,g)(x_1,\ldots,x_k,y))
-    \end{array}\]
+  \item si $f : \bN^k \to \bN$ et $g : \bN^{k+2} \to \bN$ sont des fonctions RP,
+    alors la fonction
+    \[\makeFunBis{\rec(f,g)}{\bN^{k+1}}{\bN}
+                 {(x_1,\ldots,x_k,0)}{f(x_1,\ldots,x_k)}
+                 {(x_1,\ldots,x_k,\sucs(y))}
+                 {g(x_1,\ldots,x_k,y,\rec(f,g)(x_1,\ldots,x_k,y))}\]
     est elle aussi RP. On appelle cette opération la récursion primitive.
   \end{itemize}
 \end{definition}
 
+\begin{notation}
+  Dans la suite de ce chapitre (et dans les chapitres qui suivent), on adopte
+  une notation vectorielle pour noter les paramètres~: plutôt que
+  $x_1,\ldots,x_n$ on préfèrera la notation $\vec x$, beaucoup plus compacte.
+\end{notation}
+
 \begin{remark}
-  Comme toujours, on identifie $\mathbb N^0 \to \mathbb N$ avec $\mathbb N$.
-  Ainsi on peut définir une fonction $\mathbb N \to \mathbb N$ à partir d'une
-  constante $x_0 \in \mathbb N$ et d'une fonction
-  $f_s : \mathbb N^2 \to \mathbb N$.
+  Comme toujours, on identifie $\bN^0 \to \bN$ avec $\bN$. Ainsi on peut définir
+  une fonction $\bN \to \bN$ à partir d'un élement $x_0 \in \bN$ et d'une
+  fonction $f_{\Ss} : \bN^2 \to \bN$.
 \end{remark}
 
 \begin{remark}
@@ -120,41 +118,39 @@ Donnons dès maintenant la définition de la classe RP.
   fonctions RP de base sont totales.
 \end{remark}
 
-On peut donc, dès lors, donner plusieurs fonctions RP élémentaires.
+\noindent
+Donnons plusieurs fonctions RP élémentaires.
 
 \begin{proposition}\label{fct.RP.1}
   Les fonctions suivantes sont RP~:
   \begin{itemize}
-  \item pour tout $n \in \mathbb N$ et tout $p \in \mathbb N$, la fonction
+  \item pour tout $n \in \bN$ et tout $p < n$, la fonction
     constante
-    \[\begin{array}{ccccc}
-    \mathrm k_n^p &:& \mathbb N^p&\longrightarrow &\mathbb N\\
-    & & (x_1,\ldots,x_p) &\longmapsto & n
-    \end{array}\]
-  \item $+ : \mathbb N^2 \to \mathbb N$
-  \item $\times : \mathbb N^2 \to \mathbb N$
-  \item $\exp : \mathbb N^2 \to \mathbb N$
+    \[\makeFun{\csKP{p}{n}}{\bN^n}{\bN}{\vec x}{p}\]
+  \item $+ : \bN^2 \to \bN$
+  \item $\times : \bN^2 \to \bN$
+  \item $\exp : \bN^2 \to \bN$
   \end{itemize}
 \end{proposition}
 
 \begin{proof}
   Pour les fonctions constantes, il nous suffit de composer $n$ fois la fonction
-  $\sucs$ à la fonction nulle $\mathrm k_0^p$.
+  $\sucs$ à la fonction nulle $\csKZ{p}$.
   
   On sait que les autres fonctions souhaitées sont définies par ces équations~:
   \begin{itemize}
-  \item $\forall n \in \mathbb N, n+0 = n$
-  \item $\forall n,m \in \mathbb N, n + \sucs(m) = \sucs(n+m)$
-  \item $\forall n \in \mathbb N, n \times 0 = 0$
-  \item $\forall n,m \in \mathbb N, n \times \sucs(m) = n + (n\times m)$
-  \item $\forall n \in \mathbb N, \exp(n,0) = 1$
-  \item $\forall n,m\in \mathbb N, \exp(n,\sucs(m)) = n \times \exp(n,m)$
+  \item $\forall n \in \bN, n+0 = n$
+  \item $\forall n,m \in \bN, n + \sucs(m) = \sucs(n+m)$
+  \item $\forall n \in \bN, n \times 0 = 0$
+  \item $\forall n,m \in \bN, n \times \sucs(m) = n + (n\times m)$
+  \item $\forall n \in \bN, \exp(n,0) = 1$
+  \item $\forall n,m\in \bN, \exp(n,\sucs(m)) = n \times \exp(n,m)$
   \end{itemize}
   On définit les fonctions suivantes~:
   \begin{itemize}
-  \item $+ \defeq \rec(\pi_1^1,\sucs\circ \pi_3^3)$
-  \item $\times \defeq \rec(k_0^1,+ \circ (\pi_2^3,\pi_3^3))$
-  \item $\exp \defeq \rec(k_1^1,\times\circ (\pi_2^3,\pi_3^3))$
+  \item $\mathord{+} \defeq \rec(\pi_1^1,\sucs\circ \pi_3^3)$
+  \item $\mathord{\times} \defeq \rec(k_0^1,\mathord{+} \circ (\pi_2^3,\pi_3^3))$
+  \item $\exp \defeq \rec(k_1^1,\mathord{\times}\circ (\pi_2^3,\pi_3^3))$
   \end{itemize}
   Il est direct de vérifier que ces fonctions vérifient les équations attendues.
 \end{proof}
@@ -165,14 +161,9 @@ somme et de produit.
 \begin{proposition}
   Les fonctions suivantes sont RP~:
   \[
-  \begin{array}{ccccc}
-    \Sigma^p &: & \mathbb N^p &\longrightarrow & \mathbb N \\
-    & & (x_1,\ldots,x_p) &\longmapsto & \sum_{i = 1}^p x_i
-  \end{array}\qquad
-  \begin{array}{ccccc}
-    \Pi^p &: & \mathbb N^p &\longrightarrow & \mathbb N\\
-    & & (x_1,\ldots,x_p) &\longmapsto & \prod_{i = 1}^p x_i
-  \end{array}
+  \makeFun{\Sigma^p}{\bN^p}{\bN}{\vec x}{\displaystyle\sum_{i = 1}^p x_i}
+  \qquad
+  \makeFun{\Pi^p}{\bN^p}{\bN}{\vec x}{\displaystyle\prod_{i = 1}^p x_i}
   \]
 \end{proposition}
 
@@ -184,11 +175,11 @@ somme et de produit.
     $0$ et $1$, qui sont RP.
   \item supposons que $\Sigma^p$ est RP, alors on peut définir $\Sigma^{p+1}$
     par
-    \[\Sigma^{p+1} \defeq +\circ
+    \[\Sigma^{p+1} \defeq \mathord{+}\circ
     (\Sigma^p \circ (\pi_1^{p+1},\ldots,\pi_p^{p+1}),
     \pi_{p+1}^{p+1})\]
     et $\Pi^{p+1}$ par
-    \[\Pi^{p+1}\defeq \times\circ
+    \[\Pi^{p+1}\defeq \mathord{\times}\circ
     (\Pi^p \circ (\pi_1^{p+1},\ldots,\pi_p^{p+1}),
     \pi_{p+1}^{p+1})\]
   \end{itemize}
@@ -196,12 +187,9 @@ somme et de produit.
 \end{proof}
 
 \begin{exercise}
-  Soit une fonction RP $f : \mathbb N^n \to \mathbb N$. Montrer que la
-  fonction
-  \[\begin{array}{ccccc}
-  \Sigma^f &: &\mathbb N^{n+1} &\longrightarrow & \mathbb N\\
-  & & (x_1,\ldots,x_n,p) &\longmapsto & \sum_{i = 1}^p f(x_1,\ldots,x_n,i)
-  \end{array}\]
+  Soit une fonction RP $f : \bN^n \to \bN$. Montrer que la fonction
+  \[\makeFun{\Sigma^f}{\bN^{n+1}}{\bN}
+            {(\vec x,p)}{\displaystyle\sum_{i = 1}^p f(\vec x, i)}\]
   est une fonction RP. Montrer la même chose pour la fonction $\Pi^f$ dans
   laquelle la somme est remplacée par le produit.
 \end{exercise}
@@ -210,33 +198,31 @@ D'autres fonctions arithmétiques parmi les plus élémentaires sont facilement
 prouvables comme étant RP.
 
 \begin{proposition}
-  Les fonctions $\min,\max : \mathbb N^2 \to \mathbb N$, la fonction
-  $d : \mathbb N^2 \to \mathbb N$ définie par $d(n,m) = | n - m |$,
+  Les fonctions $\min,\max : \bN^2 \to \mathbb N$, la fonction
+  $\vardis : \bN^2 \to \bN$ définie par $\vardis(n,m) = | n - m |$,
   ainsi que la fonction
-  \[\begin{array}{ccccc}
-  - &: & \mathbb N^2 &\longrightarrow & \mathbb N\\
-  & & (n,0) & \longmapsto & n\\
-  & & (0,\sucs(m)) &\longmapsto & 0\\
-  & & (\sucs(n),\sucs(m)) &\longmapsto & n - m
-  \end{array}\]
+  \[\makeFunTer{\tok - \tok}{\bN^2}{\bN}
+               {(n,0)}{n}
+               {(0,\sucs(m))}{0}
+               {(\sucs(n),\sucs(m))}{n - m}\]
   sont RP.
 \end{proposition}
 
 \begin{proof}
   On commence par prouver que $-$ est RP. Pour cela, on définit d'abord la
   fonction prédécesseur, qui envoie $0$ sur $0$ et $\sucs(n)$ sur $n$~:
-  \[p \defeq \rec(\mathrm k_0^0,\pi_1^2)\]
+  \[p \defeq \rec(\csKZ{0},\projP{1}{2})\]
   A partir de cette fonction $p$, on définit la fonction $-$ comme son
   itération~:
-  \[- \defeq \rec(\pi_1^1,p \circ \pi_3^3)\]
-  On voit qu'alors, $n - 0 = n$ pour tout $n \in \mathbb N$. On montre ensuite
-  par récurrence sur $m$ que $0 - m = 0$~:
+  \[\mathord{-} \defeq \rec(\projP{1}{1},p \circ \projP{3}{3})\]
+  On voit qu'alors, $n - 0 = n$ pour tout $n \in \bN$. On montre ensuite par
+  récurrence sur $m$ que $0 - m = 0$~:
   \begin{itemize}
   \item $0 - 0 = 0$
   \item si $0 - m = 0$, alors $0 - \sucs(m) = p(0-m) = p(0) = 0$
   \end{itemize}
   Il nous reste alors à montrer que $\sucs(n) - \sucs(m) = n - m$. On raisonne
-  par induction sur $m$~:
+  par récurrence sur $m$~:
   \begin{itemize}
   \item $\sucs(n) - \sucs(0) = p(\sucs(n) - 0) = p(\sucs(n)) = n = n - 0$
   \item supposons que $\sucs(n) - \sucs(m) = n - m$, alors
@@ -245,21 +231,20 @@ prouvables comme étant RP.
     = n - \sucs(m)
     \]
   \end{itemize}
-  Donc $-$ est RP.
+  Donc $\tok-\tok$ est RP.
 
   A partir de cette définition de $-$, on peut prouver que $n-m = \max(0,n-m)$
   (nous considérons la preuve suffisamment directe pour la laisser en
-  exercice). On peut alors définir $d(n,m) = (n - m) + (m - n)$.
+  exercice). On peut alors définir $\vardis(n,m) = (n - m) + (m - n)$.
 
   On peut vérifier que pour tous $n,m$, on a les deux équations suivantes~:
   \[\min(n,m) = \frac{1}{2}(n + m - |n - m|)\qquad
   \max(n,m) = \frac{1}{2}(n + m + |n - m|)\]
   donc les fonctions $\min$ et $\max$ s'écrivent comme
   \begin{align*}
-    \min &\defeq \mathrm{demi}\circ - \circ (+,d)\\
-    \max &\defeq \mathrm{demi}\circ + \circ (+,d)
+    \min &\defeq \demi\circ \mathord{-} \circ (+,\vardis)\\
+    \max &\defeq \demi\circ \mathord{+} \circ (+,\vardis)\qedhere
   \end{align*}
-  On en déduit que les fonctions souhaitées sont RP.
 \end{proof}
 
 \begin{exercise}
@@ -269,65 +254,76 @@ prouvables comme étant RP.
 
 \begin{exercise}
   Vérifier que la fonction
-  \[\begin{array}{ccccc}
-  \mathrm{demi} & : & \mathbb N &\longrightarrow & \mathbb N\\
-  & & n &\longmapsto & \displaystyle\left\lfloor \frac{n}{2}\right\rfloor
-  \end{array}\]
+  \[\makeFun{\demi}{\bN}{\bN}{n}{\left\lfloor\dfrac{n}{2}\right\rfloor}\]
   est bien une fonction RP.
 \end{exercise}
 
 \begin{exercise}
-  Montrer que la fonction $q : \mathbb N^2 \to \mathbb N$ et la fonction
-  $r : \mathbb N^2 \to \mathbb N$, renvoyant respectivement le quotient et le
-  reste de la division euclidienne d'un entier par un autre, sont des fonctions
-  RP.
+  Montrer que la fonction $\tok/\tok : \bN^2 \to \bN$ et la fonction
+  $\tok\%\tok:\bN^2 \to \bN$, renvoyant respectivement le quotient et le reste
+  de la division euclidienne d'un entier par un autre, sont des fonctions RP.
 \end{exercise}
 
+\begin{remark}
+  \`A partir de maintenant, on se permet de définir des fonctions RP par des
+  équations sur des arguments, c'est-à-dire considérer qu'une fonction $f$
+  définie par
+  \[\begin{cases}
+  f(\vec x,0) \defeq [\cdots]\\
+  f(\vec x,\sucs(y)) \defeq [\cdots]
+  \end{cases}\]
+  où le contenu des $[\cdots]$ est déjà RP, donne lieu à une fonction RP.
+\end{remark}
+
 Attardons-nous maintenant sur la notion de prédicat RP. On a vu qu'une fonction
-RP était une certaine fonction $\mathbb N^n \to \mathbb N$, mais il est aussi
-intéressant de considérer à la place de fonctions des relations
-$R\subseteq \mathbb N^n$. On adapte donc notre notion de RP à ces relations.
+RP était une certaine fonction $\bN^n \to \bN$, mais il est aussi intéressant de
+considérer à la place de fonctions des relations
+$\mathord{\varRR}\subseteq\bN^n$. On adapte donc notre notion de RP à ces
+relations.
 
 \begin{definition}[Relation RP]
-  On dit qu'une relation $R \subseteq \mathbb N^n$ est RP si sa fonction
-  caractéristique $\chi_R : \mathbb N^n \to \btwo$ est une fonction RP.
+  On dit qu'une relation $\mathord{\varRR}\subseteq\bN^n$ est RP si sa fonction
+  caractéristique $\makeFunName{\indicP{\mathord{\varRR}}}{\bN^n}{\btwo}$ est
+  une fonction RP.
 \end{definition}
 
 \begin{remark}
   On parlera aussi d'ensemble RP ou de partie RP, ce dernier cas plutôt pour
-  parler de partie de $\mathbb N$.
+  parler de partie de $\bN$.
 \end{remark}
 
 Les relations RP se comportent bien vis à vis de la logique classique, au sens
 de la proposition suivante.
 
 \begin{proposition}\label{prop.PRBool}
-  Pour tout $n \in \mathbb N$, l'ensemble des relations RP sur $\mathbb N^n$
-  est une sous-algèbre de Boole de $\powerset(\mathbb N^n)$.
+  Pour tout $n \in \bN$, l'ensemble des relations RP sur $\bN^n$ est une
+  sous-algèbre de Boole de $\powerset(\bN^n)$.
 \end{proposition}
 
 \begin{proof}
   On cherche donc à prouver que les relations RP sont stables par intersection,
-  union et complément, et que $\mathbb N^n$ et $\varnothing$ sont des relations
-  RP. Les deux derniers points sont directs puisque ces deux relations
-  correspondent respectivement à $\mathrm k_1^n$ et $\mathrm k_0^n$.
+  union et complément, et que $\bN^n$ et $\vide$ sont des relations RP. Les deux
+  derniers points sont directs puisque ces deux relations correspondent
+  respectivement à $\csKP{1}{n}$ et $\csKZ{n}$.
 
-  Soient $R,S$ deux relations RP, alors~:
-  \[\forall n_1,\ldots,n_p \in \mathbb N,
+  Soient $\varRR,\varRR'$ deux relations RP, alors~:
+  \[\forall \vec n \in \bN^p,
   \begin{cases}
-    \chi_{R\cap S}(n_1,\ldots,n_p) =
-    \min(\chi_R(n_1,\ldots,n_p),\chi_S(n_1,\ldots,n_p))\\
-    \chi_{R\cup S}(n_1,\ldots,n_p) =
-    \max(\chi_R(n_1,\ldots,n_p),\chi_S(n_1,\ldots,n_p))
+    \indicP{\mathord{\varRR}\cap \mathord{\varRR'}}(\vec n) =
+    \min(\indicP{\mathord{\varRR}}(\vec n),\indicP{\mathord{\varRR'}}(\vec n))\\
+    \indicP{\mathord{\varRR}\cup \mathord{\varRR'}}(\vec n) =
+    \max(\indicP{\mathord{\varRR}}(\vec n),\indicP{\mathord{\varRR'}}(\vec n))
   \end{cases}
   \]
-  donc $R\cap S$ et $R\cup S$ sont RP, en composant par $\min$ et $\max$,
-  respectivement.
+  donc $\mathord{\varRR}\cap\mathord{\varRR'}$ et
+  $\mathord{\varRR}\cup\mathord{\varRR'}$ sont RP, en composant par $\min$ et
+  $\max$, respectivement.
 
   De plus,
-  \[\forall n_1,\ldots,n_p \in \mathbb N,
-  \chi_{\mathbb N^p\setminus R}(n_1,\ldots,n_p) = 1 - \chi_R(n_1,\ldots,n_p)\]
-  donc $\mathbb N^p \setminus R$ est aussi RP, en composant par
+  \[\forall \vec n \in \bN^p,
+  \indicP{\bN^p\setminus \mathord{\varRR}}(\vec n) =
+  1 - \indicP{\mathord{\varRR}}(\vec n)\]
+  donc $\bN^p \setminus \mathord{\varRR}$ est aussi RP, en composant par
   $x \mapsto 1 - x$.
 
   Ainsi les relations RP forment une algèbre de Boole pour les opérations
@@ -335,105 +331,109 @@ de la proposition suivante.
 \end{proof}
 
 \begin{proposition}\label{fct.RP2}
-  Les relations $\triangle \defeq \{(x,x) \mid x \in \mathbb N^n\}$ et
-  $\leq \defeq \{(n,m) \mid n \leq m\}$ sont RP.
+  Les relations $\mathord{\diagRR} \defeq \compr{(n,n)}{n \in \bN}$ et
+  $\mathord{\leq} \defeq \compr{(n,m)}{n \leq m}$ sont RP.
 \end{proposition}
 
 \begin{proof}
   On prouve d'abord que $\leq$ est RP. Pour cela, on remarque que $n \leq m$
   exactement lorsque $n - m \leq 0$, c'est-à-dire lorsque $n - m = 0$.
   En prenant alors $(n,m) \mapsto 1 - (n - m)$, on a bien une fonction RP à
-  valeurs dans $\btwo$ et qui coïncide avec $\chi_\leq$. Pour montrer que
-  la relation $\triangle$ est aussi RP, il suffit de remarquer que
-  \[(n,m) \in \triangle \iff (n \leq m) \land (m \leq n)\]
+  valeurs dans $\btwo$ et qui coïncide avec $\indicP{\leq}$. Pour montrer que
+  la relation $\diagRR$ est aussi RP, il suffit de remarquer que
+  \[n \diagRR m \iff (n \leq m) \land (m \leq n)\]
   et d'utiliser la \cref{prop.PRBool} pour en déduire le résultat.
 \end{proof}
 
 \begin{exercise}
-  Montrer que $\triangle^n \defeq
-  \{(n,\ldots,n) \in \mathbb N^n\mid n \in \mathbb N\}$ est
-  une relation RP.
+  Montrer que $\diagRR^n \defeq \compr{(p,\ldots,p)}{p \in \bN}$, avec $n$
+  occurrences de $p$, est une relation RP.
 \end{exercise}
 
 Grâce à ces propriétés de base, on sait déjà que des formules sans
 quantification utilisant l'égalité et l'inégalité comme symbole de relation
-sont, en s'interprétant dans la structure $\mathbb N$, des relations RP.
+sont, en s'interprétant dans la structure $\bN$, des relations RP.
 
 On verra qu'il n'est pas possible de rajouter n'importe quelle quantification,
 mais le résultat suivant est déjà un résultat particulièrement fort~: une
 quantification bornée sur une relation RP reste une relation RP.
 
 \begin{proposition}\label{fct.RP3}
-  Soit une relation RP $R\subseteq \mathbb N^{n+1}$. On définit les fonctions
-  \[\begin{array}{ccccc}
-  \exists R&:&\mathbb N^{n+1} & \longrightarrow & \btwo\\
-  & & (x_1,\ldots,x_n,y) &\longmapsto &
-  \begin{cases}
-    1 \text{ si } \exists z < y, R(x_1,\ldots,x_n,z)\\
-    0 \text{ sinon }
-  \end{cases}
-  \end{array}\]
-  \[\begin{array}{ccccc}
-  \forall R & : & \mathbb N^{n+1} & \longrightarrow & \btwo\\
-  & & (x_1,\ldots,x_n,y) &\longmapsto &
-  \begin{cases}
-    1 \text{ si } \forall z < y, R(x_1,\ldots,x_n,z)\\
-    0 \text{ sinon }
-  \end{cases}
-  \end{array}\]
-  Ces deux fonctions sont RP.
+  Soit une relation $\mathord{\varRR}\subseteq \mathbb N^{n+1}$. On définit
+  les fonctions
+  \[\makeFun{\exists{\mathord{\varRR}}}{\bN^{n+1}}{\btwo}
+            {(\vec x,y)}{\begin{cases}
+                1 \text{ si } \exists z < y, \varRR(\vec x,z)\\
+                0 \text{ sinon }
+            \end{cases}}\]
+  \[\makeFun{\forall{\mathord{\varRR}}}{\bN^{n+1}}{\btwo}
+            {(\vec x,y)}{\begin{cases}
+                1 \text{ si } \forall z < y, \varRR(\vec x,z)\\
+                0 \text{ sinon }
+            \end{cases}}\]
+  Si $\varRR$ est une relation RP, alors ces deux relations sont elles aussi RP.
 \end{proposition}
 
 \begin{proof}
-  On construit les deux fonctions par récursion primitive~:
-  \[\exists R \defeq \rec(\mathrm k_0^n,\max\circ
-  (\pi_{n+2}^{n+2},R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+2})))\]
-  \[\forall R \defeq \rec(\mathrm k_1^n,\min\circ
-  (\pi_{n+2}^{n+2},R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+2})))\]
-  On montre seulement le fait que la fonction $\exists R$ ainsi définie
-  vérifie la propriété voulue, le cas de $\forall$ étant parfaitement analogue.
-
-  On remarque d'abord qu'il n'existe aucun $z < 0$, donc dans le cas de
-  $(x_1,\ldots,x_n,0)$ la valeur retournée est $0$. Dans le cas où l'on appelle
-  la fonction sur $(x_1,\ldots,x_n,\sucs(y))$, alors on voit qu'il existe
-  $z < \sucs (y)$ tel que $R(x_1,\ldots,x_n,z)$ si et seulement s'il existe
-  $z < y$ tel que $R(x_1,\ldots,x_n,z)$ ou si $R(x_1,\ldots,x_n,y)$, ce qui
-  correspond à l'équation vérifiée dans le cas récursif.
+  Traitons le cas de $\exists\mathord{\varRR}$. Cette fonction peut se définir
+  inductivement par
+  \[\begin{cases}
+  \exists\mathord{\varRR}(\vec x,0) = 0\\
+  \exists\mathord{\varRR}(\vec x,\sucs(y)) =
+  (\exists\mathord{\varRR}(\vec x, y)) \lor \mathbin{\varRR}(\vec x,y)
+  \end{cases}\]
+  d'où le fait que la relation est RP.
 \end{proof}
+
+\begin{remark}
+  On pourrait donner les définitions explicites des deux relations, qui sont~:
+  \[\exists{\mathord{\varRR}} \defeq \rec(\csKZ{n},\max\circ
+  (\projP{n+2}{n+2},
+  \mathord{\varRR}\circ(\projP{1}{n+2},\ldots,\projP{n+1}{n+2})))\]
+  \[\forall{\mathord{\varRR}} \defeq \rec(\csKP{1}{n},\min\circ
+  (\projP{n+2}{n+2},
+  \mathord{\varRR}\circ(\projP{1}{n+2},\ldots,\projP{n+1}{n+2})))\]
+  on conviendra que ces définitions sont de plus en plus difficiles à lire, et
+  qu'on ne gagne pas d'information notable par rapport à des équations
+  inductives.
+\end{remark}
 
 \begin{exercise}
   Montrer que l'ensemble des nombres premiers est un ensemble RP.
 \end{exercise}
 
+\noindent
 On peut aussi construire des instructions conditionnelles sur des relations RP.
 
 \begin{proposition}
-  Soit $R \subseteq \mathbb N^n$ une fonction RP et deux fonctions
-  $f,g : \mathbb N^n \to \mathbb N$ deux fonctions RP. Alors la fonction
-  \[\begin{array}{ccccc}
-  \ifrm(R,f,g)& : & \mathbb N^n &\longrightarrow & \mathbb N\\
-  & & (x_1,\ldots,x_n) &\longmapsto &
-  \begin{cases}
-    f(x_1,\ldots,x_n) \text{ si } (x_1,\ldots,x_n) \in R\\
-    g(x_1,\ldots,x_n) \text{ sinon }
-  \end{cases}
-  \end{array}\]
+  Soit $\mathord{\varRR} \subseteq \bN^n$ une fonction RP et
+  $f,g : \bN^n \to \mathbb N$ deux fonctions RP. Alors la fonction
+  \[\makeFun{\ifrm(\mathord{\varRR},f,g)}{\bN^n}{\bN}
+            {\vec n}{\begin{cases}
+                f(\vec n) \text{ si } (\vec n) \in \mathord{\varRR}\\
+                g(\vec n) \text{ si } (\vec n) \notin \mathord{\varRR}
+            \end{cases}}\]
 \end{proposition}
 
 \begin{proof}
-  On définit $\ifrm$ de la façon suivante~:
-  \[\ifrm(R,f,g) \defeq \rec(g,f\circ(\pi_1^{n+2},\ldots,\pi_n^{n+2}))\circ
-  (\pi_1^n,\ldots,\pi_n^n,R)\]
-  Lorsque $R(x_1,\ldots,x_n) = 0$, la fonction vaut
-  $(g\circ (\pi_1^n,\ldots,\pi_n^n)) (x_1,\ldots,x_n)$, c'est-à-dire
-  $g(x_1,\ldots,x_n)$. Lorsque $R(x_1,\ldots,x_n) = 1$, la fonction
-  vaut $(f\circ (\pi_1^n,\ldots,\pi_n^n))(x_1,\ldots,x_n)$, c'est-à-dire
-  $f(x_1,\ldots,x_n)$. D'où le résultat.
+  \[\begin{cases}
+  h_0
+  \end{cases}\]
+  On introduit la fonction
+  \[\makeFunBis{h}{\bN^{n+1}}{\bN}
+               {(\vec n,0)}{f(\vec n)}
+               {(\vec n,\sucs(m))}{g(\vec n)}\]
+  qui est RP puisque définie par des équations récursives (en l'occurrence, des
+  équations récursives ne faisant pas d'appel récursif). On remarque que
+  \[\ifrm(\mathord{\varRR},f,g)(\vec n) =
+  h(\vec n,\indicP{\mathord{\varRR}}(\vec n))\]
+  D'où le résultat par composition.
 \end{proof}
 
 \begin{remark}
-  La fonction $\ifrm(R,f,g)$ peut s'appliquer avec une fonction $h$ à la place
-  de $R$. La condition sera alors que la valeur retournée par $h$ est non nulle.
+  La fonction $\ifrm(\mathord{\varRR},f,g)$ peut s'appliquer avec une fonction
+  $h$ à la place de $\varRR$. La condition sera alors que la valeur retournée
+  par $h$ est non nulle.
 \end{remark}
 
 On voit qu'il est possible de passer facilement d'une fonction à un ensemble,
@@ -442,99 +442,108 @@ un moyen, étant donné un prédicat, d'en extraire une fonction~: c'est la noti
 de minimisation qui nous sera utile.
 
 \begin{definition}[Minimisation, minimisation bornée]
-  Soit $R \subseteq \mathbb N^{n+1}$ une relation. On définit la fonction
-  partielle de minimisation comme suit~:
-  \[\begin{array}{ccccc}
-  \mu R & : & \mathbb N^n & \longrightarrow & \mathbb N\\
-  & & (x_1,\ldots,x_n) & \longmapsto & \min
-  \{ y \in \mathbb N\mid (x_1,\ldots,x_n,y)\in R\}
-  \end{array}\]
+  Soit $\mathord{\varRR} \subseteq \bN^{n+1}$ une relation. On définit la
+  fonction partielle de minimisation comme suit~:
+  \[\makeFunPartial{\muC}{\bN^n}{\bN}
+                   {\vec n}
+                   {\min\compr{m \in \bN}{(\vec n,m)\in\mathord{\varRR}}}\]
   où la fonction n'est pas définie lorsque l'ensemble sur lequel est pris le
   minimum est vide.
 
   On appelle minimisation bornée la fonction totale suivante~:
-  \[\begin{array}{ccccc}
-  \mu_B R & : & \mathbb N^{n+1} & \longrightarrow &\mathbb N\\
-  & & (x_1,\ldots,x_n,y) & \longmapsto & \min
-  \{ z < y \mid (x_1,\ldots,x_n,z) \in R\}
-  \end{array}\]
+  \[\makeFun{\muB}{\bN^{n+1}}{\bN}
+            {(\vec n,m)}{\min\compr{x < m}{(\vec n,x)\in\mathord{\varRR}}}\]
   où la fonction vaut $0$ lorsque l'ensemble sur lequel est pris le minimum est
   vide.
 \end{definition}
 
+\begin{remark}
+  Pour une fonction $\makeFunName{f}{\bN^n}{\bN}$ et $\funGraph{f}$ son graphe,
+  $\muC \funGraph{f} = f$.
+\end{remark}
+
 La minimisation en général n'est pas RP, mais la minimisation bornée l'est. De
-plus, le fait que la fonction n'est pas définie dans le cas de $\mu$ est dû
-au fait que si l'on songe à nos fonctions comme à des algorithmes, et à $R$
+plus, le fait que la fonction n'est pas définie dans le cas de $\muC$ est dû
+au fait que si l'on songe à nos fonctions comme à des algorithmes, et à $\varRR$
 comme à un algorithme de décision, il est impossible de savoir (en temps fini)
-s'il existe ou non un certain $y$ tel que $R(x_1,\ldots,x_n,y)$. Au contraire,
-dans le cas de la minimisation bornée, il est possible de le vérifier en temps
-fini, et on peut donc donner une valeur dans le cas où l'ensemble est vide.
+s'il existe ou non un certain $m$ tel que $\mathord{\varRR}(\vec n,m)$. Au
+contraire, dans le cas de la minimisation bornée, il est possible de le vérifier
+en temps fini, et on peut donc donner une valeur dans le cas où l'ensemble est
+vide.
 
 \begin{proposition}
-  Soit $R\subseteq \mathbb N^{n+1}$ une relation RP. La fonction $\mu_B R$ est
-  une fonction RP.
+  Soit $\mathord{\varRR}\subseteq \bN^{n+1}$ une relation RP. La fonction
+  $\muB \mathord{\varRR}$ est une fonction RP.
 \end{proposition}
 
 \begin{proof}
-  On définit $\mu_B R$ par récursion primitive. Dans le cas où $y = 0$, alors
-  l'ensemble $\{ z < 0 \mid (x_1,\ldots,x_n,z) \in R\}$ est vide donc la
-  fonction retourne $0$. Dans le cas inductif, lorsque $y = \sucs(y')$, le
-  minimum de l'ensemble est soit le minimum de
-  $\{ z < y' \mid (x_1,\ldots,x_n,z)\in R\}$ si cet ensemble est non vide, soit
-  $y'$ si $(x_1,\ldots,x_n,y') \in R$ si cet ensemble est non vide, soit $0$. On
-  pourrait se contenter de cet algorithme, qui nous fait recalculer en
-  permanence l'habitation des ensembles. A la place, on va construire une
-  fonction qui retourne $\sucs(m)$ où $m$ est le minimum s'il existe, et $0$
-  sinon~:
-  \[f_0 \defeq \rec(\km_0^n,\ifrm(\pi_{n+2}^{n+2},\pi_{n+2}^{n+2},
-  \times\circ(R\circ(\pi_1^{n+2},\ldots,\pi_{n+1}^{n+2}),
-  \sucs\circ \pi_{n+1}^{n+2})))\]
-  On définit alors $\mu_B R$ simplement par $p\circ f_0$, où $p$ est la
-  fonction précédesseur définie plus haut.
+  On considère une fonction intermédiaire $f$, qui retourne $0$ si l'ensemble
+  des $(\vec n,x)\in\mathord{\varRR}$ est vide et $m + 1$ si le minimum vaut
+  $m$ (ainsi, on a deux cas disjoints). Montrons que $f$ est RP.
+  Cette fonction peut se définir par les équations suivantes~:
+  \[\begin{cases}
+  f(\vec n,0) = 0\\
+  f(\vec n,\sucs(m)) = f(\vec n,m)\text{ si } f(\vec n,m) \neq 0\\
+  f(\vec n,\sucs(m)) = m \text{ si }
+  f(\vec n,m) = 0 \land (\vec n,m) \in \mathord{\varRR}\\
+  f(\vec n,\sucs(m)) = 0 \text{ sinon }
+  \end{cases}\]
+  donc $f$ est RP par récursion primitive. En composant ensuite par le
+  prédécesseur, on obtient bien $\muB\mathord{\varRR}$.
 \end{proof}
+
+\begin{remark}
+  Donnons, une formule explicite pour $f$ (pour mieux se convaincre qu'il vaut
+  mieux ne pas le faire)~:
+  \[f \defeq \rec(\csKZ{n},\ifrm(\projP{n+2}{n+2},\projP{n+2}{n+2},
+  \mathord{\times}\circ(\mathord{\varRR}\circ
+  (\projP{1}{n+2},\ldots,\projP{n+1}{n+2}),\sucs\circ \projP{n+1}{n+2})))\]
+\end{remark}
 
 Avec les outils présents, on peut montrer que la bijection de Cantor introduite
 dans la \cref{def.bij.Cantor} est une fonction RP.
 
 \begin{proposition}\label{prop.Cantor.bij}
-  La bijection de Cantor $\alpha : \mathbb N \times \mathbb N \to \mathbb N$
-  est une fonction RP. Les deux fonctions
-  $\pi_1',\pi_2' : \mathbb N \to \mathbb N$ telles que
-  $(\pi_1'(\alpha(n,m)),\pi_2'(\alpha(n,m))) = (n,m)$ sont elles aussi RP.
+  La bijection de Cantor $\makeFunNameIso{\BijCB}{\bN^2}{\bN}$ est une fonction
+  RP. Les deux fonctions
+  $\makeFunName{\projP{1}{},\projP{2}{}}{\bN}{\bN}$ telles que
+  $(\projP{1}{}(\BijCB(n,m)),\projP{2}{}(\BijCB(n,m))) = (n,m)$ sont elles aussi
+  RP.
 \end{proposition}
 
 \begin{proof}
-  On sait que la fonction $f_1 : k \mapsto \sum_{i = 1}^k i$ est RP. On peut
-  alors définir $\alpha$~:
-  \[\alpha \defeq + \circ (f_1\circ +,\pi_2^2)\]
-  Ainsi $\alpha$ est bien une fonction RP.
+  On montre aisément que la fonction
+  \[\makeFun{f_1}{\bN}{\bN}{k}{\displaystyle\sum_{i = 1}^k i}\]
+  est RP. On peut alors définir $\BijCB par$~:
+  \[\BijCB(n,m) \defeq f_1(n+m)+m\]
+  Ainsi $\BijCB$ est bien une fonction RP.
 
-  Comme la situation est symétrique entre $\pi_1'$ et $\pi_2'$, on montre
-  seulement que $\pi_1'$ est RP. Soit $n,m\in \mathbb N$ et $a = \alpha(n,m)$.
-  Le prédicat $k = \pi_1'(a)$ revient à $\exists p \leq a,\alpha(k,p) = a$ car
-  $p \leq \alpha(p,i)$ pour tout $i\in\mathbb N$. De plus, pour tout
-  $a\in \mathbb N$, il existe effectivemnet $n,m$ tels que $a = \alpha(n,m)$,
-  donc $\{k \leq a \mid \exists p\leq a, \alpha(k,p) = a\}$
-  contient exactement un élément, que l'on peut récupérer par minimisation.
-  On en déduit donc
-  \[\pi_1' \defeq \mu_B (\exists(\triangle\circ
-  (\alpha\circ (\pi_2^3,\pi_3^3), \pi_1^3)))\circ (\pi_1^1,\pi_1^1)\]
-  Donc $\pi_1'$ est une fonction RP.
+  Les deux projections peuvent maintenant d'obtenir par une minimisation
+  bornée~: soit $n \in \bN$ tel que $\BijCB(k,p) = n$ pour deux entiers
+  $k,p\in \bN$, alors $k,p \leq n$ et le seul couple $(k,p)$ est le seul envoyé
+  sur $n$, donc $k$ (respectivement $p$) est le plus petit entier tel qu'il
+  existe $p$ (respectivement $k$) tel que $\BijCB(k,p) = n$. Puisque
+  $\BijCB$ est RP, on en déduit que les deux projections sont RP.
 \end{proof}
 
 \begin{exercise}
-  Montrer que chaque $\alpha_n$ est aussi une fonction RP, et que chaque
-  projection $\varpi_i^n$ telle que $\varpi_i^n(\alpha_n(x_1,\ldots,x_n)) = x_i$,
-  est une fonction RP.
+  Montrer que chaque $\BijCn$ est aussi une fonction RP, et que chaque
+  projection $\projP{i}{n}$ telle que
+  $\projP{i}{n}(\BijCn(x_1,\ldots,x_n))=x_i$, est une fonction RP.
 \end{exercise}
 
+\begin{remark}
+  Il y a confusion possible entre les projections définies ici et les
+  projections $\makeFunName{\proj{i}{n}}{\bN^n}{\bN}$. En pratique, cette
+  confusion ne posera pas de problème.
+\end{remark}
+
 Avec ces données, on se rend compte que le fait d'avoir des fonctions
-$\mathbb N^n \to \mathbb N$ n'apporte pas réellement plus d'expressivité que
-d'avoir simplement des fonctions $\mathbb N \to \mathbb N$, puisque toutes les
-fonctions RP $f : \mathbb N^k \to \mathbb N$ peuvent se réécrire en une
-composée de fonctions
-$n \mapsto (\varpi_1^p(n),\ldots,\varpi_p^p(n))
-\overset{f}{\mapsto} f(n_1,\ldots,n_p)$ elle aussi
+$\bN^n \to \bN$ n'apporte pas réellement plus d'expressivité que d'avoir
+simplement des fonctions $\bN \to \bN$, puisque toutes les fonctions RP
+$\makeFunName{f}{\bN^k}{\bN}$ peuvent se réécrire en une composée de fonctions
+$n \mapsto (\projP{1}{p}(n),\ldots,\projP{p}{p}(n))
+\overset{f}{\mapsto} f(\projP{1}{p}(n),\ldots,\projP{p}{p}(n))$ elle aussi
 RP. Bien sûr, il est toujours nécessaire de définir les fonctions avec plusieurs
 coordonnées de par la définition même des fonctions RP (puisqu'en particulier
 la récursion primitive utilise un appel sur une seule coordonnée en laissant les
@@ -544,9 +553,9 @@ autres statiques).
 
 Dans cette sous-section, on va définir une notion généralisée de fonctions
 primitives récursives, où les fonctions ont comme domaine et codomaine d'autres
-ensembles que $\mathbb N$. Comme on peut voir $\mathbb N$ comme le monoïde libre
-à un élément, $\{*\}^\star$, on peut généraliser les définitions facilement en
-remplaçant $\mathbb N$ par $\Sigma^\star$ pour un ensemble fini $\Sigma$.
+ensembles que $\bN$. Comme on peut voir $\bN$ comme le monoïde libre à un
+élément, $\toSt{\{*\}}$, on peut généraliser les définitions facilement en
+remplaçant $\bN$ par $\toStA$ pour un ensemble fini $\ABA$.
 
 Les définitions et propositions données dans cette sous-section sont l'\oe uvre
 des auteurs de ce livre, d'où l'absence de références bibliographiques.
@@ -555,81 +564,67 @@ codage, en remplaçant de futures preuves fastidieuses en 3 résultats
 principaux~:
 \begin{itemize}
 \item généraliser les fonctions récursives primitives sur des alphabets
-  différents ne change pas la classe des fonctions RP de la forme
-  $\mathbb N^n \to \mathbb N$,
+  différents ne change pas la classe des fonctions RP de la forme $\bN^n\to\bN$,
 \item les langages algébriques sont primitifs récursifs,
 \item les fonctions définies par induction par la \cref{prop.PU.gram} sont
   compatibles avec la classe des fonctions RP.
 \end{itemize}
 Le deuxième résultat est déjà plus élégant que si l'on se restreignait aux
-fonctions $\mathbb N^n \to \mathbb N$, étant donné que l'exprimer uniquement
-avec cette classe de fonctions demanderait de définir des codages préalables.
-Ne pas passer par des codages supplémentaires pour exprimer ces résultats donne
-un aspect plus intrinsèque à notre notion de fonctions PR~: les langages que
-cette notion engendrent sont effectivement plus fort que les langages
-algébriques.
+fonctions $\bN^n \to \bN$, étant donné que l'exprimer uniquement avec cette
+classe de fonctions demanderait de définir des codages préalables. Ne pas passer
+par des codages supplémentaires pour exprimer ces résultats donne un aspect plus
+intrinsèque à notre notion de fonctions PR~: les langages que cette notion
+engendrent sont effectivement plus fort que les langages algébriques.
 
 Cependant, le réel atout de cette généralisation est de permettre de considérer
 des opérations \og syntaxiques\fg sur des langages algébriques en restant dans
 une classe plus restreinte que ce que nous verrons dans la suite du chapitre.
 De plus, grâce au premier des trois résultats, on pourra montrer que toutes ces
-opérations peuvent se traduire en des opérations sur
-$\mathbb N^n \to \mathbb N$ modulo un codage prélable, sans avoir à prouver à
-nouveau que de telles opérations sont bien des fonctions RP. On le verra dans le
-\cref{chp.calculabilité}, mais ces résultats donneront en corollaire
-beaucoup de résultats techniques.
+opérations peuvent se traduire en des opérations sur $\bN^n \to \bN$ modulo un
+codage prélable, sans avoir à prouver à nouveau que de telles opérations sont
+bien des fonctions RP. On le verra dans le \cref{chp.calculabilité}, mais ces
+résultats donneront en corollaire beaucoup de résultats techniques.
 
 \begin{definition}[Fonctions récursives primitives généralisées]
   On définit la classe des fonctions récursives primitives généralisées
   (RPG) comme la plus petite classe de fonctions
-  $(\Sigma_1)^\star\times\cdots\times(\Sigma_n)^\star\to \Sigma^\star$
-  où $\Sigma_1,\ldots,\Sigma_n,\Sigma$ sont des ensembles finis, telle que~:
+  $\toStAP{1}\times\cdots\times\toStAP{n}\to \toStA$ où
+  $\ABA_1,\ldots,\ABA_n,\ABA$ sont des ensembles finis, telle que~:
   \begin{itemize}
   \item chaque fonction
-    \[\begin{array}{ccccc}
-    \pi_k^n & : &\displaystyle \left(\prod_{i = 1}^n (\Sigma_i)^\star\right)&
-    \longrightarrow & (\Sigma_k)^\star\\
-    & & (u_1,\ldots,u_n) & \longmapsto & u_k
-    \end{array}\]
+    \[\makeFun{\projP{k}{n}}{\prod_{i = 1}^n\toStAP{i}}{\toStAP{k}}
+              {(\varwd_1,\ldots,\varwd_k)}{\varwd_k}\]
     est une fonction RPG.
-  \item pour tout $\Sigma$ et $a \in \Sigma$, la fonction
-    \[\begin{array}{ccccc}
-    \cons_a & : & \Sigma^\star & \longrightarrow & \Sigma^\star\\
-    & & u & \longmapsto & u\star a
-    \end{array}\]
+  \item pour tout $\ABA$ et $\varla \in \ABA$, la fonction
+    \[\makeFun{\consP{\varla}}{\toStA}{\toStA}{\varwd}{\varwd\wdPt\varla}\]
     est une fonction RPG.
-  \item pour tous $\Sigma_1,\ldots,\Sigma_n,\Sigma$, la fonction
-    \[\begin{array}{ccccc}
-    \km_\varepsilon^n &: & \displaystyle
-    \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) &\longrightarrow& \Sigma^\star\\
-    & & (u_1,\ldots,u_n) & \longmapsto & \varepsilon
-    \end{array}\]
-    est une fonction RPG.
-  \item si $f_k : \prod_{i = 1}^n (\Sigma_i)^\star \to (\Gamma_k)^\star$ est une
+  \item pour tous $\ABA_1,\ldots,\ABA_n,\ABA$, la fonction
+    \[
+    \makeFun{\csKP{\Ewd}{\ABA_1,\ldots,\ABA_n,\ABA}}
+            {\prod_{i = 1}^n\toStAP{i}}{\toStA}{\vec\varwd}{\Ewd}
+    \]
+    est une fonction RPG (qu'on notera simplement $\csKE$).
+  \item si $\makeFunName{f_k}{\prod_{i = 1}^n \toStAP{i}}{\toStBP{k}}$ est une
     fonction RPG pour chaque $k = 1,\ldots,p$, et
-    $g : \prod_{i = 1}^p (\Gamma_i)^\star \to \Sigma$ est une fonction RPG, alors
-    \[\begin{array}{ccccc}
-    g\circ (f_1,\ldots,f_p) & : & \displaystyle
-    \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) &
-    \longrightarrow & \Sigma\\
-    & & (u_1,\ldots,u_n) &\longmapsto &
-    g(f_1(u_1,\ldots,u_n),\ldots,f_p(u_1,\ldots,u_n))
-    \end{array}\]
+    $\makeFunName{g}{\prod_{i = 1}^p \toStBP{i}}{\toStA}$ est une fonction RPG,
+    alors
+    \[\makeFun{g\circ (f_1,\ldots,f_p)}{\prod_{i = 1}^n\toStAP{i} }{\toStA}
+              {\vec{\varwd}}{g(f_1(\vec{\varwd}),\ldots,f_p(\vec{\varwd}))}\]
     est une fonction RPG.
-  \item si $f : \prod_{i = 1}^p (\Sigma_i)^\star \to \Sigma^\star$ est une
-    fonction RPG, $\Gamma$ est un ensemble fini et, pour tout $a\in \Gamma$,
-    \[g_a : \left(\prod_{i = 1}^p (\Sigma_i)^\star\right)\times \Gamma^\star\times
-    \Sigma^\star\to\Sigma^\star\]
+  \item si $\makeFunName{f}{\prod_{i = 1}^p \toStAP{i}}{\toStA}$ est une
+    fonction RPG, $\ABB$ est un ensemble fini et, pour tout $\varla\in \ABB$,
+    \[\makeFunName{g_{\varla}}
+                  {\left(\prod_{i = 1}^p\toStAP{i}\right)
+                    \times\toStB\times\toStA}
+                  {\toStA}\]
     est une fonction RPG, alors la fonction
-    \[\rec(f,(g_a)_{a \in \Gamma}) : \left(\prod_{i = 1}^p (\Sigma_i)^\star\right)
-    \times \Gamma^\star \longrightarrow \Sigma^\star \]
-    vérifiant les équations
-    \begin{align*}
-      \rec(f,(g_a)_{a\in\Gamma})(u_1,\ldots,u_p,\varepsilon) &=
-      f(u_1,\ldots,u_p)\\
-      \rec(f,(g_a)_{a\in\Gamma})(u_1,\ldots,u_p,a\star u) &=
-      g_a(u_1,\ldots,u_p,u,\rec(f,(g_a)_{a \in \Gamma})(u_1,\ldots,u_p,u))
-    \end{align*}
+    \[\makeFunBis{\rec(f,(g_{\varla})_{\varla \in \ABB})}
+                 {\left(\prod_{i = 1}^p \toStAP{i}\right) \times\toStB}
+                 {\toStA}
+                 {(\vec\varwd,\Ewd)}{f(\vec\varwd)}
+                 {(\vec\varwd,\varwv\wdPt\varla)}
+                 {(g_{\varla}(\vec\varwd,\rec(f,(g_{\varla}))
+                   (\vec\varwd,\varwv))}\]
     est une fonction RPG.
   \end{itemize}
 \end{definition}
@@ -638,135 +633,134 @@ beaucoup de résultats techniques.
   On parle ici de tous les ensembles finis, ce qui est trop grand pour obtenir
   un ensemble, et donc définir un prédicat inductif \og être une fonction RPG\fg
   en utilisant le théorème de Knaster-Tarski. Pour régler ce problème, on
-  utilise en réalité comme seuls alphabets les ensembles $n \in \omega$, qui
+  utilise en réalité comme seuls alphabets les ensembles $n \in \Ow$, qui
   représentent déjà tous les ensembles finis à bijection près.
 
   On peut ensuite considérer la version adaptée à tout ensemble fini en disant
-  qu'une fonction $f : \Sigma^\star \to \Gamma^\star$ est RPG lorsque,
-  pour toutes bijections $\sigma : \Sigma \to \{0,\ldots,n\}$ et
-  $\tau : \Gamma\to\{0,\ldots,k\}$, $\tau\circ f \circ \sigma^{-1}$ est une
-  fonction RPG. Nous ne considérerons cependant ici que des ensemble de la forme
-  $n \in \omega$, car la généralisation des fonctions RPG ajoute déjà de
+  qu'une fonction $\makeFunName{f}{\toStA}{\toStB}$ est RPG lorsque, pour toutes
+  bijections $\makeFunName{\sigma}{\ABA}{\intervInt{n}}$ et
+  $\makeFunName{\tau}{\ABB}{\intervInt{k}}$, $\tau\circ f \circ \sigma^{-1}$ est
+  une fonction RPG. Nous ne considérerons cependant ici que des ensemble de la
+  forme $n \in \Ow$, car la généralisation des fonctions RPG ajoute déjà de
   nombreuses lourdeurs, et posséder comme alphabet uniquement les ordinaux finis
   suffit à ce que l'on souhaite faire pour des codages.
 \end{remark}
 
+\begin{notation}
+  Comme pour le cas des fonctions RP, on s'autorise des simplifications
+  d'écritures en définissant des fonctions par des équations récursives.
+\end{notation}
+
 Les fonctions RP sont naturellement un sous-ensemble des fonctions RPG, en
-assimilant $\mathbb N$ à $\{0\}^\star$. On va considérer pour cette sous-section
-que $\{0\}^\star$ est exactement l'ensemble $\mathbb N$ qu'on manipule dans le
-cas des fonctions RP/RPG.
+assimilant $\bN$ à $\toSt{\{*\}}$. On va considérer pour cette sous-section
+que $\toSt{\{*\}}$ est exactement l'ensemble $\bN$ qu'on manipule dans le cas
+des fonctions RP/RPG.
 
 Une question naturelle à se poser est si cette notion de fonctions RPG est
 strictement plus forte que celle de fonctions RP~: ça n'est pas le cas, et c'est
 ce que nous allons montrer dans un premier temps. Pour montrer cela, on va
-construire une notion de traduction entre chaque $\Sigma^\star$ et $\mathbb N$.
-La traduction $f_\Sigma : \Sigma^\star \cong \mathbb N$ sera choisie RPG, et de
-telle sorte que pour toute fonction $f$ RPG, la fonction associée en utilisant
-les traductions pour avoir une fonction $\hat{f} : \mathbb N^n \to \mathbb N$
+construire une notion de traduction entre chaque $\toStA$ et $\bN$. La
+traduction $\makeFunName{\codRPG{\tok}{\ABA}}{\toStA}{\bN}$ sera choisie RPG, et
+de telle sorte que pour toute fonction $f$ RPG, la fonction associée en
+utilisant les traductions pour avoir une fonction $\relev{f} : \bN^n \to \bN$
 est RP.
 
 \begin{definition}[Traduction RPG canonique]\label{def.trad.RPG}
-  Soit $\Sigma$ un ensemble fini. Il existe une fonction
-  $f_\Sigma : \Sigma^\star \to \mathbb N$ telle que~:
+  Soit $\ABA$ un ensemble fini. Il existe une fonction
+  $\makeFunName{\codRPG{\tok}{\ABA}}{\toStA}{\bN}$ telle que~:
   \[\begin{cases}
-  f_\Sigma\text{ est bijective }\\
-  f_\Sigma\in \RPG\\
-  f^{-1}_\Sigma\in\RPG
+  \codRPG{\tok}{\ABA}\text{ est bijective }\\
+  \codRPG{\tok}{\ABA}\in \RPG\\
+  {(\codRPG{\tok}{\ABA})}^{-1}\in\RPG
   \end{cases}\]
-  et telle que $f_{\{0\}} = \id_{\mathbb N}$.
+  et telle que pour tout $n \in \bN, \codRPG{n}{\{*\}} = n$.
 \end{definition}
 
 \begin{proof}
-  Sans perte de généralité, on considère que $\Sigma = \{0,\ldots,n-1\}$ pour un
-  certain $n \in \mathbb N$. L'encodage de la suite $u = a_p\cdots a_1$ va être
-  donné par
-  \[f_\Sigma \defeq \sum_{i = 0}^{p-1} (a_i + 1) n^i\]
+  Sans perte de généralité, on considère que $\ABA=\intervInt{n}$ pour un
+  certain $n \in \bN$. L'encodage de la suite
+  $\varwd = \varla_{p-1}\cdots \varla_0$ va être donné par
+  \[\codRPG{\varwd}{\ABA} \defeq \sum_{i = 0}^{p-1} (\varla_i + 1) n^i\]
   Tout d'abord, on voit que dans le cas où $n = 1$, c'est-à-dire le cas du
-  singleton $\{0\}$, cela nous donne
-  \[f_{\{0\}}(0^n) = \sum_{i = 0}^{n-1} 1^i = n\]
-  donc $f_{\{0\}} = \id_\mathbb N$.
+  singleton $\{*\}$, cela nous donne
+  \[\codRPG{*^k}{\{*\}} = \sum_{i = 0}^{k-1} 1^i = k\]
+  donc $\codRPG{*^k}{\{*\}} = k$.
 
-  On souhaite donc montrer que $f_\Sigma$ est une fonction RPG. Pour cela, on
-  va définir pour $k \in \{0,\ldots,n-1\}$ la fonction
-  \begin{align*}
-  g_k &: \Sigma^\star \times \mathbb N \to \mathbb N\\
-  g_k(u,m) &\defeq m \times n + (k + 1)
-  \end{align*}
+  On souhaite donc montrer que $\codRPG{\tok}{\ABA}$ est une fonction RPG. Pour
+  cela, on va définir pour $k \in \intervInt{n}$ la fonction
+  \[\makeFun{g_k}{\toStA\times\bN}{\bN}
+            {(\varwd,m)}{m \times n + (k + 1)}\]
+  (la fonction ignore son argument $\varwd$).
   Alors on peut définir
-  \[f_\Sigma \defeq \rec(0,(g_k)_{k\in\{0,\ldots,n-1\}})\]
-  On voit alors que $f_\Sigma(\varepsilon) = 0$ et que si
-  $f_\Sigma(a_p\cdots a_1) = \sum_{i = 1}^{p-1} (a_i + 1)n^{i-1}$ alors
+  \[\codRPG{\tok}{\ABA} \defeq \rec(0,(g_k)_{k\in\intervInt{n}})\]
+  On voit alors que $\codRPG{\Ewd}{\ABA} = 0$ et que si
+  $\codRPG{(\varla_p\cdots\varla_1)}{\ABA}=\sum_{i=1}^{p}(\varla_i+1)n^{i-1}$
+  alors
   \begin{align*}
-    f_\Sigma(a_p\cdots a_0) &= n \times f_\Sigma(a_p\cdots a_1) + (a_0 + 1)\\
-    &= n \times \left(\sum_{i = 1}^{p-1} (a_i + 1) n^{i-1}\right) + (a_0+1)\\
-    &= \left(\sum_{i = 1}^{p-1} (a_i+1) n^i\right) + (a_0+1)\\
-    &= \sum_{i = 0}^{p-1} (a_i + 1) n^i\\
+    \codRPG{(\varla_p\cdots\varla_0)}{\ABA}
+    &= n \times \codRPG{(\varla_p\cdots \varla_1)}{\ABA} + (\varla_0 + 1)\\
+    &= n \times \left(\sum_{i = 0}^{p-1}(\varla_i+1) n^{i-1}\right)+(\varla_0+1)\\
+    &= \left(\sum_{i = 1}^{p-1} (\varla_i+1) n^i\right) + (\varla_0+1)\\
+    &= \sum_{i = 0}^{p-1} (\varla_i + 1) n^i\\
   \end{align*}
-  D'où le résultat souhaité par induction sur $\Sigma^\star$.
+  D'où le résultat souhaité par induction sur $\toStA$.
 
-  On va donner un candidat à la fonction $f_\Sigma^{-1}$ et montrer que ce
-  candidat est RPG. Pour cela, on montre d'abord qu'il est possible
-  de construire la décomposition en base $n$ sur $p$ chiffres d'un nombre $m$
-  donné en tant que fonction RPG $\mathbb N \to \{0,\ldots,n-1\}^\star$.
+  On va donner un candidat à la fonction ${(\codRPG{\tok}{\ABA})}^{-1}$ et
+  montrer que ce candidat est RPG. Pour cela, on montre d'abord qu'il est
+  possible de construire la décomposition en base $n$ sur $p$ chiffres d'un
+  nombre $m$ donné en tant que fonction RPG $\bN \to \toSt{\intervInt{n}}$.
 
   Pour commencer, il nous faut construre une première fonction~: étant donné un
-  nombre $k \in \mathbb N$, on souhaite montrer que la fonction
-  \[\begin{array}{ccccc}
-  \cons_{k\% n} &: & \Sigma^\star & \longrightarrow & \Sigma^\star\\
-  & & u &\longmapsto & u\star (k\% n)
-  \end{array}\]
+  nombre $k \in \bN$, on souhaite montrer que la fonction
+  \[\makeFun{\consP{k\%n}}{\toStA}{\toStA}{\varwd}{\varwd\wdPt(k\%n)}\]
   et RPG, où $k \% n$ désigne le reste de la division euclidienne de $k$ par
   $n$. En réalité, comme $n$ est un nombre fini, il nous suffit d'imbriquer des
-  conditions d'égalité de $k \% n$ à chaque nombre dans $i\in\{0,\ldots,n-1\}$
-  et, dans chaque cas, d'utiliser la fonction $\cons_i$.
+  conditions d'égalité de $k \% n$ à chaque nombre dans $i\in\intervInt{n}$ et,
+  dans chaque cas, d'utiliser la fonction $\consP{i}$.
 
   On définit alors la fonction
-  \[\begin{array}{ccccc}
-  f_n &: & \mathbb N^2 &\longrightarrow & \Sigma^\star\\
-  & & (k,0) & \longmapsto & \varepsilon\\
-  & & (k,d + 1) & \longmapsto & \cons_{k\% n}(f_n(k//n,d))
-  \end{array}\]
-  où $k//n$ est le quotient de la division euclidienne de $k$ par $n$. Il est
+  \[\makeFunBis{f_n}{\bN^2}{\toStA}
+               {(k,0)}{\Ewd}
+               {(k,d+1)}{\consP{k\%n}(f_n(k/n,d))}\]
+  où $k/n$ est le quotient de la division euclidienne de $k$ par $n$. Il est
   clair que cette fonction est RPG, en utilisant une récursion primitive. On
   souhaite maintenant montrer par récurrence sur $d$ que
   $f_n(k,d)$ est la suite des $d$ chiffres de poids le plus faible de la
   décomposition en base $n$ de $k$~:
   \begin{itemize}
-  \item le cas pour $d = 0$, donc $f_n(k,d) = \varepsilon$, est automatique
+  \item le cas pour $d = 0$, donc $f_n(k,d) = \Ewd$, est automatique
   \item pour l'hérédité, on remarque d'abord que la décomposition en base
-    $n$ de $k$ est la décomposition en base $n$ de $k//n$ suivie de
-    $k \% n$. Ainsi, si $f_n(k//n,d)$ est la suite des $d$ chiffres de poids le
-    plus faible de la décomposition en base $n$ de $k//n$, alors
-    $f_n(k//n,d)\star k\%n$ est la suite des $d + 1$ chiffres de poids le plus
-    faible de la décomposition en base $n$ de $k$.
+    $n$ de $k$ est la décomposition en base $n$ de $k/n$ suivie de $k \% n$.
+    Ainsi, si $f_n(k/n,d)$ est la suite des $d$ chiffres de poids le plus faible
+    de la décomposition en base $n$ de $k/n$, alors $f_n(k/n,d)\wdPt k\%n$ est
+    la suite des $d + 1$ chiffres de poids le plus faible de la décomposition en
+    base $n$ de $k$.
   \end{itemize}
   Donc la décomposition en base $n$ sur $d$ chiffres est bien une fonction RPG.
 
-  On peut maintenant définir la fonction $d : \mathbb N \to \mathbb N$ telle que
+  On peut maintenant définir la fonction $\makeFunName{d}{\bN}{\bN}$ telle que
   $d(m)$ est le plus petit entier $d$ tel que
   \[m < \sum_{i = 0}^d n^i\]
   Cette fonction est RPG puisqu'il s'agit d'une minimisation, dont une borne
   est donnée par $m$ lui-même étant donné que $m < \sum_{i = 0}^m n^i$.
   On construit ensuite l'entier $m' = m - \sum_{i = 0}^{d(m)-1} n^i$ (comme $d(m)$
   est choisi minimal, la valeur de droite est bien positive) puis le
-  mot sur $\{0,\ldots,n-1\}^\star$ donné par la décomposition de $m'$ sur
-  $d$ chiffres. On sait donc que cette fonction est RPG.
+  mot sur $\toSt{\intervInt{n}}$ donné par la décomposition de $m'$ sur $d$
+  chiffres. On sait donc que cette fonction est RPG.
 
   Montrons maintenant que les deux fonctions sont réciproques l'une de l'autre.
-  Tout d'abord, si on a un entier $m$, $d$ le plus petit entier $d$ tel que
-  $m < \sum_{i = 0}^d n^i$ et $a_{d-1}\cdots a_0$ la décomposition en base
-  $n$ sur $d$ chiffres de $m - \sum_{i = 0}^{d-1}n^i$, alors
-  \[m = \sum_{i=0}^{d-1} (a_i + 1)n^i\]
-  donc $f_\Sigma\circ f_\Sigma^{-1} = \id_{\mathbb N}$.
+  Tout d'abord, si on a un entier $m$, $d$ le plus petit entier tel que
+  $m < \sum_{i = 0}^d n^i$ et $\varla_{d-1}\cdots \varla_0$ la décomposition en
+  base $n$ sur $d$ chiffres de $m - \sum_{i = 0}^{d-1}n^i$, alors
+  \[m = \sum_{i=0}^{d-1} (\varla_i + 1)n^i\]
 
-  Réciproquement, si $a_d\cdots a_0\in \Sigma^\star$, alors en notant
-  $m = f_\Sigma(a_d\cdots a_0)$, $d(m) = d + 1$ puisque
-  \[\sum_{i = 0}^d n^i \leq m \leq \sum_{i = 0}^d (n-1)n^i = n^{d+1} - 1 <
-  \sum_{i = 1}^{d+1} n^i\]
-  On voit alors que $m - \sum_{i = 0}^d n^i = \sum_{i = 0}^d a_i n^i$, donc la
-  décomposition en base $n$ sur $d+1$ chiffres nous donne $a_d\cdots a_0$.
-
-  Ainsi $f_\Sigma$ est une fonction RPG bijective de réciproque RPG.
+  Réciproquement, si $\varla_{d-1}\cdots \varla_0\in \toStA$, alors en notant
+  $m = \codRPG{\varla_{d-1}\cdots \varla_0}{\ABA}$, $d(m) = d$ puisque
+  \[\sum_{i = 0}^{d-1} n^i \leq m \leq \sum_{i = 0}^{d-1} (n-1)n^i = n^{d+1} - 1 <
+  \sum_{i = 1}^{d} n^i\]
+  On voit alors que $m - \sum_{i = 0}^{d- 1} n^i = \sum_{i = 0}^{d-1} \varla_i n^i$,
+  donc la décomposition en base $n$ sur $d+1$ chiffres nous donne
+  $\varla_d\cdots \varla_0$.
 \end{proof}
 
 On peut alors associer à une fonction RPG $f$ une fonction RPG ne prenant en
@@ -774,42 +768,39 @@ argument et ne retournant que des entiers.
 
 \begin{definition}[Fonction RP associée à une fonction RPG]\label{def.RP.RPG}
   Soit
-  \[f : \left(\prod_{i = 1}^n (\Sigma_i)^\star\right) \longrightarrow
-  \Sigma^\star\]
+  \[\makeFunName{f}{\prod_{i = 1}^n\toStAP{i}}{\toStA}\]
   une fonction RPG. On appelle sa fonction RP associée la fonction RPG
-  \begin{align*}
-    \hat f &: \mathbb N^n \to \mathbb N\\
-    \hat f &\defeq f_\Sigma \circ f \circ
-    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1})
-  \end{align*}
+  \[\makeFun{\relev{f}}{\bN^n}{\bN}{(k_1,\ldots,k_n)}
+            {\codRPG{f((\codRPG{k_1}{\ABA_1})^{-1},\ldots,
+                (\codRPG{k_n}{\ABA_n})^{-1})}{\ABA}}\]
 \end{definition}
 
 L'objectif est donc de montrer que pour toute fonction RPG $f$, la fonction
-$\hat f$ est une focntion RP. La preuve se faisant par induction sur la
-définition des fonctions RPG, donnons donc une étude sommaire des cas les
-plus évidents~:
+$\relev{f}$ est une fonction RP. On notera $f_\ABA$ la fonction de codage
+$\codRPG{\tok}{\ABA}$ pour alléger les notations. La preuve se faisant par
+induction sur la définition des fonctions RPG, donnons donc une étude sommaire
+des cas les plus évidents~:
 \begin{itemize}
 \item dans le cas des projections, la fonction associée est
-  $f_{\Sigma_k}\circ f^{-1}_{\Sigma_k} = \id$.
-\item dans le cas de $\cons_a : \Sigma \to \Sigma$, pour
-  $\Sigma = \{0,\ldots,n-1\}$ et tout $a \in \Sigma$,
-  la fonction $f_\Sigma\circ \cons_a\circ f_\Sigma^{-1}$ est simplement la
-  fonction $k \mapsto n\times k + a + 1$. Cette fonction est RP en utilisant les
+  $f_{\ABA_k}\circ f^{-1}_{\ABA_k} = \id$.
+\item dans le cas de $\consP{\varla} : \ABA \to \ABA$, pour
+  $\ABA = \intervInt{n}$ et tout $\varla \in \ABA$, la fonction
+  $f_\ABA\circ \consP{a}\circ f_\ABA^{-1}$ est simplement la fonction
+  $k \mapsto n\times k + \varla + 1$. Cette fonction est RP en utilisant les
   résultats précédents.
-\item pour la fonction $\km_\varepsilon$, la fonction associée est directement
-  $\km_0$.
-\item si $g$ et $(h_i)_{i \in \{1,\ldots,p\}}$ sont des fonctions RPG,
-  alors on peut simplement remarque que l'égalité
-  $\widehat{g\circ (h_i)_i} = \hat g \circ (\hat{h_i})_i$
+\item pour la fonction $\csKE$, la fonction associée est directement $\csKZ{n}$.
+\item si $g$ et $(h_i)_{i \in \intervInt{p}}$ sont des fonctions RPG, alors on peut
+  simplement remarque que l'égalité
+  $\relevB{g\circ (h_i)_i} = \hat g \circ (\hat{h_i})_i$
   est vérifiée~:
   \begin{align*}
-    \widehat{g\circ h} &= f_\Sigma\circ (g \circ (h_i)) \circ
-    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1})\\
-    &= f_\Sigma\circ g \circ (f_{\Gamma_i}^{-1}\circ f_{\Gamma_i}\circ h_i\circ
-    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1}))_i\\
-    &= f_\Sigma\circ g \circ (f_{\Gamma_1}^{-1},\ldots,f_{\Gamma_p}^{-1})
-    \circ (f_{\Gamma_i}\circ h_i\circ
-    (f_{\Sigma_1}^{-1},\ldots,f_{\Sigma_n}^{-1}))_i\\
+    \relevB{g\circ h} &= f_\ABA\circ (g \circ (h_i)) \circ
+    (f_{\ABA_1}^{-1},\ldots,f_{\ABA_n}^{-1})\\
+    &= f_\ABA\circ g \circ (f_{\ABB_i}^{-1}\circ f_{\ABB_i}\circ h_i\circ
+    (f_{\ABA_1}^{-1},\ldots,f_{\ABA_n}^{-1}))_i\\
+    &= f_\ABA\circ g \circ (f_{\ABB_1}^{-1},\ldots,f_{\ABB_p}^{-1})
+    \circ (f_{\ABB_i}\circ h_i\circ
+    (f_{\ABA_1}^{-1},\ldots,f_{\ABA_n}^{-1}))_i\\
     &= \hat f \circ (\hat{g_i})_i
   \end{align*}
   la stabilité des fonctions RP par composition et l'hypothèse d'induction
@@ -820,151 +811,132 @@ On voit donc que le point réellement important de cette preuve est le cas de
 la récursion primitive.
 
 \begin{lemma}
-  Soit $f$ une fonction RPG, alors $\hat f$ est une fonction RP.
+  Soit $f$ une fonction RPG, alors $\relev{f}$ est une fonction RP.
 \end{lemma}
 
 \begin{proof}
   On procède par induction sur les fonctions RPG. On a prouvé juste avant les
   cas directs, on s'intéresse donc au cas de la récursion primitive.
 
-  Soient des ensembles finis $\Sigma_1,\ldots,\Sigma_p,\Gamma,\Sigma$ et
-  \[f : \left(\prod_{i = 1}^p (\Sigma_i)^\star\right)\to \Sigma^\star\qquad
-  \forall a \in \Gamma, g_a : \left(\prod_{i = 1}^p
-  (\Sigma_i)^\star\right)\times\Gamma^\star\times\Sigma^\star
-  \to \Sigma^\star\]
-  des fonctions RPG. On souhaite montrer que $\widehat{\rec(f,(g_a))}$ est
-  une fonction RP sachant que $\hat f, (\hat{g_a})_{a\in \Gamma}$ sont
-  des fonctions RP. On suppose que $\Sigma = \{0,\ldots,n-1\}$.
+  Soient des ensembles finis $\ABA_1,\ldots,\ABA_p,\ABB,\ABA$ et
+  \[\makeFunName{f}{\prod_{i = 1}^p\toStAP{i}}{\toStA}
+  \qquad\forall \varla\in\ABB,
+  \makeFunName{g_\varla}
+              {\left(\prod_{i = 1}^p \toStAP{i}\right)\times\toStB\times\toStA}
+              {\toStA}\]
+  des fonctions RPG. On souhaite montrer que $\relevB{\rec(f,(g_{\varla}))}$ est
+  une fonction RP sachant que $\relev f, (\relevB{g_{\varla}})_{\varla\in\ABB}$ sont
+  des fonctions RP. On suppose que $\ABA = \intervInt{n}$.
 
-  On a vu comment extraire un élément de $\Sigma^\star$ à partir d'un
-  entier. L'objectif dans cette construction va être d'adapter cette
-  extraction pour l'appliquer directement à la récursion. Dans un premier
-  temps, avec le même argument que dans celui pour construire $f_\Sigma$,
-  on peut définir une fonction $\hat g$ telle que
-  \[\hat g (x_1,\ldots,x_p,y,z) = \widehat{g_{z\% n}}(x_1,\ldots,x_p,y//n,z)\]
+  On a vu comment extraire un élément de $\toStA$ à partir d'un entier.
+  L'objectif dans cette construction va être d'adapter cette extraction pour
+  l'appliquer directement à la récursion. Dans un premier temps, avec le même
+  argument que dans celui pour construire $f_\ABA$, on peut définir une fonction
+  $\relev{g}$ telle que
+  \[\relev{g} (\vec x,y,z) = \relevB{g_{z\% n}}(\vec x,y/n,z)\]
   en imbricant des instructions conditionnelles.
 
-  On définit alors la fonction
-  \[h(x_1,\ldots,x_p,x) \defeq
-  \langle\pi'_1(x) // n,\hat g(x_1,\ldots,x_p,\pi'_1(x),\pi'_2(x))\rangle\]
-  On rappelle que la fonction $d$, définie dans une preuve précédente, associe
-  à $m$ la taille de $f_\Sigma^{-1}(m)$. On remarque l'identité suivante, pour
-  tous $x_1,\ldots,x_p,y,z\in \mathbb N, u \in \Gamma^\star, a \in \Gamma$~:
-  \[h(x_1,\ldots,x_p,y,\langle f_\Gamma(u\star a),z\rangle) =
-  \langle f_\Gamma(u),g_a(x_1,\ldots,x_p,u,z)\rangle\]
+  On souhaite maintenant construire la fonction $F$ vérifiant les équations
+  suivantes~:
+  \[\begin{cases}
+  F(\vec x,0) \defeq \relev{f}(\vec x)\\
+  F(\vec x,n\times m + k) \defeq \relevB{g_{k}}(\vec x,F(\vec x,m))
+  \end{cases}\]
+  Cette forme de récursion, bien qu'intuitivement valide (puisque l'argument
+  $n \times m + k$ décroît strictement sur l'appel récursif $m$), n'est pas par
+  défaut admis par notre syntaxe.
 
-  On définit alors la fonction $F$ à $p+2$ arguments suivante~:
-  \[F \defeq
-  \rec(\alpha\circ (\pi_{p+1}^{p+1},f\circ (\pi_1^{p+1},\ldots,\pi_{p+1}^{p+1})),
-  h\circ (\pi_1^{p+3},\ldots,\pi_p^{p+3},\pi_{p+3}^{p+3}))\]
-  Cette fonction va retourner des codes de couples. L'intérêt est de pouvoir
-  utiliser l'appel récursif pour faire réduire l'argument autrement que d'un
-  seul cran par un seul cran en stockant l'argument dans l'appel récursif,
-  avec la valeur retournée. On montre donc d'abord par récurrence sur $k$ que
-  pour tout $u = u_1\cdots u_N\in\Gamma^\star$,
-  \[F(x_1,\ldots,x_p,f_\Gamma(u),k) = \langle f_\Gamma(u_1\cdots u_{N-k}),
-  \widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u_N\cdots u_{N-k+1}))\rangle\]
-  \begin{itemize}
-  \item dans le cas où $k = 0$, les deux membres de l'équation sont
-    effectivement égaux à
-    $\langle f_\Gamma(u_1\cdots u_N),\hat f(x_1,\ldots,x_p)\rangle$.
-  \item supposons que l'égalité est vraie pour $k$, alors
-    \begin{align*}
-      F(x_1,\ldots,x_p,f_\Gamma(u),k + 1) &=
-      h(x_1,\ldots,x_p,F(x_1,\ldots,x_p,f_\Gamma(u),k))\\
-      &= h(x_1,\ldots,x_p,\langle f_\Gamma(u_1\cdots u_{N-k}),\\
-      &\widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u_N\cdots u_{N-k+1}))
-      \rangle)\\
-      &= \langle f_\Gamma(u_1\cdots u_{N-k-1}),\\
-      &g_{u_{N-k}}(\widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,
-      f_\Gamma(u_N\cdots u_{N-k+1})))\\
-      &= \langle f_\Gamma(u_1\cdots u_{N-k-1}),\\
-      &\widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u_N\cdots u_{N-k}))
-    \end{align*}
-  \end{itemize}
-  D'où le résultat par récurrence.
+  Cependant, on peut contourner le problème de la façon suivante~: on construit
+  des paires (grâce à la bijection de Cantor) qui vont contenir l'argument
+  décroissant et l'appel récursif. Par exemple, le calcul commence avec la paire
+  $\langle k,\relev{f}(\vec x)\rangle$, puis décompose $k$ en $n\times m + p$,
+  et la seconde paire est alors
+  $\langle m,\relevB{g_{p}}(\relev{f}(\vec x))\rangle$ et ainsi de suite.
+  Si le nombre $k$ d'origine correspond à une décomposition de taille $d$
+  (calculable en $k$ comme prouvé précédemment), alors on peut utiliser
+  $d$ comme argument de la fonction récursive.
 
-  On laisse en exercice le soin de vérifier qu'il est possible de transformer
-  $f_\Gamma(u_N\cdots u_1)$ en $f_\Gamma(u_1\cdots u_N)$ par une fonction RP.
-  En utilisant cette fonction, qu'on notera simplement $a \mapsto \overline a$,
-  on construit la fonction~:
-  \[G(x_1,\ldots,x_p,m) \defeq
-  \pi'_2(F(x_1,\ldots,x_p,\overline m,d(m)))\]
-  En utilisant l'identité précédente, on sait que
-  \[G(x_1,\ldots,x_p,f_\Gamma(u)) =
-  \widehat{\rec(f,(g_a))}(x_1,\ldots,x_p,f_\Gamma(u))\]
-  d'où le résultat.
+  On définit donc la fonction
+  \[h(\vec x,y) \defeq
+  \langle\projP{1}{}(y)/n,
+  \relev{g}(\vec x,\projP{1}{}(y),\projP{2}{}(y))\rangle\]
+  où les projections sont celles définies par la bijection de Cantor. Dans le
+  calcul des paires énoncé plus tôt, la fonction $h$ permet de calculer une
+  paire à partir de la précédente. En particulier, on a l'identité, pour
+  tous $\vec x \in \bN, y,z\in \bN, \varwd \in \toStB, \varla \in \ABB$~:
+  \[h(\vec x,y,\langle \codRPG{(\varwd\wdPt \varla)}{\ABB},z\rangle) =
+  \langle \codRPG{\varwd}{\ABB},\relevB{g_\varla}(\vec x,\varwd,z)\rangle\]
 
-  Ainsi $\widehat{\rec(f,(g_a)_a)}$ est aussi une fonction RP, donc par
+  On définit finalement la fonction
+  \[\begin{cases}
+  F(\vec x,y,0) \defeq \langle y,\relev{f}(\vec x)\rangle\\
+  F(\vec x,y,\sucs(z)) \defeq h(\vec x,F(\vec x,y,z))
+  \end{cases}\]
+  La fonction $\relevB{\rec(f,(g_{\varla}))}$ peut alors s'exprimer par
+  \[\relevB{\rec(f,(g_{\varla}))}(\vec x,y) = F(\vec x,y,d(y))\]
+  où $d(y)$ est la taille de la décomposition en base $n$ de $y$ (qui est une
+  fonction RPG déjà introduite précédemment).
+
+  Ainsi $\relevB{\rec(f,(g_\varla)_\varla)}$ est aussi une fonction RP, donc par
   induction sur les fonction RPG, pour toute fonction RPG $f$ la fonction
-  $\hat f$ associée est RP.
+  $\relev{f}$ associée est RP.
 \end{proof}
 
-\begin{exercise}
-  Vérifier que la fonction $a \mapsto \overline a$ est effectivement une
-  fonction RP.
-\end{exercise}
+%\begin{exercise}
+%  Vérifier que la fonction $a \mapsto \overline a$ est effectivement une
+%  fonction RP.
+%\end{exercise}
 
 \begin{theorem}
-  Soit une fonction $f : \mathbb N^n \to \mathbb N$. Cette fonction est
-  RPG si et seulement si elle est RP.
+  Soit une fonction $\makeFunName{f}{\bN^n}{\bN}$. Cette fonction est RPG si et
+  seulement si elle est RP.
 \end{theorem}
 
 \begin{proof}
   Il est clair que si $f$ est RP alors elle est RPG. Dans le sens réciproque,
-  on sait que $\hat f$ est RP, donc
+  on sait que $\relev{f}$ est RP, donc
   \[\id\circ f \circ (\id,\ldots,\id) \in \RecP\]
   ce qui revient à dire que $f \in \RecP$, d'où le résultat.
 \end{proof}
 
-\begin{remark}
-  Si nous avons jusque là donné des termes explicites, il doit être clair pour
-  le lecteur que ces termes explicites sont de moins en moins lisibles, et les
-  exemples précédents suffisent pour donner une idée fiable des manipulations
-  autorisées dans le cadre des fonctions RP et RPG. Aussi, nous emploierons
-  désormais des arguments moins formels, en essayant malgré tout d'être
-  suffisamment précis pour ne pas oublier des subtilités techniques.
-\end{remark}
-
 Ainsi, les fonctions RPG n'apportent pas plus de puissance de calcul, puisque
 les fonctions sur les entiers restent les mêmes. De plus, comme on possède un
-codage bijectif bi-RPG entre chaque $\Sigma^\star$ et $\mathbb N$, on en conclut
-que le pouvoir expressif de $\mathbb N$ est suffisant. L'utilité des fonctions
-RPG est de permettre de facilement passer de fonctions sur des langages
-algébriques à leur codage. Montrons d'abord qu'un
-langage algébrique est une partie RPG.
+codage bijectif bi-RPG entre chaque $\toStA$ et $\bN$, on en conclut que le
+pouvoir expressif de $\bN$ est suffisant. L'utilité des fonctions RPG est de
+permettre de facilement passer de fonctions sur des langages algébriques à leur
+codage. Montrons d'abord qu'un langage algébrique est une partie RPG.
 
 Pour ce faire, nous introduisons un algorithme de \foreignexpr{parsing} de
 langage algébrique. Un algorithme de \foreignexpr{parsing} est un algorithme
-qui, étant donnée une grammaire $G$ et un mot $u$, retourne à la fois un test
-du fait que $u$ dérive de la grammaire $G$, mais aussi une dérivation
-produisant $u$ le cas échéant. L'algorithme de \foreignexpr{parsing} que nous
-utilisons est celui d'Earley.
+qui, étant donnée une grammaire $\varGG$ et un mot $\varwd$, retourne à la fois
+un test du fait que $\varwd$ dérive de la grammaire $\varGG$, mais aussi une
+dérivation produisant $\varwd$ le cas échéant. L'algorithme de
+\foreignexpr{parsing} que nous utilisons est celui d'Earley.
 
+\noindent
 Donnons d'abord le formalisme adapté pour présenter l'algorithme.
 
 \begin{definition}[Item d'Earley]
-  Soit $\Sigma$ un alphabet et $G = (\Gamma, \to, S)$ une grammaire hors
-  contexte sur $\Sigma$. On appelle item d'Earley les triplets
-  $(R,i,j)$ où $R$ est une règle de $G$ (c'est-à-dire un couple
-  $(A, u)$ tel que $A \to u$) et $i$ et $j$ sont des entiers~: on manipule
-  des items d'Earley pour un mot global $u$ fixé, et ces deux indices sont
-  alors inférieurs à $|u|$.
-
-  On note $A \to \alpha \bullet \beta, i$ pour représenter l'item
-  $(A \to \alpha\beta , i,j)$ où $j = |\alpha|$.
+  Soit $\ABA$ un alphabet et $\varGG = (\ABB, \to, \StGr)$ une grammaire hors
+  contexte sur $\ABA$. On appelle item d'Earley les triplets $(R,i,j)$ où $R$
+  est une règle de $\varGG$ (c'est-à-dire un couple $(\nTA, \varwd)$ tel que
+  $\nTA \to \varwd$) et $i$ et $j$ sont des entiers~: on manipule des items
+  d'Earley pour un mot global $\varwd$ fixé, et ces deux indices sont alors
+  inférieurs à $\wul$.
+  On note $\EaItSt$ pour représenter l'item $\nTA \to \varwv\varww , i,j$ où
+  $j = \wvl$.
 \end{definition}
 
 L'idée derrière un item d'Earley est d'analyser les occurrences d'une règle
-de production en considérant des facteurs du mot $u$ analysé~: un item
-$(A \to \alpha\bullet \beta, i)$ s'interprète comme le fait que le sous-mot
-$u_i\cdots u_{j-1}$ vaut $\alpha$, et qu'il permet donc de construire le
-début de la règle $A \to u$.
+de production en considérant des facteurs du mot $\varwd$ analysé~: un item
+$\EaItSt$ s'interprète comme le fait que le sous-mot
+$\varwd_i\cdots \varwd_{j-1}$ vaut $\varwv$, et qu'il permet donc de construire
+le début de la règle $\nTA \to \varwd$.
 
 L'algorithme de \foreignexpr{parsing} est un algorithme de programmation
 dynamique~: on considère un tableau $T$ de $n$ lignes (où $n$ est la taille
-du mot $u$ analysé) où chaque ligne contient une liste d'items d'Earley,
-de sorte que la lecture du mot $u$ jusqu'à la lettre $j$ s'effectue dans la
+du mot $\varwd$ analysé) où chaque ligne contient une liste d'items d'Earley,
+de sorte que la lecture du mot $\varwd$ jusqu'à la lettre $j$ s'effectue dans la
 ligne $T[i]$. On donne donc l'algorithme en \cref{fig.Earley}.
 
 \begin{algorithm}[H]

@@ -22,7 +22,7 @@
 \newcommand{\leL}{<_{\mathbb L}} % ordre sur la classe L
 \newcommand{\ordbis}{\mathrel{\lhd}} % ordre utilisé pour la démonstration de Hessenberg, et globalement symbole de relation d'ordre au cas où
 
-\newcommand{\tok}{\bullet} % placeholder pour les définitions anonyme
+\newcommand{\tok}{\mathord{\_}} % placeholder pour les définitions anonyme
 
 %----- PROBLEMES ALGORITHMIQUES -----%
 
@@ -56,10 +56,12 @@
 \DeclareMathOperator{\postfix}{postfix} % ensemble des post-points fixes d'une fonction
 \newcommand{\restrict}[1]{\left.#1\right\vert} % restriction d'une fonction
 \newcommand{\makeFun}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
+\newcommand{\makeFunPartial}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xrightharpoonup{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
 \newcommand{\makeFunBis}[7]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \end{array}}
+\newcommand{\makeFunTer}[9]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \\ & & #8 & \longmapsto & #9\end{array}}
 \newcommand{\makeFunIso}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \overset{\cong}{\longrightarrow} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
 \newcommand{\makeFunName}[3]{#1 : \displaystyle #2 \longrightarrow #3}
-\newcommand{\makeFunNamePartial}[3]{#1 : \displaystyle #2 \xrightharpoonup{\qquad} #3}
+\newcommand{\makeFunNamePartial}[3]{#1 : \displaystyle #2 \xrightharpoonup{\quad} #3}
 \newcommand{\makeFunNameIso}[3]{#1 : \displaystyle #2 \overset{\cong}{\longrightarrow} #3}
 \DeclareMathOperator{\Supp}{Supp}
 \newcommand{\Set}[1]{\left\{#1\right\}}
@@ -147,10 +149,10 @@
 
 %----- OPERATIONS ENSEMBLISTES -----%
 
-\newcommand{\compr}[2]{\left.\left\{ #1 \;\right\vert\; #2 \right\}} % écriture d'un ensemble en compréhension
-\newcommand{\comprB}[2]{\left\{#1 \;\left\vert\;#2 \right\}\right.} % écriture d'un ensemble en compréhension, qui ajuste la taille à droite
+\newcommand{\compr}[2]{\left\{ #1 \;\middle\vert\; #2 \right\}} % écriture d'un ensemble en compréhension
+\newcommand{\comprB}[2]{\compr{#1}{#2}} % écriture d'un ensemble en compréhension, qui ajuste la taille à droite
 \newcommand{\comprML}[2]{\left\{ #1 \right\vert \\ \left\vert #2 \right\}} % écriture d'un ensemble en compréhension sur plusieurs lignes
-\newcommand{\remplP}[3]{\left.\left\{ #1(#3) \;\right\vert\; #3 \in #2 \right\}} % ensemble défini par remplacement
+\newcommand{\remplP}[3]{\left\{ #1(#3) \;\middle\vert\; #3 \in #2 \right\}} % ensemble défini par remplacement
 \newcommand{\remplx}[2]{\remplP{#1}{#2}{x}} % cas où la variable est x
 \newcommand{\restr}[1]{\mathbin{\upharpoonright}_{#1}} % restriction d'une fonction à un domaine donné
 \newcommand{\diagcap}{\bigtriangleup} % intersection diagonale
@@ -275,6 +277,7 @@
 
 \DeclareMathOperator{\List}{List} % ensemble des listes sur un ensemble
 \DeclareMathOperator{\cons}{cons} % ajouter un élément en tête d'une liste
+\newcommand{\consP}[1]{\cons_{#1}}
 \newcommand{\Cons}{\mathbin{::}} % version opérateur de la fonction cons
 \DeclareMathOperator{\nil}{nil} % liste vide
 \newcommand{\Nil}{[\;]} % version opérateur de la constante nil
@@ -742,6 +745,7 @@
 \DeclareMathOperator{\LML}{LML}
 \newcommand{\modNext}{\mathbin{\bigcirc}}
 \newcommand{\relev}[1]{\hat{#1}}
+\newcommand{\relevB}[1]{\widehat{#1}}
 \newcommand{\infWdP}[1]{{#1}^{\omega}}
 \newcommand{\infWd}{\infWdP{\intB}}
 \newcommand{\vara}{\mathds{1}}
@@ -936,3 +940,21 @@
 \newcommand{\BijCB}{\BijCP{2}} % bijection de Cantor à deux arguments
 \newcommand{\BijCn}{\BijCP{n}} % bijection de Cantor à n arguments
 \newcommand{\BijCs}{\BijCP{\star}} % bijection de Cantor pour les listes
+
+
+%----- FONCTIONS RECURSIVES -----%
+
+\DeclareMathOperator{\csK}{k} % fonction constante
+\newcommand{\csKP}[2]{\csK_{#1}^{#2}}
+\newcommand{\csKZ}[1]{\csKP{0}{#1}}
+\newcommand{\csKE}{\csK_{\Ewd}}
+\DeclareMathOperator{\demi}{demi}
+\newcommand{\diagRR}{\mathrel{\triangle}} % relation diagonale
+\newcommand{\muC}{\mathbin{\mu}} % fonction de minimisation pour la calculabilité
+\newcommand{\muB}{\mathbin{\mu_{\mathrm{B}}}} % fonction de minimisation bornée
+\newcommand{\toStAP}[1]{\toSt{(\ABA_{#1})}}
+\newcommand{\toStBP}[1]{\toSt{(\ABB_{#1})}}
+\newcommand{\codRPG}[2]{\godcod{#1}^{#2}}
+
+\newcommand{\EaIt}[4]{(#1\to #2\bullet #3,#4)} % item d'Earley
+\newcommand{\EaItSt}{\EaIt{\nTA}{\varwv}{\varww},i}
