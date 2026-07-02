@@ -937,111 +937,164 @@ L'algorithme de \foreignexpr{parsing} est un algorithme de programmation
 dynamique~: on considère un tableau $T$ de $n$ lignes (où $n$ est la taille
 du mot $\varwd$ analysé) où chaque ligne contient une liste d'items d'Earley,
 de sorte que la lecture du mot $\varwd$ jusqu'à la lettre $j$ s'effectue dans la
-ligne $T[i]$. On donne donc l'algorithme en \cref{fig.Earley}.
+ligne $T[j]$. Lorsqu'on lit une nouvelle lettre $\varla$ et qu'on considère un
+item $\EaItSt$, alors
+\begin{itemize}
+\item la lettre peut être la première lettre de $\varww$, auquel cas on avance
+  la lecture de l'item~;
+\item la première lettre de $\varww$ peut être un non terminal $\nTB$, auquel
+  cas on crée un nouvel item souhaitant lire une règle partant de $\nTB$~;
+\item l'item peut être complet, c'est-à-dire que $\varww = \Ewd$, dans ce cas on
+  peut faire avancer les items $\EaIt{\nTB}{\varwv'}{\varww'}{j}$ où
+  $\varww'$ commence par $\nTA$.
+\end{itemize}
+Remarquons que, mis à part l'étape de lecture d'une lettre, il est possible de
+devoir itérer plusieurs fois les deux autres routines, ce qui nécessite de faire
+une instruction \og Tant que\fg. Cependant, ces routines ne peuvent pas se
+répéter trop de fois, ce qui signifie qu'on peut en fait itérer l'algorithme
+avec un grand nombre d'étapes pour s'assurer qu'on n'a pas oublié de routine
+possible. On donne l'algorithme en \cref{fig.Earley}, où le nombre $N$ est un
+nombre suffisamment grand pour assurer que toutes les routines possibles sont
+effectuées, qui peut être fixé au pire des cas à un polynôme en
+$\Card(\mathord{\to}), \max(\compr{\varwd}{\exists \nTA, \nTA\to \varwd})$.
 
-\begin{algorithm}[H]
+\begin{algorithm}[!t]
   \KwData{\\
-    un vecteur $T[\;]$ de taille $n$ contenant des ensembles d'items
-    d'Earley, initialisé par $T[i] = \varnothing$ pour tout $i$\\
-    un mot $u \in \Sigma^\star$ de longueur $n$ \\
-    une grammaire $G = (\Gamma, \to, S)$ \\
-    une liste $\ell$ contenant la suite des dérivations sous la forme
-    d'un parcours en profondeur de l'arbre de dérivation
+    un tableau $T[\;]$ de taille $n$ contenant des ensembles d'items
+    d'Earley, initialisé par $T[i] = \vide$ pour tout $i$\\
+    un mot $\varwd \in \toStA$ de longueur $n$ \\
+    une grammaire $\varGG = (\ABB, \to, \StGr)$
   }
   \KwResult{\\
-    si $u \in \mathcal L_G$, la dérivation permettant de construire
-    $u$ dans la grammaire $G$\\
-    si $u \notin\mathcal L_G$, la constante $\bot$}
-  \For{$\alpha$ tel que $S\to \alpha$}{
-    $T[0] \leftarrow (S\to \bullet \alpha, 0)$\;
+    si $\varwd \in \varLL_{\varGG}$, la dérivation permettant de construire
+    $\varwd$ dans la grammaire $\varGG$\\
+    si $\varwd \notin\varLL_{\varGG}$, la constante $\Ewd$}
+  \For{$\varwv$ tel que $\StGr\to \varwv$}{
+    $T[0] \leftarrow \EaIt{\StGr}{}{\varwv}{0}$\;
   }
   \For{$j = 1$ \KwTo $n$}{
-    \For{$(A \to \alpha \bullet \beta, i) \in T[j-1]$}{
-      \If{$\beta = u_{j-1} \gamma$}{
-        $T[j] \leftarrow (A \to \alpha u_{j-1} \bullet \gamma, i)$\; }
+    \For{$\EaItSt \in T[j-1]$}{
+      \If{$\varww = \varwd_{j-1} \varwx$}{
+        $T[j] \leftarrow \EaIt{\nTA}{\varwv u_{j-1}}{\varwx}{i}$\; }
     }
-    \For{$(A \to \alpha\bullet \beta, i) \in T[j]$}{
-      \If{$\beta = B\gamma$, $B \in \Gamma$}{
-        \For{$(B, \delta) \in \to$}{
-          $T[j]\leftarrow (B \to \bullet\delta, j)$\;
-      }}
-    }
-    \For{$(A \to \alpha \bullet \beta, i) \in T[j]$}{
-      \If{$\beta = \varepsilon$}{
-        \For{$(B \to \gamma \bullet \delta, k) \in T[i]$}{
-          \If{$\delta = A \delta'$}{
-            $T[j]\leftarrow (B \to \gamma A \bullet \delta', k)$\;
+    \For{$\tok = 1$ \KwTo $N$}{
+      \For{$\EaItSt \in T[j]$}{
+        \If{$\varww = \nTB\varwx$, $\nTB \in \ABB$}{
+          \For{$(\nTB, \varwy) \in \mathord{\to}$}{
+            $T[j]\leftarrow \EaIt{\nTB}{}{\varwy}{j}$\;
+        }}
+      }
+      \For{$\EaItSt \in T[j]$}{
+        \If{$\varww = \Ewd$}{
+          \For{$\EaIt{\nTB}{\varwv'}{\varww'}{k}\in T[i]$}{
+            \If{$\varww' = \nTA \varwx$}{
+              $T[j]\leftarrow \EaIt{\nTB}{\varwv'\nTA}{\varwx}{k}$\;
+            }
           }
         }
       }
     }
   }
-  \For{$(A \to \alpha\bullet\beta, i)\in T[n-1]$}{
-    \If{$(A = S)\land (\beta = \varepsilon) \land (i = 0)$}{
-      $\ell \leftarrow S$\;
-      $\ell \leftarrow \alpha$\;
-      \For{A FAIRE}{
-        A FAIRE
-      }
+  \For{$\EaItSt \in T[n-1]$}{
+    \If{$(\nTA = \StGr)\land (\varww = \Ewd) \land (i = 0)$}{
+      \KwRet $\top$\;
     }
   }
-  \KwRet $\bot$\;
+  \KwRet $\Ewd$\;
   \caption{Algorithme d'Earley}
   \label{fig.Earley}
 \end{algorithm}
 
 \begin{proposition}
-  Soit $\Sigma$ un alphabet et $G$ une grammaire hors contexte. Alors
-  $\mathcal L_G$ est une partie de $\Sigma^\star$ dont l'indicatrice est
+  Soient $\ABA$ un alphabet et $\varGG$ une grammaire hors contexte sur $\ABA$.
+  Alors $\varLL_{\varGG}$ est une partie de $\toStA$ dont l'indicatrice est
   une fonction RPG (à valeurs dans $\btwo$).
 \end{proposition}
 
 \begin{proof}
   Il nous suffit donc d'implémenter l'\cref{fig.Earley} avec des fonctions
-  RPG. A FAIRE
+  RPG. Les branchements conditionnels et les boucles \og Pour\fg peuvent
+  s'implémenter par le constructeur $\ifrm$ et le constructeur $\rec$. Pour le
+  constructeur $\rec$, on a besoin de donner une liste contenant tous les
+  arguments potentiellement modifiés dans la boucle \og Pour\fg, ce qui se
+  fait par la fonction $\BijCs$. De même, le tableau $T[\;]$ est codé par une
+  liste de listes, sous la forme d'un entier en utilisant la fonction $\BijCs$.
+  Au total, tout l'algorithme peut donc s'écrire comme une fonction RPG.
 \end{proof}
 
+\begin{remark}
+  Dans notre présentation de l'algorithme, on ne fait pas apparaitre la
+  dérivation menant au mot. Cependant, il est possible de garder en mémoire les
+  dérivations lors de l'algorithme dynamique~:
+  \begin{itemize}
+  \item on ajoute un paramètre d'historique à chaque item qui donne la liste
+    $\varlist$ des dérivations qui ont produit les non terminaux lus dans cet
+    item~;
+  \item si on a un item $\EaIt{\nTA}{\varwv}{}{i}$ avec un historique
+    $\varlist$, on ajoute aux items $\EaIt{\nTB}{\varwv'}{\nTA\varww}{j}$
+    la liste $\varlist$ à leur historique.
+  \end{itemize}
+  On obtient ainsi pour un mot $\varwd\in\varLL_{\varGG}$, à quelques
+  manipulations près, la liste $\varlist$ correspondant à la dérivation menant
+  à $\varwd$ en effectuant les dérivations les plus à gauche possible.
+\end{remark}
+
+\noindent
 Cette proposition permet de donner du sens à la définition suivante.
 
 \begin{definition}[Fonction RPG de langage]
-  Soit $\Sigma,\Gamma$ deux alphabets et $\mathcal L \subseteq \Sigma^\star$ un
-  langage RPG sur $\Sigma$. Une fonction $f : \mathcal L \to \Gamma^\star$
-  est dite RPG s'il existe une fonction RPG
-  $\tilde f : \Sigma^\star \to \Gamma^\star$ qui coïncide avec $f$ sur
-  $\mathcal L$.
+  Soient $\ABA,\ABB$ deux alphabets et $\varLL \subseteq \toStA$ un
+  langage RPG sur $\ABA$. Une fonction $f : \varLL \to \toStB$ est dite RPG s'il
+  existe une fonction RPG $\relev{f} : \toStA \to \toStB$ qui coïncide avec $f$
+  sur $\varLL$.
 \end{definition}
 
 \begin{remark}
-  Nous décidons de contraindre $\mathcal L$ à être lui-même RPG car sinon,
-  notre fonction $\tilde f$ n'aurait pas de raison de définir une fonction dont
-  le domaine est $\mathcal L$~: appeler $\tilde f$ sur une valeur ne nous
-  permet pas de savoir si l'application de la fonction était autorisée. Au
-  contraire, s'il est possible d'avoir un processus préalable nous disant
-  quelles valeurs peuvent être effectivement appelées, alors la fonction définie
-  sur $\mathcal L$ est calculable par des fonctions RPG dans tous ses aspects.
+  Nous décidons de contraindre $\varLL$ à être lui-même RPG car sinon, notre
+  fonction $\relev{f}$ n'aurait pas de raison de définir une fonction dont le
+  domaine est $\varLL$~: appeler $\relev{f}$ sur une valeur ne nous permet pas
+  de savoir si l'application de la fonction était autorisée. Au contraire, s'il
+  est possible d'avoir un processus préalable nous disant quelles valeurs
+  peuvent être effectivement appelées, alors la fonction définie sur $\varLL$
+  est calculable par des fonctions RPG dans tous ses aspects.
 \end{remark}
 
 Un exemple essentiel de fonction RPG de langage est celui des fonctions
 définies par inductions à partir de fonctions RPG.
 
 \begin{proposition}\label{prop.PU.RPG}
-  Soient $\Sigma,\Gamma$ deux alphabets et $G = (\Sigma',\to,S)$ une
+  Soient $\ABA,\ABB$ deux alphabets et $\varGG = (\ABA',\to,\StGr)$ une
   grammaire non ambigüe. On suppose que pour toute règle
-  $A \to u$ dans $G$, on dispose d'une
-  fonction RPG $g_{A,u} : (\Gamma^\star)^n \to \Gamma^\star$ où $n$ est le nombre
-  de non terminaux apparaissant dans $u$. Alors la fonction
-  $g : \mathcal L_G \to \Gamma^\star$ donnée par la \cref{prop.PU.gram} est une
-  fonction RPG.
+  $\nTA \to \varwd$ dans $\varGG$, on dispose d'une fonction RPG
+  $g_{\nTA,\varwd} : (\toStB)^n \to \toStB$ où $n$ est le nombre de non terminaux
+  apparaissant dans $\varwd$. Alors la fonction $g : \varLL_{\varGG} \to \toStB$
+  donnée par la \cref{prop.PU.gram} est une fonction RPG.
 \end{proposition}
 
 \begin{proof}
   On utilise l'implémentation de l'\cref{fig.Earley}. On a donc une fonction
-  $\Sigma^\star \to (\Sigma' \sqcup \{``[",'']"\})^\star$ donnant, pour un
-  mot $u \in \Sigma^\star$, le mot $\varepsilon$ si $u \notin \mathcal L_G$ et
-  la liste $[u_1,u_2,\cdots,u_k]$ obtenue en effectuant un parcours en
-  profondeur de l'arbre de dérivation de $u$, si $u \in \mathcal L_G$.
+  $\toStA \to \toSt{(\ABA' \sqcup \{``\vert"\})}$ donnant, pour un
+  mot $\varwd \in \toStA$, le mot $\Ewd$ si $\varwd \notin \varLL_{\varGG}$ et
+  la liste $\varwd_1\mid\varwd_2\mid\cdots\mid\varwd_k$ obtenue en effectuant
+  une dérivation de $\varwd$ en effectuant les règles les plus à gauche
+  possible.
 
-  A FAIRE
+  Quitte à se placer dans l'union des alphabets, on procède comme suit~:
+  \begin{itemize}
+  \item on lit les mots dans l'ordre inverse, de $\varwd_k$ à $\varwd_1$~;
+  \item pour chaque mot $\varwd_i$, on construit un mot $\varwd_i'$ dans
+    lequel le non terminal le plus à droite de $\varwd_i$ est remplacé
+    par un mot de $\toStB$ (qui est l'image de $g$ au fil des dérivations)~;
+  \item entre le mot $\varwd_{j+1}$ et le mot $\varwd_{j}$, la seule différence
+    est un facteur $\varwv$ transformé par une règle $\nTA\to\varwv_0$, donc
+    on peut construire $\varwd_{j+1}'$ comme le même mot que $\varwd_{j}$ mais
+    dans lequel on a remplacé le facteur $\varwv$ par $g_{\nTA,\varwv_0}$ auquel
+    on donne en argument les éléments de $\toStB$ dans $\varwv$~;
+  \item puisque $\varwd_1$ est le mot $\StGr$, on sait que $\varwd_1'$ est un
+    élément de $\toStB$.
+  \end{itemize}
+  Ce processus peut s'effectuer en itérant des fonctions sur des mots, et sur
+  des listes de mots~: on peut donc l'implémenter avec une fonction RPG.
 \end{proof}
 
 \begin{remark}
@@ -1053,32 +1106,31 @@ définies par inductions à partir de fonctions RPG.
 Ces résultats nous permettent donc de voir les langages algébriques comme une
 sous-classe des langages RPG. On voit aussi que des opérations syntaxiques
 simples sont RPG. Par exemple, étant donnée une signature du premier ordre
-$\Delta$, un terme $t$ sur $\Delta$, une variable du premier ordre $x_n$ avec
-$n \in \mathbb N$ et une formule $\varphi$ sur $\Delta$, il est possible de
-définir la substitution $\varphi[t/x_n]$ par induction sur la grammaire des
-formules sur $\Delta$~:
+$\Sign$, un terme $t$ sur $\Sign$, une variable du premier ordre $x_n$ avec
+$n \in \bN$ et une formule $\varFF$ sur $\Sign$, il est possible de définir la
+substitution $\varFF[t/x_n]$ par induction sur la grammaire des formules sur
+$\Sign$~:
 \begin{itemize}
 \item on définit d'abord la substitution pour un terme $t'$. Si $t' = x_m$ où
   $m \neq n$, alors $t'[t/x_n] = t'$ ; si $t' = x_n$ alors $t'[t/x_n] = t$ et
-  si $t' = f(t_1,\ldots,t_p)$ alors
-  $t'[t/x_n] = f(t_1[t/x_n],\ldots,t_p[t/x_n])$.
-\item si $\varphi = R(t_1,\ldots,t_p)$, alors
-  $\varphi[t/x_n]=R(t_1[t/x_n],\ldots,t_p[t/x_n])$.
+  si $t' = f(t_1,\ldots,t_p)$ alors $t'[t/x_n]=f(t_1[t/x_n],\ldots,t_p[t/x_n])$.
+\item si $\varFF = \mathbin{\varRR}(t_1,\ldots,t_p)$, alors
+  $\varFF[t/x_n]=\mathbin{\varRR}(t_1[t/x_n],\ldots,t_p[t/x_n])$.
 \item le cas de $\top$ et $\bot$ est simple~: la substitution ne fait rien.
 \item dans le cas de $\lor,\land,\to$, on applique simplement la substitution
   récursivement aux sous-formules.
-\item si $\varphi = \exists x,\psi$ (respectivement
-  $\varphi = \forall x, \psi$), alors $\varphi[t/x_n] = \exists x, \psi[t/x_n]$
-  (respectivement $\varphi[t/x_n] = \forall x, \psi[t/x_n]$).
+\item si $\varFF = \exists x,\varFP$ (respectivement $\varFF=\forall x,\varFP$),
+  alors $\varFF[t/x_n] = \exists x, \varFP[t/x_n]$
+  (respectivement $\varFF[t/x_n] = \forall x, \varFP[t/x_n]$).
 \end{itemize}
 
 En réalité, le cas des quantificateurs est un peu particulier. On peut se
 demander comment est représentée une variable liée telle que le $x$ dans
-$\exists x, \psi$. La façon la plus simple de faire est de considérer que
+$\exists x, \varFP$. La façon la plus simple de faire est de considérer que
 cette quantification lie $x_0$, et donc que la variable libre $x_0$ dans
-$\exists x, \psi$ est la variable libre $x_s(x_0)$ dans $\psi$. Dans ce cas,
+$\exists x, \varFP$ est la variable libre $x_s(x_0)$ dans $\varFP$. Dans ce cas,
 la définition récursive reste simple~:
-$\varphi[t/x_n] = \exists x, \psi[t/x_{n+1}]$.
+$\varFF[t/x_n] = \exists x, \varFP[t/x_{n+1}]$.
 
 Malheureusement, toutes les fonctions qui peuvent s'exprimer par un algorithme
 ne sont pas des fonctions RP. Comme on l'a dit au début, une fonction RP peut
@@ -1088,11 +1140,11 @@ grandes, sans savoir \latinexpr{a priori} si on aura un nombre fini
 d'itérations. Dans l'autre sens, il est possible de définir la boucle
 \texttt{while} à partir de la boucle \texttt{for}, dans les cas où la première
 boucle converge. Si l'on décide d'écrire
-\[\texttt{while}\;\varphi(x) \;\texttt{do}\; f ; x \coloneq x + 1\;
+\[\texttt{while}\;\varFF(x) \;\texttt{do}\; f ; x \coloneq x + 1\;
 \texttt{done}\]
 par exemple, pour appliquer une procédure $f$ pour tous les $x$ tels que
-$\varphi(x)$, on peut tout aussi bien écrire, en fait,
-\[\texttt{for}\; i = 0 \;\texttt{to}\; \mu(\lnot \varphi)\;\texttt{do}\; f\;
+$\varFF(x)$, on peut tout aussi bien écrire, en fait,
+\[\texttt{for}\; i = 0 \;\texttt{to}\; \muC(\lnot \varFF)\;\texttt{do}\; f\;
 \texttt{done}\]
 Ainsi, la minimisation non bornée nous permet de simuler les boucles
 arbitrairement grandes.
@@ -1108,51 +1160,54 @@ Comme nous allons introduire des classes de fonctions partielles, nous donnons
 d'abord des notations pour manipuler ces fonctions.
 
 \begin{notation}
-  Soit $f : E \partialto F$ une fonction partielle. Pour tout $x \in E$, on
-  notera $f(x)\convcal$ dans le cas où $f$ est définie en $x$, et on
-  notera $f(x)\divcal$ dans le cas où $f$ n'est pas définie~:
-  \[f(x) \convcal \defeq \exists y \in F, f(x) = y \qquad
+  Soit $\makeFunNamePartial{f}{X}{Y}$ une fonction partielle. Pour tout
+  $x \in X$, on notera $f(x)\convcal$ dans le cas où $f$ est définie en $x$, et
+  on notera $f(x)\divcal$ dans le cas où $f$ n'est pas définie~:
+  \[f(x) \convcal \defeq \exists y \in Y, f(x) = y \qquad
   f(x) \divcal \defeq \lnot(f(x)\convcal)\]
-  On dira donc que $f$ est totale si $f(x)\convcal$ pour tout $x \in E$.
+  On dira donc que $f$ est totale si $f(x)\convcal$ pour tout $x \in X$. On note
+  $f(x)\conveq y$ pour dire que $f$ est bien définie en $f$ et vaut $y$, et
+  $f(x)\convneq y$ pour dire que $f$ est bien définie en $f$ et a une valeur
+  différente de $y$.
 
-  Etant données deux fonctions partielles $f,g : E \partialto F$, on notera
-  $f \convcal = g\convcal$ pour signifier que $f$ et $g$ sont définies
-  exactement sur les mêmes valeurs et sont égales sur ces valeurs.
+  Etant données deux fonctions partielles $\makeFunNamePartial{f,g}{X}{Y}$, on
+  notera
+  \[f\raffin g \defeq \forall x \in X, f(x)\convcal \implies g(x)\convcal \land
+  f(x) = g(x)\qquad
+  f \calEq g \defeq (f \raffin g)\land(g\raffin f)\]
+  ainsi $f\raffin g$ signifie que $g$ est définie au moins sur les valeurs où
+  $f$ l'est, et prend les mêmes valeurs~; $f\calEq g$ signifie que $f$ et $g$
+  sont définies aux mêmes points et retournent la même valeur en ces points.
 \end{notation}
 
 \begin{definition}[Fonction récursive, récursive généralisée \cite{Kleene1936}]
   On définit la classe $\Rec$ des fonctions récursives comme la plus petite
   classe de fonctions partielles stables par les mêmes opérations
   que la classe $\RecP$ et telle que si
-  $f : \mathbb N^{n+1} \partialto \mathbb N$ est une fonction partielle
-  récursive, alors
-  c'est aussi le cas de la fonction
-  \[\begin{array}{ccccc}
-  \mu(f) & : & \mathbb N^n & \xrightharpoonup{\quad} & \mathbb N\\
-  & & (x_1,\ldots,x_n) &\longmapsto & \min \left\{y \in \mathbb N \left\vert
-  \begin{array}{c} f(x_1,\ldots,x_n,y)\convcal = 0 \\ \land \\
-  \forall z < y, f(x_1,\ldots,x_n,z)\convcal \neq 0\end{array}\right.\right\}
-  \end{array}\]
-  où la fonction $\mu(f)$ est indéfinie là où l'ensemble dont on prend le
+  $\makeFunNamePartial{f}{\bN^{n+1}}{\bN}$ est une fonction partielle récursive,
+  alors c'est aussi le cas de la fonction
+  \[\makeFunPartial{\muC(f)}{\bN^n}{\bN}
+                   {\vec x}{\min\compr{y \in \bN}{\begin{array}{l}
+                         f(\vec x,y)\conveq 0 \\
+                         \forall z < y, f(\vec x,z)\convneq 0\end{array}}}\]
+  où la fonction $\muC(f)$ est indéfinie là où l'ensemble dont on prend le
   minimum est infini.
 
   La classe $\RecG$ des fonctions récursives généralisées est la plus petite
   classe de fonctions partielles contenant la classe $\RPG$ et telle que si
-  \[f : \left(\prod_{i = 1}^n (\Sigma_i)^\star\right)
-  \times \mathbb N \to \Sigma^\star\]
+  \[\makeFunName{f}{\left(\prod_{i = 1}^n \toStAP{i}\right)\times\bN}{\toStA}\]
   est une fonction récursive généralisée, alors
-  \[\begin{array}{ccccc}
-  \mu(f) & : & \displaystyle\prod_{i = 1}^n (\Sigma_i)^\star &\longrightarrow &
-  \mathbb N\\
-  & & (u_1,\ldots,u_n) &\longmapsto &\min\{y \in \mathbb N \mid
-  f(u_1,\ldots,u_n,y) = \varepsilon\}
-  \end{array}\]
+  \[\makeFunPartial{\muC(f)}{\prod_{i = 1}^n \toStAP{i}}{\bN}
+                   {\vec{\varwd}}{\min\compr{y \in \bN}{\begin{array}{l}
+                         f(\vec \varwd,y)\conveq \Ewd\\
+                         \forall z < y, f(\vec \varwd,z)\convneq \Ewd
+                     \end{array}}}\]
   est aussi une fonction récursive généralisée.
 \end{definition}
 
 \begin{exercise}
-  Montrer que pour les fonctions $f : \mathbb N^n \to \mathbb N$, appartenir à
-  $\Rec$ est équivalent à appartenir à $\RecG$.
+  Montrer que pour les fonctions $\makeFunNamePartial{f}{\bN^n}{\bN}$,
+  appartenir à $\Rec$ est équivalent à appartenir à $\RecG$.
 \end{exercise}
 
 La classe $\Rec$ est en fait la classe des fonctions calculables, au sens des
@@ -1191,61 +1246,63 @@ nous montrons que les fonctions calculables au sens des machines de Turing sont
 Donnons d'abord une définition simple de machine de Turing, permettant de plus
 rapidement travailler avec.
 
-\begin{definition}[Machine de Turing \cite{turing1936a}\cite{Post1947-POSRUO}]
-  Soit $\Sigma$ un alphabet. Une machine de Turing $M$ sur $\Sigma$ est la
+\begin{definition}[Machine de Turing \cite{turing1936a,Post1947-POSRUO}]
+  Soit $\ABA$ un alphabet. Une machine de Turing $\varTMM$ sur $\ABA$ est la
   donnée de~:
   \begin{itemize}
-  \item un ensemble fini $Q$ d'états
-  \item un état initial $q_0$
-  \item un ensemble d'états d'arrêt $F$
-  \item un alphabet $\Gamma$ de travail, tel que $\Sigma \subseteq \Gamma$
-  \item un symbole blanc $\square \in \Gamma$
+  \item un ensemble fini $\varQQ$ d'états~;
+  \item un état initial $\varqZ$~;
+  \item un ensemble d'états d'arrêt $\varAF$
+  \item un alphabet $\ABB$ de travail, tel que $\ABA \subseteq \ABB$
+  \item un symbole blanc $\blS \in \ABB$
   \item une fonction de transition partielle
-    \[\delta : Q \times \Gamma \longrightarrow Q \times \Gamma \times
-    \{\lhd,\rhd\}\]
+    \[\makeFunName{\trA}{\varQQ\times\ABB}
+                  {\varQQ\times\ABB\times\{\lTr,\rTr\}}\]
   \end{itemize}
 
-  On note $\TM(\Sigma)$ (pour \foreignexpr{Turing machine}) l'ensemble des
-  machines de Turing sur $\Sigma$.
+  On note $\TM(\ABA)$ (pour \foreignexpr{Turing machine}) l'ensemble des
+  machines de Turing sur $\ABA$.
 \end{definition}
 
 Décrivons le fonctionnement d'une machine de Turing à partir de ses
 composantes~:
 \begin{itemize}
-\item la machine de Turing va agir sur un ruban qui est une suite de symboles
-  de $\Gamma$ de la forme $u\square^\infty$, c'est-à-dire ayant un nombre
-  fini d'élément différents de $\square$. A chaque étape, la machine pointe à
-  un certain indice du ruban, lit le symbole à cet indice et agit en
-  conséquence.
+\item la machine de Turing va agir sur un ruban qui est une suite de symboles de
+  $\ABB$ de la forme $\varwd\toInf$, c'est-à-dire ayant un nombre fini d'élément
+  différents de $\blS$. A chaque étape, la machine pointe à un certain indice du
+  ruban, lit le symbole à cet indice et agit en conséquence.
 \item au début de l'exécution, la machine point à l'incide $0$ et est dans
-  l'état $q_0$.
+  l'état $\varqZ$.
 \item à chaque étape lors de l'exécution, en supposant que le ruban est de la
-  forme $uav\square^\infty$ et que la machine pointe sur le symbole $a$, la
-  machine étant en un état $q$, on regarde $\delta(q,a) = q',b,m$~: le symbole
-  $a$ est remplacé par le symbole $b$, la machine entre dans l'état b et elle
-  décale sa tête de lecture d'une case vers la gauche si $m = \lhd$, vers la
-  droite si $m = \rhd$.
-\item lorsque la machine entre dans un état $q \in F$, l'exécution s'arrête.
+  forme $\varwd\varla\varwv\toInf$ et que la machine pointe sur le symbole
+  $\varla$, la machine étant en un état $\varq$, on regarde
+  $\trA(\varq,\varla) = \varq',\varlb,m$~: le symbole $\varla$ est remplacé par
+  le symbole $\varlb$, la machine entre dans l'état $\varq'$ et elle décale sa
+  tête de lecture d'une case vers la gauche si $m = \lTr$, vers la droite si
+  $m = \rTr$.
+\item lorsque la machine entre dans un état $\varq \in \varAF$, l'exécution
+  s'arrête.
 \end{itemize}
 
+\noindent
 Donnons un exemple de machine et d'exécution d'une machine.
 
 \begin{example}[Miroir d'un mot]
-  On fixe l'alphabet $\Sigma \defeq \btwo$ et on donne une machine de Turing
-  qui, étant donné un mot en entrée, réécrit ce mot en miroir.
+  On fixe l'alphabet $\ABA \defeq \btwo$ et on donne une machine de Turing qui,
+  étant donné un mot en entrée, réécrit ce mot en miroir.
 
   On en donne d'abord une description intuitive~:
   \begin{itemize}
-  \item on commence par déplacer le mot $u$ vers la droite et on le
-    précède d'un $0$, pour avoir $\square^{|u|}0u\square^\infty$ sur la
-    bande
-  \item on va tout à droite du mot $u$ de droite
+  \item on commence par déplacer le mot $\varwd$ vers la droite et on le précède
+    d'un $0$, pour avoir $\blS^{\wul}0\varwd\toInf$ sur la
+    bande~;
+  \item on va tout à droite du mot $\varwd$ de droite~;
   \item on répète la procédure suivante~:
     \begin{itemize}
-    \item on garde en mémoire le caractère sur lequel on est, qu'on
-      notera $a$ (on peut multiplier les états pour avoir une suite
-      d'état distinct pour chaque symbole $a$ de l'alphabet), on
-      efface de caractère
+    \item on garde en mémoire le caractère sur lequel on est, qu'on notera
+      $\varla$ (on peut multiplier les états pour avoir une suite d'états
+      distincts pour chaque symbole $\varla$ de l'alphabet), on efface le
+      caractère
     \item on se déplace à gauche jusqu'à atteindre un $\square$, puis
       une lettre ($0$ ou $1$)
     \item on se déplace à droite d'une case (de sorte à être sur le
@@ -1265,101 +1322,94 @@ configuration, qui est un objet permettant de retenir simultanément l'état d'u
 machine, de son ruban et l'emplacement de sa tête de lecture.
 
 \begin{definition}[Configuration d'une machine sur un ruban]
-  Soit une machine de Turing $M$ sur un alphabet $\Sigma$. Une configuration
-  pour $M$ est une suite $u \in (\Gamma\cup Q)^\mathbb N$ telle que~:
+  Soit une machine de Turing $\varTMM$ sur un alphabet $\ABA$. Une configuration
+  pour $\varTMM$ est un triplet $(\varq,i,\varwd)$ où
   \begin{itemize}
-  \item toutes les valeurs de $u$ sauf un nombre fini sont $\square$
-  \item il existe exactement un indice $i$ tel que $u_i \in Q$.
+  \item $\varq \in \varQQ$ est l'état dans lequel est la machine~;
+  \item $i$ est l'indice du ruban auquel est la tête de lecture~;
+  \item $u$ est un mot de la forme $\varwv\toInf$ avec $\varwv \in\toStB$
   \end{itemize}
-  Etant donnée une configuration $u$, on appel état de $M$ en $u$ l'unique
-  valeur $q \in Q$ prise par $u$.
+  On note $\Config(\varTMM)$ l'ensemble des configurations de $\varTMM$.
 \end{definition}
 
 \begin{notation}
-  On notera une configuration $uqv\square^\infty$ pour indiquer que
-  $u \in \Gamma^\star$, $v \in \Gamma^\star$ et $q \in Q$.
+  On notera $\varwd\varq\varwv\toInf$ pour la configuration
+  $(\varq,\wul,\varwd\varwv\toInf)$.
 \end{notation}
 
-Il faut lire la configuration $uqv\square^\infty$ comme le fait que la tête
-de lecture de la machine se trouve à la première lettre de $v$, dans l'état $q$,
-et que tous les symboles différents de $\square$ sont contenus dans $uv$.
+Il faut lire la configuration $\varwd\varq\varwd\toInf$ comme le fait que la
+tête de lecture de la machine se trouve à la première lettre de $\varwv$, dans
+l'état $\varq$, et que tous les symboles différents de $\blS$ sont contenus dans
+$\varwd\varwv$.
 
 Une machine de Turing agit alors naturellement sur les configurations grâce à sa
 fonction de transition.
 
 \begin{definition}[Action d'une machine sur une configuration]
-  Soit $M$ une machine de Turing sur un alphabet $\Sigma$ et
-  $uqav\square^\infty$ une configuration pour $M$
-  (où $u,v \in \Gamma^\star, a\in \Gamma$ et $q \in Q$). Soit
-  $q',b,m \defeq \delta(q,a)$, on définit l'action de $M$ en un pas sur
-  $uqbv\square^\infty$, par
+  Soit $\varTMM$ une machine de Turing sur un alphabet $\ABA$. On définit
+  l'action de $\varTMM$ sur la configuration par
   \[
-  M\cdot uqav\square^\infty \defeq
-  \begin{cases}
-    u'q'a'bv\square^\infty\text{ si } m = \lhd\text{ et si } u = u'\star a'\\
-    ubq'v\square^\infty\text{ si } m = \rhd \\
-    \text{indéfini sinon}
-  \end{cases}\]
+  \makeFunBisPartial{\varTMM\opTM\tok}{\Config(\varTMM)}{\Config(\varTMM)}
+                    {\varwd\varla\varq\varlb\varwv\toInf}
+                    {\varwd\varq'\varla\varlc\varwv\toInf\text{ si }
+                      \trA(\varq,\varlb) \conveq (\varq',\varlc,\lTr)}
+                    {\varwd\varq\varla\varwv\toInf}
+                    {\varwd\varlc\varq'\varwv\toInf\text{ si }
+                      \trA(\varq,\varla) \conveq (\varq',\varlc,\rTr)}
+  \]
+  Où la fonction n'est pas définie sinon.
 \end{definition}
-
-\begin{remark}
-  Si $\delta$ n'est pas définie en un certain couple $a,q$, l'action n'est pas
-  définie non plus, comme l'indique l'impossibilité de décomposer $\delta(q,a)$.
-\end{remark}
 
 Cette action sur les configurations représente ce qu'il se déroule lors de
-l'exécution de $M$ pendant une seule unité de temps de calcul. Il nous faut
-ensuite, bien sûr, itérer cette action pour créer un vrai calcul de la part de
-$M$. Comme dans le cas des automates, on va appeler trace d'un calcul la suite
-des configurations parcourues.
+l'exécution de $\varTMM$ pendant une seule unité de temps de calcul. Il nous
+faut ensuite, bien sûr, itérer cette action pour créer un vrai calcul de la part
+de $\varTMM$. Comme dans le cas des automates, on va appeler trace d'un calcul
+la suite des configurations parcourues.
 
 \begin{definition}[Trace d'une exécution d'une machine de Turing]
-  Soit une machine de Turing $M$ sur un alphabet $\Sigma$ et
-  $uqv\square^\infty$ une configuration pour $M$. On appelle trace de
-  l'exécution de $M$ sur $uqv\square^\infty$ la plus grande suite finie ou
-  infinie de configurations $p_0,\ldots,p_i,\ldots$ telle que
+  Soit une machine de Turing $\varTMM$ sur un alphabet $\ABA$ et
+  $\varwd\varq\varwv\toInf$ une configuration pour $\varTMM$. On appelle trace
+  de l'exécution de $\varTMM$ sur cette configuration la plus grande suite finie
+  ou infinie de configurations $p_0,\ldots,p_i,\ldots$ telle que
   \begin{itemize}
-  \item $p_0 = uqv\square^\infty$
-  \item pour tout $i$, $p_{i+1} = M\cdot p_i$
-  \item s'il existe $p_i$ tel que l'état de $M$ en $p_i$ appartient à $F$,
-    alors la trace n'est pas définie pour $j > i$
+  \item $p_0 = \varwd\varq\varwv\toInf$
+  \item pour tout $i$, $p_{i+1} = \varTMM\opTM p_i$
+  \item s'il existe $p_i$ tel que l'état de $\varTMM$ en $p_i$ appartient à
+    $\varAF$, alors la trace n'est pas définie pour $j > i$
   \end{itemize}
 
-  Pour tout mot $u \in \Sigma^\star$, on appelle trace de l'exécution de $M$
-  la trace de l'exécution de $M$ sur $q_0u\square^\infty$.
+  Pour tout mot $\varwd \in \toStA$, on appelle trace de l'exécution de $varTMM$
+  la trace de l'exécution de $\varTMM$ sur $\varqZ\varwd\toInf$.
 \end{definition}
 
-L'exécution d'une machine sur un mot $u$ peut ainsi mener à plusieurs cas~:
+L'exécution d'une machine sur un mot $\varwd$ peut ainsi mener à plusieurs cas~:
 \begin{itemize}
 \item la trace est infinie, ce qui correspond à un calcul qui ne se termine pas,
-  tel un programme exécutant une boucle de la forme \texttt{while true} ;
+  tel un programme exécutant une boucle de la forme \texttt{while true}~;
 \item la trace est finie mais ne contient pas d'état d'arrêt, ce qui correspond
-  à une dernière configuration pour laquelle l'action de $M$ est indéfinie ;
+  à une dernière configuration pour laquelle l'action de $\varTMM$ est
+  indéfinie~;
 \item la trace est finie et contient un état d'arrêt, ce qui correspond à un
   calcul qui s'exécute correctement et s'arrête~: le ruban dans la configuration
-  finale est alors de la forme $vw\square^\infty$ où $v \in \Sigma^\star$ et
-  $w \in \Gamma^\star$ ($v$ peut être vide, et $w$ contient potentiellement
-  des lettres dans $\Sigma)$. On a alors associé à $u\in\Sigma^\star$ un mot
-  $v \in \Sigma^\star$. On notera dans la suite $M(u)$ ce mot $v$.
+  finale est alors de la forme $\varwv\varww\toInf$ où $\varwv \in \toStA$ et
+  $\varww \in \toStB$ ($\varwv$ peut être vide, et $\varww$ contient
+  potentiellement des lettres dans $\ABA)$. On a alors associé à
+  $\varwd\in\toStA$ un mot $\varwv \in \toStA$. On notera dans la suite
+  $\varTMM(\varwd)$ ce mot $\varwv$.
 \end{itemize}
 
 Une machine de Turing définit donc une fonction partielle
-$\Sigma^\star \partialto \Sigma^\star$~: on dira que cette fonction est calculée
-par la machine de Turing considérée, ce qui nous mène à la notion de fonction
+$\toStA \partialto \toStA$~: on dira que cette fonction est calculée par la
+machine de Turing considérée, ce qui nous mène à la notion de fonction
 calculable.
 
 \begin{definition}[Fonction calculée par une machine de Turing]
-  Soit $M$ une machine de Turing sur un alphabet $\Sigma$. On définit la
-  fonction partielle calculée par $M$ comme~:
-  \[\begin{array}{ccccc}
-  f_M & : & \Sigma^\star & \longrightarrow & \Sigma^\star\\
-  & & u & \longmapsto & M(u)
-  \end{array}\]
-  où $M(u)$ est indéfini si la trace de l'exécution de $M$ sur $u$ est infinie
-  ou ne se termine pas sur un état d'arrêt.
+  Soit $\varTMM$ une machine de Turing sur un alphabet $\ABA$. On définit la
+  fonction partielle calculée par $\varTMM$ comme~:
+  \[\makeFunPartial{f_{\varTMM}}{\toStA}{\toStA}{\varwd}{\varTMM(\varwd)}\]
   
-  On définit la classe des fonctions calculables sur $\Sigma$ comme
-  \[\Calc(\Sigma)\defeq \{ f_M\mid M \in \TM(\Sigma)\}\]
+  On définit la classe des fonctions calculables sur $\ABA$ comme
+  \[\Calc(\ABA)\defeq \compr{f_{\varTMM}}{\varTMM \in \TM(\ABA)}\]
 \end{definition}
 
 \subsection{\'Equivalence de machines de Turing}

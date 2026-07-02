@@ -62,6 +62,7 @@
 \newcommand{\makeFunIso}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \overset{\cong}{\longrightarrow} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
 \newcommand{\makeFunName}[3]{#1 : \displaystyle #2 \longrightarrow #3}
 \newcommand{\makeFunNamePartial}[3]{#1 : \displaystyle #2 \xrightharpoonup{\quad} #3}
+\newcommand{\makeFunBisPartial}[7]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xrightharpoonup{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7\end{array}}
 \newcommand{\makeFunNameIso}[3]{#1 : \displaystyle #2 \overset{\cong}{\longrightarrow} #3}
 \DeclareMathOperator{\Supp}{Supp}
 \newcommand{\Set}[1]{\left\{#1\right\}}
@@ -487,9 +488,12 @@
 %----- CALCULABILITÉ -----%
 
 \DeclareMathOperator{\Coher}{Coh} % cohérence d'une théorie
-\newcommand{\convcal}{\!\downarrow} % calcul convergent
-\newcommand{\conveq}{\convcal=} % convergence + égalité
-\newcommand{\divcal}{\!\uparrow} % calcul divergent
+\newcommand{\convcal}{\mathbin{\downarrow}} % calcul convergent
+\newcommand{\conveq}{\mathrel{\mathord{\convcal}\mathord{=}}} % convergence + égalité
+\newcommand{\convneq}{\mathrel{\mathord{\convcal}\mathord{\neq}}} % convergence + non égalité
+\newcommand{\divcal}{\mathbin{\uparrow}} % calcul divergent
+\newcommand{\calEq}{\approx} % égalité de fonctions partielles
+\newcommand{\raffin}{\precsim} % inclusion des graphes de fonctions partielles
 \newcommand{\ceil}[1]{\lceil#1\rceil}
 \newcommand{\btwo}{\boldsymbol{2}} % ensemble des booléens
 \newcommand{\godcod}[1]{\ulcorner#1\urcorner} % codage de Gödel
@@ -957,4 +961,12 @@
 \newcommand{\codRPG}[2]{\godcod{#1}^{#2}}
 
 \newcommand{\EaIt}[4]{(#1\to #2\bullet #3,#4)} % item d'Earley
-\newcommand{\EaItSt}{\EaIt{\nTA}{\varwv}{\varww},i}
+\newcommand{\EaItSt}{\EaIt{\nTA}{\varwv}{\varww}{i}}
+
+\newcommand{\varTMM}{M} % variable pour une machine de Turing M
+\newcommand{\blS}{\square} % symbole blanc
+\newcommand{\lTr}{\lhd} % transition vers la gauche
+\newcommand{\rTr}{\rhd} % transition vers la droite
+\newcommand{\toInf}{\blS^{\infty}} % ajout du mot blanc infiniment
+\newcommand{\opTM}{\mathbin{\cdot}} % action d'une TM sur une config
+\DeclareMathOperator{\Config}{Config} % ensemble des configurations sur une TM
