@@ -665,7 +665,8 @@ de telle sorte que pour toute fonction $f$ RPG, la fonction associée en
 utilisant les traductions pour avoir une fonction $\relev{f} : \bN^n \to \bN$
 est RP.
 
-\begin{definition}[Traduction RPG canonique]\label{def.trad.RPG}
+\begin{definition}[Codage de Gödel - version 2 (traduction RPG canonique)]
+\label{def.trad.RPG}
   Soit $\ABA$ un ensemble fini. Il existe une fonction
   $\makeFunName{\codRPG{\tok}{\ABA}}{\toStA}{\bN}$ telle que~:
   \[\begin{cases}
@@ -673,7 +674,8 @@ est RP.
   \codRPG{\tok}{\ABA}\in \RPG\\
   {(\codRPG{\tok}{\ABA})}^{-1}\in\RPG
   \end{cases}\]
-  et telle que pour tout $n \in \bN, \codRPG{n}{\{*\}} = n$.
+  et telle que pour tout $n \in \bN, \codRPG{n}{\{*\}} = n$. On notera aussi
+  cette fonction $f_\ABA$.
 \end{definition}
 
 \begin{proof}
@@ -1219,6 +1221,239 @@ grâce aux machines de Turing.
 
 \section{Machines de Turing}
 
+\begin{figure}[t!]
+    \centering
+\resizebox{\textwidth}{!}{
+   \begin{tikzpicture}
+
+\node (A) at (0,0) {
+\resizebox{0.6\textwidth}{!}{
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+  \draw[
+      decorate,
+      decoration={brace, amplitude=10pt}
+    ] (-2,-3) -- (-2,3)
+    node[midway, left=12pt] {$\varTMM_0 \defeq$};
+  \node[state,initial] (q0) at (0,0) {$\varqZ$};
+  \node (qP) [right = of q0] {};
+  \node[state] (q1) [above = of qP] {$\varqP{1}$};
+  \node[state] (q2) [below = of qP] {$\varqP{2}$};
+  \node[state,accepting] (qf) [right = of qP] {$\varqP{f}$};
+  \draw[->,>=latex] (q0) edge[loop below] node[below] {$0, \blS,\rTr$} ();
+  \draw[->,>=latex] (q0) edge[bend left] node[above left] {$\blS,0,\rTr$} (q1);
+  \draw[->,>=latex] (q1) edge[loop above] node[above] {$\blS,0,\rTr$} ();
+  \draw[->,>=latex] (q1) -- node[right] {$0,0,\lTr$} (q2);
+  \draw[->,>=latex] (q2) edge[loop below] node[below] {$0,\blS,\lTr$} ();
+  \draw[->,>=latex] (q2) edge[bend right] node[below right] {$\blS,\blS,\rTr$} (qf);
+\end{tikzpicture}}};
+
+\draw (0,-5) -- (0,-18);
+
+\node[anchor = north east] (B) at ([yshift = -10mm,xshift = -2mm]A.south) {
+\begin{tikzpicture}
+    \node[anchor = center] (time) at (0,2) {$t = 1$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (2.25,0.25);
+    \node[anchor = center] at (2.25,0) {$0$};
+    \node[anchor = center] at (2.75,0) {$0$};
+    \node[anchor = center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+\node[anchor = north west] (O) at ([yshift=8.5cm]B.north west) {Machine~:};
+
+\node[anchor = north west] (Oo) at ([yshift=7mm]B.north west) {Exécution de la machine~:};
+
+\node[anchor = north west] (C) at ([xshift=4mm]B.north east){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 2$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (2.75,0.25);
+    \node[anchor = center] at (2.75,0) {$0$};
+    \node[anchor = center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (D) at (B.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 3$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (E) at (C.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 4$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{1}$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (3.75,0.25);
+    \node[anchor=center] at (3.25,0) {$0$};
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (F) at (D.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 5$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{1}$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (4.25,0.25);
+    \node[anchor=center] at (3.25,0) {$0$};
+    \node[anchor=center] at (3.75,0) {$0$};
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (G) at (E.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 6$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (3.75,0.25);
+    \node[anchor=center] at (3.25,0) {$0$};
+    \node[anchor=center] at (3.75,0) {$0$};
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (H) at (F.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 7$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
+    \node[anchor=center] at (3.25,0) {$0$};
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (I) at (G.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 8$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (2.75,0.25);
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+    \node[anchor = north west] (J) at (H.south west){
+\begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[anchor = center] (time) at (0,2) {$t = 9$~:};
+    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
+    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{f}$};
+    \draw (2,-0.25) rectangle (7,0.25);
+    \draw (2.5,-0.25) -- (2.5,0.25);
+    \draw (3,-0.25) -- (3,0.25);
+    \draw (3.5,-0.25) -- (3.5,0.25);
+    \draw (4,-0.25) -- (4,0.25);
+    \draw (4.5,-0.25) -- (4.5,0.25);
+    \draw (5,-0.25) -- (5,0.25);
+    \draw (5.5,-0.25) -- (5.5,0.25);
+    \draw (6,-0.25) -- (6,0.25);
+    \draw (6.5,-0.25) -- (6.5,0.25);
+    \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
+    \node[anchor=center] at (4.25,0) {$0$};
+\end{tikzpicture}
+    };
+
+
+\end{tikzpicture}
+}
+
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Exécution d'une machine de Turing}
+    \label{fig.exec.TM}
+\end{figure}
+
 Les machines de Turing, introduites dans \cite{turing1936a}, sont un formalisme
 très proche de celui des automates. La différence principale est qu'au lieu
 de lire linéairement un mot, comme dans le cas d'un automate fini ou d'un
@@ -1252,9 +1487,9 @@ rapidement travailler avec.
   \begin{itemize}
   \item un ensemble fini $\varQQ$ d'états~;
   \item un état initial $\varqZ$~;
-  \item un ensemble d'états d'arrêt $\varAF$
-  \item un alphabet $\ABB$ de travail, tel que $\ABA \subseteq \ABB$
-  \item un symbole blanc $\blS \in \ABB$
+  \item un ensemble d'états d'arrêt $\varAF$~;
+  \item un alphabet $\ABB$ de travail, tel que $\ABA \subseteq \ABB$~;
+  \item un symbole blanc $\blS \in \ABB$~;
   \item une fonction de transition partielle
     \[\makeFunName{\trA}{\varQQ\times\ABB}
                   {\varQQ\times\ABB\times\{\lTr,\rTr\}}\]
@@ -1264,14 +1499,15 @@ rapidement travailler avec.
   machines de Turing sur $\ABA$.
 \end{definition}
 
+
 Décrivons le fonctionnement d'une machine de Turing à partir de ses
-composantes~:
+composantes (on en trouve une représentation en \cref{fig.exec.TM})~:
 \begin{itemize}
 \item la machine de Turing va agir sur un ruban qui est une suite de symboles de
   $\ABB$ de la forme $\varwd\toInf$, c'est-à-dire ayant un nombre fini d'élément
   différents de $\blS$. A chaque étape, la machine pointe à un certain indice du
   ruban, lit le symbole à cet indice et agit en conséquence.
-\item au début de l'exécution, la machine point à l'incide $0$ et est dans
+\item au début de l'exécution, la machine point à l'indice $0$ et est dans
   l'état $\varqZ$.
 \item à chaque étape lors de l'exécution, en supposant que le ruban est de la
   forme $\varwd\varla\varwv\toInf$ et que la machine pointe sur le symbole
@@ -1283,39 +1519,6 @@ composantes~:
 \item lorsque la machine entre dans un état $\varq \in \varAF$, l'exécution
   s'arrête.
 \end{itemize}
-
-\noindent
-Donnons un exemple de machine et d'exécution d'une machine.
-
-\begin{example}[Miroir d'un mot]
-  On fixe l'alphabet $\ABA \defeq \btwo$ et on donne une machine de Turing qui,
-  étant donné un mot en entrée, réécrit ce mot en miroir.
-
-  On en donne d'abord une description intuitive~:
-  \begin{itemize}
-  \item on commence par déplacer le mot $\varwd$ vers la droite et on le précède
-    d'un $0$, pour avoir $\blS^{\wul}0\varwd\toInf$ sur la
-    bande~;
-  \item on va tout à droite du mot $\varwd$ de droite~;
-  \item on répète la procédure suivante~:
-    \begin{itemize}
-    \item on garde en mémoire le caractère sur lequel on est, qu'on notera
-      $\varla$ (on peut multiplier les états pour avoir une suite d'états
-      distincts pour chaque symbole $\varla$ de l'alphabet), on efface le
-      caractère
-    \item on se déplace à gauche jusqu'à atteindre un $\square$, puis
-      une lettre ($0$ ou $1$)
-    \item on se déplace à droite d'une case (de sorte à être sur le
-      premier $\square$) et on y place $a$
-    \item on se déplace à droite jusqu'à lire un $0$
-    \item on se déplace d'une case à droite~: si la case contient
-      $\square$ alors on arrête la procédure~; sinon on la recommence
-    \end{itemize}
-  \item on efface le $0$
-  \end{itemize}
-\end{example}
-
-A FAIRE : SCHEMA DE LA SITUATION EN TIKZ
 
 Rendons maintenant ce fonctionnement formel. On définit d'abord la notion de
 configuration, qui est un objet permettant de retenir simultanément l'état d'une
@@ -1357,7 +1560,7 @@ fonction de transition.
                     {\varwd\varlc\varq'\varwv\toInf\text{ si }
                       \trA(\varq,\varla) \conveq (\varq',\varlc,\rTr)}
   \]
-  Où la fonction n'est pas définie sinon.
+  où la fonction n'est pas définie sinon.
 \end{definition}
 
 Cette action sur les configurations représente ce qu'il se déroule lors de
@@ -1414,7 +1617,202 @@ calculable.
 
 \subsection{\'Equivalence de machines de Turing}
 
-A FAIRE
+Le formalisme des machines de Turing que nous avons donné n'est pas l'unique
+façon dont on peut décrire une machine de Turing. Il existe de nombreux
+formalismes alternatifs, et nous allons en voir quelques uns. Le c\oe ur de
+cette étude est de montrer que ces formalismes alternatifs sont en fait
+équivalents, et de se convaincre que de possibles autres formalismes
+raisonnables donnent encore la même classe de fonctions calculables.
+
+Le premier paramètre sur lequel il est possible d'agir est la taille de
+l'alphabet de travail. En effet, si l'on suppose qu'on travaille sur un
+alphabet non vide $\ABA$ avec un alphabet de travail
+$\ABB\supseteq\ABA\sqcup\{\blS\}$, on peut en fait considérer qu'on a toujours
+égalité, et calculer les mêmes fonctions.
+
+\begin{theorem}[Normalisation de l'alphabet de travail]
+    Soit $\ABA$ un alphabet non vide. Alors l'ensemble $\Calc(\ABA)$ est
+    inchangé lorsqu'on se limite à une machine dont l'alphabet de travail
+    est $\ABB \defeq \ABA \sqcup\{\blS\}$.
+\end{theorem}
+
+\begin{proof}
+    Une inclusion est évidente. On considère maintenant une machine
+    $\varTMM$ dont l'alphabet de travail est $\ABB$. Soit $*\in\ABA$
+    (existant car $\ABA$ est supposé non vide), l'idée de la construction est
+    de remplacer le ruban sur $\ABB$ par un ruban sur $\{*,\blS\}$ en
+    regroupant des cases. On suppose (sans perte de généralité) que
+    $\Card(\ABB) = 2^p$ pour un certain $p\in\bN$ fixé et que l'alphabet peut
+    s'écrire $\compr{\varla_i}{i \in \btwo^p}$. La machine $\varTMM'$ s'exécute 
+    donc en trois temps pour gérer $\ABA$ par des regroupements de cases sur
+    $\{*,\blS\}$~:
+    \begin{itemize}
+        \item on commence par traduire l'ensemble du ruban (qui est
+        par défaut sur $\ABA$) en un ruban sur $\{*,\blS\}$. Une case
+        $\varla_{i}$ est transformé en un regroupement de $p$ cases sur
+        $\{*,\blS\}$ en considérant l'écriture de $i$ en binaire sur $p$
+        chiffres (en choisissant qu'on associe le chiffre $1$ à la lettre
+        $*$ et le chiffre $0$ à la lettre $\blS$). De cette façon, on
+        transforme $\varwd\toInf$ en un mot $\varwv\toInf$ sur $\{*,\blS\}$.
+        \item on simule ensuite $\varTMM$ en construisant des suites
+        d'états. Si $\varTMM$ est dans un état $\varq$ en lisant une lettre
+        $\varla_i$, alors dans la version simulée on a une suite d'états
+        correspondant $\varqP{i_0},\varqP{i_0i_1}\cdots,\varqP{i}$ qui
+        permettent de lire la suite de $p$ cases pour décider finalement dans
+        quel état $\varq'$ va la machine. A la fin de la lecture, en arrivant
+        sur l'état $\varq'$ associé, si la lettre à écrire est $\varla_j$, on
+        fait demi-tour sur $p$ cases pour y mettre l'écriture binaire de $j$.
+        On avance ensuite de $p$ cases si la transition est $\rTr$, et on
+        recule de $p$ cases si la transition est $\lTr$ (car on est arrivés
+        à droite du bloc à la lecture, puis on est revenus à gauche pour la
+        réécriture).
+        \item si $\varTMM$ doit arriver dans un état terminant, la machine
+        réécrit alors la partie la plus à gauche du ruban ne comportant pas
+        un bloc de taille $p$ constitué uniquement de $\blS$, en remplaçant
+        chaque bloc codant un nombre $i$ en binaire par le symbole
+        $\varla_i$.\qedhere
+    \end{itemize}
+\end{proof}
+
+\begin{exercise}
+    Montrer que les machines de Turing totales, c'est-à-dire celles dont la
+    table de transitions est une fonction totale, décrivent aussi la même classe
+    $\Calc$ de fonctions calculables.
+\end{exercise}
+
+\begin{exercise}
+    Montrer que les machines de Turing à un seul état terminal sont équivalentes
+    aux machines de Turing.
+\end{exercise}
+
+On peut aussi considérer des machines de Turing ayant plusieurs rubans. Dans
+ce cas-là, on a un formalisme plus général, pour lequel on doit donc
+introduire une nouvelle définition.
+
+\begin{definition}[Machine de Turing à plusieurs rubans]
+    Soit $\ABA$ un alphabet et $k$ un entier. Une machine de Turing $\varTMM$ 
+    à $k$ rubans sur $\ABA$ est la donnée de~:
+    \begin{itemize}
+        \item un ensemble fini $\varQQ$ d'états~;
+        \item un état initial $\varqZ$~;
+        \item un ensemble d'états d'arrêt $\varAF$~;
+        \item un alphabet $\ABB$ de travail tel que $\ABA\subseteq\ABB$~;
+        \item un symbole blanc $\blS\in\ABB$~;
+        \item une fonction de transition partielle
+        \[\makeFunNamePartial{\trA}{\varQQ\times\ABB^k}
+        {\varQQ\times\ABB^k\times\{\lTr,\rTr\}^k}\]
+    \end{itemize}
+    On note $\TM_k(\ABA)$ l'ensemble des machines de Turing à $k$ rubans sur
+    $\ABA$.
+\end{definition}
+
+On peut facilement définir l'action d'une machine à $k$ rubans sur une
+configuration à $k$ rubans, c'est-à-dire la donnée de $k$ suites de la
+forme $\varwd\toInf$, de $k$ entiers et d'un élément $\varq \in\varQQ$.
+Le mot extrait est choisi arbitrairement comme étant celui extrait du
+premier ruban. Les machines à $k$ rubans sont en soi beaucoup plus
+faciles à manipuler, puisqu'elles permettent d'avoir à disposition une
+quantité plus grande d'information. Cependant, ces machines n'augmentent pas
+réellement la puissance expressive et calculatoire, comme on peut le voir dans
+le théorème suivant.
+
+\begin{theorem}[\'Equivalence du calcul avec un ou plusieurs rubans]
+    Pour toute machine $\varTMM$ sur un alphabet $\ABA$ à $k$ rubans, il existe
+    une machine $\varTMM'$ sur $\ABA$ à un seul ruban et calculant la même
+    fonction.
+\end{theorem}
+
+\begin{proof}
+    Pour construire $\varTMM'$, on commence par augmenter l'alphabet de travail~:
+    pour chaque $\varla\in\ABB$, on fixe le symbole $\varla'$, et on se donne un
+    symbole $\separS$. L'alphabet $\ABB'$, utilisé comme alphabet de travail pour
+    $\varTMM'$, est donné par
+    \[\ABB'\defeq \ABB\sqcup\compr{\varla'}{\varla\in\ABB}\sqcup\{\separS\}\]
+    
+    \'Etant donnée une configuration
+    $(q,(i_1,\ldots,i_k),(\varwd_1\toInf,\cdots,\varwd_k\toInf))$, on construit une
+    configuration pour $\varTMM'$ de la façon suivante~:
+    \begin{itemize}
+    \item pour chaque $p$, on décompose $\varwd_p\toInf$ en
+    $\varwd_p = \varwv\varla\varww$ avec $\wdl{\varwv} = i_p$, et on
+    pose $\varwd_p' \defeq \varwv\varla'\varww$ (remarquons que si
+    $i_p$ est plus grand que la longueur de $\varwd_p$, il suffit d'ajouter
+    des symboles $\blS$ jusqu'à pouvoir écrire $\blS'$)
+    \item la configuration associée est alors $(q,0,\separS\varwd_1'\separS\cdots\separS\varwd_k')$.
+    \end{itemize}
+
+    La construction des états et de la table de transitions vise alors à permettre à
+    $\varTMM'$ de relier une configuration à une autre. Le fait de revenir à l'indice
+    $0$ ne pose pas de souci~: on a un symbole $\separS$ au tout début, et on maintient
+    toujours le même nombre de symboles $\separS$, donc il suffit de compter. Pour une
+    configuration $\separS\varwd_1'\separS\cdots\separS\varwd_k'$, le calcul consiste à
+    parcourir le mot entier et lire chaque symbole $\varla'$ (qui est le symbole
+    sur lequel est la tête de lecture dans le ruban associé). En introduisant
+    suffisamment d'états partiels, on peut alors trouver la transition associé dans
+    $\varTMM$ et l'exécuter. Comme dans la preuve précédente, il nous faut alors
+    revenir en arrière pour réécrire les symboles nécessaires, en particulier pour
+    déplacer l'encodage de la tête de lecture (et ajouter un symbole $\blS$ à la
+    fin d'un mot si besoin). Si $\varTMM$ entre dans un état terminal, on supprime
+    alors le symbole $\separS$ au début et on décale le contenu du premier ruban, de sorte
+    que le mot en sortie est le mot en sortie du premier ruban.
+\end{proof}
+
+On donne aussi une version alternative de machine de Turing à rubans, dans laquelle
+les rubans sont divisés en trois sortes~:
+\begin{itemize}
+\item les rubans d'entrée sur lesquels sont écrits les mots qui sont lus, sur lesquels
+  la tête de lecture peut reconnaître des symboles mais ne peut pas écrire~;
+\item les rubans de travail, sur lesquels on peut effectuer à la fois lecture et
+  écriture~;
+\item le ruban de sortie, sur lequel on ne peut qu'écrire, et qui ne peut être parcouru
+  que vers la droite.
+\end{itemize}
+
+\begin{definition}[Machine de Turing à rubans de plusieurs sortes]
+  Une machine de Turing $\varTMM$ sur un alphabet $\ABA$, à rubans de plusieurs sortes
+  et à $k$ rubans d'entrée est la donnée~:
+  \begin{itemize}
+      \item d'un entier $p$ donnant le nombre de rubans de travail~;
+      \item d'un ensemble $\varQQ$ fini d'états~;
+      \item d'un état initial $\varqZ\in\varQQ$~;
+      \item d'un ensemble $\varAF\subseteq\varQQ$ d'états terminaux~;
+      \item d'un alphabet de travail $\ABB$ contenant $\ABA$ et un symbole $\blS$
+      non dans $\ABA$~;
+      \item d'une table de transitions
+      \[\makeFunNamePartial{\trA}{\varQQ\times\ABB^{k+p}}
+                           {\varQQ\times\ABB^{k+p}\times(\ABA\sqcup\{\bot\})
+                           \times\{\lTr,\rTr\}^{k+p}}\]
+  \end{itemize}
+\end{definition}
+
+L'action d'une telle machine sur $k+p+1$ rubans est celle naturelle, dans laquelle la
+lettre dans $\ABA\sqcup\{\bot\}$ décrite dans la table de transition correspond à la
+donnée d'une lettre ou d'aucune lettre~: si une lettre $\varla$ est donnée, alors la
+machine écrit $\varla$ sur le ruban de sortie, et avance d'une case vers la droite~;
+sinon, la machine n'écrit rien et reste sur la case en cours.
+
+\begin{exercise}
+    Montrer qu'une machine à rubans de plusieurs sortes est équivalente à une machine
+    à plusieurs rubans.
+\end{exercise}
+
+\noindent
+On donne aussi un lemme pour avoir des machines de Turing dans une forme plus pratique
+à manipuler pour raisonner.
+
+\begin{lemma}[Normalisation des machines de Turing]\label{lem.norm.TM}
+Soient $\ABA_1,\ldots,\ABA_k,\ABA$ des alphabets. La classe
+$\Calc(\ABA_1,\ldots,\ABA_k,\ABA)$ des fonctions calculables sur ces alphabets
+est égale à la classe des fonctions calculables par des machines de Turing
+à $k$ rubans d'entrée respectivement sur les alphabets $\ABA_1,\ldots,\ABA_k$,
+à un ruban de sortie sur l'alphabet $\ABA$ et avec des rubans de travail sur
+l'alphabet $\{*\}$, et ayant un unique état terminal.
+\end{lemma}
+
+\begin{proof}
+    Le raisonnement est le même que précédemment, en normalisant l'alphabet
+    des rubans de travail.
+\end{proof}
 
 \section{\'Equivalence des formalismes}
 
@@ -1429,12 +1827,12 @@ fonction $\RecG$.
 Le premier sens demande de raisonner par induction~: on montre que les
 constructions définissant la classe $\RecG$ peuvent se faire avec des machines
 de Turing. Le sens réciproque, lui, va se faire en deux temps. Tout d'abord, on
-prouve qu'il existe deux fonctions $T,U \in \RPG$ qui, étant donnés un code
-$e$ donnant la description d'une machine de Turing $M$, une entrée $x$ et un
-temps $t$, retourne respectivement si la machine de Turing s'est arrêtée en
-moins de $t$ étapes de calcul sur l'entrée $x$ et l'état du ruban après
-l'exécution de $M$ sur $x$ pendant $t$ étapes de calcul. En utilisant alors la
-minimisation non bornée, on obtient une simulation des machines de Turing par
+prouve qu'il existe deux fonctions récursives générales $\KlT,\KlU$ qui, étant
+donnés un code $e$ donnant la description d'une machine de Turing $\varTMM$, une
+entrée $x$ et un temps $t$, retourne respectivement si la machine de Turing s'est
+arrêtée en moins de $t$ étapes de calcul sur l'entrée $x$ et l'état du ruban après
+l'exécution de $\varTMM$ sur $x$ pendant $t$ étapes de calcul. En utilisant alors
+la minimisation non bornée, on obtient une simulation des machines de Turing par
 les fonctions $\RecG$, et on remarque alors qu'une fonction $\RecG$ ne
 nécessite qu'une utilisation de la minimisation non bornée par rapport à une
 fonctions $\RPG$.
@@ -1443,7 +1841,7 @@ On montre d'abord le sens direct.
 
 \begin{lemma}\label{lem.recG.MT}
   Pour toute fonction récursive généralisée $f$, il existe une machine de
-  Turing telle que $f_M = f$.
+  Turing telle que $f_{\varTMM} = f$.
 \end{lemma}
 
 \begin{proof}
@@ -1456,31 +1854,31 @@ On montre d'abord le sens direct.
 
   On prouve par induction sur la classe des fonctions $\RecG$ la proposition~:
   \begin{itemize}
-  \item pour une fonction $\pi_k^n$, il suffit de considérer la machine qui
+  \item pour une fonction $\projP{k}{n}$, il suffit de considérer la machine qui
     recopie le contenu du $\ordinalnumeralmale{k}$ ruban d'entrée sur le ruban
     de sortie.
-  \item pour un alphabet $\Sigma$ et $a \in \Sigma$, la fonction $\cons_a$ est
-    implémentée en recopiant le mot d'entrée jusqu'au premier blanc et, au
-    premier blanc, en écrivant $a$.
+  \item pour un alphabet $\ABA$ et $\varla \in \ABA$, la fonction $\consP{\varla}$
+    est implémentée en recopiant le mot d'entrée jusqu'au premier blanc et, au
+    premier blanc, en écrivant $\varla$.
   \item la fonction s'arrêtant immédiatement sans lire l'entrée retourne
-    la constante $\varepsilon$.
+    la constante $\Ewd$.
   \item on suppose données des fonctions $f_k$ d'arité
-    $\prod_{i = 1}^n (\Sigma_i)^\star \to (\Gamma_k)^\star$ encodées par des
-    machines à $n$ rubans d'entrée et $a_k$ rubans de travail, et une fonction
-    $g : \prod_{i = 1}^p (\Gamma_i)^\star \to \Sigma$ encodée par une machine à
-    $p$ rubans d'entrée et $a$ rubans de travail, et on souhaite montrer qu'il
+    $\prod_{i = 1}^n \toStAP{i} \partialto \toStBP{k}$ encodées par des
+    machines à $n$ rubans d'entrée et $a_k$ rubans de travail, ainsi qu'une fonction
+    $\makeFunNamePartial{g}{\prod_{i = 1}^p \toStBP{i}}{\toStA}$ encodée par une
+    machine à $p$ rubans d'entrée et $a$ rubans de travail, et on souhaite montrer qu'il
     existe une machine de Turing à $n$ rubans d'entrées et
     $\sum a_k + a + p$ rubans de travail encodant $g\circ (f_1,\ldots,f_p)$.
 
-    On décrit le comportement de la machine, sans en donner explicitement les
-    états. Tout d'abord, on numérote les rubans de travail~: on a pour chaque
-    $k \in \{1,\ldots,n\}$ les rubans $T_{k,j}$ correspondant aux rubans de
-    travail de la machine simulant $f_k$, le ruban $T_j$ correspondant au
-    ruban de travail de la machine simulant $g$, et les rubans
-    $S_k$ correspondant aux rubans de sortie de la machine simulant $f_k$.
-    On construit alors la machine de sorte à avoir le comportement suivant~:
+    On décrit le comportement de la machine. Tout d'abord, on numérote les
+    rubans de travail~: on a pour chaque $k \in \intervIntB{n}$ les rubans
+    $T_{k,j}$ correspondant aux rubans de travail de la machine simulant
+    $f_k$, le ruban $T_j$ correspondant au ruban de travail de la machine
+    simulant $g$, et les rubans $S_k$ correspondant aux rubans de sortie de
+    la machine simulant $f_k$. On construit alors la machine de sorte à avoir
+    le comportement suivant~:
     \begin{itemize}
-    \item pour tout $k \in \{1,\ldots,p\}$, la machine implémente $f_k$ en
+    \item pour tout $k \in \intervIntB{p}$, la machine implémente $f_k$ en
       utilisant les rubans d'entrée, les rubans $T_{k,j}$ pour ses rubans de
       travail, et écrit sa sortie dans le ruban $S_k$
     \item la machine implémente $g$ en utilisant les rubans $S_k$ comme rubans
@@ -1489,88 +1887,88 @@ On montre d'abord le sens direct.
     \end{itemize}
 
     Dans le déroulement d'une telle machine, la première étape assure que
-    dans le ruban $S_k$ se trouve la valeur de $f_k(u_1,\ldots,u_n)$, et que
+    dans le ruban $S_k$ se trouve la valeur de $f_k(\vec{\varwd})$, et que
     la valeur de sortie est l'image par $g$ des valeurs contenus dans les
     rubans $S_k$, d'où le fait que notre machine simule
     $g\circ(f_1,\ldots,f_p)$.
-  \item soit une fonction $f : \prod_{i =1}^p (\Sigma_i)^\star \to \Sigma^\star$
-    et, pour chaque $a \in \Gamma$,
-    $g_a : \prod_{i = 1}^p (\Sigma_i)^\star \times
-    \Gamma^\star \times \Sigma^\star \to \Sigma^\star$.
+  \item soit une fonction $\makeFunNamePartial{f}{\prod_{i =1}^p \toStAP{i}}{\toStA}$
+    et, pour chaque $\varla \in \ABB$, la donnée d'une fonction
+    $\makeFunNamePartial{g_{\varla}}{\prod_{i = 1}^p \toStAP{i}\times\toStB\times\toStA}
+    {\toStA}$.
     On suppose par hypothèse d'induction que toutes ces fonctions sont simulées
     par des machines de Turing. On souhaite montrer que la machine encodant
-    $\rec(f,(g_a)_{a \in \Gamma})$ est simulée par une machine de Turing.
+    $\rec(f,(g_\varla)_{\varla \in \ABB})$ est simulée par une machine de Turing.
 
     Explicitons encore les rubans de travail dont nous avons besoin. On fixe
     d'abord des rubans $T_j$ correspondant aux rubans de travail de $f$, et
-    des rubans $T_{a,j}$ correspondant aux rubans de travail de chaque
-    $g_a$, ainsi qu'un ruban de travail supplémentaire $T$. On ajoute, de plus,
-    un ruban de comptage $C$, un ruban de mémoire $M$, un ruban d'appel
-    récursif $AR$ et un ruban de copie $CC$.
+    des rubans $T_{\varla,j}$ correspondant aux rubans de travail de chaque
+    $g_{\varla}$, ainsi qu'un ruban de travail supplémentaire $T$. On ajoute,
+    de plus, un ruban de comptage $\TComp$, un ruban de mémoire $\TMem$, un
+    ruban d'appel récursif $\TAR$ et un ruban de copie $\TCC$.
     On décrit le comportement de la machine simulant cette fonction~:
     \begin{itemize}
     \item on recopie le dernier ruban d'entrée, contenant l'argument sur lequel
-      on effectue le calcul récursif, dans le ruban $C$.
+      on effectue le calcul récursif, dans le ruban $\TComp$.
     \item on simule la fonction $f$ sur les rubans d'entrée à l'exception du
       dernier, avec comme rubans de travail $T_j$ et comme ruban de sortie
-      $AR$.
-    \item on va tout à gauche du ruban $C$, et on effectue les opérations
-      suivantes tant qu'on ne lit pas un $\square$ sur $C$~:
+      $\TAR$.
+    \item on va tout à gauche du ruban $\TComp$, et on effectue les opérations
+      suivantes tant qu'on ne lit pas un $\blS$ sur $\TComp$~:
       \begin{itemize}
-      \item on lit le caractère dans $C$, qu'on fixera comme valant $a$, et
-        qu'on efface de $C$
-      \item on simule la fonction $g_a$ en prenant comme rubans d'entrée~:
+      \item on lit le caractère dans $\TComp$, qu'on fixera comme valant $\varla$,
+        et qu'on efface de $\TComp$~;
+      \item on simule la fonction $g_{\varla}$ en prenant comme rubans d'entrée~:
         \begin{itemize}
         \item les rubans d'entrée à l'exception du dernier,
-        \item le ruban de mémoire $M$ et
-        \item le ruban d'appel récursif $AR$
+        \item le ruban de mémoire $\TMem$ et
+        \item le ruban d'appel récursif $\TAR$
         \end{itemize}
         comme rubans de travail les rubans $T_{a,j}$ et comme ruban de sortie le
-        ruban $CC$.
-      \item on recopie le contenu de $CC$ dans $AR$ (en ayant effacé $AR$ avant)
-        et on efface le contenu de $CC$.
-      \item on ajoute le caractère $a$ à $M$.
-      \item on se déplace d'une case à droite dans $C$.
+        ruban $\TCC$.
+      \item on recopie le contenu de $\TCC$ dans $\TAR$ (en ayant effacé $\TAR$ avant)
+        et on efface le contenu de $\TCC$.
+      \item on ajoute le caractère $\varla$ à $\TMem$.
+      \item on se déplace d'une case à droite dans $\TComp$.
       \end{itemize}
-    \item on recopie le contenu de $AR$ sur le ruban de sortie.
+    \item on recopie le contenu de $\TAR$ sur le ruban de sortie.
     \end{itemize}
     
-    L'itération sur $C$ commence en ayant dans le ruban $AR$ la valeur de
-    $f(u_1,\ldots,u_p)$ (où $u_1,\ldots,u_p$ sont le contenu des premiers rubans
-    d'entrée). A chaque étape de cette itération, on déplace une lettre de
-    $C$ dans $M$, de sorte que l'appel sur $g_a$ se fait en ayant en paramètre
-    le mot $u$ lu jusqu'à présent et dans la bande $AR$ le résultat de
-    $\rec(f,(g_a)_{a\in \Gamma})$ sur le mot $u$. Ainsi, la machine simule bien
-    la fonction $\rec(f,(g_a)_{a\in \Gamma})$.
+    L'itération sur $\TComp$ commence en ayant dans le ruban $\TAR$ la valeur de
+    $f(\vec{\varwd})$ (où $\vec{\varwd}$ est le contenu des premiers rubans d'entrée).
+    \`A chaque étape de cette itération, on déplace une lettre de $\TComp$ dans $\TMem$,
+    de sorte que l'appel sur $g_{\varla}$ se fait en ayant en paramètre le mot $\varwd$
+    lu jusqu'à présent et dans la bande $\TAR$ le résultat de
+    $\rec(f,(g_{\varla})_{\varla\in \ABB})$ sur le mot $\varwd$. Ainsi, la machine
+    simule bien la fonction $\rec(f,(g_{\varla})_{\varla\in \ABB})$.
     
   \item On suppose donnée une fonction
-    $f : \prod_{i = 1}^n (\Sigma_i)^\star \times \bN \to \Sigma^\star$
+    $\makeFunNamePartial{f}{\prod_{i = 1}^n \toStAP{i}\times\bN}{\toStA}$
     simulée par une machine à $n+1$ rubans d'entrée et $k$ rubans de travail.
-    Montrons que $\mu(f)$ peut être simulé par une machine à $n$ rubans
+    Montrons que $\muC(f)$ peut être simulé par une machine à $n$ rubans
     d'entrée et $k + 2$ rubans de travail.
 
     Décrivons les rubans. Tout d'abord, on a les rubans $T_i$ correspondant aux
-    rubans de travail de $f$. On ajoute à cela le ruban de comptage $C$ et un
-    ruban de mémoire $M$.
+    rubans de travail de $f$. On ajoute à cela le ruban de comptage $\TComp$ et
+    un ruban de mémoire $\TMem$.
     Le comportement de la machine est le suivant~:
     \begin{itemize}
     \item on effectue la boucle suivante (dont on précisera dans la boucle la
       condition pour en sortir)~:
       \begin{itemize}
       \item on simule $f$ en prenant comme entrée les rubans d'entrée et
-        le ruban $C$, avec comme rubans de travail les rubans $T_i$ et comme
-        ruban de sortie $M$.
-      \item si $M$ est vide, on s'arrête en copiant $C$ dans le ruban de
+        le ruban $\TComp$, avec comme rubans de travail les rubans $T_i$ et comme
+        ruban de sortie $\TMem$.
+      \item si $\TMem$ est vide, on s'arrête en copiant $\TComp$ dans le ruban de
         sortie.
-      \item sinon, on ajoute un symbole dans $C$, on efface le contenu de
-        $M$ et on revient au début de la boucle.
+      \item sinon, on ajoute un symbole dans $\Comp$, on efface le contenu de
+        $\TMem$ et on revient au début de la boucle.
       \end{itemize}
     \end{itemize}
 
-    Sur les $k$ premières itérations de la boucle, on obtient dans le ruban $M$
-    la valeur de $f(u_1,\ldots,u_n,k)$ au moment de tester si la valeur en
+    Sur les $k$ premières itérations de la boucle, on obtient dans le ruban $\TMem$
+    la valeur de $f(\vec{\varwd},k)$ au moment de tester si la valeur en
     question est $0$. Ainsi, si la boucle se termine, alors on a trouvé une
-    valeur d'annulation (la plus petite) de $f(u_1,\ldots,u_n,\_)$. Sinon,
+    valeur d'annulation (la plus petite) de $f(\vec{\varwd},\_)$. Sinon,
     cela signifie au choix que la boucle est infinie ou que la simulation de
     $f$ est elle-même infinie.
   \end{itemize}
@@ -1580,172 +1978,178 @@ On montre d'abord le sens direct.
 \end{proof}
 
 Pour montrer le sens réciproque, on doit d'abord décider d'une façon de coder
-une machine de Turing $M$ sur un alphabet $\Sigma$ par un mot.
+une machine de Turing $\varTMM$ sur un alphabet $\ABA$ par un mot.
 
-D'après le LEMME NORMALISATION MACHINE DE TURING, il nous suffit de considérer
-une machine à $k$ entrées sur les alphabets $\Sigma_1,\ldots,\Sigma_k$, un ruban
-de sortie sur un alphabet $\Sigma$ et $p$ rubans de travail sur l'alphabet
-$\{*\}$, dont l'ensemble des états est $\{0,\ldots,N\}$ pour un certain entier
+D'après le \cref{lem.norm.TM}, il nous suffit de considérer
+une machine à $k$ entrées sur les alphabets $\ABA_1,\ldots,\ABA_k$, un ruban
+de sortie sur un alphabet $\ABA$ et $p$ rubans de travail sur l'alphabet
+$\{*\}$, dont l'ensemble des états est $\intervInt{N}$ pour un certain entier
 $N\in \bN$ et tel que $q_0 = 0$ et $q_a = N$.
 
 Un code d'une telle machine est donc la donnée des nombres $N,p$ (les alphabets
-$\Sigma_1,\ldots,\Sigma_k,\Sigma$ étant fixés ici) et de la table de transition
+$\ABA_1,\ldots,\ABA_k,\ABA$ étant fixés ici) et de la table de transition
 encodée en tant que mot sur
-$\displaystyle\left(\bigcup_{i = 1}^k \Sigma_i\right)\cup \Sigma$. En réalité,
+$\displaystyle\left(\bigcup_{i = 1}^k \ABA_i\right)\cup \ABA$. En réalité,
 il nous suffit de donner la table de transition de la machine par des entiers,
-puis composer des fonctions $f_\Sigma$ telles que décrites dans la
+puis composer des fonctions $f_\ABA$ telles que décrites dans la
 \cref{def.trad.RPG} On donne donc un codage de la fonction de transition par un
 entier.
 
 \begin{definition}[Codage d'une fonction de transition]
-  Soient $\Sigma_1,\ldots,\Sigma_k, \Sigma$ des alphabets. Soit $M$ une machine
+  Soient $\ABA_1,\ldots,\ABA_k, \ABA$ des alphabets. Soit $\varTMM$ une machine
   de Turing sur ces alphabets à $p$ rubans de travail sur $\{*\}$ et d'états
-  $\{0,\ldots,N\}$.
+  $\intervInt{N}$.
 
   On se donne une énumération de la fonction de
   transition
-  \[\delta : Q \times \left(\prod_{i = 1}^{k} (\Sigma_i \sqcup \{\square\})\right)
-  \times \{*,\square\}^p \longrightarrow
-  Q \times \{*,\square\}^p \times \Sigma \times \{\lhd,\rhd\}^{k+p+1}\]
+  \[\makeFunName{\trA}
+  {\varQQ\times\left(\prod_{i = 1}^k\ABA_i\sqcup\{\blS\}\right)\times\{*,\blS\}^p}
+  {\varQQ\times\{*,\blS\}^p\times(\ABA\sqcup\{\bot\})\times\{\lTr,\rTr\}^{k+p}}\]
   par la famille
-  \[\delta = \{\langle q_i,a_{i,1},\ldots,a_{i,k},b_{i,1},\ldots,b_{i,p}\rangle
-  \longrightarrow \langle q'_i, b'_{i,1},\ldots,b'_{i,p}, a',
-  d_{i,1},\ldots,d_{i,k+p+1}\rangle \}_{i \in I} \]
+  \[\trA \defeq \{\langle \varqP{i},\varla_{i,1},\ldots,\varla_{i,k},
+  \varlb_{i,1},\ldots,\varlb_{i,p}\rangle
+  \longrightarrow \langle \varqP{i}', \varlb'_{i,1},\ldots,\varlb'_{i,p},\varla',
+  D_{i,1},\ldots,D_{i,k+p}\rangle \}_{i \in I} \]
   où $I$ est un ensemble fini. On considère le mot obtenu en concaténant tous
   les éléments de cette famille, pris comme des mots sur
-  \[\mathcal L_{\mathrm{code}} \defeq
-  Q \cup \left(\bigcup_{i = 1}^k \Sigma_i\right) \cup \Sigma \cup
+  \[\varLL_{\rmCode} \defeq
+  \varQQ \cup \left(\bigcup_{i = 1}^k \ABA_i\right) \cup \ABA \cup
   \{``,", ``\langle",``\rangle"\} \cup\{\lhd,\rhd\}\cup \{\longrightarrow\}\]
   où chaque terme de cette union est supposé (sans perte de généralité)
-  distinct des autres termes, à l'exception potentielle des $\Sigma_i$ et de
-  $\Sigma$. On note ce mot $\godcod\delta$.
+  distinct des autres termes, à l'exception potentielle des $\ABA_i$ et de
+  $\ABA$. On note ce mot $\godcod{\trA}$.
 \end{definition}
 
 \begin{definition}[Codage d'une machine de Turing]
-  Soit $\Sigma_1,\ldots,\Sigma_k,\Sigma$ des alphabets. Une machine de Turing
-  $M$ sur ces alphabets, dont les rubans de travail sont $p$ rubans sur $\{*\}$
-  et dont les états sont $\{0,\ldots,N\}$, $0$ étant l'état initial et
-  $N$ l'état d'arrêt, est encodée par le nombre
+  Soient $\ABA_1,\ldots,\ABA_k,\ABA$ des alphabets. Une machine de Turing
+  $\varTMM$ sur ces alphabets, dont les rubans de travail sont $p$ rubans sur
+  $\{*\}$ et dont les états sont $\intervInt{N}$, $0$ étant l'état initial et
+  $N-1$ l'état d'arrêt, est encodée par le nombre
   \[\godcod M \defeq \langle N,p,
-  f_{\mathcal L_{\mathrm{code}}}(\godcod \delta)\rangle\]
+  f_{\varLL_{\rmCode}}(\godcod \trA)\rangle\]
 \end{definition}
 
 Le point central de ce codage est le suivant~: toutes les fonctions simulant
-l'exécution de $M$ sur des rubans donnés peuvent s'écrire de façon RPG. On peut
-résumer ce fait par la mise sous forme normale de Kleene~: on peut trouver deux
-fonctions RPG qui, respectivement, détermine si l'état de la machine en un
-temps $t$ est l'état d'arrêt et affiche le contenu du ruban de sortie au bout
-de $t$ étapes de calcul.
+l'exécution de $\varMM$ sur des rubans donnés peuvent s'écrire de façon RPG.
+On peut résumer ce fait par la mise sous forme normale de Kleene~: on peut
+trouver deux fonctions RPG qui, respectivement, détermine si l'état de la
+machine en un temps $t$ est l'état d'arrêt et affiche le contenu du ruban de
+sortie au bout de $t$ étapes de calcul.
 
 \begin{theorem}[Forme normale de Kleene \cite{Kleene1936}]
   \label{thm.norm.Kleene}
   Soient des alphabets
-  $\Sigma_1,\ldots,\Sigma_n, \Gamma$. Il existe deux fonctions RPG
-  \[T : \bN \times \left(\prod_{i = 1}^n (\Sigma_i)^\star\right)
-  \times\bN \to \btwo \qquad
-  U : \bN \times \left(\prod_{i = 1}^n (\Sigma_i)^\star \right)
-  \times \bN \to \Gamma^\star\]
+  $\ABA_1,\ldots,\ABA_n, \ABB$. Il existe deux fonctions RPG
+  \[
+  \makeFunName{\KlT}{\bN\times
+  \left(\prod_{i = 1}^n\toStAP{i}\right)\times\bN}{\btwo}
+  \qquad
+  \makeFunName{\KlU}{\bN\times\left(
+  \prod_{i = 1}^n\toStAP{i}\right)\times\bN}{\toStB}\]
   et une fonction
-  \[\godcod - : \TM(\Sigma_1,\ldots,\Sigma_n,\Gamma) \to \bN\]
+  \[\makeFunName{\godcod{\tok}}{\TM(\ABA_1,\ldots,\ABA_n,\ABB)}{\bN}\]
   telles que pour toute machine de Turing
-  $M \in \TM(\Sigma_1,\ldots,\Sigma_n,\Gamma)$~:
+  $\varMM \in \TM(\ABA_1,\ldots,\ABA_n,\ABB)$~:
   \begin{itemize}
-  \item $T(\godcod M,u_1,\ldots,u_n,k) = 1$ si et seulement si la machine
-    $M$ s'arrête sur les entrées $u_1,\ldots,u_n$ en moins de $k$ étapes
-    de calcul
-  \item $U(\godcod M,u_1,\ldots,u_n,k)$ est le contenu du ruban de sortie de
-    $M$ au bout de $k$ étapes de calcul.
+  \item $\KlT(\godcod{\varTMM},\vec{\varwd},k) = 1$ si et seulement si la
+    machine $\varTMM$ s'arrête sur les entrées $\vec{\varwd}$ en moins de
+    $k$ étapes de calcul~;
+  \item $\KlU(\godcod{\varTMM},\vec{\varwd},k)$ est le contenu du ruban de
+    sortie de $\varTMM$ au bout de $k$ étapes de calcul.
   \end{itemize}
 \end{theorem}
 
 \begin{proof}
   Tout d'abord, puisque les réciproques de la bijection de Cantor sont des
-  fonctions RPG, on peut extraire de $\godcod M$ la valeur de $N,p$ et
-  la table de transition $\delta$ prise comme un mot contenant chaque
-  transition. Remarquons que, si $\delta$ est donnée sous la forme de
-  $f_{\mathcal L_{\mathrm{code}}}(\godcod \delta)$, il est possible de retrouver
-  $\godcod\delta$ à partir de cette valeur puisque la fonction réciproque est
+  fonctions RPG, on peut extraire de $\godcod{\varTMM}$ la valeur de $N,p$ et
+  la table de transition $\trA$ prise comme un mot contenant chaque
+  transition. Remarquons que, si $\trA$ est donnée sous la forme de
+  $f_{\varLL_{\rmCode}}(\godcod{\trA})$, il est possible de retrouver
+  $\godcod{\trA}$ à partir de cette valeur puisque la fonction réciproque est
   une fonction RPG.
 
-  De plus, étant donné le mot $\godcod \delta$, un état $q \in Q$ des
-  lettres $a_1,\ldots, a_k \in \prod \Sigma_i$ et des lettres
-  $b_1,\ldots,b_p \in \{*,\square\}^p$, il est possible de récupérer le mot
-  $\langle q,a_1,\ldots,a_k,b_1,\ldots,b_p \rangle \longrightarrow
-  \langle v \rangle$
-  de $\godcod \delta$ correspondant
-  par une fonction RPG~: il suffit de lire $\godcod\delta$ en essayant de
-  reconnaître le mot de gauche.
+  De plus, étant donné le mot $\godcod{\trA}$, un état $\varq \in \varQQ$, des
+  lettres $\varla_1,\ldots, \varla_k \in \prod \ABA_i$ et des lettres
+  $\varlb_1,\ldots,\varlb_p \in \{*,\blS\}^p$, il est possible de récupérer le mot
+  $\langle \varq,\varla_1,\ldots,\varla_k,\varlb_1,\ldots,\varlb_p \rangle
+  \longrightarrow \langle \varwv \rangle$
+  de $\godcod{\trA}$ correspondant par une fonction RPG~: il suffit de lire
+  $\godcod{\trA}$ en essayant de reconnaître le mot de gauche.
 
   Il nous suffit donc d'établir comment coder une configuration, pour pouvoir
-  simuler l'action de $M$ sur une configuration. \'Etant donnés les
-  $N+p+1$ rubans, de la forme $u_i\square^\infty$, pour des positions
-  $a_i$de la machines aux différents rubans et pour un état $q$, on écrit la
+  simuler l'action de $\varTMM$ sur une configuration. \'Etant donnés les
+  $N+p+1$ rubans, de la forme $\varwd_i\toInf$, pour des positions $i_k$ de
+  la machines aux différents rubans et pour un état $\varq$, on écrit la
   configuration par
-  \[\godcod C \defeq q|a_0|u_0|a_2|u_2|a_3|\cdots |a_{N+p}| u_{N+p}\]
-  où $|$ est un nouveau symbole.
+  \[\godcod{C} \defeq \varq\separS \varla_0\separS \varwd_0\separS
+  \varla_2\separS\varwd_2\separS\varla_3\separS\cdots\separS\varla_{N+p}
+  \separS\varwd_{N+p}\]
+  où $\separS$ est un nouveau symbole.
 
-  L'action en une étape de calcul de $M$ sur une configuration consiste alors
-  à extraire l'état $q$ et
-  la \ordinalnumeralfeminin{$a_i$} lettre du mot $u_i$, puis de
-  reconnaître le mot $v$ de $\godcod\delta$ obtenu à la fin de la transition
+  L'action en une étape de calcul de $\varTMM$ sur une configuration consiste alors
+  à extraire l'état $\varq$ et
+  la \ordinalnumeralfeminin{$i_k$} lettre du mot $\varwd_k$, puis de
+  reconnaître le mot $\varwd$ de $\godcod{\trA}$ obtenu à la fin de la transition
   contenant ces lettres. Si aucune telle transition est trouvée, on retourne un
   état de blocage (que l'on peut encoder en dur, par exemple en faisant en sorte
-  que $T$ retourne la valeur $2$ plutôt que $0$ ou $1$). Ensuite, on modifie
+  que $\KlT$ retourne la valeur $2$ plutôt que $0$ ou $1$). Ensuite, on modifie
   les configurations de façon adéquate avec les symboles donnés en sortie de
-  la transition, en augmentant ou diminuant les $a_i$ en fonction de si le
-  caractère $d_i$ est $\lhd$ ou $\rhd$.
+  la transition, en augmentant ou diminuant les $i_k$ en fonction de si le
+  caractère $D_k$ est $\lTr$ ou $\rTr$.
 
   On peut ainsi obtenir une fonction qui, pour une configuration $C$ donnée,
-  calcule l'action de $M$ sur $C$ en $t$ étapes de calcul. On peut, de plus,
-  construire de façon RPG une configuration pour des mots $u_1,\ldots,u_k$
-  donnés en entrée. Cela nous permet donc d'obtenir une fonction $RPG$ qui,
+  calcule l'action de $\varTMM$ sur $C$ en $t$ étapes de calcul. On peut, de plus,
+  construire de façon RPG une configuration pour des mots $\vec{\varwd}$
+  donnés en entrée. Cela nous permet donc d'obtenir une fonction $\RPG$ qui,
   étant donnés des mots d'entrée et un temps de calcul $t$, retourne la
   configuration résultante de $t$ étapes de calcul sur la configuration
-  $0|u_1|0|u_1|\cdots |0|u_k|0|\varepsilon|0|\varepsilon|\cdots|0|\varepsilon$
-  (configuration initiale pour le calcul de $u_1,\ldots,u_k$).
+  \[0\separS\varwd_1\separS 0\separS\varwd_2\separS\cdots
+  \separS 0\separS\varwd_k\separS 0\separS\Ewd\separS 
+  0\separS\Ewd\separS\Ewd\separS
+  \cdots\separS 0\separS\Ewd\]
+  (configuration initiale pour le calcul de $\vec{\varwd}$).
 
-  La fonction $T$ est alors obtenue en récupérant l'état $q$ de la
-  configuration et en testant si $q = 0$. La fonction $U$, elle, renvoie
-  simplement le mot de la configuration, en supprimant les $\square$
+  La fonction $\KlT$ est alors obtenue en récupérant l'état $\varq$ de la
+  configuration et en testant si $\varq = N - 1$. La fonction $\KlU$, elle,
+  renvoie simplement le mot de la configuration, en supprimant les $\blS$
   potentiels écrits lors du calcul.
 \end{proof}
 
 On en déduit donc le théorème de Church-Turing.
 
 \begin{theorem}[Church-Turing]
-  Pour tous alphabets $\Sigma_1,\ldots,\Sigma_n,\Gamma$, on a l'égalité
-  \[\RecG(\Sigma_1,\ldots,\Sigma_n,\Gamma) =
-  \Calc(\Sigma_1,\ldots,\Sigma_n,\Gamma)\]
+  Pour tous alphabets $\ABA_1,\ldots,\ABA_n,\ABB$, on a l'égalité
+  \[\RecG(\ABA_1,\ldots,\ABA_n,\ABB) = \Calc(\ABA_1,\ldots,\ABA_n,\ABB)\]
 \end{theorem}
 
 \begin{proof}
   Par le \cref{lem.recG.MT}, on en déduit l'inclusion $\RecG\subseteq\Calc$.
-  Pour la réciproque, on pose $M \in \Calc(\Sigma_1,\ldots,\Sigma_n,\Gamma)$.
+  Pour la réciproque, on pose $\varTMM \in \Calc(\ABA_1,\ldots,\ABA_n,\ABB)$.
   D'après le \cref{thm.norm.Kleene}, on peut donc considérer la fonction
   suivante, qui est $\RecG$ par construction~:
-  \[(u_1,\ldots,u_n) \longmapsto U(\godcod M,u_1,\ldots,u_n,\mu(t \mapsto
-  T(\godcod M,u_1,\ldots, u_n,t)))\]
-  Qui retourne exactement $f_M(u_1,\ldots,u_n)$ si $f_M$ converge en ce point,
-  et n'est pas définie sinon. Cette fonction calculable est donc une fonction
-  récursive générale.
+  \[\vec{\varwd} \longmapsto \KlU(\godcod{\varTMM},\vec{\varwd},
+  \muC(t \mapsto \KlT(\godcod{\varTMM},\vec{\varwd},t)))\]
+  Qui retourne exactement $f_{\varTMM}(\vec{\varwd})$ si $f_{\varTMM}$ converge
+  en ce point, et n'est pas définie sinon. Cette fonction calculable est donc
+  une fonction récursive générale.
 \end{proof}
 
 Cette preuve apporte aussi un corollaire essentiel, que l'on énonce comme
 théorème à cause de son importance.
 
 \begin{theorem}[Machine universelle]\label{thm.MT.U}
-  Pour tous alphabets $\Sigma_1,\ldots,\Sigma_n,\Gamma$, il existe une machine
-  de Turing $\mathcal U_{\Sigma_1,\ldots,\Sigma_n,\Gamma}$ (que l'on écrira simplement
-  $\mathcal U$) telle que
-  \[\forall M \in \TM(\Sigma_1,\ldots,\Sigma_n,\Gamma),
-  \forall (u_1,\ldots, u_n) \in \prod_{i = 1}^n (\Sigma_i)^\star,
-  f_M(u_1,\ldots,u_n) = f_\mathcal U(\godcod M, u_1,\ldots,u_n)\]
+  Pour tous alphabets $\ABA_1,\ldots,\ABA_n,\ABB$, il existe une machine
+  de Turing $\UnTMP{\ABA_1,\ldots,\ABA_n,\ABB}$ (que l'on écrira simplement
+  $\UnTM$) telle que
+  \[\forall \varTMM \in \TM(\ABA_1,\ldots,\ABA_n,\ABB),
+  \forall \vec{\varwd} \in \prod_{i = 1}^n \toStAP{i},
+  f_{\varTMM}(\vec{\varwd}) = f_{\UnTM}(\godcod{\varTMM}, \vec{\varwd})\]
 \end{theorem}
 
 \begin{proof}
   La fonction donnée précédemment étant une fonction récursive générale, on peut
   trouver une machine de Turing qui la simule~: cette machine est donc une
-  machine $\mathcal U$ vérifiant la propriété souhaitée.
+  machine $\UnTM$ vérifiant la propriété souhaitée.
 \end{proof}
 
 \subsection{Thèse de Church-Turing}
@@ -1818,10 +2222,10 @@ algorithmique peut s'écrire comme une machine de Turing, et qu'il suffit donc d
 décrire des fonctions calculables par des algorithmiques et méthodes
 suffisamment précises et finitaires (par exemple, on refuse quand même
 d'imaginer une méthode qui testerait toutes les valeurs d'une fonction
-$f : \bN \to \bN$). Ce point de vue est largement plus efficace, et permet
-d'éviter de détailler inutilement des constructions techniques qui ne font
-aucunement avancer la compréhension des objets en jeu. Cette pratique était déjà
-présente par exemple dans la preuve du \cref{lem.recG.MT}, où les
+$\makeFunName{f}{\bN}{\bN}$). Ce point de vue est largement plus efficace, et
+permet d'éviter de détailler inutilement des constructions techniques qui ne
+font aucunement avancer la compréhension des objets en jeu. Cette pratique était
+déjà présente par exemple dans la preuve du \cref{lem.recG.MT}, où les
 constructions de machines de Turing étaient décrites de façon informelle.
 Dans les chapitres suivants, nous proposerons des constructions encore moins
 formelles, mais restant suffisamment précises pour que la \cref{thesis.CT}
