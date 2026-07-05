@@ -11,9 +11,9 @@ Turing universelle en tête.
 Dans ce chapitre, nous allons étudier les théorèmes principaux de la
 calculabilité, en nous éloignant du choix particulier d'un modèle de calcul.
 Grâce à l'équivalence des modèles et à la \cref{thesis.CT}, il nous est possible
-d'étudier la structure de mondu monde des fonctions calculables de façon
-abstraite avec simplement une énumération $\Enum$ des fonctions calculables et
-en ne considérant que les fonctions $\bN \to \bN$ (ou $\bN^k \to \bN^n$).
+d'étudier la structure du monde des fonctions calculables de façon abstraite
+avec simplement une énumération $\Enum$ des fonctions calculables et en ne
+considérant que les fonctions $\bN \to \bN$ (ou $\bN^k \to \bN^n$).
 
 L'étude de ce paradigme plus moderne de la calculabilité commence donc par la
 notion d'énumération des fonctions calculables, avec ses propriétés essentielles
@@ -34,7 +34,7 @@ le point de vue adopté dans un cours présentant des modèles de calcul et dans
 cours dédié à de la pure calculabilité, et nous présentons ici les notions
 permettant de réduire cet écart. L'objectif premier est de décrire une
 énumération des fonctions calculables à travers ses propriétés~: théorème
-$s_m^n$, théorème du point fixe de Kleene\ldots
+$\Smn{m}{n}$, théorème du point fixe de Kleene\ldots
 
 \subsection{Abstraction du modèle de calcul}
 
@@ -42,69 +42,65 @@ Commençons donc par définir la notion d'énumération.
 
 \begin{definition}[\'Enumération des fonctions calculables]
   On appelle énumération des fonctions calculables une famille de fonctions
-  \[(\Enum^k)_{k \in \bN} : \bN \to (\bN^k \partialto \bN)\]
+  \[\makeFunName{(\EnumP{}{k})_{k \in \bN}}{\bN}{(\bN^k \partialto \bN)}\]
   dont l'image est la classe des fonctions calculables $\Calc(\bN^k,\bN)$.
 
   Pour une fonction $f \in \Calc(\bN^k,\bN)$, on dira que $e \in \bN$ est un
-  indice (ou un code) de $f$ lorsque $f = \Enum^k_e$ (on utilise cette notation
-  au lieu de $\Enum^k(e)$ pour mettre en avant les arguments qui viennent
+  indice (ou un code) de $f$ lorsque $f = \EnumEK$ (on utilise cette notation
+  au lieu de $\EnumP{}{k}(e)$ pour mettre en avant les arguments qui viennent
   après).
 \end{definition}
 
 \begin{remark}
   En utilisant le \cref{thm.norm.Kleene}, on vérifie qu'il existe bien de telles
-  énumération~: on choisit donc l'énumération $(\Enum^k)_{k \in \bN}$ donnée
+  énumération~: on choisit donc l'énumération $(\EnumP{}{k})_{k \in \bN}$ donnée
   par ce théorème.
 \end{remark}
 
 \begin{notation}
-  A partir de maintenant, on emploira une notation vectorielle pour alléger les
-  notations sur les entrées~: $\vec x$ représente la donnée de $x_1,\ldots,x_n$
-  pour un certain n.
-\end{notation}
-
-\begin{notation}
   Il est parfois utile d'expliciter le temps de calcul~: lorsqu'on considère une
   fonction calculable $f$ de code $e$ appelée sur une entrée $\vec x$, on écrit
-  \[\Enum_e(\vec x)[t]\]
+  \[\Tit{\EnumE(\vec x)}\]
   pour désigner la valeur obtenue au bout de $t$ étapes de calcul. Cette
   notation est relativement informelle en ce qu'elle permet à la fois de
   désigner le test de terminaison au bout de $t$ étapes et le résultat
-  retourné, combinant les prédicats $T$ et $U$ du \cref{thm.norm.Kleene}
+  retourné, combinant les prédicats $\KlT$ et $\KlU$ du \cref{thm.norm.Kleene}.
 \end{notation}
 
 On a, de plus, une propriété permettant d'ajouter en paramètre le code de la
 fonction qu'on considère.
 
 \begin{property}[\'Enumération]
-  Pour notre énumération $(\Enum^k)_{k \in \bN}$, on a la propriété suivante,
+  Pour notre énumération $(\EnumP{}{k})_{k \in \bN}$, on a la propriété suivante,
   dite d'énumération~:
-  \[\exists n_U \in \bN, \forall e \in \bN, \forall \vec x \in \bN^k,
-  \Enum^{k+1}_{n_U}(e,\vec x) = \Enum^k_e(\vec x)\]
+  \[\exists e_{\UnTM} \in \bN, \forall e \in \bN,
+  \forall \vec x \in \bN^k,
+  \EnumP{e_{\UnTM}}{k+1}(e,\vec x) = \EnumEK(\vec x)\]
 \end{property}
 
 \begin{proof}
-  Il nous suffit de prendre pour indice $n_u$ la valeur de
-  $\godcod{\mathcal U_{\bN^k, \bN}}$ où $\mathcal U$ est définie dans le
+  Il nous suffit de prendre pour indice $e_{\UnTM}$ la valeur de
+  $\godcod{\UnTMP{\bN^k, \bN}}$ où $\UnTM$ est définie dans le
   \cref{thm.MT.U}.
 \end{proof}
 
 \begin{remark}
   En utilisant la \cref{prop.Cantor.bij}, on en déduit que pour tout
-  $k \in \bN$, on peut trouver un code $n_U$ tel que
+  $k \in \bN$, on peut trouver un code $e_{\UnTM}$ tel que
   \[\forall e \in \bN, \forall \vec x \in \bN^k,
-  \Enum^k_e (\vec x) = \Enum^1_{n_u} (\langle e, \vec x \rangle)\]
+  \EnumEK (\vec x) = \EnumP{e_{\UnTM}}{1} (\langle e, \vec x \rangle)\]
   pour cette raison, il sera souvent plus facile d'ignorer l'exposant
-  $\Enum^k$ et de simplement considérer la fonction $\Enum$.
+  $\EnumP{}{k}$ et de simplement considérer la fonction $\Enum$.
 \end{remark}
 
 \begin{exercise}[Lemme de bourrage]
-  Montrer que pour toute fonction $f : \bN^k \partialto \bN$ calculable, il
-  existe en réalité une infinité d'indices $e$ tels que $\Enum^k_e = f$.
+  Montrer que pour toute fonction $\makeFunNamePartial{f}{\bN^k}{\bN}$
+  calculable, il existe en réalité une infinité d'indices $e$ tels que
+  $\EnumEK = f$.
   Montrer le résultat plus fort suivant~: il existe une fonction RP
-  $\nu : \bN^2 \to \bN$ telle que $\nu$ est strictement croissante en son
-  deuxième argument, et pour tous entiers $n,m$ on a
-  $\Enum^k_{\nu(n,m)} = \Enum_n$.
+  $\makeFunName{\nu}{\bN^2}{\bN}$ telle que $\nu$ est strictement
+  croissante en son deuxième argument, et pour tous entiers $n,m$ on a
+  $\EnumP{\nu(n,m)}{k} = \EnumP{n}{k}$.
 \end{exercise}
 
 Donnons aussi la propriété de paramétrisation~: celle-ci nous permet de
@@ -114,16 +110,16 @@ s'appliquer de façon purement uniforme.
 
 \begin{property}[Paramétrisation]
   Pour tous entiers $n,m \geq 1$, il existe une fonction RP
-  $s^n_m : \bN^{m+1} \to \bN$ telle que
+  $\makeFunName{\Smn{m}{n}}{\bN^{m+1}}{\bN}$ telle que
   \[\forall e \in \bN, \forall \vec x \in \bN^m, \forall \vec y \in \bN^n,
-  \Enum^{n+m}_e(\vec x, \vec y) = \Enum^n_{s^n_m(e,\vec x)}(\vec y)\]
+  \EnumP{e}{n+m}(\vec x, \vec y) = \EnumP{\Smn{m}{n}(e,\vec x)}{n}(\vec y)\]
 \end{property}
 
 \begin{proof}
   Pour prouver l'égalité, il nous suffit de considérer une machine de Turing
-  $M$ à $n + m$ entrée. Supposons fixées $m$ entrées $\vec x$~: on ajoute
-  à $M$ des états et transitions qui font écrire les valeurs de $\vec x$ aux
-  $m$ premiers rubans d'entrée avant le démarrage de la machine. Il nous
+  $\varTMM$ à $n + m$ entrée. Supposons fixées $m$ entrées $\vec x$~: on ajoute
+  à $\varTMM$ des états et transitions qui font écrire les valeurs de $\vec x$
+  aux $m$ premiers rubans d'entrée avant le démarrage de la machine. Il nous
   faut donc, à $\vec x$ fixé, simplement ajouter des états et des transitions,
   et modifier l'état initial~: ces modifications sont RP.
 
@@ -137,94 +133,94 @@ En réalité, ces trois propriétés (surjectivité sur les fonctions calculable
 sens suivant~:
 
 \begin{definition}[\'Equivalence d'énumération]
-  Soient $(\Enum^k)$ et $(\Psi^k)$ deux énumérations des fonctions calculables.
-  On dit que ces deux énumérations sont équivalentes lorsqu'il existe pour
-  tout $k$ une paire de fonctions calculables totales $f_k,g_k : \bN \to \bN$
-  telles que
-  \[\forall e \in \bN, \Psi^k_e = \Enum_{f_k(e)}^k\qquad
-  \forall e \in \bN, \Enum_e^k = \Psi^k_{g_k(e)}\]
+  Soient $(\EnumP{}{k})$ et $(\EnumB{}{k})$ deux énumérations des fonctions
+  calculables. On dit que ces deux énumérations sont équivalentes lorsqu'il
+  existe pour tout $k$ une paire de fonctions calculables totales
+  $f_k,g_k : \bN \to \bN$ telles que
+  \[\forall e \in \bN, \EnumBP{e}{k} = \EnumP{f_k(e)}{k}\qquad
+  \forall e \in \bN, \EnumEK = \EnumBP{g_k(e)}{k}\]
 \end{definition}
 
 \begin{proposition}
-  Pour toute énumération de fonctions calculables $(\Psi^k)_{k \in \bN}$, cette
-  énumération est équivalente à $(\Enum^k)$ si et seulement si elle vérifie
-  les trois conditions suivantes~:
+  Pour toute énumération de fonctions calculables $(\EnumBP{}{k})_{k \in \bN}$,
+  cette énumération est équivalente à $(\EnumP{}{k})$ si et seulement si elle
+  vérifie les trois conditions suivantes~:
   \begin{itemize}
-  \item pour toute fonction calculable $f : \bN^k \partialto \bN$, il existe
-    $e$ tel que $\Psi^k_e = f$
+  \item pour toute fonction calculable $\makeFunNamePartial{f}{\bN^k}{\bN}$,
+    il existe $e$ tel que $\EnumBP{e}{k} = f$
   \item pour chaque $k$,
-    il existe un indice $n_U$ tel que pour tout code $e \in \bN$
+    il existe un indice $e_{\UnTM}$ tel que pour tout code $e \in \bN$
     et toute entrée $\vec x \in \bN^k$,
-    $\Psi^k_e(\vec x) = \Psi^k_{n_U}(e,\vec x)$
+    $\EnumBP{e}{k}(\vec x) = \EnumBP{e_{\UnTM}}{k+1}(e,\vec x)$
   \item pour tous $n,m \geq 1$, il existe une fonction totale calculable
-    $\sigma^n_m$ telle que pour tout code $e \in \bN$, toutes entrées
+    $\SmnB{m}{n}$ telle que pour tout code $e \in \bN$, toutes entrées
     $\vec x \in \bN^m, \vec y \in \bN^n$,
-    $\Psi^{n+m}_e(\vec x,\vec y) = \Psi^n_{\sigma^n_m(e, \vec x)}(\vec y)$
+    $\EnumBP{e}{n+m}(\vec x,\vec y) = \EnumBP{\SmnB{m}{n}(e,\vec x)}{n}(\vec y)$
   \end{itemize}
-  la surjectivité sur les fonctions calculables, l'énumération et la
-  paramétrisation.
 \end{proposition}
 
 \begin{proof}
   On procède par double implication~:
   \begin{itemize}
-  \item Supposons que $(\Psi^k)$ est équivalente à $(\Enum^k)$ et soient les
-    deux familles de fonctions $(f_k),(g_k)$ témoignant de leur équivalence.
+  \item Supposons que $(\EnumBP{}{k})$ est équivalente à $(\EnumP{}{k})$ et soient
+    les deux familles de fonctions $(f_k),(g_k)$ témoignant de leur équivalence.
     Montrons que les $3$ conditions sont vérifiées~:
     \begin{itemize}
-    \item Chaque $\Psi^k$ est surjective sur l'ensemble des fonctions
-      calculables à $k$ arguments~: si $f$ a pour code $e$ pour $\Enum^k$,
-      alors elle a pour code $g_k(e)$ pour $\Psi^k$.
-    \item Soit $k \in \bN$, montrons qu'il existe un indice $n_U$ pour la
+    \item Chaque $\EnumBP{}{k}$ est surjective sur l'ensemble des fonctions
+      calculables à $k$ arguments~: si $f$ a pour code $e$ pour $\EnumP{}{k}$,
+      alors elle a pour code $g_k(e)$ pour $\EnumBP{}{k}$.
+    \item Soit $k \in \bN$, montrons qu'il existe un indice $e_{\UnTM}$ pour la
       propriété d'énumération. Soient un code $e \in \bN$ et une entrée
       $\vec x \in \bN^k$. On a alors
-      \[\Psi^k_e(\vec x) = \Enum^k_{f_k(e)}(\vec x)\]
-      En posant $f : e, \vec x \longmapsto \Enum^k_{f_k(e)}(\vec x)$ et prenant
-      $e_U$ un indice de cette fonction (qui existe car c'est la composition
-      d'une machine universelle et de $f_k$ supposée calculable), on a alors
-      \[\Enum^{k+1}_{e_U}(e,\vec x) = \Enum^k_{f_k(e)}(\vec x)\]
-      et $\Enum^{k+1}_{e_U}(e,\vec x) = \Psi^{k+1}_{g_k(e_U)}(e, \vec x)$ par
-      hypothèse. On peut donc prendre l'indice $m_U \defeq g_k(e_U)$
+      \[\EnumBP{e}{k}(\vec x) = \EnumP{f_k(e)}{k}(\vec x)\]
+      En posant $f : (e, \vec x) \longmapsto \EnumP{f_k(e)}{k}(\vec x)$ et en
+      prenant $e_{\UnTM}$ un indice de cette fonction (qui existe car c'est la
+      composition d'une machine universelle et de $f_k$ supposée calculable), on a
+      alors
+      \[\EnumP{e_{\UnTM}}{k+1}(e,\vec x) = \EnumP{f_k(e)}{k}(\vec x)\]
+      et $\Enum{e_{\UnTM}}{k+1}(e,\vec x) = \EnumBP{g_k(e_U)}{k+1}(e, \vec x)$ par
+      hypothèse. On peut donc prendre l'indice $e'_{\UnTM} \defeq g_k(e_{\UnTM})$
       pour en déduire le résultat. Remarquons que cet indice
-      $m_U$ est le même pour tout choix de $e$ et de $\vec x$, ce qui est
+      $e'_{\UnTM}$ est le même pour tout choix de $e$ et de $\vec x$, ce qui est
       le résultat souhaité.
     \item Soient $n,m \geq 1$, $i \in \bN$, $\vec x \in \bN^m$ et
-      $\vec y \in \bN^n$, montrons qu'il existe une fonction $\sigma^n_m$
+      $\vec y \in \bN^n$, montrons qu'il existe une fonction $\SmnB{m}{n}$
       vérifiant la propriété attendue. tout d'abord, on sait que
-      \[\Psi^{n+m}_e(\vec x, \vec y) = \Enum^{n+m}_{f_{n+m}(e)}(\vec x, \vec y)\]
+      \[\EnumBP{e}{n+m}(\vec x, \vec y)=\EnumP{f_{n+m}(e)}{n+m}(\vec x, \vec y)\]
       On pose maintenant
-      $f : e, \vec x, \vec y \longmapsto \Enum^{n+m}_{f_{n+m}(e)}(\vec x,\vec y)$
-      et $n_f$ un code de cette fonction. On a alors
-      \[\Enum^{n+m}_{f_{n+m}(e)}(\vec x, \vec y) =
-      \Enum^{n+m+1}_{n_f}(e, \vec x, \vec y)\]
-      et, grâce à la fonction $s^n_m$, on en déduit que
-      \[\Enum^{n+m+1}_{n_f}(e, \vec x, \vec y) =
-      \Enum^n_{s_{m+1}^n(n_f,e, \vec x)}(\vec y)\]
+      $f : (e, \vec x, \vec y) \longmapsto \EnumP{f_{n+m}(e)}{n+m}(\vec x,\vec y)$
+      et $e_f$ un code de cette fonction. On a alors
+      \[\EnumP{f_{n+m}(e)}{n+m}(\vec x, \vec y) =
+      \Enum{e_f}{n+m+1}(e, \vec x, \vec y)\]
+      et, grâce à la fonction $\Smn{m}{n}$, on en déduit que
+      \[\EnumP{e_f}{n+m+1}(e, \vec x, \vec y) =
+      \EnumP{\Smn{m+1}{n}(e_f,e, \vec x)}{n}(\vec y)\]
       d'où
-      \[\Psi^{n+m}_e(\vec x, \vec y) =
-      \Psi^{m}_{g_m(s^n_{m+1}(n_f,e,\vec x))}(\vec y)\]
+      \[\EnumBP{e}{n+m}(\vec x, \vec y) =
+      \EnumBP{g_m(\Smn{m+1}{n}(e_f,e,\vec x))}{m}(\vec y)\]
       donc, en posant
-      $\sigma^m_n : e, \vec x \longmapsto g_m(s^n_{m+1}(n_f,e, \vec x))$,
+      $\SmnB{m}{n} : (e, \vec x) \longmapsto g_m(\Smn{m+1}{n}(e_f,e,\vec x))$,
       on obtient le résultat.
     \end{itemize}
 
-  \item Réciproquement, supposons que $(\Psi^{k})$ vérifie les propriétées
+  \item Réciproquement, supposons que $(\EnumBP{}{k})$ vérifie les propriétés
     souhaitées. On construit $f_k$ de la façon suivante (la construction de
-    $g_k$ est similaire, puisque la situation est symétrique entre $\Enum^k$
-    et $\Psi^k$, les deux énumérations vérifiant les mêmes hypothèses)~:
+    $g_k$ est similaire, puisque la situation est symétrique entre $\EnumP{}{k}$
+    et $\EnumBP{}{k}$, les deux énumérations vérifiant les mêmes hypothèses)~:
     \begin{align*}
-      \Psi^k_e(\vec x) &= \Psi^{k+1}_{m_U}(e,\vec x) &\text{par énumération}\\
-      &= \Enum^{k+1}_{e'}(e,\vec x) &\text{par surjectivité}\\
-      &= \Enum^k_{s^k_1(e',e)}(\vec x) &\text{par paramétrisation}
+      \EnumBP{e}{k}(\vec x)
+      &= \EnumBP{e_{\UnTM}}{k+1}(e,\vec x) &\text{par énumération}\\
+      &= \EnumP{e'}{k+1}(e,\vec x) &\text{par surjectivité}\\
+      &= \EnumP{\Smn{1}{k}(e',e)}{k}(\vec x) &\text{par paramétrisation}
     \end{align*}
-    donc $f_k : e \longmapsto s^k_1(e',e)$ où $e'$ est un code de la fonction
-    $e, \vec x \mapsto \Psi^{k+1}_{m_U}(e, \vec x)$ pour $\Enum$.
+    on peut donc $f_k$ comme la fonction $e \longmapsto \Smn{1}{k}(e',e)$ où
+    $e'$ est un code de la fonction
+    $(e, \vec x) \longmapsto \EnumBP{e_{\UnTM}}{k+1}(e, \vec x)$ pour $\Enum$.
+    \qedhere
   \end{itemize}
-
-  D'où l'équivalence.
 \end{proof}
 
-Par ce résultat, on comprend que le choix exact de l'énumération $\Enum^k$
+Par ce résultat, on comprend que le choix exact de l'énumération $\EnumP{}{k}$
 n'est pas essentiel~: tant qu'elle vérifie les trois conditions naturelles que
 sont la surjectivité, l'énumération et la paramétrisation, l'énumération
 choisie permettra de manipuler les fonctions calculables comme on le souhaite.
@@ -249,32 +245,33 @@ en donnons une présentation plus systématique reprise en partie de
 Pour exprimer au mieux l'argument diagonal, il convient de considérer ce qui
 mène à la contradiction dans la démonstration du \cref{thm.Cantor}. Le point
 central est le suivant~: en supposant qu'on a une surjection
-$f : X \to \powerset(X)$, on peut considérer une matrice
-$\{x_{i,j}\}_{i,j \in X}$ où
+$\makeFunName{f}{X}{\powerset(X)}$, on peut considérer une matrice
+$\compr{x_{i,j}}{i,j \in X}$ où
 \[x_{i,j} \defeq
 \begin{cases} 1 \text{ si } i \in f(j) \\ 0 \text{ sinon} \end{cases}\]
 L'argument diagonal, qui lui vaut son nom, est alors de considérer la diagonale
-de cette matrice, c'est-à-dire la famille $\{x_{i,i}\}_{i \in X}$ dont on sait,
-par surjectivité de $f$, qu'elle a un antécédent. En notant $e$ l'antécédent,
-peut alors considérer $x_{e,e}$.
+de cette matrice, c'est-à-dire la famille $\compr{x_{i,i}}{i \in X}$ dont on
+sait, par surjectivité de $f$, qu'elle a un antécédent. En notant $e$
+l'antécédent, peut alors considérer $x_{e,e}$.
 
 Cette construction peut s'effectuer en considérant n'importe quelle fonction
-$b : \btwo \to \btwo$. Dans ce cas, en prenant la famille
-$\{b(x_{i,i})\}_{i \in X}$ et $e$ un antécédent, on obtient l'égalité suivante~:
-\[x_{e,e} = \chi_{f(e)}(e) = b(x_{i,i})_{i = e} = b(x_{e,e})\]
+$\makeFunName{b}{\btwo}{\btwo}$. Dans ce cas, en prenant la famille
+$\compr{b(x_{i,i})}{i \in X}$ et $e$ un antécédent, on obtient l'égalité
+suivante~:
+\[x_{e,e} = \indicP{f(e)}(e) = b(x_{i,i})_{i = e} = b(x_{e,e})\]
 ce qui constitue donc un point fixe de $b$.
 
 L'argument diagonal permet ainsi de construire, pour toute fonction
-$f : \btwo \to \btwo$, un point fixe de $f$. Dans ce cas précis, il est clair
-qu'on a une contradiction en prenant la fonction $\lnot$, nous donnant alors
-comme ensemble à considérer
-\[Y \defeq \{x \in X \mid x \notin f(x)\}\]
+$\makeFunName{f}{\btwo}{\btwo}$, un point fixe de $f$. Dans ce cas précis, il
+est clair qu'on a une contradiction en prenant la fonction $\lnot$, nous
+donnant alors comme ensemble à considérer
+\[Y \defeq \compr{x \in X}{x \notin f(x)}\]
 comme donné dans la preuve du \cref{thm.Cantor}. Cependant, cette version
 générale devient plus exploitable dans d'autres conditions~: si l'on a à
-disposition une surjection $f : A \to (B^A)$, alors toute fonction $B \to B$
-admet un point fixe. Ces points fixes existent rarement, ce qui fait que cet
-outil permet principalement d'obtenir une contradiction (mais il existe des
-cas où ce point fixe existe).
+disposition une surjection $\makeFunName{f}{A}{(\Funct(A,B)}$, alors toute
+fonction $B \to B$ admet un point fixe. Ces points fixes existent rarement,
+ce qui fait que cet outil permet principalement d'obtenir une contradiction,
+mais il existe des cas où ce point fixe existe.
 
 Avec cette discussion en tête sur l'argument diagonal, et sachant que
 $\Enum$ nous donne une surjection $\bN \to \Calc(\bN \partialto \bN)$, il est
@@ -283,54 +280,55 @@ situation.
 
 Pour construire ce point fixe, on utilise une méthode analogue à ce qui a été
 présenté précédemment. En effet, en considérant une machine universelle de code
-$n_U$, on obtient par $\Enum^{k+1}$ une façon de lister les fonctions à $k$
-arguments avec deux paramètre~: le premier indique quelle énumération choisir
-(le cas de $n_U$ indique qu'il existe une énumération qui atteindra toutes les
+$e_{\UnTM}$, on obtient par $\EnumP{}{k+1}$ une façon de lister les fonctions à
+$k$ arguments avec deux paramètres~: le premier indique quelle énumération choisir
+(le cas de $e_{\UnTM}$ indique qu'il existe une énumération qui atteindra toutes les
 fonctions) et le second indique à quelle position dans l'énumération on se
 trouve. Ainsi, la fonction
-\[e \longmapsto s^k_1(e,e)\]
+\[e \longmapsto \Smn{1}{k}(e,e)\]
 représente une fonction diagonale analogue à la famille $\{x_{i,i}\}$. En
-considérant une fonction calculable totale $\alpha : \bN \to \bN$, on peut donc
-considérer
-\[e \longmapsto \alpha(s^k_1(e,e))\]
+considérant une fonction calculable totale $\makeFunName{\alpha}{\bN}{\bN}$, on
+peut donc considérer
+\[e \longmapsto \alpha(\Smn{1}{k}(e,e))\]
 pour espérer obtenir une point fixe de $\alpha$ (au sens d'une fonction qui
 a comme codes à la fois $e$ et $\alpha(e)$), c'est précisément le contenu du
 théorème du point fixe de Kleene.
 
 \begin{theorem}[Point fixe de Kleene \cite{Kleene1938}
     - formulation de Rogers \cite{Rogers1987}]\label{thm.Kleene.fix}
-  Soit $\alpha : \bN \to \bN$ une fonction totale calculable.
+  Soit $\makeFunName{\alpha}{\bN}{\bN}$ une fonction totale calculable.
   Alors il existe un code $e \in \bN$ tel que
-  \[\forall \vec x \in \bN^k, \Enum_e (\vec x)= \Enum_{f(e)}(\vec x)\]
+  \[\forall \vec x \in \bN^k, \EnumEK (\vec x)= \EnumP{f(e)}{k}(\vec x)\]
   calculable en un code de $\alpha$.
 \end{theorem}
 
 \begin{proof}
   On pose la fonction
-  \[g : (e,\vec x) \mapsto \Enum^k_{\alpha(s^k_1(e,e))}(\vec x)\]
+  \[g : (e,\vec x) \longmapsto \EnumP{\alpha(\Smn{1}{k}(e,e))}{k}(\vec x)\]
   qui est calculable comme composée de fonctions calculables.
   Soit $e_0$ un code de $g$ (on peut calculer $e_0$ directement en fonction
   d'un code de $\alpha$), on a alors pour tous $e \in \bN,\vec x \in \bN^k$~:
   \begin{align*}
-    \Enum^{k}_{s^k_1(e_0,e)}(\vec x)
-    &= \Enum^{k+1}_{e_0}(e,\vec x) \\
-    &= \Enum^k_{\alpha(s^k_1(e,e))}(\vec x)
+    \EnumP{\Smn{1}{k}(e_0,e)}{k}(\vec x)
+    &= \EnumP{e_0}{k+1}(e,\vec x) \\
+    &= \EnumP{\alpha(\Smn{1}{k}(e,e))}{k}(\vec x)
   \end{align*}
   d'où, en particulier pour $e \defeq e_0$~:
-  \[\Enum^k_{s^k_1(e_0,e_0)}(\vec x) = \Enum^k_{\alpha(s^k_1(e_0,e_0))}(\vec x)\]
+  \[\EnumP{\Smn{1}{k}(e_0,e_0)}{k}(\vec x) =
+  \EnumP{\alpha(\Smn{1}{k}(e_0,e_0))}{k}(\vec x)\]
 
-  On en déduit le théorème en considérant $s^k_1(e_0,e_0)$.
+  On en déduit le théorème en considérant $\Smn{1}{k}(e_0,e_0)$.
 \end{proof}
 
 Ce théorème est central pour construire des programmes, puisqu'il revient à
 la notion de récursion. Pour en donner un exemple simple d'utilisation,
 considérons la transformation de programme suivante~:
-\[(e, n) \longmapsto \ifrm (n = 0)\thenrm 1 \elserm  n \times\Enum_e(n-1)\]
-Cette transformation de programme est évidemment calculable. En currifiant la
+\[(e, n) \longmapsto \ifrm (n = 0)\thenrm 1 \elserm  n \times\EnumE(n-1)\]
+Cette transformation de programme est évidemment calculable. En curryfiant la
 fonction (en la transformant en une fonction de la forme
 $e \mapsto n \mapsto [\cdots]$ au lieu d'une fonction de la forme
 $(e,n) \mapsto [\cdots]$) on obtient une fonction totale calculable
-\[\alpha : \bN \longrightarrow \bN\]
+\[\makeFunName{\alpha}{\bN}{\bN}\]
 et, en prenant un point fixe $e$ de cette fonction $\alpha$, donnée par le
 \cref{thm.Kleene.fix}, on obtient la fonction suivante~:
 \[f : n \longmapsto \ifrm (n = 0) \thenrm 1 \elserm n \times f(n-1)\]
@@ -351,23 +349,23 @@ existaient dans lesquels on devait prouver qu'une fonction était totale pour la
 rendre calculable. Une question est alors rapidement née, en particulier à
 l'aulne du \cref{thm.godel.incompl1}~: pourquoi ne peut-on pas appliquer
 un procédé diagonal à cet ensemble de fonctions totales calculables pour obtenir
-une fonction non listée auparavant ?
+une fonction non listée auparavant~?
 
 En appliquant cette idée naïve, cela nous pousse à considérer la fonction
-\[e \longmapsto \Enum_e(e) + 1\]
+\[e \longmapsto \EnumP{e}{1}(e) + 1\]
 qui, par définition, est différente de toutes les fonctions calculables, et
 n'est donc pas calculable. La solution à ce paradoxe apparent est donc que
-l'expression $\Enum_e(e) + 1$ est parfois non définie, et montre qu'on ne peut
+l'expression $\EnumP{e}{1}(e) + 1$ est parfois non définie, et montre qu'on ne peut
 supprimer du domaine de la calculabilité le fait que les fonctions étudiées sont
 partielles dans leur définition.
 
 En suivant cette idée, un premier candidat de fonction non calculable se
-dessine~: la fonction valant $1$ si $\Enum_e(e)$ est définie et $0$ sinon.
+dessine~: la fonction valant $1$ si $\EnumP{e}{1}(e)$ est définie et $0$ sinon.
 
 \begin{definition}[Problème de l'arrêt]
   On définit le problème de l'arrêt comme la partie (ou, de façon équivalente,
   comme sa fonction caractéristique)~:
-  \[K \defeq \{e \in \bN \mid \Enum_e(e)\convcal\}\]
+  \[\KH \defeq \compr{e \in \bN}{\EnumP{e}{1}(e)\convcal}\]
 \end{definition}
 
 \begin{theorem}\label{thm.arret.indec}
@@ -375,12 +373,12 @@ dessine~: la fonction valant $1$ si $\Enum_e(e)$ est définie et $0$ sinon.
 \end{theorem}
 
 \begin{proof}
-  Supposons qu'il existe un code $e_K$ tel que $\Enum_{e_K} = \chi_K$. On
-  introduit la \cref{algo.diag}.
+  Supposons qu'il existe un code $e_{\KH}$ tel que
+  $\EnumP{e_{\KH}}{1} = \indicP{\KH}$. On introduit la \cref{algo.diag}.
   
-  \begin{algorithm}[H]
+  \begin{algorithm}[t]
     \KwData{un code de machine $e$}
-    \If{$\Enum_{e_K}(e) = 1$}{
+    \If{$\Enum{e_{\KH}}{1}(e) = 1$}{
       effectuer une boucle infinie\;
     }
     \Else{
@@ -394,23 +392,23 @@ dessine~: la fonction valant $1$ si $\Enum_e(e)$ est définie et $0$ sinon.
   D'après le \cref{thm.Kleene.fix}, on peut donc trouver un code $e$ qui est
   un point fixe de cette transformation, ce qui mène à deux cas possibles~:
   \begin{itemize}
-  \item soit $\Enum_e(e)\convcal$. Dans ce cas, d'après le branchement
+  \item soit $\EnumP{e}{1}(e)\convcal$. Dans ce cas, d'après le branchement
     conditionnel, l'algorithme effectue une boucle infinie, donc il diverge.
-  \item soit $\Enum_e(e)\divcal$. Dans ce cas, d'après le branchement
+  \item soit $\EnumP{e}{1}(e)\divcal$. Dans ce cas, d'après le branchement
     conditionnel, l'algorithme s'arrête et retourne $0$.
   \end{itemize}
-  Ainsi, $\Enum_e(e)$ s'arrête si et seulement s'il ne s'arrête pas~: on a une
-  contradiction.
+  Ainsi, $\EnumP{e}{1}(e)$ s'arrête si et seulement s'il ne s'arrête pas~: on a
+  une contradiction.
 \end{proof}
 
 \begin{remark}
-  La définition de l'ensemble $K$ repose sur le tiers exclu~: on utilise le
-  fait que $\Enum_e(e)$ converge ou diverge pour définir la valeur de
-  $\chi_K(e)$. Dans un contexte où l'on rejette le tiers exclu (en logique
+  La définition de l'ensemble $\KH$ repose sur le tiers exclu~: on utilise le
+  fait que $\EnumP{e}{k}(e)$ converge ou diverge pour définir la valeur de
+  $\indicP{\KH}(e)$. Dans un contexte où l'on rejette le tiers exclu (en logique
   intuitionniste) il est possible de vérifier un énoncé tel que
   \[\forall f : \bN \to \bN, \exists e \in \bN, \forall n \in \bN,
-  f(n) = \Enum_e(n)\]
-  au prix de ne plus avoir l'existence d'ensembles tels que $K$.
+  f(n) = \EnumE(n)\]
+  au prix de ne plus avoir l'existence d'ensembles tels que $\KH$.
 \end{remark}
 
 A partir de la non calculabilité de cet ensemble, il est possible de déduire
@@ -418,7 +416,7 @@ celle de plusieurs autres ensembles similaires, que nous laissons en exercice.
 
 \begin{exercise}
   Montrer que pour tout $k$, la fonction caractéristique de l'ensemble
-  \[\{(e,\vec x) \in \bN^{k+1}\mid \Enum^k_e(\vec x)\convcal\}\]
+  \[\compr{(e,\vec x) \in \bN^{k+1}}{\EnumEK(\vec x)\convcal}\]
   n'est pas calculable.
 \end{exercise}
 
@@ -430,14 +428,15 @@ que le caractère non calculable du problème de l'arrêt se définit tout aussi
 bien sur l'ensemble lui-même.
 
 L'idée d'étudier les parties de $\bN$ pour la calculabilité nous mène alors à
-la notion de problème de décision.
+la notion de problème de décision, pour lequel nous donnons un formalisme plus
+adéquat.
 
 \section{Problèmes de décision}
 
 Un problème de décision peut se représenter de plusieurs manières~: une fonction
 $\bN \to \btwo$, une partie $X \subseteq \bN$, ou encore un prédicat
-arithmétique (comme nous le verrons dans le \cref{chp.arith}). Toutes
-ces visions étant identiques, nous considérons principalement les problèmes
+arithmétique (comme nous le verrons dans le \cref{chp.arith}). Les deux premières
+de ces visions étant identiques, nous considérons principalement les problèmes
 comme des parties de $\bN$.
 
 \subsection{Codes et ensembles c.e.}
@@ -472,14 +471,13 @@ dans $\bN$, et ainsi parler de problèmes de décisions sur ces ensembles sans
 s'attarder sur la façon d'encoder les objets~:
 \begin{itemize}
 \item on a déjà vu qu'il était possible d'encoder n'importe quel ensemble de
-  la forme $\Gamma^\star$ où $\Gamma$ est un ensemble fini.
-\item encore mieux~: toute partie d'un tel ensemble $\Gamma^\star$ qui est un
-  langage algébrique $\mathcal L$ est en particulier une partie décidable, et
-  le code $\Gamma^\star \to \bN$ se restreint donc en un code
-  $\mathcal L \to \bN$. En particulier, tout ensemble défini inductivement
-  de façon finitaire (avec un nombre fini de constructeurs) s'écrit
-  naturellement comme un langage algébrique, et est donc possible à encoder
-  dans $\bN$.
+  la forme $\toStA$ où $\ABA$ est un ensemble fini.
+\item encore mieux~: toute partie d'un tel ensemble $\toStA$ qui est un
+  langage algébrique $\varLL$ est en particulier une partie décidable, et
+  le code $\toStA \to \bN$ se restreint donc en un code $\varLL \to \bN$.
+  En particulier, tout ensemble défini inductivement de façon finitaire
+  (avec un nombre fini de constructeurs) s'écrit naturellement comme un langage
+  algébrique, et est donc possible à encoder dans $\bN$.
 \item pour deux ensembles $X,Y$ avec un code $c_X : X \to \bN$ et un code
   $c_Y : Y \to \bN$, on définit le code $c_{X\times Y}$ par la composée
   \[X \times Y \xrightarrow{c_X \times c_Y} \bN \times \bN
@@ -496,9 +494,9 @@ Parmi les exemples précédents, on remarque que deux problèmes sont décidable
 (vérifier qu'un nombre est premier et vérifier qu'un graphe est connexe), mais
 les deux autres problèmes ne le sont pas. Pourtant, les deux problèmes n'ont
 pas exactement la même forme. Pour le problème de l'arrêt, on peut effectivement
-donner une information dans les cas positifs~: si $\Enum_e(e)\convcal$, alors
-on peut effectivement en déduire que $e \in K$. Au contraire, pour tester si
-$\Enum_e$ est une fonction totale, il faudrait vérifier qu'elle s'arrête sur
+donner une information dans les cas positifs~: si $\EnumE(e)\convcal$, alors
+on peut effectivement en déduire que $e \in \KH$. Au contraire, pour tester si
+$\EnumE$ est une fonction totale, il faudrait vérifier qu'elle s'arrête sur
 chaque entrée, ce qui demande de vérifier une infinité de valeurs d'entrées et
 ne peut se faire en un temps fini.
 
@@ -510,14 +508,14 @@ semi-décidable.
   Soit $X \subseteq \bN$ un problème de décision. On dit que $X$ est~:
   \begin{itemize}
   \item décidable (ou calculable, ou récursif) s'il existe un code $e$ tel que
-    \[\forall x \in \bN, (x \in X \iff \Enum_e(x) \conveq 1) \land
-    (x \notin X \iff \Enum_e(x) \conveq 0)\]
+    \[\forall x \in \bN, (x \in X \iff \EnumE(x) \conveq 1) \land
+    (x \notin X \iff \EnumE(x) \conveq 0)\]
   \item semi-décidable (ou calculatoirement énumérable, ou récursivement
     énumérable) s'il existe un code $e$ tel que
-    \[\forall x \in \bN, x \in X \iff \Enum_e(x) \conveq 1\]
+    \[\forall x \in \bN, x \in X \iff \EnumE(x) \conveq 1\]
   \item co-semi-décidable (ou co-calculatoirement énumérable, ou
     co-récursivement énumérable) s'il existe un code $e$ tel que
-    \[\forall x \in \bN, x \notin X \iff \Enum_e(x) \conveq 0\]
+    \[\forall x \in \bN, x \notin X \iff \EnumE(x) \conveq 0\]
   \end{itemize}
 \end{definition}
 
@@ -536,13 +534,13 @@ fini).
 L'exemple canonique de problème c.e. est le problème de l'arrêt.
 
 \begin{proposition}
-  L'ensemble $K$ est c.e.
+  L'ensemble $\KH$ est c.e.
 \end{proposition}
 
 \begin{proof}
   Il nous suffit de considérer la fonction
-  $f : e \mapsto \ifrm{\Enum_e(e)\convcal}\thenrm{1}$ qui est
-  calculable (partielle). $\Enum_e(e)\convcal$ si et seulement si $f(e) = 1$.
+  $f : e \longmapsto \ifrm{\EnumE(e)\convcal}\thenrm{1}$ qui est
+  calculable (partielle). $\EnumE(e)\convcal$ si et seulement si $f(e) = 1$.
 \end{proof}
 
 Un autre exemple important de problème c.e. est l'énumération des domaines
@@ -550,36 +548,36 @@ de fonction calculables.
 
 \begin{definition}[Ensemble c.e. canonique]
   On définit l'ensemble c.e. canonique associé à un entier $e$ par
-  \[W_e \defeq \{n \in \bN \mid \Enum_e(n)\convcal\}\]
+  \[\domCP{e} \defeq \compr{n \in \bN}{\EnumE(n)\convcal}\]
 \end{definition}
 
 Allié au \cref{thm.arret.indec}, on en déduit que la classe des problèmes
 calculables est une sous-classe stricte des problèmes c.e. Le problème
-$\complement K$, le complémentaire de $K$, est naturellement un problème
+$\complement \KH$, le complémentaire de $\KH$, est naturellement un problème
 co-c.e. On donne le lemme suivant, permettant de voir les problèmes
 calculables comme l'intersection des problèmes c.e. et co-c.e.
 
 \begin{lemma}\label{lem.cal.c.e.co.c.e}
-  Soit $X \subseteq \bN$, alors $X$ est calculable si et seulement si
-  $X$ est c.e. et co-c.e.
+  Soit $X \subseteq \bN$, alors $X$ est calculable si et seulement si $X$
+  est c.e. et co-c.e.
 \end{lemma}
 
 \begin{proof}
   Si $X$ est calculable, il est évident que $X$ est à la fois c.e. et co-c.e.
-  Réciproquement, cependant, on suppose qu'il existe deux fonctions totales
+  Réciproquement, on suppose qu'il existe deux fonctions totales
   (potentiellement distinctes) de codes $e$ et $e'$ telles que pour tout
   $x \in \bN$~:
-  \[x \in X \iff \Enum_e(x) \conveq 1 \qquad
-  x \notin X \iff \Enum_{e'}(x)\conveq 0\]
+  \[x \in X \iff \EnumE(x) \conveq 1 \qquad
+  x \notin X \iff \EnumP{e'}{}(x)\conveq 0\]
   On construit alors l'algorithme suivant~:
   
   \begin{algorithm}[H]
     $t \leftarrow 0$\;
     \While{True}{
-      \If{$\Enum_e(x)[t]\conveq 1$}{
+      \If{$\Tit{\EnumE(x)}\conveq 1$}{
         \KwRet 1\;
       }
-      \If{$\Enum_{e'}(x)[t]\conveq 0$}{
+      \If{$\Tit{\EnumP{e'}{}(x)}\conveq 0$}{
         \KwRet 0\;
       }
       $t \leftarrow t + 1$\;
@@ -587,7 +585,7 @@ calculables comme l'intersection des problèmes c.e. et co-c.e.
   \end{algorithm}
   Cet algorithme est calculable, et il termine sur toute entrée~: en effet,
   on sait que pour tout $x$, soit $x \in X$ soit $x \notin X$. Dans le premier
-  cas, $\Enum_e(x) \conveq 1$ et dans le second cas $\Enum_{e'}(x) \conveq 0$,
+  cas, $\EnumE(x) \conveq 1$ et dans le second cas $\EnumP{e'}{}(x) \conveq 0$,
   donc l'algorithme retourne $0$ ou $1$ selon si $x \in X$.
 
   On en déduit que $X$ est calculable.
@@ -600,15 +598,15 @@ très forte.
 \begin{exercise}
   Soit $X \subseteq \bN$ un problème de décision non vide. Montrer que
   $X$ est c.e. si et seulement s'il existe une fonction calculable totale
-  $f : \bN \to \bN$ telle que $X = \im(f)$.
+  $\makeFunName{f}{\bN}{\bN}$ telle que $X = \im(f)$.
 \end{exercise}
 
 \begin{exercise}\label{exo.enum.cr}
   Soit $X\subseteq \bN$ un problème de décision tel qu'il existe une fonction
-  calculable totale $f : \bN \to \bN$ telle que $X = \im(f)$. Montrer que si
-  $f$ est croissante strictement, alors $X$ est calculable. En déduire que si
-  $f$ est croissante au sens large et $X$ est infini, alors $X$ est
-  calculable.
+  calculable totale $\makeFunName{f}{\bN}{\bN}$ telle que $X = \im(f)$.
+  Montrer que si $f$ est croissante strictement, alors $X$ est calculable.
+  En déduire que si $f$ est croissante au sens large et $X$ est infini, alors
+  $X$ est calculable.
 \end{exercise}
 
 \begin{exercise}
@@ -620,11 +618,11 @@ sont en fait indécidable. Pour cela, on introduit la notion de fonction
 sémantique.
 
 \begin{definition}[Fonction sémantique]
-  Une fonction $f : \bN \to \bN$ est dite sémantique, ou extensionnelle, si elle
-  se relève en une fonction $\Calc(\bN \partialto \bN) \to \bN$, c'est-à-dire si
-  elle vérifie
-  \[\forall e,e' \in \bN, (\forall x, \Enum_e(x) = \Enum_{e'}(x)) \implies
-  f(e) = f(e')\]
+  Une fonction $\makeFunName{f}{\bN}{\bN}$ est dite sémantique, ou
+  extensionnelle, si elle se relève en une fonction
+  $\Calc(\bN \partialto \bN) \to \bN$, c'est-à-dire si elle vérifie
+  \[\forall e,e' \in \bN, (\forall x, \EnumE(x) = \EnumP{e'}{}(x))
+  \implies f(e) = f(e')\]
 
   Un problème sémantique (ou extensionnel) est un problème de décision dont la
   fonction caractéristique est sémantique.
@@ -635,43 +633,43 @@ programme~: deux programmes décrivant le même comportement (prenant les mêmes
 valeurs aux mêmes entrées) sont équivalents pour un problème sémantique.
 
 \begin{theorem}[Rice \cite{Rice1953}]
-  Soit $X \subseteq \bN$ un problème sémantique tel que $X \neq \varnothing$
+  Soit $X \subseteq \bN$ un problème sémantique tel que $X \neq \vide$
   et $X \neq \bN$. Alors $X$ est indécidable.
 \end{theorem}
 
 \begin{proof}
-  Comme on sait que $K$ est indécidable, on souhaite se ramener au problème de
-  $K$. Soit la fonction $\nu : \bN \partialto \bN$ définie nulle part. Sans
-  perte de généralité (quitte à remplacer $X$ par $\complement X$), on peut
-  considérer que $\nu \in X$. Soit de plus $g \notin X$. On définit
+  Comme on sait que $\KH$ est indécidable, on souhaite se ramener au problème de
+  $\KH$. Soit la fonction $\makeFunNamePartial{\nu}{\bN}{\bN}$ définie nulle
+  part. Sans perte de généralité (quitte à remplacer $X$ par $\complement X$),
+  on peut considérer que $\nu \in X$. Soit de plus $g \notin X$. On définit
   \[f : (n,x) \longmapsto
   \begin{cases}
     g(x) \text{ si } n \in K\\
     \bot \text{ sinon}
   \end{cases}\]
-  Cette définition par cas en fonction de si $n \in K$ fonctionne ici car
-  $K$ est semi-décidable~: le fait que le case \og sinon\fg donne une valeur
+  Cette définition par cas en fonction de si $n \in \KH$ fonctionne ici car
+  $\KH$ est semi-décidable~: le fait que le case \og sinon\fg donne une valeur
   indéfinie assure qu'il n'est pas nécessaire de reconnaître les instances
-  négatives de $K$ (on aurait par exemple pu multiplier $g(x)$ par la fonction
-  caractéristique de $K$). La fonction $f$ est donc encore calculable, soit
+  négatives de $\KH$ (on aurait par exemple pu multiplier $g(x)$ par la fonction
+  caractéristique de $\KH$). La fonction $f$ est donc encore calculable, soit
   $e$ un code de cette fonction.
 
   Pour une entrée $x$ donnée, on sait donc que soit $f(n,x) = g(x)$, soit
   $f(n,x) = \nu(x)$. Soit $n \in \bN$, on en déduit deux cas~:
   \begin{itemize}
-  \item si $n \in K$, alors $x \mapsto \Enum^2_e(n,x)$ coïncide avec
-    $g$, donc $s^1_1(e,n)$ est un indice de $g$. Par extensionnalité,
-    $s^1_1(e,n) \notin X$.
-  \item si $n \notin K$, alors $x \mapsto \Enum^2_e(n,x)$ est la fonction $\nu$,
-    donc $s^1_1(e,n)$ est un indice de $\nu$. Par extensionnalité,
-    $s^1_1(e,n) \in X$.
+  \item si $n \in \KH$, alors $x \mapsto \EnumP{e}{2}(n,x)$ coïncide avec
+    $g$, donc $\Smn{1}{1}(e,n)$ est un indice de $g$. Par extensionnalité,
+    $\Smn{1}{1}(e,n) \notin X$.
+  \item si $n \notin \KH$, alors $x \mapsto \EnumP{e}{2}(n,x)$ est la fonction
+    $\nu$, donc $\Smn{1}{1}(e,n)$ est un indice de $\nu$. Par extensionnalité,
+    $\Smn{1}{1}(e,n) \in X$.
   \end{itemize}
   On en déduit
-  \[n \in K \iff s^1_1(e,n) \in X\]
+  \[n \in \KH \iff \Smn{1}{1}(e,n) \in X\]
 
-  On en déduit, comme $K$ n'est pas calculable, que $X$ ne l'est pas non plus,
-  car sinon la fonction $n \mapsto s^1_1(e,n)$, calculable, déciderait le
-  problème $K$.
+  On en déduit, comme $\KH$ n'est pas calculable, que $X$ ne l'est pas non plus,
+  car sinon la fonction $n \mapsto \Smn{1}{1}(e,n)$, calculable, déciderait le
+  problème $\KH$.
 \end{proof}
 
 Le théorème de Rice apporte une réponse négative à la plupart des questions
@@ -710,10 +708,10 @@ $n$ pour $X$ pouvait être associée à une instance $f(n)$ d'un autre problème
 $X'$ de telle sorte que, avec une solution pour $f(n)$, on en déduisait une
 solution pour $n$.
 
-Dans le cas du théorème de Rice, $f$ était la fonction $n \mapsto s_1^1(e,n)$
-et $X'$ était le problème $K$. La preuve permet alors de déduire que le
+Dans le cas du théorème de Rice, $f$ était la fonction $n\mapsto\Smn{1}{1}(e,n)$
+et $X'$ était le problème $\KH$. La preuve permet alors de déduire que le
 problème $X$ est, en un sens, calculatoirement plus difficile que le problème
-$K$, puisque toute façon de résoudre $X$ permet de résoudre $K$ en tant que
+$\KH$, puisque toute façon de résoudre $X$ permet de résoudre $\KH$ en tant que
 cas particulier.
 
 Cette idée permet de définir la réduction many-one.
@@ -721,7 +719,7 @@ Cette idée permet de définir la réduction many-one.
 \begin{definition}[Réduction many-one, one-one]
   Soient $A,B \subseteq \bN$. On dit que $A$ est many-one réductible à $B$,
   ce que l'on note $A\manyOne B$, s'il existe une
-  fonction calculable totale $f : \bN \to \bN$ telle que
+  fonction calculable totale $\makeFunName{f}{\bN}{\bN}$ telle que
   \[\forall n \in \bN, n \in A \iff f(n) \in B\]
   si, de plus, la fonction $f$ est injective, alors on dit que $A$ est
   one-one réductible à $B$, et on le note $A \oneOne B$.
@@ -737,15 +735,15 @@ résultat suivant.
 \end{proposition}
 
 \begin{proof}
-  En supposant que $\chi_B$ est calculable et en posant $f$ témoignant que
-  $A \manyOne B$, on remarque que $\chi_B \circ f$ témoigne du caractère
+  En supposant que $\indicP{B}$ est calculable et en posant $f$ témoignant que
+  $A \manyOne B$, on remarque que $\indicP{B} \circ f$ témoigne du caractère
   calculable (resp. c.e., resp. co-c.e.) de $A$.
 \end{proof}
 
 \begin{remark}
   Par contraposition, on en déduit que si $A \manyOne B$ et $A$ n'est pas
   calculable, alors $B$ ne l'est pas non plus~: on peut donc utiliser cet
-  argument pour montrer le théorème de Rice en prouvant $K \manyOne X$ (en
+  argument pour montrer le théorème de Rice en prouvant $\KH \manyOne X$ (en
   reprenant les notations de l'énoncé).
 \end{remark}
 
@@ -755,7 +753,7 @@ complexité calculatoire des problèmes. En effet, comme la réduction many-one
 est réflexive et transitive (on laisse au lecteur dubitatif le soin de le
 prouver), on peut construire une relation d'équivalence canonique $\manyEq$
 de telle sorte que
-\[(\powerset(\bN)/\manyEq, \manyOne)\]
+\[(\quot{\powerset(\bN)}{\manyEq}, \manyOne)\]
 est un ensemble ordonné. On donne donc la définition de degré many-one associé
 à cette construction.
 
@@ -783,64 +781,64 @@ Une notion essentielle, établissant ce lien, est celle de problème difficile
 (resp. complet) pour une classe donnée.
 
 \begin{definition}[Problème difficile, complet]
-  Soit $\mathcal C \subseteq \powerset(\bN)$ une classe de problèmes de
+  Soit $\varCC \subseteq \powerset(\bN)$ une classe de problèmes de
   décision. On dit qu'un problème $A\subseteq \bN$ est difficile pour
-  $\mathcal C$ (ou $\mathcal C$-difficile) si
-  \[\forall B \in \mathcal C, B \manyOne A\]
-  On dit que $A$ est $\mathcal C$-complet si $A$ est $\mathcal C$-difficile et
-  $A \in \mathcal C$.
+  $\varCC$ (ou $\varCC$-difficile) si
+  \[\forall B \in \varCC, B \manyOne A\]
+  On dit que $A$ est $\varCC$-complet si $A$ est $\varCC$-difficile et
+  $A \in \varCC$.
 \end{definition}
 
 Un problème complet pour une classe donnée est donc un problème représentatif de
 la complexité calculatoire de la classe~: tout problème de la classe est au
-pire plus simple que ce problème. Ainsi, pour une classe $\mathcal C$, on peut
-vérifier qu'un problème $A$ domine $\mathcal C$ si et seulement s'il est
-plus difficile qu'un problème $\mathcal C$-complet, et qu'il suffit qu'il
-domine un problème $\mathcal C$-difficile.
+pire plus simple que ce problème. Ainsi, pour une classe $\varCC$, on peut
+vérifier qu'un problème $A$ domine $\varCC$ si et seulement s'il est
+plus difficile qu'un problème $\varCC$-complet, et qu'il suffit qu'il
+domine un problème $\varCC$-difficile.
 
-L'exemple de $K$ comme problème c.e. est représentatif dans ce sens de
+L'exemple de $\KH$ comme problème c.e. est représentatif dans ce sens de
 complétude.
 
 \begin{proposition}
-  Le problème $K$ est complet pour la classe des problèmes c.e.
+  Le problème $\KH$ est complet pour la classe des problèmes c.e.
 \end{proposition}
 
 \begin{proof}
-  On a déjà prouvé que $K$ était un problème c.e.-complet. On veut donc prouver
-  que $K$ est c.e.-difficile. Soit $A$ un problème c.e. On se donne donc
-  $f : \bN \partialto \bN$ calculable telle que pour tout $x \in \bN$,
+  On a déjà prouvé que $\KH$ était un problème c.e.-complet. On veut donc prouver
+  que $\KH$ est c.e.-difficile. Soit $A$ un problème c.e. On se donne donc
+  $\makeFunNamePartial{f}{\bN}{\bN}$ calculable telle que pour tout $x \in \bN$,
   \[x \in A \iff f(x) \conveq 1\]
   Sans perte de généralité (quitte à ajouter une boucle infinie au code de $f$
   pour les valeurs différentes de $1$), on peut supposer que $f(x) \conveq 1$
   ou $f(x) \divcal$.
 
   Pour une entrée $x \in \bN$, on sait alors que $x \in A \iff f(x) \convcal$,
-  c'est-à-dire $x \in A \iff f(x) \in K$, ce qui correspond exactement à dire
-  que $A \manyOne K $. En conclusion, $K$ est ce.e.-difficile.
+  c'est-à-dire $x \in A \iff f(x) \in \KH$, ce qui correspond exactement à dire
+  que $A \manyOne K $. En conclusion, $\KH$ est ce.e.-difficile.
 \end{proof}
 
 La structure des problèmes c.e. revient donc à celle du problème de l'arrêt (ou
 à des cas plus simples). En particulier, on sait que le problème de l'arrêt peut
 s'écrire
-\[e \in K \defeq \exists t \in \bN, T(e,e,t)\]
-Cette forme d'énoncé n'est pas anodine~: on sait que le prédicat $T$ est
+\[e \in \KH \defeq \exists t \in \bN, \KlT(e,e,t)\]
+Cette forme d'énoncé n'est pas anodine~: on sait que le prédicat $\KlT$ est
 calculable total, et on teste alors l'existence d'une entrée rendant le
 prédicat vrai.
 
 Le fait que les instances positives sont calculables tient à cette
 quantification existentielle. En effet, quand une instance de $t$ qui rend
-vrai $T(e,e,t)$ existe, elle sera trouvée au bout d'un temps fini (possiblement
+vrai $\KlT(e,e,t)$ existe, elle sera trouvée au bout d'un temps fini (possiblement
 très grand), mais le fait qu'aucun temps d'arrêt existe implique qu'on doit
-tester une infinité de valeurs. Au contraire, si l'on regarder $\complement K$,
-on obtient l'énoncé $\forall t \in \bN, \lnot T(e,e,t)$ qui ne peut tester ses
+tester une infinité de valeurs. Au contraire, si l'on regarde $\complement \KH$,
+on obtient l'énoncé $\forall t \in \bN, \lnot \KlT(e,e,t)$ qui ne peut tester ses
 instances positives en temps fini mais peut trouver des contre-exemples en temps
 fini si un tel $t$ existe.
 
 On voit donc un lien fort entre la quantification des énoncés et la complexité
-calculatoire. Dans le \cref{chp.modZFC}, la hiérarchie de Lévy (\cref{def.Levy})
+calculatoire. Cette complexité par quantification rappelle une autre notion~:
+dans le \cref{chp.modZFC}, la hiérarchie de Lévy (\cref{def.Levy})
 a été introduite par une hiérarchie de (classes d'équivalences de) formules,
 triées par les alternances de quantification.
-
 Dans cette hiérarchie, les quantifications non bornées amènent une
 difficulté de traitement du fait que ces tests sur l'entièreté du modèle sont
 instables par passage dans un modèle intérieur. Dans le cas présent, la
@@ -848,7 +846,7 @@ difficulté amenée par une quantification non bornée tient aussi au fait qu'il
 faille tester l'entièreté des objets du modèle, mais ici parce que les
 méthodes que nous avons sont intrinsèquement finitaires. Ainsi, il n'est pas
 possible de tester réellement toutes les valeurs de $\bN$, et une quantification
-va donc rajouter un ordre de difficultée infinie à un problème.
+va donc rajouter un ordre de difficulté infini à un problème.
 
 Comme dans le cas de la hiérarchie de Lévy, cependant, un groupe de
 quantificateurs identiques peut se regrouper par une fonction de
@@ -872,13 +870,13 @@ qui est une façon d'ordonner les problèmes par difficulté croissante.
   \item pour tout $n \in \bN$, la classe $\HierArithS{n+1}$ est définie par
     l'ensemble des problèmes $A$ tel qu'il existe $B \in \HierArithP n$ tel
     que
-    \[\forall n_1,\ldots,n_k \in \bN, (n_1,\ldots,n_k) \in A \iff
-    (\exists p_1,\ldots,p_m, (n_1,\ldots,n_k,p_1,\ldots,p_m) \in B)\]
+    \[\forall\vec n \in \bN, \vec n \in A \iff
+    (\exists \vec m, (\vec n,\vec m) \in B)\]
   \item pour tout $n \in \bN$, la classe $\HierArithP{n+1}$ est définie par
     l'ensemble des problèmes $A$ tel qu'il existe $B \in \HierArithS n$ tel
     que
-    \[\forall n_1,\ldots,n_k \in \bN, (n_1,\ldots,n_k) \in A \iff
-    (\forall p_1,\ldots,p_m, (n_1,\ldots,n_k,p_1,\ldots,p_m) \in B)\]
+    \[\forall \vec n \in \bN, \vec n \in A \iff
+    (\forall \vec m, (\vec n,\vec m) \in B)\]
   \end{itemize}
 \end{definition}
 
@@ -890,8 +888,8 @@ qui est une façon d'ordonner les problèmes par difficulté croissante.
 \begin{exercise}
   Montrer que pour tout $n$, un problème $A$ est dans $\HierArithS{n+1}$ si
   et seulement s'il existe $B \in \HierArithP n$ tel que
-  \[A = \{(n_1,\ldots,n_k) \in \bN^k \mid \exists p,
-  \langle n_1,\ldots,n_k,p\rangle \in B\}\]
+  \[A =
+  \compr{\vec n \in \bN^k}{\exists \vec m, \langle \vec n,\vec m\rangle\in B}\]
 \end{exercise}
 
 \begin{remark}
@@ -904,7 +902,8 @@ qui est une façon d'ordonner les problèmes par difficulté croissante.
 \begin{exercise}
   Montrer que pour tout $n$, un problème $A$ est dans $\HierArithS{n+1}$ si
   et seulement s'il existe un problème $B \in \HierArithP n$ tel que
-  \[\forall n \in \bN, \chi_A(n) = \sup_{k \in \bN} \chi_B\langle n,k\rangle\]
+  \[\forall n \in \bN, \indicP{A}(n) =
+  \sup_{k \in \bN} \indicP{B}\langle n,k\rangle\]
 \end{exercise}
 
 La hiérarchie arithmétique donne donc une vision alternative de la complexité
@@ -920,7 +919,7 @@ contient strictement plus de problème.
 Ce résultat n'a rien d'évident~: dans le domaine de la complexité, la
 hiérarchie polynomiale occupe une place similaire à la hiérarchie arithmétique
 en calculabilité, et le fait que la hiérarchie ne s'effondre pas implique que
-$P \neq NP$, énoncé dont nous n'avons pas de preuve.
+$\PPoly \neq \NPoly$, énoncé dont nous n'avons pas de preuve.
 
 Cependant, dans le cas de la hiérarchie arithmétique, un théorème existe bien
 pour montrer que la hiérarchie ne s'effondre pas~: il s'agit du théorème de
@@ -931,40 +930,40 @@ utiliser une réduction différente de la réduction many-one.
 
 La réduction many-one est, en un sens, une réduction trop restreinte~: plusieurs
 problèmes peuvent être vu comme assimilables et sont distincts pour cette
-réduction. Par exemple, $K$ et $\complement K$ contiennent en essence la même
+réduction. Par exemple, $\KH$ et $\complement \KH$ contiennent en essence la même
 information calculatoire (celle du problème de l'arrêt) mais ne sont pas
 many-one réductibles l'un à l'autre.
 
 \begin{proposition}
-  On n'a ni $K \manyOne \complement K$ ni $\complement K \manyOne K$.
+  On n'a ni $\KH \manyOne \complement \KH$ ni $\complement \KH \manyOne \KH$.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $K \manyOne \complement K$. On pose alors une fonction
+  Supposons que $\KH \manyOne \complement \KH$. On pose alors une fonction
   $f$ totale calculable telle que
-  \[\forall e \in \bN, e \in K \iff f(e) \in \complement K\]
-  Soit $e \in \bN$. Si $\Enum_e(e)$ termine, alors $e \in K$. Si
-  $\Enum_e(e)$ ne termine pas, alors $e \notin K$, donc
-  $f(e) \notin \complement K$, donc $f(e) \in K$, donc $\Enum_{f(e)}(f(e))$
-  termine. Ainsi, on a un algorithme pour tester si $e \in K$ en testant
+  \[\forall e \in \bN, e \in \KH \iff f(e) \in \complement \KH\]
+  Soit $e \in \bN$. Si $\EnumE(e)$ termine, alors $e \in \KH$. Si
+  $\EnumE(e)$ ne termine pas, alors $e \notin \KH$, donc
+  $f(e) \notin \complement \KH$, donc $f(e) \in \KH$, donc $\EnumP{f(e)}{}(f(e))$
+  termine. Ainsi, on a un algorithme pour tester si $e \in \KH$ en testant
   en parallèle si $e$ ou $f(e)$ s'arrête sur son entrée.
 
-  On en déduit que si $K \manyOne \complement K$ (et par symétrie de l'argument
-  entre $K$ et $\complement K$, si $\complement K \manyOne k$), alors
-  $K$ est décidable. On en déduit le résultat.
+  On en déduit que si $\KH \manyOne \complement \KH$ (et par symétrie de l'argument
+  entre $\KH$ et $\complement \KH$, si $\complement \KH \manyOne \KH$), alors
+  $\KH$ est décidable. On en déduit le résultat.
 \end{proof}
 
-On souhaite donc trouver une réduction permettant d'égaler plus de problèmes.
+On souhaite donc trouver une réduction permettant de confondre plus de problèmes.
 L'idée derrière cette réduction est que, pour prouver $A \leq B$, on peut
 partir du principe que $B$ est décidable pour décider $A$.
 
 Pour formaliser cette idée, on introduit la notion d'oracle.
 
 \begin{definition}[Calculabilité relative]
-  Soit $f : \bN \to \bN$, on définit l'ensemble des fonctions $f$-récursives
-  comme la plus petite classe contenant $f$, les projections et l'opération
-  successeur, et qui est stable à la fois par les schémas $\mu$, de récurrence
-  primitive et de composition.
+  Soit $\makeFunName{f}{\bN}{\bN}$, on définit l'ensemble des fonctions
+  $f$-récursives comme la plus petite classe contenant $f$, les projections et
+  l'opération successeur, et qui est stable à la fois par les schémas $\muC$,
+  de récurrence primitive et de composition.
 
   On définit l'ensemble des $f$-machines de Turing comme l'ensemble des
   machines de Turing à $k+1$ rubans d'entrée telle que le calcul de la machine
@@ -987,40 +986,40 @@ calculable.
 
 \begin{exercise}
   Montrer qu'une fonction $g$ est calculable si et seulement si elle est
-  calculable relativement au problème $\varnothing$, si et seulement s'il
-  existe une fonction $f : \bN \to \bN$ calculable telle que $g$ est
+  calculable relativement au problème $\vide$, si et seulement s'il existe
+  une fonction $\makeFunName{f}{\bN}{\bN}$ calculable telle que $g$ est
   $f$-calculable.
 \end{exercise}
 
-Par exemple, en supposant donné un oracle pour $K$, il devient aisé de calculer
-$\complement K$~: il suffit d'appeler $\chi_K$ et d'inverser sa valeur.
+Par exemple, en supposant donné un oracle pour $\KH$, il devient aisé de calculer
+$\complement \KH$~: il suffit d'appeler $\indicP{\KH}$ et d'inverser sa valeur.
 
 On peut prouver des résultats similaires aux résultats de calculabilité
 précédents~: il existe une machine universelle $f$-calculable pour les fonctions
-$f$-calculables, le théorème $s_n^m$ est le même, \latinexpr{etc.} On définit
+$f$-calculables, le théorème $\Smn{m}{n}$ est le même, \latinexpr{etc.} On définit
 donc une notion d'énumération relative à une fonction donnée.
 
 \begin{definition}[\'Enumération des fonctions $f$-calculables]
-  Soit $f : \bN \to \bN$. On note $\Enum^f$ une fonction surjective des entiers
-  dans la classe des fonctions $f$-calculables (de façon équivalente, des
-  fonctions $f$-récursives). Pour un problème $X\subseteq \bN$, on note
-  $\Enum^X$ pour l'énumération des fonctions $\chi_X$-calculables.
+  Soit $\makeFunName{f}{\bN}{\bN}$. On note $\EnumP{}{f}$ une fonction surjective
+  des entiers dans la classe des fonctions $f$-calculables (de façon équivalente,
+  des fonctions $f$-récursives). Pour un problème $X\subseteq \bN$, on note
+  $\EnumP{}{X}$ pour l'énumération des fonctions $\indicP{X}$-calculables.
 \end{definition}
 
 La réduction Turing est alors naturelle à définir~: un problème $A$ est plus
-simple qu'un problème $B$ s'il est possible de calculer $\chi_A$ à partir d'un
-oracle pour $\chi_B$.
+simple qu'un problème $B$ s'il est possible de calculer $\indicP{A}$ à partir d'un
+oracle pour $\indicP{B}$.
 
 \begin{definition}[Réduction Turing, degré Turing]
   Soient $A,B\subseteq \bN$ deux problèmes. On définit le fait que $A$ est
   Turing-réductible à $B$ par
-  \[A \TuringRed B \defeq \exists e \in \bN, \chi_A = \Enum^B_e\]
+  \[A \TuringRed B \defeq \exists e \in \bN, \indicP{A} = \EnumP{e}{B}\]
 
   Deux problèmes sont dits Turing-équivalents lorsqu'ils sont mutuellement
   Turing-réductibles, ce que l'on note $\TuringEq$.
 
   On appelle ensemble des degrés Turing l'ensemble ordonné
-  $(\powerset(\bN) / \TuringEq, \TuringRed)$, que l'on note $\TuringDeg$.
+  $(\quot{\powerset(\bN)}{\TuringEq}, \TuringRed)$, que l'on note $\TuringDeg$.
 \end{definition}
 
 \begin{exercise}
@@ -1034,6 +1033,14 @@ oracle pour $\chi_B$.
   $\TuringDeg$.
 \end{exercise}
 
+\begin{exercise}
+    Montrer que pour toute fonction $\makeFunName{f}{\bN}{\bN}$, en notant
+    $\funGraph{f}$ son graphe (\latinexpr{i.e.} la partie
+    $\compr{(x,y)\in\bN^2}{f(x) = y}$), $\funGraph(f)\TuringEq f$. On peut
+    donc travailler avec des parties de $\bN^k$ pour représenter toutes les
+    fonctions.
+\end{exercise}
+
 L'opération fondamentale sur les degrés Turing est le saut Turing. On a vu que
 le problème de l'arrêt est indécidable, mais cette indécidabilité passe aussi à
 la relativisation par une partie de $\bN$.
@@ -1041,7 +1048,7 @@ la relativisation par une partie de $\bN$.
 \begin{definition}[Arrêt relativisé]
   Soit $X\subseteq \bN$ un problème de décision. On appelle problème de l'arrêt
   relativisé à $X$ l'ensemble
-  \[K^X \defeq \{ e \in \bN \mid \Enum^X_e(e)\convcal\}\]
+  \[\KHP{X} \defeq \compr{e \in \bN}{\EnumP{e}{X}(e)\convcal}\]
 \end{definition}
 
 \begin{proposition}
@@ -1055,21 +1062,25 @@ la relativisation par une partie de $\bN$.
 \end{proof}
 
 \begin{remark}
-  Il faut bien différencier le problème de l'arrêt $K$, qui est $K$-calculable,
-  du problème relativisé de l'arrêt en $K$, $K^K$, qui n'est pas
-  $K$-calculable.
+  Il faut bien différencier le problème de l'arrêt $\KH$, qui est $\KH$-calculable,
+  du problème relativisé de l'arrêt en $\KH$, $\KHP{\KH}$, qui n'est pas
+  $\KH$-calculable.
 
-  On remarque aussi que $K^X$ est toujours $X$-r.e.
+  On remarque aussi que $\KHP{X}$ est toujours $X$-r.e.
 \end{remark}
 
 On peut aussi construire les itérations de l'arrêt.
 
 \begin{definition}[Problème de l'arrêt itéré]
-  Pour tout $n \in \bN$, le problème de l'arrêt itéré $K^{(n)} \subseteq \bN$
+  Pour tout $n \in \bN$, le problème de l'arrêt itéré $\KHP{(n)} \subseteq \bN$
   est défini par~:
   \begin{itemize}
-  \item $K^{(0)} \defeq K$
-  \item $K^{(n+1)} \defeq K^{K^{(n)}}$
+  \begin{minipage}{0.45\textwidth}
+  \item $\KHP{(0)} \defeq \vide$
+  \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $\KHP{(n+1)} \defeq \KHP{\KHP{(n)}}$
+  \end{minipage}
   \end{itemize}
 \end{definition}
 
@@ -1079,27 +1090,27 @@ degrés Turing, qui les augmente strictement.
 \begin{definition}[Saut Turing]
   Soit $\degD \in \TuringDeg$. On définit son saut de Turing
   $\degD' \in \TuringDeg$ par, pour tout $X \in \degD$~:
-  \[\degD' \defeq \{Y \subseteq \bN \mid Y \TuringEq K^X\}\]
+  \[\degD' \defeq \compr{Y \subseteq \bN}{Y \TuringEq \KHP{X}}\]
 
   On définit pour tout $n \in \bN$ son saut de Turing itéré par~:
   \begin{itemize}
   \item $\degD^{(0)} \defeq \degD$
-  \item $\degD^{(n+1)} \defeq (\degD^{(n)})'$
+  \item $\degD^{(n+1)} \defeq \left(\degD^{(n)}\right)'$
   \end{itemize}
 \end{definition}
 
 \begin{proof}
-  Il convient de montrer que, si $X \TuringEq Y$, alors $K^X \TuringEq K^Y$,
+  Il convient de montrer que, si $X\TuringEq Y$, alors $\KHP{X}\TuringEq\KHP{Y}$,
   pour en déduire que $\degD'$ est bien défini. Comme la situation est
-  symétrique en $X$ et $Y$, on va montrer que $K^X \TuringRed K^Y$.
+  symétrique en $X$ et $Y$, on va montrer que $\KHP{X} \TuringRed \KHP{Y}$.
 
-  On veut donc montrer que $K^X$ est $K^Y$-calculable, sachant que $X$ est
+  On veut donc montrer que $\KHP{X}$ est $\KHP{Y}$-calculable, sachant que $X$ est
   $Y$-calculable. On sait donc que toute fonction $X$-calculable est aussi
   $Y$-calculable. Ainsi, si on a une fonction permettant de décider l'arrêt
   des fonctions $Y$-calculables, cette fonction permet en particulier de
   décider l'arrêt des fonctions $X$-calculables~: il suffit de simuler la
   fonction en remplaçant l'oracle pour $X$ par le calcul de $X$ avec oracle pour
-  $Y$. On en déduit que $K^X \TuringRed K^Y$.
+  $Y$. On en déduit que $\KHP{X} \TuringRed \KHP{Y}$.
 \end{proof}
 
 \begin{corollary}
@@ -1109,16 +1120,15 @@ degrés Turing, qui les augmente strictement.
 
 \begin{notation}
   On confondra régulièrement les degrés Turing avec certains de leurs
-  représentans. En particulier, on confond généralement $\varnothing$ avec
-  son degré associé (le degré des fonctions calculables) et
-  $\varnothing'$ avec le degré contenant le problème de l'arrêt, qu'on appelle
-  le degré Turing-complet.
+  représentants. En particulier, on confond généralement $\vide$ avec son
+  degré associé (le degré des fonctions calculables) et $\vide'$ avec le degré
+  contenant le problème de l'arrêt, qu'on appelle le degré Turing-complet.
 \end{notation}
 
 On peut donc résumer le saut Turing de la façon suivante~:
 \begin{itemize}
 \item c'est une fonction qui à chaque problème $X$ lui associe son problème de
-  l'arrêt relativisé $K^X$
+  l'arrêt relativisé $\KHP{X}$
 \item c'est une fonction croissante $\TuringDeg \to \TuringDeg$
 \item pour tout degré $\degD$, $\degD \TuringRedS \degD'$
 \end{itemize}
@@ -1134,60 +1144,60 @@ comme un passage sur une itération infinie d'un algorithme de l'étage du
 dessous. Le saut Turing, quant à lui, permet de directement passer d'un problème
 au problème de l'arrêt qui lui est relatif~: ce passage correspond aussi à une
 forme d'itération infinie. Le théorème de Post relie les deux, en montrant que
-le problème de l'arrêt itéré $K^{(n)}$ correspond exactement à un problème
+le problème de l'arrêt itéré $\KHP{(n)}$ correspond exactement à un problème
 $\HierArithS n$-complet (pour la réduction many-one, ce qui signifie qu'il est
 en particulier complet pour la réduction Turing).
 
 \begin{theorem}[Post]\label{thm.Post}
   Pour tout $n \in \bN$, on a les faits suivants~:
   \begin{itemize}
-  \item $K^{(n)}$ est $\HierArithS{n+1}$-complet pour la réduction many-one.
-  \item $\complement K^{(n)}$ est $\HierArithP{n+1}$-complet pour la réduction
+  \item $\KHP{(n)}$ est $\HierArithS{n}$-complet pour la réduction many-one.
+  \item $\complement \KHP{(n)}$ est $\HierArithP{n}$-complet pour la réduction
     many-one.
-  \item un problème est $\HierArithD{n+1}$ si et seulement s'il est
-    $K^{(n)}$-calculable.
+  \item un problème est $\HierArithD{n}$ si et seulement s'il est
+    $\KHP{(n)}$-calculable.
   \end{itemize}
 \end{theorem}
 
 \begin{proof}
-  On prouve le résultat par récurrence sur $n$. On suppose donc que $K^{(n)}$
-  est $\HierArithS{n+1}$-complet et que $\complement K^{(n)}$ est
-  $\HierArithP{n+1}$-complet.
+  On prouve le résultat par récurrence sur $n$. On suppose donc que $\KHP{(n)}$
+  est $\HierArithS{n}$-complet et que $\complement \KHP{(n)}$ est
+  $\HierArithP{n}$-complet.
 
-  Soit $X$ un problème $\HierArithS{n+2}$. On peut donc écrire
+  Soit $X$ un problème $\HierArithS{n+1}$. On peut donc écrire
   \[\forall x \in \bN, x \in X \iff \exists y \in \bN, (x,y) \in Y\]
-  pour $Y$ un problème $\HierArithP{n+1}$. Comme $\complement K^{(n)}$ est
-  $\HierArithP{n+1}$-complet, on trouve $f$ calculable tel que
-  \[\forall (x,y) \in \bN, (x,y) \in Y \iff f(x,y) \in \complement K^{(n)}\]
+  pour $Y$ un problème $\HierArithP{n}$. Comme $\complement \KHP{(n)}$ est
+  $\HierArithP{n}$-complet, on trouve $f$ calculable tel que
+  \[\forall (x,y) \in \bN, (x,y) \in Y \iff f(x,y) \in \complement \KHP{(n)}\]
   Le membre de droite signifie que $f(x,y)$ est un code ne terminant pas sur son
-  entrée pour l'énumération $\Enum^{K^{(n-1)}}$. On définit alors la fonction
+  entrée pour l'énumération $\EnumP{}{K^{(n-1)}}$. On définit alors la fonction
   \[\makeFunNamePartial{g}{\bN}{\bN}\]
-  telle que $g(x)$ énumère tous les $y\in\bN$ et teste si $f(x,y) \in K^{(n)}$.
-  Si elle trouve $y$ tel que $f(x,y) \in \complement K^{(n)}$, elle s'arrête
+  telle que $g(x)$ énumère tous les $y\in\bN$ et teste si $f(x,y) \in \KHP{(n)}$.
+  Si elle trouve $y$ tel que $f(x,y) \in \complement \KHP{(n)}$, elle s'arrête
   et accepte $x$.
 
-  $g$ est $K^{(n)}$ définissable car tester si $f(x,y) \in \complement K^{(n)}$
-  peut se faire avec un test d'appartenance à $K^{(n)}$ (qui est son oracle), et
+  $g$ est $\KHP{(n)}$ définissable car tester si $f(x,y) \in \complement \KHP{(n)}$
+  peut se faire avec un test d'appartenance à $\KHP{(n)}$ (qui est son oracle), et
   le reste de l'algorithme est un parcours non borné des valeurs de $y$.
 
   On peut transformer $g$ en une fonction $h$ telle que $h(x)(y) = g(x)$, de
   sorte qu'exécuter $h(x)$ sur son entrée correspond simplement à exécuter
-  $g$ (il suffit d'utiliser le théorème $s_n^m$).
+  $g$ (il suffit d'utiliser le théorème $\Smn{m}{n}$).
 
   Ainsi, $x \in X$ si et seulement s'il existe $y$ tel que $(x,y) \in Y$, si
-  et seulement s'il existe $y$ tel que $f(n,m) \in K^{(n)}$, si et seulement si
-  $g(x)$ termine sur sa propre entrée, ce qui signifie $g(x) \in \K^{(n+1)}$.
-  Ainsi $X \TuringRed K^{(n+1)}$, d'où la propriété par induction.
+  et seulement s'il existe $y$ tel que $f(n,m) \in \KHP{(n)}$, si et seulement si
+  $g(x)$ termine sur sa propre entrée, ce qui signifie $g(x) \in \KHP{(n+1)}$.
+  Ainsi $X \TuringRed \KHP{(n+1)}$, d'où la propriété par induction.
 
   Le cas de $\HierArithP n$ se traite de façon similaire. Pour $\HierArithD n$,
   on remarque qu'être décidable est équivalent (en réutilisant l'argument du
   \cref{lem.cal.c.e.co.c.e}) au fait d'être à la fois c.e. et co-c.e., ce qui
-  correspond ici à appartenir à la fois à $\HierArithS{n+1}$ et à
-  $\HierArithP{n+1}$.
+  correspond ici à appartenir à la fois à $\HierArithS{n}$ et à
+  $\HierArithP{n}$.
 \end{proof}
 
 \begin{corollary}
-  Puisqu'on sait que $K^{(n+1)}$ n'est pas $K^{(n)}$-calculable, on en déduit
+  Puisqu'on sait que $\KHP{(n+1)}$ n'est pas $\KHP{(n)}$-calculable, on en déduit
   que chaque étage de la hiérarchie arithmétique est inclus strictement dans
   l'étage supérieur. Pour la réduction Turing, les degrés $\HierArithS n$ et
   $\HierArithP n$ sont égaux, mais tous les degrés many-one sont distincts.
@@ -1195,8 +1205,8 @@ en particulier complet pour la réduction Turing).
 
 \begin{remark}
   Comme une fonction est calculable si et seulement si elle est
-  $\varnothing$-calculable, on peut réécrire le théorème de Post en disant que
-  $\varnothing^{(n)}$ est $\HierArithS n$-complet pour tout $n \geq 1$. La
-  notation $\varnothing'$ (ainsi que $\varnothing^{(n)}$) est standard pour
+  $\vide$-calculable, on peut réécrire le théorème de Post en disant que
+  $\vide^{(n)}$ est $\HierArithS n$-complet pour tout $n \geq 1$. La
+  notation $\vide'$ (ainsi que $\vide^{(n)}$) est standard pour
   parler du problème de l'arrêt.
 \end{remark}
