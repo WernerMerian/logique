@@ -317,9 +317,12 @@
 \newcommand{\dvvd}{\mathrel{\mathord{\dashv}\mathord{\vdash}}} % équivalence prouvable
 \newcommand{\nvdP}{\nvdash}
 \newcommand{\vdLK}{\vdash_{\LK}} % relation de prouvabilité pour LK
+\newcommand{\dvvdLK}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LK}}}
 \newcommand{\vdLJ}{\vdash_{\LJ}} % relation de prouvabilité pour LJ
+\newcommand{\dvvdLJ}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LJ}}}
 \newcommand{\nvdLJ}{\nvdash_{\LJ}}
 \newcommand{\vdLS}{\vdash_{\LS}} % relation de prouvabilité pour LS
+\newcommand{\dvvdLS}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LS}}}
 \newcommand{\vdNK}{\vdash_{\NK}} % relation de prouvabilité pour NK
 \newcommand{\vdNJ}{\vdash_{\NJ}} % relation de prouvabilité pour NJ
 \newcommand{\vdLL}{\vdash_{\LL}} % relation de prouvabilité pour LL
@@ -342,6 +345,8 @@
 
 %----- REGLES D'INFERENCE -----%
 
+\DeclareMathOperator{\rml}{l}
+\DeclareMathOperator{\rmr}{r}
 \DeclareMathOperator{\Rax}{ax}
 \DeclareMathOperator{\Rcut}{cut}
 \DeclareMathOperator{\Rle}{le}
@@ -351,23 +356,41 @@
 \DeclareMathOperator{\Rlw}{lw}
 \DeclareMathOperator{\Rrw}{rw}
 \newcommand{\Rtop}{\top}
+\newcommand{\Rrtop}{\mathrm{r}\mathord{\Rtop}}
 \newcommand{\Rbot}{\bot}
+\newcommand{\Rlbot}{\mathrm{l}\mathord{\Rbot}}
 \newcommand{\Rlnot}{\mathrm{l}\mathord{\lnot}}
 \newcommand{\Rrnot}{\mathrm{r}\mathord{\lnot}}
 \newcommand{\Rlor}{\mathrm{l}\mathord{\lor}}
 \newcommand{\Rror}{\mathrm{r}\mathord{\lor}}
+\newcommand{\RrorG}{\Rror_{1}}
+\newcommand{\RrorD}{\Rror_{2}}
 \newcommand{\Rland}{\mathrm{l}\mathord{\land}}
+\newcommand{\RlandG}{\Rland_{1}}
+\newcommand{\RlandD}{\Rland_{2}}
 \newcommand{\Rrand}{\mathrm{r}\mathord{\land}}
 \newcommand{\Rlto}{\mathrm{l}\mathord{\to}}
 \newcommand{\Rrto}{\mathrm{r}\mathord{\to}}
+\newcommand{\RrtoG}{\Rrto_{1}}
+\newcommand{\RrtoD}{\Rrto_{2}}
 \newcommand{\Rlfora}{\mathrm{l}\mathord{\forall}}
 \newcommand{\Rrfora}{\mathrm{r}\mathord{\forall}}
 \newcommand{\Rlex}{\mathrm{l}\mathord{\exists}}
 \newcommand{\Rrex}{\mathrm{r}\mathord{\exists}}
-\newcommand{\Rlsq}{\mathrm{l}\mathord{\square}}
-\newcommand{\Rrsq}{\mathrm{r}\mathord{\square}}
-\newcommand{\Rldia}{\mathrm{l}\mathord{\diamond}}
-\newcommand{\Rrdia}{\mathrm{r}\mathord{\diamond}}
+\newcommand{\Rlsq}{\mathrm{l}\mathord{\modSq}}
+\newcommand{\Rrsq}{\mathrm{r}\mathord{\modSq}}
+\newcommand{\Rldia}{\mathrm{l}\mathord{\modDia}}
+\newcommand{\Rrdia}{\mathrm{r}\mathord{\modDia}}
+\newcommand{\Rleq}{\mathrm{l}{\mathord{=}}}
+\newcommand{\Rreq}{\mathrm{r}\mathord{=}}
+\newcommand{\Rlwi}{\mathrm{l}\mathord{\with}}
+\newcommand{\RlwiG}{\Rlwi_{1}}
+\newcommand{\RlwiD}{\Rlwi_{2}}
+\newcommand{\Rrwi}{\mathrm{r}\mathord{\with}}
+\newcommand{\Rlpar}{\mathrm{l}\mathord{\parr}}
+\newcommand{\Rrpar}{\mathrm{r}\mathord{\parr}}
+\newcommand{\Rlloli}{\mathrm{l}\mathord{\multimap}}
+\newcommand{\Rrloli}{\mathrm{r}\mathord{\multimap}}
 \newcommand{\RtopI}{\top}
 \newcommand{\RbotC}{\bot_{\mathrm{c}}}
 \newcommand{\RbotE}{\bot_{\mathrm{e}}}
@@ -376,13 +399,13 @@
 \newcommand{\RnotI}{\mathord{\lnot}_{\mathrm{i}}}
 \newcommand{\RnotE}{\mathord{\lnot}_{\mathrm{e}}}
 \newcommand{\RorI}{\mathord{\lor}_{\mathrm{i}}}
-\newcommand{\RorIG}{\RorI^{\Rg}}
-\newcommand{\RorID}{\RorI^{\Rd}}
+\newcommand{\RorIG}{\RorI^{1}}
+\newcommand{\RorID}{\RorI^{2}}
 \newcommand{\RorE}{\mathord{\lor}_{\mathrm{e}}}
 \newcommand{\RandI}{\mathord{\land}_{\mathrm{i}}}
 \newcommand{\RandE}{\mathord{\land}_{\mathrm{e}}}
-\newcommand{\RandEG}{\RandE^{\mathrm{g}}}
-\newcommand{\RandED}{\RandE^{\mathrm{d}}}
+\newcommand{\RandEG}{\RandE^{1}}
+\newcommand{\RandED}{\RandE^{2}}
 \newcommand{\RtoI}{\mathord{\to}_{\mathrm{i}}}
 \newcommand{\RtoE}{\mathord{\to}_{\mathrm{e}}}
 \newcommand{\RforaI}{\mathord{\forall}_{\mathrm{i}}}
@@ -394,8 +417,8 @@
 \newcommand{\iffS}{\leftrightarrow} % ssi dans sa version syntaxique
 \newcommand{\RiffI}{\mathord{\iffS}_{\mathrm{i}}}
 \newcommand{\RiffE}{\mathord{\iffS}_{\mathrm{e}}}
-\newcommand{\RiffEG}{\RiffE^{\mathrm{g}}}
-\newcommand{\RiffED}{\RiffE^{\mathrm{d}}}
+\newcommand{\RiffEG}{\RiffE^{1}}
+\newcommand{\RiffED}{\RiffE^{2}}
 \DeclareMathOperator{\RLEM}{LEM}
 
 %----- REALISABILITE -----%
@@ -1011,3 +1034,42 @@
 \newcommand{\godG}{G} % formule G de Gödel
 \newcommand{\tradFP}{\Psi} % prédicat Psi pour une traduction
 \DeclareMathOperator{\toTrad}{Trad} % traduction
+
+%----- CALCUL DES SEQUENTS -----%
+
+\DeclareMathOperator{\RComp}{comp}
+\DeclareMathOperator{\RAff}{aff}
+\DeclareMathOperator{\RRaa}{raa}
+\newcommand{\indIff}{\xLeftrightarrow{\textit{ind.hyp.}}}
+\newcommand{\interIff}{\xLeftrightarrow{\text{?}}}
+\newcommand{\Sigl}{\Sigma^{\mathrm{l}}}
+\newcommand{\Sigr}{\Sigma^{\mathrm{r}}}
+\newcommand{\GFl}{\Phi^{\mathrm{l}}}
+\newcommand{\GFr}{\Phi^{\mathrm{r}}}
+\newcommand{\lQuant}{\mathrm{l}{\mathord{\quantif}}}
+\newcommand{\rQuant}{\mathrm{r}{\mathord{\quantif}}}
+\newcommand{\Rexch}{\mathrm{exch}}
+\DeclareMathOperator{\logR}{log}
+\newcommand{\logNot}{\logR\mathord{\lnot}}
+\newcommand{\logOr}{\logR\mathord{\lor}}
+\newcommand{\logWi}{\logR\mathord{\with}}
+\newcommand{\logAnd}{\logR\mathord{\land}}
+\newcommand{\logPar}{\logR\mathord{\parr}}
+\newcommand{\logImp}{\logR\mathord{\to}}
+\newcommand{\logLoli}{\logR\mathord{\multimap}}
+\newcommand{\logFora}{\logR\mathord{\forall}}
+\newcommand{\logEx}{\logR\mathord{\exists}}
+\newcommand{\logSq}{\logR\mathord{\modSq}}
+\newcommand{\logDia}{\logR\mathord{\modDia}}
+\newcommand{\logEq}{\logR\mathord{=}}
+\DeclareMathOperator{\AxN}{N}
+\DeclareMathOperator{\AxK}{K}
+\DeclareMathOperator{\AxT}{T}
+\newcommand{\strucS}{\mathcal{S}} % ensemble de structures S
+\newcommand{\varMK}{\mathcal{K}} % modèle de Kripke K
+\newcommand{\toK}[2]{\toMP{#1}{\varMK_{#2}}}
+\newcommand{\toKw}[1]{\toK{#1}{w}}
+\newcommand{\varOW}{\mathcal{W}} % ensemble ordonné W
+\newcommand{\forc}{\Vdash} % relation de forcing
+\newcommand{\nforc}{\nVdash}
+\newcommand{\LogM}{\mathrm{S}4} % logique modale S4
