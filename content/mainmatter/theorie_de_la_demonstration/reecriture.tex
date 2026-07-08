@@ -1,0 +1,856 @@
+\chapter{Théorie abstraite de la réécriture}
+\label{chp.reecr}
+
+\minitoc
+
+\lettrine{L}{e} chapitre précédent utilisait par deux fois une relation
+$\reecr{}$ pour réécriture les arbres de preuve. Dans la suite de cette
+partie, on aura souvent besoin de relation de réécriture (qu'on
+appellera aussi relation de réduction, suivant le contexte), et on se
+propose donc d'en étudier la théorie générale en amont. Ce chapitre est
+donc dédié à la théorie abstraite de la réécriture, portant sur les
+système abstraits de réécriture (\foreignexpr{Abstract Rewriting Systems},
+abrégé en ARS).
+
+Le principal objectif du chapitre est de donner les outils nécessaires
+pour étudier efficacement les systèmes de réécriture donnés dans les
+prochaines chapitres. A FAIRE
+
+On pourra se référer à \cite{TermRewrAllThat} pour une étude plus
+approfondie des systèmes de réécriture.
+
+\section{\'Etude des ARS}
+
+Le cadre des ARS est particulièrement général~: on s'intéresse en soi à
+n'importe quel ensemble muni d'une relation binaire. Dans les faits, c'est
+le choix des propriétés d'intérêt ainsi que des objets concrets auxquels on
+applique la théorie qui donne à ce cadre son sens. Ainsi, on peut déjà citer
+le cas de $(\ProofLJ(\Sign),\reecr{})$ ou de $(\ProofLK(\Sign),\reecr{})$.
+Abordons donc, dans un premier temps, les constructions élémentaires
+fixant un peu plus le cadre de travail.
+
+\subsection{Premières définitions et propriétés}
+
+\noindent
+Commençons par la définition la plus élémentaire, déjà évoquée avant.
+
+\begin{definition}[Système de réécriture abstrait]
+    On appelle système de réécriture abstrait (abrégé $\ARS$) une paire
+    $(A,\varTo)$ où $\mathord{\varTo}\subseteq A^2$ est une relation
+    binaire.
+\end{definition}
+
+L'exemple sur lequel il est bon de fixer son intuition pour appréhender les
+ARS est celui d'un système de calcul (par exemple, on pourrait considérer
+des configurations de machines de Turing avec la relation d'action par une
+machine donnée). Dans un système de calcul, les
+éléments sont des programme, c'est-à-dire des suites de symboles, et la
+relation de réécriture permet de faire avancer l'exécution du programme.
+Ainsi, les ARS ont beau être un cadre très large, on va tout de suite
+introduire des propriétés précises qui sont d'intérêt ici, car nous voulons
+décrire des comportements précis parmi ces ensembles munis d'une relation.
+Les premières propriétés à introduire sont parfaitement classiques, et
+mènent avant tout à pouvoir construire une relation d'équivalence.
+
+\begin{definition}[Propriétés d'un ARS]
+    Soit $(A,\varTo)$ un ARS. On dira que $\varTo$ est
+    \begin{itemize}
+    \item réflexive quand $\forall a \in A, a \varTo a$
+    \item irréflexive quand $\forall a \in A, a\nvarTo a$
+    \item symétrique quand
+      $\forall a\,b\in A, a\varTo b \implies b \varTo a$
+    \item transitive quand
+      $\forall a\,b\,c\in A, a \varTo b \land b \varTo c \implies
+      a \varTo c$
+    \end{itemize}
+\end{definition}
+
+Ces propriétés sont importantes, mais contrairement au cas général, nous
+voulons ici traiter de relations qui ne sont pas, par défaut, des relations
+d'équivalence. En reprenant l'analogie d'un système de calcul, si pour deux
+programmes $p,q$ la relation $p\varTo q$ signifie que $p$ devient $q$ lors de
+son exécution, il nous est nécessaire de garder disponibles deux points de
+vue concurrents~:
+\begin{itemize}
+\item le point de vue de l'exécution, dans lequel on a les deux programmes
+  $p$ et $q$, distincts, qui sont reliés par le fait de s'exécuter l'un en
+  l'autre~;
+\item le point de vue sémantique, dans lequel le programme est avant tout une
+  représentation de son résultat, ce qui correspond à l'identification
+  $p = q$ entre deux programmes s'exécutant l'un en l'autre.
+\end{itemize}
+
+Pour pouvoir rendre compte de ses deux points de vue, on conserve toujours la
+relation $\varTo$ mais on introduit aussi les meilleures approximations de
+cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
+
+\begin{definition}[Clôture réflexive, symétrique, transitive]
+    Soit $(A,\varTo)$ un ARS. On définit les relations suivantes~:
+    \begin{itemize}
+    \item $\varToR$ est la plus petite relation réflexive contenant $\varTo$~;
+    \item $\varToS$ est la plus petite relation symétrique contenant $\varTo$~;
+    \item $\varToT$ est la plus petite relation transitive contenant $\varTo$~;
+    \item $\varToRt$ est la plus petite relation réflexive et transitive
+      contenant $\varTo$~;
+    \item $\varToRst$ est la plus petite relation d'équivalence contenant
+      $\varTo$.
+    \end{itemize}
+    On appelle ces relations les clôtures (respectivement réflexive, symétrique,
+    transitive, réflexive et transitive, et réflexive symétrique et transitive)
+    de $\varTo$.
+\end{definition}
+
+\begin{remark}
+    On peut se référer aux \cref{exo.tClot}, \cref{exo.rtClot}, \cref{exo.sClot}
+    et \cref{exo.rstClot} pour une étude de ces clôtures de relations.
+\end{remark}
+
+\begin{example}
+    Prenons comme système, pour une machine de Turing (potentiellement non
+    déterministe) $\varTMM$ fixée, l'ensemble des configurations sur $\varTMM$.
+    La relation $\varTo$ relie naturellement une configuration à une
+    configuration qui la suit sous l'action de $\varTMM$. Remarquons que si
+    la configuration comporte un état d'arrêt, alors elle est en relation avec
+    aucune configuration. Analysons maintenant les différentes clôtures pour cette
+    relation~:
+    \begin{itemize}
+        \item la clôture réflexive relie une configuration $C$ aux configurations
+        $C'$ atteignables en au plus un temps de calcul~;
+        \item la clôture symétrique relie une configuration $C$ aux configurations
+        $C'$ qui diffèrent d'un temps de calcul (dans les deux sens)~;
+        \item la clôture transitive relie une configuration $C$ à toutes les
+        configurations $C'$ qu'elle peut atteindre dans le futur~;
+        \item la clôture réflexive et transitive relie une configuration $C$ à
+        toutes les configurations $C'$ qu'elle peut atteindre dans le futur au sens
+        large~;
+        \item la clôture d'équivalence relie une configuration $C$ aux configurations
+        $C'$ atteignables depuis $C$ en avançant d'une étape de calcul, puis en
+        \og remontant le temps\fg si nécessaire, et ainsi de suite un nombre fini de
+        fois.
+    \end{itemize}
+\end{example}
+
+\noindent
+On donne aussi quelques opérations élémentaires sur les relations.
+
+\begin{definition}[Transposée]
+    Soit $(A,\varTo)$ un ARS. On appelle transposée de $\varTo$ la relation
+    \[a \varToTr b \defeq b \varTo a\]
+    On appelle composition de deux relations $\varRR,\varRR'$ sur $A$ la
+    relation
+    \[a\mathrel{(\mathord{\varRR}\circ\mathord{\varRR'})}c \defeq
+    \exists b \in A, a \varRR b \land b \varRR c\]
+    On définit l'itérée d'une relation $\varRR$ par
+    \[\begin{cases}
+        \varRR^0 \defeq \compr{(a,a)}{a \in A}\\
+        \mathord{\varRR^{n+1}}\defeq \mathord{\varRR^n}\circ\mathord{\varRR}
+    \end{cases}\]
+    Enfin, on définit les plages d'itérées d'une relation $\varRR$ par
+    \[\mathord{\varRR^{\leq n}}\defeq \bigcup_{k \leq n} \mathord{\varRR^k}\]
+\end{definition}
+
+Avec ces constructions élémentaires, on peut finalement commencer à exprimer des
+propriétés réellement intéressantes évoquant l'exécution dans des systèmes de
+calcul.
+
+\subsection{Confluence}
+
+Le premier point à aborder est celui de la cohérence des résultats d'un calcul.
+Prenons par exemple le cas des configurations de machines de Turing. Rappelons
+qu'une machine de Turing non déterministe est une machine dans laquelle la
+table de transition est une relation~: ainsi, depuis une configuration $C$
+donnée, on dispose d'un ensemble $\varTMM\opTM C$ de configurations suivantes.
+Dans un tel cas, on pourrait imaginer qu'un calcul \og s'effectue correctement\fg
+pour une machine de Turing lorsque, pour n'importe quelles transitions qu'on
+emprunte depuis la configuration initiale $\varqZ\varwd\toInf$, on arrive à la même
+configuration $\varqP{f}\varwv\toInf$. Ainsi, le non déterminisme de la machine de
+Turing peut se résumer à la nécessité d'effectuer des choix sur les transitions,
+mais qui n'ont aucun impact sur le résultat final.
+
+En un sens, on supprime ainsi le non déterminisme, mais le non déterminisme est
+souvent (plus qu'autre chose) un obstacle à l'implémentation pratique. Ainsi, on
+est tenté d'exprimer la propriété pour un ARS que tout choix de transitions
+mène au même résultat. Une première façon d'exprimer cette propriété est la
+suivante.
+
+\begin{definition}[Propriété de Church-Rosser]
+    Soit $(A,\varTo)$ un ARS. On dit qu'il a la propriété de Church-Rosser 
+    (abrégée CR) si, pour tous $a,b \in A$ tels que $a \varToRst b$, il existe
+    $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$.
+\end{definition}
+
+Pour tirer profit de cette propriété, introduisons aussi la notion de réécriture
+correspondant à ce qu'on imagine être un résultat~: celle de forme normale.
+
+\begin{definition}[Forme normale]
+    Soit $(A,\varTo)$ un ARS. Un élément $a \in A$ est dit sous forme normale s'il
+    n'existe pas de $b \in A$ tel que $a \varTo b$. On note $\NF(A,\varTo)$ (ou
+    simplement $\NF$ quand le contexte est clair) l'ensemble des formes normales
+    dans $(A,\varTo)$.
+\end{definition}
+
+L'intérêt de la propriété de Church-Rosser est qu'elle implique la propriété
+suivante.
+
+\begin{definition}[Propriété de la forme normale unique]
+    Soit $(A,\varTo)$ un ARS. On dit qu'il a la propriété de la forme normale
+    unique (\foreignexpr{Uniqueness of Normal Form} en anglais, abrégé en UNF)
+    si pour toutes deux formes normales $a,b \in \NF(A,\varTo)$, si
+    $a \varToRst b$ alors $a = b$.
+\end{definition}
+
+\begin{proposition}
+    Pour tout ARS $(A,\varTo)$, si $(A,\varTo)$ a la propriété CR alors
+    $(A,\varTo)$ a la propriété UNF.
+\end{proposition}
+
+\begin{proof}
+    Soient $a,b\in \NF(A,\varTo)$ tels que $a \varToRst b$. Alors, par la
+    propriété de Church-Rosser, on trouve $c$ tel que $a \varToRt c$ et
+    $b\varToRt c$. Comme $a$ et $b$ sont des formes normales, on sait que
+    $a \varToRt c$ (respectivement $b\varToRt c$) donne une réduction en $0$
+    pas, c'est-à-dire que $a = c$ et $b = c$, d'où $a = b$.
+\end{proof}
+
+Ainsi, pour un système vérifiant CR, tout élément $a \in A$ peut se réduire en
+au plus un élément.
+
+\begin{notation}
+    Soient $a,b \in \NF$. On note $a\varToMax b$ pour signifier que la réduction
+    $a \varToRt b$ est maximale, et ainsi que $b \in \NF$.
+\end{notation}
+
+La détermination de formes normales est au c\oe ur de l'étude des systèmes de
+calcul, et la théorie de la réécriture permet alors de donner des outils
+efficaces pour prouver des propriétés sur ladite détermination dans le cas
+général.
+
+La suite de cette section est dédiée à la construction d'outils pour établir
+la propriété CR. Pour ce faire, le premier pas est de donnée une formulation
+alternative de la propriété CR, nommée confluence.
+
+\begin{definition}[Confluence]
+    Soit $(A,\varTo)$ un ARS. On dit qu'il est confluent si pour tous
+    $a,b,c \in A$ tels que $a \varToRt b$ et $a \varToRt c$, il existe
+    $d \in A$ tel que $b \varToRt d$ et $c\varToRt d$. De façon alternative,
+    on peut exprimer ça par l'inclusion
+    $\mathord{\varToTTr}\circ\mathord{\varToRt}\subseteq
+    \mathord{\varToRt}\circ\mathord{\varToTTr}$.
+\end{definition}
+
+\begin{figure}[t!]
+  \centering
+  %\hrule
+
+  %\vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (q_0) {$a$};
+    \node (q_1) [below left = of q_0] {$b$};
+    \node (q_2) [below right = of q_0] {$c$};
+    \node (q_3) [below right = of q_1] {$d$};
+    \node (r_1) [right = of q_2] {$b$};
+    \node (r_0) [above right = of r_1] {$a$};
+    \node (r_2) [below right = of r_0] {$c$};
+    \node (r_3) [below right = of r_1] {$d$};
+    \node (s_1) [right = of r_2] {$b$};
+    \node (s_0) [above right = of s_1] {$a$};
+    \node (s_2) [below right = of s_0] {$c$};
+    \node (s_3) [below right = of s_1] {$d$};
+    \node (a) at (0,-3.5) {Confluence};
+    \node (b) at (5,-3.5) {Confluence locale};
+    \node (c) at (10,-3.5) {Propriété du carreau};
+    \draw[->,>=latex] (q_0) to node[very near end,below]{$\star$} (q_1);
+    \draw[->,>=latex] (q_0) to node[very near end,below]{$\star$} (q_2);
+    \draw[->,>=latex,dashed] (q_1) to node[very near end,below]{$\star$} (q_3);
+    \draw[->,>=latex,dashed] (q_2) to node[very near end,below]{$\star$} (q_3);
+    \draw[->,>=latex] (r_0) -- (r_1);
+    \draw[->,>=latex] (r_0) -- (r_2);
+    \draw[->,>=latex,dashed] (r_1) to node[very near end,below]{$\star$} (r_3);
+    \draw[->,>=latex,dashed] (r_2) to node[very near end,below]{$\star$} (r_3);
+    \draw[->,>=latex] (s_0) -- (s_1);
+    \draw[->,>=latex] (s_0) -- (s_2);
+    \draw[->,>=latex,dashed] (s_1) -- (s_3);
+    \draw[->,>=latex,dashed] (s_2) -- (s_3);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.4cm}
+  \caption{Confluence, confluence locale, propriété du carreau}
+  \label{fig.confluence}
+  %\hrule
+\end{figure}
+
+\begin{proposition}\label{prop.CR.confl}
+    Tout ARS $(A,\varTo)$ a la propriété CR si et seulement s'il est confluent.
+\end{proposition}
+
+\begin{figure}[t]
+  \centering
+  %\hrule
+
+  %\vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (a) {$a$};
+    \node (bla) [right = of a] {};
+    \node (c) [right = of bla] {$c$};
+    \draw[<->,>=latex] (a) -- node[very near end, above right] {$\star$} (c);
+    \node (b) [right = of c] {$b$};
+    \draw[->,>=latex] (c) -- (b);
+    \node (d0) [below = of bla] {$d_0$};
+    \draw[->,>=latex,dashed] (a) -- node[very near end, right] {$\star$} (d0);
+    \draw[->,>=latex,dashed] (c) -- node[very near end, below right] {$\star$} (d0);
+    \node (d) [below right = of d0] {$d$};
+    \draw[->,>=latex,dashed] (d0) -- node[very near end, right] {$\star$} (d);
+    \draw[->,>=latex,dashed] (b) -- node[very near end, below right] {$\star$} (d);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+  
+  \vspace{0.4cm}
+  \caption{Preuve de la \cref{prop.CR.confl}}
+  \label{fig.CR.confl}
+  %\hrule
+
+\end{figure}
+
+\begin{proof}
+    L'un des sens est évident~: si on a la propriété CR, alors (en reprenant les
+    notations précédentes) $b \varToRst c$ donc on trouve un $d$ correspondant.
+
+    On souhaite donc montrer la réciproque. Tout d'abord, on peut exprimer la
+    relation $\varToRst$ comme étant $\rtClot{\varToS}$ (\latinexpr{c.f}
+    l'\cref{exo.rstClot}). On suppose qu'on a la confluence et on souhaite
+    montrer qu'on a la propriété CR. Soient $a,b \in A$ tels que $a\varToRst b$.
+    On raisonne donc par induction sur le nombre de réécriture de $\varToS$
+    pour prouver qu'il existe $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$~:
+    \begin{itemize}
+    \item la propriété est évidente en $0$ pas puisqu'alors $a = b$~;
+    \item on suppose donc que $a \varToRst c \varTo b$ et on souhaite trouver
+      $d$ tel que $a \varToRt d$ et $b \varToRt d$. Par hypothèse d'induction,
+      on trouve donc $d_0$ tel que $a \varToRt d_0$ et $c \varToRt d_0$. On
+      sait donc que $c \varToRt d_0$ et $c\varToRt b$ (var $c \varTo b$), donc
+      par confluence on en déduit qu'il existe $d$ tel que $d_0 \varToRt d$
+      et $b\varToRt d$, d'où (par transitivité) que $a\varToRt d$.
+    \item on suppose enfin que $a \varToRst c \varToTr b$ et on souhaite
+      trouver $d$ tel que $a\varToRt d$ et $b \varToRt d$. Par hypothèse
+      d'induction, on trouve $d$ tel que $a\varToRt d$ et $c\varToRt d$,
+      mais alors par transitivité $b\varToRt d$, d'où le résultat.\qedhere
+    \end{itemize}
+\end{proof}
+
+L'avantage de la confluence est qu'elle est une propriété plus naturelle à
+vérifier~: on se donne deux réductions $\varToRt$ partant d'un même élément
+$a$, et on trouve un point qui les relie. Cependant, cette propriété reste
+globale, au sens où le nombre de cas à traiter est très grand. Le fait de
+quantifier sur des triplets $b\varToTTr a \varToRt c$ donne des réductions
+arbitrairement grandes. C'est pourquoi on introduit des variantes locales
+de la confluence.
+
+\begin{definition}[Confluence locale, propriété du carreau]
+    Soit $(A,\varTo)$ un ARS. On dit qu'il a la confluence locale si pour tous
+    $b \varToTr a \varTo c$, il existe $d \in A$ tel que
+    $b \varToRt d \varToTTr c$.
+    On dit qu'il a la propriété du carreau (ou la propriété du diamant, de
+    l'anglais \foreignexpr{diamond property}) si pour tous
+    $b \varToTr a \varTo c$ il existe $d \in A$ tel que
+    $b \varTo d \varToTr c$.
+\end{definition}
+
+\begin{remark}
+    La confluence pour $\varTo$ peut se voir exactement comme la propriété
+    du carreau pour $\varToRt$.
+\end{remark}
+
+Un point essentiel dans ces propriétés est que la propriété du carreau
+implique la confluence.
+
+\begin{proposition}\label{prop.carreau.confluence}
+    Soit $(A,\to)$ un ARS. Si $\varTo$ a la propriété du carreau, alors $\varTo$
+    est confluente.
+\end{proposition}
+
+\begin{figure}[t!]
+  \centering
+  %\hrule
+
+  %\vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 1.2cm, on grid, auto]
+    \node (a) {$a$};
+    \node (a_0) [below left = of a] {$a_0$};
+    \node (a_1) [below right = of a] {$a_1$};
+    \node (a') [below right = of a_0] {$a'$};
+    \node (no) [below left = of a_0] {};
+    \node (noo) [below right = of a_1] {};
+    \node (b) [below left = of no] {$b$};
+    \node (c) [below right = of noo] {$c$};
+    \node (b_0) [below right = of b] {$b_0$};
+    \node (c_0) [below left = of c] {$c_0$};
+    \node (nooo) [below left = of c_0] {};
+    \node (d) [below left = of nooo] {$d$};
+    \draw[->,>=latex] (a) -- (a_0);
+    \draw[->,>=latex] (a) -- (a_1);
+    \draw[->,>=latex] (b) -- (b_0);
+    \draw[->,>=latex] (c) -- (c_0);
+    \draw[->,>=latex,dashed] (a_0) -- (a');
+    \draw[->,>=latex,dashed] (a_1) -- (a');
+    \draw[->,>=latex] (a_0) to node[very near end,below]{$p$} (b);
+    \draw[->,>=latex] (a_1) to node[very near end,below]{$k$} (c);
+    \draw[->,>=latex,dashed] (b_0) to node[very near end,below]{$k$} (d);
+    \draw[->,>=latex,dashed] (c_0) to node[very near end,below]{$p$} (d);
+    \draw[->,>=latex,dashed] (a') to node[very near end,below]{$p$} (b_0);
+    \draw[->,>=latex,dashed] (a') to node[very near end,below]{$k$} (c_0);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+  
+  \vspace{0.4cm}
+  \caption{Preuve de la \cref{prop.carreau.confluence}}
+  \label{fig.carreau.confluence}
+  %\hrule
+\end{figure}
+
+\begin{proof}
+  On prouve par récurrence sur $\max(p,k)$ que si $a\varTo^p b$ et
+  $a\varTo^k c$ alors il existe $d$ tel que $b\varTo^{\leq k} d$ et
+  $c\varTo^{\leq p} d$. Le cas où $p = 0$
+  ou $k = 0$ est évident en prenant respectivement $d = c$ et $d = b$.
+
+  On suppose donc la propriété vraie pour $n$, et on souhaite la
+  prouver pour $n + 1$. Soit donc $a \varTo^{p+1} b$, $a\varTo^{k+1} c$.
+  Par définition, on trouve $a_0,a_1$ tels que $a\varTo a_0 \varTo^p b$ et
+  $a\varTo a_1 \varTo^k c$.
+
+  Par propriété du diamant, on trouve donc $a'$ tel que
+  $a_0 \varTo a'$ et $a_1 \varTo a'$. On peut alors appliquer l'hypothèse de
+  récurrence à~:
+  \begin{itemize}
+  \item $a_0 \varTo^p b$, $a_0 \varTo a'$ pour trouver $b_0$ tel que
+    $b \varTo b_0$ et $a' \varTo^{\leq p} b_0$.
+  \item $a_1 \varTo^k c$, $a_1 \varTo a'$ pour trouver $c_0$ tel que
+    $c \varTo c_0$ et $a' \varTo^{\leq k} c_0$.
+  \end{itemize}
+  mais alors, par hypothèse de récurrence sur
+  $a' \varTo^{\leq p} b_0$, $a' \varTo^{\leq k} c_0$,
+  on trouve $d$ tel que $b_0 \varTo^{\leq k} d$ et $c_0\varTo^{\leq p} d$,
+  d'où $b \varTo^{\leq k+1} d$ et $c\varTo^{\leq p+1} d$. D'où le résultat par
+  récurrence.
+\end{proof}
+
+On peut se demander alors si la confluence locale implique elle aussi la
+confluence, mais cela n'est pas le cas en considérant le contre-exemple en
+\cref{fig.ctrex.confluence}. On verra cependant un cas où la confluence
+locale implique la confluence.
+
+On termine cette section par une technique utile pour prouver la confluence, à
+l'aulne des constructions précédentes.
+
+\begin{lemma}\label{lem.carreau.confluence.clot}
+    Soit $(A,\varTo)$ un ARS. Soit $\varRR$ une relation telle que~:
+    \begin{itemize}
+    \begin{minipage}{0.3\textwidth}
+    \item $\mathord{\varRR}\subseteq\mathord{\varToRt}$~;
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \item $\mathord{\varTo}\subseteq\mathord{\varRR}$~;
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+    \item $\varRR$ a la propriété du carreau~;
+    \end{minipage}
+    \end{itemize}
+    alors $\varTo$ est confluente.
+\end{lemma}
+
+\begin{proof}
+    Tout d'abord, $\varRR$ contient $\varTo$, donc sa clôture réflexive et
+    transitive est contenue dans celle de $\varTo$, et $\varTo$ contient
+    $\varRR$~: puisque $\rtClot{\varRR}$ est la plus petite relation
+    réflexive et transitive contenant $\varRR$, on en déduit l'inclusion
+    inverse, d'où $\rtClot{\varRR} = \varToRt$. Comme $\varRR$ a la propriété
+    du carreau, on en déduit que $\varRR$ est confluente, c'est-à-dire que
+    $\rtClot{\varRR}$ a la propriété du carreau, ce que l'on peut par égalité
+    appliquer à $\varToRt$ pour en déduire que $\varTo$ est confluente.
+\end{proof}
+
+\begin{figure}[t]
+  \centering
+  %\hrule
+
+  %\vspace{0.2cm}
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (q_0) {$a$};
+    \node (q_1) [right of = q_0] {$b$};
+    \node (q_2) [right of = q_1] {$c$};
+    \node (q_3) [right of = q_2] {$d$};
+    \draw[->,>=latex] (q_1) -- (q_0);
+    \draw[->,>=latex] (q_2) -- (q_3);
+    \draw[->,>=latex] (q_1) to[bend left] (q_2);
+    \draw[->,>=latex] (q_2) to[bend left] (q_1);
+  \end{tikzpicture}
+
+  \vspace{0.2cm}
+  \hrule
+  
+  \vspace{0.4cm}
+  \caption{Confluence locale sans confluence}
+  \label{fig.ctrex.confluence}
+  %\hrule
+\end{figure}
+
+On a donc une méthode efficace pour prouver la confluence, qui nous donne
+une propriété forte impliquant que tout élément a une seule forme normale.
+Intéressons-nous maintenant à la question de s'il existe toujours une telle
+forme normale.
+
+\subsection{Terminaison}
+
+En effet, si la confluence est un outil important pour déduire que toute
+forme normale représente de façon unique sa classe modulo $\varToRst$, il
+est important de trouver aussi une telle forme normale.
+
+On peut en fait trouver deux notions distinctes~: l'existence d'une forme
+normale, d'une part, et la notion de normalisation forte.
+
+\begin{definition}[Normalisation forte, faible]
+    Soit $(A,\varTo)$ un ARS. On dit qu'un élément $a \in A$ est faiblement
+    normalisant quand il existe $b \in \NF$ tel que $a\varToMax b$. On note
+    $\WN(A,\varTo)$ l'ensemble des termes faiblement normalisant. On définit
+    l'ensemble $\SN(A,\varTo)$ des termes fortement normalisant comme celui
+    engendré par la règle
+    \begin{prooftree}
+        \AxiomC{$\forall b \in A, a \varTo b \implies b \in \SN$}
+        \UnaryInfC{$a \in \SN$}
+    \end{prooftree}
+    On dit que l'ARS est faiblement normalisant quand $\WN = A$ et fortement
+    normalisant quand $\SN = A$.
+\end{definition}
+
+La faible normalisation est probablement la définition la plus intuitive des
+deux~: elle dit simplement que tout élément possède une forme normale (ainsi,
+un système faiblement normalisant et confluent permet de parler de \og la\fg
+forme normale d'un élément). Cependant, elle est au final moins manipulable,
+car atteindre la forme normale d'un élément peut demander de choisir
+précisément des réductions, ce qui peut devenir excessivement difficile (voire
+incalculable). La forte normalisation, elle, peut se résumer à l'idée que
+toute suite de réductions par $\varTo$ est finie, ce qui signifie qu'on
+atteint toujours une forme normale en exécutant des réductions (évidemment,
+le choix des réductions à effectuer peut influencer la taille du chemin vers
+une forme normale).
+
+\begin{exercise}
+    Montrer que pour un ARS $(A,\varTo)$, l'ensemble $\SN$ est la plus grande
+    partie de $A$ sur laquelle $\varTo$ est une relation bien fondée.
+\end{exercise}
+
+Sur la vision de $\SN$ comme une partie bien fondée, on peut deviner un outil
+assez naturel pour montrer des résultats de normalisation (forte comme faible).
+
+\begin{proposition}
+    Soit $(A,\varTo)$ un ARS. Soit $(X,\varRR)$ un ensemble muni d'une relation
+    bien fondée et $\makeFunName{f}{A}{X}$ une fonction. Si pour tous
+    $a,b \in A$ tels que $a\varTo b$, $f(a)\varRR f(b)$, alors $\varTo$ est
+    fortement normalisante. Si pour tout $a \in \NF\setminus A$ il existe
+    $b \in A$ tel que $a\varTo b$ et $f(a)\varRR f(b)$ alors $\varTo$ est
+    faiblement normalisante.
+\end{proposition}
+
+\begin{proof}
+    Pour le cas de la forte normalisation, on raisonne par induction bien
+    fondée sur $\varRR$. Soit donc $x \in X$ tel que pour tout $y\in X$ tel
+    que $x \varRR y$ et tout $a \in A$, si $f(a) = y$ alors $a \in \SN$.
+    Soit $a \in A$ tel que $f(a) = x$, alors pour tout $b \in A$ tel que
+    $a \varTo b$, on sait que $f(a)\varRR f(b)$, donc par hypothèse
+    d'induction $b \in \SN$, donc par définition $a \in \SN$. Donc pour
+    tout $x \in X$, si $a \in A$ est tel que $f(a) = x$, alors $a \in \SN$,
+    et puisque $f$ est une fonction totale, on en déduit que $\SN = A$.
+
+    Pour le cas de la faible normalisation, on raisonne aussi par
+    induction bien fondée sur $\varRR$. De même, soit $x \in X$ tel que pour
+    tout $y \in X$ tel que $x \varRR y$ et tout $a \in A$, si $f(a) = y$
+    alors il existe une forme normale à $a$. Soit alors $a$ tel que
+    $f(a) = x$. Si $a$ est une forme normale, alors $a$ est faiblement
+    normalisant. Sinon, alors on sait qu'il existe $b$ tel que
+    $f(a)\varRR f(b)$, donc par hypothèse d'induction $b$ a une
+    forma normale, et $a \varTo b \varToMax n$ avec $n$ une forme
+    normale pour $b$, donc $a\varToMax n$, d'où le résultat par
+    induction bien fondée.
+\end{proof}
+
+Ainsi, dans les cas les plus simples, il suffit de trouver une bonne mesure
+décroissante lors d'une réécriture. Pour cela, on peut bien sûr associer des
+entiers, mais on peut aussi utiliser la structure bien fondée des listes sur
+un ensemble bien fondé, des paires avec l'ordre lexicographique\ldots
+
+\begin{exercise}
+    Soit un ARS $(A,\varTo)$, montrer que $\varTo$ est fortement normalisant
+    si et seulement si $\varToT$ est fortement normalisant.
+\end{exercise}
+
+En particulier, la forte normalisation nous permet de raisonner par induction
+sur $\varTo$. Pour prouver une propriété $P(x)$ sur un ARS $(A,\varTo)$
+fortement normalisant, il nous suffit de montrer que pour tout $a \in A$, si
+pour tout $b$ tel que $a \varTo b$, on a $P(b)$, alors on a $\varFF(a)$.
+Cette méthode permet de prouver le lemme de Newman.
+
+\begin{lemma}[Newman \cite{Newman42}]\label{lem.newman}
+    Soit $(A,\varTo)$ un ARS. S'il est fortement normalisant et localement
+    confluent, alors il est confluent.
+\end{lemma}
+
+\begin{proof}
+    On procède, par induction sur $\varTo$, en considérant la propriété
+    \[P(a) \defeq \forall b,c \in A, b \varToTTr a \varToRt c \implies
+    \exists d \in A, b \varToRt d \varToTTr c\]
+    On suppose donc donnés $a,b,c$ avec $b\varToTTr a \varToRt c$. Remarquons
+    d'abord que si $b = a$ ou $c = a$, alors on peut prendre $d \defeq c$
+    (respectivement $d \defeq b$) pour avoir le résultat. On suppose donc sans
+    perte de généralité que $b\varToTTr b_0 \varToTr a \varTo c_0 \varToRt c$.
+    On peut maintenant utiliser la confluence local en
+    $b_0\varToTr a \varTo c_0$ pour trouver $d_0$ tel que
+    $b_0 \varToRt d_0 \varToTTr c_0$, mais alors on peut appliquer l'hypothèse
+    d'induction à $b\varToTTr b_0 \varToRt d_0$ pour trouver $d_1$ puis
+    $d_1\varToTTr c_0\varToRt c$ pour en déduire le résultat.
+\end{proof}
+
+\begin{figure}[t]
+    \centering
+    \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+        \node (a) {$a$};
+        \node (b0) [below left of = a] {$b_0$};
+        \node (bla1) [below left of = b0] {};
+        \node (b) [below left of = bla1] {$b$};
+        \node (c0) [below right of = a] {$c_0$};
+        \node (bla2) [below right of = c0] {};
+        \node (c) [below right of = bla2] {$c$};
+        \node (d0) [below right of = b0] {$d_0$};
+        \node (d1) [below right of = b] {$d_1$};
+        \node (bla3) [below right of = d1] {};
+        \node (d) [below right of = bla3] {$d$};
+        \draw[->,>=latex] (a) -- (b0);
+        \draw[->,>=latex] (a) -- (c0);
+        \draw[->,>=latex] (b0) -- node[very near end, below] {$\star$} (b);
+        \draw[->,>=latex] (c0) -- node[very near end, right] {$\star$} (c);
+        \draw[->,>=latex,dashed] (b0) -- node[very near end, right] {$\star$} (d0);
+        \draw[->,>=latex,dashed] (c0) -- node[very near end, below] {$\star$} (d0);
+        \draw[->,>=latex,dashed] (b) -- node[very near end, right] {$\star$} (d1);
+        \draw[->,>=latex,dashed] (d0) -- node[very near end, below] {$\star$} (d1);
+        \draw[->,>=latex,dashed] (d1) -- node[very near end, right] {$\star$} (d);
+        \draw[->,>=latex,dashed] (c) -- node[very near end, below] {$\star$} (d);
+    \end{tikzpicture}
+
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Preuve du \cref{lem.newman}}
+\end{figure}
+
+Un ARS qui est à la fois confluent et fortement normalisant est parfois appelé un
+système terminant. Un point central dans un tel calcul est que, si on possède
+un codage de Gödel $\godcod\tok$ de notre ARS $(A,\varTo)$ et que la relation de
+réécriture est calculable sur les codes, alors le problème de décider si deux éléments
+$a,b \in A$ vérifient $a\varToRst b$ est décidable.
+
+Cette question, de décider si deux éléments sont égaux modulo réécriture,
+a une importance historique toute particulière. Nous allons donc donner des
+bases théoriques pour en comprendre l'importance.
+
+\section{Problème du mot}
+
+Pour énoncer le problème du mot, commençons par fixer un cadre plus restrictif à
+notre étude. Les ARS constituent un cadre particulièrement général, si bien que
+celui-ci empêche de dire grand chose. Aussi, nous préférons maintenant nous
+restreindre à un cadre qui a déjà été introduit dans le \cref{chp.auto}~: celui
+des monoïdes. Notre objectif va être de considérer des relations de réécriture
+sur des monoïdes, en prenant comme idée centrale l'étude des monoïdes libres.
+
+\subsection{Réécriture sur des monoïdes}
+
+En effet, prenons par exemple le langage des formules $\Formula(\Sign)$. Comme
+on considère un langage, on sait qu'on étudie une partie $\varLL\subseteq \toStB$
+pour un certain alphabet $\ABB$ (qu'on pourrait ici expliciter en ajoutant les
+symboles de fonctions et de relations aux connecteurs, quantificateurs, variables
+\latinexpr{etc.}) qui se traduit donc par un certain monoïde libre. Considérons
+par exemple la relation de réécriture suivante sur les termes arithmétiques~:
+\begin{itemize}
+    \begin{minipage}{0.45\textwidth}
+    \item $t + 0 \reecr{} t$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $t + \Ss u \reecr{} \Ss(t + u)$
+    \end{minipage}
+\end{itemize}
+cette relation induit en particulier une réécriture sur $\Formula(\Sign)$, mais
+on peut tout de même l'étudier comme une relation sur $\toStB$. Cela permet en
+particulier d'expliciter la notion de compatibilité, permettant de faire des
+réécritures dans des sous-termes. Définissons tout cela formellement.
+
+\begin{definition}[Relation compatible sur un monoïde]
+    Soit $\varMMo$ un monoïde et $\varRR$ une relation sur $\varMMo$. On dit que
+    $\varRR$ est compatible si
+    \[\forall m,m' \in \varMMo, m \varRR m' \implies
+    \forall m_{\rml}, m_{\rmr} \in \varMMo,
+    m_{\rml}\opM m\opM m_{\rmr} \varRR m_{\rml} \opM m' \opM m_{\rmr}\]
+    On dit que $\varRR$ est une congruence si, de plus, $\varRR$ est une
+    relation d'équivalence.
+\end{definition}
+
+Ainsi, les relations qui vont nous intéresser sont les relations compatibles,
+mais la donnée d'une relation compatible en elle-même signifie la donnée d'une
+infinité d'instances (pour peu que le monoïde est infini). On souhaite donc
+construire un cadre dans lequel on peut trouver des données finies résumant
+notre relation. Pour cela, on introduit la clôture compatible d'une relation.
+
+\begin{definition}[Clôture compatible d'une relation]
+    Soit $\varRR$ une relation sur un monoïde $\varMMo$. On appelle clôture
+    compatible la plus petite relation $\toCompt{\varRR}$ contenant $\varRR$
+    et compatible. Dans le cas d'un ARS $(\varMMo,\varTo)$, on notera
+    $\varToC$ la clôture compatible de $\varTo$, ainsi que
+    $\varToCRst$ la plus petite congruence contenant $\varTo$.
+\end{definition}
+
+Reprenons maintenant notre exemple précédent de $\reecr{}$ sur les formules.
+La donnée de la relation est uniquement celle de couples de la forme
+\[\compr{(``t+0",``t")}{t \in \Term(\SignP{\Arith})}\cup
+\compr{(``t+\Ss u",``\Ss(t+u)"}{t,u \in \Term(\SignP{\Arith})}\]
+mais, en considérant la relation compatible qu'elle engendre, on peut
+maintenant écrire par exemple
+\[\Ss(\Ss 0 + \Ss 0) = \Ss\Ss\Ss 0 \rtClot{\reecr{}}
+\Ss\Ss\Ss 0 = \Ss\Ss\Ss 0\]
+Nous repoussons à la fin du chapitre la discussion de systèmes de preuves
+dans lequel on autorise ce genre de réductions, mais il est clair ici que
+la seconde proposition est largement plus simple à prouver (elle se prouve
+par simple réflexivité de l'égalité).
+
+En nous restreignant au cas des monoïdes, ces notions nous permettent de
+construire ce qu'on appelle une présentation de monoïde.
+
+\begin{definition}[Présentation de monoïde]
+    On appelle présentation de monoïde une paire $(\ABA,\varTo)$ où
+    $\ABA$ est un ensemble quelconque et
+    $\mathord{\varTo}\subseteq\left(\toStA\right)^2$. Le monoïde
+    engendré par une présentation $(\ABA,\varTo)$ est le monoïde
+    quotient $\quot{\toStA}{\varToCRst}$. Un monoïde $\varMMo$
+    admet une présentation $(\ABA,\varTo)$ dont le monoïde engendré
+    est isomorphe à $\varMMo$. On dit que $\varMMo$ est finiment
+    présenté s'il existe une présentation dont $\ABA$ et
+    $\varTo$ sont des ensembles finis, et finiment engendré s'il
+    existe une présentation dont $\ABA$ est un ensemble fini.
+\end{definition}
+
+On peut maintenant énoncer le problème du mot, qui s'applique à des
+présentations de monoïdes.
+
+\begin{definition}[Problème du mot]
+    Soit $(\ABA,\varTo)$ une présentation de monoïde et un codage de Gödel
+    $\makeFunName{\godcod\tok}{\ABA}{\bN}$ (qu'on étend sans souci à
+    $\toStA$ par la bijection $\BijCs$). Le problème du mot pour cette
+    présentation est la question de savoir si l'ensemble
+    \[\compr{(\godcod a,\godcod b)}{a,b \in \toStA\land a\varToCRst b}\]
+    est décidable.
+\end{definition}
+
+On peut aussi restreindre ce problème à une sous-classe des monoïdes, qui
+est celle des groupes. On se réfère par exemple à \cite{algGrandCombat}
+pour un cours plus détaillé abordant cette notion.
+
+Le fait important étant que, même dans le cas où l'on considère simplement
+les groupes, le problème du mot est indécidable. Ce théorème est donné
+avant tout pour la culture, nous n'en donnons pas la preuve ici.
+
+\begin{theorem}[Boone-Novikov \cite{novikov55, boone58}]
+    Il existe un groupe finiment présenté dont le problème du mot est
+    indécidable.
+\end{theorem}
+
+\subsection{Complétion de Knuth-Bendix}
+
+Si le problème du mot en toute généralité est indécidable, même pour des
+classes restreintes, il reste décidable dans de nombreux cas, et il est
+alors intéressant d'étudier la relation de réécriture. Nous avons déjà vu
+que, grâce au \cref{lem.newman}, la forte normalisation permet de se
+contenter de la confluence locale pour prouver la confluence. Supposons
+donc maintenant qu'on dispose d'un ARS $(\varMMo,\varTo)$ sur un monoïde,
+fortement normalisant, dont on veut établir la confluence locale. L'étude
+de cette confluence locale peut en fait se réduire à celle des paires
+critiques, qui sont des conflits de règles. Prenons un exemple~:
+soit le système de réécriture sur $\{\varla,\varlb\}$ donné par
+\[\varla\varla \varTo \Ewd \qquad
+\varlb\varlb \varTo \Ewd\qquad
+\varlb\varla\varlb\varTo\varla\varlb\varla\]
+Si on considère un mot $\varwd$ qui se réécrit en deux mots
+$\varwv_1,\varwv_2$, on peut avoir~:
+\begin{itemize}
+\item le cas où $\varwd = \varwd_1\varwd_2$, $\varwv_1=\varwv_1'\varwd_2$
+  et $\varwd_1\varTo\varwv_1'$, $\varwv_2 = \varwd_1\varwv_2'$ et
+  $\varwd_2\varTo\varwv_2'$~;
+\item le cas où $\varwv_1 = \varwv_2$~;
+\item le cas où $\varwd$ contient $\varla\varla\varla$ et la réécriture
+  réduit les deux premiers $\varla$ pour $\varwd_1$, et les deux derniers
+  pour $\varwd_2$~;
+\item la même chose avec $\varlb\varlb\varlb$~;
+\item le cas où $\varwd$ contient $\varlb\varla\varlb\varla\varlb$
+  et la réécriture réduit le $\varlb\varla\varlb$ de gauche pour donner
+  $\varla\varlb\varla\varla\varlb$ d'un côté, et réduit le
+  $\varlb\varla\varlb$ de droite pour donner
+  $\varlb\varla\varla\varlb\varla$ de l'autre~;
+\item le cas où $\varwd$ contient $\varlb\varlb\varla\varlb$~;
+\item le cas où $\varwd$ contient $\varlb\varla\varlb\varlb$.
+\end{itemize}
+Comment prouver la confluence locale de ce système~? D'abord, les 2 premiers
+cas peuvent se \og rejoindre\fg directement, le premier en effectuant
+l'autre réduction puisque les deux peuvent se faire en quelque sorte en
+parallèle, et le second en remarquant que $\varToRt$ contient la réflexivité,
+donc le résultat est déjà vérifié.
+
+Il ne reste donc qu'à vérifier les 5 autres cas, qu'on peut tous lister en
+considérant directement la forme des mots mis en cause dans la définition de
+$\varTo$. En effet, on a simplement cherché toutes les paires de mots
+$(\varwd_1,\varwd_2)$ telles qu'un suffixe de $\varwd_1$ est aussi un préfixe
+de $\varwd_2$, et $\varwd_1$ et $\varwd_2$ sont des membres droits de $\varTo$.
+Ainsi, en posant $\varwd_1 = \varwd_1'\varww$ et $\varwd_2 = \varww\varwd_2'$,
+le mot $\varwd_1'\varww\varwd_2'$ est le mot associé à la paire critique
+$(\varwd_1,\varwd_2)$. C'est cette étude qui va permettre de traiter de façon
+automatique les systèmes de réécriture.
+
+\begin{definition}[Paire critique]
+    Soit $(\ABA,\varTo)$ une présentation de monoïde. On appelle paire
+    critique sur cette présentation une paire $(\varwd_1,\varwd_2)$
+    telle que
+    \[\exists \varwd_1',\varwd_2',\varwv_1,\varwv_2,\varww\in\toStA,\begin{cases}
+        \varwd_1=\varwd_1'\varww\\
+        \varwd_2=\varww\varwd_2'\\
+        \varwd_1\varTo \varwv_1\\
+        \varwd_2\varTo \varwv_2
+    \end{cases}\]
+    On dit que le mot associé à cette paire est, dans la décomposition
+    donnée au-dessus, le mot $\varwd_1'\varww\varwd_2'$. On dit que cette
+    paire peut être rejointe (ou résolue) s'il existe $\varwv$ tel que
+    $\varwv_1\varToCRt \varwv\varToCTTr \varwv_2$.
+\end{definition}
+
+\begin{remark}
+    La relation $\varToC$ est localement confluente si et seulement si toute
+    paire critique peut être rejointe.
+\end{remark}
+
+Dans notre exemple, on peut remarquer que la réduction est fortement
+normalisante~: en associant à chaque mot $\varwd$ la paire ordonnée
+lexicographiquement $(\wul_{\varlb},\wul_{\varla})$, chaque règle fait
+décroître strictement la paire.
+
+Cependant, la confluence locale n'est ici pas assurée. Les paires
+critiques $(\varla\varla,\varla\varla)$ et $(\varlb\varlb,\varlb\varlb)$
+se résolvent de façon évidente, mais la troisième paire critique,
+$\varlb\varla\varlb\varla\varlb$, donne deux mots incompatibles avec
+$\varla\varlb\varla\varla\varlb$ (qui peut se réduire uniquement en
+$\varla\varlb\varlb$) et $\varlb\varla\varla\varlb\varla$ (qui peut se
+réduire uniquement en $\varlb\varlb\varla$). Les deux dernières paires
+aussi sont impossible à résoudre en l'état.
+
+On introduit donc un algorithme permettant, pour une présentation de monoïde,
+de réécrire la relation $\varTo$ de sorte à obtenir une présentation
+confluente. Pour cela A FAIRE

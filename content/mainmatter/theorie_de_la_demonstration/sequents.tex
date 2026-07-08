@@ -1284,9 +1284,9 @@ donc définir une notion de réécriture globale. On introduit pour ça la notio
 de relation compatible.
 
 \begin{definition}[Relation compatible]
-  Soit $\mathord{\varRR}\subseteq \ProofLK \times \ProofLK$ une relation sur
-  des arbres de preuves. $\varRR$ est dite compatibles si, pour chaque règle
-  de construction de $\LK$, de la forme
+  Soit $\mathord{\varRR}\subseteq \ProofLK(\Sign) \times \ProofLK(\Sign)$ une
+  relation sur des arbres de preuves sur une signature $\Sign$. $\varRR$ est
+  dite compatibles si, pour chaque règle de construction de $\LK$, de la forme
   \begin{prooftree}
     \AxiomC{$\varCG_1\vdLK \varCD_1$}
     \AxiomC{$\cdots$}
@@ -1412,13 +1412,13 @@ On peut donc montrer le théorème du séquent du milieu.
 
 \begin{theorem}[Séquent du milieu]\label{thm.midsequent}
   Soit $\varCG\vdLK\varCD$ un séquent composé de formules sous forme prénexe.
-  S'il existe un arbre de preuve $\varPT\in\ProofLK$ tel que
+  S'il existe un arbre de preuve $\varPT\in\ProofLK(\Sign)$ tel que
   $\varPT\concl \varCG\vdLK\varCD$, alors il existe un arbre de preuve
-  $\varPT'\in\ProofLK$ tel que $\varPT'\concl\varCG\vdLK\varCD$ et ne contenant
-  des règles quantitatives qu'en bas de l'arbre, c'est-à-dire qu'il existe un
-  entier $n$ tel que les $n$ règles les plus basses de $\varPT'$ sont des
-  règles quantitatives, et toutes les autres règles sont des règles connectives,
-  d'affaiblissement ou égalitaires.
+  $\varPT'\in\ProofLK(\Sign)$ tel que $\varPT'\concl\varCG\vdLK\varCD$ et ne
+  contenant des règles quantitatives qu'en bas de l'arbre, c'est-à-dire qu'il
+  existe un entier $n$ tel que les $n$ règles les plus basses de $\varPT'$ sont
+  des règles quantitatives, et toutes les autres règles sont des règles
+  connectives, d'affaiblissement ou égalitaires.
 \end{theorem}
 
 \begin{proof}
@@ -1739,7 +1739,7 @@ de transformer deux occurrences en une seule~: c'est la règle de contraction.
 
 \begin{definition}[Calcul des séquents $\LK$ avec multi-ensembles]
   On définit le calcul des séquents $\LK$ avec multi-ensembles par l'ensemble
-  $\ProofLK$ construit d'après les règles de la \cref{tbl.LK.multiset} où
+  $\ProofLK(\Sign)$ construit d'après les règles de la \cref{tbl.LK.multiset} où
   les séquents $\varCG\vdLK\varCD$ sont constitués de multi-ensembles finis, et
   où $\varCG,\varCD$ est le multi-ensemble $\varCG + \varCD$.
 \end{definition}
@@ -1914,7 +1914,7 @@ possible du système syntaxique.
 
 \begin{definition}[Calcul des séquents $\LK$ présenté vers le haut avec listes]
   Le calcul des séquents $\LK$ présenté vers le haut avec listes est l'ensemble
-  $\ProofLK$ décrit par les règles de la \cref{tbl.LK.upward}, où les
+  $\ProofLK(\Sign)$ décrit par les règles de la \cref{tbl.LK.upward}, où les
   séquents $\varCG\vdLK\varCD$ sont donnés par des listes de formules, et où
   $\varCG,\varCD$ est la concaténation des listes $\varCG$ et $\varCD$.
 \end{definition}
@@ -2216,7 +2216,7 @@ C'est pour cette raison que, par exemple, l'élimination des coupures pour
 $\with$ et pour $\land$ sont bien différentes malgré le fait que les deux
 connecteurs logiques sont logiquement équivalents.
 
-\begin{table}[t!]
+\begin{table}[p]
   \centering
   %\hrule
   \resizebox{\textwidth}{!}{
@@ -3892,11 +3892,12 @@ commençons par définir le calcul des séquents intuitionniste.
 \subsection{Calcul des séquents LJ}
 
 \begin{definition}[Calcul des séquents $\LJ$ \cite{Gentzen1935}]
-  On définit l'ensemble $\ProofLJ$ des arbres de preuve pour le calcul des
-  séquents $\LJ$ par les règles de la \cref{tbl.LJ}. La notation $[\varFF]$
-  signifie que la liste contient la formule $\varFF$ ou est vide. Comme
-  pour les autres calculs des séquents, les règles marquées d'un $\dagger$
-  demandent que la variable $x$ soit libre dans les autres formules du séquent.
+  On définit l'ensemble $\ProofLJ(\Sign)$ des arbres de preuve pour le calcul
+  des séquents $\LJ$ sur une signature $\Sign$ par les règles de la
+  \cref{tbl.LJ}. La notation $[\varFF]$ signifie que la liste contient la
+  formule $\varFF$ ou est vide. Comme pour les autres calculs des séquents,
+  les règles marquées d'un $\dagger$ demandent que la variable $x$ soit libre
+  dans les autres formules du séquent.
 \end{definition}
 
 \begin{table}[t!]
@@ -4721,14 +4722,14 @@ traduction de la logique intuitionniste dans la logique modale $\LogM$.
       contraction à droite est impossible~;
     \item pour
       $a \in \{\mathord{\lnot},\mathord{\to},\mathord{\forall},\mathord{=}\}$,
-      si les deux dernièes règles ne sont pas $\Rlsq$ en-dessous de $\rml a$,
+      si les deux dernières règles ne sont pas $\Rlsq$ en-dessous de $\rml a$,
       appliquées à la même formule, alors on peut commuter $\Rlsq$ de sorte à
       ce que la dernière règle soit l'une des règles gauches déjà traitées, et
       le même argument s'applique aux règles droites~;
     \item si les deux dernières règles sont $\Rlsq$ en-dessous de
-      $\rml a$, alors on peut appliquer l'hypothèse d'induction sur le
-      sous-arbre au-dessus de ces deux règles et réappliquer $\rml a$ pour
-      obtenir le résultat~;
+      $\rml \mathord{a}$, alors on peut appliquer l'hypothèse d'induction sur
+      le sous-arbre au-dessus de ces deux règles et réappliquer $\rml \mathord{a}$
+      pour obtenir le résultat~;
     \item si l'arbre de preuve est de la forme
       \begin{prooftree}
         \AxiomC{$\varPT$}
