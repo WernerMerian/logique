@@ -14,7 +14,14 @@ abrégé en ARS).
 
 Le principal objectif du chapitre est de donner les outils nécessaires
 pour étudier efficacement les systèmes de réécriture donnés dans les
-prochaines chapitres. A FAIRE
+prochaines chapitres. La première partie du chapitre est consacrée
+à l'introduction du formalisme décrivant la confluence et la terminaison.
+Ces deux propriétés permettent de motiver l'introduction du problème
+du mot dans le cas plus restreint des monoïdes et groupes~: on introduit
+l'algorithme de complétion de Knuth-Bendix pour donner une solution
+partielle au problème du mot. Enfin, on aborde des questions liées aux
+équations avec d'un côté les problèmes d'unification et leur résolution,
+et de l'autre les systèmes de preuve modulo réécriture.
 
 On pourra se référer à \cite{TermRewrAllThat} pour une étude plus
 approfondie des systèmes de réécriture.
@@ -548,7 +555,7 @@ une forme normale).
 Sur la vision de $\SN$ comme une partie bien fondée, on peut deviner un outil
 assez naturel pour montrer des résultats de normalisation (forte comme faible).
 
-\begin{proposition}
+\begin{proposition}\label{prop.normalisation.wfFun}
     Soit $(A,\varTo)$ un ARS. Soit $(X,\varRR)$ un ensemble muni d'une relation
     bien fondée et $\makeFunName{f}{A}{X}$ une fonction. Si pour tous
     $a,b \in A$ tels que $a\varTo b$, $f(a)\varRR f(b)$, alors $\varTo$ est
@@ -811,25 +818,28 @@ considérant directement la forme des mots mis en cause dans la définition de
 $\varTo$. En effet, on a simplement cherché toutes les paires de mots
 $(\varwd_1,\varwd_2)$ telles qu'un suffixe de $\varwd_1$ est aussi un préfixe
 de $\varwd_2$, et $\varwd_1$ et $\varwd_2$ sont des membres droits de $\varTo$.
-Ainsi, en posant $\varwd_1 = \varwd_1'\varww$ et $\varwd_2 = \varww\varwd_2'$,
-le mot $\varwd_1'\varww\varwd_2'$ est le mot associé à la paire critique
-$(\varwd_1,\varwd_2)$. C'est cette étude qui va permettre de traiter de façon
-automatique les systèmes de réécriture.
+On peut ainsi lister les mots $\varwd$ qui se décomposent en
+$\varwd_1\varwd_2\varwd_3$ avec $\varwd_1\varwd_2 \varTo \varwv_1$,
+$\varwd_2\varwd_3 \varTo \varwv_2$, et chercher si les deux mots
+$\varwv_1\varwd_3$ et $\varwd_1\varwv_2$ peuvent se réduire en un même mot.
+C'est cette idée que formalise la notion de paire critique.
 
 \begin{definition}[Paire critique]
     Soit $(\ABA,\varTo)$ une présentation de monoïde. On appelle paire
-    critique sur cette présentation une paire $(\varwd_1,\varwd_2)$
+    critique sur cette présentation une paire $(\varww_1,\varww_2)$
     telle que
-    \[\exists \varwd_1',\varwd_2',\varwv_1,\varwv_2,\varww\in\toStA,\begin{cases}
-        \varwd_1=\varwd_1'\varww\\
-        \varwd_2=\varww\varwd_2'\\
-        \varwd_1\varTo \varwv_1\\
-        \varwd_2\varTo \varwv_2
+    \[\exists \varwd_1,\varwd_2,\varwd_3,\varwv_1,\varwv_2\in\toStA,
+    \begin{cases}
+        \varwd_1\varwd_2\varTo \varwv_1\\
+        \varwd_2\varwd_3\varTo \varwv_2\\
+        \varww_1 = \varwv_1\varwd_3\\
+        \varww_2 = \varwd_1\varwv_2\\
+        \varww_1 \neq \varww_2
     \end{cases}\]
-    On dit que le mot associé à cette paire est, dans la décomposition
-    donnée au-dessus, le mot $\varwd_1'\varww\varwd_2'$. On dit que cette
-    paire peut être rejointe (ou résolue) s'il existe $\varwv$ tel que
-    $\varwv_1\varToCRt \varwv\varToCTTr \varwv_2$.
+    On dit que cette paire peut être rejointe (ou résolue) s'il existe
+    $\varww_0$ tel que $\varww_1\varToCRt \varww_0\varToCTTr \varww_2$.
+    On note $\PrCrt(\ABA,\varTo)$ l'ensemble des paires critiques de
+    $(\ABA,\varTo)$ (on laissera le paramètre $(\ABA,\varTo)$ sous-entendu).
 \end{definition}
 
 \begin{remark}
@@ -853,4 +863,434 @@ aussi sont impossible à résoudre en l'état.
 
 On introduit donc un algorithme permettant, pour une présentation de monoïde,
 de réécrire la relation $\varTo$ de sorte à obtenir une présentation
-confluente. Pour cela A FAIRE
+confluente. Pour cela, on se donne d'abord un cadre légèrement plus général.
+
+\begin{definition}[Théorie équationnelle]
+    On appelle équation sur un monoïde libre $\toStA$ une paire
+    $\{\varwd,\varwv\} \subseteq \toStA$.
+    On appelle théorie équationnelle un ensemble d'équations. Si
+    $\varEq$ est une théorie équationnelle et $\varwd,\varwv \in \toStA$,
+    on écrit $\varEq\vdP \varwd = \varwv$ pour signifier que
+    la congruence induite par $\varEq$ (en associant à une paire
+    $\{\varww_1,\varww_2\}$ les deux couples $(\varww_1,\varww_2)$ et
+    $(\varww_2,\varww_2)$) met en relation $\varwd$ et $\varwv$.
+\end{definition}
+
+L'algorithme que nous présentons, appelé algorithme de complétion de
+Knuth-Bendix, permet de construire un système de réécriture confluent et
+fortement normalisant à partir d'une théorie équationnelle. Pour cela, on
+demande d'abord un ordre sur les termes qu'on étudie (on peut voir cet
+ordre comme les hypothèses de la \cref{prop.normalisation.wfFun}, en
+tirant en arrière la bonne fondation de la relation de l'ensemble
+d'arrivée). Pour présenter au mieux l'algorithme, on introduit un
+formalisme inspiré de \cite{equationalInference}. Dans ce
+formalisme, on considère des couples $\langle \varEq,\varTo\rangle$
+avec une théorie équationnelle et une relation de réécriture.
+L'objectif est alors, étant donnée une théorie équationnelle
+$\varEq$, de réduire le couple $\langle \varEq,\vide\rangle$ en un
+couple $\langle \vide,\varTo\rangle$ dans lequel $\varTo$ est une
+relation confluente et fortement normalisante.
+
+Remarquons que, si on dispose d'une relation bien fondée respectée
+par $\varTo$, la forte normalisation est automatique. On peut donc,
+en supposant donné un ordre sur nos termes, prendre une équation
+$\varEq \vdP \varwd = \varwv$ et la transformer en une instance
+$\varwd \varTo \varwv$ si $\varwd > \varwv$. Ainsi, on peut
+donner une première règle d'inférence~:
+\begin{prooftree}
+    \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwv\}\},\varTo\rangle$}
+    \AxiomC{$\varwd > \varwv$}
+    \RightLabel{Ori}
+    \BinaryInfC{$\langle \varEq,\mathord{\varTo}\cup\{(\varwd,\varwv)\}\rangle$}
+\end{prooftree}
+Chaque règle qu'on définira doit vérifier l'invariant suivant~: la
+congruence engendrée par $\varEq \cup \mathord{\varTo}$ en prémisse et en
+conclusion de la règle doit être la même. Dans ce premier cas par
+exemple, il est clair qu'orienter une règle ne change pas les égalités
+engendrées (puisqu'on considère la clôture symétrique). On assure aussi
+que pour toutes les règles qu'on introduit, la relation $\varTo$ est
+compatible avec l'ordre $<$ (ce qui signifie aussi que l'algorithme peut
+échouer si on a $\varEq\vdP \varwd = \varwv$ avec $\varwd\nless \varwv$
+et $\varwv\nless\varwd$). On donne en \cref{tbl.KnuthBendix.Regles} les
+autres règles disponibles.
+
+\begin{table}[t]
+    \centering
+    \begin{tabular}{cc}
+         \AxiomC{$\langle \varEq,\varTo\rangle$}
+         \AxiomC{$(\varwd,\varwv)\in\PrCrt(\mathord{\varTo})$}
+         \RightLabel{PC}
+         \BinaryInfC{$\langle\varEq\cup\{\{\varwd',\varwv'\}\},\varTo\rangle$}
+         \DisplayProof
+         &
+         \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwd\}\},\varTo\rangle$}
+         \RightLabel{Del}
+         \UnaryInfC{$\langle \varEq,\varTo\rangle$}
+         \DisplayProof
+         \\
+         \\
+         \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwv\}\},\varTo\rangle$}
+         \AxiomC{$\varwd\varToC \varww$}
+         \RightLabel{Simp}
+         \BinaryInfC{$\langle \varEq\cup\{\{\varww,\varwv\}\},\varTo\rangle$}
+         \DisplayProof
+         &
+         \AxiomC{$\langle \varEq,\varTo\cup\{(\varwd,\varwv)\}$}
+         \AxiomC{$\varwv\varToC \varww$}
+         \RightLabel{Comp}
+         \BinaryInfC{$\langle \varEq,\varTo\cup\{(\varwd,\varww)\}\rangle$}
+         \DisplayProof
+    \end{tabular}
+
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Règles de réductions des couples de réécriture}
+    \label{tbl.KnuthBendix.Regles}
+\end{table}
+
+Relevons en particulier que les réductions qui nous intéressent sont
+chaque fois la clôture compatible de $\varTo$, ce qui permet
+d'assurer que l'on ne change pas la relation engendrée au total.
+La règle de paire critique est celle qui permet d'obtenir à la fin une
+relation confluente en éliminant les paires critiques~: pour chaque
+paire critique $(\varwd, \varwd')$, on ajoute directement une égalité
+entre les deux mots (qu'il convient ensuite d'orienter). La règle
+d'orientation permet alors d'intégrer cette égalité pour l'ajouter au
+système de réécriture. Cependant, on souhaite ajouter uniquement les
+paires critiques, ce qui signifie que la règle d'orientation doit
+s'appliquer uniquement lorsque l'égalité n'est pas déjà dérivable.
+C'est à cela que servent les règles Simp et Del~: la règle de
+simplification permet de réduire une équation petit à petit jusqu'à
+avoir des formes normales, et la règle de suppression permet (dans le
+cas de deux termes déjà rejoints) d'éliminer une équation triviale.
+On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
+
+\begin{theorem}[Complétion de Knuth-Bendix \cite{Knuth1983}]
+    Soit $\varEq$ une théorie équationnelle, alors si l'algorithme de
+    la \cref{algo.KnuthBendix} termine positivement, le résultat est
+    une relation de réécriture fortement normalisante et confluente.
+\end{theorem}
+
+\begin{proof}
+    A chaque étape, on sait que la relation $\varTo$ associée est
+    fortement normalisante. De plus, si l'algorithme termine, alors
+    aucune paire critique ne peut être présente car, dans un tel cas,
+    elle serait ajoutée à $\varEq$, et le membre de gauche du couple
+    ne serait donc pas vide. On a donc une réduction fortement
+    normalisante et localement confluente (car toutes les paires
+    critiques sont rejointes) donc confluente.
+\end{proof}
+
+\begin{remark}
+    Tout le travail effectué autour du problème du mot a été
+    ici traité dans le cas d'un monoïde $\varMMo$, mais on le
+    généralise assez naturellement à des définitions
+    d'ensembles inductifs (au sens du \cref{chp.induction})
+    ou des langages algébriques. Par exemple, la notion de
+    clôture compatible doit se voir comme la possibilité
+    d'appliquer la réécriture dans un sous-terme d'un
+    terme fixé. On voit aussi que la \cref{def.relat.compatible}
+    peut se voir comme une telle instance.
+\end{remark}
+
+\begin{algorithm}[t]
+    
+  \KwData{\\
+    une paire $\langle \varEq,\varTo\rangle$ contenant une théorie
+    équationnelle et une relation de réduction\\
+  }
+  \KwResult{\\
+    une relation $\varTo$ fortement normalisante et confluente
+    }
+  \While{le couple $\langle \varEq,\varTo\rangle$ change et
+    $\varEq \neq \vide$}{
+    \For{$(\varwd,\varwv)\in\PrCrt(\varTo)$}{
+      $\varEq \leftarrow \varEq\cup \{\{\varwd,\varwv\}\}$\;
+    }
+    \For{$\{\varwd,\varwv\}\in\varEq$}{
+      \If{$\varwd = \varwv$}{
+        $\varEq\leftarrow \varEq\setminus\{\{\varwd,\varwv\}\}$\;
+      }
+      \If{$\exists \varwd', \varwd\varToC\varwd'$}{
+        $\varEq \leftarrow (\varEq\setminus\{\{\varwd,\varwv\}\})\cup
+        \{\{\varwd',\varwv\}\}$\;
+      }
+      \If{$\varwd\in\NF(\varTo)\land\varwv\in\NF(\varTo)\land
+        \varwd > \varwv$}{
+        $(\mathord{\varTo})\leftarrow (\mathord{\varTo})\cup
+        \{(\varwd,\varwv)\}$\;
+      }
+      \If{$\varwd\in\NF(\varTo)\land\varwv\in\NF(\varTo)
+      \land\varwd\nless \varwv\land\varwv\nless\varwd$}
+      {
+      \KwRet $\bot$\;
+      }
+    }
+  }
+  \KwRet $\varTo$\;
+  \caption{Algorithme de complétion de Knuth-Bendix}
+  \label{algo.KnuthBendix}
+\end{algorithm}
+
+\section{Théories équationnelles}
+
+Pour clore ce chapitre, on se propose d'étudier des
+questions liées à l'égalité. Cette dernière section
+comporte deux sous-sections relativement indépendantes~:
+la question de l'unification de termes d'un côté, et
+la question des systèmes de preuve modulo réécriture de
+l'autre.
+
+\subsection{Problèmes d'unification}
+
+Pour cette sous-section, fixons une signature du premier
+ordre $\Sign$, pour laquelle nous nous intéresserons
+uniquement aux symboles de fonctions. L'objectif va être
+d'étudier des termes et de répondre à des questions telles
+que
+\begin{quote}
+    \'Etant données des équations
+    $t_1 = u_1, \cdots, t_n = u_n$, est-il possible de
+    trouver une substitution $\subSimul$ sur les variables
+    libres des différents termes telle que les différentes
+    équations
+    $\subSimul(t_1) = \subSimul(u_1), \cdots,
+    \subSimul(t_n) = \subSimul(u_n)$
+    sont effectivement vérifiées~?
+\end{quote}
+
+Pour ce faire, la première étape est de définir correctement
+les objets en jeu. Pour cela, on considère l'ensemble
+$\Term(\Sign)$, qui est donc construit à partir d'un ensemble
+$\Var$ de variables. On a déjà introduit la notion de
+substitution et son application à des termes dans le
+\cref{chp.logpred}, mais donnons un rappel. Une substitution
+est une fonction partielle
+$\makeFunNamePartial{\subSimul}{\Var}{\Term(\Sign)}$
+et son application à un terme $t$ se construit inductivement
+en considérant que $\subSimul(x) \defeq x$ si $x\notin \dom(x)$,
+$\subSimul(x) \defeq \subSimul(x)$ si $x\in\dom(x)$ et
+$\subSimul(f(\vec x)) = f\left(\overrightarrow{\subSimul(x)}\right)$.
+Définissons maintenant la notion de problème d'unification.
+
+\begin{definition}[Problème d'unification]
+    Un problème d'unification est la donnée d'un ensemble $\varPbU$
+    de couples $(t,u) \in \Term(\Sign)$. On notera des couples
+    $(t,u) \in \varPbU$ par $t \simeq u$.
+
+    On appelle solution à un problème d'unification $\varPbU$ une
+    substitution $\subSimul$ telle que pour tout
+    $(t\simeq u) \in \varPbU$, on a l'égalité
+    $\subSimul(t) = \subSimul(u)$.
+\end{definition}
+
+\begin{example}
+    Prenons la signature de l'arithmétique pour construire nos
+    termes. Un exemple de problème d'unification sur une telle
+    signature peut être $\{ x + 2 \simeq 2 + x\}$, et une solution
+    évidente est $\subSimul(x) = 2$. Attention cependant~:
+    l'unification est ici syntaxique, ce qui signifie qu'il n'y a
+    par exemple pas de solution à $x + 2 \simeq 4$, car toute
+    substitution sur $x$ laissera inchangé le fait qu'un symbole
+    $+$ apparaît à gauche mais pas à droite.
+\end{example}
+
+Ces problèmes peuvent se rencontrer dès lors qu'il s'agit de
+résoudre des formes d'équations syntaxiques. On s'en servira
+avant tout dans le \cref{chp.lambda_type} pour construire un
+algorithme de typage. L'algorithme de typage va ainsi construire
+des contraintes de type telles que, pour typer
+\[(\lambda (x : \varTypA). f\;x) : \varTypA \to \varTypA\]
+le problème d'unification
+\[\varPbU\defeq\{X \simeq \varTypA \to \varTypA, X \simeq Y \to Z,
+Y \simeq \varTypA, Z\simeq \varTypA,X_f \simeq X_1 \to X_2,
+X_1 \simeq Y, X_2 \simeq Z\}\]
+Un tel problème semble évident à résoudre~: $X$ est associé à
+$\varTypA \to \varTypA$, comme $X_f$ et toutes les autres
+variables sont associées à $\varTypA$. Cependant, l'objectif
+est de vérifier qu'il est toujours possible de résoudre de tels
+problèmes syntaxiquement. Plus précisément~: il est possible pour
+tout problème d'unification de décider s'il a une solution, et
+d'en exhiber une le cas échéant. On peut même en exhiber une
+optimale, au sens suivant.
+
+\begin{definition}[Solution principale d'un problème d'unification]
+    Soit $\varPbU$ un problème d'unification. On dit qu'une solution
+    $\subSimul_0$ à $\varPbU$ est une solution principale si pour
+    toute autre solution $\subSimul_1$ il existe une substitution
+    $\subSimul_{0\to 1}$ telle que
+    $\subSimul_1 = \subSimul_{0 \to 1} \circ \subSimul$.
+\end{definition}
+
+Ainsi, une solution principale factorise n'importe quelle solution
+particulière. Par exemple, dans le cas précédent, la solution
+que nous avons cité aurait pu ne pas être unique si, plutôt qu'un
+type $\varTypA$ fixé, on avait donné un type $X \to X$ avec $X$
+une variable de type. Dans un tel cas, n'importe quelle
+substitution $X \mapsto a$ avec $a$ une valeur quelconque aurait
+pu être composée à une solution pour en donner une nouvelle.
+L'intérêt d'une solution principale est donc de donner une solution
+pertinente~: elle permet de conserver l'information importante de
+toutes les solutions à des problèmes d'unification.
+
+Présentons donc l'algorithme d'unification, permettant de résoudre
+de tels problèmes. Cet algorithme se déroule d'une façon
+plutôt intuitive~:
+\begin{itemize}
+\item on commence avec une substitution $\subSimul$ vide~;
+\item pour toute équation $t\simeq u$, on compare d'abord la forme
+  des deux termes~;
+\item si $t = f(\vec v)$ et $u = g(\vec w)$, alors le problème
+  d'unification n'a pas de solution~;
+\item si $t = u$ directement, alors on peut ignorer cette équation
+  et conserver la même substitution~;
+\item si $t = f(t_1,\ldots, t_k)$ et $u = f(u_1,\ldots,u_k)$ alors
+  on remplace l'équation $t \simeq u$ par les équations
+  $t_1 \simeq u_1,\cdots t_k \simeq u_k$~;
+\item si $t = x$ où $x$ est une variable, alors on peut ajouter
+  la substitution $\subSimul(x) = u$~;
+\item on fait de même si $u$ est une variable.
+\end{itemize}
+On donne le pseudo code en \cref{algo.unification}.
+
+\begin{algorithm}[t]
+    \KwData{\\
+    un problème d'unification $\varPbU$\\
+    une substitution $\subSimul$
+    }
+    \KwResult{\\
+    une solution principale au problème $\varPbU$
+    }
+    \While{$\varPbU \neq \vide$}{
+    \For{$(t\simeq u) \in \varPbU$}{
+        \If{$t = x \land u = y \land x \neq y$}{
+        \KwRet $\bot$\;
+        }
+        \If{$t = x \land u = y \land x = y$}{
+        $\varPbU \leftarrow \varPbU\setminus\{(t\simeq u)\}$\;
+        }
+        \If{$t = x$}{
+        $\subSimul \leftarrow (x \mapsto u)\circ\subSimul$\;
+        $\varPbU \leftarrow \varPbU\setminus\{(t\simeq u)\}$\;
+        }
+        \If{$u = x$}{
+        $\subSimul \leftarrow (x \mapsto t)\circ\subSimul$\;
+        $\varPbU \leftarrow \varPbU\setminus\{(t\simeq u)\}$\;
+        }
+        \If{$t = f(\vec{t'})\land u = g(\vec{u'})\land f\neq g$}{
+        \KwRet $\bot$\;
+        }
+        \If{$t = f(t_1,\ldots,t_k) \land u = f(u_1,\ldots,u_n)$}{
+        $\varPbU \leftarrow (\varPbU\setminus\{(t\simeq u)\})
+        \cup \{(t_1\simeq u_1),\ldots,(t_k\simeq u_k)\}$\;
+        }
+    }
+    }
+    \caption{Algorithme d'unification de Robinson}
+    \label{algo.unification}
+\end{algorithm}
+
+\begin{remark}
+Dans l'algorithme, lorsqu'on considère $\subSimul$ auquel on ajoute
+$x \mapsto t$, on doit aussi remplacer chaque $x$ dans l'image de
+$\subSimul$ par $t$.
+\end{remark}
+
+On souhaite maintenant montrer la correction et la terminaison de cet
+algorithme.
+
+\paragraph{Correction}
+Pour prouver la correction de l'algorithme, on considère à chaque
+étape de l'algorithme la paire $\langle \varPbU,\subSimul\rangle$.
+Notons $\varPbU_0$ le problème d'unification d'origine.
+On vérifie qu'à chaque opération, pour toute solution de $\varPbU$,
+composée par $\subSimul$, donne une solution à $\varPbU$~:
+\begin{itemize}
+\item dans le cas où il n'y a pas de solution, l'invariant est
+  évidemment préservé~;
+\item lorsque $t$ et $u$ sont la même variable, il est clair que
+  toute solution à $\varPbU\setminus \{t\simeq u\}$ est une
+  solution à $\varPbU$~;
+\item supposons que $t = x$ (le cas $u = x$ est parfaitement
+  analogue) et soit $\subSimul_1$ une solution à
+  $\varPbU\setminus\{t\simeq u\}$. Puisque $t = x$, on sait
+  que toute solution précomposée par $x \mapsto u$ donne
+  une solution à $t \simeq u$, d'où le résultat par hypothèse~;
+\item supposons que $f = f(t_1,\ldots,t_k)$ et que
+  $u = f(u_1,\ldots,u_k)$. Alors toute solution à
+  $t \simeq u$ correspond à une solution à
+  $t_1 \simeq u_1,\cdots, t_k \simeq u_k$ et inversement, d'où
+  le résultat.
+\end{itemize}
+Ainsi, lorsque $\varPbU = \vide$, comme la fonction vide est
+une solution du problème, on en déduire que $\subSimul$ est une
+solution de $\varPbU_0$, mais aussi que toute solution de
+$\varPbU_0$ se factorise par elle.
+
+\paragraph{Terminaison}
+Pour prouver que l'algorithme termine, il nous suffit de trouver
+un ordre bien fondé sur les problèmes $\varPbU$ apparaissant dans
+l'algorithme. Pour cela, on considère pour chaque problème
+$\compr{t_i\simeq u_i}{i \in \intervInt{k}}$ le tuple
+$(|t_0|,|u_0|,\ldots,|t_{k-1}|,|u_{k-1}|)$ muni de l'ordre
+lexicographique. En considérant qu'on traite toujours la dernière
+équation dans $\varPbU$ lors de l'algorithme, on vérifie que chaque
+opération fait décroître ce tuple~:
+\begin{itemize}
+\item dans les cas sans solution, l'algorithme se termine immédiatement~;
+\item lorsqu'un terme est une variable, on supprime un élément de $\varPbU$,
+  le tuple est donc strictement plus petit~;
+\item si $t=f(\vec t)$ et $u = f(\vec u)$, alors chaque $t' \in \vec t$
+  et chaque $u' \in \vec u$ ajoutés dans $\varPbU$ sont de taille strictement
+  inférieure à celle de $t$ et de $u$ (qui, eux, sont supprimés de $\varPbU$),
+  donc le tuple total est strictement plus petit.
+\end{itemize}
+L'exécution ne peut donc décroître qu'un nombre fini de fois, et se
+termine donc par bonne fondation.
+
+On dispose ainsi d'un moyen de résoudre un problème d'unification qu'on
+peut exprimer sur des ensembles de termes pour une signature fixée.
+
+\subsection{Déduction modulo réécriture}
+
+Cette dernière sous-section du chapitre s'intéresse à une autre forme
+de raisonnement équationnel. Dans ce cadre, on considère un système de
+démonstration~: le seul que nous avons pleinement étudié pour l'instant
+est le calcul des séquents. Ce qui suivra pourra s'appliquer aussi bien à
+$\LK$ qu'à $\LJ$ qu'à $\LS$ (dans une certaine mesure).
+
+Nous poursuivons ici deux buts~: présenter un formalisme de déduction
+modulo réécriture, permettant d'intégrer une égalité \og forte\fg dans
+un système de démonstration, et montrer que ce formalisme est équivalent
+à l'ajout d'équations bien choisies.
+
+Puisqu'on travaille dans un système de démonstration, on peut dès lors
+se fixer une signature $\Sign$ sur laquelle on va construire des
+réécritures. Pour cette raison, peut reprendre l'exemple développé
+précédemment de la réécriture arithmétique
+\begin{itemize}
+    \begin{minipage}{0.45\textwidth}
+    \item $t + 0 \reecr{} t$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $t + \Ss u \reecr{} \Ss(t + u)$
+    \end{minipage}
+\end{itemize}
+Cette réécriture est fortement normalisante~: dans un cas, la taille du
+terme diminue strictement, dans l'autre le nombre de constructeurs $\Ss$
+à l'intérieur d'autres expressions diminue strictement. Les paires
+critiques sont absentes car on réduit toujours à droite du signe $+$.
+Ainsi, le système est fortement normalisant et confluent, et on a donc
+une façon décidable de déterminer, étant donnés deux termes $t,u$,
+si $t \rtsClot{\reecr{}} u$.
+
+Cette réécriture peut être définie sur $\Term(\SignP{\Arith})$, mais
+aussi se généraliser à $\Formula(\SignP{\Arith})$. Un cran plus loin,
+et on peut écrire $\varCG\vdP \varCD \reecr{} \varCG' \vdP \varCD'$.
+On pourrait ainsi directement définir la déduction en ajoutant une
+règle disant que si deux séquents sont réductibles l'un à l'autre,
+alors on peut passer d'un arbre de preuve à un autre.
+
+A FAIRE
