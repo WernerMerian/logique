@@ -71,7 +71,8 @@
 \newcommand{\indicP}[1]{\indic_{#1}} % fonction indcatrice de quelque chose
 \newcommand{\funGraph}[1]{\Gamma_{#1}}
 \newcommand{\proj}{\pi}
-\newcommand{\projP}[2]{\proj_{#1}^{#2}}
+\newcommand{\projP}[2]{\mathop{\proj_{#1}^{#2}}}
+\newcommand{\coprojP}[1]{\mathop{\kappa_{#1}}}
 \newcommand{\proji}{\projP{i}{}}
 \newcommand{\projj}{\projP{j}{}}
 \newcommand{\projiI}{\projP{i}{I}}
@@ -464,19 +465,19 @@
 \newcommand{\satur}{\mathcal{SAT}}
 \newcommand{\lamSet}{\Lambda}
 \newcommand{\lamVar}{\Var_{\lambda}}
-\newcommand{\bred}{\rhd_{\beta}}
-\newcommand{\bered}{\rhd_{\beta\eta}}
-\newcommand{\Sred}{\rhd_{\beta\mathrm{s}}^\star}
-\newcommand{\Lred}{\rhd_{\beta\mathrm{l}}}
+\newcommand{\bred}{\mathrel{\rhd_{\beta}}}
+\newcommand{\bered}{\mathrel{\rhd_{\beta\eta}}}
+\newcommand{\Sred}{\mathrel{\rtClot{\rhd_{\beta\mathrm{s}}}}}
+\newcommand{\Lred}{\mathrel{\rhd_{\beta\mathrm{l}}}}
 \newcommand{\Beq}{=_{\beta}}
 \newcommand{\BEeq}{=_{\beta\eta}}
-\newcommand{\redPar}{\rhd_{\beta||}}
-\newcommand{\Hred}{\rhd_{\beta\mathrm{h}}}
-\newcommand{\Ired}{\rhd_{\beta\mathrm{i}}}
-\newcommand{\WHred}{\rhd_{\mathrm{wh}}}
-\newcommand{\IredPar}{\rhd_{\beta\mathrm{i}{||}}}
-\newcommand{\HredPar}{\rhd_{\beta\mathrm{h}{||}}}
-\newcommand{\lift}[3]{\uparrow_{#2}^{#3}#1}
+\newcommand{\redPar}{\mathrel{\rhd_{\mathord{\beta}\mathord{||}}}}
+\newcommand{\Hred}{\mathrel{\rhd_{\beta\mathrm{h}}}}
+\newcommand{\Ired}{\mathrel{\rhd_{\beta\mathrm{i}}}}
+\newcommand{\WHred}{\mathrel{\rhd_{\mathrm{wh}}}}
+\newcommand{\IredPar}{\mathrel{\rhd_{\beta\mathrm{i}{\mathord{||}}}}}
+\newcommand{\HredPar}{\rhd_{\beta\mathrm{h}\mathord{||}}}
+\newcommand{\lift}[3]{\mathop{\uparrow_{#2}^{#3}}#1}
 \newcommand{\eqZ}{\mathrm{eq}_0}
 \DeclareMathOperator{\HALT}{HALT}
 \newcommand{\hnf}{\lamSet_{\mathrm{hnf}}}
@@ -488,13 +489,15 @@
 
 \newcommand{\intT}{\texttt{int}}
 \DeclareMathOperator{\tyT}{Types}
+\newcommand{\TyB}{\kappa} % ensemble des types de base
 \newcommand{\vdNJto}{\vdash_{\NJ_\to}}
 \newcommand{\STLCSet}{\Lambda_{\mathrm{STLC}}}
 \newcommand{\tySTLC}{\tyT_{\mathrm{STLC}}}
 \newcommand{\unitT}{\texttt{Unit}}
 \newcommand{\emptyT}{\texttt{Empty}}
-\newcommand{\deltaSTLC}[5]{\delta\;#1\;\{\kappa_1\;#2\mapsto #3|
-  \kappa_2\;#4\mapsto #5\}}
+\newcommand{\deltaSTLC}[5]{\delta\;#1\;\left\{\coprojP{1} #2\mapsto #3
+  \;\middle\vert\; \coprojP{2} #4\mapsto #5\right\}}
+\newcommand{\dBSTLC}[1]{\delta_{\bot}\;#1\;\{\}}
 \newcommand{\STLCred}{\rhd}
 \newcommand{\FOLSet}{\Lambda_{\mathrm{FOL}}}
 \newcommand{\tyFOL}{\tyT_{\mathrm{FOL}}}
@@ -716,7 +719,7 @@
 
 \newcommand{\arite}{\alpha}
 \newcommand{\ruleR}{\mathrm{r}}
-\newcommand{\reflR}{\mathrm{refl}}
+\newcommand{\reflR}{\refl}
 \newcommand{\transR}{\mathrm{trans}}
 \newcommand{\foraList}{\forall_{\List}}
 \DeclareMathOperator{\mapList}{map}
@@ -1104,7 +1107,8 @@
 \newcommand{\varTo}{\mathrel{\to}} % relation dans un ARS
 \newcommand{\varToTr}{\mathrel{\leftarrow}} % relation transposée
 \newcommand{\varToTTr}{\rtClot{\varToTr}}
-\newcommand{\varToMax}{\varTo^{\mathord{!}}} % réduction maximale vers une NF
+\newcommand{\toMax}[1]{#1^{\mathord{!}}}
+\newcommand{\varToMax}{\toMax{\varTo}} % réduction maximale vers une NF
 \newcommand{\nvarTo}{\mathrel{\nrightarrow}}
 \newcommand{\varToT}{\tClot{\varTo}} % relation ->+ dans un ARS
 \newcommand{\varToR}{\rClot{\varTo}} % relation ->= dans un ARS
@@ -1143,6 +1147,49 @@
 \newcommand{\BCutP}[1]{\reecr{\bot^{\mathord{#1}}}}
 \newcommand{\BCut}{\BCutP{}}
 
+%----- LAMBDA CALCUL NON TYPE -----%
+
+\newcommand{\GaEq}{=_{\alpha}} % alpha_équivalence
+
+\newcommand{\Ltom}{\omega} % lambda-terme pour construire Omega
+\newcommand{\LtOm}{\Omega} % lambda-terme Omega
+\newcommand{\Lty}{\mathrm{y}}
+\newcommand{\LtY}{\mathrm{Y}}
+\newcommand{\Ltt}{\theta}
+\newcommand{\LtT}{\Theta}
+\newcommand{\LtU}{\mathrm{U}} % lambda-terme simulant une machine universelle
+\newcommand{\LtF}[1]{\mathrm{F}_{#1}} % lambda-terme de pt fixe
+\newcommand{\LtFt}{\LtF{t}}
+\newcommand{\Ltd}{\delta} % lambda-terme diagonal pour le pt fixe
+
 %----- LAMBDA CALCUL SIMPLEMENT TYPE -----%
 
-\newcommand{\varTypA}{A} % variable pour un type A
+\newcommand{\varTypA}{T} % variable pour un type A
+\newcommand{\varTypB}{U} % variable pour un type B
+\newcommand{\varTypC}{V} % variable pour un type C
+\newcommand{\varTypBa}{\iota} % variable pour un type de base
+\newcommand{\tyR}{\mathrel{\vdash}} % relation de typage
+\newcommand{\RVar}{\mathrm{var}} % règle de typage de variable
+\newcommand{\RApp}{\mathrm{app}} % règle de typage d'application
+\newcommand{\RAbs}{\mathrm{abs}} % règle de typage d'abstraction
+\newcommand{\RUn}{\unitT}
+\newcommand{\REm}{\emptyT}
+\newcommand{\RPair}{\mathrm{pair}}
+\newcommand{\RProj}[1]{\mathrm{proj}_{#1}}
+\newcommand{\RProji}{\RProj{i}}
+\newcommand{\RInj}[1]{\mathrm{coproj}_{#1}}
+\newcommand{\RInji}{\RInj{i}}
+\newcommand{\RCopair}{\mathrm{copair}}
+\newcommand{\RAbsFOL}{\mathrm{abs}_{\mathrm{FOL}}}
+\newcommand{\RAppFOL}{\mathrm{app}_{\mathrm{FOL}}}
+\newcommand{\RPairFOL}{\mathrm{pair}_{\mathrm{FOL}}}
+\newcommand{\RMatch}{\mathrm{match}}
+\newcommand{\RRefl}{\refl}
+\newcommand{\RTransp}{\transp}
+\newcommand{\RZero}{\intT_{\mathord{0}}}
+\newcommand{\RSucc}{\intT_{\mathord{\Ss}}}
+\newcommand{\Rrec}{\rec}
+
+\newcommand{\varSATA}{A}
+\newcommand{\varSATB}{B}
+\newcommand{\varSATC}{C}

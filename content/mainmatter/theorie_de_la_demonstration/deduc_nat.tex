@@ -196,9 +196,9 @@ racine (pour la conclusion) et les feuilles (pour les hypothèses).
     & &
     \bottomAlignProof
     \axNJP{\varPT_1}
-    \UnaryInfC{$t = u$}
-    \axNJP{\varPT_2}
     \UnaryInfC{$\varFF[t/x]$}
+    \axNJP{\varPT_2}
+    \UnaryInfC{$t = u$}
     \RightLabel{$\ReqE$}
     \BinaryInfC{$\varFF[u/x]$}
     \DisplayProof
@@ -586,13 +586,13 @@ une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
     \UnaryInfC{$\varFP_1[t/x],\ldots,\varFP_n[t/x], t = u \vdLJ[\varFF[t/x]]$}
     \DisplayProof
     \quad $\longmapsto$ \quad
-    \AxiomC{$t = u$}
     \AxiomC{}\RightLabel{$\ReqI$}\UnaryInfC{$t = t$}
+    \AxiomC{$t = u$}
     \RightLabel{$\ReqE$}\BinaryInfC{$u = t$}
-    \AxiomC{$t = u$}\AxiomC{$\varFP_1[t/x]$}
+    \AxiomC{$\varFP_1[t/x]$}\AxiomC{$t = u$}
     \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_1[u/x]$}
     \AxiomC{$\cdots$}
-    \AxiomC{$t = u$}\AxiomC{$\varFP_n[t/x]$}
+    \AxiomC{$\varFP_n[t/x]$}\AxiomC{$t = u$}
     \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_n[u/x]$}
     \ligneNJPT{\tradNJ{\varPT}}
     \UnaryInfC{$[\varFF[u/x]]$}
@@ -1062,30 +1062,38 @@ les coupures.
   par la plus petite relation compatible contenant l'union des réductions
   logiques $\LCut$, des $\bot$-réductions $\BCut$ et des réductions
   commutatives $\CCut$, données respectivement en \cref{tbl.cut.log.NJ},
-  en \cref{tbl.cut.bot.NJ} et en \cref{tbl.cut.com.NJ}.
+  en \cref{tbl.cut.bot.NJ}, en \cref{tbl.cut.com.NJ1} et en
+  \cref{tbl.cut.com.NJ2}.
 \end{definition}
 
 \begin{table}[t!]
   \centering
   \begin{tabular}{cc}
-    \multicolumn{2}{c}{
-      \AxiomC{$[\varFF]^\varTokA$}
-      \ligneNJV
-      \UnaryInfC{$\varFP$}
-      \RightLabel{$\RtoIA$}
-      \UnaryInfC{$\varFF\to\varFP$}
-      \axNJP{\varPT'}
-      \UnaryInfC{$\varFF$}
-      \RightLabel{$\RtoE$}
-      \BinaryInfC{$\varFP$}
-      \DisplayProof
-      $\LCutP{\to}$
-      \axNJP{\varPT'}
-      \UnaryInfC{$\varFF$}
-      \ligneNJV
-      \UnaryInfC{$\varFP$}
-      \DisplayProof
-    }
+    \axNJV\UnaryInfC{$\varFF[t/x]$}
+    \AxiomC{}\RightLabel{$\ReqI$}\UnaryInfC{$t = t$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$\varFF[t/x]$}
+    \DisplayProof
+    $\LCutP{=}$
+    \axNJV{$\varFF[t/x]$}
+    \DisplayProof
+    &
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJV
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\varFF\to\varFP$}
+    \axNJP{\varPT'}
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varFP$}
+    \DisplayProof
+    $\LCutP{\to}$
+    \axNJP{\varPT'}
+    \UnaryInfC{$\varFF$}
+    \ligneNJV
+    \UnaryInfC{$\varFP$}
+    \DisplayProof
     \\
     \\
     \axNJP{\varPT_1}\UnaryInfC{$\varFF_1$}
@@ -1150,19 +1158,26 @@ les coupures.
 \begin{table}[t]
   \centering
   \begin{tabular}{cc}
-    \multicolumn{2}{c}{
-      \axNJV\UnaryInfC{$\bot$}
-      \RightLabel{$\RbotE$}
-      \UnaryInfC{$\varFF\to\varFP$}
-      \axNJP{\varPT'}\UnaryInfC{$\varFF$}
-      \RightLabel{$\RtoE$}
-      \BinaryInfC{$\varFP$}
-      \DisplayProof
-      $\BCutP{\to}$
-      \axNJV\UnaryInfC{$\bot$}
-      \RightLabel{$\RbotE$}\UnaryInfC{$\varFP$}
-      \DisplayProof
-    }
+    \axNJV\UnaryInfC{$\bot$}
+    \axNJP{\varPT'}\UnaryInfC{$t = u$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$\bot$}
+    \DisplayProof
+    $\BCutP{=}$
+    \axNJV\UnaryInfC{$\bot$}
+    \DisplayProof
+    &
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFF\to\varFP$}
+    \axNJP{\varPT'}\UnaryInfC{$\varFF$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varFP$}
+    \DisplayProof
+    $\BCutP{\to}$
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}\UnaryInfC{$\varFP$}
+    \DisplayProof
     \\
     \\
     \axNJV\UnaryInfC{$\bot$}
@@ -1361,7 +1376,7 @@ les coupures.
       \TrinaryInfC{$\exists x, \varFP$}
       \AxiomC{$[\varFP]^\varTokB$}
       \ligneNJP{\varPT'}\UnaryInfC{$\varFC$}
-      \RightLabel{$\RorEB^\dagger$}
+      \RightLabel{$\RexEB^\dagger$}
       \BinaryInfC{$\varFC$}
       \DisplayProof}
     & $\CCutP{\exists}{\lor}$ &
@@ -1512,10 +1527,85 @@ les coupures.
   \hrule
 
   \vspace{0.4cm}
-  \caption{Réductions commutatives dans $\NJ$}
-  \label{tbl.cut.com.NJ}
+  \caption{Réductions commutatives dans $\NJ$ - partie 1}
+  \label{tbl.cut.com.NJ1}
   %\hrule
 
+\end{table}
+
+\begin{table}[t]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{ccc}
+         \axNJV
+         \UnaryInfC{$\varFF_1\lor\varFF_2$}
+         \AxiomC{$[\varFF_1]^\varTokA$}
+         \ligneNJP{\varPT_1}
+         \UnaryInfC{$\varFP[t/x]$}
+         \AxiomC{$[\varFF_2]^\varTokA$}
+         \ligneNJP{\varPT_2}
+         \UnaryInfC{$\varFP[t/x]$}
+         \RightLabel{$\RorEA$}
+         \TrinaryInfC{$\varFP[t/x]$}
+         \axNJP{\varPT'}
+         \UnaryInfC{$t = u$}
+         \RightLabel{$\ReqE$}
+         \BinaryInfC{$\varFP[u/x]$}
+         \DisplayProof
+         & $\CCutP{=}{\lor}$ &
+         \axNJV
+         \UnaryInfC{$\varFF_1\lor\varFF_2$}
+         \AxiomC{$[\varFF_1]^\varTokA$}
+         \ligneNJP{\varPT_1}
+         \UnaryInfC{$\varFP[t/x]$}
+         \axNJP{\varPT'}
+         \UnaryInfC{$t = u$}
+         \RightLabel{$\ReqE$}
+         \BinaryInfC{$\varFP[u/x]$}
+         \AxiomC{$[\varFF_2]^\varTokA$}
+         \ligneNJP{\varPT_2}
+         \UnaryInfC{$\varFP[t/x]$}
+         \axNJP{\varPT'}
+         \UnaryInfC{$t = u$}
+         \RightLabel{$\ReqE$}
+         \BinaryInfC{$\varFP[u/x]$}
+         \RightLabel{$\RorEA$}
+         \TrinaryInfC{$\varFP[u/x]$}
+         \DisplayProof
+         \\
+         \\
+         \axNJV\UnaryInfC{$\exists x,\varFF$}
+         \AxiomC{$[\varFF]^\varTokA$}
+         \ligneNJP{\varPT'}
+         \UnaryInfC{$\varFP[t/y]$}
+         \RightLabel{$\RexEA^\dagger$}
+         \BinaryInfC{$\varFP[t/y]$}
+         \axNJP{\varPT''}
+         \UnaryInfC{$t = u$}
+         \RightLabel{$\ReqE$}
+         \BinaryInfC{$\varFP[u/x]$}
+         \DisplayProof
+         & $\CCutP{=}{\exists}$ &
+         \axNJV\UnaryInfC{$\exists x,\varFF$}
+         \AxiomC{$[\varFF]^\varTokA$}
+         \ligneNJP{\varPT'}
+         \UnaryInfC{$\varFP[t/y]$}
+         \axNJP{\varPT''}
+         \UnaryInfC{$t = u$}
+         \RightLabel{$\ReqE$}
+         \BinaryInfC{$\varFP[u/x]$}
+         \RightLabel{$\RexEA^\dagger$}
+         \BinaryInfC{$\varFP[u/x]$}
+         \DisplayProof
+    \end{tabular}
+    }
+
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Réductions commutatives dans $\NJ$ - partie 2}
+    \label{tbl.cut.com.NJ2}
 \end{table}
 
 \begin{remark}
