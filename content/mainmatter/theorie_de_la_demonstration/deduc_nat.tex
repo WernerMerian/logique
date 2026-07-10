@@ -19,8 +19,7 @@ façon plus naturelle, mais ces considérations dépassent le cadre d'une
 introduction à la théorie de la démonstration.
 
 Nous donnons ensuite une version adaptée à la déduction naturelle de
-l'élimination des coupures, dans laquelle on introduit les notions essentielles
-de système de réécriture abstrait. La preuve de la forte normalisation des
+l'élimination des coupures. La preuve de la forte normalisation des
 arbres de preuve de $\NJ$ est, elle, reportée au \cref{chp.lambda_type}.
 
 \section{Variantes de la déduction naturelle}
@@ -42,161 +41,166 @@ suivants~:
 \end{itemize}
 
 La première présentation de Gentzen du calcul en est proche, mais n'utilise pas
-de séquent. Dans le calcul des séquents, seules existent des formules dans des
-arbres, et les hypothèses d'une preuve peuvent être récupérées en considérant
-les feuilles de l'arbre. Le second point, lui, reste identique dans cette
-présentation.
+de séquent. \`A la place, les arbres sont simplement constitués de formules, et
+la conclusion $\varCG\vdNK \varFF$ d'un arbre $\varPT$ s'obtient en lisant la
+racine (pour la conclusion) et les feuilles (pour les hypothèses).
 
-\begin{table}[t!]
+\begin{table}[p]
   \centering
-  \begin{tabular}{cc}
-    \multicolumn{2}{c}{
-      \bottomAlignProof
-      \AxiomC{$\varphi$}
+  \begin{tabular}{c m{2cm} c}
+    \multicolumn{3}{c}{
+      \AxiomC{$\varFF$}
       \DisplayProof
     }
     \\
     \\
-    \bottomAlignProof
     \AxiomC{}
-    \RightLabel{$\top_\mathrm i$}
+    \RightLabel{$\RtopI$}
     \UnaryInfC{$\top$}
     \DisplayProof
-    &
+    & &
     \bottomAlignProof
-    \AxiomC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\varphi$}
-    \DisplayProof
-    \\
-    \\
-    \bottomAlignProof
-    \AxiomC{$[\varphi]^\alpha$}
-    \noLine
-    \UnaryInfC{$\vdots$}
-    \noLine
+    \axNJV
     \UnaryInfC{$\bot$}
-    \RightLabel{$\lnot_\mathrm i,\alpha$}
-    \UnaryInfC{$\lnot\varphi$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFF$}
     \DisplayProof
-    &
+    \\
+    \\
     \bottomAlignProof
-    \AxiomC{$\lnot \varphi$}
-    \AxiomC{$\varphi$}
-    \RightLabel{$\lnot_\mathrm e$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJV
+    \UnaryInfC{$\bot$}
+    \RightLabel{$\RnotIA$}
+    \UnaryInfC{$\lnot\varFF$}
+    \DisplayProof
+    & &
+    \bottomAlignProof
+    \axNJP{\varPT_1}
+    \UnaryInfC{$\lnot \varFF$}
+    \axNJP{\varPT_2}
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RnotE$}
     \BinaryInfC{$\bot$}
     \DisplayProof
     \\
     \\
     \bottomAlignProof
-    \AxiomC{$\varphi$}
-    \RightLabel{$\lor_\mathrm i^1$}
-    \UnaryInfC{$\varphi\lor\psi$}
+    \axNJV
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RorIG$}
+    \UnaryInfC{$\varFF\lor\varFP$}
     \DisplayProof
-    \quad
+    \hspace{1cm}
     \bottomAlignProof
-    \AxiomC{$\psi$}
-    \RightLabel{$\lor_\mathrm i^2$}
-    \UnaryInfC{$\varphi\lor\psi$}
+    \axNJV
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RorID$}
+    \UnaryInfC{$\varFF\lor\varFP$}
     \DisplayProof
-    &
+    & &
     \bottomAlignProof
-    \AxiomC{$\varphi\lor\psi$}
-    \AxiomC{$[\varphi]^\alpha$}
-    \noLine
-    \UnaryInfC{$\vdots$}
-    \noLine
-    \UnaryInfC{$\chi$}
-    \AxiomC{$[\psi]^\alpha$}
-    \noLine
-    \UnaryInfC{$\vdots$}
-    \noLine
-    \UnaryInfC{$\chi$}
-    \RightLabel{$\lor_\mathrm e,\alpha$}
-    \TrinaryInfC{$\chi$}
-    \DisplayProof
-    \\
-    \\
-    \bottomAlignProof
-    \AxiomC{$\varphi$}
-    \AxiomC{$\psi$}
-    \RightLabel{$\land_\mathrm i$}
-    \BinaryInfC{$\varphi\land\psi$}
-    \DisplayProof
-    &
-    \bottomAlignProof
-    \AxiomC{$\varphi\land\psi$}
-    \RightLabel{$\land_\mathrm e^1$}
-    \UnaryInfC{$\varphi$}
-    \DisplayProof
-    \quad
-    \bottomAlignProof
-    \AxiomC{$\varphi\land\psi$}
-    \RightLabel{$\land_\mathrm e^2$}
-    \UnaryInfC{$\psi$}
+    \axNJV
+    \UnaryInfC{$\varFF\lor\varFP$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\varPT_1}
+    \UnaryInfC{$\varFC$}
+    \AxiomC{$[\varFP]^\varTokA$}
+    \ligneNJP{\varPT_2}
+    \UnaryInfC{$\varFC$}
+    \RightLabel{$\RorEA$}
+    \TrinaryInfC{$\varFC$}
     \DisplayProof
     \\
     \\
     \bottomAlignProof
-    \AxiomC{$[\varphi]^\alpha$}
-    \noLine
-    \UnaryInfC{$\vdots$}
-    \noLine
-    \UnaryInfC{$\psi$}
-    \RightLabel{$\to_\mathrm i,\alpha$}
-    \UnaryInfC{$\varphi\to\psi$}
+    \axNJP{\varPT_1}
+    \UnaryInfC{$\varFF$}
+    \axNJP{\varPT_2}
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RandI$}
+    \BinaryInfC{$\varFF\land\varFP$}
     \DisplayProof
-    &
+    & &
     \bottomAlignProof
-    \AxiomC{$\varphi\to\psi$}
-    \AxiomC{$\psi$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\psi$}
+    \axNJV
+    \UnaryInfC{$\varFF\land\varFP$}
+    \RightLabel{$\RandEG$}
+    \UnaryInfC{$\varFF$}
     \DisplayProof
-    \\
-    \\
+    \hspace{1cm}
     \bottomAlignProof
-    \AxiomC{$\varphi$}
-    \RightLabel{$\forall_\mathrm i^\dagger$}
-    \UnaryInfC{$\forall x, \varphi$}
-    \DisplayProof
-    &
-    \bottomAlignProof
-    \AxiomC{$\forall x, \varphi$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\varphi[t/x]$}
+    \axNJV
+    \UnaryInfC{$\varFF\land\varFP$}
+    \RightLabel{$\RandED$}
+    \UnaryInfC{$\varFP$}
     \DisplayProof
     \\
     \\
     \bottomAlignProof
-    \AxiomC{$\varphi[t/x]$}
-    \RightLabel{$\exists_\mathrm i$}
-    \UnaryInfC{$\exists x, \varphi$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJV
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\varFF\to\varFP$}
     \DisplayProof
-    &
+    & &
     \bottomAlignProof
-    \AxiomC{$\exists x, \varphi$}
-    \AxiomC{$[\varphi]^\alpha$}
-    \noLine
-    \UnaryInfC{$\vdots$}
-    \noLine
-    \UnaryInfC{$\psi$}
-    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-    \BinaryInfC{$\psi$}
+    \axNJP{\varPT_1}
+    \UnaryInfC{$\varFF\to\varFP$}
+    \axNJP{\varPT_2}
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varFP$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \axNJV
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RforaI^\dagger$}
+    \UnaryInfC{$\forall x, \varFF$}
+    \DisplayProof
+    & &
+    \bottomAlignProof
+    \axNJV
+    \UnaryInfC{$\forall x, \varFF$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varFF[t/x]$}
+    \DisplayProof
+    \\
+    \\
+    \bottomAlignProof
+    \axNJV
+    \UnaryInfC{$\varFF[t/x]$}
+    \RightLabel{$\RexI$}
+    \UnaryInfC{$\exists x, \varFF$}
+    \DisplayProof
+    & &
+    \bottomAlignProof
+    \axNJP{\varPT_1}
+    \UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\varPT_2}
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RexEA\alpha$}
+    \BinaryInfC{$\varFP$}
     \DisplayProof
     \\
     \\
     \bottomAlignProof
     \AxiomC{}
-    \RightLabel{$=_\mathrm i$}
+    \RightLabel{$\ReqI$}
     \UnaryInfC{$t=t$}
     \DisplayProof
-    &
+    & &
     \bottomAlignProof
-    \AxiomC{$t = u$}
-    \AxiomC{$\varphi[t/x]$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$\varphi[u/x]$}
+    \axNJP{\varPT_1}
+    \UnaryInfC{$t = u$}
+    \axNJP{\varPT_2}
+    \UnaryInfC{$\varFF[t/x]$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$\varFF[u/x]$}
     \DisplayProof
   \end{tabular}
 
@@ -206,26 +210,29 @@ présentation.
   \vspace{0.4cm}
   \caption{Règles de $\NJ$}
   \label{tbl.NJ}
-  \hrule
+  %\hrule
 \end{table}
 
 On présente d'abord la variante intuitionniste, car $\NK$ en est un système
-dérivé dans lequel on ajoute une règle.
+dérivé dans lequel on ajoute une règle. On ne le précise pas, mais tout se
+déroule en fixant une signature $\Sign$ (ainsi on pourra noter
+$\ProofNJ(\Sign)$ l'ensemble des arbres de preuve sur une signature fixée
+\latinexpr{etc.}).
 
 \begin{definition}[Déduction naturelle $\NJ$]
   On définit l'ensemble $\ProofNJ$ des arbres de preuves de $\NJ$ par les
   règles de formation données dans la \cref{tbl.NJ}. Dans un arbre de preuves,
   on va appeler feuille les formules tout en haut, qui n'ont pas de règle
-  au-dessus d'elles (en particulier, $=_\mathrm i$ ne donne pas de feuille).
-  Les feuilles de l'arbres sont donc de deux sortes~:
+  au-dessus d'elles (en particulier, $\ReqI$ ne donne pas de feuille).
+  Les feuilles d'un arbre sont donc de deux sortes~:
   \begin{itemize}
-  \item les formules marquées, de la forme $[\varphi]^\alpha$ où $\alpha$ est
-    appelé une marque~;
+  \item les formules marquées, de la forme $[\varFF]^\varTokA$ où $\varTokA$
+    est appelé une marque~;
   \item les formules non marquées.
   \end{itemize}
-  Un arbre $\pi\in \ProofNJ$ a pour conclusion le séquent $\Gamma\vdNJ \varphi$
-  si la formule à sa racine est $\varphi$ et si ses feuilles non marquées sont
-  des formules de $\Gamma$.
+  Un arbre $\varPT\in \ProofNJ$ a pour conclusion le séquent
+  $\varCG\vdNJ \varFF$ si la formule à sa racine est $\varFF$ et si ses
+  feuilles non marquées sont des formules de $\varCG$.
 
   Les règles avec la condition $\dagger$ demandent que la variable libre $x$
   n'apparaisse pas dans les feuilles non marquées de l'arbre, ou les feuilles
@@ -233,28 +240,28 @@ dérivé dans lequel on ajoute une règle.
   $x$.
 
   On considère uniquement les arbres dont toutes les marques sont liées par
-  des règles, c'est-à-dire que pour une formule marquée $[\varphi]^\alpha$
-  dans un arbre $\pi$, il existe une règle $\mathrm r_\alpha$ dans $\pi$.
+  des règles, c'est-à-dire que pour une formule marquée $[\varFF]^\varTokA$
+  dans un arbre $\varPT$, il existe une règle $\ruleR_\varTokA$ dans $\varPT$.
 
-  La relation de prouvabilité dans une théorie $\mathcal T$ est donnée par
-  \[\mathcal T \vdNJ \varphi \defeq \exists \Gamma \in \List(\mathcal T),
-  \exists \pi \in \ProofNJ, \pi\concl \Gamma\vdNJ\varphi\]
+  La relation de prouvabilité dans une théorie $\varT$ est donnée par
+  \[\varT \vdNJ \varFF \defeq \exists \varCG \in \List(\varT),
+  \exists \varPT \in \ProofNJ, \varPT\concl \varCG\vdNJ\varFF\]
 \end{definition}
 
 \begin{remark}
-  Dans les règles introduisant les marques telles que $\to_\mathrm i,\alpha$,
-  il n'existe pas forcément de formule marquée par $\alpha$, et il peut y en
-  avoir plusieurs marquées par le même $\alpha$. L'intérêt de ces marques est
-  de supprimer du contexte global des hypothèses en ne les comptant plus comme
-  des feuilles d'hypothèses (c'est pour cela qu'on ne considère que les feuilles
-  non marquées).
+  Dans les règles introduisant les marques telles que $\RtoIA$, il n'existe
+  pas forcément de formule marquée par $\varTokA$, et il peut y en avoir
+  plusieurs marquées par le même $\varTokA$. L'intérêt de ces marques est de
+  supprimer du contexte global des hypothèses en ne les comptant plus comme des
+  feuilles d'hypothèses (c'est pour cela qu'on ne considère que les feuilles non
+  marquées).
 \end{remark}
 
 La déduction naturelle $\NK$ est simplement l'ajout d'une règle de logique
 classique. Il existe plusieurs axiomes ou règles qui permettent de passer de la
 logique intuitionniste à la logique classique~: l'\cref{exo.EDN.RAA} consiste
 par exemple à montrer qu'il est équivalent de considérer l'ajout des axiomes
-$\varphi\lor\lnot\varphi$ ou l'ajout des axiomes $\lnot\lnot\varphi\to\varphi$,
+$\varFF\lor\lnot\varFF$ ou l'ajout des axiomes $\lnot\lnot\varFF\to\varFF$,
 les deux pouvant se réécrire comme des règles. On choisit d'ajouter la règle du
 raisonnement par l'absurde, plus naturelle à considérer pour formaliser des
 raisonnements mathématiques.
@@ -263,23 +270,25 @@ raisonnements mathématiques.
   L'ensemble $\ProofNK$ des arbres de preuve de déduction naturelle classique
   est donné par les règles de la \cref{tbl.NJ} ainsi que par la règle
   \begin{prooftree}
-    \AxiomC{$[\lnot\varphi]$}\noLine\UnaryInfC{$\vdots$}\noLine
+    \AxiomC{$[\lnot\varFF]^\varTokA$}
+    \ligneNJV
     \UnaryInfC{$\bot$}
-    \RightLabel{Raa}
-    \UnaryInfC{$\varphi$}
+    \RightLabel{$\RaaA$}
+    \UnaryInfC{$\varFF$}
   \end{prooftree}
   La relation $\vdNK$ est définie de façon analogue à $\vdNJ$.
 \end{definition}
 
 \begin{remark}
-  \'Etant donné un arbre $\pi\concl \psi_1,\cdots,\psi_n\vdNJ \varphi$ et
+  \'Etant donné un arbre $\varPT\concl \varFP_1,\cdots,\varFP_n\vdNJ \varFF$ et
   un arbre
-  $\pi'\concl \Delta\vdNJ\psi_i$, on peut placer l'arbre $\pi'$ au-dessus des
-  feuilles de $\pi$ étiquetées par $\psi_i$ pour obtenir un arbre
-  \[\pi \circ_i \pi' \concl \psi_1,\ldots,\psi_{i-1},\Delta,
-  \psi_{i+1},\ldots,\psi_n\vdNJ\varphi\]
-  Le lecteur ayant vu la notion d'opérade notera des similarités avec ces
-  objets.
+  $\varPT'\concl \varCD\vdNJ\varFP_i$, on peut placer l'arbre $\varPT'$
+  au-dessus des feuilles de $\varPT$ étiquetées par $\varFP_i$ pour obtenir un
+  arbre
+  \[\varPT' \circ_i \varPT \concl \varFP_1,\ldots,\varFP_{i-1},\varCD,
+  \varFP_{i+1},\ldots,\varFP_n\vdNJ\varFF\]
+  Le lecteur ayant vu la notion d'opérade ou de multicatégorie notera des
+  similarités avec ces objets.
 \end{remark}
 
 \begin{example}
@@ -287,31 +296,33 @@ raisonnements mathématiques.
   dans le \cref{chp.logpred}, pour mettre en valeur les différences de style
   avec la première version de déduction naturelle donnée.
   On fixe la signature
-  $\Sigma \defeq \{f^1,R^1\}$ où $R$ est un symbole de relation et $f$ un
-  symbole de fonction. On veut prouver que
-  $\forall x, R(x)\to R(f(x))\vdNJ \forall x, R(x)\to R(f(f(x)))$~:
+  $\Sign \defeq \{f^1,\mathord{\varRR}^1\}$ où $\varRR$ est un symbole de
+  relation et $f$ un symbole de fonction. On maintenant construire un
+  arbre de preuve pour le séquent
+  $\forall x, \varRR(x)\to \varRR(f(x))\vdNJ
+  \forall x, \varRR(x)\to \varRR(f(f(x)))$~:
   \begin{prooftree}
-    \AxiomC{$\forall x, R(x)\to R(f(x))$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$R(f(x))\to R(f(f(x)))$}
-    \AxiomC{$\forall x, R(x)\to R(f(x))$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$R(x) \to R(f(x))$}
-    \AxiomC{$[R(x)]^\alpha$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$R(f(x))$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$R(f(f(x)))$}
-    \RightLabel{$\to_\mathrm i,\alpha$}
-    \UnaryInfC{$R(x) \to R(f(f(x)))$}
-    \RightLabel{$\forall_\mathrm i^\dagger$}
-    \UnaryInfC{$\forall x, R(x)\to R(f(f(x)))$}
+    \AxiomC{$\forall x, \varRR(x)\to \varRR(f(x))$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varRR(f(x))\to \varRR(f(f(x)))$}
+    \AxiomC{$\forall x, \varRR(x)\to \varRR(f(x))$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varRR(x) \to \varRR(f(x))$}
+    \AxiomC{$[\varRR(x)]^\varTokA$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varRR(f(x))$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varRR(f(f(x)))$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\varRR(x) \to \varRR(f(f(x)))$}
+    \RightLabel{$\RforaI^\dagger$}
+    \UnaryInfC{$\forall x, \varRR(x)\to \varRR(f(f(x)))$}
   \end{prooftree}
 \end{example}
 
 Puisque nous avons donné une nouvelle syntaxe de preuve, à la fois pour la
-logique classique et la logique intuitionniste, il convient de montrer la
-complétude de ces calculs.
+logique classique et la logique intuitionniste, il convient de montrer leur
+complétude.
 
 \subsection{Complétude de la déduction naturelle}
 
@@ -320,232 +331,284 @@ complétude.
 
 \begin{exercise}
   Montrer que $\NK$ vérifie les hypothèse du \cref{thm.completude.gen}. En
-  déduire que $\vdNK = \vDash$.
+  déduire que $\mathord{\vdNK} = \mathord{\vD}$.
 \end{exercise}
 
 Pour la logique intuitionniste, on peut tenter de construire un théorème de
 complétude directement inspiré de celui utilisé pour prouver la complétude de
-$\LJ$ pour la sémantique de Kripke. Si cette méthode fonctionne, on propose de
-donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
+$\LJ$ pour la sémantique de Kripke. Même si cette méthode fonctionne, on propose
+une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
 
 \begin{definition}[Construction d'arbre depuis le calcul des séquents]
-  On définit une fonction $\tradNJ - : \ProofLJ \to \ProofNJ$ par induction sur
-  les arbres, de telle sorte que si $\pi\concl \Gamma\vdLJ \varphi$ alors
-  $\tradNJ\pi\concl\Gamma\vdNJ\varphi$ et si $\pi\concl\Gamma\vdLJ$ alors
-  $\tradNJ\pi\concl\Gamma\vdNJ\bot$~:
-  \begin{itemize}
-  \item si $\pi = \bottomAlignProof\AxiomC{}\RightLabel{$ax$}
-    \UnaryInfC{$\varphi\vdLJ\varphi$}\DisplayProof$
-    alors $\tradNJ\pi \defeq \varphi$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
-    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Delta,\varphi\vdLJ[\psi]$}
-    \RightLabel{$cut$}\BinaryInfC{$\Gamma,\Delta\vdLJ[\psi]$}
-    \DisplayProof$
-    alors $\tradNJ\pi \defeq \tradNJ{\pi_1}\circ_i\tradNJ{\pi_0}$ où
-    $i$ est la position de $\varphi$ dans $\Delta,\varphi$.
-  \item pour les règles structurelles sauf $rw$, la traduction ne change pas
-    l'arbre.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ$}
-    \RightLabel{$rw$}\UnaryInfC{$\Gamma\vdLJ\varphi$}\DisplayProof$
-    alors \[\tradNJ\pi \defeq
-    \bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\tradNJ{\pi_0}$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\varphi$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine
-    \UnaryInfC{$\Gamma\vdLJ\varphi$}
-    \RightLabel{$l\lnot$}\UnaryInfC{$\Gamma,\lnot\varphi\vdLJ$}\DisplayProof$
-    alors
-    \[\tradNJ{\pi} \defeq \bottomAlignProof
-    \AxiomC{$\lnot\varphi$}
-    \Axiom$\fCenter\tradNJ{\pi_0}$
-    \noLine\UnaryInfC{$\varphi$}
-    \RightLabel{$\lnot_\mathrm e$}\BinaryInfC{$\bot$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ$}
-    \RightLabel{$r\lnot$}\UnaryInfC{$\Gamma\vdLJ\lnot\varphi$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi \defeq \bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$[\varphi]^\alpha$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi_0}$
-    \noLine
-    \UnaryInfC{$\bot$}
-    \RightLabel{$\lnot_\mathrm i,\alpha$}\UnaryInfC{$\lnot\varphi$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ[\chi]$}
-    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Gamma,\psi\vdLJ[\chi]$}
-    \RightLabel{$l\lor$}\BinaryInfC{$\Gamma,\varphi\lor\psi\vdLJ[\chi]$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq \bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$\varphi\lor\psi$}
-    \AxiomC{$[\varphi]^\alpha$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi_0}$
-    \noLine
-    \UnaryInfC{$[\chi]$}
-    \AxiomC{$[\psi]^\alpha$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi_1}$
-    \noLine
-    \UnaryInfC{$[\chi]$}
-    \RightLabel{$\lor_\mathrm e,\alpha$}\TrinaryInfC{$[\chi]$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi_i$}
-    \RightLabel{$r\lor_i$}\UnaryInfC{$\Gamma\vdLJ\varphi_1\lor\varphi_2$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$\varphi_i$}
-    \RightLabel{$\lor_\mathrm i^i$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi_i\vdLJ [\psi]$}
-    \RightLabel{$l\land_i$}
-    \UnaryInfC{$\Gamma,\varphi_1\land\varphi_2\vdLJ[\psi]$}\DisplayProof$,
-    alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$\varphi_1\land\varphi_2$}\RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\varphi_i$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$[\psi]$}\DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
-    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Gamma\vdLJ\psi$}
-    \RightLabel{$r\land$}\BinaryInfC{$\Gamma\vdLJ\varphi\land\psi$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq \bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\tradNJ{\pi_0}$
-    \noLine\UnaryInfC{$\varphi$}
-    \Axiom$\fCenter\tradNJ{\pi_1}$
-    \noLine\UnaryInfC{$\psi$}
-    \RightLabel{$\land_\mathrm i$}\BinaryInfC{$\varphi\land\psi$}\DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi_0$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
-    \AxiomC{$\pi_1$}\noLine\UnaryInfC{$\Gamma,\psi\vdLJ[\chi]$}
-    \RightLabel{$l\to$}\BinaryInfC{$\Gamma,\varphi\to\psi\vdLJ[\chi]$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$\varphi\to\psi$}
-    \Axiom$\fCenter\tradNJ{\pi_0}$
-    \noLine
-    \UnaryInfC{$\varphi$}
-    \RightLabel{$\to_\mathrm e$}
-    \BinaryInfC{$\psi$}
-    \noLine
-    \UnaryInf$\fCenter\tradNJ{\pi_1}$
-    \noLine\UnaryInfC{$[\chi]$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ\psi$}
-    \RightLabel{$r\to$}\UnaryInfC{$\Gamma\vdLJ\varphi\to\psi$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$[\varphi]^\alpha$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$\psi$}
-    \RightLabel{$\to_\mathrm i,\alpha$}\UnaryInfC{$\varphi\to\psi$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdLJ[\psi]$}
-    \RightLabel{$l\forall$}\UnaryInfC{$\Gamma,\forall x,\varphi\vdLJ[\psi]$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$\forall x, \varphi$}\RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\varphi[t/x]$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$[\psi]$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi$}
-    \RightLabel{$r\forall^\dagger$}\UnaryInfC{$\Gamma\vdLJ\forall x, \varphi$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$\varphi$}
-    \RightLabel{$\forall_\mathrm i^\dagger$}\UnaryInfC{$\forall x, \varphi$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma,\varphi\vdLJ[\psi]$}
-    \RightLabel{$l\exists^\dagger$}
-    \UnaryInfC{$\Gamma,\exists x, \varphi\vdLJ[\psi]$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$\exists x, \varphi$}
-    \AxiomC{$[\varphi]^\alpha$}\noLine
-    \UnaryInf$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$[\psi]$}\RightLabel{$\exists_\mathrm e^\dagger$}
-    \BinaryInfC{$[\psi]$}\DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine\UnaryInfC{$\Gamma\vdLJ\varphi[t/x]$}
-    \RightLabel{$r\exists$}\UnaryInfC{$\Gamma\vdLJ\exists x, \varphi$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq \bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$\varphi[t/x]$}
-    \RightLabel{$\exists_\mathrm i$}\UnaryInfC{$\exists x, \varphi$}
-    \DisplayProof\]
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\pi'$}\noLine
-    \UnaryInfC{$\psi_1[u/x],\ldots,\psi_n[u/x]\vdLJ[\varphi[u/x]]$}
-    \RightLabel{$l=$}
-    \UnaryInfC{$\psi_1[t/x],\ldots,\psi_n[t/x], t = u \vdLJ[\varphi[t/x]]$}
-    \DisplayProof$, alors
-    \[\tradNJ\pi\defeq\bottomAlignProof
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \AxiomC{$t = u$}
-    \AxiomC{}
-    \RightLabel{$=_\mathrm i$}
-    \UnaryInfC{$t = t$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$u = t$}
-    \AxiomC{$t = u$}
-    \AxiomC{$\psi_1[t/x]$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$\psi_1[u/x]$}
-    \AxiomC{$\cdots$}
-    \AxiomC{$t = u$}
-    \AxiomC{$\psi_n[t/x]$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$\psi_n[u/x]$}
-    \dashedLine
-    \TrinaryInf$\fCenter\tradNJ{\pi'}$
-    \noLine
-    \UnaryInfC{$[\varphi[u/x]]$}
-    \RightLabel{$=_\mathrm e$}
-    \BinaryInfC{$[\varphi[t/x]]$}
-    \DisplayProof
-    \]
-  \item si $\pi = \bottomAlignProof\AxiomC{}\RightLabel{$r=$}
-    \UnaryInfC{$t =t$}\DisplayProof$, alors
-    $\tradNJ{\pi}\defeq \AxiomC{}\RightLabel{$=_\mathrm i$}
-    \UnaryInfC{$t = t$}\DisplayProof$.
-  \end{itemize}
+\label{def.LJtoNJ}
+  On définit une fonction $\makeFunName{\tradNJ{\tok}}{\ProofLJ}{\ProofNJ}$ par
+  induction sur les arbres, de telle sorte que si
+  $\varPT\concl \varCG\vdLJ \varFF$ alors
+  $\tradNJ\varPT\concl\varCG\vdNJ\varFF$ et si $\varPT\concl\varCG\vdLJ$ alors
+  $\tradNJ\varPT\concl\varCG\vdNJ\bot$. On donne dans la \cref{tbl.LJtoNJ} la
+  définition exacte de la fonction.
 \end{definition}
+
+\begin{table}[t]
+    \centering
+    \resizebox{\textwidth}{!}{
+    \begin{tabular}{ccc|ccc}
+
+    \AxiomC{}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varFF\vdLJ\varFF$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \bottomAlignProof
+    \AxiomC{$\varFF$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT_1$}
+    \noLine
+    \UnaryInfC{$\varCG\vdLJ\varFP_i$}
+    \AxiomC{$\varPT_2$}
+    \noLine
+    \UnaryInfC{$\varFP_1,\ldots,\varFP_n\vdLJ[\varFF]$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\varFP_1,\ldots,\varFP_{i-1},\varCG,
+    \varFP_{i+1},\ldots,\varFP_n\vdLJ[\varFF]$}
+    \DisplayProof
+    & $\longmapsto$ &
+    $\tradNJ{\varPT_1}\circ_i \tradNJ{\varPT_2}$
+    \\ & & & &
+    \\
+    \multicolumn{3}{l|}{
+    Aucune règle structurelle n'a
+    d'effet sur $\tradNJ\tok$ à part $\Rrw$.}
+    &
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG\vdLJ$}
+    \RightLabel{$\Rrw$}
+    \UnaryInfC{$\varCG\vdLJ\varFF$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \axNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFF$}
+    \DisplayProof
+    \\ & & & &
+    \\
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
+    \RightLabel{$\Rlnot$}
+    \UnaryInfC{$\varCG,\lnot\varFF\vdLJ$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$\lnot\varFF$}
+    \axNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RnotE$}
+    \BinaryInfC{$\bot$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ$}
+    \RightLabel{$\Rrnot$}
+    \UnaryInfC{$\varCG\vdLJ\lnot\varFF$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$[\varFF]^{\varTokA}$}
+    \ligneNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\bot$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\lnot\varFF$}
+    \DisplayProof
+    \\ & & & &
+    \\
+    \AxiomC{$\varPT_1$}
+    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ[\varFC]$}
+    \AxiomC{$\varPT_2$}
+    \noLine\UnaryInfC{$\varCG,\varFP\vdLJ[\varFC]$}
+    \RightLabel{$\Rlor$}
+    \BinaryInfC{$\varCG,\varFF\lor\varFP\vdLJ[\varFC]$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$\varFF\lor\varFP$}
+    \AxiomC{$[\varFF]^{\varTokA}$}
+    \ligneNJP{\tradNJ{\varPT_1}}
+    \UnaryInfC{$[\varFC]$}
+    \AxiomC{$[\varFF]^{\varTokA}$}
+    \ligneNJP{\tradNJ{\varPT_2}}
+    \UnaryInfC{$[\varFC]$}
+    \RightLabel{$\RorEA$}
+    \TrinaryInfC{$[\varFC]$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG\vdLJ\varFF_i$}
+    \RightLabel{$\Rrori$}
+    \UnaryInfC{$\varCG\vdLJ\varFF_1\lor\varFF_2$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \axNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\varFF_i$}
+    \RightLabel{$\RorIi$}
+    \UnaryInfC{$\varFF_1\lor\varFF_2$}
+    \DisplayProof
+    \\ & & & &
+    \\
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF_i\vdLJ[\varFP]$}
+    \RightLabel{$\Rlandi$}
+    \UnaryInfC{$\varCG,\varFF_1\land\varFF_2\vdLJ[\varFP]$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$\varFF_1\land\varFF_2$}
+    \RightLabel{$\RandEi$}
+    \UnaryInfC{$\varFF_i$}
+    \ligneNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$[\varFP]$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT_1$}
+    \noLine\UnaryInfC{$\varCG\vdLJ \varFF_1$}
+    \AxiomC{$\varPT_2$}
+    \noLine\UnaryInfC{$\varCG\vdLJ\varFF_2$}
+    \RightLabel{$\Rrand$}
+    \BinaryInfC{$\varCG\vdLJ\varFF_1\land\varFF_2$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \axNJP{\tradNJ{\varPT_1}}
+    \UnaryInfC{$\varFF_1$}
+    \axNJP{\tradNJ{\varPT_2}}
+    \UnaryInfC{$\varFF_2$}
+    \RightLabel{$\RandI$}
+    \BinaryInfC{$\varFF_1\land\varFF_2$}
+    \DisplayProof
+    \\ & & & &
+    \\
+    \AxiomC{$\varPT_1$}
+    \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
+    \AxiomC{$\varPT_2$}
+    \noLine\UnaryInfC{$\varCG,\varFP\vdLJ[\varFC]$}
+    \RightLabel{$\Rlto$}
+    \BinaryInfC{$\varCG,\varFF\to\varFP\vdLJ[\varFC]$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$\varFF\to\varFP$}
+    \axNJP{\tradNJ{\varPT_1}}
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RtoE$}
+    \BinaryInfC{$\varFP$}
+    \ligneNJP{\tradNJ{\varPT_2}}
+    \UnaryInfC{$[\varFP]$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ\varFP$}
+    \RightLabel{$\Rrto$}
+    \UnaryInfC{$\varCG\vdLJ\varFF\to\varFP$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\varFP$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\varFF\to\varFP$}
+    \DisplayProof
+    \\ & & & &
+    \\
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF[t/x]\vdLJ[\varFP]$}
+    \RightLabel{$\Rlfora$}
+    \UnaryInfC{$\varCG,\forall x\,\varFF\vdLJ[\varFP]$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$\forall x\,\varFF$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varFF[t/x]$}
+    \ligneNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$[\varFP]$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
+    \RightLabel{$\Rrfora^\dagger$}
+    \UnaryInfC{$\varCG\vdLJ \forall x\,\varFF$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \axNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\varFF$}
+    \RightLabel{$\RforaI^\dagger$}
+    \UnaryInfC{$\forall x\,\varFF$}
+    \DisplayProof
+    \\ & & & &
+    \\
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ[\varFP]$}
+    \RightLabel{$\Rlex^\dagger$}
+    \UnaryInfC{$\varCG,\exists x\,\varFF\vdLJ[\varFP]$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{$\exists x\,\varFF$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$[\varFP]$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$[\varFP]$}
+    \DisplayProof
+    &
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG\vdLJ\varFF[t/x]$}
+    \RightLabel{$\Rrex$}
+    \UnaryInfC{$\varCG\vdLJ\exists x\,\varFF$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \axNJP{\tradNJ{\varPT}}
+    \UnaryInfC{$\varFF[t/x]$}
+    \RightLabel{$\RexI$}
+    \UnaryInfC{$\exists x\,\varFF$}
+    \\ & & & &
+    \\
+    & & &
+    \AxiomC{}
+    \RightLabel{$\Rreq$}
+    \UnaryInfC{$\vdLJ t = t$}
+    \DisplayProof
+    & $\longmapsto$ &
+    \AxiomC{}
+    \RightLabel{$\ReqI$}
+    \UnaryInfC{$t = t$}
+    \DisplayProof
+    \\
+    \\
+    \\
+    \multicolumn{6}{l}{
+    \AxiomC{$\varPT$}\noLine
+    \UnaryInfC{$\varFP_1[u/x],\ldots,\varFP_n[u/x]\vdLJ[\varFF[u/x]]$}
+    \RightLabel{$\Rleq$}
+    \UnaryInfC{$\varFP_1[t/x],\ldots,\varFP_n[t/x], t = u \vdLJ[\varFF[t/x]]$}
+    \DisplayProof
+    \quad $\longmapsto$ \quad
+    \AxiomC{$t = u$}
+    \AxiomC{}\RightLabel{$\ReqI$}\UnaryInfC{$t = t$}
+    \RightLabel{$\ReqE$}\BinaryInfC{$u = t$}
+    \AxiomC{$t = u$}\AxiomC{$\varFP_1[t/x]$}
+    \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_1[u/x]$}
+    \AxiomC{$\cdots$}
+    \AxiomC{$t = u$}\AxiomC{$\varFP_n[t/x]$}
+    \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_n[u/x]$}
+    \ligneNJPT{\tradNJ{\varPT}}
+    \UnaryInfC{$[\varFF[u/x]]$}
+    \RightLabel{$\ReqE$}
+    \BinaryInfC{$[\varFF[t/x]]$}
+    \DisplayProof
+    }
+    \end{tabular}
+    }
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Transformation syntaxique de la \cref{def.LJtoNJ}}
+    \label{tbl.LJtoNJ}
+\end{table}
 
 \begin{corollary}
   Un séquent intuitionniste est prouvable dans $\NJ$ si et seulement s'il est
@@ -555,8 +618,8 @@ donner une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
 \begin{proof}
   On vérifie par une induction sans difficulté que le calcul $\NJ$ est correct.
   Si un séquent est vrai dans tout modèle de Kripke intuitionniste, alors il
-  est prouvable dans $\LJ$ par complétude, mais pour $\pi$ la preuve ainsi
-  obtenue, $\tradNJ\pi$ est un arbre de preuve du même séquent dans $\NJ$.
+  est prouvable dans $\LJ$ par complétude, mais pour $\varPT$ la preuve ainsi
+  obtenue, $\tradNJ\varPT$ est un arbre de preuve du même séquent dans $\NJ$.
 \end{proof}
 
 Cette construction se sert crucialement du fait que les séquent sont
@@ -571,54 +634,57 @@ plusieurs formules à gauche même dans un séquent intuitionniste. On peut donc
 chercher à déplacer toutes les formules à gauche, de sorte que les raisonnements
 classiques peuvent se faire de façon identique dans les deux formalismes. La
 différence principale est qu'alors, si on a par exemple
-\[\Gamma,\lnot\Delta\vdLK\]
-représentant le séquent $\Gamma\vdLK\Delta$ (la négation permettant de faire
-passer toutes les formules de $\Delta$ à gauche), on peut récupérer
-\[\Gamma\vdLK\Delta\]
-en procédant à des coupures contre $\vdLK\lnot\psi,\psi$ pour chaque
-$\psi \in \Delta$.
+\[\varCG,\lnot\varCD\vdLK\]
+représentant le séquent $\varCG\vdLK\varCD$ (la négation permettant de faire
+passer toutes les formules de $\varCD$ à gauche), on peut récupérer
+\[\varCG\vdLK\varCD\]
+en procédant à des coupures contre $\vdLK\lnot\varFP,\varFP$ pour chaque
+$\varFP \in \varCD$.
 
 Dans le cas intuitionniste, la seule possibilité est, d'abord, de transformer
-$\lnot\Delta$ en une seule formule $\bigwedge\lnot\Delta$, puis de la passer à
-droite avec $r\lnot$. On obtient ainsi une double négation, dans le cas d'une
+$\lnot\varCD$ en une seule formule $\bigwedge\lnot\varCD$, puis de la passer à
+droite avec $\Rrnot$. On obtient ainsi une double négation, dans le cas d'une
 seule formule. On cherche donc à prouver un énoncé de la forme~:
-\[\Gamma\vdLK\varphi \iff \Gamma\vdLJ\lnot\lnot\varphi\]
+\[\varCG\vdLK\varFF \iff \varCG\vdLJ\lnot\lnot\varFF\]
 Cette équivalence, vraie en logique propositionnelle (\latinexpr{c.f.}
 \cref{exo.glivenko}), n'est plus vraie en logique du premier ordre. A la
 place, on donne la traduction de Gödel-Gentzen, qui remplit le rôle qu'a
-$\lnot\lnot\varphi$ ci-dessus.
+$\lnot\lnot\varFF$ ci-dessus.
 
 \begin{definition}[Traduction de Gödel-Gentzen \cite{GodelTradNot,Gentzen1936}]
   \label{def.gg.trad}
-  Pour toute formule $\varphi$, on définit par induction sa traduction de
-  Gödel-Gentzen $\varphi^N$ par~:
+  Pour toute formule $\varFF$, on définit par induction sa traduction de
+  Gödel-Gentzen $\tradGG{\varFF}$ par~:
   \begin{itemize}
-  \item si $\varphi$ est atomique, alors $\varphi^N \defeq \lnot\lnot\varphi$.
-  \item si $\varphi \in\{\top,\bot\}$, alors $\varphi^N \defeq \varphi$.
-  \item si $\varphi = \lnot \psi$, alors $\varphi^N\defeq\lnot\psi^N$.
-  \item si $\varphi = \psi\land\chi$, alors $\varphi^N\defeq\psi^N\land\chi^N$.
-  \item si $\varphi = \psi\lor\chi$, alors
-    $\varphi^N\defeq \lnot(\lnot\psi^N\land\lnot\chi^N)$.
-  \item si $\varphi = \psi \to \chi$, alors $\varphi^N\defeq\psi^N\to\chi^N$.
-  \item si $\varphi = \forall x, \psi$, alors
-    $\varphi^N\defeq \forall x, \psi^N$.
-  \item si $\varphi = \exists x, \psi$, alors
-    $\varphi^N\defeq \lnot(\forall x, \lnot\psi^N)$.
+  \item si $\varFF$ est atomique, alors $\tradGG{\varFF} \defeq \lnot\lnot\varFF$.
+  \item si $\varFF \in\{\top,\bot\}$, alors $\tradGG{\varFF} \defeq \varFF$.
+  \item si $\varFF = \lnot \varFP$, alors
+    $\tradGG{\varFF}\defeq\lnot\tradGG{\varFP}$.
+  \item si $\varFF = \varFP\land\varFC$, alors
+    $\tradGG{\varFF}\defeq\tradGG{\varFP}\land\tradGG{\varFC}$.
+  \item si $\varFF = \varFP\lor\varFC$, alors
+    $\tradGG{\varFF}\defeq \lnot(\lnot\tradGG{\varFP}\land\lnot\tradGG{\varFC})$.
+  \item si $\varFF = \varFP \to \varFC$, alors
+    $\tradGG{\varFF}\defeq\tradGG{\varFP}\to\tradGG{\varFC}$.
+  \item si $\varFF = \forall x, \varFP$, alors
+    $\tradGG{\varFF}\defeq \forall x, \tradGG{\varFP}$.
+  \item si $\varFF = \exists x, \varFP$, alors
+    $\tradGG{\varFF}\defeq \lnot(\forall x, \lnot\tradGG{\varFP})$.
   \end{itemize}
 \end{definition}
 
 On souhaite donc prouver que la prouvabilité dans $\LK$ revient à la
 prouvabilité des traductions dans $\LJ$. Pour cela, le sens difficile est
-principalement celui de montrer que si $\Gamma\vdLK\varphi$ alors
-$\Gamma^N \vdLJ \varphi^N$. Plutôt que d'en donner la preuve directement, on
-développe une classification des propositions permettant de mieux cibler le
-sens des traductions de formules.
+principalement celui de montrer que si $\varCG\vdLK\varFF$ alors
+$\tradGG{\varCG} \vdLJ \tradGG{\varFF}$. Plutôt que d'en donner la preuve
+directement, on développe une classification des propositions permettant de
+mieux cibler le sens des traductions de formules.
 
 \begin{definition}[Proposition stable, dense]
-  Soit $\varphi \in \Formula$. Notons $\varphi^\lnot \defeq \lnot\lnot\varphi$.
-  On dit que $\varphi$ est stable si
-  $\vdLJ \varphi\leftrightarrow\varphi^\lnot$ et qu'elle est
-  dense si $\vdLJ \varphi^\lnot$.
+  Soit $\varFF \in \Formula$. Notons $\varFF^\lnot \defeq \lnot\lnot\varFF$.
+  On dit que $\varFF$ est stable si
+  $\vdLJ \varFF\iffS\varFF^\lnot$ et qu'elle est
+  dense si $\vdLJ \varFF^\lnot$.
 \end{definition}
 
 Une formule dense est donc une proposition vraie dans $\LK$ et une
@@ -627,36 +693,37 @@ admissible. Un cas important de formule stable est celui des négations de
 formule.
 
 \begin{proposition}
-  Pour toute formule $\varphi$, $\lnot\varphi$ est une proposition stable.
+  Pour toute formule $\varFF$, $\lnot\varFF$ est une proposition stable.
 \end{proposition}
 
 \begin{proof}
-  Dans le cas général, on a toujours $\varphi\to\varphi^\lnot$~:
+  Dans le cas général, on a toujours $\varFF\to\varFF^\lnot$~:
   \begin{prooftree}
-    \AxiomC{$[\lnot\varphi]^\beta$}
-    \AxiomC{$[\varphi]^\alpha$}
-    \RightLabel{$\to_\mathrm e$}
+    \AxiomC{$[\lnot\varFF]^\varTokB$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \RightLabel{$\RnotE$}
     \BinaryInfC{$\bot$}
-    \RightLabel{$\lnot_\mathrm i,\beta$}
-    \UnaryInfC{$\varphi^\lnot$}
-    \RightLabel{$\to_\mathrm i, \alpha$}
-    \UnaryInfC{$\varphi \to \varphi^\lnot$}
+    \RightLabel{$\RnotIB$}
+    \UnaryInfC{$\varFF^\lnot$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\varFF \to \varFF^\lnot$}
   \end{prooftree}
-  Dans le cas particulier où $\varphi = \lnot\psi$ pour une certaine formule
-  $\psi$, on a donc toujours ce résultat. Montrons maintenant que
-  $\lnot\lnot\lnot\varphi\to\lnot\varphi$~:
+  Dans le cas particulier où $\varFF = \lnot\varFP$ pour une certaine formule
+  $\varFP$, on a donc toujours ce résultat. Montrons maintenant que
+  $\lnot\lnot\lnot\varFF\to\lnot\varFF$~:
   \begin{prooftree}
-    \AxiomC{$[\lnot\lnot\lnot\varphi]^\alpha$}
-    \AxiomC{$[\varphi]^\beta$}
+    \AxiomC{$[\lnot\lnot\lnot\varFF]^\varTokA$}
+    \AxiomC{$[\varFF]^\varTokB$}
     \noLine\UnaryInfC{$\vdots$}\noLine
-    \UnaryInfC{$\lnot\lnot\varphi$}
+    \UnaryInfC{$\lnot\lnot\varFF$}
+    \RightLabel{$\RnotE$}
     \BinaryInfC{$\bot$}
-    \RightLabel{$\lnot_\mathrm i, \beta$}
-    \UnaryInfC{$\lnot\varphi$}
-    \RightLabel{$\to_\mathrm i, \alpha$}
-    \UnaryInfC{$\lnot\lnot\lnot\varphi\to\lnot\varphi$}
+    \RightLabel{$\RnotIB$}
+    \UnaryInfC{$\lnot\varFF$}
+    \RightLabel{$\RtoIA$}
+    \UnaryInfC{$\lnot\lnot\lnot\varFF\to\lnot\varFF$}
   \end{prooftree}
-  d'où la stabilité de $\lnot\varphi$.
+  d'où la stabilité de $\lnot\varFF$.
 \end{proof}
 
 \begin{remark}
@@ -665,229 +732,305 @@ formule.
   pour la sémantique de Kripke intuitionniste).
 \end{remark}
 
-Ce résultat ce généralise aux traductions.
+Ce résultat se généralise aux traductions.
 
 \begin{lemma}
-  Pour toute formule $\varphi$, $\varphi^N$ est stable.
+  Pour toute formule $\varFF$, $\tradGG{\varFF}$ est stable.
 \end{lemma}
 
 \begin{proof}
-  On raisonne par induction sur $\varphi$~:
+  On raisonne par induction sur $\varFF$~:
   \begin{itemize}
-  \item si $\varphi$ est atomique, alors sa traduction est une double négation,
+  \item si $\varFF$ est atomique, alors sa traduction est une double négation,
     et une négation (en particulier une double négation) est stable~;
-  \item si $\varphi$ est une négation, alors sa traduction en est aussi une,
-    donc $\varphi^N$ est stable~;
-  \item si $\varphi$ est une disjonction ou une quantification existentielle,
+  \item si $\varFF$ est une négation, alors sa traduction en est aussi une,
+    donc $\tradGG{\varFF}$ est stable~;
+  \item si $\varFF$ est une disjonction ou une quantification existentielle,
     sa traduction est définie par une négation aussi, d'où le résultat~;
-  \item si $\varphi = \psi_1 \land \psi_2$, montrons que $\varphi^N$ est stable~:
+  \item si $\varFF = \varFP_1 \land \varFP_2$, montrons que $\tradGG{\varFF}$ est
+    stable~:
     \begin{prooftree}
       \AxiomC{}\RightLabel{HI}
-      \UnaryInfC{$\lnot\lnot\psi_i^N \to \psi_i^N$}
-      \AxiomC{$[\lnot\lnot(\psi_1^N\land\psi_2^N)]^\alpha$}
-      \RightLabel{A FAIRE}
-      \UnaryInfC{$\lnot\lnot\psi_i^N$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\psi_i^N$}
-      \RightLabel{$\land_\mathrm i$}
-      \UnaryInfC{$\psi^N\land \chi^N$}
-      \RightLabel{$\to_\mathrm i, \alpha$}
-      \UnaryInfC{$\lnot\lnot\varphi^N \to \varphi^N$}
+      \UnaryInfC{$\lnot\lnot(\tradGG{\varFP_i}) \to \tradGG{\varFP_i}$}
+      \AxiomC{$[\lnot\lnot(\tradGG{\varFP_1}\land\tradGG{\varFP_2})]^{\varTokA}$}
+      \AxiomC{$[\lnot\tradGG{\varFP}_i]^\varTokB$}
+      \AxiomC{$[\tradGG{\varFP}_1\land\tradGG{\varFP}_2]^\varTokC$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\tradGG{\varFP_i}$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\bot$}
+      \RightLabel{$\RnotIP{\varTokC}$}
+      \UnaryInfC{$\lnot(\tradGG{\varFP_1}\land\tradGG{\varFP_2})$}
+      \RightLabel{$\RnotE$}
+      \BinaryInfC{$\bot$}
+      \RightLabel{$\RnotIB$}
+      \UnaryInfC{$\lnot\lnot\tradGG{\varFP}_i$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\tradGG{\varFP_i}$}
+      \RightLabel{$\RandI$}
+      \UnaryInfC{$\tradGG{\varFP_1}\land \tradGG{\varFP_2}$}
+      \RightLabel{$\RtoIA$}
+      \UnaryInfC{$\lnot\lnot\tradGG{\varFF} \to \tradGG{\varFF}$}
     \end{prooftree}
-  \item A FAIRE
+  \item si $\varFF = \varFP \to \varFC$, montrons que $\tradGG{\varFF}$ est
+    stable~:
+    \begin{prooftree}
+        \AxiomC{}\RightLabel{HI}
+        \UnaryInfC{$\lnot\lnot\tradGG{\varFC}\to\tradGG{\varFC}$}
+        \AxiomC{$[\lnot\lnot(\tradGG{\varFP}\to\tradGG{\varFC})]^{\varTokA}$}
+        \AxiomC{$[\lnot\tradGG{\varFC}]^{\varTokC}$}
+        \AxiomC{$[\tradGG{\varFP}\to\tradGG{\varFC}]^{\varTokD}$}
+        \AxiomC{$[\tradGG{\varFP}]^{\varTokB}$}
+        \RightLabel{$\RtoE$}
+        \BinaryInfC{$\tradGG{\varFC}$}
+        \RightLabel{$\RnotE$}
+        \BinaryInfC{$\bot$}
+        \RightLabel{$\RnotIP{\varTokD}$}
+        \UnaryInfC{$\lnot(\tradGG{\varFP}\to\tradGG{\varFC})$}
+        \RightLabel{$\RnotE$}
+        \BinaryInfC{$\bot$}
+        \RightLabel{$\RnotIP{\varTokC}$}
+        \UnaryInfC{$\lnot\lnot\tradGG{\varFC}$}
+        \RightLabel{$\RtoE$}
+        \BinaryInfC{$\tradGG{\varFC}$}
+        \RightLabel{$\RtoIB$}
+        \UnaryInfC{$\tradGG{\varFP}\to\tradGG{\varFC}$}
+        \RightLabel{$\RtoIA$}
+        \UnaryInfC{$\lnot\lnot(\tradGG{\varFP}\to\tradGG{\varFC})\to
+        \tradGG{\varFP}\to\tradGG{\varFC}$}
+    \end{prooftree}
+  \item si $\varFF = \forall x, \varFP$, montrons que $\tradGG{\varFF}$ est
+    stable~:
+    \begin{prooftree}
+        \AxiomC{$[\lnot\lnot(\forall x, \tradGG{\varFP}(x))]^{\varTokA}$}
+        \AxiomC{$[\lnot \tradGG{\varFP}(x)]^{\varTokB}$}
+        \AxiomC{$[\forall x, \tradGG{\varFP}(x)]^{\varTokC}$}
+        \RightLabel{$\RforaE$}
+        \UnaryInfC{$\tradGG{\varFP}(x)$}
+        \RightLabel{$\RnotE$}
+        \BinaryInfC{$\bot$}
+        \RightLabel{$\RnotIP{\varTokC}$}
+        \UnaryInfC{$\lnot(\forall x, \tradGG{\varFP}(x))$}
+        \RightLabel{$\RnotE$}
+        \BinaryInfC{$\bot$}
+        \RightLabel{$\RnotIB$}
+        \UnaryInfC{$\lnot\lnot(\tradGG{\varFP}(x))$}
+        \RightLabel{$\RforaI^\dagger$}
+        \UnaryInfC{$\forall x,\lnot\lnot(\tradGG{\varFP}(x))$}
+        \RightLabel{$\RtoIA$}
+        \UnaryInfC{$\lnot\lnot(\forall x, \tradGG{\varFP}(x))
+        \to \forall x,\lnot\lnot(\tradGG{\varFP}(x))$}
+    \end{prooftree}
   \end{itemize}
   On en déduit le résultat par induction.
 \end{proof}
 
-Le lemme suivant est le c\oe ur du résultat qu'on recherche sur la traduction.
+On peut maintenant prouver un lemme qui permettra directement de déduire
+l'équivalence entre les démonstrations dans $\LK$ et celles sur les
+traductions dans $\LJ$.
 
 \begin{lemma}
-  Soient $\Gamma,\Delta \in \List(\Formula)$. Si $\Gamma\vdLK\Delta$ alors
-  $\Gamma^N,\lnot\Delta^N \vdLJ$, où $\lnot\Delta^N$ signifie que pour chaque
-  formule $\varphi \in \Delta$, on considère la formule $\lnot(\varphi^N)$.
+  Soient $\varCG,\varCD \in \List(\Formula)$. Si $\varCG\vdLK\varCD$ alors
+  $\tradGG{\varCG},\lnot\tradGG{\varCD} \vdLJ$, où $\lnot\tradGG{\varCD}$
+  signifie que pour chaque formule $\varFF \in \varCD$, on considère la
+  formule $\lnot(\tradGG{\varFF})$.
 \end{lemma}
 
 \begin{proof}
   On procède par induction sur $\vdLK$~:
   \begin{itemize}
-  \item cas $ax$~: on veut montrer que
-    $\varphi^N,\lnot\varphi^N\vdLJ$, ce qui se prouve par
+  \item[$\Rax$~:] on veut montrer que
+    $\tradGG{\varFF},\lnot\tradGG{\varFF}\vdLJ$, ce qui se prouve par
     \begin{prooftree}
-      \AxiomC{$\varphi^N\vdLJ\varphi^N$}
-      \RightLabel{$l\lnot$}
-      \UnaryInfC{$\varphi^N,\lnot\varphi^N\vdLJ$}
+      \AxiomC{$\tradGG{\varFF}\vdLJ\tradGG{\varFF}$}
+      \RightLabel{$\Rlnot$}
+      \UnaryInfC{$\tradGG{\varFF},\lnot\tradGG{\varFF}\vdLJ$}
     \end{prooftree}
-  \item cas $cut$~: on suppose que $\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$
-    et que $\Theta^N,\varphi^N,\lnot\Xi^N\vdLJ$, et on veut prouver que
-    $\Gamma^N,\Theta^N,\lnot\Delta^N,\lnot\Xi^N\vdLJ$~:
+  \item[$\Rcut$~:] on suppose que
+    $\tradGG{\varCG},\lnot\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$
+    et que
+    $\tradGG{\varCT},\tradGG{\varFF},\lnot\tradGG{\varCX}\vdLJ$, et on
+    veut prouver que
+    $\tradGG{\varCG},\tradGG{\varCT},\lnot\tradGG{\varCD},\lnot\tradGG{\varCX}\vdLJ$~:
     \begin{prooftree}
-      \AxiomC{$\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$}
-      \AxiomC{$\Theta^N,\varphi^N,\lnot\Xi^N\vdLJ$}
-      \RightLabel{$r\lnot$}
-      \UnaryInfC{$\Theta^N,\lnot\Xi^N\vdLJ\lnot\varphi^N$}
-      \RightLabel{$cut$}
-      \BinaryInfC{$\Gamma^N,\Theta^N,\lnot\Delta^N,\lnot\Xi^N$}
+      \AxiomC{$\tradGG{\varCG},\lnot\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$}
+      \AxiomC{$\tradGG{\varCT},\tradGG{\varFF},\lnot\tradGG{\varCX}\vdLJ$}
+      \RightLabel{$\Rrnot$}
+      \UnaryInfC{$\tradGG{\varCT},\lnot\tradGG{\varCX}\vdLJ\lnot\tradGG{\varFF}$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\tradGG{\varCG},\tradGG{\varCT},
+      \lnot\tradGG{\varCD},\lnot\tradGG{\varCX}\vdLJ$}
     \end{prooftree}
   \item les règles structurelles s'appliquent par leur version intuitionniste
     gauche sans difficulté~;
-  \item cas $l\lnot$~: on suppose que
-    $\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$ et on souhaite montrer que
-    $\Gamma^N,\lnot\varphi^N,\lnot\Delta^N\vdLJ$, ce qui est tautologique~;
-  \item cas $r\lnot$~: on suppose que
-    $\Gamma^N,\varphi^N,\lnot\Delta^N\vdLJ$ et on souhaite montrer que
-    $\Gamma^N,\lnot\lnot\varphi^N,\Delta^N\vdLJ$, ce qui se fait en appliquant
-    une coupure sur une preuve de $\varphi^N\vdLJ\lnot\lnot\varphi$
-    (vrai car $\varphi\vdLJ\varphi^\lnot$ est toujours vrai)~;
-  \item cas $l\lor$~: on suppose que
-    $\Gamma^N,\varphi^N,\lnot\Delta^N\vdLJ$ et
-    $\Gamma^N,\psi^N,\lnot\Delta^N\vdLJ$, et on souhaite prouver que
-    $\Gamma^N,\lnot(\lnot\varphi^N\land\lnot\psi^N),\lnot\Delta^N\vdLJ$
-    (on note $\Theta$ le contexte $\Gamma^N,\lnot\Delta^N$)~:
+  \item[$\Rlnot$~:] on suppose que
+    $\tradGG{\varCG},\lnot\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$ et on
+    construire un arbre pour le séquent
+    $\tradGG{\varCG},\lnot\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$, ce qui
+    est tautologique~;
+  \item[$\Rrnot$~:] on suppose que
+    $\tradGG{\varCG},\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$ et on souhaite
+    construire un arbre pour le séquent
+    $\tradGG{\varCD},\lnot\lnot\tradGG{\varFF},\tradGG{\varCD}\vdLJ$, ce qui
+    se fait en appliquant une coupure sur une preuve de
+    $\tradGG{\varFF}\vdLJ\lnot\lnot\tradGG{\varFF}$
+    (que l'on vérifie grâce au fait que $\varFF\vdLJ\varFF^\lnot$ est toujours
+    vrai)~;
+  \item[$\Rlor$~:] on suppose que
+    $\tradGG{\varCG},\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$ et
+    $\tradGG{\varCG},\tradGG{\varFP},\lnot\tradGG{\varCD}\vdLJ$, et on souhaite
+    prouver que
+    $\tradGG{\varCG},\lnot(\lnot\tradGG{\varFF}\land\lnot\tradGG{\varFP}),
+    \lnot\tradGG{\varCD}\vdLJ$
+    (on note $\varCT$ le contexte $\tradGG{\varCG},\lnot\tradGG{\varCD}$)~:
     \begin{prooftree}
-      \AxiomC{$\Theta,\varphi^N$}
-      \RightLabel{$r\lnot$}
-      \UnaryInfC{$\Theta\vdLJ \lnot\varphi^N$}
-      \AxiomC{$\Theta,\psi^N$}
-      \RightLabel{$r\lnot$}
-      \UnaryInfC{$\Theta\vdLJ \lnot\psi^N$}
-      \RightLabel{$r\land$}
-      \BinaryInfC{$\Theta\vdLJ\lnot\varphi^N\land\lnot\psi^N$}
-      \RightLabel{$l\lnot$}
-      \UnaryInfC{$\Theta,\lnot(\lnot\varphi^N\land\lnot\psi^N)\vdLJ$}
+      \AxiomC{$\varCT,\tradGG{\varFF}$}
+      \RightLabel{$\Rrnot$}
+      \UnaryInfC{$\varCT\vdLJ \lnot\tradGG{\varFF}$}
+      \AxiomC{$\varCT,\tradGG{\varFP}$}
+      \RightLabel{$\Rrnot$}
+      \UnaryInfC{$\varCT\vdLJ \lnot\tradGG{\varFP}$}
+      \RightLabel{$\Rrand$}
+      \BinaryInfC{$\varCT\vdLJ\lnot\tradGG{\varFF}\land\lnot\tradGG{\varFP}$}
+      \RightLabel{$\Rlnot$}
+      \UnaryInfC{$\varCT,\lnot(\lnot\tradGG{\varFF}\land\lnot\tradGG{\varFP})\vdLJ$}
     \end{prooftree}
-  \item cas $r\lor_i$~: on suppose que
-    $\Gamma^N,\lnot\varphi_i^N,\lnot\Delta^N\vdLJ$ et on veut montrer que
-    $\Gamma^N,\lnot\lnot(\lnot\varphi_1^N\land\lnot\varphi_2^N),
-    \lnot\Delta^N\vdLJ$
-    (on note encore $\Theta$ pour $\Gamma^N,\lnot\Delta^N$)~:
+  \item[$\Rrori$~:] on suppose que
+    $\tradGG{\varCG},\lnot\tradGG{\varFF_i},\lnot\tradGG{\varCD}\vdLJ$ et on
+    veut construire un arbre prouvant le séquent
+    $\tradGG{\varCG},\lnot\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2}),
+    \lnot\tradGG{\varCD}\vdLJ$
+    (on note encore $\varCT$ pour $\tradGG{\varCG},\lnot\tradGG{\varCD}$)~:
     \begin{prooftree}
-      \AxiomC{$\Theta,\lnot\varphi_i^N\vdLJ$}
-      \RightLabel{$l\land_i$}
-      \UnaryInfC{$\Theta,\lnot\varphi_1^N\land\lnot\varphi^2\vdLJ$}
-      \RightLabel{$r\lnot$}
-      \UnaryInfC{$\Theta,\lnot(\lnot\varphi_1^N\land\lnot\varphi_2^N)\vdLJ$}
-      \RightLabel{$l\lnot$}
-      \UnaryInfC{$\Theta,
-        \lnot\lnot(\lnot\varphi_1^N\land\lnot\varphi_2^N)\vdLJ$}
+      \AxiomC{$\varCT,\lnot\tradGG{\varFF_i}\vdLJ$}
+      \RightLabel{$\Rlandi$}
+      \UnaryInfC{$\varCT,\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2}\vdLJ$}
+      \RightLabel{$\Rrnot$}
+      \UnaryInfC{$\varCT,\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2})\vdLJ$}
+      \RightLabel{$\Rlnot$}
+      \UnaryInfC{$\varCT,
+        \lnot\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2})\vdLJ$}
     \end{prooftree}
-  \item les cas de $l\land,r\land,l\to,r\to,l\forall,r\forall$ se traitent avec
+  \item les cas de $\Rland,\Rrand,\Rlto,\Rrto,\Rlfora,\Rrfora$ se traitent avec
     peu de difficultés, le lecteur est invité à les vérifier lui-même~;
-  \item cas $l\exists^\dagger$~: on suppose que
-    $\Theta,\varphi^N\vdLJ$ et on veut montrer que
-    $\Theta,\lnot(\forall x,\lnot\varphi^N)\vdLJ$~:
+  \item[$\Rlex^\dagger$~:] on suppose que
+    $\varCT,\tradGG{\varFF}\vdLJ$ et on veut montrer que
+    $\varCT,\lnot(\forall x,\lnot\tradGG{\varFF})\vdLJ$~:
     \begin{prooftree}
-      \AxiomC{$\Theta,\varphi^N\vdLJ$}
-      \RightLabel{$r\lnot$}\UnaryInfC{$\Theta\vdLJ \lnot\varphi^N$}
-      \RightLabel{$r\forall^\dagger$}
-      \UnaryInfC{$\Theta\vdLJ\forall x, \lnot\varphi^N$}
-      \RightLabel{$l\lnot$}
-      \UnaryInfC{$\Theta,\lnot(\forall x, \lnot\varphi^N)\vdLJ$}
+      \AxiomC{$\varCT,\tradGG{\varFF}\vdLJ$}
+      \RightLabel{$\Rrnot$}\UnaryInfC{$\varCT\vdLJ \lnot\tradGG{\varFF}$}
+      \RightLabel{$\Rrfora^\dagger$}
+      \UnaryInfC{$\varCT\vdLJ\forall x, \lnot\tradGG{\varFF}$}
+      \RightLabel{$\Rlnot$}
+      \UnaryInfC{$\varCT,\lnot(\forall x, \lnot\tradGG{\varFF})\vdLJ$}
     \end{prooftree}
-  \item cas $r\exists$~: on suppose que
-    $\Theta,\lnot\varphi^N[t/x]\vdLJ$ et on veut montrer que
-    $\Theta,\lnot\lnot(\forall x, \lnot\varphi^N)\vdLJ$~:
+  \item[$\Rrex$~:] on suppose que
+    $\varCT,\lnot\tradGG{\varFF}[t/x]\vdLJ$ et on veut montrer que
+    $\varCT,\lnot\lnot(\forall x, \lnot\tradGG{\varFF})\vdLJ$~:
     \begin{prooftree}
-      \AxiomC{$\Theta,\lnot\varphi^N[t/x]\vdLJ$}
-      \RightLabel{$l\forall$}\UnaryInfC{$\Theta,\forall x, \lnot\varphi^N\vdLJ$}
-      \RightLabel{$r\lnot$}
-      \UnaryInfC{$\Theta\vdLJ\lnot(\forall x, \lnot\varphi^N)$}
-      \RightLabel{$l\lnot$}
-      \UnaryInfC{$\Theta,\lnot\lnot(\forall x, \lnot\varphi^N)\vdLJ$}
+      \AxiomC{$\varCT,\lnot\tradGG{\varFF}[t/x]\vdLJ$}
+      \RightLabel{$\Rlfora$}\UnaryInfC{$\varCT,\forall x, \lnot\tradGG{\varFF}\vdLJ$}
+      \RightLabel{$\Rrnot$}
+      \UnaryInfC{$\varCT\vdLJ\lnot(\forall x, \lnot\tradGG{\varFF})$}
+      \RightLabel{$\Rlnot$}
+      \UnaryInfC{$\varCT,\lnot\lnot(\forall x, \lnot\tradGG{\varFF})\vdLJ$}
     \end{prooftree}
   \item les cas de l'égalité demandent simplement d'utiliser le fait que
     $t = u \to \lnot\lnot(t = u)$.
   \end{itemize}
-  On en déduit par induction que si $\Gamma\vdLK\Delta$ alors
-  $\Gamma,\lnot\Delta^N\vdLJ$.
+  On en déduit par induction que si $\varCG\vdLK\varCD$ alors
+  $\tradGG{\varCG},\lnot\tradGG{\varCD}\vdLJ$.
 \end{proof}
 
 \begin{theorem}\label{thm.GG.trad}
-  Pour tout contexte $\Gamma$ et toute formule $\varphi$, on a
-  \[\Gamma\vdLK\varphi \iff \Gamma^N\vdLJ\varphi^N\]
+  Pour tout contexte $\varCG$ et toute formule $\varFF$, on a
+  \[\varCG\vdLK\varFF \iff \tradGG{\varCG}\vdLJ\tradGG{\varFF}\]
 \end{theorem}
 
 \begin{proof}
-  On peut vérifier que pour toute formule $\varphi$, on a
-  $\varphi\dashv\vdLK\varphi^N$, ce qui permet de déduire directement que si
-  $\Gamma^N\vdLJ\varphi^N$, puisqu'alors $\Gamma^N\vdLK\varphi^N$, on a
-  $\Gamma\vdLK\varphi$.
+  On peut vérifier que pour toute formule $\varFF$, on a
+  $\varFF\dvvdLK\tradGG{\varFF}$, ce qui permet de déduire directement que si
+  $\tradGG{\varCG}\vdLJ\tradGG{\varFF}$, comme
+  $\tradGG{\varCG}\vdLK\tradGG{\varFF}$, on a
+  $\varCG\vdLK\varFF$.
 
-  Pour l'autre direction, on sait que si $\Gamma\vdLK\varphi$, alors
-  $\Gamma^N,\lnot\varphi^N\vdLJ$, mais alors
-  $\Gamma^N\vdLJ\lnot\lnot\varphi^N$ par application de $r\lnot$, et comme
-  $\varphi^N$ est stable, on en déduit que $\Gamma^N\vdLJ\varphi^N$ par coupure.
+  Pour l'autre direction, on sait que si $\varCG\vdLK\varFF$, alors
+  $\tradGG{\varCG},\lnot\tradGG{\varFF}\vdLJ$, mais alors
+  $\tradGG{\varCG}\vdLJ\lnot\lnot\tradGG{\varFF}$ par application de
+  $\Rrnot$, et comme $\tradGG{\varFF}$ est stable, on en déduit que
+  $\tradGG{\varCG}\vdLJ\tradGG{\varFF}$ par coupure.
 
   On en déduit l'équivalence.
 \end{proof}
 
 \begin{exercise}
-  Vérifier que pour toute formule $\varphi$, $\varphi\dashv\vdLK\varphi^N$.
+  Vérifier que pour toute formule $\varFF$, $\varFF\dvvdLK\tradGG{\varFF}$.
 \end{exercise}
 
 \begin{remark}
   La position des doubles négations est en quelque sorte duale de celle des
-  modalités $\square$ lorsqu'on définit $\varphi_\square$. Là où les modalités
-  $\square$ renforcent les constructeurs négatifs $\to, \forall$ (et $\lnot$
+  modalités $\modSq$ lorsqu'on définit $\varFF_{\modSq}$. Là où les modalités
+  $\modSq$ renforcent les constructeurs négatifs $\to, \forall$ (et $\lnot$
   en conséquence) pour rendre les formules plus difficiles à prouver, ce sont
   les constructeurs positifs $\lor,\exists$ qui sont affaiblis en en prenant
   une formule de dualité de De Morgan. Justement, ce sont ces constructeurs
   positifs qui, en logique intuitionniste, sont plus difficiles à prouver.
   
-  Par exemple, prouver $\varphi\lor\psi$ demande d'expliciter laquelle des
-  deux formules entre $\varphi$ et $\psi$ est vraie, mais prouver
-  $\lnot(\lnot\varphi\land\lnot\psi)$ signifie qu'on se donne des
-  contre-preuves de $\varphi$ et de $\psi$, et qu'on veut en déduire une
+  Par exemple, prouver $\varFF\lor\varFP$ demande d'expliciter laquelle des
+  deux formules entre $\varFF$ et $\varFP$ est vraie, mais prouver
+  $\lnot(\lnot\varFF\land\lnot\varFP)$ signifie qu'on se donne des
+  contre-preuves de $\varFF$ et de $\varFP$, et qu'on veut en déduire une
   contradiction~: l'information est perdue de laquelle des deux formules est
   vraie.
 \end{remark}
 
 \begin{exercise}[Théorème de Glivenko \cite{glivenko1929}]\label{exo.glivenko}
   Montrer que dans le cas de formules propositionnelles, l'équivalence
-  \[\Gamma\vdLK\varphi\iff\Gamma\vdLJ\lnot\lnot\varphi\]
+  \[\varCG\vdLK\varFF\iff\varCG\vdLJ\varFF^{\mathord{\lnot}}\]
   est vérifiée.
 \end{exercise}
 
 On peut alors en déduire la complétude de $\NK$, en montrant que l'équivalence
-$\varphi \leftrightarrow \varphi^N$ est prouvable dans $\NK$. Le choix de la
+$\varFF \iffS \tradGG{\varFF}$ est prouvable dans $\NK$. Le choix de la
 règle du raisonnement par l'absurde est alors le bon, puisqu'il permet d'obtenir
 l'élimination de la double négation, c'est-à-dire le schéma d'axiomes
-\[\lnot\lnot\varphi\to\varphi\]
-qui permet de passer de $\varphi^N$ à $\varphi$ (l'autre sens peut être montré
-directement dans $\NJ$).
+\[\lnot\lnot\varFF\to\varFF\]
+qui permet de passer de $\tradGG{\varFF}$ à $\varFF$ (l'autre sens peut être
+montré directement dans $\NJ$).
 
 \begin{exercise}
-  Prouver d'une nouvlle manière la complétude du système $\NK$.
+  Prouver d'une nouvelle manière la complétude du système $\NK$.
 \end{exercise}
 
 \section{Coupures en déduction naturelle}
 
-Dans le calcul des séquents, le \textit{Hauptsatz} permettait de considérer que
-les preuves peuvent se réécrire sans coupure. En déduction naturelle, nous
-n'avons plus la règle de coupure, mais la coupure elle-même est dérivable~:
+Dans le calcul des séquents, le \foreignexpr{Hauptsatz} permettait de
+considérer que les preuves peuvent se réécrire sans coupure. En
+déduction naturelle, nous n'avons plus la règle de coupure, et la coupure
+est même dérivable~:
 \begin{prooftree}
   \def\fCenter{\mbox{\Large$\vdots$}}
-  \AxiomC{$\Delta$}
-  \AxiomC{$[\varphi]^\alpha$}
-  \dashedLine
-  \BinaryInf$\fCenter\pi'$
-  \noLine
-  \UnaryInfC{$\psi$}
-  \RightLabel{$\to_\mathrm i,\alpha$}
-  \UnaryInfC{$\varphi\to\psi$}
-  \AxiomC{$\Gamma$}
-  \noLine\UnaryInf$\fCenter\pi$
-  \noLine\UnaryInfC{$\varphi$}
-  \RightLabel{$\to_\mathrm e$}\BinaryInfC{$\psi$}
+  \AxiomC{$\varCD$}
+  \AxiomC{$[\varFF]^\varTokA$}
+  \ligneNJPB{\varPT'}
+  \UnaryInfC{$\varFP$}
+  \RightLabel{$\RtoIA$}
+  \UnaryInfC{$\varFF\to\varFP$}
+  \AxiomC{$\varCG$}
+  \ligneNJP{\varPT}
+  \UnaryInfC{$\varFF$}
+  \RightLabel{$\RtoE$}
+  \BinaryInfC{$\varFP$}
 \end{prooftree}
-On remarque que lorsqu'on a défini la traduction $\tradNJ -$, la traduction de
+On remarque que lorsqu'on a défini la traduction $\tradNJ\tok$, la traduction de
 la règle de coupure était plus simple, en remplaçant la feuille marquée
-$[\varphi]^\alpha$ par l'arbre de droite, pour arriver directement à $\psi$.
+$[\varFF]^\varTokA$ par l'arbre de droite, pour arriver directement à $\varFP$.
 
 \`A la place, dans cette dérivation, on introduit une règle qu'on élimine tout
 de suite après. Cette situation est ce qu'on appelle, pour la déduction
 naturelle, une coupure~: dans le cas de l'implication, on coupe la preuve en
-deux pour définir un lemme $\varphi \to \psi$ dont on prouve la prémisse
-$\varphi$.
+deux pour définir un lemme $\varFF \to \varFP$ dont on prouve la prémisse
+$\varFF$.
 
 On va donc étudier la suppression de ce type de coupures.
 
@@ -903,9 +1046,9 @@ travaillons ici que dans $\NJ$.
   \begin{itemize}
   \item une règle d'introduction du même constructeur que la règle
     d'élimination, auquel cas on parle de coupure logique~;
-  \item la règle $\bot_\mathrm e$, auquel cas on parle de $\bot$-coupure~;
-  \item une règle $\lor_\mathrm e$ ou $\exists_\mathrm e$, auquel cas on parle
-    de coupure commutative.
+  \item la règle $\RbotE$, auquel cas on parle de $\bot$-coupure~;
+  \item une règle $\RorE$ ou $\RexE$, auquel cas on parle de coupure
+    commutative.
   \end{itemize}
 \end{definition}
 
@@ -917,8 +1060,8 @@ les coupures.
 \begin{definition}[Réduction des coupures]
   La réduction des coupures $\reecr{}$ est donnée
   par la plus petite relation compatible contenant l'union des réductions
-  logiques $\reecr{L}$, des $\bot$-réductions $\reecr{\bot}$ et des réductions
-  commutatives $\reecr{C}$, données respectivement en \cref{tbl.cut.log.NJ},
+  logiques $\LCut$, des $\bot$-réductions $\BCut$ et des réductions
+  commutatives $\CCut$, données respectivement en \cref{tbl.cut.log.NJ},
   en \cref{tbl.cut.bot.NJ} et en \cref{tbl.cut.com.NJ}.
 \end{definition}
 
@@ -926,107 +1069,73 @@ les coupures.
   \centering
   \begin{tabular}{cc}
     \multicolumn{2}{c}{
-      %\resizebox{0.5\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine
-      \UnaryInf$\fCenter\pi$
-      \noLine\UnaryInfC{$\psi$}
-      \RightLabel{$\to_\mathrm i, \alpha$}
-      \UnaryInfC{$\varphi\to\psi$}
-      \Axiom$\fCenter\pi'$
-      \noLine\UnaryInfC{$\varphi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\psi$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJV
+      \UnaryInfC{$\varFP$}
+      \RightLabel{$\RtoIA$}
+      \UnaryInfC{$\varFF\to\varFP$}
+      \axNJP{\varPT'}
+      \UnaryInfC{$\varFF$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFP$}
       \DisplayProof
-      $\reecr{L^\to}$
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi'$
-      \noLine\UnaryInfC{$\varphi$}\noLine
-      \UnaryInf$\fCenter\pi$
-      \noLine\UnaryInfC{$\psi$}
+      $\LCutP{\to}$
+      \axNJP{\varPT'}
+      \UnaryInfC{$\varFF$}
+      \ligneNJV
+      \UnaryInfC{$\varFP$}
       \DisplayProof
-      %}
     }
     \\
     \\
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi_1$
-    \noLine\UnaryInfC{$\varphi_1$}
-    \Axiom$\fCenter\pi_2$
-    \noLine\UnaryInfC{$\varphi_2$}
-    \RightLabel{$\land_\mathrm i$}
-    \BinaryInfC{$\varphi_1\land\psi_2$}
-    \RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\varphi_i$}
+    \axNJP{\varPT_1}\UnaryInfC{$\varFF_1$}
+    \axNJP{\varPT_2}\UnaryInfC{$\varFF_2$}
+    \RightLabel{$\RandI$}
+    \BinaryInfC{$\varFF_1\land\varFP_2$}
+    \RightLabel{$\RandEi$}
+    \UnaryInfC{$\varFF_i$}
     \DisplayProof
-    $\reecr{L^\land_i}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi_i$
-    \noLine\UnaryInfC{$\varphi_i$}
+    $\LCutP{\land_i}$
+    \axNJP{\varPT_i}\UnaryInfC{$\varFF_i$}
     \DisplayProof
-    %}
     &
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\varphi_i$}
-    \RightLabel{$\lor_\mathrm i^i$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
-    \AxiomC{$[\varphi_1]^\alpha$}
-    \noLine\UnaryInf$\fCenter\pi_1$
-    \noLine\UnaryInfC{$\chi$}
-    \AxiomC{$[\varphi_2]^\alpha$}
-    \noLine\UnaryInf$\fCenter\pi_2$
-    \noLine\UnaryInfC{$\chi$}
-    \RightLabel{$\lor_\mathrm e, \alpha$}
-    \TrinaryInfC{$\chi$}
+    \axNJV\UnaryInfC{$\varFF_i$}
+    \RightLabel{$\RorIi$}\UnaryInfC{$\varFF_1\lor\varFF_2$}
+    \AxiomC{$[\varFF_1]^\varTokA$}
+    \ligneNJP{\varPT_1}\UnaryInfC{$\varFC$}
+    \AxiomC{$[\varFF_2]^\varTokA$}
+    \ligneNJP{\varPT_2}\UnaryInfC{$\varFC$}
+    \RightLabel{$\RorEA$}
+    \TrinaryInfC{$\varFC$}
     \DisplayProof
-    $\reecr{L^\lor_i}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\varphi_i$}
-    \noLine\UnaryInf$\fCenter\pi_i$
-    \noLine\UnaryInfC{$\chi$}
+    $\LCutP{\lor_i}$
+    \axNJV\UnaryInfC{$\varFF_i$}
+    \ligneNJP{\varPT_i}\UnaryInfC{$\chi$}
     \DisplayProof
-    %}
     \\
     \\
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\varphi$}
-    \RightLabel{$\forall_\mathrm i^\dagger$}
-    \UnaryInfC{$\forall x, \varphi$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\varphi[t/x]$}
+    \axNJV\UnaryInfC{$\varFF$}
+    \RightLabel{$\RforaI^\dagger$}
+    \UnaryInfC{$\forall x, \varFF$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varFF[t/x]$}
     \DisplayProof
-    $\reecr{L^\forall}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi[t/x]$
-    \noLine\UnaryInfC{$\varphi[t/x]$}
+    $\LCutP{\forall}$
+    \axNJP{\varPT[t/x]}\UnaryInfC{$\varFF[t/x]$}
     \DisplayProof
-    %}
     &
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\varphi[t/x]$}
-    \RightLabel{$\exists_\mathrm i$}
-    \UnaryInfC{$\exists x, \varphi$}
-    \Axiom$\fCenter\pi'$
-    \noLine\UnaryInfC{$\chi$}
-    \RightLabel{$\exists_\mathrm e^\dagger$}
-    \BinaryInfC{$\chi$}
+    \axNJV\UnaryInfC{$\varFF[t/x]$}
+    \RightLabel{$\RexI$}
+    \UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^{\varTokA}$}
+    \ligneNJP{\varPT'}\UnaryInfC{$\varFC$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$\varFC$}
     \DisplayProof
-    $\reecr{L^\exists}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\varphi[t/x]$}
-    \noLine\UnaryInf$\fCenter\pi'[t/x]$
-    \noLine\UnaryInfC{$\chi$}
+    $\LCutP{\exists}$
+    \axNJV\UnaryInfC{$\varFF[t/x]$}
+    \ligneNJP{\varPT'[t/x]}\UnaryInfC{$\varFC$}
     \DisplayProof
-    %}
   \end{tabular}
 
   \vspace{0.2cm}
@@ -1035,113 +1144,80 @@ les coupures.
   \vspace{0.4cm}
   \caption{Réductions logiques dans $\NJ$}
   \label{tbl.cut.log.NJ}
-  \hrule
+  %\hrule
 \end{table}
 
 \begin{table}[t]
   \centering
   \begin{tabular}{cc}
     \multicolumn{2}{c}{
-      %\resizebox{0.5\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\bot$}
-      \RightLabel{$\bot_\mathrm e$}
-      \UnaryInfC{$\varphi\to\psi$}
-      \Axiom$\fCenter\pi'$
-      \noLine\UnaryInfC{$\varphi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\psi$}
+      \axNJV\UnaryInfC{$\bot$}
+      \RightLabel{$\RbotE$}
+      \UnaryInfC{$\varFF\to\varFP$}
+      \axNJP{\varPT'}\UnaryInfC{$\varFF$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFP$}
       \DisplayProof
-      $\reecr{\bot^\to}$
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\bot$}
-      \RightLabel{$\bot$}\UnaryInfC{$\psi$}
+      $\BCutP{\to}$
+      \axNJV\UnaryInfC{$\bot$}
+      \RightLabel{$\RbotE$}\UnaryInfC{$\varFP$}
       \DisplayProof
-      %}
     }
     \\
     \\
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\varphi_1\land\psi_2$}
-    \RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\varphi_i$}
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFF_1\land\varFF_2$}
+    \RightLabel{$\RandEi$}
+    \UnaryInfC{$\varFF_i$}
     \DisplayProof
-    $\reecr{\bot^\land_i}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\varphi_i$}
+    $\BCutP{\land_i}$
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFF_i$}
     \DisplayProof
-    %}
     &
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}\UnaryInfC{$\varphi_1\lor\varphi_2$}
-    \AxiomC{$[\varphi_1]^\alpha$}
-    \noLine\UnaryInf$\fCenter\pi_1$
-    \noLine\UnaryInfC{$\chi$}
-    \AxiomC{$[\varphi_2]^\alpha$}
-    \noLine\UnaryInf$\fCenter\pi_2$
-    \noLine\UnaryInfC{$\chi$}
-    \RightLabel{$\lor_\mathrm e, \alpha$}
-    \TrinaryInfC{$\chi$}
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}\UnaryInfC{$\varFF_1\lor\varFF_2$}
+    \AxiomC{$[\varFF_1]^\varTokA$}
+    \ligneNJP{\varPT_1}\UnaryInfC{$\varFC$}
+    \AxiomC{$[\varFF_2]^\varTokA$}
+    \ligneNJP{\varPT_2}\UnaryInfC{$\varFC$}
+    \RightLabel{$\RexEA$}
+    \TrinaryInfC{$\varFC$}
     \DisplayProof
-    $\reecr{\bot^\lor_i}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\chi$}
+    $\BCutP{\lor}$
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFC$}
     \DisplayProof
-    %}
     \\
     \\
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\forall x, \varphi$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\varphi[t/x]$}
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\forall x, \varFF$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varFF[t/x]$}
     \DisplayProof
-    $\reecr{\bot^\forall}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\varphi[t/x]$}
+    $\BCutP{\forall}$
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFF[t/x]$}
     \DisplayProof
-    %}
     &
-    %\resizebox{0.5\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\exists x, \varphi$}
-    \Axiom$\fCenter\pi'$
-    \noLine\UnaryInfC{$\chi$}
-    \RightLabel{$\exists_\mathrm e^\dagger$}
-    \BinaryInfC{$\chi$}
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^{\varTokA}$}
+    \ligneNJP{\varPT'}\UnaryInfC{$\varFC$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$\varFC$}
     \DisplayProof
-    $\reecr{\bot^\exists}$
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\bot$}
-    \RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\chi$}
+    $\BCutP{\exists}$
+    \axNJV\UnaryInfC{$\bot$}
+    \RightLabel{$\RbotE$}
+    \UnaryInfC{$\varFC$}
     \DisplayProof
-    %}
   \end{tabular}
 
   \vspace{0.2cm}
@@ -1150,366 +1226,285 @@ les coupures.
   \vspace{0.4cm}
   \caption{$\bot$-réductions dans $\NJ$}
   \label{tbl.cut.bot.NJ}
-  \hrule
+  %\hrule
 \end{table}
 
-\begin{table}[t!]
+\begin{table}[p]
   \centering
   \begin{tabular}{ccc}
     \resizebox{0.4\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \AxiomC{$[\varphi_1]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\chi\to\xi$}
-      \AxiomC{$[\varphi_2]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\chi\to\xi$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\chi\to\xi$}
-      \Axiom$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\xi$}
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\varFC\to\varFX$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\varFC\to\varFX$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFC\to\varFX$}
+      \axNJP{\varPT'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFX$}
       \DisplayProof}
-    & $\reecr{C^\to_\lor}$ &
+    & $\CCutP{\to}{\lor}$ &
     \resizebox{0.4\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \AxiomC{$[\varphi_1]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\chi\to\xi$}
-      \Axiom$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\xi$}
-      \AxiomC{$[\varphi_2]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\chi\to\xi$}
-      \Axiom$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\xi$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\xi$}
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\varFC\to\varFX$}
+      \axNJP{\varPT'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFX$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\varFC\to\varFX$}
+      \axNJP{\varPT'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFX$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFX$}
       \DisplayProof}
     \\
     \\
     \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \Axiom$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
-      \Axiom$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\psi_1\land\psi_2$}
-      \RightLabel{$\land_\mathrm e^i$}
-      \UnaryInfC{$\psi_i$}
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \axNJP{\varPT_1}\UnaryInfC{$\varFP_1\land\varFP_2$}
+      \axNJP{\varPT_2}\UnaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\varFP_i$}
       \DisplayProof}
-    & $\reecr{C^\land_\lor}$ &
+    & $\CCutP{\land}{\lor}$ &
     \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \Axiom$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
-      \RightLabel{$\land_\mathrm e^i$}
-      \UnaryInfC{$\psi_i$}
-      \Axiom$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\psi_1\land\psi_2$}
-      \RightLabel{$\land_\mathrm e^i$}
-      \UnaryInfC{$\psi_i$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\psi_i$}
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \axNJP{\varPT_1}\UnaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\varFP_i$}
+      \axNJP{\varPT_2}\UnaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\varFP_i$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFP_i$}
       \DisplayProof}
     \\
     \\
     \resizebox{0.4\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \AxiomC{$[\varphi_1]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
-      \AxiomC{$[\varphi_2]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\psi_1\lor\psi_2$}
-      \AxiomC{$[\psi_1]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_1$
-      \noLine\UnaryInfC{$\chi$}
-      \AxiomC{$[\psi_2]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_2$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e,\beta$}
-      \TrinaryInfC{$\chi$}
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\varFP_1\lor\varFP_2$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\varFP_1\lor\varFP_2$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFP_1\lor\varFP_2$}
+      \AxiomC{$[\varFP_1]^\varTokB$}
+      \ligneNJP{\varPT_1'}\UnaryInfC{$\varFC$}
+      \AxiomC{$[\varFP_2]^\varTokB$}
+      \ligneNJP{\varPT_2'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RorEB$}
+      \TrinaryInfC{$\varFC$}
       \DisplayProof}
-    & $\reecr{C^\lor_\lor}$ &
+    & $\CCutP{\lor}{\lor}$ &
     \resizebox{0.4\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \AxiomC{$[\varphi_1]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
-      \AxiomC{$[\psi_1]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_1$
-      \noLine\UnaryInfC{$\chi$}
-      \AxiomC{$[\psi_2]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_2$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e,\beta$}
-      \TrinaryInfC{$\chi$}
-      \AxiomC{$[\varphi_2]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
-      \AxiomC{$[\psi_1]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_1$
-      \noLine\UnaryInfC{$\chi$}
-      \AxiomC{$[\psi_2]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_2$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e,\beta$}
-      \TrinaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e, \alpha$}
-      \TrinaryInfC{$\chi$}
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\varFP_1\lor\varFP_2$}
+      \AxiomC{$[\varFP_1]^\varTokB$}
+      \ligneNJP{\varPT_1'}\UnaryInfC{$\varFC$}
+      \AxiomC{$[\varFP_2]^\varTokB$}
+      \ligneNJP{\varPT_2'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RorEB$}
+      \TrinaryInfC{$\varFC$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{varPT_1}\UnaryInfC{$\varFP_1\lor\varFP_2$}
+      \AxiomC{$[\varFP_1]^\varTokB$}
+      \ligneNJP{\varPT_1'}\UnaryInfC{$\varFC$}
+      \AxiomC{$[\varFP_2]^\varTokB$}
+      \ligneNJP{\varPT_2'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RorEB$}
+      \TrinaryInfC{$\varFC$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFC$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\forall x, \varFP$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\forall x, \varFP$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\forall x, \varFC$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\varFP[t/x]$}
+      \DisplayProof}
+    & $\CCutP{\forall}{\lor}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\forall x, \varFP$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\varFP[t/x]$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\forall x, \varFP$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\varFP[t/x]$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFP[t/x]$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.3\textwidth}{!}{
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\exists x, \varFP$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\exists x, \varFP$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\exists x, \varFP$}
+      \AxiomC{$[\varFP]^\varTokB$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RorEB^\dagger$}
+      \BinaryInfC{$\varFC$}
+      \DisplayProof}
+    & $\CCutP{\exists}{\lor}$ &
+    \resizebox{0.3\textwidth}{!}{
+      \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\exists x, \varFP$}
+      \AxiomC{$[\varFP]^\varTokB$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RexEB^\dagger$}
+      \BinaryInfC{$\varFC$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\exists x, \varFP$}
+      \AxiomC{$[\varFP]^\varTokB$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RexEB^\dagger$}
+      \BinaryInfC{$\varFC$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFC$}
       \DisplayProof}
     \\
     \\
     \resizebox{0.3\textwidth}{!}{
       \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \Axiom$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\forall x, \psi$}
-      \Axiom$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\forall x, \psi$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\forall x, \psi$}
-      \RightLabel{$\forall_\mathrm e$}
-      \UnaryInfC{$\psi[t/x]$}
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFC\to\varFX$}
+      \RightLabel{$\RorEA^\dagger$}
+      \BinaryInfC{$\varFC\to\varFX$}
+      \axNJP{\varPT''}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFX$}
       \DisplayProof}
-    & $\reecr{C^\forall_\lor}$ &
-    \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \Axiom$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\forall x, \psi$}
-      \RightLabel{$\land_\mathrm e^i$}
-      \UnaryInfC{$\psi[t/x]$}
-      \Axiom$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\forall x, \psi$}
-      \RightLabel{$\land_\mathrm e^i$}
-      \UnaryInfC{$\psi[t/x]$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\psi[t/x]$}
-      \DisplayProof}
-    \\
-    \\
-    \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \AxiomC{$[\varphi_1]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\exists x, \psi$}
-      \AxiomC{$[\varphi_2]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\exists x, \psi$}
-      \RightLabel{$\lor_\mathrm e,\alpha$}
-      \TrinaryInfC{$\exists x, \psi$}
-      \AxiomC{$[\psi]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
-      \BinaryInfC{$\chi$}
-      \DisplayProof}
-    & $\reecr{C^\exists_\lor}$ &
-    \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\varphi_1\lor\varphi_2$}
-      \AxiomC{$[\varphi_1]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_1$
-      \noLine\UnaryInfC{$\exists x, \psi$}
-      \AxiomC{$[\psi]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
-      \BinaryInfC{$\chi$}
-      \AxiomC{$[\varphi_2]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi_2$
-      \noLine\UnaryInfC{$\exists x, \psi$}
-      \AxiomC{$[\psi]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
-      \BinaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e, \alpha$}
-      \TrinaryInfC{$\chi$}
-      \DisplayProof}
-    \\
-    \\
-    \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\exists x, \varphi$}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi\to\xi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-      \BinaryInfC{$\chi\to\xi$}
-      \Axiom$\fCenter\pi''$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\xi$}
-      \DisplayProof}
-    & $\reecr{C^\to_\exists}$ &
-    \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\exists x, \varphi$}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\chi\to\xi$}
-      \Axiom$\fCenter\pi''$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\to_\mathrm e$}
-      \BinaryInfC{$\xi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-      \BinaryInfC{$\xi$}
+    & $\CCutP{\to}{\exists}$ &
+    \resizebox{0.25\textwidth}{!}{
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFC\to\varFX$}
+      \axNJP{\varPT''}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFX$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFX$}
       \DisplayProof}
     \\
     \\
     \resizebox{0.2\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\exists x, \varphi$}
-    \Axiom$\fCenter\pi'$
-    \noLine\UnaryInfC{$\psi_1\land\psi_2$}
-    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-    \BinaryInfC{$\psi_1\land\psi_2$}
-    \RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\psi_i$}
+    \axNJV\UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\land\varFP_2$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$\varFP_1\land\varFP_2$}
+    \RightLabel{$\RandEi$}
+    \UnaryInfC{$\varFP_i$}
     \DisplayProof
     }
-    & $\reecr{C^\land_\exists}$ &
+    & $\CCutP{\land}{\exists}$ &
     \resizebox{0.2\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\exists x, \varphi$}
-    \Axiom$\fCenter\pi'$
-    \noLine\UnaryInfC{$\psi_1\land\psi_2$}
-    \RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\psi_i$}
-    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-    \BinaryInfC{$\psi_i$}
-    \DisplayProof
-    }
-    \\
-    \\
-    \resizebox{0.4\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\exists x, \varphi$}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-      \BinaryInfC{$\psi_1\lor\psi_2$}
-      \AxiomC{$[\psi_1]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_1$
-      \noLine\UnaryInfC{$\chi$}
-      \AxiomC{$[\psi_2]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_2$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e,\beta$}
-      \TrinaryInfC{$\chi$}
-      \DisplayProof}
-    & $\reecr{C^\lor_\exists}$ &
-    \resizebox{0.4\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\exists x, \varphi$}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\psi_1\lor\psi_2$}
-      \AxiomC{$[\psi_1]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_1$
-      \noLine\UnaryInfC{$\chi$}
-      \AxiomC{$[\psi_2]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi'_2$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e,\beta$}
-      \TrinaryInfC{$\chi$}
-      \RightLabel{$\lor_\mathrm e, \alpha$}
-      \BinaryInfC{$\chi$}
-      \DisplayProof}
-    \\
-    \\
-    \resizebox{0.2\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\exists x, \varphi$}
-    \Axiom$\fCenter\pi'$
-    \noLine\UnaryInfC{$\forall y, \psi$}
-    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-    \BinaryInfC{$\forall y, \psi$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\psi[t/y]$}
-    \DisplayProof
-    }
-    & $\reecr{C^\forall_\exists}$ &
-    \resizebox{0.2\textwidth}{!}{
-    \def\fCenter{\mbox{\Large$\vdots$}}
-    \Axiom$\fCenter\pi$
-    \noLine\UnaryInfC{$\exists x, \varphi$}
-    \Axiom$\fCenter\pi'$
-    \noLine\UnaryInfC{$\forall y, \psi$}
-    \RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\psi[t/y]$}
-    \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-    \BinaryInfC{$\psi[t/y]$}
+    \axNJV\UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\land\varFP_2$}
+    \RightLabel{$\RandEi$}
+    \UnaryInfC{$\varFP_i$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$\varFP_i$}
     \DisplayProof
     }
     \\
     \\
     \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\exists x, \varphi$}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\exists y, \psi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-      \BinaryInfC{$\exists y, \psi$}
-      \AxiomC{$[\psi]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi''$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
-      \BinaryInfC{$\chi$}
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFC_1\lor\varFC_2$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFP_1\lor\varFP_2$}
+      \AxiomC{$[\varFP_1]^\varTokB$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\varFC$}
+      \AxiomC{$[\varFP_2]^\varTokB$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RorEB$}
+      \TrinaryInfC{$\varFC$}
       \DisplayProof}
-    & $\reecr{C^\exists_\exists}$ &
+    & $\CCutP{\lor}{\exists}$ &
     \resizebox{0.3\textwidth}{!}{
-      \def\fCenter{\mbox{\Large$\vdots$}}
-      \Axiom$\fCenter\pi$
-      \noLine\UnaryInfC{$\exists x, \varphi$}
-      \AxiomC{$[\varphi]^\alpha$}
-      \noLine\UnaryInf$\fCenter\pi'$
-      \noLine\UnaryInfC{$\exists y, \psi$}
-      \AxiomC{$[\psi]^\beta$}
-      \noLine\UnaryInf$\fCenter\pi''$
-      \noLine\UnaryInfC{$\chi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\beta$}
-      \BinaryInfC{$\chi$}
-      \RightLabel{$\exists_\mathrm e^\dagger,\alpha$}
-      \BinaryInfC{$\chi$}
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\lor\varFP_2$}
+      \AxiomC{$[\varFP_1]^\varTokB$}
+      \ligneNJP{\varPT_1}\UnaryInfC{$\varFC$}
+      \AxiomC{$[\varFP_2]^\varTokB$}
+      \ligneNJP{\varPT_2}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RorEB$}
+      \TrinaryInfC{$\varFC$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFC$}
+      \DisplayProof}
+    \\
+    \\
+    \resizebox{0.2\textwidth}{!}{
+    \axNJV\UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\varPT'}\UnaryInfC{$\forall y, \varFP$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$\forall y, \varFP$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varFP[t/y]$}
+    \DisplayProof
+    }
+    & $\CCutP{\forall}{\exists}$ &
+    \resizebox{0.2\textwidth}{!}{
+    \axNJV\UnaryInfC{$\exists x, \varFF$}
+    \AxiomC{$[\varFF]^\varTokA$}
+    \ligneNJP{\varPT'}\UnaryInfC{$\forall y, \varFP$}
+    \RightLabel{$\RforaE$}
+    \UnaryInfC{$\varFP[t/y]$}
+    \RightLabel{$\RexEA^\dagger$}
+    \BinaryInfC{$\varFP[t/y]$}
+    \DisplayProof
+    }
+    \\
+    \\
+    \resizebox{0.25\textwidth}{!}{
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\exists y, \varFP$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\exists y, \varFP$}
+      \AxiomC{$[\varFP]^\varTokB$}
+      \ligneNJP{\varPT''}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RexEB^\dagger$}
+      \BinaryInfC{$\varFC$}
+      \DisplayProof}
+    & $\CCutP{\exists}{\exists}$ &
+    \resizebox{0.25\textwidth}{!}{
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\exists y, \varFP$}
+      \AxiomC{$[\varFP]^\varTokB$}
+      \ligneNJP{\varPT''}\UnaryInfC{$\varFC$}
+      \RightLabel{$\RexEB^\dagger$}
+      \BinaryInfC{$\varFC$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFC$}
       \DisplayProof}
   \end{tabular}
 
@@ -1519,20 +1514,20 @@ les coupures.
   \vspace{0.4cm}
   \caption{Réductions commutatives dans $\NJ$}
   \label{tbl.cut.com.NJ}
-  \hrule
+  %\hrule
 
 \end{table}
 
 \begin{remark}
   La plupart des coupures logiques (si ce n'est toutes) ressemblent à de pures
   évidences. Une coupure pour $\to$ est par exemple le fait de prouver d'abord
-  $\varphi\to\psi$ pour ensuite prouver $\varphi$ et en déduire $\psi$. On
+  $\varFF\to\varFP$ pour ensuite prouver $\varFF$ et en déduire $\varFP$. On
   pourrait penser, sous cette forme, qu'une telle situation n'arrive pas en
-  pratique puisqu'il est plus direct de prouver $\psi$ avec la version sans
+  pratique puisqu'il est plus direct de prouver $\varFP$ avec la version sans
   coupure. Pourtant, c'est bien la version avec coupure qu'on utilise lorsqu'on
   établit un théorème abstrait, souvent de la forme
-  $\forall x, \varphi \to \psi$, pour en récupérer une instance précise
-  $\psi[t/x]$.
+  $\forall x, \varFF \to \varFP$, pour en récupérer une instance précise
+  $\varFP[t/x]$.
 \end{remark}
 
 Cette réduction conserve les hypothèses et les conclusions, et permet donc de
@@ -1543,10 +1538,10 @@ Pour l'instant, nous nous intéressons aux conséquences de cette élimination d
 coupures.
 
 \begin{theorem}[\'Elimination des coupures dans $\NJ$]
-  Pour tout arbre $\pi\in\ProofNJ$, il existe un arbre $\pi'$ tel que
-  $\pi{\reecr{}}^\star\pi'$ et $\pi'$ est sans coupure.
+  Pour tout arbre $\varPT\in\ProofNJ$, il existe un arbre $\varPT'$ tel que
+  $\varPT\rtClot{\reecr{}}\varPT'$ et $\varPT'$ est sans coupure.
 
-  Un séquent $\Gamma\vdNJ\varphi$ est prouvable si et seulement s'il est
+  Un séquent $\varCG\vdNJ\varFF$ est prouvable si et seulement s'il est
   prouvable par un arbre de preuve sans coupure.
 \end{theorem}
 
@@ -1555,16 +1550,16 @@ vérifier que, comme pour le calcul des séquents, on a la propriété de la
 sous-formule.
 
 \begin{property}[Sous-formule]
-  Pour tout arbre $\pi\in\ProofNJ$ sans coupure et pour $\Gamma\vdNJ\varphi$
-  sa conclusion, chaque formule apparaissant dans $\pi$ est une sous-formule
-  de $\varphi$ ou de l'une des formules de $\Gamma$.
+  Pour tout arbre $\varPT\in\ProofNJ$ sans coupure et pour $\varCG\vdNJ\varFF$
+  sa conclusion, chaque formule apparaissant dans $\varPT$ est une sous-formule
+  de $\varFF$ ou de l'une des formules de $\varCG$.
 \end{property}
 
 On peut aussi déduire directement le fait suivant~:
 
 \begin{proposition}
-  Tout arbre $\pi\in\ProofNJ$ sans coupure tel que $\pi\concl \vdNJ\varphi$ a
-  comme dernière règle une règle d'introduction.
+  Tout arbre $\varPT\in\ProofNJ$ sans coupure tel que $\varPT\concl \vdNJ\varFF$
+  a comme dernière règle une règle d'introduction.
 \end{proposition}
 
 \begin{proof}
@@ -1575,34 +1570,47 @@ On peut aussi déduire directement le fait suivant~:
 D'où les propriétés déjà prouvées dans $\LJ$ de la disjonction et du témoin.
 
 \begin{property}[Disjonction]\label{prop.disjonction.NJ}
-  Pour toutes formules $\varphi,\psi$, si $\vdNJ\varphi\lor\psi$ alors
-  $\vdNJ\varphi$ ou $\vdNJ\psi$.
+  Pour toutes formules $\varFF,\varFP$, si $\vdNJ\varFF\lor\varFP$ alors
+  $\vdNJ\varFF$ ou $\vdNJ\varFP$.
 \end{property}
 
 \begin{proof}
-  Si $\vdNJ\varphi\lor\psi$, alors on trouve un arbre $\pi$ sans coupure
-  tel que $\pi\concl\vdNJ\varphi\lor\psi$. On sait que $\pi$ a comme dernière
-  règle une règle d'introduction, et la seule pouvant s'appliquer à un
-  $\lor$ est une des deux règles $\lor_\mathrm i$. On en déduit le résultat.
+  Si $\vdNJ\varFF\lor\varFP$, alors on trouve un arbre $\varPT$ sans coupure
+  tel que $\varPT\concl\vdNJ\varFF\lor\varFP$. On sait que $\varPT$ a comme
+  dernière règle une règle d'introduction, et la seule pouvant s'appliquer
+  à un $\lor$ est une des deux règles $\RorI$. On en déduit le résultat.
 \end{proof}
 
 \begin{property}[Témoin]
-  Pour toute formule $\varphi$, si $\vdNJ\exists x, \varphi$ alors il existe
-  un terme $t$ tel que $\vdNJ\varphi[t/x]$.
+  Pour toute formule $\varFF$, si $\vdNJ\exists x, \varFF$ alors il existe
+  un terme $t$ tel que $\vdNJ\varFF[t/x]$.
 \end{property}
 
 \begin{proof}
-  Si $\vdNJ\exists x, \varphi$, alors on trouve $\pi$ sans coupure tel que
-  $\pi\concl\vdNJ\exists x, \varphi$. Comme $\pi$, commence par une règle
+  Si $\vdNJ\exists x, \varFF$, alors on trouve $\varPT$ sans coupure tel que
+  $\varPT\concl\vdNJ\exists x, \varFF$. Comme $\varPT$, commence par une règle
   d'introduction, on a le résultat.
 \end{proof}
 
-Nous avons vu trois réécriture au fil des derniers chapitres, qui ont permis à
-chaque fois de faire apparaître des formes remarquables des arbres de preuves.
-Pour abstraire les propriétés et parler de façon plus génériques de systèmes de
-réécriture, on introduit les systèmes de réécriture abstraits.
+On peut aussi en déduire (là encore comme pour $\LJ$) la cohérence du calcul.
+
+\begin{property}[Cohérence]
+    Il n'existe pas d'arbre $\varPT \in \ProofNJ$ tel que
+    $\varPT\concl \vdNJ\bot$.
+\end{property}
+
+Enfin, on donne le résultat qui sera prouvé dans les prochaines chapitres, qui
+permet de montrer le bon comportement de la déduction naturelle.
 
 \begin{theorem}\label{thm.NJ.prop}
   L'ARS $(\ProofNJ,\reecr{})$ est fortement normalisant et confluent.
   L'égalité d'arbres de preuves est donc décidable.
 \end{theorem}
+
+\begin{remark}
+    Ce résultat est plus fort que l'élimination des coupures dans le calcul des
+    séquents~: on peut avoir des suites infinies de réduction $\reecr{}$ dans le
+    calcul des séquents (notamment en faisant remonter une coupure à gauche, puis
+    à droite \latinexpr{etc.}) alors que la déduction naturelle assure que
+    toutes les suites de réductions terminent.
+\end{remark}

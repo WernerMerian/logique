@@ -102,6 +102,7 @@
 \newcommand{\varFF}{\varphi} % variable de formule phi
 \newcommand{\varFP}{\psi} % variable de formule psi
 \newcommand{\varFC}{\chi} % variable de formule chi
+\newcommand{\varFX}{\xi} % variable de formule xi
 \newcommand{\varFT}{\theta} % variable de formule theta
 \newcommand{\varFA}{\alpha} % variable de formule alpha
 \newcommand{\varFD}{\delta} % variable de formule delta
@@ -367,9 +368,11 @@
 \newcommand{\Rror}{\mathrm{r}\mathord{\lor}}
 \newcommand{\RrorG}{\Rror_{1}}
 \newcommand{\RrorD}{\Rror_{2}}
+\newcommand{\Rrori}{\Rror_{i}}
 \newcommand{\Rland}{\mathrm{l}\mathord{\land}}
 \newcommand{\RlandG}{\Rland_{1}}
 \newcommand{\RlandD}{\Rland_{2}}
+\newcommand{\Rlandi}{\Rland_{i}}
 \newcommand{\Rrand}{\mathrm{r}\mathord{\land}}
 \newcommand{\Rlto}{\mathrm{l}\mathord{\to}}
 \newcommand{\Rrto}{\mathrm{r}\mathord{\to}}
@@ -399,29 +402,48 @@
 \newcommand{\Rg}{\mathrm{g}}
 \newcommand{\Rd}{\mathrm{d}}
 \newcommand{\RnotI}{\mathord{\lnot}_{\mathrm{i}}}
+\newcommand{\RnotIP}[1]{\mathord{\lnot}_{\mathrm{i},#1}}
+\newcommand{\RnotIA}{\RnotIP{\varTokA}}
+\newcommand{\RnotIB}{\RnotIP{\varTokB}}
 \newcommand{\RnotE}{\mathord{\lnot}_{\mathrm{e}}}
 \newcommand{\RorI}{\mathord{\lor}_{\mathrm{i}}}
 \newcommand{\RorIG}{\RorI^{1}}
 \newcommand{\RorID}{\RorI^{2}}
+\newcommand{\RorIi}{\RorI^{i}}
 \newcommand{\RorE}{\mathord{\lor}_{\mathrm{e}}}
+\newcommand{\RorEP}[1]{\mathord{\lor}_{\mathrm{e},#1}}
+\newcommand{\RorEA}{\RorEP{\varTokA}}
+\newcommand{\RorEB}{\RorEP{\varTokB}}
 \newcommand{\RandI}{\mathord{\land}_{\mathrm{i}}}
 \newcommand{\RandE}{\mathord{\land}_{\mathrm{e}}}
 \newcommand{\RandEG}{\RandE^{1}}
 \newcommand{\RandED}{\RandE^{2}}
+\newcommand{\RandEi}{\RandE^{i}}
 \newcommand{\RtoI}{\mathord{\to}_{\mathrm{i}}}
+\newcommand{\RtoIP}[1]{\mathord{\to}_{\mathrm{i},#1}}
+\newcommand{\RtoIA}{\RtoIP{\varTokA}}
+\newcommand{\RtoIB}{\RtoIP{\varTokB}}
 \newcommand{\RtoE}{\mathord{\to}_{\mathrm{e}}}
 \newcommand{\RforaI}{\mathord{\forall}_{\mathrm{i}}}
 \newcommand{\RforaE}{\mathord{\forall}_{\mathrm{e}}}
 \newcommand{\RexI}{\mathord{\exists}_{\mathrm{i}}}
 \newcommand{\RexE}{\mathord{\exists}_{\mathrm{e}}}
+\newcommand{\RexEP}[1]{\mathord{\exists}_{\mathrm{e},#1}}
+\newcommand{\RexEA}{\RexEP{\varTokA}}
+\newcommand{\RexEB}{\RexEP{\varTokB}}
 \newcommand{\ReqI}{\mathord{=}_{\mathrm{i}}}
 \newcommand{\ReqE}{\mathord{=}_{\mathrm{e}}}
-\newcommand{\iffS}{\leftrightarrow} % ssi dans sa version syntaxique
+\newcommand{\iffS}{\mathrel{\leftrightarrow}} % ssi dans sa version syntaxique
 \newcommand{\RiffI}{\mathord{\iffS}_{\mathrm{i}}}
 \newcommand{\RiffE}{\mathord{\iffS}_{\mathrm{e}}}
 \newcommand{\RiffEG}{\RiffE^{1}}
 \newcommand{\RiffED}{\RiffE^{2}}
 \DeclareMathOperator{\RLEM}{LEM}
+
+\newcommand{\varTokA}{\alpha}
+\newcommand{\varTokB}{\beta}
+\newcommand{\varTokC}{\gamma}
+\newcommand{\varTokD}{\delta}
 
 %----- REALISABILITE -----%
 
@@ -1100,5 +1122,27 @@
 \newcommand{\varEq}{\mathscr{E}} % théorie équationnelle E
 \DeclareMathOperator{\PrCrt}{PC} % ensemble des paires critiques
 \newcommand{\varPbU}{\mathcal{P}} % variable pour un pb d'unification
+
+%----- DEDUCTION NATURELLE -----%
+
+\newcommand{\ligneNJP}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\noLine\UnaryInf$\fCenter #1$\noLine}
+\newcommand{\ligneNJV}{\ligneNJP{\varPT}}
+\newcommand{\ligneNJPB}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\dashedLine\BinaryInf$\fCenter #1$\noLine}
+\newcommand{\ligneNJPT}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\dashedLine\TrinaryInf$\fCenter #1$\noLine}
+\newcommand{\ligneNJVT}{\ligneNJPT{\varPT}}
+\newcommand{\axNJP}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\Axiom$\fCenter #1$\noLine}
+\newcommand{\axNJV}{\axNJP{\varPT}}
+\newcommand{\RaaP}[1]{\RRaa_{#1}}
+\newcommand{\RaaA}{\RaaP{\varTokA}}
+\newcommand{\tradGG}[1]{#1^{\mathrm{N}}}
+
+\newcommand{\LCutP}[1]{\reecr{\mathrm{L}^{\mathord{#1}}}}
+\newcommand{\LCut}{\LCutP{}}
+\newcommand{\CCutP}[2]{\reecr{\mathrm{C}^{\mathord{#1}}_{\mathord{#2}}}}
+\newcommand{\CCut}{\CCutP{}{}}
+\newcommand{\BCutP}[1]{\reecr{\bot^{\mathord{#1}}}}
+\newcommand{\BCut}{\BCutP{}}
+
+%----- LAMBDA CALCUL SIMPLEMENT TYPE -----%
 
 \newcommand{\varTypA}{A} % variable pour un type A

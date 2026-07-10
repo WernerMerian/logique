@@ -5,8 +5,8 @@
 
 \lettrine{L}{e} chapitre précédent utilisait par deux fois une relation
 $\reecr{}$ pour réécriture les arbres de preuve. Dans la suite de cette
-partie, on aura souvent besoin de relation de réécriture (qu'on
-appellera aussi relation de réduction, suivant le contexte), et on se
+partie, on aura souvent besoin de relations de réécriture (qu'on
+appellera aussi relations de réduction, suivant le contexte), et on se
 propose donc d'en étudier la théorie générale en amont. Ce chapitre est
 donc dédié à la théorie abstraite de la réécriture, portant sur les
 système abstraits de réécriture (\foreignexpr{Abstract Rewriting Systems},
@@ -236,15 +236,6 @@ La suite de cette section est dédiée à la construction d'outils pour établir
 la propriété CR. Pour ce faire, le premier pas est de donnée une formulation
 alternative de la propriété CR, nommée confluence.
 
-\begin{definition}[Confluence]
-    Soit $(A,\varTo)$ un ARS. On dit qu'il est confluent si pour tous
-    $a,b,c \in A$ tels que $a \varToRt b$ et $a \varToRt c$, il existe
-    $d \in A$ tel que $b \varToRt d$ et $c\varToRt d$. De façon alternative,
-    on peut exprimer ça par l'inclusion
-    $\mathord{\varToTTr}\circ\mathord{\varToRt}\subseteq
-    \mathord{\varToRt}\circ\mathord{\varToTTr}$.
-\end{definition}
-
 \begin{figure}[t!]
   \centering
   %\hrule
@@ -288,6 +279,15 @@ alternative de la propriété CR, nommée confluence.
   \label{fig.confluence}
   %\hrule
 \end{figure}
+
+\begin{definition}[Confluence]
+    Soit $(A,\varTo)$ un ARS. On dit qu'il est confluent si pour tous
+    $a,b,c \in A$ tels que $a \varToRt b$ et $a \varToRt c$, il existe
+    $d \in A$ tel que $b \varToRt d$ et $c\varToRt d$. De façon alternative,
+    on peut exprimer ça par l'inclusion
+    $\mathord{\varToTTr}\circ\mathord{\varToRt}\subseteq
+    \mathord{\varToRt}\circ\mathord{\varToTTr}$.
+\end{definition}
 
 \begin{proposition}\label{prop.CR.confl}
     Tout ARS $(A,\varTo)$ a la propriété CR si et seulement s'il est confluent.
@@ -1268,7 +1268,7 @@ un système de démonstration, et montrer que ce formalisme est équivalent
 
 Puisqu'on travaille dans un système de démonstration, on peut dès lors
 se fixer une signature $\Sign$ sur laquelle on va construire des
-réécritures. Pour cette raison, peut reprendre l'exemple développé
+réécritures. Pour cette raison, on peut reprendre l'exemple développé
 précédemment de la réécriture arithmétique
 \begin{itemize}
     \begin{minipage}{0.45\textwidth}
@@ -1287,7 +1287,8 @@ une façon décidable de déterminer, étant donnés deux termes $t,u$,
 si $t \rtsClot{\reecr{}} u$.
 
 Cette réécriture peut être définie sur $\Term(\SignP{\Arith})$, mais
-aussi se généraliser à $\Formula(\SignP{\Arith})$. Un cran plus loin,
+on peut tout aussi bien la généraliser à $\Formula(\SignP{\Arith})$.
+Un cran plus loin,
 et on peut écrire $\varCG\vdP \varCD \reecr{} \varCG' \vdP \varCD'$.
 On pourrait ainsi directement définir la déduction en ajoutant une
 règle disant que si deux séquents sont réductibles l'un à l'autre,
