@@ -1253,7 +1253,7 @@ termine donc par bonne fondation.
 On dispose ainsi d'un moyen de résoudre un problème d'unification qu'on
 peut exprimer sur des ensembles de termes pour une signature fixée.
 
-\subsection{Déduction modulo réécriture}
+\subsection{Déduction modulo réécriture}\label{subsec.dedModTh}
 
 Cette dernière sous-section du chapitre s'intéresse à une autre forme
 de raisonnement équationnel. Dans ce cadre, on considère un système de
@@ -1290,8 +1290,233 @@ Cette réécriture peut être définie sur $\Term(\SignP{\Arith})$, mais
 on peut tout aussi bien la généraliser à $\Formula(\SignP{\Arith})$.
 Un cran plus loin,
 et on peut écrire $\varCG\vdP \varCD \reecr{} \varCG' \vdP \varCD'$.
-On pourrait ainsi directement définir la déduction en ajoutant une
+On peut ainsi directement définir la déduction en ajoutant une
 règle disant que si deux séquents sont réductibles l'un à l'autre,
 alors on peut passer d'un arbre de preuve à un autre.
 
-A FAIRE
+\begin{definition}[Démonstration modulo réécriture]
+\label{def.demoModTh}
+Soit $\Sign$ une signature et $\reecr{}$ une relation de réécriture
+sur $\Formula(\Sign)$. On définit $\Proof(\Sign,\reecr{})$ de façon
+analogue à $\Proof(\Sign)$, mais en permettant que, dans une règle
+\begin{prooftree}
+    \AxiomC{$\ldots$}
+    \RightLabel{$\ruleR$}
+    \UnaryInfC{$\varFF_1,\ldots,\varFF_k\vdP
+    \varFP_1,\ldots,\varFP_p$}
+\end{prooftree}
+si $\varFF_i \rtsClot{\reecr{}} \varFF_i'$ et
+$\varFP_i \rtsClot{\reecr{}} \varFP_i'$, alors on a la règle
+\begin{prooftree}
+    \AxiomC{$\ldots$}
+    \RightLabel{$\ruleR$}
+    \UnaryInfC{$\varFF_1',\ldots,\varFF_k'\vdP
+    \varFP_1',\ldots,\varFP_p'$}
+\end{prooftree}
+où les prémisses sont les mêmes dans la seconde règle.
+\end{definition}
+
+On peut ainsi, en reprenant la réécriture précédente, construire
+\begin{prooftree}
+    \AxiomC{}
+    \RightLabel{$\Rreq$}
+    \UnaryInfC{$\vdP\Ss \Ss 0 = \Ss 0 + \Ss 0$}
+\end{prooftree}
+simplement parce que
+$\Ss 0 + \Ss 0 \reecr{} \Ss(\Ss 0 + 0) \reecr{} \Ss \Ss 0$. Les
+arbres de preuve en sont donc largement raccourcis. De plus, si
+$\reecr{}$ est confluente et fortement normalisante, alors les
+arbres de preuve modulo réécriture restent décidables~: étant
+donnée une règle et des prémisses fixées, on connaît le séquent
+conclusion et on peut le comparer au séquent conclusion présent
+dans l'arbre. Il suffit alors de tester l'égalité formule par
+formule.
+
+La construction des arbres modulo réécriture simplifie la plupart
+des raisonnements, mais il est alors nécessaire de vérifier que ces
+arbres se comportent bien. En particulier, puisque le c\oe ur du
+calcul des séquents est le \foreignexpr{Hauptsatz}, il faut
+vérifier que celui-ci est encore valide. Revenons donc à la
+construction de l'élimination des coupures. Celle-ci se fait en
+deux parties~:
+\begin{itemize}
+\item faire remonter les coupures vers des coupures logiques~;
+\item éliminer les coupures logiques.
+\end{itemize}
+
+On peut remarquer que le relèvement de coupure ne pose pas de
+souci modulo réécriture, puisque les règles qu'on applique se
+font de façon indépendante. Les coupures logique, au contraire,
+demandent de considérer précisément les règles logiques utilisées.
+Par exemple, supposons qu'on pose
+$\varFF \lor \varFP \reecr{} \varFF\land \varFP$. Avec une telle
+définition, on autorise la coupure
+\begin{prooftree}
+    \AxiomC{$\varFF,\varFP\vdP$}
+    \RightLabel{$\Rland$}
+    \UnaryInfC{$\varFF\land\varFP\vdP$}
+    \AxiomC{$\vdP\varFF,\varFP$}
+    \RightLabel{$\Rror$}
+    \UnaryInfC{$\vdP\varFF\land\varFP$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\vdP$}
+\end{prooftree}
+ce qui, outre le fait que l'arbre peut effectivement s'écrire
+en prenant $\varFP\defeq\lnot\varFF$ et contredit alors la
+cohérence du système, génère surtout une impossibilité d'éliminer
+une coupure logique. En effet, une coupure logique doit se faire
+avec \latinexpr{e.g.} le couple de règles $\Rlor/\Rror$, ou
+le couple $\Rland/\Rrand$. Pour conserver cette possibilité
+de réduction, il nous faut donc imposer une condition à la
+réécriture. Une première idée est de considérer des réécritures
+qui n'affectent pas la forme des formules. Par exemple, si on
+définit une réécriture uniquement sur des termes, puis qu'on
+l'applique par compatibilité aux formules, la réécriture d'une
+conjonction sera une conjonction \latinexpr{etc.} On souhaite
+cependant pouvoir construire des réécritures de la forme
+$\varFF \reecr{} \varFP$ directement.
+
+Un premier cas simple est celui dans lequel la réécriture peut
+se simuler par un arbre de preuve.
+
+\begin{definition}[Réécriture simulée]
+    Une réécriture $\reecr{}$ est dite simulable si pour toute
+    réécriture $\varFF\reecr{} \varFP$, on peut prouver que
+    $\varFF\dvvd \varFP$ (sans réécriture ici).
+\end{definition}
+
+Dans un tel cas, on peut modifier une coupure logique en
+ajoutant un arbre permettant de transformer $\varFF$ en
+$\varFP$, pour que la règle logique soit celle attendue.
+
+\begin{example}
+    On peut ajouter la règle $\varFF\lor\bot\reecr{}\varFF$
+    car on a les deux arbres
+    \begin{center}
+        \AxiomC{}
+        \RightLabel{$\Rax$}
+        \UnaryInfC{$\varFF\vdP\varFF$}
+        \RightLabel{$\Rlw$}
+        \UnaryInfC{$\varFF,\bot\vdP\varFF$}
+        \RightLabel{$\Rlor$}
+        \UnaryInfC{$\varFF\lor\bot\vdP\varFF$}
+        \DisplayProof
+        \hspace{2cm}
+        \AxiomC{}
+        \RightLabel{$\Rax$}
+        \UnaryInfC{$\varFF\vdP\varFF$}
+        \RightLabel{$\RrorG$}
+        \UnaryInfC{$\varFF\vdP\varFF\lor\bot$}
+        \DisplayProof
+    \end{center}
+\end{example}
+
+Ces constructions peuvent être utiles pour alléger les arbres,
+mais restent très limitées. On donne donc un autre critère,
+lui aussi suffisant, permettant d'assurer l'élimination des
+coupures.
+
+\begin{definition}[Réécriture non ambiguë]
+    On dit qu'une réécriture $\reecr{}$ sur $\Formula(\Sign)$
+    est non ambiguë lorsque pour toute formule $\varFF$ et
+    tous contextes $\varCG,\varCD\in\Ctx(\Sign)$, il existe
+    au plus un couple de règles $\rmr c/\rml c'$ permettant
+    de construire $\varCG,\varFF\vdP\varCD$ et
+    $\varCG\vdP\varFF,\varCD$ à partir de sous-formules de
+    $\varFF$. On dit que la réécriture est bonne si
+    elle est non ambiguë et que, lorsqu'un couple
+    $\rmr c/\rml c'$ existe, alors $c = c'$, c'est-à-dire
+    que le couple correspond à la règle gauche et droite
+    d'un constructeur fixé.
+\end{definition}
+
+\begin{remark}
+    Si $\reecr{}$ est définie sur les termes du langages
+    et appliquée par compatibilité sur les formules, alors
+    elle est automatiquement non ambiguë et compatible,
+    puisque pour $\varFF\reecr{} \varFP$, seuls changent
+    les termes des formules et les
+    connecteurs / quantificateurs restent inchangée.
+\end{remark}
+
+\begin{theorem}\label{thm.cutElimModTh}
+    Soit $\reecr{}$ une réécriture sur $\Formula(\Sign)$ qui
+    est bonne. Alors le système de preuve
+    $\Proof(\Sign,\reecr{})$ admet l'élimination des coupures.
+\end{theorem}
+
+\begin{proof}
+    On reprend simplement l'élimination des coupures dans
+    le chapitre précédent. On peut toujours faire remonter
+    les coupures jusqu'à des coupures logique, et on sait
+    qu'une coupure logique peut être réduite par le fait
+    que la réécriture est bonne. La terminaison de l'algorithme
+    est inchangée.
+\end{proof}
+
+L'un des intérêts premiers de l'ajout de ces réécritures est de
+construire un système sans axiomes qui encode une théorie (ce que
+nous voulons faire dans le \cref{chp.coh.arith}). Ainsi, on peut
+transformer un ensemble d'équations $\compr{``t_i = u_i"}{i \in I}$
+en la règle de réécriture $t_i \reecr{} u_i$. On veut montrer
+que l'ensemble des formules prouvables est effectivement le même
+dans les deux cas. On remarque aussi que, puisqu'on peut
+prouver $\varFF \iffS \varFF$, une réécriture
+$\varFF\reecr{} \varFP$ induit la prouvabilité de
+$\varFF\iffS \varFP$. En fait, ces deux cas définissent
+exactement l'ensemble des formules qu'on peut prouver en plus.
+
+\begin{definition}[Théorie associée à une réécriture]
+    Soit $\reecr{}$ une relation de réécriture sur des termes.
+    On définit la théorie associée à cette réécriture par
+    \[\varT_{\reecr{}} \defeq
+    \compr{``t = u"}{t\reecr{} u} \]
+    Pour une réécriture $\reecr{}$ sur les formules, on définit
+    la théorie associée par
+    \[\varT_{\reecr{}} \defeq
+    \compr{\varFF\iffS\varFP}{\varFF\reecr{}\varFP}\]
+\end{definition}
+
+\begin{exercise}
+    Montrer que pour une réécriture $\reecr{}$ sur les termes
+    et $\reecr{}'$ la réécriture sur les formules induite par
+    $\reecr{}$ par compatibilité, les deux théories
+    $\varT_{\reecr{}}$ et $\varT_{\reecr{}'}$ sont
+    équivalentes.
+\end{exercise}
+
+\begin{theorem}\label{thm.ReecrThModTh}
+    Soit $\reecr{}$ une réécriture sur les formules. Alors la
+    déduction modulo $\reecr{}$ est équivalente à la déduction
+    dans la théorie $\varT_{\reecr{}}$.
+\end{theorem}
+
+\begin{proof}
+    On peut prouver chaque équivalence $\varFF\iffS\varFP$ pour
+    $\varFF\reecr{}\varFP$ modulo $\reecr{}$, donc la théorie
+    $\varT_{\reecr{}}$ est prouvable modulo $\reecr{}$. Comme
+    la déduction modulo $\reecr{}$ contient la déduction
+    habituelle, on en déduit que tout ce qui est prouvable
+    dans $\varT_{\reecr{}}$ est prouvable modulo $\reecr{}$.
+
+    Réciproquement, pour tout arbre $\varPT$ modulo $\reecr{}$, il
+    existe une partie $\varCG\subseteq\varT_{\reecr{}}$ et un
+    arbre $\varPT'$ (non modulo $\reecr{}$) tels
+    que, pour $\varCD\vdP\varCT$ le séquent conclusion de
+    $\varPT$, $\varCG,\varCD\vdP\varCT$ est la conclusion de
+    $\varPT'$.
+
+    On le prouve par induction, toutes les règles se traitant
+    de la même façon. Supposons que $\varCD_0\vdP\varCT_0$ est
+    la conclusion d'une règle non modulo réécriture. On sait
+    alors que la conclusion de $\varPT$ est $\varCD_1\vdP\varCT_1$
+    où $\varCD_0$ et $\varCD_1$ (respectivement $\varCT_0$ et
+    $\varCT_1$) sont égaux modulo réécriture. On sait qu'on
+    a $\varCD_0 \iffS \varCD_1$ (c'est-à-dire, pour chaque
+    formule $\varFF_0$ dans $\varCD_0$ et $\varFF_1$ dans
+    $\varCD_1$, une preuve que $\varFF_0\iffS\varFF_1$)
+    donc, en ajoutant suffisamment de coupures, on peut prouver
+    que
+    \[\varCD_1,\varCD_0\iffS\varCD_1,\varCT_0\iffS\varCT_1\vdP
+    \varCT_1\qedhere\]
+\end{proof}

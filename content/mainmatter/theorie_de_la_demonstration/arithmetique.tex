@@ -5,11 +5,11 @@
 
 \lettrine{P}{armi} les questions posées par le programme de Hilbert, outre le
 problème de la décision, résolu par Church et Turing par la négative, on compte
-aussi le deuxième problème de Hilbert~:
+aussi le deuxième problème de Hilbert à propos duquel le second théorème
+d'incomplétude impose une limite~:
 \begin{quote}
   Prouver que la théorie de l'arithmétique est cohérente.
 \end{quote}
-à propos duquel le second théorème d'incomplétude impose une limite.
 
 Le second théorème d'incomplétude nous permet de dire qu'il n'existe pas de
 démonstration arithmétique de cette cohérence, mais une démonstration peut se
@@ -23,16 +23,21 @@ $\ZFC$ est cohérente, l'arithmétique est cohérente.
 
 La première démonstration historique de la cohérence de l'arithmétique par
 Gentzen dans \cite{Gentzen1936}, nous donne en comparaison beaucoup plus
-d'informations. Elle est par exemple le fondement de l'analyse ordinale des
+d'informations. Elle est entre autres le fondement de l'analyse ordinale des
 théories logiques.
 
 L'objectif de ce chapitre est de parcourir deux preuves centrales de la
 cohérence de l'arithmétique. La première est celle de Gentzen, déjà mentionnée
 plus tôt, qui sera présentée dans une forme mise à jour et adaptée à notre
-formalisem logique moderne. La seconde est la démonstration de la cohérence de
-l'arithmétique de Heyting, ou arithmétique intuitionniste, développée par
-Kleene dans \cite{Kleene1945}. Cette démonstration fonde la théorie de la
-réalisabilité, sujet tout aussi important de la théorie de la démonstration.
+formalisme logique moderne. La seconde est la démonstration de la cohérence de
+l'arithmétique de Heyting, ou arithmétique intuitionniste, développée par Kleene
+dans \cite{Kleene1945}. Cette démonstration fonde la théorie de la réalisabilité,
+sujet tout aussi important de la théorie de la démonstration.
+
+Enfin, en utilisant l'outil de la réalisabilité, on introduit la réalisabilité
+modifiée pour prouver ce que nous avons annoncé à la fin du chapitre précédent~:
+toute fonction prouvablement totale dans l'arithmétique du premier ordre est
+définissable dans système T.
 
 \section{La cohérence de l'arithmétique de Peano}
 
@@ -49,124 +54,82 @@ prouvables (sans contexte gauche).
 
 On fixe donc comme signature celle de l'arithmétique. Rappelons les axiomes
 de la théorie $\ArithPeano$~:
-\begin{align*}
-  &\forall n, 0 \neq S\;n\\
-  &\forall n\;m, Sn =Sm\implies n = m\\
-  &\forall n, (n = 0) \lor (\exists m,n = Sm)\\
-  &\forall n, n+0 = n\\
-  &\forall n\;m, n+(Sm) = S(n+m)\\
-  &\forall n, n\times 0 = n\\
-  &\forall n\;m, n\times(Sm) = (n\times m)+n\\
-  &\forall \varphi(\vec x,y)\in\Formula, \forall \vec n,
-  \varphi(\vec n,0)\implies
-  (\forall m, \varphi(\vec n,m) \implies \varphi(\vec n,S m))\implies
-  \forall m, \varphi(\vec n,m)
-\end{align*}
-où la quantifcation $\forall \varphi$ signifie qu'on considère un schéma
+
+\begin{itemize}
+\begin{minipage}{0.45\textwidth}
+\item $\forall n, 0 \neq \Ss n$
+\item $\forall n\, m, \Ss n = \Ss m \implies n = m$
+\item $\forall n, (n = 0) \lor (\exists m, n = \Ss m)$
+\end{minipage}
+\begin{minipage}{0.45\textwidth}
+\item $\forall n, n + 0 = n$
+\item $\forall n\,m, n + (\Ss m) = \Ss (n + m)$
+\item $\forall n, n \times 0 = 0$
+\item $\forall n\,m, n \times (\Ss m) = (n \times m) + n$
+\end{minipage}
+\item $\forall \varFF(\vec x,y)\in \Formula, \varFF(\vec n,0) \implies
+  (\forall m, \varFF(\vec n,m) \implies \varFF(\vec n,\Ss m))\implies
+  \forall m, \varFF(\vec n,m)$
+\end{itemize}
+où la quantifcation $\forall \varFF$ signifie qu'on considère un schéma
 d'axiomes.
 
 On remarque d'abord que le \ordinalnumeralmale{$3$} axiome est une conséquent
 de la récurrence, en instanciant le schéma avec
-$\varphi(n) \defeq (n = 0) \lor (\exists m, n = Sm)$.
+$\varFF(n) \defeq (n = 0) \lor (\exists m, n = \Ss m)$.
 
 Les axiomes définissant l'addition et la multiplication sont simplement des
 égalités quantifiées universellement. Pour les intégrer à notre système, on
-peut décider d'ajouter des règles telles que
-\begin{prooftree}
-  \AxiomC{}
-  \RightLabel{$+0$}
-  \UnaryInfC{$t + 0 = t$}
-\end{prooftree}
-Une telle façon de procéder suffit à prouver le résultat de cohérence, mais on
-souhaite introduire une façon plus efficace de raisonner sur les théories, qui
-permet des raisonnements plus simples et naturels~: l'introduction de règles
-de réécriture au sein d'un système de démonstration.
+peut décider d'ajouter des règles de réduction telles qu'introduites dans la
+\cref{subsec.dedModTh}.
 
-Pour cela, supposons qu'on dispose d'une relation de réécriture $\rhd$ sur les
-termes et les formules (vérifiant naturellement que si $t \rhd u$, alors
-$\varphi[t/x] \rhd \varphi[u/x]$) qui est compatible. Un point essentiel à
-assurer, puisqu'on traite de systèmes syntaxiques, est que la réécriture d'une
-formule (ou d'un terme) en une autre est calculable. On fixe donc la réécriture
-$\rhd$ comme étant fortement normalisante et confluente (on verra que, pour
-notre usage, ces conditions sont vérifiées).
+Il nous faut donc vérifier les conditions suivantes~: la réécriture doit être
+confluente, normalisante et bonne. Ajouter directement les réécritures
+\[t + 0 \reecr{} t \quad t + \Ss u \reecr{} \Ss (t + u) \quad
+t \times 0 \reecr{} 0 \quad t \times (\Ss u) \reecr{} (t \times u) + t\]
+ne pose pas de souci pour ces conditions. De même, on peut ajouter la
+réécriture $\Ss t = \Ss u \reecr{} t = u$ puisqu'elle ne change pas la forme
+de la formule (dans les deux cas, on a une formule atomique donnée par une
+égalité) et diminue strictement la taille de la formule. Le
+\ordinalnumeralmale{2} axiome, lui, peut s'implémenter en considérant la
+réécriture
+\[0 = \Ss t \reecr{} \bot\]
+Ce faisant, on change la forme de la formule. Heureusement, on peut remarquer
+que
+\begin{itemize}
+\item il n'existe pas de règle droite qui introduit $\bot$~;
+\item il n'existe pas de règle droite qui introduit $0 = \Ss t$ puisque,
+  dans toutes les autres règles de réécriture, aucun terme se réduisant
+  à $0$ ne fait apparaître de $\Ss$.
+\end{itemize}
 
-On définit alors l'ensemble des arbres de preuve où les séquents à la conclusion
-d'une règle peuvent différer de la conclusion attendue par des réécritures du
-séquent.
-
-\begin{definition}[Déduction modulo théorie]
-  Soit un ensemble de règles pour le calcul des séquents et $\rhd$ une
-  relation de réécriture compatible sur les termes et les formules. On étend
-  $\rhd$ en une relation d'équivalence $\equiv$, et on l'étend sur les
-  séquents en considérant l'équivalence des formules appartenant aux séquents
-  (vu comme des listes de formules). Les arbres de déduction modulo $\rhd$ sont
-  les arbres construits par les règles modifiées suivantes~: pour chaque règle
-  $r$ de prémisses $\Gamma_1\vdLK\Delta_1,\cdots, \Gamma_n\vdLK\Delta_n$ et de
-  conclusion $\Gamma\vdLK\Delta$, si
-  $(\Gamma_i\vdLK\Delta_i)\equiv (\Theta_i\vdLK\Xi_i)$ et
-  $(\Gamma\vdLK\Delta)\equiv(\Theta\vdLK\Xi)$, alors on ajoute la règle
-  \begin{prooftree}
-    \AxiomC{$\Theta_1\vdLK\Xi_1$}
-    \AxiomC{$\cdots$}
-    \AxiomC{$\Theta_n\vdLK\Xi_n$}
-    \RightLabel{r}
-    \TrinaryInfC{$\Theta\vdLK\Xi$}
-  \end{prooftree}
-\end{definition}
-
-Le théorème suivant permet d'assurer la validité de cette pratique, en
-montrant que les séquent prouvables n'en sont pas modifiés.
-
-\begin{theorem}
-  Soit $\rhd$ une réécriture compatible sur les termes et les formules. Un
-  séquent $\Gamma\vdLK\Delta$ est prouvable modulo $\rhd$ si et seulement
-  s'il existe un sous-ensemble fini $F$ de
-  \[\mathcal T_{\to} \defeq \{(t = u)\mid t,u\in\Term, t \equiv u\}
-  \cup \{\varphi \leftrightarrow \psi \mid \varphi,\psi\in\Formula,
-  \varphi\equiv \psi\}\]
-  tel que $\Gamma,F\vdLK\Delta$.
-\end{theorem}
-
-\begin{proof}
-  A chaque application de règle dans la construction de l'arbre modulo $\rhd$,
-  on utilise un nombre fini de réductions entre des formules et entre des
-  termes. Pour chaque substitution d'une terme $t$ par un terme $u$, il
-  suffit d'utiliser la règle $l=$. Pour chaque substitution d'une formule
-  $\varphi$ par une formule $\psi$, on utilise le fait que, si
-  $\vdLK \varphi\leftrightarrow \psi$, alors
-  $\Gamma[\varphi/\psi]\vdLK\Delta[\varphi/\psi]$ est prouvable si et seulement
-  si $\Gamma\vdLK\Delta$ l'est, ce qui est direct en passant par la sémantique.
-\end{proof}
-
-La déduction modulo théorie permet donc d'internaliser les égalités les plus
-naturelles du système, qu'on appelle parfois des égalités définitionnelles.
-
-A l'exception de la récurrence, tous les autres axiomes peuvent s'utiliser par
-une règle de réécriture.
+De plus, la théorie engendrée par $\reecr{}$ ainsi construite est bien
+celle attendue~: puisqu'on a $x + 0 \reecr{} x$ on peut en déduire par
+$\Rrfora^\dagger$ que $\forall x, x + 0 \reecr{} x$, et ainsi de suite
+pour toutes les autres règles. Comme $\bot\to \varFF$ est toujours vraie,
+le fait d'égaliser $\bot$ et $0 = \Ss t$ ne donne en réalité que le sens
+$0 = \Ss t \to \bot$, qui est l'axiome qu'on recherche.
 
 \begin{definition}[Réécriture arithmétique]
-  On définit la règle de réécriture suivante sur les expressions arithmétiques~:
-  \begin{align*}
-    t + 0 &\rhd t\\
-    t + S\;u &\rhd S\;(t + u)\\
-    t \times 0 &\rhd 0 \\
-    t \times (S\;u) &\rhd (t\times u) + t
-  \end{align*}
+  On définit la règle de réécriture suivante sur les expressions
+  arithmétiques~:
+  \begin{itemize}
+  \begin{minipage}{0.45\textwidth}
+    \item $t + 0 \reecr{\Arith} t$
+    \item $t + \Ss u \reecr{\Arith} \Ss (t + u)$
+  \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+    \item $t \times 0 \reecr{\Arith} 0$
+    \item $t \times (\Ss u) \reecr{\Arith} (t\times u) + t$
+  \end{minipage}
+  \end{itemize}
+  ainsi que la réécriture $0 = \Ss t \reecr{\Arith} \bot$ sur les formules
+  arithmétiques.
 \end{definition}
 
 \begin{exercise}
   Montrer que cette réécriture est confluente et fortement normalisante.
 \end{exercise}
-
-Il est clair que travailler modulo cette réécriture arithmétique permet
-de prouver exactement les séquents prouvables avec les axiomes définissant
-l'addition et la multiplication.
-
-Pour les deux premiers axiomes, on ajoute des réécritures de formules.
-On remarque d'abord que $0\neq S\;n$ est défini comme $(0 = S\;n)\to \bot$,
-et $\bot\to \varphi$ est toujours vraie, donc on ajoute la réécriture
-$(0 = S\;t)\rhd \bot$. De même, on sait que $n = m \implies S\;n = S\;m$,
-donc on ajoute la réécriture $(S\;t = S\;u)\rhd t = u$.
 
 Finalement, il nous reste à introduire une règle pour le schéma de récurrence.
 La règle à introduire est naturelle~: les deux prémisses d'une récurrence sont
@@ -174,32 +137,26 @@ les prémisses de la règle.
 
 \begin{definition}[Calcul des séquents arithmétique]
   On définit le calcul des séquents arithmétique $\LKPA$ comme le calcul $\LK$
-  sur la signature de l'arithmétique, considéré modulo la réduction $\rhd$
-  définie précédemment sur les termes et les formules, et avec l'ajout de la
-  règle
+  sur la signature de l'arithmétique, considéré modulo la réduction
+  $\reecr{\Arith}$ définie précédemment sur les termes et les formules, et avec
+  l'ajout de la règle
   \begin{prooftree}
-    \AxiomC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-    \AxiomC{$\Gamma,\varphi\vdPA\varphi[S\;x/x],\Delta$}
-    \RightLabel{Rec${}^\dagger$}
-    \BinaryInfC{$\Gamma\vdPA\forall x\, \varphi,\Delta$}
+    \AxiomC{$\varCG\vdPA\varFF(0),\varCD$}
+    \AxiomC{$\varCG,\varFF(x)\vdPA\varFF(\Ss x),\varCD$}
+    \RightLabel{$\Rrec^\dagger$}
+    \BinaryInfC{$\varCG\vdPA\forall x\, \varFF(x),\varCD$}
   \end{prooftree}
   où $\dagger$ indique que la variable $x$ est libre dans
-  $\Gamma,\Delta$.
+  $\varCG,\varCD$.
 \end{definition}
 
 \begin{proposition}
-  Pour toute formule $\varphi$, $\ArithPeano\vdLK\varphi$ si et seulement si
-  $\vdPA\varphi$.
+  Pour toute formule $\varFF$, $\ArithPeano\vdLK\varFF$ si et seulement si
+  $\vdPA\varFF$.
 \end{proposition}
 
 \begin{proof}
-  On sait que les formules prouvables modulo réécriture le sont sans réécriture
-  en ajoutant des hypothèses, et ces hypothèses sont choisies exactement parmi
-  les conséquences des premiers axiomes de $\ArithPeano$ (à l'exception du
-  \ordinalnumeralmale{$3$}). Pour la récurrence, il est clair que chaque
-  instance du schéma de récurrence est prouvable avec la règle Rec${}^\dagger$,
-  et que toute utilisation de la règle Rec${}^\dagger$ peut s'écrire avec une
-  instance du schéma de récurrence.
+  On applique simplement le \cref{thm.ReecrThModTh}.
 \end{proof}
 
 \subsection{\'Elimination des coupures}
@@ -207,76 +164,80 @@ les prémisses de la règle.
 Il nous reste à prouver l'élimination des coupures. \'Etudions un premier
 exemple en prenant un arbre prouvant que le successeur commute avec la somme à
 gauche~:
-\[\pi_0 \defeq \resizebox{0.8\textwidth}{!}{
+\begin{center}
+$\varPT_0 \defeq$
+\resizebox{0.8\textwidth}{!}{
   \AxiomC{}
-  \RightLabel{$r=$}
-  \UnaryInfC{$\vdPA \forall n, S\;n + 0 = S\;(n+0)$}
+  \RightLabel{$\Rreq$}
+  \UnaryInfC{$\vdPA \Ss n + 0 = \Ss (n + 0)$}
+  \RightLabel{$\Rrfora^\dagger$}
+  \UnaryInfC{$\vdPA \forall n, \Ss n + 0 = \Ss (n+0)$}
   \AxiomC{}
-  \RightLabel{$r=$}
-  \UnaryInfC{$\vdPA (S\;n)+(S\;m) = S(S\;n+m)$}
-  \RightLabel{$l=$}
-  \UnaryInfC{$S\;n+m = S\;(n+m) \vdPA (S\;n)+(S\;m) = SS(n+m)$}
-  \RightLabel{$l\forall$}
-  \UnaryInfC{$\forall n,S\;n+m = S\;(n+m) \vdPA (S\;n)+(S\;m) = S\;(n+S\;m)$}
-  \RightLabel{$r\forall^\dagger$}
-  \UnaryInfC{$\forall n,S\;n+m = S\;(n+m)\vdPA
-    \forall n, (S\;n)+(S\;m)=S\;(n+S\;m)$}
-  \RightLabel{Rec}
-  \BinaryInfC{$\vdPA \forall n\;m, S\;n+m = S\;(n+m)$}
+  \RightLabel{$\Rreq$}
+  \UnaryInfC{$\vdPA (\Ss n)+(\Ss m) = \Ss(\Ss n+m)$}
+  \RightLabel{$\Rleq$}
+  \UnaryInfC{$\Ss n+m = \Ss(n+m) \vdPA (\Ss n)+(\Ss m) = \Ss \Ss(n+m)$}
+  \RightLabel{$\Rlfora$}
+  \UnaryInfC{$\forall n,\Ss n+m = \Ss (n+m) \vdPA (\Ss n)+(\Ss m) = \Ss (n+\Ss m)$}
+  \RightLabel{$\Rrfora^\dagger$}
+  \UnaryInfC{$\forall n,\Ss n+m = \Ss (n+m)\vdPA
+    \forall n, (\Ss n)+(\Ss m)=\Ss (n+\Ss m)$}
+  \RightLabel{$\Rrec^\dagger$}
+  \BinaryInfC{$\vdPA \forall n\;m, \Ss n+m = \Ss (n+m)$}
   \DisplayProof
-}\]
+}
+\end{center}
 et un arbre prouvant que $0$ est neutre à gauche pour l'addition~:
-\[\pi_1\defeq%\resizebox{\textwidth}{!}{
+\begin{center}$\varPT_1\defeq$
   \AxiomC{}
-  \RightLabel{$r=$}
-  \UnaryInfC{$\vdPA 0 + 0 = 0$}
+  \RightLabel{$\Rreq$}
+  \UnaryInfC{$\vdPA 0 = 0 + 0$}
   \AxiomC{}
-  \RightLabel{$r=$}
-  \UnaryInfC{$\vdPA S\;n = S\;n$}
-  \RightLabel{$l=$}
-  \UnaryInfC{$0 + n = n \vdPA 0 + S\;n = S\;n$}
-  \RightLabel{Rec}
-  \BinaryInfC{$\vdPA\forall n, 0 + n = n$}
+  \RightLabel{$\Rreq$}
+  \UnaryInfC{$\vdPA \Ss n = \Ss n$}
+  \RightLabel{$\Rleq$}
+  \UnaryInfC{$n = 0 + n \vdPA \Ss n = 0 + \Ss n$}
+  \RightLabel{$\Rrec^\dagger$}
+  \BinaryInfC{$\vdPA\forall n, n = 0 + n$}
   \DisplayProof
-  %}
-    \]
+\end{center}
 Avec ces deux arbres, on peut prouver par récurrence que l'addition est
 commutative~:
-\[\resizebox{\textwidth}{!}{
-  \AxiomC{$\pi_1$}
+\begin{center}\resizebox{\textwidth}{!}{
+  \AxiomC{$\varPT_1$}
   \noLine
   \UnaryInfC{$\vdPA\forall n, n + 0 = 0 + n$}
-  \AxiomC{$\pi_0$}
+  \AxiomC{$\varPT_0$}
   \noLine
-  \UnaryInfC{$\vdPA\forall n\;m, Sn + m = S(n+m)$}
+  \UnaryInfC{$\vdPA\forall n\,m, \Ss n + m = \Ss (n+m)$}
   \AxiomC{}
-  \RightLabel{Ax}
-  \UnaryInfC{$Sn + m = S(n+m)\vdPA n + Sm = Sm + n$}
-  \RightLabel{$l\forall$}\doubleLine
-  \UnaryInfC{$\forall n\;m, Sn + m = S(n+m)\vdPA n + Sm = Sm + n$}
-  \RightLabel{$r\forall^\dagger$}
-  \UnaryInfC{$\forall n\;m, Sn + m = S(n+m)\vdPA \forall n, n + Sm = Sm + n$}
-  \RightLabel{Cut}
-  \BinaryInfC{$\vdPA\forall n, n + m = m + n \vdPA \forall n, n + Sm = Sm + n$}
-  \RightLabel{Rec}
-  \BinaryInfC{$\vdPA\forall n\;m, n + m = m + n$}
+  \RightLabel{$\Rax$}
+  \UnaryInfC{$\Ss n + m = \Ss (n+m)\vdPA n + \Ss m = \Ss m + n$}
+  \RightLabel{$\Rlfora$}\doubleLine
+  \UnaryInfC{$\forall n\,m, \Ss n + m = \Ss (n+m)\vdPA n + \Ss m = \Ss m + n$}
+  \RightLabel{$\Rrfora^\dagger$}
+  \UnaryInfC{$\forall n\,m, \Ss n + m = \Ss(n+m)\vdPA \forall n, n + \Ss m = \Ss m + n$}
+  \RightLabel{$\Rcut$}
+  \BinaryInfC{$\vdPA\forall n, n + m = m + n \vdPA \forall n, n + \Ss m = \Ss m + n$}
+  \RightLabel{$\Rrec^\dagger$}
+  \BinaryInfC{$\vdPA\forall n\,m, n + m = m + n$}
   \DisplayProof
-}\]
+}\end{center}
 Supposons que l'on souhaite éliminer la coupure introduite dans cet arbre.
 La première étape est de faire remonter la coupure au-dessus de la règle
-$r\forall^\dagger$, de sorte qu'on obtient une coupure logique sur
+$\Rrfora^\dagger$, de sorte qu'on obtient une coupure logique sur
 $\forall$. La coupure logique en question est alors
-\[\resizebox{\textwidth}{!}{
+\begin{center}\resizebox{\textwidth}{!}{
   \AxiomC{$\cdots$}
-  \RightLabel{Rec}
-  \UnaryInfC{$\vdPA \forall n\;m,Sn + m = S(n+m)$}
+  \RightLabel{$\Rrec$}
+  \UnaryInfC{$\vdPA \forall n\,m,\Ss n + m = \Ss(n+m)$}
   \AxiomC{$\cdots$}
-  \RightLabel{$l\forall$}
-  \UnaryInfC{$\forall n\;m,Sn + m = S(n+m)\vdPA n+Sm = Sm + n$}
-  \RightLabel{Cut}
+  \RightLabel{$\Rlfora$}
+  \UnaryInfC{$\forall n\,m,\Ss n + m = \Ss (n+m)\vdPA n+\Ss m = \Ss m + n$}
+  \RightLabel{$\Rcut$}
   \BinaryInfC{$\cdots$}
   \DisplayProof
-}\]
+}\end{center}
 L'objectif de l'élimination des coupures est donc d'éliminer cette nouvelle
 coupure logique.
 
@@ -287,119 +248,112 @@ en revue les points clés de l'élimination des coupures~:
   logiques, en effectuant des réécritures $\reecr{\nwarrow}$ puis des
   réécriture $\reecr{\nearrow}$. On peut sans problème adapter les réécritures
   de relèvement avec la nouvelle règle de récurrence~;
-\item puisqu'on a introduit des réécritures pour les termes et formules, il est
-  nécessaire de vérifier que la réécriture d'une formule de coupure ne
-  gêne pas la réécriture. Dans le cas de $Sn = Sm \rhd n = m$, la formule passe
-  d'une égalité à une égalité, et il suffit de remplacer la substitution des
-  termes $Sn$ par la substitution uniquement du $n$ à l'intérieur. Par exemple,
-  pour $\varphi \defeq \forall n, Sm = n$, on peut considérer qu'on fait la
-  substitution $(\forall n, x = n)[Sm/x]$ ou, après réécriture par $\rhd$,
-  qu'on fait la substitution $(\forall n, Sx = n)[n/x]$. On peut alors, pour
-  une coupure logique sur $=$, réduire la formule de coupure des deux côtés
-  pour ne pas avoir de $S$~;
-\item dans le cas de $0=St\rhd \bot$, une coupure logique sur $0 = St$ est
-  impossible puisqu'il faudrait alors avoir
-  \begin{itemize}
-  \item la règle $r=$ utilisée pour avoir une égalité dans la formule de coupure
-    de droite
-  \item une égalité $0 \equiv St$ pour que, depuis la formule $u=u$ de la règle
-    $r=$, on puisse réécrire la formule de gauche en $0$ et celle de droite en
-    $St$
-  \end{itemize}
-  mais on peut vérifier que $0\not\equiv St$, en parcourant simplement les cas
-  définissant $\rhd$ (aucun ne contient d'un côté de la réduction un $S$
-  englobant tout le terme et de l'autre côté un $0$ seul).
+\item on a vérifié que le travail modulo réécriture se comporte correctement
+  vis à vis de l'élimination des coupures.
 \end{itemize}
 
 Ces difficultés étant résolues, le c\oe ur de la difficulté de l'élimination des
 coupures est la coupure de la récurrence~:
 \begin{prooftree}
-  \AxiomC{$\Gamma,\varphi[t/x]\vdPA\Delta$}
-  \RightLabel{$l\forall$}
-  \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
-  \AxiomC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-  \AxiomC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
-  \RightLabel{Rec}
-  \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
-  \RightLabel{Cut}
-  \BinaryInfC{$\Gamma\vdPA\Delta$}
+  \AxiomC{$\varCG,\varFF(t)\vdPA\varCD$}
+  \RightLabel{$\Rlfora$}
+  \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+  \AxiomC{$\varCG\vdPA\varFF(0),\varCD$}
+  \AxiomC{$\varCG,\varFF\vdPA\varFF(\Ss x),\varCD$}
+  \RightLabel{$\Rrec$}
+  \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+  \RightLabel{$\Rcut$}
+  \BinaryInfC{$\varCG\vdPA\varCD$}
 \end{prooftree}
 
 Pour éliminer cette coupure, on commence par considérer le cas où $t$ est un
 terme clos. Dans ce cas, on peut prouver facilement par induction que
-$t \equiv \encode n$ pour un certain entier $n \in \bN$. L'élimination de cette
-coupure repose donc sur l'élimination des entiers standards.
+$t \rtClot{\reecr{\Arith}} \encode n$ pour un certain entier $n \in \bN$.
+L'élimination de cette coupure repose donc sur l'élimination des entiers
+standards.
 
-\'Etant donnés $\pi_0 \concl \Gamma\vdPA\varphi[0/x],\Delta$,
-$\pi_S \concl \Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$, le fait que
-$\Gamma\vdPA \forall x\,\varphi,\Delta$ se déduit moralement du fait que,
-pour tout $n\in\bN$, on peut prouver $\varphi[\encode n/x]$ en utilisant
-$\pi_0$ dans le cas où $n = 0$ et $\pi_S$ pour passer du cas $n$ au cas
-$n+1$. La réduction de la coupure est donc, naturellement, la suivante~:
-\begin{center}
+\'Etant donnés $\varPT_0 \concl \varCG\vdPA\varFF(0),\varCD$,
+$\varPT_{\Ss} \concl \varCG,\varFF\vdPA\varFF(\Ss x),\varCD$, le fait que
+$\varCG\vdPA \forall x\,\varFF,\varCD$ se déduit moralement du fait que,
+pour tout $n\in\bN$, on peut prouver $\varFF(\encode n)$ en utilisant
+$\varPT_0$ dans le cas où $n = 0$ et $\varPT_{\Ss}$ pour passer du cas $n$
+au cas $n+1$. La réduction de la coupure qui s'en déduit est donnée en
+\cref{tbl.Arith.ElimCut}.
+
+\begin{table}[t]
   \resizebox{\textwidth}{!}{
     \begin{tabular}{ccc}
       \bottomAlignProof
-      \AxiomC{$\mathlarger\pi$}
-      \noLine\UnaryInfC{$\Gamma,\varphi[0/x]\vdPA\Delta$}
-      \RightLabel{$l\forall$}
-      \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
-      \AxiomC{$\mathlarger{\pi_0}$}
-      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-      \AxiomC{$\mathlarger{\pi_S}$}
-      \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
-      \RightLabel{Rec}
-      \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
-      \RightLabel{Cut}
-      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF(0)\vdPA\varCD$}
+      \RightLabel{$\Rlfora$}
+      \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+      \AxiomC{$\varPT_0$}
+      \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+      \AxiomC{$\varPT_{\Ss}$}
+      \noLine\UnaryInfC{$\varCG,\varFF(x)\vdPA\varFF(\Ss x),\varCD$}
+      \RightLabel{$\Rrec$}
+      \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\varCG\vdPA\varCD$}
       \DisplayProof
-      & $\reecr{Rec_0}$ &
+      & $\reecr{\Rrec_0}$ &
       \bottomAlignProof
-      \AxiomC{$\mathlarger\pi$}
-      \noLine\UnaryInfC{$\Gamma,\varphi[0/x]\vdPA\Delta$}
-      \AxiomC{$\mathlarger{\pi_0}$}
-      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-      \RightLabel{Cut}
-      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF(0)\vdPA\varCD$}
+      \AxiomC{$\varPT_0$}
+      \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\varCG\vdPA\varCD$}
       \DisplayProof
       \\
       \\
+      \\
       \bottomAlignProof
-      \AxiomC{$\mathlarger\pi$}
-      \noLine\UnaryInfC{$\Gamma,\varphi[S\;t/x]\vdPA\Delta$}
-      \RightLabel{$l\forall$}
-      \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
-      \AxiomC{$\mathlarger{\pi_0}$}
-      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-      \AxiomC{$\mathlarger{\pi_S}$}
-      \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
-      \RightLabel{Rec}
-      \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
-      \RightLabel{Cut}
-      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF(\Ss t)\vdPA\varCD$}
+      \RightLabel{$\Rlfora$}
+      \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+      \AxiomC{$\varPT_0$}
+      \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+      \AxiomC{$\varPT_{\Ss}$}
+      \noLine\UnaryInfC{$\varCG,\varFF(x)\vdPA\varFF(\Ss x),\varCD$}
+      \RightLabel{$\Rrec$}
+      \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\varCG\vdPA\varCD$}
       \DisplayProof
-      & $\reecr{Rec_S}$ &
+      & $\reecr{\Rrec_{\Ss}}$ &\\ \\
+      \multicolumn{3}{r}{
       \bottomAlignProof
-      \AxiomC{$\mathlarger\pi$}
-      \noLine\UnaryInfC{$\Gamma,\varphi[S\;t/x]\vdPA\Delta$}
-      \AxiomC{$\mathlarger{\pi_S[t/x]}$}
-      \noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdPA\varphi[S\;t/x],\Delta$}
-      \RightLabel{Cut}
-      \BinaryInfC{$\Gamma\varphi[t/x]\vdPA\Delta$}
-      \RightLabel{$l\forall$}
-      \UnaryInfC{$\Gamma\forall x\,\varphi\vdPA\Delta$}
-      \AxiomC{$\mathlarger{\pi_0}$}
-      \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-      \AxiomC{$\mathlarger{\pi_S}$}
-      \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
-      \RightLabel{Rec}
-      \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
-      \RightLabel{Cut}
-      \BinaryInfC{$\Gamma\vdPA\Delta$}
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF(\Ss t)\vdPA\varCD$}
+      \AxiomC{$\varPT_{\Ss}[t/x]$}
+      \noLine\UnaryInfC{$\Gamma,\varFF(t)\vdPA\varFF(\Ss t),\varCD$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\varCG,\varphi(t)\vdPA\varCD$}
+      \RightLabel{$\Rlfora$}
+      \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+      \AxiomC{$\varPT_0$}
+      \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+      \AxiomC{$\varPT_{\Ss}$}
+      \noLine\UnaryInfC{$\varCG,\varFF\vdPA\varFF(\Ss x),\varCD$}
+      \RightLabel{$\Rrec$}
+      \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\varCG\vdPA\varCD$}
       \DisplayProof
+      }
     \end{tabular}
   }
-\end{center}
+
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{\'Elimination des coupures récursives}
+  \label{tbl.Arith.ElimCut}
+\end{table}
 
 La réécriture fait donc grossir l'arbre de gauche de la coupure, mais fait
 diminuer la valeur de $t$ jusqu'à $0$.
@@ -419,20 +373,21 @@ peut donc se limiter aux séquents dont tous les termes sont clos.
 \begin{remark}
   Le fait que tous les termes sont clos est plus fort que le fait que les
   formules de la conclusion sont closes, car on demande ici qu'aucune variable
-  libre n'apparaissent dans l'arbre de preuve.
+  liée n'apparaissent dans l'arbre de preuve.
 \end{remark}
 
 \begin{lemma}\label{lem.coh.PA}
-  Pour tout arbre de preuve $\pi \in \ProofPA$ sous forme normale pour
-  $\reecr{}$ et dont tous les termes sont clos est sans coupure.
+  Pour tout arbre de preuve $\varPT \in \ProofPA$ sous forme normale pour
+  $\reecr{}$ (l'élimination des coupures augmentée de $\reecr{\Rrec}$) et
+  dont tous les termes sont clos est sans coupure.
 \end{lemma}
 
 \begin{proof}
   On sait que toute coupure peut être réécriture en une coupure logique. Une
   telle coupure logique s'élimine forcément si elle ne fait pas intervenir
-  la règle Rec (puisque $\LK$ a l'élimination des coupures). Si la coupure
-  logique utilise la règle Rec, alors le terme $t$ utilisé dans cette coupure
-  peut se réécrire en $0$ ou en $Su$ pour un certain terme $u$~: dans tous les
+  la règle $\Rrec$ (puisque $\LK$ a l'élimination des coupures). Si la coupure
+  logique utilise la règle $\Rrec$, alors le terme $t$ utilisé dans cette coupure
+  peut se réécrire en $0$ ou en $\Ss u$ pour un certain terme $u$~: dans tous les
   cas, une réduction existe sur cette coupure.
 \end{proof}
 
@@ -440,72 +395,76 @@ La dernière étape est de vérifier la terminaison de notre réécriture. On d�
 donc une mesure de décroissance, permettant de l'assurer.
 
 \begin{definition}[Poids d'une coupure logique récursive]
-  Soit $\pi\in\ProofPA$ sans coupure autre que des coupures logiques utilisant
-  la règle Rec. Soit une coupure $C$ ayant la forme suivante~:
+  Soit $\varPT\in\ProofPA$ sans coupure autre que des coupures logiques utilisant
+  la règle $\Rrec$. Soit une coupure $C$ ayant la forme suivante~:
   \begin{prooftree}
-    \AxiomC{$\mathlarger\pi$}
-    \noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdPA\Delta$}
-    \RightLabel{$l\forall$}
-    \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
-    \AxiomC{$\mathlarger{\pi_0}$}
-    \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-    \AxiomC{$\mathlarger{\pi_S}$}
-    \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
-    \RightLabel{Rec}
-    \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
-    \RightLabel{Cut}
-    \BinaryInfC{$\Gamma\vdPA\Delta$}
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF(t)\vdPA\varCD$}
+    \RightLabel{$\Rlfora$}
+    \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+    \AxiomC{$\varPT_0$}
+    \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+    \AxiomC{$\pi_{\Ss}$}
+    \noLine\UnaryInfC{$\varCG,\varFF(x)\vdPA\varFF(\Ss x),\varCD$}
+    \RightLabel{$\Rrec$}
+    \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\varCG\vdPA\varCD$}
   \end{prooftree}
-  On définit $w(C) \in \Ord$ et $w(\pi)$ par induction mutuelle~:
-  \[\omega^{w(\pi_S)}\times |t| + w(C) \defeq \max(w(\pi),w(\pi_0)) \qquad
-  w(\pi) \defeq 1 + \max_{C \in \pi} w(C)\]
-  où la taille $|t|$ est prise comme le minimum des $|u|$ pour $t \equiv u$.
+  On définit $w(C) \in \Ord$ et $w(\varPT)$ par induction mutuelle~:
+  \[\Ow^{w(\varPT_{\Ss})}\times |t| + w(C) \defeq \max(w(\varPT),w(\varPT_0)) \qquad
+  w(\varPT) \defeq 1 + \max_{C \in \varPT} w(C)\]
+  où la taille $|t|$ est prise comme le minimum des $|u|$ pour
+  $t \rtsClot{\reecr{\Arith}} u$.
 \end{definition}
 
-La raison pour laquelle le poids d'une coupure dans $\pi_S$ est ajouté
+La raison pour laquelle le poids d'une coupure dans $\varPT_{\Ss}$ est ajouté
 exponentiellement découle du fait que, lorsqu'on réécrit une coupure récursive,
-on ajoute une fois $\pi_S$ pour chaque réécriture de $t$ le faisant décroître.
+on ajoute une fois $\varPT_{\Ss}$ pour chaque réécriture de $t$ le faisant
+décroître.
 
 \begin{lemma}
-  Pour tout arbre $\pi\in\ProofPA$ ne possédant que des coupures logiques
-  récursives, en posant $\pi'$ le résultat de $\pi$ en réduisant sa coupure
-  logique récursive de poids maximal, on a $w(\pi') < w(\pi)$.
+  Pour tout arbre $\varPT\in\ProofPA$ ne possédant que des coupures logiques
+  récursives, en posant $\varPT'$ le résultat de $\varPT$ en réduisant sa
+  coupure logique récursive de poids maximal, on a $w(\varPT') < w(\varPT)$.
 \end{lemma}
 
 \begin{proof}
   Considérons que la coupure $C$ de poids maximal est donnée par le sous-arbre
   suivant~:
   \begin{prooftree}
-    \AxiomC{$\mathlarger\pi$}
-    \noLine\UnaryInfC{$\Gamma,\varphi[t/x]\vdPA\Delta$}
-    \RightLabel{$l\forall$}
-    \UnaryInfC{$\Gamma,\forall x\,\varphi\vdPA\Delta$}
-    \AxiomC{$\mathlarger{\pi_0}$}
-    \noLine\UnaryInfC{$\Gamma\vdPA\varphi[0/x],\Delta$}
-    \AxiomC{$\mathlarger{\pi_S}$}
-    \noLine\UnaryInfC{$\Gamma,\varphi\vdPA\varphi[Sx/x],\Delta$}
-    \RightLabel{Rec}
-    \BinaryInfC{$\Gamma\vdPA\forall x\,\varphi,\Delta$}
-    \RightLabel{Cut}
-    \BinaryInfC{$\Gamma\vdPA\Delta$}
+    \AxiomC{$\varPT$}
+    \noLine\UnaryInfC{$\varCG,\varFF(t)\vdPA\varCD$}
+    \RightLabel{$\Rlfora$}
+    \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+    \AxiomC{$\varPT_0$}
+    \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+    \AxiomC{$\varPT_{\Ss}$}
+    \noLine\UnaryInfC{$\varCG,\varFF(x)\vdPA\varFF(\Ss x),\varCD$}
+    \RightLabel{$\Rrec$}
+    \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\varCG\vdPA\varCD$}
   \end{prooftree}
   Montrons que le poids décroît strictement en réduisant la coupure.
 
   Dans le cas où $t = 0$, les deux poids sont respectivement
-  $\omega^{w(\pi_S)}\times 1 + \max(w(\pi),w(\pi_0))$ et $\max(w(\pi),w(\pi_0))$,
-  d'où la stricte décroissance.
+  $\Ow^{w(\varPT_{\Ss})}\times 1 + \max(w(\varPT),w(\varPT_0))$ et
+  $\max(w(\varPT),w(\varPT_0))$, d'où la stricte décroissance.
 
-  Dans le cas où $t \equiv Su$ avec $u$ un terme, les poids sont respectivement
-  \[\omega^{w(\pi_S)}\times |u| + \omega^{w(\pi_S)} + \max(w(\pi),w(\pi_0))
+  Dans le cas où $t \rtsClot{\reecr{\Arith}} \Ss u$ avec $u$ un terme, les
+  poids sont respectivement
+  \[\Ow^{w(\varPT_{\Ss})}\times |u| + \Ow^{w(\varPT_{\Ss})} +
+  \max(w(\varPT),w(\varPT_0))
   \quad\text{et}\quad
-  \omega^{w(\pi_S)}\times |u| + \max(w(\pi),w(\pi_S),w(\pi_0))\]
-  Dans le cas où $w(\pi_S)$ n'est pas la plus grande valeur des trois dont on
-  prend le maximum, on se trouve après simplification à $\omega^{w(\pi_S)} > 0$,
+  \Ow^{w(\varPT_{\Ss})}\times |u| + \max(w(\varPT),w(\varPT_{\Ss}),w(\varPT_0))\]
+  Dans le cas où $w(\varPT_{\Ss})$ n'est pas la plus grande valeur des trois dont
+  on prend le maximum, on se trouve après simplification à $\Ow^{w(\varPT_{\Ss})} > 0$,
   ce qui est vrai.
-  Dans le cas où $w(\pi_S)$ est la plus grande valeur des trois, on veut
-  vérifier que $\omega^{w(\pi_S)}  > w(\pi_S)$, ce qui est vrai aussi pour
-  $w(\pi_S) < \varepsilon_0$ (et, par construction, $w(\pi_S) < \varepsilon_0$
-  est toujours vérifié).
+  Dans le cas où $w(\varPT_{\Ss})$ est la plus grande valeur des trois, on veut
+  vérifier que $\Ow^{w(\varPT_{\Ss})}  > w(\varPT_{\Ss})$, ce qui est vrai aussi pour
+  $w(\varPT_{\Ss}) < \varepsilon_0$ (et, par construction,
+  $w(\varPT_{\Ss}) < \varepsilon_0$ est toujours vérifié).
 
   Dans tous les cas, on voit que le poids décroît strictement.
 \end{proof}
@@ -513,18 +472,19 @@ on ajoute une fois $\pi_S$ pour chaque réécriture de $t$ le faisant décroîtr
 \begin{remark}
   Le poids ne décroît pas systématiquement, avec notre définition. Pour autant,
   en prenant comme mesure le nombre de coupures maximales avec la valeur du
-  poids maximal, on sait que (puisque la coupure de poids maximal choisit est
-  réduite en une coupure de poids strictement inférieur) le coupe de nombres
-  décroît strictement.
+  poids maximal, on sait que (puisque la coupure de poids maximal choisie est
+  réduite en une coupure de poids strictement inférieur) le nombre de telles
+  coupures décroît.
 \end{remark}
 
+\noindent
 On en déduit le résultat d'élimination des coupures (faible).
 
 \begin{theorem}[\'Elimination des coupures faible de l'arithmétique]
-  Pour tout séquent $\Gamma\vdPA \Delta$, s'il existe $\pi \in \ProofPA$ tel
-  que $\pi\concl \Gamma\vdPA\Delta$, alors il existe un arbre
-  $\pi' \in \ProofPA$ sous forme normale pour $\reecr{}$ tel que
-  $\pi'\concl\Gamma\vdPA\Delta$.
+  Pour tout séquent $\varCG\vdPA \varCD$, s'il existe $\varPT \in \ProofPA$ tel
+  que $\varPT\concl \varCG\vdPA\varCD$, alors il existe un arbre
+  $\varPT' \in \ProofPA$ sous forme normale pour $\reecr{}$ tel que
+  $\varPT'\concl\varCG\vdPA\varCD$.
 \end{theorem}
 
 \begin{proof}
@@ -533,8 +493,8 @@ On en déduit le résultat d'élimination des coupures (faible).
 \end{proof}
 
 \begin{theorem}[Cohérence de l'arithmétique \cite{Gentzen1936}]
-  Le séquent suivant n'est pas dérivable dans $\LK$~:
-  \[\ArithPeano\vdLK\]
+  La théorie $\ArithPeano$ est cohérente~:
+  \[\lnot(\ArithPeano\vdLK)\]
 \end{theorem}
 
 \begin{proof}
@@ -545,7 +505,7 @@ On en déduit le résultat d'élimination des coupures (faible).
   sans coupure. En effet, il doit exister un arbre sous forme normale pour
   $\reecr{}$ dont la conclusion est $\vdPA$. Mais alors, on peut vérifier que
   tous les termes de l'arbre sont clos. Si ça n'est pas le cas, alors pour le
-  séquent le plus bas où un terme non clos apparaît, on a la propriété de la
+  séquent le plus haut où un terme non clos apparaît, on a la propriété de la
   sous-formule (car sur cette partie de l'arbre, tous les termes sont clos et
   l'arbre est sous forme normale, donc sans coupure d'après le
   \cref{lem.coh.PA}).
@@ -564,59 +524,60 @@ réside dans la possibilité d'évaluer à quel point la cohérence de
 $\ArithPeano$ est difficile à prouver.
 
 Avec les définitions précédentes, tout ce qui est défini est parfaitement
-calculable (c'est en particulier pour cette raison qu'on a demandé que $\equiv$
-soit calculable). Cela signifie que n'importe quelle théorie $\Sigma$-complète,
-voire encodant à traduction près une théorie $\Sigma$-complète, permet de
-redonner l'essentiel de la démonstration.
+calculable (c'est en particulier pour cette raison qu'on sait que
+$\reecr{\Arith}$ soit calculable). Cela signifie que n'importe quelle théorie
+$\Sigma$-complète, voire encodant à traduction près une théorie
+$\Sigma$-complète, permet de redonner l'essentiel de la démonstration.
 
 La définition du calcul des séquents ne pose pas de problème, la définition des
 étapes de réécriture non plus. Un seul fait peut limiter cette démonstration~:
 le fait que l'algorithme termine. Remarquons d'abord que, une fois définie une
 syntaxe calculable pour parler de l'ensemble $\varepsilon_0$, plus petit
-ordinal stable par l'opération $x \mapsto \omega^x$, on peut tout à fait
+ordinal stable par l'opération $x \mapsto \Ow^x$, on peut tout à fait
 définir le poids des coupures, et parfois même prouver leur décroissance.
 
 Le point limitant dans la terminaison de l'algorithme est la bonne fondation de
 l'ensemble $\varepsilon_0$, ou d'un de ses encodages dans l'arithmétique.
 
 \begin{definition}[Encodage d'un bon ordre]
-  Soit $\mathcal T$ une théorie. On dit que $\mathcal T$ encode un ensemble bien
+  Soit $\varT$ une théorie. On dit que $\varT$ encode un ensemble bien
   ordonné strict $(X,<)$ s'il existe un prédicat $F_X(x)$, un prédicat $x <_X y$
   et si on a
   \begin{align*}
-    \mathcal T\vdash& \forall x^{F_X}, \lnot(x <_X x)\\
-    \mathcal T\vdash& \forall x^{F_X}\;y^{F_X}\;z^{F_X},
+    \varT\vdP& \forall x^{F_X}, \lnot(x <_X x)\\
+    \varT\vdP& \forall x^{F_X}\,y^{F_X}\,z^{F_X},
     x <_X y \land y <_X z \implies x <_X z\\
-    \mathcal T\vdash& (\forall x^{F_X}, (\forall y^{F_X}, y <_X x \implies
-    \varphi(y))\implies \varphi(x))\implies \forall x^{F_X},\varphi(x)
+    \varT\vdP& (\forall x^{F_X}, (\forall y^{F_X}, y <_X x \implies
+    \varFF(y))\implies \varFF(x))\implies \forall x^{F_X},\varFF(x)
   \end{align*}
   où la dernière ligne est un schéma de théorèmes, pour toute formule
-  $\varphi(x)$ (potentiellement à paramètres).
+  $\varFF(x)$ (potentiellement à paramètres).
 \end{definition}
 
+\noindent
 On en déduit donc une première conséquence de la cohérence de l'arithmétique.
 
 \begin{corollary}
-  Soit $\mathcal T$ une théorie arithmétique $\Sigma$-complète. Si
-  $\mathcal T$ encode $\varepsilon_0$ alors
-  \[\mathcal T \vdash \Coher(\ArithPeano)\]
+  Soit $\varT$ une théorie arithmétique $\Sigma$-complète. Si $\varT$ encode
+  $\varepsilon_0$ alors
+  \[\varT \vdP \Coher(\ArithPeano)\]
 \end{corollary}
 
-Prenons maintenant un point de vue plus général. Pour une théorie $\mathcal T$,
+Prenons maintenant un point de vue plus général. Pour une théorie $\varT$,
 on peut chercher quelles sont les ensembles bien ordonnés encodables dans
-$\mathcal T$. A l'encodage près, on obtient ainsi un ensemble d'ordinaux qui
-représentent en quelque sorte \og jusqu'où $\mathcal T$ arrive à prouver la
-bonne fondation de l'ordre\fg. D'après ce qui a été vu pour $\ArithPeano$, cet
+$\varT$. A l'encodage près, on obtient ainsi un ensemble d'ordinaux qui
+représentent en quelque sorte \og jusqu'où $\varT$ arrive à prouver la bonne
+fondation de l'ordre\fg. D'après ce qui a été vu pour $\ArithPeano$, cet
 ensemble a un sens important logique à travers la normalisation de systèmes
 formels~: les ordinaux encodables sont les systèmes formels dont on peut
 prouver la terminaison d'un processus de normalisation. On donne donc un nom à
-la borne supérieure de cet ensemble~: l'ordinal de preuve de $\mathcal T$.
+la borne supérieure de cet ensemble~: l'ordinal de preuve de $\varT$.
 
 \begin{definition}[Ordinal de preuve]
-  Soit $\mathcal T$ une théorie $\Sigma$-complète. On appelle ordinal de preuve
-  de $\mathcal T$ l'ordinal
-  \[\PTO(\mathcal T) \defeq \sup
-  \{\type(X,<)\mid (X,<)\text{ est encodable dans } \mathcal T\}\]
+  Soit $\varT$ une théorie $\Sigma$-complète. On appelle ordinal de preuve de
+  $\varT$ l'ordinal
+  \[\PTO(\varT) \defeq \sup
+  \compr{\type(X,<)}{(X,<)\text{ est encodable dans } \varT}\]
 \end{definition}
 
 On peut donc reformuler le corollaire précédent par
@@ -639,54 +600,57 @@ $\varepsilon_0$.
 
 \begin{proof}
   Il nous faut prouver l'autre inégalité, qui consiste à montrer que tout
-  ordinal $\alpha < \varepsilon_0$ est encodable dans $\ArithPeano$. Pour cela,
+  ordinal $\varOa < \varepsilon_0$ est encodable dans $\ArithPeano$. Pour cela,
   on prouve que $0$ est encodable dans $\ArithPeano$ et que si
-  $\alpha,\beta$ sont encodables dans $\ArithPeano$, alors
-  $\alpha+ \beta$ et $\omega^\alpha$ sont encodables. Le premier point est
+  $\varOa,\varOb$ sont encodables dans $\ArithPeano$, alors
+  $\varOa + \varOb$ et $\Ow^\varOa$ sont encodables. Le premier point est
   évident, on se tourne donc vers le second point.
 
-  Soient $\alpha,\beta$ encodés par respectivement $F_\alpha,<_\alpha$ et
-  $F_\beta,<_\beta$. On définit alors
-  \[F_{\alpha+\beta}(x) \defeq \exists n\;m, x = \langle n,m\rangle \land
-  F_\alpha(n) \land F_\beta(m)\]
-  \[x<_{\alpha+\beta}y \defeq \forall n\;m\;n'\;m', (x = \langle n,m\rangle \land
-  y = \langle n',m'\rangle)\implies (n <_{\alpha} n')\lor (n = n'\land
-  m <_{\beta} m')\]
-  On peut vérifier sans souci que $<_{\alpha+\beta}$ est bien une relation d'ordre
-  stricte en utilisant le fait que $<_\alpha$ et $<_\beta$ en sont.
-  Pour prouver que $<_{\alpha+\beta}$ est bien fondée, on considère un élément
+  Soient $\varOa,\varOb$ encodés par respectivement $F_\varOa,<_\varOa$ et
+  $F_\varOb,<_\varOb$. On définit alors
+  \[F_{\varOa+\varOb}(x) \defeq \exists n\;m, x = \langle n,m\rangle \land
+  F_\varOa(n) \land F_\varOb(m)\]
+  \[x<_{\varOa+\varOb}y \defeq \forall n\;m\;n'\;m', (x = \langle n,m\rangle \land
+  y = \langle n',m'\rangle)\implies (n <_{\varOa} n')\lor (n = n'\land
+  m <_{\varOb} m')\]
+  On peut vérifier sans souci que $<_{\varOa+\varOb}$ est bien une relation d'ordre
+  stricte en utilisant le fait que $<_\varOa$ et $<_\varOb$ en sont.
+  Pour prouver que $<_{\varOa+\varOb}$ est bien fondée, on considère un élément
   $x$ tel que
-  \[(\forall y^{F_{\alpha_\beta}}, y <_{\alpha+\beta} x \implies \varphi(y))\implies
-  \varphi(x)\]
-  on sait que $\varphi(x)$ est vérifié si et seulement si, en décomposant
+  \[(\forall y^{F_{\varOa+\varOb}}, y <_{\varOa+\varOb} x \implies
+  \varFF(y))\implies \varFF(x)\]
+  on sait que $\varFF(x)$ est vérifié si et seulement si, en décomposant
   $x = \langle n,m\rangle$, le prédicats suivant est vérifié~:
-  \[\chi(n,m) \defeq \varphi(\langle n,m\rangle)\]
+  \[\varFC(n,m) \defeq \varFF(\langle n,m\rangle)\]
   et on peut prouver que ce prédicat est vrai pour tous $n,m$ tels que
-  $F_\alpha(n)$ et $F_\beta(m)$ en utilisant la bonne fondation de $<_\alpha$ et
-  $<_\beta$.
+  $F_\varOa(n)$ et $F_\varOb(m)$ en utilisant la bonne fondation de $<_\varOa$ et
+  $<_\varOb$.
 
-  Pour encoder l'ordinal $\omega^\alpha$, on utilise l'encodage des listes~:
-  \[F_{\omega^\alpha}(\ell) \defeq \forall i < |\ell|, F_{\alpha}(\ell_i)\]
-  en considérant que $\ell$ est l'encodage des lites par la bijection
-  $\alpha_\star : \List(\bN) \cong \bN$, où $|\ell|$ est l'encodage sur les
-  entiers de la fonction donnant la longueur d'une liste, et que
-  $\ell_i$ est le \ordinalnumeralmale{$i$} élément de $\ell$. Pour la
+  Pour encoder l'ordinal $\Ow^\varOa$, on utilise l'encodage des listes~:
+  \[F_{\Ow^\varOa}(\varlist) \defeq \forall i < \ListLen{\varlist},
+  F_{\varOa}(\varlist_i)\]
+  en considérant que $\varlist$ est l'encodage des lites par la bijection
+  $\makeFunNameIso{\BijCs}{\List(\bN)}{\bN}$, où $\ListLen{\varlist}$ est
+  l'encodage sur les entiers de la fonction donnant la longueur d'une liste, et que
+  $\varlist_i$ est le \ordinalnumeralmale{$i$} élément de $\varlist$. Pour la
   relation d'ordre, on pose
-  \[\ell <_{\omega^\alpha} \ell' \defeq
+  \[\varlist <_{\Ow^\varOa} \varlist' \defeq
   \begin{cases}
-    |\ell| < |\ell'| \land \forall i < |\ell|, \ell_i = \ell'_i\\
+    |\varlist| < |\varlist'| \land \forall i < |\varlist|,
+    \varlist_i = \varlist'_i\\
     \text{ou}\\
-    \exists i, \forall j < i, (\ell_i = \ell'_i)\land (\ell_j < \ell'_j)
+    \exists i, \forall j < i, (\varlist_i = \varlist'_i)\land
+    (\varlist_j < \varlist'_j)
   \end{cases}\]
-  La vérification du fait que $<_{\omega^\alpha}$ est une relation d'ordre est
+  La vérification du fait que $<_{\Ow^\varOa}$ est une relation d'ordre est
   longue mais ne pose pas de problème.
 
-  Pour le fait que $<_{\omega^\alpha}$, on raisonne par induction sur la longueur
-  des listes, et on utilise la bonne fondation de $\alpha$ dans le cas
-  inductif.
+  Pour le fait que $<_{\Ow^\varOa}$ est bien fondée, on raisonne par
+  induction sur la longueur des listes, et on utilise la bonne fondation de
+  $\varOa$ sur l'élément en tête de liste dans le cas inductif.
 
   On en déduit ainsi que l'ensemble définie inductivement par
-  \[\alpha,\beta \Coloneq 0 \mid \alpha + \beta \mid \omega^\alpha\]
+  \[\varOa,\varOb \inddefeq 0 \mid \varOa + \varOb \mid \Ow^\varOa\]
   est contenu dans les ordinaux représentables dans $\ArithPeano$. Par
   décomposition de Cantor, on sait que tout élément strictement inférieur à
   $\varepsilon_0$ est dans cet ensemble. On en déduit que
@@ -702,24 +666,24 @@ ordinale, qui étudie les ordinaux de preuve de différentes théories. Dans cet
 ordinaux de preuve pouvant être beaucoup plus grands dans certaines théories des
 types.
 
-
 \section{Cohérence de l'arithmétique intuitionniste}
 
-D'après le \cref{thm.GG.trad}, un séquent $\Gamma\vdash \varphi$ est prouvable
-de façon classique si et seulement si sa traduction $\Gamma^N\vdash \varphi^N$
-est prouvable de façon intuitionniste.
+D'après le \cref{thm.GG.trad}, un séquent $\varCG\vdP \varFF$ est prouvable
+de façon classique si et seulement si sa traduction
+$\tradGG{\varCG}\vdP \tradGG{\varFF}$ est prouvable de façon intuitionniste.
 
-On remarque aussi que, comme $\varphi\implies \varphi^N$, on a pour toute
-théorie $\mathcal T$ que si $\mathcal T \vdNK \bot$, alors
-$\mathcal T \vdNJ \bot$, puisque $\mathcal T \vdNJ\mathcal T^N \vdNJ \bot$ et
-la deuxième relation de prouvabilité équivaut à $\mathcal T \vdNK \bot$.
+On remarque aussi que, comme $\varFF\implies \tradGG{\varGG}$, on a pour toute
+théorie $\varT$ que si $\varT \vdNK \bot$, alors
+$\varT \vdNJ \bot$, puisque $\varT \vdNJ\tradGG{\varT} \vdNJ \bot$ et
+la deuxième relation de prouvabilité équivaut à $\varT \vdNK \bot$.
 On verra en fait que dans le cas de l'arithmétique, un résultat encore meilleur
 peut être prouvé.
  
-Ainsi, pour prouver que l'arithmétique de Peano est cohérente, il suffit de
-prouver que sa version intuitionniste est cohérente. L'objectif de cette section
-est d'établir la cohérence de l'arithmétique de Heyting, variante intuitionniste
-de l'arithmétique de Peano, en utilisant la méthode développée par Kleene dans
+Néanmoins, on en retient que pour prouver que l'arithmétique de Peano est
+cohérente, il suffit de prouver que sa version intuitionniste est cohérente.
+L'objectif de cette section est d'établir la cohérence de l'arithmétique de
+Heyting, variante intuitionniste de l'arithmétique de Peano, en utilisant la
+méthode développée par Kleene dans
 \cite{Kleene1945}.
 
 \subsection{Arithmétique de Heyting}
@@ -730,9 +694,9 @@ $\LJ$ au lieu de $\LK$.
 
 \begin{definition}[Arithmétique de Heyting]
   La théorie de l'arithmétique de Heyting est la théorie du premier ordre sur
-  la signature $\mathcal L_{\mathrm{arith}}$ donnée par les mêmes axiomes que
-  $\ArithPeano$, mais dans le système formel $\LJ$ (ou de façon équivalente dans
-  le système $\NJ$). On note $\HA$ cette théorie.
+  la signature $\SignP{\Arith}$ donnée par les mêmes axiomes que $\ArithPeano$,
+  mais dans le système formel $\LJ$ (ou de façon équivalente dans le système
+  $\NJ$). On note $\HA$ cette théorie.
 \end{definition}
 
 Comme on l'a dit précédemment, la cohérence de $\ArithPeano$ et celle de $\HA$
@@ -753,13 +717,13 @@ peut prouver la conservativité de $\ArithPeano$ sur une classe bien plus large
 de formules.
 
 \begin{definition}[Conservativité d'une extension sur une classe]
-  Soient $\mathcal T,\mathcal T'$ deux théories sur une même signature $\Sigma$.
-  On dit que $\mathcal T'$ est une extension conservative de $\mathcal T$ sur
-  une classe $\mathcal C \subseteq \Formula(\Sigma)$ si~:
+  Soient $\varT,\varT'$ deux théories sur une même signature $\Sign$. On dit
+  que $\varT'$ est une extension conservative de $\varT$ sur une classe
+  $\varCC \subseteq \Formula(\Sign)$ si~:
   \begin{itemize}
-  \item $\mathcal T \subseteq \mathcal T'$~;
-  \item pour toute formule $\varphi \in \mathcal C$, si
-    $\varphi \in \mathcal T'$ alors $\varphi \in \mathcal T$.
+  \item $\varT \subseteq \varT'$~;
+  \item pour toute formule $\varFF \in \varCC$, si
+    $\varFF \in \vdclose{\varT'}$ alors $\varFF \in \vdclose{\varT}$.
   \end{itemize}
 \end{definition}
 
@@ -768,14 +732,14 @@ de formules.
   \cref{def.conserv.ext}, on utilise ici des formules sur une même signature.
   Cela est dû au fait qu'on veut conserver une partie seulement des formules,
   mais il est possible d'adapter la définition pour prendre en compte une
-  extension $\mathcal T'$ sur un langage plus riche~: il suffit alors de traiter
-  $\mathcal T$ comme une théorie sur ce langage plus riche.
+  extension $\varT'$ sur un langage plus riche~: il suffit alors de traiter
+  $\varT$ comme une théorie sur ce langage plus riche.
+\end{remark}
 
-  Une autre différence importante est le fait qu'on considère ici des théories
-  comme des ensembles de formules stables par des relations de prouvabilité
-  potentiellement différentes, ce qui est le cas avec $\ArithPeano$ et $\HA$ qui
-  sont des ensembles d'axiomes identiques mais dont les théorèmes sont
-  différents.
+\begin{remark}
+    Les preuves de la \cref{subsec.ext.PA} sont en fait intuitionnistes. On a
+    donc encore la conservativité sur $\HA$ de l'ajout des fonctions RP avec
+    les équations qui les définissent.
 \end{remark}
 
 Nous allons prouver que $\ArithPeano$ est une extension conservative de $\HA$
@@ -783,37 +747,38 @@ sur la classe des formules $\HierArithP 2$.
 
 Pour ce faire, on reprend l'idée initiale de la traduction de Gödel-Gentzen
 (\cref{def.gg.trad}) mais, à la place de considérer la négation
-$\lnot \varphi$ comme étant $\varphi \to \bot$, on paramétrise la négation
-$\lnot_\psi$ par une formule $\psi$.
+$\lnot \varFF$ comme étant $\varFF \to \bot$, on paramétrise la négation
+$\lnot_\varFP$ par une formule $\varFP$.
 
 \begin{definition}[Négation paramétrée]
-  Soit $\varphi$ une formule fixée qu'on appelle formule de retour. On définit
-  l'opération $\lnot_\varphi$ sur les formules par
-  \[\lnot_\varphi \psi \defeq \psi \to \varphi\]
+  Soit $\varFF$ une formule fixée qu'on appelle formule de retour. On définit
+  l'opération $\lnot_\varFF$ sur les formules par
+  \[\lnot_\varFF \varFP \defeq \varFP \to \varFF\]
 \end{definition}
 
 \begin{definition}[Traduction de Friedman]\label{def.friedman}
-  Soit $\varphi$ une formule de retour fixée. On définit par induction sur
-  $\psi$ la formule $\psi^{\lnot_\varphi}$ par~:
+  Soit $\varFF$ une formule de retour fixée. On définit par induction sur
+  $\varFP$ la formule $\varFP^{\lnot_\varFF}$ par~:
   \begin{itemize}
-  \item si $\psi$ est atomique, alors
-    $\psi^{\lnot_\varphi} \defeq \lnot_\varphi\lnot_\varphi \psi$.
-  \item si $\psi = \top$ alors $\psi^{\lnot_\varphi} \defeq \top$.
-  \item si $\psi = \bot$ alors $\psi^{\lnot_\varphi} \defeq \varphi$.
-  \item si $\psi = \lnot \chi$ alors
-    $\psi^{\lnot_\varphi} \defeq \lnot_\varphi \chi^{\lnot_\varphi}$.
-  \item si $\psi = \psi_0 \land \psi_1$ alors
-    $\psi^{\lnot_\varphi} \defeq \psi_0^{\lnot_\varphi}\land\psi_1^{\lnot_\varphi}$.
-  \item si $\psi = \psi_0 \lor \psi_1$ alors
-    $\psi^{\lnot_\varphi} \defeq
-    \lnot_\varphi\lnot_\varphi(\psi_0^{\lnot_\varphi}\lor\psi_1^{\lnot_\varphi})$.
-  \item si $\psi = \psi_0 \to \psi_1$ alors
-    $\psi^{\lnot_\varphi} \defeq \psi_0^{\lnot_\varphi}\to\psi_1^{\lnot_\varphi}$.
-  \item si $\psi = \forall x, \chi$ alors
-    $\psi^{\lnot_\varphi} \defeq \forall x, \chi^{\lnot_\varphi}$.
-  \item si $\psi = \exists x, \chi$ alors
-    $\psi^{\lnot_\varphi} \defeq
-    \lnot_\varphi\forall x, \lnot_\varphi \chi^{\lnot_\varphi}$.
+  \item si $\varFP$ est atomique, alors
+    $\varFP^{\lnot_\varFF} \defeq \lnot_\varFF\lnot_\varFF \varFP$.
+  \item si $\varFP = \top$ alors $\varFP^{\lnot_\varFF} \defeq \top$.
+  \item si $\varFP = \bot$ alors $\varFP^{\lnot_\varFF} \defeq \varFF$.
+  \item si $\varFP = \lnot \varFC$ alors
+    $\varFP^{\lnot_\varFF} \defeq \lnot_\varFF \varFC^{\lnot_\varFF}$.
+  \item si $\varFP = \varFP_0 \land \varFP_1$ alors
+    $\varFP^{\lnot_\varFF} \defeq \varFP_0^{\lnot_\varFF}\land\varFP_1^{\lnot_\varFF}$.
+  \item si $\varFP = \varFP_0 \lor \varFP_1$ alors
+    $\varFP^{\lnot_\varFF} \defeq
+    \lnot_\varFF(\lnot_\varFF\varFP_0^{\lnot_\varFF}\land
+    \lnot_\varFF\varFP_1^{\lnot_\varFF})$.
+  \item si $\varFP = \varFP_0 \to \varFP_1$ alors
+    $\varFP^{\lnot_\varFF} \defeq \varFP_0^{\lnot_\varFF}\to\varFP_1^{\lnot_\varFF}$.
+  \item si $\varFP = \forall x, \varFC$ alors
+    $\varFP^{\lnot_\varFF} \defeq \forall x, \varFC^{\lnot_\varFF}$.
+  \item si $\varFP = \exists x, \varFC$ alors
+    $\varFP^{\lnot_\varFF} \defeq
+    \lnot_\varFF\forall x, \lnot_\varFF \varFC^{\lnot_\varFF}$.
   \end{itemize}
 \end{definition}
 
@@ -822,26 +787,26 @@ traduction d'une formule dans le cas intuitionniste et la formule dans le cas
 classique. Pour prouver ce lien, on a d'abord besoin de plusieurs propriétés.
 
 \begin{property}\label{prop.friedman}
-  On a les propositions suivantes pour toute formule de retour $\varphi$
+  On a les propositions suivantes pour toute formule de retour $\varFF$
   fixée~:
   \begin{itemize}
-  \item pour toutes formules $\psi,\chi$,
-    $\psi \to \lnot_\varphi \chi \vdLJ \chi \to \lnot_\varphi \psi$
-  \item pour toute formule $\psi$,
-    $\psi \vdLJ \lnot_\varphi\lnot_\varphi \psi$
-  \item pour toutes formules $\psi,\chi$,
-    $\psi\to\chi \vdLJ \lnot_\varphi \chi \to \lnot_\varphi \psi$
-  \item pour toutes formules $\psi,\chi$,
-    $\psi\to\chi\vdLJ
-    \lnot_\varphi\lnot_\varphi \psi \to \lnot_\varphi\lnot_\varphi\chi$
-  \item pour toute formule $\psi$,
-    $\lnot_\varphi\lnot_\varphi\lnot_\varphi \psi \vdLJ \lnot_\varphi \psi$
-  \item pour toute formule $\psi$,
-    $\vdLJ (\psi \lor \lnot\psi)^{\lnot_\varphi}$
-  \item pour toute formule $\psi$,
-    $\varphi\vdLJ\psi^{\lnot_\varphi}$
-  \item pour toute formule $\psi$,
-    $\lnot_\varphi\lnot_\varphi\psi^{\lnot_\varphi}\vdLJ \psi^{\lnot_\varphi}$
+  \item pour toutes formules $\varFP,\varFC$,
+    $\varFP \to \lnot_\varFF \varFC \vdLJ \varFC \to \lnot_\varFF \varFP$
+  \item pour toute formule $\varFP$,
+    $\varFP \vdLJ \lnot_\varFF\lnot_\varFF \varFP$
+  \item pour toutes formules $\varFP,\varFC$,
+    $\varFP\to\varFC \vdLJ \lnot_\varFF \varFC \to \lnot_\varFF \varFP$
+  \item pour toutes formules $\varFP,\varFC$,
+    $\varFP\to\varFC\vdLJ
+    \lnot_\varFF\lnot_\varFF \varFP \to \lnot_\varFF\lnot_\varFF\varFC$
+  \item pour toute formule $\varFP$,
+    $\lnot_\varFF\lnot_\varFF\lnot_\varFF \varFP \vdLJ \lnot_\varFF \varFP$
+  \item pour toute formule $\varFP$,
+    $\vdLJ (\varFP \lor \lnot\varFP)^{\lnot_\varFF}$
+  \item pour toute formule $\varFP$,
+    $\varFF\vdLJ\varFP^{\lnot_\varFF}$
+  \item pour toute formule $\varFP$,
+    $\lnot_\varFF\lnot_\varFF\varFP^{\lnot_\varFF}\vdLJ \varFP^{\lnot_\varFF}$
   \end{itemize}
 \end{property}
 
@@ -850,9 +815,9 @@ classique. Pour prouver ce lien, on a d'abord besoin de plusieurs propriétés.
 \end{exercise}
 
 \begin{lemma}[Correction de la traduction de Friedman]
-  Pour tout séquent $\Gamma\vdLK \psi$ dérivable dans lequel aucune variable
-  libre d'une formule $\varphi$ de retour n'apparaît, le séquent
-  $\Gamma^{\lnot_\varphi}\vdLJ\psi^{\lnot_\varphi}$ est dérivable.
+  Pour tout séquent $\varCG\vdLK \varFP$ dérivable dans lequel aucune variable
+  libre d'une formule $\varFF$ de retour n'apparaît, le séquent
+  $\varCG^{\lnot_\varFF}\vdLJ\varFP^{\lnot_\varFF}$ est dérivable.
 \end{lemma}
 
 \begin{exercise}
@@ -860,8 +825,8 @@ classique. Pour prouver ce lien, on a d'abord besoin de plusieurs propriétés.
 \end{exercise}
 
 \begin{corollary}\label{cor.friedman}
-  Pour toute formule $\psi$, si $\ArithPeano\vdLK \psi$ alors
-  $\HA\vdLJ \psi^{\lnot_\varphi}$.
+  Pour toute formule $\varFP$, si $\ArithPeano\vdLK \varFP$ alors
+  $\HA\vdLJ \varFP^{\lnot_\varFF}$.
 \end{corollary}
 
 \begin{theorem}[Kreisel-Friedman
@@ -871,22 +836,22 @@ classique. Pour prouver ce lien, on a d'abord besoin de plusieurs propriétés.
 \end{theorem}
 
 \begin{proof}
-  Soit $\varphi \in \HierArithP 2$. Sans perte de généralité, on peut écrire
-  $\varphi \defeq \forall x, \exists y, f(x,y) = 0$ où $f$ est un terme
-  dépendant de $x$ et $y$.
+  Soit $\varFF \in \HierArithP 2$. Sans perte de généralité, on peut écrire
+  $\varFF \defeq \forall x, \exists y, f(x,y) = 0$ où $f$ est un terme
+  dépendant de $x$ et $y$ (représentant une fonction RP).
 
-  On suppose que $\ArithPeano\vdLK \varphi$~: d'après le \cref{cor.friedman},
-  on en déduit que $\HA\vdLJ \varphi^{\lnot_\psi}$ pour n'importe quelle formule
-  $\psi$. En écrivant $\varphi^{\lnot_\psi}$, on obtient
-  \[\varphi^{\lnot_\psi} = \forall x, \lnot_\psi \forall y, \lnot_\psi
-  \lnot_\psi\lnot_\psi f(x,y) = 0\]
+  On suppose que $\ArithPeano\vdLK \varFF$~: d'après le \cref{cor.friedman},
+  on en déduit que $\HA\vdLJ \varFF^{\lnot_\varFP}$ pour n'importe quelle formule
+  $\varFP$. En écrivant $\varFF^{\lnot_\varFP}$, on obtient
+  \[\varFF^{\lnot_\varFP} = \forall x, \lnot_\varFP \forall y, \lnot_\varFP
+  \lnot_\varFP\lnot_\varFP f(x,y) = 0\]
   qui est une formule équivalente à
-  $\forall x, \lnot_\psi \forall y, \lnot_\psi f(x,y) = 0$ puisqu'on peut
+  $\forall x, \lnot_\varFP \forall y, \lnot_\varFP f(x,y) = 0$ puisqu'on peut
   éliminer les doubles négations ici (\latinexpr{c.f.} \cref{prop.friedman}).
   Prenons alors une variable fraîche $x_0$, on a alors
-  \[\HA\vdLJ (\forall y, (f(x_0,y) = 0 \to \psi)) \to \psi\]
-  pour n'importe quelle formule $\psi$. On instancie donc
-  $\psi \defeq \exists y_0, f(x_0,y_0) = 0$, et la prémisse
+  \[\HA\vdLJ (\forall y, (f(x_0,y) = 0 \to \varFP)) \to \varFP\]
+  pour n'importe quelle formule $\varFP$. On instancie donc
+  $\varFP \defeq \exists y_0, f(x_0,y_0) = 0$, et la prémisse
   \[\forall y, f(x_0,y) = 0 \to (\exists y_0, f(x_0,y_0) = 0)\]
   est prouvable, d'où
   \[\HA \vdLJ \exists y_0, f(x_0,y_0) = 0\]
@@ -895,6 +860,14 @@ classique. Pour prouver ce lien, on a d'abord besoin de plusieurs propriétés.
 
   Ainsi, $\ArithPeano$ est conservative sur $\HierArithP 2$.
 \end{proof}
+
+Rappelons qu'en particulier, les formule $\HierArithP 2$ peuvent encoder les
+problèmes de totalité des fonctions calculables. Ainsi, on a l'égalité
+ensembliste
+\[\compr{e \in \bN}{\ArithPeano \vdLK \forall n,\EnumP{e}{}(n)\convcal}
+= \compr{e \in \bN}{\HA\vdLJ\forall n, \EnumP{e}{}(n)\convcal}\]
+On peut donc parler de fonction \og prouvablement totale dans l'arithmétique
+du premier ordre\fg sans préciser si on parle de $\ArithPeano$ ou de $\HA$.
 
 \subsection{BHK et réalisabilité}
 
@@ -907,19 +880,19 @@ d'un énoncé.
 La réalisabilité, introduite par \cite{Kleene1945}, permet de donner une
 implémentation plus sémantique de l'interprétation BHK. En particulier, le sens
 de la formule
-\[\varphi \implies \psi\]
+\[\varFF \implies \varFP\]
 devient celui d'une fonction calculable, assignant des témoins de la vérité de
-$\psi$ à des témoins de la vérité de $\varphi$.
+$\varFP$ à des témoins de la vérité de $\varFF$.
 
-La notion de réalisabilité repose sur la relation $x\real \varphi$, qui peut
+La notion de réalisabilité repose sur la relation $x\real \varFF$, qui peut
 se lire de différentes façons~:
 \begin{itemize}
-\item $x$ est une preuve de $\varphi$
-\item $\varphi$ s'interprète en une spécification de programme que $x$ réalise
-\item $x$ force la vérité de $\varphi$
+\item $x$ est une preuve de $\varFF$~;
+\item $\varFF$ s'interprète en une spécification de programme que $x$ réalise~;
+\item $x$ force la vérité de $\varphi$.
 \end{itemize}
-Dans un tel cas, on dira que $x$ réalise $\varphi$, ou que $x$ est un réaliseur
-de $\varphi$.
+Dans un tel cas, on dira que $x$ réalise $\varFF$, ou que $x$ est un réaliseur
+de $\varFF$.
 
 En reprenant l'interprétation BHK avec ces notations, on propose donc de
 définir $\real$ de façon inductive comme suit~:
@@ -927,17 +900,17 @@ définir $\real$ de façon inductive comme suit~:
 \item $x \real \top$ pour n'importe quel $x$~;
 \item $x \real \bot$ jamais~;
 \item $x \real n = m$ si $n = m$~;
-\item $x \real \varphi \to \psi$ si $x$ s'interprète comme une fonction
-  calculable $f$ telle que pour tout $y \real \varphi$, $f(y)\real \psi$~;
-\item $x \real \varphi \land \psi$ si $x$ s'interprète comme une paire $(y,z)$
-  où $y \real \varphi$ et $z \real \psi$~;
-\item $x \real \varphi \lor \psi$ si $x$ s'interprète comme une paire $(i,y)$
-  où $i = 0$ et $y \real \varphi$, ou $i = 1$ et $y \real \psi$~;
-\item $x \real \forall a, \varphi$ si $x$ s'interprète comme une fonction
-  calculable $f$ qui à tout $m$ du domaine de discours,
-  $f(m) \real \varphi[m/a]$~;
-\item $x \real \forall a, \varphi$ si $x$ s'interprète comme une paire
-  $(m,y)$ telle que  $y \real \varphi[m/a]$.
+\item $x \real \varFF \to \varFP$ si $x$ s'interprète comme une fonction
+  calculable $f$ telle que pour tout $y \real \varFF$, $f(y)\real \varFP$~;
+\item $x \real \varFF \land \varFP$ si $x$ s'interprète comme une paire $(y,z)$
+  où $y \real \varFF$ et $z \real \varFP$~;
+\item $x \real \varFF \lor \varFP$ si $x$ s'interprète comme une paire $(i,y)$
+  où $i = 0$ et $y \real \varFF$, ou $i = 1$ et $y \real \varFP$~;
+\item $x \real \forall a, \varFF$ si $x$ s'interprète comme une fonction
+  calculable $f$ telle que pour tout $m$ du domaine de discours,
+  $f(m) \real \varFF[m/a]$~;
+\item $x \real \forall a, \varFF$ si $x$ s'interprète comme une paire
+  $(m,y)$ telle que  $y \real \varFF[m/a]$.
 \end{itemize}
 L'ensemble des réaliseurs doit donc être un ensemble dans lequel on peut
 facilement interpréter des paires et des fonctions, et qui permet aussi
@@ -961,38 +934,38 @@ contextes aux formules qu'on interprète, de sorte que les variables libres d'un
 formule sont interprétées par des entiers du modèle standard.
 
 \begin{definition}[Réalisabilité de Kleene]
-  Soit $\sigma : \Var \partialto \bN$ un environnement pour l'arithmétique. On
-  définit, pour $n \in \bN$ et $\varphi \in \Formula$ telle que
-  $\VL(\varphi)\subseteq \dom(\sigma)$, la relation $n\real_\sigma \varphi$
-  par induction sur $\varphi$~:
+  Soit $\makeFunNamePartial{\env}{\Var}{\bN}$ un environnement pour
+  l'arithmétique. On définit, pour $n \in \bN$ et $\varFF \in \Formula$ telle
+  que $\VL(\varFF)\subseteq \dom(\env)$, la relation $n\real_\env \varFF$
+  par induction sur $\varFF$~:
   \begin{itemize}
-  \item si $\varphi = \top$, alors $n\real_\sigma \varphi$
-  \item si $\varphi = \bot$, alors $n\nVdash_\sigma \varphi$
-  \item si $\varphi = (t = u)$ et $\sigma(t) = \sigma(u)$, alors
-    $n\real_\sigma \varphi$
-  \item si $\varphi = (t = u)$ et $\sigma(t) \neq \sigma(u)$, alors
-    $n\nVdash_\sigma \varphi$
-  \item si $\varphi = \psi \to \chi$, alors
-    \[n\real_\sigma\varphi\defeq \forall m \in \bN, m\real_\sigma\psi \implies
-    \Enum_n(m) \real_\sigma\chi\]
-  \item si $\varphi = \psi \land \chi$, alors
-    \[n\real_\sigma\varphi\defeq n = \langle p,q\rangle
-    \land p \real_\sigma\psi\land q\real_\sigma\chi\]
-  \item si $\varphi = \psi \lor \chi$, alors
-    \[n\real_\sigma\varphi \defeq n = \langle i,p\rangle \land
+  \item si $\varFF = \top$, alors $n\real_\env \varFF$
+  \item si $\varFF = \bot$, alors $n\nVdash_\env \varFF$
+  \item si $\varFF = (t = u)$ et $\env(t) = \env(u)$, alors
+    $n\real_\env \varFF$
+  \item si $\varFF = (t = u)$ et $\env(t) \neq \env(u)$, alors
+    $n\nVdash_\env \varFF$
+  \item si $\varFF = \varFP \to \varFC$, alors
+    $n\real_\env\varFF\defeq \forall m \in \bN, m\real_\env\varFP \implies
+    \EnumP{n}{}(m) \real_\env\varFC$
+  \item si $\varFF = \varFP \land \varFC$, alors
+    $n\real_\env\varFF\defeq n = \langle p,q\rangle
+    \land p \real_\env\varFP\land q\real_\env\varFC$
+  \item si $\varFF = \varFP \lor \varFC$, alors
+    $n\real_\env\varFF \defeq n = \langle i,p\rangle \land
     \begin{cases}
-      i = 0 \land p \real_\sigma \psi \\
+      i = 0 \land p \real_\env \varFP \\
       \text{ou}\\
-      i = 1 \land p \real_\sigma \chi
-    \end{cases}\]
-  \item si $\varphi = \forall x, \psi$, alors
-    \[n\real_\sigma\varphi\defeq\forall m \in \bN,
-    \Enum_n(m) \real_{\sigma[x \mapsto m]}\varphi\]
-  \item si $\varphi = \exists x, \psi$, alors
-    \[n\real_\sigma\varphi \defeq n = \langle p,m\rangle \land
-    m\real_{\sigma[x\mapsto p]} \varphi\]
+      i = 1 \land p \real_\env \varFC
+    \end{cases}$
+  \item si $\varFF = \forall x, \varFP$, alors
+    $n\real_\env\varFF\defeq\forall m \in \bN,
+    \EnumP{n}{}(m) \real_{\env[x \mapsto m]}\varFP$
+  \item si $\varFF = \exists x, \varFP$, alors
+    $n\real_\env\varFF \defeq n = \langle p,m\rangle \land
+    m\real_{\env[x\mapsto p]} \varFF$
   \end{itemize}
-  Si $\sigma = \varnothing$, on note directement $n\real \varphi$.
+  Si $\env = \vide$, on note directement $n\real \varFF$.
 \end{definition}
 
 Dans l'interprétation que nous offre la réalisabilité, il est clair que
@@ -1004,146 +977,194 @@ On se place ici dans le formalisme de $\NJ$ pour considérer les règles logique
 (par complétude, cela revient au même que de considérer $\LJ$). D'après notre
 interprétation de l'implication, la notion d'hypothèse dans un raisonnement
 logique est ici représentée par une fonction calculable. Cela signifie,
-puisque $\Gamma\vdNJ \varphi$ représente la vérité de $\varphi$ sous les
-hypothèses de $\Gamma$, que réaliser $\Gamma\vdNJ\varphi$ demande à associer à
-des réaliseurs des formules de $\Gamma$, un réaliseur de $\varphi$. On retrouve
+puisque $\varCG\vdNJ \varFF$ représente la vérité de $\varFF$ sous les
+hypothèses de $\varCG$, que réaliser $\varCG\vdNJ\varFF$ demande à associer à
+des réaliseurs des formules de $\varCG$, un réaliseur de $\varFF$. On retrouve
 la une structure étroitement liée à la preuve de forte normalisation pour le
 $\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
 
+\begin{table}[p]
+    \centering
+    \resizebox{!}{0.45\textheight}{
+    \begin{tabular}{ccc}
+        \bottomAlignProof
+        \AxiomC{}\RightLabel{$\Rax$}
+        \UnaryInfC{$\varFF_1,\ldots,\varFF_1\vdNJ \varFF_i$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k} \defeq \projP{i}{n+k}$
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{}\RightLabel{$\RtopI$}\UnaryInfC{$\varCG\vdNJ\top$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}\defeq 0$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\bot$}
+        \RightLabel{$\RbotE$}\UnaryInfC{$\varCG\vdNJ\varFF$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $e(\varPT) \defeq e(\varPT')$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG,\varFF\vdNJ\varFP$}
+        \RightLabel{$\RtoI$}\UnaryInfC{$\varCG\vdNJ\varFF\to\varFP$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $e(\varPT) \defeq \Smn{n+k}{1}(e(\varPT))$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF\to\varFP$}
+        \axNJP{\varPT''}\UnaryInfC{$\varCG\vdNJ\varFF$}
+        \RightLabel{$\RtoE$}
+        \BinaryInfC{$\varCG\vdNJ\varFP$}\DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}(\vec n)\defeq
+        \EnumP{e(\varPT')}{n+k}(\vec n)(\EnumP{e(\varPT'')}{n+k}(\vec n)$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT_1}\UnaryInfC{$\varCG\vdNJ\varFF_1$}
+        \axNJP{\varPT_2}\UnaryInfC{$\varCG\vdNJ\varFF_2$}
+        \RightLabel{$\RandI$}\BinaryInfC{$\varCG\vdNJ\varFF_1\land\varFF_2$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}(\vec n) \defeq
+        \langle\tok,\tok\rangle\circ (\EnumP{e(\varPT_1)}{n+k}(\vec n),
+        \EnumP{e(\varPT_2)}{n+k}(\vec n))$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_1\land\varFF_2$}
+        \RightLabel{$\RandEi$}\UnaryInfC{$\varCG\vdNJ\varFF_i$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}\defeq \projP{i}{}\circ \EnumP{e(\varPT')}{n+k}$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_i$}
+        \RightLabel{$\RorIi$}\UnaryInfC{$\varCG\vdNJ\varFF_1\lor\varFF_2$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}\defeq (x \mapsto \langle i-1,x\rangle)\circ
+        \EnumP{e(\varPT')}{n+k}$
+        \\
+        \\
+        \multicolumn{3}{l}{
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_1\lor\varFF_2$}
+        \axNJP{\varPT_1}\UnaryInfC{$\varCG,\varFF_1\vdNJ\varFP$}
+        \axNJP{\varPT_2}\UnaryInfC{$\varCG,\varFF_2\vdNJ\varFP$}
+        \RightLabel{$\RorE$}\TrinaryInfC{$\varCG\vdNJ\varFP$}
+        \DisplayProof
+        $\longmapsto$
+        }
+        \\
+        \multicolumn{3}{r}{
+        $\EnumP{e(\varPT)}{n+k}(\vec n)\defeq
+        \ifrm \projP{1}{}(\EnumP{e(\varPT')}{n+k}(\vec n))
+        \thenrm \EnumP{e(\varPT_1)}{n+1+k}
+        (\vec n,\projP{2}{}(\EnumP{e(\varPT')}{n+k}(\vec n)))
+        \elserm \EnumP{e(\varPT_2)}{n+1+k}
+        (\vec n,\projP{2}{}(\EnumP{e(\varPT')}{n+k}(\vec n)))$
+        }
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF$}
+        \RightLabel{$\RforaI^\dagger$}
+        \UnaryInfC{$\varCG\vdNJ\forall x\, \varFF$}\DisplayProof
+        & $\longmapsto$ &
+        $e(\varPT) \defeq \Smn{n+k}{1}(e(\varPT'))$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\forall x\,\varFF$}
+        \RightLabel{$\RforaE$}\UnaryInfC{$\varCG\vdNJ\varFF[t/x$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}(\vec n, \vec k) \defeq
+        \EnumP{e(\varPT')}{n+k}(\vec n, \vec k)(f_t(\vec k))$
+        \\
+        \\
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF[t/x]$}
+        \RightLabel{$\RexI$}\UnaryInfC{$\varCG\vdNJ\exists x\,\varFF$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}(\vec n,\vec k) \defeq
+        \langle f_t(\vec k),\EnumP{e(\varPT')}{n+k}(\vec n,\vec k)\rangle$
+        \\
+        \\
+        \multicolumn{3}{l}{
+        \bottomAlignProof
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\exists x\,\varFF$}
+        \axNJP{\varPT''}\UnaryInfC{$\varCG,\varFF\vdNJ\varFP$}
+        \RightLabel{$\RexE^\dagger$}\BinaryInfC{$\varCG\vdNJ\varFP$}
+        \DisplayProof
+        \quad $\longmapsto$}
+        \\
+        \multicolumn{3}{r}{
+        $\EnumP{e(\varPT)}{n+k}(\vec n,\vec k) \defeq
+        \EnumP{e(\varPT'')}{n+1+k}(\vec n,
+        \projP{2}{}(\EnumP{e(\varPT')}(\vec n,\vec k)), \vec k,
+        \projP{1}{}(\EnumP{e(\varPT')}(\vec n, \vec k)))$}
+        \\
+        \\
+        \bottomAlignProof
+        \AxiomC{}\RightLabel{$\ReqI$}\UnaryInfC{$\vdNJ t = t$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $\EnumP{e(\varPT)}{n+k}(\vec n) \defeq 0$
+        \\
+        \\
+        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ \varFF[t/x]$}
+        \axNJP{\varPT''}\UnaryInfC{$\varCG \vdNJ t = u$}
+        \RightLabel{$\ReqE$}\BinaryInfC{$\varCG\vdNJ\varFF[u/x]$}
+        \DisplayProof
+        & $\longmapsto$ &
+        $e(\varPT) \defeq e(\varPT')$
+    \end{tabular}
+    }
+    
+    \vspace{0.2cm}
+    \hrule
+
+    \vspace{0.2cm}
+    \caption{Programme associé à une preuve dans $\NJ$}
+    \label{tbl.adequacy.K1}
+\end{table}
+
 \begin{definition}[Programme tiré d'une preuve]
-  On définit inductivement, pour chaque arbre de preuve $\pi\in\ProofNJ$ de
-  conclusion $\varphi_1,\ldots,\varphi_n\vdNJ\psi$ et dont toutes les
-  variables libres sont parmi $\{x_1,\ldots,x_k\}$, un code $e(\pi)$
+  On définit inductivement, pour chaque arbre de preuve
+  $\varPT\in\ProofNJ$ de conclusion $\varFF_1,\ldots,\varFF_n\vdNJ\varFP$
+  et dont toutes les variables libres sont parmi
+  $\{x_1,\ldots,x_k\}$, un code $e(\varPT)$
   définissant une fonction calculable totale
-  $\Enum_{e(\pi)} : \bN^{n+k} \to \psi$~:
-  \begin{itemize}
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{}\RightLabel{Ax}
-    \UnaryInfC{$\varphi_1,\ldots,\varphi_n\vdNJ\varphi_i$}
-    \DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)} \defeq \pi_i^{n+k}$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{}\RightLabel{$\top_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdNJ \top$}\DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)} = 0$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}
-    \noLine\UnaryInfC{$\Gamma\vdNJ \bot$}\RightLabel{$\bot_\mathrm e$}
-    \UnaryInfC{$\Gamma\vdNJ \varphi$}\DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)} \defeq \Enum^n_{e(\pi')}$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}
-    \noLine\UnaryInfC{$\Gamma,\varphi\vdNJ\psi$}\RightLabel{$\to_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdNJ\varphi\to\psi$}\DisplayProof$, alors
-    $e(\pi) \defeq s_{n+k}^1(e(\pi))$ où la variable abstraite est en
-    \ordinalnumeralfeminin{$n$} position.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}
-    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi\to\psi$}
-    \AxiomC{$\mathlarger{\pi''}$}
-    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi$}
-    \RightLabel{$\to_\mathrm e$}\BinaryInfC{$\Gamma\vdNJ\psi$}\DisplayProof$,
-    alors
-    $\Enum^{n+k}_{e(\pi)}(\vec n) \defeq
-    \Enum^{n+k}_{e(\pi')}(\vec n)(\Enum^{n+k}_{e(\pi'')}(\vec n))$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi_1}$}
-    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi_1$}
-    \AxiomC{$\mathlarger{\pi_2}$}
-    \noLine\UnaryInfC{$\Gamma\vdNJ \varphi_2$}
-    \RightLabel{$\land_\mathrm i$}
-    \BinaryInfC{$\Gamma\vdNJ \varphi_1\land\varphi_2$}
-    \DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)}(\vec n) \defeq \langle-,-\rangle \circ
-    (\Enum^{n+k}_{e(\pi_1)},\Enum^{n+k}_{e(\pi_2)})$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ \varphi_1\land\varphi_2$}
-    \RightLabel{$\land_\mathrm e^i$}
-    \UnaryInfC{$\Gamma\vdNJ \varphi_i$}
-    \DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)} \defeq \pi_i\circ \Enum^{n+k}_{e(\pi')}$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ\varphi_i$}
-    \RightLabel{$\lor_\mathrm i^i$}
-    \UnaryInfC{$\Gamma\vdNJ\varphi_1\lor\varphi_2$}
-    \DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)} \defeq
-    (x \mapsto \langle i,x\rangle) \circ \Enum^{n+k}_{e(\pi')}$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ \varphi_1\lor\varphi_2$}
-    \AxiomC{$\mathlarger{\pi_1}$}\noLine
-    \UnaryInfC{$\Gamma,\varphi_1\vdNJ \chi$}
-    \AxiomC{$\mathlarger{\pi_2}$}\noLine
-    \UnaryInfC{$\Gamma,\varphi_2\vdNJ\chi$}
-    \TrinaryInfC{$\Gamma\vdNJ\chi$}
-    \DisplayProof$, alors
-    \begin{multline*}
-      \Enum^{n+k}_{e(\pi)}(\vec n) \defeq
-      \ifrm \pi_1(\Enum^{n+k}_{e(\pi')}(\vec n)) 
-      \thenrm \Enum^{n+1+k}_{e(\pi_1)}(\vec n, \pi_2(\Enum^{n+k}_{e(\pi')}(\vec n)))\\
-      \elserm \Enum^{n+1+k}_{e(\pi_2)}(\vec n, \pi_2(\Enum^{n+k}_{e(\pi')}(\vec n)))
-    \end{multline*}
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ \varphi$}
-    \RightLabel{$\forall_\mathrm i^\dagger$}
-    \UnaryInfC{$\Gamma\vdNJ\forall x, \varphi$}
-    \DisplayProof$, alors $e(\pi) \defeq s_{n+k}^1(e(\pi'))$ où la variable
-    abstrait est en \ordinalnumeralfeminin{$n+k$} position.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ \forall x, \varphi$}
-    \RightLabel{$\forall_\mathrm e$}
-    \UnaryInfC{$\Gamma\vdNJ\varphi[t/x]$}
-    \DisplayProof$, alors en considérant $f_t : \bN^k \to \bN$ la fonction
-    naturellement associée au terme $t$,
-    $\Enum^{n+k}_{e(\pi)}(\vec n,\vec k) \defeq
-    \Enum^{n+k}_{e(\pi')}(\vec n,\vec k)(f_t(\vec k))$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ\varphi[t/x]$}
-    \RightLabel{$\exists_\mathrm i$}
-    \UnaryInfC{$\Gamma\vdNJ\exists x, \varphi$}
-    \DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)}(\vec n,\vec k) \defeq \langle f_t(\vec k),
-    \Enum^{n+k}_{e(\pi')}(\vec n,\vec k)\rangle$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine
-    \UnaryInfC{$\Gamma\vdNJ\exists x, \varphi$}
-    \AxiomC{$\mathlarger{\pi''}$}\noLine
-    \UnaryInfC{$\Gamma, \varphi\vdNJ \psi$}
-    \RightLabel{$\exists_\mathrm e^\dagger$}
-    \BinaryInfC{$\Gamma\vdNJ\psi$}
-    \DisplayProof$, alors
-    \begin{center}
-      $\Enum^{n+k}_{e(\pi)}(\vec n, \vec k) \defeq
-      \Enum^{n+1+k}_{e(\pi'')}(\vec n,
-      \pi_1(\Enum^{n+k}_{e(\pi')}(\vec n, \vec k)),\vec k)$
-    \end{center}
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{}\RightLabel{$=_\mathrm i$}
-    \UnaryInfC{$\vdNJ t = t$}\DisplayProof$, alors
-    $\Enum^{n+k}_{e(\pi)}(\vec n, \vec k)\defeq 0$.
-  \item si $\pi = \bottomAlignProof
-    \AxiomC{$\mathlarger{\pi'}$}\noLine\UnaryInfC{$\Gamma\vdNJ t = u$}
-    \AxiomC{$\mathlarger{\pi''}$}\noLine\UnaryInfC{$\Gamma\vdNJ\varphi[t/x]$}
-    \RightLabel{$=_\mathrm e$} \BinaryInfC{$\Gamma\vdNJ\varphi[u/x]$}
-    \DisplayProof$, alors
-    $e(\pi) \defeq e(\pi'')$.
-  \end{itemize}
+  $\makeFunName{\EnumP{e(\varPT)}{n+k}}{\bN^{n+k}}{\bN}$. Les cas sont
+  donnés dans la \cref{tbl.adequacy.K1}. La fonction $f_t$ est, étant
+  donné un
+  terme $t(x_1,\ldots,x_k)$, la fonction $\bN^k \to \bN$ donnée par
+  l'interprétation du terme. Dans la définition du cas $\RtoI$, la
+  variable abstraite par $\Smn{}{}$ est la
+  \ordinalnumeralfeminin{$n$}. Dans la définition du cas $\RforaI$,
+  c'est la \ordinalnumeralfeminin{$n+k$} variable.
 \end{definition}
 
 \begin{lemma}[Adéquation]
-  Pour tout arbre de preuve $\pi \in \ProofNJ$ de conclusion
-  $\varphi_1,\ldots,\varphi_n \vdNJ \psi$ et dont les variables libres sont
-  $x_1,\ldots,x_k$, pour tout environnement $\sigma$ défini sur
+  Pour tout arbre de preuve $\varPT \in \ProofNJ$ de conclusion
+  $\varFF_1,\ldots,\varFF_n \vdNJ \varFP$ et dont les variables libres sont
+  $x_1,\ldots,x_k$, pour tout environnement $\env$ défini sur
   $x_1,\ldots,x_k$, et pour tous entiers $e_1,\ldots,e_n$ tels que
-  \[\forall i \in \{1,\ldots,n\}, e_i\real_{\sigma} \varphi_i\]
+  \[\forall i \in \intervIntB{n}, e_i\real_{\env} \varFF_i\]
   on a
-  \[e(\pi)(e_1,\ldots,e_n,\sigma(x_1),\ldots,\sigma(x_k))\real_\sigma \psi\]
+  \[e(\varPT)(e_1,\ldots,e_n,\env(x_1),\ldots,\env(x_k))
+  \real_\env \varFP\]
 \end{lemma}
 
 \begin{exercise}
@@ -1152,16 +1173,16 @@ $\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
 
 \begin{corollary}
   L'ensemble
-  \[\mathcal T_{\real} \defeq \{\varphi \in \Prop\mid \exists n \in \bN,
-  n\real \varphi\}\]
+  \[\varT_{\real} \defeq \compr{\varFF \in \Prop}
+  {\exists n \in \bN, n\real \varFF}\]
   est une théorie logique cohérente.
 \end{corollary}
 
 \begin{proof}
   Par le lemme d'adéquation, on sait que $\real$ est clos par conséquence
   syntaxique. De plus, on a défini $\bot$ comme n'ayant aucun réaliseur, donc
-  $\bot\notin\mathcal T_{\real}$, on en déduit donc que
-  $\mathcal T_{\real}\nvdash_{\NJ} \bot$.
+  $\bot\notin\varT_{\real}$, on en déduit donc que
+  $\varT_{\real}\nvdash_{\NJ} \bot$.
 \end{proof}
 
 On a donc prouvé que les formules réalisées par les fonctions calculables
@@ -1169,7 +1190,7 @@ forment une théorie cohérente. Pour en déduire la cohérence de l'arithmétiq
 Heyting, il nous suffit alors de montrer que les axiomes de $\HA$ sont réalisés.
 
 \begin{lemma}
-  On a l'inclusion $\HA\subseteq\mathcal T_{\real}$.
+  On a l'inclusion $\HA\subseteq\varT_{\real}$.
 \end{lemma}
 
 \begin{proof}
@@ -1180,15 +1201,15 @@ Heyting, il nous suffit alors de montrer que les axiomes de $\HA$ sont réalisé
   Pour la récurrence, on remarque que la construction de récursion primitive
   permet d'obtenir le résultat~: supposons données deux fonctions
   $f(\vec n)$ et $g(\vec n,m,p)$ telles que
-  \[f(\vec n)\real_{\vec n} \varphi[0/x]\quad\text{et}\quad
-  g(\vec n) \real_{\vec n} \forall x, \varphi \to \varphi[Sx/x]\]
+  \[f(\vec n)\real_{\vec n} \varFF(0)\quad\text{et}\quad
+  g(\vec n) \real_{\vec n} \forall x, \varphi(x) \to \varFF(\Ss x)\]
   Alors la fonction $\rec(f,g)$ vérifie~:
   \begin{itemize}
-  \item $\rec(f,g)(\vec n,0) = f(\vec n)$ donc réalise $\varphi[0/x]$
-  \item $\rec(f,g)(\vec n,Sm) = g(\vec n,m,\rec(f,g)(\vec n,m))$ donc par
+  \item $\rec(f,g)(\vec n,0) = f(\vec n)$ donc réalise $\varFF(0)$
+  \item $\rec(f,g)(\vec n,\Ss m) = g(\vec n,m,\rec(f,g)(\vec n,m))$ donc par
     récurrence sur $m$, on obtient que
-    $\rec(f,g)(\vec n,m) \real_{\vec n} \varphi[m/x]$ puis, par
-    application de $g$, que la fonction réalise $\varphi[Sm/x]$
+    $\rec(f,g)(\vec n,m) \real_{\vec n} \varFF[()$ puis, par
+    application de $g$, que la fonction réalise $\varFF(\Ss m)$
   \end{itemize}
   donc $\rec$ réalise uniformément le schéma d'axiomes de récurrence.
 \end{proof}
@@ -1198,8 +1219,8 @@ Heyting, il nous suffit alors de montrer que les axiomes de $\HA$ sont réalisé
 \end{theorem}
 
 \begin{proof}
-  On a prouvé que $\HA \subseteq \mathcal T_{\real}$ et que
-  $\mathcal T_{\real}\nvdash_{\NJ} \bot$, donc $\HA$ ne peut pas prouver
+  On a prouvé que $\HA \subseteq \varT_{\real}$ et que
+  $\varT_{\real}\nvdash_{\NJ} \bot$, donc $\HA$ ne peut pas prouver
   $\bot$, donc $\HA$ est cohérente.
 \end{proof}
 
@@ -1216,26 +1237,26 @@ par construire une version de logique minimale de la réalisabilité, pour cerne
 les difficultés à venir.
 
 \begin{definition}[Réalisabilité pour la logique minimale]
-  On considère la relation $\real\subseteq \lamSet\times \Formula$ définie par
-  induction sur $\varphi \in \Formula$~:
+  On considère la relation $\mathord{\real}\subseteq \lamSet\times \Formula$
+  définie par induction sur $\varphi \in \Formula$~:
   \begin{itemize}
   \item $t \real \top$ toujours~;
   \item $t \real \bot$ jamais~;
-  \item $t\real \varphi \to \psi \defeq \forall u \real \varphi, t\;u \real
-    \psi$
+  \item $t\real \varFF \to \varFP \defeq \forall u \real \varFF, t\;u \real
+    \varFP$
   \end{itemize}
 \end{definition}
 
 D'après la correspondance de Curry-Howard, on sait que les formules peuvent
-s'interpréter comme des types. Ainsi, $\vdash t : \varphi$ et
-$t\real \varphi$ semblent fortement liés. En fait, la définition de
-$t\real \varphi \to \psi$ semble identique à la définition de
-$\semT{\varphi\to\psi}$. Cela nous mène naturellement à l'énoncé suivant~:
+s'interpréter comme des types. Ainsi, $\tyR t : \varFF$ et
+$t\real \varFF$ semblent étroitement liés. En fait, la définition de
+$t\real \varFF \to \varFP$ semble identique à la définition de
+$\semT{\varFF\to\varFP}$. Cela nous suggère l'énoncé suivant~:
 \begin{quote}
   Pour toute dérivation de typage
-  $x_1:\varphi_1,\ldots,x_n:\varphi_n\vdash t : \varphi$ si pour tous
-  $i \in\{1,\ldots,n\}$ on dispose d'un terme $t_i \real \varphi_i$ alors
-  $t[t_i/x_i] \real \varphi$.
+  $x_1:\varFF_1,\ldots,x_n:\varFF_n\tyR t : \varFF$ si pour tous
+  $i \in\intervIntB{n}$ on dispose d'un terme $t_i \real \varFF_i$ alors
+  $t[t_i/x_i] \real \varFF$.
 \end{quote}
 Comme dans le cas du lemme d'adéquation pour la forte normalisation, il est
 nécessaire d'avoir une propriété de saturation pour vérifier que la règle
@@ -1247,68 +1268,71 @@ de toutes les formules, on a encore besoin d'introduire un ensemble de candidats
 préalables.
 
 \begin{definition}[Ensemble saturé]
-  On appelle ensemble saturé un ensemble de termes $A \subseteq \STSet$ tel
-  que si $t \STred u$ et $u \in A$ alors $t \in A$. On note $\satur$
-  l'ensemble des parties saturées de $\STSet$.
+  On appelle ensemble saturé un ensemble de termes $\varSATA \subseteq \STSet$
+  tel que si $t \STred u$ et $u \in \varSATA$ alors $t \in \varSATA$. On note
+  $\satur$ l'ensemble des parties saturées de $\STSet$.
 \end{definition}
 
 \begin{exercise}
   Prouver que $\satur$ est un treillis complet pour l'inclusion, dont le
-  majorant est $\STSet$ et le minorant est $\varnothing$, la borne supérieure
+  majorant est $\STSet$ et le minorant est $\vide$, la borne supérieure
   est donnée par l'union et la borne inférieure donnée par l'intersection.
 \end{exercise}
 
 \begin{definition}[Réalisabilité d'une formule]
-  Soit $\rho : \Var \to \bN$ un environnement d'interprétation.
-  On définit la relation $\real_\rho\subseteq \STSet\times\Formula$ par
-  induction sur $\varphi\in\Formula$~:
+  Soit $\makeFunNamePartial{\env}{\Var}{\bN}$ un environnement
+  d'interprétation. On définit la relation
+  $\mathord{\real_\env}\subseteq \STSet\times\Formula$ par
+  induction sur $\varFF\in\Formula$~:
   \begin{itemize}
-  \item si $\varphi = \top$ alors $t \real_\rho \varphi$
-  \item si $\varphi = \bot$ alors $t\nVdash_\rho\varphi$
-  \item si $\varphi = (t = u)$ où $\rho(t) = \rho(u)$ alors
-    $t \real_\rho \varphi$
-  \item si $\varphi = (t = u)$ où $\rho(t) \neq \rho(u)$ alors
-    $t\nVdash_\rho \varphi$
-  \item si $\varphi = \psi \to \chi$ alors
-    \[t\real_\rho \varphi \defeq \forall u \real_\rho \psi, t\;u \real_\rho \chi\]
-  \item si $\varphi = \psi \land \chi$ alors
-    \[t\real_\rho \varphi \defeq
-    (\pi_1\;t\real_\rho \psi) \land (\pi_2\;t\real_\rho \chi)\]
-  \item si $\varphi = \psi \land \chi$ alors
+  \item si $\varFF = \top$ alors $t \real_\env \varFF$
+  \item si $\varFF = \bot$ alors $t\nVdash_\env\varFF$
+  \item si $\varFF = (t = u)$ où $\env(t) = \env(u)$ alors
+    $t \real_\env \varFF$
+  \item si $\varFF = (t = u)$ où $\env(t) \neq \env(u)$ alors
+    $t\nVdash_\env \varFF$
+  \item si $\varFF = \varFP \to \varFC$ alors
+    $t\real_\env \varFF \defeq \forall u \real_\env \varFP, t\;u \real_\env
+    \varFC$
+  \item si $\varFF = \varFP \land \varFC$ alors
+    $t\real_\env \varFF \defeq
+    (\projP{1}{} t\real_\env \varFP) \land (\projP{2}{} t\real_\env \varFC)$
+  \item si $\varFF = \varFP \lor \varFC$ alors
     \begin{multline*}
-      t \real_\rho \varphi \defeq
-      \forall A \in \satur,\forall u,v \in\STSet,\\
-      (\forall w \real_\rho \psi, u[w/x] \in A) \implies
-      (\forall w \real_\rho \chi, u[w/x] \in A)\implies \\
-      \deltaSTLC t x u x v \in A
+      t \real_\env \varFF \defeq
+      \forall \varSATA \in \satur,\forall u,v \in\STSet,\\
+      (\forall w \real_\env \varFP, u[w/x] \in \varSATA) \implies
+      (\forall w \real_\env \varFC, u[w/x] \in \varSATA)\implies \\
+      \deltaSTLC t x u x v \in \varSATA
     \end{multline*}
-  \item si $\varphi = \forall x, \psi$ alors
-    \[t \real_\rho \varphi \defeq \forall n \in \bN,
-    t\real_{\rho[x\mapsto n]} \psi\]
-  \item si $\varphi = \exists x, \psi$ alors
-    \[t \real_\rho\varphi\defeq \exists n \in \bN,
-    t\real_{\rho[x\mapsto n]} \psi\]
+  \item si $\varFF = \forall x, \varFP$ alors
+    $t \real_\env \varFF \defeq \forall n \in \bN,
+    t\real_{\env[x\mapsto n]} \varFP$
+  \item si $\varFF = \exists x, \varFP$ alors
+    $t \real_\env\varFF\defeq \exists n \in \bN,
+    t\real_{\env[x\mapsto n]} \varFP$
   \end{itemize}
   
   On définit aussi
-  $\semT{\varphi}_\rho \defeq \{t \in \STSet\mid t \real_\rho \varphi\}$.
-  Dans le cas où $\rho = \varnothing$, on écrit simplement $t \real \varphi$ et
-  $\semT{\varphi}$.
+  $\semT{\varFF}_\env \defeq \compr{t \in \STSet}{t \real_\env \varFF}$.
+  Dans le cas où $\env = \vide$, on écrit simplement $t \real \varFF$ et
+  $\semT{\varFF}$.
 \end{definition}
 
 \begin{exercise}
-  Montrer que pour toute formule $\varphi$, $\semT\varphi\in\satur$. Montrer
+  Montrer que pour toute formule $\varFF$, $\semT\varFF\in\satur$. Montrer
   que pour tout $n \in \bN$, on a
-  \[t\real_{\rho[x\mapsto n]} \varphi \iff t \real_\rho \varphi[\encode n/x]\]
+  \[t\real_{\env[x\mapsto n]} \varFF \iff t \real_\env \varFF[\encode n/x]\]
 \end{exercise}
 
+\noindent
 On peut ainsi prouver le lemme d'adéquation.
 
 \begin{lemma}[Adéquation]
-  Pour tout typage $x_1:\varphi_1,\ldots,x_n:\varphi_n\vdash t : \varphi$, tout
-  environnement $\rho$ et termes $t_1,\ldots,t_n$ tels que
-  $t_i \real_\rho \varphi_i$, on a
-  \[t[t_i/x_i] \real_\rho\varphi\]
+  Pour tout typage $x_1:\varFF_1,\ldots,x_n:\varFF_n\vdash t : \varFF$, tout
+  environnement $\env$ et termes $t_1,\ldots,t_n$ tels que
+  $t_i \real_\env \varFF_i$, on a
+  \[t[t_i/x_i] \real_\env\varFF\]
 \end{lemma}
 
 \begin{exercise}
@@ -1317,40 +1341,40 @@ On peut ainsi prouver le lemme d'adéquation.
 
 \begin{corollary}
   La théorie
-  \[\mathcal T_{\real} \defeq
-  \{\varphi\in\Formula\mid\semT\varphi\neq\varnothing\}\]
+  \[\varT_{\real} \defeq
+  \compr{\varFF\in\Prop}{\semT\varFF\neq\vide}\]
   est une théorie cohérente.
 \end{corollary}
 
 On pourrait être tenté d'en déduire que $\HA$ est une théorie cohérente, comme
 on l'a fait avec les machines de Turing. Cependant, cette conclusion est fausse
 en l'état. On n'a en effet pas de moyen de prouver que la récurrence est
-réalisée. Cela est dû au fait que la définition de $t\real \forall x, \varphi$
+réalisée. Cela est dû au fait que la définition de $t\real \forall x, \varFF$
 signifie ici que $t$ est le même terme pour réaliser uniformément toutes les
-instances de $\varphi[\encode n/x]$ avec $n \in \bN$. Dans le principe de
+instances de $\varFF[\encode n/x]$ avec $n \in \bN$. Dans le principe de
 récurrence, comme on a pu le voir dans l'élimination des coupures, il est
 nécessaire d'effectuer un calcul qui dépend de l'entrée en elle-même.
 
 On peut être tenté de changer la définition de $\real$, de sorte que
-$t\real \forall x, \varphi$ signifie que pour tout $n$,
-$t\;\encode n \real\varphi[\encode n/x]$. Une telle modification fonctionne,
+$t\real \forall x, \varFF$ signifie que pour tout $n$,
+$t\;\encode n \real\varFF[\encode n/x]$. Une telle modification fonctionne,
 mais on préfère introduire une méthode plus efficace, permettant d'enrichir le
 langage plutôt que de simplement modifier la relation de réalisabilité.
 
 \begin{definition}[Formules arithmétiques relativisées]
   On définit le langage des formules arithmétiques relativisées en ajoutant le
   constructeur de formule
-  \[\varphi \Coloneq \cdots \mid \bN(\btermt)\]
+  \[\varFF \inddefeq \cdots \mid \bN(\btermt)\]
   où $t$ est un terme arithmétique (et tous les cas précédents définissant les
   formules arithmétiques sont conservés).
 \end{definition}
 
 L'intérêt du prédicat $\bN(\btermt)$ est en fait d'être réalisé (dans
-l'environnement $\rho$) par le terme $\encode{\rho(\btermt)}$.
+l'environnement $\env$) par le terme $\encode{\env(\btermt)}$.
 
 \begin{definition}[Réalisation d'une formule arithmétique relativisée]
-  On définit $t\real_\rho \varphi$ comme précédemment, en ajoutant le cas
-  \[t\real_\rho \bN(\btermt) \defeq t \STred^\star \encode{\rho(\btermt)}\]
+  On définit $t\real_\env \varFF$ comme précédemment, en ajoutant le cas
+  \[t\real_\env \bN(\btermt) \defeq t \rtClot{\STred} \encode{\env(\btermt)}\]
 \end{definition}
 
 On a ainsi un prédicat $\bN(x)$ à un paramètre, qui permet de décrire la classe
@@ -1358,8 +1382,8 @@ des entiers. En un sens, cette classe est celle des entiers standards~: les
 $x$ vérifiant $\bN(x)$ sont ceux muni d'un entier concret réalisé par un
 programme. On peut maintenant définir considérer, plutôt que $\HA$, la version
 relativisée
-\[\HA^\bN \defeq \{\varphi^\bN\mid \varphi \in \Formula\}\]
-où $\varphi^\bN$ est la formule relativisée telle qu'introduite dans la
+\[\HA^\bN \defeq \compr{\varFF^\bN}{\varFF \in \HA}\]
+où $\varFF^\bN$ est la formule relativisée telle qu'introduite dans la
 \cref{def.relativisation}.
 
 \begin{lemma}[Adéquation]
@@ -1368,37 +1392,37 @@ où $\varphi^\bN$ est la formule relativisée telle qu'introduite dans la
     \begin{tabular}{cc}
       \bottomAlignProof
       \AxiomC{}
-      \RightLabel{$0$}
-      \UnaryInfC{$\Gamma\vdash 0 : \bN(0)$}
+      \RightLabel{$\RnatIZ$}
+      \UnaryInfC{$\varCG\tyR 0 : \bN(0)$}
       \DisplayProof
       &
       \bottomAlignProof
-      \AxiomC{$\Gamma\vdash t : \bN(\btermt)$}
-      \RightLabel{$S$}
-      \UnaryInfC{$\Gamma\vdash S\;t : \bN(S\;\btermt)$}
+      \AxiomC{$\varCG\tyR t : \bN(\btermt)$}
+      \RightLabel{$\RnatIS$}
+      \UnaryInfC{$\varCG\tyR \Ss t : \bN(\Ss \btermt)$}
       \DisplayProof
       \\
       \\
       \multicolumn{2}{c}{
-        \AxiomC{$\Gamma\vdash t : \varphi(0)$}
-        \AxiomC{$\Gamma\vdash u :
-          \forall \bvarx,\bN(\bvarx)\to\varphi(\bvarx)\to\varphi(S\;\bvarx)$}
-        \AxiomC{$\Gamma\vdash v : \bN(\btermt)$}
-        \RightLabel{$\mathrm{Rec}$}
-        \TrinaryInfC{$\Gamma\vdash \rec\;t\;u\;v : \varphi(\btermt)$}
+        \AxiomC{$\varCG\tyR t : \varFF(0)$}
+        \AxiomC{$\varCG\tyR u :
+          \forall \bvarx,\bN(\bvarx)\to\varFF(\bvarx)\to\varFF(\Ss\bvarx)$}
+        \AxiomC{$\varCG\tyR v : \bN(\btermt)$}
+        \RightLabel{$\RnatE$}
+        \TrinaryInfC{$\varCG\tyR \rec t\;u\;v : \varFF(\btermt)$}
         \DisplayProof
       }
     \end{tabular}
   \end{center}
 
-  Alors pour tout environnement d'interprétation $\rho$, pour tous
-  $\Gamma\vdash t : \varphi$, $\sigma : \lamVar \to \STSet$ tels que
-  $(x : \psi) \in \Gamma \implies \sigma(x) \real_\rho \psi$,
-  on a $\sigma(t) \real_\rho \varphi$.
+  Alors pour tout environnement d'interprétation $\env$, pour tous
+  $\varCG\tyR t : \varFF$, $\makeFunName{\subSimul}{\lamVar}{\STSet}$
+  tels que $(x : \varFP) \in \varCG \implies \subSimul(x) \real_\env \varFP$,
+  on a $\subSimul(t) \real_\env \varFF$.
 \end{lemma}
 
 Dans ce cas, cependant, il devient clair que le schéma d'axiomes de récurrence
-est vérifié par le constructeur Rec. On en déduit le théorème suivant.
+est vérifié par le constructeur $\rec$. On en déduit le théorème suivant.
 
 \begin{theorem}[Cohérence de l'arithmétique]
   La théorie $\HA^\bN$ est cohérente.
@@ -1406,10 +1430,137 @@ est vérifié par le constructeur Rec. On en déduit le théorème suivant.
 
 \begin{proof}
   Tous les axiomes de $\HA^\bN$ sont réalisés, donc
-  $\HA^\bN\subseteq \mathcal T_\real$, donc la cohérence de $\mathcal T_\real$
-  implique celle de $\HA^\bN$, d'où le résultat.
+  $\HA^\bN\subseteq \varT_\real$, donc la cohérence de $\varT_\real$
+  implique celle de $\HA^\bN$.
 \end{proof}
 
-\begin{exercise}
-  En déduire que $\HA$ est cohérente.
+\subsection{Fonctions de l'arithmétique}
+
+Pour terminer ce chapitre, on propose une autre utilisation de la
+réalisabilité. Jusqu'ici, la réalisabilité a permis de construire un
+modèle pour l'arithmétique. Ce faisant, l'adéquation était avant tout
+un outil pour prouver la stabilité par déduction de la réalisabilité.
+
+On peut cependant prendre un point de vue différent~: si l'on fixe une
+notion de réalisabilité, alors toute preuve construit un programme.
+En particulier, en appliquant cette idée au cas des formules
+$\HierArithP 2$, on peut construire à partir d'une preuve de totalité
+d'une fonction, un programme qui la calcule. C'est ce processus qu'on
+va formaliser ici, en utilisant la réalisabilité modifiée.
+
+L'objectif est de prouver que toute preuve dans $\HA$ donne lieu à
+un programme typé de système T~: il nous faut donc d'abord associer
+des types aux formules. En effet, prenons par exemple la formule
+\[\varFF \defeq \forall x, \exists y, (x = y + y) \lor (x = \Ss(y + y))\]
+$\varFF$ n'est pas en elle-même un type de système T, mais on peut y voir
+un aspect fonctionnel, puisqu'un réaliseur d'une telle formule doit
+retourner pour chaque $x$ en entrée un entier $y$ avec une preuve que
+$y$ est la moitié de $x$, cette preuve définissant si $x$ est pair ou
+impair dans le même temps. On peut donc associer un type à $\varFF$, qui
+est $\intT \to \intT \times (\varTypBa + \varTypBa)$ où $\varTypBa$ est
+un type de base représentant les formules atomiques. On construit de
+cette façon une association d'un type pour chaque formule de
+l'arithmétique.
+
+\begin{definition}[Type associé à une formule]
+    On définit pour toute formule $\varFF \in \Formula$ un type de
+    système T $\toTyST(\varFF)$, par induction sur $\varFF$~:
+    \begin{itemize}
+    \begin{minipage}{0.45\textwidth}
+    \item si $\varFF$ est atomique, $\toTyST(\varFF) \defeq \varTypBa$~;
+    \item $\toTyST(\top)\defeq \unitT$~;
+    \item $\toTyST(\bot) \defeq \emptyT$~;
+    \item $\toTyST(\varFF\to\varFP) \defeq
+      \toTyST(\varFF)\to\toTyST(\varFP)$~;
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\toTyST(\varFF\land\varFP) \defeq
+      \toTyST(\varFF)\times \toTyST(\varFP)$~;
+    \item $\toTyST(\varFF\lor\varFP) \defeq
+      \toTyST(\varFF) + \toTyST(\varFP)$~;
+    \item $\toTyST(\forall x, \varFF) \defeq
+      \intT \to \toTyST(\varFF)$~;
+    \item $\toTyST(\exists x, \varFF) \defeq
+      \intT\times \toTyST(\varFF)$.
+    \end{minipage}
+    \end{itemize}
+\end{definition}
+Les quantifications s'interprètent donc comme une fonction / un produit
+avec des entiers~: le type du réaliseur lui permet de garder la trace de
+l'aspect fonctionnel du réaliseur. On peut maintenant définir la
+réalisation d'une formule, en se restreignant aux réaliseurs qui ont un
+type adéquat.
+
+\begin{definition}[Réalisation modifiée]
+    Soit $\varTypBa$ un type fixé et soit $\env$ un environnement
+    d'interprétation. On définit la relation de réalisabilité modifiée
+    $\mathord{\real_\env}\subseteq\STSet\times\Formula$ par induction sur
+    $\varFF$~:
+    \begin{itemize}
+    \item $\langle\rangle\real_\env \top$
+    \item $t\nVdash_\env\bot$ pour tout $t$
+    \item $t\real_\env (t = u) \defeq (\tyR t : \varTypBa) \land
+      (\env(t) = \env(u))$
+    \item $t\real_\env \varFF \to \varFP \defeq
+      (\tyR t : \toTyST(\varFF \to \varFP))\land(\forall u \real_\env \varFF,
+      t\;u\real_\env \varFP)$
+    \item $t\real_\env\varFF\land\varFP \defeq
+      (\tyR t : \toTyST(\varFF\land\varFP))\land
+      (\projP{1}{} t \real_\env\varFF)\land(\projP{2}{} t \real_\env \varFP)$
+    \item $t\real_\env\varFF\lor\varFP \defeq
+      (\tyR t : \toTyST(\varFF\lor\varFP))\land\begin{cases}
+      t\rtClot{\STred} \coprojP{1}u \land u\real_\env \varFF\\
+      u\rtClot{\STred}\coprojP{2} u \land u \real_\env \varFP
+      \end{cases}$
+    \item $t\real_\env\forall x, \varFF \defeq
+      (\tyR t : \toTyST(\forall x, \varFF))\land(\forall n \in \bN,
+      t\;\encode n \real_{\env[x \mapsto n]} \varFF)$
+    \item $t\real_\env\exists x, \varFF \defeq
+      (\tyR t : \toTyST(\exists x, \varFF)\land
+      t\rtClot{\STred} \langle \encode n, u\rangle \land
+      u\real_{\env[x \mapsto n]} \varFF$
+    \end{itemize}
+\end{definition}
+
+\begin{exercise}[Préliminaires techniques]
+    Montrer que pour tous $t,u \in \STSet$, environnement $\env$ et
+    formule $\varFF$, si $u \real_\env \varFF$ et $t \STred u$ alors
+    $u\real_\env \varFF$. Montrer que pour tout $n$,
+    $t\real_{\env[x\mapsto n]} \varFF\iff t\real_\env\varFF[\encode n/x]$.
 \end{exercise}
+
+\begin{lemma}[Adéquation]
+    Pour tout séquent prouvable $\varCG\vdNJ\varFF$, il existe un terme
+    $t \in \STSet$ tel que $\tyR t : \toTyST(\varFF)$ et, pour tout
+    environnement $\env$ couvrant les variables libres du séquent et tout
+    tuple $\vec u \real_\env \varCG$, on a
+    $t[\vec u/\vec x] \real_\env \varFF$
+\end{lemma}
+
+\begin{exercise}
+    Prouver le lemme d'adéquation. \textit{Indication~: la saturation
+    est utile pour les cas d'élimination, et le lemme de substitution
+    pour les quantifications.}
+\end{exercise}
+
+De plus, on peut vérifier que les axiomes de $\HA$ sont eux aussi
+réalisés (pour peu que le type $\varTypBa$ contienne au moins un habitant)~:
+seul l'axiome de récurrence n'est pas une égalité vérifiée automatiquement.
+Pour la récurrence, le constructeur $\rec$ satisfait bien le schéma
+d'axiomes.
+
+Grâce à cette construction, on en déduit le théorème annoncé au début.
+
+\begin{theorem}[Représentation des fonctions prouvablement totales]
+    Toute fonction calculable $f$ prouvablement totale dans l'arithmétique
+    du premier ordre est représentable par un terme du système T.
+\end{theorem}
+
+\begin{proof}
+    Soit $f$ une telle fonction. Par définition, on trouve une preuve
+    \[\varPT\concl \vdNJ \forall \vec x, \exists y, f(\vec x) = y\]
+    Par le lemme d'adéquation, on trouve donc un terme $t\in\STSet$ tel
+    que $\tyR t : \intT^k \to \intT\times \varTypBa$ qui réalise
+    la totalité de $f$. Par définition, cela signifie en particulier que
+    $\projP{1}{}\circ t$ représente exactement la fonction $f$.
+\end{proof}
