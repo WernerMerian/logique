@@ -38,29 +38,29 @@ III. Théorie des modèles
 
 IV. Calculabilité
 
-11. Langage régulier et automates finis
+12. Langage régulier et automates finis
 
-12. Langage algébrique et automates à pile
+13. Langage algébrique et automates à pile
 
-13. Modèles de calcul : fonctions récursives, machines de Turing
+14. Modèles de calcul : fonctions récursives, machines de Turing
 
-14. Enumérations et théorèmes de calculabilité
+15. Enumérations et théorèmes de calculabilité
 
-15. Arithmétique et incomplétude
-
-(16. Complexité ?)
+16. Arithmétique et incomplétude
 
 V. Théorie de la démonstration
 
 17. Calcul des séquents, complétude, logique intuitionniste
 
-18. Déduction naturelle
+18. Théorie abstraite de la réécriture
 
-19. Lambda-calcul non typé
+19. Déduction naturelle
 
-20. Lambda-calcul typé
+20. Lambda-calcul non typé
 
-21. Cohérence de l'arithmétique
+21. Lambda-calcul typé
+
+22. Cohérence de l'arithmétique
 
 
 ## Protocole de compilation
