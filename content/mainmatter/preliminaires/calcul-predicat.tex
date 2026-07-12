@@ -329,7 +329,8 @@ plusieurs variables à la fois par des termes.
 \end{exercise}
 
 \begin{exercise}
-  Soient $t,u\in\Term(\Sign)$, $\subSimul : \Var \partialto \Term(\Sign)$ et
+  Soient $t,u\in\Term(\Sign)$,
+  $\makeFunNamePartial{\subSimul}{\Var}{\Term(\Sign)}$ et
   $x \notin \VL(\subSimul)$ (cet ensemble est l'abréviation de
   $\displaystyle\bigcup_{y \in \VL(\subSimul)} \VL(\subSimul(y))$). Montrer que
   \[\subSimul(t[u/x]) = \subSimul(t)[\subSimul(u)/x]\]
@@ -379,7 +380,8 @@ sur l'univers de discours.
   (on notera les deux $\toM{\tok}$, sans indice) où :
   \begin{itemize}
   \item $\carMM$ est un ensemble.
-  \item pour chaque $f\in\SigFun$ d'arité $n$, $\toM{f} : \carMM^n \to \carMM$.
+  \item pour chaque $f\in\SigFun$ d'arité $n$,
+    $\makeFunName{\toM{f}}{\carMM^n}{\carMM}$.
   \item pour chaque $R\in\SigRel$ d'arité $n$, $\toM{R} \subseteq \carMM^n$.
   \end{itemize}
 
@@ -388,7 +390,7 @@ sur l'univers de discours.
   de constante est associé directement à un élément. En effet, on prend la
   convention que $X^0 \defeq \{*\}$, c'est-à-dire que la puissance $0$
   correspond à un singleton (dont l'élément n'est pas important). Ainsi, une
-  fonction $f : \{*\} \to \carMM$ est exactement le choix de la valeur
+  fonction $\makeFunName{f}{\{*\}}{\carMM}$ est exactement le choix de la valeur
   $f(*)$, c'est-à-dire le choix d'uné élément $x \in \carMM$.
 
   \noindent
@@ -433,8 +435,9 @@ dépendant des valeurs de $\env$.
 
 \begin{definition}[Environnement]
   Soit une signature $\Sign$ et une structure $\varMM$. Un environnement
-  $\env$ est une fonction partielle $\env : \Var\partialto \carMM$. On
-  note $\Enviro$ l'ensemble des environnements. Etant donnés un élément
+  $\env$ est une fonction partielle
+  $\makeFunNamePartial{\env}{\Var}{\carMM}$. On
+  note $\Enviro$ l'ensemble des environnements. \'Etant donnés un élément
   $m\in\carMM$, une variable $x$ et un environnement $\env$, on note
   $\env[x \mapsto m]$ l'environnement coïncidant avec $\env$ sur
   $\Var\setminus\{x\}$ et valant $m$ en $x$.
@@ -814,7 +817,7 @@ et de fonction.
 
 \begin{exercise}\label{pred.exo.morph.val}
   Montrer que pour tout morphisme de structure
-  $\varMoM : \varMM \to \varMN$, terme $t$ sur la même signature et
+  $\makeFunName{\varMoM}{\varMM}{\varMN}$, terme $t$ sur la même signature et
   environnement $\env$ tel que $\VL(t) \subseteq \dom(\env)$, on a l'égalité
   suivante~:
   \[\varMoM(\toMMI{t}) = \toMIP{t}{\varMN}{\varMoM\circ \env}\]
@@ -828,8 +831,8 @@ modèle de départ.
 
 \begin{definition}[Plongement]
   Un plongement d'une structure $\varMM$ vers une structure $\varMN$ est
-  un morphisme $\varMoM : \varMM \to \varMN$ pour lequel la deuxième condition
-  n'est plus une implication mais une équivalence~:
+  un morphisme $\makeFunName{\varMoM}{\varMM}{\varMN}$ pour lequel la deuxième
+  condition n'est plus une implication mais une équivalence~:
   \[\forall(m_1,\ldots,m_n)\in\carMM^n,\toM{R}(m_1,\ldots,m_n) \iff
   \toN{R}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
 \end{definition}
@@ -843,8 +846,8 @@ modèle de départ.
 Enfin, la notion d'isomorphisme est celle à laquelle on s'attend.
 
 \begin{definition}[Isomorphisme]
-  Un isomorphisme $\varMoM : \varMM \cong \varMN$ est un morphisme de
-  $\varMM$ vers $\varMN$ tel qu'il existe un morphisme $\varMoMB$ de
+  Un isomorphisme $\makeFunNameIso{\varMoM}{\varMM}{\varMN}$ est un morphisme
+  de $\varMM$ vers $\varMN$ tel qu'il existe un morphisme $\varMoMB$ de
   $\varMN$ vers $\varMM$ vérifiant
   \[\begin{cases}
   \varMoM\circ \varMoMB = \id_{\varMN}\\
@@ -858,15 +861,15 @@ près puisque toute formule qu'on voudrait énoncer reste stable en passant à
 travers un isomorphisme.
 
 \begin{proposition}
-  Si $\varMoM : \varMM \cong \varMN$ alors pour toute proposition $\varFF$,
-  $\satMM \varFF$ si et seulement si $\satMN\varFF$.
+  Si $\makeFunNameIso{\varMoM}{\varMM}{\varMN}$ alors pour toute proposition
+  $\varFF$, $\satMM \varFF$ si et seulement si $\satMN\varFF$.
 \end{proposition}
 
 \begin{proof}
   On montre par induction sur la structure de $\varFF$ que pour tout
   environnement
-  $\env : \Var\partialto \varMM$ tel que $\VL(\varFF) \subseteq\dom(\env)$,
-  on a l'équivalence
+  $\makeFunNamePartial{\env}{\Var}{\varMM}$ tel que
+  $\VL(\varFF) \subseteq\dom(\env)$, on a l'équivalence
   \[\satMI \varFF \iff \satMP{\varMN}{\varMoM\circ \env} \varFF\]
   \begin{itemize}
   \item si $\varFF$ est de la forme
@@ -876,7 +879,8 @@ travers un isomorphisme.
     $(\toMIP{(t_1)}{\varMN}{\varMoM\circ \env},\ldots,
     \toMIP{(t_n)}{\varMN}{\varMoM\circ\env})\in \toN{R}$,
     comme on sait qu'on a
-    un morphisme réciproque $\varMoMB : \varMN \to \varMM$, on peut
+    un morphisme réciproque
+    $\makeFunName{\varMoMB}{\varMN}{\varMM}$, on peut
     écrire
     $\toMMI{(t_i)}= \toMIP{(t_i)}{\varMM}{\varMoMB\circ\varMoM\circ\env}$,
     donc l'argument précédent appliqué à $\varMoMB$ permet de déduire que si
@@ -953,7 +957,7 @@ comme le montre l'exercice suivant.
 Cependant, pour un plongement, ce résultat devient valide.
 
 \begin{proposition}
-  Un morphisme $\varMoM : \varMM \to \varMN$ est un isomorphisme si et
+  Un morphisme $\makeFunName{\varMoM}{\varMM}{\varMN}$ est un isomorphisme si et
   seulement si c'est un plongement surjectif.
 \end{proposition}
 
@@ -2732,16 +2736,16 @@ d'un représentant).
 \subsection{Exercices}
 
 \begin{exercise}[Mise en jambes]
-  
+  Commençons par prouver des énoncés pour $\vdP$~:
   \begin{enumerate}[label=(\roman*)]
-  \item Ecrire un arbre de dérivation pour chaque cas~:
+  \item \'Ecrire un arbre de dérivation pour chaque cas~:
     \begin{itemize}
-      \begin{minipage}{0.4\textwidth}
+      \begin{minipage}{0.5\textwidth}
       \item $(\exists x, \forall y, \varFF(x,y)) \vdP
         (\forall y, \exists x, \varFF(x,y))$
       \item $\vdP\exists x, (\varFF(x) \to \forall y, \varFF(y))$
       \end{minipage}
-      \begin{minipage}{0.4\textwidth}
+      \begin{minipage}{0.35\textwidth}
       \item $\vdP(\varFF \to \varFP) \lor (\varFP \to \varFF)$
       \item $
       \lnot\lnot(\varFF \land \varFP) \dvvd \lnot\lnot\varFF\land
@@ -2758,11 +2762,11 @@ d'un représentant).
     \cref{subsec.theorie}.
     Montrer dans cette théorie les deux propositions suivantes~:
     \begin{itemize}
-      \begin{minipage}{0.4\textwidth}
+      \begin{minipage}{0.5\textwidth}
       \item
         $\forall x,(\forall y,(xy = y)\land(yx = y)) \to x = e$
       \end{minipage}
-      \begin{minipage}{0.4\textwidth}
+      \begin{minipage}{0.3\textwidth}
       \item $\forall x,y, (xy)^{-1} = y^{-1}x^{-1}$
       \end{minipage}
     \end{itemize}

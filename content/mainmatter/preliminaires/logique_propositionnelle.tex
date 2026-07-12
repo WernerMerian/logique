@@ -108,7 +108,8 @@ un environnement. On utilisera l'ensemble $\intB$ pour signifier
 $\{\mathrm{Faux},\mathrm{Vrai}\}$.
 
 \begin{definition}[Environnement]
-  Un environnement est une fonction partielle $\env : \Var \partialto \intB$
+  Un environnement est une fonction partielle
+  $\makeFunNamePartial{\env}{\Var}{\intB}$
   dont le domaine (l'ensemble des valeurs $x\in \Var$ sur lesquelles
   $\env$ est défini) est fini.
 \end{definition}
@@ -120,7 +121,7 @@ naturelles pour donner le sens voulu aux propositions.
 
 \begin{definition}[Valuation]
   Soit $\env$ un environnement. On définit par induction sur $\Prop$
-  la fonction partielle $\ValE : \Prop \to \intB$~:
+  la fonction partielle $\makeFunName{\ValE}{\Prop}{\intB}$~:
   \begin{itemize}
   \item $\ValE(\top) = 1$.
   \item $\ValE(\bot) = 0$.
@@ -146,9 +147,10 @@ naturelles pour donner le sens voulu aux propositions.
 
 \begin{notation}
   Par souci de lisibilité, on introduit dès maintenant la notation suivante~:
-  si $f : X \to Y$ est une fonction et $A \subseteq X$, alors on note
-  $f\restr{A}$ la restriction de $f$ à $A$, c'est-à-dire la fonction
-  $f\restr{A} : A \to Y$ définie par $x \mapsto f(x)$.
+  si $\makeFunName{f}{X}{Y}$ est une fonction et $\varPt \subseteq X$,
+  alors on note $f\restr{\varPt}$ la restriction de $f$ à $\varPt$,
+  c'est-à-dire la fonction $\makeFunName{f\restr{\varPt}}{\varPt}{Y}$
+  définie par $x \mapsto f(x)$.
 \end{notation}
 
 \begin{exercise}\label{exo.val.VL}
@@ -296,7 +298,7 @@ propositions.
   On définit l'ensemble $\Enviro$ des environnement potentiellement infinis
   comme l'ensemble des fonctions partielles $\Var \partialto \intB$. On
   définit la
-  fonction $\Val : \Enviro\times \Prop \to \intB$, pour tout
+  fonction $\makeFunName{\Val}{\Enviro\times \Prop}{\intB}$, pour tout
   $\env\in\Enviro$, par :
   \[\Val_\env(\varFF) = \Val_{\env\restr{\VL(\varFF)}}(\varFF)\]
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
@@ -1082,9 +1084,9 @@ encodable par exemple sur un ordinateur).
 
   Commençons par prouver que notre système actuel a la propriété de complétude.
   \begin{enumerate}[label=(\roman*)]
-  \item Soit une fonction $f : \intB^n \to \intB$. Montrer qu'il existe une
-    formule $\varFF_f$ dont les variables libres sont parmi $x_1,\ldots,x_n$ et
-    telle que pour tout $n$-uplet $(b_1,\ldots,b_n)$~:
+  \item Soit une fonction $\makeFunName{f}{\intB^n}{\intB}$. Montrer qu'il existe
+    une formule $\varFF_f$ dont les variables libres sont parmi $x_1,\ldots,x_n$
+    et telle que pour tout $n$-uplet $(b_1,\ldots,b_n)$~:
     \[f(b_1,\ldots,b_n) = \ValP{(b_1,\ldots,b_n)}(\varFF_f)\]
   \end{enumerate}
   Ainsi, toute fonction booléenne peut se représenter par une formule utilisant
@@ -1092,7 +1094,7 @@ encodable par exemple sur un ordinateur).
 
   On définit un système de connecteurs comme la donnée d'un ensemble $\Symbol$
   et, pour chaque élément $s \in \Symbol$, d'une arité $\arite(s) \in \bN$ et
-  d'une fonction $\Ff_s : \intB^{\arite(s)} \to \intB$.
+  d'une fonction $\makeFunName{\Ff_s}{\intB^{\arite(s)}}{\intB}$.
   Etant donné un système de connecteurs $S = (\Symbol,\arite,\Ff)$, on
   définit l'ensemble inductif des $S$-propositions comme étant composé des
   variables (d'arité nulle) et des symboles $s \in \Symbol$ (dont l'arité
@@ -1103,8 +1105,9 @@ encodable par exemple sur un ordinateur).
   \end{enumerate}
 
   On dit qu'un système de connecteurs $S$ est complet si pour toute fonction
-  $f : \intB^n \to \intB$ il existe une formule $\varFF$ telle que, pour tout
-  $n$-uplet $(b_1,\ldots,b_n)$~:
+  booléenne
+  $\makeFunName{f}{\intB^n}{\intB}$ il existe une formule $\varFF$ telle que,
+  pour tout $n$-uplet $(b_1,\ldots,b_n)$~:
   \[f(b_1,\ldots,b_n) = \ValP{(b_1,\ldots,b_n)}(\varFF_f)\]
   \begin{enumerate}[resume,label=(\roman*)]
   \item Montrer que le système de connecteurs $\{\lnot,\lor\}$ (induit pas les
@@ -1184,7 +1187,7 @@ encodable par exemple sur un ordinateur).
   simplement une suite binaire $\makeFunName{\varPath}{\bN}{\intB}$.
 
   \begin{pbQuest}[resume]
-  \item Soit $\varPath : \bN \to \intB$. Définir une fonction
+  \item Soit $\makeFunName{\varPath}{\bN}{\intB}$. Définir une fonction
     \[\makeFunName{\varPath\restr\tok}{\bN}{\List(\intB)}\]
     telle que $\varPath\restr{n}$ est la liste des $n$ premières valeurs de
     $\varPath$ (pour $n = 0$, on retournera la liste vide $\nil$).
@@ -1201,7 +1204,8 @@ encodable par exemple sur un ordinateur).
   L'énoncé du lemme (faible) de König est
   \begin{quotation}
     Si $\varTree \in \Tree$ est un arbre infini, alors il existe
-    $\varPath : \bN \to \intB$ tel que $\varPath \inTreeInf \varTree$.
+    $\makeFunName{\varPath}{\bN}{\intB}$ tel que
+    $\varPath \inTreeInf \varTree$.
   \end{quotation}
 
   \begin{pbQuest}[resume]
@@ -1286,7 +1290,8 @@ encodable par exemple sur un ordinateur).
 
   \noindent
   On considère ici des environnements finis. Pour un environnement
-  $\env : \Var \partialto \intB$, on définit le contexte $\varCG_{\env}$ par~:
+  $\makeFunNamePartial{\env}{\Var}{\intB}$, on définit le contexte $\varCG_{\env}$
+  par~:
   \begin{itemize}
   \item si $x \in \dom(\env)$ et $\env(x) = 1$, alors on ajoute $x$ dans
     $\varCG_{\env}$~;
