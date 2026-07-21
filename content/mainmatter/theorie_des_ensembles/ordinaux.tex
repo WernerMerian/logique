@@ -24,7 +24,7 @@ d'obtenir des représentants canoniques.
 Les cardinaux forment l'exemple le plus évident d'un tel procédé~: par défaut,
 on imagine un cardinal comme une classe d'équipotence, c'est-à-dire comme
 l'univers ensembliste $\unZF$ quotienté par la relation d'équivalence
-\[X\sim Y \defeq \exists f : X \to Y, \bij(f)\]
+\[X\cong Y \defeq \exists \makeFunName{f}{X}{Y}, \bij(f)\]
 Le souci, évidemment, est que ces classes ne sont pas des ensembles. Pour le
 cardinal $1$, on peut par exemple prendre n'importe quel ensemble $X$ et
 considérer $\{X\}$, montrant que tout l'univers $\unZF$ peut être injecté
@@ -86,8 +86,8 @@ ordonné pour la relation $\in$. Telle est donc notre définition d'ordinal.
     \[(\forall x\in \varOa, x\notin x)\land (\forall x,y,z\in \varOa,
     x\in y \land y \in z \implies x \in z)\]
     et que toutes ses parties non vides ont un minimum~:
-    \[\forall X\subseteq \varOa, X\neq\vide\implies
-    \exists x \in X, \forall y \in X, (x=y \lor x \in y)\]
+    \[\forall \varPt\subseteq \varOa, \varPt\neq\vide\implies
+    \exists x \in \varPt, \forall y \in \varPt, (x=y \lor x \in y)\]
   \end{itemize}
 
   \noindent
@@ -112,11 +112,11 @@ ordonné pour la relation $\in$. Telle est donc notre définition d'ordinal.
   \item $0$ est un ordinal.
   \item Plus généralement, tout entier $n = \intervInt{n}$ est un ordinal.
   \item $\Ow$, qui est le nom qu'on utilise en théorie des ensembles pour
-    l'ensemble qu'on a décrété être $\bN$, est aussi un ordinal. Les
-    différents axiomes du fait d'être un ordinal peuvent se prouver par
-    récurrence. C'est aussi le plus petit ordinal infini, puisque pour tout
-    $n\in \Ow$, $n$ est fini (nous donnerons plus tard une définition d'être
-    un ordinal fini).
+    l'ensemble qu'on a décrété être $\bN$ dans le chapitre précédent, est aussi
+    un ordinal. Les différents axiomes du fait d'être un ordinal peuvent se
+    prouver par récurrence. C'est aussi le plus petit ordinal infini, puisque
+    pour tout $n\in \Ow$, $n$ est fini (nous donnerons plus tard une définition
+    d'être un ordinal fini).
   \end{itemize}
 \end{example}
 
@@ -154,12 +154,13 @@ $\in$ (qui est donc la relation $x \in y \lor x = y$) coïncide avec l'inclusion
       $\Ss\varOa$, alors soit $z = \varOa$ et la transitivité de $\varOa$
       donne le résultat, soit $z \in \varOa$ et la transitivité de $\in$ dans
       $\varOa$ donne le résultat.
-    \item soit une partie non vide $X\subseteq \Ss\varOa$, alors $X$ a un
-      minimum. Si $X = \{\varOa\}$, son minimum est $\varOa$. Sinon, on en
-      déduit que $X\cap \varOa \neq\vide$, donc on peut considérer, comme
-      $\varOa$ est un ordinal, le minimum de $X\setminus \{\varOa\}$~: le
-      minimum de cet ensemble est le minimum de $X$ puisque $\varOa$ est
-      plus grand que tous ses éléments. \qedhere
+    \item soit une partie non vide $\varPt\subseteq \Ss\varOa$, alors $\varPt$ a
+      un minimum. Si $\varPt = \{\varOa\}$, son minimum est $\varOa$. Sinon, on
+      en déduit que $\varPt\cap \varOa \neq\vide$, donc on peut considérer,
+      comme $\varOa$ est un ordinal, le minimum de
+      $\varPt\setminus \{\varOa\}$~: le minimum de cet ensemble est le minimum
+      de $\varPt$ puisque $\varOa$ est plus grand que tous ses éléments.
+      \qedhere
     \end{itemize}
   \end{itemize}
 \end{proof}
@@ -183,14 +184,14 @@ $\in$ (qui est donc la relation $x \in y \lor x = y$) coïncide avec l'inclusion
     \item $\in$ est transitif~: si $x\in y\in z$ sont des éléments de
       $\varOa\cap\varOb$ alors en particulier $x\in y \in z$ dans $\varOa$, donc
       $x\in z$ par transitivité de $\in$ dans $\varOa$.
-    \item soit $X\subseteq \varOa\cap \varOb$ non vide. Par définition,
-      $X\subseteq \varOa$ donc on peut trouver un minimum pour $X$ dans
-      $\varOa$, notons-le $m$. Pour montrer que $m$ est un minimum dans
+    \item soit $\varPt\subseteq \varOa\cap \varOb$ non vide. Par définition,
+      $\varPt\subseteq \varOa$ donc on peut trouver un minimum pour $\varPt$
+      dans $\varOa$, notons-le $m$. Pour montrer que $m$ est un minimum dans
       $\varOa\cap \varOb$, il suffit de montrer que $m \in \varOb$ puisque tout
       élément de $\varOa\cap \varOb$ est élément de $\varOa$, donc minorer dans
       $\varOa$ donne aussi un minorant dans $\varOa\cap\varOb$. Or, on sait que
-      $X\subseteq \varOa\cap\varOb$, donc, $m$ étant le minimum de $X$,
-      $m\in \varOa\cap\varOb$. Donc $X$ a un minimum. \qedhere
+      $\varPt\subseteq \varOa\cap\varOb$, donc, $m$ étant le minimum de
+      $\varPt$, $m\in \varOa\cap\varOb$. Donc $\varPt$ a un minimum. \qedhere
     \end{itemize}
   \end{itemize}
 \end{proof}
@@ -229,7 +230,8 @@ la proposition suivante.
   Les propositions suivantes sont vraies~:
   \begin{enumerate}
   \item si $\varOa\in\varOb\in \Ord$ alors $\varOa \in \Ord$.
-  \item si $X\subseteq \Ord$ est non vide, alors $\bigcap X \in \Ord$.
+  \item si $\varFam\subseteq \Ord$ est non vide, alors
+    $\bigcap \varFam \in \Ord$.
   \item $\Ord$ n'est pas un ensemble.
   \end{enumerate}
 \end{proposition}
@@ -249,32 +251,32 @@ la proposition suivante.
         $x\notin x$ puisque $\varOb$ est un ordinal.
       \item $\in$ est transitif puisque transitif sur $\varOb$ et
         $\varOa\subseteq\varOb$.
-      \item si $X\subseteq \varOa$ est non vide, alors $X\subseteq \varOb$
-        donc $X$ a un minimum pour $\in$~: c'est aussi un minimum pour $\in$
-        dans $\varOa$.
+      \item si $\varPt\subseteq \varOa$ est non vide, alors
+        $\varPt\subseteq \varOb$ donc $\varPt$ a un minimum pour $\in$~: c'est
+        aussi un minimum pour $\in$ dans $\varOa$.
       \end{itemize}
     \end{itemize}
     Donc $\varOa$ est un ordinal.
-  \item $\bigcap X$ est un ordinal~:
+  \item $\bigcap \varFam$ est un ordinal~:
     \begin{itemize}
-    \item $\bigcap X$ est transitif~: si $x\in y \in \bigcap X$, alors pour
-      tout $\varOa \in X$, $x \in y \in \varOa$ donc par transitivité de
-      $\varOa$, $x \in \varOa$, donc $x\in \bigcap X$.
-    \item $\in$ est un bon ordre strict sur $\bigcap X$~:
+    \item $\bigcap \varFam$ est transitif~: si $x\in y \in \bigcap \varFam$,
+      alors pour tout $\varOa \in \varFam$, $x \in y \in \varOa$ donc par
+      transitivité de $\varOa$, $x \in \varOa$, donc $x\in \bigcap \varFam$.
+    \item $\in$ est un bon ordre strict sur $\bigcap \varFam$~:
       \begin{itemize}
-      \item si $x \in \bigcap X$ alors en particulier $x\in \varOa$ pour un
-        certain $\varOa \in X$, et comme $\varOa \in \Ord$, on en déduit que
-        $x\notin x$.
-      \item $\in$ est transitif~: si $x\in y \in z$ est vrai dans $\bigcap X$,
-        alors les relations sont encore vraies dans un certain
-        $\varOa \in \bigcap X$, donc $x \in z$ par transitivité de $\in$ dans
-        $\varOa$.
-      \item si $X\subseteq \bigcap X$ est non vide, alors on peut en trouver
-        un minimum dans un certain $\varOa \in X$. Ce minimum est dans
-        $X$, donc dans $\bigcap X$~: c'est donc bien un minimum au sens de $\in$
-        dans $\bigcap X$.
+      \item si $x \in \bigcap \varFam$ alors en particulier $x\in \varOa$ pour
+        un certain $\varOa \in \varFam$, et comme $\varOa \in \Ord$, on en
+        déduit que $x\notin x$.
+      \item $\in$ est transitif~: si $x\in y \in z$ est vrai dans
+        $\bigcap \varFam$, alors les relations sont encore vraies dans un
+        certain $\varOa \in \bigcap \varFam$, donc $x \in z$ par transitivité de
+        $\in$ dans $\varOa$.
+      \item si $\varPt\subseteq \bigcap \varFam$ est non vide, alors on peut en
+        trouver un minimum dans un certain $\varOa \in \varFam$. Ce minimum est
+        dans $\varPt$, donc dans $\bigcap \varFam$~: c'est donc bien un minimum
+        au sens de $\in$ dans $\bigcap \varFam$.
       \end{itemize}
-      Donc $\bigcap X$ est un ordinal.
+      Donc $\bigcap \varFam$ est un ordinal.
     \end{itemize}
   \item Supposons que $\Ord$ est un ensemble. Alors, par les propositions
     précédentes, c'est un ordinal. En effet, $\Ord$ est alors un ensemble
@@ -303,33 +305,35 @@ la proposition suivante.
 \end{notation}
 
 \begin{property}
-  Soit $X\subseteq\Ord$ un ensemble, alors $\bigcup X \in \Ord$.
+  Soit $\varFam\subseteq\Ord$ un ensemble, alors $\bigcup \varFam \in \Ord$.
 \end{property}
 
 \begin{proof}
   On vérifie les axiomes d'un ordinal~:
   \begin{itemize}
-  \item si $x\in y\in \bigcup X$ alors on trouve $\varOa \in X$ tel que
-    $x\in y \in \varOa$, et comme $\varOa$ est transitif, $x\in \varOa$, donc
-    $x\in \bigcup X$.
-  \item si $x\in X$ alors on trouve $\varOa \in X$ tel que $x\in \varOa$, donc
-    comme $\varOa$ est un ordinal, $x\notin x$.
-  \item si $x\in y\in z$ sont trois éléments de $\bigcup X$, alors on trouve
-    $\varOa,\varOb,\varOc\in X$ tels que $x\in \varOa,y\in \varOb,z\in\varOc$.
+  \item si $x\in y\in \bigcup \varFam$ alors on trouve $\varOa \in \varFam$ tel
+    que $x\in y \in \varOa$, et comme $\varOa$ est transitif, $x\in \varOa$,
+    donc $x\in \bigcup \varFam$.
+  \item si $x\in \bigcup \varFam$ alors on trouve $\varOa \in \varFam$ tel que
+    $x\in \varOa$, donc comme $\varOa$ est un ordinal, $x\notin x$.
+  \item si $x\in y\in z$ sont trois éléments de $\bigcup \varFam$, alors on
+    trouve $\varOa,\varOb,\varOc\in \varFam$ tels que
+    $x\in \varOa,y\in \varOb,z\in\varOc$.
     Comme $\Ord$ est bien ordonnée, on trouve un maximum entre $\varOa$,
     $\varOb$ et $\varOc$, disons $\varOa$ quitte à renommer nos ordinaux.
     Il vient donc que $x,y,z\in\varOa$, donc que $x\in z$ comme $\in$
     est un ordre sur $\varOa$.
-  \item soit $Y\subseteq \bigcup X$ une partie non vide de $X$. On trouve par
-    hypothèse un élément $x\in Y$, et donc $\varOa \in X$ tel que $x\in\varOa$.
-    Alors $Y\cap \varOa$ a un plus petit élément, notons-le $m$. Montrons que
-    $m$ est un minimum de $Y$. Soit $y\in Y$, par hypothèse on trouve
-    $\varOb\in X$ tel que $y\in \varOb$. Comme $y\in \varOb$, $y$ est un
-    ordinal, donc soit $y\subseteq \varOa$, soit $\varOa \in y$. Dans le premier
-    cas, si $y\in \varOa$ alors $y\in Y \cap \varOa$ donc $m \leq y$ par
-    définition, et si $y=\varOa$ alors $m\in Y \cap \varOa$ donc
-    $m \leq \varOa$. Supposons maintenant que $\varOa \in y$. Alors on sait que
-    $m\in \varOa\in y$, donc $m\in y$, d'où $m\leq y$.\qedhere
+  \item soit $\varPt\subseteq \bigcup \varFam$ une partie non vide de $\varFam$.
+    On trouve par hypothèse un élément $x\in \varPt$, et donc
+    $\varOa \in \varFam$ tel que $x\in\varOa$.
+    Alors $\varPt\cap \varOa$ a un plus petit élément, notons-le $m$. Montrons
+    que $m$ est un minimum de $\varPt$. Soit $y\in \varPt$, par hypothèse on
+    trouve $\varOb\in \varFam$ tel que $y\in \varOb$. Comme $y\in \varOb$, $y$
+    est un ordinal, donc soit $y\subseteq \varOa$, soit $\varOa \in y$. Dans le
+    premier cas, si $y\in \varOa$ alors $y\in \varPt \cap \varOa$ donc
+    $m \leq y$ par définition, et si $y=\varOa$ alors $m\in \varPt \cap \varOa$
+    donc $m \leq \varOa$. Supposons maintenant que $\varOa \in y$. Alors on sait
+    que $m\in \varOa\in y$, donc $m\in y$, d'où $m\leq y$.\qedhere
   \end{itemize}
 \end{proof}
 
@@ -337,28 +341,29 @@ la proposition suivante.
 Donnons maintenant un outil efficace pour prouver qu'un ensemble est un ordinal.
 
 \begin{proposition}
-  Soit $\varOa$ un ordinal et $Y\subseteq \varOa$ une partie close par le bas,
-  c'est-à-dire telle que si $x\in Y$, $y\in \varOa$ et $y\in x$ alors
-  $y\in \varOa$, alors $Y$ est un ordinal (on dit aussi que $Y$ est un segment
-  initial de $\varOa$).
+  Soit $\varOa$ un ordinal et $\varPt\subseteq \varOa$ une partie close par le
+  bas, c'est-à-dire telle que si $x\in \varPt$, $y\in \varOa$ et $y\in x$ alors
+  $y\in \varPt$, alors $\varPt$ est un ordinal (on dit aussi que $\varPt$ est un
+  segment initial de $\varOa$).
 \end{proposition}
 
 \begin{proof}
-  On vérifie les axiomes d'un ordinal pour $Y$~:
+  On vérifie les axiomes d'un ordinal pour $\varPt$~:
   \begin{itemize}
-  \item $Y$ est transitif~: par définition de partie close par le bas, pour
+  \item $\varPt$ est transitif~: par définition de partie close par le bas, pour
     l'ordre strict $\in$.
-  \item $\in$ est un ordre strict sur $Y$~:
+  \item $\in$ est un ordre strict sur $\varPt$~:
     \begin{itemize}
-    \item $\in$ est irréflexif~: si $x \in Y$ alors $x \in \varOa$ donc
+    \item $\in$ est irréflexif~: si $x \in \varPt$ alors $x \in \varOa$ donc
       $x\notin x$.
-    \item $\in$ est transitif~: si $x\in y \in z$ est vrai dans $Y$, alors
+    \item $\in$ est transitif~: si $x\in y \in z$ est vrai dans $\varPt$, alors
       la même chose est vraie dans $\varOa$, donc $x \in z$ par transitivité de
       $\varOa$.
-    \item si $X\subseteq Y$ est non vide, alors comme $Y\subseteq \varOa$ on
-      peut y trouver un minimum $m$ pour $\in$ dans $\varOa$. C'est un élément
-      de $X$, donc de $Y$, et comme les éléments de $Y$ sont éléments de
-      $\varOa$ on en déduit que $m$ est bien le minimum de $X$ dans $Y$.\qedhere
+    \item si $\varPtB\subseteq \varPt$ est non vide, alors comme
+      $\varPt\subseteq \varOa$ on peut y trouver un minimum $m$ pour $\in$ dans
+      $\varOa$. C'est un élément de $\varPtB$, donc de $\varPt$, et comme les
+      éléments de $\varPt$ sont éléments de $\varOa$ on en déduit que $m$ est
+      bien le minimum de $\varPtB$ dans $\varPt$.\qedhere
     \end{itemize}
   \end{itemize}
 \end{proof}
@@ -374,8 +379,8 @@ lemme d'effondremnet de Mostovski.
 
 \begin{lemma}
   Soient $\varOa$ et $\varOb$ deux ordinaux, avec
-  $\varCol : (\varOa,\in) \cong (\varOb,\in)$, alors $\varCol = \id$ et
-  $\varOa = \varOb$.
+  $\makeFunNameIso{\varCol}{(\varOa,\in)}{(\varOb,\in)}$, alors $\varCol = \id$
+  et $\varOa = \varOb$.
 \end{lemma}
 
 \begin{proof}
@@ -388,17 +393,17 @@ lemme d'effondremnet de Mostovski.
 
 \begin{proposition}
   Soit $(X,<)$ un bon ordre. Alors il existe un unique ordinal $\varOa$ et un
-  unique isomorphisme $\varCol : (X,<)\cong (\varOa,\in)$.
+  unique isomorphisme $\makeFunNameIso{\varCol}{(X,<)}{(\varOa,\in)}$.
 \end{proposition}
 
 \begin{proof}
-  On définit la fonction $\varCol : X \to \Ord$ par récursion bien fondée sur
-  $X$~:
+  On définit la fonction $\makeFunName{\varCol}{X}{\Ord}$ par récursion bien
+  fondée sur $X$~:
   \[\varCol(x)\defeq \compr{\varCol(y)}{y < x}\]
   qui, d'après l'axiome de remplacement et par une induction bien fondée,
-  peut bien être défini comme une fonction $\varCol : X \to Y$ avec
-  $Y\subseteq \Ord$. On vérifie alors que $\varCol$ est un isomorphisme
-  d'ensembles ordonnés vers un ordinal~:
+  peut bien être défini comme une fonction $\makeFunName{\varCol}{X}{\varPt}$ en
+  posant $\varPt\subseteq \Ord$ son codomaine. On vérifie alors que $\varCol$
+  est un isomorphisme d'ensembles ordonnés vers un ordinal~:
   \begin{itemize}
   \item $\varCol$ est surjective par définition, puisqu'on considère son
     codomaine comme étant son image.
@@ -409,12 +414,12 @@ lemme d'effondremnet de Mostovski.
   \item si $\varCol(x) \in \varCol(y)$, alors $y \leq x$ est impossible puisque
     dans ce cas, $\varCol(y) \in \varCol(x)$, donc (comme $<$ est total)
     $x < y$.
-  \item $Y$ est un segment initial de $\Ord$~: si $\varOa \in Y$ alors on trouve
-    $x \in X$ tel que $\varOa = \varCol(x)$, et si $\varOb \in \varOa$ alors
-    on trouve $y\in X$ tel que $\varOb = \varCol(y)$ et $y < x$, par définition
-    de $\varCol$, donc $\varOb \in Y$.
+  \item $\varPt$ est un segment initial de $\Ord$~: si $\varOa \in \varPt$ alors
+    on trouve $x \in X$ tel que $\varOa = \varCol(x)$, et si $\varOb \in \varOa$
+    alors on trouve $y\in X$ tel que $\varOb = \varCol(y)$ et $y < x$, par
+    définition de $\varCol$, donc $\varOb \in \varPt$.
   \end{itemize}
-  On a donc trouvé un isomorphisme entre $(X,<)$ et un ordinal $\varOa$ donné.
+  On a donc trouvé un isomorphisme entre $(X,<)$ et un certain ordinal $\varOa$.
   Si on avait deux ordinaux isomorphes, alors par le lemme précédent,
   l'isomorphisme induit entre eux est l'identité, donc on a en fait un seul
   tel ordinal, et l'isomorphisme est unique par le même argument.
@@ -422,8 +427,9 @@ lemme d'effondremnet de Mostovski.
 
 \begin{corollary}
   Soient deux ordinaux $\varOa,\varOb$ tels qu'on a une fonction strictement
-  croissante $f : \varOa \to \varOb$ et une fonction strictement croissante
-  $g : \varOb \to \varOa$, alors $\varOa = \varOb$ et $f = g = \id_{\varOa}$.
+  croissante $\makeFunName{f}{\varOa}{\varOb}$ et une fonction strictement
+  croissante $\makeFunName{g}{\varOb}{\varOa}$, alors $\varOa = \varOb$ et
+  $f = g = \id_{\varOa}$.
 \end{corollary}
 
 \begin{definition}
@@ -571,8 +577,8 @@ Pour préciser ces notions, nous allons introduire un peu de vocabulaire.
 
 \begin{definition}[Fonction inductive pour une relation]
   Soit $H(x,y)$ une relation fonctionnelle à deux variables libres. Soit
-  $\varOa$ un ordinal. On dit qu'une fonction $f : \varOa \to \unZF$ est
-  inductive pour $H$ si pour tout $\varOb < \varOa$, on a~:
+  $\varOa$ un ordinal. On dit qu'une fonction $\makeFunName{f}{\varOa}{\unZF}$
+  est inductive pour $H$ si pour tout $\varOb < \varOa$, on a~:
   \begin{itemize}
   \item $f\restr\varOb$ est dans le domaine de $H$.
   \item $H(f\restr{\varOb},f(\varOb))$.
@@ -618,7 +624,7 @@ $H$ dont le domaine est $\varOa$.
 
 \begin{lemma}
   Soit $H$ une relation fonctionnelle et $\varOa$ un ordinal. Alors il existe
-  au plus une fonction $f : \varOa \to X$ qui est inductive pour $H$.
+  au plus une fonction $\makeFunName{f}{\varOa}{X}$ qui est inductive pour $H$.
 \end{lemma}
 
 \begin{proof}
@@ -636,15 +642,17 @@ il existe effectivement une fonction $H$-inductive de domaine $\varOa$.
 \begin{lemma}
   Soit $H$ une relation fonctionnelle dont le domaine est stable, c'est-à-dire
   que si $H(x,y)$ alors $y$ est lui-même dans le domaine. Pour tout
-  $\varOa \in \Ord$, il existe une fonction $f : \varOa \to X$ qui est inductive
-  pour $H$.
+  $\varOa \in \Ord$, il existe une fonction $\makeFunName{f}{\varOa}{X}$ qui est
+  inductive pour $H$.
 \end{lemma}
 
 \begin{proof}
-  Par l'absurde, prenons un $\varOa$ minimal tel que $f : \varOa \to X$ n'est
+  Par l'absurde, prenons un $\varOa$ minimal tel que
+  $\makeFunName{f}{\varOa}{X}$ n'est
   pas définie (pour $f$ étant $H$-inductive). Comme $\varOa$ est minimal, on
   sait que pour tout $\varOb < \varOa$, il existe une fonction
-  $f_{\varOb} :\varOb\to X$ qui est inductive pour $H$. On définit alors
+  $\makeFunName{f_{\varOb}}{\varOb}{X}$ qui est inductive pour $H$. On définit
+  alors
   \[\makeFun{f}{\varOa}{X}{\varOb}{H(f_{\varOb})}\]
   On remarque, comme chaque $f_{\varOb}$ est $H$-inductive, et par unicité d'une
   fonction $H$-inductive, que $f_{\varOb}\restr{\varOc} = f_{\varOc}$ pour tous
@@ -657,8 +665,8 @@ il existe effectivement une fonction $H$-inductive de domaine $\varOa$.
   \item $f(\varOb)=H(f\restr{\varOb})=H(f_{\varOb})$ est vérifié par définition.
   \end{itemize}
 
-  On en déduit donc qu'il existe une fonction $f : \varOa \to X$ inductive pour
-  $H$.
+  On en déduit donc qu'il existe une fonction $\makeFunName{f}{\varOa}{X}$
+  inductive pour $H$.
 \end{proof}
 
 \noindent
@@ -666,8 +674,9 @@ On en déduit le théorème de récursion.
 
 \begin{theorem}[Principe de récursion transfinie]\label{thm.recurs.transf}
   Soit $H$ une relation fonctionnelle telle que pour tout $x\in \dom(H)$,
-  $H(x)\in\dom(H)$. Il existe alors une unique fonction $f$ de $\Ord$ dans
-  $\im(H)$ telle que $f\restr{\varOa}$ est $H$-inductive pour tout $\varOa$.
+  $H(x)\in\dom(H)$. Il existe alors une unique fonction
+  $\makeFunName{f}{\Ord}{\im(H)}$ telle que $f\restr{\varOa}$ est $H$-inductive
+  pour tout $\varOa$.
 \end{theorem}
 
 \begin{proof}
@@ -676,7 +685,7 @@ On en déduit le théorème de récursion.
   existe un prédicat $\varFF$ fonctionnel dont le domaine est $\Ord$ et qui
   vérifie l'hypothèse que l'on veut. Pour écrire ce prédicat, il nous suffit
   d'utiliser la définition précédente~:
-  \[\varFF(\varOa,y) \defeq \exists (f : \varOa \to X),
+  \[\varFF(\varOa,y) \defeq \exists (\makeFunName{f}{\varOa}{X}),
   \ind_H(f)\land H(f) = y\]
 
   On a vérifié précédemment que la fonction définie de cette façon est bien
@@ -701,7 +710,7 @@ s'ils sont successeurs ou limites, en utilisant les formules
 \isS(\varOa)\defeq \exists \varOb. \varOa = \Ss\varOb \qquad
 \isL(\varOl)\defeq \varOl \neq 0 \land \bigcup \varOl = \varOl\]
 et l'astuce précédente permettant de récupérer le rang de l'argument, on peut
-donner une fonction $f : \Ord \to \unZF$ par trois données~:
+donner une fonction $\makeFunName{f}{\Ord}{\unZF}$ par trois données~:
 \begin{itemize}
 \item un ensemble $X_0$.
 \item une relation fonctionnelle $H_{\Ss}$ qui, à chaque ensemble
@@ -721,17 +730,17 @@ Si on souhaite expliciter la formule, celle-ci est alors
 On peut aussi généraliser notre \cref{thm.recurs.transf} en permettant la
 définition de fonctions $\Ord\times\Ord\to \unZF$. \'Etant donnée une
 relation fonctionnelle $H$, on peut définir une fonction
-$f : \Ord \to \unZF$ telle que $f\restr{\varOa}$ est une fonction. Soit
-maintenant un énoncé fonctionnel $H$ à deux paramètres, disons $x$ et $\varOa$.
-Pour tout $\varOa\in\Ord$, il est possible de définir la relation fonctionnelle
-$H$ en fixant $\varOa$, donnant alors une fonction
-$f_{\varOa} : \Ord \to \unZF$. On a donc ensuite, en prenant la fonction
-$\varOa \mapsto f_{\varOa}$, une fonction $g : \Ord\to(\Ord\to\unZF)$, que
-l'on peut réécrire en une fonction $g' : \Ord\times\Ord \to \unZF$. On
-évitera bien sûr de détailler tout ce processus lorsque l'on définira des
-fonctions par récursion transfinie, mais il est important de garder en tête que
-l'on peut effectivement faire cela, et ce de façon purement syntaxique (sans
-avoir recours à la notion de classe).
+$\makeFunName{f}{\Ord}{\unZF}$ telle que $f\restr{\varOa}$ est une fonction.
+Soit maintenant un énoncé fonctionnel $H$ à deux paramètres, disons $x$ et
+$\varOa$. Pour tout $\varOa\in\Ord$, il est possible de définir la relation
+fonctionnelle $H$ en fixant $\varOa$, donnant alors une fonction
+$\makeFunName{f_{\varOa}}{\Ord}{\unZF}$. On a donc ensuite, en prenant la
+fonction $\varOa \mapsto f_{\varOa}$, une fonction
+$\makeFunName{g}{\Ord}{(\Ord\to\unZF)}$, que l'on peut réécrire en une fonction
+$\makeFunName{g'}{\Ord\times\Ord}{\unZF}$. On évitera bien sûr de détailler tout
+ce processus lorsque l'on définira des fonctions par récursion transfinie, mais
+il est important de garder en tête que l'on peut effectivement faire cela, et ce
+de façon purement syntaxique (sans avoir recours à la notion de classe).
 
 On donne maintenant deux exemples classiques de fonctions définies par récursion
 transfinie~: l'addition et la multiplication.
@@ -747,7 +756,8 @@ transfinie~: l'addition et la multiplication.
 \end{definition}
 
 \begin{notation}
-  A partir de maintenant, on écrira $\varOa + 1$ plutôt que $\Ss\varOa$.
+  A partir de maintenant, on écrira $\varOa + 1$ et $\Ss\varOa$ de façon
+  interchangeable.
 \end{notation}
 
 \begin{exercise}[Sur la somme ensembliste]
@@ -769,7 +779,7 @@ transfinie~: l'addition et la multiplication.
   \[\makeFun{\proj}{\sum_{i\in I}X_i}{I}{(i,x)}{i}\]
   Montrer qu'on a une bijection
   \[\prod_{i \in I} X_i \cong
-  \compr{f : I \to \sum_{i \in I} X_i}{\proj\circ f = \id_I}\]
+  \compr{\makeFunName{f}{I}{\sum_{i \in I} X_i}}{\proj\circ f = \id_I}\]
 \end{exercise}
 
 \begin{definition}[Multiplication ordinale]
@@ -1041,22 +1051,22 @@ ordinal, qu'on appelle l'ordinal de Hartogs.
   On veut donc prouver qu'un tel ordinal existe. Pour ce faire, on commence par
   définir
   \[\Ord(X) \defeq
-  \compr{(Y,\mathord{\varRR})}
-        {Y\subseteq X, \mathord{\varRR}\subseteq Y\times Y,
-          \mathord{\varRR}\text{ est un bon ordre sur }Y}\]
-  On sait donc que pour chaque $(Y,\mathord{varRR})\in\Ord(X)$, il existe un
-  unique $\varOa_{(Y,\mathord{\varRR})}\in\Ord$ qui lui correspond. Ainsi, par le
-  schéma de remplacement, la collection
+  \compr{(\varPt,\mathord{\varRR})}
+        {\varPt\subseteq X, \mathord{\varRR}\subseteq \varPt\times \varPt,
+          \mathord{\varRR}\text{ est un bon ordre sur }\varPt}\]
+  On sait donc que pour chaque $(\varPt,\mathord{\varRR})\in\Ord(X)$, il existe
+  un unique $\type(\varPt,\mathord{\varRR})\in\Ord$ qui lui correspond. Ainsi,
+  par le schéma de remplacement, la collection
   \[\Hart{X} \defeq
-  \compr{\varOa \in \Ord}{\exists (Y,\mathord{\varRR}) \in \Ord(X),
-    \varOa = \varOa_{(Y,\mathord{\varRR})}}\]
+  \compr{\type(\varPt,\mathord{\varRR})}
+        {(\varPt,\mathord{\varRR}) \in \Ord(X)}\]
   est bien un ensemble. Pour vérifier que $\Hart{X}$ est bien un ordinal, il
   nous suffit maintenant de vérifier que c'est un segment initial de $\Ord$.
-  Si $\varOc\in\varOb\in\Hart{X}$ alors on trouve $(Y,\mathord{\varRR})$ tel que
-  $\varOb = \varOa_{(Y,\mathord{\varRR})}$. Comme $\varOc\in\varOb$, $\varOc$ induit
-  par restriction une partie bien ordonnée
-  $(Z,\mathord{\varRR'})\subseteq (Y,\mathord{\varRR})$, donc
-  $\varOc = \varOa_{(Z,\mathord{\varRR'})}$, donc
+  Si $\varOc\in\varOb\in\Hart{X}$ alors on trouve $(\varPt,\mathord{\varRR})$
+  tel que $\varOb = \type(\varPt,\mathord{\varRR})$. Comme $\varOc\in\varOb$,
+  $\varOc$ induit par restriction une partie bien ordonnée
+  $(\varPtB,\mathord{\varRR'})\subseteq (\varPt,\mathord{\varRR})$, donc
+  $\varOc = \type{(\varPtB,\mathord{\varRR'})}$, donc
   $\varOc\in \Hart{X}$. Ainsi $\Hart{X}$ est bien un ordinal.
 
   On vérifie maintenant que $\Hart{X}$ ne s'injecte pas dans $X$. Si c'était le
@@ -1069,9 +1079,9 @@ ordinal, qu'on appelle l'ordinal de Hartogs.
   ordinal $\varOb$ tel que $\varOb$ ne s'injecte pas dans $X$. On sait que
   soit $\varOb \in \Hart{X}$, soit $\Hart{X}\subseteq \varOb$. Dans le deuxième
   cas, on a le résultat souhaité. Dans le premier cas, $\varOb$ est par
-  définition $\varOa_{(Y,\mathord{\varRR})}$ pour un certain
-  $(Y,\mathord{\varRR})\in\Ord(X)$, ce qui impose que $\varOb$ s'injecte dans
-  $X$, ce qui n'est pas.
+  définition $\type(\varPt,\mathord{\varRR})$ pour un certain
+  $(\varPt,\mathord{\varRR})\in\Ord(X)$, ce qui impose que $\varOb$ s'injecte
+  dans $X$, ce qui n'est pas.
 \end{proof}
 
 L'ordinal de Hartogs permet de relier un ensemble quelconque à la hiérarchie
@@ -1091,19 +1101,20 @@ Montrons maintenant le lemme de Zorn, qui utilise l'axiome du choix.
 \end{theorem}
 
 \begin{proof}
-  On va construire une fonction $f : \Ord \to X$ strictement croissante tant que
-  l'on n'a pas atteint un élément maximal. Pour faciliter la rédaction, on
-  procède par l'absurde. Supposons donc qu'il n'existe pas d'élément maximal
-  dans $X$ qui est supérieur à $x_0$, on définit pour tout $x\in X$ l'ensemble
+  On va construire une fonction $\makeFunName{f}{\Ord}{X}$ strictement
+  croissante tant que l'on n'a pas atteint un élément maximal. Pour faciliter la
+  rédaction, on procède par l'absurde. Supposons donc qu'il n'existe pas
+  d'élément maximal dans $X$ qui est supérieur à $x_0$, on définit pour tout
+  $x\in X$ l'ensemble
   \[\upcl{x}\defeq \compr{y \in X}{x < y}\]
   qui est toujours un ensemble non vide pour $x \geq x_0$ ($\upcl{x}$ est vide
   si et seulement si $x$ est un élément maximal). On se donne, grâce à l'axiome
   du choix, une fonction de choix
-  $f : \powerset(X)\setminus\{\vide\}\to X$ telle que
-  $f(Y) \in Y$ pour tout $Y\in\dom(f)$.
+  $\makeFunName{f}{\powerset(X)\setminus\{\vide\}}{X}$ telle que
+  $f(\varPt) \in \varPt$ pour tout $\varPt\in\dom(f)$.
 
-  On définit maintenant par récursion transfinie une fonction $F : \Ord\to X$
-  strictement croissante, par~:
+  On définit maintenant par récursion transfinie une fonction
+  $\makeFunName{F}{\Ord}{X}$ strictement croissante, par~:
   \begin{itemize}
   \item $F(0)\defeq x_0$.
   \item pour tout $\varOa\in\Ord$, $f(\varOa+1) \defeq f(\upcl{F(\varOa)})$.
@@ -1118,9 +1129,9 @@ Montrons maintenant le lemme de Zorn, qui utilise l'axiome du choix.
   déjà définis assure la stricte croissance à chaque étape de notre récursion.
   De plus, comme la fonction est strictement croissante, on est assurés que
   les éléments rencontrés ne sont pas maximaux, puisqu'ils sont tous supérieurs
-  à $x_0$. On a donc une fonction injective $F : \Ord \to X$, ce qui signifie en
-  particulier qu'on a trouvé $F : \Hart{X}\to X$ injective, ce qui n'est pas
-  possible par hypothèse.
+  à $x_0$. On a donc une fonction injective $\makeFunName{F}{\Ord}{X}$, ce qui
+  signifie en particulier qu'on a trouvé $\makeFunName{F}{\Hart{X}}{X}$
+  injective, ce qui n'est pas possible par hypothèse.
 
   Par l'absurde, on en déduit donc qu'il existe bien $x \geq x_0$ maximal.
 \end{proof}
@@ -1141,8 +1152,8 @@ Montrons aussi la réciproque~: le lemme de Zorn implique l'axiome du choix.
   On pose l'ensemble
   \[Y \defeq \compr{c \subseteq \bigcup X}{\forall x,y \in c,
     \forall a \in X, (x \in a)\land (y \in a) \implies x = y}\]
-  un élément de $Y$ est donc un choix, pour chaque élément $a$ de $X$, d'au plus
-  un élément de $a$. On veut montrer que $(Y,\subseteq)$ est un ensemble
+  un élément de $Y$ est donc un choix, pour chaque élément $a$ de $X$, d'au
+  plus un élément de $a$. On veut montrer que $(Y,\subseteq)$ est un ensemble
   inductif~:
 
   Soit une chaîne $(c_i)_{i\in I}$ d'éléments de $Y$, montrons que
@@ -1170,15 +1181,15 @@ Montrons aussi la réciproque~: le lemme de Zorn implique l'axiome du choix.
 \end{proof}
 
 \begin{exercise}[Une caractérisation des ordinaux finis]
-  Montrer qu'un ordinal $\alpha$ appartient à $\Ow$ si et seulement si
+  Montrer qu'un ordinal $\varOa$ appartient à $\Ow$ si et seulement si
   $(\varOa,\ni)$ est un ensemble bien ordonné.
 \end{exercise}
 
 \begin{exercise}[Une caractérisation des ensembles infinis]
   Un ensemble $X$ est dit infini au sens de Dedekind s'il existe une partie
-  $Y\subsetneq X$ telle que $X$ s'injecte dans $Y$. Montrer qu'un ensemble $X$
-  est infini au sens de Dedekind si et seulement si $\Ow$ s'injecte dans $X$,
-  si et seulement si $X$ ne s'injecte dans aucun ordinal fini.
+  $\varPt\subsetneq X$ telle que $X$ s'injecte dans $\varPt$. Montrer qu'un
+  ensemble $X$ est infini au sens de Dedekind si et seulement si $\Ow$ s'injecte
+  dans $X$, si et seulement si $X$ ne s'injecte dans aucun ordinal fini.
 \end{exercise}
 
 \section{Cardinaux}
@@ -1204,7 +1215,7 @@ qui correspond intuitivement à dire qu'un ensemble est plus petit qu'un autre.
 
 \begin{definition}[Subpotence]
   Soient $X,Y$ deux ensembles. On dit que $X$ est subpotent à $Y$, ce que l'on
-  notera $X\subpo Y$, lorsqu'il existe une injection $f : X \to Y$.
+  notera $X\subpo Y$, lorsqu'il existe une injection $\makeFunName{f}{X}{Y}$.
 \end{definition}
 
 \begin{property}
@@ -1215,58 +1226,61 @@ qui correspond intuitivement à dire qu'un ensemble est plus petit qu'un autre.
   On vérifie les axiomes d'un pré-ordre.
   \begin{itemize}
   \item pour tout ensemble $X$, $\id_X$ est une injection de $X$ dans $X$.
-  \item si $f : X \to Y$ et $g : Y \to Z$ sont des injections, alors
-    $g\circ f : X \to Z$ est une injection, donc $\subpo$ est transitive.
+  \item si $\makeFunName{f}{X}{Y}$ et $\makeFunName{g}{Y}{Z}$ sont des
+    injections, alors $\makeFunName{g\circ f}{X}{Z}$ est une injection, donc
+    $\subpo$ est transitive.
   \end{itemize}
   Ainsi $\subpo$ est une relation d'ordre.
 \end{proof}
 
 La relation d'équipotence est alors la relation d'équivalence associée à ce
 pré-ordre. On la définit aussi par le fait que $X\cong Y$ si et seulement s'il
-existe $f : X \to Y$ bijective. La coïncidence des deux définitions n'est pas
-immédiate~: c'est le théorème de Cantor-Bernstein.
+existe $\makeFunName{f}{X}{Y}$ bijective. La coïncidence des deux définitions
+n'est pas immédiate~: c'est le théorème de Cantor-Bernstein.
 
 Le nom de Georg Cantor vient du fait qu'il a donné ce résultat dans 
-\cite{Cantor1887}, mais sans y apporter de preuve. Felix Bernstein démontre
-ensuite ce théorème en 1897 (\latinexpr{c.f.} \cite{deiser2004einführung}).
+\cite{Cantor1887}, mais sans y apporter de preuve. Felix \name{Bernstein}
+démontre ensuite ce théorème en 1897
+(\latinexpr{c.f.} \cite{deiser2004einführung}).
 
 \begin{theorem}[Cantor-Bernstein]
-  Soient $X,Y$ des ensembles. S'il existe une injection $f : X \to Y$ et une
-  injection $g : Y \to X$, alors il existe une bijection $h : X \cong Y$.
+  Soient $X,Y$ des ensembles. S'il existe une injection
+  $\makeFunName{f}{X}{Y}$ et une injection $\makeFunName{g}{Y}{X}$, alors il
+  existe une bijection $\makeFunNameIso{h}{X}{Y}$.
 \end{theorem}
 
 \begin{proof}
-  Comme il existe une injection $f : X \to Y$, on en déduit (comme toute
-  fonction est surjective sur son image) que $X \cong \im(f)$. On se contente
-  donc de montrer que si $X \subseteq Y$ et qu'il existe $g : Y \to X$
-  injective, alors $X \cong Y$.
+  Comme il existe une injection $\makeFunName{f}{X}{Y}$, on en déduit (comme
+  toute fonction est surjective sur son image) que $X \cong \im(f)$. On se
+  contente donc de montrer que si $\varPt \subseteq Y$ et qu'il existe
+  $\makeFunName{g}{Y}{\varPt}$ injective, alors $\varPt \cong Y$.
 
-  On définit une suite de parties $(Z_n)_{n\in\bN}$ de $Y$ comme suit~:
+  On définit une suite de parties $(\varPtB_n)_{n\in\bN}$ de $Y$ comme suit~:
   \[\begin{cases}
-  Z_0 = Y \setminus X\\
-  \forall n \in \bN, Z_{n+1} = g(Z_n)
+  \varPtB_0 = Y \setminus \varPt\\
+  \forall n \in \bN, \varPtB_{n+1} = g(\varPtB_n)
   \end{cases}\]
   et on définit
-  \[Z \defeq \bigcup_{n \in \bN} Z_n\]
-  la fonction $g$ est alors stable sur $Z$, par construction. On décide donc de
-  définir la fonction
-  \[\makeFun{h}{Y}{X}{x}{
+  \[\varPtB \defeq \bigcup_{n \in \bN} \varPtB_n\]
+  la fonction $g$ est alors stable sur $\varPtB$, par construction. On décide
+  donc de définir la fonction
+  \[\makeFun{h}{Y}{\varPt}{x}{
     \begin{cases}
-      g(x)\text{ si } x \notin Z \\
-      x \text{ si } x \notin Z
+      g(x)\text{ si } x \in \varPtB \\
+      x \text{ si } x \notin \varPtB
   \end{cases}}\]
-  $h$ est bien à valeurs dans $X$~: si $x \in Z$, alors $h(x) = g(x)$ et
-  $g$ est à valeurs dans $X$~; sinon, $x \notin Z$, donc $x\notin Z_0$, donc
-  $x \in X$.
+  $h$ est bien à valeurs dans $\varPt$~: si $x \in \varPtB$, alors $h(x) = g(x)$
+  et $g$ est à valeurs dans $\varPt$~; sinon, $x \notin \varPtB$, donc
+  $x\notin \varPtB_0$, donc $x \in \varPt$.
 
-  On montre que $h$ est une bijection~: c'est une injection sur $Z$ et une
-  injection sur $X\setminus Z$ et ces deux parties sont stables par $h$, donc
-  $h$ est injective. $h$ est surjective~: si $x \in X$, alors soit $x \in Z$,
-  auquel cas on trouve $i \in \bN$ tel que $x \in Z_i$. $i$ ne peut
-  pas être nul, puisque $x \in X$, donc on peut trouver $z \in Z_0$ tel que
-  $x = g^i(z)$~: cela signifie alors que $x = h(g^{i-1}(z))$. Si $x \notin Z$,
-  alors $h(x) = x$. Ainsi $h$ est injective et surjective~: c'est une bijection
-  entre $X$ et $Y$.
+  On montre que $h$ est une bijection~: c'est une injection sur $\varPtB$ et une
+  injection sur $\varPt\setminus \varPtB$ et ces deux parties sont stables par
+  $h$, donc $h$ est injective. $h$ est surjective~: si $x \in \varPt$, alors
+  soit $x \in \varPtB$, auquel cas on trouve $i \in \bN$ tel que
+  $x \in \varPtB_i$. $i$ ne peut pas être nul, puisque $x \in \varPt$, donc on
+  peut trouver $z \in \varPtB_0$ tel que $x = g^i(z)$~: cela signifie alors que
+  $x = h(g^{i-1}(z))$. Si $x \notin \varPtB$, alors $h(x) = x$. Ainsi $h$ est
+  injective et surjective~: c'est une bijection entre $\varPt$ et $Y$.
 \end{proof}
 
 La relation $\subpo$ est donc une relation d'ordre sur les classes
@@ -1278,12 +1292,15 @@ que c'est en fait une équivalence.
 
 \begin{property}
   L'axiome du choix implique la proposition suivante~:
-  \[\forall X,Y,(\exists f : X\to Y,\inj(f))\lor(\exists f : Y\to X,\inj(f))\]
+  \[\forall X,Y,
+  (\exists \makeFunName{f}{X}{Y},\inj(f))\lor
+  (\exists \makeFunName{f}{Y}{X},\inj(f))\]
 \end{property}
 
 \begin{proof}
   On utilise le lemme de Zorn sur l'ensemble
-  \[\compr{f : A \to B}{A \subseteq X, B \subseteq Y, \inj(f)}\]
+  \[\compr{\makeFunName{f}{\varPt}{\varPtB}}
+          {\varPt \subseteq X, \varPtB \subseteq Y, \inj(f)}\]
   ordonné par $\subseteq$. Si on a une chaîne $\{f_i\}_{i\in I}$ d'éléments,
   alors on veut montrer que
   \[g\defeq \bigcup_{i\in I} f_i\]
@@ -1297,21 +1314,22 @@ que c'est en fait une équivalence.
     $(z,y)\in f_i$, et comme $f_i$ est injective, $x=z$.
   \end{itemize}
 
-  On applique donc le lemme de Zorn~: on trouve $f : A \to B$ maximale pour
-  l'inclusion, et injective. Supposons que $A\subsetneq X$ et $B\subsetneq Y$,
-  alors on trouve $x\in X\setminus A$ et $y\in Y\setminus B$, et on peut
+  On applique donc le lemme de Zorn~: on trouve
+  $\makeFunName{f}{\varPt}{\varPtB}$ maximale pour l'inclusion, et injective.
+  Supposons que $\varPt\subsetneq X$ et $\varPtB\subsetneq Y$, alors on trouve
+  $x\in X\setminus \varPt$ et $y\in Y\setminus \varPtB$, et on peut
   construire $g\cup\{(x,y)\}$ qui est une injection strictement plus grande
-  que $f$. On en déduit que $A = X$ ou $B = Y$. Si $A = X$, alors on a trouvé
-  une injection de $X$ dans $Y$. Si $B = Y$, alors la transposée de $f$,
-  c'est-à-dire l'ensemble $\compr{(y,x)}{(x,y)\in f}$, est une injection de
-  $Y$ dans $X$.
+  que $f$. On en déduit que $\varPt = X$ ou $\varPtB = Y$. Si $\varPt = X$,
+  alors on a trouvé une injection de $X$ dans $Y$. Si $\varPtB = Y$, alors la
+  transposée de $f$, c'est-à-dire l'ensemble $\compr{(y,x)}{(x,y)\in f}$, est
+  une injection de $Y$ dans $X$.
 \end{proof}
 
 Le théorème de Zermelo indique qu'il est toujours possible de munir un ensemble
 d'un bon ordre.
 
 \begin{theorem}[Zermelo \cite{Zermelo1904}]\label{thm.Zermelo}
-  Soit $X$ un ensemble. Alors il existe $<$ qui est un bon ordre sur $X$.
+  Soit $X$ un ensemble. Alors il existe un bon ordre sur $X$.
 \end{theorem}
 
 \begin{proof}
@@ -1369,10 +1387,10 @@ notre définition de la hiérarchie cardinale.
 
 \begin{proof}
   Il nous faut montrer que le choix du bon ordre sur $X$ n'intervient pas dans
-  la définition de $\Card(X)$. Si $<,<'$ sont deux bons ordres sur $X$, alors
-  l'ordinal associé à $(X,<)$ et celui associé à $(X,<')$ sont en bijection,
+  la définition de $\Card(X)$. Si $<,\prec$ sont deux bons ordres sur $X$, alors
+  l'ordinal associé à $(X,<)$ et celui associé à $(X,\prec)$ sont en bijection,
   donc un cardinal est inférieur à l'ordinal associé à $(X,<)$ si et seulement
-  s'il est inférieur à l'ordinal associé à $(X,<')$, donc le plus grand
+  s'il est inférieur à l'ordinal associé à $(X,\prec)$, donc le plus grand
   cardinal inférieur à l'un d'eux est aussi le plus grand cardinal inférieur à
   l'autre.
 \end{proof}
@@ -1438,7 +1456,7 @@ premier lemme.
 
 \begin{definition}[Fonction aleph]
   On définit par induction transfinie la fonction entre classes
-  $\Cal : \Ord \to \Card$~:
+  $\makeFunName{\Cal}{\Ord}{\Card}$~:
   \begin{itemize}
   \item $\Cal_0 = \Ow$
   \item $\Cal_{\varOa + 1} = \SsC{\Cal_\varOa}$
@@ -1454,7 +1472,7 @@ cardinaux infinis.
 \begin{property}
   Les propositions suivantes sont vérifiées~:
   \begin{enumerate}[label=(\roman*)]
-  \item pour tous $\varOa < \varOb$, $\Cal_\varOa < \Cal_\varOb$.
+  \item pour tout $\varOa < \varOb$, $\Cal_\varOa < \Cal_\varOb$.
   \item pour tout $\varOa \in \Ord$, $\varOa \leq \Cal_\varOa$.
   \item pour tout $\varCk \in \Card$ infini, il existe $\varOa \in \Ord$ tel
     que $\varCk = \Cal_\varOa$.
@@ -1547,10 +1565,11 @@ cardinaux infinis.
   En reprenant les arguments précédents, montrer que si une sous-classe des
   ordinaux $\varCC\subseteq\Ord$ est non bornée (c'est-à-dire que pour tout
   $\varOa \in \Ord$, il existe $\varOb \in \varCC$ tel que $\varOa < \varOb$)
-  alors il existe une bijection croissante $f : \Ord \to \varCC$. Montrer de
-  plus que si $f : \Ord \to \Ord$ est une fonction vérifiant pour tout
-  ensemble $X\subseteq \Ord$ l'égalité
-  \[\bigcup_{\varOa \in X} f(\varOa) = f\left(\bigcup X\right)\]
+  et stable par unions indexées sur un ensemble,
+  alors il existe une bijection croissante $\makeFunName{f}{\Ord}{\varCC}$.
+  Montrer de plus que si $\makeFunName{f}{\Ord}{\Ord}$ est une fonction
+  vérifiant pour tout ensemble $\varFam\subseteq \Ord$ l'égalité
+  \[\bigcup_{\varOa \in \varFam} f(\varOa) = f\left(\bigcup \varFam\right)\]
   alors l'ensemble des points fixes de $f$ est une sous-classe non bornée de
   $\Ord$.
 \end{exercise}
@@ -1584,17 +1603,18 @@ qui rend l'arithmétique cardinale si simple.
 
   On souhaite donc montrer que $\ordbis$ est un bon ordre strict. Le fait que
   c'est un ordre total découle directement du fait que $<$ et $\lexl$ le sont.
-  On considère donc un ensemble $S\subseteq \Ord\times \Ord$, et on veut montrer
-  qu'il existe un minimum à $S$ pour $\ordbis$. Soit
-  \[S'\defeq \compr{\max(\varOa,\varOb)}{(\varOa,\varOb) \in S}\]
-  Par l'axiome de remplacement, $S'$ est un ensemble, et ses éléments sont des
-  ordinaux~: on peut donc lui trouver un minimum $\varOc$. Soit alors
-  \[S'' \defeq \compr{(\varOa,\varOb) \in S}{\max(\varOa,\varOb) = \varOc}\]
-  Cet ensemble est une partie non vide de $S$. De plus, on voit que puisque
-  $\max(\varOa,\varOb)$ est constant sur $S''$, $\lexl$ et $\ordbis$ coïncident
-  sur $S''$. Puisque $\varOc$ est choisi minimal, cela signifie que le minimum
-  de $S''$ pour $\lexl$ est le minimum de $S$ pour $\ordbis$. Ainsi, $\ordbis$
-  est un bon ordre sur $\Ord\times \Ord$.
+  On considère donc un ensemble $\varPt\subseteq \Ord\times \Ord$, et on veut
+  montrer qu'il existe un minimum à $\varPt$ pour $\ordbis$. Soit
+  \[\varPtB\defeq \compr{\max(\varOa,\varOb)}{(\varOa,\varOb) \in \varPt}\]
+  Par l'axiome de remplacement, $\varPtB$ est un ensemble, et ses éléments sont
+  des ordinaux~: on peut donc lui trouver un minimum $\varOc$. Soit alors
+  \[\varPtC \defeq
+  \compr{(\varOa,\varOb) \in \varPt}{\max(\varOa,\varOb) = \varOc}\]
+  Cet ensemble est une partie non vide de $\varPt$. De plus, on voit que puisque
+  $\max(\varOa,\varOb)$ est constant sur $\varPtC$, $\lexl$ et $\ordbis$
+  coïncident sur $\varPtC$. Puisque $\varOc$ est choisi minimal, cela signifie
+  que le minimum de $\varPtC$ pour $\lexl$ est le minimum de $\varPt$ pour
+  $\ordbis$. Ainsi, $\ordbis$ est un bon ordre sur $\Ord\times \Ord$.
 
   On veut maintenant prouver que
   $\type(\varCk\times\varCk,\mathord{\ordbis}) = \varCk$
@@ -1607,7 +1627,7 @@ qui rend l'arithmétique cardinale si simple.
   pour tout $\varOa < \varCk$ on sait que
   $\type(|\varOa| \times |\varOa|,\mathord{\ordbis}) = |\varOa|$. Soit
   $\varOd = \type(\varCk\times\varCk,\mathord{\ordbis})$. Par hypothèse,
-  $\varOd \neq \varCk$. Soit $f : \varOd \to \varCk \times \varCk$
+  $\varOd \neq \varCk$. Soit $\makeFunName{f}{\varOd}{\varCk \times \varCk}$
   l'isomorphisme entre $(\varOd,\in)$ et
   $(\varCk\times\varCk,\mathord{\ordbis})$.
 
@@ -1664,9 +1684,9 @@ grandes.
   On considère que $I$ est non vide et que chaque $X_i$ est aussi non vide
   (les cas d'ensembles vides sont strictement plus simples à traiter). Comme
   $\Card(I) \leq \varCk$, on peut trouver une injection $\Card(I) \to \varCk$
-  et donc une surjection $g : \varCk \to \Card(I)$. Il y a aussi, pour chaque
-  $i \in I$, une surjection $\varCk \to X_i$ par le même argument. On peut
-  réécrire cela en disant que pour tout $\varOa < \varCk$, il existe une
+  et donc une surjection $\makeFunName{g}{\varCk}{\Card(I)}$. Il y a aussi, pour
+  chaque $i \in I$, une surjection $\varCk \to X_i$ par le même argument. On
+  peut réécrire cela en disant que pour tout $\varOa < \varCk$, il existe une
   surjection $\varCk \to X_{g(\varOa)}$.
 
   On utilise alors le \cref{thm.Zermelo} pour fixer un bon ordre $<_1$ sur
@@ -1735,7 +1755,8 @@ de l'ensemble des parties. On va donc définir la hiérarchie $\Cbe$ de façon
 analogue à $\Cal$, mais en itérant l'exponentiation.
 
 \begin{definition}[Fonction beth]
-  On définit la fonction $\Cbe : \Ord \to \Card$ par récursion transfinie~:
+  On définit la fonction $\makeFunName{\Cbe}{\Ord}{\Card}$ par récursion
+    transfinie~:
   \begin{itemize}
   \item $\Cbe_0 = \Cal_0$
   \item $\Cbe_{\varOa + 1} = 2^{\Cbe_\varOa}$
@@ -1755,8 +1776,8 @@ La fonction $\beth$ est strictement croissante grâce au théorème de Cantor.
 \begin{proof}
   L'injection est donnée par $x \mapsto \{x\}$.
 
-  Supposons qu'il existe une surjection $f : X \to \powerset(X)$. Soit alors
-  l'ensemble
+  Supposons qu'il existe une surjection $\makeFunName{f}{X}{\powerset(X)}$. Soit
+  alors l'ensemble
   \[D\defeq \compr{x\in X}{x\notin f(x)}\]
   Comme $f$ est surjective, on trouve $d$ tel que $f(d) = D$. Alors si
   $d\in D$, on en déduit que $d\in f(d)$ et donc que $d\notin D$. Si
@@ -1820,12 +1841,13 @@ une partie $X\subseteq \varOa$ telle que pour tout $\varOb \in \varOa$ il existe
 $\varOc \in X$ tel que $\varOb \leq \varOc$.
 
 \begin{definition}[Cofinalité]
-  Soit $\varOa\in\Ord$, on dit qu'une partie $X\subseteq \varOa$ est cofinale si
-  \[\forall \varOb \in \varOa, \exists \varOc \in X, \varOb \leq \varOc\]
+  Soit $\varOa\in\Ord$, on dit qu'une partie $\varPt\subseteq \varOa$ est
+  cofinale si
+  \[\forall \varOb \in \varOa, \exists \varOc \in \varPt, \varOb \leq \varOc\]
 
   On définit la cofinalité d'un ordinal $\varOa$ par~:
   \[\cof(\varOa) \defeq
-  \min \compr{\type(X)}{X\subseteq\varOa, X\text{ est cofinale}}\]
+  \min \compr{\type(\varPt)}{\varPt\subseteq\varOa,\varPt\text{ est cofinale}}\]
 \end{definition}
 
 Remarquons que, par définition, $\varOa$ est une partie cofinale dans lui-même,
@@ -1865,39 +1887,44 @@ On va maintenant s'intéresser à l'effet des opérations ordinales sur la
 cofinalité, étude pour laquelle on introduit d'abord le lemme suivant.
 
 \begin{lemma}\label{lem.cof.type}
-  Soit $\varOa$ un ordinal limite et $X$ une partie cofinale dans $\varOa$.
-  Alors on a l'égalité $\cof(\varOa) = \cof(\type(X))$.
+  Soit $\varOa$ un ordinal limite et $\varPt$ une partie cofinale dans $\varOa$.
+  Alors on a l'égalité $\cof(\varOa) = \cof(\type(\varPt))$.
 \end{lemma}
 
 \begin{proof}
-  Soit $Y\subseteq X$ telle que $\type(Y) = \cof(\type(X))$. Comme $X$ est
-  cofinale dans $\varOa$ et $Y$ est cofinale dans $X$, $Y$ est cofinale dans
-  $\varOa$, donc $\cof(\varOa) \leq \type(Y)$, donc
-  $\cof(\varOa) \leq \cof(\type(X))$.
+  On procède par double inégalité.
 
-  Réciproquement, soit $Y\subseteq \varOa$ cofinale telle que
-  $\type(Y) = \cof(\varOa)$. On définit alors la fonction
-  \[\makeFun{f}{Y}{X}{y}{\min (X \setminus y)}\]
-  L'image de $f$ dans $X$ est cofinale. En effet, si on prend $\varOb \in X$,
-  alors on peut trouver $\varOc \in \varOa$ tel que $\varOb < \varOc$ (car
-  $\varOa$ est limite). Comme $Y$ est cofinale dans $\varOa$, on trouve
-  $\varOd \in Y$ tel que $\varOb < \varOd$, mais alors $f(\varOd) > \varOd$
-  par définition, donc $\varOb < f(\varOd)$, donc on trouve un élément dans
-  $\im(f)$ qui est supérieur à $\varOb$. Comme $\im(f)$ est cofinale, on en
-  déduit que $\cof(\type(X)) \leq \type(Y)$, donc que
+  Soit $\varPtB\subseteq \varPt$ telle que
+  $\type(\varPtB) = \cof(\type(\varPt))$. Comme $\varPt$ est cofinale dans
+  $\varOa$ et $\varPtB$ est cofinale dans $\varPt$, $\varPtB$ est cofinale dans
+  $\varOa$, donc $\cof(\varOa) \leq \type(\varPtB)$, donc
+  $\cof(\varOa) \leq \cof(\type(\varPtB))$.
+
+  Réciproquement, soit $\varPtB\subseteq \varOa$ cofinale telle que
+  $\type(\varPtB) = \cof(\varOa)$. On définit alors la fonction
+  \[\makeFun{f}{\varPtB}{\varPt}{y}{\min (\varPt \setminus y)}\]
+  L'image de $f$ dans $\varPt$ est cofinale. En effet, si on prend
+  $\varOb \in \varPt$, alors on peut trouver $\varOc \in \varOa$ tel que
+  $\varOb < \varOc$ (car $\varOa$ est limite). Comme $\varPtB$ est cofinale dans
+  $\varOa$, on trouve $\varOd \in \varPtB$ tel que $\varOb < \varOd$, mais alors
+  $f(\varOd) > \varOd$ par définition, donc $\varOb < f(\varOd)$, donc on trouve
+  un élément dans $\im(f)$ qui est supérieur à $\varOb$. Comme $\im(f)$ est
+  cofinale, on en déduit que $\cof(\type(\varPt)) \leq \type(\varPtB)$, donc que
   $\cof(\varOa) = \cof(\type(X))$ par double inégalité.
 \end{proof}
 
 \begin{notation}
-  Une partie $X$ cofinale à un ordinal $\varOa$ est une partie non strictement
-  bornée de $\varOa$. Dans le cas d'une fonction $f : X \to \varOa$, on dira
-  qu'elle est cofinale lorsque son image est une partie cofinale.
+  Une partie $\varPt$ cofinale à un ordinal $\varOa$ est une partie non
+  strictement bornée de $\varOa$. Dans le cas d'une fonction
+  $\makeFunName{f}{X}{\varOa}$, on dira qu'elle est cofinale lorsque son
+  image est une partie cofinale.
 \end{notation}
 
 On peut maintenant comprendre quel effet a une somme sur la cofinalité.
 Moralement, l'ordinal $\varOa+\varOb$ peut se voir comme la demi-droite
 représentant $\varOa$ à laquelle on a accolé la demi-droite représentant
-$\varOb$ à sa fin. Ainsi, pour avoir une partie non bornée de $\varOa + \varOb$,la partie en $\varOa$ n'importe pas, puisqu'il suffit de dépasser les éléments
+$\varOb$ à sa fin. Ainsi, pour avoir une partie non bornée de $\varOa + \varOb$,
+la partie en $\varOa$ n'importe pas, puisqu'il suffit de dépasser les éléments
 de $\varOb$. De même $\varOa \times \varOb$ peut se voir comme $\varOb$
 successions de l'ordinal $\varOa$. Si $\varOb$ est successeur, alors il suffit
 d'avoir une cofin à $\varOa$ et de l'appliquer au dernier segment de
@@ -1927,10 +1954,10 @@ une cofin à $\varOb$ pour l'appliquer à chaque copie de $\varOa$.
     $\varOa \times \varOc$ comme étant égal à
     $\type(\varOa\times\varOb,\mathord{\lexl})$
     avec le produit cartésien, on remarque que
-    \[F \defeq \compr{(0,\varOc)}{\varOc \in \varOb}\]
+    \[\varPt \defeq \compr{(0,\varOc)}{\varOc \in \varOb}\]
     est cofinal dans $\varOa \times \varOb$. Donc
-    $\cof(\varOa\times \varOb) = \cof(\type(F))$ et $\type(F) = \varOb$, d'où le
-    résultat.\qedhere
+    $\cof(\varOa\times \varOb) = \cof(\type(\varPt))$ et
+    $\type(\varPt) = \varOb$, d'où le résultat.\qedhere
   \end{itemize}
 \end{proof}
 
@@ -1938,43 +1965,46 @@ Pour donner les propriétés essentielles de la cofinalité, nous allons avoir
 besoin d'un lemme technique pour comparer des cofinalités à partir de fonctions.
 
 \begin{proposition}\label{prop.cof.compar.surj}
-  Soient $\varOa,\varOb$ deux ordinaux, $f :\varOb\to\varOa$ une fonction telle
-  que l'image de $f$ est cofinale dans $\varOa$. Alors
+  Soient $\varOa,\varOb$ deux ordinaux, $\makeFunName{f}{\varOb}{\varOa}$ une
+  fonction telle que l'image de $f$ est cofinale dans $\varOa$. Alors
   $\cof(\varOa) \leq \varOb$.
 \end{proposition}
 
 \begin{proof}
   On pose
-  \[C \defeq
+  \[\varPtB \defeq
   \compr{\varOc \in \varOb}{\forall \varOd < \varOc, f(\varOd) < f(\varOc)}
     \]
   et
-  \[B \defeq f(C)\]
-  Comme $C\subseteq \varOb$, on sait que $\type(B)\leq \type(C) \leq \varOb$.
-  On veut maintenant prouver que $B$ est cofinal dans $\varOa$, ce qui nous
+  \[\varPt \defeq f(\varPtB)\]
+  Comme $\varPtB\subseteq \varOb$, on sait que
+  $\type(\varPt)\leq \type(\varPtB) \leq \varOb$.
+  On veut maintenant prouver que $\varPt$ est cofinal dans $\varOa$, ce qui nous
   permettra alors d'en déduire que $\cof(\varOa) \leq \varOb$.
 
   Soit $\varOx \in \varOa$, comme $f$ est cofinale dans $\varOa$, on sait que
   $\compr{\varOc \in \beta}{\varOx \leq f(\varOc)}$ est non vide, donc on peut
   en trouver un minimum $\varOc_0$. Pour $\varOd < \varOc_0$, par minimalité de
   $\varOc_0$ on sait que $f(\varOd) < \varOx\leq f(\varOc_0)$, donc
-  $\varOc_0 \in C$. On en déduit que $f(\varOc_0)\in B$ et que
-  $f(\varOc_0) \geq \varOx$, donc $B$ est cofinal dans $\varOa$.
+  $\varOc_0 \in \varPtB$. On en déduit que $f(\varOc_0)\in \varPt$ et que
+  $f(\varOc_0) \geq \varOx$, donc $\varPt$ est cofinal dans $\varOa$.
 \end{proof}
 
 \noindent
 Dans le cas où la fonction $f$ est croissante, le résultat peut être renforcé.
 
 \begin{proposition}
-  Soient $\varOa,\varOb$ deux ordinaux, $f : \varOb \to \varOa$ une fonction
-  croissante (au sens large) telle que l'image de $f$ est cofinale dans
+  Soient $\varOa,\varOb$ deux ordinaux, $\makeFunName{f}{\varOb}{\varOa}$ une
+  fonction croissante (au sens large) telle que l'image de $f$ est cofinale dans
   $\varOa$. Alors $\cof(\varOa)\leq\cof(\varOb)$.
 \end{proposition}
 
 \begin{proof}
-  Soient $\varOc = \cof(\varOb)$ et $g : \varOc \to \varOb$ une fonction
-  strictement croissante témoignant du fait que $\varOc$ est cofinal à $\varOb$.
-  On remarque alors que $f\circ g : \varOc \to \varOa$ est cofinale à $\varOa$.
+  Soient $\varOc = \cof(\varOb)$ et $\makeFunName{g}{\varOc}{\varOb}$ une
+  fonction strictement croissante témoignant du fait que $\varOc$ est cofinal à
+  $\varOb$.
+  On remarque alors que $\makeFunName{f\circ g}{\varOc}{\varOa}$ est cofinale à
+  $\varOa$.
   En effet, pour tout $\varOx \in \varOa$, on peut trouver $\varOd \in \varOb$
   tel que $f(\varOd) \geq \varOx$, puis $\varOn$ tel que $g(\varOn) \geq\varOd$,
   d'où par croissance $f(g(\varOn)) \geq \varOx$.
@@ -1995,9 +2025,9 @@ particulier qu'un ordinal régulier est en fait un cardinal.
   Le fait que $|\varOa|\leq \varOa$ est par définition, de même
   $\Ow\leq\cof(\varOa)$ se déduit du résultat sur la cofinalité finie. On
   veut donc montrer que $\cof(\varOa) \leq|\varOa|$. On sait par définition
-  qu'on dispose d'une fonction $f : |\varOa|\to \varOa$ surjective, donc
-  cofinale. En utilisant le \cref{prop.cof.compar.surj}, on en déduit donc que
-  $\cof(\varOa)\leq|\varOa|$.
+  qu'on dispose d'une fonction $\makeFunName{f}{|\varOa|}{\varOa}$ surjective,
+  donc cofinale. En utilisant le \cref{prop.cof.compar.surj}, on en déduit donc
+  que $\cof(\varOa)\leq|\varOa|$.
 \end{proof}
 
 \begin{property}
@@ -2015,8 +2045,8 @@ particulier qu'un ordinal régulier est en fait un cardinal.
 \end{property}
 
 \begin{proof}
-  On trouve une partie $X\subseteq\varOa$ de type $\cof(\varOa)$ cofinale dans
-  $\varOa$, par définition de $\cof(\varOa)$. Alors en utilisant le
+  On trouve une partie $\varPt\subseteq\varOa$ de type $\cof(\varOa)$ cofinale
+  dans $\varOa$, par définition de $\cof(\varOa)$. Alors en utilisant le
   \cref{lem.cof.type}, on en déduit que $\cof(\varOa) = \cof(\cof(\varOa))$.
 \end{proof}
 
@@ -2028,16 +2058,16 @@ pour caractériser les inégalités sur les cofinalités.
 \begin{proposition}\label{prop.ineg.bounded}
   Soient $\varCk$ et $\varCCl$ deux cardinaux infinis. L'inégalité
   $\varCk < \cof(\varCCl)$ est vraie si et seulement si toute fonction
-  $f : \varCk \to \varCCl$ est bornée.
+  $\makeFunName{f}{\varCk}{\varCCl}$ est bornée.
 \end{proposition}
 
 \begin{proof}
   On prouve les deux sens de l'équivalence par contraposée.
-  Si $\varCk \geq \cof(\varCCl)$, alors on trouve une partie $X\subseteq\varCCl$
-  telle que $\type(X)=\cof(\varCCl)$, cofinale dans $\varCCl$. On pose alors
-  une énumération strictement croissante $(x_\varOa)_{\varOa < \cof(\varCCl)}$ de
-  $X$~:
-  \[X = \compr{x_\varOa}{\varOa < \cof(\varCCl)}\]
+  Si $\varCk \geq \cof(\varCCl)$, alors on trouve une partie
+  $\varPt\subseteq\varCCl$ telle que $\type(\varPt)=\cof(\varCCl)$, cofinale
+  dans $\varCCl$. On pose alors une énumération strictement croissante
+  $(x_\varOa)_{\varOa < \cof(\varCCl)}$ de $\varPt$~:
+  \[\varPt = \compr{x_\varOa}{\varOa < \cof(\varCCl)}\]
   On considère alors la fonction
   \[\makeFun{f}{\varCk}{\varCCl}{\varOc}{\begin{cases}
       x_\varOa\text{ si } \varOa < \cof(\varCCl)\\
@@ -2045,8 +2075,8 @@ pour caractériser les inégalités sur les cofinalités.
     \end{cases}}\]
   qui est cofinale dans $\varCCl$.
 
-  Réciproquement, s'il existe $f : \varCk \to \varCCl$ cofinale, alors on sait
-  que $f(\varCk)$ est de cardinal au plus $\varCk$, donc de type d'ordre
+  Réciproquement, s'il existe $\makeFunName{f}{\varCk}{\varCCl}$ cofinale, alors
+  on sait que $f(\varCk)$ est de cardinal au plus $\varCk$, donc de type d'ordre
   strictement inférieur à $\SsC{\varCk}$. Comme on sait que $f(\varCk)$ est
   cofinale dans $\varCCl$, on en déduit que
   $\SsC{\varCk} > \type(f(\varCk)) \geq \cof(\varCCl)$, donc
@@ -2061,12 +2091,12 @@ successeur est régulier.
 \end{theorem}
 
 \begin{proof}
-  Par l'absurde, supposons qu'on trouve $X$ une partie cofinale de
-  $\SsC{\varCk}$ de cardinal inférieur à $\varCk$. Comme $X$ est une partie
-  cofinale, $\sup X = \SsC{\varCk}$, or on sait que chaque élément de $X$ est de
-  cardinal inférieur à $\varCk$, donc en utilisant la \cref{prop.card.union}, on
-  sait que $\Card(\sup X) \leq \varCk$, ce qui est absurde. On en déduit que
-  $\SsC{\varCk}$ est régulier.
+  Par l'absurde, supposons qu'on trouve $\varPt$ une partie cofinale de
+  $\SsC{\varCk}$ de cardinal inférieur à $\varCk$. Comme $\varPt$ est une partie
+  cofinale, $\sup \varPt = \SsC{\varCk}$, or on sait que chaque élément de
+  $\varPt$ est de cardinal inférieur à $\varCk$, donc en utilisant la
+  \cref{prop.card.union}, on sait que $\Card(\sup \varPt) \leq \varCk$, ce qui
+  est absurde. On en déduit que $\SsC{\varCk}$ est régulier.
 \end{proof}
 
 \noindent
@@ -2078,8 +2108,9 @@ Pour les cardinaux limites, on a un résultat beaucoup plus faible.
 \end{proposition}
 
 \begin{proof}
-  Soit $X = \compr{\Cal_\varOb}{\varOb < \varOc}$, alors $\type(X) = \varOc$,
-  donc par le \cref{lem.cof.type}, $\cof(\varCk) = \cof(\type(X))$.
+  Soit $\varPt\defeq \compr{\Cal_\varOb}{\varOb < \varOc}$, alors
+  $\type(\varPt) = \varOc$, donc par le \cref{lem.cof.type},
+  $\cof(\varCk) = \cof(\type(\varPt))$.
 \end{proof}
 
 On voit en particulier que dans le cas d'un point fixe de $\Cal$, cette
@@ -2112,19 +2143,20 @@ arbitrairement haut.
 \end{proposition}
 
 \begin{proof}
-  Pour commencer, on définit la classe $C$ suivante~:
-  \[C \defeq \compr{\varOa \in \Ord}{\varOa = \Cal_\varOa}\]
-  Une première remarque est que si $X\subseteq C$ est un ensemble, alors
-  $\sup X \in C$. En effet, comme $\Cal$ est continue, on peut faire le calcul
-  suivant~:
+  Pour commencer, on définit la classe $\varCC$ suivante~:
+  \[\varCC \defeq \compr{\varOa \in \Ord}{\varOa = \Cal_\varOa}\]
+  Une première remarque est que si $\varPt\subseteq \varCC$ est un ensemble,
+  alors $\sup \varPt \in \varCC$. En effet, comme $\Cal$ est continue, on peut
+  faire le calcul suivant~:
   \begin{align*}
     \Cal_{\sup X} &= \sup_{\varOc \in X} \Cal_\varOc\\
     &= \sup_{\varOc \in X} \varOc\\
-    &= \sup X
+    &= \sup \varPt
   \end{align*}
   Où le passage de la deuxième à la troisième ligne est donné par le fait que
-  $X\subseteq C$. De plus, $C$ est non borné dans $\Ord$. En effet, si $\varOa$
-  est un ordinal, alors on peut construire la suite $(\varOa_n)$ définie par
+  $\varPt\subseteq \varCC$. De plus, $\varCC$ est non borné dans $\Ord$. En
+  effet, si $\varOa$ est un ordinal, alors on peut construire la suite
+  $(\varOa_n)$ définie par
   \[\begin{cases}
   \varOa_0 \defeq \varOa + 1\\
   \varOa_{n+1} \defeq \Cal_{\varOa_n }
@@ -2132,30 +2164,31 @@ arbitrairement haut.
   On voit alors que $\sup_{n \in \bN} \varOa_n$ est un ordinal strictement
   supérieur à $\varOa$ et un point fixe de $\Cal$.
 
-  On construit maintenant une fonction $f : \Ord \to C$ par induction
-  transfinie~:
+  On construit maintenant une fonction $\makeFunName{f}{\Ord}{\varCC}$ par
+  induction transfinie~:
   \begin{itemize}
-  \item $f(0) = \min C$.
+  \item $f(0) = \min \varCC$.
   \item si $f(\varOa)$ est défini, alors
-    $f(\varOa + 1) = \min(C \setminus (f(\varOa) + 1))$, qui est bien défini car
-    $C$ est non borné, donc la classe dont on prend le minimum est non vide.
+    $f(\varOa + 1) = \min(\varCC \setminus (f(\varOa) + 1))$, qui est bien
+    défini car $\varCC$ est non borné, donc la classe dont on prend le minimum
+    est non vide.
   \item si $\varOb$ est un ordinal limite, alors
     $f(\varOb) = \sup_{\varOa \in \varOb} f(\varOa)$, qui est bien défini car
-    on a vérifié que $C$ était stable par borne supérieure.
+    on a vérifié que $\varCC$ était stable par borne supérieure.
   \end{itemize}
   On a ainsi une fonction $f$, strictement croissante, dont on peut prouver
-  qu'elle atteint tout élément de $C$ (par un argument similaire à ce qui a été
-  fait pour la surjectivité de $\varOa$).
+  qu'elle atteint tout élément de $\varCC$ (par un argument similaire à ce qui a
+  été fait pour la surjectivité de $\varOa$).
 
   On pose maintenant
   \[\varCCl \defeq f(\varCm + \varCk)\qquad
-  X \defeq \compr{f(\varCm + \varOa)}{\varOa < \varCk}\]
-  On sait que $X$ est une partie de $\varCCl$ de type d'ordre $\varCk$, puisque
-  c'est l'image par une fonction strictement croissante de $\varCk$. De plus,
-  comme $\varCk$ est un ordinal limite (car c'est un cardinal infini), $X$ est
-  cofinale dans $\varCCl$. On en déduit donc, par le \cref{lem.cof.type}, que
-  $\cof(\varCCl) = \cof(\type(X))$, c'est-à-dire que
-  $\cof(\varCCl) = \cof(\varCk)$. On en déduit donc le résultat souhaité.
+  \varPt \defeq \compr{f(\varCm + \varOa)}{\varOa < \varCk}\]
+  On sait que $\varPt$ est une partie de $\varCCl$ de type d'ordre $\varCk$,
+  puisque c'est l'image par une fonction strictement croissante de $\varCk$. De
+  plus, comme $\varCk$ est un ordinal limite (car c'est un cardinal infini),
+  $\varPt$ est cofinale dans $\varCCl$. On en déduit donc, par le
+  \cref{lem.cof.type}, que $\cof(\varCCl) = \cof(\type(\varPt))$, c'est-à-dire
+  que $\cof(\varCCl) = \cof(\varCk)$. On en déduit donc le résultat souhaité.
 \end{proof}
 
 \begin{proposition}
@@ -2219,9 +2252,9 @@ On peut maintenant en tirer deux conséquences sur l'exponentiation cardinale.
 \end{proposition}
 
 \begin{proof}
-  Soit $f : \cof(\varCk) \to \varCk$ une fonction cofinale (qui existe par
-  définition de $\cof(\varCk)$). Supposons par l'absurde qu'il existe une
-  surjection $g : \varCk \to \varCk^{\cof(\varCk)}$. On définit
+  Soit $\makeFunName{f}{\cof(\varCk)}{\varCk}$ une fonction cofinale (qui existe
+  par définition de $\cof(\varCk)$). Supposons par l'absurde qu'il existe une
+  surjection $\makeFunName{g}{\varCk}{\varCk^{\cof(\varCk)}}$. On définit
   \[
   \makeFun{h}{\cof(\varCk)}{\varCk}{\varOa}
           {\min(\varCk\setminus\compr{g(\varOb)(\varOa)}{\varOb < f(\varOa)})}\]
@@ -2258,7 +2291,7 @@ suivantes~:
 En fait, on peut prouver qu'il est impossible d'être plus précis que ces trois
 conditions dans le cas des cardinaux réguliers~: c'est le théorème d'Easton
 \cite{Easton}. Plus précisément, pour toute classe $\varCC$ de cardinaux
-réguliers et toute fonction $f : \varCC \to \Card$
+réguliers et toute fonction $\makeFunName{f}{\varCC}{\Card}$
 croissante, supérieure strictement à l'identité et vérifiant
 \[\forall \varCk \in \varCC, \varCk < \cof(f(\varCk))\]
 il existe un modèle de $\ZFC$ vérifiant que $\varCk \mapsto 2^\varCk$ coïncide

@@ -25,11 +25,11 @@ plus explicitement ici.
 
 \begin{definition}[Topologie de l'ordre]
   Soit $(X,\leq)$ un ensemble ordonné. On définit, pour tous
-  $a,b\in X\cup\{-\infty,+\infty\}$, le segment ouvert
+  $a,b\in X\cup\{\mInf,\pInf\}$, le segment ouvert
   \[\intOO{a}{b} \defeq \compr{x \in X}{a < x < b}\]
   La topologie de l'ordre sur $X$ est alors la topologie engendrée par la
   famille de parties $\{\intOO{a}{b}\}_{a,b\in X\cup\{\pm\infty\}}$, où un segment
-  ouvert de la forme $\intOO{-\infty}{a}$ signifie $\compr{x}{x < a}$ (les
+  ouvert de la forme $\intOO{\mInf}{a}$ signifie $\compr{x}{x < a}$ (les
   autres cas sont définis de façon analogue).
 \end{definition}
 
@@ -38,9 +38,9 @@ considérant la topologie de l'ordre pour $\in$ sur $\varOa$.
 
 \begin{example}
   Considérons l'ordinal $\Ow + 3$, la partie $\Ow$ en est un ouvert
-  puisqu'elle peut s'écrire $\intOO{-\infty}{\Ow}$. De plus, $\Ow + 1$ est aussi
-  un ouvert~: il vaut $\intOO{-\infty}{\Ow+1}$ mais il est aussi un fermé,
-  puisque son complémentaire est $\intOO{\Ow + 1}{+\infty}$.
+  puisqu'elle peut s'écrire $\intOO{\mInf}{\Ow}$. De plus, $\Ow + 1$ est aussi
+  un ouvert~: il vaut $\intOO{\mInf}{\Ow+1}$ mais il est aussi un fermé,
+  puisque son complémentaire est $\intOO{\Ow + 1}{\pInf}$.
 \end{example}
 
 Ces exemples nous montrent que les ordinaux successeurs ont un comportement
@@ -54,7 +54,7 @@ relativement pathologique.
 
 \begin{proof}
   Il suffit de voir que $\{\varOb + 1\} = \intOO{\varOb}{\varOb + 2}$. Pour $0$,
-  on a $\{0\} = \intOO{-\infty}{1}$.
+  on a $\{0\} = \intOO{\mInf}{1}$.
 \end{proof}
 
 \begin{proposition}
@@ -63,7 +63,7 @@ relativement pathologique.
 \end{proposition}
 
 \begin{proof}
-  $\varOb$ est simplement $\intOO{-\infty}{\varOb}$.
+  $\varOb$ est simplement $\intOO{\mInf}{\varOb}$.
 \end{proof}
 
 On remarque donc que $\Ow$ est muni de la topologie discrète. Par contre, $\Ow$
@@ -86,41 +86,43 @@ quelconque, et plutôt que la limite on utilise la borne supérieure.
 
 \begin{proposition}
   Soit $\varOa$ un ordinal. Une partie $\varCl\subseteq \varOa$ est un fermé si
-  et seulement si pour toute partie $X\subseteq \varCl$, si $\sup X \in \varOa$
-  alors $\sup X \in \varCl$.
+  et seulement si pour toute partie $\varPt\subseteq \varCl$, si
+  $\sup \varPt \in \varOa$ alors $\sup \varPt \in \varCl$.
 \end{proposition}
 
 \begin{proof}
-  Supposons que $\varCl$ est un fermé et soit $X\subseteq \varCl$ tel que
-  $\sup X \in \varOa$. On veut montrer que $\sup X$ est dans l'adhérence de
-  $\varCl$ (qui est $\varCl$ lui-même par hypothèse). Soit $\varOp$ un ouvert
-  contenant $\sup X$, sans perte de généralité (quitte à prendre une plus petite
-  partie) on peut considérer que $U = \intOO{\varOb}{\varOc}$ où
-  $\varOb < \sup X < \varOc$, mais alors par définition de $\sup X$, on trouve
-  $\varOd \in X$ tel que $\varOb < \varOd < \sup X$, donc
-  $\varOp \cap X \neq\vide$, ce qui signifie que $\sup X \in X$.
+  Supposons que $\varCl$ est un fermé et soit $\varPt\subseteq \varCl$ tel que
+  $\sup \varPt \in \varOa$. On veut montrer que $\sup \varPt$ est dans
+  l'adhérence de $\varCl$ (qui est $\varCl$ lui-même par hypothèse). Soit
+  $\varOp$ un ouvert contenant $\sup \varPt$, sans perte de généralité (quitte à
+  prendre une plus petite partie) on peut considérer que
+  $\varOp = \intOO{\varOb}{\varOc}$ où
+  $\varOb < \sup \varPt < \varOc$, mais alors par définition de $\sup \varPt$,
+  on trouve $\varOd \in \varPt$ tel que $\varOb < \varOd < \sup \varPt$, donc
+  $\varOp \cap \varPt \neq\vide$, ce qui signifie que $\sup \varPt \in \varPt$.
 
-  Réciproquement, supposons que pour tout $X\subseteq \varCl$, si
-  $\sup X \in \varOa$ alors $\sup X \in \varCl$. On veut montrer que $\varCl$
-  est fermé. Pour cela, on va montrer que tout point adhérent de $X$ est dans
-  $X$. Soit $x \in \adher X$~: si $x$ est un successeur ou $0$ alors il est un
-  point isolé, donc il appartient directement à $X$ en considérant le fait que
-  $\{x\}\cap X$ est non vide. On suppose donc que $x$ est une limite, et on
-  construit une famille $(x_\varOb)$ d'éléments de $X$ dont le sup est $x$~:
+  Réciproquement, supposons que pour tout $\varPt\subseteq \varCl$, si
+  $\sup \varPt \in \varOa$ alors $\sup \varPt \in \varCl$. On veut montrer que
+  $\varCl$ est fermé. Pour cela, on va montrer que tout point adhérent de
+  $\varPt$ est dans $\varPt$. Soit $x \in \adher \varPt$~: si $x$ est un
+  successeur ou $0$ alors il est un point isolé, donc il appartient directement
+  à $\varPt$ en considérant le fait que $\{x\}\cap \varPt$ est non vide. On
+  suppose donc que $x$ est une limite, et on construit une famille $(x_\varOb)$
+  d'éléments de $\varPt$ dont le sup est $x$~:
   \begin{itemize}
-  \item on définit $x_0$ comme un élément de $\intOO{-\infty}{x}\cap X$, qui est
-    non vide car $x$ est adhérent à $X$.
+  \item on définit $x_0$ comme un élément de $\intOO{\mInf}{x}\cap \varPt$,
+    qui est non vide car $x$ est adhérent à $\varPt$.
   \item si on a défini $x_\varOa$, alors $x_{\varOa + 1}$ est un élément de
-    $\intOO{(x_\varOa}{x}\cap X$.
+    $\intOO{x_\varOa}{x}\cap \varPt$.
   \item si $\varOl$ est limite, alors
-    $x_{\varOl}=\sup_{\varOb < \varOl}x_\varOb$, qui est un élément de $X$ car
+    $x_{\varOl}=\sup_{\varOb < \varOl}x_\varOb$, qui est un élément de $\varPt$ car
     tous les $x_\varOb$ sont inférieurs à $x$, donc $\sup x_\varOb\in \varOa$,
-    et en utilisant notre hypothèse sur $X$.
+    et en utilisant notre hypothèse sur $\varPt$.
   \end{itemize}
   On a donc créé une suite strictement croissante de $\Ord$ dans
-  $\intOO{-\infty}{x}\cap X$, ce qui est impossible. Notre famille finit donc à
-  un certain $\varOc$, et $\sup_{\varOb < \varOc} x_\varOb = x$, donc en utilisant
-  notre hypothèse sur $X$ on en déduit que $x\in X$.
+  $\intOO{\mInf}{x}\cap \varPt$, ce qui est impossible. Notre famille finit donc
+  à un certain $\varOc$, et $\sup_{\varOb < \varOc} x_\varOb = x$, donc en utilisant
+  notre hypothèse sur $\varPt$ on en déduit que $x\in \varPt$.
 \end{proof}
 
 \noindent
@@ -135,9 +137,9 @@ Enfin, donnons un résultat caractérisant les ordinaux compacts.
   On va d'abord montrer qu'un ordinal compact est successeur ou $0$ par
   contraposée. Supposons que $\varOa$ est un ordinal limite. Alors on considère
   le recouvrement
-  \[\varRecouv \defeq \{\intOO{-\infty}{\varOb}\}_{\varOb \in \varOa}\]
+  \[\varRecouv \defeq \{\intOO{\mInf}{\varOb}\}_{\varOb \in \varOa}\]
   Pour toute partie $F\subfin\varRecouv$, on trouve un plus grand $\varOb$ tel
-  que $\bigcup F = \intOO{-\infty}{\varOb}$, donc $\varOb + 1 \notin\bigcup F$.
+  que $\bigcup F = \intOO{\mInf}{\varOb}$, donc $\varOb + 1 \notin\bigcup F$.
   On a donc un recouvrement dont on ne peut extraire un recouvrement fini~:
   $\varOa$ n'est pas compact.
 
@@ -202,10 +204,10 @@ partir du moment où la cofinalité de $\varOa$ est indénombrable.
   Commençons par le cas où $\cof(\varOa) \leq \Cal_0$. Dans ce cas, on peut
   trouver une suite $(\varOa_n)$ strictement croissante cofinale dans $\varOa$.
   Soient alors $(\varOa_{2n})$ et $(\varOa_{2n+1})$ deux suites extraites. Les
-  images $B$ et $C$, respectivement, de $(\varOa_{2n})$ et $(\varOa_{2n+1})$, sont
-  cofinales dans $\varOa$ et disjointes. De plus, $B$ et $C$ sont des parties
-  fermées de $\varOa$. On a donc trouvé deux parties disjointes de $\varOa$ qui
-  sont des clubs.
+  images $\varPt$ et $\varPtB$, respectivement, de $(\varOa_{2n})$ et
+  $(\varOa_{2n+1})$, sont cofinales dans $\varOa$ et disjointes. De plus,
+  $\varPt$ et $\varPtB$ sont des parties fermées de $\varOa$. On a donc trouvé
+  deux parties disjointes de $\varOa$ qui sont des clubs.
 
   Supposons maintenant que $\cof(\varOa) > \Cal_0$. Soient alors $\varClub_1$ et
   $\varClub_2$ deux clubs de $\varOa$. Montrons que $\varClub_1\cap \varClub_2$
@@ -309,8 +311,8 @@ Pour commencer, un exemple important de club est celui des points de fermeture,
 que l'on va définir d'abord.
 
 \begin{definition}[Point de fermeture]
-  Soit $\varOa$ un ordinal et $f : \varOa \to \varOa$. On dit qu'un point
-  $\varOb \in \varOa$ est un point de fermeture de $f$ lorsque
+  Soit $\varOa$ un ordinal et $\makeFunName{f}{\varOa}{\varOa}$. On dit qu'un
+  point $\varOb \in \varOa$ est un point de fermeture de $f$ lorsque
   \[\forall \varOc < \varOb, f(\varOc) < \varOb\]
   ou, de façon équivalence, lorsque $f(\varOb) \subseteq \varOb$ en considérant
   l'image directe pour $f(\varOb)$ (et non l'image de $\varOb$). On notera
@@ -318,20 +320,22 @@ que l'on va définir d'abord.
 \end{definition}
 
 \begin{proposition}
-  Soit $\varCk$ un ordinal régulier indénombrable et $f : \varCk \to \varCk$,
-  alors $\Clos(f)$ est un club de $\varCk$.
+  Soit $\varCk$ un ordinal régulier indénombrable et
+  $\makeFunName{f}{\varCk}{\varCk}$, alors $\Clos(f)$ est un club de $\varCk$.
 \end{proposition}
 
 \begin{proof}
   On vérifie que $\Clos(f)$ est un club~:
   \begin{itemize}
-  \item soit $X\subseteq \Clos(f)$, montrons que $\sup X \in \Clos(f)$. Si
-    $\sup X \in X$ le résultat est évident. On suppose donc que $\sup X$ est un
-    ordinal limite. Soit $\varOb \in \sup X$, comme $\sup X$ est limite,
-    on trouve $\varOa \in X$ tel que $\varOb + 1 \leq \varOa$, et comme
+  \item soit $\varPt\subseteq \Clos(f)$, montrons que
+    $\sup \varPt \in \Clos(f)$. Si $\sup \varPt \in \varPt$ le résultat est
+    évident. On suppose donc que $\sup \varPt$ est un ordinal limite. Soit
+    $\varOb \in \sup \varPt$, comme $\sup \varPt$ est limite, on trouve
+    $\varOa \in \varPt$ tel que $\varOb + 1 \leq \varOa$, et comme
     $\varOb < \varOa$ et $\varOa \in \Clos(f)$, on en déduit que
-    $f(\varOb) < \varOa < \sup X$, donc pour tout
-    $\varOb \in \sup X, f(\varOb) < \sup X$, d'où $X\in \Clos(f)$.
+    $f(\varOb) < \varOa < \sup \varPt$, donc pour tout
+    $\varOb \in \sup \varPt, f(\varOb) < \sup \varPt$, d'où
+    $\sup\varPt\in \Clos(f)$.
   \item de plus $\Clos(f)$ est cofinal dans $\varCk$. Soit $\varOb\in\varCk$, on
     définit la suite
     \[\begin{cases}
@@ -349,7 +353,7 @@ que l'on va définir d'abord.
 \end{proof}
 
 Dans cet exemple précis, il est essentiel que $\varCk$ soit régulier. En effet,
-en prenant $f : \Cal_{\Ow_1} \to \Cal_{\Ow_1}$ tel que
+en prenant $\makeFunName{f}{\Cal_{\Ow_1}}{\Cal_{\Ow_1}}$ tel que
 $f(\varOa) = \Cal_\varOa$ pour $\varOa < \Ow_1$ et $f(\varOa) = 0$ sinon,
 on a un exemple de fonction sans point de fermeture.
 
@@ -371,15 +375,16 @@ fonctionne que dans le cas d'un cardinal régulier.
 \begin{proof}
   On vérifie que $\Lim_\varCk$ est un club~:
   \begin{itemize}
-  \item Soit $X\subseteq \Lim_\varCk$ tel que $\sup X \in \varCk$, alors
+  \item Soit $\varPt\subseteq \Lim_\varCk$ tel que $\sup \varPt \in \varCk$,
+    alors
     \begin{align*}
-      \bigcup (\sup X) &= \bigcup_{\varOa \in \sup X} \varOa \\
-      &= \bigcup_{\varOa \in \bigcup X} \varOa \\
-      &= \bigcup_{\varOa \in X} \left(\bigcup \varOa\right)\\
-      &= \bigcup_{\varOa \in X} \varOa\\
-      &= \sup X
+      \bigcup (\sup \varPt) &= \bigcup_{\varOa \in \sup \varPt} \varOa \\
+      &= \bigcup_{\varOa \in \bigcup \varPt} \varOa \\
+      &= \bigcup_{\varOa \in \varPt} \left(\bigcup \varOa\right)\\
+      &= \bigcup_{\varOa \in \varPt} \varOa\\
+      &= \sup \varPt
     \end{align*}
-    donc $\sup X \in \Lim_\varCk$, donc $\Lim_\varCk$ est fermé.
+    donc $\sup \varPt \in \Lim_\varCk$, donc $\Lim_\varCk$ est fermé.
   \item Soit $\varOa \in \varCk$, alors $\varOa + \Ow$ est un ordinal limite
     et il est supérieur à $\varOa$, donc $\Lim_\varCk$ est non borné.
   \end{itemize}
@@ -402,8 +407,8 @@ la notation $\Eij{\varCk}{\varCCl}$ introduite dans la \cref{sct.cof}.
 
 \begin{proof}
   On va montrer que tout club contient un élément de cofinalité $\varCk$. Soit
-  $\varClub$ un club de $\varCCl$. On définit $f : \varCCl \to \varClub$ par
-  récursion transfinie~:
+  $\varClub$ un club de $\varCCl$. On définit
+  $\makeFunName{f}{\varCCl}{\varClub}$ par récursion transfinie~:
   \begin{itemize}
   \item $f(0) = \min \varClub$
   \item pour tout $\varOa \in \varCCl$,
@@ -451,43 +456,43 @@ plus grandes~? C'est effectivement le cas, comme nous le montrons maintenant.
   On raisonne par l'absurde. Supposons qu'il existe un cardinal
   $\varCCl < \varCk$ tel qu'il existe une famille $\varFam$ de cardinal
   $\varCCl$ dont les éléments sont des clubs et dont l'intersection n'est pas
-  un club. Prenons $\varCCl$ minimal, et soit $(A_\varOa)$ une énumération de
-  $\varFam$~:
-  \[\varFam \defeq \compr{A_\varOa}{\varOa < \varCCl}\]
+  un club. Prenons $\varCCl$ minimal, et soit $(\varPt_\varOa)$ une énumération
+  de $\varFam$~:
+  \[\varFam \defeq \compr{\varPt_\varOa}{\varOa < \varCCl}\]
   On souhaite montrer que $\bigcap \varFam$ est un club. Pour cela, on
   définit d'abord la famille suivante~:
-  \[B_\varOa \defeq \bigcup_{\varOb < \varOa} A_\varOb\]
+  \[\varPtB_\varOa \defeq \bigcup_{\varOb < \varOa} \varPt_\varOb\]
   On remarque que
-  $\displaystyle\bigcap_{\varOa < \varCCl} B_\varOa = \bigcap\varFam$, donc il
+  $\displaystyle\bigcap_{\varOa < \varCCl} \varPtB_\varOa = \bigcap\varFam$, donc il
   nous suffit de montrer que cette intersection est un club. De plus, on sait
-  que chaque $B_\varOa$ est un club, car il est l'intersection
+  que chaque $\varPtB_\varOa$ est un club, car il est l'intersection
   d'une famille de cardinal strictement inférieur à $\varCCl$ de clubs (et
-  $\varCCl$ est supposé minimal). Comme chaque $B_\varOa$ est un fermé,
-  $\bigcap B_\varOa$ aussi. Il nous reste donc à montrer que $\bigcap B_\varOa$
-  est cofinal.
+  $\varCCl$ est supposé minimal). Comme chaque $\varPtB_\varOa$ est un fermé,
+  $\bigcap \varPtB_\varOa$ aussi. Il nous reste donc à montrer que
+  $\bigcap \varPtB_\varOa$ est cofinal.
 
   Soit $\varOb < \varCk$, on veut construire une famille $(\varOb_\varOc)$ de
   taille $\varOc$ d'éléments supérieurs à $\varOb$ par induction transfinie~:
   \begin{itemize}
-  \item on sait que $B_0 = A_0$ est cofinal, donc on peut trouver
-    $\varOb_0 \geq \varOb$ un élément de $B_0$.
+  \item on sait que $\varPtB_0 = \varPt_0$ est cofinal, donc on peut trouver
+    $\varOb_0 \geq \varOb$ un élément de $\varPtB_0$.
   \item si on a défini $\varOb_\varOc$, alors on peut utiliser le fait que
-    $B_{\varOc + 1}$ est un club pour trouver
-    $\varOb_{\varOc + 1}\in B_{\varOc+ 1}$ supérieur à $\varOb_\varOc$.
+    $\varPtB_{\varOc + 1}$ est un club pour trouver
+    $\varOb_{\varOc + 1}\in \varPtB_{\varOc+ 1}$ supérieur à $\varOb_\varOc$.
   \item si on a défini $\varOb_\varOd$ pour tout $\varOd < \varOc$ et $\varOc$
     est un ordinal limite, alors comme $\varOc < \cof(\varCk) = \varCk$, on
     sait que $\sup_{\varOd < \varOc} \beta_\varOd < \varCk$, donc on peut prendre
-    $\varOb_\varOc \in B_\varOc$ supérieur à ce suprémum.
+    $\varOb_\varOc \in \varPtB_\varOc$ supérieur à ce suprémum.
   \end{itemize}
   On considère maintenant
   \[\varOc \defeq \sup_{\varOc < \varCCl} \varOb_\varOc\]
   Comme $\varCk$ est régulier et $\varCCl < \varCk$, on sait que
-  $\varOc < \varCk$, et cet élément est dans tous les $B_\varOa$. En effet, il
-  est la borne supérieure d'une famille d'éléments de $B_\varOa$, donc comme
-  $B_\varOa$ est fermé, $\varOc \in B_\varOa$.
+  $\varOc < \varCk$, et cet élément est dans tous les $\varPtB_\varOa$. En effet,
+  il est la borne supérieure d'une famille d'éléments de $\varPtB_\varOa$, donc
+  comme $\varPtB_\varOa$ est fermé, $\varOc \in \varPtB_\varOa$.
 
-  Ainsi $\displaystyle\bigcap_{\varOa < \varCCl} B_\varOa$ est un club, ce qui est
-  absurde. On en déduit que l'intersection d'une famille de cardinal
+  Ainsi $\displaystyle\bigcap_{\varOa < \varCCl} \varPtB_\varOa$ est un club, ce qui
+  est absurde. On en déduit que l'intersection d'une famille de cardinal
   $\varCCl < \varCk$ de clubs est encore un club.
 \end{proof}
 
@@ -501,8 +506,8 @@ ici simplement donner un résultat légèrement plus fort.
 \end{proposition}
 
 \begin{proof}
-  Pour commencer, on pose $f : \Ow_1 \to \intFF{0}{1}\setminus \bQ$ une
-  injection (qui existe par un simple argument de cardinalité). On va
+  Pour commencer, on pose $\makeFunName{f}{\Ow_1}{\intFF{0}{1}\setminus \bQ}$
+  une injection (qui existe par un simple argument de cardinalité). On va
   construire, pour chaque $\varwd \in \toSt{\intB}$\footnote{On se réfère au
   \cref{chp.auto} pour une description détaillée des ensembles de mots.}
   de taille $n$, un ensemble
@@ -528,8 +533,9 @@ ici simplement donner un résultat légèrement plus fort.
 
   On raisonne maintenant par l'absurde~: supposons qu'il n'existe pas deux
   ensembles stationnaires disjoints dans $\Ow_1$. On va alors construire une
-  suite $g : \Ow \to \intB$ de telle sorte que $\varSt_{g\restr n}$ contienne
-  toujours un club. Ce faisant, $\displaystyle\bigcap_{n\in \bN} \varSt_{g\restr n}$
+  suite $\makeFunName{g}{\Ow}{\intB}$ de telle sorte que $\varSt_{g\restr n}$
+  contienne toujours un club. Ce faisant,
+  $\displaystyle\bigcap_{n\in \bN} \varSt_{g\restr n}$
   contient un club puisque chaque $\varSt_{g\restr n}$ contient un club et que,
   grâce à la \cref{prop.inter.club.k}, on sait qu'une intersection dénombrable
   de clubs de $\Ow_1$ est encore un club de $\Ow_1$. Comme
@@ -571,8 +577,8 @@ donc par en donner la définition.
 
 \begin{definition}[Fonction régressive]
   Soit $\varCk$ un cardinal, $\varSt\subseteq \varCk$ et
-  $f : \varSt \to \varCk$. On dit que $f$ est régressive si la propriété
-  suivante est vérifiée~:
+  $\makeFunName{f}{\varSt}{\varCk}$. On dit que $f$ est régressive si la
+  propriété suivante est vérifiée~:
   \[\forall \varOa \in \varSt\setminus\{0\}, f(\varOa) < \varOa\]
 \end{definition}
 
@@ -581,9 +587,9 @@ Donnons la version faible du lemme de Fodor suivante~:
 
 \begin{lemma}[Fodor, version faible]\label{lem.fodor.faible}
   Soit $\varCCl$ un cardinal régulier indénombrable et $\varSt\subseteq \varCCl$
-  un ensemble stationnaire. Soit $f : \varSt \to \varCCl$ régressive, alors $f$
-  est constante sur un ensemble de taille $\varCCl$, c'est-à-dire qu'il existe
-  $\varStT\subseteq \varSt$ et $\varOa \in \varCCl$ tels que
+  un ensemble stationnaire. Soit $\makeFunName{f}{\varSt}{\varCCl}$ régressive,
+  alors $f$ est constante sur un ensemble de taille $\varCCl$, c'est-à-dire
+  qu'il existe $\varStT\subseteq \varSt$ et $\varOa \in \varCCl$ tels que
   \[\begin{cases}
   \forall \varOb \in \varStT, f(\varOb) = \varOa\\
   \Card(\varStT) = \varCCl
@@ -734,14 +740,15 @@ l'intersection diagonale.
 \begin{proof}
   Nommons $D$ cette intersection diagonale et vérifions les axiomes d'un club~:
   \begin{itemize}
-  \item Soit $X\subseteq D$ borné, montrons que $\sup X \in D$. Soit
-    $\varOb < \sup X$, par définition pour tout $\varOd$ tel que
-    $\varOb<\varOd<\sup X$ et $\varOd \in X$, $\varOd \in \varClub_\varOb$. On en
-    déduit, comme $\sup X$ est une limite d'éléments de $X$ supérieurs à
-    $\varOb$, que $\sup X$ est une limite d'éléments de $\varClub_\varOb$, donc
-    un élément de $\varClub_\varOb$ puisque $\varClub_\varOb$ est un club (en
-    particulier un fermé). Donc $\sup X\in \varClub_\varOb$ pour tout
-    $\varOb < \sup X$, donc $\sup X \in D$.
+  \item Soit $\varPt\subseteq D$ borné, montrons que $\sup \varPt \in D$. Soit
+    $\varOb < \sup \varPt$, par définition pour tout $\varOd$ tel que
+    $\varOb<\varOd<\sup \varPt$ et $\varOd \in \varPt$,
+    $\varOd \in \varClub_\varOb$. On en déduit, comme $\sup \varPt$ est une
+    limite d'éléments de $\varPt$ supérieurs à $\varOb$, que $\sup \varPt$ est
+    une limite d'éléments de $\varClub_\varOb$, donc un élément de
+    $\varClub_\varOb$ puisque $\varClub_\varOb$ est un club (en particulier un
+    fermé). Donc $\sup \varPt\in \varClub_\varOb$ pour tout
+    $\varOb < \sup \varPt$, donc $\sup \varPt \in D$.
   \item On utilise un argument développé dans la preuve de la
     \cref{prop.inter.club.k} pour montrer que $D$ est cofinal. On pose
     \[D_\varOa \defeq \bigcap_{\varOb < \varOa} \varClub_\varOa\]
@@ -761,9 +768,8 @@ l'intersection diagonale.
     $\displaystyle D_{\varOa} =\bigcap_{n \in \bN} D_{\varOa_n}$,
     on en déduit que $\varOa \in D_\varOa$, c'est-à-dire
     $\varOa \in \bigcap_{\varOb < \varOa} \varClub_\varOa$, donc
-    $\varOa \in D$ et $\varOa > \varOb$.
+    $\varOa \in D$ et $\varOa > \varOb$.\qedhere
   \end{itemize}
-  Ainsi $D$ est bien un club.
 \end{proof}
 
 \noindent
@@ -771,8 +777,8 @@ On en déduit le lemme de Fodor.
 
 \begin{lemma}[Fodor \cite{Fodor}]
   Soit $\varCk$ un cardinal régulier indénombrable, $\varSt \subseteq \varCk$
-  une partie stationnaire et $f : \varSt \to \varCk$ une fonction régressive.
-  Alors $f$ est constante sur un ensemble stationnaire.
+  une partie stationnaire et $\makeFunName{f}{\varSt}{\varCk}$ une fonction
+  régressive. Alors $f$ est constante sur un ensemble stationnaire.
 \end{lemma}
 
 \begin{proof}
@@ -851,35 +857,37 @@ $\varOa$.
                    {\Cal_{\varOa_\varOb + 1}}\]
   donnée par $\HCG_\varCCl$.
 
-  Pour chaque $X\subseteq \varCCl$, on définit la fonction
-  \[\makeFun{f_X}{\varCk}{\varCCl}{\varOb}
-            {\iota_\varOb(X\cap\Cal_{\varOa_\varOb})}\]
+  Pour chaque $\varPt\subseteq \varCCl$, on définit la fonction
+  \[\makeFun{f_{\varPt}}{\varCk}{\varCCl}{\varOb}
+            {\iota_\varOb(\varPt\cap\Cal_{\varOa_\varOb})}\]
   Remarquons que cette fonction est bien définie, car
-  $X\cap \Cal_{\varOa_\varOb}$ est une partie de $\Cal_{\varOa_\varOb}$ et elle est
+  $\varPt\cap \Cal_{\varOa_\varOb}$ est une partie de $\Cal_{\varOa_\varOb}$ et elle est
   donc à valeur dans $\Cal_{\varOa_\varOb + 1} < \varCCl$. Montrons maintenant que
-  $\{f_X\}_{X\subseteq \varCCl}$ est une famille éventuellement différente~:
+  $\{f_{\varPt}\}_{\varPt\subseteq \varCCl}$ est une famille éventuellement
+  différente~:
 
-  Soient $X,Y\subseteq \varCCl$ tels que $X\neq Y$. On veut montrer que
-  $\compr{\varOx}{f_X(\varOx) = f_Y(\varOx)}$ est de cardinal strictement
-  inférieur à $\varCk$. Comme $X\neq Y$, on trouve
-  $\varOd = \min X \diffsym Y$. La suite $(\varOa_\varOb)$ est cofinale dans
-  $\varOa$, donc on peut trouver $\varOc\in \varCk$ tel que
-  $\Cal_{\varOa_\varOc} > \varOd$. Comme $(\varOa_\varOb)$ est strictement
-  croissante, on en déduit que pour tout
+  Soient $\varPt,\varPtB\subseteq \varCCl$ tels que $\varPt\neq \varPtB$. On
+  veut montrer que $\compr{\varOx}{f_{\varPt}(\varOx) = f_{\varPtB}(\varOx)}$ est
+  de cardinal strictement inférieur à $\varCk$. Comme $\varPt\neq \varPtB$, on
+  trouve $\varOd = \min \varPt \diffsym \varPtB$. La suite
+  $(\varOa_\varOb)$ est cofinale dans $\varOa$, donc on peut trouver
+  $\varOc\in \varCk$ tel que $\Cal_{\varOa_\varOc} > \varOd$. Comme $(\varOa_\varOb)$
+  est strictement croissante, on en déduit que pour tout
   $\varOc' > \varOc, \Cal_{\varOc'} > \varOd$.
 
   En remarquant que
-  $(X\diffsym Y) \cap \Cal_{\varOa_\varOb} =
-  (X\cap \Cal_{\varOa_\varOb})\diffsym (Y\cap \Cal_{\varOa_\varOb})$,
+  $(\varPt\diffsym \varPtB) \cap \Cal_{\varOa_\varOb} =
+  (\varPt\cap \Cal_{\varOa_\varOb})\diffsym (\varPtB\cap \Cal_{\varOa_\varOb})$,
   si $\varOb \in \varCk$ est tel que $\varOd \in \Cal_{\varOa_\varOb}$, alors
-  $\varOd\in(X\cap \Cal_{\varOa_\varOb})\triangle (Y\cap \Cal_{\varOa_\varOb})$
-  donc $X\cap \Cal_{\varOa_\varOb}\neq Y\cap \Cal_{\varOa_\varOb}$,
-  d'où par injectivité de $\iota_\varOb$, $f_X(\varOb) \neq f_Y(\varOb)$.
+  $\varOd\in(\varPt\cap \Cal_{\varOa_\varOb})\diffsym(\varPtB\cap \Cal_{\varOa_\varOb})$
+  donc $\varPt\cap \Cal_{\varOa_\varOb}\neq \varPtB\cap \Cal_{\varOa_\varOb}$,
+  d'où par injectivité de $\iota_\varOb$,
+  $f_{\varPt}(\varOb) \neq f_{\varPtB}(\varOb)$.
 
   On voit donc que l'ensemble
-  $\compr{\varOx}{f_X(\varOx) = f_Y(\varOx)}$ est borné par $\varOc$ tel que
-  $\varOd \in \Cal_\varOc$, c'est donc un ensemble de cardinal inférieur à
-  $\varOc$ et $\varOc < \varCk$, donc $\{f_X\}$ est une
+  $\compr{\varOx}{f_{\varPt}(\varOx) = f_{\varPtB}(\varOx)}$ est borné par
+  $\varOc$ tel que $\varOd \in \Cal_\varOc$, c'est donc un ensemble de cardinal
+  inférieur à $\varOc$ et $\varOc < \varCk$, donc $\{f_{\varPt}\}$ est une
   famille éventuellement différente.
 \end{proof}
 
@@ -887,67 +895,70 @@ $\varOa$.
 On définit maintenant une relation entre les parties de $\varCCl$.
 
 \begin{definition}
-  Pour deux parties $X,Y\subseteq \lambda$, on définit la relation
+  Pour deux parties $\varPt,\varPtB\subseteq \varCCl$, on définit la relation
   $\varRR$ par
-  \[X \varRR Y\defeq \compr{\varOc}{f_X(\varOc) < f_Y(\varOc)}
+  \[\varPt \varRR \varPtB\defeq
+  \compr{\varOc}{f_{\varPt}(\varOc) < f_{\varPtB}(\varOc)}
   \text{ est stationnaire dans }\varCk\]
 \end{definition}
 
 \begin{property}
-  Soient $X\neq Y$ deux parties de $\varCCl$. Alors $X\varRR Y$ ou
-  $Y\varRR X$.
+  Soient $\varPt\neq \varPtB$ deux parties de $\varCCl$. Alors
+  $\varPt\varRR \varPtB$ ou $\varPtB\varRR \varPt$.
 \end{property}
 
 \begin{proof}
-  Comme $\{f_X\}$ est une famille éventuellement différente, on peut trouver
-  $\varCk' < \varCk$ tel que
-  $\compr{\varOx}{f_X(\varOx) =f_Y(\varOx)}\subseteq\varCk'$
-  donc $\compr{\varOx}{f_X(\varOx)\neq f_Y(\varOx)}$ contient un club (la
-  partie $\varCk\setminus \varCk'$). De plus on a l'égalité
-  \[\compr{\varOx}{f_X(\varOx) \neq f_Y(\varOx)} =
-  \compr{\varOx}{f_X(\varOx) < f_Y(\varOx)}
-  \cup \compr{\varOx}{f_X(\varOx) > f_Y(\varOx)}\]
+  Comme $\{f_{\varPt}\}$ est une famille éventuellement différente, on peut
+  trouver $\varCk' < \varCk$ tel que
+  $\compr{\varOx}{f_{\varPt}(\varOx) =f_{\varPtB}(\varOx)}\subseteq\varCk'$
+  donc $\compr{\varOx}{f_{\varPt}(\varOx)\neq f_{\varPtB}(\varOx)}$ contient un
+  club (la partie $\varCk\setminus \varCk'$). De plus on a l'égalité
+  \[\compr{\varOx}{f_{\varPt}(\varOx) \neq f_{\varPtB}(\varOx)} =
+  \compr{\varOx}{f_{\varPt}(\varOx) < f_{\varPtB}(\varOx)}
+  \cup \compr{\varOx}{f_{\varPt}(\varOx) > f_{\varPtB}(\varOx)}\]
   donc l'union des deux ensembles est un ensemble stationnaire. On en déduit
   qu'au moins l'un des deux ensembles est stationnaire, ce qui signifie que
-  $X\varRR Y$ ou $Y\varRR X$.
+  $\varPt\varRR \varPtB$ ou $\varPtB\varRR \varPt$.
 \end{proof}
 
 \begin{proposition}
-  Il existe une partie $X\subseteq \varCCl$ telle que
-  $\Card(\LclR{X}) \geq \SsC{\varCCl}$.
+  Il existe une partie $\varPt\subseteq \varCCl$ telle que
+  $\Card(\LclR{\varPt}) \geq \SsC{\varCCl}$.
 \end{proposition}
 
 \begin{proof}
   Soit $\varFam\subseteq \powerset(\varCCl)$ tel que
-  $\Card(\varFam) = \SsC{\varCCl}$. On définit, pour tout $X\in \varFam$~:
-  \[\varFam_X\defeq \LclR{X}\cup \{X\}\]
+  $\Card(\varFam) = \SsC{\varCCl}$. On définit, pour tout $\varPt\in \varFam$~:
+  \[\varFam_{\varPt}\defeq \LclR{\varPt}\cup \{\varPt\}\]
   Il y a alors deux possibilités à traiter~:
   \begin{itemize}
-  \item s'il existe $X\in \varFam$ tel que $\Card(\varFam_X)\geq \SsC{\varCCl}$,
-    alors en prenant ce tel $X$, on a bien prouvé l'affirmation souhaitée.
-  \item sinon, alors on sait que pour tout $X\in \varFam$,
-    $\Card(\varFam_X)< \SsC{\varCCl}$,
+  \item s'il existe $\varPt\in \varFam$ tel que
+    $\Card(\varFam_{\varPt})\geq \SsC{\varCCl}$,
+    alors en prenant ce tel $\varPt$, on a bien prouvé l'affirmation souhaitée.
+  \item sinon, alors on sait que pour tout $\varPt\in \varFam$,
+    $\Card(\varFam_{\varPt})< \SsC{\varCCl}$,
     donc en utilisant le \cref{thm.Konig}, on en déduit que~:
-    \[\Card\left(\bigcup_{X\in \varFam}\varFam_X\right) \leq \SsC{\varCCl}\]
+    \[\Card\left(\bigcup_{\varPt\in \varFam}\varFam_{\varPt}\right) \leq
+    \SsC{\varCCl}\]
     donc, comme on a supposé que $2^\varCCl > \SsC{\varCCl}$, on peut trouver une
     partie
-    \[X\in \powerset(\varCCl)\setminus
-    \left(\bigcup_{X\in \varFam}\varFam_X\right)\]
-    Comme on sait que pour tous $X\neq Y$, $X\varRR Y$ ou $Y\varRR X$,
-    le fait que $X\notin \varFam_Y$ pour tout $Y\in \varFam$ signifie que
-    $\LclR{X}\supseteq A$, donc que
-    $\Card(\LclR{X}) \geq\SsC{\varCCl}$.\qedhere
+    \[\varPt\in \powerset(\varCCl)\setminus
+    \left(\bigcup_{\varPt\in \varFam}\varFam_{\varPt}\right)\]
+    Comme on sait que pour tous $\varPt\neq \varPtB$, $\varPt\varRR \varPtB$ ou
+    $\varPtB\varRR \varPt$, le fait que $\varPt\notin \varFam_{\varPtB}$ pour
+    tout $\varPtB\in \varFam$ signifie que $\LclR{\varPt}\supseteq A$, donc que
+    $\Card(\LclR{\varPt}) \geq\SsC{\varCCl}$.\qedhere
   \end{itemize}
 \end{proof}
 
 \begin{notation}
-  On fixe maintenant $X$ tel que défini dans la proposition précédente. De plus,
-  pour tout $\varOc \in \varCk$, comme
-  $f_X(\varOc) \in \Cal_{\varOa_\varOc + 1}$, on se donne une injection
-  $g_\varOc : f_X(\varOc) \to \Cal_{\varOa_\varOc}$.
+  On fixe maintenant $\varPt$ tel que défini dans la proposition précédente. De
+  plus, pour tout $\varOc \in \varCk$, comme
+  $f_{\varPt}(\varOc) \in \Cal_{\varOa_\varOc + 1}$, on se donne une injection
+  $\makeFunName{g_\varOc}{f_{\varPt}(\varOc)}{\Cal_{\varOa_\varOc}}$.
 
-  Pour tout $Y\in\LclR{X}$, on définit
-  $\varSt_Y = \compr{\varOc}{f_Y(\varOc) < f_X(\varOc)}$.
+  Pour tout $\varPtB\in\LclR{\varPt}$, on définit
+  $\varSt_{\varPtB} = \compr{\varOc}{f_{\varPtB}(\varOc) < f_{\varPt}(\varOc)}$.
 \end{notation}
 
 On va maintenant introduire une variant du lemme de Fodor pour traiter notre
@@ -956,7 +967,7 @@ famille éventuellement différente.
 \begin{lemma}[Fodor, variante]
   Soit $\varOa_\varOb$ une suite cofinale continue dans $\varOa$. Soit
   $\varSt\subseteq\varCk$ une partie stationnaire et
-  $f : \varSt \to \Cal_\varOa$ telle que
+  $\makeFunName{f}{\varSt}{\Cal_\varOa}$ telle que
   \[\forall \varOb < \varCk, f(\varOb) < \Cal_{\varOa_\varOb}\]
   On peut alors trouver $\varOc < \varOa$ et une partie $\varStT\subseteq\varSt$
   stationnaire telle que
@@ -965,7 +976,7 @@ famille éventuellement différente.
 
 \begin{proof}
   On commence par considérer
-  \[\varSt' \defeq varSt \cap \Lim_\varCk\]
+  \[\varSt' \defeq \varSt \cap \Lim_\varCk\]
   qui, comme $\Lim_\varCk$ est un club, est encore une partie stationnaire.
   Soit maintenant, pour $\varOb \in \varSt'$, l'ensemble
   \[\varFam_\varOb \defeq \compr{\varOb}{f(\varOb) < \Cal_{\varOa_\varOc}}\]
@@ -997,44 +1008,49 @@ En utilisant cette variante, on peut prouver le résultat suivant, qui nous
 permettra finalement de conclure le théorème de Silver.
 
 \begin{lemma}\label{lem.Silver.F}
-  Pour tout $Y\in\LclR{X}$, on peut trouver $\varStT_Y\subseteq \varSt_Y$
-  stationnaire et $\overline\varOc_Y$ tels que
-  \[\forall \varOc \in \varStT_Y,
-  g_\varOc(f_Y(\varOc)) < \Cal_{\overline\varOc_Y}\]
+  Pour tout $\varPtB\in\LclR{\varPt}$, on peut trouver
+  $\varStT_{\varPtB}\subseteq \varSt_{\varPtB}$
+  stationnaire et $\overline\varOc_{\varPtB}$ tels que
+  \[\forall \varOc \in \varStT_{\varPtB},
+  g_\varOc(f_{\varPtB}(\varOc)) < \Cal_{\overline\varOc_Y}\]
 \end{lemma}
 
 \begin{proof}
-  Soit $Y\in\LclR{X}$. On applique la variante du lemme de Fodor en
+  Soit $\varPtB\in\LclR{\varPt}$. On applique la variante du lemme de Fodor en
   considérant la suite cofinale continue $(\varOa_\varOb)$, l'ensemble
-  stationnaire $\varSt_Y$ et la fonction $\varOc\mapsto g_\varOc(f_Y(\varOc))$.
+  stationnaire $\varSt_{\varPtB}$ et la fonction
+  $\varOc\mapsto g_\varOc(f_{\varPtB}(\varOc))$.
 
   La fonction
-  \[\makeFun{F_Y}{\varSt_Y}{\varCCl}{\varOc}{g_\varOc(f_Y(\varOc))}\]
-  est bien définie car sur $\varSt_Y, f_Y < f_X$. De plus,
-  $g_\varOc : f_X(\varOc) \to \Cal_{\varOa_\varOc}$ donc $F_Y$ vérifie bien
-  les condition de la variante du lemme de Fodor.
+  \[\makeFun{F_{\varPtB}}{\varSt_{\varPtB}}{\varCCl}
+            {\varOc}{g_\varOc(f_{\varPtB}(\varOc))}\]
+  est bien définie car sur $\varSt_{\varPtB}, f_{\varPtB} < f_{\varPt}$. De plus,
+  $\makeFunName{g_\varOc}{f_{\varPt}(\varOc)}{\Cal_{\varOa_\varOc}}$ donc
+  $F_{\varPtB}$ vérifie bien les condition de la variante du lemme de Fodor.
 
-  On trouve donc $\overline\varOc_Y$ et $\varStT_Y\subseteq \varSt_Y$ tels que
-  \[\forall \varOc \in \varStT_Y, g_\varOc(f_Y(\varOc)) < \Cal_{\overline\varOc_Y}\]
+  On trouve donc $\overline\varOc_Y$ et
+  $\varStT_{\varPtB}\subseteq \varSt_{\varPtB}$ tels que
+  \[\forall \varOc \in \varStT_{\varPtB},
+  g_\varOc(f_{\varPtB}(\varOc)) < \Cal_{\overline\varOc_{\varPtB}}\qedhere\]
 \end{proof}
 
 On généralise ce lemme pour avoir un $\varStT$ et un $\overline\varOc$
-indépendants de $Y$.
+indépendants de $\varPtB$.
 
 \begin{lemma}
   Il existe $\varStT\subseteq \varCk$ stationnaire et un ordinal
   $\overline\varOc$ tels que
   \[\Card\left(
-  \compr{Y}{\varStT_Y = \varStT \land \overline\varOc_Y = \overline\varOc}
-  \right) \geq\SsC{\varCCl}\]
+  \compr{\varPtB}{\varStT_{\varPtB} = \varStT \land
+    \overline\varOc_{\varPtB} = \overline\varOc}\right) \geq\SsC{\varCCl}\]
 \end{lemma}
 
 \begin{proof}
   Soit la fonction
   \[\makeFun{h}
-            {\LclR{X}}{\powerset(\varCk)\times\varOa}
-            {Y}{(\varStT_Y,\overline\varOc_Y)}\]
-  On peut donc écrire $\LclR{X}$ comme l'union des
+            {\LclR{\varPt}}{\powerset(\varCk)\times\varOa}
+            {\varPtB}{(\varStT_{\varPtB},\overline\varOc_{\varPtB})}\]
+  On peut donc écrire $\LclR{\varPt}$ comme l'union des
   $h^{-1}(\{(\varStT,\overline\varOc)\})$ pour tous
   $(\varStT,\overline\varOc)\in\powerset(\varCk)\times\varOa$. Par l'absurde,
   supposons que chacun de ces ensembles $h^{-1}(\{(\varStT,\overline\varOc)\})$
@@ -1044,7 +1060,7 @@ indépendants de $Y$.
   \[\Card\left(
   \bigcup_{\genfrac{}{}{0pt}{2}{\varStT\subseteq\varCk}{\overline\varOc\in\varOa}}
   h^{-1}(\{(\varStT,\overline\varOc)\})\right) < \SsC{\varCCl}\]
-  ce qui contredit le fait que cette union vaut $\LclR{X}$, qui est
+  ce qui contredit le fait que cette union vaut $\LclR{\varPt}$, qui est
   de cardinal supérieur ou égal à $\SsC{\varCCl}$.
 
   On en déduit donc qu'il existe un certain $(\varStT,\overline\varOc)$ tel que
@@ -1062,17 +1078,19 @@ indépendants de $Y$.
   contradiction, on reprend les constructions et notations précédentes.
 
   Soit
-  \[\famY \defeq \compr{Y\subseteq \varCCl}
-          {\varStT_Y=\varStT\land\overline\varOc_Y=\overline\varOc}\]
+  \[\famY \defeq \compr{\varPtB\subseteq \varCCl}
+          {\varStT_{\varPtB}=\varStT\land
+            \overline\varOc_{\varPtB}=\overline\varOc}\]
 
-  On commence par trouver $Y_1\neq Y_2$ deux éléments de $\famY$ tels que
+  On commence par trouver $\varPtB_1\neq \varPtB_2$ deux éléments de $\famY$
+  tels que
   \[\forall \varOc \in \varStT,
-  g_\varOc(f_{Y_1}(\varOc)) = g_\varOc(f_{Y_2}(\varOc))\]
+  g_\varOc(f_{\varPtB_1}(\varOc)) = g_\varOc(f_{\varPtB_2}(\varOc))\]
 
   Un argument de dénombrement suffit. En effet, la condition précédente revient
-  à dire que, pour la famille de fonctions $F_Y$ définies dans le
-  \cref{lem.Silver.F}, on a l'égalité $F_{Y_1} = F_{Y_2}$, et ces deux fonctions
-  sont des éléments de
+  à dire que, pour la famille de fonctions $F_{\varPtB}$ définies dans le
+  \cref{lem.Silver.F}, on a l'égalité $F_{\varPtB_1} = F_{\varPtB_2}$, et ces deux
+  fonctions sont des éléments de
   $\Funct(\varStT,\Cal_{\overline\varOc})$. On sait que
   $\Card(\varStT) < \Cal_{\overline\varOc}$, donc
   \begin{align*}
@@ -1082,14 +1100,16 @@ indépendants de $Y$.
     &\leq \Cal_{\overline\varOc + 1}
   \end{align*}
   Comme $\Card(\famY) = \SsC{\varCCl}$, on en déduit qu'il existe au moins
-  deux parties $Y_1,Y_2$ telles que $F_{Y_1} = F_{Y_2}$ et $Y_1\neq Y_2$.
+  deux parties $\varPtB_1,\varPtB_2$ telles que
+  $F_{\varPtB_1} = F_{\varPtB_2}$ et $\varPtB_1\neq \varPtB_2$.
 
   Maintenant, comme on sait que chaque $g_\varOc$ est injective, et qu'on sait
   que
   \[\forall \varOc\in \varStT,
-  g_\varOc(f_{Y_1}(\varOc)) = g_\varOc(f_{Y_2}(\varOc))\]
-  on en déduit que $f_{Y_1}$ et $f_{Y_2}$ coïncident sur $\varStT$. Pourtant, on
-  sait que $\compr{\varOx}{f_{Y_1}(\varOx) = f_{Y_2}(\varOx)}$ est de cardinal
+  g_\varOc(f_{\varPtB_1}(\varOc)) = g_\varOc(f_{\varPtB_2}(\varOc))\]
+  on en déduit que $f_{\varPtB_1}$ et $f_{\varPtB_2}$ coïncident sur $\varStT$.
+  Pourtant, on sait que
+  $\compr{\varOx}{f_{\varPtB_1}(\varOx) = f_{\varPtB_2}(\varOx)}$ est de cardinal
   strictement inférieur à $\varCk$, et est donc non stationnaire. C'est absurde,
   donc notre hypothèse de départ, que $2^\varCCl > \SsC{\varCCl}$, est fausse.
   Comme $2^\varCCl\leq\SsC{\varCCl}$, on en déduit que $2^\varCCl=\SsC{\varCCl}$.

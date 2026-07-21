@@ -188,27 +188,28 @@ remarquable.
   \[\vardis(a_m,b) < \sum_{n = 0}^\infty \frac{\vareps}{2\times 2^n}\]
   d'où $\vardis(a_m,b) < \vareps$. Donc $\lim_{i \to \infty} a_i = b$.
   
-  Enfin, l'espace produit est séparable. Pour tout $n \in \bN$, on choisit $Y_n$
-  une partie dense dénombrable de $X_n$ et $x_n$ un élément quelconque de $X_n$.
-  On définit alors, pour chaque $F\subfin \bN$~:
-  \[Z_F \defeq \compr{(y_i)_{i \in \bN}}{\begin{array}{l}
-    \forall i \in F, y_i \in Y_i\\
+  Enfin, l'espace produit est séparable. Pour tout $n \in \bN$, on choisit
+  $D_n$ une partie dense dénombrable de $X_n$ et $x_n$ un élément
+  quelconque de $X_n$. On définit alors, pour chaque $F\subfin \bN$~:
+  \[D'_F \defeq \compr{(y_i)_{i \in \bN}}{\begin{array}{l}
+    \forall i \in F, y_i \in D_i\\
     \forall j \in \bN \setminus F, y_j = x_j
   \end{array}}\]
-  Le cardinal de $Z_F$ est donc dénombrable, puisqu'il y a autant d'éléments
-  dans $Z_F$ que de tuples dans le produit fini des $Y_i$ pour $i \in F$. On
+  Le cardinal de $D'_F$ est donc dénombrable, puisqu'il y a autant d'éléments
+  dans $D'_F$ que de tuples dans le produit fini des $D_i$ pour $i \in F$. On
   en déduit, comme l'ensemble des parties finies de $\bN$ est dénombrable,
   que
-  \[Z \defeq \bigcup_{F\subfin \bN} Z_F\]
-  est dénombrable. Montrons maintenant que $Z$ est dense dans le produit
+  \[D' \defeq \bigcup_{F\subfin \bN} D'_F\]
+  est dénombrable. Montrons maintenant que $D'$ est dense dans le produit
   dénombrable des $X_n$. Un ouvert de $\displaystyle\prod_{n \in \bN} X_n$
   correspond à un ensemble fini $F\subfin \bN$ et, pour chaque $n \in F$, un
-  ouvert $\varOp_n \subseteq X_n$. Par chaque $n$, comme $Y_n$ est dense dans
-  $X_n$, on peut donc trouver $y_n \in Y_n \cap \varOp_n$. Alors la suite
+  ouvert $\varOp_n \subseteq X_n$. Par chaque $n$, comme $D_n$ est dense dans
+  $X_n$, on peut donc trouver $y_n \in D_n \cap \varOp_n$. Alors la suite
   \[u_n \defeq \begin{cases} y_n\text{ si } n \in F \\
     x_n \text{ sinon}\end{cases}\]
-  appartient au cylindre en $(\varOp_n)_{n \in F}$, et à $Y$, donc $Y$ intersecte
-  tout ouvert, donc $Y$ est dense dans $\displaystyle \prod_{n \in \bN} X_n$.
+  appartient au cylindre en $(\varOp_n)_{n \in F}$, et à $D'$, donc $D'$
+  intersecte tout ouvert, donc $D'$ est dense dans
+  $\displaystyle \prod_{n \in \bN} X_n$.
 \end{proof}
 
 La seconde propriété de stabilité, là encore dénombrable, est celle par union
@@ -354,10 +355,10 @@ petite $\sigma$-algèbre contenant $\topo$.
   $\Borel\subseteq \powerset(X)$ tel que~:
   \begin{itemize}
   \item $\topo\subseteq \Borel$
-  \item si $(Y_i)_{i\in\bN}$ est une suite d'éléments de $\Borel$, alors
-    $\displaystyle\bigcap_{i\in\bN} Y_i\in \Borel$ et
-    $\displaystyle\bigcup_{i\in\bN} Y_i\in\Borel$.
-  \item si $Y\in\Borel$, alors $X\setminus Y \in \Borel$.
+  \item si $(\varPt_i)_{i\in\bN}$ est une suite d'éléments de $\Borel$, alors
+    $\displaystyle\bigcap_{i\in\bN} \varPt_i\in \Borel$ et
+    $\displaystyle\bigcup_{i\in\bN} \varPt_i\in\Borel$.
+  \item si $\varPt\in\Borel$, alors $X\setminus \varPt \in \Borel$.
   \end{itemize}
 \end{definition}
 
@@ -367,46 +368,48 @@ $\Ord$.
 
 \begin{definition}[Hiérarchie de Borel]
   Soit $(X,\Omega)$ un espace topologique. On définit par induction transfinie
-  %les ensembles $\HierBorS{\varOa},\HierBorP{\varOa}$ et
-  %$\HierBorD{\varOa}$ pour $\varOa \in \Ord$~:
-  %\begin{itemize}
-  %\item $\HierBorS{1} = \topo$
-  %\item pour une partie $Y\subseteq X$, $Y\in\HierBorS{\varOa}$ si et seulement
-  %  s'il existe une suite $(Y_i)_{i\in\bN}$ telle que
-  %  \[\begin{cases}
-  %  \forall i \in \bN, \exists \varOb < \varOa, Y_i \in \HierBorP{\varOb}\\
-  %  \displaystyle\bigcup_{i\in\bN} Y_i = Y
-  %  \end{cases}\]
-  %\item pour tout $\varOa \in \Ord$, on définit
-  %  \[\HierBorP{\varOa} \defeq \compr{X\setminus Y}{Y \in \HierBorS{\varOa}}\]
-  %\item pour tout $\varOa \in \Ord$, on définit
-  %  \[\HierBorD{\varOa}\defeq \HierBorS{\varOa}\cap\HierBorP{\varOa}\]
-  %\end{itemize}
+  les ensembles $\HierBorS{\varOa},\HierBorP{\varOa}$ et
+  $\HierBorD{\varOa}$ pour $\varOa \in \Ord$~:
+  \begin{itemize}
+  \item $\HierBorS{1} = \topo$
+  \item pour une partie $\varPt\subseteq X$, $\varPt\in\HierBorS{\varOa}$ si et
+    seulement s'il existe une suite $(\varPt_i)_{i\in\bN}$ telle que
+    \[\begin{cases}
+    \forall i \in \bN, \exists \varOb < \varOa, \varPt_i \in \HierBorP{\varOb}\\
+    \displaystyle\bigcup_{i\in\bN} \varPt_i = \varPt
+    \end{cases}\]
+  \item pour tout $\varOa \in \Ord$, on définit
+    \[\HierBorP{\varOa} \defeq
+    \compr{X\setminus \varPt}{\varPt \in \HierBorS{\varOa}}\]
+  \item pour tout $\varOa \in \Ord$, on définit
+    \[\HierBorD{\varOa}\defeq \HierBorS{\varOa}\cap\HierBorP{\varOa}\]
+  \end{itemize}
 
-  %En particulier, on dit qu'une partie $Y\subseteq X$ est un $\Fsig$ si
-  %$Y\in\HierBorS{2}$ et un $\Gdel$ si $Y\in\HierBorP{2}$, ce sont respectivement
-  %les unions dénombrables de fermés et les intersections dénombrables d'ouverts.
+  En particulier, on dit qu'une partie $\varPt\subseteq X$ est un $\Fsig$ si
+  $\varPt\in\HierBorS{2}$ et un $\Gdel$ si $\varPt\in\HierBorP{2}$, ce sont
+  respectivement les unions dénombrables de fermés et les intersections
+  dénombrables d'ouverts.
 \end{definition}
 
 \begin{exercise}
-  %Montrer que pour tout espace topologique $(X,\topo)$, on a l'égalité
-  %\[\Borel(X,\topo) = \bigcup_{\varOa < \Ow_1} \HierBorS{\varOa}\]
+  Montrer que pour tout espace topologique $(X,\topo)$, on a l'égalité
+  \[\Borel(X,\topo) = \bigcup_{\varOa < \Ow_1} \HierBorS{\varOa}\]
 \end{exercise}
 
 On peut désormais montrer la stabilité des espaces polonais pour les parties
 $\Gdel$.
 
 \begin{proposition}
-  Soit $(X,\topo)$ un espace polonais et $Y\subseteq X$ un $\Gdel$. Alors $Y$
-  muni de la topologie induite est un espace polonais.
+  Soit $(X,\topo)$ un espace polonais et $\varPt\subseteq X$ un $\Gdel$. Alors
+  $\varPt$ muni de la topologie induite est un espace polonais.
 \end{proposition}
 
 \begin{proof}
   On se donne une distance complète $\vardis$ sur $X$ engendrant $\topo$. Soit
-  $(\varOp_n)_{n\in\bN}$ une suite d'ouverts telle que $\bigcap \varOp_n = Y$. On
-  définit
+  $(\varOp_n)_{n\in\bN}$ une suite d'ouverts telle que
+  $\bigcap \varOp_n = \varPt$. On définit
   \[\varCl_n \defeq X\setminus \varOp_n\]
-  et une nouvelle distance $\vardis'$ sur $Y$~:
+  et une nouvelle distance $\vardis'$ sur $\varPt$~:
   \[\vardis'(x,y) \defeq \vardis(x,y) + \sum_{n\in \bN} \min\left(2^{-n-1},
   \left|\frac{1}{\vardis(x,\varCl_n)} - \frac{1}{\vardis(y,\varCl_n)}\right|
   \right)\]
@@ -415,7 +418,7 @@ $\Gdel$.
   $\vardis$ (vérification laissée dans l'\cref{exo.desc.verif1}).
 
   $\vardis'$ est une distance complète~: soit $(x_n)_{n\in\bN}$ une suite de
-  Cauchy de $(Y,\vardis')$. $(x_n)$ est aussi une suite de Cauchy dans
+  Cauchy de $(\varPt,\vardis')$. $(x_n)$ est aussi une suite de Cauchy dans
   $(X,\vardis)$. En effet, pour $\vareps > 0$, on trouve $n_0$ tel que
   \[\forall p,q > n_0, \vardis'(x_p,x_q) \leq \vareps\]
   mais $\vardis \leq \vardis'$, donc $\vardis(x_p,x_q) \leq \vareps$ dans
@@ -447,8 +450,8 @@ $\Gdel$.
   suite de Cauchy, donc converge (dans $\bR$), ce qui signifie que pour tout $p$
   suffisamment grand, $\vardis(x_p,\varCl_n) \neq 0$, donc que
   $\vardis(x,\varCl_n) \neq 0$, d'où $x\notin \varCl_n$. Comme cela est vrai
-  pour tout $n$, on en déduit que $x\in \bigcap \varOp_n$, donc que $x\in Y$.
-  Ainsi $(Y,\vardis')$ est complet.
+  pour tout $n$, on en déduit que $x\in \bigcap \varOp_n$, donc que
+  $x\in \varPt$. Ainsi $(\varPt,\vardis')$ est complet.
 
   Cet espace est séparable par le même argument que pour la preuve de la
   \cref{desc.ferme.polonais}.
@@ -518,8 +521,8 @@ proches d'un points que l'on veut.
     \[\varVW \defeq \bigcap_{y \in F} \varVW_y\]
     on a alors un voisinage de $x$ disjoint de tous les $\varVV_y$, supposés
     ouverts, donc l'adhérence de $\varVW$ est disjointe de
-    $\front(\varCK \cap varOp)$. On a donc trouvé un voisinage fermé $\varCl$ de
-    $x$ contenu dans $\varOp$.\qedhere
+    $\front(\varCK \cap \varOp)$. On a donc trouvé un voisinage fermé $\varCl$
+    de $x$ contenu dans $\varOp$.\qedhere
   \end{itemize}
 \end{proof}
 
@@ -776,8 +779,7 @@ de sorte que l'image des suites infinies est obtenue par passage à la limite.
 Pour une suite finie $\varwd \in 2^{<\Ow}$ de taille $n$ et $b \in \intB$, on
 note $\varwd\wdPt b$ la suite finie obtenue en associant $n$ à $b$ et les termes
 de $0$ à $n-1$ à ceux correspondant dans $\varwd$\footnote{Là encore, on se
-réfère au \cref{chp.auto} pour voir un traitement général des suites finies,
-sous la forme des mots.}.
+réfère au \cref{chp.auto} pour voir un traitement général des suites finies.}.
 
 \begin{definition}[Schéma de Cantor]
   Soit $(X,\topo)$ un espace polonais. On appelle schéma de Cantor sur $X$ une
@@ -803,7 +805,7 @@ sous la forme des mots.}.
 \begin{proposition}\label{desc.prop.schem.C}
   Soit $(X,\topo)$ un espace polonais et $\varFam$ un schéma de Cantor de
   diamètre évanescent dont tous les éléments sont des ouverts. Alors il existe
-  une fonction $f : 2^{\bN} \to X$ et une seule vérifiant
+  une fonction $\makeFunName{f}{2^{\bN}}{X}$ et une seule vérifiant
   \[\forall \varCan \in 2^{\bN},
   f(\varCan) \in \bigcap_{n \in \bN}X_{\varCan\restr n}\]
   De plus, c'est une injection continue.
@@ -877,7 +879,7 @@ sens fort), puisqu'on n'utilisera un schéma de Lusin que dans ce cas.
 
 \begin{exercise}\label{exo.Lusin.inj}
   Soit $(X,\topo)$ un espace polonais et $\varFam$ un schéma de Lusin sur $X$.
-  Montrer qu'il existe une fonction $f : \bN^\bN \to X$
+  Montrer qu'il existe une fonction $\makeFunName{f}{\bN^\bN}{X}$
   et une seule vérifiant
   \[\forall \varCan \in \bN^\bN, f(\varCan) \in
   \bigcap_{n \in \bN} X_{\varCan\restr n}\]
@@ -910,11 +912,11 @@ mais ce qui nous importe est de considérer un point d'accumulation de l'espace
 entier.
 
 \begin{definition}[Point d'accumulation]
-  Soit $(X,\topo)$ un espace topologique, $Y\subseteq X$ une partie et $x\in X$.
-  On dit que $x$ est un point d'accumulation de $Y$ si pour tout ouvert
-  $\varOp\in\topo$ contenant $x$, il existe un point $y\in Y$ différent de $x$
-  tel que $y\in U$. On dira que $x$ est un point d'accumulation sans autre
-  précision si $x$ est un point d'accumulation de $X$.
+  Soit $(X,\topo)$ un espace topologique, $\varPt\subseteq X$ une partie et
+  $x\in X$. On dit que $x$ est un point d'accumulation de $\varPt$ si pour tout
+  ouvert $\varOp\in\topo$ contenant $x$, il existe un point $y\in \varPt$
+  différent de $x$ tel que $y\in U$. On dira que $x$ est un point d'accumulation
+  sans autre précision si $x$ est un point d'accumulation de $X$.
 \end{definition}
 
 On voit donc qu'un point est soit un point isolé, soit un point d'accumulation.
@@ -925,8 +927,8 @@ espaces parfaits.
 \begin{definition}[Espace parfait]
   Un espace parfait est un espace topologique dont tous les points sont des
   points d'accumulation. Si $(X,\topo)$ est un espace topologique et
-  $Y\subseteq X$ est un espace parfait (pour la topologie induite), on dit alors
-  que $Y$ est parfait dans $X$.
+  $\varPt\subseteq X$ est un espace parfait (pour la topologie induite), on dit
+  alors que $\varPt$ est parfait dans $X$.
 \end{definition}
 
 \noindent
