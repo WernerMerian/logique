@@ -9,10 +9,11 @@ récurrence. Nous allons cependant adopter un formalisme différent de celui
 utilisé pour faire une simple récurrence. Les objets principaux sur lesquels
 nous utiliserons l'induction sont les ensembles inductifs et les relations
 inductives, que nous présenterons. Ces deux objets sont associés à des
-formalismes différents~: le premier aux grammaire en forme de Backus-Naur, et le
-deuxième aux points fixes et à la théorie des treillis. Comme la théorie des
-treillis sera étudiée plus tard dans cette partie préliminaire, nous ne
-traiterons qu'un cas restreint suffisant pour le travail sur l'induction.
+formalismes différents~: le premier aux grammaire en forme de
+Backus-Naur, et le deuxième aux points fixes et à la théorie des
+treillis. Comme la théorie des treillis sera étudiée plus tard dans cette partie
+préliminaire, nous ne traiterons qu'un cas restreint suffisant pour le travail
+sur l'induction.
 
 L'objectif de ce chapitre est de donner une justification mathématique aux
 procédés qui seront utilisés par la suite, et d'offrir un modèle mathématique
@@ -45,7 +46,7 @@ robuste que les ensembles infinis. Il est en effet très facile de se convaincre
 un ensemble à $300!$ éléments semble légèrement plus long). Cette robustesse
 découle du fait qu'on peut explicitement les construire, et cette possibilité
 n'existe que pour un ensemble fini. Pourtant, l'ensemble $\bN$ tend aussi
-à être plus facilement accepté qu'un ensemble tel que $\bR / \bQ$.
+à être plus facilement accepté qu'un ensemble tel que $\quot{\bR}{\bQ}$.
 Un point essentiel qui rend le premier ensemble logiquement plus simple que le
 deuxième est qu'il est facile à engendrer~: l'ensemble $\bN$ est constitué
 de l'élément $0$ et de l'opération $\Ss$ définie par $n \mapsto n + 1$, et tout
@@ -80,8 +81,9 @@ l'on peut spécifier correctement un ensemble inductif par certaines données.
 Pour une description plus systématique, mais utilisant le langage catégorique,
 on peut par exemple se référer à \cite{JacobsCLTT}.
 
-Une signature sera généralement donnée sous forme dite de Backus-Naur, abrégée en
-BNF (\foreignexpr{Backus-Naur Form}). Cette
+Une signature sera généralement donnée sous forme dite de
+Backus-Naur \cite{Backus59}, abrégée en BNF
+(\foreignexpr{Backus-Naur Form}). Cette
 présentation se décompose de la façon suivante~:
 \[a,b,\ldots \inddefeq \mathrm{cas}\;1 \mid \mathrm{cas}\;2 \mid \ldots\]
 où $a,b,\ldots$ représentent les éléments que les constructeurs définissent,
@@ -105,9 +107,10 @@ constructeurs donnés dans la signature. L'ensemble généré doit être un ense
 $X$ contenant, pour chaque $x_1,\ldots,x_n \in X$ et $c \in C$ d'arité $n$,
 l'objet $c(x_1,\ldots,x_n)$, et ne doit contenir que les objets de cette forme.
 Nous procédons alors par le bas~: un premier ensemble est construit par
-l'ensemble $C_0 = \compr{c \in C}{\arite(c) = 0}$, puis l'ensemble $C_1$ est
-construit par $C_1 = C_0 \cup \compr{c(x_1,\ldots,x_n)}{c \in C, x_1,\ldots,
-x_n \in C_0, \arite(c) = n}$ et ainsi de suite. Comme $c$ est simplement un
+l'ensemble $C_1 \defeq \compr{c \in C}{\arite(c) = 0}$, puis l'ensemble $C_2$
+est construit par
+$C_2 \defeq C_1 \cup \compr{c(x_1,\ldots,x_n)}{c \in C, x_1,\ldots,
+  x_n \in C_0, \arite(c) = n}$ et ainsi de suite. Comme $c$ est simplement un
 élément dans notre cas, écrire $c(x_1,\ldots,x_n)$ n'a pas de sens, c'est
 pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
 
@@ -122,7 +125,7 @@ pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
   \end{itemize}
 
   L'ensemble inductif engendré par $(C,\alpha)$ est alors l'ensemble
-  \[X = \bigcup_{n\in \bN} X_n\]
+  \[X \defeq \bigcup_{n\in \bN} X_n\]
 \end{definition}
 
 La définition donnée n'est pas exactement celle décrite plus haut, mais la
@@ -146,10 +149,11 @@ avec les deux méthodes.
     mais par inclusion, comme $(x_1,\ldots,x_p)\in (X_n)^p$, on en déduit que
     $(x_1,\ldots,x_p)$ est aussi dans $(X_m)^p$, pour tout $m \geq n$. Ainsi
     $(c,x_1,\ldots,x_p) \in X_{m+1}$ pour tout $m \geq n$, donc
-    $X_{n+1}\subseteq X_m$ pour tout $m \geq n+1$.
+    $X_{n+1}\subseteq X_m$ pour tout $m \geq n+1$.\qedhere
   \end{itemize}
 \end{proof}
 
+\noindent
 Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
 
 \begin{lemma}[Lecture unique]\label{lem.lecture_unique}
@@ -199,9 +203,7 @@ vérifier que le comportement que l'on a décrit est en accord avec le
 comportement réel de l'ensemble que l'on a construit. Nous avons dit que
 l'ensemble engendré par $(C,\arite)$ doit contenir exactement les éléments de
 la forme $c(x_1,\ldots,x_n)$ où $x_i \in X$ pour tout $i\in\{1,\ldots,n\}$, mais
-une autre façon de penser ce fait
-%que l'ensemble ne contient que des applications de constructeurs
-est qu'une fonction partant d'un ensemble
+une autre façon de penser ce fait est qu'une fonction partant d'un ensemble
 inductif est exactement spécifiée par son comportement sur les constructeurs.
 De telles fonctions sont appelées récursives, car elles peuvent faire appel à
 elles-mêmes pour s'appliquer sur les arguments d'un constructeur, comme nous le
@@ -241,10 +243,10 @@ pour aller d'un coin à l'autre du carré sont égaux.
     = f_c(f_n(x_1),\ldots,f_n(x_p))
   \end{multline*}
   \begin{itemize}
-  \item Si $n = 0$, il existe une unique fonction $f_0 : \vide \to Y$ et
-    elle vérifie la propriété par vacuité.
+  \item Si $n = 0$, il existe une unique fonction $\makeFunName{f_0}{\vide}{Y}$
+    et elle vérifie la propriété par vacuité.
   \item Soit $n \in \bN$. Supposons qu'il existe une unique fonction
-    $f_n : X_n \to Y$ telle que
+    $\makeFunName{f_n}{X_n}{Y}$ telle que
     \[\forall c\in C, \forall (x_1,\ldots,x_p)\in (X_n)^{\arite(c)},
     f_n((c,x_1,\ldots,x_p)) = f_c(f(x_1),\ldots,f(x_p))\]
     On définit alors
@@ -290,9 +292,9 @@ directement \og par induction sur $x$\fg si le contexte rend clair que $x$ est
 un élément de $X$.
 
 \begin{example}%\label{ex.double}
-  Donnons un premier exemple de fonction récursive~: la fonction
-  $\double :n\mapsto 2n$, définie de $\bN$ dans $\bN$. En effet, on peut
-  la décrire par
+  Donnons un premier exemple de fonction que l'on définit récursivement~: la
+  fonction $\double :n\mapsto 2n$, définie de $\bN$ dans $\bN$. En effet, on
+  peut la décrire par
   \begin{itemize}
   \item $\double(0) = 0$
   \item $\double(\Ss n) = \Ss \Ss \double(n)$
@@ -334,8 +336,8 @@ un élément de $X$.
 
   Définir une fonction $\makeFunName{h}{\BinTree(A)}{\bN}$ donnant la
   hauteur d'un arbre, c'est-à-dire la longueur du plus long chemin entre la
-  racine de l'arbre (la première étiquette) et une feuille (un arbre vide qui est
-  sous-arbre). On prend comme convention que $h(\nil) = 0$.
+  racine de l'arbre (la première étiquette) et une feuille (un arbre vide qui
+  est sous-arbre). On prend comme convention que $h(\nil) = 0$.
 
   Définir une fonction $\makeFunName{\ListLen{\tok}}{\BinTree(A)}{\bN}$ donnant
   le nombre d'étiquettes d'un arbre.
@@ -544,7 +546,7 @@ Donnons quelques exemples du résultat de $\ruleR$ pour des règles simples.
   \begin{prooftree}
     \AxiomC{}
     \RightLabel{$\reflR$}
-    \UnaryInfC{$\mathop{\varRR}(x,x)$}
+    \UnaryInfC{$x\varRR x$}
   \end{prooftree}
   exprimant que $\varRR$ est réflexive. La fonction associée à $\reflR$ est
   alors simplement la fonction
@@ -557,10 +559,10 @@ Donnons quelques exemples du résultat de $\ruleR$ pour des règles simples.
   La règle précédente n'utilisait pas $\varRR$ dans ses prémisses, un exemple
   l'utilisant est la règle exprimant la transitivité :
   \begin{prooftree}
-    \AxiomC{$\mathop{\varRR}(x,y)$}
-    \AxiomC{$\mathop{\varRR}(y,z)$}
+    \AxiomC{$x\varRR y$}
+    \AxiomC{$y\varRR z$}
     \RightLabel{$\transR$}
-    \BinaryInfC{$\mathop{\varRR}(x,z)$}
+    \BinaryInfC{$x\varRR z$}
   \end{prooftree}
   Dans ce cas, l'image de $\varRR$ par $\transR$ est l'ensemble
   \[\mathord{\varRR} \cup \compr{(x,z) \in X^2}
@@ -578,7 +580,8 @@ $\ruleR$ associée. On va ainsi chercher à créer un point fixe de la fonction
 associée. Pour cela, nous allons donner un théorème essentiel en logique~: le
 théorème de Knaster-Tarski.
 
-\begin{theorem}[Knaster-Tarski (faible)\cite{Knaster}]\label{thm.ind.KT}
+\begin{theorem}[Knaster-Tarski (faible)\cite{Knaster}]
+  \label{thm.ind.KT}
   Soit un ensemble $X$ quelconque, et une fonction
   $\makeFunName{f}{\powerset(X)}{\powerset (X)}$ croissante pour $\subseteq$,
   c'est-à-dire telle que
@@ -620,8 +623,8 @@ théorème de Knaster-Tarski.
   Soit $X$ un ensemble quelconque,
   $\makeFunName{f}{\powerset(X)}{\powerset(X)}$ une
   fonction croissante pour l'inclusion et $\varPt \in \powerset(X)$ tel que
-  $\varPt\subseteq f(\varPt)$. Montrer que l'on peut étendre le \cref{thm.ind.KT}
-  pour trouver un plus petit point fixe $\alpha$ tel que
+  $\varPt\subseteq f(\varPt)$. Montrer que l'on peut étendre le
+  \cref{thm.ind.KT} pour trouver un plus petit point fixe $\alpha$ tel que
   $\varPt\subseteq \alpha$.
 \end{exercise}
 
@@ -670,14 +673,15 @@ Ce résultat est essentiel pour prouver beaucoup de résultats~: étant donnée 
 relation $\varRR$ construite par induction, pour montrer un résultat de la forme
 \[\forall x_1,\ldots,x_n\in X, \mathop{\varRR}(x_1,\ldots,x_n)\implies
 \varFF(x_1,\ldots,x_n)\]
-pour un certain prédicat $\varFF$, il suffit de montrer que ce prédicat est stable
-par la règle définissant $\varRR$.
+pour un certain prédicat $\varFF$, il suffit de montrer que ce prédicat est
+stable par la règle définissant $\varRR$.
 
 \begin{exercise}
   Soient désormais $n$ règles $\ruleR_1,\ldots,\ruleR_n$ incluant toutes
-  un paramètre $\varRR$ d'arité $p$. Montrer qu'on peut leur associer une fonction
-  $\makeFunName{\ruleR_{1,\ldots,n}}{\powerset(X^p)}{\powerset(X^p)}$ croissante.
-  En déduire un analogue des propositions précédentes pour un nombre fini de règles.
+  un paramètre $\varRR$ d'arité $p$. Montrer qu'on peut leur associer une
+  fonction $\makeFunName{\ruleR_{1,\ldots,n}}{\powerset(X^p)}{\powerset(X^p)}$
+  croissante. En déduire un analogue des propositions précédentes pour un nombre
+  fini de règles.
 \end{exercise}
 
 \begin{remark}
@@ -774,8 +778,8 @@ syntaxiquement prouver la correspondance avec la règle.
 \begin{definition}[Règle admissible]
   Une règle $\ruleR$ est admissible pour une relation $\varRR$ si
   $\mathord{\varRR}\satisf \ruleR$. La règle est admissible pour un ensemble de
-  règles $\ruleR_1,\ldots,\ruleR_n$ si la relation définie par ces règles vérifie
-  la règle $\ruleR$.
+  règles $\ruleR_1,\ldots,\ruleR_n$ si la relation définie par ces règles
+  vérifie la règle $\ruleR$.
 \end{definition}
 
 \begin{definition}[Règle dérivable]
@@ -788,8 +792,8 @@ syntaxiquement prouver la correspondance avec la règle.
 
 \begin{exercise}
   Montrer qu'une règle dérivable est admissible et que si une règle est
-  admissible pour une relation $\varRR$, alors la relation définie par cette règle
-  sur $\varRR$ est exactement $\varRR$.
+  admissible pour une relation $\varRR$, alors la relation définie par cette
+  règle sur $\varRR$ est exactement $\varRR$.
 \end{exercise}
 
 \begin{exercise}\label{exo.pair_list}
@@ -822,7 +826,8 @@ syntaxiquement prouver la correspondance avec la règle.
     \UnaryInfC{$\mathop{\varRR}(a\Cons b \Cons c \Cons \varlist)$}
     \DisplayProof
   \end{center}
-  Montrer que la première règle est valide pour $\varRR$, la seconde l'est-elle~?
+  Montrer que la première règle est valide pour $\varRR$, la seconde
+  l'est-elle~?
 \end{exercise}
 
 \begin{exercise}
@@ -975,8 +980,9 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 \end{exercise}
 
 \begin{exercise}[Clôtures symétriques]\label{exo.sClot}
-  Soit $X$ un ensemble et $\varRR$ une relation binaire sur $X$. On définit les deux
-  relations $\sClotMin{\varRR}$ et $\sClotMax{\varRR}$ respectivement par les règles
+  Soit $X$ un ensemble et $\varRR$ une relation binaire sur $X$. On définit les
+  deux relations $\sClotMin{\varRR}$ et $\sClotMax{\varRR}$ respectivement par
+  les règles
   \begin{center}
     \bottomAlignProof
     \AxiomC{$x \varRR y$}
@@ -996,8 +1002,8 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     \BinaryInfC{$x \sClotMin{\varRR} y$}
     \DisplayProof
   \end{center}
-  Montrer que $\sClotMax{\varRR}$ est une relation symétrique contenant $\varRR$,
-  et que pour toute relation $\varRR'$ symétrique contenant $\varRR$,
+  Montrer que $\sClotMax{\varRR}$ est une relation symétrique contenant
+  $\varRR$, et que pour toute relation $\varRR'$ symétrique contenant $\varRR$,
   $\mathord{\sClotMax{\varRR}} \subseteq \mathord{\varRR'}$.
 
   \noindent
@@ -1034,7 +1040,8 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   on a l'inclusion $\mathord{\rtsClot{\varRR}} \subseteq \mathord{\sim}$.
 
   \noindent
-  Montrer que $\mathord{\rtsClot{\varRR}} = \mathord{\rtClot{(\sClotMax{\varRR})}}$.
+  Montrer que
+  $\mathord{\rtsClot{\varRR}} = \mathord{\rtClot{(\sClotMax{\varRR})}}$.
   A-t-on toujours l'égalité
   $\mathord{\rtsClot{\varRR}} = \mathord{\sClotMax{(\rtClot{\varRR})}}$~?
   Si non, donner un contre-exemple.
@@ -1605,9 +1612,11 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     à paramètres $X_0 \in \powerset(X^n), x_1,\ldots,x_n \in X$. Soit
     $\varRR$ une relation $n$-aire sur $X$.
     Si on a la satisfaction
-    $(X_0 \mapsto \varRR, x_1\mapsto a_1,\ldots x_n \mapsto a_n) \cosatisf \ruleR$
+    $(X_0 \mapsto \varRR, x_1\mapsto a_1,\ldots x_n \mapsto a_n) \cosatisf
+    \ruleR$
     alors la relation inductive engendrée par $\ruleR$ sur la relation
-    $\varRR$ est contenue dans la relation coinductivement engendrée par $\ruleR$.
+    $\varRR$ est contenue dans la relation coinductivement engendrée par
+    $\ruleR$.
   \item En déduire le théorème de coinduction suivant~:
     \begin{quotation}
       Soit $X$ un ensemble et $\{\ruleR_i\}_{i \in I}$ un ensemble de règles

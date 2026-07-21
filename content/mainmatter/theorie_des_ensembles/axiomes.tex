@@ -222,16 +222,16 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
 
 \begin{definition}[Relation fonctionnelle]
   Une relation binaire est ici une formule à deux variables libres. On dit
-  qu'une relation $\varRR(x,y)$ est fonctionnelle si pour chaque $x$, il existe
-  au plus un $y$ tel que $\varRR(x,y)$. On écrira pour raccourcir
+  qu'une relation $\varRR$ est fonctionnelle si pour chaque $x$, il existe
+  au plus un $y$ tel que $x \varRR y$. On écrira pour raccourcir
   \[\Funct(\varRR) \defeq \forall x\forall y\forall z,
-  \varRR(x,y)\land \varRR(x,z)\implies y = z\]
+  x \varRR y\land x \varRR z \implies y = z\]
 
-  Pour une relation fonctionnelle $\varRR(x,y)$, on définit la collection du
+  Pour une relation fonctionnelle $\varRR$, on définit la collection du
   domaine de $\varRR$~:
-  \[\dom(\varRR)(x)\defeq \exists y, \varRR(x,y)\]
+  \[\dom(\varRR)(x)\defeq \exists y, x \varRR y\]
   et la collection de l'image de $\varRR$~:
-  \[\im(\varRR)(y)\defeq \exists x, \varRR(x,y)\]
+  \[\im(\varRR)(y)\defeq \exists x, x \varRR y\]
 \end{definition}
 
 \begin{axiom}[Schéma de remplacement]\label{ax.ZF.repl}
@@ -259,7 +259,7 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
   \item le schéma de remplacement total, énonçant la même chose que le schéma
     de remplacement mais demandant à la relation fonctionnelle d'être totale,
     c'est-à-dire de vérifier le prédicat
-    \[\FunTot(\varRR) \defeq \forall x \exists! y, \varRR(x,y)\]
+    \[\FunTot(\varRR) \defeq \forall x \exists! y, x \varRR y\]
     plutôt que $\Funct$.
   \end{itemize}
 
@@ -278,10 +278,7 @@ encore définie, nous utilisons à la place la notion de relation fonctionnelle.
   $x\times y$ est bien défini même sans l'axiome de l'ensemble des parties.
 \end{exercise}
 
-%Comme nous l'avons fait remarquer dans le \cref{chp.logpred}, certaines
-%conventions considèrent qu'il existe un élément dans l'univers de discours.
-%Comme nous ne souhaitons pas invoquer explicitement cette convention, nous
-%ajoutons en tant qu'axiome qu'il existe bien un objet dans notre univers.
+\noindent
 Donnons aussi l'axiome de l'univers non vide.
 
 \begin{axiom}[Univers non vide]\label{ax.ZF.nonEmpty}
@@ -318,8 +315,8 @@ trois constituants suivant~:
 \item l'élément $0$
 \item la fonction unaire $\Ss$ (successeur), correspondant à $n \mapsto n + 1$
 \item le principe de récurrence, que l'on peut encoder dans les ensembles par le
-  fait que si $F\subseteq\bN$, $0 \in F$ et
-  $\forall n, n\in F \implies \Ss n \in F$ alors $F = \bN$.
+  fait que si $\varPt\subseteq\bN$, $0 \in \varPt$ et
+  $\forall n, n\in \varPt \implies \Ss n \in \varPt$ alors $\varPt = \bN$.
 \end{itemize}
 
 Chercher à définir $\bN$ dans $\ZFC$ nous demande donc de définir ces
@@ -328,7 +325,7 @@ nuls par excellence, et $\vide$ est le premier ensemble que l'on peut
 construire. La question de savoir ce qu'est $\Ss x$ pour un ensemble $x$ est
 alors naturelle~: pour cela, nous utilisons le codage de Von Neumann consistant
 à coder l'entier naturel $n$ par $\intervInt{n}$. Cet encodage nous offre
-une définition simple à la fonction $S$~:
+une définition simple à la fonction $\Ss$~:
 \[\Ss x\defeq x\cup \{x\}\]
 
 Remarquons que l'on peut déjà construire tous les entiers que l'on souhaite~:
@@ -369,31 +366,31 @@ $0$ et stable par $\Ss$ existe bien.
 \begin{definition}[Entiers naturels]
   Soit $X$ l'ensemble défini par l'axiome de l'infini. On définit alors
   $\bN$ comme
-  \[\bN \defeq \compr{x\in X}{\forall Y, Y\subseteq X\land
-  \vide \in Y \land (\forall a, a \in Y \implies \Ss a\in Y) \implies
-  x\in Y}\]
+  \[\bN \defeq \compr{x\in X}{\forall \varPt, \varPt\subseteq X\land
+    \vide \in \varPt \land (\forall a, a \in \varPt \implies \Ss a\in \varPt)
+    \implies x\in \varPt}\]
 \end{definition}
 
 \noindent
 On vérifie maintenant le principe de récurrence.
 
 \begin{theorem}[Récurrence]
-  Soit $F$ une partie de $\bN$ telle que $\vide \in F$ et telle que
-  $\forall n, n \in F \implies \Ss n \in F$, alors $F = \bN$.
+  Soit $\varPt$ une partie de $\bN$ telle que $\vide \in \varPt$ et telle que
+  $\forall n, n \in \varPt \implies \Ss n \in \varPt$, alors $\varPt = \bN$.
 \end{theorem}
 
 \begin{proof}
-  Comme $F$ est une partie de $\bN$, il nous suffit de montrer que
-  $\bN \subseteq F$. Par transitivité de l'inclusion,
-  $F\subseteq X$ pour $X$ l'ensemble à partir duquel $\bN$ a été défini.
+  Comme $\varPt$ est une partie de $\bN$, il nous suffit de montrer que
+  $\bN \subseteq \varPt$. Par transitivité de l'inclusion,
+  $\varPt\subseteq X$ pour $X$ l'ensemble à partir duquel $\bN$ a été défini.
   On sait de plus que
   \[x \in \bN \implies \forall Y, Y\subseteq X \land
-  \vide \in Y \land (\forall a, a \in Y \implies \Ss a \in Y) \implies
-  x\in Y\]
-  d'où, en spécialisant $Y$ en $F$, et sachant que $\vide\in F$ et
-  $\forall n, n \in F \implies \Ss n \in F$, il vient que
-  \[x\in \bN \implies x \in F\] ce qui est exactement
-  $\bN\subseteq F$, d'où le résultat.
+  \vide \in Y \land (\forall a, a \in Y \implies \Ss a \in Y)
+  \implies x\in Y\]
+  d'où, en spécialisant $Y$ en $\varPt$, et sachant que $\vide\in \varPt$ et
+  $\forall a, a \in \varPt \implies \Ss a \in \varPt$, il vient que
+  \[x\in \bN \implies x \in \varPt\] ce qui est exactement
+  $\bN\subseteq \varPt$, d'où le résultat.
 \end{proof}
 
 \begin{notation}
@@ -438,27 +435,35 @@ définition de cet axiome.
   Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
   disjoints. Alors il existe un ensemble $\varCh$ tel que pour tout $x\in X$,
   $\varCh\cap x$ est un singleton. \'Ecrit formellement~:
-  %\begin{multline*}
   \[\forall X, \vide\notin X \land
   (\forall x,y \in X, x \cap y \neq
   \vide \implies x = y)
   \implies \exists \varCh, \forall x \in X, \exists y, \varCh \cap x = \{y\}\]
-  %\end{multline*}
 \end{axiom}
+
+\begin{remark}
+  En l'état, l'ensemble $\varCh$ obtenu par l'axiome du choix peut tout à fait
+  contenir des éléments qui ne sont pas éléments d'éléments de $X$~: on impose
+  simplement que les éléments d'éléments de $X$ qui sont dans $\varCh$ donnent
+  la propriété souhaitée. On peut cependant prendre
+  $\varCh'\defeq\varCh\cap \bigcup X$ pour avoir en plus le résultat
+  \[\forall y, y \in \varCh' \iff \exists x \in X, x = \{y\}\]
+\end{remark}
 
 \noindent
 Il existe plusieurs reformulations naturelles de l'axiome du choix. Pour
 celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
 
 \begin{definition}[Fonction]
-  Soient $X,Y$ deux ensembles. Une fonction partielle $f : X \partialto Y$ est
+  Soient $X,Y$ deux ensembles. Une fonction partielle
+  $\makeFunNamePartial{f}{X}{Y}$ est
   une partie $\varGrP{f}\subseteq X \times Y$ (appelée graphe de $f$) telle que
   le prédicat $(x,y)\in \varGrP{f}$, défini pour $x\in X$ et $y\in Y$, est une
   relation fonctionnelle. On désigne par $\dom(f)$ et $\im(f)$ les ensembles
   associés à la relation fonctionnelle. On dit que $f$ est partielle si
   $\dom(f) \neq X$, et totale si $\dom(f) = X$. Pour une fonction totale
-  $f$, on notera $f : X \to Y$, et on appellera simplement \og fonction\fg
-  les fonctions totales.
+  $f$, on notera $\makeFunName{f}{X}{Y}$, et on appellera simplement
+  \og fonction\fg les fonctions totales.
 
   Pour deux ensembles $X,Y$, on note par $\Funct(X,Y)$ l'ensemble des fonctions
   (totales) de $X$ dans $Y$~:
@@ -474,52 +479,15 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
   Dans la présentation faite ici, la notion de totalité est relative à des
   ensembles de départ et d'arrivée fixés. On considère que si $f$ et $g$ ont
   le même graphe, alors $f = g$. Suivant les auteurs, on peut croiser un
-  formalisme considérant qu'une fonction $f : X \to Y$ est un triplet
+  formalisme considérant qu'une fonction $\makeFunName{f}{X}{Y}$ est un triplet
   $(X,Y,\varGrP{f})$. \'Etant donné que nous étudierons presque toujours des
   fonctions dont l'ensemble de départ et d'arrivée sont précisés, ces deux
   présentations sont interchangeables.
 \end{remark}
 
-%\begin{notation}
-%  Soit une fonction $f : X \to Y$. On s'autorise à ajouter $f$ comme symbole de
-%  fonction dans notre langage, dont l'argument est un élément de $X$. Cela
-%  n'est
-%  pas autorisé par défaut, et nous devons donc le coder dans notre langage
-%  élémentaire (de la même manière que l'on convient qu'il est possible de
-%  réécrire $x\cup y$ uniquement grâce à $\in$ et $=$). Pour cela, on définit la
-%  traduction d'une phrase $\varphi$ faisant potentiellement intervenir
-%  l'expression $f(x)$ en une phrase $\varphi'$ sans $f(x)$, par induction sur
-%  la structure de $\varphi$ :
-%  \begin{itemize}
-%  \item si $\varphi = R(f(x))$ où $R$ est une proposition atomique (une
-%  relation
-%    avec potentiellement d'autres termes que $f(x)$), alors
-%    \[\varphi' \defeq \forall y\in Y, (x,y)\in \Gamma_f \implies R(y)\]
-%  \item si $\varphi = \lnot \psi$, alors $\varphi' = \lnot \psi'$.
-%  \item si $\varphi = \psi \lor \chi$, alors $\varphi' = \psi'\lor \chi'$.
-%  \item si $\varphi = \psi \land \chi$, alors $\varphi' = \psi'\land \chi'$.
-%  \item si $\varphi = \exists a, \psi$, alors $\varphi' = \exists a, \psi'$.
-%  \item si $\varphi = \forall a, \psi$, alors $\varphi' = \forall a, \psi'$.
-%  \end{itemize}
-%
-%  On considère donc qu'introduire la notation $f(x)$ est une facilité
-%  d'écriture.
-%\end{notation}
-
-%\begin{remark}
-%  Cet abus de notation est aussi possible dans le cas d'une relation
-%  fonctionnelle qui n'est pas donnée par une fonction (au sens ensembliste).
-%  On peut en particulier voir nos ajouts de notations tels que $\vide$,
-%  $\bigcup$ ou $\{ x \in X \mid \varphi(x)\}$ comme de tels abus de notation.
-%  Il est d'ailleurs possible de rendre ce procédé formel, ce qui se base sur la
-%  notion d'extension par définition, mais nous ne préciserons pas ces notions
-%  métamathématiques dans ce livre, nous renvoyons le lecteur intéressé par ces
-%  questions à \cite{Troelstra1973-TROMIO}.
-%\end{remark}
-
 \begin{notation}
-  Dans le cas d'une fonction $f : X \to Y$, il est naturel d'ajouter un
-  symbole de fonction correspondant, pour externaliser l'objet ensembliste
+  Dans le cas d'une fonction $\makeFunName{f}{X}{Y}$, il est naturel d'ajouter
+  un symbole de fonction correspondant, pour externaliser l'objet ensembliste
   interne (et ainsi parler dans notre langage de la fonction $f$ associée).
   Il existe plusieurs façons de traiter formellement cet ajout. On peut
   par exemple ajouter une opération agissant sur tout $\unZF$ de la façon
@@ -547,16 +515,19 @@ celles-ci, nous allons introduire le formalisme pour traiter des fonctions.
 On définit de plus les notions d'injectivité, de surjectivité et de bijectivité.
 
 \begin{definition}[Injectivité, surjectivité, bijectivité]
-  Une fonction $f : X \to Y$ est dite injective si chaque élément $y\in Y$ a au
-  plus un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
+  Une fonction $\makeFunName{f}{X}{Y}$ est dite injective si chaque élément
+  $y\in Y$ a au plus un antécédent, c'est-à-dire si la proposition suivante est
+  vérifiée~:
   \[\forall x_0,x_1\in X, f(x_0) = f(x_1)\implies x_0 = x_1\]
 
-  Une fonction $f : X \to Y$ est dite surjective si tout élément $y\in Y$ a au
-  moins un antécédent, c'est-à-dire si la proposition suivante est vérifiée :
+  Une fonction $\makeFunName{f}{X}{Y}$ est dite surjective si tout élément
+  $y\in Y$ a au moins un antécédent, c'est-à-dire si la proposition suivante est
+  vérifiée~:
   \[\forall y\in Y, \exists x \in X, f(x) = y\]
 
-  Une fonction $f : X \to Y$ est dite bijective si elle est à la fois injective
-  et surjective.
+  Une fonction $\makeFunName{f}{X}{Y}$ est dite bijective si elle est à la fois
+  injective et surjective. On notera $\makeFunNameIso{f}{X}{Y}$ lorsqu'on veut
+  signifier que la fonction $f$ établit une bijection entre $X$ et $Y$.
 \end{definition}
 
 En combinant notre construction de $\bN$ aux considérations fonctionnelles, on
@@ -565,8 +536,8 @@ en vient à définir le principe de récursion sur $\bN$.
 \begin{exercise}
   Montrer que l'on peut définir des fonctions par récursion sur $\bN$,
   c'est-à-dire montrer que si l'on a un ensemble $X$, un élément $x_0\in X$ et
-  une fonction $f_{\Ss} : \bN \times X \to X$ alors il existe une unique
-  fonction $f : \bN \to X$ telle que
+  une fonction $\makeFunName{f_{\Ss}}{\bN \times X}{X}$ alors il existe une
+  unique fonction $\makeFunName{f}{\bN}{X}$ telle que
   \[\begin{cases}
   f(0) = x_0\\
   \forall n \in \bN, f(\Ss n) = f_{\Ss}(n,f(n))
@@ -584,7 +555,7 @@ en considérant seulement ses projections.
 
 \begin{exercise}
   Montrer que pour tout ensemble $X$, il existe une unique fonction
-  $\mathord{!} : \vide \to X$.
+  $\makeFunName{\mathord{!}}{\vide}{X}$.
 \end{exercise}
 
 Donnons maintenant deux nouvelles formulations de l'axiome du choix. Dans ces
@@ -596,9 +567,9 @@ peut se formuler en un principe d'existence de fonctions de choix.
 
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
-  \[\forall x, %\vide\neq x \land
+  \[\forall x,
   \vide\notin x \implies
-  \exists f : x \to \bigcup x, \forall y \in x, f(y) \in y\]
+  \exists \makeFunName{f}{x}{\bigcup x}, \forall y \in x, f(y) \in y\]
 \end{proposition}
 
 \begin{proof}
@@ -618,8 +589,9 @@ peut se formuler en un principe d'existence de fonctions de choix.
 
   Supposons qu'on possède une fonction de choix pour tout ensemble sans élément
   vide. Soit $X$ un ensemble dont les éléments sont non vides et deux à deux
-  disjoints. On peut alors trouver $f : X \to \bigcup X$ telle que $f(x)\in x$
-  pour tout $x\in X$. Soit alors $\varCh = \im(f)$. Comme $f(x)\in x$ et tous
+  disjoints. On peut alors trouver $\makeFunName{f}{X}{\bigcup X}$ telle que
+  $f(x)\in x$ pour tout $x\in X$. Soit alors $\varCh = \im(f)$. Comme
+  $f(x)\in x$ et tous
   les éléments de $X$ sont deux à deux disjoints, on en déduit que
   $\varCh\cap x$ contient au plus un élément, pour chaque $x\in X$. Comme de
   plus $f(x) \in x$, $\varCh\cap x$ contient au moins un élément. Donc
@@ -629,7 +601,7 @@ peut se formuler en un principe d'existence de fonctions de choix.
 \begin{proposition}
   L'axiome du choix est équivalent à la proposition suivante~:
   \[\forall x, %x\neq\vide\implies
-  \exists f : \powerset (x) \setminus \{\vide\} \to x,
+  \exists \makeFunName{f}{\powerset(x) \setminus \{\vide\}}{x},
   \forall y \in \powerset(x)\setminus \{\vide\}, f(y)\in y\]
 \end{proposition}
 
@@ -649,13 +621,15 @@ simplement considérer comme une généralisation de l'opération $\times$.
 
 \begin{definition}[Produit cartésien quelconque]
   Soit $X$ un ensemble, on définit $\prod X$ par
-  \[\prod X \defeq \compr{f : X \to \bigcup X}{\forall x \in X, f(x)\in x}\]
+  \[\prod X \defeq
+  \compr{\makeFunName{f}{X}{\bigcup X}}{\forall x \in X, f(x)\in x}\]
 
   Si $\{X_i\}_{i\in I}$ est une famille d'ensembles (c'est-à-dire une fonction
-  $g : i \mapsto \unZF$, \textit{i.e.} une relation fonctionnelle entre un
+  $\makeFunName{g}{i}{\unZF}$, \textit{i.e.} une relation fonctionnelle entre un
   ensemble $I$ et des ensembles quelconques) alors on considère que
   \[\prod_{i\in I} X_i \defeq
-  \compr{ f : I \to \bigcup_{i\in I} X_i}{\forall i \in I, f(i) \in X_i}\]
+  \compr{\makeFunName{f}{I}
+    {\bigcup_{i\in I} X_i}}{\forall i \in I, f(i) \in X_i}\]
 \end{definition}
 
 L'axiome du choix peut alors se réécrire en disant que le produit de toute
@@ -669,8 +643,8 @@ famille non vide d'ensembles non vides est lui-même non vide.
 
 \begin{proof}
   Par définition, $\prod X$ est non vide si et seulement si on a une fonction
-  $f : X \to \bigcup X$ telle que $\forall x \in X, f(x)\in x$. C'est un énoncé
-  précédent de l'axiome du choix.
+  $\makeFunName{f}{X}{\bigcup X}$ telle que $\forall x \in X, f(x)\in x$. C'est
+  un énoncé précédent de l'axiome du choix.
 \end{proof}
 
 \subsection{Axiome de fondation}
@@ -730,10 +704,10 @@ transitif.
 \begin{proof}
   Pour construire $\trcl(x)$, on construit la suite d'ensembles
   $(x_i)_{i\in\bN}$ suivante :
-  \begin{itemize}
-  \item $x_0 = x$
-  \item $x_{i+1} = \bigcup x_i$
-  \end{itemize}
+  \[\begin{cases}
+  x_0 \defeq x\\
+  x_{i+1} \defeq \bigcup x_i
+  \end{cases}\]
   L'ensemble $\trcl(x)$ est alors $\displaystyle\bigcup_{n\in \bN} x_n$.
 
   Vérifions que $\trcl(x)$ est bien transitif et contient $x$. Comme
@@ -801,16 +775,16 @@ directement $\in$.
   \end{itemize}
 
   Alors il existe une unique classe $\varCM$ transitive et un unique
-  isomorphisme $\varCol : \varCC\to \varCM$ tels que
-  $(\varCC,\varRR) \overset{\varCol}{\cong} (\varCM,\in)$.
+  $\makeFunNameIso{(\varCol,\varRR)}{\varCC}{(\varCM,\in)}$, isomorphisme entre
+  les deux classes munies d'une relation.
 \end{lemma}
 
 \begin{remark}
   Nous n'avons pas formellement défini ce qu'est un isomorphisme entre classes.
   Cette définition est assez naturelle~: étant données deux classes $\varCC$
   et $\varCC'$ avec chacune une relation $\varRR$ (respectivement $\varRR'$), un
-  isomorphisme $\varFunCl: (\varCC,\varRR)\cong (\varCC',\varRR')$ est une
-  formule $\varFunCl(x,y)$ à deux variables libres telle que, pour une
+  isomorphisme $\makeFunNameIso{\varFunCl}{(\varCC,\varRR)}{(\varCC',\varRR')}$
+  est une formule $\varFunCl(x,y)$ à deux variables libres telle que, pour une
   proposition $\varFP$ définissant $\varCC$ et une proposition $\varFC$
   définissant $\varCC'$, les propositions suivantes peuvent être prouvées :
   \begin{itemize}
@@ -820,7 +794,8 @@ directement $\in$.
   \item $\forall x,\forall y,\forall z, \varFP(x)\land\varFP(y)\land\varFC(z)
     \land\varFunCl(x,z)\land\varFunCl(y,z)\implies x = y$
   \item $\forall y,\varFC(y)\implies \exists x, \varFP(x)\land\varFunCl(x,y)$
-  \item $\forall x,\forall x',\forall y, \forall y', \varFP(x)\land\varFP(x')\land
+  \item $\forall x,\forall x',\forall y, \forall y',
+    \varFP(x)\land\varFP(x')\land
     \varFC(y)\land\varFC(y')\land\varFunCl(x,y)\land\varFunCl(x',y')\implies
     (x\varRR x'\iff y\varRR' y')$
   \end{itemize}
@@ -835,8 +810,8 @@ directement $\in$.
 
 \begin{proof}
   Montrons d'abord que si $\varCC_1$ et $\varCC_2$ sont deux classes transitives
-  et que $\varFunCl : \varCC_1\to \varCC_2$ est un isomorphisme pour la relation
-  $\in$, alors $\varFunCl$ est l'identité.
+  et que $\makeFunNameIso{\varFunCl}{\varCC_1}{\varCC_2}$ est un isomorphisme
+  pour la relation $\in$, alors $\varFunCl$ est l'identité.
 
   Par l'absurde, supposons que $\varFunCl$ n'est pas l'identité. On pose
   $\varCC_0 \defeq \compr{x}{\varFunCl(x)\neq x}$, non vide par hypothèse. Soit
@@ -891,7 +866,7 @@ directement $\in$.
   \begin{multline*}
     \varCol(x,y) \defeq \exists X,
     (\forall a \in X, \varFF(a) \land \forall b, b\varRR a \implies b \in X)
-    \land \exists f : X \to \unZF, \\(\forall z\in X,
+    \land \exists \makeFunName{f}{X}{\unZF}, \\(\forall z\in X,
     \forall Y, (\forall a, a \in Y \iff a \varRR z) \implies
     f(z) = \compr{f(a)}{a \varRR z})\land f(x) = y
   \end{multline*}
@@ -899,8 +874,8 @@ directement $\in$.
   est bien fonctionnelle.
 
   Au sein même de cette définition, on voit apparaître l'écriture
-  $f : X \to \unZF$, qui peut là encore sembler litigieuse. Une fonction
-  $X \to \unZF$ est en fait un ensemble décrivant une relation
+  $\makeFunName{f}{X}{\unZF}$, qui peut là encore sembler litigieuse. Une
+  fonction $X \to \unZF$ est en fait un ensemble décrivant une relation
   fonctionnelle totale dont le domaine est $X$, sans restriction sur l'ensemble
   d'arrivée. Ces fonctions $X \to \unZF$ constituent une classe, mais
   cela n'est pas un problème lorsqu'on effectue une quantification.
@@ -927,7 +902,8 @@ avons vu. Donnons d'abord les axiomes de $\ZF$~:
 \item l'\cref{ax.ZF.AF} (fondation) (noté $\AxF$)
 \end{itemize}
 $\ZFC$ est alors obtenue comme $\ZF + \AxC$. On peut aussi définir
-$\ZF - \AxF$ par exemple. De plus, la théorie $\Zermelo$, de Zermelo, est la
+$\ZF - \AxF$ par exemple. De plus, la théorie $\Zermelo$, introduite par
+Ernst \name{Zermelo} dans \cite{zermelo08}, est la
 théorie contenant le schéma d'axiomes de compréhension mais pas de remplacement,
 ne contenant pas l'axiome de fondation et contenant l'axiome de la paire (et les
 axiomes d'extensionalité, de réunion, d'ensemble des parties et de l'infini).
@@ -950,8 +926,8 @@ définir une fonction par récursion. Nous pouvons donc définir les fonctions
 $+$ et $\times$.
 
 \begin{definition}[Addition, multiplication]
-  On définit la fonction $+ : \bN \times \bN \to \bN$ et la
-  fonction $\times : \bN \times \bN \to \bN$ par récursion
+  On définit la fonction $\makeFunName{+}{\bN \times \bN}{\bN}$ et la
+  fonction $\makeFunName{\times}{\bN \times \bN}{\bN}$ par récursion
   sur leur second argument~:
   \begin{itemize}
   \item $\forall n \in \mathbb N, n + 0 = n$
@@ -1348,8 +1324,8 @@ Passons maintenant à la construction générale sur un monoïde commutatif.
 \begin{exercise}
   Soit $\varMMo$ un monoïde commutatif et $\varMMo^\dagger$ son symétrisé.
   Montrer que pour tout groupe $\varGrp$ et tout morphisme de monoïde
-  $f : \varMMo \to \varGrp$ il existe un unique
-  morphisme de groupe $\relev{f} : \varMMo^\dagger \to \varGrp$ tel que
+  $\makeFunName{f}{\varMMo}{\varGrp}$ il existe un unique
+  morphisme de groupe $\makeFunName{\relev{f}}{\varMMo^\dagger}{\varGrp}$ tel que
   $f = \relev{f} \circ \iota$, ce
   que l'on peut représenter par le fait que tout diagramme comme suit peut être
   complété en un diagramme commutatif~:
@@ -1494,7 +1470,7 @@ appelle localisation.
   Soit $\varAA$ un anneau commutatif intègre. On considère une partie
   $S\subseteq \varAA$ close par produit, c'est-à-dire telle que
   \[\forall x,y\in S, x \times y \in S\]
-  On définit la relation $\sim_S$ sur $varAA\times S$ par
+  On définit la relation $\sim_S$ sur $\varAA\times S$ par
   \[(a,s) \sim (a',s') \defeq a\times s' = a' \times s\]
 \end{definition}
 
@@ -1645,28 +1621,27 @@ idéal propre.
 
 Cependant, on voit que deux idéaux peuvent sembler coder le même rationnel~:
 $\{q < 2\}$ et $\{q \leq 2\}$ sont des idéaux et ont la même borne supérieure,
-ce qui est un problème dans notre cas. Pour arranger cela, on ajoute qu'une
-partie ayant une borne supérieure doit la contenir.
+ce qui est un problème dans notre cas. D'un point de vue de la théorie des
+ordres, on peut voir ces deux parties comme respectivement un ouvert et un
+fermé, et il est donc nécessaire de choisir si l'on considère qu'un idéal
+doit être ouvert ou fermé. On considère ici qu'un idéal est une partie ouverte,
+ce qui signifie qu'un idéal ne doit pas avoir de maximum\footnote{si on avait
+voulu définir un idéal comme une partie fermé, on aurait au contraire demandé
+que si la borne supérieure existe alors elle appartient à l'idéal.}.
 
 \begin{definition}[Complétion idéale]
   Soit $(X,\leq)$ un ensemble totalement ordonné. On appelle complétion idéale
   l'ensemble $\ideal(X)\subseteq \powerset(X)$ défini par le fait que
-  $Y\in \ideal(X)$ si et seulement si~:
+  $\varId\in \ideal(X)$ si et seulement si~:
   \begin{itemize}
-  \item pour tout $x,y\in X$, si $x\leq y$ et $y \in Y$ alors $x\in Y$.
-  \item $Y\neq \vide$
-  \item $Y\neq X$
-  \item si $\opJn Y$ existe, alors $\opJn Y \in Y$.
+  \item pour tout $x,y\in X$, si $x\leq y$ et $y \in \varId$ alors
+    $x\in\varId$~;
+  \item $\varId\neq \vide$~;
+  \item $\varId\neq X$~;
+  \item pour tout $x \in \varId$, il existe $y \in \varId$ tel que $x < y$.
   \end{itemize}
   muni de l'inclusion comme ordre.
 \end{definition}
-
-\begin{remark}
-  On aurait aussi pu caractériser cet ensemble comme l'ensemble des idéaux de
-  $X$ fermés pour la topologie de l'ordre, qui est la topologie engendrée par
-  les intervalles ouverts, c'est-à-dire de la forme $\compr{x \in X}{y < x < z}$
-  pour $y,z\in X$.
-\end{remark}
 
 \noindent
 On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
@@ -1677,87 +1652,79 @@ On peut alors montrer que $(\ideal(X),\subseteq)$ est un ordre total complet.
 \end{proposition}
 
 \begin{proof}
-  On souhaite d'abord montrer que cet ordre est total. Soient $Y,Z\in\ideal(X)$,
-  $Y\neq Z$. Par définition, on trouve $x\in Y\Delta Z$. Par symétrie du rôle de
-  $Y$ et $Z$, on suppose sans perte de généralité que $x\in Y$. Alors pour tout
-  $z\in Z$, si $x \leq z$ on aurait $x\in Z$ puisque $Z$ est clos par le bas.
-  Donc, comme $x\in Y\setminus Z$, on en déduit que $x \leq z$ est faux. Comme
-  l'ordre est total, on en déduit que $z\leq x$, donc par clôture par le bas de
-  $Y$ que $z\in Y$. En conclusion, $Z\subseteq Y$, donc l'ordre est total.
+  On souhaite d'abord montrer que cet ordre est total. Soient
+  $\varId,\varIdB\in\ideal(X)$, $\varId\neq \varIdB$. Par définition, on trouve
+  $x\in \varId\diffsym \varIdB$. Par symétrie du rôle de
+  $\varId$ et $\varIdB$, on suppose sans perte de généralité que $x\in \varId$.
+  Alors pour tout $z\in \varIdB$, si $x \leq z$ on aurait $x\in \varIdB$ puisque
+  $\varIdB$ est clos par le bas. Donc, comme $x\in \varId\setminus \varIdB$, on
+  en déduit que $x \leq z$ est faux. Comme l'ordre est total, on en déduit que
+  $z\leq x$, donc par clôture par le bas de $\varId$ que $z\in \varId$. En
+  conclusion, $\varIdB\subseteq \varId$, donc l'ordre est total.
 
-  Soit maintenant une partie $A\subseteq \ideal(X)$ non vide majorée, on
-  construit la borne supérieure de $A$ en deux temps. On pose d'abord
-  $B = \bigcup A$. Si $B$ admet une borne supérieure (dans $X$), alors on
-  considère comme borne supérieure de $A$ l'ensemble $B \cup\{\opJn B\}$,
-  sinon on considère simplement $B$. On note cet ensemble $C$. On vérifie que
-  $C\in \ideal(X)$~:
+  Soit maintenant une partie $\varFam\subseteq \ideal(X)$ non vide majorée, on
+  construit la borne supérieure de $\varFam$ en deux temps. On pose le majorant
+  $\varId = \bigcup \varFam$. Vérifions que $\varId \in \ideal(X)$~:
   \begin{itemize}
-  \item soient $x,y\in X$ tels que $x < y$ et $y\in C$. Si $y = \opJn B$,
-    alors comme $x < \opJn B$, on en déduit qu'il existe $z \in B$ tel que
-    $x < z$, et par définition de $z\in B$ on trouve $Z\in A$ tel que $z\in Z$,
-    donc $x \in Z$, donc $x \in B$. Si $y \in B$, alors on trouve $Z\in A$ tel
-    que $y \in Z$ et on en déduit que $x\in Z$, donc que $x \in B$.
-  \item comme $A\neq \vide$, on trouve $Y\in A$, et $Y\neq\vide$
-    donc on trouve $y\in Y$, on en déduit que $y\in C$, donc que
-    $C\neq\vide$.
-  \item comme $A$ est majorée, on trouve $Y \in \ideal(X)$ tel que pour tout
-    $z\in C$, $z\in Y$. Comme $Y\neq X$, on trouve $x\in X\setminus Y$,
-    et par totalité de $\leq$ on en déduit que $x$ est un majorant de $Y$, c'est
-    de plus un majorant strict puisque la borne supérieure de $Y$ doit
-    appartenir à $Y$. On remarque que $C\subseteq Y$, donc $x\notin C$, donc
-    $C\neq X$.
-  \item si $\opJn C$ existe, alors par construction c'est $\opJn B$ qui est
-    un élément de $C$.
+  \item soient $x,y \in X$ tels que $x < y$ et $y \in \varId$. Par définition,
+    on trouve $\varId_0 \in \varFam$ tel que $y \in \varId_0$, mais alors
+    (puisque $\varId_0$ est un idéal) $x \in \varId_0$, donc $x \in \varId$.
+  \item puisque la partie est non vide et que les idéaux sont supposés non
+    vides, l'union $\varId$ est non vide.
+  \item on a supposé que $\varFam$ est majorée~: on trouve donc $\varIdB$
+    tel que pour tout $\varId_0 \in \varFam$, $\varId_0\subseteq \varIdB$,
+    donc (comme l'union est la borne supérieure pour l'inclusion) on en déduit
+    que $\varId\subseteq\varIdB$. Comme $\varIdB\neq X$, il existe un élément
+    qui est hors de $\varIdB$ et qui doit alors être strictement supérieur à
+    tous les éléments de $\varIdB$ (car $X$ est totalement ordonné). Cet élément
+    est alors strictement supérieur à tous les éléments de $\varId$, donc
+    $\varId\neq X$.
+  \item soit $x \in \varId$. Par hypothèse, on trouve $\varId_0\in\varFam$ tel
+    que $x \in \varId_0$, mais alors il existe $y \in \varId_0$ tel que
+    $y > x$, donc il existe $y \in \varId$ tel que $y > x$.
   \end{itemize}
-  Donc $C\in\ideal(X)$.
-
-  On montre maintenant que c'est la borne supérieure de $A$~:
-  \begin{itemize}
-  \item $C$ contient l'union de $A$ donc pour tout $Y\in A, Y\subseteq C$.
-  \item soit $Z\in\ideal(X)$ tel que pour tout $Y\in A, Y\subseteq Z$. Alors
-    $B\subseteq Z$, il nous faut donc montrer que si $\opJn B$ existe alors
-    $\opJn B \in Z$. Supposons que cet élément existe et qu'il n'appartient
-    pas à $Z$. Alors il est un majorant de $Z$. Soit $z$ un autre majorant de
-    $Z$, alors si $z < \opJn B$, on en déduit qu'il existe $Y\in A$ tel que
-    $z\in Y$, donc $z \in Z$, donc $z$ est le maximum de $Z$, qui est une borne
-    supérieure~: on en déduit que $\opJn B = z$, donc que $\opJn B \in Z$,
-    ce qui est absurde. Ainsi $\opJn B \in Z$, donc $C\subseteq Z$.
-  \end{itemize}
-  Ainsi $C$ est le plus petit majorant de $A$, donc $C$ est la borne supérieure
-  de $A$ dans $(\ideal(X),\subseteq)$.
+  Donc $\varId$ est bien un idéal, et c'est la borne supérieure de $\varFam$
+  car c'est un majorant pour l'inclusion (en tant qu'union) et tout majorant
+  de $\varFam$ pour l'inclusion contient en particulier $\bigcup\varFam$.
 
   \noindent
   Le cas des bornes inférieures est laissé en exercice.
 \end{proof}
 
 \begin{exercise}
-  Montrer qu'une partie minorée non vide $A$ possède une borne inférieure dans
-  $(\ideal(X),\subseteq)$. \textit{Indication~: on considère comme candidat de
-  cette borne inférieure de $A$ l'ensemble $\bigcap A$.}
+  Montrer qu'une partie minorée non vide $\varFam$ possède une borne inférieure
+  dans $(\ideal(X),\subseteq)$. \textit{Indication~: on pourra s'inspirer de
+    la \cref{prop.treillis.complet.justInf}.}
 \end{exercise}
 
 \begin{exercise}\label{exo.ide.maj}
   Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. Montrer que tout
-  $Y \in \ideal(X)$ est majoré dans $X$.
+  $\varId \in \ideal(X)$ est majoré dans $X$.
 \end{exercise}
 
 \begin{remark}
   On peut noter la différence de traitement de la borne supérieure de l'idéal
   entre l'intersection et l'union. La raison à cela peut s'interpréter de façon
-  topologique~: nous imposons à nos idéaux d'être des fermés, donc considérer
-  l'union nous demande de prendre ensuite l'adhérence (qui correspond dans notre
-  cas à ajouter la borne supérieure) là où la stabilité par intersection est
-  assurée.
+  topologique~: nous imposons à nos idéaux d'être des ouverts, donc considérer
+  l'union fonctionne sans heurt, tandis que l'intersection arbitraite demande
+  de considérer l'intérieur.
 \end{remark}
 
 On veut aussi montrer que $\ideal(X)$ est un prolongement naturel, en un sens,
 de $X$. Cela se traduit par deux faits~: on peut plonger $X$ dans $\ideal(X)$,
 et $\ideal(X)$ est le plus petit ensemble contenant $X$ et étant stable par
-sups de parties bornées non vides.
+sups de parties bornées non vides. Cependant, cela demande une dernière
+condition technique, qui est la densité de l'ordre.
+
+\begin{definition}
+  Un ensemble ordonné $(X,\leq)$ est dit dense si pour tous $x,y \in X$ tels
+  que $x < y$ il existe $z\in X$ tel que $x < z < y$.
+\end{definition}
 
 \begin{proposition}
-  Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. La fonction
-  \[\makeFun{\iota}{X}{\ideal(X)}{x}{\compr{y \in X}{y \leq x}}\]
+  Soit $(X,\leq)$ un ensemble totalement ordonné dense non majoré ni minoré. La
+  fonction
+  \[\makeFun{\iota}{X}{\ideal(X)}{x}{\compr{y \in X}{y < x}}\]
   est une fonction strictement croissante.
 \end{proposition}
 
@@ -1767,16 +1734,18 @@ sups de parties bornées non vides.
   \begin{itemize}
   \item si $y,z\in X$ tels que $y\leq z$ et $z\in \iota(x)$, alors $z \leq x$
     donc $y\leq x$ par transitivité, donc $y\in \iota(x)$.
-  \item $x\in\iota(x)$ donc $\iota(x)\neq\vide$.
+  \item $X$ n'est pas minoré, donc on trouve $y < x$, ce qui signifie que
+    $y \in \iota(x)$, donc $\iota(x) \neq\vide$.
   \item $X$ n'est pas majoré, donc on trouve $y > x$, ce qui signifie que
     $y\notin\iota(x)$, donc $\iota(x)\neq X$.
-  \item $\opJn\iota(x) = x$ et $x\in\iota(x)$ donc la borne supérieure  de
-    $\iota(x)$ existe et appartient bien à $\iota(x)$.
+  \item si $y \in \iota(x)$ alors $y < x$, et par densité de $X$ on en déduit
+    qu'il existe $z\in X$ tel que $y < z < x$, c'est-à-dire $z \in \ideal(x)$
+    tel que $z > y$.
   \end{itemize}
   On en déduit que $\iota$ est bien définie.
 
-  Si $x < y$ alors pour tout $z \in \iota(x)$, $z \leq x$ donc par transitivité
-  $z \leq y$, donc $z \in \iota(y)$. De plus, $y\notin\iota(x)$ et
+  Si $x < y$ alors pour tout $z \in \iota(x)$, $z < x$ donc par transitivité
+  $z < y$, donc $z \in \iota(y)$. De plus, $y\notin\iota(x)$ et
   $y\in\iota(y)$ donc $\iota(x)\subsetneq\iota(y)$. $\iota$ est donc strictement
   croissante.
 \end{proof}
@@ -1791,30 +1760,29 @@ sups de parties bornées non vides.
 \end{remark}
 
 \begin{lemma}\label{lem.id.cup}
-  Soit $(X,\leq)$ un ensemble totalement ordonné. Alors pour tout
-  $Y\in\ideal(X)$, on a l'égalité
-  \[Y = \bigcup_{x\in Y} \iota(x)\]
+  Soit $(X,\leq)$ un ensemble totalement ordonné dense non majoré ni minoré.
+  Alors pour tout $\varId\in\ideal(X)$, on a l'égalité
+  \[\varId = \bigcup_{x\in \varId} \iota(x)\]
 \end{lemma}
 
 \begin{proof}
   On prouve ce résultat par double inclusion~:
   \begin{itemize}
-  \item pour tout $x\in Y$, comme $Y$ est clos par le bas,
-    $\iota(x)\subseteq Y$, donc
-    $\displaystyle\bigcup_{x\in Y}\iota(x)\subseteq Y$.
-  \item on sait que $x\in \iota(x)$, donc pour tout $x\in Y$,
-    $\displaystyle x\in \bigcup_{x\in Y} \iota(x)$.
+  \item pour tout $x\in \varId$, comme $\varId$ est clos par le bas,
+    $\iota(x)\subseteq \varId$, donc
+    $\displaystyle\bigcup_{x\in \varId}\iota(x)\subseteq \varId$.
+  \item on sait que pour tout $x\in \iota(x)$ il existe $y \in \varId$ tel que
+    $x < y$, donc $\displaystyle x\in \bigcup_{y\in \varId} \iota(y)$.\qedhere
   \end{itemize}
-  D'où le résultat par double inclusion.
 \end{proof}
 
 \begin{theorem}[Propriété universelle de la complétion idéale]
-  Soit $(X,\leq)$ un ensemble totalement ordonné non majoré. Soit $(Y,\leq)$
-  un ensemble totalement ordonné complet et $f : X \to Y$ une fonction
-  croissante préservant les bornes inférieures et supérieures. Il existe une
-  unique fonction $\relev{f} : \ideal(X) \to Y$ qui préserve les bornes
-  supérieures et les bornes inférieures et telle que
-  $f = \relev{f} \circ \iota$.
+  Soit $(X,\leq)$ un ensemble totalement ordonné dense non majoré ni mnioté.
+  Soit $(Y,\leq)$ un ensemble totalement ordonné complet et
+  $\makeFunName{f}{X}{Y}$ une fonction croissante préservant les bornes
+  inférieures et supérieures. Il existe une unique fonction
+  $\makeFunName{\relev{f}}{\ideal(X)}{Y}$ qui préserve les bornes supérieures et
+  les bornes inférieures et telle que $f = \relev{f} \circ \iota$.
 \end{theorem}
 
 \begin{proof}
@@ -1822,33 +1790,30 @@ sups de parties bornées non vides.
   \begin{itemize}
   \item si une telle fonction $\relev{f}$ existe, alors par définition, on sait
     que pour tout $x\in X$, $\relev{f}(\iota(x)) = f(x)$. De plus, par le
-    \cref{lem.id.cup}, on sait que pour tout $Y\in \iota(x)$,
-    $\displaystyle Y = \bigcup_{x\in Y} \iota(x)$, donc par préservation des
-    bornes supérieures on en déduit que
-    \[\relev{f}(Y) = \bigvee_{x\in Y} f(x)\]
+    \cref{lem.id.cup}, on sait que pour tout $\varId\in \iota(x)$,
+    $\displaystyle \varId = \bigcup_{x\in \varId} \iota(x)$, donc par préservation
+    des bornes supérieures on en déduit que
+    \[\relev{f}(\varId) = \bigvee_{x\in \varId} f(x)\]
     ce qui définit de façon unique $\relev{f}$.
   \item Montrons que notre candidat $\relev{f}$ est une fonction croissante qui
     préserve les bornes supérieures et inférieures~:
     \begin{itemize}
     \item Tout d'abord, si
-      $Y\subseteq Z$, comme la borne supérieure est croissante pour l'inclusion,
-      on en déduit que $\opJn f(Y) \leq \opJn f(Z)$, d'où
-      $\relev{f}(Y)\leq \relev{f}(Z)$.
+      $\varId\subseteq \varIdB$, comme la borne supérieure est croissante pour
+      l'inclusion, on en déduit que $\opJn f(\varId) \leq \opJn f(\varIdB)$,
+      d'où $\relev{f}(\varId)\leq \relev{f}(\varIdB)$.
       
-    \item Soit $A\subseteq \ideal(X)$ admettant une borne supérieure, qu'on note
-      $a$. On a vu que cette borne supérieure est $\bigcup A$, en ajoutant si
-      nécessaire la borne supérieure (dans $X$) de $\bigcup A$, ce qui nous
-      donne donc
-      \[\relev{f}(a) = \opJn_{x \in a} f(x)\]
+    \item Soit $\varFam\subseteq \ideal(X)$ admettant une borne supérieure,
+      qu'on note $\varId$. On a vu que cette borne supérieure est
+      $\bigcup \varFam$, ce qui nous donne donc
+      \[\relev{f}(\varId) = \opJn_{x \in \varId} f(x)\]
       on veut montrer que cette valeur est la borne supérieure de
-      $\relev{f}(A)$. Comme la borne supérieure est croissante vis à vis de
-      l'inclusion, on sait déjà que $\relev{f}(a)$ est un majorant de
-      $\relev{f}(A)$.
-      Soit $b$ un majorant de $\relev{f}(A)$, cela signifie que pour tout
-      $Y\in A, \opJn_{x \in Y} f(x) \leq b$, donc pour tout
-      $x \in \bigcup A, f(x) \leq b$. Il nous reste donc, si $\opJn a$ existe,
-      à montrer que $f(\opJn a) \leq b$. Mais cela est dû au fait que $f$
-      préserve les bornes supérieures.
+      $\relev{f}(\varFam)$. Comme la borne supérieure est croissante vis à vis
+      de l'inclusion, on sait déjà que $\relev{f}(\varId)$ est un majorant de
+      $\relev{f}(\varFam)$.
+      Soit $\varIdB$ un majorant de $\relev{f}(\varId)$, cela signifie que pour
+      tout $\varId_0\in \varFam, \opJn_{x \in \varId_0} f(x) \leq \varIdB$, donc
+      pour tout $x \in \varId, f(x) \leq \varIdB$.
     \item Le cas de la borne inférieure est laissé en exercice.
     \end{itemize}
   \end{itemize}
@@ -1871,124 +1836,51 @@ sups de parties bornées non vides.
   \end{center}
 \end{remark}
 
-On peut donc construire l'ensemble ordonné $(\bR,\leq)$, mais nous
-souhaitons aussi définir les opérations sur cet ensemble. Pour l'addition, nous
-avons besoin d'un simple lemme car l'addition est compatible avec l'ordre de
-$\bQ$. Cependant, il nous est ici nécessaire de supposer un résultat
-proche d'une caractérisation de la borne supérieure, dans le cas où cette borne
-n'existe pas forcément.
-
-\begin{lemma}\label{lem.R.compat}
-  Soit $(X,+,\leq)$ un groupe abélien non majoré où $+$ est compatible avec
-  $\leq$. On suppose de plus que pour tout $Y \in \ideal(X)$ et $x > 0$, il
-  existe un élément $y \in Y$ tel que $y + x$ est un majorant strict de $Y$.
-  Alors l'ensemble ordonné $(\ideal(X),\subseteq)$ peut être muni de la loi de
-  composition interne $+$ définie par~:
-  \[Y + Z \defeq \{y + z \mid y \in Y, z \in Z\}\]
-  en ajoutant la borne supérieure de cet ensemble si celle-ci existe dans $X$.
-  $(\ideal(X),+,\subseteq)$ est alors un groupe abélien et $+$ est compatible
-  avec $\subseteq$.
-\end{lemma}
-
-\begin{proof}
-  Soient $Y,Z\in \ideal(X)$, montrons que $Y + Z \in \ideal(X)$~:
-  \begin{itemize}
-  \item soient $x,x'\in X$ tels que $x\leq x'$ et $x\in Y + Z$. Par définition,
-    si $x'$ n'est pas la borne supérieure de $Y + Z$, on trouve $y\in Y,z \in Z$
-    tels que $x' = y + z$. Comme $x \leq y + z$, on en déduit que $x - z \leq y$
-    par compatibilité de $+$ avec $\leq$, et comme $Y$ est clos par le bas,
-    $x - z \in Y$, donc $x - z + z \in Y + Z$, et $x - z + z = x$, donc
-    $x \in Y + Z$.
-
-    Rajouter la borne supérieure à cet ensemble ne change pas la clôture par le
-    bas, puisque tout élément inférieur à la borne supérieure de $Y + Z$ est
-    inférieur à un élément de $Y + Z$. En effet, si $x \leq \opJn(Y + Z)$ et
-    $x > a$ pour tout $a \in Y + Z$, alors $x$ est un majorant de $Y + Z$ donc
-    $\opJn(Y + Z) \leq x$, donc $x = \opJn (Y + Z)$.
-  \item comme $Y$ et $Z$ sont non vides, on trouve $y\in Y$ et $z\in Z$. Comme
-    $y + z \in Y + Z$, $Y + Z \neq \vide$.
-  \item $Y + Z \neq X$~: en utilisant l'\cref{exo.ide.maj}, on trouve
-    $y$ un majorant de $Y$ et $z$ un majorant de $Z$. On sait donc que
-    $y + z$ est un majorant de $Y + Z$ puisque $+$ est compatible avec $\leq$.
-    Comme $X$ est supposé non majoré, on peut donc trouver un élément
-    strictement supérieur à $y + z$, qui est donc un majorant strict de $Y + Z$,
-    donc $Y + Z \neq X$.
-  \item le fait d'ajouter la borne supérieure assure que notre ensemble vérifie
-    la dernière condition.
-  \end{itemize}
-
-  On vérifie maintenant qu'on a un groupe abélien, en omettant le cas où la
-  borne supérieure doit être ajoutée dans la somme de deux idéaux~:
-  \begin{itemize}
-  \item pour tous $Y,Z,A\in\ideal(X)$, on a
-    \begin{align*}
-      Y + (Z + A) &= \compr{y + (z + a)}{y \in Y, z \in Z, a \in A}\\
-      &= \compr{(y + z) + a}{y \in Y, z \in Z, a \in A}\\
-      &= (Y + Z) + A
-    \end{align*}
-  \item en notant $0$ le neutre de $X$, on a pour tout $Y \in \ideal(X)$~:
-    \begin{align*}
-      Y + \iota(0) &= \compr{ y + 0}{y \in Y}\\
-      &= \compr{y}{y \in Y}\\
-      &= Y
-    \end{align*}
-  \item pour tout $Y\in \ideal(X)$, on définit
-    \[-Y \defeq X \setminus \compr{- y}{y \in Y}\]
-    augmenté si besoin de sa borne supérieure. C'est un élément de $\ideal(X)$~:
-    \begin{itemize}
-    \item si $x,y \in X$, $x\leq y$ et $y \in -Y$, alors on sait que
-      $-y\notin Y$, et $-y \leq -x$. Si $-x \in Y$, alors $-y \in Y$ par clôture
-      par le bas, donc on en déduit que $-x \notin Y$, donc $x \in -Y$.
-    \item comme $Y \neq X$, on trouve $y\notin Y$, et alors $-y \in -Y$, donc
-      $-Y\neq \vide$.
-    \item comme $Y \neq \vide$, on trouve $y\in Y$, et alors
-      $-y \notin -Y$, donc $-Y\neq X$.
-    \item ajouter la borne supérieure si elle existe assure la dernière
-      condition.
-    \end{itemize}
-    On montre alors que pour tout $Y \in \ideal(X)$, on a
-    $Y + (-Y) = \iota(0)$. Soient $y\in Y, y' \in -Y$, si $y + y' > 0$, alors
-    $y > - y'$, donc par clôture par le bas de $Y$, $-y' \in Y$, ce qui est
-    faux par définition de $-Y$~: il en résulte que $y + y' \leq 0$, donc que
-    $Y + (-Y) \subseteq \iota(0)$. Réciproquement, soit $x < 0$. On sait donc
-    que $-x > 0$, donc on trouve $y \in Y$ tel que $y - x$ est un majorant
-    strict de $Y$. On sait donc que $x - y \in - Y$, donc
-    $x = (x - y) + y \in Y + (-Y)$.
-  \item enfin, $+$ est commutatif~: pour tout $Y,Z \in \ideal(X)$, on a~:
-    \begin{align*}
-      Y + Z &= \compr{y + z}{y \in Y, z \in Z}\\
-      &= \compr{z + y}{z \in Z, y \in Y}\\
-      &= Z + Y
-    \end{align*}
-  \end{itemize}
-  Ainsi $(\ideal(X),+,\subseteq)$ est un groupe abélien ordonné.
-\end{proof}
-
-On peut donc utiliser ce fait pour munir $\bR$ de la loi $+$. Cependant,
-pour la loi $\times$, cela pose un problème~: $\times$ n'est pas compatible avec
-$\leq$ dans $\bQ$. Pour contourner ce problème, on peut définir d'abord
-$\times$ sur $\bR_+^\star$~: la loi $\times$ est en effet compatible
-avec $\leq$ sur $\bQ_+^\star$ et donne un groupe.
-
 \begin{definition}[Ensemble des réels]
-  On définit $(\bR,+,\leq)$ comme la complétion idéale de $\bQ$.
-  On définit de plus $(\bR_+^\star,\times, \leq)$ comme la complétion
-  idéale de $(\bQ_+^\star,\times)$.
+  On définit $(\bR,\leq)$ comme la complétion idéale de $(\bQ,\leq)$, qui est
+  bien un ensemble totalement ordonné dense non majoré ni minoré.
+\end{definition}
+
+On définit finalement les deux lois $+$ et $\times$ sur $\bR$. Pour le cas de
+l'addition, la construction est directe, mais la multiplication demande de
+prendre en compte le signe des éléments.
+
+\begin{definition}[Somme de réels]
+  Soient $\varId,\varIdB\in\bR$, on définit la somme
+  \[\varId+\varIdB\defeq \compr{x + y}{x \in \varId,y \in \varIdB}\]
+  et l'opposé
+  \[(-\varId) \defeq
+  \compr{y}{\exists z,y < z \land (\forall x \in \varId, z < - x)}\]
 \end{definition}
 
 \begin{remark}
-  Ces constructions peuvent être définies grâce au fait que $\bQ$ et
-  $\bQ_+^\star$ sont non majorés.
+  Une autre façon de définir $(-\varId)$ est de considérer d'abord l'opposé
+  $\compr{-x}{x \in \varId}$. Cet ensemble n'est pas un idéal car il est clos
+  par le haut (prendre l'opposé inverse l'ordre)~: on souhaite donc considérer
+  son complémentaire, mais le complémentaire est alors un fermé (car l'opposé
+  d'un ouvert est ici un ouvert). On souhaite donc prendre l'intérieur de ce
+  fermé, ce qui donne le même résultat.
 \end{remark}
 
+\begin{exercise}
+  Vérifier que $(\bR,+,0)$ est un groupe abélien.
+\end{exercise}
+
 \begin{definition}[Produit de réels]
-  On définit maintenant le produit de nombres réels par
-  \[x \times y \defeq \begin{cases}
-  0 \text{ si } x = 0 \lor y = 0 \\
-  x \times_{\bQ_+^\star} y \text{ si } x > 0 \land y > 0\\
-  - (x \times_{\bQ_+^\star} (-y)) \text{ si } x > 0 \land y < 0\\
-  - ((-x) \times_{\bQ_+^\star} y) \text{ si } x < 0 \land y > 0\\
-  - ((-x) \times_{\bQ_+^\star} (-y)) \text{ si } x < 0 \land y < 0
+  Le produit de nombres réels $\varId,\varIdB > 0$ est défini par
+  \[\varId\times_{\bR^*}\varIdB\defeq
+  \compr{z \in \bQ}{\exists x \in \varId, \exists y \in \varIdB,
+    (x > 0) \land (y > 0) \land (z < x \times y)}\]
+  il est ensuite défini sur tous les réels par
+  \[\varId \times \varIdB \defeq \begin{cases}
+  0 \text{ si } \varId = 0 \lor \varIdB = 0 \\
+  \varId \times_{\bR_+^*} \varIdB \text{ si } \varId > 0 \land \varIdB > 0\\
+  - (\varId \times_{\bR_+^*} (-\varIdB)) \text{ si }
+  \varId > 0 \land \varIdB < 0\\
+  - ((-\varId) \times_{\bR_+^*} \varIdB) \text{ si }
+  \varId < 0 \land \varIdB > 0\\
+  - ((-\varId) \times_{\bR_+^*} (-\varIdB)) \text{ si }
+  \varId < 0 \land \varIdB < 0
   \end{cases}\]
 \end{definition}
 
@@ -2005,13 +1897,9 @@ avec $\leq$ sur $\bQ_+^\star$ et donne un groupe.
   On aurait pu, au lieu de faire cette disjonction de cas, construire nos
   ensembles de nombres dans un ordre plus efficace en vu de la construction par
   complétion idéale. En construisant $\bN$, puis $\bQ_+$ (en
-  inversant $\times$ dans $\bN^\star$), on peut directement considérer le
-  demi-anneau $(\bR,+,\times,\leq)$ complet, puis le symétriser pour la
+  inversant $\times$ dans $\bN\setminus\{0\}$), on peut directement considérer
+  le demi-anneau $(\bR_+,+,\times,\leq)$ complet, puis le symétriser pour la
   loi $+$ pour obtenir un corps totalement ordonné complet.
-
-  Cette construction, cependant, demande d'affiner le \cref{lem.R.compat} pour
-  le cas d'un monoïde régulier, puisque $(\bQ_+,+)$ n'a pas une structure
-  de groupe.
 \end{remark}
 
 \begin{remark}

@@ -67,14 +67,14 @@ ce que signifie chaque symbole.
 \begin{definition}[Signature]
   Une signature, ou langage, du premier ordre, est un quadruplet
   $\Sign = (\SigFun,\SigRel, \aritFun,\aritRel)$ où
-  $\aritFun : \SigFun \to \bN$
-  et $\aritRel : \SigRel \to \bN$. On appelle les éléments de $\SigFun$
+  $\makeFunName{\aritFun}{\SigFun}{\bN}$ et
+  $\makeFunName{\aritRel}{\SigRel}{\bN}$. On appelle les éléments de $\SigFun$
   les symboles de fonction et les éléments de $\SigRel$ les symboles de
-  relation. Pour un symboles de fonction $f\in\SigFun$, $\aritFun(f)$ est
-  appelée l'arité de $f$, et de même $\aritRel(R)$ est l'arité de $R$ pour
-  $R\in\SigRel$. Si $f\in\SigFun$ est d'arité $0$, on dit que c'est une
-  constante, et $R \in \SigRel$ d'arité $0$ est appelé une constante
-  propositionnelle.
+  relation. Pour un symboles de fonction $\symbF\in\SigFun$, $\aritFun(\symbF)$
+  est appelée l'arité de $\symbF$, et de même $\aritRel(\symbR)$ est l'arité de
+  $\symbR$ pour $\symbR\in\SigRel$. Si $\symbF\in\SigFun$ est d'arité $0$, on
+  dit que c'est une constante, et $\symbR \in \SigRel$ d'arité $0$ est appelé
+  une constante propositionnelle.
 \end{definition}
 
 \begin{example}
@@ -112,11 +112,11 @@ fonction nous donnent les arités des constructeurs de l'ensemble.
   Soit une signature
   $\Sign = (\SigFun,\SigRel, \aritFun,\aritRel)$,
   on définit $\Term(\Sign)$ comme l'ensemble inductif engendré par
-  $\SigFun\cup\Var$ où l'arité de $f\in\SigFun$ est
-  $\aritFun(f)$ et où l'arité de $x\in \Var$ est $0$. On peut représenter
+  $\SigFun\cup\Var$ où l'arité de $\symbF\in\SigFun$ est
+  $\aritFun(\symbF)$ et où l'arité de $x\in \Var$ est $0$. On peut représenter
   cet ensemble par la grammaire suivante :
-  \[t,u \inddefeq x \mid f(t_1,\ldots,t_{\aritFun(f)})\]
-  où $x\in \Var$ et $f\in \SigFun$.
+  \[t,u \inddefeq x \mid \symbF(t_1,\ldots,t_{\aritFun(\symbF)})\]
+  où $x\in \Var$ et $\symbF\in \SigFun$.
 \end{definition}
 
 Ainsi, les termes écrits dans notre langage vont représenter les objets
@@ -126,17 +126,17 @@ propositionnelle. En l'absence de variables propositionnelles, les éléments
 atomiques des formules seront construits à partir des termes.
 
 Nous donnons la définition d'une proposition atomique comme une proposition de
-la forme $R(t_1,\ldots,t_n)$ où $n$ correspond à l'arité de $R$. En plus des
-symboles de relation de la signature, on considère le symbole $\mathord{=}$,
-représentant l'égalité.
+la forme $\symbR(t_1,\ldots,t_n)$ où $n$ correspond à l'arité de $\symbR$. En
+plus des symboles de relation de la signature, on considère le symbole
+$\mathord{=}$, représentant l'égalité.
 
 \begin{definition}[Proposition atomique]
   Soit une signature $\Sign$. On définit l'ensemble $\Atom(\Sign)$ des
   propositions atomiques par
   \begin{multline*}
-    \Atom(\Sign) \defeq \{(R,t_1,\ldots,t_k)\mid R\in\SigRel,
-    (t_1,\ldots,t_k) \in (\Term(\Sign))^k, k = \aritRel(R)\}\\
-    \cup\{(``\mathord{=}",t,u)\mid t,u\in \Term(\Sign)\}
+    \Atom(\Sign) \defeq \compr{(\symbR,t_1,\ldots,t_k)}{\symbR\in\SigRel,
+    (t_1,\ldots,t_k) \in (\Term(\Sign))^k, k = \aritRel(\symbR)}\\
+    \cup\compr{(``\mathord{=}",t,u)}{t,u\in \Term(\Sign)}
   \end{multline*}
   où $\mathord{=}$ est un symbole n'appartenant pas à $\SigRel$.
 \end{definition}
@@ -157,12 +157,13 @@ représentant l'égalité.
 \end{remark}
 
 \begin{notation}
-  Pour un symbole de relation $R$ (pouvant être l'égalité), on écrira
-  $R(t_1,\ldots,t_k)$ plutôt que $(R,t_1,\ldots,t_k)$ dans la suite. Cela est
-  motivé par le fait que le sens donné à $R$ est d'être un prédicat atomique
-  prenant en argument des termes. Dans le cas des symboles binaires, on écrira
-  même $t\mathbin{R} u$ pour signifier $R(t,u)$ comme on le voit généralement
-  dans les ouvrages de mathématiques.
+  Pour un symbole de relation $\symbR$ (pouvant être l'égalité), on écrira
+  $\symbR(t_1,\ldots,t_k)$ plutôt que
+  $(\symbR,t_1,\ldots,t_k)$ dans la suite. Cela est motivé par le fait
+  que le sens donné à $\symbR$ est d'être un prédicat atomique prenant en
+  argument des termes. Dans le cas des symboles binaires, on écrira même
+  $t\mathrel{\symbR} u$ pour signifier $\symbR(t,u)$ comme on le voit
+  généralement dans les ouvrages de mathématiques.
 \end{notation}
 
 Nous pouvons maintenant définir l'ensemble des formules sur une signature
@@ -190,12 +191,12 @@ basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
   par les équations suivantes :
   \begin{itemize}
   \item si $t = x\in \Var$, alors $\VL(t) \defeq \{x\}$.
-  \item si $t = f(t_1,\ldots,t_n)$ où $f\in \SigFun$,
+  \item si $t = \symbF(t_1,\ldots,t_n)$ où $\symbF\in \SigFun$,
     $t_1,\ldots,t_n\in\Term(\Sign)$, alors
     $\displaystyle\VL(t) \defeq \bigcup_{k = 1}^n \VL(t_k)$.
-  \item si $\varFF = R(t_1,\ldots,t_n)$ est une proposition atomique où
-    $R\in\SigRel, t_1,\ldots,t_n\in\Term(\Sign)$, alors
-    $\displaystyle\VL(\varFF) \defeq \bigcup_{k = 1}^n \VL(t_k)$.
+  \item si $\varFF = \symbR(t_1,\ldots,t_n)$ est une proposition
+    atomique où $\symbR\in\SigRel, t_1,\ldots,t_n\in\Term(\Sign)$,
+    alors $\displaystyle\VL(\varFF) \defeq \bigcup_{k = 1}^n \VL(t_k)$.
   \item si $\varFF = \top$, alors $\VL(\varFF) \defeq \vide$.
   \item si $\varFF = \bot$, alors $\VL(\varFF) \defeq \vide$.
   \item si $\varFF = \lnot \varFP$, alors $\VL(\varFF) \defeq \VL(\varFP)$.
@@ -206,7 +207,7 @@ basiques sur celles-ci. Tout d'abord, nous devons introduire les notions
     $\VL(\varFF) \defeq \VL(\varFP)\setminus\{x\}$.
   \end{itemize}
   On dit que $\varFF$ est une formule close (ou une proposition) si
-  $\VL(\varFF) =\vide$. On note par $\Prop(\Sign)$ l'ensemble des
+  $\VL(\varFF) = \vide$. On note par $\Prop(\Sign)$ l'ensemble des
   formules closes (ou propositions) sur la signature $\Sign$. De même, un
   terme $t$ est appelé un terme clos s'il n'a pas de variables libres
   (c'est-à-dire s'il n'a pas de variable) et on note $\TermCl(\Sign)$ l'ensemble
@@ -243,10 +244,10 @@ comme une évaluation syntaxique~: on remplace une variable libre par un terme.
   \begin{itemize}
   \item si $u = x$, alors $u[t/x] \defeq t$.
   \item si $u = y\in \Var$ avec $y \neq x$, alors $u[t/x] \defeq y$.
-  \item si $u = f(u_1,\ldots,u_n)$, alors
-    $u[t/x] \defeq f(u_1[t/x],\ldots,u_n[t/x])$.
-  \item si $\varFF = R(u_1,\ldots,u_n)$, alors
-    $\varFF[t/x] \defeq R(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $u = \symbF(u_1,\ldots,u_n)$, alors
+    $u[t/x] \defeq \symbF(u_1[t/x],\ldots,u_n[t/x])$.
+  \item si $\varFF = \symbR(u_1,\ldots,u_n)$, alors
+    $\varFF[t/x] \defeq \symbR(u_1[t/x],\ldots,u_n[t/x])$.
   \item si $\varFF = \top$ alors $\varFF[t/x] \defeq \top$.
   \item si $\varFF = \bot$ alors $\varFF[t/x] \defeq \bot$.
   \item si $\varFF = \lnot \varFP$ alors $\varFF[t/x] \defeq \lnot \varFP[t/x]$.
@@ -276,11 +277,11 @@ comme une évaluation syntaxique~: on remplace une variable libre par un terme.
   $\forall x, \varFP \equiv \forall y, \varFP[y/x]$ et
   $\exists x,\varFP \equiv\exists y, \varFP[y/x]$ dont on prouve qu'elle est une
   relation d'équivalence, puis on définit le \og vrai\fg{} ensemble
-  $\Formula(\Sign)$ par $\Formula(\Sign)/ \equiv$ (cela n'est pas nécessaire
-  pour $\Term(\Sign)$ puisque toute variable est libre, dans un terme), et que
-  la fonction $\tok[t/x]$ est bien définie sur ce quotient. Ce processus est
-  évidemment plus laborieux et n'apporte rien à la compréhension, c'est pourquoi
-  nous ne le détaillons pas ici.
+  $\Formula(\Sign)$ par $\quot{\Formula(\Sign)}{\equiv}$ (cela n'est pas
+  nécessaire pour $\Term(\Sign)$ puisque toute variable est libre, dans un
+  terme), et que la fonction $\tok[t/x]$ est bien définie sur ce quotient. Ce
+  processus est évidemment plus laborieux et n'apporte rien à la compréhension,
+  c'est pourquoi nous ne le détaillons pas ici.
 \end{remark}
 
 On définit aussi la notion de substitution simultanée, permettant de remplacer
@@ -288,17 +289,17 @@ plusieurs variables à la fois par des termes.
 
 \begin{definition}[Substitution simultanée]
     Soit une signature $\Sign$, une fonction partielle
-    $\subSimul : \Var \partialto \Term(\Sign)$, un terme $t \in \Term(\Sign)$
-    et 
-    une formule $\varFF \in \Formula(\Sign)$. On définit la substitution de $t$
-    (respectivement $\varFF$) par $\subSimul$, notée  $\subSimul(t)$
-    (respectivement $\subSimul(\varFF)$), par induction sur $\varFF$~:
+    $\makeFunNamePartial{\subSimul}{\Var}{\Term(\Sign)}$, un terme
+    $t \in \Term(\Sign)$ et  une formule $\varFF \in \Formula(\Sign)$. On
+    définit la substitution de $t$ (respectivement $\varFF$) par $\subSimul$,
+    notée $\subSimul(t)$ (respectivement $\subSimul(\varFF)$), par induction
+    sur $\varFF$~:
     \begin{itemize}
         \item si $t = x \in \dom(\rho)$ alors $\subSimul(t) \defeq \subSimul(x)$
-        \item si $t = f(t_1,\ldots,t_n)$ alors
-        $\subSimul(t) \defeq f(\subSimul(t_1),\ldots,\subSimul(t_n))$.
-        \item si $\varFF = R(t_1,\ldots,t_n)$ alors
-        $\subSimul(\varFF) \defeq R(\subSimul(t_1),\ldots,\subSimul(t_n))$.
+        \item si $t = \symbF(t_1,\ldots,t_n)$ alors
+        $\subSimul(t) \defeq \symbF(\subSimul(t_1),\ldots,\subSimul(t_n))$.
+        \item si $\varFF = \symbR(t_1,\ldots,t_n)$ alors
+          $\subSimul(\varFF)\defeq\symbR(\subSimul(t_1),\ldots,\subSimul(t_n))$.
         \item si $\varFF = \top$ alors $\subSimul(\varFF) \defeq \top$.
         \item si $\varFF = \bot$ alors $\subSimul(\varFF) \defeq \bot$.
         \item si $\varFF = \lnot \varFP$ alors
@@ -362,7 +363,7 @@ le reste des formules, mais il faut quantifier sur des structures en
 contrepartie.
 
 Donner un sens à notre langage signifie que l'on sélectionne en premier lieu un
-univers de discours~: on désigne un ensemble $M$ dans lequel seront interprétées
+univers de discours~: on désigne un ensemble dans lequel seront interprétées
 les formules. Par exemple, quand on parle d'arithmétique, une formule telle que
 \[\forall n,\exists m, n \leq m\]
 s'interprète naturellement comme portant sur des entiers, c'est-à-dire que $n$
@@ -380,9 +381,10 @@ sur l'univers de discours.
   (on notera les deux $\toM{\tok}$, sans indice) où :
   \begin{itemize}
   \item $\carMM$ est un ensemble.
-  \item pour chaque $f\in\SigFun$ d'arité $n$,
-    $\makeFunName{\toM{f}}{\carMM^n}{\carMM}$.
-  \item pour chaque $R\in\SigRel$ d'arité $n$, $\toM{R} \subseteq \carMM^n$.
+  \item pour chaque $\symbF\in\SigFun$ d'arité $n$,
+    $\makeFunName{\toM{\symbF}}{\carMM^n}{\carMM}$.
+  \item pour chaque $\symbR\in\SigRel$ d'arité $n$,
+    $\toM{\symbR} \subseteq \carMM^n$.
   \end{itemize}
 
   \noindent
@@ -400,8 +402,8 @@ sur l'univers de discours.
 \begin{remark}
   Si l'on définit un modèle comme un triplet, définir un modèle revient à lister
   toutes les assignations, c'est-à-dire donner un ensemble $\carMM$ puis
-  une fonction $\toM{f}$ pour chaque symbole de fonction $f$, et
-  une relation $\toM{R}$ pour chaque symbole de relation $R$. On
+  une fonction $\toM{\symbF}$ pour chaque symbole de fonction $\symbF$, et
+  une relation $\toM{\symbR}$ pour chaque symbole de relation $\symbR$. On
   notera donc, au lieu d'un triplet contenant deux fonctions, une liste de
   tous les éléments donnés par l'intérprétation. En règle générale (comme par
   exemple le modèle donné au paragraphe suivant) l'association de chaque symbole
@@ -411,23 +413,22 @@ sur l'univers de discours.
 \end{remark}
 
 \begin{example}
-  En reprenant les différents langages définis précédemments, on peut voir que,
-  par exemple, $(\bZ,0,+,-\tok)$ est une structure sur le langage des groupes.
+  En reprenant les différents langages définis précédemments, on peut voir que
+  $(\bZ,0,+,x\mapsto -x)$ est une structure sur le langage des groupes.
   C'est même, en incluant $1$ et $\times$, une structure sur le langage des
-  anneaux. De même, $(\bN,0,n\mapsto n + 1,+,\times,\leq)$ est une
-  structure sur le langage de l'arithmétique (qui sera largement étudiée dans
-  le \cref{chp.arith}).
+  anneaux. De même, $(\bN,0,n\mapsto n + 1,+,\times,\leq)$ est une structure sur
+  le langage de l'arithmétique (qui sera largement étudiée dans le
+  \cref{chp.arith}).
 \end{example}
 
 Avec ces nouveaux exemples, on voit qu'il devient naturel d'interpréter dans la
 structure $(\bN,0,n\mapsto n+1,+,\times,\leq)$ le terme
-$\Ss\Ss 0 + \Ss\Ss 0$
-par l'élément $4\in\bN$. Nous pouvons donc généraliser ce résultat. Pour
-cela, on définit d'abord la notion d'environnement. Un environnement permet de
-gérer les variables libres d'un terme et d'une formule pour qu'une variable $x$
-puisse être assignée à un réel objet de $\carMM$. Dans un environnement
-$\env$ donné, dont on suppose qu'il contient les variables libres d'un certain
-terme $t$, on peut construire de façon canonique un élément
+$\Ss\Ss 0 + \Ss\Ss 0$ par l'élément $4\in\bN$. Nous pouvons généraliser ce
+résultat. Pour cela, on définit d'abord la notion d'environnement. Un
+environnement permet de gérer les variables libres d'un terme et d'une formule
+pour qu'une variable $x$ puisse être assignée à un réel objet de $\carMM$. Dans
+un environnement $\env$ donné, dont on suppose qu'il contient les variables
+libres d'un certain terme $t$, on peut construire de façon canonique un élément
 $\toMMI{t} \in \carMM$~: une variable libre est associée à son
 image par $\env$, et le reste se construit par l'interprétation des symboles
 de fonction. De même, une formule est alors associée à une valeur de vérité,
@@ -450,36 +451,37 @@ dépendant des valeurs de $\env$.
   $\VL(\varFF)\subseteq\dom(\env)$), les fonctions suivantes~:
   \begin{center}
     $\makeFunName{\toMMI{\tok}}{\Term(\Sign)}{\carMM}$
-    \\
+    \qquad
     $\makeFunName{\ValE}{\Formula(\Sign)}{\{0,1\}}$
   \end{center}
 
   \begin{itemize}
-  \item si $t = x \in \Var$, alors $\toMMI{t} = \env(x)$.
-  \item si $t = f(t_1,\ldots,t_n)$, alors
-    $\toMMI = \toM{f}(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})$.
-  \item si $\varFF = R(t_1,\ldots,t_n)$ alors
-    $\ValE(\varFF) = \indicP{\toM{R}}(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})$,
+  \item si $t = x \in \Var$, alors $\toMMI{t} \defeq \env(x)$.
+  \item si $t = \symbF(t_1,\ldots,t_n)$, alors
+    $\toMMI \defeq \toM{\symbF}(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})$.
+  \item si $\varFF = \symbR(t_1,\ldots,t_n)$ alors
+    $\ValE(\varFF) \defeq \indicP{\toM{\symbR}}
+    (\toMMI{(t_1)},\ldots,\toMMI{(t_n)})$,
     l'image
     de $(\toMMI{(t_i)})_{i = 1,\ldots,n}$ par la fonction indicatrice de
-    $\toM{R}$ (qui est, rappelons-le, une partie de $\carMM^n$).
+    $\toM{\symbR}$ (qui est, rappelons-le, une partie de $\carMM^n$).
     On interprète le symbole $\mathord{=}$ de la même façon, en prenant la
     partie $\compr{(m,m)}{m\in \carMM}$.
-  \item si $\varFF = \top$, alors $\ValE(\varFF) = 1$.
-  \item si $\varFF = \bot$, alors $\ValE(\varFF) = 0$.
+  \item si $\varFF = \top$, alors $\ValE(\varFF) \defeq 1$.
+  \item si $\varFF = \bot$, alors $\ValE(\varFF) \defeq 0$.
   \item si $\varFF = \lnot \varFP$, alors
-    $\ValE(\varFF) = 1 - \ValE(\varFP)$.
+    $\ValE(\varFF) \defeq 1 - \ValE(\varFP)$.
   \item si $\varFF = \varFP \lor \varFC$, alors
-    $\ValE(\varFF) = \max(\ValE(\varFP),\ValE(\varFC))$
+    $\ValE(\varFF) \defeq \max(\ValE(\varFP),\ValE(\varFC))$
   \item si $\varFF = \varFP \land \varFC$, alors
-    $\ValE(\varFF) = \min(\ValE(\varFP),\ValE(\varFC))$
+    $\ValE(\varFF) \defeq \min(\ValE(\varFP),\ValE(\varFC))$
   \item si $\varFF = \varFP \to \varFC$, alors
-    $\ValE(\varFF) = \max(1 - \ValE(\varFP),\ValE(\varFC))$
+    $\ValE(\varFF) \defeq \max(1 - \ValE(\varFP),\ValE(\varFC))$
   \item si $\varFF = \forall x, \varFP$, alors
-    $\displaystyle\ValE(\varFF) =
+    $\displaystyle\ValE(\varFF) \defeq
     \min_{m \in \carMM}(\ValP{\env[x\mapsto m]}(\varFP))$
   \item si $\varFF = \exists x, \varFP$, alors
-    $\displaystyle\ValE(\varFF) =
+    $\displaystyle\ValE(\varFF) \defeq
     \max_{m \in \carMM}(\ValP{\env[x\mapsto m]}(\varFP))$
   \end{itemize}
   
@@ -515,25 +517,28 @@ commutent.
   \item si $t = y$ où $y\in\Var$ et $y\neq x$, alors
     $\toMMI{(t[u/x])} = \env(y)$, qui est la même valeur pour l'autre
     partie de l'équation.
-  \item si $t = f(t_1,\ldots,t_n)$ où pour tout $i\in\intervIntB{n}$,
+  \item si $t = \symbF(t_1,\ldots,t_n)$ où pour tout $i\in\intervIntB{n}$,
     $\toMMI{(t_i[u/x])}= \toMIP{(t_i)}{\varMM}{\env[x\mapsto \toMMI{u}]}$,
     alors
     \begin{align*}
-      \toMMI{(t[u/x])} &= f(\toMMI{(t_1[u/x])},\ldots,
+      \toMMI{(t[u/x])} &= \symbF(\toMMI{(t_1[u/x])},\ldots,
       \toMMI{(t_n[u/x])})\\
-      &= f(\toMIP{(t_1)}{\varMM}{\env[x\mapsto \toMMI{u}]},\ldots,
+      &= \symbF(\toMIP{(t_1)}{\varMM}{\env[x\mapsto \toMMI{u}]},\ldots,
       \toMIP{(t_n)}{\varMM}{\env[x\mapsto \toMMI{u}]})\\
       &= \toMIP{t}{\varMM}{\env[x\mapsto \toMMI{u}]}
     \end{align*}
   \item si $\varFF = \top$ ou $\varFF = \bot$, l'égalité est directe.
-  \item si $\varFF = R(t_1,\ldots,t_n)$ est une proposition atomique, alors
+  \item si $\varFF = \symbR(t_1,\ldots,t_n)$ est une proposition
+    atomique, alors
     \begin{align*}
-      \ValE(R(t_1,\ldots,t_n)[u/x])
-      &= \ValE(R(t_1[u/x],\ldots,t_n[u/x]))\\
-      &= \indicP{\toM{R}}(\toMMI{(t_1[u/x])},\ldots,\toMMI{(t_n[u/x])})\\
-      &= \indicP{\toM{R}}(\toMIP{(t_1)}{\varMM}{\env[x\mapsto \toMMI{u}]},
+      \ValE(\symbR(t_1,\ldots,t_n)[u/x])
+      &= \ValE(\symbR(t_1[u/x],\ldots,t_n[u/x]))\\
+      &= \indicP{\toM{\symbR}}
+      (\toMMI{(t_1[u/x])},\ldots,\toMMI{(t_n[u/x])})\\
+      &= \indicP{\toM{\mathord{\varRR}}}
+      (\toMIP{(t_1)}{\varMM}{\env[x\mapsto \toMMI{u}]},
       \ldots, \toMIP{(t_n)}{\varMM}{\env[x\mapsto \toMMI{u}]})\\
-      &= \ValP{\env[x\mapsto \toMMI{u}]}(R(t_1,\ldots,t_n))
+      &= \ValP{\env[x\mapsto \toMMI{u}]}(\symbR(t_1,\ldots,t_n))
     \end{align*}
   \item si $\varFF = \lnot \varFP$, alors
     \begin{align*}
@@ -791,14 +796,14 @@ et de fonction.
   \[\makeFunName{\varMoM}{\carMM}{\carMN}\]
   vérifiant les propositions suivantes~:
   \begin{itemize}
-  \item pour tout symbole de fonction $f$ d'arité $n$ et tout tuple
+  \item pour tout symbole de fonction $\symbF$ d'arité $n$ et tout tuple
     $(m_1,\ldots,m_n)\in\carMM^n$~:
-    \[\varMoM(\toM{f}(m_1,\ldots,m_n))
-    = \toN{f}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
-  \item pour tout symbole de relation $R$ d'arité $n$ et tout tuple
+    \[\varMoM(\toM{\symbF}(m_1,\ldots,m_n))
+    = \toN{\symbF}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
+  \item pour tout symbole de relation $\symbR$ d'arité $n$ et tout tuple
     $(m_1,\ldots,m_n)\in\carMM^n$~:
-    \[\toM{R}(m_1,\ldots,m_n) \implies
-    \toN{R}(\varMoM(m_1),\ldots,\varMoM(m_n)) \]
+    \[\toM{\symbR}(m_1,\ldots,m_n) \implies
+    \toN{\symbR}(\varMoM(m_1),\ldots,\varMoM(m_n)) \]
   \end{itemize}
 \end{definition}
 
@@ -833,8 +838,9 @@ modèle de départ.
   Un plongement d'une structure $\varMM$ vers une structure $\varMN$ est
   un morphisme $\makeFunName{\varMoM}{\varMM}{\varMN}$ pour lequel la deuxième
   condition n'est plus une implication mais une équivalence~:
-  \[\forall(m_1,\ldots,m_n)\in\carMM^n,\toM{R}(m_1,\ldots,m_n) \iff
-  \toN{R}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
+  \[\forall(m_1,\ldots,m_n)\in\carMM^n,
+  \toM{\symbR}(m_1,\ldots,m_n) \iff
+  \toN{\symbR}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
 \end{definition}
 
 \begin{remark}
@@ -873,13 +879,12 @@ travers un isomorphisme.
   \[\satMI \varFF \iff \satMP{\varMN}{\varMoM\circ \env} \varFF\]
   \begin{itemize}
   \item si $\varFF$ est de la forme
-    $R(t_1,\ldots,t_n)$ avec un symbole de relation
-    $R$, alors comme $\varMoM$ est un morphisme on sait que si
-    $(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})\in \toM{R}$, alors
+    $\symbR(t_1,\ldots,t_n)$ avec un symbole de relation
+    $\symbR$, alors comme $\varMoM$ est un morphisme on sait que si
+    $(\toMMI{(t_1)},\ldots,\toMMI{(t_n)})\in \toM{\symbR}$, alors
     $(\toMIP{(t_1)}{\varMN}{\varMoM\circ \env},\ldots,
-    \toMIP{(t_n)}{\varMN}{\varMoM\circ\env})\in \toN{R}$,
-    comme on sait qu'on a
-    un morphisme réciproque
+    \toMIP{(t_n)}{\varMN}{\varMoM\circ\env})\in \toN{\symbR}$,
+    comme on sait qu'on a un morphisme réciproque
     $\makeFunName{\varMoMB}{\varMN}{\varMM}$, on peut
     écrire
     $\toMMI{(t_i)}= \toMIP{(t_i)}{\varMM}{\varMoMB\circ\varMoM\circ\env}$,
@@ -889,8 +894,8 @@ travers un isomorphisme.
     le résultat est direct puisqu'indépendant de la structure dans laquelle on
     l'évalue.
   \item si $\varFF$ est de la forme $\lnot \varFP$, alors
-    \[\satMI \lnot \varFP\iff \not\satMI\varFP
-    \iff \not\satMP{\varMN}{\varMoM\circ\env}\varFP
+    \[\satMI \lnot \varFP\iff \nsatMP{\varMM}{\env}\varFP
+    \iff \nsatMP{\varMN}{\varMoM\circ\env}\varFP
     \iff \satMP{\varMN}{\varMoM\circ\env}\lnot \varFP\]
   \item si $\varFF$ est de la forme $\varFP\lor \varFC$, alors
     \begin{align*}
@@ -971,12 +976,13 @@ Cependant, pour un plongement, ce résultat devient valide.
   peut donc considérer la réciproque $\varMoMB$ de $\varMoM$. Il nous reste à
   prouver que $\varMoMB$ est bien un morphisme~: la préservation des termes est
   automatique, et il nous faut encore montrer que pour tout symbole de relation
-  $R$ d'arité $p$ et $n_1,\ldots,n_p\in\varMN$~:
-  \[\toN{R}(n_1,\ldots,n_p)\implies\toM{R}(\varMoMB(n_1),\ldots,\varMoMB(n_p))\]
+  $\symbR$ d'arité $p$ et $n_1,\ldots,n_p\in\varMN$~:
+  \[\toN{\symbR}(n_1,\ldots,n_p)\implies
+  \toM{\symbR}(\varMoMB(n_1),\ldots,\varMoMB(n_p))\]
   mais chaque $n_1,\ldots,n_p$ peut se réécrire
   $\varMoM(m_1),\ldots,\varMoM(m_p)$, donnant
-  \[\toN{R}(\varMoM(m_1),\ldots,\varMoM(m_p)) \implies \toM{R}
-  (\varMoMB(\varMoM(m_1)),\ldots,\varMoMB(\varMoM(m_p)))\]
+  \[\toN{\symbR}(\varMoM(m_1),\ldots,\varMoM(m_p)) \implies
+  \toM{\symbR}(\varMoMB(\varMoM(m_1)),\ldots,\varMoMB(\varMoM(m_p)))\]
   Or on sait que $\varMoMB\circ \varMoM = \id$, donc la condition revient à la
   réciproque de celle disant que $\varMoM$ est un morphisme~: c'est justement
   ce que nous donne le fait que $\varMoM$ est un plongement. Donc $\varMoM$ est
@@ -995,10 +1001,10 @@ définir la notion d'enrichissement.
   enrichissement d'une structure $\varMM$ sur $\Sign$ si~:
   \begin{itemize}
   \item $\carMM = \carM{\varMM'}$~;
-  \item pour tout symbole de fonction $f\in \SigFun_{\Sign}$,
-    $\toM{f} = \toMP{f}{\varMM'}$~;
-  \item pour tout symbole de fonction $R\in \SigRel_{\Sign}$,
-    $\toM{R} = \toMP{R}{\varMM'}$.
+  \item pour tout symbole de fonction $\symbF\in \SigFun_{\Sign}$,
+    $\toM{\symbF} = \toMP{\symbF}{\varMM'}$~;
+  \item pour tout symbole de fonction $\symbR\in \SigRel_{\Sign}$,
+    $\toM{\symbR} = \toMP{\symbR}{\varMM'}$.
   \end{itemize}
 
   \noindent
@@ -1030,17 +1036,18 @@ enrichissement.
   variable $x$, on a $\env(x) = \env(x)$ et si l'on suppose que pour tout
   $i\in\intervIntB{1}{n}$ on a $\toMMI{(t_i)} = \toMIP{(t_i)}{\varMM'}{\env}$
   alors
-  \[\toMMI{(f(t_1,\ldots,t_n))} = \toMIP{(f(t_1,\ldots,t_n))}{\varMM'}{\env}\]
+  \[\toMMI{(\symbF(t_1,\ldots,t_n))} =
+  \toMIP{(\symbF(t_1,\ldots,t_n))}{\varMM'}{\env}\]
   d'où le résultat pour tout terme $t$.
 
   \noindent
   On procède maintenant par induction sur la structure de $\varFF$~:
   \begin{itemize}
-  \item si $\varFF = R(t_1,\ldots,t_n)$ alors
+  \item si $\varFF = \symbR(t_1,\ldots,t_n)$ alors
     \begin{align*}
-      \ValE^{\varMM}(R(t_1,\ldots,t_n)) &= \toM{R}(\toMMI{(t_1)},
-      \ldots,\toMMI{(t_n)}) \\
-      &= \toMP{R}{\varMM'}(\toMIP{(t_1)}{\varMM'}{\env},\ldots,
+      \ValE^{\varMM}(\symbR(t_1,\ldots,t_n)) &=
+      \toM{\symbR}(\toMMI{(t_1)},\ldots,\toMMI{(t_n)}) \\
+      &= \toMP{\symbR}{\varMM'}(\toMIP{(t_1)}{\varMM'}{\env},\ldots,
       \toMIP{(t_n)}{\varMM'}{\env})
     \end{align*}
   \item si $\varFF$ est un connecteur logique, alors le résultat est direct.
@@ -1459,33 +1466,36 @@ naturelle).
 
 \begin{example}
   Donnons un exemple d'arbre de preuve pour une proposition simple mais non
-  triviale. On fixe la signature $\Sign \defeq \{f^1, R^1\}$ où $f$ est un
-  symbole de fonction et $R$ est un symbole de relation. Posons
-  \[\varCG \defeq \forall x, R(x) \to R(f(x))\]
-  et prouvons que $\varCG\vdash \forall x, R(x) \to R(f(f(x)))$~:
+  triviale. On fixe la signature $\Sign \defeq \{\symbF^1, \symbR^1\}$ où
+  $\symbF$ est un symbole de fonction et $\symbR$ est un symbole de relation.
+  Posons
+  \[\varCG \defeq \forall x, \symbR(x) \to \symbR(\symbF(x))\]
+  et prouvons que
+  $\varCG\vdash \forall x, \symbR(x) \to \symbR(\symbF(\symbF(x)))$~:
   \begin{center}
   \resizebox{\textwidth}{!}{\(
     \AxiomC{}
     \RightLabel{$\Rax$}
-    \UnaryInfC{$\varCG,R(x)\vdP \forall x, R(x) \to R(f(x))$}
+    \UnaryInfC{$\varCG,\symbR(x)\vdP \forall x,\symbR(x) \to \symbR(\symbF(x))$}
     \RightLabel{$\RforaE$}
-    \UnaryInfC{$\varCG, R(x)\vdP R(f(x)) \to R(f(f(x)))$}
+    \UnaryInfC{$\varCG, \symbR(x)\vdP
+      \symbR(\symbF(x)) \to \symbR(\symbF(\symbF(x)))$}
     \AxiomC{}
     \RightLabel{$\Rax$}
-    \UnaryInfC{$\varCG,R(x)\vdP \forall x, R(x) \to R(f(x))$}
+    \UnaryInfC{$\varCG,\symbR(x)\vdP\forall x, \symbR(x) \to \symbR(\symbF(x))$}
     \RightLabel{$\RforaE$}
-    \UnaryInfC{$\varCG, R(x)\vdP R(x) \to R(f(x))$}
+    \UnaryInfC{$\varCG, \symbR(x)\vdP \symbR(x) \to \symbR(\symbF(x))$}
     \AxiomC{}
     \RightLabel{$\Rax$}
-    \UnaryInfC{$\varCG, R(x)\vdP R(x)$}
+    \UnaryInfC{$\varCG, \symbR(x)\vdP \symbR(x)$}
     \RightLabel{$\RtoE$}
-    \BinaryInfC{$\varCG, R(x)\vdP R(f(x))$}
+    \BinaryInfC{$\varCG, \symbR(x)\vdP \symbR(\symbF(x))$}
     \RightLabel{$\RtoE$}
-    \BinaryInfC{$\varCG, R(x)\vdP R(f(f(x)))$}
+    \BinaryInfC{$\varCG, \symbR(x)\vdP \symbR(\symbF(\symbF(x)))$}
     \RightLabel{$\RtoI$}
-    \UnaryInfC{$\varCG\vdP R(x) \to R(f(f(x)))$}
+    \UnaryInfC{$\varCG\vdP \symbR(x) \to \symbR(\symbF(\symbF(x)))$}
     \RightLabel{$\RforaI$}
-    \UnaryInfC{$\varCG\vdP \forall x, R(x) \to R(f(f(x)))$}
+    \UnaryInfC{$\varCG\vdP \forall x, \symbR(x) \to \symbR(\symbF(\symbF(x)))$}
     \DisplayProof
     \)}
   \end{center}
@@ -1528,7 +1538,7 @@ environnements en plus. Nous allons donc utiliser la \cref{prop.comm.subst.env}.
   \begin{itemize}
   \item[$\Rax$~:] Si $\varFF\in \varCG$, alors il est évident que
     $\satMI \varFF$.
-  \item[$R\top$~:] Peu importe les prémisses, $\satMI \top$.
+  \item[$\RtopI$~:] Peu importe les prémisses, $\satMI \top$.
   \item[$\RbotC$~:] Supposons qu'aucun modèle $\varMM$ et aucun
     environnement $\env$ ne vérifient
     $\satMI \varCG,\lnot \varFF$. Alors si
@@ -1691,7 +1701,7 @@ essentielles~:
   des termes.
   On en déduit donc qu'il faut pour chaque proposition $\varFF$ avoir un
   terme $t_{\varFF}$ correspondant tel que
-  $\exists x, \varFF \implies P[t_{\varFF}/x]$. Cela n'est
+  $(\exists x, \varFF) \implies \varFF[t_{\varFF}/x]$. Cela n'est
   pas vrai \latinexpr{a priori}, on va donc chercher à élargir notre langage
   pour ajouter à chaque fois des constantes témoignant pour une proposition
   $\exists x,\varFF$ vraie qu'un terme correspond~: c'est ce que l'on appelle la
@@ -1711,17 +1721,17 @@ essentielles~:
 \end{itemize}
 
 Historiquement, le théorème de complétude de la logique du premier ordre date de
-Gödel, dans sa thèse de doctorat \cite{GödelCompleteness}, mais la méthode que
-nous présentons ici (et celle généralement utilisée de nos jours) a été
-introduite par Henkin, dans \cite{HenkinCompleteness}.
+Kurt \name{Gödel}, dans sa thèse de doctorat \cite{GödelCompleteness}, mais la
+méthode que nous présentons ici (et celle généralement utilisée de nos jours) a
+été introduite par Léon \name{Henkin}, dans \cite{HenkinCompleteness}.
 
 Pour pouvoir effectuer les deux premières étapes, il est d'abord
 important que celles-ci soient compatibles entre elles.
 
 \begin{definition}[Propriété de Henkin]
   On dit qu'une théorie $\varT$ sur une signature $\Sign$ a la propriété
-  de Henkin si pour toute formule $\varFF(x)$ à une variable libre $x$ telle que
-  $\varT\vdP\exists x, \varFF(x)$, il existe un terme
+  de Henkin si pour toute formule $\varFF(x)$ à une variable libre $x$
+  telle que $\varT\vdP\exists x, \varFF(x)$, il existe un terme
   $t_{\varFF}\in\Term(\Sign)$ tel que $\varT\vdP \varFF(t_{\varFF})$.
 \end{definition}
 
@@ -1798,7 +1808,7 @@ libre.
   une variable $x\notin \VL(\varFF_1,\ldots,\varFF_n)$.
   Les deux propositions sont équivalentes~:
   \begin{itemize}
-    \begin{minipage}{0.4\textwidth}
+    \begin{minipage}{0.5\textwidth}
     \item $\varFF_1,\ldots,\varFF_n\vdash \varFP$
     \end{minipage}
     \begin{minipage}{0.4\textwidth}
@@ -1870,8 +1880,8 @@ libre.
 \end{proof}
 
 \noindent
-On peut maintenant prouver que la clôture par témoins de Henkin préserve la
-cohérence.
+On peut maintenant prouver que la clôture par témoins de Henkin préserve
+la cohérence.
 
 \begin{property}
   Si $\varT\nvdP \bot$, alors $\hclose{\varT}\nvdP\bot$.
@@ -1988,16 +1998,16 @@ On fixe aussi la signature $\Sign'$ comme étant $\hclose{\Sign}$.
     $\Sign'$,
     quotienté par la relation $\mathord{\equiv}$, définie par
     \[t\equiv u \defeq \varT'\vdP t = u\]
-  \item pour chaque symbole de fonction $f\in\Sign'$ d'arité $n$, on associe la
-    fonction
+  \item pour chaque symbole de fonction $\symbF\in\Sign'$ d'arité $n$, on
+    associe la fonction
     \[ \makeFun
-       {\toMP{f}{\varT'}}{\carM{\varMM_{\varT'}}^n}{\carM{\varMM_{\varT'}}}
-       {\overline{t_1},\ldots,\overline{t_n}}{\overline{f(t_1,\ldots,t_n)}}
+       {\toMP{\symbF}{\varT'}}{\carM{\varMM_{\varT'}}^n}{\carM{\varMM_{\varT'}}}
+       {\clas{t_1},\ldots,\clas{t_n}}{\clas{\symbF(t_1,\ldots,t_n)}}
     \]
-  \item pour chaque symbole de relation $R\in\Sign'$ d'arité $n$, on définit la
-    relation $\toMP{R}{\varT'}$ par
-    \[\toMP{R}{\varT'}(\overline{t_1},\ldots,\overline{t_n}) \defeq
-    \varT'\vdP R(t_1,\ldots,t_n)\]
+  \item pour chaque symbole de relation $\symbR\in\Sign'$ d'arité $n$,
+    on définit la relation $\toMP{\symbR}{\varT'}$ par
+    \[\toMP{\symbR}{\varT'}(\clas{t_1},\ldots,\clas{t_n})
+    \defeq \varT'\vdP \symbR(t_1,\ldots,t_n)\]
   \end{itemize}
 \end{definition}
 
@@ -2005,7 +2015,7 @@ On fixe aussi la signature $\Sign'$ comme étant $\hclose{\Sign}$.
   Pour que cette définition ait du sens, il convient de montrer que $\equiv$ est
   une relation d'équivalence, et qu'elle est compatible avec les symboles de
   fonction et de relation (c'est-à-dire que nos définitions de
-  $\toMP{f}{\varT'}$ et $\toMP{R}{\varT'}$ ne
+  $\toMP{f}{\varT'}$ et $\toMP{\varRR}{\varT'}$ ne
   dépendent pas du représentant choisi).
 
   Montrons d'abord que $\equiv$ est une relation d'équivalence~:
@@ -2039,37 +2049,37 @@ On fixe aussi la signature $\Sign'$ comme étant $\hclose{\Sign}$.
   \end{itemize}
   Ainsi $\equiv$ est bien une relation d'équivalence.
 
-  Soit $f$ un symbole de fonction d'arité $n$. Pour simplifier la preuve, on
-  suppose que $f$ est d'arité $1$ (il suffit ensuite de faire une récurrence
-  sur $n$ pour généraliser la preuve que nous allons faire). Pour que $\equiv$
-  soit compatible avec $f$, il faut que l'image de $f$ ne dépende pas du choix
-  du représentant, c'est-à-dire que si $t\equiv u$ alors
-  $\toMP{f}{\varT'}(\overline t) = \toMP{f}{\varT'}(\overline u)$,
+  Soit $\symbF$ un symbole de fonction d'arité $n$. Pour simplifier la preuve,
+  on suppose que $\symbF$ est d'arité $1$ (il suffit ensuite de faire une
+  récurrence sur $n$ pour généraliser la preuve que nous allons faire). Pour que
+  $\equiv$ soit compatible avec $\symbF$, il faut que l'image de $\symbF$ ne
+  dépende pas du choix du représentant, c'est-à-dire que si $t\equiv u$ alors
+  $\toMP{\symbF}{\varT'}(\clas{t}) = \toMP{\symbF}{\varT'}(\clas{u})$,
   ou encore
-  $\varT'\vdP f(t) = f(u)$, ce que l'on peut prouver par
+  $\varT'\vdP \symbF(t) = \symbF(u)$, ce que l'on peut prouver par
   \begin{prooftree}
     \AxiomC{}
     \RightLabel{$\ReqI$}
-    \UnaryInfC{$\varT' \vdP f(t) = f(t)$}
+    \UnaryInfC{$\varT' \vdP \symbF(t) = \symbF(t)$}
     \AxiomC{$\varT'\vdP t = u$}
     \RightLabel{$\ReqE$}
-    \BinaryInfC{$\varT'\vdP f(t) = f(u)$}
+    \BinaryInfC{$\varT'\vdP \symbF(t) = \symbF(u)$}
   \end{prooftree}
-  donc $\toMP{f}{\varT'}$ est bien définie.
+  donc $\toMP{\symbF}{\varT'}$ est bien définie.
 
-  De même, pour une relation $R$ prise pour simplifier d'arité $1$, il convient
-  de montrer que si $t\equiv u$ alors
-  $\toMP{R}{\varT'}(\overline t)\to \toMP{R}{\varT'}(\overline u)$
-  (il faudrait une
-  équivalence, mais il suffit en fait de montrer l'implication puisque $\equiv$
-  a été montrée symétrique). L'arbre de preuve suivant nous le montre~:
+  De même, pour une relation $\symbR$ prise pour simplifier d'arité $1$, il
+  convient de montrer que si $t\equiv u$ alors
+  $\toMP{\symbR}{\varT'}(\clas{t})\to\toMP{\symbR}{\varT'}(\clas{u})$
+  (il faudrait une équivalence, mais il suffit en fait de montrer l'implication
+  puisque $\equiv$ a été montrée symétrique). L'arbre de preuve suivant nous le
+  montre~:
   \begin{prooftree}
-    \AxiomC{$\varT'\vdP R(t)$}
+    \AxiomC{$\varT'\vdP \symbR(t)$}
     \AxiomC{$\varT'\vdP t = u$}
     \RightLabel{$\ReqE$}
-    \BinaryInfC{$\varT'\vdP R(u)$}
+    \BinaryInfC{$\varT'\vdP \symbR(u)$}
   \end{prooftree}
-  donc $\toMP{R}{\varT'}$ est bien définie.
+  donc $\toMP{\symbR}{\varT'}$ est bien définie.
 \end{proof}
 
 Afin de montrer le théorème de complétude, on va vouloir montrer que les
@@ -2080,10 +2090,9 @@ On définit donc d'abord une notation pour définir un environnement sur
 $\varMM_{\varT'}$.
 
 \begin{definition}[Valuation syntaxique]
-  Soit $\env$ une valuation sur $\varMM_{\varT'}$, on la notera
-  $\overline \env$ et on notera $\env$ une fonction
-  $\Var \partialto \Term(\Sign')$ telle que
-  $\overline{\env(x)} = \overline\env(x)$.
+  Soit $\env$ une valuation sur $\varMM_{\varT'}$, on la notera $\clas{\env}$ et
+  on notera $\env$ une fonction $\Var \partialto \Term(\Sign')$ telle que
+  $\clas{\env(x)} = \clas{\env}(x)$.
 \end{definition}
 
 \noindent
@@ -2095,12 +2104,14 @@ complétude.
   $\overline\env$ telle que $\VL(\varFF)\subseteq \dom(\env)$, on a
   l'équivalence suivante~:
   \[\varT' \vdP \env(\varFF) \iff
-  \varMM_{\varT'},\overline \env\satisf \varFF\]
+  \varMM_{\varT'},\clas{\env}\satisf \varFF\]
 \end{lemma}
 
 \begin{proof}
   On peut prouver par induction sur la structure des termes que pour tout terme
-  $t \in \Term(\Sign')$, on a $\overline{\env(t)} = \overline \env(t)$
+  $t \in \Term(\Sign')$, on a
+  $\clas{\toMIP{t}{\varMM_{\varT'}}{\env}} =
+  \toMIP{t}{\varMM_{\varT'}}{\clas{\env}}$
   (l'exercice est laissé au lecteur, mais il s'agit d'une induction qui ne
   présente aucune difficulté).
   
@@ -2108,26 +2119,26 @@ complétude.
   \begin{itemize}
   \item si $\varFF$ est $\top$ ou $\bot$, le résultat est évident (en
     particulier $\varT'\nvdP\bot$).
-  \item si $\varFF = R(t_1,\ldots,t_n)$ alors la proposition
-    $\varT'\vdP R(\env(t_1),\ldots,\env(t_n))$ signifie exactement
-    \[\toMP{R}{\varT'}(\overline{\env(t_1)},\ldots,\overline{\env(t_n)})\]
+  \item si $\varFF = \symbR(t_1,\ldots,t_n)$ alors la proposition
+    $\varT'\vdP \symbR(\env(t_1),\ldots,\env(t_n))$ signifie
+    exactement
+    \[\toMP{\symbR}{\varT'}(\clas{\env(t_1)},\ldots,\clas{\env(t_n)})\]
     ce qui correspond à
-    \[\varMM_{\varT'}\satisf 
-    R(\overline \env (t_1),\ldots,\overline \env(t_n))\]
+    \[\varMM_{\varT'}\satisf \symbR(\clas{\env} (t_1),\ldots,\clas{\env}(t_n))\]
     en utilisant le résultat sur la substitution des termes.
     Ce fait est une équivalence puisqu'il provient de la définition même de
-    $\toMP{R}{\varT'}$.
+    $\toMP{\symbR}{\varT'}$.
   \item si $\varFF = \lnot \varFP$, montrons que
     $\varT'\vdP\env(\varFF)\implies \varMM_{\varT'},
-    \overline\env \satisf\varFF$.
+    \clas{\env} \satisf\varFF$.
     Comme $\varT'\vdP \lnot \env(\varFP)$, on en déduit que
     $\varT'\nvdP \env(\varFP)$ (car $\varT'\nvdP\bot$), donc par
     hypothèse d'induction
-    $\varMM_{\varT'},\overline \env\not\satisf \varFP$, donc
-    $\varMM_{\varT'},\overline \env\satisf \varFP$.
+    $\varMM_{\varT'},\clas{\env}\not\satisf \varFP$, donc
+    $\varMM_{\varT'},\clas{\env}\satisf \varFP$.
     Montrons la réciproque~: on suppose que
-    $\varMM_{\varT'},\overline\env\satisf \varFF$, c'est-à-dire que
-    $\varMM_{\varT'},\overline\env\not\satisf \varFP$. Par hypothèse
+    $\varMM_{\varT'},\clas{\env}\satisf \varFF$, c'est-à-dire que
+    $\varMM_{\varT'},\clas{\env}\not\satisf \varFP$. Par hypothèse
     d'induction, cela signifie que $\varT'\nvdP \env(\varFP)$, mais
     $\varT'$ est complète donc $\varT'\vdP\lnot\env(\varFP)$. On a
     donc l'équivalence.
@@ -2135,11 +2146,11 @@ complétude.
     $\varT'\vdP \env(\varFP)\land\env(\varFC)$. Comme $\varT'$ est
     complète, cela est équivalent à dire que $\varT'\vdP \env(\varFP)$ et
     $\varT'\vdP \env(\varFC)$ (puisque ni $\lnot\env(\varFP)$ ni
-    $\lnot \rho(\varFC)$ ne sont prouvables), ce qui est équivalent par hypothèse
-    d'induction à dire que
-    $\varMM_{\varT'},\overline\env\satisf\varFP$ et
-    $\varMM_{\varT'},\overline\env\satisf\varFC$, donc équivalent à
-    $\varMM_{\varT'},\overline\env\satisf \varFP\land \varFC$.
+    $\lnot \env(\varFC)$ ne sont prouvables), ce qui est équivalent par
+    hypothèse d'induction à dire que
+    $\varMM_{\varT'},\clas{\env}\satisf\varFP$ et
+    $\varMM_{\varT'},\clas{\env}\satisf\varFC$, donc équivalent à
+    $\varMM_{\varT'},\clas{\env}\satisf \varFP\land \varFC$.
   \item les cas de $\mathord{\to}$ et $\mathord{\lor}$
     se ramènent directement à $\mathord{\land}$ et $\mathord{\lnot}$
     grâce aux lois de De Morgan (sémantiquement on peut voir facilement
@@ -2148,21 +2159,20 @@ complétude.
     et $\mathord{\lnot}$ grâce
     aux lois de De Morgan, nous traitons donc simplement $\mathord{\exists}$.
   \item si $\varFF = \exists x, \varFP$, où $x \notin \VL(\env)$, alors
-    supposons
-    que $\varT'\vdP \exists x, \env(\varFP)$~: comme chaque terme substitué
-    par $\env$ devient un terme clos et que toutes les variables libres de
-    $\varFF$ sont dans le domaine de $\env$, on sai que seul $x$ est une
-    variable libre de $\env(\varFP)$, la propriété de Henkin sur $\varT'$
+    supposons que $\varT'\vdP \exists x, \env(\varFP)$~: comme chaque terme
+    substitué par $\env$ devient un terme clos et que toutes les variables
+    libres de $\varFF$ sont dans le domaine de $\env$, on sait que seul $x$ est
+    une variable libre de $\env(\varFP)$, la propriété de Henkin sur $\varT'$
     nous donne done une constante $\Cc$ telle que
     $\varT'\vdP \env(\varFP[\Cc/x])$
-    et donc un élément $\overline \Cc \in \carM{\varMM_{\varT'}}$ tel que
-    $\varMM_{\varT'}, \overline\env[x\mapsto \overline c] \satisf \varFP$,
+    et donc un élément $\clas{\Cc} \in \carM{\varMM_{\varT'}}$ tel que
+    $\varMM_{\varT'}, \clas{\env}[x\mapsto \clas{\Cc}] \satisf \varFP$,
     donc
-    $\varMM_{\varT'},\overline\env\satisf \exists x, \varFP$.
-    Réciproquement, s'il existe $\overline t$ tel que
-    $\varMM_{\varT'},\overline\env[x\mapsto \overline t]\satisf \varFP$,
+    $\varMM_{\varT'},\clas{\env}\satisf \exists x, \varFP$.
+    Réciproquement, s'il existe $\clas{t}$ tel que
+    $\varMM_{\varT'},\clas{\env}[x\mapsto \clas{t}]\satisf \varFP$,
     alors par hypothèse d'induction
-    $\varT'\vdP \env[x\mapsto \overline t](\varFP)$ donc
+    $\varT'\vdP \env[x\mapsto t](\varFP)$ donc
     $\varT'\vdP \exists x, \varFP$.\qedhere
   \end{itemize}
 \end{proof}
@@ -2264,9 +2274,10 @@ théorème.
   Ainsi on a un modèle de $\varT'$.
 \end{proof}
 
-On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une forme générale,
-utilisant la version ascendante et descendante. Ce théorème, dû à Löwenheim
-pour sa forme descendante, a été prouvé rigoureusement par Skolem ensuite.
+On peut ainsi énoncer le théorème de Löwenheim-Skolem sous une
+forme générale, utilisant la version ascendante et descendante. Ce théorème, dû
+à Léopold \name{Löwenheim} pour sa forme descendante, a été prouvé
+rigoureusement par Thoralf \name{Skolem} ensuite.
 
 \begin{theorem}[Löwenheim-Skolem\cite{Löwenheim1915, skolem1920logisch}]
   \label{thm.LS}
@@ -2330,8 +2341,7 @@ sur $\Sign'$ et une façon naturelle de faire l'inverse.
   sur $\Sign'$ (et on note $\ext_{\Sign'}(\varT)$)
   la théorie $\varT$ vue comme une théorie de $\Sign'$, et
   trace de $\varT'$ sur $\Sign$ la théorie
-  \[%\tr_{\Sign'}(\varT) \defeq \varT \qquad
-  \tr_{\Sign}(\varT') \defeq \varT' \cap \Prop(\Sign)\]
+  \[\tr_{\Sign}(\varT') \defeq \varT' \cap \Prop(\Sign)\]
 \end{definition}
 
 Les traces permettent de facilement passer d'un modèle pour une théorie à un
@@ -2468,8 +2478,8 @@ On souhaite donc~:
   Soit une formule $\varFF \in \Formula(\Sign')$. On définit sa traductions sans
   $\symbRF$ par induction sur la structure des formules~:
   \begin{itemize}
-  \item si $\varFP = \top, \bot, t = u, R(t_1,\ldots,t_k)$ où $R \neq \symbRF$,
-    alors $\minRFP \defeq \varFF$~;
+  \item si $\varFP = \top, \bot, t = u, \symbR(t_1,\ldots,t_k)$ où
+    $\symbR \neq \symbRF$, alors $\minRFP \defeq \varFF$~;
   \item si $\varFP = \symbRF(t_1,\ldots,t_n)$, alors
     $\minRFP \defeq \varFF(t_1,\ldots,t_n)$~;
   \item si $\varFF = \lnot \varFC$, alors $\minRFP\defeq\lnot\minRF{\varFC}$~;
@@ -2489,9 +2499,9 @@ On souhaite donc~:
 \begin{proof}
   On raisonne par induction sur $\varFF$~:
   \begin{itemize}
-  \item si $\varFF = \top, \bot, t = u, R(t_1,\ldots,t_k)$ où $R \neq \symbRF$,
-    alors on veut prouver que $\varT' \vdP \varFF \iffS \varFF$ ce
-    qui est automatique~;
+  \item si $\varFF = \top, \bot, t = u, \symbR(t_1,\ldots,t_k)$ où
+    $\symbR \neq \symbRF$, alors on veut prouver que
+    $\varT' \vdP \varFF \iffS \varFF$ ce qui est automatique~;
   \item si $\varFF = \symbRF(t_1,\ldots,t_n)$, alors on veut prouver que
     $\varT' \vdP \symbRF(t_1,\ldots,t_n) \iffS \varFF(t_1,\ldots,t_n)$
     ce qui s'obtient exactement en spécialisant l'axiome ajouté dans
@@ -2588,9 +2598,9 @@ définir la traduction $\minFFP$ d'une formule $\varFP$.
   \begin{itemize}
   \item si $t = x$, alors $\memMinT{t} \defeq \vide$ et
     $\minFF{t} \defeq t$.
-  \item si $t = f(t_1,\ldots,t_n)$ où $f \neq \symbFF$, alors
+  \item si $t = \symbF(t_1,\ldots,t_n)$ où $\symbF \neq \symbFF$, alors
     \[\memMinT{t} \defeq \bigcup_{i = 1}^n \memMinT{t_i} \quad\text{et}\quad
-    \minFF{t} \defeq g(\minFF{(t_1)},\ldots,\minFF{(t_n)})\]
+    \minFF{t} \defeq \symbF(\minFF{(t_1)},\ldots,\minFF{(t_n)})\]
   \item si $t = \symbFF(t_1,\ldots,t_n)$ alors
     \[\memMinT{t} \defeq \left(\bigcup_{i = 1}^n \memMinT{t_i}\right) \cup
     \{(\minFF{(t_1)},\ldots,\minFF{(t_n)},z)\} \quad\text{et}\quad
@@ -2602,11 +2612,11 @@ définir la traduction $\minFFP$ d'une formule $\varFP$.
   formule $\minFFP$ par induction sur la structure des formules~:
   \begin{itemize}
   \item si $\varFP = \top,\bot$ alors $\minFFP \defeq \varFP$~;
-  \item si $\varFP = R(t_1,\ldots,t_k)$ où $R$ est un symbole de relation ou le
-    symbole $=$, alors
+  \item si $\varFP = \symbR(t_1,\ldots,t_k)$ où $\symbR$ est un symbole de
+    relation ou le symbole $=$, alors
     \[\minFFP \defeq \mathop{\forall}_{i = 1}^k
     \mathop{\forall}_{(u_1,\ldots,u_n,x)\in \memMinT{t_i}} x,
-    \varFF(u_1,\ldots,u_n,x) \to R(\minFF{(t_1)},\ldots,\minFF{(t_n)})\]
+    \varFF(u_1,\ldots,u_n,x) \to \symbR(\minFF{(t_1)},\ldots,\minFF{(t_n)})\]
     où les indices des $\forall$ signifient que pour chaque $i$ et chaque
     $(u_1,\ldots,u_n,x) \in \memMinT{t_i}$, on ajoute
     $\forall x, \varFF(u_1,\ldots,u_n,x) \to$ avant le reste de la formule~;
@@ -2662,7 +2672,7 @@ que pour le cas d'un symbole de relation, à ceci près que la conservativité v
   suivants~:
   \[\varT, \minFF{\varCG}\vdP \minFF{(t=u)} \qquad
   \varT, \minFF{\varCG}\vdP \minFF{(\varFP[t/x])}\]
-  On a déjà vu comment passer de la seconde hypothèse à l'hypothèse
+  On a déjà vu comment passer de la seconde hypothèse à
   $\varT, \minFF{\varCG}\vdP (\minFF{\varFP})[t/x]$. La première hypothèse
   fonctionne d'une façon similaire, en supprimant les occurrences de
   $\forall x, \varFF(t_1,\ldots,t_n,x) \to$ en extrayant des témoins de
@@ -2908,10 +2918,10 @@ d'un représentant).
     est satisfiable dans une $\Sign'$-structure.
   \item Plus généralement, montrer que la formule
     $\forall x_1,\ldots,\forall x_n, \exists y, \varFF$ est satisfiable dans
-    une $\Sign$-structure si et seulement si, en notant $\Ff$ un nouveau
-    symbole de fonction d'arité $n$ et $\Sign' \defeq \Sign\cup \{\Ff\}$, la
+    une $\Sign$-structure si et seulement si, en notant $\symbF$ un nouveau
+    symbole de fonction d'arité $n$ et $\Sign' \defeq \Sign\cup \{\symbF\}$, la
     formule
-    $\forall x_1,\ldots,\forall x_n,(\varFF[\Ff(x_1,\ldots,x_n)/y])$ est
+    $\forall x_1,\ldots,\forall x_n,(\varFF[\symbF(x_1,\ldots,x_n)/y])$ est
     satisfiable dans une $\Sign'$-structure.
   \item En déduire que pour toute proposition $\varFF$, on peut trouver une
     formule $\varFP$ prénexe sans quantification existentielle sur un

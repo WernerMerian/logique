@@ -69,8 +69,8 @@ Donnons la définition formelle d'une topologie grâce à ses ouverts.
   \begin{itemize}
   \item $\topoP{X}$ est stable par intersection finie~: si $F\subfin \topoP{X}$
     alors $\bigcap F \in \topoP{X}$.
-  \item $\topoP{X}$ est stable par union quelconque~: si $Y\subseteq \topoP{X}$
-    alors $\bigcup Y \in \topoP{X}$.
+  \item $\topoP{X}$ est stable par union quelconque~: si
+    $\varPt\subseteq \topoP{X}$ alors $\bigcup \varPt \in \topoP{X}$.
   \end{itemize}
 
   En particulier, $X\in \topoP{X}$ et $\vide\in \topoP{X}$. On appelle
@@ -90,19 +90,19 @@ les fermés.
 \begin{remark}
   La structure ordonnée $(\topoP{X},\subseteq)$ est en fait une algèbre de
   Heyting complète. Remarquons que la borne inférieure d'une partie
-  $Y\subseteq\topoP{X}$ n'est pas forcément l'intersection~: elle est le plus
-  grand ouvert contenu dans $\bigcap Y$.
+  $\varPt\subseteq\topoP{X}$ n'est pas forcément l'intersection~: elle est le
+  plus grand ouvert contenu dans $\bigcap \varPt$.
 
   On peut établir une version plus générale de la topologie en étudiant les
-  algèbres de Heyting complètes, c'est ce que l'on appelle la topologie sans
-  points, ou la théorie des locales
+  algèbres de Heyting complètes, c'est ce que l'on appelle la topologie
+  sans points, ou la théorie des locales
   (en anglais \foreignexpr{pointless topology} ou
   \foreignexpr{point-free topology}).
 \end{remark}
 
 On voit que décrire une topologie par ses ouverts ou par ses fermés est
 équivalent, puisqu'on peut retrouver l'un à partir de l'autre par l'opération
-$\topo \mapsto \compr{X\setminus T}{T \in \topo}$. Voyons enfin
+$\topo \mapsto \compr{X\setminus \varOp}{\varOp \in \topo}$. Voyons enfin
 l'autre façon possible de décrire une topologie~: par les voisinages.
 
 \begin{definition}[Voisinage]
@@ -229,21 +229,21 @@ par des unions quelconque.
 Nous verrons plus tard une large famille d'espaces topologiques qui contient
 ces exemples~: les espace métriques.
 
-\'Etant donnée une partie $Y\subseteq X$, qui n'est ni un ouvert ni un fermé,
-disons par exemple $\intFO{1}{2}$, peut-on lui associer
+\'Etant donnée une partie $\varPt\subseteq X$, qui n'est ni un ouvert ni un
+fermé, disons par exemple $\intFO{1}{2}$, peut-on lui associer
 un ouvert (respectivement un fermé) naturellement ? La réponse est oui, en
 considérant l'intérieur (respectivement l'adhérence).
 
 \begin{definition}[Intérieur]
-  Soit $(X,\topoP{X})$ un espace topologique et $Y\subseteq X$. On appelle
-  intérieur de $Y$, que l'on note $\inter Y$, le plus grand ouvert contenu dans
-  $Y$.
+  Soit $(X,\topoP{X})$ un espace topologique et $\varPt\subseteq X$. On appelle
+  intérieur de $\varPt$, que l'on note $\inter{\varPt}$, le plus grand ouvert
+  contenu dans $\varPt$.
 \end{definition}
 
 \begin{definition}[Adhérence]
-  Soit $(X,\topoP{X})$ un espace topologique et $Y\subseteq X$. On appelle
-  adhérence de $X$, que l'on note $\adher Y$, le plus petit fermé contenant
-  $Y$.
+  Soit $(X,\topoP{X})$ un espace topologique et $\varPt\subseteq X$. On appelle
+  adhérence de $X$, que l'on note $\adher{\varPt}$, le plus petit fermé
+  contenant $\varPt$.
 \end{definition}
 
 \begin{exercise}
@@ -256,14 +256,14 @@ correspondant naturellement au fait d'appartenir à l'intérieur (respectivement
 l'adhérence), mais sous une forme localisée en un point.
 
 \begin{definition}[Point intérieur]
-  Soit $(X,\topoP{X})$ un espace topologique et $Y\subseteq X$. On dit qu'un
-  point $x$ est intérieur à $Y$ si $Y\in\voisP{x}$.
+  Soit $(X,\topoP{X})$ un espace topologique et $\varPt\subseteq X$. On dit
+  qu'un point $x$ est intérieur à $\varPt$ si $\varPt\in\voisP{x}$.
 \end{definition}
 
 \begin{definition}[Point adhérent]
-  Soit $(X,\topoP{X})$ un espace topologique et $Y\subseteq X$. On dit qu'un
-  point $x$ est adhérent à $Y$ si pour tout ouvert $\varOp$ contenant $x$,
-  $\varOp\cap Y\neq \vide$.
+  Soit $(X,\topoP{X})$ un espace topologique et $\varPt\subseteq X$. On dit
+  qu'un point $x$ est adhérent à $\varPt$ si pour tout ouvert $\varOp$
+  contenant $x$, $\varOp\cap \varPt\neq \vide$.
 \end{definition}
 
 \begin{exercise}
@@ -282,18 +282,19 @@ Nous en verrons une interprétation grâce aux filtres.
 
 \begin{definition}[Fonction continue]
   Soient $(X,\topoP{X})$ et $(Y,\topoP{Y})$ deux espaces topologiques. Une
-  fonction $f : X \to Y$ est dite continue si pour tout $\varOp\in\topoP{Y}$,
-  l'ensemble $f^{-1}(\varOp)$ est un ouvert de $X$.
+  fonction $\makeFunName{f}{X}{Y}$ est dite continue si pour tout
+  $\varOp\in\topoP{Y}$, l'ensemble $f^{-1}(\varOp)$ est un ouvert de $X$.
 \end{definition}
 
 \begin{remark}
-  Si l'on considère un espace topologique comme l'algèbre de Heyting complète de
-  son ensemble d'ouverts, alors la définition que nous venons de donner signifie
-  que $f$ induit grâce à $f^{-1}$ un morphisme d'algèbres de Heyting complètes.
-  Cependant, il est important de voir que là où $f : X \to Y$,
-  $f^{-1} : \powerset(Y)\to\powerset(X)$, on a donc une inversion du sens entre
-  le point de vue algébrique par un ensemble ordonné et le point de vue
-  analytique comme un ensemble de points muni d'une topologie.
+  Si l'on considère un espace topologique comme l'algèbre de Heyting
+  complète de son ensemble d'ouverts, alors la définition que nous venons de
+  donner signifie que $f$ induit grâce à $f^{-1}$ un morphisme d'algèbres de
+  Heyting complètes.
+  Cependant, il est important de voir que là où $\makeFunName{f}{X}{Y}$,
+  $\makeFunName{f^{-1}}{\powerset(Y)}{\powerset(X)}$, on a donc une inversion du
+  sens entre le point de vue algébrique par un ensemble ordonné et le point de
+  vue analytique comme un ensemble de points muni d'une topologie.
 \end{remark}
 
 La notion duale, en quelque sorte, de fonction continue, est celle de fonction
@@ -301,19 +302,20 @@ ouverte. Celle-ci est largement moins utile, mais nous servira parfois.
 
 \begin{definition}[Fonction ouverte]
   Soient $(X,\topoP{X})$ et $(Y,\topoP{Y})$ deux espaces topologiques. Une
-  fonction $f : X \to Y$ est dite ouverte si pour tout $\varOp \in \topoP{X}$,
-  l'ensemble $f(\varOp)$ est un ouvert de $Y$.
+  fonction $\makeFunName{f}{X}{Y}$ est dite ouverte si pour tout
+  $\varOp \in \topoP{X}$, l'ensemble $f(\varOp)$ est un ouvert de $Y$.
 \end{definition}
 
 Notre dernière définition préliminaire est celle d'isomorphisme
 (adaptée au cas des espaces topologiques). Un isomorphisme pour les espaces
-topologiques est, comme attendu, fonction continue admettant un inverse continu.
+topologiques est, comme attendu, une fonction continue admettant un inverse
+continu.
 
 \begin{definition}[Homéomorphisme]
   Soient $(X,\topoP{X})$ et $(Y,\topoP{Y})$ deux espaces topologiques, une
-  fonction $f : X \to Y$ est appelée un homéomorphisme entre $X$ et $Y$ s'il
-  existe une fonction continue $g : Y \to X$ telle que $g\circ f = \id_X$ et
-  $f\circ g = \id_Y$.
+  fonction $\makeFunName{f}{X}{Y}$ est appelée un homéomorphisme entre $X$ et
+  $Y$ s'il existe une fonction continue $g : Y \to X$ telle que
+  $g\circ f = \id_X$ et $f\circ g = \id_Y$.
 \end{definition}
 
 \begin{exercise}
@@ -373,8 +375,8 @@ fonction en un point.
 
 \begin{definition}[Convergence d'une fonction]
   Soient $(X,\topoP{X}),(Y,\topoP{Y})$ deux espaces topologiques et
-  $f : X \to Y$. On dit que $f$ converge vers $b\in Y$ en $a\in X$
-  (au sens des filtres) si
+  $\makeFunName{f}{X}{Y}$. On définit le fait que $f$ converge vers $b\in Y$ en
+  $a\in X$ (au sens des filtres) par
   \[\fillim_{x\to a}f(x) = b\defeq f\voisP{a} \supseteq\voisP{b}\]
 \end{definition}
 
@@ -393,7 +395,7 @@ ne verrons que le plus classique, qu'on appelle axiome de séparation $T_2$. Il
 est à la fois suffisamment puissant pour assurer un bon comportement à nos
 espaces, et suffisamment faible pour être vérifié par de nombreux espaces. La
 terminologie anglaise donne le nom \foreignexpr{Hausdorff} aux espaces vérifiant
-l'axiome $T_2$ (du nom de Félix Hausdorff, grand topologue des
+l'axiome $T_2$ (du nom de Félix \name{Hausdorff}, grand topologue des
 \century{19} et \century{20} siècle), mais comme nous n'utiliserons que cet
 axiome de séparation, nous parlerons simplement d'espace séparé.
 
@@ -436,8 +438,8 @@ La notion de limite permet aussi de caractériser la continuité~: une fonction
 est continue quand la limite commute avec l'application par $f$.
 
 \begin{property}\label{prop.carac.cont.fil}
-  Soient deux espaces $(X,\topoP{X})$ et $(Y,\topoP{Y})$ et une fonction
-  $f : X \to Y$. Alors $f$ est continue si et seulement si
+  Soient deux espaces $(X,\topoP{X}), (Y,\topoP{Y})$ et une fonction
+  $\makeFunName{f}{X}{Y}$. Alors $f$ est continue si et seulement si
   \[\forall x \in X, \fillim_{y \to x} f(y) = f(x)\]
 \end{property}
 
@@ -447,7 +449,8 @@ est continue quand la limite commute avec l'application par $f$.
 
   Soit $\varVV\in\voisP{f(x)}$ et $\varOp$ un ouvert contenant $f(x)$ contenu
   dans $\varVV$ (donné par la définition du fait d'être un voisinage de $f(x)$).
-  Comme $f$ est continue, cela signifie que $f^{-1}(\varOp)$ est aussi un ouvert.
+  Comme $f$ est continue, cela signifie que $f^{-1}(\varOp)$ est aussi un
+  ouvert.
   Or $f^{-1}(\varOp)\subseteq f^{-1}(\varVV)$ et $x\in f^{-1}(\varOp)$ puisque
   $f(x)\in \varOp$, donc $f^{-1}(\varVV)\in\voisP{x}$, ce qui signifie
   exactement que $\varVV\in f\voisP{x}$, d'où l'inclusion.
@@ -456,7 +459,8 @@ est continue quand la limite commute avec l'application par $f$.
   $f\voisP{x}\supseteq \voisP{f(x)}$ et montrons que $f$ est continue.
 
   Soit $\varOp$ un ouvert de $Y$, montrons que $f^{-1}(\varOp)$ est un ouvert de
-  $X$. Pour cela, il nous suffit de montrer que pour tout $x \in f^{-1}(\varOp)$,
+  $X$. Pour cela, il nous suffit de montrer que pour tout
+  $x \in f^{-1}(\varOp)$,
   $f^{-1}(\varOp)$ est un voisinage de $x$. Soit donc $x \in f^{-1}(\varOp)$, on
   sait donc que $f(x) \in \varOp$, donc $\varOp \in \voisP{f(x)}$, d'où par
   inclusion $\varOp \in f\voisP{x}$, c'est-à-dire
@@ -465,9 +469,9 @@ est continue quand la limite commute avec l'application par $f$.
 \end{proof}
 
 \begin{exercise}\label{exo.conv.suite}
-  On dit qu'une suite $u : \bN \to X$ converge lorsque le filtre image du
-  filtre de Fréchet sur $\bN$ converge vers un certain élément $x\in X$.
-  Montrer que cela revient à vérifier la formule usuelle~:
+  On dit qu'une suite $\makeFunName{u}{\bN}{X}$ converge lorsque le filtre image
+  du filtre de Fréchet sur $\bN$ converge vers un certain élément
+  $x\in X$. Montrer que cela revient à vérifier la formule usuelle~:
   \[\exists x\in X,\forall \varVV\in\voisP{x}, \exists n \in \bN,
   \forall m \geq n, u_m \in \varVV\]
 \end{exercise}
@@ -501,8 +505,8 @@ pour contenir $\{1\}$ ou $\{2\}$.
 
 Même si l'espace est séparé, un filtre peut avoir plusieurs valeurs d'adhérence.
 Cependant, il est aussi possible qu'un filtre n'en possède aucune. Si on prend
-par exemple $\bN$ avec la topologie discrète, le filtre de Fréchet n'a pas
-de valeur d'adhérence, puisqu'un filtre de voisinage serait un ultrafiltre
+par exemple $\bN$ avec la topologie discrète, le filtre de Fréchet n'a
+pas de valeur d'adhérence, puisqu'un filtre de voisinage serait un ultrafiltre
 principal, et que nous avons déjà prouvé que le filtre de Fréchet n'était
 contenu dans aucun ultrafiltre principal.
 
@@ -802,12 +806,12 @@ On a vu que la notion de morphisme, pour des espaces topologiques, est celle de
 fonction continue, pour laquelle l'image réciproque d'un ouvert est encore un
 ouvert. De plus, si $\prod X_i$ est muni d'une topologie, alors il est légitime
 d'exiger de cette topologie qu'elle rende les projections
-$\projj : \prod X_i \to X_j$ continues (les projections sont en quelque sorte
-l'élément le plus primitif pour un produit). On veut donc une topologie qui
-rende ces fonctions continues, mais beaucoup de choix de topologies sont
-possibles. En particulier, pour tout $i \in I$ et $\varOp$ ouvert de $X_i$, on
-demande que $(\projj)^{-1}(\varOp)$ soit ouvert, et cet ensemble est exactement
-$\prod_{i\neq j} X_i \times \varOp$.
+$\makeFunName{\projj}{\prod X_i}{X_j}$ continues (les projections sont en
+quelque sorte l'objet le plus primitif pour un produit). On veut donc une
+topologie qui rende ces fonctions continues, mais beaucoup de choix de
+topologies sont possibles. En particulier, pour tout $i \in I$ et $\varOp$
+ouvert de $X_i$, on demande que $(\projj)^{-1}(\varOp)$ soit ouvert, et cet
+ensemble est exactement $\prod_{i\neq j} X_i \times \varOp$.
 
 A partir du moment où ces images réciproques appartiennent à la topologie, on
 peut ajouter autant d'ouverts que l'on veut et garder la continuité des
@@ -820,20 +824,21 @@ l'intuition de la topologie produit reste celle ci-dessus.
 
 \begin{definition}[Cylindre]
   Soit $(X_i)_{i\in I}$ une famille d'ensembles. Soit $F\subfin I$ et
-  $\displaystyle (Y_i)_{i\in F} \in \prod_{i \in F} \powerset(X_i)$,
-  on appelle cylindre en $(Y_i)_{i \in F}$ l'ensemble
-  \[\cylin Y \defeq
-  \compr{(x_i) \in \prod_{i \in I} X_i}{\forall j \in F, x_j \in Y_j}\]
+  $\displaystyle (\varPt_i)_{i\in F} \in \prod_{i \in F} \powerset(X_i)$,
+  on appelle cylindre en $(\varPt_i)_{i \in F}$ l'ensemble
+  \[\cylin{\varPt} \defeq
+  \compr{(x_i) \in \prod_{i \in I} X_i}{\forall j \in F, x_j \in \varPt_j}\]
   que l'on peut aussi écrire
   $\displaystyle\left(\prod_{j\notin F} X_j\right)\times
-  \left(\prod_{i\in F} Y_i\right)$.
+  \left(\prod_{i\in F} \varPt_i\right)$.
 \end{definition}
 
 \begin{property}
   Soit une famille $(X_i,\topoP{X_i})_{i\in I}$ d'espaces topologiques. La
   famille
   \[\Cylind((X_i,\topoP{X_i})_{i\in I})\defeq
-  \compr{\cylin Y}{F\subfin I, (Y_i)_{i\in F}\in \prod_{i\in F}\topoP{X_i}}\]
+  \compr{\cylin{\varPt}}
+        {F\subfin I, (\varPt_i)_{i\in F}\in \prod_{i\in F}\topoP{X_i}}\]
   est une base de topologie sur $\displaystyle\prod_{i \in I} X_i$.
 \end{property}
 
@@ -844,26 +849,28 @@ l'intuition de la topologie produit reste celle ci-dessus.
   \begin{itemize}
   \item En prenant la famille vide, on a directement
     $\cylin\vide = \prod_{i\in I} X_i$.
-  \item Soient $\cylin Y$ et $\cylin Z$ deux éléments de la famille. Soient
-    $F$ et $F'$ les parties finies de $I$ apparaissant dans la définition de
-    $Y$ et de $Z$. Remarquons d'abord que
-    \[\cylin Y \cap \cylin Z =
-    \compr{(x_i)\in \prod_{i \in I} X_i}{ \forall j \in F, x_j \in Y_j,
-      \forall k \in F', x_k \in Z_j}
+  \item Soient $\cylin{\varPt}$ et $\cylin{\varPtB}$ deux éléments de la
+    famille. Soient $F$ et $F'$ les parties finies de $I$ apparaissant dans la
+    définition de $\varPt$ et de $\varPtB$. Remarquons d'abord que
+    \[\cylin \varPt \cap \cylin \varPtB =
+    \compr{(x_i)\in \prod_{i \in I} X_i}{ \forall j \in F, x_j \in \varPt_j,
+      \forall k \in F', x_k \in \varPtB_j}
     \]
 
     \noindent
-    On définit la famille $A$ sur $F\cup F'$ par
-    \[A_i =
+    On définit la famille $\varPtC$ sur $F\cup F'$ par
+    \[\varPtC_i =
     \begin{cases}
-      Y_i\cap Z_i\text{ si } i\in F\cap F'\\
-      Y_i\text{ si } i \in F \setminus F'\\
-      Z_i\text{ si } i \in F'\setminus F
+      \varPt_i\cap \varPt_i\text{ si } i\in F\cap F'\\
+      \varPt_i\text{ si } i \in F \setminus F'\\
+      \varPtB_i\text{ si } i \in F'\setminus F
     \end{cases}\]
-    alors $\cylin A$ appartient à la famille ci-dessus, car $Y_i\cap Z_i$ est
-    une intersection d'ouvert, donc un ouvert, et $Y_i$ (respectivement $Z_i$)
-    est un ouvert, donc on a bien une famille finie d'ouverts. De plus,
-    $\cylin A = \cylin Y \cap \cylin Z$ en déroulant les définitions.
+    alors $\cylin{\varPtC}$ appartient à la famille ci-dessus, car
+    $\varPt_i\cap \varPtB_i$ est une intersection d'ouvert, donc un ouvert, et
+    $\varPt_i$ (respectivement $\varPtB_i$) est un ouvert, donc on a bien une
+    famille finie d'ouverts. De plus,
+    $\cylin{\varPtC} = \cylin{\varPt} \cap \cylin{\varPtB}$ en déroulant les
+    définitions.
   \end{itemize}
 
   Ainsi $\Cylind((X_i,\topoP{X_i})_{i\in I})$ est bien une base de topologie.
@@ -964,13 +971,13 @@ version) qu'il est équivalent à l'axiome du choix.
 \section{Dualité de Stone}
 
 Nous profitons de cette introduction à la topologie pour aborder la dualité de
-Stone, remontant aux travaux du mathématicien éponyme (en particulier à
-\cite{StoneDuality}), qui relie fortement la logique booléenne et la topologie
-de certains espaces. Dans son énoncé le plus théorique, il établit une
-équivalence de catégories, mais comme nous ne présentons pas les éléments
-suffisants de théorie des catégories pour l'énoncer, nous nous contenterons de
-montrer la construction des espaces à partir d'algèbres de Boole et
-réciproquement, et le fait qu'elles sont presque inverses l'une de l'autre.
+Stone, remontant aux travaux du mathématicien Marshall Harvey \name{Stone}
+(en particulier à \cite{StoneDuality}), qui relie fortement la logique booléenne
+et la topologie de certains espaces. Dans son énoncé le plus théorique, il
+établit une équivalence de catégories, mais comme nous ne présentons pas les
+éléments suffisants de théorie des catégories pour l'énoncer, nous nous
+contenterons de montrer la construction des espaces à partir d'algèbres de Boole
+et réciproquement, et le fait qu'elles sont presque inverses l'une de l'autre.
 
 Nous étudierons dans un premier lieu les ouverts-fermés et les espaces de Stone,
 et donnerons la construction seulement ensuite.
@@ -1355,7 +1362,7 @@ fonction, très naturellement, une distance.
 
 \begin{definition}[Distance]
   Soit $X$ un ensemble. On appelle distance sur $X$ une fonction
-  $\vardis : X \times X \to \bR_+$ vérifiant les axiomes suivants~:
+  $\makeFunName{\vardis}{X \times X}{\bR_+}$ vérifiant les axiomes suivants~:
   \begin{itemize}
   \item séparation~: $\forall x,y\in X, \vardis(x,y) = 0 \implies x = y$
   \item symétrie~: $\forall x,y\in X, \vardis(x,y)=\vardis(y,x)$
@@ -1441,35 +1448,36 @@ On peut généraliser la notion de distance pour établir la distance entre un
 élément et une partie (ou entre deux parties).
 
 \begin{definition}[Distance entre parties]
-  Soit $(X,\vardis)$ un espace métrique, $Y\subseteq X$ et $x\in X$. On définit
-  la distance de $x$ à $Y$ par
-  \[\vardis(x,Y)\defeq \inf_{y\in Y} \vardis(x,y)\]
-  et la distance d'une partie $Y\subseteq X$ à une partie $Z\subseteq X$ par
-  \[\vardis(Y,Z)\defeq \inf_{y\in Y, z \in Z} \vardis(y,z)\]
+  Soit $(X,\vardis)$ un espace métrique, $\varPt\subseteq X$ et $x\in X$. On
+  définit la distance de $x$ à $\varPt$ par
+  \[\vardis(x,\varPt)\defeq \inf_{y\in \varPt} \vardis(x,y)\]
+  et la distance d'une partie $\varPt\subseteq X$ à une partie
+  $\varPtB\subseteq X$ par
+  \[\vardis(\varPt,\varPtB)\defeq \inf_{y\in \varPt, z \in \varPtB} \vardis(y,z)\]
 \end{definition}
 
 \noindent
 On en déduit une caractérisation de l'adhérence par les distances.
 
 \begin{proposition}
-  Soit $(X,d)$ un espace métrique et $Y\subseteq X$. Alors pour tout $x\in X$,
-  on a l'équivalence suivante :
-  \[x\in \adher Y \iff \vardis(x,Y) = 0\]
+  Soit $(X,d)$ un espace métrique et $\varPt\subseteq X$. Alors pour tout
+  $x\in X$, on a l'équivalence suivante :
+  \[x\in \adher \varPt \iff \vardis(x,\varPt) = 0\]
 \end{proposition}
 
 \begin{proof}
-  Supposons que $x\in \adher{Y}$ et montrons que $d(x,Y) = 0$. Soit
-  $\vareps > 0$, on va montrer qu'il existe $y\in Y$ tel que
-  $\vardis(x,y)< \vareps$~: par définition de $x\in \adher{Y}$, on peut trouver
-  un élément dans $\boule{x}{\vareps}\cap Y$ (puisque l'intersection avec un
-  ouvert contenant $x$ est non vide), mais cet élément $y$ vérifie justement
-  $\vardis(x,y) < \vareps$, d'où le résultat.
+  Supposons que $x\in \adher{\varPt}$ et montrons que $d(x,\varPt) = 0$. Soit
+  $\vareps > 0$, on va montrer qu'il existe $y\in \varPt$ tel que
+  $\vardis(x,y)< \vareps$~: par définition de $x\in \adher{\varPt}$, on peut
+  trouver un élément dans $\boule{x}{\vareps}\cap \varPt$ (puisque
+  l'intersection avec un ouvert contenant $x$ est non vide), mais cet élément
+  $y$ vérifie justement $\vardis(x,y) < \vareps$, d'où le résultat.
 
-  Réciproquement, supposons que $\vardis(x,Y) = 0$. Soit $\vareps > 0$, on veut
-  montrer qu'il existe $y\in \boule{x}{\vareps}\cap Y$. Comme on sait que
-  $\inf \vardis(x,Y) = 0$, on peut trouver $y\in Y$ tel que
+  Réciproquement, supposons que $\vardis(x,\varPt) = 0$. Soit $\vareps > 0$, on
+  veut montrer qu'il existe $y\in \boule{x}{\vareps}\cap \varPt$. Comme on sait
+  que $\inf \vardis(x,\varPt) = 0$, on peut trouver $y\in \varPt$ tel que
   $\vardis(x,y) <\vareps$, et cet élément vérifie
-  $y\in \boule{x}{\vareps}\cap Y$, d'où le fait que $x\in \adher Y$.
+  $y\in \boule{x}{\vareps}\cap \varPt$, d'où le fait que $x\in \adher \varPt$.
 \end{proof}
 
 \begin{exercise}
@@ -1506,9 +1514,9 @@ On va donc montrer, dans un premier temps, que les notions déjà vues peuvent
 en jambe (qui découle directement de ce la proposition précédente).
 
 \begin{exercise}
-  Soit un espace métrique $(X,\vardis)$, $Y\subseteq X$ et $x\in X$. Montrer que
-  $x\in \adher Y$ si et seulement s'il existe une suite
-  $(x_n)\in Y^{\bN}$ telle que $\lim x_n = x$.
+  Soit un espace métrique $(X,\vardis)$, $\varPt\subseteq X$ et $x\in X$.
+  Montrer que $x\in \adher{\varPt}$ si et seulement s'il existe une suite
+  $(x_n)\in \varPt^{\bN}$ telle que $\lim x_n = x$.
 \end{exercise}
 
 \noindent
@@ -1518,7 +1526,8 @@ d'abord la notion de sous-suite.
 \begin{definition}[Sous-suite]
   Soit un espace métrique $(X,\vardis)$ et une suite $(x_n)\in X^{\bN}$. On dit
   que $(y_n)$ est une sous-suite, ou suite extraite, de $(x_n)$, s'il existe
-  $\varextr : \bN \to \bN$ une fonction strictement croissante telle que
+  $\makeFunName{\varextr}{\bN}{\bN}$ une fonction strictement croissante telle
+  que
   \[\forall n \in \bN, y_n = x_{\varextr(n)}\]
 
   \noindent
@@ -1561,9 +1570,9 @@ définition séquentielle des compacts utilisant la notion de valeur d'adhérenc
 c'est ce que nous faisons.
 
 \begin{definition}[Compact séquentiel]
-  Soit un espace métrique $(X,\vardis)$. On dit qu'une partie $Y\subseteq X$
-  est une partie séquentiellement compacte si toute suite $(x_n)\in Y^{\bN}$
-  admet une valeur d'adhérence.
+  Soit un espace métrique $(X,\vardis)$. On dit qu'une partie
+  $\varPt\subseteq X$ est une partie séquentiellement compacte si toute suite
+  $(x_n)\in Y^{\bN}$ admet une valeur d'adhérence.
 \end{definition}
 
 Un espace séquentiellement compact est alors, naturellement, un espace métrique
@@ -1573,7 +1582,8 @@ Pour prouver que cette notion alternative de compacité est équivalente à notr
 notion générale, un sens demande plus de technique~: c'est celui de montrer
 qu'un espace compact au sens séquentiel l'est au sens général. Nous introduisons
 deux notions importantes pour prouver ce sens plus naturellement~: le nombre de
-Lebesgue et la précompacité.
+Lebesgue\footnote{nommé en l'honneur d'Henri \name{Lebesgue}} et la
+précompacité.
 
 \begin{definition}[Nombre de Lebesgue]
   Soit $(X,\vardis)$ un espace métrique et $(\varOp_i)_{i\in I}$ un recouvrement
@@ -1697,14 +1707,14 @@ compacité générale.
   \cref{lem.nb.lebesgue}, on trouve $\LebNb$ un nombre de Lebesgue de
   $(\varOp_i)$. De plus, par le \cref{lem.precomp}, on sait qu'on peut trouver
   un recouvrement fini de $\varCK$ par des boules ouvertes de rayon $\LebNb$,
-  notons $Y \subfin X$ l'ensemble des points tels que
-  $\compr{\boule{x}{\LebNb}}{x \in Y}$ soit le recouvrement fini obtenu par
+  notons $F \subfin X$ l'ensemble des points tels que
+  $\compr{\boule{x}{\LebNb}}{x \in F}$ soit le recouvrement fini obtenu par
   notre lemme. Par définition du nombre de Lebesgue, on sait que pour chaque
-  $x \in Y$, il
+  $x \in F$, il
   existe $i_x \in I$ tel que $\boule{x}{\LebNb} \subseteq \varOp_{i_x}$~: notre
-  recouvrement fini est alors $\compr{\varOp_{i_x}}{x \in Y}$, puisque
-  \[\varCK\subseteq \bigcup_{x \in Y} \boule{x}{\LebNb}\subseteq
-  \bigcup_{x \in Y} \varOp_{i_x}\]
+  recouvrement fini est alors $\compr{\varOp_{i_x}}{x \in F}$, puisque
+  \[\varCK\subseteq \bigcup_{x \in F} \boule{x}{\LebNb}\subseteq
+  \bigcup_{x \in F} \varOp_{i_x}\]
   On en déduit que $\varCK$ est compacte.
 \end{proof}
 
@@ -1713,16 +1723,16 @@ mais que l'on préfère introduire dans le cas métrique~: la densité.
 
 \begin{definition}[Densité]
   Soit $(X,\topoP{X})$ un espace topologique. On dit qu'une partie
-  $Y\subseteq X$ est dense si $\adher Y = X$.
+  $\varPt\subseteq X$ est dense si $\adher{\varPt} = X$.
 \end{definition}
 
 \noindent
 La caractérisation séquentielle est directe, mais on l'écrit tout de même.
 
 \begin{property}
-  Soit $(X,\vardis)$ un espace métrique. Une partie $Y\subseteq X$ est dense si
-  et seulement si pour tout $x\in X$ il existe une suite $(y_n)\in Y^{\bN}$
-  telle que $\lim y_n = x$.
+  Soit $(X,\vardis)$ un espace métrique. Une partie $\varPt\subseteq X$ est
+  dense si et seulement si pour tout $x\in X$ il existe une suite
+  $(y_n)\in \varPt^{\bN}$ telle que $\lim y_n = x$.
 \end{property}
 
 \begin{example}
@@ -1737,8 +1747,8 @@ Nous donnons en exercice une caractérisation de la continuité, analogue à la
 
 \begin{exercise}\label{exo.carac.cont.suit}
   Soient $(X,\vardis)$ et $(Y,\vardis)$ deux espaces métriques. Montrer que
-  toute fonction $f : X \to Y$ est continue si et seulement si, en notant
-  $\ell(X)$ l'ensemble des suites convergentes à valeurs dans $X$, on a
+  toute fonction $\makeFunName{f}{X}{Y}$ est continue si et seulement si, en
+  notant $\ell(X)$ l'ensemble des suites convergentes à valeurs dans $X$, on a
   \[\forall (x_n) \in \ell(X),
   \lim_{n \to \infty} f(x_n) = f\left(\lim_{n\to\infty} x_n\right)\]
 \end{exercise}
@@ -1748,7 +1758,7 @@ d'une certaine manière, l'adhérence d'un espace dénombrable.
 
 \begin{definition}[Espace séparable]
   Soit $(X,\topoP{X})$ un espace topologique. On dit que cet espace est
-  séparable s'il existe une partie $Y\subseteq X$ dense et dénombrable.
+  séparable s'il existe une partie $\varPt\subseteq X$ dense et dénombrable.
 \end{definition}
 
 Le fait d'être dénombrable se prête particulièrement bien au cas métrique,
@@ -1766,7 +1776,8 @@ limite est un irrationnel.
 A partir de cette observation, on voit que $\bR$ possède une propriété que
 $\bQ$ ne vérifie pas. Cependant, cette observation ne suffit pas~: il faut
 encore décrire concrètement ce qu'est une suite ayant l'air de converger. Cette
-notion est celle des suites de Cauchy, dont l'écart entre les différentes
+notion est celle des suites de Cauchy\footnote{nommé en l'honneur
+d'Augustin-Louis \name{Cauchy}}, dont l'écart entre les différentes
 valeurs tend vers $0$.
 
 \begin{definition}[Suite de Cauchy]
@@ -1800,7 +1811,7 @@ limite pour ces suites.
   d'adhérence~: il suffit de considérer $\id$ comme extractrice.
 
   Réciproquement, supposons que $x$ est une valeur d'adhérence de $(x_n)$. On
-  trouve donc une fonction $\varextr : \bN \to \bN$ strictement
+  trouve donc une fonction $\makeFunName{\varextr}{\bN}{\bN}$ strictement
   croissante telle que $\lim x_{\varextr(n)} = x$. Montrons que $(x_n)$ converge
   vers $x$~: soit $\vareps > 0$, par définition de la limite, on peut
   trouver $n_0$ tel que
@@ -1851,7 +1862,8 @@ définition d'isométrie.
 
 \begin{definition}[Isométrie]
   Soient $(X,\vardis)$ et $(Y,\vardis')$ deux espaces métriques. On dit qu'une
-  fonction $X \to Y$ est une isométrie si elle vérifie la propriété suivante~:
+  fonction $\makeFunName{f}{X}{Y}$ est une isométrie si elle vérifie la
+  propriété suivante~:
   \[\forall x,y \in X, \vardis(x,y) = \vardis'(f(x),f(y))\]
 \end{definition}
 
@@ -2040,8 +2052,8 @@ et comment celui-ci se comporte vis à vis de la complétion.
 \end{proposition}
 
 \begin{proof}
-  On sait qu'il existe une partie dense dénombrable $Y\subseteq X$, et que
-  $X$ est dense dans $\compl X$, donc $Y$ est dense (et dénombrable) dans
+  On sait qu'il existe une partie dense dénombrable $\varPt\subseteq X$, et que
+  $X$ est dense dans $\compl X$, donc $\varPt$ est dense (et dénombrable) dans
   $\compl X$. Comme $\compl X$ est par construction un espace complet, on en
   déduit qu'il est un espace séparable complet~: c'est un espace polonais.
 \end{proof}
