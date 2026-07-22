@@ -10,7 +10,7 @@ la terminaison.
 
 Pour assurer la terminaison, on peut construire une condition syntaxique
 suffisante. En considérant un programme $t \in \lamSet$, on souhaite avoir une
-condition $P(t)$ calculable qui implique la terminaison de $t$. Cette condition
+condition $C(t)$ calculable qui implique la terminaison de $t$. Cette condition
 ne peut pas coïncider avec la condition d'être (faiblement ou fortement)
 normalisant, puisqu'une telle condition est sémantique et donc indécidable.
 
@@ -27,7 +27,9 @@ moralement une fonction $\bN \to \bN$.
 
 Cette notion, \latinexpr{a priori} liée à l'informatique et à la programmation,
 a en fait un lien étroit avec la logique. Ce lien s'incarne dans la
-correspondance de Curry-Howard, notion incontournable du pan informatique de la
+correspondance de
+Curry-Howard\footnote{Nommé en l'honneur d'Haskell \name{Curry} et de Willian
+Alvin \name{Howard}}, notion incontournable du pan informatique de la
 logique mathématique, et fondation de la théorie des types.
 
 On introduit dans ce chapitre un système de type avec un $\lambda$-calcul
@@ -122,7 +124,7 @@ représentant un élément de $X$.
     \AxiomC{}
     \RightLabel{$\RVar$}
     \UnaryInfC{$f : \varTypA \to \varTypA, x : \varTypA \tyR
-    f : \varTypA \to \varTypA$}
+      f : \varTypA \to \varTypA$}
     \AxiomC{}
     \RightLabel{$\RVar$}
     \UnaryInfC{$f : \varTypA \to \varTypA, x : \varTypA \tyR x : \varTypA$}
@@ -132,10 +134,10 @@ représentant un élément de $X$.
     \BinaryInfC{$f : \varTypA \to \varTypA, x : \varTypA\tyR f^n\;x : \varTypA$}
     \RightLabel{$\RAbs$}
     \UnaryInfC{$f : \varTypA \to \varTypA\tyR
-    \lambda x.f^n\;x : \varTypA\to\varTypA$}
+      \lambda x.f^n\;x : \varTypA\to\varTypA$}
     \RightLabel{$\RAbs$}
     \UnaryInfC{$\tyR \lambda f\;x.f^n\;x:(\varTypA\to\varTypA)
-    \to\varTypA\to\varTypA$}
+      \to\varTypA\to\varTypA$}
   \end{prooftree}
 \end{example}
 
@@ -182,17 +184,17 @@ le même système de démonstration.
 En prenant des arbres de preuves par séquents, on peut alors mettre en parallèle
 les règles de déduction et les règles de typage~:
 \begin{center}
-\AxiomC{$\varCG\vdNJto \varFF \to \varFP$}
-\AxiomC{$\varCG\vdNJto \varFF$}
-\RightLabel{$\RtoI$}
-\BinaryInfC{$\varCG\vdNJto \varFP$}
-\DisplayProof
-\hspace{2cm}
-\AxiomC{$\varCG\tyR t : \varTypA \to \varTypB$}
-\AxiomC{$\varCG\tyR u : \varTypA$}
-\RightLabel{$\RApp$}
-\BinaryInfC{$\varCG\tyR t\;u : \varTypB$}
-\DisplayProof
+  \AxiomC{$\varCG\vdNJto \varFF \to \varFP$}
+  \AxiomC{$\varCG\vdNJto \varFF$}
+  \RightLabel{$\RtoI$}
+  \BinaryInfC{$\varCG\vdNJto \varFP$}
+  \DisplayProof
+  \hspace{2cm}
+  \AxiomC{$\varCG\tyR t : \varTypA \to \varTypB$}
+  \AxiomC{$\varCG\tyR u : \varTypA$}
+  \RightLabel{$\RApp$}
+  \BinaryInfC{$\varCG\tyR t\;u : \varTypB$}
+  \DisplayProof
 \end{center}
 Ces deux règles sont presque identiques. La seule différence se trouve dans
 le fait que le typage nous donne un objet explicite, le terme $t\;u$, qui
@@ -212,7 +214,7 @@ entre les types et les propositions. On en retire les expressions
   et une bijection entre d'un côté ${\ProofNJ}_\to$ et de l'autre l'ensemble
   \[\compr{(\varTypA_1,\ldots,\varTypA_n,t,\varTypB)}
           {x_1 : \varTypA_1,\ldots,x_n : \varTypA_n\tyR t : \varTypB}\]
-  qui commute aux règles de déduction (respectivement de typage).
+          qui commute aux règles de déduction (respectivement de typage).
 \end{proposition}
 
 En particulier, si l'on voit un contexte $\varCG$ d'un côté comme
@@ -227,18 +229,18 @@ de raisonnements sont en correspondance, mais la réduction elle-même est
 parfaitement analogue dans les deux cas~: dans le cas des arbres, on a
 la réécriture
 \begin{center}
-\AxiomC{$[\varFF]^{\varTokA}$}
-\ligneNJV\UnaryInfC{$\varFP$}
-\RightLabel{$\RtoIA$}
-\UnaryInfC{$\varFF \to \varFP$}
-\axNJP{\varPT'}\UnaryInfC{$\varFF$}
-\RightLabel{$\RtoE$}
-\BinaryInfC{$\varFP$}
-\DisplayProof
-$\LCutP{\to}$
-\axNJP{\varPT'}\UnaryInfC{$\varFF$}
-\ligneNJV\UnaryInfC{$\varFP$}
-\DisplayProof
+  \AxiomC{$[\varFF]^{\varTokA}$}
+  \ligneNJV\UnaryInfC{$\varFP$}
+  \RightLabel{$\RtoIA$}
+  \UnaryInfC{$\varFF \to \varFP$}
+  \axNJP{\varPT'}\UnaryInfC{$\varFF$}
+  \RightLabel{$\RtoE$}
+  \BinaryInfC{$\varFP$}
+  \DisplayProof
+  $\LCutP{\to}$
+  \axNJP{\varPT'}\UnaryInfC{$\varFF$}
+  \ligneNJV\UnaryInfC{$\varFP$}
+  \DisplayProof
 \end{center}
 et de l'autre, on a la réécriture $(\lambda x.t)u\bred t[u/x]$. Dans le
 $\lambda$-terme, la substitution de $x$ par $u$ remplace les références à
@@ -424,7 +426,7 @@ constructeurs.
         \AxiomC{$\varCG\tyR u : \varTypB$}
         \RightLabel{$\RPair$}
         \BinaryInfC{$\varCG\tyR \langle t,u\rangle :
-        \varTypA \times \varTypB$}
+          \varTypA \times \varTypB$}
         \DisplayProof
         & &
         \bottomAlignProof
@@ -477,11 +479,11 @@ $\ProofNJ$.
       \\
       \\
       \multicolumn{2}{l}{$(\deltaSTLC{t}{x}{u}{x}{v})\;w\STLCred
-      \deltaSTLC{t}{x}{u\;w}{x}{v\;w}$}
+        \deltaSTLC{t}{x}{u\;w}{x}{v\;w}$}
       \\
       \\
       \multicolumn{2}{l}{$\projP{i}{}(\deltaSTLC{t}{x}{u}{x}{v}) \STLCred
-      \deltaSTLC{t}{x}{\projP{i}{} u}{x}{\projP{i}{} v}$}
+        \deltaSTLC{t}{x}{\projP{i}{} u}{x}{\projP{i}{} v}$}
       \\
       \\
       \multicolumn{2}{l}{
@@ -544,74 +546,74 @@ $t[\btermt/\bvarx]$, en substituant $\btermt$ dans chaque occurrence de
 $\bvarx$ dans les termes du premier ordre apparaissant dans $t$.
 
 \begin{table}[t]
-    \centering
-    \resizebox{\textwidth}{!}{
-      \begin{tabular}{cm{1cm}c}
-        $(\blam \bvarx.t)\;\btermt \FOLred t[\btermt/\bvarx]$
-        & &
-        $(\dBSTLC{t})\;\btermt\FOLred \dBSTLC{t}$
-        \\
-        \\
-        $\letin{\bvarx}{x}{\langle \btermt, t\rangle}{u} \FOLred
-        u[t/x][\btermt/\bvarx]$
-        & &
-        $\letin{\bvarx}{x}{\dBSTLC{t}}{u} \FOLred \dBSTLC{t}$
-        \\
-        \\
-        $\transp(\bvarx,\varFF\leftarrow (\refl\btermt))\;u\FOLred u$
-        & &
-        $\transp(\bvarx,\varFF\leftarrow (\dBSTLC{t}))\;u
-        \FOLred \dBSTLC{t}$
-        \\
-        \\
-        \multicolumn{3}{c}{
-          $\letin\bvarx x {(\deltaSTLC{t}{y}{u_1}{y}{u_2})} v \FOLred
-          \deltaSTLC{t}{y}{\letin\bvarx x {u_1} v}{y}{\letin\bvarx x {u_2} v}$
-        }
-        \\
-        \\
-        \multicolumn{3}{c}{
-          $\transp(\bvarx,\varFP \leftarrow v)\;\deltaSTLC{t}{x}{u_1}{x}{u_2}
-          \FOLred \deltaSTLC{t}{x}{\transp(\bvarx,\varFP\leftarrow v)\;u_1}
-          {x}{\transp(\bvarx,\varFP\leftarrow v)\;u_2}$
-        }
-        \\
-        \\
-        $(\letin{\bvarx}{x}{t}{u})\;v \FOLred \letin\bvarx x t {(u\;v)}$
-        & &
-        $(\letin\bvarx x t u)\;\btermt \FOLred \letin\bvarx x t {(u\;\btermt)}$
-        \\
-        \\
-        \multicolumn{3}{c}{
-          $\projP{i}{}(\letin\bvarx x t u)\FOLred \letin\bvarx x t {\projP{i}{}u}$
-        }
-        \\
-        \\
-        \multicolumn{3}{c}{
-          $\letin\bvary y {(\letin \bvarx x t u)} v \FOLred
-          \letin\bvarx x t {(\letin\bvary y u v)}$
-        }
-        \\
-        \\
-        \multicolumn{3}{c}{
-          $\deltaSTLC{\letin\bvarx x t u}{y}{v}{y}{w} \FOLred
-          \letin\bvarx x t {(\deltaSTLC u y v y w)}$
-        }
-        \\
-        \\
-        \multicolumn{3}{c}{
-          $\transp(\bvarx,\varFP \leftarrow v)\;(\letin \bvary x t u)\FOLred
-          \letin\bvary x t {\transp(\bvarx,\varFP\leftarrow v)\; u}$
-        }
-      \end{tabular}
-    }
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{cm{1cm}c}
+      $(\blam \bvarx.t)\;\btermt \FOLred t[\btermt/\bvarx]$
+      & &
+      $(\dBSTLC{t})\;\btermt\FOLred \dBSTLC{t}$
+      \\
+      \\
+      $\letin{\bvarx}{x}{\langle \btermt, t\rangle}{u} \FOLred
+      u[t/x][\btermt/\bvarx]$
+      & &
+      $\letin{\bvarx}{x}{\dBSTLC{t}}{u} \FOLred \dBSTLC{t}$
+      \\
+      \\
+      $\transp(\bvarx,\varFF\leftarrow (\refl\btermt))\;u\FOLred u$
+      & &
+      $\transp(\bvarx,\varFF\leftarrow (\dBSTLC{t}))\;u
+      \FOLred \dBSTLC{t}$
+      \\
+      \\
+      \multicolumn{3}{c}{
+        $\letin\bvarx x {(\deltaSTLC{t}{y}{u_1}{y}{u_2})} v \FOLred
+        \deltaSTLC{t}{y}{\letin\bvarx x {u_1} v}{y}{\letin\bvarx x {u_2} v}$
+      }
+      \\
+      \\
+      \multicolumn{3}{c}{
+        $\transp(\bvarx,\varFP \leftarrow v)\;\deltaSTLC{t}{x}{u_1}{x}{u_2}
+        \FOLred \deltaSTLC{t}{x}{\transp(\bvarx,\varFP\leftarrow v)\;u_1}
+                {x}{\transp(\bvarx,\varFP\leftarrow v)\;u_2}$
+      }
+      \\
+      \\
+      $(\letin{\bvarx}{x}{t}{u})\;v \FOLred \letin\bvarx x t {(u\;v)}$
+      & &
+      $(\letin\bvarx x t u)\;\btermt \FOLred \letin\bvarx x t {(u\;\btermt)}$
+      \\
+      \\
+      \multicolumn{3}{c}{
+        $\projP{i}{}(\letin\bvarx x t u)\FOLred \letin\bvarx x t {\projP{i}{}u}$
+      }
+      \\
+      \\
+      \multicolumn{3}{c}{
+        $\letin\bvary y {(\letin \bvarx x t u)} v \FOLred
+        \letin\bvarx x t {(\letin\bvary y u v)}$
+      }
+      \\
+      \\
+      \multicolumn{3}{c}{
+        $\deltaSTLC{\letin\bvarx x t u}{y}{v}{y}{w} \FOLred
+        \letin\bvarx x t {(\deltaSTLC u y v y w)}$
+      }
+      \\
+      \\
+      \multicolumn{3}{c}{
+        $\transp(\bvarx,\varFP \leftarrow v)\;(\letin \bvary x t u)\FOLred
+        \letin\bvary x t {\transp(\bvarx,\varFP\leftarrow v)\; u}$
+      }
+    \end{tabular}
+  }
 
-    \vspace{0.2cm}
-    \hrule
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Définition de la relation $\FOLred$}
-    \label{tbl.FOLred}
+  \vspace{0.2cm}
+  \caption{Définition de la relation $\FOLred$}
+  \label{tbl.FOLred}
 \end{table}
 
 \begin{definition}[Réduction des termes de preuve]
@@ -624,61 +626,61 @@ Pour le système de types, on considère directement que $\Formula$ est l'ensemb
 des types.
 
 \begin{table}[t]
-    \centering
-    \resizebox{\textwidth}{!}{
-      \begin{tabular}{cc}
-        \bottomAlignProof
-        \AxiomC{$\varCG\tyR t : \varFF$}
-        \AxiomC{$\bvarx \notin\VL(\varCG)$}
-        \RightLabel{$\RAbsFOL$}
-        \BinaryInfC{$\varCG\tyR \blam \bvarx.t : \forall \bvarx.\varFF$}
-        \DisplayProof
-        &
-        \bottomAlignProof
-        \AxiomC{$\varCG\tyR t : \forall \bvarx.\varFF$}
-        \RightLabel{$\RAppFOL$}
-        \UnaryInfC{$\varCG\tyR t\;\btermt : \varFF[\btermt/\bvarx]$}
-        \DisplayProof
-        \\
-        \\
-        \bottomAlignProof
-        \AxiomC{$\varCG\tyR t : \varFF[\btermt/\bvarx]$}
-        \RightLabel{$\RPairFOL$}
-        \UnaryInfC{$\varCG\tyR \langle \btermt,t\rangle : \exists \bvarx,
-          \varFF$}
-        \DisplayProof
-        &
-        \bottomAlignProof
-        \AxiomC{$\varCG\tyR t : \exists \bvarx, \varFF$}
-        \AxiomC{$\varCG, x : \varFF\vdash u : \varFP$}
-        \AxiomC{$\bvarx \notin\VL(\varCG,\varFP)$}
-        \RightLabel{$\RMatch$}
-        \TrinaryInfC{$\varCG\tyR \letin\bvarx x t u : \varFP$}
-        \DisplayProof
-        \\
-        \\
-        \bottomAlignProof
-        \AxiomC{}
-        \RightLabel{$\RRefl$}
-        \UnaryInfC{$\varCG\tyR \refl\btermt : \btermt = \btermt$}
-        \DisplayProof
-        &
-        \bottomAlignProof
-        \AxiomC{$\varCG\tyR t : \btermt = \btermu$}
-        \AxiomC{$\varCG\tyR u : \varFF[\btermt/\bvarx]$}
-        \RightLabel{$\RTransp$}
-        \BinaryInfC{$\varCG\tyR \transp(\bvarx,\varFF\leftarrow t)\;u :
-          \varFF[\btermu/\bvarx]$}
-        \DisplayProof
-      \end{tabular}
-    }
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tabular}{cc}
+      \bottomAlignProof
+      \AxiomC{$\varCG\tyR t : \varFF$}
+      \AxiomC{$\bvarx \notin\VL(\varCG)$}
+      \RightLabel{$\RAbsFOL$}
+      \BinaryInfC{$\varCG\tyR \blam \bvarx.t : \forall \bvarx.\varFF$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$\varCG\tyR t : \forall \bvarx.\varFF$}
+      \RightLabel{$\RAppFOL$}
+      \UnaryInfC{$\varCG\tyR t\;\btermt : \varFF[\btermt/\bvarx]$}
+      \DisplayProof
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{$\varCG\tyR t : \varFF[\btermt/\bvarx]$}
+      \RightLabel{$\RPairFOL$}
+      \UnaryInfC{$\varCG\tyR \langle \btermt,t\rangle : \exists \bvarx,
+        \varFF$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$\varCG\tyR t : \exists \bvarx, \varFF$}
+      \AxiomC{$\varCG, x : \varFF\vdash u : \varFP$}
+      \AxiomC{$\bvarx \notin\VL(\varCG,\varFP)$}
+      \RightLabel{$\RMatch$}
+      \TrinaryInfC{$\varCG\tyR \letin\bvarx x t u : \varFP$}
+      \DisplayProof
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{}
+      \RightLabel{$\RRefl$}
+      \UnaryInfC{$\varCG\tyR \refl\btermt : \btermt = \btermt$}
+      \DisplayProof
+      &
+      \bottomAlignProof
+      \AxiomC{$\varCG\tyR t : \btermt = \btermu$}
+      \AxiomC{$\varCG\tyR u : \varFF[\btermt/\bvarx]$}
+      \RightLabel{$\RTransp$}
+      \BinaryInfC{$\varCG\tyR \transp(\bvarx,\varFF\leftarrow t)\;u :
+        \varFF[\btermu/\bvarx]$}
+      \DisplayProof
+    \end{tabular}
+  }
 
-    \vspace{0.2cm}
-    \hrule
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Règles de typage pour $\FOLSet$}
-    \label{tbl.FOLTy}
+  \vspace{0.2cm}
+  \caption{Règles de typage pour $\FOLSet$}
+  \label{tbl.FOLTy}
 \end{table}
 
 \begin{definition}[Typage des termes de preuve]
@@ -780,17 +782,18 @@ indique comment contourner le problème. Un typage
 signifie que $t$ représente une fonction depuis les variables $x_1,\ldots,x_n$
 typées respectivement par $\varTypA_1,\ldots,\varTypA_n$ vers une valeur de type
 $\varTypB$. On décide de définir pour chaque type $\varTypA$ une interprétation
-$\semT{\varTypA}\subseteq\STLCSet$, de sorte qu'un typage comme plus haut soit associé
-à la fonction
-\[\makeFun{\varCG\tyR t : \varTypB}{\prod_{i = 1}^n\semT{\varTypA_i}}{\semT{\varTypB}}
-{(u_1,\ldots,u_n)}{t[u_i/x_i]}\]
+$\semT{\varTypA}\subseteq\STLCSet$, de sorte qu'un typage comme plus haut soit
+associé à la fonction
+\[\makeFun{\varCG\tyR t : \varTypB}
+          {\prod_{i = 1}^n\semT{\varTypA_i}}{\semT{\varTypB}}
+          {(u_1,\ldots,u_n)}{t[u_i/x_i]}\]
 La bonne définition de cette fonction est le c\oe ur de la preuve de
 normalisation forte~: il faut montrer que pour tous tels $u_1,\ldots,u_n$,
 $t[u_i/x_i] \in \semT{\varTypB}$.
 
 Cette assertion devient alors possible à prouver par induction sur le typage de
-$t$. Il suffit alors de construire une interprétation $\semT{\varTypA}$ adaptée pour
-vérifier la bonne définition de la fonction, et telle que
+$t$. Il suffit alors de construire une interprétation $\semT{\varTypA}$ adaptée
+pour vérifier la bonne définition de la fonction, et telle que
 $\semT{\varTypA}\subseteq\SN$.
 
 Pour définir correctement la notation $t[u_i/x_i]$, il faut introduire les
@@ -798,8 +801,8 @@ substitutions simultanées.
 
 \begin{definition}[Substitution simultanée]
   On appelle substitution une fonction partielle
-  $\makeFunNamePartial{\subSimul}{\lamVar}{\lamSet}$. La substitution $\subSimul(t)$
-  est définie par induction sur $t$~:
+  $\makeFunNamePartial{\subSimul}{\lamVar}{\lamSet}$. La substitution
+  $\subSimul(t)$ est définie par induction sur $t$~:
   \begin{itemize}
   \item si $t = x$ et $x \in \dom(\subSimul)$, alors
     $\subSimul(t) \defeq \subSimul(x)$~;
@@ -814,9 +817,10 @@ substitutions simultanées.
 
 Supposons maintenant qu'on trouve une bonne définition de l'interprétation
 $\semT{\varTypA}$ d'un type $\varTypA$. Si on suppose que
-$\subSimul(x_i) \in \semT{\varTypA_i}$ pour tout $i$, on veut montrer par induction
-que
-\[(x_i : \varTypA_i)_i\tyR t : \varTypB \implies \subSimul(t) \in \semT{\varTypB}\]
+$\subSimul(x_i) \in \semT{\varTypA_i}$ pour tout $i$, on veut montrer par
+induction que
+\[(x_i : \varTypA_i)_i\tyR t : \varTypB \implies \subSimul(t) \in
+\semT{\varTypB}\]
 Le cas des variables est traité automatiquement par notre hypothèse. Pour les
 autres cas, on cherche une façon correcte de définir l'interprétation des types.
 
@@ -907,23 +911,27 @@ de tête et à des réductions internes.
     \item soit $u = E[\projP{i}{}\langle t',t_2\rangle]$ où $t_1 \STLCred t'$.
     \end{itemize}
   \item pour tout contexte $E[\;]\in\Elim$ et termes $t,t_1,t_2,u \in \STLCSet$,
-    si on a la réduction $E[\deltaSTLC{\coprojP{i}t}x{t_1}x{t_2}] \STLCred u$ alors
+    si on a la réduction $E[\deltaSTLC{\coprojP{i}t}x{t_1}x{t_2}] \STLCred u$
+    alors
     \begin{itemize}
     \item soit $u = E[t_i[t/x]]$,
     \item soit $u = E'[\deltaSTLC{\coprojP{i}t}x{t_1}x{t_2}]$ où
       $E[\;]\STLCred E'[\;]$,
-    \item soit $u = E[\deltaSTLC{\coprojP{i}t'}x{t_1}x{t_2}]$ où $t \STLCred t'$,
-    \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t'}x{t_2}]$ où $t_1 \STLCred t'$,
-    \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t'}x{t_2}]$ où $t_1 \STLCred t'$,
+    \item soit $u = E[\deltaSTLC{\coprojP{i}t'}x{t_1}x{t_2}]$ où
+      $t \STLCred t'$,
+    \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t'}x{t_2}]$ où
+      $t_1 \STLCred t'$,
+    \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t'}x{t_2}]$ où
+      $t_1 \STLCred t'$,
     \item soit $E = E'[[\;]\;v]$ et
       $u = E'[\deltaSTLC{\coprojP{i}t}x{t_1\;v}x{t_2\;v}]$,
     \item soit $E = E'[\projP{j}{}[\;]]$ et
       $u = E'[\deltaSTLC{\coprojP{i}t}x{\projP{j}{}t_1}x{\projP{j}{}t_2}]$,
     \item soit $E = E'[\deltaSTLC{[\;]}{x}{u_1}{x}{u_2}]$ et
       \begin{multline*}
-      u = E'[\delta\;{\coprojP{i}t}\;
-      \{x \mapsto {\deltaSTLC{t_1}x{u_1}x{u_2}}\mid\\
-      x\mapsto \deltaSTLC{t_2}x{u_1}x{u_2}\}]
+        u = E'[\delta\;{\coprojP{i}t}\;
+          \{x \mapsto {\deltaSTLC{t_1}x{u_1}x{u_2}}\mid\\
+          x\mapsto \deltaSTLC{t_2}x{u_1}x{u_2}\}]
       \end{multline*}
     \end{itemize}
   \end{itemize}
@@ -986,8 +994,8 @@ Jusqu'ici, l'objectif de notre interprétation $\semT{\varTypA}$ est~:
   pour pouvoir déduire que la règle d'introduction de $\varTypA$ est vérifiée
   aussi.
 \end{itemize}
-La définition de $\semT{\varTypA\to\varTypB}$ ne pose pas de problème pour la première
-étape, mais la définition de $\semT{\varTypA + \varTypB}$ en pose un.
+La définition de $\semT{\varTypA\to\varTypB}$ ne pose pas de problème pour la
+première étape, mais la définition de $\semT{\varTypA + \varTypB}$ en pose un.
 
 En effet, en considérant le typage du constructeur $\delta$, on est tenté de
 donner la définition suivante~:
@@ -1000,9 +1008,9 @@ donner la définition suivante~:
 \end{multline*}
 mais la définition de $\semT{\varTypA+\varTypB}$ fait alors intervenir la
 définition de $\semT{\varTypC}$ pour $\varTypC$ quelconque. On choisit alors de
-construire un ensemble $\mathscr A$ de parties $A\subseteq \STLCSet$ dont on sait
-qu'elles contiendront au moins les interprétations de types, et dont les propriétés
-suffisent à assurer notre construction.
+construire un ensemble $\mathscr A$ de parties $A\subseteq \STLCSet$ dont on
+sait qu'elles contiendront au moins les interprétations de types, et dont les
+propriétés suffisent à assurer notre construction.
 
 Cette technique, due à Girard pour adapter la preuve de Tait au système F,
 permet de contourner le problème d'imprédicativité où l'on souhaite définir
@@ -1035,7 +1043,7 @@ On définit alors notre ensemble de candidats par la notion d'ensemble saturé.
   majorant est $\top_{\satSN}\defeq \SN$ et le minorant est
   \[\bot_{\satSN} \defeq
   \compr{t\in\STLCSet}{t\in\SN \land (\exists E[\;]\in\ElimSN, x \in \lamVar,
-  t\rtClot{\WHred} E[x])}\]
+    t\rtClot{\WHred} E[x])}\]
 \end{proposition}
 
 \begin{proof}
@@ -1046,15 +1054,16 @@ On définit alors notre ensemble de candidats par la notion d'ensemble saturé.
   Si $\varFam$ est un ensemble de parties saturées, alors l'intersection
   $\varSATA \defeq \bigcap \varFam$ est inclus dans $\SN$, contient chaque
   $E[x]$ car chaque $\varSATB \in \varFam$ contient ces éléments. Enfin, comme
-  chaque $\varSATB \in \varFam$ est clos par l'extension de tête faible telle que
-  décrite dans la condition de saturation, on en déduit que $\varSATA$ est aussi
-  clos pour cette extension. On peut montrer de même que $\bigcup \varFam$ est
-  saturé.
+  chaque $\varSATB \in \varFam$ est clos par l'extension de tête faible telle
+  que décrite dans la condition de saturation, on en déduit que $\varSATA$ est
+  aussi clos pour cette extension. On peut montrer de même que $\bigcup \varFam$
+  est saturé.
 
   Montrons que $\bot_{\satSN}$ est saturé~:
   \begin{itemize}
   \item si $t \in \bot_{\satSN}$, alors $t \in \SN$, par définition~;
-  \item pour tout $E[x]$, $E[x]\rtClot{\WHred} E[x]$, donc $E[x]\in\bot_{\satSN}$~;
+  \item pour tout $E[x]$, $E[x]\rtClot{\WHred} E[x]$, donc
+    $E[x]\in\bot_{\satSN}$~;
   \item si $E[t[u/x]] \in \bot_{\satSN}$ et $u \in \SN$, alors
     $E[(\lambda x.t)u] \in \SN$ par extension de tête faible, et
     $E[(\lambda x.t)u] \WHred E[t[u/x]]$ qui se réduit lui-même en un
@@ -1093,7 +1102,7 @@ inductivement sur $\varTypA$.
       $\compr{t \in \STLCSet}{\forall u \in \varSATA, t\;u \in \varSATB}$\\\\
       $\varSATA \satAND \varSATB$ &$\defeq$&
       $\compr{t \in \STLCSet}{(\projP{1}{} t \in \varSATA)\land
-      (\projP{2}{} u\in \varSATB)}$ \\\\
+        (\projP{2}{} u\in \varSATB)}$ \\\\
       $\varSATA_1 \satOR \varSATA_2$ &$\defeq$&
       $\{ t \in \STLCSet \mid \forall \varSATB \in \satSN,
       \forall u,v \in \STLCSet,$\\
@@ -1107,7 +1116,8 @@ inductivement sur $\varTypA$.
 \end{definition}
 
 \begin{lemma}
-  Pour tous $\varSATA,\varSATB \in \satSN$, $\varSATA\satTO \varSATB \in \satSN$,
+  Pour tous $\varSATA,\varSATB \in \satSN$,
+  $\varSATA\satTO \varSATB \in \satSN$,
   $\varSATA\satAND \varSATB \in \satSN$ et $\varSATA\satOR \varSATB \in \satSN$.
 \end{lemma}
 
@@ -1115,14 +1125,15 @@ inductivement sur $\varTypA$.
   Prouver le lemme précédent.
 \end{exercise}
 
-On peut finalement définir $\semT{\varTypA}$ de sorte à ce que la preuve se déroule
-sans problème.
+On peut finalement définir $\semT{\varTypA}$ de sorte à ce que la preuve se
+déroule sans problème.
 
 \begin{definition}[Interprétation des types]
   On définit inductivement sur $\varTypA\in\tySTLC$ l'ensemble
   $\semT{\varTypA} \in \satSN$~:
   \begin{itemize}
-  \item pour $\varTypBa$ un type de base, $\semT{\varTypBa} \defeq \top_{\satSN}$~;
+  \item pour $\varTypBa$ un type de base,
+    $\semT{\varTypBa} \defeq \top_{\satSN}$~;
   \item $\semT{\unitT} \defeq \top_{\satSN}$~;
   \item $\semT{\emptyT} \defeq \bot_{\satSN}$~;
   \item pour $\varTypA = \varTypA_0 \to \varTypA_1$,
@@ -1191,7 +1202,7 @@ central~: le lemme d'adéquation.
     tels que pour tout $w \in \semT{\varTypA_1}, u_1[w/x]\in \varSATA$ et
     pour tout $w\in\semT{\varTypA_2}, u_2[w/x]\in \varSATA$. Alors,
     \[\deltaSTLC{\coprojP{i}\subSimul(t)} x
-    {u_1} x {u_2} \WHred u_i[\subSimul(t)/x]\]
+                {u_1} x {u_2} \WHred u_i[\subSimul(t)/x]\]
     et $\subSimul(t) \in \semT{\varTypA_i}$ par hypothèse d'induction,
     donc $\coprojP{i}\subSimul(t) \in \semT{\varTypA_1+\varTypA_2}$ par
     saturation.
@@ -1253,8 +1264,8 @@ l'ensemble des termes $t[\btermt/\bvarx]$ pour $t \in \varSATA$.
 On définit aussi les opérations
 \begin{center}
   \begin{tabular}{rcl}
-    $\forall \varSATA$ &$\defeq$& $\compr{t \in \STLCSet}{\forall \btermt \in \Term,
-    t\;\btermt \in \varSATA}$
+    $\forall \varSATA$ &$\defeq$&
+    $\compr{t \in \STLCSet}{\forall \btermt \in \Term,t\;\btermt \in \varSATA}$
     \\
     \\
     $\exists \bvarx, \varSATA$ &$\defeq$&
@@ -1265,7 +1276,8 @@ On définit aussi les opérations
     \\
     \\
     $\varSATA_=$ & $\defeq$ &
-    $\{ t \in \STLCSet\mid \forall \varSATB \in \satSN,\forall \btermt \in \Term,
+    $\{ t \in \STLCSet\mid \forall \varSATB \in \satSN,
+    \forall \btermt \in \Term,
     \forall \varFF \in \Formula, \forall u \in \varSATB[\btermt/\bvarx],$\\
     \multicolumn{3}{r}{
       $\transp\;(\bvarx,\varFF \leftarrow t)\;u \in \varSATB[\btermu/\bvarx]\}$}
@@ -1308,41 +1320,41 @@ s'utiliser ici pour construire des équations associées à chaque sous-terme d'
 terme donné.
 
 \begin{definition}[Système d'équation de types pour un terme]
-    Soit $t$ un $\lambda$-terme (de $\STLCSet$, de $\FOLSet$ ou même de
-    $\lamSet$). On fixe une variable $X_u$ pour chaque sous-terme $u$ de $t$ et
-    une variable $X_x$ pour chaque variable libre $x \in \VL(t)$.
-    On définit inductivement sur $t$ le système d'équations $\varEq_t$ suivant~:
-    \begin{itemize}
-    \item si $t = x$ est une variable, alors $\varEq_t \defeq \{X_t \simeq X_x\}$
-    \item si $t = \lambda x.u$, alors
-      $\varEq_t \defeq \varEq_u \cup \{X_t \simeq X_x \to X_u\}$
-    \item si $t = u_1\;u_2$ alors
-      $\varEq_t \defeq \varEq_{u_1}\cup \varEq_{u_2}\cup
-      \{X_{u_1} \simeq X_{u_2}\to X_t\}$
-    \item si $t = \langle\rangle$ alors $\varEq_t \defeq \{X_t \simeq \unitT\}$
-    \item si $t = \langle u_1,u_2\rangle$ alors
-      $\varEq_t \defeq \varEq_{u_1}\cup\varEq_{u_2}\cup
-      \{X_t \simeq X_{u_1}\times X_{u_2}\}$
-    \item si $t = \projP{i}{} u_i$ alors
-      $\varEq_t \defeq \varEq_{u_i} \cup \{ X_{u_i} \simeq X_t\times Y\}$
-      où $Y$ est une nouvelle variable (qu'on place à gauche ou à droite de
-      $X_{u_i}$ suivant la valeur de $i$)
-    \item si $t = \coprojP{i} u_i$ alors
-      $\varEq_t \defeq \varEq_{u_i}\cup \{X_t \simeq X_{u_i}+ Y\}$
-    \item si $t = \deltaSTLC{u}{x_1}{v_1}{x_1}{v_2}$ alors
-      \[\varEq_t \defeq \varEq_u\cup\varEq_{v_1}\cup\varEq_{v_2}\cup
-      \{X_t \simeq X_{v_1},X_t\simeq X_{v_2},X_u\simeq X_{x_1}+X_{x_2}\}\]
-    \item si $t = \dBSTLC{u}$ alors
-      $\varEq_t \defeq \varEq_u \cup \{X_u \simeq \emptyT\}$
-    \end{itemize}
+  Soit $t$ un $\lambda$-terme (de $\STLCSet$, de $\FOLSet$ ou même de
+  $\lamSet$). On fixe une variable $X_u$ pour chaque sous-terme $u$ de $t$ et
+  une variable $X_x$ pour chaque variable libre $x \in \VL(t)$.
+  On définit inductivement sur $t$ le système d'équations $\varEq_t$ suivant~:
+  \begin{itemize}
+  \item si $t = x$ est une variable, alors $\varEq_t \defeq \{X_t \simeq X_x\}$
+  \item si $t = \lambda x.u$, alors
+    $\varEq_t \defeq \varEq_u \cup \{X_t \simeq X_x \to X_u\}$
+  \item si $t = u_1\;u_2$ alors
+    $\varEq_t \defeq \varEq_{u_1}\cup \varEq_{u_2}\cup
+    \{X_{u_1} \simeq X_{u_2}\to X_t\}$
+  \item si $t = \langle\rangle$ alors $\varEq_t \defeq \{X_t \simeq \unitT\}$
+  \item si $t = \langle u_1,u_2\rangle$ alors
+    $\varEq_t \defeq \varEq_{u_1}\cup\varEq_{u_2}\cup
+    \{X_t \simeq X_{u_1}\times X_{u_2}\}$
+  \item si $t = \projP{i}{} u_i$ alors
+    $\varEq_t \defeq \varEq_{u_i} \cup \{ X_{u_i} \simeq X_t\times Y\}$
+    où $Y$ est une nouvelle variable (qu'on place à gauche ou à droite de
+    $X_{u_i}$ suivant la valeur de $i$)
+  \item si $t = \coprojP{i} u_i$ alors
+    $\varEq_t \defeq \varEq_{u_i}\cup \{X_t \simeq X_{u_i}+ Y\}$
+  \item si $t = \deltaSTLC{u}{x_1}{v_1}{x_1}{v_2}$ alors
+    \[\varEq_t \defeq \varEq_u\cup\varEq_{v_1}\cup\varEq_{v_2}\cup
+    \{X_t \simeq X_{v_1},X_t\simeq X_{v_2},X_u\simeq X_{x_1}+X_{x_2}\}\]
+  \item si $t = \dBSTLC{u}$ alors
+    $\varEq_t \defeq \varEq_u \cup \{X_u \simeq \emptyT\}$
+  \end{itemize}
 \end{definition}
 
 \begin{theorem}
-    Un terme $t$ est typable si et seulement si $\varEq_t$ admet une solution
-    d'unification. Si $\subSimul$ est une solution à ce problème d'unification,
-    alors en notant $\VL(t) = \{x_1,\ldots,x_k\}$ on a la relation de typage
-    \[x_1 : \subSimul(X_{x_1}),\ldots, x_k : \subSimul(X_{x_k})\tyR
-    t : \subSimul(X_t)\]
+  Un terme $t$ est typable si et seulement si $\varEq_t$ admet une solution
+  d'unification. Si $\subSimul$ est une solution à ce problème d'unification,
+  alors en notant $\VL(t) = \{x_1,\ldots,x_k\}$ on a la relation de typage
+  \[x_1 : \subSimul(X_{x_1}),\ldots, x_k : \subSimul(X_{x_k})\tyR
+  t : \subSimul(X_t)\]
 \end{theorem}
 
 \section{Système T et arithmétique}\label{sec.systemT}
@@ -1534,8 +1546,8 @@ la règle d'élimination, on définit donc
 \begin{multline*}
   \semT{\intT} \defeq \{t \in \STSet \mid \forall \varSATA \in \satSN,
   \forall u \in \varSATA, \forall v \in \STSet,\\
-  (\forall w \in \semT{\intT}, \forall a \in \varSATA, v\;w\;a \in \varSATA)\implies 
-  \rec u\;v\;t \in \varSATA\}
+  (\forall w \in \semT{\intT}, \forall a \in \varSATA, v\;w\;a \in \varSATA)
+  \implies \rec u\;v\;t \in \varSATA\}
 \end{multline*}
 Cette définition est impossible~: $\semT{\intT}$ intervient dans la définition
 de $\semT{\intT}$~!
@@ -1576,12 +1588,12 @@ point fixe $\fix(f)$.
 \begin{definition}[Interprétation des entiers]
   L'ensemble $\semT\intT$ est défini par $\fix(f)$. Il vérifie
   \begin{multline*}
-  t \in \semT{\intT} \iff \forall \varSATA \in \satSN,
-  \forall u \in \varSATA, \forall v \in \STSet,\\
-  (\forall w \in \semT{\intT}, \forall a \in \varSATA,
-  v\;w\;a \in \varSATA)\implies
-  \rec u\;v\;t \in \varSATA
-\end{multline*}
+    t \in \semT{\intT} \iff \forall \varSATA \in \satSN,
+    \forall u \in \varSATA, \forall v \in \STSet,\\
+    (\forall w \in \semT{\intT}, \forall a \in \varSATA,
+    v\;w\;a \in \varSATA)\implies
+    \rec u\;v\;t \in \varSATA
+  \end{multline*}
 \end{definition}
 
 On a ainsi une interprétation de chaque type, donc on prouve sans problème

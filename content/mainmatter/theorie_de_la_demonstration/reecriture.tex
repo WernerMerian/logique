@@ -10,7 +10,7 @@ appellera aussi relations de réduction, suivant le contexte), et on se
 propose donc d'en étudier la théorie générale en amont. Ce chapitre est
 donc dédié à la théorie abstraite de la réécriture, portant sur les
 système abstraits de réécriture (\foreignexpr{Abstract Rewriting Systems},
-abrégé en ARS).
+abrégé en $\ARS$).
 
 Le principal objectif du chapitre est de donner les outils nécessaires
 pour étudier efficacement les systèmes de réécriture donnés dans les
@@ -28,7 +28,7 @@ approfondie des systèmes de réécriture.
 
 \section{Systèmes abstraits de réécriture}
 
-Le cadre des ARS est particulièrement général~: on s'intéresse en soi à
+Le cadre des $\ARS$ est particulièrement général~: on s'intéresse en soi à
 n'importe quel ensemble muni d'une relation binaire. Dans les faits, c'est
 le choix des propriétés d'intérêt ainsi que des objets concrets auxquels on
 applique la théorie qui donne à ce cadre son sens. Ainsi, on peut déjà citer
@@ -42,34 +42,34 @@ fixant un peu plus le cadre de travail.
 Commençons par la définition la plus élémentaire, déjà évoquée avant.
 
 \begin{definition}[Système de réécriture abstrait]
-    On appelle système de réécriture abstrait (abrégé $\ARS$) une paire
-    $(A,\varTo)$ où $\mathord{\varTo}\subseteq A^2$ est une relation
-    binaire.
+  On appelle système de réécriture abstrait (abrégé $\ARS$) une paire
+  $(A,\varTo)$ où $\mathord{\varTo}\subseteq A^2$ est une relation
+  binaire.
 \end{definition}
 
 L'exemple sur lequel il est bon de fixer son intuition pour appréhender les
-ARS est celui d'un système de calcul (par exemple, on pourrait considérer
+$\ARS$ est celui d'un système de calcul (par exemple, on pourrait considérer
 des configurations de machines de Turing avec la relation d'action par une
 machine donnée). Dans un système de calcul, les
 éléments sont des programme, c'est-à-dire des suites de symboles, et la
 relation de réécriture permet de faire avancer l'exécution du programme.
-Ainsi, les ARS ont beau être un cadre très large, on va tout de suite
+Ainsi, les $\ARS$ ont beau être un cadre très large, on va tout de suite
 introduire des propriétés précises qui sont d'intérêt ici, car nous voulons
 décrire des comportements précis parmi ces ensembles munis d'une relation.
 Les premières propriétés à introduire sont parfaitement classiques, et
 mènent avant tout à pouvoir construire une relation d'équivalence.
 
 \begin{definition}[Propriétés d'un ARS]
-    Soit $(A,\varTo)$ un ARS. On dira que $\varTo$ est
-    \begin{itemize}
-    \item réflexive quand $\forall a \in A, a \varTo a$
-    \item irréflexive quand $\forall a \in A, a\nvarTo a$
-    \item symétrique quand
-      $\forall a\,b\in A, a\varTo b \implies b \varTo a$
-    \item transitive quand
-      $\forall a\,b\,c\in A, a \varTo b \land b \varTo c \implies
-      a \varTo c$
-    \end{itemize}
+  Soit $(A,\varTo)$ un $\ARS$. On dira que $\varTo$ est
+  \begin{itemize}
+  \item réflexive quand $\forall a \in A, a \varTo a$
+  \item irréflexive quand $\forall a \in A, a\nvarTo a$
+  \item symétrique quand
+    $\forall a\,b\in A, a\varTo b \implies b \varTo a$
+  \item transitive quand
+    $\forall a\,b\,c\in A, a \varTo b \land b \varTo c \implies
+    a \varTo c$
+  \end{itemize}
 \end{definition}
 
 Ces propriétés sont importantes, mais contrairement au cas général, nous
@@ -92,68 +92,69 @@ relation $\varTo$ mais on introduit aussi les meilleures approximations de
 cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
 
 \begin{definition}[Clôture réflexive, symétrique, transitive]
-    Soit $(A,\varTo)$ un ARS. On définit les relations suivantes~:
-    \begin{itemize}
-    \item $\varToR$ est la plus petite relation réflexive contenant $\varTo$~;
-    \item $\varToS$ est la plus petite relation symétrique contenant $\varTo$~;
-    \item $\varToT$ est la plus petite relation transitive contenant $\varTo$~;
-    \item $\varToRt$ est la plus petite relation réflexive et transitive
-      contenant $\varTo$~;
-    \item $\varToRst$ est la plus petite relation d'équivalence contenant
-      $\varTo$.
-    \end{itemize}
-    On appelle ces relations les clôtures (respectivement réflexive, symétrique,
-    transitive, réflexive et transitive, et réflexive symétrique et transitive)
-    de $\varTo$.
+  Soit $(A,\varTo)$ un $\ARS$. On définit les relations suivantes~:
+  \begin{itemize}
+  \item $\varToR$ est la plus petite relation réflexive contenant $\varTo$~;
+  \item $\varToS$ est la plus petite relation symétrique contenant $\varTo$~;
+  \item $\varToT$ est la plus petite relation transitive contenant $\varTo$~;
+  \item $\varToRt$ est la plus petite relation réflexive et transitive
+    contenant $\varTo$~;
+  \item $\varToRst$ est la plus petite relation d'équivalence contenant
+    $\varTo$.
+  \end{itemize}
+  On appelle ces relations les clôtures (respectivement réflexive, symétrique,
+  transitive, réflexive et transitive, et réflexive symétrique et transitive)
+  de $\varTo$.
 \end{definition}
 
 \begin{remark}
-    On peut se référer aux \cref{exo.tClot}, \cref{exo.rtClot}, \cref{exo.sClot}
-    et \cref{exo.rstClot} pour une étude de ces clôtures de relations.
+  On peut se référer aux \cref{exo.tClot}, \cref{exo.rtClot}, \cref{exo.sClot}
+  et \cref{exo.rstClot} pour une étude de ces clôtures de relations.
 \end{remark}
 
 \begin{example}
-    Prenons comme système, pour une machine de Turing (potentiellement non
-    déterministe) $\varTMM$ fixée, l'ensemble des configurations sur $\varTMM$.
-    La relation $\varTo$ relie naturellement une configuration à une
-    configuration qui la suit sous l'action de $\varTMM$. Remarquons que si
-    la configuration comporte un état d'arrêt, alors elle est en relation avec
-    aucune configuration. Analysons maintenant les différentes clôtures pour cette
-    relation~:
-    \begin{itemize}
-        \item la clôture réflexive relie une configuration $C$ aux configurations
-        $C'$ atteignables en au plus un temps de calcul~;
-        \item la clôture symétrique relie une configuration $C$ aux configurations
-        $C'$ qui diffèrent d'un temps de calcul (dans les deux sens)~;
-        \item la clôture transitive relie une configuration $C$ à toutes les
-        configurations $C'$ qu'elle peut atteindre dans le futur~;
-        \item la clôture réflexive et transitive relie une configuration $C$ à
-        toutes les configurations $C'$ qu'elle peut atteindre dans le futur au sens
-        large~;
-        \item la clôture d'équivalence relie une configuration $C$ aux configurations
-        $C'$ atteignables depuis $C$ en avançant d'une étape de calcul, puis en
-        \og remontant le temps\fg si nécessaire, et ainsi de suite un nombre fini de
-        fois.
-    \end{itemize}
+  Prenons comme système, pour une machine de Turing (potentiellement non
+  déterministe) $\varTMM$ fixée, l'ensemble des configurations sur $\varTMM$.
+  La relation $\varTo$ relie naturellement une configuration à une
+  configuration qui la suit sous l'action de $\varTMM$. Remarquons que si
+  la configuration comporte un état d'arrêt, alors elle est en relation avec
+  aucune configuration. Analysons maintenant les différentes clôtures pour
+  cette relation~:
+  \begin{itemize}
+  \item la clôture réflexive relie une configuration $C$ aux
+    configurations
+    $C'$ atteignables en au plus un temps de calcul~;
+  \item la clôture symétrique relie une configuration $C$ aux configurations
+    $C'$ qui diffèrent d'un temps de calcul (dans les deux sens)~;
+  \item la clôture transitive relie une configuration $C$ à toutes les
+    configurations $C'$ qu'elle peut atteindre dans le futur~;
+  \item la clôture réflexive et transitive relie une configuration $C$ à
+    toutes les configurations $C'$ qu'elle peut atteindre dans le futur au sens
+    large~;
+  \item la clôture d'équivalence relie une configuration $C$ aux configurations
+    $C'$ atteignables depuis $C$ en avançant d'une étape de calcul, puis en
+    \og remontant le temps\fg si nécessaire, et ainsi de suite un nombre fini de
+    fois.
+  \end{itemize}
 \end{example}
 
 \noindent
 On donne aussi quelques opérations élémentaires sur les relations.
 
 \begin{definition}[Transposée]
-    Soit $(A,\varTo)$ un ARS. On appelle transposée de $\varTo$ la relation
-    \[a \varToTr b \defeq b \varTo a\]
-    On appelle composition de deux relations $\varRR,\varRR'$ sur $A$ la
-    relation
-    \[a\mathrel{(\mathord{\varRR}\circ\mathord{\varRR'})}c \defeq
-    \exists b \in A, a \varRR b \land b \varRR c\]
-    On définit l'itérée d'une relation $\varRR$ par
-    \[\begin{cases}
-        \varRR^0 \defeq \compr{(a,a)}{a \in A}\\
-        \mathord{\varRR^{n+1}}\defeq \mathord{\varRR^n}\circ\mathord{\varRR}
-    \end{cases}\]
-    Enfin, on définit les plages d'itérées d'une relation $\varRR$ par
-    \[\mathord{\varRR^{\leq n}}\defeq \bigcup_{k \leq n} \mathord{\varRR^k}\]
+  Soit $(A,\varTo)$ un $\ARS$. On appelle transposée de $\varTo$ la relation
+  \[a \varToTr b \defeq b \varTo a\]
+  On appelle composition de deux relations $\varRR,\varRR'$ sur $A$ la
+  relation
+  \[a\mathrel{(\mathord{\varRR}\circ\mathord{\varRR'})}c \defeq
+  \exists b \in A, a \varRR b \land b \varRR c\]
+  On définit l'itérée d'une relation $\varRR$ par
+  \[\begin{cases}
+  \varRR^0 \defeq \compr{(a,a)}{a \in A}\\
+  \mathord{\varRR^{n+1}}\defeq \mathord{\varRR^n}\circ\mathord{\varRR}
+  \end{cases}\]
+  Enfin, on définit les plages d'itérées d'une relation $\varRR$ par
+  \[\mathord{\varRR^{\leq n}}\defeq \bigcup_{k \leq n} \mathord{\varRR^k}\]
 \end{definition}
 
 Avec ces constructions élémentaires, on peut finalement commencer à exprimer des
@@ -167,74 +168,25 @@ Prenons par exemple le cas des configurations de machines de Turing. Rappelons
 qu'une machine de Turing non déterministe est une machine dans laquelle la
 table de transition est une relation~: ainsi, depuis une configuration $C$
 donnée, on dispose d'un ensemble $\varTMM\opTM C$ de configurations suivantes.
-Dans un tel cas, on pourrait imaginer qu'un calcul \og s'effectue correctement\fg
+Dans un tel cas, on pourrait imaginer qu'un calcul
+\og s'effectue correctement\fg
 pour une machine de Turing lorsque, pour n'importe quelles transitions qu'on
-emprunte depuis la configuration initiale $\varqZ\varwd\toInf$, on arrive à la même
-configuration $\varqP{f}\varwv\toInf$. Ainsi, le non déterminisme de la machine de
-Turing peut se résumer à la nécessité d'effectuer des choix sur les transitions,
-mais qui n'ont aucun impact sur le résultat final.
+emprunte depuis la configuration initiale $\varqZ\varwd\toInf$, on arrive à la
+même configuration $\varqP{f}\varwv\toInf$. Ainsi, le non déterminisme de la
+machine de Turing peut se résumer à la nécessité d'effectuer des choix sur les
+transitions, mais qui n'ont aucun impact sur le résultat final.
 
 En un sens, on supprime ainsi le non déterminisme, mais le non déterminisme est
 souvent (plus qu'autre chose) un obstacle à l'implémentation pratique. Ainsi, on
-est tenté d'exprimer la propriété pour un ARS que tout choix de transitions
+est tenté d'exprimer la propriété pour un $\ARS$ que tout choix de transitions
 mène au même résultat. Une première façon d'exprimer cette propriété est la
 suivante.
 
 \begin{definition}[Propriété de Church-Rosser]
-    Soit $(A,\varTo)$ un ARS. On dit qu'il a la propriété de Church-Rosser 
-    (abrégée CR) si, pour tous $a,b \in A$ tels que $a \varToRst b$, il existe
-    $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$.
+  Soit $(A,\varTo)$ un $\ARS$. On dit qu'il a la propriété de Church-Rosser 
+  (abrégée CR) si, pour tous $a,b \in A$ tels que $a \varToRst b$, il existe
+  $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$.
 \end{definition}
-
-Pour tirer profit de cette propriété, introduisons aussi la notion de réécriture
-correspondant à ce qu'on imagine être un résultat~: celle de forme normale.
-
-\begin{definition}[Forme normale]
-    Soit $(A,\varTo)$ un ARS. Un élément $a \in A$ est dit sous forme normale s'il
-    n'existe pas de $b \in A$ tel que $a \varTo b$. On note $\NF(A,\varTo)$ (ou
-    simplement $\NF$ quand le contexte est clair) l'ensemble des formes normales
-    dans $(A,\varTo)$.
-\end{definition}
-
-L'intérêt de la propriété de Church-Rosser est qu'elle implique la propriété
-suivante.
-
-\begin{definition}[Propriété de la forme normale unique]
-    Soit $(A,\varTo)$ un ARS. On dit qu'il a la propriété de la forme normale
-    unique (\foreignexpr{Uniqueness of Normal Form} en anglais, abrégé en UNF)
-    si pour toutes deux formes normales $a,b \in \NF(A,\varTo)$, si
-    $a \varToRst b$ alors $a = b$.
-\end{definition}
-
-\begin{proposition}
-    Pour tout ARS $(A,\varTo)$, si $(A,\varTo)$ a la propriété CR alors
-    $(A,\varTo)$ a la propriété UNF.
-\end{proposition}
-
-\begin{proof}
-    Soient $a,b\in \NF(A,\varTo)$ tels que $a \varToRst b$. Alors, par la
-    propriété de Church-Rosser, on trouve $c$ tel que $a \varToRt c$ et
-    $b\varToRt c$. Comme $a$ et $b$ sont des formes normales, on sait que
-    $a \varToRt c$ (respectivement $b\varToRt c$) donne une réduction en $0$
-    pas, c'est-à-dire que $a = c$ et $b = c$, d'où $a = b$.
-\end{proof}
-
-Ainsi, pour un système vérifiant CR, tout élément $a \in A$ peut se réduire en
-au plus un élément.
-
-\begin{notation}
-    Soient $a,b \in \NF$. On note $a\varToMax b$ pour signifier que la réduction
-    $a \varToRt b$ est maximale, et ainsi que $b \in \NF$.
-\end{notation}
-
-La détermination de formes normales est au c\oe ur de l'étude des systèmes de
-calcul, et la théorie de la réécriture permet alors de donner des outils
-efficaces pour prouver des propriétés sur ladite détermination dans le cas
-général.
-
-La suite de cette section est dédiée à la construction d'outils pour établir
-la propriété CR. Pour ce faire, le premier pas est de donnée une formulation
-alternative de la propriété CR, nommée confluence.
 
 \begin{figure}[t!]
   \centering
@@ -274,23 +226,73 @@ alternative de la propriété CR, nommée confluence.
   \vspace{0.2cm}
   \hrule
 
-  \vspace{0.4cm}
+  \vspace{0.2cm}
   \caption{Confluence, confluence locale, propriété du carreau}
   \label{fig.confluence}
   %\hrule
 \end{figure}
 
+Pour tirer profit de cette propriété, introduisons aussi la notion de réécriture
+correspondant à ce qu'on imagine être un résultat~: celle de forme normale.
+
+\begin{definition}[Forme normale]
+  Soit $(A,\varTo)$ un $\ARS$. Un élément $a \in A$ est dit sous forme normale
+  s'il n'existe pas de $b \in A$ tel que $a \varTo b$. On note $\NF(A,\varTo)$
+  (ou simplement $\NF$ quand le contexte est clair) l'ensemble des formes
+  normales dans $(A,\varTo)$.
+\end{definition}
+
+L'intérêt de la propriété de Church-Rosser est qu'elle implique la propriété
+suivante.
+
+\begin{definition}[Propriété de la forme normale unique]
+  Soit $(A,\varTo)$ un $\ARS$. On dit qu'il a la propriété de la forme normale
+  unique (\foreignexpr{Uniqueness of Normal Form} en anglais, abrégé en UNF)
+  si pour toutes deux formes normales $a,b \in \NF(A,\varTo)$, si
+  $a \varToRst b$ alors $a = b$.
+\end{definition}
+
+\begin{proposition}
+  Pour tout $\ARS$ $(A,\varTo)$, si $(A,\varTo)$ a la propriété CR alors
+  $(A,\varTo)$ a la propriété UNF.
+\end{proposition}
+
+\begin{proof}
+  Soient $a,b\in \NF(A,\varTo)$ tels que $a \varToRst b$. Alors, par la
+  propriété de Church-Rosser, on trouve $c$ tel que $a \varToRt c$ et
+  $b\varToRt c$. Comme $a$ et $b$ sont des formes normales, on sait que
+  $a \varToRt c$ (respectivement $b\varToRt c$) donne une réduction en $0$
+  pas, c'est-à-dire que $a = c$ et $b = c$, d'où $a = b$.
+\end{proof}
+
+Ainsi, pour un système vérifiant CR, tout élément $a \in A$ peut se réduire en
+au plus un élément.
+
+\begin{notation}
+  Soient $a,b \in A$. On note $a\varToMax b$ pour signifier que la réduction
+  $a \varToRt b$ est maximale, et ainsi que $b \in \NF$.
+\end{notation}
+
+La détermination de formes normales est au c\oe ur de l'étude des systèmes de
+calcul, et la théorie de la réécriture permet alors de donner des outils
+efficaces pour prouver des propriétés sur ladite détermination dans le cas
+général.
+
+La suite de cette section est dédiée à la construction d'outils pour établir
+la propriété CR. Pour ce faire, le premier pas est de donnée une formulation
+alternative de la propriété CR, nommée confluence.
+
 \begin{definition}[Confluence]
-    Soit $(A,\varTo)$ un ARS. On dit qu'il est confluent si pour tous
-    $a,b,c \in A$ tels que $a \varToRt b$ et $a \varToRt c$, il existe
-    $d \in A$ tel que $b \varToRt d$ et $c\varToRt d$. De façon alternative,
-    on peut exprimer ça par l'inclusion
-    $\mathord{\varToTTr}\circ\mathord{\varToRt}\subseteq
-    \mathord{\varToRt}\circ\mathord{\varToTTr}$.
+  Soit $(A,\varTo)$ un $\ARS$. On dit qu'il est confluent si pour tous
+  $a,b,c \in A$ tels que $a \varToRt b$ et $a \varToRt c$, il existe
+  $d \in A$ tel que $b \varToRt d$ et $c\varToRt d$. De façon alternative,
+  on peut exprimer ça par l'inclusion
+  $\mathord{\varToTTr}\circ\mathord{\varToRt}\subseteq
+  \mathord{\varToRt}\circ\mathord{\varToTTr}$.
 \end{definition}
 
 \begin{proposition}\label{prop.CR.confl}
-    Tout ARS $(A,\varTo)$ a la propriété CR si et seulement s'il est confluent.
+  Tout $\ARS$ $(A,\varTo)$ a la propriété CR si et seulement s'il est confluent.
 \end{proposition}
 
 \begin{figure}[t]
@@ -307,16 +309,18 @@ alternative de la propriété CR, nommée confluence.
     \draw[->,>=latex] (c) -- (b);
     \node (d0) [below = of bla] {$d_0$};
     \draw[->,>=latex,dashed] (a) -- node[very near end, right] {$\star$} (d0);
-    \draw[->,>=latex,dashed] (c) -- node[very near end, below right] {$\star$} (d0);
+    \draw[->,>=latex,dashed]
+    (c) -- node[very near end, below right] {$\star$} (d0);
     \node (d) [below right = of d0] {$d$};
     \draw[->,>=latex,dashed] (d0) -- node[very near end, right] {$\star$} (d);
-    \draw[->,>=latex,dashed] (b) -- node[very near end, below right] {$\star$} (d);
+    \draw[->,>=latex,dashed]
+    (b) -- node[very near end, below right] {$\star$} (d);
   \end{tikzpicture}
 
   \vspace{0.2cm}
   \hrule
   
-  \vspace{0.4cm}
+  \vspace{0.2cm}
   \caption{Preuve de la \cref{prop.CR.confl}}
   \label{fig.CR.confl}
   %\hrule
@@ -324,28 +328,28 @@ alternative de la propriété CR, nommée confluence.
 \end{figure}
 
 \begin{proof}
-    L'un des sens est évident~: si on a la propriété CR, alors (en reprenant les
-    notations précédentes) $b \varToRst c$ donc on trouve un $d$ correspondant.
+  L'un des sens est évident~: si on a la propriété CR, alors (en reprenant les
+  notations précédentes) $b \varToRst c$ donc on trouve un $d$ correspondant.
 
-    On souhaite donc montrer la réciproque. Tout d'abord, on peut exprimer la
-    relation $\varToRst$ comme étant $\rtClot{\varToS}$ (\latinexpr{c.f}
-    l'\cref{exo.rstClot}). On suppose qu'on a la confluence et on souhaite
-    montrer qu'on a la propriété CR. Soient $a,b \in A$ tels que $a\varToRst b$.
-    On raisonne donc par induction sur le nombre de réécriture de $\varToS$
-    pour prouver qu'il existe $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$~:
-    \begin{itemize}
-    \item la propriété est évidente en $0$ pas puisqu'alors $a = b$~;
-    \item on suppose donc que $a \varToRst c \varTo b$ et on souhaite trouver
-      $d$ tel que $a \varToRt d$ et $b \varToRt d$. Par hypothèse d'induction,
-      on trouve donc $d_0$ tel que $a \varToRt d_0$ et $c \varToRt d_0$. On
-      sait donc que $c \varToRt d_0$ et $c\varToRt b$ (var $c \varTo b$), donc
-      par confluence on en déduit qu'il existe $d$ tel que $d_0 \varToRt d$
-      et $b\varToRt d$, d'où (par transitivité) que $a\varToRt d$.
-    \item on suppose enfin que $a \varToRst c \varToTr b$ et on souhaite
-      trouver $d$ tel que $a\varToRt d$ et $b \varToRt d$. Par hypothèse
-      d'induction, on trouve $d$ tel que $a\varToRt d$ et $c\varToRt d$,
-      mais alors par transitivité $b\varToRt d$, d'où le résultat.\qedhere
-    \end{itemize}
+  On souhaite donc montrer la réciproque. Tout d'abord, on peut exprimer la
+  relation $\varToRst$ comme étant $\rtClot{\varToS}$ (\latinexpr{c.f}
+  l'\cref{exo.rstClot}). On suppose qu'on a la confluence et on souhaite
+  montrer qu'on a la propriété CR. Soient $a,b \in A$ tels que $a\varToRst b$.
+  On raisonne donc par induction sur le nombre de réécriture de $\varToS$
+  pour prouver qu'il existe $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$~:
+  \begin{itemize}
+  \item la propriété est évidente en $0$ pas puisqu'alors $a = b$~;
+  \item on suppose donc que $a \varToRst c \varTo b$ et on souhaite trouver
+    $d$ tel que $a \varToRt d$ et $b \varToRt d$. Par hypothèse d'induction,
+    on trouve donc $d_0$ tel que $a \varToRt d_0$ et $c \varToRt d_0$. On
+    sait donc que $c \varToRt d_0$ et $c\varToRt b$ (var $c \varTo b$), donc
+    par confluence on en déduit qu'il existe $d$ tel que $d_0 \varToRt d$
+    et $b\varToRt d$, d'où (par transitivité) que $a\varToRt d$.
+  \item on suppose enfin que $a \varToRst c \varToTr b$ et on souhaite
+    trouver $d$ tel que $a\varToRt d$ et $b \varToRt d$. Par hypothèse
+    d'induction, on trouve $d$ tel que $a\varToRt d$ et $c\varToRt d$,
+    mais alors par transitivité $b\varToRt d$, d'où le résultat.\qedhere
+  \end{itemize}
 \end{proof}
 
 L'avantage de la confluence est qu'elle est une propriété plus naturelle à
@@ -357,26 +361,26 @@ arbitrairement grandes. C'est pourquoi on introduit des variantes locales
 de la confluence.
 
 \begin{definition}[Confluence locale, propriété du carreau]
-    Soit $(A,\varTo)$ un ARS. On dit qu'il a la confluence locale si pour tous
-    $b \varToTr a \varTo c$, il existe $d \in A$ tel que
-    $b \varToRt d \varToTTr c$.
-    On dit qu'il a la propriété du carreau (ou la propriété du diamant, de
-    l'anglais \foreignexpr{diamond property}) si pour tous
-    $b \varToTr a \varTo c$ il existe $d \in A$ tel que
-    $b \varTo d \varToTr c$.
+  Soit $(A,\varTo)$ un $\ARS$. On dit qu'il a la confluence locale si pour tous
+  $b \varToTr a \varTo c$, il existe $d \in A$ tel que
+  $b \varToRt d \varToTTr c$.
+  On dit qu'il a la propriété du carreau (ou la propriété du diamant, de
+  l'anglais \foreignexpr{diamond property}) si pour tous
+  $b \varToTr a \varTo c$ il existe $d \in A$ tel que
+  $b \varTo d \varToTr c$.
 \end{definition}
 
 \begin{remark}
-    La confluence pour $\varTo$ peut se voir exactement comme la propriété
-    du carreau pour $\varToRt$.
+  La confluence pour $\varTo$ peut se voir exactement comme la propriété
+  du carreau pour $\varToRt$.
 \end{remark}
 
 Un point essentiel dans ces propriétés est que la propriété du carreau
 implique la confluence.
 
 \begin{proposition}\label{prop.carreau.confluence}
-    Soit $(A,\to)$ un ARS. Si $\varTo$ a la propriété du carreau, alors $\varTo$
-    est confluente.
+  Soit $(A,\to)$ un $\ARS$. Si $\varTo$ a la propriété du carreau, alors
+  $\varTo$ est confluente.
 \end{proposition}
 
 \begin{figure}[t!]
@@ -414,7 +418,7 @@ implique la confluence.
   \vspace{0.2cm}
   \hrule
   
-  \vspace{0.4cm}
+  \vspace{0.2cm}
   \caption{Preuve de la \cref{prop.carreau.confluence}}
   \label{fig.carreau.confluence}
   %\hrule
@@ -456,30 +460,30 @@ On termine cette section par une technique utile pour prouver la confluence, à
 l'aulne des constructions précédentes.
 
 \begin{lemma}\label{lem.carreau.confluence.clot}
-    Soit $(A,\varTo)$ un ARS. Soit $\varRR$ une relation telle que~:
-    \begin{itemize}
-    \begin{minipage}{0.3\textwidth}
+  Soit $(A,\varTo)$ un $\ARS$. Soit $\varRR$ une relation telle que~:
+  \begin{itemize}
+    \begin{minipage}{0.2\textwidth}
     \item $\mathord{\varRR}\subseteq\mathord{\varToRt}$~;
     \end{minipage}
-    \begin{minipage}{0.3\textwidth}
+    \begin{minipage}{0.2\textwidth}
     \item $\mathord{\varTo}\subseteq\mathord{\varRR}$~;
     \end{minipage}
-    \begin{minipage}{0.3\textwidth}
+    \begin{minipage}{0.4\textwidth}
     \item $\varRR$ a la propriété du carreau~;
     \end{minipage}
-    \end{itemize}
-    alors $\varTo$ est confluente.
+  \end{itemize}
+  alors $\varTo$ est confluente.
 \end{lemma}
 
 \begin{proof}
-    Tout d'abord, $\varRR$ contient $\varTo$, donc sa clôture réflexive et
-    transitive est contenue dans celle de $\varTo$, et $\varTo$ contient
-    $\varRR$~: puisque $\rtClot{\varRR}$ est la plus petite relation
-    réflexive et transitive contenant $\varRR$, on en déduit l'inclusion
-    inverse, d'où $\rtClot{\varRR} = \varToRt$. Comme $\varRR$ a la propriété
-    du carreau, on en déduit que $\varRR$ est confluente, c'est-à-dire que
-    $\rtClot{\varRR}$ a la propriété du carreau, ce que l'on peut par égalité
-    appliquer à $\varToRt$ pour en déduire que $\varTo$ est confluente.
+  Tout d'abord, $\varRR$ contient $\varTo$, donc sa clôture réflexive et
+  transitive est contenue dans celle de $\varTo$, et $\varTo$ contient
+  $\varRR$~: puisque $\rtClot{\varRR}$ est la plus petite relation
+  réflexive et transitive contenant $\varRR$, on en déduit l'inclusion
+  inverse, d'où $\rtClot{\varRR} = \varToRt$. Comme $\varRR$ a la propriété
+  du carreau, on en déduit que $\varRR$ est confluente, c'est-à-dire que
+  $\rtClot{\varRR}$ a la propriété du carreau, ce que l'on peut par égalité
+  appliquer à $\varToRt$ pour en déduire que $\varTo$ est confluente.
 \end{proof}
 
 \begin{figure}[t]
@@ -501,7 +505,7 @@ l'aulne des constructions précédentes.
   \vspace{0.2cm}
   \hrule
   
-  \vspace{0.4cm}
+  \vspace{0.2cm}
   \caption{Confluence locale sans confluence}
   \label{fig.ctrex.confluence}
   %\hrule
@@ -522,17 +526,17 @@ On peut en fait trouver deux notions distinctes~: l'existence d'une forme
 normale, d'une part, et la notion de normalisation forte.
 
 \begin{definition}[Normalisation forte, faible]
-    Soit $(A,\varTo)$ un ARS. On dit qu'un élément $a \in A$ est faiblement
-    normalisant quand il existe $b \in \NF$ tel que $a\varToMax b$. On note
-    $\WN(A,\varTo)$ l'ensemble des termes faiblement normalisant. On définit
-    l'ensemble $\SN(A,\varTo)$ des termes fortement normalisant comme celui
-    engendré par la règle
-    \begin{prooftree}
-        \AxiomC{$\forall b \in A, a \varTo b \implies b \in \SN$}
-        \UnaryInfC{$a \in \SN$}
-    \end{prooftree}
-    On dit que l'ARS est faiblement normalisant quand $\WN = A$ et fortement
-    normalisant quand $\SN = A$.
+  Soit $(A,\varTo)$ un $\ARS$. On dit qu'un élément $a \in A$ est faiblement
+  normalisant quand il existe $b \in \NF$ tel que $a\varToMax b$. On note
+  $\WN(A,\varTo)$ l'ensemble des termes faiblement normalisant. On définit
+  l'ensemble $\SN(A,\varTo)$ des termes fortement normalisant comme celui
+  engendré par la règle
+  \begin{prooftree}
+    \AxiomC{$\forall b \in A, a \varTo b \implies b \in \SN$}
+    \UnaryInfC{$a \in \SN$}
+  \end{prooftree}
+  On dit que l'$\ARS$ est faiblement normalisant quand $\WN = A$ et fortement
+  normalisant quand $\SN = A$.
 \end{definition}
 
 La faible normalisation est probablement la définition la plus intuitive des
@@ -548,42 +552,42 @@ le choix des réductions à effectuer peut influencer la taille du chemin vers
 une forme normale).
 
 \begin{exercise}
-    Montrer que pour un ARS $(A,\varTo)$, l'ensemble $\SN$ est la plus grande
-    partie de $A$ sur laquelle $\varTo$ est une relation bien fondée.
+  Montrer que pour un $\ARS$ $(A,\varTo)$, l'ensemble $\SN$ est la plus grande
+  partie de $A$ sur laquelle $\varTo$ est une relation bien fondée.
 \end{exercise}
 
 Sur la vision de $\SN$ comme une partie bien fondée, on peut deviner un outil
 assez naturel pour montrer des résultats de normalisation (forte comme faible).
 
 \begin{proposition}\label{prop.normalisation.wfFun}
-    Soit $(A,\varTo)$ un ARS. Soit $(X,\varRR)$ un ensemble muni d'une relation
-    bien fondée et $\makeFunName{f}{A}{X}$ une fonction. Si pour tous
-    $a,b \in A$ tels que $a\varTo b$, $f(a)\varRR f(b)$, alors $\varTo$ est
-    fortement normalisante. Si pour tout $a \in \NF\setminus A$ il existe
-    $b \in A$ tel que $a\varTo b$ et $f(a)\varRR f(b)$ alors $\varTo$ est
-    faiblement normalisante.
+  Soit $(A,\varTo)$ un $\ARS$. Soit $(X,\varRR)$ un ensemble muni d'une relation
+  bien fondée et $\makeFunName{f}{A}{X}$ une fonction. Si pour tous
+  $a,b \in A$ tels que $a\varTo b$, $f(a)\varRR f(b)$, alors $\varTo$ est
+  fortement normalisante. Si pour tout $a \in \NF\setminus A$ il existe
+  $b \in A$ tel que $a\varTo b$ et $f(a)\varRR f(b)$ alors $\varTo$ est
+  faiblement normalisante.
 \end{proposition}
 
 \begin{proof}
-    Pour le cas de la forte normalisation, on raisonne par induction bien
-    fondée sur $\varRR$. Soit donc $x \in X$ tel que pour tout $y\in X$ tel
-    que $x \varRR y$ et tout $a \in A$, si $f(a) = y$ alors $a \in \SN$.
-    Soit $a \in A$ tel que $f(a) = x$, alors pour tout $b \in A$ tel que
-    $a \varTo b$, on sait que $f(a)\varRR f(b)$, donc par hypothèse
-    d'induction $b \in \SN$, donc par définition $a \in \SN$. Donc pour
-    tout $x \in X$, si $a \in A$ est tel que $f(a) = x$, alors $a \in \SN$,
-    et puisque $f$ est une fonction totale, on en déduit que $\SN = A$.
+  Pour le cas de la forte normalisation, on raisonne par induction bien
+  fondée sur $\varRR$. Soit donc $x \in X$ tel que pour tout $y\in X$ tel
+  que $x \varRR y$ et tout $a \in A$, si $f(a) = y$ alors $a \in \SN$.
+  Soit $a \in A$ tel que $f(a) = x$, alors pour tout $b \in A$ tel que
+  $a \varTo b$, on sait que $f(a)\varRR f(b)$, donc par hypothèse
+  d'induction $b \in \SN$, donc par définition $a \in \SN$. Donc pour
+  tout $x \in X$, si $a \in A$ est tel que $f(a) = x$, alors $a \in \SN$,
+  et puisque $f$ est une fonction totale, on en déduit que $\SN = A$.
 
-    Pour le cas de la faible normalisation, on raisonne aussi par
-    induction bien fondée sur $\varRR$. De même, soit $x \in X$ tel que pour
-    tout $y \in X$ tel que $x \varRR y$ et tout $a \in A$, si $f(a) = y$
-    alors il existe une forme normale à $a$. Soit alors $a$ tel que
-    $f(a) = x$. Si $a$ est une forme normale, alors $a$ est faiblement
-    normalisant. Sinon, alors on sait qu'il existe $b$ tel que
-    $f(a)\varRR f(b)$, donc par hypothèse d'induction $b$ a une
-    forma normale, et $a \varTo b \varToMax n$ avec $n$ une forme
-    normale pour $b$, donc $a\varToMax n$, d'où le résultat par
-    induction bien fondée.
+  Pour le cas de la faible normalisation, on raisonne aussi par
+  induction bien fondée sur $\varRR$. De même, soit $x \in X$ tel que pour
+  tout $y \in X$ tel que $x \varRR y$ et tout $a \in A$, si $f(a) = y$
+  alors il existe une forme normale à $a$. Soit alors $a$ tel que
+  $f(a) = x$. Si $a$ est une forme normale, alors $a$ est faiblement
+  normalisant. Sinon, alors on sait qu'il existe $b$ tel que
+  $f(a)\varRR f(b)$, donc par hypothèse d'induction $b$ a une
+  forma normale, et $a \varTo b \varToMax n$ avec $n$ une forme
+  normale pour $b$, donc $a\varToMax n$, d'où le résultat par
+  induction bien fondée.
 \end{proof}
 
 Ainsi, dans les cas les plus simples, il suffit de trouver une bonne mesure
@@ -592,74 +596,74 @@ entiers, mais on peut aussi utiliser la structure bien fondée des listes sur
 un ensemble bien fondé, des paires avec l'ordre lexicographique\ldots
 
 \begin{exercise}
-    Soit un ARS $(A,\varTo)$, montrer que $\varTo$ est fortement normalisant
-    si et seulement si $\varToT$ est fortement normalisant.
+  Soit un $\ARS$ $(A,\varTo)$, montrer que $\varTo$ est fortement normalisant
+  si et seulement si $\varToT$ est fortement normalisant.
 \end{exercise}
 
 En particulier, la forte normalisation nous permet de raisonner par induction
-sur $\varTo$. Pour prouver une propriété $P(x)$ sur un ARS $(A,\varTo)$
+sur $\varTo$. Pour prouver une propriété $P(x)$ sur un $\ARS$ $(A,\varTo)$
 fortement normalisant, il nous suffit de montrer que pour tout $a \in A$, si
 pour tout $b$ tel que $a \varTo b$, on a $P(b)$, alors on a $\varFF(a)$.
 Cette méthode permet de prouver le lemme de Newman.
 
 \begin{lemma}[Newman \cite{Newman42}]\label{lem.newman}
-    Soit $(A,\varTo)$ un ARS. S'il est fortement normalisant et localement
-    confluent, alors il est confluent.
+  Soit $(A,\varTo)$ un $\ARS$. S'il est fortement normalisant et localement
+  confluent, alors il est confluent.
 \end{lemma}
 
 \begin{proof}
-    On procède, par induction sur $\varTo$, en considérant la propriété
-    \[P(a) \defeq \forall b,c \in A, b \varToTTr a \varToRt c \implies
-    \exists d \in A, b \varToRt d \varToTTr c\]
-    On suppose donc donnés $a,b,c$ avec $b\varToTTr a \varToRt c$. Remarquons
-    d'abord que si $b = a$ ou $c = a$, alors on peut prendre $d \defeq c$
-    (respectivement $d \defeq b$) pour avoir le résultat. On suppose donc sans
-    perte de généralité que $b\varToTTr b_0 \varToTr a \varTo c_0 \varToRt c$.
-    On peut maintenant utiliser la confluence local en
-    $b_0\varToTr a \varTo c_0$ pour trouver $d_0$ tel que
-    $b_0 \varToRt d_0 \varToTTr c_0$, mais alors on peut appliquer l'hypothèse
-    d'induction à $b\varToTTr b_0 \varToRt d_0$ pour trouver $d_1$ puis
-    $d_1\varToTTr c_0\varToRt c$ pour en déduire le résultat.
+  On procède, par induction sur $\varTo$, en considérant la propriété
+  \[P(a) \defeq \forall b,c \in A, b \varToTTr a \varToRt c \implies
+  \exists d \in A, b \varToRt d \varToTTr c\]
+  On suppose donc donnés $a,b,c$ avec $b\varToTTr a \varToRt c$. Remarquons
+  d'abord que si $b = a$ ou $c = a$, alors on peut prendre $d \defeq c$
+  (respectivement $d \defeq b$) pour avoir le résultat. On suppose donc sans
+  perte de généralité que $b\varToTTr b_0 \varToTr a \varTo c_0 \varToRt c$.
+  On peut maintenant utiliser la confluence local en
+  $b_0\varToTr a \varTo c_0$ pour trouver $d_0$ tel que
+  $b_0 \varToRt d_0 \varToTTr c_0$, mais alors on peut appliquer l'hypothèse
+  d'induction à $b\varToTTr b_0 \varToRt d_0$ pour trouver $d_1$ puis
+  $d_1\varToTTr c_0\varToRt c$ pour en déduire le résultat.
 \end{proof}
 
 \begin{figure}[t]
-    \centering
-    \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-        \node (a) {$a$};
-        \node (b0) [below left of = a] {$b_0$};
-        \node (bla1) [below left of = b0] {};
-        \node (b) [below left of = bla1] {$b$};
-        \node (c0) [below right of = a] {$c_0$};
-        \node (bla2) [below right of = c0] {};
-        \node (c) [below right of = bla2] {$c$};
-        \node (d0) [below right of = b0] {$d_0$};
-        \node (d1) [below right of = b] {$d_1$};
-        \node (bla3) [below right of = d1] {};
-        \node (d) [below right of = bla3] {$d$};
-        \draw[->,>=latex] (a) -- (b0);
-        \draw[->,>=latex] (a) -- (c0);
-        \draw[->,>=latex] (b0) -- node[very near end, below] {$\star$} (b);
-        \draw[->,>=latex] (c0) -- node[very near end, right] {$\star$} (c);
-        \draw[->,>=latex,dashed] (b0) -- node[very near end, right] {$\star$} (d0);
-        \draw[->,>=latex,dashed] (c0) -- node[very near end, below] {$\star$} (d0);
-        \draw[->,>=latex,dashed] (b) -- node[very near end, right] {$\star$} (d1);
-        \draw[->,>=latex,dashed] (d0) -- node[very near end, below] {$\star$} (d1);
-        \draw[->,>=latex,dashed] (d1) -- node[very near end, right] {$\star$} (d);
-        \draw[->,>=latex,dashed] (c) -- node[very near end, below] {$\star$} (d);
-    \end{tikzpicture}
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node (a) {$a$};
+    \node (b0) [below left of = a] {$b_0$};
+    \node (bla1) [below left of = b0] {};
+    \node (b) [below left of = bla1] {$b$};
+    \node (c0) [below right of = a] {$c_0$};
+    \node (bla2) [below right of = c0] {};
+    \node (c) [below right of = bla2] {$c$};
+    \node (d0) [below right of = b0] {$d_0$};
+    \node (d1) [below right of = b] {$d_1$};
+    \node (bla3) [below right of = d1] {};
+    \node (d) [below right of = bla3] {$d$};
+    \draw[->,>=latex] (a) -- (b0);
+    \draw[->,>=latex] (a) -- (c0);
+    \draw[->,>=latex] (b0) -- node[very near end, below] {$\star$} (b);
+    \draw[->,>=latex] (c0) -- node[very near end, right] {$\star$} (c);
+    \draw[->,>=latex,dashed] (b0) -- node[very near end, right] {$\star$} (d0);
+    \draw[->,>=latex,dashed] (c0) -- node[very near end, below] {$\star$} (d0);
+    \draw[->,>=latex,dashed] (b) -- node[very near end, right] {$\star$} (d1);
+    \draw[->,>=latex,dashed] (d0) -- node[very near end, below] {$\star$} (d1);
+    \draw[->,>=latex,dashed] (d1) -- node[very near end, right] {$\star$} (d);
+    \draw[->,>=latex,dashed] (c) -- node[very near end, below] {$\star$} (d);
+  \end{tikzpicture}
 
-    \vspace{0.2cm}
-    \hrule
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Preuve du \cref{lem.newman}}
+  \vspace{0.2cm}
+  \caption{Preuve du \cref{lem.newman}}
 \end{figure}
 
-Un ARS qui est à la fois confluent et fortement normalisant est parfois appelé un
-système terminant. Un point central dans un tel calcul est que, si on possède
-un codage de Gödel $\godcod\tok$ de notre ARS $(A,\varTo)$ et que la relation de
-réécriture est calculable sur les codes, alors le problème de décider si deux éléments
-$a,b \in A$ vérifient $a\varToRst b$ est décidable.
+Un $\ARS$ qui est à la fois confluent et fortement normalisant est parfois
+appelé un système terminant. Un point central dans un tel calcul est que, si on
+possède un codage de Gödel $\godcod\tok$ de notre $\ARS$ $(A,\varTo)$ et que la
+relation de réécriture est calculable sur les codes, alors le problème de
+décider si deux éléments $a,b \in A$ vérifient $a\varToRst b$ est décidable.
 
 Cette question, de décider si deux éléments sont égaux modulo réécriture,
 a une importance historique toute particulière. Nous allons donc donner des
@@ -668,8 +672,8 @@ bases théoriques pour en comprendre l'importance.
 \section{Problème du mot}
 
 Pour énoncer le problème du mot, commençons par fixer un cadre plus restrictif à
-notre étude. Les ARS constituent un cadre particulièrement général, si bien que
-celui-ci empêche de dire grand chose. Aussi, nous préférons maintenant nous
+notre étude. Les $\ARS$ constituent un cadre particulièrement général, si bien
+que celui-ci empêche de dire grand chose. Aussi, nous préférons maintenant nous
 restreindre à un cadre qui a déjà été introduit dans le \cref{chp.auto}~: celui
 des monoïdes. Notre objectif va être de considérer des relations de réécriture
 sur des monoïdes, en prenant comme idée centrale l'étude des monoïdes libres.
@@ -677,18 +681,20 @@ sur des monoïdes, en prenant comme idée centrale l'étude des monoïdes libres
 \subsection{Réécriture sur des monoïdes}
 
 En effet, prenons par exemple le langage des formules $\Formula(\Sign)$. Comme
-on considère un langage, on sait qu'on étudie une partie $\varLL\subseteq \toStB$
+on considère un langage, on sait qu'on étudie une partie
+$\varLL\subseteq \toStB$
 pour un certain alphabet $\ABB$ (qu'on pourrait ici expliciter en ajoutant les
-symboles de fonctions et de relations aux connecteurs, quantificateurs, variables
-\latinexpr{etc.}) qui se traduit donc par un certain monoïde libre. Considérons
-par exemple la relation de réécriture suivante sur les termes arithmétiques~:
+symboles de fonctions et de relations aux connecteurs, quantificateurs,
+variables \latinexpr{etc.}) qui se traduit donc par un certain monoïde libre.
+Considérons par exemple la relation de réécriture suivante sur les termes
+arithmétiques~:
 \begin{itemize}
-    \begin{minipage}{0.45\textwidth}
-    \item $t + 0 \reecr{} t$
-    \end{minipage}
-    \begin{minipage}{0.45\textwidth}
-    \item $t + \Ss u \reecr{} \Ss(t + u)$
-    \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $t + 0 \reecr{} t$
+  \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $t + \Ss u \reecr{} \Ss(t + u)$
+  \end{minipage}
 \end{itemize}
 cette relation induit en particulier une réécriture sur $\Formula(\Sign)$, mais
 on peut tout de même l'étudier comme une relation sur $\toStB$. Cela permet en
@@ -696,13 +702,13 @@ particulier d'expliciter la notion de compatibilité, permettant de faire des
 réécritures dans des sous-termes. Définissons tout cela formellement.
 
 \begin{definition}[Relation compatible sur un monoïde]
-    Soit $\varMMo$ un monoïde et $\varRR$ une relation sur $\varMMo$. On dit que
-    $\varRR$ est compatible si
-    \[\forall m,m' \in \varMMo, m \varRR m' \implies
-    \forall m_{\rml}, m_{\rmr} \in \varMMo,
-    m_{\rml}\opM m\opM m_{\rmr} \varRR m_{\rml} \opM m' \opM m_{\rmr}\]
-    On dit que $\varRR$ est une congruence si, de plus, $\varRR$ est une
-    relation d'équivalence.
+  Soit $\varMMo$ un monoïde et $\varRR$ une relation sur $\varMMo$. On dit que
+  $\varRR$ est compatible si
+  \[\forall m,m' \in \varMMo, m \varRR m' \implies
+  \forall m_{\rml}, m_{\rmr} \in \varMMo,
+  m_{\rml}\opM m\opM m_{\rmr} \varRR m_{\rml} \opM m' \opM m_{\rmr}\]
+  On dit que $\varRR$ est une congruence si, de plus, $\varRR$ est une
+  relation d'équivalence.
 \end{definition}
 
 Ainsi, les relations qui vont nous intéresser sont les relations compatibles,
@@ -712,11 +718,11 @@ construire un cadre dans lequel on peut trouver des données finies résumant
 notre relation. Pour cela, on introduit la clôture compatible d'une relation.
 
 \begin{definition}[Clôture compatible d'une relation]
-    Soit $\varRR$ une relation sur un monoïde $\varMMo$. On appelle clôture
-    compatible la plus petite relation $\toCompt{\varRR}$ contenant $\varRR$
-    et compatible. Dans le cas d'un ARS $(\varMMo,\varTo)$, on notera
-    $\varToC$ la clôture compatible de $\varTo$, ainsi que
-    $\varToCRst$ la plus petite congruence contenant $\varTo$.
+  Soit $\varRR$ une relation sur un monoïde $\varMMo$. On appelle clôture
+  compatible la plus petite relation $\toCompt{\varRR}$ contenant $\varRR$
+  et compatible. Dans le cas d'un $\ARS$ $(\varMMo,\varTo)$, on notera
+  $\varToC$ la clôture compatible de $\varTo$, ainsi que
+  $\varToCRst$ la plus petite congruence contenant $\varTo$.
 \end{definition}
 
 Reprenons maintenant notre exemple précédent de $\reecr{}$ sur les formules.
@@ -736,28 +742,28 @@ En nous restreignant au cas des monoïdes, ces notions nous permettent de
 construire ce qu'on appelle une présentation de monoïde.
 
 \begin{definition}[Présentation de monoïde]
-    On appelle présentation de monoïde une paire $(\ABA,\varTo)$ où
-    $\ABA$ est un ensemble quelconque et
-    $\mathord{\varTo}\subseteq\left(\toStA\right)^2$. Le monoïde
-    engendré par une présentation $(\ABA,\varTo)$ est le monoïde
-    quotient $\quot{\toStA}{\varToCRst}$. Un monoïde $\varMMo$
-    admet une présentation $(\ABA,\varTo)$ dont le monoïde engendré
-    est isomorphe à $\varMMo$. On dit que $\varMMo$ est finiment
-    présenté s'il existe une présentation dont $\ABA$ et
-    $\varTo$ sont des ensembles finis, et finiment engendré s'il
-    existe une présentation dont $\ABA$ est un ensemble fini.
+  On appelle présentation de monoïde une paire $(\ABA,\varTo)$ où
+  $\ABA$ est un ensemble quelconque et
+  $\mathord{\varTo}\subseteq\left(\toStA\right)^2$. Le monoïde
+  engendré par une présentation $(\ABA,\varTo)$ est le monoïde
+  quotient $\quot{\toStA}{\varToCRst}$. Un monoïde $\varMMo$
+  admet une présentation $(\ABA,\varTo)$ dont le monoïde engendré
+  est isomorphe à $\varMMo$. On dit que $\varMMo$ est finiment
+  présenté s'il existe une présentation dont $\ABA$ et
+  $\varTo$ sont des ensembles finis, et finiment engendré s'il
+  existe une présentation dont $\ABA$ est un ensemble fini.
 \end{definition}
 
 On peut maintenant énoncer le problème du mot, qui s'applique à des
 présentations de monoïdes.
 
 \begin{definition}[Problème du mot]
-    Soit $(\ABA,\varTo)$ une présentation de monoïde et un codage de Gödel
-    $\makeFunName{\godcod\tok}{\ABA}{\bN}$ (qu'on étend sans souci à
-    $\toStA$ par la bijection $\BijCs$). Le problème du mot pour cette
-    présentation est la question de savoir si l'ensemble
-    \[\compr{(\godcod a,\godcod b)}{a,b \in \toStA\land a\varToCRst b}\]
-    est décidable.
+  Soit $(\ABA,\varTo)$ une présentation de monoïde et un codage de Gödel
+  $\makeFunName{\godcod\tok}{\ABA}{\bN}$ (qu'on étend sans souci à
+  $\toStA$ par la bijection $\BijCs$). Le problème du mot pour cette
+  présentation est la question de savoir si l'ensemble
+  \[\compr{(\godcod a,\godcod b)}{a,b \in \toStA\land a\varToCRst b}\]
+  est décidable.
 \end{definition}
 
 On peut aussi restreindre ce problème à une sous-classe des monoïdes, qui
@@ -769,8 +775,8 @@ les groupes, le problème du mot est indécidable. Ce théorème est donné
 avant tout pour la culture, nous n'en donnons pas la preuve ici.
 
 \begin{theorem}[Boone-Novikov \cite{novikov55, boone58}]
-    Il existe un groupe finiment présenté dont le problème du mot est
-    indécidable.
+  Il existe un groupe finiment présenté dont le problème du mot est
+  indécidable.
 \end{theorem}
 
 \subsection{Complétion de Knuth-Bendix}
@@ -780,7 +786,7 @@ classes restreintes, il reste décidable dans de nombreux cas, et il est
 alors intéressant d'étudier la relation de réécriture. Nous avons déjà vu
 que, grâce au \cref{lem.newman}, la forte normalisation permet de se
 contenter de la confluence locale pour prouver la confluence. Supposons
-donc maintenant qu'on dispose d'un ARS $(\varMMo,\varTo)$ sur un monoïde,
+donc maintenant qu'on dispose d'un $\ARS$ $(\varMMo,\varTo)$ sur un monoïde,
 fortement normalisant, dont on veut établir la confluence locale. L'étude
 de cette confluence locale peut en fait se réduire à celle des paires
 critiques, qui sont des conflits de règles. Prenons un exemple~:
@@ -825,26 +831,26 @@ $\varwv_1\varwd_3$ et $\varwd_1\varwv_2$ peuvent se réduire en un même mot.
 C'est cette idée que formalise la notion de paire critique.
 
 \begin{definition}[Paire critique]
-    Soit $(\ABA,\varTo)$ une présentation de monoïde. On appelle paire
-    critique sur cette présentation une paire $(\varww_1,\varww_2)$
-    telle que
-    \[\exists \varwd_1,\varwd_2,\varwd_3,\varwv_1,\varwv_2\in\toStA,
-    \begin{cases}
-        \varwd_1\varwd_2\varTo \varwv_1\\
-        \varwd_2\varwd_3\varTo \varwv_2\\
-        \varww_1 = \varwv_1\varwd_3\\
-        \varww_2 = \varwd_1\varwv_2\\
-        \varww_1 \neq \varww_2
-    \end{cases}\]
-    On dit que cette paire peut être rejointe (ou résolue) s'il existe
-    $\varww_0$ tel que $\varww_1\varToCRt \varww_0\varToCTTr \varww_2$.
-    On note $\PrCrt(\ABA,\varTo)$ l'ensemble des paires critiques de
-    $(\ABA,\varTo)$ (on laissera le paramètre $(\ABA,\varTo)$ sous-entendu).
+  Soit $(\ABA,\varTo)$ une présentation de monoïde. On appelle paire
+  critique sur cette présentation une paire $(\varww_1,\varww_2)$
+  telle que
+  \[\exists \varwd_1,\varwd_2,\varwd_3,\varwv_1,\varwv_2\in\toStA,
+  \begin{cases}
+    \varwd_1\varwd_2\varTo \varwv_1\\
+    \varwd_2\varwd_3\varTo \varwv_2\\
+    \varww_1 = \varwv_1\varwd_3\\
+    \varww_2 = \varwd_1\varwv_2\\
+    \varww_1 \neq \varww_2
+  \end{cases}\]
+  On dit que cette paire peut être rejointe (ou résolue) s'il existe
+  $\varww_0$ tel que $\varww_1\varToCRt \varww_0\varToCTTr \varww_2$.
+  On note $\PrCrt(\ABA,\varTo)$ l'ensemble des paires critiques de
+  $(\ABA,\varTo)$ (on laissera le paramètre $(\ABA,\varTo)$ sous-entendu).
 \end{definition}
 
 \begin{remark}
-    La relation $\varToC$ est localement confluente si et seulement si toute
-    paire critique peut être rejointe.
+  La relation $\varToC$ est localement confluente si et seulement si toute
+  paire critique peut être rejointe.
 \end{remark}
 
 Dans notre exemple, on peut remarquer que la réduction est fortement
@@ -866,14 +872,14 @@ de réécrire la relation $\varTo$ de sorte à obtenir une présentation
 confluente. Pour cela, on se donne d'abord un cadre légèrement plus général.
 
 \begin{definition}[Théorie équationnelle]
-    On appelle équation sur un monoïde libre $\toStA$ une paire
-    $\{\varwd,\varwv\} \subseteq \toStA$.
-    On appelle théorie équationnelle un ensemble d'équations. Si
-    $\varEq$ est une théorie équationnelle et $\varwd,\varwv \in \toStA$,
-    on écrit $\varEq\vdP \varwd = \varwv$ pour signifier que
-    la congruence induite par $\varEq$ (en associant à une paire
-    $\{\varww_1,\varww_2\}$ les deux couples $(\varww_1,\varww_2)$ et
-    $(\varww_2,\varww_2)$) met en relation $\varwd$ et $\varwv$.
+  On appelle équation sur un monoïde libre $\toStA$ une paire
+  $\{\varwd,\varwv\} \subseteq \toStA$.
+  On appelle théorie équationnelle un ensemble d'équations. Si
+  $\varEq$ est une théorie équationnelle et $\varwd,\varwv \in \toStA$,
+  on écrit $\varEq\vdP \varwd = \varwv$ pour signifier que
+  la congruence induite par $\varEq$ (en associant à une paire
+  $\{\varww_1,\varww_2\}$ les deux couples $(\varww_1,\varww_2)$ et
+  $(\varww_2,\varww_2)$) met en relation $\varwd$ et $\varwv$.
 \end{definition}
 
 L'algorithme que nous présentons, appelé algorithme de complétion de
@@ -898,10 +904,10 @@ $\varEq \vdP \varwd = \varwv$ et la transformer en une instance
 $\varwd \varTo \varwv$ si $\varwd > \varwv$. Ainsi, on peut
 donner une première règle d'inférence~:
 \begin{prooftree}
-    \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwv\}\},\varTo\rangle$}
-    \AxiomC{$\varwd > \varwv$}
-    \RightLabel{Ori}
-    \BinaryInfC{$\langle \varEq,\mathord{\varTo}\cup\{(\varwd,\varwv)\}\rangle$}
+  \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwv\}\},\varTo\rangle$}
+  \AxiomC{$\varwd > \varwv$}
+  \RightLabel{Ori}
+  \BinaryInfC{$\langle \varEq,\mathord{\varTo}\cup\{(\varwd,\varwv)\}\rangle$}
 \end{prooftree}
 Chaque règle qu'on définira doit vérifier l'invariant suivant~: la
 congruence engendrée par $\varEq \cup \mathord{\varTo}$ en prémisse et en
@@ -915,39 +921,39 @@ et $\varwv\nless\varwd$). On donne en \cref{tbl.KnuthBendix.Regles} les
 autres règles disponibles.
 
 \begin{table}[t]
-    \centering
-    \begin{tabular}{cc}
-         \AxiomC{$\langle \varEq,\varTo\rangle$}
-         \AxiomC{$(\varwd,\varwv)\in\PrCrt(\mathord{\varTo})$}
-         \RightLabel{PC}
-         \BinaryInfC{$\langle\varEq\cup\{\{\varwd',\varwv'\}\},\varTo\rangle$}
-         \DisplayProof
-         &
-         \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwd\}\},\varTo\rangle$}
-         \RightLabel{Del}
-         \UnaryInfC{$\langle \varEq,\varTo\rangle$}
-         \DisplayProof
-         \\
-         \\
-         \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwv\}\},\varTo\rangle$}
-         \AxiomC{$\varwd\varToC \varww$}
-         \RightLabel{Simp}
-         \BinaryInfC{$\langle \varEq\cup\{\{\varww,\varwv\}\},\varTo\rangle$}
-         \DisplayProof
-         &
-         \AxiomC{$\langle \varEq,\varTo\cup\{(\varwd,\varwv)\}$}
-         \AxiomC{$\varwv\varToC \varww$}
-         \RightLabel{Comp}
-         \BinaryInfC{$\langle \varEq,\varTo\cup\{(\varwd,\varww)\}\rangle$}
-         \DisplayProof
-    \end{tabular}
+  \centering
+  \begin{tabular}{cc}
+    \AxiomC{$\langle \varEq,\varTo\rangle$}
+    \AxiomC{$(\varwd,\varwv)\in\PrCrt(\mathord{\varTo})$}
+    \RightLabel{PC}
+    \BinaryInfC{$\langle\varEq\cup\{\{\varwd',\varwv'\}\},\varTo\rangle$}
+    \DisplayProof
+    &
+    \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwd\}\},\varTo\rangle$}
+    \RightLabel{Del}
+    \UnaryInfC{$\langle \varEq,\varTo\rangle$}
+    \DisplayProof
+    \\
+    \\
+    \AxiomC{$\langle \varEq\cup\{\{\varwd,\varwv\}\},\varTo\rangle$}
+    \AxiomC{$\varwd\varToC \varww$}
+    \RightLabel{Simp}
+    \BinaryInfC{$\langle \varEq\cup\{\{\varww,\varwv\}\},\varTo\rangle$}
+    \DisplayProof
+    &
+    \AxiomC{$\langle \varEq,\varTo\cup\{(\varwd,\varwv)\}$}
+    \AxiomC{$\varwv\varToC \varww$}
+    \RightLabel{Comp}
+    \BinaryInfC{$\langle \varEq,\varTo\cup\{(\varwd,\varww)\}\rangle$}
+    \DisplayProof
+  \end{tabular}
 
-    \vspace{0.2cm}
-    \hrule
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Règles de réductions des couples de réécriture}
-    \label{tbl.KnuthBendix.Regles}
+  \vspace{0.2cm}
+  \caption{Règles de réductions des couples de réécriture}
+  \label{tbl.KnuthBendix.Regles}
 \end{table}
 
 Relevons en particulier que les réductions qui nous intéressent sont
@@ -968,42 +974,42 @@ cas de deux termes déjà rejoints) d'éliminer une équation triviale.
 On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
 
 \begin{theorem}[Complétion de Knuth-Bendix \cite{Knuth1983}]
-    Soit $\varEq$ une théorie équationnelle, alors si l'algorithme de
-    la \cref{algo.KnuthBendix} termine positivement, le résultat est
-    une relation de réécriture fortement normalisante et confluente.
+  Soit $\varEq$ une théorie équationnelle, alors si l'algorithme de
+  la \cref{algo.KnuthBendix} termine positivement, le résultat est
+  une relation de réécriture fortement normalisante et confluente.
 \end{theorem}
 
 \begin{proof}
-    A chaque étape, on sait que la relation $\varTo$ associée est
-    fortement normalisante. De plus, si l'algorithme termine, alors
-    aucune paire critique ne peut être présente car, dans un tel cas,
-    elle serait ajoutée à $\varEq$, et le membre de gauche du couple
-    ne serait donc pas vide. On a donc une réduction fortement
-    normalisante et localement confluente (car toutes les paires
-    critiques sont rejointes) donc confluente.
+  A chaque étape, on sait que la relation $\varTo$ associée est
+  fortement normalisante. De plus, si l'algorithme termine, alors
+  aucune paire critique ne peut être présente car, dans un tel cas,
+  elle serait ajoutée à $\varEq$, et le membre de gauche du couple
+  ne serait donc pas vide. On a donc une réduction fortement
+  normalisante et localement confluente (car toutes les paires
+  critiques sont rejointes) donc confluente.
 \end{proof}
 
 \begin{remark}
-    Tout le travail effectué autour du problème du mot a été
-    ici traité dans le cas d'un monoïde $\varMMo$, mais on le
-    généralise assez naturellement à des définitions
-    d'ensembles inductifs (au sens du \cref{chp.induction})
-    ou des langages algébriques. Par exemple, la notion de
-    clôture compatible doit se voir comme la possibilité
-    d'appliquer la réécriture dans un sous-terme d'un
-    terme fixé. On voit aussi que la \cref{def.relat.compatible}
-    peut se voir comme une telle instance.
+  Tout le travail effectué autour du problème du mot a été
+  ici traité dans le cas d'un monoïde $\varMMo$, mais on le
+  généralise assez naturellement à des définitions
+  d'ensembles inductifs (au sens du \cref{chp.induction})
+  ou des langages algébriques. Par exemple, la notion de
+  clôture compatible doit se voir comme la possibilité
+  d'appliquer la réécriture dans un sous-terme d'un
+  terme fixé. On voit aussi que la \cref{def.relat.compatible}
+  peut se voir comme une telle instance.
 \end{remark}
 
 \begin{algorithm}[t]
-    
+  
   \KwData{\\
     une paire $\langle \varEq,\varTo\rangle$ contenant une théorie
     équationnelle et une relation de réduction\\
   }
   \KwResult{\\
     une relation $\varTo$ fortement normalisante et confluente
-    }
+  }
   \While{le couple $\langle \varEq,\varTo\rangle$ change et
     $\varEq \neq \vide$}{
     \For{$(\varwd,\varwv)\in\PrCrt(\varTo)$}{
@@ -1023,10 +1029,10 @@ On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
         \{(\varwd,\varwv)\}$\;
       }
       \If{$\varwd\in\NF(\varTo)\land\varwv\in\NF(\varTo)
-      \land\varwd\nless \varwv\land\varwv\nless\varwd$}
-      {
-      \KwRet $\bot$\;
-      }
+        \land\varwd\nless \varwv\land\varwv\nless\varwd$}
+         {
+           \KwRet $\bot$\;
+         }
     }
   }
   \KwRet $\varTo$\;
@@ -1051,14 +1057,14 @@ uniquement aux symboles de fonctions. L'objectif va être
 d'étudier des termes et de répondre à des questions telles
 que
 \begin{quote}
-    \'Etant données des équations
-    $t_1 = u_1, \cdots, t_n = u_n$, est-il possible de
-    trouver une substitution $\subSimul$ sur les variables
-    libres des différents termes telle que les différentes
-    équations
-    $\subSimul(t_1) = \subSimul(u_1), \cdots,
-    \subSimul(t_n) = \subSimul(u_n)$
-    sont effectivement vérifiées~?
+  \'Etant données des équations
+  $t_1 = u_1, \cdots, t_n = u_n$, est-il possible de
+  trouver une substitution $\subSimul$ sur les variables
+  libres des différents termes telle que les différentes
+  équations
+  $\subSimul(t_1) = \subSimul(u_1), \cdots,
+  \subSimul(t_n) = \subSimul(u_n)$
+  sont effectivement vérifiées~?
 \end{quote}
 
 Pour ce faire, la première étape est de définir correctement
@@ -1076,25 +1082,25 @@ $\subSimul(f(\vec x)) = f\left(\overrightarrow{\subSimul(x)}\right)$.
 Définissons maintenant la notion de problème d'unification.
 
 \begin{definition}[Problème d'unification]
-    Un problème d'unification est la donnée d'un ensemble $\varPbU$
-    de couples $(t,u) \in \Term(\Sign)$. On notera des couples
-    $(t,u) \in \varPbU$ par $t \simeq u$.
+  Un problème d'unification est la donnée d'un ensemble $\varPbU$
+  de couples $(t,u) \in \Term(\Sign)$. On notera des couples
+  $(t,u) \in \varPbU$ par $t \simeq u$.
 
-    On appelle solution à un problème d'unification $\varPbU$ une
-    substitution $\subSimul$ telle que pour tout
-    $(t\simeq u) \in \varPbU$, on a l'égalité
-    $\subSimul(t) = \subSimul(u)$.
+  On appelle solution à un problème d'unification $\varPbU$ une
+  substitution $\subSimul$ telle que pour tout
+  $(t\simeq u) \in \varPbU$, on a l'égalité
+  $\subSimul(t) = \subSimul(u)$.
 \end{definition}
 
 \begin{example}
-    Prenons la signature de l'arithmétique pour construire nos
-    termes. Un exemple de problème d'unification sur une telle
-    signature peut être $\{ x + 2 \simeq 2 + x\}$, et une solution
-    évidente est $\subSimul(x) = 2$. Attention cependant~:
-    l'unification est ici syntaxique, ce qui signifie qu'il n'y a
-    par exemple pas de solution à $x + 2 \simeq 4$, car toute
-    substitution sur $x$ laissera inchangé le fait qu'un symbole
-    $+$ apparaît à gauche mais pas à droite.
+  Prenons la signature de l'arithmétique pour construire nos
+  termes. Un exemple de problème d'unification sur une telle
+  signature peut être $\{ x + 2 \simeq 2 + x\}$, et une solution
+  évidente est $\subSimul(x) = 2$. Attention cependant~:
+  l'unification est ici syntaxique, ce qui signifie qu'il n'y a
+  par exemple pas de solution à $x + 2 \simeq 4$, car toute
+  substitution sur $x$ laissera inchangé le fait qu'un symbole
+  $+$ apparaît à gauche mais pas à droite.
 \end{example}
 
 Ces problèmes peuvent se rencontrer dès lors qu'il s'agit de
@@ -1117,11 +1123,11 @@ d'en exhiber une le cas échéant. On peut même en exhiber une
 optimale, au sens suivant.
 
 \begin{definition}[Solution principale d'un problème d'unification]
-    Soit $\varPbU$ un problème d'unification. On dit qu'une solution
-    $\subSimul_0$ à $\varPbU$ est une solution principale si pour
-    toute autre solution $\subSimul_1$ il existe une substitution
-    $\subSimul_{0\to 1}$ telle que
-    $\subSimul_1 = \subSimul_{0 \to 1} \circ \subSimul$.
+  Soit $\varPbU$ un problème d'unification. On dit qu'une solution
+  $\subSimul_0$ à $\varPbU$ est une solution principale si pour
+  toute autre solution $\subSimul_1$ il existe une substitution
+  $\subSimul_{0\to 1}$ telle que
+  $\subSimul_1 = \subSimul_{0 \to 1} \circ \subSimul$.
 \end{definition}
 
 Ainsi, une solution principale factorise n'importe quelle solution
@@ -1156,46 +1162,46 @@ plutôt intuitive~:
 On donne le pseudo code en \cref{algo.unification}.
 
 \begin{algorithm}[t]
-    \KwData{\\
+  \KwData{\\
     un problème d'unification $\varPbU$\\
     une substitution $\subSimul$
-    }
-    \KwResult{\\
+  }
+  \KwResult{\\
     une solution principale au problème $\varPbU$
-    }
-    \While{$\varPbU \neq \vide$}{
+  }
+  \While{$\varPbU \neq \vide$}{
     \For{$(t\simeq u) \in \varPbU$}{
-        \If{$t = x \land u = y \land x \neq y$}{
+      \If{$t = x \land u = y \land x \neq y$}{
         \KwRet $\bot$\;
-        }
-        \If{$t = x \land u = y \land x = y$}{
+      }
+      \If{$t = x \land u = y \land x = y$}{
         $\varPbU \leftarrow \varPbU\setminus\{(t\simeq u)\}$\;
-        }
-        \If{$t = x$}{
+      }
+      \If{$t = x$}{
         $\subSimul \leftarrow (x \mapsto u)\circ\subSimul$\;
         $\varPbU \leftarrow \varPbU\setminus\{(t\simeq u)\}$\;
-        }
-        \If{$u = x$}{
+      }
+      \If{$u = x$}{
         $\subSimul \leftarrow (x \mapsto t)\circ\subSimul$\;
         $\varPbU \leftarrow \varPbU\setminus\{(t\simeq u)\}$\;
-        }
-        \If{$t = f(\vec{t'})\land u = g(\vec{u'})\land f\neq g$}{
+      }
+      \If{$t = f(\vec{t'})\land u = g(\vec{u'})\land f\neq g$}{
         \KwRet $\bot$\;
-        }
-        \If{$t = f(t_1,\ldots,t_k) \land u = f(u_1,\ldots,u_n)$}{
+      }
+      \If{$t = f(t_1,\ldots,t_k) \land u = f(u_1,\ldots,u_n)$}{
         $\varPbU \leftarrow (\varPbU\setminus\{(t\simeq u)\})
         \cup \{(t_1\simeq u_1),\ldots,(t_k\simeq u_k)\}$\;
-        }
+      }
     }
-    }
-    \caption{Algorithme d'unification de Robinson}
-    \label{algo.unification}
+  }
+  \caption{Algorithme d'unification de Robinson}
+  \label{algo.unification}
 \end{algorithm}
 
 \begin{remark}
-Dans l'algorithme, lorsqu'on considère $\subSimul$ auquel on ajoute
-$x \mapsto t$, on doit aussi remplacer chaque $x$ dans l'image de
-$\subSimul$ par $t$.
+  Dans l'algorithme, lorsqu'on considère $\subSimul$ auquel on ajoute
+  $x \mapsto t$, on doit aussi remplacer chaque $x$ dans l'image de
+  $\subSimul$ par $t$.
 \end{remark}
 
 On souhaite maintenant montrer la correction et la terminaison de cet
@@ -1271,12 +1277,12 @@ se fixer une signature $\Sign$ sur laquelle on va construire des
 réécritures. Pour cette raison, on peut reprendre l'exemple développé
 précédemment de la réécriture arithmétique
 \begin{itemize}
-    \begin{minipage}{0.45\textwidth}
-    \item $t + 0 \reecr{} t$
-    \end{minipage}
-    \begin{minipage}{0.45\textwidth}
-    \item $t + \Ss u \reecr{} \Ss(t + u)$
-    \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $t + 0 \reecr{} t$
+  \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $t + \Ss u \reecr{} \Ss(t + u)$
+  \end{minipage}
 \end{itemize}
 Cette réécriture est fortement normalisante~: dans un cas, la taille du
 terme diminue strictement, dans l'autre le nombre de constructeurs $\Ss$
@@ -1295,32 +1301,32 @@ règle disant que si deux séquents sont réductibles l'un à l'autre,
 alors on peut passer d'un arbre de preuve à un autre.
 
 \begin{definition}[Démonstration modulo réécriture]
-\label{def.demoModTh}
-Soit $\Sign$ une signature et $\reecr{}$ une relation de réécriture
-sur $\Formula(\Sign)$. On définit $\Proof(\Sign,\reecr{})$ de façon
-analogue à $\Proof(\Sign)$, mais en permettant que, dans une règle
-\begin{prooftree}
-    \AxiomC{$\ldots$}
+  \label{def.demoModTh}
+  Soit $\Sign$ une signature et $\reecr{}$ une relation de réécriture
+  sur $\Formula(\Sign)$. On définit $\Proof(\Sign,\reecr{})$ de façon
+  analogue à $\Proof(\Sign)$, mais en permettant que, dans une règle
+  \begin{prooftree}
+    \AxiomC{$\cdots$}
     \RightLabel{$\ruleR$}
     \UnaryInfC{$\varFF_1,\ldots,\varFF_k\vdP
-    \varFP_1,\ldots,\varFP_p$}
-\end{prooftree}
-si $\varFF_i \rtsClot{\reecr{}} \varFF_i'$ et
-$\varFP_i \rtsClot{\reecr{}} \varFP_i'$, alors on a la règle
-\begin{prooftree}
-    \AxiomC{$\ldots$}
+      \varFP_1,\ldots,\varFP_p$}
+  \end{prooftree}
+  si $\varFF_i \rtsClot{\reecr{}} \varFF_i'$ et
+  $\varFP_i \rtsClot{\reecr{}} \varFP_i'$, alors on a la règle
+  \begin{prooftree}
+    \AxiomC{$\cdots$}
     \RightLabel{$\ruleR$}
     \UnaryInfC{$\varFF_1',\ldots,\varFF_k'\vdP
-    \varFP_1',\ldots,\varFP_p'$}
-\end{prooftree}
-où les prémisses sont les mêmes dans la seconde règle.
+      \varFP_1',\ldots,\varFP_p'$}
+  \end{prooftree}
+  où les prémisses sont les mêmes dans la seconde règle.
 \end{definition}
 
 On peut ainsi, en reprenant la réécriture précédente, construire
 \begin{prooftree}
-    \AxiomC{}
-    \RightLabel{$\Rreq$}
-    \UnaryInfC{$\vdP\Ss \Ss 0 = \Ss 0 + \Ss 0$}
+  \AxiomC{}
+  \RightLabel{$\Rreq$}
+  \UnaryInfC{$\vdP\Ss \Ss 0 = \Ss 0 + \Ss 0$}
 \end{prooftree}
 simplement parce que
 $\Ss 0 + \Ss 0 \reecr{} \Ss(\Ss 0 + 0) \reecr{} \Ss \Ss 0$. Les
@@ -1352,14 +1358,14 @@ Par exemple, supposons qu'on pose
 $\varFF \lor \varFP \reecr{} \varFF\land \varFP$. Avec une telle
 définition, on autorise la coupure
 \begin{prooftree}
-    \AxiomC{$\varFF,\varFP\vdP$}
-    \RightLabel{$\Rland$}
-    \UnaryInfC{$\varFF\land\varFP\vdP$}
-    \AxiomC{$\vdP\varFF,\varFP$}
-    \RightLabel{$\Rror$}
-    \UnaryInfC{$\vdP\varFF\land\varFP$}
-    \RightLabel{$\Rcut$}
-    \BinaryInfC{$\vdP$}
+  \AxiomC{$\varFF,\varFP\vdP$}
+  \RightLabel{$\Rland$}
+  \UnaryInfC{$\varFF\land\varFP\vdP$}
+  \AxiomC{$\vdP\varFF,\varFP$}
+  \RightLabel{$\Rror$}
+  \UnaryInfC{$\vdP\varFF\land\varFP$}
+  \RightLabel{$\Rcut$}
+  \BinaryInfC{$\vdP$}
 \end{prooftree}
 ce qui, outre le fait que l'arbre peut effectivement s'écrire
 en prenant $\varFP\defeq\lnot\varFF$ et contredit alors la
@@ -1380,9 +1386,9 @@ Un premier cas simple est celui dans lequel la réécriture peut
 se simuler par un arbre de preuve.
 
 \begin{definition}[Réécriture simulée]
-    Une réécriture $\reecr{}$ est dite simulable si pour toute
-    réécriture $\varFF\reecr{} \varFP$, on peut prouver que
-    $\varFF\dvvd \varFP$ (sans réécriture ici).
+  Une réécriture $\reecr{}$ est dite simulable si pour toute
+  réécriture $\varFF\reecr{} \varFP$, on peut prouver que
+  $\varFF\dvvd \varFP$ (sans réécriture ici).
 \end{definition}
 
 Dans un tel cas, on peut modifier une coupure logique en
@@ -1390,25 +1396,25 @@ ajoutant un arbre permettant de transformer $\varFF$ en
 $\varFP$, pour que la règle logique soit celle attendue.
 
 \begin{example}
-    On peut ajouter la règle $\varFF\lor\bot\reecr{}\varFF$
-    car on a les deux arbres
-    \begin{center}
-        \AxiomC{}
-        \RightLabel{$\Rax$}
-        \UnaryInfC{$\varFF\vdP\varFF$}
-        \RightLabel{$\Rlw$}
-        \UnaryInfC{$\varFF,\bot\vdP\varFF$}
-        \RightLabel{$\Rlor$}
-        \UnaryInfC{$\varFF\lor\bot\vdP\varFF$}
-        \DisplayProof
-        \hspace{2cm}
-        \AxiomC{}
-        \RightLabel{$\Rax$}
-        \UnaryInfC{$\varFF\vdP\varFF$}
-        \RightLabel{$\RrorG$}
-        \UnaryInfC{$\varFF\vdP\varFF\lor\bot$}
-        \DisplayProof
-    \end{center}
+  On peut ajouter la règle $\varFF\lor\bot\reecr{}\varFF$
+  car on a les deux arbres
+  \begin{center}
+    \AxiomC{}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varFF\vdP\varFF$}
+    \RightLabel{$\Rlw$}
+    \UnaryInfC{$\varFF,\bot\vdP\varFF$}
+    \RightLabel{$\Rlor$}
+    \UnaryInfC{$\varFF\lor\bot\vdP\varFF$}
+    \DisplayProof
+    \hspace{2cm}
+    \AxiomC{}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\varFF\vdP\varFF$}
+    \RightLabel{$\RrorG$}
+    \UnaryInfC{$\varFF\vdP\varFF\lor\bot$}
+    \DisplayProof
+  \end{center}
 \end{example}
 
 Ces constructions peuvent être utiles pour alléger les arbres,
@@ -1417,41 +1423,41 @@ lui aussi suffisant, permettant d'assurer l'élimination des
 coupures.
 
 \begin{definition}[Réécriture non ambiguë]
-    On dit qu'une réécriture $\reecr{}$ sur $\Formula(\Sign)$
-    est non ambiguë lorsque pour toute formule $\varFF$ et
-    tous contextes $\varCG,\varCD\in\Ctx(\Sign)$, il existe
-    au plus un couple de règles $\rmr c/\rml c'$ permettant
-    de construire $\varCG,\varFF\vdP\varCD$ et
-    $\varCG\vdP\varFF,\varCD$ à partir de sous-formules de
-    $\varFF$. On dit que la réécriture est bonne si
-    elle est non ambiguë et que, lorsqu'un couple
-    $\rmr c/\rml c'$ existe, alors $c = c'$, c'est-à-dire
-    que le couple correspond à la règle gauche et droite
-    d'un constructeur fixé.
+  On dit qu'une réécriture $\reecr{}$ sur $\Formula(\Sign)$
+  est non ambiguë lorsque pour toute formule $\varFF$ et
+  tous contextes $\varCG,\varCD\in\Ctx(\Sign)$, il existe
+  au plus un couple de règles $\rmr c/\rml c'$ permettant
+  de construire $\varCG,\varFF\vdP\varCD$ et
+  $\varCG\vdP\varFF,\varCD$ à partir de sous-formules de
+  $\varFF$. On dit que la réécriture est bonne si
+  elle est non ambiguë et que, lorsqu'un couple
+  $\rmr c/\rml c'$ existe, alors $c = c'$, c'est-à-dire
+  que le couple correspond à la règle gauche et droite
+  d'un constructeur fixé.
 \end{definition}
 
 \begin{remark}
-    Si $\reecr{}$ est définie sur les termes du langages
-    et appliquée par compatibilité sur les formules, alors
-    elle est automatiquement non ambiguë et compatible,
-    puisque pour $\varFF\reecr{} \varFP$, seuls changent
-    les termes des formules et les
-    connecteurs / quantificateurs restent inchangée.
+  Si $\reecr{}$ est définie sur les termes du langages
+  et appliquée par compatibilité sur les formules, alors
+  elle est automatiquement non ambiguë et compatible,
+  puisque pour $\varFF\reecr{} \varFP$, seuls changent
+  les termes des formules et les
+  connecteurs / quantificateurs restent inchangée.
 \end{remark}
 
 \begin{theorem}\label{thm.cutElimModTh}
-    Soit $\reecr{}$ une réécriture sur $\Formula(\Sign)$ qui
-    est bonne. Alors le système de preuve
-    $\Proof(\Sign,\reecr{})$ admet l'élimination des coupures.
+  Soit $\reecr{}$ une réécriture sur $\Formula(\Sign)$ qui
+  est bonne. Alors le système de preuve
+  $\Proof(\Sign,\reecr{})$ admet l'élimination des coupures.
 \end{theorem}
 
 \begin{proof}
-    On reprend simplement l'élimination des coupures dans
-    le chapitre précédent. On peut toujours faire remonter
-    les coupures jusqu'à des coupures logique, et on sait
-    qu'une coupure logique peut être réduite par le fait
-    que la réécriture est bonne. La terminaison de l'algorithme
-    est inchangée.
+  On reprend simplement l'élimination des coupures dans
+  le chapitre précédent. On peut toujours faire remonter
+  les coupures jusqu'à des coupures logique, et on sait
+  qu'une coupure logique peut être réduite par le fait
+  que la réécriture est bonne. La terminaison de l'algorithme
+  est inchangée.
 \end{proof}
 
 L'un des intérêts premiers de l'ajout de ces réécritures est de
@@ -1467,56 +1473,56 @@ $\varFF\iffS \varFP$. En fait, ces deux cas définissent
 exactement l'ensemble des formules qu'on peut prouver en plus.
 
 \begin{definition}[Théorie associée à une réécriture]
-    Soit $\reecr{}$ une relation de réécriture sur des termes.
-    On définit la théorie associée à cette réécriture par
-    \[\varT_{\reecr{}} \defeq
-    \compr{``t = u"}{t\reecr{} u} \]
-    Pour une réécriture $\reecr{}$ sur les formules, on définit
-    la théorie associée par
-    \[\varT_{\reecr{}} \defeq
-    \compr{\varFF\iffS\varFP}{\varFF\reecr{}\varFP}\]
+  Soit $\reecr{}$ une relation de réécriture sur des termes.
+  On définit la théorie associée à cette réécriture par
+  \[\varT_{\reecr{}} \defeq
+  \compr{``t = u"}{t\reecr{} u} \]
+  Pour une réécriture $\reecr{}$ sur les formules, on définit
+  la théorie associée par
+  \[\varT_{\reecr{}} \defeq
+  \compr{\varFF\iffS\varFP}{\varFF\reecr{}\varFP}\]
 \end{definition}
 
 \begin{exercise}
-    Montrer que pour une réécriture $\reecr{}$ sur les termes
-    et $\reecr{}'$ la réécriture sur les formules induite par
-    $\reecr{}$ par compatibilité, les deux théories
-    $\varT_{\reecr{}}$ et $\varT_{\reecr{}'}$ sont
-    équivalentes.
+  Montrer que pour une réécriture $\reecr{}$ sur les termes
+  et $\reecr{}'$ la réécriture sur les formules induite par
+  $\reecr{}$ par compatibilité, les deux théories
+  $\varT_{\reecr{}}$ et $\varT_{\reecr{}'}$ sont
+  équivalentes.
 \end{exercise}
 
 \begin{theorem}\label{thm.ReecrThModTh}
-    Soit $\reecr{}$ une réécriture sur les formules. Alors la
-    déduction modulo $\reecr{}$ est équivalente à la déduction
-    dans la théorie $\varT_{\reecr{}}$.
+  Soit $\reecr{}$ une réécriture sur les formules. Alors la
+  déduction modulo $\reecr{}$ est équivalente à la déduction
+  dans la théorie $\varT_{\reecr{}}$.
 \end{theorem}
 
 \begin{proof}
-    On peut prouver chaque équivalence $\varFF\iffS\varFP$ pour
-    $\varFF\reecr{}\varFP$ modulo $\reecr{}$, donc la théorie
-    $\varT_{\reecr{}}$ est prouvable modulo $\reecr{}$. Comme
-    la déduction modulo $\reecr{}$ contient la déduction
-    habituelle, on en déduit que tout ce qui est prouvable
-    dans $\varT_{\reecr{}}$ est prouvable modulo $\reecr{}$.
+  On peut prouver chaque équivalence $\varFF\iffS\varFP$ pour
+  $\varFF\reecr{}\varFP$ modulo $\reecr{}$, donc la théorie
+  $\varT_{\reecr{}}$ est prouvable modulo $\reecr{}$. Comme
+  la déduction modulo $\reecr{}$ contient la déduction
+  habituelle, on en déduit que tout ce qui est prouvable
+  dans $\varT_{\reecr{}}$ est prouvable modulo $\reecr{}$.
 
-    Réciproquement, pour tout arbre $\varPT$ modulo $\reecr{}$, il
-    existe une partie $\varCG\subseteq\varT_{\reecr{}}$ et un
-    arbre $\varPT'$ (non modulo $\reecr{}$) tels
-    que, pour $\varCD\vdP\varCT$ le séquent conclusion de
-    $\varPT$, $\varCG,\varCD\vdP\varCT$ est la conclusion de
-    $\varPT'$.
+  Réciproquement, pour tout arbre $\varPT$ modulo $\reecr{}$, il
+  existe une partie $\varCG\subseteq\varT_{\reecr{}}$ et un
+  arbre $\varPT'$ (non modulo $\reecr{}$) tels
+  que, pour $\varCD\vdP\varCT$ le séquent conclusion de
+  $\varPT$, $\varCG,\varCD\vdP\varCT$ est la conclusion de
+  $\varPT'$.
 
-    On le prouve par induction, toutes les règles se traitant
-    de la même façon. Supposons que $\varCD_0\vdP\varCT_0$ est
-    la conclusion d'une règle non modulo réécriture. On sait
-    alors que la conclusion de $\varPT$ est $\varCD_1\vdP\varCT_1$
-    où $\varCD_0$ et $\varCD_1$ (respectivement $\varCT_0$ et
-    $\varCT_1$) sont égaux modulo réécriture. On sait qu'on
-    a $\varCD_0 \iffS \varCD_1$ (c'est-à-dire, pour chaque
-    formule $\varFF_0$ dans $\varCD_0$ et $\varFF_1$ dans
-    $\varCD_1$, une preuve que $\varFF_0\iffS\varFF_1$)
-    donc, en ajoutant suffisamment de coupures, on peut prouver
-    que
-    \[\varCD_1,\varCD_0\iffS\varCD_1,\varCT_0\iffS\varCT_1\vdP
-    \varCT_1\qedhere\]
+  On le prouve par induction, toutes les règles se traitant
+  de la même façon. Supposons que $\varCD_0\vdP\varCT_0$ est
+  la conclusion d'une règle non modulo réécriture. On sait
+  alors que la conclusion de $\varPT$ est $\varCD_1\vdP\varCT_1$
+  où $\varCD_0$ et $\varCD_1$ (respectivement $\varCT_0$ et
+  $\varCT_1$) sont égaux modulo réécriture. On sait qu'on
+  a $\varCD_0 \iffS \varCD_1$ (c'est-à-dire, pour chaque
+  formule $\varFF_0$ dans $\varCD_0$ et $\varFF_1$ dans
+  $\varCD_1$, une preuve que $\varFF_0\iffS\varFF_1$)
+  donc, en ajoutant suffisamment de coupures, on peut prouver
+  que
+  \[\varCD_1,\varCD_0\iffS\varCD_1,\varCT_0\iffS\varCT_1\vdP
+  \varCT_1\qedhere\]
 \end{proof}

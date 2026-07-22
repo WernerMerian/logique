@@ -81,7 +81,7 @@ expressions possibles. Au lieu d'évaluer des expressions, on décide alors de
 travailler de façon purement syntaxique, en créant une relation représentant
 l'évaluation d'une expression, encore appelée $\lambda$-terme.
 
-\begin{definition}[$\lambda$-terme - \ordinalnumeralfeminin{1} version]
+\begin{definition}[$\lambda$-terme - version 1]
   On fixe un ensemble $\lamVar$ dénombrable de $\lambda$-variables, dont on
   notera les éléments $x,y,z,\ldots$ On définit l'ensemble $\lamSet_0$ des
   $\lambda$-termes par la BNF suivante~:
@@ -114,7 +114,7 @@ La même idée permet alors de définir une réduction sur les $\lambda$-termes,
 en réduisant $(\lambda x.t)u$ en l'expression $t$ où $u$ remplace $x$. On a donc
 besoin de la notion de substitution.
 
-\begin{definition}[Substitution - \ordinalnumeralfeminin{1} version]
+\begin{definition}[Substitution - version 1]
   Soient $t,u\in\lamSet_0$ et $x \in \lamVar$. On définit la substitution de
   $x$ par $u$ dans $t$, notée $t[u/x]$, par induction sur $t$~:
   \begin{itemize}
@@ -170,7 +170,7 @@ de considérer égaux les termes $\lambda x.t$ et $\lambda y.t[y/x]$.
   où $y \notin \VL(t)$.
 \end{definition}
 
-\begin{definition}[$\lambda$-terme - \ordinalnumeralfeminin{2} version]
+\begin{definition}[$\lambda$-terme - version 2]
   L'ensemble $\lamSet$ est défini comme le quotient par l'$\alpha$-équivalence~:
   \[\lamSet \defeq \quot{\lamSet_0}{\GaEq}\]
 \end{definition}
@@ -196,7 +196,7 @@ variables.
 
 On peut maintenant définir la substitution sans capture de variable.
 
-\begin{definition}[Substitution - \ordinalnumeralfeminin{2} version]
+\begin{definition}[Substitution - version 2]
   Soient $t,u\in\lamSet_0$ et $x \in \lamVar$. On définit la substitution sans
   capture, de $x$ par $u$ dans $t$, notée $t[u/x]$, par induction sur $t$~:
   \begin{itemize}
@@ -396,9 +396,10 @@ données.
 \end{definition}
 
 Cette définition peut paraître surprenante~: au lieu de variables, on introduit
-des entiers, et on n'ajoute aucune variable liante aux abstractions. Le choix des
-entiers n'est donc pas simplement une réécriture des variables en les énumérant
-par $x_0,x_1,\ldots$ mais bien une façon alternative de lire des variables.
+des entiers, et on n'ajoute aucune variable liante aux abstractions. Le choix
+des entiers n'est donc pas simplement une réécriture des variables en les
+énumérant par $x_0,x_1,\ldots$ mais bien une façon alternative de lire des
+variables.
 
 La façon de lire un terme dans cette syntaxe est d'imaginer que les termes sont
 interprété dans un contexte, qui associe un objet aux variables libres. On
@@ -426,8 +427,8 @@ indiquant de combien de $\lambda$ on remonte pour trouver son lieur.
   \vspace{0.2cm}
   \begin{tikzpicture}[node distance = 2cm, on grid, auto]
     \node (a0) at (0,0) {Contexte~: $[a,$};
-    \node (b0) at (1.3,0){$b$};
-    \node (c0) at (1.6,0) {$,c]$};
+      \node (b0) at (1.3,0){$b$};
+      \node (c0) at (1.6,0) {$,c]$};
     \node (a) at (0,-1) {$\lambda$};
     \node (b) [below = of a] {$\lambda$};
     \node (c) [below = of b] {$@$};
@@ -582,8 +583,8 @@ On donne aussi un encodage des tuples, de sorte à pouvoir définir des fonction
 calculables $\bN^k\partialto \bN^p$.
 
 \begin{definition}[Représentation des paires]
-  On définit les termes $\langle\tok,\tok\rangle$, $\projP{1}{}$ et $\proj{2}{}$ comme
-  suit~:
+  On définit les termes $\langle\tok,\tok\rangle$, $\projP{1}{}$ et $\proj{2}{}$
+  comme suit~:
   \begin{align*}
     \langle\tok,\tok\rangle &\defeq \lambda t\;u.\lambda p. p\;t\;u\\
     \projP{1}{} &\defeq \lambda p.p\;(\lambda x\;y.x)\\
@@ -840,6 +841,7 @@ On en déduit la représentation des fonctions calculables.
   représentable au sens fort par un $\lambda$-terme.
 \end{theorem}
 
+\noindent
 Le sens réciproque de ce théorème de représentation est laissé en exercice.
 
 \begin{exercise}
@@ -872,8 +874,8 @@ de calculabilité, on déduit les faits suivants~:
 \end{proposition}
 
 \begin{remark}
-    Si on parle de \og la\fg forme normale si elle existe, c'est parce qu'on
-    prouvera que $\bred$ est confluente.
+  Si on parle de \og la\fg forme normale si elle existe, c'est parce qu'on
+  prouvera que $\bred$ est confluente.
 \end{remark}
 
 \begin{proposition}
@@ -925,22 +927,23 @@ $\lambda$-termes.
 \end{proof}
 
 \begin{definition}[Ensembles récursivement séparables]
-  On dit que $X,Y\subseteq \lamSet$ sont récursivement séparables s'il existe
-  un terme $t$ tel que
+  On dit que $\varPt,\varPtB\subseteq \lamSet$ sont récursivement séparables
+  s'il existe un terme $t$ tel que
   \[\forall u \in \lamSet, t\;\encode{\godcod u} \rtClot{\bred}
   \begin{cases}
     \encode \bot\text{ si } u \in X\\
     \encode \top\text{ si } u \in Y
   \end{cases}\]
-  $X$ et $Y$ sont dit récursivement inséparables sinon.
+  $\varPt$ et $\varPtB$ sont dit récursivement inséparables sinon.
 \end{definition}
 
 \noindent
 Un ensemble sémantique, mais dans le sens de $\bred$, sera dit saturé ici.
 
 \begin{definition}[Ensemble saturé]
-  Une partie $X\subseteq \lamSet$ est dite saturée si
-  \[\forall t,u \in \lamSet, t \Beq u \implies t \in X \implies u \in X\]
+  Une partie $\varPt\subseteq \lamSet$ est dite saturée si
+  \[\forall t,u \in \lamSet,
+  t \Beq u \implies t \in \varPt \implies u \in \varPt\]
 \end{definition}
 
 \begin{theorem}
@@ -948,19 +951,19 @@ Un ensemble sémantique, mais dans le sens de $\bred$, sera dit saturé ici.
 \end{theorem}
 
 \begin{proof}
-  Supposons que deux ensembles $X,Y$ vérifiant les hypothèses sont récursivement
-  séparables, et soit $t$ un séparateur tel que donné dans la définition.
-  Soient $t_X \in X$ et $t_Y \in Y$, et
-  \[u \defeq \lambda n.\eqZ\;(t\;n)\;t_X\;t_Y\]
+  Supposons que deux ensembles $\varPt,\varPtB$ vérifiant les hypothèses sont
+  récursivement séparables, et soit $t$ un séparateur tel que donné dans la
+  définition. Soient $t_{\varPt} \in \varPt$ et $t_{\varPtB} \in \varPtB$, et
+  \[u \defeq \lambda n.\eqZ\;(t\;n)\;t_{\varPt}\;t_{\varPtB}\]
   On utilise maintenant le théorème de point fixe pour trouver $\LtF{u}$ tel que
   $u\;\encode{\godcod{\LtF{u}}}\Beq \LtF{u}$. On en déduit~:
   \begin{itemize}
   \item si $t\;\encode{\godcod{\LtF{u}}}\rtClot{\bred} \encode{\bot}$, alors
-    $\LtF{u}\rtClot{\bred} t_Y$
-    donc $\LtF{u} \Beq t_Y \in Y$, mais alors
+    $\LtF{u}\rtClot{\bred} t_{\varPtB}$
+    donc $\LtF{u} \Beq t_{\varPtB} \in \varPtB$, mais alors
     $t\;\encode{\godcod{\LtF{u}}}\rtClot{\bred} \encode{\top}$
-  \item de même, si $t\;\encode{\godcod{\LtF{u}}}\rtClot{\bred} \encode{\top}$, alors
-    $\LtF{u} \Beq t_X \in X$, donc
+  \item de même, si $t\;\encode{\godcod{\LtF{u}}}\rtClot{\bred} \encode{\top}$,
+    alors $\LtF{u} \Beq t_{\varPt} \in \varPt$, donc
     $t\;\encode{\godcod{\LtF{u}}}\rtClot{\bred} \encode{\bot}$.\qedhere
   \end{itemize}
 \end{proof}
@@ -984,20 +987,21 @@ On en déduit aussi le théorème de l'image.
 \begin{theorem}[Image]
   Soit $\overline t \in \quot{\lamSet}{\Beq}$, $t$ définit une fonction
   \[\makeFun{f_{\overline t}}{\quot{\lamSet}{\Beq}}{\quot{\lamSet}{\Beq}}
-    {\overline u}{\overline{t\;u}}\]
+            {\clas{u}}{\clas{t\;u}}\]
   qui est une fonction constante ou une fonction dont l'image est infinie.
 \end{theorem}
 
 \begin{proof}
   En effet, supposons qu'il existe deux valeurs $t_1$ et $t_2$ telles que
-  $\im(f_{\overline t}) = \{t_1,t_2\}$ (dans le cas de plus de valeurs,
+  $\im(f_{\clas{t}}) = \{\clas{t_1},\clas{t_2}\}$ (dans le cas de plus de valeurs,
   l'argument s'adapte facilement). Les ensembles
-  \[X_{t_1} \defeq \compr{u \in \lamSet}{t\;u \Beq t_1}\qquad
-  X_{t_2}\defeq \compr{u \in \lamSet}{t\;u \Beq t_2}\]
+  \[\varPt_{t_1} \defeq \compr{u \in \lamSet}{t\;u \Beq t_1}\qquad
+  \varPt_{t_2}\defeq \compr{u \in \lamSet}{t\;u \Beq t_2}\]
   sont alors des ensembles disjoints et saturés~: ils sont donc inséparables.
-  Pourtant, puisqu'on sait à la fois que $X_{t_1}\cup X_{t_2} = \lamSet$, que
-  les deux ensembles sont disjoints et qu'ils sont c.e., on en déduit qu'ils
-  sont tous deux décidables, ce qui est une contradiction.
+  Pourtant, puisqu'on sait à la fois que
+  $\varPt_{t_1}\cup \varPt_{t_2} = \lamSet$, que les deux ensembles sont disjoints
+  et qu'ils sont c.e., on en déduit qu'ils sont tous deux décidables, ce qui est
+  une contradiction.
 \end{proof}
 
 \section{Propriétés de la réduction}
@@ -1019,8 +1023,9 @@ certaines propriétés de cette réduction, en particulier~:
 \subsection{Propriété de Church-Rosser}
 
 Pour prouver la propriété de Church-Rosser, on utilise une méthode développée
-par Tait et Martin-Löf (de ce qui est dit dans \cite{Barendregt1984}), et 
-affinée dans \cite{TAKAHASHI1995120}, impliquant la réduction parallèle.
+par William Walker \name{Tait} et Par \name{Martin}-\name{Löf} (de ce qui est
+dit dans \cite{Barendregt1984}), et  affinée dans \cite{TAKAHASHI1995120},
+impliquant la réduction parallèle.
 
 Pour prouver la confluence du $\lambda$-calcul, la difficulté principale est,
 étant donnés deux redexes dans une expression, de montrer que les deux ordres
@@ -1198,7 +1203,7 @@ On définit pour cela le développement en un pas.
   $t \not\Beq u$. En effet, par unicité de la forme normale, deux formes
   normales ne peuvent se réduire l'une en l'autre.
 \end{remark}
-  
+
 \subsection{Lemme de standardisation}
 
 Puisque nous avons prouvé que $\bred$ a la propriété de Church-Rosser, la donnée
@@ -1286,10 +1291,10 @@ internes.
   \begin{center}
     \begin{tabular}{cm{2cm}c}
       \multicolumn{3}{c}{
-      \bottomAlignProof
-      \AxiomC{$u\bred u'$}
-      \UnaryInfC{$t\;u'\Ired t\;u'$}
-      \DisplayProof}
+        \bottomAlignProof
+        \AxiomC{$u\bred u'$}
+        \UnaryInfC{$t\;u'\Ired t\;u'$}
+        \DisplayProof}
       \\
       \\
       \bottomAlignProof
@@ -1409,8 +1414,9 @@ ici une réduction parallèle interne.
   $t''\Ired u''$, que $t \redPar v$.
 \end{proof}
 
-Ainsi, on peut décomposer $t \rtClot{\bred} u$ en $t\rtClot{\redPar} u$. Il reste
-donc à prouver que $\redPar$ peut se décomposer en $\rtClot{\Hred}\IredPar$.
+Ainsi, on peut décomposer $t \rtClot{\bred} u$ en $t\rtClot{\redPar} u$. Il
+reste donc à prouver que $\redPar$ peut se décomposer en
+$\rtClot{\Hred}\IredPar$.
 
 \begin{lemma}
   Pour tous $t,u \in \lamSet$, si $t \redPar u$ alors il existe
@@ -1469,17 +1475,17 @@ donc à prouver que $\redPar$ peut se décomposer en $\rtClot{\Hred}\IredPar$.
     le cas de $v'[t_/x]$. On traite donc les cas d'une redex, d'une variable
     de tête $y \neq x$ et de la variable de tête $x$~:
     \begin{itemize}
-        \item si $v' = x$, alors $v'[t_1/x] = t_1$. Par induction, on a
-          une suite de $t_1$ à $u_1$. Si cette suite ne fait pas apparaître
-          d'abstraction, alors on peut la concaténer à la suite déjà
-          construite et obtenir le résultat. Sinon, on concatène toute la
-          suite jusqu'à l'apparition d'une abstraction, puis on effectue une
-          seule réduction interne parallèle.
-        \item si $v' = x \neq y$, alors on effectue dans $\vec{w}$ des
-          réductions de tête jusqu'à n'avoir que des réductions internes,
-          qu'on peut effectuer en un pas.
-        \item si $v'$ est une redex, alors $v'[t_1/x] \IredPar v'[u_1/x]$.
-          \qedhere
+    \item si $v' = x$, alors $v'[t_1/x] = t_1$. Par induction, on a
+      une suite de $t_1$ à $u_1$. Si cette suite ne fait pas apparaître
+      d'abstraction, alors on peut la concaténer à la suite déjà
+      construite et obtenir le résultat. Sinon, on concatène toute la
+      suite jusqu'à l'apparition d'une abstraction, puis on effectue une
+      seule réduction interne parallèle.
+    \item si $v' = x \neq y$, alors on effectue dans $\vec{w}$ des
+      réductions de tête jusqu'à n'avoir que des réductions internes,
+      qu'on peut effectuer en un pas.
+    \item si $v'$ est une redex, alors $v'[t_1/x] \IredPar v'[u_1/x]$.
+      \qedhere
     \end{itemize}
   \end{itemize}
 \end{proof}
@@ -1488,8 +1494,8 @@ donc à prouver que $\redPar$ peut se décomposer en $\rtClot{\Hred}\IredPar$.
 On peut alors en déduire le théorème de standardisation faible.
 
 \begin{theorem}[Standardisation faible]
-  Pour tous $t,v \in \lamSet$, si $t \rtClot{\bred} v$ alors il existe $u$ tel que
-  $t\rtClot{\Hred} u \rtClot{\Ired} v$.
+  Pour tous $t,v \in \lamSet$, si $t \rtClot{\bred} v$ alors il existe $u$ tel
+  que $t\rtClot{\Hred} u \rtClot{\Ired} v$.
 \end{theorem}
 
 \begin{proof}

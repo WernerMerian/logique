@@ -4,9 +4,9 @@
 \minitoc
 
 \lettrine{P}{armi} les questions posées par le programme de Hilbert, outre le
-problème de la décision, résolu par Church et Turing par la négative, on compte
-aussi le deuxième problème de Hilbert à propos duquel le second théorème
-d'incomplétude impose une limite~:
+problème de la décision, résolu par Alonzo \name{Church} et Alan \name{Turing}
+par la négative, on compte aussi le deuxième problème de Hilbert à propos duquel
+le second théorème d'incomplétude impose une limite~:
 \begin{quote}
   Prouver que la théorie de l'arithmétique est cohérente.
 \end{quote}
@@ -22,17 +22,18 @@ le modèle standard. Grâce à cette démonstration, on apprend que, pour peu qu
 $\ZFC$ est cohérente, l'arithmétique est cohérente.
 
 La première démonstration historique de la cohérence de l'arithmétique par
-Gentzen dans \cite{Gentzen1936}, nous donne en comparaison beaucoup plus
-d'informations. Elle est entre autres le fondement de l'analyse ordinale des
-théories logiques.
+Gerhard \name{Gentzen} dans \cite{Gentzen1936}, nous donne en comparaison
+beaucoup plus d'informations. Elle est entre autres le fondement de l'analyse
+ordinale des théories logiques.
 
 L'objectif de ce chapitre est de parcourir deux preuves centrales de la
-cohérence de l'arithmétique. La première est celle de Gentzen, déjà mentionnée
-plus tôt, qui sera présentée dans une forme mise à jour et adaptée à notre
-formalisme logique moderne. La seconde est la démonstration de la cohérence de
-l'arithmétique de Heyting, ou arithmétique intuitionniste, développée par Kleene
-dans \cite{Kleene1945}. Cette démonstration fonde la théorie de la réalisabilité,
-sujet tout aussi important de la théorie de la démonstration.
+cohérence de l'arithmétique. La première est celle de \name{Gentzen}, déjà
+mentionnée plus tôt, qui sera présentée dans une forme mise à jour et adaptée à
+notre formalisme logique moderne. La seconde est la démonstration de la
+cohérence de l'arithmétique de Heyting, ou arithmétique intuitionniste,
+développée par Stephen \name{Kleene} dans \cite{Kleene1945}. Cette démonstration
+fonde la théorie de la réalisabilité, sujet tout aussi important de la théorie
+de la démonstration.
 
 Enfin, en utilisant l'outil de la réalisabilité, on introduit la réalisabilité
 modifiée pour prouver ce que nous avons annoncé à la fin du chapitre précédent~:
@@ -41,9 +42,9 @@ définissable dans système T.
 
 \section{La cohérence de l'arithmétique de Peano}
 
-Notre première démonstration de cohérence est celle de Gentzen. L'idée est assez
-directe~: on a vu que l'élimination des coupures permettait de prouver la
-cohérence du calcul des séquents, on construit donc un calcul des séquents
+Notre première démonstration de cohérence est celle de \name{Gentzen}. L'idée
+est assez directe~: on a vu que l'élimination des coupures permettait de prouver
+la cohérence du calcul des séquents, on construit donc un calcul des séquents
 encodant l'arithmétique de Peano, dont on prouve l'élimination des coupures.
 
 L'objectif est donc en premier lieu de trouver des règles qui puissent
@@ -56,17 +57,17 @@ On fixe donc comme signature celle de l'arithmétique. Rappelons les axiomes
 de la théorie $\ArithPeano$~:
 
 \begin{itemize}
-\begin{minipage}{0.45\textwidth}
-\item $\forall n, 0 \neq \Ss n$
-\item $\forall n\, m, \Ss n = \Ss m \implies n = m$
-\item $\forall n, (n = 0) \lor (\exists m, n = \Ss m)$
-\end{minipage}
-\begin{minipage}{0.45\textwidth}
-\item $\forall n, n + 0 = n$
-\item $\forall n\,m, n + (\Ss m) = \Ss (n + m)$
-\item $\forall n, n \times 0 = 0$
-\item $\forall n\,m, n \times (\Ss m) = (n \times m) + n$
-\end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $\forall n, 0 \neq \Ss n$
+  \item $\forall n\, m, \Ss n = \Ss m \implies n = m$
+  \item $\forall n, (n = 0) \lor (\exists m, n = \Ss m)$
+  \end{minipage}
+  \begin{minipage}{0.45\textwidth}
+  \item $\forall n, n + 0 = n$
+  \item $\forall n\,m, n + (\Ss m) = \Ss (n + m)$
+  \item $\forall n, n \times 0 = 0$
+  \item $\forall n\,m, n \times (\Ss m) = (n \times m) + n$
+  \end{minipage}
 \item $\forall \varFF(\vec x,y)\in \Formula, \varFF(\vec n,0) \implies
   (\forall m, \varFF(\vec n,m) \implies \varFF(\vec n,\Ss m))\implies
   \forall m, \varFF(\vec n,m)$
@@ -114,14 +115,14 @@ $0 = \Ss t \to \bot$, qui est l'axiome qu'on recherche.
   On définit la règle de réécriture suivante sur les expressions
   arithmétiques~:
   \begin{itemize}
-  \begin{minipage}{0.45\textwidth}
+    \begin{minipage}{0.45\textwidth}
     \item $t + 0 \reecr{\Arith} t$
     \item $t + \Ss u \reecr{\Arith} \Ss (t + u)$
-  \end{minipage}
-  \begin{minipage}{0.45\textwidth}
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
     \item $t \times 0 \reecr{\Arith} 0$
     \item $t \times (\Ss u) \reecr{\Arith} (t\times u) + t$
-  \end{minipage}
+    \end{minipage}
   \end{itemize}
   ainsi que la réécriture $0 = \Ss t \reecr{\Arith} \bot$ sur les formules
   arithmétiques.
@@ -165,27 +166,28 @@ Il nous reste à prouver l'élimination des coupures. \'Etudions un premier
 exemple en prenant un arbre prouvant que le successeur commute avec la somme à
 gauche~:
 \begin{center}
-$\varPT_0 \defeq$
-\resizebox{0.8\textwidth}{!}{
-  \AxiomC{}
-  \RightLabel{$\Rreq$}
-  \UnaryInfC{$\vdPA \Ss n + 0 = \Ss (n + 0)$}
-  \RightLabel{$\Rrfora^\dagger$}
-  \UnaryInfC{$\vdPA \forall n, \Ss n + 0 = \Ss (n+0)$}
-  \AxiomC{}
-  \RightLabel{$\Rreq$}
-  \UnaryInfC{$\vdPA (\Ss n)+(\Ss m) = \Ss(\Ss n+m)$}
-  \RightLabel{$\Rleq$}
-  \UnaryInfC{$\Ss n+m = \Ss(n+m) \vdPA (\Ss n)+(\Ss m) = \Ss \Ss(n+m)$}
-  \RightLabel{$\Rlfora$}
-  \UnaryInfC{$\forall n,\Ss n+m = \Ss (n+m) \vdPA (\Ss n)+(\Ss m) = \Ss (n+\Ss m)$}
-  \RightLabel{$\Rrfora^\dagger$}
-  \UnaryInfC{$\forall n,\Ss n+m = \Ss (n+m)\vdPA
-    \forall n, (\Ss n)+(\Ss m)=\Ss (n+\Ss m)$}
-  \RightLabel{$\Rrec^\dagger$}
-  \BinaryInfC{$\vdPA \forall n\;m, \Ss n+m = \Ss (n+m)$}
-  \DisplayProof
-}
+  $\varPT_0 \defeq$
+  \resizebox{0.8\textwidth}{!}{
+    \AxiomC{}
+    \RightLabel{$\Rreq$}
+    \UnaryInfC{$\vdPA \Ss n + 0 = \Ss (n + 0)$}
+    \RightLabel{$\Rrfora^\dagger$}
+    \UnaryInfC{$\vdPA \forall n, \Ss n + 0 = \Ss (n+0)$}
+    \AxiomC{}
+    \RightLabel{$\Rreq$}
+    \UnaryInfC{$\vdPA (\Ss n)+(\Ss m) = \Ss(\Ss n+m)$}
+    \RightLabel{$\Rleq$}
+    \UnaryInfC{$\Ss n+m = \Ss(n+m) \vdPA (\Ss n)+(\Ss m) = \Ss \Ss(n+m)$}
+    \RightLabel{$\Rlfora$}
+    \UnaryInfC{$\forall n,\Ss n+m = \Ss (n+m) \vdPA
+      (\Ss n)+(\Ss m) = \Ss (n+\Ss m)$}
+    \RightLabel{$\Rrfora^\dagger$}
+    \UnaryInfC{$\forall n,\Ss n+m = \Ss (n+m)\vdPA
+      \forall n, (\Ss n)+(\Ss m)=\Ss (n+\Ss m)$}
+    \RightLabel{$\Rrec^\dagger$}
+    \BinaryInfC{$\vdPA \forall n\;m, \Ss n+m = \Ss (n+m)$}
+    \DisplayProof
+  }
 \end{center}
 et un arbre prouvant que $0$ est neutre à gauche pour l'addition~:
 \begin{center}$\varPT_1\defeq$
@@ -204,39 +206,41 @@ et un arbre prouvant que $0$ est neutre à gauche pour l'addition~:
 Avec ces deux arbres, on peut prouver par récurrence que l'addition est
 commutative~:
 \begin{center}\resizebox{\textwidth}{!}{
-  \AxiomC{$\varPT_1$}
-  \noLine
-  \UnaryInfC{$\vdPA\forall n, n + 0 = 0 + n$}
-  \AxiomC{$\varPT_0$}
-  \noLine
-  \UnaryInfC{$\vdPA\forall n\,m, \Ss n + m = \Ss (n+m)$}
-  \AxiomC{}
-  \RightLabel{$\Rax$}
-  \UnaryInfC{$\Ss n + m = \Ss (n+m)\vdPA n + \Ss m = \Ss m + n$}
-  \RightLabel{$\Rlfora$}\doubleLine
-  \UnaryInfC{$\forall n\,m, \Ss n + m = \Ss (n+m)\vdPA n + \Ss m = \Ss m + n$}
-  \RightLabel{$\Rrfora^\dagger$}
-  \UnaryInfC{$\forall n\,m, \Ss n + m = \Ss(n+m)\vdPA \forall n, n + \Ss m = \Ss m + n$}
-  \RightLabel{$\Rcut$}
-  \BinaryInfC{$\vdPA\forall n, n + m = m + n \vdPA \forall n, n + \Ss m = \Ss m + n$}
-  \RightLabel{$\Rrec^\dagger$}
-  \BinaryInfC{$\vdPA\forall n\,m, n + m = m + n$}
-  \DisplayProof
+    \AxiomC{$\varPT_1$}
+    \noLine
+    \UnaryInfC{$\vdPA\forall n, n + 0 = 0 + n$}
+    \AxiomC{$\varPT_0$}
+    \noLine
+    \UnaryInfC{$\vdPA\forall n\,m, \Ss n + m = \Ss (n+m)$}
+    \AxiomC{}
+    \RightLabel{$\Rax$}
+    \UnaryInfC{$\Ss n + m = \Ss (n+m)\vdPA n + \Ss m = \Ss m + n$}
+    \RightLabel{$\Rlfora$}\doubleLine
+    \UnaryInfC{$\forall n\,m, \Ss n + m = \Ss (n+m)\vdPA n + \Ss m = \Ss m + n$}
+    \RightLabel{$\Rrfora^\dagger$}
+    \UnaryInfC{$\forall n\,m, \Ss n + m = \Ss(n+m)\vdPA
+      \forall n, n + \Ss m = \Ss m + n$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\vdPA\forall n, n + m = m + n \vdPA
+      \forall n, n + \Ss m = \Ss m + n$}
+    \RightLabel{$\Rrec^\dagger$}
+    \BinaryInfC{$\vdPA\forall n\,m, n + m = m + n$}
+    \DisplayProof
 }\end{center}
 Supposons que l'on souhaite éliminer la coupure introduite dans cet arbre.
 La première étape est de faire remonter la coupure au-dessus de la règle
 $\Rrfora^\dagger$, de sorte qu'on obtient une coupure logique sur
 $\forall$. La coupure logique en question est alors
 \begin{center}\resizebox{\textwidth}{!}{
-  \AxiomC{$\cdots$}
-  \RightLabel{$\Rrec$}
-  \UnaryInfC{$\vdPA \forall n\,m,\Ss n + m = \Ss(n+m)$}
-  \AxiomC{$\cdots$}
-  \RightLabel{$\Rlfora$}
-  \UnaryInfC{$\forall n\,m,\Ss n + m = \Ss (n+m)\vdPA n+\Ss m = \Ss m + n$}
-  \RightLabel{$\Rcut$}
-  \BinaryInfC{$\cdots$}
-  \DisplayProof
+    \AxiomC{$\cdots$}
+    \RightLabel{$\Rrec$}
+    \UnaryInfC{$\vdPA \forall n\,m,\Ss n + m = \Ss(n+m)$}
+    \AxiomC{$\cdots$}
+    \RightLabel{$\Rlfora$}
+    \UnaryInfC{$\forall n\,m,\Ss n + m = \Ss (n+m)\vdPA n+\Ss m = \Ss m + n$}
+    \RightLabel{$\Rcut$}
+    \BinaryInfC{$\cdots$}
+    \DisplayProof
 }\end{center}
 L'objectif de l'élimination des coupures est donc d'éliminer cette nouvelle
 coupure logique.
@@ -325,24 +329,24 @@ au cas $n+1$. La réduction de la coupure qui s'en déduit est donnée en
       \DisplayProof
       & $\reecr{\Rrec_{\Ss}}$ &\\ \\
       \multicolumn{3}{r}{
-      \bottomAlignProof
-      \AxiomC{$\varPT$}
-      \noLine\UnaryInfC{$\varCG,\varFF(\Ss t)\vdPA\varCD$}
-      \AxiomC{$\varPT_{\Ss}[t/x]$}
-      \noLine\UnaryInfC{$\Gamma,\varFF(t)\vdPA\varFF(\Ss t),\varCD$}
-      \RightLabel{$\Rcut$}
-      \BinaryInfC{$\varCG,\varphi(t)\vdPA\varCD$}
-      \RightLabel{$\Rlfora$}
-      \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
-      \AxiomC{$\varPT_0$}
-      \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
-      \AxiomC{$\varPT_{\Ss}$}
-      \noLine\UnaryInfC{$\varCG,\varFF\vdPA\varFF(\Ss x),\varCD$}
-      \RightLabel{$\Rrec$}
-      \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
-      \RightLabel{$\Rcut$}
-      \BinaryInfC{$\varCG\vdPA\varCD$}
-      \DisplayProof
+        \bottomAlignProof
+        \AxiomC{$\varPT$}
+        \noLine\UnaryInfC{$\varCG,\varFF(\Ss t)\vdPA\varCD$}
+        \AxiomC{$\varPT_{\Ss}[t/x]$}
+        \noLine\UnaryInfC{$\Gamma,\varFF(t)\vdPA\varFF(\Ss t),\varCD$}
+        \RightLabel{$\Rcut$}
+        \BinaryInfC{$\varCG,\varphi(t)\vdPA\varCD$}
+        \RightLabel{$\Rlfora$}
+        \UnaryInfC{$\varCG,\forall x\,\varFF(x)\vdPA\varCD$}
+        \AxiomC{$\varPT_0$}
+        \noLine\UnaryInfC{$\varCG\vdPA\varFF(0),\varCD$}
+        \AxiomC{$\varPT_{\Ss}$}
+        \noLine\UnaryInfC{$\varCG,\varFF\vdPA\varFF(\Ss x),\varCD$}
+        \RightLabel{$\Rrec$}
+        \BinaryInfC{$\varCG\vdPA\forall x\,\varFF(x),\varCD$}
+        \RightLabel{$\Rcut$}
+        \BinaryInfC{$\varCG\vdPA\varCD$}
+        \DisplayProof
       }
     \end{tabular}
   }
@@ -386,17 +390,17 @@ peut donc se limiter aux séquents dont tous les termes sont clos.
   On sait que toute coupure peut être réécriture en une coupure logique. Une
   telle coupure logique s'élimine forcément si elle ne fait pas intervenir
   la règle $\Rrec$ (puisque $\LK$ a l'élimination des coupures). Si la coupure
-  logique utilise la règle $\Rrec$, alors le terme $t$ utilisé dans cette coupure
-  peut se réécrire en $0$ ou en $\Ss u$ pour un certain terme $u$~: dans tous les
-  cas, une réduction existe sur cette coupure.
+  logique utilise la règle $\Rrec$, alors le terme $t$ utilisé dans cette
+  coupure peut se réécrire en $0$ ou en $\Ss u$ pour un certain terme $u$~: dans
+  tous les cas, une réduction existe sur cette coupure.
 \end{proof}
 
 La dernière étape est de vérifier la terminaison de notre réécriture. On définit
 donc une mesure de décroissance, permettant de l'assurer.
 
 \begin{definition}[Poids d'une coupure logique récursive]
-  Soit $\varPT\in\ProofPA$ sans coupure autre que des coupures logiques utilisant
-  la règle $\Rrec$. Soit une coupure $C$ ayant la forme suivante~:
+  Soit $\varPT\in\ProofPA$ sans coupure autre que des coupures logiques
+  utilisant la règle $\Rrec$. Soit une coupure $C$ ayant la forme suivante~:
   \begin{prooftree}
     \AxiomC{$\varPT$}
     \noLine\UnaryInfC{$\varCG,\varFF(t)\vdPA\varCD$}
@@ -459,12 +463,12 @@ décroître.
   \quad\text{et}\quad
   \Ow^{w(\varPT_{\Ss})}\times |u| + \max(w(\varPT),w(\varPT_{\Ss}),w(\varPT_0))\]
   Dans le cas où $w(\varPT_{\Ss})$ n'est pas la plus grande valeur des trois dont
-  on prend le maximum, on se trouve après simplification à $\Ow^{w(\varPT_{\Ss})} > 0$,
-  ce qui est vrai.
+  on prend le maximum, on se trouve après simplification à
+  $\Ow^{w(\varPT_{\Ss})} > 0$, ce qui est vrai.
   Dans le cas où $w(\varPT_{\Ss})$ est la plus grande valeur des trois, on veut
   vérifier que $\Ow^{w(\varPT_{\Ss})}  > w(\varPT_{\Ss})$, ce qui est vrai aussi pour
-  $w(\varPT_{\Ss}) < \varepsilon_0$ (et, par construction,
-  $w(\varPT_{\Ss}) < \varepsilon_0$ est toujours vérifié).
+  $w(\varPT_{\Ss}) < \Oe$ (et, par construction, $w(\varPT_{\Ss}) < \Oe$ est
+  toujours vérifié).
 
   Dans tous les cas, on voit que le poids décroît strictement.
 \end{proof}
@@ -532,12 +536,12 @@ $\Sigma$-complète, permet de redonner l'essentiel de la démonstration.
 La définition du calcul des séquents ne pose pas de problème, la définition des
 étapes de réécriture non plus. Un seul fait peut limiter cette démonstration~:
 le fait que l'algorithme termine. Remarquons d'abord que, une fois définie une
-syntaxe calculable pour parler de l'ensemble $\varepsilon_0$, plus petit
-ordinal stable par l'opération $x \mapsto \Ow^x$, on peut tout à fait
-définir le poids des coupures, et parfois même prouver leur décroissance.
+syntaxe calculable pour parler de l'ensemble $\Oe$, plus petit ordinal stable
+par l'opération $x \mapsto \Ow^x$, on peut tout à fait définir le poids des
+coupures, et parfois même prouver leur décroissance.
 
 Le point limitant dans la terminaison de l'algorithme est la bonne fondation de
-l'ensemble $\varepsilon_0$, ou d'un de ses encodages dans l'arithmétique.
+l'ensemble $\Oe$, ou d'un de ses encodages dans l'arithmétique.
 
 \begin{definition}[Encodage d'un bon ordre]
   Soit $\varT$ une théorie. On dit que $\varT$ encode un ensemble bien
@@ -559,7 +563,7 @@ On en déduit donc une première conséquence de la cohérence de l'arithmétiqu
 
 \begin{corollary}
   Soit $\varT$ une théorie arithmétique $\Sigma$-complète. Si $\varT$ encode
-  $\varepsilon_0$ alors
+  $\Oe$ alors
   \[\varT \vdP \Coher(\ArithPeano)\]
 \end{corollary}
 
@@ -581,26 +585,26 @@ la borne supérieure de cet ensemble~: l'ordinal de preuve de $\varT$.
 \end{definition}
 
 On peut donc reformuler le corollaire précédent par
-\begin{quote}
+\begin{quotation}
+  \noindent
   Toute théorie $\Sigma$-complète dont l'ordinal de preuve est supérieur
-  strictement à $\varepsilon_0$ prouve la cohérente de $\ArithPeano$.
-\end{quote}
+  strictement à $\Oe$ prouve la cohérente de $\ArithPeano$.
+\end{quotation}
 et, d'après le second théorème d'incomplétude
-\begin{quote}
-  L'ordinal de preuve de $\ArithPeano$ est inférieur à $\varepsilon_0$.
-\end{quote}
+\begin{quotation}
+  \noindent
+  L'ordinal de preuve de $\ArithPeano$ est inférieur à $\Oe$.
+\end{quotation}
 
-En réalité, l'ordinal de preuve de $\ArithPeano$ est exactement égal à
-$\varepsilon_0$.
+En réalité, l'ordinal de preuve de $\ArithPeano$ est exactement égal à $\Oe$.
 
 \begin{theorem}
-  On a l'égalité
-  \[\PTO(\ArithPeano) = \varepsilon_0\]
+  On a l'égalité \[\PTO(\ArithPeano) = \Oe\]
 \end{theorem}
 
 \begin{proof}
   Il nous faut prouver l'autre inégalité, qui consiste à montrer que tout
-  ordinal $\varOa < \varepsilon_0$ est encodable dans $\ArithPeano$. Pour cela,
+  ordinal $\varOa < \Oe$ est encodable dans $\ArithPeano$. Pour cela,
   on prouve que $0$ est encodable dans $\ArithPeano$ et que si
   $\varOa,\varOb$ sont encodables dans $\ArithPeano$, alors
   $\varOa + \varOb$ et $\Ow^\varOa$ sont encodables. Le premier point est
@@ -631,9 +635,9 @@ $\varepsilon_0$.
   F_{\varOa}(\varlist_i)\]
   en considérant que $\varlist$ est l'encodage des lites par la bijection
   $\makeFunNameIso{\BijCs}{\List(\bN)}{\bN}$, où $\ListLen{\varlist}$ est
-  l'encodage sur les entiers de la fonction donnant la longueur d'une liste, et que
-  $\varlist_i$ est le \ordinalnumeralmale{$i$} élément de $\varlist$. Pour la
-  relation d'ordre, on pose
+  l'encodage sur les entiers de la fonction donnant la longueur d'une liste, et
+  que $\varlist_i$ est le \ordinalnumeralmale{$i$} élément de $\varlist$. Pour
+  la relation d'ordre, on pose
   \[\varlist <_{\Ow^\varOa} \varlist' \defeq
   \begin{cases}
     |\varlist| < |\varlist'| \land \forall i < |\varlist|,
@@ -653,11 +657,9 @@ $\varepsilon_0$.
   \[\varOa,\varOb \inddefeq 0 \mid \varOa + \varOb \mid \Ow^\varOa\]
   est contenu dans les ordinaux représentables dans $\ArithPeano$. Par
   décomposition de Cantor, on sait que tout élément strictement inférieur à
-  $\varepsilon_0$ est dans cet ensemble. On en déduit que
-  $\varepsilon_0 \leq \PTO(\ArithPeano)$.
+  $\Oe$ est dans cet ensemble. On en déduit que $\Oe \leq \PTO(\ArithPeano)$.
 
-  Donc, par double inégalité, on en déduit que
-  $\PTO(\ArithPeano) = \varepsilon_0$.
+  Donc, par double inégalité, on en déduit que $\PTO(\ArithPeano) = \Oe$.
 \end{proof}
 
 Cette preuve ouvre finalement la voie à la discipline appelée l'analyse
@@ -678,7 +680,7 @@ $\varT \vdNJ \bot$, puisque $\varT \vdNJ\tradGG{\varT} \vdNJ \bot$ et
 la deuxième relation de prouvabilité équivaut à $\varT \vdNK \bot$.
 On verra en fait que dans le cas de l'arithmétique, un résultat encore meilleur
 peut être prouvé.
- 
+
 Néanmoins, on en retient que pour prouver que l'arithmétique de Peano est
 cohérente, il suffit de prouver que sa version intuitionniste est cohérente.
 L'objectif de cette section est d'établir la cohérence de l'arithmétique de
@@ -737,9 +739,9 @@ de formules.
 \end{remark}
 
 \begin{remark}
-    Les preuves de la \cref{subsec.ext.PA} sont en fait intuitionnistes. On a
-    donc encore la conservativité sur $\HA$ de l'ajout des fonctions RP avec
-    les équations qui les définissent.
+  Les preuves de la \cref{subsec.ext.PA} sont en fait intuitionnistes. On a
+  donc encore la conservativité sur $\HA$ de l'ajout des fonctions RP avec
+  les équations qui les définissent.
 \end{remark}
 
 Nous allons prouver que $\ArithPeano$ est une extension conservative de $\HA$
@@ -877,9 +879,9 @@ implémentation syntaxique de cette sémantique~: la relation de typage permet d
 donner un critère décidable pour qu'un programme soit effectivement la preuve
 d'un énoncé.
 
-La réalisabilité, introduite par \cite{Kleene1945}, permet de donner une
-implémentation plus sémantique de l'interprétation BHK. En particulier, le sens
-de la formule
+La réalisabilité, introduite par Stephen \name{Kleene} dans \cite{Kleene1945},
+permet de donner une implémentation plus sémantique de l'interprétation BHK. En
+particulier, le sens de la formule
 \[\varFF \implies \varFP\]
 devient celui d'une fonction calculable, assignant des témoins de la vérité de
 $\varFP$ à des témoins de la vérité de $\varFF$.
@@ -984,108 +986,108 @@ la une structure étroitement liée à la preuve de forte normalisation pour le
 $\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
 
 \begin{table}[p]
-    \centering
-    \resizebox{!}{0.45\textheight}{
+  \centering
+  \resizebox{!}{0.45\textheight}{
     \begin{tabular}{ccc}
-        \bottomAlignProof
-        \AxiomC{}\RightLabel{$\Rax$}
-        \UnaryInfC{$\varFF_1,\ldots,\varFF_1\vdNJ \varFF_i$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $\EnumP{e(\varPT)}{n+k} \defeq \projP{i}{n+k}$
-        \\
-        \\
-        \bottomAlignProof
-        \AxiomC{}\RightLabel{$\RtopI$}\UnaryInfC{$\varCG\vdNJ\top$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $\EnumP{e(\varPT)}{n+k}\defeq 0$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\bot$}
-        \RightLabel{$\RbotE$}\UnaryInfC{$\varCG\vdNJ\varFF$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $e(\varPT) \defeq e(\varPT')$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG,\varFF\vdNJ\varFP$}
-        \RightLabel{$\RtoI$}\UnaryInfC{$\varCG\vdNJ\varFF\to\varFP$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $e(\varPT) \defeq \Smn{n+k}{1}(e(\varPT))$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF\to\varFP$}
-        \axNJP{\varPT''}\UnaryInfC{$\varCG\vdNJ\varFF$}
-        \RightLabel{$\RtoE$}
-        \BinaryInfC{$\varCG\vdNJ\varFP$}\DisplayProof
-        & $\longmapsto$ &
-        $\EnumP{e(\varPT)}{n+k}(\vec n)\defeq
-        \EnumP{e(\varPT')}{n+k}(\vec n)(\EnumP{e(\varPT'')}{n+k}(\vec n)$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT_1}\UnaryInfC{$\varCG\vdNJ\varFF_1$}
-        \axNJP{\varPT_2}\UnaryInfC{$\varCG\vdNJ\varFF_2$}
-        \RightLabel{$\RandI$}\BinaryInfC{$\varCG\vdNJ\varFF_1\land\varFF_2$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $\EnumP{e(\varPT)}{n+k}(\vec n) \defeq
-        \langle\tok,\tok\rangle\circ (\EnumP{e(\varPT_1)}{n+k}(\vec n),
-        \EnumP{e(\varPT_2)}{n+k}(\vec n))$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_1\land\varFF_2$}
-        \RightLabel{$\RandEi$}\UnaryInfC{$\varCG\vdNJ\varFF_i$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $\EnumP{e(\varPT)}{n+k}\defeq \projP{i}{}\circ \EnumP{e(\varPT')}{n+k}$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_i$}
-        \RightLabel{$\RorIi$}\UnaryInfC{$\varCG\vdNJ\varFF_1\lor\varFF_2$}
-        \DisplayProof
-        & $\longmapsto$ &
-        $\EnumP{e(\varPT)}{n+k}\defeq (x \mapsto \langle i-1,x\rangle)\circ
-        \EnumP{e(\varPT')}{n+k}$
-        \\
-        \\
-        \multicolumn{3}{l}{
+      \bottomAlignProof
+      \AxiomC{}\RightLabel{$\Rax$}
+      \UnaryInfC{$\varFF_1,\ldots,\varFF_1\vdNJ \varFF_i$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $\EnumP{e(\varPT)}{n+k} \defeq \projP{i}{n+k}$
+      \\
+      \\
+      \bottomAlignProof
+      \AxiomC{}\RightLabel{$\RtopI$}\UnaryInfC{$\varCG\vdNJ\top$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $\EnumP{e(\varPT)}{n+k}\defeq 0$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\bot$}
+      \RightLabel{$\RbotE$}\UnaryInfC{$\varCG\vdNJ\varFF$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $e(\varPT) \defeq e(\varPT')$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG,\varFF\vdNJ\varFP$}
+      \RightLabel{$\RtoI$}\UnaryInfC{$\varCG\vdNJ\varFF\to\varFP$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $e(\varPT) \defeq \Smn{n+k}{1}(e(\varPT))$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF\to\varFP$}
+      \axNJP{\varPT''}\UnaryInfC{$\varCG\vdNJ\varFF$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varCG\vdNJ\varFP$}\DisplayProof
+      & $\longmapsto$ &
+      $\EnumP{e(\varPT)}{n+k}(\vec n)\defeq
+      \EnumP{e(\varPT')}{n+k}(\vec n)(\EnumP{e(\varPT'')}{n+k}(\vec n)$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT_1}\UnaryInfC{$\varCG\vdNJ\varFF_1$}
+      \axNJP{\varPT_2}\UnaryInfC{$\varCG\vdNJ\varFF_2$}
+      \RightLabel{$\RandI$}\BinaryInfC{$\varCG\vdNJ\varFF_1\land\varFF_2$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $\EnumP{e(\varPT)}{n+k}(\vec n) \defeq
+      \langle\tok,\tok\rangle\circ (\EnumP{e(\varPT_1)}{n+k}(\vec n),
+      \EnumP{e(\varPT_2)}{n+k}(\vec n))$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_1\land\varFF_2$}
+      \RightLabel{$\RandEi$}\UnaryInfC{$\varCG\vdNJ\varFF_i$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $\EnumP{e(\varPT)}{n+k}\defeq \projP{i}{}\circ \EnumP{e(\varPT')}{n+k}$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_i$}
+      \RightLabel{$\RorIi$}\UnaryInfC{$\varCG\vdNJ\varFF_1\lor\varFF_2$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $\EnumP{e(\varPT)}{n+k}\defeq (x \mapsto \langle i-1,x\rangle)\circ
+      \EnumP{e(\varPT')}{n+k}$
+      \\
+      \\
+      \multicolumn{3}{l}{
         \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF_1\lor\varFF_2$}
         \axNJP{\varPT_1}\UnaryInfC{$\varCG,\varFF_1\vdNJ\varFP$}
         \axNJP{\varPT_2}\UnaryInfC{$\varCG,\varFF_2\vdNJ\varFP$}
         \RightLabel{$\RorE$}\TrinaryInfC{$\varCG\vdNJ\varFP$}
         \DisplayProof
         $\longmapsto$
-        }
-        \\
-        \multicolumn{3}{r}{
+      }
+      \\
+      \multicolumn{3}{r}{
         $\EnumP{e(\varPT)}{n+k}(\vec n)\defeq
         \ifrm \projP{1}{}(\EnumP{e(\varPT')}{n+k}(\vec n))
         \thenrm \EnumP{e(\varPT_1)}{n+1+k}
         (\vec n,\projP{2}{}(\EnumP{e(\varPT')}{n+k}(\vec n)))
         \elserm \EnumP{e(\varPT_2)}{n+1+k}
         (\vec n,\projP{2}{}(\EnumP{e(\varPT')}{n+k}(\vec n)))$
-        }
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF$}
-        \RightLabel{$\RforaI^\dagger$}
-        \UnaryInfC{$\varCG\vdNJ\forall x\, \varFF$}\DisplayProof
-        & $\longmapsto$ &
-        $e(\varPT) \defeq \Smn{n+k}{1}(e(\varPT'))$
-        \\
-        \\
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\forall x\,\varFF$}
-        \RightLabel{$\RforaE$}\UnaryInfC{$\varCG\vdNJ\varFF[t/x$}
+      }
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\varFF$}
+      \RightLabel{$\RforaI^\dagger$}
+      \UnaryInfC{$\varCG\vdNJ\forall x\, \varFF$}\DisplayProof
+      & $\longmapsto$ &
+      $e(\varPT) \defeq \Smn{n+k}{1}(e(\varPT'))$
+      \\
+      \\
+      \bottomAlignProof
+      \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\forall x\,\varFF$}
+      \RightLabel{$\RforaE$}\UnaryInfC{$\varCG\vdNJ\varFF[t/x$}
         \DisplayProof
         & $\longmapsto$ &
         $\EnumP{e(\varPT)}{n+k}(\vec n, \vec k) \defeq
@@ -1102,18 +1104,18 @@ $\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
         \\
         \\
         \multicolumn{3}{l}{
-        \bottomAlignProof
-        \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\exists x\,\varFF$}
-        \axNJP{\varPT''}\UnaryInfC{$\varCG,\varFF\vdNJ\varFP$}
-        \RightLabel{$\RexE^\dagger$}\BinaryInfC{$\varCG\vdNJ\varFP$}
-        \DisplayProof
-        \quad $\longmapsto$}
+          \bottomAlignProof
+          \axNJP{\varPT'}\UnaryInfC{$\varCG\vdNJ\exists x\,\varFF$}
+          \axNJP{\varPT''}\UnaryInfC{$\varCG,\varFF\vdNJ\varFP$}
+          \RightLabel{$\RexE^\dagger$}\BinaryInfC{$\varCG\vdNJ\varFP$}
+          \DisplayProof
+          \quad $\longmapsto$}
         \\
         \multicolumn{3}{r}{
-        $\EnumP{e(\varPT)}{n+k}(\vec n,\vec k) \defeq
-        \EnumP{e(\varPT'')}{n+1+k}(\vec n,
-        \projP{2}{}(\EnumP{e(\varPT')}(\vec n,\vec k)), \vec k,
-        \projP{1}{}(\EnumP{e(\varPT')}(\vec n, \vec k)))$}
+          $\EnumP{e(\varPT)}{n+k}(\vec n,\vec k) \defeq
+          \EnumP{e(\varPT'')}{n+1+k}(\vec n,
+          \projP{2}{}(\EnumP{e(\varPT')}(\vec n,\vec k)), \vec k,
+          \projP{1}{}(\EnumP{e(\varPT')}(\vec n, \vec k)))$}
         \\
         \\
         \bottomAlignProof
@@ -1130,14 +1132,14 @@ $\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
         & $\longmapsto$ &
         $e(\varPT) \defeq e(\varPT')$
     \end{tabular}
-    }
-    
-    \vspace{0.2cm}
-    \hrule
+      }
+      
+      \vspace{0.2cm}
+      \hrule
 
-    \vspace{0.2cm}
-    \caption{Programme associé à une preuve dans $\NJ$}
-    \label{tbl.adequacy.K1}
+      \vspace{0.2cm}
+      \caption{Programme associé à une preuve dans $\NJ$}
+      \label{tbl.adequacy.K1}
 \end{table}
 
 \begin{definition}[Programme tiré d'une preuve]
@@ -1174,8 +1176,8 @@ $\lambda$-calcul~: l'objectif est de prouver un lemme d'adéquation.
 \begin{corollary}
   L'ensemble
   \[\varT_{\real} \defeq \compr{\varFF \in \Prop}
-  {\exists n \in \bN, n\real \varFF}\]
-  est une théorie logique cohérente.
+         {\exists n \in \bN, n\real \varFF}\]
+         est une théorie logique cohérente.
 \end{corollary}
 
 \begin{proof}
@@ -1209,7 +1211,7 @@ Heyting, il nous suffit alors de montrer que les axiomes de $\HA$ sont réalisé
   \item $\rec(f,g)(\vec n,\Ss m) = g(\vec n,m,\rec(f,g)(\vec n,m))$ donc par
     récurrence sur $m$, on obtient que
     $\rec(f,g)(\vec n,m) \real_{\vec n} \varFF[()$ puis, par
-    application de $g$, que la fonction réalise $\varFF(\Ss m)$
+      application de $g$, que la fonction réalise $\varFF(\Ss m)$
   \end{itemize}
   donc $\rec$ réalise uniformément le schéma d'axiomes de récurrence.
 \end{proof}
@@ -1463,9 +1465,9 @@ cette façon une association d'un type pour chaque formule de
 l'arithmétique.
 
 \begin{definition}[Type associé à une formule]
-    On définit pour toute formule $\varFF \in \Formula$ un type de
-    système T $\toTyST(\varFF)$, par induction sur $\varFF$~:
-    \begin{itemize}
+  On définit pour toute formule $\varFF \in \Formula$ un type de
+  système T $\toTyST(\varFF)$, par induction sur $\varFF$~:
+  \begin{itemize}
     \begin{minipage}{0.45\textwidth}
     \item si $\varFF$ est atomique, $\toTyST(\varFF) \defeq \varTypBa$~;
     \item $\toTyST(\top)\defeq \unitT$~;
@@ -1483,7 +1485,7 @@ l'arithmétique.
     \item $\toTyST(\exists x, \varFF) \defeq
       \intT\times \toTyST(\varFF)$.
     \end{minipage}
-    \end{itemize}
+  \end{itemize}
 \end{definition}
 Les quantifications s'interprètent donc comme une fonction / un produit
 avec des entiers~: le type du réaliseur lui permet de garder la trace de
@@ -1492,53 +1494,53 @@ réalisation d'une formule, en se restreignant aux réaliseurs qui ont un
 type adéquat.
 
 \begin{definition}[Réalisation modifiée]
-    Soit $\varTypBa$ un type fixé et soit $\env$ un environnement
-    d'interprétation. On définit la relation de réalisabilité modifiée
-    $\mathord{\real_\env}\subseteq\STSet\times\Formula$ par induction sur
-    $\varFF$~:
-    \begin{itemize}
-    \item $\langle\rangle\real_\env \top$
-    \item $t\nVdash_\env\bot$ pour tout $t$
-    \item $t\real_\env (t = u) \defeq (\tyR t : \varTypBa) \land
-      (\env(t) = \env(u))$
-    \item $t\real_\env \varFF \to \varFP \defeq
-      (\tyR t : \toTyST(\varFF \to \varFP))\land(\forall u \real_\env \varFF,
-      t\;u\real_\env \varFP)$
-    \item $t\real_\env\varFF\land\varFP \defeq
-      (\tyR t : \toTyST(\varFF\land\varFP))\land
-      (\projP{1}{} t \real_\env\varFF)\land(\projP{2}{} t \real_\env \varFP)$
-    \item $t\real_\env\varFF\lor\varFP \defeq
-      (\tyR t : \toTyST(\varFF\lor\varFP))\land\begin{cases}
-      t\rtClot{\STred} \coprojP{1}u \land u\real_\env \varFF\\
-      u\rtClot{\STred}\coprojP{2} u \land u \real_\env \varFP
-      \end{cases}$
-    \item $t\real_\env\forall x, \varFF \defeq
-      (\tyR t : \toTyST(\forall x, \varFF))\land(\forall n \in \bN,
-      t\;\encode n \real_{\env[x \mapsto n]} \varFF)$
-    \item $t\real_\env\exists x, \varFF \defeq
-      (\tyR t : \toTyST(\exists x, \varFF)\land
-      t\rtClot{\STred} \langle \encode n, u\rangle \land
-      u\real_{\env[x \mapsto n]} \varFF$
-    \end{itemize}
+  Soit $\varTypBa$ un type fixé et soit $\env$ un environnement
+  d'interprétation. On définit la relation de réalisabilité modifiée
+  $\mathord{\real_\env}\subseteq\STSet\times\Formula$ par induction sur
+  $\varFF$~:
+  \begin{itemize}
+  \item $\langle\rangle\real_\env \top$
+  \item $t\nVdash_\env\bot$ pour tout $t$
+  \item $t\real_\env (t = u) \defeq (\tyR t : \varTypBa) \land
+    (\env(t) = \env(u))$
+  \item $t\real_\env \varFF \to \varFP \defeq
+    (\tyR t : \toTyST(\varFF \to \varFP))\land(\forall u \real_\env \varFF,
+    t\;u\real_\env \varFP)$
+  \item $t\real_\env\varFF\land\varFP \defeq
+    (\tyR t : \toTyST(\varFF\land\varFP))\land
+    (\projP{1}{} t \real_\env\varFF)\land(\projP{2}{} t \real_\env \varFP)$
+  \item $t\real_\env\varFF\lor\varFP \defeq
+    (\tyR t : \toTyST(\varFF\lor\varFP))\land\begin{cases}
+    t\rtClot{\STred} \coprojP{1}u \land u\real_\env \varFF\\
+    u\rtClot{\STred}\coprojP{2} u \land u \real_\env \varFP
+  \end{cases}$
+  \item $t\real_\env\forall x, \varFF \defeq
+    (\tyR t : \toTyST(\forall x, \varFF))\land(\forall n \in \bN,
+    t\;\encode n \real_{\env[x \mapsto n]} \varFF)$
+  \item $t\real_\env\exists x, \varFF \defeq
+    (\tyR t : \toTyST(\exists x, \varFF)\land
+    t\rtClot{\STred} \langle \encode n, u\rangle \land
+    u\real_{\env[x \mapsto n]} \varFF$
+  \end{itemize}
 \end{definition}
 
 \begin{exercise}[Préliminaires techniques]
-    Montrer que pour tous $t,u \in \STSet$, environnement $\env$ et
-    formule $\varFF$, si $u \real_\env \varFF$ et $t \STred u$ alors
-    $u\real_\env \varFF$. Montrer que pour tout $n$,
-    $t\real_{\env[x\mapsto n]} \varFF\iff t\real_\env\varFF[\encode n/x]$.
+  Montrer que pour tous $t,u \in \STSet$, environnement $\env$ et
+  formule $\varFF$, si $u \real_\env \varFF$ et $t \STred u$ alors
+  $u\real_\env \varFF$. Montrer que pour tout $n$,
+  $t\real_{\env[x\mapsto n]} \varFF\iff t\real_\env\varFF[\encode n/x]$.
 \end{exercise}
 
 \begin{lemma}[Adéquation]
-    Pour tout séquent prouvable $\varCG\vdNJ\varFF$, il existe un terme
-    $t \in \STSet$ tel que $\tyR t : \toTyST(\varFF)$ et, pour tout
-    environnement $\env$ couvrant les variables libres du séquent et tout
-    tuple $\vec u \real_\env \varCG$, on a
-    $t[\vec u/\vec x] \real_\env \varFF$
+  Pour tout séquent prouvable $\varCG\vdNJ\varFF$, il existe un terme
+  $t \in \STSet$ tel que $\tyR t : \toTyST(\varFF)$ et, pour tout
+  environnement $\env$ couvrant les variables libres du séquent et tout
+  tuple $\vec u \real_\env \varCG$, on a
+  $t[\vec u/\vec x] \real_\env \varFF$
 \end{lemma}
 
 \begin{exercise}
-    Prouver le lemme d'adéquation. \textit{Indication~: la saturation
+  Prouver le lemme d'adéquation. \textit{Indication~: la saturation
     est utile pour les cas d'élimination, et le lemme de substitution
     pour les quantifications.}
 \end{exercise}
@@ -1552,15 +1554,15 @@ d'axiomes.
 Grâce à cette construction, on en déduit le théorème annoncé au début.
 
 \begin{theorem}[Représentation des fonctions prouvablement totales]
-    Toute fonction calculable $f$ prouvablement totale dans l'arithmétique
-    du premier ordre est représentable par un terme du système T.
+  Toute fonction calculable $f$ prouvablement totale dans l'arithmétique
+  du premier ordre est représentable par un terme du système T.
 \end{theorem}
 
 \begin{proof}
-    Soit $f$ une telle fonction. Par définition, on trouve une preuve
-    \[\varPT\concl \vdNJ \forall \vec x, \exists y, f(\vec x) = y\]
-    Par le lemme d'adéquation, on trouve donc un terme $t\in\STSet$ tel
-    que $\tyR t : \intT^k \to \intT\times \varTypBa$ qui réalise
-    la totalité de $f$. Par définition, cela signifie en particulier que
-    $\projP{1}{}\circ t$ représente exactement la fonction $f$.
+  Soit $f$ une telle fonction. Par définition, on trouve une preuve
+  \[\varPT\concl \vdNJ \forall \vec x, \exists y, f(\vec x) = y\]
+  Par le lemme d'adéquation, on trouve donc un terme $t\in\STSet$ tel
+  que $\tyR t : \intT^k \to \intT\times \varTypBa$ qui réalise
+  la totalité de $f$. Par définition, cela signifie en particulier que
+  $\projP{1}{}\circ t$ représente exactement la fonction $f$.
 \end{proof}

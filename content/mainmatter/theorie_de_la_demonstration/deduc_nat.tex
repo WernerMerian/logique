@@ -4,13 +4,13 @@
 \minitoc
 
 \lettrine{D}{ans} son article présentant le calcul des séquents
-\cite{Gentzen1935}, Gentzen présente aussi un deuxième formalisme de
+\cite{Gentzen1935}, \name{Gentzen} présente aussi un deuxième formalisme de
 démonstration~: la déduction naturelle. C'est ce système qui a été présenté dans
 le \cref{chp.logpred}, mais nous allons ici étudier ses aspects structurels.
 
-Comme le relavait déjà Gentzen dans son article original, la déduction naturelle
-comporte deux variantes que sont $\NK$ et $\NJ$, respectivement la déduction
-naturelle classique et intuitionniste, mais la première est en fait un
+Comme le relavait déjà \name{Gentzen} dans son article original, la déduction
+naturelle comporte deux variantes que sont $\NK$ et $\NJ$, respectivement la
+déduction naturelle classique et intuitionniste, mais la première est en fait un
 formalisme, en un sens, maladroit.
 
 Le chapitre présente donc les deux variantes, mais étudie principalement la
@@ -40,10 +40,10 @@ suivants~:
   constructeur.
 \end{itemize}
 
-La première présentation de Gentzen du calcul en est proche, mais n'utilise pas
-de séquent. \`A la place, les arbres sont simplement constitués de formules, et
-la conclusion $\varCG\vdNK \varFF$ d'un arbre $\varPT$ s'obtient en lisant la
-racine (pour la conclusion) et les feuilles (pour les hypothèses).
+La première présentation de \name{Gentzen} du calcul en est proche, mais
+n'utilise pas de séquent. \`A la place, les arbres sont simplement constitués de
+formules, et la conclusion $\varCG\vdNK \varFF$ d'un arbre $\varPT$ s'obtient en
+lisant la racine (pour la conclusion) et les feuilles (pour les hypothèses).
 
 \begin{table}[p]
   \centering
@@ -340,7 +340,7 @@ $\LJ$ pour la sémantique de Kripke. Même si cette méthode fonctionne, on prop
 une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
 
 \begin{definition}[Construction d'arbre depuis le calcul des séquents]
-\label{def.LJtoNJ}
+  \label{def.LJtoNJ}
   On définit une fonction $\makeFunName{\tradNJ{\tok}}{\ProofLJ}{\ProofNJ}$ par
   induction sur les arbres, de telle sorte que si
   $\varPT\concl \varCG\vdLJ \varFF$ alors
@@ -350,264 +350,265 @@ une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
 \end{definition}
 
 \begin{table}[t]
-    \centering
-    \resizebox{\textwidth}{!}{
+  \centering
+  \resizebox{\textwidth}{!}{
     \begin{tabular}{ccc|ccc}
 
-    \AxiomC{}
-    \RightLabel{$\Rax$}
-    \UnaryInfC{$\varFF\vdLJ\varFF$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \bottomAlignProof
-    \AxiomC{$\varFF$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT_1$}
-    \noLine
-    \UnaryInfC{$\varCG\vdLJ\varFP_i$}
-    \AxiomC{$\varPT_2$}
-    \noLine
-    \UnaryInfC{$\varFP_1,\ldots,\varFP_n\vdLJ[\varFF]$}
-    \RightLabel{$\Rcut$}
-    \BinaryInfC{$\varFP_1,\ldots,\varFP_{i-1},\varCG,
-    \varFP_{i+1},\ldots,\varFP_n\vdLJ[\varFF]$}
-    \DisplayProof
-    & $\longmapsto$ &
-    $\tradNJ{\varPT_1}\circ_i \tradNJ{\varPT_2}$
-    \\ & & & &
-    \\
-    \multicolumn{3}{l|}{
-    Aucune règle structurelle n'a
-    d'effet sur $\tradNJ\tok$ à part $\Rrw$.}
-    &
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG\vdLJ$}
-    \RightLabel{$\Rrw$}
-    \UnaryInfC{$\varCG\vdLJ\varFF$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \axNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\bot$}
-    \RightLabel{$\RbotE$}
-    \UnaryInfC{$\varFF$}
-    \DisplayProof
-    \\ & & & &
-    \\
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
-    \RightLabel{$\Rlnot$}
-    \UnaryInfC{$\varCG,\lnot\varFF\vdLJ$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$\lnot\varFF$}
-    \axNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\varFF$}
-    \RightLabel{$\RnotE$}
-    \BinaryInfC{$\bot$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ$}
-    \RightLabel{$\Rrnot$}
-    \UnaryInfC{$\varCG\vdLJ\lnot\varFF$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$[\varFF]^{\varTokA}$}
-    \ligneNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\bot$}
-    \RightLabel{$\RtoIA$}
-    \UnaryInfC{$\lnot\varFF$}
-    \DisplayProof
-    \\ & & & &
-    \\
-    \AxiomC{$\varPT_1$}
-    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ[\varFC]$}
-    \AxiomC{$\varPT_2$}
-    \noLine\UnaryInfC{$\varCG,\varFP\vdLJ[\varFC]$}
-    \RightLabel{$\Rlor$}
-    \BinaryInfC{$\varCG,\varFF\lor\varFP\vdLJ[\varFC]$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$\varFF\lor\varFP$}
-    \AxiomC{$[\varFF]^{\varTokA}$}
-    \ligneNJP{\tradNJ{\varPT_1}}
-    \UnaryInfC{$[\varFC]$}
-    \AxiomC{$[\varFF]^{\varTokA}$}
-    \ligneNJP{\tradNJ{\varPT_2}}
-    \UnaryInfC{$[\varFC]$}
-    \RightLabel{$\RorEA$}
-    \TrinaryInfC{$[\varFC]$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG\vdLJ\varFF_i$}
-    \RightLabel{$\Rrori$}
-    \UnaryInfC{$\varCG\vdLJ\varFF_1\lor\varFF_2$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \axNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\varFF_i$}
-    \RightLabel{$\RorIi$}
-    \UnaryInfC{$\varFF_1\lor\varFF_2$}
-    \DisplayProof
-    \\ & & & &
-    \\
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG,\varFF_i\vdLJ[\varFP]$}
-    \RightLabel{$\Rlandi$}
-    \UnaryInfC{$\varCG,\varFF_1\land\varFF_2\vdLJ[\varFP]$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$\varFF_1\land\varFF_2$}
-    \RightLabel{$\RandEi$}
-    \UnaryInfC{$\varFF_i$}
-    \ligneNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$[\varFP]$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT_1$}
-    \noLine\UnaryInfC{$\varCG\vdLJ \varFF_1$}
-    \AxiomC{$\varPT_2$}
-    \noLine\UnaryInfC{$\varCG\vdLJ\varFF_2$}
-    \RightLabel{$\Rrand$}
-    \BinaryInfC{$\varCG\vdLJ\varFF_1\land\varFF_2$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \axNJP{\tradNJ{\varPT_1}}
-    \UnaryInfC{$\varFF_1$}
-    \axNJP{\tradNJ{\varPT_2}}
-    \UnaryInfC{$\varFF_2$}
-    \RightLabel{$\RandI$}
-    \BinaryInfC{$\varFF_1\land\varFF_2$}
-    \DisplayProof
-    \\ & & & &
-    \\
-    \AxiomC{$\varPT_1$}
-    \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
-    \AxiomC{$\varPT_2$}
-    \noLine\UnaryInfC{$\varCG,\varFP\vdLJ[\varFC]$}
-    \RightLabel{$\Rlto$}
-    \BinaryInfC{$\varCG,\varFF\to\varFP\vdLJ[\varFC]$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$\varFF\to\varFP$}
-    \axNJP{\tradNJ{\varPT_1}}
-    \UnaryInfC{$\varFF$}
-    \RightLabel{$\RtoE$}
-    \BinaryInfC{$\varFP$}
-    \ligneNJP{\tradNJ{\varPT_2}}
-    \UnaryInfC{$[\varFP]$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ\varFP$}
-    \RightLabel{$\Rrto$}
-    \UnaryInfC{$\varCG\vdLJ\varFF\to\varFP$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$[\varFF]^\varTokA$}
-    \ligneNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\varFP$}
-    \RightLabel{$\RtoIA$}
-    \UnaryInfC{$\varFF\to\varFP$}
-    \DisplayProof
-    \\ & & & &
-    \\
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG,\varFF[t/x]\vdLJ[\varFP]$}
-    \RightLabel{$\Rlfora$}
-    \UnaryInfC{$\varCG,\forall x\,\varFF\vdLJ[\varFP]$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$\forall x\,\varFF$}
-    \RightLabel{$\RforaE$}
-    \UnaryInfC{$\varFF[t/x]$}
-    \ligneNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$[\varFP]$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
-    \RightLabel{$\Rrfora^\dagger$}
-    \UnaryInfC{$\varCG\vdLJ \forall x\,\varFF$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \axNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\varFF$}
-    \RightLabel{$\RforaI^\dagger$}
-    \UnaryInfC{$\forall x\,\varFF$}
-    \DisplayProof
-    \\ & & & &
-    \\
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG,\varFF\vdLJ[\varFP]$}
-    \RightLabel{$\Rlex^\dagger$}
-    \UnaryInfC{$\varCG,\exists x\,\varFF\vdLJ[\varFP]$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{$\exists x\,\varFF$}
-    \AxiomC{$[\varFF]^\varTokA$}
-    \ligneNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$[\varFP]$}
-    \RightLabel{$\RexEA^\dagger$}
-    \BinaryInfC{$[\varFP]$}
-    \DisplayProof
-    &
-    \AxiomC{$\varPT$}
-    \noLine\UnaryInfC{$\varCG\vdLJ\varFF[t/x]$}
-    \RightLabel{$\Rrex$}
-    \UnaryInfC{$\varCG\vdLJ\exists x\,\varFF$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \axNJP{\tradNJ{\varPT}}
-    \UnaryInfC{$\varFF[t/x]$}
-    \RightLabel{$\RexI$}
-    \UnaryInfC{$\exists x\,\varFF$}
-    \\ & & & &
-    \\
-    & & &
-    \AxiomC{}
-    \RightLabel{$\Rreq$}
-    \UnaryInfC{$\vdLJ t = t$}
-    \DisplayProof
-    & $\longmapsto$ &
-    \AxiomC{}
-    \RightLabel{$\ReqI$}
-    \UnaryInfC{$t = t$}
-    \DisplayProof
-    \\
-    \\
-    \\
-    \multicolumn{6}{l}{
-    \AxiomC{$\varPT$}\noLine
-    \UnaryInfC{$\varFP_1[u/x],\ldots,\varFP_n[u/x]\vdLJ[\varFF[u/x]]$}
-    \RightLabel{$\Rleq$}
-    \UnaryInfC{$\varFP_1[t/x],\ldots,\varFP_n[t/x], t = u \vdLJ[\varFF[t/x]]$}
-    \DisplayProof
-    \quad $\longmapsto$ \quad
-    \AxiomC{}\RightLabel{$\ReqI$}\UnaryInfC{$t = t$}
-    \AxiomC{$t = u$}
-    \RightLabel{$\ReqE$}\BinaryInfC{$u = t$}
-    \AxiomC{$\varFP_1[t/x]$}\AxiomC{$t = u$}
-    \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_1[u/x]$}
-    \AxiomC{$\cdots$}
-    \AxiomC{$\varFP_n[t/x]$}\AxiomC{$t = u$}
-    \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_n[u/x]$}
-    \ligneNJPT{\tradNJ{\varPT}}
-    \UnaryInfC{$[\varFF[u/x]]$}
-    \RightLabel{$\ReqE$}
-    \BinaryInfC{$[\varFF[t/x]]$}
-    \DisplayProof
-    }
+      \AxiomC{}
+      \RightLabel{$\Rax$}
+      \UnaryInfC{$\varFF\vdLJ\varFF$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \bottomAlignProof
+      \AxiomC{$\varFF$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT_1$}
+      \noLine
+      \UnaryInfC{$\varCG\vdLJ\varFP_i$}
+      \AxiomC{$\varPT_2$}
+      \noLine
+      \UnaryInfC{$\varFP_1,\ldots,\varFP_n\vdLJ[\varFF]$}
+      \RightLabel{$\Rcut$}
+      \BinaryInfC{$\varFP_1,\ldots,\varFP_{i-1},\varCG,
+        \varFP_{i+1},\ldots,\varFP_n\vdLJ[\varFF]$}
+      \DisplayProof
+      & $\longmapsto$ &
+      $\tradNJ{\varPT_1}\circ_i \tradNJ{\varPT_2}$
+      \\ & & & &
+      \\
+      \multicolumn{3}{l|}{
+        Aucune règle structurelle n'a
+        d'effet sur $\tradNJ\tok$ à part $\Rrw$.}
+      &
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG\vdLJ$}
+      \RightLabel{$\Rrw$}
+      \UnaryInfC{$\varCG\vdLJ\varFF$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \axNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\bot$}
+      \RightLabel{$\RbotE$}
+      \UnaryInfC{$\varFF$}
+      \DisplayProof
+      \\ & & & &
+      \\
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
+      \RightLabel{$\Rlnot$}
+      \UnaryInfC{$\varCG,\lnot\varFF\vdLJ$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$\lnot\varFF$}
+      \axNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\varFF$}
+      \RightLabel{$\RnotE$}
+      \BinaryInfC{$\bot$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF\vdLJ$}
+      \RightLabel{$\Rrnot$}
+      \UnaryInfC{$\varCG\vdLJ\lnot\varFF$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$[\varFF]^{\varTokA}$}
+      \ligneNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\bot$}
+      \RightLabel{$\RtoIA$}
+      \UnaryInfC{$\lnot\varFF$}
+      \DisplayProof
+      \\ & & & &
+      \\
+      \AxiomC{$\varPT_1$}
+      \noLine\UnaryInfC{$\varCG,\varFF\vdLJ[\varFC]$}
+      \AxiomC{$\varPT_2$}
+      \noLine\UnaryInfC{$\varCG,\varFP\vdLJ[\varFC]$}
+      \RightLabel{$\Rlor$}
+      \BinaryInfC{$\varCG,\varFF\lor\varFP\vdLJ[\varFC]$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$\varFF\lor\varFP$}
+      \AxiomC{$[\varFF]^{\varTokA}$}
+      \ligneNJP{\tradNJ{\varPT_1}}
+      \UnaryInfC{$[\varFC]$}
+      \AxiomC{$[\varFF]^{\varTokA}$}
+      \ligneNJP{\tradNJ{\varPT_2}}
+      \UnaryInfC{$[\varFC]$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$[\varFC]$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG\vdLJ\varFF_i$}
+      \RightLabel{$\Rrori$}
+      \UnaryInfC{$\varCG\vdLJ\varFF_1\lor\varFF_2$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \axNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\varFF_i$}
+      \RightLabel{$\RorIi$}
+      \UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \DisplayProof
+      \\ & & & &
+      \\
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF_i\vdLJ[\varFP]$}
+      \RightLabel{$\Rlandi$}
+      \UnaryInfC{$\varCG,\varFF_1\land\varFF_2\vdLJ[\varFP]$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$\varFF_1\land\varFF_2$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\varFF_i$}
+      \ligneNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$[\varFP]$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT_1$}
+      \noLine\UnaryInfC{$\varCG\vdLJ \varFF_1$}
+      \AxiomC{$\varPT_2$}
+      \noLine\UnaryInfC{$\varCG\vdLJ\varFF_2$}
+      \RightLabel{$\Rrand$}
+      \BinaryInfC{$\varCG\vdLJ\varFF_1\land\varFF_2$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \axNJP{\tradNJ{\varPT_1}}
+      \UnaryInfC{$\varFF_1$}
+      \axNJP{\tradNJ{\varPT_2}}
+      \UnaryInfC{$\varFF_2$}
+      \RightLabel{$\RandI$}
+      \BinaryInfC{$\varFF_1\land\varFF_2$}
+      \DisplayProof
+      \\ & & & &
+      \\
+      \AxiomC{$\varPT_1$}
+      \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
+      \AxiomC{$\varPT_2$}
+      \noLine\UnaryInfC{$\varCG,\varFP\vdLJ[\varFC]$}
+      \RightLabel{$\Rlto$}
+      \BinaryInfC{$\varCG,\varFF\to\varFP\vdLJ[\varFC]$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$\varFF\to\varFP$}
+      \axNJP{\tradNJ{\varPT_1}}
+      \UnaryInfC{$\varFF$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\varFP$}
+      \ligneNJP{\tradNJ{\varPT_2}}
+      \UnaryInfC{$[\varFP]$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF\vdLJ\varFP$}
+      \RightLabel{$\Rrto$}
+      \UnaryInfC{$\varCG\vdLJ\varFF\to\varFP$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\varFP$}
+      \RightLabel{$\RtoIA$}
+      \UnaryInfC{$\varFF\to\varFP$}
+      \DisplayProof
+      \\ & & & &
+      \\
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF[t/x]\vdLJ[\varFP]$}
+      \RightLabel{$\Rlfora$}
+      \UnaryInfC{$\varCG,\forall x\,\varFF\vdLJ[\varFP]$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$\forall x\,\varFF$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\varFF[t/x]$}
+      \ligneNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$[\varFP]$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG\vdLJ\varFF$}
+      \RightLabel{$\Rrfora^\dagger$}
+      \UnaryInfC{$\varCG\vdLJ \forall x\,\varFF$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \axNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\varFF$}
+      \RightLabel{$\RforaI^\dagger$}
+      \UnaryInfC{$\forall x\,\varFF$}
+      \DisplayProof
+      \\ & & & &
+      \\
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG,\varFF\vdLJ[\varFP]$}
+      \RightLabel{$\Rlex^\dagger$}
+      \UnaryInfC{$\varCG,\exists x\,\varFF\vdLJ[\varFP]$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{$\exists x\,\varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$[\varFP]$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$[\varFP]$}
+      \DisplayProof
+      &
+      \AxiomC{$\varPT$}
+      \noLine\UnaryInfC{$\varCG\vdLJ\varFF[t/x]$}
+      \RightLabel{$\Rrex$}
+      \UnaryInfC{$\varCG\vdLJ\exists x\,\varFF$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \axNJP{\tradNJ{\varPT}}
+      \UnaryInfC{$\varFF[t/x]$}
+      \RightLabel{$\RexI$}
+      \UnaryInfC{$\exists x\,\varFF$}
+      \\ & & & &
+      \\
+      & & &
+      \AxiomC{}
+      \RightLabel{$\Rreq$}
+      \UnaryInfC{$\vdLJ t = t$}
+      \DisplayProof
+      & $\longmapsto$ &
+      \AxiomC{}
+      \RightLabel{$\ReqI$}
+      \UnaryInfC{$t = t$}
+      \DisplayProof
+      \\
+      \\
+      \\
+      \multicolumn{6}{l}{
+        \AxiomC{$\varPT$}\noLine
+        \UnaryInfC{$\varFP_1[u/x],\ldots,\varFP_n[u/x]\vdLJ[\varFF[u/x]]$}
+        \RightLabel{$\Rleq$}
+        \UnaryInfC{$\varFP_1[t/x],\ldots,\varFP_n[t/x], t = u \vdLJ
+          [\varFF[t/x]]$}
+        \DisplayProof
+        \quad $\longmapsto$ \quad
+        \AxiomC{}\RightLabel{$\ReqI$}\UnaryInfC{$t = t$}
+        \AxiomC{$t = u$}
+        \RightLabel{$\ReqE$}\BinaryInfC{$u = t$}
+        \AxiomC{$\varFP_1[t/x]$}\AxiomC{$t = u$}
+        \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_1[u/x]$}
+        \AxiomC{$\cdots$}
+        \AxiomC{$\varFP_n[t/x]$}\AxiomC{$t = u$}
+        \RightLabel{$\ReqE$}\BinaryInfC{$\varFP_n[u/x]$}
+        \ligneNJPT{\tradNJ{\varPT}}
+        \UnaryInfC{$[\varFF[u/x]]$}
+        \RightLabel{$\ReqE$}
+        \BinaryInfC{$[\varFF[t/x]]$}
+        \DisplayProof
+      }
     \end{tabular}
-    }
-    \vspace{0.2cm}
-    \hrule
+  }
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Transformation syntaxique de la \cref{def.LJtoNJ}}
-    \label{tbl.LJtoNJ}
+  \vspace{0.2cm}
+  \caption{Transformation syntaxique de la \cref{def.LJtoNJ}}
+  \label{tbl.LJtoNJ}
 \end{table}
 
 \begin{corollary}
@@ -656,14 +657,15 @@ $\lnot\lnot\varFF$ ci-dessus.
   Pour toute formule $\varFF$, on définit par induction sa traduction de
   Gödel-Gentzen $\tradGG{\varFF}$ par~:
   \begin{itemize}
-  \item si $\varFF$ est atomique, alors $\tradGG{\varFF} \defeq \lnot\lnot\varFF$.
+  \item si $\varFF$ est atomique, alors
+    $\tradGG{\varFF} \defeq \lnot\lnot\varFF$.
   \item si $\varFF \in\{\top,\bot\}$, alors $\tradGG{\varFF} \defeq \varFF$.
   \item si $\varFF = \lnot \varFP$, alors
     $\tradGG{\varFF}\defeq\lnot\tradGG{\varFP}$.
   \item si $\varFF = \varFP\land\varFC$, alors
     $\tradGG{\varFF}\defeq\tradGG{\varFP}\land\tradGG{\varFC}$.
   \item si $\varFF = \varFP\lor\varFC$, alors
-    $\tradGG{\varFF}\defeq \lnot(\lnot\tradGG{\varFP}\land\lnot\tradGG{\varFC})$.
+    $\tradGG{\varFF}\defeq\lnot(\lnot\tradGG{\varFP}\land\lnot\tradGG{\varFC})$.
   \item si $\varFF = \varFP \to \varFC$, alors
     $\tradGG{\varFF}\defeq\tradGG{\varFP}\to\tradGG{\varFC}$.
   \item si $\varFF = \forall x, \varFP$, alors
@@ -747,8 +749,8 @@ Ce résultat se généralise aux traductions.
     donc $\tradGG{\varFF}$ est stable~;
   \item si $\varFF$ est une disjonction ou une quantification existentielle,
     sa traduction est définie par une négation aussi, d'où le résultat~;
-  \item si $\varFF = \varFP_1 \land \varFP_2$, montrons que $\tradGG{\varFF}$ est
-    stable~:
+  \item si $\varFF = \varFP_1 \land \varFP_2$, montrons que $\tradGG{\varFF}$
+    est stable~:
     \begin{prooftree}
       \AxiomC{}\RightLabel{HI}
       \UnaryInfC{$\lnot\lnot(\tradGG{\varFP_i}) \to \tradGG{\varFP_i}$}
@@ -775,50 +777,50 @@ Ce résultat se généralise aux traductions.
   \item si $\varFF = \varFP \to \varFC$, montrons que $\tradGG{\varFF}$ est
     stable~:
     \begin{prooftree}
-        \AxiomC{}\RightLabel{HI}
-        \UnaryInfC{$\lnot\lnot\tradGG{\varFC}\to\tradGG{\varFC}$}
-        \AxiomC{$[\lnot\lnot(\tradGG{\varFP}\to\tradGG{\varFC})]^{\varTokA}$}
-        \AxiomC{$[\lnot\tradGG{\varFC}]^{\varTokC}$}
-        \AxiomC{$[\tradGG{\varFP}\to\tradGG{\varFC}]^{\varTokD}$}
-        \AxiomC{$[\tradGG{\varFP}]^{\varTokB}$}
-        \RightLabel{$\RtoE$}
-        \BinaryInfC{$\tradGG{\varFC}$}
-        \RightLabel{$\RnotE$}
-        \BinaryInfC{$\bot$}
-        \RightLabel{$\RnotIP{\varTokD}$}
-        \UnaryInfC{$\lnot(\tradGG{\varFP}\to\tradGG{\varFC})$}
-        \RightLabel{$\RnotE$}
-        \BinaryInfC{$\bot$}
-        \RightLabel{$\RnotIP{\varTokC}$}
-        \UnaryInfC{$\lnot\lnot\tradGG{\varFC}$}
-        \RightLabel{$\RtoE$}
-        \BinaryInfC{$\tradGG{\varFC}$}
-        \RightLabel{$\RtoIB$}
-        \UnaryInfC{$\tradGG{\varFP}\to\tradGG{\varFC}$}
-        \RightLabel{$\RtoIA$}
-        \UnaryInfC{$\lnot\lnot(\tradGG{\varFP}\to\tradGG{\varFC})\to
+      \AxiomC{}\RightLabel{HI}
+      \UnaryInfC{$\lnot\lnot\tradGG{\varFC}\to\tradGG{\varFC}$}
+      \AxiomC{$[\lnot\lnot(\tradGG{\varFP}\to\tradGG{\varFC})]^{\varTokA}$}
+      \AxiomC{$[\lnot\tradGG{\varFC}]^{\varTokC}$}
+      \AxiomC{$[\tradGG{\varFP}\to\tradGG{\varFC}]^{\varTokD}$}
+      \AxiomC{$[\tradGG{\varFP}]^{\varTokB}$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\tradGG{\varFC}$}
+      \RightLabel{$\RnotE$}
+      \BinaryInfC{$\bot$}
+      \RightLabel{$\RnotIP{\varTokD}$}
+      \UnaryInfC{$\lnot(\tradGG{\varFP}\to\tradGG{\varFC})$}
+      \RightLabel{$\RnotE$}
+      \BinaryInfC{$\bot$}
+      \RightLabel{$\RnotIP{\varTokC}$}
+      \UnaryInfC{$\lnot\lnot\tradGG{\varFC}$}
+      \RightLabel{$\RtoE$}
+      \BinaryInfC{$\tradGG{\varFC}$}
+      \RightLabel{$\RtoIB$}
+      \UnaryInfC{$\tradGG{\varFP}\to\tradGG{\varFC}$}
+      \RightLabel{$\RtoIA$}
+      \UnaryInfC{$\lnot\lnot(\tradGG{\varFP}\to\tradGG{\varFC})\to
         \tradGG{\varFP}\to\tradGG{\varFC}$}
     \end{prooftree}
   \item si $\varFF = \forall x, \varFP$, montrons que $\tradGG{\varFF}$ est
     stable~:
     \begin{prooftree}
-        \AxiomC{$[\lnot\lnot(\forall x, \tradGG{\varFP}(x))]^{\varTokA}$}
-        \AxiomC{$[\lnot \tradGG{\varFP}(x)]^{\varTokB}$}
-        \AxiomC{$[\forall x, \tradGG{\varFP}(x)]^{\varTokC}$}
-        \RightLabel{$\RforaE$}
-        \UnaryInfC{$\tradGG{\varFP}(x)$}
-        \RightLabel{$\RnotE$}
-        \BinaryInfC{$\bot$}
-        \RightLabel{$\RnotIP{\varTokC}$}
-        \UnaryInfC{$\lnot(\forall x, \tradGG{\varFP}(x))$}
-        \RightLabel{$\RnotE$}
-        \BinaryInfC{$\bot$}
-        \RightLabel{$\RnotIB$}
-        \UnaryInfC{$\lnot\lnot(\tradGG{\varFP}(x))$}
-        \RightLabel{$\RforaI^\dagger$}
-        \UnaryInfC{$\forall x,\lnot\lnot(\tradGG{\varFP}(x))$}
-        \RightLabel{$\RtoIA$}
-        \UnaryInfC{$\lnot\lnot(\forall x, \tradGG{\varFP}(x))
+      \AxiomC{$[\lnot\lnot(\forall x, \tradGG{\varFP}(x))]^{\varTokA}$}
+      \AxiomC{$[\lnot \tradGG{\varFP}(x)]^{\varTokB}$}
+      \AxiomC{$[\forall x, \tradGG{\varFP}(x)]^{\varTokC}$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\tradGG{\varFP}(x)$}
+      \RightLabel{$\RnotE$}
+      \BinaryInfC{$\bot$}
+      \RightLabel{$\RnotIP{\varTokC}$}
+      \UnaryInfC{$\lnot(\forall x, \tradGG{\varFP}(x))$}
+      \RightLabel{$\RnotE$}
+      \BinaryInfC{$\bot$}
+      \RightLabel{$\RnotIB$}
+      \UnaryInfC{$\lnot\lnot(\tradGG{\varFP}(x))$}
+      \RightLabel{$\RforaI^\dagger$}
+      \UnaryInfC{$\forall x,\lnot\lnot(\tradGG{\varFP}(x))$}
+      \RightLabel{$\RtoIA$}
+      \UnaryInfC{$\lnot\lnot(\forall x, \tradGG{\varFP}(x))
         \to \forall x,\lnot\lnot(\tradGG{\varFP}(x))$}
     \end{prooftree}
   \end{itemize}
@@ -851,15 +853,17 @@ traductions dans $\LJ$.
     et que
     $\tradGG{\varCT},\tradGG{\varFF},\lnot\tradGG{\varCX}\vdLJ$, et on
     veut prouver que
-    $\tradGG{\varCG},\tradGG{\varCT},\lnot\tradGG{\varCD},\lnot\tradGG{\varCX}\vdLJ$~:
+    $\tradGG{\varCG},\tradGG{\varCT},
+    \lnot\tradGG{\varCD},\lnot\tradGG{\varCX}\vdLJ$~:
     \begin{prooftree}
       \AxiomC{$\tradGG{\varCG},\lnot\tradGG{\varFF},\lnot\tradGG{\varCD}\vdLJ$}
       \AxiomC{$\tradGG{\varCT},\tradGG{\varFF},\lnot\tradGG{\varCX}\vdLJ$}
       \RightLabel{$\Rrnot$}
-      \UnaryInfC{$\tradGG{\varCT},\lnot\tradGG{\varCX}\vdLJ\lnot\tradGG{\varFF}$}
+      \UnaryInfC{$\tradGG{\varCT},\lnot\tradGG{\varCX}\vdLJ
+        \lnot\tradGG{\varFF}$}
       \RightLabel{$\Rcut$}
       \BinaryInfC{$\tradGG{\varCG},\tradGG{\varCT},
-      \lnot\tradGG{\varCD},\lnot\tradGG{\varCX}\vdLJ$}
+        \lnot\tradGG{\varCD},\lnot\tradGG{\varCX}\vdLJ$}
     \end{prooftree}
   \item les règles structurelles s'appliquent par leur version intuitionniste
     gauche sans difficulté~;
@@ -893,20 +897,24 @@ traductions dans $\LJ$.
       \RightLabel{$\Rrand$}
       \BinaryInfC{$\varCT\vdLJ\lnot\tradGG{\varFF}\land\lnot\tradGG{\varFP}$}
       \RightLabel{$\Rlnot$}
-      \UnaryInfC{$\varCT,\lnot(\lnot\tradGG{\varFF}\land\lnot\tradGG{\varFP})\vdLJ$}
+      \UnaryInfC{$\varCT,
+        \lnot(\lnot\tradGG{\varFF}\land\lnot\tradGG{\varFP})\vdLJ$}
     \end{prooftree}
   \item[$\Rrori$~:] on suppose que
     $\tradGG{\varCG},\lnot\tradGG{\varFF_i},\lnot\tradGG{\varCD}\vdLJ$ et on
     veut construire un arbre prouvant le séquent
-    $\tradGG{\varCG},\lnot\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2}),
+    $\tradGG{\varCG},
+    \lnot\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2}),
     \lnot\tradGG{\varCD}\vdLJ$
     (on note encore $\varCT$ pour $\tradGG{\varCG},\lnot\tradGG{\varCD}$)~:
     \begin{prooftree}
       \AxiomC{$\varCT,\lnot\tradGG{\varFF_i}\vdLJ$}
       \RightLabel{$\Rlandi$}
-      \UnaryInfC{$\varCT,\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2}\vdLJ$}
+      \UnaryInfC{$\varCT,
+        \lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2}\vdLJ$}
       \RightLabel{$\Rrnot$}
-      \UnaryInfC{$\varCT,\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2})\vdLJ$}
+      \UnaryInfC{$\varCT,
+        \lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2})\vdLJ$}
       \RightLabel{$\Rlnot$}
       \UnaryInfC{$\varCT,
         \lnot\lnot(\lnot\tradGG{\varFF_1}\land\lnot\tradGG{\varFF_2})\vdLJ$}
@@ -929,7 +937,8 @@ traductions dans $\LJ$.
     $\varCT,\lnot\lnot(\forall x, \lnot\tradGG{\varFF})\vdLJ$~:
     \begin{prooftree}
       \AxiomC{$\varCT,\lnot\tradGG{\varFF}[t/x]\vdLJ$}
-      \RightLabel{$\Rlfora$}\UnaryInfC{$\varCT,\forall x, \lnot\tradGG{\varFF}\vdLJ$}
+      \RightLabel{$\Rlfora$}
+      \UnaryInfC{$\varCT,\forall x, \lnot\tradGG{\varFF}\vdLJ$}
       \RightLabel{$\Rrnot$}
       \UnaryInfC{$\varCT\vdLJ\lnot(\forall x, \lnot\tradGG{\varFF})$}
       \RightLabel{$\Rlnot$}
@@ -1424,25 +1433,25 @@ les coupures.
     \\
     \\
     \resizebox{0.2\textwidth}{!}{
-    \axNJV\UnaryInfC{$\exists x, \varFF$}
-    \AxiomC{$[\varFF]^\varTokA$}
-    \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\land\varFP_2$}
-    \RightLabel{$\RexEA^\dagger$}
-    \BinaryInfC{$\varFP_1\land\varFP_2$}
-    \RightLabel{$\RandEi$}
-    \UnaryInfC{$\varFP_i$}
-    \DisplayProof
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\varFP_i$}
+      \DisplayProof
     }
     & $\CCutP{\land}{\exists}$ &
     \resizebox{0.2\textwidth}{!}{
-    \axNJV\UnaryInfC{$\exists x, \varFF$}
-    \AxiomC{$[\varFF]^\varTokA$}
-    \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\land\varFP_2$}
-    \RightLabel{$\RandEi$}
-    \UnaryInfC{$\varFP_i$}
-    \RightLabel{$\RexEA^\dagger$}
-    \BinaryInfC{$\varFP_i$}
-    \DisplayProof
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\varFP_1\land\varFP_2$}
+      \RightLabel{$\RandEi$}
+      \UnaryInfC{$\varFP_i$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFP_i$}
+      \DisplayProof
     }
     \\
     \\
@@ -1476,25 +1485,25 @@ les coupures.
     \\
     \\
     \resizebox{0.2\textwidth}{!}{
-    \axNJV\UnaryInfC{$\exists x, \varFF$}
-    \AxiomC{$[\varFF]^\varTokA$}
-    \ligneNJP{\varPT'}\UnaryInfC{$\forall y, \varFP$}
-    \RightLabel{$\RexEA^\dagger$}
-    \BinaryInfC{$\forall y, \varFP$}
-    \RightLabel{$\RforaE$}
-    \UnaryInfC{$\varFP[t/y]$}
-    \DisplayProof
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\forall y, \varFP$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\forall y, \varFP$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\varFP[t/y]$}
+      \DisplayProof
     }
     & $\CCutP{\forall}{\exists}$ &
     \resizebox{0.2\textwidth}{!}{
-    \axNJV\UnaryInfC{$\exists x, \varFF$}
-    \AxiomC{$[\varFF]^\varTokA$}
-    \ligneNJP{\varPT'}\UnaryInfC{$\forall y, \varFP$}
-    \RightLabel{$\RforaE$}
-    \UnaryInfC{$\varFP[t/y]$}
-    \RightLabel{$\RexEA^\dagger$}
-    \BinaryInfC{$\varFP[t/y]$}
-    \DisplayProof
+      \axNJV\UnaryInfC{$\exists x, \varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}\UnaryInfC{$\forall y, \varFP$}
+      \RightLabel{$\RforaE$}
+      \UnaryInfC{$\varFP[t/y]$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFP[t/y]$}
+      \DisplayProof
     }
     \\
     \\
@@ -1534,78 +1543,78 @@ les coupures.
 \end{table}
 
 \begin{table}[t]
-    \centering
-    \resizebox{\textwidth}{!}{
+  \centering
+  \resizebox{\textwidth}{!}{
     \begin{tabular}{ccc}
-         \axNJV
-         \UnaryInfC{$\varFF_1\lor\varFF_2$}
-         \AxiomC{$[\varFF_1]^\varTokA$}
-         \ligneNJP{\varPT_1}
-         \UnaryInfC{$\varFP[t/x]$}
-         \AxiomC{$[\varFF_2]^\varTokA$}
-         \ligneNJP{\varPT_2}
-         \UnaryInfC{$\varFP[t/x]$}
-         \RightLabel{$\RorEA$}
-         \TrinaryInfC{$\varFP[t/x]$}
-         \axNJP{\varPT'}
-         \UnaryInfC{$t = u$}
-         \RightLabel{$\ReqE$}
-         \BinaryInfC{$\varFP[u/x]$}
-         \DisplayProof
-         & $\CCutP{=}{\lor}$ &
-         \axNJV
-         \UnaryInfC{$\varFF_1\lor\varFF_2$}
-         \AxiomC{$[\varFF_1]^\varTokA$}
-         \ligneNJP{\varPT_1}
-         \UnaryInfC{$\varFP[t/x]$}
-         \axNJP{\varPT'}
-         \UnaryInfC{$t = u$}
-         \RightLabel{$\ReqE$}
-         \BinaryInfC{$\varFP[u/x]$}
-         \AxiomC{$[\varFF_2]^\varTokA$}
-         \ligneNJP{\varPT_2}
-         \UnaryInfC{$\varFP[t/x]$}
-         \axNJP{\varPT'}
-         \UnaryInfC{$t = u$}
-         \RightLabel{$\ReqE$}
-         \BinaryInfC{$\varFP[u/x]$}
-         \RightLabel{$\RorEA$}
-         \TrinaryInfC{$\varFP[u/x]$}
-         \DisplayProof
-         \\
-         \\
-         \axNJV\UnaryInfC{$\exists x,\varFF$}
-         \AxiomC{$[\varFF]^\varTokA$}
-         \ligneNJP{\varPT'}
-         \UnaryInfC{$\varFP[t/y]$}
-         \RightLabel{$\RexEA^\dagger$}
-         \BinaryInfC{$\varFP[t/y]$}
-         \axNJP{\varPT''}
-         \UnaryInfC{$t = u$}
-         \RightLabel{$\ReqE$}
-         \BinaryInfC{$\varFP[u/x]$}
-         \DisplayProof
-         & $\CCutP{=}{\exists}$ &
-         \axNJV\UnaryInfC{$\exists x,\varFF$}
-         \AxiomC{$[\varFF]^\varTokA$}
-         \ligneNJP{\varPT'}
-         \UnaryInfC{$\varFP[t/y]$}
-         \axNJP{\varPT''}
-         \UnaryInfC{$t = u$}
-         \RightLabel{$\ReqE$}
-         \BinaryInfC{$\varFP[u/x]$}
-         \RightLabel{$\RexEA^\dagger$}
-         \BinaryInfC{$\varFP[u/x]$}
-         \DisplayProof
+      \axNJV
+      \UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}
+      \UnaryInfC{$\varFP[t/x]$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}
+      \UnaryInfC{$\varFP[t/x]$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFP[t/x]$}
+      \axNJP{\varPT'}
+      \UnaryInfC{$t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varFP[u/x]$}
+      \DisplayProof
+      & $\CCutP{=}{\lor}$ &
+      \axNJV
+      \UnaryInfC{$\varFF_1\lor\varFF_2$}
+      \AxiomC{$[\varFF_1]^\varTokA$}
+      \ligneNJP{\varPT_1}
+      \UnaryInfC{$\varFP[t/x]$}
+      \axNJP{\varPT'}
+      \UnaryInfC{$t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varFP[u/x]$}
+      \AxiomC{$[\varFF_2]^\varTokA$}
+      \ligneNJP{\varPT_2}
+      \UnaryInfC{$\varFP[t/x]$}
+      \axNJP{\varPT'}
+      \UnaryInfC{$t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varFP[u/x]$}
+      \RightLabel{$\RorEA$}
+      \TrinaryInfC{$\varFP[u/x]$}
+      \DisplayProof
+      \\
+      \\
+      \axNJV\UnaryInfC{$\exists x,\varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}
+      \UnaryInfC{$\varFP[t/y]$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFP[t/y]$}
+      \axNJP{\varPT''}
+      \UnaryInfC{$t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varFP[u/x]$}
+      \DisplayProof
+      & $\CCutP{=}{\exists}$ &
+      \axNJV\UnaryInfC{$\exists x,\varFF$}
+      \AxiomC{$[\varFF]^\varTokA$}
+      \ligneNJP{\varPT'}
+      \UnaryInfC{$\varFP[t/y]$}
+      \axNJP{\varPT''}
+      \UnaryInfC{$t = u$}
+      \RightLabel{$\ReqE$}
+      \BinaryInfC{$\varFP[u/x]$}
+      \RightLabel{$\RexEA^\dagger$}
+      \BinaryInfC{$\varFP[u/x]$}
+      \DisplayProof
     \end{tabular}
-    }
+  }
 
-    \vspace{0.2cm}
-    \hrule
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Réductions commutatives dans $\NJ$ - partie 2}
-    \label{tbl.cut.com.NJ2}
+  \vspace{0.2cm}
+  \caption{Réductions commutatives dans $\NJ$ - partie 2}
+  \label{tbl.cut.com.NJ2}
 \end{table}
 
 \begin{remark}
@@ -1685,8 +1694,8 @@ D'où les propriétés déjà prouvées dans $\LJ$ de la disjonction et du témo
 On peut aussi en déduire (là encore comme pour $\LJ$) la cohérence du calcul.
 
 \begin{property}[Cohérence]
-    Il n'existe pas d'arbre $\varPT \in \ProofNJ$ tel que
-    $\varPT\concl \vdNJ\bot$.
+  Il n'existe pas d'arbre $\varPT \in \ProofNJ$ tel que
+  $\varPT\concl \vdNJ\bot$.
 \end{property}
 
 Enfin, on donne le résultat qui sera prouvé dans les prochaines chapitres, qui
@@ -1698,9 +1707,9 @@ permet de montrer le bon comportement de la déduction naturelle.
 \end{theorem}
 
 \begin{remark}
-    Ce résultat est plus fort que l'élimination des coupures dans le calcul des
-    séquents~: on peut avoir des suites infinies de réduction $\reecr{}$ dans le
-    calcul des séquents (notamment en faisant remonter une coupure à gauche, puis
-    à droite \latinexpr{etc.}) alors que la déduction naturelle assure que
-    toutes les suites de réductions terminent.
+  Ce résultat est plus fort que l'élimination des coupures dans le calcul des
+  séquents~: on peut avoir des suites infinies de réduction $\reecr{}$ dans le
+  calcul des séquents (notamment en faisant remonter une coupure à gauche, puis
+  à droite \latinexpr{etc.}) alors que la déduction naturelle assure que
+  toutes les suites de réductions terminent.
 \end{remark}
