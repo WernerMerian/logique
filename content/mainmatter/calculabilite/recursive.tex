@@ -31,10 +31,10 @@ C, Python, Ocaml \latinexpr{etc}).
 
 Avant d'introduire les fonctions récursives, nous en donnons une version faible
 mais très importante~: les fonctions primitives récursives (abrégées en
-fonctions RP).
+fonctions $\RecP$).
 
 Si l'on imagine une fonction calculable comme un programme C ou Python, une
-fonction RP est un programme n'employant comme seule boucle que la boucle
+fonction $\RecP$ est un programme n'employant comme seule boucle que la boucle
 \texttt{for}. Comme nous le verrons, ces fonctions ne donnent pas une
 expressivité aussi forte qu'on pourrait le souhaiter, d'où l'introduction plus
 tard des fonctions récursives. Cependant, cette première notion de calcul est
@@ -48,14 +48,14 @@ centrale pour plusieurs raisons~:
   n'utilisant que des boucles \texttt{for} est toujours sûr de terminer).
 \end{itemize}
 
-Nous allons d'abord voir la notion de fonction RP la plus classique (on peut
-retrouver les mêmes définitions par exemple dans \cite{cori1993logique}), puis
-nous introduirons une version généralisée de cette classe de fonctions.
+Nous allons d'abord voir la notion de fonction $\RecP$ la plus classique (on
+peut retrouver les mêmes définitions par exemple dans \cite{cori1993logique}),
+puis nous introduirons une version généralisée de cette classe de fonctions.
 L'intérêt premier de cette version généralisée est de faciliter le travail
 d'encodage dans les futurs chapitres, et de mettre en valeur la classe des
-fonctions RP non comme un pur objet logique mais bien comme un modèle de calcul
-intermédiaire entre les langages algébriques et les langages récursifs (que nous
-verrons ensuite).
+fonctions $\RecP$ non comme un pur objet logique mais bien comme un modèle de
+calcul intermédiaire entre les langages algébriques et les langages récursifs
+(que nous verrons ensuite).
 
 Historiquement, la notion de fonction primitive récursive est apparue avant
 celle des fonctions calculables, notamment dans \cite{skolem1923begrundung} qui
@@ -84,19 +84,19 @@ Commençons par donner la définition de la classe $\RecP$.
   \item $\RecP$ contient, pour tout $n \in \bN$, la fonction
     \[\makeFun{\csKZ{n}}{\bN^n}{\bN}{(x_1,\ldots,x_n)}{0}\]
   \item la fonction $n \mapsto n + 1$ est primitive récursive~: $\sucs\in\RecP$.
-  \item si $f_1,\ldots,f_n : \bN^k \to \bN$ sont des fonctions RP et
-    $g : \bN^n \to \bN$ est une fonction RP, alors la fonction
+  \item si $\makeFunName{f_1,\ldots,f_n}{\bN^k}{\bN}$ sont des fonctions $\RecP$
+    et $\makeFunName{g}{\bN^n}{\bN}$ est une fonction $\RecP$, alors la fonction
     \[\makeFun{g\circ(f_1,\ldots,f_n)}{\bN^k}{\bN}
               {(x_1,\ldots,x_k)}
               {g(f_1(x_1,\ldots,x_k),\ldots,f_n(x_1,\ldots,x_k))}\]
-    est elle aussi RP.
-  \item si $f : \bN^k \to \bN$ et $g : \bN^{k+2} \to \bN$ sont des fonctions RP,
-    alors la fonction
+    est elle aussi $\RecP$.
+  \item si $\makeFunName{f}{\bN^k}{\bN}$ et $\makeFunName{g}{\bN^{k+2}}{\bN}$
+    sont des fonctions $\RecP$, alors la fonction
     \[\makeFunBis{\rec(f,g)}{\bN^{k+1}}{\bN}
                  {(x_1,\ldots,x_k,0)}{f(x_1,\ldots,x_k)}
                  {(x_1,\ldots,x_k,\sucs(y))}
                  {g(x_1,\ldots,x_k,y,\rec(f,g)(x_1,\ldots,x_k,y))}\]
-    est elle aussi RP. On appelle cette opération la récursion primitive.
+    est elle aussi $\RecP$. On appelle cette opération la récursion primitive.
   \end{itemize}
 \end{definition}
 
@@ -109,27 +109,27 @@ Commençons par donner la définition de la classe $\RecP$.
 \begin{remark}
   Comme toujours, on identifie $\bN^0 \to \bN$ avec $\bN$. Ainsi on peut définir
   une fonction $\bN \to \bN$ à partir d'un élement $x_0 \in \bN$ et d'une
-  fonction $f_{\Ss} : \bN^2 \to \bN$.
+  fonction $\makeFunName{f_{\Ss}}{\bN^2}{\bN}$.
 \end{remark}
 
 \begin{remark}
-  Toute fonction RP est une fonction totale, puisque les opérations permettant
-  de construire de nouvelles fonctions RP conservent la totalité, et les
-  fonctions RP de base sont totales.
+  Toute fonction $\RecP$ est une fonction totale, puisque les opérations
+  permettant de construire de nouvelles fonctions $\RecP$ conservent la
+  totalité, et les fonctions $\RecP$ de base sont totales.
 \end{remark}
 
 \noindent
-Donnons plusieurs fonctions RP élémentaires.
+Donnons plusieurs fonctions $\RecP$ élémentaires.
 
 \begin{proposition}\label{fct.RP.1}
-  Les fonctions suivantes sont RP~:
+  Les fonctions suivantes sont $\RecP$~:
   \begin{itemize}
   \item pour tout $n \in \bN$ et tout $p < n$, la fonction
     constante
     \[\makeFun{\csKP{p}{n}}{\bN^n}{\bN}{\vec x}{p}\]
-  \item $+ : \bN^2 \to \bN$
-  \item $\times : \bN^2 \to \bN$
-  \item $\exp : \bN^2 \to \bN$
+  \item $\makeFunName{+}{\bN^2}{\bN}$
+  \item $\makeFunName{\times}{\bN^2}{\bN}$
+  \item $\makeFunName{\exp}{\bN^2}{\bN}$
   \end{itemize}
 \end{proposition}
 
@@ -159,7 +159,7 @@ A partir de ces fonctions élémentaires, on peut construire les fonctions de
 somme et de produit.
 
 \begin{proposition}
-  Les fonctions suivantes sont RP~:
+  Les fonctions suivantes sont $\RecP$~:
   \[
   \makeFun{\Sigma^p}{\bN^p}{\bN}{\vec x}{\displaystyle\sum_{i = 1}^p x_i}
   \qquad
@@ -169,12 +169,12 @@ somme et de produit.
 
 \begin{proof}
   On prouve par récurrence sur $p$ que chaque $\Sigma^p,\Pi^p$ est une fonction
-  RP~:
+  $\RecP$~:
   \begin{itemize}
   \item dans le cas où $p = 0$, on a simplement deux constantes, respectivement
-    $0$ et $1$, qui sont RP.
-  \item supposons que $\Sigma^p$ est RP, alors on peut définir $\Sigma^{p+1}$
-    par
+    $0$ et $1$, qui sont $\RecP$.
+  \item supposons que $\Sigma^p$ est $\RecP$, alors on peut définir
+    $\Sigma^{p+1}$ par
     \[\Sigma^{p+1} \defeq \mathord{+}\circ
     (\Sigma^p \circ (\pi_1^{p+1},\ldots,\pi_p^{p+1}),
     \pi_{p+1}^{p+1})\]
@@ -183,33 +183,34 @@ somme et de produit.
     (\Pi^p \circ (\pi_1^{p+1},\ldots,\pi_p^{p+1}),
     \pi_{p+1}^{p+1})\]
   \end{itemize}
-  Les deux fonctions sont donc RP.
+  Les deux fonctions sont donc $\RecP$.
 \end{proof}
 
 \begin{exercise}
-  Soit une fonction RP $f : \bN^n \to \bN$. Montrer que la fonction
+  Soit une fonction $\RecP$ $\makeFunName{f}{\bN^n}{\bN}$. Montrer que la
+  fonction
   \[\makeFun{\Sigma^f}{\bN^{n+1}}{\bN}
             {(\vec x,p)}{\displaystyle\sum_{i = 1}^p f(\vec x, i)}\]
-  est une fonction RP. Montrer la même chose pour la fonction $\Pi^f$ dans
+  est une fonction $\RecP$. Montrer la même chose pour la fonction $\Pi^f$ dans
   laquelle la somme est remplacée par le produit.
 \end{exercise}
 
 D'autres fonctions arithmétiques parmi les plus élémentaires sont facilement
-prouvables comme étant RP.
+prouvables comme étant $\RecP$.
 
 \begin{proposition}
-  Les fonctions $\min,\max : \bN^2 \to \mathbb N$, la fonction
-  $\vardis : \bN^2 \to \bN$ définie par $\vardis(n,m) = | n - m |$,
+  Les fonctions $\makeFunName{\min,\max}{\bN^2}{\bN}$, la fonction
+  $\makeFunName{\vardis}{\bN^2}{\bN}$ définie par $\vardis(n,m) = | n - m |$,
   ainsi que la fonction
   \[\makeFunTer{\tok - \tok}{\bN^2}{\bN}
                {(n,0)}{n}
                {(0,\sucs(m))}{0}
                {(\sucs(n),\sucs(m))}{n - m}\]
-  sont RP.
+  sont $\RecP$.
 \end{proposition}
 
 \begin{proof}
-  On commence par prouver que $-$ est RP. Pour cela, on définit d'abord la
+  On commence par prouver que $-$ est $\RecP$. Pour cela, on définit d'abord la
   fonction prédécesseur, qui envoie $0$ sur $0$ et $\sucs(n)$ sur $n$~:
   \[p \defeq \rec(\csKZ{0},\projP{1}{2})\]
   A partir de cette fonction $p$, on définit la fonction $-$ comme son
@@ -231,7 +232,7 @@ prouvables comme étant RP.
     = n - \sucs(m)
     \]
   \end{itemize}
-  Donc $\tok-\tok$ est RP.
+  Donc $\tok-\tok$ est $\RecP$.
 
   A partir de cette définition de $-$, on peut prouver que $n-m = \max(0,n-m)$
   (nous considérons la preuve suffisamment directe pour la laisser en
@@ -249,64 +250,67 @@ prouvables comme étant RP.
 
 \begin{exercise}
   Montrer que les fonctions $\min$ et $\max$ sur un $n$-uplet sont encore des
-  fonctions RP.
+  fonctions $\RecP$.
 \end{exercise}
 
 \begin{exercise}
   Vérifier que la fonction
   \[\makeFun{\demi}{\bN}{\bN}{n}{\left\lfloor\dfrac{n}{2}\right\rfloor}\]
-  est bien une fonction RP.
+  est bien une fonction $\RecP$.
 \end{exercise}
 
 \begin{exercise}
-  Montrer que la fonction $\tok/\tok : \bN^2 \to \bN$ et la fonction
-  $\tok\%\tok:\bN^2 \to \bN$, renvoyant respectivement le quotient et le reste
-  de la division euclidienne d'un entier par un autre, sont des fonctions RP.
+  Montrer que la fonction $\makeFunName{\tok/\tok}{\bN^2}{\bN}$ et la fonction
+  $\makeFunName{\tok\%\tok}{\bN^2}{\bN}$, renvoyant respectivement le quotient
+  et le reste de la division euclidienne d'un entier par un autre, sont des
+  fonctions $\RecP$.
 \end{exercise}
 
 \begin{remark}
-  \`A partir de maintenant, on se permet de définir des fonctions RP par des
-  équations sur des arguments, c'est-à-dire considérer qu'une fonction $f$
+  \`A partir de maintenant, on se permet de définir des fonctions $\RecP$ par
+  des équations sur des arguments, c'est-à-dire considérer qu'une fonction $f$
   définie par
   \[\begin{cases}
   f(\vec x,0) \defeq [\cdots]\\
   f(\vec x,\sucs(y)) \defeq [\cdots]
   \end{cases}\]
-  où le contenu des $[\cdots]$ est déjà RP, donne lieu à une fonction RP.
+  où le contenu des $[\cdots]$ est déjà $\RecP$, donne lieu à une fonction
+  $\RecP$.
 \end{remark}
 
-Attardons-nous maintenant sur la notion de prédicat RP. On a vu qu'une fonction
-RP était une certaine fonction $\bN^n \to \bN$, mais il est aussi intéressant de
-considérer à la place de fonctions des relations
-$\mathord{\varRR}\subseteq\bN^n$. On adapte donc notre notion de RP à ces
+Attardons-nous maintenant sur la notion de prédicat $\RecP$. On a vu qu'une
+fonction $\RecP$ était une certaine fonction $\bN^n \to \bN$, mais il est aussi
+intéressant de considérer à la place de fonctions des relations
+$\mathord{\varRR}\subseteq\bN^n$. On adapte donc notre notion de $\RecP$ à ces
 relations.
 
 \begin{definition}[Relation RP]
-  On dit qu'une relation $\mathord{\varRR}\subseteq\bN^n$ est RP si sa fonction
-  caractéristique $\makeFunName{\indicP{\mathord{\varRR}}}{\bN^n}{\btwo}$ est
-  une fonction RP.
+  On dit qu'une relation $\mathord{\varRR}\subseteq\bN^n$ est $\RecP$ si sa
+  fonction caractéristique
+  $\makeFunName{\indicP{\mathord{\varRR}}}{\bN^n}{\btwo}$ est une fonction
+  $\RecP$.
 \end{definition}
 
 \begin{remark}
-  On parlera aussi d'ensemble RP ou de partie RP, ce dernier cas plutôt pour
-  parler de partie de $\bN$.
+  On parlera aussi d'ensemble $\RecP$ ou de partie $\RecP$, ce dernier cas
+  plutôt pour parler de partie de $\bN$.
 \end{remark}
 
-Les relations RP se comportent bien vis à vis de la logique classique, au sens
-de la proposition suivante.
+Les relations $\RecP$ se comportent bien vis à vis de la logique classique, au
+sens de la proposition suivante.
 
 \begin{proposition}\label{prop.PRBool}
-  Pour tout $n \in \bN$, l'ensemble des relations RP sur $\bN^n$ est une
+  Pour tout $n \in \bN$, l'ensemble des relations $\RecP$ sur $\bN^n$ est une
   sous-algèbre de Boole de $\powerset(\bN^n)$.
 \end{proposition}
 
 \begin{proof}
-  On cherche donc à prouver que les relations RP sont stables par intersection,
-  union et complément, et que $\bN^n$ et $\vide$ sont des relations RP. Les deux
-  derniers points sont directs puisque ces deux relations correspondent
-  respectivement à $\csKP{1}{n}$ et $\csKZ{n}$.
+  On cherche donc à prouver que les relations $\RecP$ sont stables par
+  intersection, union et complément, et que $\bN^n$ et $\vide$ sont des
+  relations $\RecP$. Les deux derniers points sont directs puisque ces deux
+  relations correspondent respectivement à $\csKP{1}{n}$ et $\csKZ{n}$.
 
-  Soient $\varRR,\varRR'$ deux relations RP, alors~:
+  Soient $\varRR,\varRR'$ deux relations $\RecP$, alors~:
   \[\forall \vec n \in \bN^p,
   \begin{cases}
     \indicP{\mathord{\varRR}\cap \mathord{\varRR'}}(\vec n) =
@@ -316,62 +320,64 @@ de la proposition suivante.
   \end{cases}
   \]
   donc $\mathord{\varRR}\cap\mathord{\varRR'}$ et
-  $\mathord{\varRR}\cup\mathord{\varRR'}$ sont RP, en composant par $\min$ et
-  $\max$, respectivement.
+  $\mathord{\varRR}\cup\mathord{\varRR'}$ sont $\RecP$, en composant par $\min$
+  et $\max$, respectivement.
 
   De plus,
   \[\forall \vec n \in \bN^p,
   \indicP{\bN^p\setminus \mathord{\varRR}}(\vec n) =
   1 - \indicP{\mathord{\varRR}}(\vec n)\]
-  donc $\bN^p \setminus \mathord{\varRR}$ est aussi RP, en composant par
+  donc $\bN^p \setminus \mathord{\varRR}$ est aussi $\RecP$, en composant par
   $x \mapsto 1 - x$.
 
-  Ainsi les relations RP forment une algèbre de Boole pour les opérations
+  Ainsi les relations $\RecP$ forment une algèbre de Boole pour les opérations
   ensemblistes usuelles.
 \end{proof}
 
 \begin{proposition}\label{fct.RP2}
   Les relations $\mathord{\diagRR} \defeq \compr{(n,n)}{n \in \bN}$ et
-  $\mathord{\leq} \defeq \compr{(n,m)}{n \leq m}$ sont RP.
+  $\mathord{\leq} \defeq \compr{(n,m)}{n \leq m}$ sont $\RecP$.
 \end{proposition}
 
 \begin{proof}
-  On prouve d'abord que $\leq$ est RP. Pour cela, on remarque que $n \leq m$
+  On prouve d'abord que $\leq$ est $\RecP$. Pour cela, on remarque que
+  $n \leq m$
   exactement lorsque $n - m \leq 0$, c'est-à-dire lorsque $n - m = 0$.
-  En prenant alors $(n,m) \mapsto 1 - (n - m)$, on a bien une fonction RP à
+  En prenant alors $(n,m) \mapsto 1 - (n - m)$, on a bien une fonction $\RecP$ à
   valeurs dans $\btwo$ et qui coïncide avec $\indicP{\leq}$. Pour montrer que
-  la relation $\diagRR$ est aussi RP, il suffit de remarquer que
+  la relation $\diagRR$ est aussi $\RecP$, il suffit de remarquer que
   \[n \diagRR m \iff (n \leq m) \land (m \leq n)\]
   et d'utiliser la \cref{prop.PRBool} pour en déduire le résultat.
 \end{proof}
 
 \begin{exercise}
-  Montrer que $\diagRR^n \defeq \compr{(p,\ldots,p)}{p \in \bN}$, avec $n$
-  occurrences de $p$, est une relation RP.
+  Montrer que $\mathord{\diagRR^n} \defeq \compr{(p,\ldots,p)}{p \in \bN}$,
+  avec $n$ occurrences de $p$, est une relation $\RecP$.
 \end{exercise}
 
 Grâce à ces propriétés de base, on sait déjà que des formules sans
 quantification utilisant l'égalité et l'inégalité comme symbole de relation
-sont, en s'interprétant dans la structure $\bN$, des relations RP.
+sont, en s'interprétant dans la structure $\bN$, des relations $\RecP$.
 
 On verra qu'il n'est pas possible de rajouter n'importe quelle quantification,
 mais le résultat suivant est déjà un résultat particulièrement fort~: une
-quantification bornée sur une relation RP reste une relation RP.
+quantification bornée sur une relation $\RecP$ reste une relation $\RecP$.
 
 \begin{proposition}\label{fct.RP3}
-  Soit une relation $\mathord{\varRR}\subseteq \mathbb N^{n+1}$. On définit
+  Soit une relation $\mathord{\varRR}\subseteq \bN^{n+1}$. On définit
   les fonctions
   \[\makeFun{\exists{\mathord{\varRR}}}{\bN^{n+1}}{\btwo}
             {(\vec x,y)}{\begin{cases}
                 1 \text{ si } \exists z < y, \varRR(\vec x,z)\\
                 0 \text{ sinon }
             \end{cases}}\]
-  \[\makeFun{\forall{\mathord{\varRR}}}{\bN^{n+1}}{\btwo}
-            {(\vec x,y)}{\begin{cases}
-                1 \text{ si } \forall z < y, \varRR(\vec x,z)\\
-                0 \text{ sinon }
-            \end{cases}}\]
-  Si $\varRR$ est une relation RP, alors ces deux relations sont elles aussi RP.
+            \[\makeFun{\forall{\mathord{\varRR}}}{\bN^{n+1}}{\btwo}
+                      {(\vec x,y)}{\begin{cases}
+                          1 \text{ si } \forall z < y, \varRR(\vec x,z)\\
+                          0 \text{ sinon }
+                      \end{cases}}\]
+  Si $\varRR$ est une relation $\RecP$, alors ces deux relations sont elles
+  aussi $\RecP$.
 \end{proposition}
 
 \begin{proof}
@@ -382,7 +388,7 @@ quantification bornée sur une relation RP reste une relation RP.
   \exists\mathord{\varRR}(\vec x,\sucs(y)) =
   (\exists\mathord{\varRR}(\vec x, y)) \lor \mathbin{\varRR}(\vec x,y)
   \end{cases}\]
-  d'où le fait que la relation est RP.
+  d'où le fait que la relation est $\RecP$.
 \end{proof}
 
 \begin{remark}
@@ -399,15 +405,16 @@ quantification bornée sur une relation RP reste une relation RP.
 \end{remark}
 
 \begin{exercise}
-  Montrer que l'ensemble des nombres premiers est un ensemble RP.
+  Montrer que l'ensemble des nombres premiers est un ensemble $\RecP$.
 \end{exercise}
 
 \noindent
-On peut aussi construire des instructions conditionnelles sur des relations RP.
+On peut aussi construire des instructions conditionnelles sur des relations
+$\RecP$.
 
 \begin{proposition}
-  Soit $\mathord{\varRR} \subseteq \bN^n$ une fonction RP et
-  $f,g : \bN^n \to \mathbb N$ deux fonctions RP. Alors la fonction
+  Soit $\mathord{\varRR} \subseteq \bN^n$ une relation $\RecP$ et
+  $\makeFunName{f,g}{\bN^n}{\bN}$ deux fonctions $\RecP$. Alors la fonction
   \[\makeFun{\ifrm(\mathord{\varRR},f,g)}{\bN^n}{\bN}
             {\vec n}{\begin{cases}
                 f(\vec n) \text{ si } (\vec n) \in \mathord{\varRR}\\
@@ -420,8 +427,8 @@ On peut aussi construire des instructions conditionnelles sur des relations RP.
   \[\makeFunBis{h}{\bN^{n+1}}{\bN}
                {(\vec n,0)}{f(\vec n)}
                {(\vec n,\sucs(m))}{g(\vec n)}\]
-  qui est RP puisque définie par des équations récursives (en l'occurrence, des
-  équations récursives ne faisant pas d'appel récursif). On remarque que
+  qui est $\RecP$ puisque définie par des équations récursives (en l'occurrence,
+  des équations récursives ne faisant pas d'appel récursif). On remarque que
   \[\ifrm(\mathord{\varRR},f,g)(\vec n) =
   h(\vec n,\indicP{\mathord{\varRR}}(\vec n))\]
   D'où le résultat par composition.
@@ -459,8 +466,8 @@ de minimisation qui nous sera utile.
   $\muC \funGraph{f} = f$.
 \end{remark}
 
-La minimisation en général n'est pas RP, mais la minimisation bornée l'est. De
-plus, le fait que la fonction n'est pas définie dans le cas de $\muC$ est dû
+La minimisation en général n'est pas $\RecP$, mais la minimisation bornée l'est.
+De plus, le fait que la fonction n'est pas définie dans le cas de $\muC$ est dû
 au fait que si l'on songe à nos fonctions comme à des algorithmes, et à $\varRR$
 comme à un algorithme de décision, il est impossible de savoir (en temps fini)
 s'il existe ou non un certain $m$ tel que $\mathord{\varRR}(\vec n,m)$. Au
@@ -469,14 +476,14 @@ en temps fini, et on peut donc donner une valeur dans le cas où l'ensemble est
 vide.
 
 \begin{proposition}
-  Soit $\mathord{\varRR}\subseteq \bN^{n+1}$ une relation RP. La fonction
-  $\muB \mathord{\varRR}$ est une fonction RP.
+  Soit $\mathord{\varRR}\subseteq \bN^{n+1}$ une relation $\RecP$. La fonction
+  $\muB \mathord{\varRR}$ est une fonction $\RecP$.
 \end{proposition}
 
 \begin{proof}
   On considère une fonction intermédiaire $f$, qui retourne $0$ si l'ensemble
   des $(\vec n,x)\in\mathord{\varRR}$ est vide et $m + 1$ si le minimum vaut
-  $m$ (ainsi, on a deux cas disjoints). Montrons que $f$ est RP.
+  $m$ (ainsi, on a deux cas disjoints). Montrons que $f$ est $\RecP$.
   Cette fonction peut se définir par les équations suivantes~:
   \[\begin{cases}
   f(\vec n,0) = 0\\
@@ -485,7 +492,7 @@ vide.
   f(\vec n,m) = 0 \land (\vec n,m) \in \mathord{\varRR}\\
   f(\vec n,\sucs(m)) = 0 \text{ sinon }
   \end{cases}\]
-  donc $f$ est RP par récursion primitive. En composant ensuite par le
+  donc $f$ est $\RecP$ par récursion primitive. En composant ensuite par le
   prédécesseur, on obtient bien $\muB\mathord{\varRR}$.
 \end{proof}
 
@@ -498,53 +505,53 @@ vide.
 \end{remark}
 
 Avec les outils présents, on peut montrer que la bijection de Cantor introduite
-dans la \cref{def.bij.Cantor} est une fonction RP.
+dans la \cref{def.bij.Cantor} est une fonction $\RecP$.
 
 \begin{proposition}\label{prop.Cantor.bij}
   La bijection de Cantor $\makeFunNameIso{\BijCB}{\bN^2}{\bN}$ est une fonction
-  RP. Les deux fonctions
+  $\RecP$. Les deux fonctions
   $\makeFunName{\projP{1}{},\projP{2}{}}{\bN}{\bN}$ telles que
   $(\projP{1}{}(\BijCB(n,m)),\projP{2}{}(\BijCB(n,m))) = (n,m)$ sont elles aussi
-  RP.
+  $\RecP$.
 \end{proposition}
 
 \begin{proof}
   On montre aisément que la fonction
   \[\makeFun{f_1}{\bN}{\bN}{k}{\displaystyle\sum_{i = 1}^k i}\]
-  est RP. On peut alors définir $\BijCB par$~:
+  est $\RecP$. On peut alors définir $\BijCB par$~:
   \[\BijCB(n,m) \defeq f_1(n+m)+m\]
-  Ainsi $\BijCB$ est bien une fonction RP.
+  Ainsi $\BijCB$ est bien une fonction $\RecP$.
 
   Les deux projections peuvent maintenant d'obtenir par une minimisation
   bornée~: soit $n \in \bN$ tel que $\BijCB(k,p) = n$ pour deux entiers
   $k,p\in \bN$, alors $k,p \leq n$ et le seul couple $(k,p)$ est le seul envoyé
   sur $n$, donc $k$ (respectivement $p$) est le plus petit entier tel qu'il
   existe $p$ (respectivement $k$) tel que $\BijCB(k,p) = n$. Puisque
-  $\BijCB$ est RP, on en déduit que les deux projections sont RP.
+  $\BijCB$ est $\RecP$, on en déduit que les deux projections sont $\RecP$.
 \end{proof}
 
 \begin{exercise}
-  Montrer que chaque $\BijCn$ est aussi une fonction RP, et que chaque
+  Montrer que chaque $\BijCn$ est aussi une fonction $\RecP$, et que chaque
   projection $\projP{i}{n}$ telle que
-  $\projP{i}{n}(\BijCn(x_1,\ldots,x_n))=x_i$, est une fonction RP.
+  $\projP{i}{n}(\BijCn(x_1,\ldots,x_n))=x_i$, est une fonction $\RecP$.
 \end{exercise}
 
 \begin{remark}
   Il y a confusion possible entre les projections définies ici et les
-  projections $\makeFunName{\proj{i}{n}}{\bN^n}{\bN}$. En pratique, cette
+  projections $\makeFunName{\projP{i}{n}}{\bN^n}{\bN}$. En pratique, cette
   confusion ne posera pas de problème.
 \end{remark}
 
 Avec ces données, on se rend compte que le fait d'avoir des fonctions
 $\bN^n \to \bN$ n'apporte pas réellement plus d'expressivité que d'avoir
-simplement des fonctions $\bN \to \bN$, puisque toutes les fonctions RP
+simplement des fonctions $\bN \to \bN$, puisque toutes les fonctions $\RecP$
 $\makeFunName{f}{\bN^k}{\bN}$ peuvent se réécrire en une composée de fonctions
 $n \mapsto (\projP{1}{p}(n),\ldots,\projP{p}{p}(n))
 \overset{f}{\mapsto} f(\projP{1}{p}(n),\ldots,\projP{p}{p}(n))$ elle aussi
-RP. Bien sûr, il est toujours nécessaire de définir les fonctions avec plusieurs
-coordonnées de par la définition même des fonctions RP (puisqu'en particulier
-la récursion primitive utilise un appel sur une seule coordonnée en laissant les
-autres statiques).
+$\RecP$. Bien sûr, il est toujours nécessaire de définir les fonctions avec
+plusieurs coordonnées de par la définition même des fonctions $\RecP$ (puisqu'en
+particulier la récursion primitive utilise un appel sur une seule coordonnée en
+laissant les autres statiques).
 
 \subsection{Codages primitifs récursifs}
 
@@ -565,16 +572,17 @@ codage, en remplaçant de futures preuves fastidieuses en 3 résultats
 principaux~:
 \begin{itemize}
 \item généraliser les fonctions récursives primitives sur des alphabets
-  différents ne change pas la classe des fonctions RP de la forme $\bN^n\to\bN$,
+  différents ne change pas la classe des fonctions $\RecP$ de la forme
+  $\bN^n\to\bN$,
 \item les langages algébriques sont primitifs récursifs,
 \item les fonctions définies par induction par la \cref{prop.PU.gram} sont
-  compatibles avec la classe des fonctions RP.
+  compatibles avec la classe des fonctions $\RecP$.
 \end{itemize}
 Le deuxième résultat est déjà plus élégant que si l'on se restreignait aux
 fonctions $\bN^n \to \bN$, étant donné que l'exprimer uniquement avec cette
 classe de fonctions demanderait de définir des codages préalables. Ne pas passer
 par des codages supplémentaires pour exprimer ces résultats donne un aspect plus
-intrinsèque à notre notion de fonctions PR~: les langages que cette notion
+intrinsèque à notre notion de fonctions $\RecP$~: les langages que cette notion
 engendrent sont effectivement plus fort que les langages algébriques.
 
 Cependant, le réel atout de cette généralisation est de permettre de considérer
@@ -583,42 +591,42 @@ une classe plus restreinte que ce que nous verrons dans la suite du chapitre.
 De plus, grâce au premier des trois résultats, on pourra montrer que toutes ces
 opérations peuvent se traduire en des opérations sur $\bN^n \to \bN$ modulo un
 codage prélable, sans avoir à prouver à nouveau que de telles opérations sont
-bien des fonctions RP. On le verra dans le \cref{chp.calculabilité}, mais ces
-résultats donneront en corollaire beaucoup de résultats techniques.
+bien des fonctions $\RecP$. On le verra dans le \cref{chp.calculabilité}, mais
+ces résultats donneront en corollaire beaucoup de résultats techniques.
 
 \begin{definition}[Fonctions récursives primitives généralisées]
   On définit la classe des fonctions récursives primitives généralisées
-  (RPG) comme la plus petite classe de fonctions
+  ($\RPG$) comme la plus petite classe de fonctions
   $\toStAP{1}\times\cdots\times\toStAP{n}\to \toStA$ où
   $\ABA_1,\ldots,\ABA_n,\ABA$ sont des ensembles finis, telle que~:
   \begin{itemize}
   \item chaque fonction
     \[\makeFun{\projP{k}{n}}{\prod_{i = 1}^n\toStAP{i}}{\toStAP{k}}
               {(\varwd_1,\ldots,\varwd_k)}{\varwd_k}\]
-    est une fonction RPG.
+    est une fonction $\RPG$.
   \item pour tout $\ABA$ et $\varla \in \ABA$, la fonction
     \[\makeFun{\consP{\varla}}{\toStA}{\toStA}{\varwd}{\varwd\wdPt\varla}\]
-    est une fonction RPG.
+    est une fonction $\RPG$.
   \item pour tous $\ABA_1,\ldots,\ABA_n,\ABA$, la fonction
     \[
     \makeFun{\csKP{\Ewd}{\ABA_1,\ldots,\ABA_n,\ABA}}
             {\prod_{i = 1}^n\toStAP{i}}{\toStA}{\vec\varwd}{\Ewd}
-    \]
-    est une fonction RPG (qu'on notera simplement $\csKE$).
+            \]
+    est une fonction $\RPG$ (qu'on notera simplement $\csKE$).
   \item si $\makeFunName{f_k}{\prod_{i = 1}^n \toStAP{i}}{\toStBP{k}}$ est une
-    fonction RPG pour chaque $k = 1,\ldots,p$, et
-    $\makeFunName{g}{\prod_{i = 1}^p \toStBP{i}}{\toStA}$ est une fonction RPG,
+    fonction $\RPG$ pour chaque $k = 1,\ldots,p$, et
+    $\makeFunName{g}{\prod_{i = 1}^p\toStBP{i}}{\toStA}$ est une fonction $\RPG$,
     alors
     \[\makeFun{g\circ (f_1,\ldots,f_p)}{\prod_{i = 1}^n\toStAP{i} }{\toStA}
               {\vec{\varwd}}{g(f_1(\vec{\varwd}),\ldots,f_p(\vec{\varwd}))}\]
-    est une fonction RPG.
+    est une fonction $\RPG$.
   \item si $\makeFunName{f}{\prod_{i = 1}^p \toStAP{i}}{\toStA}$ est une
-    fonction RPG, $\ABB$ est un ensemble fini et, pour tout $\varla\in \ABB$,
+    fonction $\RPG$, $\ABB$ est un ensemble fini et, pour tout $\varla\in \ABB$,
     \[\makeFunName{g_{\varla}}
                   {\left(\prod_{i = 1}^p\toStAP{i}\right)
                     \times\toStB\times\toStA}
                   {\toStA}\]
-    est une fonction RPG, alors la fonction
+    est une fonction $\RPG$, alors la fonction
     \[\makeFunBis{\rec(f,(g_{\varla})_{\varla \in \ABB})}
                  {\left(\prod_{i = 1}^p \toStAP{i}\right) \times\toStB}
                  {\toStA}
@@ -626,54 +634,54 @@ résultats donneront en corollaire beaucoup de résultats techniques.
                  {(\vec\varwd,\varwv\wdPt\varla)}
                  {(g_{\varla}(\vec\varwd,\rec(f,(g_{\varla}))
                    (\vec\varwd,\varwv))}\]
-    est une fonction RPG.
+    est une fonction $\RPG$.
   \end{itemize}
 \end{definition}
 
 \begin{remark}
   On parle ici de tous les ensembles finis, ce qui est trop grand pour obtenir
-  un ensemble, et donc définir un prédicat inductif \og être une fonction RPG\fg
-  en utilisant le théorème de Knaster-Tarski. Pour régler ce problème, on
-  utilise en réalité comme seuls alphabets les ensembles $n \in \Ow$, qui
+  un ensemble, et donc définir un prédicat inductif \og être une fonction
+  $\RPG$\fg en utilisant le théorème de Knaster-Tarski. Pour régler ce problème,
+  on utilise en réalité comme seuls alphabets les ensembles $n \in \Ow$, qui
   représentent déjà tous les ensembles finis à bijection près.
 
   On peut ensuite considérer la version adaptée à tout ensemble fini en disant
-  qu'une fonction $\makeFunName{f}{\toStA}{\toStB}$ est RPG lorsque, pour toutes
-  bijections $\makeFunName{\sigma}{\ABA}{\intervInt{n}}$ et
+  qu'une fonction $\makeFunName{f}{\toStA}{\toStB}$ est $\RPG$ lorsque, pour
+  toutes bijections $\makeFunName{\sigma}{\ABA}{\intervInt{n}}$ et
   $\makeFunName{\tau}{\ABB}{\intervInt{k}}$, $\tau\circ f \circ \sigma^{-1}$ est
-  une fonction RPG. Nous ne considérerons cependant ici que des ensemble de la
-  forme $n \in \Ow$, car la généralisation des fonctions RPG ajoute déjà de
-  nombreuses lourdeurs, et posséder comme alphabet uniquement les ordinaux finis
-  suffit à ce que l'on souhaite faire pour des codages.
+  une fonction $\RPG$. Nous ne considérerons cependant ici que des ensemble de
+  la forme $n \in \Ow$, car la généralisation des fonctions $\RPG$ ajoute déjà
+  de nombreuses lourdeurs, et posséder comme alphabet uniquement les ordinaux
+  finis suffit à ce que l'on souhaite faire pour des codages.
 \end{remark}
 
 \begin{notation}
-  Comme pour le cas des fonctions RP, on s'autorise des simplifications
+  Comme pour le cas des fonctions $\RecP$, on s'autorise des simplifications
   d'écritures en définissant des fonctions par des équations récursives.
 \end{notation}
 
-Les fonctions RP sont naturellement un sous-ensemble des fonctions RPG, en
-assimilant $\bN$ à $\toSt{\{*\}}$. On va considérer pour cette sous-section
+Les fonctions $\RecP$ sont naturellement un sous-ensemble des fonctions $\RPG$,
+en assimilant $\bN$ à $\toSt{\{*\}}$. On va considérer pour cette sous-section
 que $\toSt{\{*\}}$ est exactement l'ensemble $\bN$ qu'on manipule dans le cas
-des fonctions RP/RPG.
+des fonctions $\RecP/\RPG$.
 
-Une question naturelle à se poser est si cette notion de fonctions RPG est
-strictement plus forte que celle de fonctions RP~: ça n'est pas le cas, et c'est
-ce que nous allons montrer dans un premier temps. Pour montrer cela, on va
+Une question naturelle à se poser est si cette notion de fonctions $\RPG$ est
+strictement plus forte que celle de fonctions $\RecP$~: ça n'est pas le cas, et
+c'est ce que nous allons montrer dans un premier temps. Pour montrer cela, on va
 construire une notion de traduction entre chaque $\toStA$ et $\bN$. La
-traduction $\makeFunName{\codRPG{\tok}{\ABA}}{\toStA}{\bN}$ sera choisie RPG, et
-de telle sorte que pour toute fonction $f$ RPG, la fonction associée en
+traduction $\makeFunName{\codRPG{\tok}{\ABA}}{\toStA}{\bN}$ sera choisie $\RPG$,
+et de telle sorte que pour toute fonction $f$ $\RPG$, la fonction associée en
 utilisant les traductions pour avoir une fonction $\relev{f} : \bN^n \to \bN$
-est RP.
+est $\RecP$.
 
 \begin{definition}[Codage de Gödel - version 2 (traduction RPG canonique)]
-\label{def.trad.RPG}
+  \label{def.trad.RPG}
   Soit $\ABA$ un ensemble fini. Il existe une fonction
   $\makeFunName{\codRPG{\tok}{\ABA}}{\toStA}{\bN}$ telle que~:
   \[\begin{cases}
-  \codRPG{\tok}{\ABA}\text{ est bijective }\\
+  \bij(\codRPG{\tok}{\ABA})\\
   \codRPG{\tok}{\ABA}\in \RPG\\
-  {(\codRPG{\tok}{\ABA})}^{-1}\in\RPG
+         {(\codRPG{\tok}{\ABA})}^{-1}\in\RPG
   \end{cases}\]
   et telle que pour tout $n \in \bN, \codRPG{n}{\{*\}} = n$. On notera aussi
   cette fonction $f_\ABA$.
@@ -689,8 +697,8 @@ est RP.
   $\codRPG{*^k}{\{*\}} = \sum_{i = 0}^{k-1} 1^i = k$
   donc $\codRPG{*^k}{\{*\}} = k$.
 
-  On souhaite donc montrer que $\codRPG{\tok}{\ABA}$ est une fonction RPG. Pour
-  cela, on va définir pour $k \in \intervInt{n}$ la fonction
+  On souhaite donc montrer que $\codRPG{\tok}{\ABA}$ est une fonction $\RPG$.
+  Pour cela, on va définir pour $k \in \intervInt{n}$ la fonction
   \[\makeFun{g_k}{\toStA\times\bN}{\bN}
             {(\varwd,m)}{m \times n + (k + 1)}\]
   (la fonction ignore son argument $\varwd$).
@@ -707,26 +715,26 @@ est RP.
     &= \sum_{i = 0}^{p-1} (\varla_i + 1) n^i\\
   \end{align*}
   D'où le résultat souhaité par induction sur $\toStA$.
-
+  
   On va donner un candidat à la fonction ${(\codRPG{\tok}{\ABA})}^{-1}$ et
-  montrer que ce candidat est RPG. Pour cela, on montre d'abord qu'il est
+  montrer que ce candidat est $\RPG$. Pour cela, on montre d'abord qu'il est
   possible de construire la décomposition en base $n$ sur $p$ chiffres d'un
-  nombre $m$ donné en tant que fonction RPG $\bN \to \toSt{\intervInt{n}}$.
-
+  nombre $m$ donné en tant que fonction $\RPG$ $\bN \to \toSt{\intervInt{n}}$.
+  
   Pour commencer, il nous faut construre une première fonction~: étant donné un
   nombre $k \in \bN$, on souhaite montrer que la fonction
   \[\makeFun{\consP{k\%n}}{\toStA}{\toStA}{\varwd}{\varwd\wdPt(k\%n)}\]
-  et RPG, où $k \% n$ désigne le reste de la division euclidienne de $k$ par
+  et $\RPG$, où $k \% n$ désigne le reste de la division euclidienne de $k$ par
   $n$. En réalité, comme $n$ est un nombre fini, il nous suffit d'imbriquer des
   conditions d'égalité de $k \% n$ à chaque nombre dans $i\in\intervInt{n}$ et,
   dans chaque cas, d'utiliser la fonction $\consP{i}$.
-
+  
   On définit alors la fonction
   \[\makeFunBis{f_n}{\bN^2}{\toStA}
                {(k,0)}{\Ewd}
                {(k,d+1)}{\consP{k\%n}(f_n(k/n,d))}\]
   où $k/n$ est le quotient de la division euclidienne de $k$ par $n$. Il est
-  clair que cette fonction est RPG, en utilisant une récursion primitive. On
+  clair que cette fonction est $\RPG$, en utilisant une récursion primitive. On
   souhaite maintenant montrer par récurrence sur $d$ que
   $f_n(k,d)$ est la suite des $d$ chiffres de poids le plus faible de la
   décomposition en base $n$ de $k$~:
@@ -739,24 +747,25 @@ est RP.
     la suite des $d + 1$ chiffres de poids le plus faible de la décomposition en
     base $n$ de $k$.
   \end{itemize}
-  Donc la décomposition en base $n$ sur $d$ chiffres est bien une fonction RPG.
+  Donc la décomposition en base $n$ sur $d$ chiffres est bien une fonction
+  $\RPG$.
 
   On peut maintenant définir la fonction $\makeFunName{d}{\bN}{\bN}$ telle que
   $d(m)$ est le plus petit entier $d$ tel que
   \[m < \sum_{i = 0}^d n^i\]
-  Cette fonction est RPG puisqu'il s'agit d'une minimisation, dont une borne
+  Cette fonction est $\RPG$ puisqu'il s'agit d'une minimisation, dont une borne
   est donnée par $m$ lui-même étant donné que $m < \sum_{i = 0}^m n^i$.
   On construit ensuite l'entier $m' = m - \sum_{i = 0}^{d(m)-1} n^i$ (comme $d(m)$
   est choisi minimal, la valeur de droite est bien positive) puis le
   mot sur $\toSt{\intervInt{n}}$ donné par la décomposition de $m'$ sur $d$
-  chiffres. On sait donc que cette fonction est RPG.
-
+  chiffres. On sait donc que cette fonction est $\RPG$.
+  
   Montrons maintenant que les deux fonctions sont réciproques l'une de l'autre.
   Tout d'abord, si on a un entier $m$, $d$ le plus petit entier tel que
   $m < \sum_{i = 0}^d n^i$ et $\varla_{d-1}\cdots \varla_0$ la décomposition en
   base $n$ sur $d$ chiffres de $m - \sum_{i = 0}^{d-1}n^i$, alors
   \[m = \sum_{i=0}^{d-1} (\varla_i + 1)n^i\]
-
+  
   Réciproquement, si $\varla_{d-1}\cdots \varla_0\in \toStA$, alors en notant
   $m = \codRPG{\varla_{d-1}\cdots \varla_0}{\ABA}$, $d(m) = d$ puisque
   \[\sum_{i = 0}^{d-1} n^i \leq m \leq \sum_{i = 0}^{d-1} (n-1)n^i = n^{d+1} - 1 <
@@ -766,34 +775,34 @@ est RP.
   $\varla_d\cdots \varla_0$.
 \end{proof}
 
-On peut alors associer à une fonction RPG $f$ une fonction RPG ne prenant en
-argument et ne retournant que des entiers.
+On peut alors associer à une fonction $\RPG$ $f$ une fonction $\RPG$ ne prenant
+en argument et ne retournant que des entiers.
 
 \begin{definition}[Fonction RP associée à une fonction RPG]\label{def.RP.RPG}
   Soit
   \[\makeFunName{f}{\prod_{i = 1}^n\toStAP{i}}{\toStA}\]
-  une fonction RPG. On appelle sa fonction RP associée la fonction RPG
+  une fonction $\RPG$. On appelle sa fonction $\RecP$ associée la fonction RPG
   \[\makeFun{\relev{f}}{\bN^n}{\bN}{(k_1,\ldots,k_n)}
             {\codRPG{f((\codRPG{k_1}{\ABA_1})^{-1},\ldots,
                 (\codRPG{k_n}{\ABA_n})^{-1})}{\ABA}}\]
 \end{definition}
 
-L'objectif est donc de montrer que pour toute fonction RPG $f$, la fonction
-$\relev{f}$ est une fonction RP. On notera $f_\ABA$ la fonction de codage
+L'objectif est donc de montrer que pour toute fonction $\RPG$ $f$, la fonction
+$\relev{f}$ est une fonction $\RecP$. On notera $f_\ABA$ la fonction de codage
 $\codRPG{\tok}{\ABA}$ pour alléger les notations. La preuve se faisant par
-induction sur la définition des fonctions RPG, donnons donc une étude sommaire
-des cas les plus évidents~:
+induction sur la définition des fonctions $\RPG$, donnons donc une étude
+sommaire des cas les plus évidents~:
 \begin{itemize}
 \item dans le cas des projections, la fonction associée est
   $f_{\ABA_k}\circ f^{-1}_{\ABA_k} = \id$.
 \item dans le cas de $\consP{\varla} : \ABA \to \ABA$, pour
   $\ABA = \intervInt{n}$ et tout $\varla \in \ABA$, la fonction
   $f_\ABA\circ \consP{a}\circ f_\ABA^{-1}$ est simplement la fonction
-  $k \mapsto n\times k + \varla + 1$. Cette fonction est RP en utilisant les
-  résultats précédents.
+  $k \mapsto n\times k + \varla + 1$. Cette fonction est $\RecP$ en utilisant
+  les résultats précédents.
 \item pour la fonction $\csKE$, la fonction associée est directement $\csKZ{n}$.
-\item si $g$ et $(h_i)_{i \in \intervInt{p}}$ sont des fonctions RPG, alors on peut
-  simplement remarque que l'égalité
+\item si $g$ et $(h_i)_{i \in \intervInt{p}}$ sont des fonctions $\RPG$, alors on
+  peut simplement remarque que l'égalité
   $\relevB{g\circ (h_i)_i} = \hat g \circ (\hat{h_i})_i$
   est vérifiée~:
   \begin{align*}
@@ -806,7 +815,7 @@ des cas les plus évidents~:
     (f_{\ABA_1}^{-1},\ldots,f_{\ABA_n}^{-1}))_i\\
     &= \hat f \circ (\hat{g_i})_i
   \end{align*}
-  la stabilité des fonctions RP par composition et l'hypothèse d'induction
+  la stabilité des fonctions $\RecP$ par composition et l'hypothèse d'induction
   permettent donc de conclure.
 \end{itemize}
 
@@ -814,11 +823,11 @@ On voit donc que le point réellement important de cette preuve est le cas de
 la récursion primitive.
 
 \begin{lemma}
-  Soit $f$ une fonction RPG, alors $\relev{f}$ est une fonction RP.
+  Soit $f$ une fonction $\RPG$, alors $\relev{f}$ est une fonction $\RecP$.
 \end{lemma}
 
 \begin{proof}
-  On procède par induction sur les fonctions RPG. On a prouvé juste avant les
+  On procède par induction sur les fonctions $\RPG$. On a prouvé juste avant les
   cas directs, on s'intéresse donc au cas de la récursion primitive.
 
   Soient des ensembles finis $\ABA_1,\ldots,\ABA_p,\ABB,\ABA$ et
@@ -827,10 +836,11 @@ la récursion primitive.
   \makeFunName{g_\varla}
               {\left(\prod_{i = 1}^p \toStAP{i}\right)\times\toStB\times\toStA}
               {\toStA}\]
-  des fonctions RPG. On souhaite montrer que $\relevB{\rec(f,(g_{\varla}))}$ est
-  une fonction RP sachant que $\relev f, (\relevB{g_{\varla}})_{\varla\in\ABB}$ sont
-  des fonctions RP. On suppose que $\ABA = \intervInt{n}$.
-
+  des fonctions $\RPG$. On souhaite montrer que $\relevB{\rec(f,(g_{\varla}))}$
+  est une fonction $\RecP$ sachant que
+  $\relev f, (\relevB{g_{\varla}})_{\varla\in\ABB}$ sont des fonctions $\RecP$. On
+  suppose que $\ABA = \intervInt{n}$.
+  
   On a vu comment extraire un élément de $\toStA$ à partir d'un entier.
   L'objectif dans cette construction va être d'adapter cette extraction pour
   l'appliquer directement à la récursion. Dans un premier temps, avec le même
@@ -838,7 +848,7 @@ la récursion primitive.
   $\relev{g}$ telle que
   \[\relev{g} (\vec x,y,z) = \relevB{g_{z\% n}}(\vec x,y/n,z)\]
   en imbricant des instructions conditionnelles.
-
+  
   On souhaite maintenant construire la fonction $F$ vérifiant les équations
   suivantes~:
   \[\begin{cases}
@@ -848,7 +858,7 @@ la récursion primitive.
   Cette forme de récursion, bien qu'intuitivement valide (puisque l'argument
   $n \times m + k$ décroît strictement sur l'appel récursif $m$), n'est pas par
   défaut admis par notre syntaxe.
-
+  
   Cependant, on peut contourner le problème de la façon suivante~: on construit
   des paires (grâce à la bijection de Cantor) qui vont contenir l'argument
   décroissant et l'appel récursif. Par exemple, le calcul commence avec la paire
@@ -858,7 +868,7 @@ la récursion primitive.
   Si le nombre $k$ d'origine correspond à une décomposition de taille $d$
   (calculable en $k$ comme prouvé précédemment), alors on peut utiliser
   $d$ comme argument de la fonction récursive.
-
+  
   On définit donc la fonction
   \[h(\vec x,y) \defeq
   \langle\projP{1}{}(y)/n,
@@ -869,7 +879,7 @@ la récursion primitive.
   tous $\vec x \in \bN, y,z\in \bN, \varwd \in \toStB, \varla \in \ABB$~:
   \[h(\vec x,y,\langle \codRPG{(\varwd\wdPt \varla)}{\ABB},z\rangle) =
   \langle \codRPG{\varwd}{\ABB},\relevB{g_\varla}(\vec x,\varwd,z)\rangle\]
-
+  
   On définit finalement la fonction
   \[\begin{cases}
   F(\vec x,y,0) \defeq \langle y,\relev{f}(\vec x)\rangle\\
@@ -878,36 +888,31 @@ la récursion primitive.
   La fonction $\relevB{\rec(f,(g_{\varla}))}$ peut alors s'exprimer par
   \[\relevB{\rec(f,(g_{\varla}))}(\vec x,y) = F(\vec x,y,d(y))\]
   où $d(y)$ est la taille de la décomposition en base $n$ de $y$ (qui est une
-  fonction RPG déjà introduite précédemment).
-
-  Ainsi $\relevB{\rec(f,(g_\varla)_\varla)}$ est aussi une fonction RP, donc par
-  induction sur les fonction RPG, pour toute fonction RPG $f$ la fonction
-  $\relev{f}$ associée est RP.
+  fonction $\RPG$ déjà introduite précédemment).
+  
+  Ainsi $\relevB{\rec(f,(g_\varla)_\varla)}$ est aussi une fonction $\RecP$, donc
+  par induction sur les fonction $\RPG$, pour toute fonction $\RPG$ $f$ la
+  fonction $\relev{f}$ associée est $\RecP$.
 \end{proof}
 
-%\begin{exercise}
-%  Vérifier que la fonction $a \mapsto \overline a$ est effectivement une
-%  fonction RP.
-%\end{exercise}
-
 \begin{theorem}
-  Soit une fonction $\makeFunName{f}{\bN^n}{\bN}$. Cette fonction est RPG si et
-  seulement si elle est RP.
+  Soit une fonction $\makeFunName{f}{\bN^n}{\bN}$. Cette fonction est $\RPG$ si
+  et seulement si elle est $\RecP$.
 \end{theorem}
 
 \begin{proof}
-  Il est clair que si $f$ est RP alors elle est RPG. Dans le sens réciproque,
-  on sait que $\relev{f}$ est RP, donc
+  Il est clair que si $f$ est $\RecP$ alors elle est $\RPG$. Dans le sens
+  réciproque, on sait que $\relev{f}$ est $\RecP$, donc
   \[\id\circ f \circ (\id,\ldots,\id) \in \RecP\]
   ce qui revient à dire que $f \in \RecP$, d'où le résultat.
 \end{proof}
 
-Ainsi, les fonctions RPG n'apportent pas plus de puissance de calcul, puisque
+Ainsi, les fonctions $\RPG$ n'apportent pas plus de puissance de calcul, puisque
 les fonctions sur les entiers restent les mêmes. De plus, comme on possède un
-codage bijectif bi-RPG entre chaque $\toStA$ et $\bN$, on en conclut que le
-pouvoir expressif de $\bN$ est suffisant. L'utilité des fonctions RPG est de
+codage bijectif bi-$\RPG$ entre chaque $\toStA$ et $\bN$, on en conclut que le
+pouvoir expressif de $\bN$ est suffisant. L'utilité des fonctions $\RPG$ est de
 permettre de facilement passer de fonctions sur des langages algébriques à leur
-codage. Montrons d'abord qu'un langage algébrique est une partie RPG.
+codage. Montrons d'abord qu'un langage algébrique est une partie $\RPG$.
 
 Pour ce faire, nous introduisons un algorithme de \foreignexpr{parsing} de
 langage algébrique. Un algorithme de \foreignexpr{parsing} est un algorithme
@@ -1011,18 +1016,18 @@ $\Card(\mathord{\to}), \max(\compr{\varwd}{\exists \nTA, \nTA\to \varwd})$.
 \begin{proposition}
   Soient $\ABA$ un alphabet et $\varGG$ une grammaire hors contexte sur $\ABA$.
   Alors $\varLL_{\varGG}$ est une partie de $\toStA$ dont l'indicatrice est
-  une fonction RPG (à valeurs dans $\btwo$).
+  une fonction $\RPG$ (à valeurs dans $\btwo$).
 \end{proposition}
 
 \begin{proof}
   Il nous suffit donc d'implémenter l'\cref{fig.Earley} avec des fonctions
-  RPG. Les branchements conditionnels et les boucles \og Pour\fg peuvent
+  $\RPG$. Les branchements conditionnels et les boucles \og Pour\fg peuvent
   s'implémenter par le constructeur $\ifrm$ et le constructeur $\rec$. Pour le
   constructeur $\rec$, on a besoin de donner une liste contenant tous les
   arguments potentiellement modifiés dans la boucle \og Pour\fg, ce qui se
   fait par la fonction $\BijCs$. De même, le tableau $T[\;]$ est codé par une
   liste de listes, sous la forme d'un entier en utilisant la fonction $\BijCs$.
-  Au total, tout l'algorithme peut donc s'écrire comme une fonction RPG.
+  Au total, tout l'algorithme peut donc s'écrire comme une fonction $\RPG$.
 \end{proof}
 
 \begin{remark}
@@ -1047,31 +1052,33 @@ Cette proposition permet de donner du sens à la définition suivante.
 
 \begin{definition}[Fonction RPG de langage]
   Soient $\ABA,\ABB$ deux alphabets et $\varLL \subseteq \toStA$ un
-  langage RPG sur $\ABA$. Une fonction $f : \varLL \to \toStB$ est dite RPG s'il
-  existe une fonction RPG $\relev{f} : \toStA \to \toStB$ qui coïncide avec $f$
+  langage $\RPG$ sur $\ABA$. Une fonction $\makeFunName{f}{\varLL}{\toStB}$ est
+  dite $\RPG$ s'il existe une fonction $\RPG$
+  $\makeFunName{\relev{f}}{\toStA}{\toStB}$ qui coïncide avec $f$
   sur $\varLL$.
 \end{definition}
 
 \begin{remark}
-  Nous décidons de contraindre $\varLL$ à être lui-même RPG car sinon, notre
+  Nous décidons de contraindre $\varLL$ à être lui-même $\RPG$ car sinon, notre
   fonction $\relev{f}$ n'aurait pas de raison de définir une fonction dont le
   domaine est $\varLL$~: appeler $\relev{f}$ sur une valeur ne nous permet pas
   de savoir si l'application de la fonction était autorisée. Au contraire, s'il
   est possible d'avoir un processus préalable nous disant quelles valeurs
   peuvent être effectivement appelées, alors la fonction définie sur $\varLL$
-  est calculable par des fonctions RPG dans tous ses aspects.
+  est calculable par des fonctions $\RPG$ dans tous ses aspects.
 \end{remark}
 
-Un exemple essentiel de fonction RPG de langage est celui des fonctions
-définies par inductions à partir de fonctions RPG.
+Un exemple essentiel de fonction $\RPG$ de langage est celui des fonctions
+définies par inductions à partir de fonctions $\RPG$.
 
 \begin{proposition}\label{prop.PU.RPG}
   Soient $\ABA,\ABB$ deux alphabets et $\varGG = (\ABA',\to,\StGr)$ une
   grammaire non ambigüe. On suppose que pour toute règle
-  $\nTA \to \varwd$ dans $\varGG$, on dispose d'une fonction RPG
-  $g_{\nTA,\varwd} : (\toStB)^n \to \toStB$ où $n$ est le nombre de non terminaux
-  apparaissant dans $\varwd$. Alors la fonction $g : \varLL_{\varGG} \to \toStB$
-  donnée par la \cref{prop.PU.gram} est une fonction RPG.
+  $\nTA \to \varwd$ dans $\varGG$, on dispose d'une fonction $\RPG$
+  $\makeFunName{g_{\nTA,\varwd}}{(\toStB)^n}{\toStB}$ où $n$ est le nombre de non
+  terminaux apparaissant dans $\varwd$. Alors la fonction
+  $\makeFunName{g}{\varLL_{\varGG}}{\toStB}$ donnée par la \cref{prop.PU.gram}
+  est une fonction $\RPG$.
 \end{proposition}
 
 \begin{proof}
@@ -1097,7 +1104,7 @@ définies par inductions à partir de fonctions RPG.
     élément de $\toStB$.
   \end{itemize}
   Ce processus peut s'effectuer en itérant des fonctions sur des mots, et sur
-  des listes de mots~: on peut donc l'implémenter avec une fonction RPG.
+  des listes de mots~: on peut donc l'implémenter avec une fonction $\RPG$.
 \end{proof}
 
 \begin{remark}
@@ -1107,8 +1114,8 @@ définies par inductions à partir de fonctions RPG.
 \end{remark}
 
 Ces résultats nous permettent donc de voir les langages algébriques comme une
-sous-classe des langages RPG. On voit aussi que des opérations syntaxiques
-simples sont RPG. Par exemple, étant donnée une signature du premier ordre
+sous-classe des langages $\RPG$. On voit aussi que des opérations syntaxiques
+simples sont $\RPG$. Par exemple, étant donnée une signature du premier ordre
 $\Sign$, un terme $t$ sur $\Sign$, une variable du premier ordre $x_n$ avec
 $n \in \bN$ et une formule $\varFF$ sur $\Sign$, il est possible de définir la
 substitution $\varFF[t/x_n]$ par induction sur la grammaire des formules sur
@@ -1116,9 +1123,10 @@ $\Sign$~:
 \begin{itemize}
 \item on définit d'abord la substitution pour un terme $t'$. Si $t' = x_m$ où
   $m \neq n$, alors $t'[t/x_n] = t'$ ; si $t' = x_n$ alors $t'[t/x_n] = t$ et
-  si $t' = f(t_1,\ldots,t_p)$ alors $t'[t/x_n]=f(t_1[t/x_n],\ldots,t_p[t/x_n])$.
-\item si $\varFF = \mathbin{\varRR}(t_1,\ldots,t_p)$, alors
-  $\varFF[t/x_n]=\mathbin{\varRR}(t_1[t/x_n],\ldots,t_p[t/x_n])$.
+  si $t' = \symbF(t_1,\ldots,t_p)$ alors
+  $t'[t/x_n]=\symbF(t_1[t/x_n],\ldots,t_p[t/x_n])$.
+\item si $\varFF = \symbR(t_1,\ldots,t_p)$, alors
+  $\varFF[t/x_n]=\symbR(t_1[t/x_n],\ldots,t_p[t/x_n])$.
 \item le cas de $\top$ et $\bot$ est simple~: la substitution ne fait rien.
 \item dans le cas de $\lor,\land,\to$, on applique simplement la substitution
   récursivement aux sous-formules.
@@ -1136,11 +1144,11 @@ la définition récursive reste simple~:
 $\varFF[t/x_n] = \exists x, \varFP[t/x_{n+1}]$.
 
 Malheureusement, toutes les fonctions qui peuvent s'exprimer par un algorithme
-ne sont pas des fonctions RP. Comme on l'a dit au début, une fonction RP peut
-se voir comme un programme impératif n'utilisant que la boucle \texttt{for}. La
-boucle \texttt{while}, elle, permet de faire des itérations arbitrairement
-grandes, sans savoir \latinexpr{a priori} si on aura un nombre fini
-d'itérations. Dans l'autre sens, il est possible de définir la boucle
+ne sont pas des fonctions $\RecP$. Comme on l'a dit au début, une fonction
+$\RecP$ peut se voir comme un programme impératif n'utilisant que la boucle
+\texttt{for}. La boucle \texttt{while}, elle, permet de faire des itérations
+arbitrairement grandes, sans savoir \latinexpr{a priori} si on aura un nombre
+fini d'itérations. Dans l'autre sens, il est possible de définir la boucle
 \texttt{while} à partir de la boucle \texttt{for}, dans les cas où la première
 boucle converge. Si l'on décide d'écrire
 \[\texttt{while}\;\varFF(x) \;\texttt{do}\; f ; x \coloneq x + 1\;
@@ -1156,8 +1164,8 @@ Nous définissons donc une classe de fonctions plus générales, les fonctions
 récursives (et récursives généralisées) en ajoutant cet opérateur. Plutôt que de
 le présenter par minimisation d'un prédicat, on va le présenter à partir d'une
 fonction, en considérant le prédicat \og la fonction s'annule en ce point\fg qui
-ne fait pas perdre de généralité (puisqu'un prédicat RP est déjà une fonction
-valant $0$ ou $1$).
+ne fait pas perdre de généralité (puisqu'un prédicat $\RecP$ est déjà une
+fonction valant $0$ ou $1$).
 
 Comme nous allons introduire des classes de fonctions partielles, nous donnons
 d'abord des notations pour manipuler ces fonctions.
@@ -1195,7 +1203,7 @@ d'abord des notations pour manipuler ces fonctions.
                          \forall z < y, f(\vec x,z)\convneq 0\end{array}}}\]
   où la fonction $\muC(f)$ est indéfinie là où l'ensemble dont on prend le
   minimum est infini.
-
+  
   La classe $\RecG$ des fonctions récursives généralisées est la plus petite
   classe de fonctions partielles contenant la classe $\RPG$ et telle que si
   \[\makeFunName{f}{\left(\prod_{i = 1}^n \toStAP{i}\right)\times\bN}{\toStA}\]
@@ -1204,7 +1212,7 @@ d'abord des notations pour manipuler ces fonctions.
                    {\vec{\varwd}}{\min\compr{y \in \bN}{\begin{array}{l}
                          f(\vec \varwd,y)\conveq \Ewd\\
                          \forall z < y, f(\vec \varwd,z)\convneq \Ewd
-                     \end{array}}}\]
+                   \end{array}}}\]
   est aussi une fonction récursive généralisée.
 \end{definition}
 
@@ -1222,237 +1230,254 @@ grâce aux machines de Turing.
 
 \section{Machines de Turing}
 
-\begin{figure}[t!]
-    \centering
-\resizebox{\textwidth}{!}{
-   \begin{tikzpicture}
+\begin{figure}[p]
+  \centering
+  \resizebox{\textwidth}{!}{
+    \begin{tikzpicture}
 
-\node (A) at (0,0) {
-\resizebox{0.6\textwidth}{!}{
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-  \draw[
-      decorate,
-      decoration={brace, amplitude=10pt}
-    ] (-2,-3) -- (-2,3)
-    node[midway, left=12pt] {$\varTMM_0 \defeq$};
-  \node[state,initial] (q0) at (0,0) {$\varqZ$};
-  \node (qP) [right = of q0] {};
-  \node[state] (q1) [above = of qP] {$\varqP{1}$};
-  \node[state] (q2) [below = of qP] {$\varqP{2}$};
-  \node[state,accepting] (qf) [right = of qP] {$\varqP{f}$};
-  \draw[->,>=latex] (q0) edge[loop below] node[below] {$0, \blS,\rTr$} ();
-  \draw[->,>=latex] (q0) edge[bend left] node[above left] {$\blS,0,\rTr$} (q1);
-  \draw[->,>=latex] (q1) edge[loop above] node[above] {$\blS,0,\rTr$} ();
-  \draw[->,>=latex] (q1) -- node[right] {$0,0,\lTr$} (q2);
-  \draw[->,>=latex] (q2) edge[loop below] node[below] {$0,\blS,\lTr$} ();
-  \draw[->,>=latex] (q2) edge[bend right] node[below right] {$\blS,\blS,\rTr$} (qf);
-\end{tikzpicture}}};
+      \node (A) at (0,0) {
+        \resizebox{0.6\textwidth}{!}{
+          \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+            \draw[
+              decorate,
+              decoration={brace, amplitude=10pt}
+            ] (-2,-3) -- (-2,3)
+            node[midway, left=12pt] {$\varTMM_0 \defeq$};
+            \node[state,initial] (q0) at (0,0) {$\varqZ$};
+            \node (qP) [right = of q0] {};
+            \node[state] (q1) [above = of qP] {$\varqP{1}$};
+            \node[state] (q2) [below = of qP] {$\varqP{2}$};
+            \node[state,accepting] (qf) [right = of qP] {$\varqP{f}$};
+            \draw[->,>=latex]
+            (q0) edge[loop below] node[below] {$0, \blS,\rTr$} ();
+            \draw[->,>=latex]
+            (q0) edge[bend left] node[above left] {$\blS,0,\rTr$} (q1);
+            \draw[->,>=latex]
+            (q1) edge[loop above] node[above] {$\blS,0,\rTr$} ();
+            \draw[->,>=latex] (q1) -- node[right] {$0,0,\lTr$} (q2);
+            \draw[->,>=latex]
+            (q2) edge[loop below] node[below] {$0,\blS,\lTr$} ();
+            \draw[->,>=latex]
+            (q2) edge[bend right] node[below right] {$\blS,\blS,\rTr$} (qf);
+      \end{tikzpicture}}};
 
-\draw (0,-5) -- (0,-18);
+      \draw (0,-5) -- (0,-18);
+      
+      \node[anchor = north east]
+      (B) at ([yshift = -10mm,xshift = -2mm]A.south) {
+        \begin{tikzpicture}
+          \node[anchor = center] (time) at (0,2) {$t = 1$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (2.25,0.25);
+          \node[anchor = center] at (2.25,0) {$0$};
+          \node[anchor = center] at (2.75,0) {$0$};
+          \node[anchor = center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-\node[anchor = north east] (B) at ([yshift = -10mm,xshift = -2mm]A.south) {
-\begin{tikzpicture}
-    \node[anchor = center] (time) at (0,2) {$t = 1$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (2.25,0.25);
-    \node[anchor = center] at (2.25,0) {$0$};
-    \node[anchor = center] at (2.75,0) {$0$};
-    \node[anchor = center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west]
+      (O) at ([yshift=8.5cm]B.north west) {Machine~:};
 
-\node[anchor = north west] (O) at ([yshift=8.5cm]B.north west) {Machine~:};
+      \node[anchor = north west]
+      (Oo) at ([yshift=7mm]B.north west) {Exécution de la machine~:};
 
-\node[anchor = north west] (Oo) at ([yshift=7mm]B.north west) {Exécution de la machine~:};
+      \node[anchor = north west] (C) at ([xshift=4mm]B.north east){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 2$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (2.75,0.25);
+          \node[anchor = center] at (2.75,0) {$0$};
+          \node[anchor = center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-\node[anchor = north west] (C) at ([xshift=4mm]B.north east){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 2$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (2.75,0.25);
-    \node[anchor = center] at (2.75,0) {$0$};
-    \node[anchor = center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (D) at (B.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 3$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-    \node[anchor = north west] (D) at (B.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 3$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqZ$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (E) at (C.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 4$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqP{1}$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (3.75,0.25);
+          \node[anchor=center] at (3.25,0) {$0$};
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-    \node[anchor = north west] (E) at (C.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 4$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{1}$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (3.75,0.25);
-    \node[anchor=center] at (3.25,0) {$0$};
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (F) at (D.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 5$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqP{1}$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (4.25,0.25);
+          \node[anchor=center] at (3.25,0) {$0$};
+          \node[anchor=center] at (3.75,0) {$0$};
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-    \node[anchor = north west] (F) at (D.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 5$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{1}$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (4.25,0.25);
-    \node[anchor=center] at (3.25,0) {$0$};
-    \node[anchor=center] at (3.75,0) {$0$};
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (G) at (E.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 6$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (3.75,0.25);
+          \node[anchor=center] at (3.25,0) {$0$};
+          \node[anchor=center] at (3.75,0) {$0$};
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-    \node[anchor = north west] (G) at (E.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 6$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (3.75,0.25);
-    \node[anchor=center] at (3.25,0) {$0$};
-    \node[anchor=center] at (3.75,0) {$0$};
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (H) at (F.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 7$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
+          \node[anchor=center] at (3.25,0) {$0$};
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-    \node[anchor = north west] (H) at (F.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 7$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
-    \node[anchor=center] at (3.25,0) {$0$};
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (I) at (G.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 8$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (2.75,0.25);
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
-    \node[anchor = north west] (I) at (G.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 8$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{2}$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (2.75,0.25);
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
-
-    \node[anchor = north west] (J) at (H.south west){
-\begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[anchor = center] (time) at (0,2) {$t = 9$~:};
-    \node[anchor = center, draw,rectangle, double] (q0) at (0,0) {$\varTMM_0$};
-    \node[anchor = center, state] (qstate) at (1,1) {$\varqP{f}$};
-    \draw (2,-0.25) rectangle (7,0.25);
-    \draw (2.5,-0.25) -- (2.5,0.25);
-    \draw (3,-0.25) -- (3,0.25);
-    \draw (3.5,-0.25) -- (3.5,0.25);
-    \draw (4,-0.25) -- (4,0.25);
-    \draw (4.5,-0.25) -- (4.5,0.25);
-    \draw (5,-0.25) -- (5,0.25);
-    \draw (5.5,-0.25) -- (5.5,0.25);
-    \draw (6,-0.25) -- (6,0.25);
-    \draw (6.5,-0.25) -- (6.5,0.25);
-    \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
-    \node[anchor=center] at (4.25,0) {$0$};
-\end{tikzpicture}
-    };
+      \node[anchor = north west] (J) at (H.south west){
+        \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+          \node[anchor = center] (time) at (0,2) {$t = 9$~:};
+          \node[anchor = center, draw,rectangle, double]
+          (q0) at (0,0) {$\varTMM_0$};
+          \node[anchor = center, state] (qstate) at (1,1) {$\varqP{f}$};
+          \draw (2,-0.25) rectangle (7,0.25);
+          \draw (2.5,-0.25) -- (2.5,0.25);
+          \draw (3,-0.25) -- (3,0.25);
+          \draw (3.5,-0.25) -- (3.5,0.25);
+          \draw (4,-0.25) -- (4,0.25);
+          \draw (4.5,-0.25) -- (4.5,0.25);
+          \draw (5,-0.25) -- (5,0.25);
+          \draw (5.5,-0.25) -- (5.5,0.25);
+          \draw (6,-0.25) -- (6,0.25);
+          \draw (6.5,-0.25) -- (6.5,0.25);
+          \draw[->,>=latex] (q0) |- (qstate) -| (3.25,0.25);
+          \node[anchor=center] at (4.25,0) {$0$};
+        \end{tikzpicture}
+      };
 
 
-\end{tikzpicture}
-}
+    \end{tikzpicture}
+  }
 
-    \vspace{0.2cm}
-    \hrule
+  \vspace{0.2cm}
+  \hrule
 
-    \vspace{0.2cm}
-    \caption{Exécution d'une machine de Turing}
-    \label{fig.exec.TM}
+  \vspace{0.2cm}
+  \caption{Exécution d'une machine de Turing}
+  \label{fig.exec.TM}
 \end{figure}
 
 Les machines de Turing, introduites dans \cite{turing1936a}, sont un formalisme
@@ -1560,7 +1585,7 @@ fonction de transition.
                     {\varwd\varq\varla\varwv\toInf}
                     {\varwd\varlc\varq'\varwv\toInf\text{ si }
                       \trA(\varq,\varla) \conveq (\varq',\varlc,\rTr)}
-  \]
+                    \]
   où la fonction n'est pas définie sinon.
 \end{definition}
 
@@ -1632,58 +1657,58 @@ $\ABB\supseteq\ABA\sqcup\{\blS\}$, on peut en fait considérer qu'on a toujours
 égalité, et calculer les mêmes fonctions.
 
 \begin{theorem}[Normalisation de l'alphabet de travail]
-    Soit $\ABA$ un alphabet non vide. Alors l'ensemble $\Calc(\ABA)$ est
-    inchangé lorsqu'on se limite à une machine dont l'alphabet de travail
-    est $\ABB \defeq \ABA \sqcup\{\blS\}$.
+  Soit $\ABA$ un alphabet non vide. Alors l'ensemble $\Calc(\ABA)$ est
+  inchangé lorsqu'on se limite à une machine dont l'alphabet de travail
+  est $\ABB \defeq \ABA \sqcup\{\blS\}$.
 \end{theorem}
 
 \begin{proof}
-    Une inclusion est évidente. On considère maintenant une machine
-    $\varTMM$ dont l'alphabet de travail est $\ABB$. Soit $*\in\ABA$
-    (existant car $\ABA$ est supposé non vide), l'idée de la construction est
-    de remplacer le ruban sur $\ABB$ par un ruban sur $\{*,\blS\}$ en
-    regroupant des cases. On suppose (sans perte de généralité) que
-    $\Card(\ABB) = 2^p$ pour un certain $p\in\bN$ fixé et que l'alphabet peut
-    s'écrire $\compr{\varla_i}{i \in \btwo^p}$. La machine $\varTMM'$ s'exécute 
-    donc en trois temps pour gérer $\ABA$ par des regroupements de cases sur
-    $\{*,\blS\}$~:
-    \begin{itemize}
-        \item on commence par traduire l'ensemble du ruban (qui est
-        par défaut sur $\ABA$) en un ruban sur $\{*,\blS\}$. Une case
-        $\varla_{i}$ est transformé en un regroupement de $p$ cases sur
-        $\{*,\blS\}$ en considérant l'écriture de $i$ en binaire sur $p$
-        chiffres (en choisissant qu'on associe le chiffre $1$ à la lettre
-        $*$ et le chiffre $0$ à la lettre $\blS$). De cette façon, on
-        transforme $\varwd\toInf$ en un mot $\varwv\toInf$ sur $\{*,\blS\}$.
-        \item on simule ensuite $\varTMM$ en construisant des suites
-        d'états. Si $\varTMM$ est dans un état $\varq$ en lisant une lettre
-        $\varla_i$, alors dans la version simulée on a une suite d'états
-        correspondant $\varqP{i_0},\varqP{i_0i_1}\cdots,\varqP{i}$ qui
-        permettent de lire la suite de $p$ cases pour décider finalement dans
-        quel état $\varq'$ va la machine. A la fin de la lecture, en arrivant
-        sur l'état $\varq'$ associé, si la lettre à écrire est $\varla_j$, on
-        fait demi-tour sur $p$ cases pour y mettre l'écriture binaire de $j$.
-        On avance ensuite de $p$ cases si la transition est $\rTr$, et on
-        recule de $p$ cases si la transition est $\lTr$ (car on est arrivés
-        à droite du bloc à la lecture, puis on est revenus à gauche pour la
-        réécriture).
-        \item si $\varTMM$ doit arriver dans un état terminant, la machine
-        réécrit alors la partie la plus à gauche du ruban ne comportant pas
-        un bloc de taille $p$ constitué uniquement de $\blS$, en remplaçant
-        chaque bloc codant un nombre $i$ en binaire par le symbole
-        $\varla_i$.\qedhere
-    \end{itemize}
+  Une inclusion est évidente. On considère maintenant une machine
+  $\varTMM$ dont l'alphabet de travail est $\ABB$. Soit $*\in\ABA$
+  (existant car $\ABA$ est supposé non vide), l'idée de la construction est
+  de remplacer le ruban sur $\ABB$ par un ruban sur $\{*,\blS\}$ en
+  regroupant des cases. On suppose (sans perte de généralité) que
+  $\Card(\ABB) = 2^p$ pour un certain $p\in\bN$ fixé et que l'alphabet peut
+  s'écrire $\compr{\varla_i}{i \in \btwo^p}$. La machine $\varTMM'$ s'exécute 
+  donc en trois temps pour gérer $\ABA$ par des regroupements de cases sur
+  $\{*,\blS\}$~:
+  \begin{itemize}
+  \item on commence par traduire l'ensemble du ruban (qui est
+    par défaut sur $\ABA$) en un ruban sur $\{*,\blS\}$. Une case
+    $\varla_{i}$ est transformé en un regroupement de $p$ cases sur
+    $\{*,\blS\}$ en considérant l'écriture de $i$ en binaire sur $p$
+    chiffres (en choisissant qu'on associe le chiffre $1$ à la lettre
+    $*$ et le chiffre $0$ à la lettre $\blS$). De cette façon, on
+    transforme $\varwd\toInf$ en un mot $\varwv\toInf$ sur $\{*,\blS\}$.
+  \item on simule ensuite $\varTMM$ en construisant des suites
+    d'états. Si $\varTMM$ est dans un état $\varq$ en lisant une lettre
+    $\varla_i$, alors dans la version simulée on a une suite d'états
+    correspondant $\varqP{i_0},\varqP{i_0i_1}\cdots,\varqP{i}$ qui
+    permettent de lire la suite de $p$ cases pour décider finalement dans
+    quel état $\varq'$ va la machine. A la fin de la lecture, en arrivant
+    sur l'état $\varq'$ associé, si la lettre à écrire est $\varla_j$, on
+    fait demi-tour sur $p$ cases pour y mettre l'écriture binaire de $j$.
+    On avance ensuite de $p$ cases si la transition est $\rTr$, et on
+    recule de $p$ cases si la transition est $\lTr$ (car on est arrivés
+    à droite du bloc à la lecture, puis on est revenus à gauche pour la
+    réécriture).
+  \item si $\varTMM$ doit arriver dans un état terminant, la machine
+    réécrit alors la partie la plus à gauche du ruban ne comportant pas
+    un bloc de taille $p$ constitué uniquement de $\blS$, en remplaçant
+    chaque bloc codant un nombre $i$ en binaire par le symbole
+    $\varla_i$.\qedhere
+  \end{itemize}
 \end{proof}
 
 \begin{exercise}
-    Montrer que les machines de Turing totales, c'est-à-dire celles dont la
-    table de transitions est une fonction totale, décrivent aussi la même classe
-    $\Calc$ de fonctions calculables.
+  Montrer que les machines de Turing totales, c'est-à-dire celles dont la
+  table de transitions est une fonction totale, décrivent aussi la même classe
+  $\Calc$ de fonctions calculables.
 \end{exercise}
 
 \begin{exercise}
-    Montrer que les machines de Turing à un seul état terminal sont équivalentes
-    aux machines de Turing.
+  Montrer que les machines de Turing à un seul état terminal sont équivalentes
+  aux machines de Turing.
 \end{exercise}
 
 On peut aussi considérer des machines de Turing ayant plusieurs rubans. Dans
@@ -1691,20 +1716,20 @@ ce cas-là, on a un formalisme plus général, pour lequel on doit donc
 introduire une nouvelle définition.
 
 \begin{definition}[Machine de Turing à plusieurs rubans]
-    Soit $\ABA$ un alphabet et $k$ un entier. Une machine de Turing $\varTMM$ 
-    à $k$ rubans sur $\ABA$ est la donnée de~:
-    \begin{itemize}
-        \item un ensemble fini $\varQQ$ d'états~;
-        \item un état initial $\varqZ$~;
-        \item un ensemble d'états d'arrêt $\varAF$~;
-        \item un alphabet $\ABB$ de travail tel que $\ABA\subseteq\ABB$~;
-        \item un symbole blanc $\blS\in\ABB$~;
-        \item une fonction de transition partielle
-        \[\makeFunNamePartial{\trA}{\varQQ\times\ABB^k}
-        {\varQQ\times\ABB^k\times\{\lTr,\rTr\}^k}\]
-    \end{itemize}
-    On note $\TM_k(\ABA)$ l'ensemble des machines de Turing à $k$ rubans sur
-    $\ABA$.
+  Soit $\ABA$ un alphabet et $k$ un entier. Une machine de Turing $\varTMM$ 
+  à $k$ rubans sur $\ABA$ est la donnée de~:
+  \begin{itemize}
+  \item un ensemble fini $\varQQ$ d'états~;
+  \item un état initial $\varqZ$~;
+  \item un ensemble d'états d'arrêt $\varAF$~;
+  \item un alphabet $\ABB$ de travail tel que $\ABA\subseteq\ABB$~;
+  \item un symbole blanc $\blS\in\ABB$~;
+  \item une fonction de transition partielle
+    \[\makeFunNamePartial{\trA}{\varQQ\times\ABB^k}
+                         {\varQQ\times\ABB^k\times\{\lTr,\rTr\}^k}\]
+  \end{itemize}
+  On note $\TM_k(\ABA)$ l'ensemble des machines de Turing à $k$ rubans sur
+  $\ABA$.
 \end{definition}
 
 On peut facilement définir l'action d'une machine à $k$ rubans sur une
@@ -1718,101 +1743,107 @@ réellement la puissance expressive et calculatoire, comme on peut le voir dans
 le théorème suivant.
 
 \begin{theorem}[\'Equivalence du calcul avec un ou plusieurs rubans]
-    Pour toute machine $\varTMM$ sur un alphabet $\ABA$ à $k$ rubans, il existe
-    une machine $\varTMM'$ sur $\ABA$ à un seul ruban et calculant la même
-    fonction.
+  Pour toute machine $\varTMM$ sur un alphabet $\ABA$ à $k$ rubans, il existe
+  une machine $\varTMM'$ sur $\ABA$ à un seul ruban et calculant la même
+  fonction.
 \end{theorem}
 
 \begin{proof}
-    Pour construire $\varTMM'$, on commence par augmenter l'alphabet de travail~:
-    pour chaque $\varla\in\ABB$, on fixe le symbole $\varla'$, et on se donne un
-    symbole $\separS$. L'alphabet $\ABB'$, utilisé comme alphabet de travail pour
-    $\varTMM'$, est donné par
-    \[\ABB'\defeq \ABB\sqcup\compr{\varla'}{\varla\in\ABB}\sqcup\{\separS\}\]
-    
-    \'Etant donnée une configuration
-    $(q,(i_1,\ldots,i_k),(\varwd_1\toInf,\cdots,\varwd_k\toInf))$, on construit une
-    configuration pour $\varTMM'$ de la façon suivante~:
-    \begin{itemize}
-    \item pour chaque $p$, on décompose $\varwd_p\toInf$ en
+  Pour construire $\varTMM'$, on commence par augmenter l'alphabet de
+  travail~:
+  pour chaque $\varla\in\ABB$, on fixe le symbole $\varla'$, et on se donne un
+  symbole $\separS$. L'alphabet $\ABB'$, utilisé comme alphabet de travail pour
+  $\varTMM'$, est donné par
+  \[\ABB'\defeq \ABB\sqcup\compr{\varla'}{\varla\in\ABB}\sqcup\{\separS\}\]
+  
+  \'Etant donnée une configuration
+  $(q,(i_1,\ldots,i_k),(\varwd_1\toInf,\cdots,\varwd_k\toInf))$, on construit
+  une configuration pour $\varTMM'$ de la façon suivante~:
+  \begin{itemize}
+  \item pour chaque $p$, on décompose $\varwd_p\toInf$ en
     $\varwd_p = \varwv\varla\varww$ avec $\wdl{\varwv} = i_p$, et on
     pose $\varwd_p' \defeq \varwv\varla'\varww$ (remarquons que si
     $i_p$ est plus grand que la longueur de $\varwd_p$, il suffit d'ajouter
     des symboles $\blS$ jusqu'à pouvoir écrire $\blS'$)
-    \item la configuration associée est alors $(q,0,\separS\varwd_1'\separS\cdots\separS\varwd_k')$.
-    \end{itemize}
+  \item la configuration associée est alors
+    $(q,0,\separS\varwd_1'\separS\cdots\separS\varwd_k')$.
+  \end{itemize}
 
-    La construction des états et de la table de transitions vise alors à permettre à
-    $\varTMM'$ de relier une configuration à une autre. Le fait de revenir à l'indice
-    $0$ ne pose pas de souci~: on a un symbole $\separS$ au tout début, et on maintient
-    toujours le même nombre de symboles $\separS$, donc il suffit de compter. Pour une
-    configuration $\separS\varwd_1'\separS\cdots\separS\varwd_k'$, le calcul consiste à
-    parcourir le mot entier et lire chaque symbole $\varla'$ (qui est le symbole
-    sur lequel est la tête de lecture dans le ruban associé). En introduisant
-    suffisamment d'états partiels, on peut alors trouver la transition associé dans
-    $\varTMM$ et l'exécuter. Comme dans la preuve précédente, il nous faut alors
-    revenir en arrière pour réécrire les symboles nécessaires, en particulier pour
-    déplacer l'encodage de la tête de lecture (et ajouter un symbole $\blS$ à la
-    fin d'un mot si besoin). Si $\varTMM$ entre dans un état terminal, on supprime
-    alors le symbole $\separS$ au début et on décale le contenu du premier ruban, de sorte
-    que le mot en sortie est le mot en sortie du premier ruban.
+  La construction des états et de la table de transitions vise alors à permettre
+  à $\varTMM'$ de relier une configuration à une autre. Le fait de revenir à
+  l'indice $0$ ne pose pas de souci~: on a un symbole $\separS$ au tout début,
+  et on maintient toujours le même nombre de symboles $\separS$, donc il suffit
+  de compter. Pour une configuration
+  $\separS\varwd_1'\separS\cdots\separS\varwd_k'$, le calcul consiste à
+  parcourir le mot entier et lire chaque symbole $\varla'$ (qui est le symbole
+  sur lequel est la tête de lecture dans le ruban associé). En introduisant
+  suffisamment d'états partiels, on peut alors trouver la transition associé
+  dans $\varTMM$ et l'exécuter. Comme dans la preuve précédente, il nous faut
+  alors revenir en arrière pour réécrire les symboles nécessaires, en
+  particulier pour déplacer l'encodage de la tête de lecture (et ajouter un
+  symbole $\blS$ à la fin d'un mot si besoin). Si $\varTMM$ entre dans un état
+  terminal, on supprime alors le symbole $\separS$ au début et on décale le
+  contenu du premier ruban, de sorte que le mot en sortie est le mot en sortie
+  du premier ruban.
 \end{proof}
 
-On donne aussi une version alternative de machine de Turing à rubans, dans laquelle
-les rubans sont divisés en trois sortes~:
+On donne aussi une version alternative de machine de Turing à rubans, dans
+laquelle les rubans sont divisés en trois sortes~:
 \begin{itemize}
-\item les rubans d'entrée sur lesquels sont écrits les mots qui sont lus, sur lesquels
-  la tête de lecture peut reconnaître des symboles mais ne peut pas écrire~;
+\item les rubans d'entrée sur lesquels sont écrits les mots qui sont lus, sur
+  lesquels la tête de lecture peut reconnaître des symboles mais ne peut pas
+  écrire~;
 \item les rubans de travail, sur lesquels on peut effectuer à la fois lecture et
   écriture~;
-\item le ruban de sortie, sur lequel on ne peut qu'écrire, et qui ne peut être parcouru
-  que vers la droite.
+\item le ruban de sortie, sur lequel on ne peut qu'écrire, et qui ne peut être
+  parcouru que vers la droite.
 \end{itemize}
 
 \begin{definition}[Machine de Turing à rubans de plusieurs sortes]
-  Une machine de Turing $\varTMM$ sur un alphabet $\ABA$, à rubans de plusieurs sortes
-  et à $k$ rubans d'entrée est la donnée~:
+  Une machine de Turing $\varTMM$ sur un alphabet $\ABA$, à rubans de plusieurs
+  sortes et à $k$ rubans d'entrée est la donnée~:
   \begin{itemize}
-      \item d'un entier $p$ donnant le nombre de rubans de travail~;
-      \item d'un ensemble $\varQQ$ fini d'états~;
-      \item d'un état initial $\varqZ\in\varQQ$~;
-      \item d'un ensemble $\varAF\subseteq\varQQ$ d'états terminaux~;
-      \item d'un alphabet de travail $\ABB$ contenant $\ABA$ et un symbole $\blS$
-      non dans $\ABA$~;
-      \item d'une table de transitions
-      \[\makeFunNamePartial{\trA}{\varQQ\times\ABB^{k+p}}
-                           {\varQQ\times\ABB^{k+p}\times(\ABA\sqcup\{\bot\})
+  \item d'un entier $p$ donnant le nombre de rubans de travail~;
+  \item d'un ensemble $\varQQ$ fini d'états~;
+  \item d'un état initial $\varqZ\in\varQQ$~;
+  \item d'un ensemble $\varAF\subseteq\varQQ$ d'états terminaux~;
+  \item d'un alphabet de travail $\ABB$ contenant $\ABA$ et un symbole $\blS$
+    non dans $\ABA$~;
+  \item d'une table de transitions
+    \[\makeFunNamePartial{\trA}{\varQQ\times\ABB^{k+p}}
+                         {\varQQ\times\ABB^{k+p}\times(\ABA\sqcup\{\bot\})
                            \times\{\lTr,\rTr\}^{k+p}}\]
   \end{itemize}
 \end{definition}
 
-L'action d'une telle machine sur $k+p+1$ rubans est celle naturelle, dans laquelle la
-lettre dans $\ABA\sqcup\{\bot\}$ décrite dans la table de transition correspond à la
-donnée d'une lettre ou d'aucune lettre~: si une lettre $\varla$ est donnée, alors la
-machine écrit $\varla$ sur le ruban de sortie, et avance d'une case vers la droite~;
-sinon, la machine n'écrit rien et reste sur la case en cours.
+L'action d'une telle machine sur $k+p+1$ rubans est celle naturelle, dans
+laquelle la lettre dans $\ABA\sqcup\{\bot\}$ décrite dans la table de transition
+correspond à la donnée d'une lettre ou d'aucune lettre~: si une lettre $\varla$
+est donnée, alors la machine écrit $\varla$ sur le ruban de sortie, et avance
+d'une case vers la droite~; sinon, la machine n'écrit rien et reste sur la case
+en cours.
 
 \begin{exercise}
-    Montrer qu'une machine à rubans de plusieurs sortes est équivalente à une machine
-    à plusieurs rubans.
+  Montrer qu'une machine à rubans de plusieurs sortes est équivalente à une
+  machine à plusieurs rubans.
 \end{exercise}
 
 \noindent
-On donne aussi un lemme pour avoir des machines de Turing dans une forme plus pratique
-à manipuler pour raisonner.
+On donne aussi un lemme pour avoir des machines de Turing dans une forme plus
+pratique à manipuler pour raisonner.
 
 \begin{lemma}[Normalisation des machines de Turing]\label{lem.norm.TM}
-Soient $\ABA_1,\ldots,\ABA_k,\ABA$ des alphabets. La classe
-$\Calc(\ABA_1,\ldots,\ABA_k,\ABA)$ des fonctions calculables sur ces alphabets
-est égale à la classe des fonctions calculables par des machines de Turing
-à $k$ rubans d'entrée respectivement sur les alphabets $\ABA_1,\ldots,\ABA_k$,
-à un ruban de sortie sur l'alphabet $\ABA$ et avec des rubans de travail sur
-l'alphabet $\{*\}$, et ayant un unique état terminal.
+  Soient $\ABA_1,\ldots,\ABA_k,\ABA$ des alphabets. La classe
+  $\Calc(\ABA_1,\ldots,\ABA_k,\ABA)$ des fonctions calculables sur ces alphabets
+  est égale à la classe des fonctions calculables par des machines de Turing
+  à $k$ rubans d'entrée respectivement sur les alphabets $\ABA_1,\ldots,\ABA_k$,
+  à un ruban de sortie sur l'alphabet $\ABA$ et avec des rubans de travail sur
+  l'alphabet $\{*\}$, et ayant un unique état terminal.
 \end{lemma}
 
 \begin{proof}
-    Le raisonnement est le même que précédemment, en normalisant l'alphabet
-    des rubans de travail.
+  Le raisonnement est le même que précédemment, en normalisant l'alphabet
+  des rubans de travail.
 \end{proof}
 
 \section{Formalismes pour les machines de Turing}
@@ -1830,13 +1861,13 @@ constructions définissant la classe $\RecG$ peuvent se faire avec des machines
 de Turing. Le sens réciproque, lui, va se faire en deux temps. Tout d'abord, on
 prouve qu'il existe deux fonctions récursives générales $\KlT,\KlU$ qui, étant
 donnés un code $e$ donnant la description d'une machine de Turing $\varTMM$, une
-entrée $x$ et un temps $t$, retourne respectivement si la machine de Turing s'est
-arrêtée en moins de $t$ étapes de calcul sur l'entrée $x$ et l'état du ruban après
-l'exécution de $\varTMM$ sur $x$ pendant $t$ étapes de calcul. En utilisant alors
-la minimisation non bornée, on obtient une simulation des machines de Turing par
-les fonctions $\RecG$, et on remarque alors qu'une fonction $\RecG$ ne
-nécessite qu'une utilisation de la minimisation non bornée par rapport à une
-fonctions $\RPG$.
+entrée $x$ et un temps $t$, retourne respectivement si la machine de Turing
+s'est arrêtée en moins de $t$ étapes de calcul sur l'entrée $x$ et l'état du
+ruban après l'exécution de $\varTMM$ sur $x$ pendant $t$ étapes de calcul. En
+utilisant alors la minimisation non bornée, on obtient une simulation des
+machines de Turing par les fonctions $\RecG$, et on remarque alors qu'une
+fonction $\RecG$ ne nécessite qu'une utilisation de la minimisation non bornée
+par rapport à une fonctions $\RPG$.
 
 On montre d'abord le sens direct.
 
@@ -1858,17 +1889,19 @@ On montre d'abord le sens direct.
   \item pour une fonction $\projP{k}{n}$, il suffit de considérer la machine qui
     recopie le contenu du $\ordinalnumeralmale{k}$ ruban d'entrée sur le ruban
     de sortie.
-  \item pour un alphabet $\ABA$ et $\varla \in \ABA$, la fonction $\consP{\varla}$
+  \item pour un alphabet $\ABA$ et $\varla \in \ABA$, la fonction
+    $\consP{\varla}$
     est implémentée en recopiant le mot d'entrée jusqu'au premier blanc et, au
     premier blanc, en écrivant $\varla$.
   \item la fonction s'arrêtant immédiatement sans lire l'entrée retourne
     la constante $\Ewd$.
-  \item on suppose données des fonctions $f_k$ d'arité
-    $\prod_{i = 1}^n \toStAP{i} \partialto \toStBP{k}$ encodées par des
-    machines à $n$ rubans d'entrée et $a_k$ rubans de travail, ainsi qu'une fonction
+  \item on suppose données des fonctions
+    $\makeFunNamePartial{f_k}{\prod_{i = 1}^n \toStAP{i}}{\toStBP{k}}$ encodées
+    par des machines à $n$ rubans d'entrée et $a_k$ rubans de travail, ainsi
+    qu'une fonction
     $\makeFunNamePartial{g}{\prod_{i = 1}^p \toStBP{i}}{\toStA}$ encodée par une
-    machine à $p$ rubans d'entrée et $a$ rubans de travail, et on souhaite montrer qu'il
-    existe une machine de Turing à $n$ rubans d'entrées et
+    machine à $p$ rubans d'entrée et $a$ rubans de travail, et on souhaite
+    montrer qu'il existe une machine de Turing à $n$ rubans d'entrées et
     $\sum a_k + a + p$ rubans de travail encodant $g\circ (f_1,\ldots,f_p)$.
 
     On décrit le comportement de la machine. Tout d'abord, on numérote les
@@ -1892,10 +1925,11 @@ On montre d'abord le sens direct.
     la valeur de sortie est l'image par $g$ des valeurs contenus dans les
     rubans $S_k$, d'où le fait que notre machine simule
     $g\circ(f_1,\ldots,f_p)$.
-  \item soit une fonction $\makeFunNamePartial{f}{\prod_{i =1}^p \toStAP{i}}{\toStA}$
+  \item soit une fonction
+    $\makeFunNamePartial{f}{\prod_{i =1}^p \toStAP{i}}{\toStA}$
     et, pour chaque $\varla \in \ABB$, la donnée d'une fonction
-    $\makeFunNamePartial{g_{\varla}}{\prod_{i = 1}^p \toStAP{i}\times\toStB\times\toStA}
-    {\toStA}$.
+    $\makeFunNamePartial{g_{\varla}}{\prod_{i = 1}^p
+      \toStAP{i}\times\toStB\times\toStA}{\toStA}$.
     On suppose par hypothèse d'induction que toutes ces fonctions sont simulées
     par des machines de Turing. On souhaite montrer que la machine encodant
     $\rec(f,(g_\varla)_{\varla \in \ABB})$ est simulée par une machine de Turing.
@@ -1916,8 +1950,8 @@ On montre d'abord le sens direct.
     \item on va tout à gauche du ruban $\TComp$, et on effectue les opérations
       suivantes tant qu'on ne lit pas un $\blS$ sur $\TComp$~:
       \begin{itemize}
-      \item on lit le caractère dans $\TComp$, qu'on fixera comme valant $\varla$,
-        et qu'on efface de $\TComp$~;
+      \item on lit le caractère dans $\TComp$, qu'on fixera comme valant
+        $\varla$, et qu'on efface de $\TComp$~;
       \item on simule la fonction $g_{\varla}$ en prenant comme rubans d'entrée~:
         \begin{itemize}
         \item les rubans d'entrée à l'exception du dernier,
@@ -1926,8 +1960,8 @@ On montre d'abord le sens direct.
         \end{itemize}
         comme rubans de travail les rubans $T_{a,j}$ et comme ruban de sortie le
         ruban $\TCC$.
-      \item on recopie le contenu de $\TCC$ dans $\TAR$ (en ayant effacé $\TAR$ avant)
-        et on efface le contenu de $\TCC$.
+      \item on recopie le contenu de $\TCC$ dans $\TAR$ (en ayant effacé $\TAR$
+        avant) et on efface le contenu de $\TCC$.
       \item on ajoute le caractère $\varla$ à $\TMem$.
       \item on se déplace d'une case à droite dans $\TComp$.
       \end{itemize}
@@ -1935,10 +1969,11 @@ On montre d'abord le sens direct.
     \end{itemize}
     
     L'itération sur $\TComp$ commence en ayant dans le ruban $\TAR$ la valeur de
-    $f(\vec{\varwd})$ (où $\vec{\varwd}$ est le contenu des premiers rubans d'entrée).
-    \`A chaque étape de cette itération, on déplace une lettre de $\TComp$ dans $\TMem$,
-    de sorte que l'appel sur $g_{\varla}$ se fait en ayant en paramètre le mot $\varwd$
-    lu jusqu'à présent et dans la bande $\TAR$ le résultat de
+    $f(\vec{\varwd})$ (où $\vec{\varwd}$ est le contenu des premiers rubans
+    d'entrée).
+    \`A chaque étape de cette itération, on déplace une lettre de $\TComp$ dans
+    $\TMem$, de sorte que l'appel sur $g_{\varla}$ se fait en ayant en paramètre
+    le mot $\varwd$ lu jusqu'à présent et dans la bande $\TAR$ le résultat de
     $\rec(f,(g_{\varla})_{\varla\in \ABB})$ sur le mot $\varwd$. Ainsi, la machine
     simule bien la fonction $\rec(f,(g_{\varla})_{\varla\in \ABB})$.
     
@@ -1957,17 +1992,17 @@ On montre d'abord le sens direct.
       condition pour en sortir)~:
       \begin{itemize}
       \item on simule $f$ en prenant comme entrée les rubans d'entrée et
-        le ruban $\TComp$, avec comme rubans de travail les rubans $T_i$ et comme
-        ruban de sortie $\TMem$.
-      \item si $\TMem$ est vide, on s'arrête en copiant $\TComp$ dans le ruban de
-        sortie.
+        le ruban $\TComp$, avec comme rubans de travail les rubans $T_i$ et
+        comme ruban de sortie $\TMem$.
+      \item si $\TMem$ est vide, on s'arrête en copiant $\TComp$ dans le ruban
+        de sortie.
       \item sinon, on ajoute un symbole dans $\Comp$, on efface le contenu de
         $\TMem$ et on revient au début de la boucle.
       \end{itemize}
     \end{itemize}
 
-    Sur les $k$ premières itérations de la boucle, on obtient dans le ruban $\TMem$
-    la valeur de $f(\vec{\varwd},k)$ au moment de tester si la valeur en
+    Sur les $k$ premières itérations de la boucle, on obtient dans le ruban
+    $\TMem$ la valeur de $f(\vec{\varwd},k)$ au moment de tester si la valeur en
     question est $0$. Ainsi, si la boucle se termine, alors on a trouvé une
     valeur d'annulation (la plus petite) de $f(\vec{\varwd},\_)$. Sinon,
     cela signifie au choix que la boucle est infinie ou que la simulation de
@@ -2004,8 +2039,10 @@ entier.
   On se donne une énumération de la fonction de
   transition
   \[\makeFunName{\trA}
-  {\varQQ\times\left(\prod_{i = 1}^k\ABA_i\sqcup\{\blS\}\right)\times\{*,\blS\}^p}
-  {\varQQ\times\{*,\blS\}^p\times(\ABA\sqcup\{\bot\})\times\{\lTr,\rTr\}^{k+p}}\]
+                {\varQQ\times\left(\prod_{i = 1}^k\ABA_i
+                  \sqcup\{\blS\}\right)\times\{*,\blS\}^p}
+                {\varQQ\times\{*,\blS\}^p\times
+                  (\ABA\sqcup\{\bot\})\times\{\lTr,\rTr\}^{k+p}}\]
   par la famille
   \[\trA \defeq \{\langle \varqP{i},\varla_{i,1},\ldots,\varla_{i,k},
   \varlb_{i,1},\ldots,\varlb_{i,p}\rangle
@@ -2026,31 +2063,31 @@ entier.
   $\varTMM$ sur ces alphabets, dont les rubans de travail sont $p$ rubans sur
   $\{*\}$ et dont les états sont $\intervInt{N}$, $0$ étant l'état initial et
   $N-1$ l'état d'arrêt, est encodée par le nombre
-  \[\godcod M \defeq \langle N,p,
+  \[\godcod{\varTMM} \defeq \langle N,p,
   f_{\varLL_{\rmCode}}(\godcod \trA)\rangle\]
 \end{definition}
 
 Le point central de ce codage est le suivant~: toutes les fonctions simulant
-l'exécution de $\varMM$ sur des rubans donnés peuvent s'écrire de façon RPG.
+l'exécution de $\varTMM$ sur des rubans donnés peuvent s'écrire de façon $\RPG$.
 On peut résumer ce fait par la mise sous forme normale de Kleene~: on peut
-trouver deux fonctions RPG qui, respectivement, détermine si l'état de la
+trouver deux fonctions $\RPG$ qui, respectivement, détermine si l'état de la
 machine en un temps $t$ est l'état d'arrêt et affiche le contenu du ruban de
 sortie au bout de $t$ étapes de calcul.
 
 \begin{theorem}[Forme normale de Kleene \cite{Kleene1936}]
   \label{thm.norm.Kleene}
   Soient des alphabets
-  $\ABA_1,\ldots,\ABA_n, \ABB$. Il existe deux fonctions RPG
+  $\ABA_1,\ldots,\ABA_n, \ABB$. Il existe deux fonctions $\RPG$
   \[
   \makeFunName{\KlT}{\bN\times
-  \left(\prod_{i = 1}^n\toStAP{i}\right)\times\bN}{\btwo}
+    \left(\prod_{i = 1}^n\toStAP{i}\right)\times\bN}{\btwo}
   \qquad
   \makeFunName{\KlU}{\bN\times\left(
-  \prod_{i = 1}^n\toStAP{i}\right)\times\bN}{\toStB}\]
+    \prod_{i = 1}^n\toStAP{i}\right)\times\bN}{\toStB}\]
   et une fonction
   \[\makeFunName{\godcod{\tok}}{\TM(\ABA_1,\ldots,\ABA_n,\ABB)}{\bN}\]
   telles que pour toute machine de Turing
-  $\varMM \in \TM(\ABA_1,\ldots,\ABA_n,\ABB)$~:
+  $\varTMM \in \TM(\ABA_1,\ldots,\ABA_n,\ABB)$~:
   \begin{itemize}
   \item $\KlT(\godcod{\varTMM},\vec{\varwd},k) = 1$ si et seulement si la
     machine $\varTMM$ s'arrête sur les entrées $\vec{\varwd}$ en moins de
@@ -2062,19 +2099,19 @@ sortie au bout de $t$ étapes de calcul.
 
 \begin{proof}
   Tout d'abord, puisque les réciproques de la bijection de Cantor sont des
-  fonctions RPG, on peut extraire de $\godcod{\varTMM}$ la valeur de $N,p$ et
+  fonctions $\RPG$, on peut extraire de $\godcod{\varTMM}$ la valeur de $N,p$ et
   la table de transition $\trA$ prise comme un mot contenant chaque
   transition. Remarquons que, si $\trA$ est donnée sous la forme de
   $f_{\varLL_{\rmCode}}(\godcod{\trA})$, il est possible de retrouver
   $\godcod{\trA}$ à partir de cette valeur puisque la fonction réciproque est
-  une fonction RPG.
+  une fonction $\RPG$.
 
   De plus, étant donné le mot $\godcod{\trA}$, un état $\varq \in \varQQ$, des
   lettres $\varla_1,\ldots, \varla_k \in \prod \ABA_i$ et des lettres
-  $\varlb_1,\ldots,\varlb_p \in \{*,\blS\}^p$, il est possible de récupérer le mot
-  $\langle \varq,\varla_1,\ldots,\varla_k,\varlb_1,\ldots,\varlb_p \rangle
+  $\varlb_1,\ldots,\varlb_p \in \{*,\blS\}^p$, il est possible de récupérer le
+  mot $\langle \varq,\varla_1,\ldots,\varla_k,\varlb_1,\ldots,\varlb_p \rangle
   \longrightarrow \langle \varwv \rangle$
-  de $\godcod{\trA}$ correspondant par une fonction RPG~: il suffit de lire
+  de $\godcod{\trA}$ correspondant par une fonction $\RPG$~: il suffit de lire
   $\godcod{\trA}$ en essayant de reconnaître le mot de gauche.
 
   Il nous suffit donc d'établir comment coder une configuration, pour pouvoir
@@ -2087,23 +2124,23 @@ sortie au bout de $t$ étapes de calcul.
   \separS\varwd_{N+p}\]
   où $\separS$ est un nouveau symbole.
 
-  L'action en une étape de calcul de $\varTMM$ sur une configuration consiste alors
-  à extraire l'état $\varq$ et
+  L'action en une étape de calcul de $\varTMM$ sur une configuration consiste
+  alors à extraire l'état $\varq$ et
   la \ordinalnumeralfeminin{$i_k$} lettre du mot $\varwd_k$, puis de
-  reconnaître le mot $\varwd$ de $\godcod{\trA}$ obtenu à la fin de la transition
-  contenant ces lettres. Si aucune telle transition est trouvée, on retourne un
-  état de blocage (que l'on peut encoder en dur, par exemple en faisant en sorte
-  que $\KlT$ retourne la valeur $2$ plutôt que $0$ ou $1$). Ensuite, on modifie
-  les configurations de façon adéquate avec les symboles donnés en sortie de
-  la transition, en augmentant ou diminuant les $i_k$ en fonction de si le
-  caractère $D_k$ est $\lTr$ ou $\rTr$.
+  reconnaître le mot $\varwd$ de $\godcod{\trA}$ obtenu à la fin de la
+  transition contenant ces lettres. Si aucune telle transition est trouvée, on
+  retourne un état de blocage (que l'on peut encoder en dur, par exemple en
+  faisant en sorte que $\KlT$ retourne la valeur $2$ plutôt que $0$ ou $1$).
+  Ensuite, on modifie les configurations de façon adéquate avec les symboles
+  donnés en sortie de la transition, en augmentant ou diminuant les $i_k$ en
+  fonction de si le caractère $D_k$ est $\lTr$ ou $\rTr$.
 
   On peut ainsi obtenir une fonction qui, pour une configuration $C$ donnée,
-  calcule l'action de $\varTMM$ sur $C$ en $t$ étapes de calcul. On peut, de plus,
-  construire de façon RPG une configuration pour des mots $\vec{\varwd}$
-  donnés en entrée. Cela nous permet donc d'obtenir une fonction $\RPG$ qui,
-  étant donnés des mots d'entrée et un temps de calcul $t$, retourne la
-  configuration résultante de $t$ étapes de calcul sur la configuration
+  calcule l'action de $\varTMM$ sur $C$ en $t$ étapes de calcul. On peut, de
+  plus, construire de façon $\RPG$ une configuration pour des mots
+  $\vec{\varwd}$ donnés en entrée. Cela nous permet donc d'obtenir une fonction
+  $\RPG$ qui, étant donnés des mots d'entrée et un temps de calcul $t$, retourne
+  la configuration résultante de $t$ étapes de calcul sur la configuration
   \[0\separS\varwd_1\separS 0\separS\varwd_2\separS\cdots
   \separS 0\separS\varwd_k\separS 0\separS\Ewd\separS 
   0\separS\Ewd\separS\Ewd\separS

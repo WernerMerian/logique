@@ -69,7 +69,7 @@ une suite finie de lettres.
 \begin{notation}
   Pour tout mot $\varwd\in\ABA^n$, on note $\varwd_i$ pour la
   \ordinalnumeralfeminin{$i$} lettre, c'est-à-dire l'image de $\varwd$ par la
-  projection $\projP{i}{} : \ABA^n \to \ABA$.
+  projection $\makeFunName{\projP{i}{}}{\ABA^n}{\ABA}$.
 
   Pour tout mot $\varwd\in\toStA$, on note $\wul\in\bN$ l'entier $n$ tel que
   $\varwd\in \ABA^n$. On définit aussi, pour $\varwd\in\toStA$ et
@@ -278,8 +278,8 @@ Définissons la notion de morphisme associée à la structure de monoïde.
 
 \begin{definition}[Morphisme de monoïde]
   Soient $(\varMMo,\opM,\neuMM)$ et $(\varMNo,\opN,\neuMN)$ deux monoïdes. Un
-  morphisme entre ces deux monoïdes est une fonction $f : \varMMo \to \varMNo$
-  vérifiant les deux conditions
+  morphisme entre ces deux monoïdes est une fonction
+  $\makeFunName{f}{\varMMo}{\varMNo}$ vérifiant les deux conditions
   \begin{equation*}
     \forall x,y\in \varMMo, f(x\opM y) = f(x)\opN f(y)
   \end{equation*}
@@ -308,8 +308,8 @@ traduit par la propriété universelle du monoïde libre.
 
 \begin{theorem}[Propriété universelle du monoïde libre]\label{thm.PU.monoid}
   Soit $\ABA$ un alphabet, $(\varMMo,\opM,\neuMM)$ un monoïde et
-  $f :\ABA\to\varMMo$ une fonction (quelconque). Alors il existe un unique
-  morphisme de monoïde $\relev{f}$ entre $\toStA$ et $\varMMo$ tel que
+  $\makeFunName{f}{\ABA}{\varMMo}$ une fonction (quelconque). Alors il existe un
+  unique morphisme de monoïde $\relev{f}$ entre $\toStA$ et $\varMMo$ tel que
   $\relev{f}(x) = f(x)$ pour tout $x \in \ABA$.
 \end{theorem}
 
@@ -339,15 +339,15 @@ ne sont pas atteintes par $f$ directement. Par exemple si on prend la fonction
 alors l'image d'un mot de taille $n$ est $n$. De cette façon, on vient de voir
 que l'ensemble des mots de taille $n$ peut être décrit à partir du monoïde
 $(\bN,+,1)$ en considérant une partie du monoïde et une fonction
-$f : \ABA \to \bN$.
+$\makeFunName{f}{\ABA}{\bN}$.
 
 Plus généralement, on définit ce qu'est le langage induit par une fonction
 depuis un alphabet vers un monoïde possédant une partie distinguée.
 
 \begin{definition}
   Soit $\ABA$ un alphabet, $(\varMMo,\opM,\neuMM)$ un monoïde,
-  $h : \ABA \to \varMMo$ une fonction et $S\subseteq\varMMo$. On dit que
-  $\varLL(\ABA,\varMMo,\opM,\neuMM,h,S)$ est le langage induit par
+  $\makeFunName{h}{\ABA}{\varMMo}$ une fonction et $S\subseteq\varMMo$. On dit
+  que $\varLL(\ABA,\varMMo,\opM,\neuMM,h,S)$ est le langage induit par
   $(\ABA,\varMMo,\opM,\neuMM,h,S)$, qui est défini par~:
   \[\varLL(\ABA,\varMMo,\opM,\neuMM,h,S)\defeq
   \compr{\varwd\in\toStA}{\relev{h}(\varwd)\in S}\]
@@ -376,6 +376,31 @@ est accepté si la lecture aboutit à un certain état considéré comme accepta
 
 Le formalisme derrière cette définion est lourd, mais nécessaire, nous donnons
 donc la définition formelle d'un automate.
+
+\begin{figure}[t]
+  \centering
+  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
+    \node[state, initial] (q_0) {$\varqP{0}$};
+    \node[state,accepting] (q_1) [right = of q_0] {$\varqP{1}$};
+    \node[state] (q_2) [above right = of q_1] {$\varqP{2}$};
+    \node[state, accepting] (q_3) [below right = of q_1] {$\varqP{3}$};
+    \path[->,>=latex]
+    (q_0) edge node {0,1} (q_1)
+    (q_1) edge node {1} (q_2)
+    edge node {0} (q_3)
+    (q_2) edge node {0} (q_3)
+    edge [loop above] node {$1$} ()
+    (q_3) edge node {1} (q_0);
+  \end{tikzpicture}
+  
+  \vspace{0.2cm}
+  \hrule
+
+  \vspace{0.2cm}
+  \caption{Automate $\varAuA_0$ sur l'alphabet $\btwo$}
+  \label{fig.A0}
+  
+\end{figure}
 
 \begin{definition}[Automate fini déterministe]
   Soit un alphabet $\ABA$. Un automate fini déterministe $\varAuA$ sur $\ABA$
@@ -433,34 +458,6 @@ Prenons par exemple un premier automate $\varAuA_0$ sur $\btwo$ donné dans la
 
 \begin{figure}[t]
   \centering
-  \begin{tikzpicture}[node distance = 2cm, on grid, auto]
-    \node[state, initial] (q_0) {$\varqP{0}$};
-    \node[state,accepting] (q_1) [right = of q_0] {$\varqP{1}$};
-    \node[state] (q_2) [above right = of q_1] {$\varqP{2}$};
-    \node[state, accepting] (q_3) [below right = of q_1] {$\varqP{3}$};
-    \path[->,>=latex]
-    (q_0) edge node {0,1} (q_1)
-    (q_1) edge node {1} (q_2)
-    edge node {0} (q_3)
-    (q_2) edge node {0} (q_3)
-    edge [loop above] node {$1$} ()
-    (q_3) edge node {1} (q_0);
-  \end{tikzpicture}
-  
-  \vspace{0.2cm}
-  \hrule
-
-  \vspace{0.2cm}
-  \caption{Automate $\varAuA_0$ sur l'alphabet $\btwo$}
-  \label{fig.A0}
-  
-\end{figure}
-
-\begin{figure}[t]
-  \centering
-  \hrule
-
-  \vspace{0.2cm}
   \begin{tikzpicture}[node distance = 2cm, on grid, auto,
       scale=0.65, transform shape]
     \node[state, initial, color = red] (q_0) {$\varqP{0}$};
@@ -579,7 +576,6 @@ langages, qui s'avérera en fait être la même classe.
   \item si $\varLL,\varLLB \in \varCR$ alors $\varLL\wdPt \varLLB \in \varCR$
   \item si $\varLL \in \varCR$ alors $\toSt{\varLL} \in \varCR$.
   \end{itemize}
-
   On note $\Ratio(\ABA)$ cette classe $\varCR$.
 \end{definition}
 
@@ -625,13 +621,18 @@ lisbilité.
 \begin{definition}[Interprétation d'une expression rationnelle]
   On définit la fonction $\makeFunName{\Val}{\Regex(\ABA)}{\Ratio(\ABA)}$ par
   induction~:
+  \vspace{0.1cm}
   \begin{itemize}
-  \item $\Val(\vide) = \vide$
-  \item $\Val(\varla) = \{\varla\}$
-  \item $\Val(e+e') = \Val(e) \cup \Val(e')$
-  \item $\Val(ee') = \Val(e) \wdPt \Val(e')$
-  \item $\Val(\toSt{e}) = \toSt{(\Val(e))}$
-  \item $\Val(\Ewd) = \{\Ewd\}$
+    \begin{minipage}{0.45\textwidth}
+    \item $\Val(\vide) = \vide$
+    \item $\Val(\varla) = \{\varla\}$
+    \item $\Val(e+e') = \Val(e) \cup \Val(e')$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\Val(ee') = \Val(e) \wdPt \Val(e')$
+    \item $\Val(\toSt{e}) = \toSt{(\Val(e))}$
+    \item $\Val(\Ewd) = \{\Ewd\}$
+    \end{minipage}
   \end{itemize}
 \end{definition}
 
@@ -723,6 +724,7 @@ union, et les $\Ewd$-transitions.
   $\varAuA = (\varQA,\varqZ,\trAA,\varAAF)$ et
   $\varAuB = (\varQB,\varqZ',\trAB,\varABF)$ deux automates sur un alphabet
   $\ABA$. On définit l'automate union $\UnAuB$ par~:
+  \vspace{0.1cm}
   \begin{itemize}
     \begin{minipage}{0.45\textwidth}
     \item $\varQP{\UnAuB} \defeq \varQA\times\varQB$
@@ -837,10 +839,15 @@ considérer l'union à chaque fois qu'on prend un ensemble d'états possibles.
   Soit un automate fini non déterministe $\varAuA$ sur un alphabet $\ABA$,
   on note $\makeFunName{\trAS}{\varQQ \times \toStA}{\powerset(\varQQ)}$ sa
   fonction de transition étendue, définie par induction par~:
+  \vspace{0.1cm}
   \begin{itemize}
-  \item $\trAS(\varq,\Ewd) = \{\varq\}$
-  \item $\displaystyle\trAS(\varq,\varwd\wdPt\varla) =
-    \bigcup_{\varq' \in \trAS(\varq,\varwd)} \trA(\varq',\varla)$
+    \begin{minipage}{0.45\textwidth}
+    \item $\trAS(\varq,\Ewd) \defeq \{\varq\}$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\displaystyle\trAS(\varq,\varwd\wdPt\varla) \defeq
+      \bigcup_{\varq' \in \trAS(\varq,\varwd)} \trA(\varq',\varla)$
+    \end{minipage}
   \end{itemize}
 \end{definition}
 
@@ -889,6 +896,7 @@ des parties.
   Soit un alphabet $\ABA$ et un automate fini non déterministe $\varAuA$ sur
   $\ABA$. On définit l'automate des parties de $\varAuA$, noté
   $\powerset(\varAuA)$, par~:
+  \vspace{0.1cm}
   \begin{itemize}
     \begin{minipage}{0.45\textwidth}
     \item $\varQP{\powerset(\varAuA)} \defeq \powerset(\varQP{\varAuA})$
@@ -965,8 +973,12 @@ utilisera le formalisme des traces, introduit dans l'\cref{exo.traces.auto}.
   $\Ewd$) $\varla_i \in \ABA\cup\{\Ewd\}$ telle que les deux conditions
   suivantes sont vérifiées~:
   \begin{itemize}
-  \item $\varqP{i+1} \in \trA(\varqP{i},\varla_i)$
-  \item $\varwd = \varla_0\wdPt\cdots\wdPt \varla_{n-1}$
+    \begin{minipage}{0.45\textwidth}
+    \item $\varqP{i+1} \in \trA(\varqP{i},\varla_i)$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\varwd = \varla_0\wdPt\cdots\wdPt \varla_{n-1}$
+    \end{minipage}
   \end{itemize}
   On dit que $\varAuA$ accepte le mot $\varwd$ s'il existe une suite
   $(\varqZ,\ldots,\varqP{n}) \in \tr(\varwd)$ telle que $\varqP{n} \in \varAF$.
@@ -1024,10 +1036,15 @@ effectuant des $\Ewd$-transitions.
   On prouve d'abord que $\varq'\in \trAP{\varAuP{\nEwd}}(\varq,\varla)$ si et
   seulement s'il existe une suite finie $(\varqZ,\ldots,\varqP{n})$ telle que~:
   \begin{itemize}
-  \item $\varqZ = \varq$
-  \item $\forall i \in \{0,\ldots,n-2\}, \varqP{i+1} \in \trAA(\varqP{i},\Ewd)$
-  \item $\varqP{n} \in \trAA(\varqP{n-1},\varla)$
-  \item $\varqP{n} = \varq'$
+    \begin{minipage}{0.45\textwidth}
+    \item $\varqZ = \varq$
+    \item $\forall i \in \{0,\ldots,n-2\},
+      \varqP{i+1} \in \trAA(\varqP{i},\Ewd)$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\varqP{n} \in \trAA(\varqP{n-1},\varla)$
+    \item $\varqP{n} = \varq'$
+    \end{minipage}
   \end{itemize}
   Pour un sens, on remarque que dans une telle suite,
   $\varqZ \rtClot{\to} \varqP{n-1}$, ce qui nous donne l'inclusion
@@ -1401,7 +1418,7 @@ plus une transition d'un état à un autre.
 
 On introduit une nouvelle notation~: on décrit la relation de transition avec
 $\varRR_{\trA}$ définie par la formule suivante~:
-\[\varRR_{\trA}(\varq,e,\varq') \defeq \varq' \in \trA(\varq,e)\]
+\[\mathord{\varRR_{\trA}}(\varq,e,\varq') \defeq \varq' \in \trA(\varq,e)\]
 On définit aussi la notation $\sum e_i$ pour des expressions rationnelles
 $e_1,\ldots,e_n$, comme $\vide$ si $n = 0$ et de façon naturelle en
 itérant l'opération $+$ sinon.
@@ -1410,7 +1427,7 @@ itérant l'opération $+$ sinon.
   Soit $\ABA$ un alphabet et $\varAuA$ un automate généralisé sur $\ABA$. Il
   existe alors un automate généralisé $\varAuB$, équivalent à $\varAuA$, tel que
   pour tous états $\varq,\varq'$ il existe exactement une expression $e$ telle
-  que $\varRR_{\trA}(\varq,e,\varq')$.
+  que $\mathord{\varRR_{\trA}}(\varq,e,\varq')$.
 \end{proposition}
 
 \begin{proof}
@@ -1421,12 +1438,14 @@ itérant l'opération $+$ sinon.
   $(\varqZ,\ldots,\varqP{n})$ pour $\varwd$, une décomposition
   $\varwd = \varwd_0\wdPt\cdots\wdPt \varwd_{n-1}$ et une suite
   $e_0,\ldots, e_{n-1}$ telles que $\varwd_i \in \Val(e_i)$ et
-  $\varRR_{\trA}(\varqP{i},e_i,\varqP{i+1})$, pour tous $i \in \intervInt{n}$.
+  $\mathord{\varRR_{\trA}}(\varqP{i},e_i,\varqP{i+1})$, pour tout
+  $i \in \intervInt{n}$.
   Cette décomposition est aussi valide dans $\varAuB$, puisque si
   $\varwd_i \in \Val(e_i)$, $u_i$ appartient à la somme des $e$ pour
-  $\varRR_{\trA}(\varqP{i},e,\varqP{i+1})$. Réciproquement, appartenir à la somme
-  signifie qu'on peut trouver $e$ tel que
-  $\varRR_{\trA}(\varqP{i},e,\varqP{i+1})$ telle que $\varwd_i \in \Val(e_i)$. On
+  $\mathord{\varRR_{\trA}}(\varqP{i},e,\varqP{i+1})$. Réciproquement, appartenir
+  à la somme signifie qu'on peut trouver $e$ telle que
+  $\mathord{\varRR_{\trA}}(\varqP{i},e,\varqP{i+1})$ et
+  $\varwd_i \in \Val(e_i)$. On
   en déduit donc que les traces acceptantes sont identiques dans les deux
   automates, et comme les états initiaux et terminaux sont les mêmes, $\varAuA$
   et $\varAuB$ sont équivalents.
@@ -1452,12 +1471,17 @@ calculé.
   Soit $\ABA$ un alphabet et $\varAuA$ un automate généralisé contenant
   exactement une transition entre chaque deux états. Soit $\varq$ un état ni
   initial ni terminal. On définit l'automate $\varAuB$ par~:
+  \vspace{0.1cm}
   \begin{itemize}
-  \item $\varQB \defeq \varQA \setminus \{q\}$
-  \item $\varQP{0,\varAuB} \defeq \varQP{0,\varAuA}$
-  \item $e(\varqP{1},\varqP{2}) \defeq e(\varqP{1},\varq)
-    \toSt{(e(\varq,\varq))} e(\varq,\varqP{2}) + e(\varqP{1},\varqP{2})$
-  \item $\varAFP{\varAuB} \defeq \varAFP{\varAuA}$
+    \begin{minipage}{0.3\textwidth}
+    \item $\varQB \defeq \varQA \setminus \{q\}$
+    \item $\varQP{0,\varAuB} \defeq \varQP{0,\varAuA}$
+    \end{minipage}
+    \begin{minipage}{0.6\textwidth}
+    \item $e(\varqP{1},\varqP{2}) \defeq e(\varqP{1},\varq)
+      \toSt{(e(\varq,\varq))} e(\varq,\varqP{2}) + e(\varqP{1},\varqP{2})$
+    \item $\varAFP{\varAuB} \defeq \varAFP{\varAuA}$
+    \end{minipage}
   \end{itemize}
   Alors $\varAuB$ reconnaît le même langage que $\varAuA$.
 \end{lemma}
@@ -1599,8 +1623,8 @@ voudra avoir le chemin suivant~:
 
   Soit $\varwd\in\varLL$ de longueur $n \geq N$. Comme $\varwd \in \varLL$, on
   peut trouver une trace acceptante $(\varqZ,\ldots,\varqP{n})$ pour $\varwd$
-  dans $\varAuA$. Comme $n \geq N$, on en déduit que $n > |\varQQ|$, donc par le
-  principe des tiroirs, on trouve $\varq$ tel qu'il existe au moins deux
+  dans $\varAuA$. Comme $n \geq N$, on en déduit que $n > \Card(\varQQ)$, donc
+  par le principe des tiroirs, on trouve $\varq$ tel qu'il existe au moins deux
   occurrences de $\varq$ dans notre trace. On coupe alors notre trace selon deux
   telles occurrences~: $(\varqZ,\ldots,\varqP{u})$,
   $(\varqP{i},\ldots,\varqP{j})$ et $(\varqP{j},\ldots,\varqP{n})$ où
@@ -1746,11 +1770,11 @@ associé.
 
 \begin{remark}
   L'une des formulations équivalentes de l'axiome du choix est que toute
-  surjection $f : X \to Y$ admet une section, c'est-à-dire une fonction
-  $g : Y \to X$ telle que $f\circ g = \id_Y$. Pour cette raison, montrer un
-  résultat de finitude (et plus généralement de cardinalité) en utilisant une
-  surjection est moins fort que d'utiliser une injection, puisqu'on définit
-  la subpotence par l'existence d'une injection.
+  surjection $\makeFunName{f}{X}{Y}$ admet une section, c'est-à-dire une
+  fonction $\makeFunName{g}{Y}{X}$ telle que $f\circ g = \id_Y$. Pour cette
+  raison, montrer un résultat de finitude (et plus généralement de cardinalité)
+  en utilisant une surjection est moins fort que d'utiliser une injection,
+  puisqu'on définit la subpotence par l'existence d'une injection.
 
   Dans notre cas, il est donc légitime de se demander s'il n'est pas possible
   de considérer une injection, et la première idée qui vient en tête pour une
@@ -1759,7 +1783,7 @@ associé.
   \[\makeFun{f}{\compr{\luLq}{\varwd\in\toStA}}{\varQQ}
             {\clas{\varwd}}{\trAS(\varqZ,\varwd)}\]
   Malheureusement, cette fonction n'est pas bien définie, car deux mots peuvent
-  être dans le même résiduel pour $\varLL$ et pour autant être associé à des
+  être dans le même résiduel pour $\varLL$ et pour autant être associés à des
   états différents. Un exemple d'une telle situation est l'automate $\varAuA_2$
   donné en \cref{fig.auto.2}.
   
@@ -1769,8 +1793,8 @@ associé.
   résiduel, et donc de construire une fonction $f$ comme ci-dessus sur un
   sous-ensemble de $\varQQ$.
 
-  Remarquons aussi que cette fonction $f$ est bien définie exactement lorsque
-  l'automate est isomorphe à l'automate syntaxique.
+  Remarquons aussi que la précédente fonction $f$ est bien définie exactement
+  lorsque l'automate est isomorphe à l'automate syntaxique.
 \end{remark}
 
 Cela nous donne un moyen de montrer à la fois qu'un langage est rationnel, et
@@ -1996,7 +2020,7 @@ quotienter notre objet pour obtenir un objet plus petit, et plus \og exact\fg
 vis à vis de ce morphisme.
 
 \begin{proposition}
-  Soient $\varAuA, \varAuB$ deux automates sur le même alphabet $\ABA$ et
+  Soient $\varAuA, \varAuB$ deux automates sur un alphabet $\ABA$ et
   $\makeFunName{f}{\varAuA}{\varAuB}$ un morphisme surjectif. Alors $f$ définit
   sur $\varAuA$ une congruence d'automate par~:
   \[\varq\sim_f \varq' \defeq f(\varq) = f(\varq')\]
@@ -2128,8 +2152,8 @@ sont aussi reconnus par automates.
 
 \begin{proposition}
   Soit $\ABA$ un alphabet, $\varMMo$ un monoïde et $\varLL$ un langage reconnu
-  par une fonction $h : \ABA \to \varMMo$ et $S\subseteq \varMMo$. Alors
-  $\varLL \in \Reco(\ABA)$.
+  par une fonction $\makeFunName{h}{\ABA}{\varMMo}$ et $S\subseteq \varMMo$.
+  Alors $\varLL \in \Reco(\ABA)$.
 \end{proposition}
 
 \begin{proof}
@@ -2162,10 +2186,10 @@ on va utiliser la construction du monoïde des transitions.
   \item les éléments du monoïde sont les relations binaires
     $\mathord{\varRR}\subseteq \varQQ\times \varQQ$.
   \item la multiplication est la composition de relations~:
-    \[\mathord{\varRR}\neuMM \mathord{\varRR'} \defeq
-    \compr{(x,z)}{\exists y \in \varQQ, x\varRR y\land y\varRR z}\]
+    \[\mathord{\varRR}\opM \mathord{\varRR'} \defeq
+    \compr{(x,z)}{\exists y \in \varQQ, x\varRR y\land y\varRR' z}\]
   \item l'élément neutre est la relation
-    \[\Delta_{\varQQ} \defeq \compr{(\varq,\varq)}{\varq \in \varQQ}\]
+    \[\mathord{\diagRR_{\varQQ}} \defeq \compr{(\varq,\varq)}{\varq \in \varQQ}\]
   \end{itemize}
 \end{definition}
 

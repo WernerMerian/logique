@@ -538,8 +538,12 @@ terminaux à droite.
   On dit que $\varGG$ est sous forme normale de Chomsky (ou forme normale
   quadratique) lorsque toutes ses règles sont de l'une des deux formes~:
   \begin{itemize}
-  \item $\nTA \to \nTB\nTC$ avec $\nTB,\nTC\in \ABB$
-  \item $\nTA \to \varla$ où $\varla \in \ABA$
+    \begin{minipage}{0.45\textwidth}
+    \item $\nTA \to \nTB\nTC$ avec $\nTB,\nTC\in \ABB$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\nTA \to \varla$ où $\varla \in \ABA$
+    \end{minipage}
   \end{itemize}
 \end{definition}
 
@@ -784,7 +788,7 @@ généralisent directement les \cref{thm.PU.ind} et \cref{thm.ind.induct}.
   \item pour toute famille d'ensembles $(Y_s)_{s\in\varSup}$ et toute famille
     $(f_c)_{c\in C}$ telle que
     \[\forall c \in C, \arite(c) = ((s_1\cdots s_k),s) \implies
-    \makeFunName{f}{\prod_{i = 1}^k Y_{s_k}}{Y_s}\]
+    \makeFunName{f_c}{\prod_{i = 1}^k Y_{s_k}}{Y_s}\]
     il existe une famille de fonctions $(f_s)_{s\in\varSup}$ telle que
     $\forall s \in \varSup, \makeFunName{f_s}{X_s}{Y_s}$ et
     \begin{multline*}
@@ -792,12 +796,12 @@ généralisent directement les \cref{thm.PU.ind} et \cref{thm.ind.induct}.
     \forall x_1 \in X_{s_1}\cdots x_k\in X_{s_k},
     f_s(c(x_1,\ldots,x_k)) = f_c(f_{s_1}(x_1),\ldots,f_{s_k}(x_k))
     \end{multline*}
-  \item pour toute famille $(P_s)_{s\in \varSup}$ de parties de
+  \item pour toute famille $(\varPt_s)_{s\in \varSup}$ de parties de
     $(X_s)_{s\in\varSup}$, si pour tout $c \in C$ et en prenant la décomposition
     $\arite(c) = ((s_1,\ldots,s_k),s)$ on a
-    \[\forall x_1\in P_{s_1}\cdots x_k\in P_{s_k},
-    c(x_1,\ldots,x_k) \in P_s\]
-    alors pour tout $s \in \varSup$, $P_s = X_s$.
+    \[\forall x_1\in \varPt_{s_1}\cdots x_k\in \varPt_{s_k},
+    c(x_1,\ldots,x_k) \in \varPt_s\]
+    alors pour tout $s \in \varSup$, $\varPt_s = X_s$.
   \end{itemize}
 \end{theorem}
 
@@ -1082,8 +1086,8 @@ propriété universelle, analogue au \cref{thm.PU.ind}.
   fonctions telles que pour tout $(\nTA,\varwd) \in \mathord{\to}$, en
   décomposant $\varwd = \varwd_1\nTA_1\cdots\varwd_k\nTA_k\varwd_{k+1}$, on a
   $\makeFunName{f_{\nTA,\varwd}}{X^k}{X_{\nTA}}$.
-  Il existe alors une unique fonction $f : \varLL_{\varGG} \to X$ telle que pour
-  toute règle $\nTA \to \varwd_1\nTA_1\cdots \nTA_k\varwd_{k+1}$ et mots
+  Il existe alors une unique fonction $\makeFunName{f}{\varLL_{\varGG}}{X}$ telle
+  que pour toute règle $\nTA \to \varwd_1\nTA_1\cdots \nTA_k\varwd_{k+1}$ et mots
   $\varwv_1,\ldots,\varwv_k\in\toStA$ tels que
   $\nTA_i \rtClot{\to} \varwv_i$, on a l'égalité
   \[f(\varwd_1\wdPt \varwv_1\wdPt\cdots\wdPt \varwv_k \varwd_{k+1}) =
@@ -1181,11 +1185,11 @@ $k$-uplets d'entiers, et même les listes d'entiers.
     \Disj &\inddefeq \Conj \lor \Disj \mid \Conj\\
     \Conj &\inddefeq \Atom \land \Disj \mid \Atom\\
     \Atom &\inddefeq \lnot \Atom \mid \top \mid \bot \mid \Term = \Term \mid
-    R^p(\Term,\ldots,\Term)\mid (\StGr)\\
-    \Term &\inddefeq x \mid f^p(\Term,\ldots,\Term)
+    \symbR^p(\Term,\ldots,\Term)\mid (\StGr)\\
+    \Term &\inddefeq x \mid \symbF^p(\Term,\ldots,\Term)
   \end{align*}
-  où $x \in \Var$, $R^p$ décrit l'ensemble des symboles de relation
-  d'arité $p$ et $f^p$ les symboles de fonctions d'arité $p$. Les tuples
+  où $x \in \Var$, $\symbR^p$ décrit l'ensemble des symboles de relation
+  d'arité $p$ et $\symbF^p$ les symboles de fonctions d'arité $p$. Les tuples
   $\Term,\ldots,\Term$ sont des $p$-uplets~: en particulier pour $p = 0$ on a
   simplement $R^0$ (respectivement $f^0$).
   
@@ -1276,6 +1280,7 @@ de pile (d'où le nom)~: le symbole lu est le dernier symbole ajouté.
     \item $\ABB$ est l'alphabet de pile
     \item $\varla_0 \in \ABB$ est le symbole initial
     \end{minipage}
+    \vspace{-0.1cm}
   \item 
     $\mathord{\varRR} \subseteq \varQQ \times \ABB\times
     (\ABA\cup \{\Ewd\})\times \varQQ \times \toStB$
@@ -1346,7 +1351,7 @@ Comme dans le chapitre précédent, on définir une notion de trace, qui corresp
   le mot de départ.
 \end{definition}
 
-\begin{example}\label{ex.pile.trace}
+\begin{example}
   L'exemple de la \cref{fig.auto.pile1} nous fournit un automate à pile sur
   $\ABA = \btwo$. On donne en exemple une trace d'exécution du mot $011$
   par cet automate, en prenant comme symbole initial $*$~:
@@ -1369,7 +1374,7 @@ Plusieurs tels critères existent. Nous en donnons deux~:
 \end{itemize}
 
 \begin{remark}
-  Dans l'\cref{ex.pile.trace}, on peut déduire que $011$ est reconnu par pile
+  Dans l'exemple précédent, on peut déduire que $011$ est reconnu par pile
   vide par l'automate donné en \cref{fig.auto.pile1}.
 \end{remark}
 
