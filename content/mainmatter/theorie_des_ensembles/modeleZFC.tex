@@ -537,8 +537,7 @@ que chaque rang inférieur à un $\rk(x)$ donné est présent dans $x$. Non
 forcément en tant que rang d'un de ses éléments, mais potentiellement d'un
 élément d'un de ses éléments \latinexpr{etc.} car, s'il y avait un \og saut\fg
 de rang dans les éléments de $x$, alors les éléments au-dessus de ce saut
-n'auraient pas de raison d'être déjà présents plus tôt dans la hiérarchie des
-$\bVa$.
+pourraient aussi bien être présents plus tôt dans la hiérarchie des $\bVa$.
 
 \begin{lemma}\label{lem.rk.surj}
   Soit $x$ un ensemble et $\varOa$ son rang. Alors pour tout $\varOb < \varOa$,
@@ -564,7 +563,8 @@ $\bVa$.
   \begin{itemize}
   \item $\forall x,y\in\bV, x\in y \implies \rk(x) + 1 \leq \rk(y)$
   \item $\forall x,y\in\bV, x\subseteq y \implies \rk(x) \leq \rk(y)$
-  \item $\displaystyle\forall x\in\bV,\rk\left(\bigcup x\right)+1\leq\rk(x)$
+  \item $\displaystyle\forall x\in\bV,\rk\left(\bigcup x\right)\leq\rk(x)
+    \leq \rk\left(\bigcup x\right) + 1$
   \item $\forall x,y\in\bV, \rk(x\cup y) = \max(\rk(x),\rk(y))$
   \item $\forall x,y\in\bV, \rk(\{x,y\}) = \max(\rk(x),\rk(y)) + 1$
   \item $\forall x\in\bV, \rk(\powerset(x)) = \rk(x) + 1$
@@ -579,10 +579,24 @@ $\bVa$.
   \item l'inégalité vient directement de la \cref{prop.cara.rk}.
   \item soient $x,y$ tels que $x\subseteq y$. Si $y\subseteq\bVa$, comme
     $x\subseteq y$, on en déduit que $x\subseteq\bVa$, donc $\rk(x)\leq \rk(y)$.
-  \item soit $y\in \bigcup x$, on trouve $z\in x$ tel que $y\in z \in x$. En
-    utilisant l'inégalité précédente, on en déduit que $\rk(y) + 1 \leq \rk(z)$
-    et que $\rk(z) + 1 \leq \rk(x)$, donc $\rk(y) + 2 \leq \rk(x)$. On en déduit
-    en utilisant la \cref{prop.cara.rk} que $\rk(\bigcup x) + 1 \leq \rk(x)$.
+  \item en utilisant la \cref{prop.cara.rk}, puisque les éléments de $\bigcup x$
+    sont exactement les éléments d'éléments de $x$, on a
+    \begin{equation}\label{eq.rk.union}
+      \rk\left(\bigcup x\right) = \sup_{y \in \bigcup x} (\rk(y) + 1)
+      = \sup_{y \in x}\sup_{z \in y}(\rk(z) + 1)
+    \end{equation}
+    On montre maintenant les deux inégalités~:
+    \begin{itemize}
+    \item on vérifie que $\rk(x)$ est un majorant de $\rk(z) + 1$ pour
+      $z \in y \in x$, ce qui se vérifie directement en considérant la première
+      inégalité qu'on a démontrée. Ainsi, puisque $\rk\left(\bigcup x\right)$
+      est une borne supérieure, elle est inférieure à $\rk(x)$.
+    \item on peut écrire $\displaystyle\rk(x) = \sup_{y \in x} (\rk(y) + 1)$, qui
+      est inférieur à $\displaystyle(\sup_{y \in x} \rk(y)) + 1$ (car ce dernier
+      est un majorant de tous les $\rk(y) + 1$). Ce dernier sup est
+      (par la \cref{prop.cara.rk} appliquée à l'\cref{eq.rk.union})
+      $\rk\left(\bigcup x\right)$, d'où le résultat.
+    \end{itemize}
   \item soient $x,y$. On utilise directement la \cref{prop.cara.rk}~:
     \begin{align*}
       \rk(x\cup y) &= \sup_{z \in x \cup y} (\rk(z) + 1)\\
@@ -611,7 +625,7 @@ $\bVa$.
       $\rk(\varOl) = \sup_{\varOb < \varOl} (\rk(\varOb) + 1)$ et par hypotèse
       d'induction, $\rk(\varOb) = \varOb$, donc $\rk(\varOl) = \varOl$.
     \end{itemize}
-    Ainsi pour tout $\varOa \in \Ord, \rk(\varOa) = \varOa$.\qed
+    Ainsi pour tout $\varOa \in \Ord, \rk(\varOa) = \varOa$.\qedhere
   \end{itemize}
 \end{proof}
 
@@ -628,12 +642,19 @@ sont stables par $\bV_{\varOl}$.
 \begin{property}
   Soit $\varOl$ un ordinal limite. Alors $\bV_\varOl$ vérifie les
   axiomes suivants~:
+
+  \vspace{0.2cm}
   \begin{itemize}
-  \item l'axiome de la paire
-  \item l'axiome de l'union
+    \begin{minipage}{0.45\textwidth}
+    \item l'axiome de la paire
+    \item l'axiome de l'union
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item l'axiome de compréhension
+    \item l'axiome du choix
+    \end{minipage}
+    \vspace{0.15cm}
   \item l'axiome de l'ensemble des parties
-  \item l'axiome de compréhension
-  \item l'axiome du choix
   \end{itemize}
 
   De plus, si $\varOl > \Ow$ alors $\bV_\varOl$ vérifie l'axiome de l'infini.

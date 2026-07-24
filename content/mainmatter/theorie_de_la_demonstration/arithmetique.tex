@@ -7,9 +7,10 @@
 problème de la décision, résolu par Alonzo \name{Church} et Alan \name{Turing}
 par la négative, on compte aussi le deuxième problème de Hilbert à propos duquel
 le second théorème d'incomplétude impose une limite~:
-\begin{quote}
+\begin{quotation}
+  \noindent
   Prouver que la théorie de l'arithmétique est cohérente.
-\end{quote}
+\end{quotation}
 
 Le second théorème d'incomplétude nous permet de dire qu'il n'existe pas de
 démonstration arithmétique de cette cohérence, mais une démonstration peut se
@@ -703,9 +704,10 @@ $\LJ$ au lieu de $\LK$.
 
 Comme on l'a dit précédemment, la cohérence de $\ArithPeano$ et celle de $\HA$
 sont équivalentes, ce qui s'exprime par le fait suivant~:
-\begin{quote}
+\begin{quotation}
+  \noindent
   Si $\ArithPeano\vdLK \bot$ alors $\HA\vdLJ\bot$.
-\end{quote}
+\end{quotation}
 Cette relation a déjà été présentée d'une autre façon dans un chapitre
 précédent~: il s'agit de la conservativité exprimée dans la
 \cref{def.conserv.ext}. La théorie $\ArithPeano$ est une extension conservative
@@ -1254,12 +1256,13 @@ s'interpréter comme des types. Ainsi, $\tyR t : \varFF$ et
 $t\real \varFF$ semblent étroitement liés. En fait, la définition de
 $t\real \varFF \to \varFP$ semble identique à la définition de
 $\semT{\varFF\to\varFP}$. Cela nous suggère l'énoncé suivant~:
-\begin{quote}
+\begin{quotation}
+  \noindent
   Pour toute dérivation de typage
   $x_1:\varFF_1,\ldots,x_n:\varFF_n\tyR t : \varFF$ si pour tous
   $i \in\intervIntB{n}$ on dispose d'un terme $t_i \real \varFF_i$ alors
   $t[t_i/x_i] \real \varFF$.
-\end{quote}
+\end{quotation}
 Comme dans le cas du lemme d'adéquation pour la forte normalisation, il est
 nécessaire d'avoir une propriété de saturation pour vérifier que la règle
 de typage de l'abstraction $\lambda$ est adéquate. Cependant, on n'a ici aucun
@@ -1381,8 +1384,8 @@ l'environnement $\env$) par le terme $\encode{\env(\btermt)}$.
 
 On a ainsi un prédicat $\bN(x)$ à un paramètre, qui permet de décrire la classe
 des entiers. En un sens, cette classe est celle des entiers standards~: les
-$x$ vérifiant $\bN(x)$ sont ceux muni d'un entier concret réalisé par un
-programme. On peut maintenant définir considérer, plutôt que $\HA$, la version
+$x$ vérifiant $\bN(x)$ sont ceux munis d'un entier concret réalisé par un
+programme. On peut maintenant considérer, plutôt que $\HA$, la version
 relativisée
 \[\HA^\bN \defeq \compr{\varFF^\bN}{\varFF \in \HA}\]
 où $\varFF^\bN$ est la formule relativisée telle qu'introduite dans la
@@ -1512,13 +1515,14 @@ type adéquat.
   \item $t\real_\env\varFF\lor\varFP \defeq
     (\tyR t : \toTyST(\varFF\lor\varFP))\land\begin{cases}
     t\rtClot{\STred} \coprojP{1}u \land u\real_\env \varFF\\
-    u\rtClot{\STred}\coprojP{2} u \land u \real_\env \varFP
+    \text{ou}\\
+    t\rtClot{\STred}\coprojP{2} u \land u \real_\env \varFP
   \end{cases}$
   \item $t\real_\env\forall x, \varFF \defeq
     (\tyR t : \toTyST(\forall x, \varFF))\land(\forall n \in \bN,
     t\;\encode n \real_{\env[x \mapsto n]} \varFF)$
   \item $t\real_\env\exists x, \varFF \defeq
-    (\tyR t : \toTyST(\exists x, \varFF)\land
+    (\tyR t : \toTyST(\exists x, \varFF))\land
     t\rtClot{\STred} \langle \encode n, u\rangle \land
     u\real_{\env[x \mapsto n]} \varFF$
   \end{itemize}
@@ -1527,7 +1531,7 @@ type adéquat.
 \begin{exercise}[Préliminaires techniques]
   Montrer que pour tous $t,u \in \STSet$, environnement $\env$ et
   formule $\varFF$, si $u \real_\env \varFF$ et $t \STred u$ alors
-  $u\real_\env \varFF$. Montrer que pour tout $n$,
+  $t\real_\env \varFF$. Montrer que pour tout $n$,
   $t\real_{\env[x\mapsto n]} \varFF\iff t\real_\env\varFF[\encode n/x]$.
 \end{exercise}
 
@@ -1559,10 +1563,18 @@ Grâce à cette construction, on en déduit le théorème annoncé au début.
 \end{theorem}
 
 \begin{proof}
-  Soit $f$ une telle fonction. Par définition, on trouve une preuve
-  \[\varPT\concl \vdNJ \forall \vec x, \exists y, f(\vec x) = y\]
-  Par le lemme d'adéquation, on trouve donc un terme $t\in\STSet$ tel
-  que $\tyR t : \intT^k \to \intT\times \varTypBa$ qui réalise
-  la totalité de $f$. Par définition, cela signifie en particulier que
-  $\projP{1}{}\circ t$ représente exactement la fonction $f$.
+  Soit $f$ une telle fonction, représentée par un indice $e$. Par définition,
+  on trouve un contexte $\varCG\in\List(\HA)$ et une preuve
+  \[\varPT\concl \varCG\vdNJ \forall \vec x, \exists t,
+  \EnumP{e}{}(\vec x)[t]\convcal\]
+  Par le lemme d'adéquation et le fait que les axiomes de $\HA$ sont réalisés,
+  on trouve donc un terme $t\in\STSet$ tel que
+  $\tyR t : \intT^k \to \intT\times \varTypBa$ qui réalise cette formule.
+  On remarque alors que $\projP{1}{}\circ t$ est une fonction qui, à
+  $\vec x$, associe une borne supérieure sur le temps de calcul de
+  $\EnumP{e}{}(\vec x)$. Puisque les fonctions $\RecP$ sont définissables dans
+  système T, on peut alors définir
+  \[\tyR \lambda \vec x.\KlU(e,\vec x,\projP{1}{}(t\;\vec x)) :
+  \intT^k \to \intT\]
+  qui représente $f$.
 \end{proof}
