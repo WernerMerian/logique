@@ -83,7 +83,7 @@ Commençons par donner la définition de la classe $\RecP$.
     \[\makeFun{\projP{k}{n}}{\bN^n}{\bN}{(x_1,\ldots,x_n)}{x_k}\]
   \item $\RecP$ contient, pour tout $n \in \bN$, la fonction
     \[\makeFun{\csKZ{n}}{\bN^n}{\bN}{(x_1,\ldots,x_n)}{0}\]
-  \item la fonction $n \mapsto n + 1$ est primitive récursive~: $\sucs\in\RecP$.
+  \item la fonction $n \mapsto n + 1$ est primitive récursive~: $\Ss\in\RecP$.
   \item si $\makeFunName{f_1,\ldots,f_n}{\bN^k}{\bN}$ sont des fonctions $\RecP$
     et $\makeFunName{g}{\bN^n}{\bN}$ est une fonction $\RecP$, alors la fonction
     \[\makeFun{g\circ(f_1,\ldots,f_n)}{\bN^k}{\bN}
@@ -94,7 +94,7 @@ Commençons par donner la définition de la classe $\RecP$.
     sont des fonctions $\RecP$, alors la fonction
     \[\makeFunBis{\rec(f,g)}{\bN^{k+1}}{\bN}
                  {(x_1,\ldots,x_k,0)}{f(x_1,\ldots,x_k)}
-                 {(x_1,\ldots,x_k,\sucs(y))}
+                 {(x_1,\ldots,x_k,\Ss(y))}
                  {g(x_1,\ldots,x_k,y,\rec(f,g)(x_1,\ldots,x_k,y))}\]
     est elle aussi $\RecP$. On appelle cette opération la récursion primitive.
   \end{itemize}
@@ -135,20 +135,20 @@ Donnons plusieurs fonctions $\RecP$ élémentaires.
 
 \begin{proof}
   Pour les fonctions constantes, il nous suffit de composer $n$ fois la fonction
-  $\sucs$ à la fonction nulle $\csKZ{p}$.
+  $\Ss$ à la fonction nulle $\csKZ{p}$.
   
   On sait que les autres fonctions souhaitées sont définies par ces équations~:
   \begin{itemize}
   \item $\forall n \in \bN, n+0 = n$
-  \item $\forall n,m \in \bN, n + \sucs(m) = \sucs(n+m)$
+  \item $\forall n,m \in \bN, n + \Ss(m) = \Ss(n+m)$
   \item $\forall n \in \bN, n \times 0 = 0$
-  \item $\forall n,m \in \bN, n \times \sucs(m) = n + (n\times m)$
+  \item $\forall n,m \in \bN, n \times \Ss(m) = n + (n\times m)$
   \item $\forall n \in \bN, \exp(n,0) = 1$
-  \item $\forall n,m\in \bN, \exp(n,\sucs(m)) = n \times \exp(n,m)$
+  \item $\forall n,m\in \bN, \exp(n,\Ss(m)) = n \times \exp(n,m)$
   \end{itemize}
   On définit les fonctions suivantes~:
   \begin{itemize}
-  \item $\mathord{+} \defeq \rec(\pi_1^1,\sucs\circ \pi_3^3)$
+  \item $\mathord{+} \defeq \rec(\pi_1^1,\Ss\circ \pi_3^3)$
   \item $\mathord{\times} \defeq \rec(k_0^1,\mathord{+} \circ (\pi_2^3,\pi_3^3))$
   \item $\exp \defeq \rec(k_1^1,\mathord{\times}\circ (\pi_2^3,\pi_3^3))$
   \end{itemize}
@@ -204,14 +204,14 @@ prouvables comme étant $\RecP$.
   ainsi que la fonction
   \[\makeFunTer{\tok - \tok}{\bN^2}{\bN}
                {(n,0)}{n}
-               {(0,\sucs(m))}{0}
-               {(\sucs(n),\sucs(m))}{n - m}\]
+               {(0,\Ss(m))}{0}
+               {(\Ss(n),\Ss(m))}{n - m}\]
   sont $\RecP$.
 \end{proposition}
 
 \begin{proof}
   On commence par prouver que $-$ est $\RecP$. Pour cela, on définit d'abord la
-  fonction prédécesseur, qui envoie $0$ sur $0$ et $\sucs(n)$ sur $n$~:
+  fonction prédécesseur, qui envoie $0$ sur $0$ et $\Ss(n)$ sur $n$~:
   \[p \defeq \rec(\csKZ{0},\projP{1}{2})\]
   A partir de cette fonction $p$, on définit la fonction $-$ comme son
   itération~:
@@ -220,16 +220,15 @@ prouvables comme étant $\RecP$.
   récurrence sur $m$ que $0 - m = 0$~:
   \begin{itemize}
   \item $0 - 0 = 0$
-  \item si $0 - m = 0$, alors $0 - \sucs(m) = p(0-m) = p(0) = 0$
+  \item si $0 - m = 0$, alors $0 - \Ss(m) = p(0-m) = p(0) = 0$
   \end{itemize}
-  Il nous reste alors à montrer que $\sucs(n) - \sucs(m) = n - m$. On raisonne
+  Il nous reste alors à montrer que $\Ss(n) - \Ss(m) = n - m$. On raisonne
   par récurrence sur $m$~:
   \begin{itemize}
-  \item $\sucs(n) - \sucs(0) = p(\sucs(n) - 0) = p(\sucs(n)) = n = n - 0$
-  \item supposons que $\sucs(n) - \sucs(m) = n - m$, alors
+  \item $\Ss(n) - \Ss(0) = p(\Ss(n) - 0) = p(\Ss(n)) = n = n - 0$
+  \item supposons que $\Ss(n) - \Ss(m) = n - m$, alors
     \[
-    \sucs(n) - \sucs(\sucs(m)) = p(\sucs(n) - \sucs(m)) = p(n - m)
-    = n - \sucs(m)
+    \Ss(n) - \Ss(\Ss(m)) = p(\Ss(n) - \Ss(m)) = p(n - m) = n - \Ss(m)
     \]
   \end{itemize}
   Donc $\tok-\tok$ est $\RecP$.
@@ -272,7 +271,7 @@ prouvables comme étant $\RecP$.
   définie par
   \[\begin{cases}
   f(\vec x,0) \defeq [\cdots]\\
-  f(\vec x,\sucs(y)) \defeq [\cdots]
+  f(\vec x,\Ss(y)) \defeq [\cdots]
   \end{cases}\]
   où le contenu des $[\cdots]$ est déjà $\RecP$, donne lieu à une fonction
   $\RecP$.
@@ -385,7 +384,7 @@ quantification bornée sur une relation $\RecP$ reste une relation $\RecP$.
   inductivement par
   \[\begin{cases}
   \exists\mathord{\varRR}(\vec x,0) = 0\\
-  \exists\mathord{\varRR}(\vec x,\sucs(y)) =
+  \exists\mathord{\varRR}(\vec x,\Ss(y)) =
   (\exists\mathord{\varRR}(\vec x, y)) \lor \mathbin{\varRR}(\vec x,y)
   \end{cases}\]
   d'où le fait que la relation est $\RecP$.
@@ -426,7 +425,7 @@ $\RecP$.
   On introduit la fonction
   \[\makeFunBis{h}{\bN^{n+1}}{\bN}
                {(\vec n,0)}{f(\vec n)}
-               {(\vec n,\sucs(m))}{g(\vec n)}\]
+               {(\vec n,\Ss(m))}{g(\vec n)}\]
   qui est $\RecP$ puisque définie par des équations récursives (en l'occurrence,
   des équations récursives ne faisant pas d'appel récursif). On remarque que
   \[\ifrm(\mathord{\varRR},f,g)(\vec n) =
@@ -487,10 +486,10 @@ vide.
   Cette fonction peut se définir par les équations suivantes~:
   \[\begin{cases}
   f(\vec n,0) = 0\\
-  f(\vec n,\sucs(m)) = f(\vec n,m)\text{ si } f(\vec n,m) \neq 0\\
-  f(\vec n,\sucs(m)) = m \text{ si }
+  f(\vec n,\Ss(m)) = f(\vec n,m)\text{ si } f(\vec n,m) \neq 0\\
+  f(\vec n,\Ss(m)) = m \text{ si }
   f(\vec n,m) = 0 \land (\vec n,m) \in \mathord{\varRR}\\
-  f(\vec n,\sucs(m)) = 0 \text{ sinon }
+  f(\vec n,\Ss(m)) = 0 \text{ sinon }
   \end{cases}\]
   donc $f$ est $\RecP$ par récursion primitive. En composant ensuite par le
   prédécesseur, on obtient bien $\muB\mathord{\varRR}$.
@@ -501,7 +500,7 @@ vide.
   mieux ne pas le faire)~:
   \[f \defeq \rec(\csKZ{n},\ifrm(\projP{n+2}{n+2},\projP{n+2}{n+2},
   \mathord{\times}\circ(\mathord{\varRR}\circ
-  (\projP{1}{n+2},\ldots,\projP{n+1}{n+2}),\sucs\circ \projP{n+1}{n+2})))\]
+  (\projP{1}{n+2},\ldots,\projP{n+1}{n+2}),\Ss\circ \projP{n+1}{n+2})))\]
 \end{remark}
 
 Avec les outils présents, on peut montrer que la bijection de Cantor introduite
@@ -883,7 +882,7 @@ la récursion primitive.
   On définit finalement la fonction
   \[\begin{cases}
   F(\vec x,y,0) \defeq \langle y,\relev{f}(\vec x)\rangle\\
-  F(\vec x,y,\sucs(z)) \defeq h(\vec x,F(\vec x,y,z))
+  F(\vec x,y,\Ss(z)) \defeq h(\vec x,F(\vec x,y,z))
   \end{cases}\]
   La fonction $\relevB{\rec(f,(g_{\varla}))}$ peut alors s'exprimer par
   \[\relevB{\rec(f,(g_{\varla}))}(\vec x,y) = F(\vec x,y,d(y))\]

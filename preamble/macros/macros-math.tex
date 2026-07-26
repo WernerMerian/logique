@@ -6,25 +6,1293 @@
 %----- COMMANDES -----%
 %%%%%%%%%%%%%%%%%%%%%%%
 
-%----- NOUVEAUX SYMBOLES -----%
+%===============================%
+%----- COMMANDES GENERALES -----%
+%===============================%
+
+%----- FONCTIONS -----%
+
+%----- Définitions de fonctions -----%
+
+\newcommand{\restrict}[1]{\left.#1\right\vert} % restriction d'une fonction
+\newcommand{\makeFun}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}} % définition d'une fonction avec f : X -> Y, x mapsto f(x)
+\newcommand{\makeFunBis}[7]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \end{array}} % définition d'une fonction avec x mapsto f(x), x' mapsto f(x')
+\newcommand{\makeFunTer}[9]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \\ & & #8 & \longmapsto & #9\end{array}} % pareil avec trois cas possibles
+\newcommand{\makeFunPartial}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xrightharpoonup{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}} % définition d'une fonction partielle
+\newcommand{\makeFunBisPartial}[7]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xrightharpoonup{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7\end{array}} % définition d'une fonction partielle avec deux cas
+\newcommand{\makeFunIso}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \overset{\cong}{\longrightarrow} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}} % définition d'un isomorphisme / d'une fonction bijective
+\newcommand{\makeFunName}[3]{#1 : \displaystyle #2 \longrightarrow #3} % déclaration d'un nom de fonction f : X -> Y
+\newcommand{\makeFunNamePartial}[3]{#1 : \displaystyle #2 \xrightharpoonup{\quad} #3} % déclaration d'un nom de fonction partielle
+\newcommand{\makeFunNameIso}[3]{#1 : \displaystyle #2 \overset{\cong}{\longrightarrow} #3} % déclaration d'un nom d'isomorphisme
+
+%----- Opérations sur les fonctions -----%
+
+\DeclareMathOperator{\im}{Im} % ensemble image d'une fonction
+\DeclareMathOperator{\dom}{Dom} % domaine d'une fonction
+\DeclareMathOperator{\fix}{fix} % ensemble des points fixes d'une fonction
+\DeclareMathOperator{\prefix}{prefix} % ensemble des pré-points fixes d'une fonction
+\DeclareMathOperator{\postfix}{postfix} % ensemble des post-points fixes d'une fonction
+\DeclareMathOperator{\Supp}{Supp} % support d'une fonction
+\newcommand{\funGraph}[1]{\Gamma_{#1}} % graphe d'une fonction
+\DeclareMathOperator{\App}{App} % prédicat d'application de fonction
+\newcommand{\relev}[1]{\hat{#1}} % relèvement d'une fonction, propriété universelle
+\newcommand{\relevB}[1]{\widehat{#1}} % relèvement d'une fonction, propriété universelle, cas d'une fonction large à écrire
+
+
+%----- Propriétés sur les fonctions -----%
+
+\DeclareMathOperator{\inj}{Inj} % prédicat "être injectif"
+\DeclareMathOperator{\surj}{Surj} % prédicat "être surjectif"
+\DeclareMathOperator{\bij}{Bij} % prédicat "être bijectif"
+\DeclareMathOperator{\Tot}{Tot} % Prédicat de totalité
+
+%----- Fonctions usuelles -----%
+
+\DeclareMathOperator{\id}{id} % fonction identité
+\newcommand{\idP}[1]{\id_{#1}} % fonction identité pour un ensemble donné
+\DeclareMathOperator{\csK}{k} % fonction constante
+\newcommand{\csKP}[2]{\csK_{#1}^{#2}} % fonction constante à paramètres
+\newcommand{\csKZ}[1]{\csKP{0}{#1}} % fonction constante nulle
+\newcommand{\csKE}{\csK_{\Ewd}} % fonction constante sur le mot vide
+\newcommand{\indic}{\mathds{1}} % fonction indicatrice
+\newcommand{\indicP}[1]{\indic_{#1}} % fonction indcatrice de quelque chose
+\newcommand{\proj}{\pi} % fonction de projection canonique
+\newcommand{\projP}[2]{\mathop{\proj_{#1}^{#2}}} % fonction de projection paramétrée
+\newcommand{\proji}{\projP{i}{}} % projection sur i
+\newcommand{\projj}{\projP{j}{}} % projection sur j
+\newcommand{\projiI}{\projP{i}{I}} % projection sur i € I
+\newcommand{\coprojP}[1]{\mathop{\kappa_{#1}}} % fonction d'injection canonique / de coprojection
+\DeclareMathOperator{\argth}{argth} % fonction argth
+\newcommand{\clas}[1]{\overline{#1}} % classe d'équivalence
+\newcommand{\kron}[2]{\delta_{#1,#2}} % symbole de Kronecker
+\DeclareMathOperator{\tr}{tr} % trace
+\newcommand{\BijC}{\alpha} % bijection de Cantor
+\newcommand{\BijCP}[1]{\BijC_{#1}}
+\newcommand{\BijCB}{\BijCP{2}} % bijection de Cantor à deux arguments
+\newcommand{\BijCn}{\BijCP{n}} % bijection de Cantor à n arguments
+\newcommand{\BijCs}{\BijCP{\star}} % bijection de Cantor pour les listes
+
+
+%----- Fonctions partielles -----%
+
+\newcommand{\convcal}{\mathbin{\downarrow}} % calcul convergent
+\newcommand{\conveq}{\mathrel{\mathord{\convcal}\mathord{=}}} % convergence + égalité
+\newcommand{\convneq}{\mathrel{\mathord{\convcal}\mathord{\neq}}} % convergence + non égalité
+\newcommand{\divcal}{\mathbin{\uparrow}} % calcul divergent
+\newcommand{\calEq}{\approx} % égalité de fonctions partielles
+\newcommand{\raffin}{\precsim} % inclusion des graphes de fonctions partielles
+
+
+%----- ENSEMBLES -----%
+
+%----- Ensembles usuels -----%
+
+\newcommand{\bN}{\mathbb N} % ensemble des entiers naturels
+\newcommand{\bZ}{\mathbb Z} % ensemble des entiers relatifs
+\newcommand{\bQ}{\mathbb Q} % ensemble des nombres rationnels
+\newcommand{\bR}{\mathbb R} % ensemble des nombres réels
+\newcommand{\bC}{\mathbb C} % ensemble des nombres complexes
+\newcommand{\bU}{\mathbb U} % cercle unité
+\newcommand{\bT}{\mathbb T} % tore
+\newcommand{\bV}{\mathbb V} % hiérarchie cumulative de Von Neumann
+\newcommand{\bL}{\mathbb L} % classe des constructibles de Gödel
+\newcommand{\bH}{\mathbb H} % classe des ensembles héréditaires
+\newcommand{\vide}{\varnothing} % ensemble vide
+\newcommand{\intervP}[2]{\{#1,\ldots,#2\}} % ensemble de type { x1, ..., xn }
+\newcommand{\intervInt}[1]{\intervP{0}{#1 - 1}} % ensemble de type { 0 ,..., n - 1}
+\newcommand{\intervIntB}[1]{\intervP{1}{#1}} % ensemble de type {1,...,n}
+\newcommand{\intB}{\{0,1\}} % ensemble {0,1}
+\newcommand{\btwo}{\bm{2}} % ensemble des booléens
+\newcommand{\intOO}[2]{\mathord{]\,#1,#2\,[}} % ]a,b[
+\newcommand{\intOF}[2]{\mathord{]\,#1,#2\,]}} % ]a,b]
+\newcommand{\intFO}[2]{\mathord{[\,#1,#2\,[}} % [a,b[
+\newcommand{\intFF}[2]{\mathord{[\,#1,#2\,]}} % [a,b]
+\newcommand{\diffsym}{\mathbin{\triangle}} % différence symétrique
+\newcommand{\toSt}[1]{#1^{\star}} % ensemble des mots sur un ensemble
+\newcommand{\infWdP}[1]{{#1}^{\omega}} % ensemble des mots infinis sur un ensemble
+\newcommand{\infWd}{\infWdP{\intB}} % ensemble des mots infinis sur {0,1}
+
+% Classes usuelles
+
+\DeclareMathOperator{\Ord}{Ord} % classe des ordinaux
+\DeclareMathOperator{\Card}{Card} % classe des cardinaux, fonction cardinal
+\DeclareMathOperator{\Arith}{Arith} % classe des structure arithmétiques
+\DeclareMathOperator{\Grp}{Grp} % classe des groupes
+\DeclareMathOperator{\Ab}{Ab} % classe des groupes abéliens
+\DeclareMathOperator{\Ring}{Ring} % classe des anneaux
+
+%----- Opérations ensemblistes -----%
 
 \newcommand{\powerset}{\mathcal{P}} % ensemble des parties
 \newcommand{\powerdef}{\mathcal{D}} % ensemble des parties définissables
 \newcommand{\powerfin}{\powerset_{\mathrm{fin}}} % ensemble des parties finies
 \newcommand{\powermul}{\powerset_{\mathcal{M}}} % ensemble des multi ensembles
 \newcommand{\partialto}{\rightharpoonup} % fonction partielle
-%\newcommand{\defeq}{\triangleq}
-           %{\overset{{\normalfont\text{déf}}}{=}} % égalité définitionnelle
+\newcommand{\tofin}{\to_{\mathrm{fin}}} % fonction de domaine fini
 \newcommand{\symdiff}{\triangle} % différence symétrique
+\newcommand{\compr}[2]{\left\{ #1 \;\middle\vert\; #2 \right\}} % écriture d'un ensemble en compréhension
+\newcommand{\comprML}[2]{\left\{ #1 \right\vert \\ \left. #2 \right\}} % écriture d'un ensemble en compréhension sur plusieurs lignes
+\newcommand{\restr}[1]{\mathbin{\upharpoonright}_{#1}} % restriction d'une fonction à un domaine donné
+\newcommand{\diagcap}{\bigtriangleup} % intersection diagonale
+\newcommand{\quot}[2]{\mathord{#1}\mathbin{/}\mathord{#2}}
+\DeclareMathOperator{\Funct}{Funct} % ensemble des fonctions entre deux ensembles
+\newcommand{\FunTot}{\Funct_{\Tot}}
+\DeclareMathOperator{\Hom}{Hom} % ensemble des homomorphismes entre deux structures
+
+\newcommand{\Dedekind}{\mathfrak{D}} % ensemble des coupures de Dedekind
+
+%----- RELATIONS -----%
+
+%----- Relations d'ordre -----%
+
 \newcommand{\subfin}{\subseteq_{\mathrm{fin}}} % inclusion d'une partie finie
+\newcommand{\subfil}{\subseteq_{\mathrm{fil}}} % partie filtrante
 \newcommand{\lexl}{<_{\mathrm{lex}}} % ordre lexicographique
-\newcommand{\lexleq}{\leq_{\mathrm{lex}}}
+\newcommand{\lexleq}{\leq_{\mathrm{lex}}} % ordre lexicographique large
 \newcommand{\leL}{<_{\mathbb L}} % ordre sur la classe L
 \newcommand{\ordbis}{\mathrel{\lhd}} % ordre utilisé pour la démonstration de Hessenberg, et globalement symbole de relation d'ordre au cas où
 
+\renewcommand{\leq}{\leqslant} % réécriture de <= (esthétique)
+\renewcommand{\geq}{\geqslant} % réécriture de >= (esthétique)
+
+%----- NOUVEAUX SYMBOLES -----%
+
+%----- Placeholder -----%
+
 \newcommand{\tok}{\mathord{\_}} % placeholder pour les définitions anonyme
+
+%----- Infinis -----%
+
 \newcommand{\mInf}{\mathord{-}\infty} % nombre -inf avec le - collé
 \newcommand{\pInf}{\mathord{+}\infty} % nombre +inf avec le + collé
+
+%----- Egalités -----%
+
+\newcommand{\defeq}{\triangleq} % égalité définitionnelle
+\newcommand{\inddefeq}{\Coloneq} % définition inductive, ::=
+
+%----- Relation -----%
+
+\newcommand{\varRR}{\mathrel{\mathcal{R}}} % variable de relation R
+\newcommand{\Lcl}[2]{\mathord{#1}^{-1}[#2]} % classe des éléments en relation par une relation donnée avec un élément donné
+\newcommand{\LclR}[1]{\Lcl{\varRR}{#1}} % classe des éléments en relation par R avec un élément donné
+
+%----- Ensembles -----%
+
+\newcommand{\varFam}{\mathcal A} % famille d'ensembles A
+\newcommand{\varFamB}{\mathcal{B}} % famille d'ensembles B
+\newcommand{\varPt}{A} % partie A d'un ensemble
+\newcommand{\varPtB}{B} % partie B d'un ensemble
+\newcommand{\varPtC}{C} % partie C d'un ensemble
+
+
+%====================================%
+%----- LOGIQUE DU PREMIER ORDRE -----%
+%====================================%
+
+%----- LOGIQUE PROPOSITIONNELLE -----%
+
+\DeclareMathOperator{\Symbol}{Symbol} % ensemble des symboles pour un système propositionnel
+\newcommand{\Sheffer}{\mathbin{\vert}} % fonction de la barre de Sheffer
+
+%----- SYNTAXE -----%
+
+%----- Ensembles inductifs -----%
+
+\DeclareMathOperator{\derTr}{DerivTree} % ensemble des arbres de dérivation
+\newcommand{\varSup}{\mathfrak{S}} % support d'une signature
+\newcommand{\foraList}{\forall_{\List}} % application d'un "pour tout" à toute une liste
+\DeclareMathOperator{\mapList}{map} % fonction map : List(A) -> List(B)
+\DeclareMathOperator{\filterList}{filter} % filtrage d'une liste suivant un prédicat
+\DeclareMathOperator{\Stream}{Stream} % ensemble des listes infinies sur un ensemble
+\DeclareMathOperator{\fromF}{from} % fonction n -> [n,n+1,...]
+\DeclareMathOperator{\ABR}{ABR} % ensemble des arbres binaires de recherche
+\DeclareMathOperator{\isABR}{isABR} % prédicat d'être un ABR
+\DeclareMathOperator{\lookup}{lookup} % fonction regardant dans un ABR
+\DeclareMathOperator{\add}{add} % fonction ajoutant dans un ABR
+\DeclareMathOperator{\remove}{remove} % fonction supprimant d'un ABR
+\DeclareMathOperator{\sort}{sort} % fonction triant grâce à un ABR
+
+%----- Termes et formules -----%
+
+\newcommand{\Sign}{\Sigma} % signature Sigma
+\newcommand{\SignP}[1]{\Sign_{#1}} % signature Sigma avec une précision en indice
+\newcommand{\arite}{\alpha}
+\newcommand{\SigFun}{\mathscr F} % ensemble des symboles de fonction
+\newcommand{\aritFun}{\arite_{\SigFun}} % fonction d'arité des symboles de fonction
+\newcommand{\Cc}{\mathrm{c}} % symbole de constante
+\newcommand{\Ff}{\mathrm{f}} % symbole de fonction
+\newcommand{\symbF}{\mathrm{f}} % symbole de fonction f
+\newcommand{\SigRel}{\mathscr R} % ensemble des symboles de relation
+\newcommand{\aritRel}{\arite_{\SigRel}} % fonction d'arité des symboles de relation
+\newcommand{\symbR}{\mathrm{R}} % symbole de relation R
+\DeclareMathOperator{\Const}{Const} % ensemble des constantes
+\DeclareMathOperator{\Term}{Term} % ensemble des termes
+\newcommand{\TermCl}{\Term_{\mathrm{cl}}} % ensemble des termes clos
+\DeclareMathOperator{\Atom}{Atom} % ensemble des atomes
+%\newcommand{\quant}{\mathrm{Q}} % quantificateur Q
+\newcommand{\quantif}{{\normalfont\texttt{Q}}} % quantificateur Q
+\DeclareMathOperator{\Formula}{Form} % ensemble des formules
+\newcommand{\Formqf}{\Formula_{\mathrm{qf}}} % ensembles des formules sans quantificateurs
+\newcommand{\FormMod}{\Formula_{\mathrm{mod}}} % ensemble des formules de la logique modale
+\newcommand{\FormPren}{\Formula_{\mathrm{pren}}} % ensemble des formules sous forme prénexe
+\DeclareMathOperator{\Prop}{Prop} % ensemble des propositions
+\DeclareMathOperator{\VL}{VL} % ensemble des variables libres
+\DeclareMathOperator{\Var}{Var} % ensemble des variables
+\DeclareMathOperator{\VLie}{Vliees} % ensemble des variables liées
+\DeclareMathOperator{\Ctx}{Ctx} % ensemble des contextes logiques
+\newcommand{\PropSet}{\mathcal P} % ensemble de propositions P
+\newcommand{\FormSet}{\mathcal F} % ensemble de formules F
+
+% Variables
+
+\newcommand{\varFF}{\varphi} % variable de formule phi
+\newcommand{\varFP}{\psi} % variable de formule psi
+\newcommand{\varFC}{\chi} % variable de formule chi
+\newcommand{\varFX}{\xi} % variable de formule xi
+\newcommand{\varFT}{\theta} % variable de formule theta
+\newcommand{\varFA}{\alpha} % variable de formule alpha
+\newcommand{\varFD}{\delta} % variable de formule delta
+\newcommand{\varCG}{\Gamma} % variable de contexte Gamma
+\newcommand{\varCD}{\Delta} % variable de contexte Delta
+\newcommand{\varCT}{\Theta} % variable de contexte Theta
+\newcommand{\varCX}{\Xi} % variable de contexte Xi
+\newcommand{\subSimul}{\sigma} % variable pour une substitution sigma
+
+% Exemples
+
+\newcommand{\SignArith}{\SignP{\Arith}} % signature de l'arithmétique
+\newcommand{\SignAb}{\SignP{\Ab}} % signature des groupes abéliens
+\newcommand{\SignGrp}{\SignP{\Grp}} % signature des groupes
+\newcommand{\SignRing}{\SignP{\Ring}} % signature des anneaux
+
+\DeclareMathOperator{\Ineq}{Ineq} % prédicat d'inégalité
+\newcommand{\IneqP}[1]{\Ineq_{#1}} % prédicat d'inégalité à paramètre
+\DeclareMathOperator{\poset}{poset} % classe des ensembles partiellement ordonnés
+\DeclareMathOperator{\toset}{toset} % classe des ensembles totalement ordonnés
+\newcommand{\nbr}{\mathrm{nbr}} % notation pour le nombre de classes infinies
+\newcommand{\cl}{\mathrm{cl}} % notation pour la théorie ayant des classes infinies
+
+%----- PROUVABILITE -----%
+
+%----- Théories -----%
+
+\DeclareMathOperator{\Theory}{Theorie} % ensemble des théories sur une signature
+\newcommand{\varT}{\mathscr T} % variable T pour une théorie
+\newcommand{\varTB}{\mathscr T'} % variable T' pour une autre théorie
+\DeclareMathOperator{\Th}{Th} % ensemble des théorèmes d'une théorie
+\newcommand{\DemT}[1]{\Dem_{#1}} % être le code d'une preuve d'un énoncé dans une théorie
+\newcommand{\ThT}[1]{\Th_{#1}} % être démontrable dans une théorie
+\DeclareMathOperator{\Coher}{Coh} % cohérence d'une théorie
+
+% Exemples
+
+\DeclareMathOperator{\ArithRobin}{Q} % théorie de l'arithmétique de Robinson
+\DeclareMathOperator{\ArithPeano}{PA} % théorie de l'arithmétique de Peano
+\DeclareMathOperator{\HA}{HA} % arithmétique de Heyting
+\newcommand{\TAb}{\varT_{\Ab}} % théorie des groupes abéliens
+\newcommand{\TGrp}{\varT_{\Grp}} % théorie des groupes
+\newcommand{\TRing}{\varT_{\Ring}} % théorie des anneaux
+
+%----- Preuves -----%
+
+\DeclareMathOperator{\Proof}{PT} % ensemble des arbres de preuves
+\newcommand{\ProofP}[1]{\Proof_{#1}} % ensemble des arbres de preuves à paramètre
+\DeclareMathOperator{\hypo}{hypotheses} % ensemble des hypothèses d'un arbre de preuves
+\newcommand{\concl}{\mathrel{\rhd}} % séquent conclusion d'un arbre de preuves
+\newcommand{\varPT}{\pi} % variable pour un arbre de preuve
+
+% Variantes de théorie de la démonstration
+
+\newcommand{\ProofLK}{\ProofP{\LK}} % calcul des séquents classique
+\newcommand{\ProofLS}{\ProofP{\LS}} % calcul des séquents modal
+\newcommand{\ProofLJ}{\ProofP{\LJ}} % calcul des séquents intuitionniste
+\newcommand{\ProofNK}{\ProofP{\NK}} % déduction naturelle classique
+\newcommand{\ProofNJ}{\ProofP{\NJ}} % déduction naturelle intuitionniste
+
+% Commandes Bussproofs
+
+\newcommand{\ligneNJP}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\noLine\UnaryInf$\fCenter #1$\noLine} % ajout d'un arbre de NJ au milieu
+\newcommand{\ligneNJV}{\ligneNJP{\varPT}} % ajout de l'arbre pi de NJ au milieu
+\newcommand{\ligneNJPB}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\dashedLine\BinaryInf$\fCenter #1$\noLine} % ajout d'un arbre de NJ au milieu, binaire
+\newcommand{\ligneNJPT}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\dashedLine\TrinaryInf$\fCenter #1$\noLine} % ajout d'un arbre de NJ au milieu, ternaire
+\newcommand{\ligneNJVT}{\ligneNJPT{\varPT}} % ajout d'un arbre pi de NJ au milieu, ternaire
+\newcommand{\axNJP}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\Axiom$\fCenter #1$\noLine} % début d'un arbre de NJ
+\newcommand{\axNJV}{\axNJP{\varPT}} % début de l'arbre pi de NJ
+
+%----- Satisfaction -----%
+
+\newcommand{\satisf}{\models} % satisfaction d'une formule
+\newcommand{\cosatisf}{\satisf^{\mathrm{co}}} % satisfaction pour les relation coinductives
+\newcommand{\vD}{\vDash} % relation de conséquence sémantique
+\newcommand{\nvD}{\nvDash} % négation de la conséquence sémantique
+\newcommand{\vd}{\vdash} % relation de prouvabilité
+\newcommand{\vdP}{\vd} % relation de prouvabilité pour les sytèmes des ch2 et 3
+\newcommand{\dvvd}{\mathrel{\mathord{\dashv}\mathord{\vdash}}} % équivalence prouvable
+\newcommand{\nvdP}{\nvdash} % non prouvabilité
+\newcommand{\vdAbs}{\vdP^{\maltese}} % prouvabilité incohérente
+
+% Variantes de théorie de la démonstration
+
+\newcommand{\vdLK}{\vdash_{\LK}} % relation de prouvabilité pour LK
+\newcommand{\dvvdLK}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LK}}} % équivalence prouvable dans LK
+\newcommand{\vdLJ}{\vdash_{\LJ}} % relation de prouvabilité pour LJ
+\newcommand{\dvvdLJ}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LJ}}} % équivalence prouvable dans LJ
+\newcommand{\nvdLJ}{\nvdash_{\LJ}} % négation de prouvabilité dans LJ
+\newcommand{\vdLS}{\vdash_{\LS}} % relation de prouvabilité pour LS
+\newcommand{\dvvdLS}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LS}}} % équivalence prouvable dans LS
+\newcommand{\vdNK}{\vdash_{\NK}} % relation de prouvabilité pour NK
+\newcommand{\vdNJ}{\vdash_{\NJ}} % relation de prouvabilité pour NJ
+\newcommand{\vdNJto}{\vdash_{\NJ_\to}} % relation de prouvabilité pour la logique minimale
+\newcommand{\vdLL}{\vdash_{\LL}} % relation de prouvabilité pour LL
+\newcommand{\LKPA}{\LK_{\ArithPeano}} % calcul des séquents arithmétique
+\newcommand{\vdPA}{\vdash_{\ArithPeano}} % théorie PA
+
+%----- Clôtures -----%
+
+\newcommand{\vclose}[1]{\Th_{\vD}(#1)} % clôture par conséquence sémantique d'un ensemble de formules
+\newcommand{\vTclos}{\vclose{\varT}} % clôture par conséquence sémantique de T
+\newcommand{\vdclose}[1]{\Th(#1)} % clôture par conséquence syntaxique d'un ensemble de formules
+\newcommand{\vdTclos}{\vdclose{\varT}} % clôture par conséquence syntaxique de T
+\newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}} % clôture par ajout des témoins de Henkin d'une théorie
+
+%----- SEMANTIQUE -----%
+
+%----- Structure et interprétation -----%
+
+\DeclareMathOperator{\Struct}{Struct} % classe des structures
+\DeclareMathOperator{\Model}{Mod} % classe des modèles
+\newcommand{\carM}[1]{\left\vert #1\right\vert} % ensemble "carrier" d'une structure
+\newcommand{\toMP}[2]{#1^{#2}} % interprétation des symboles dans une structure
+\newcommand{\toMFunP}[2]{\toMP{#1}{#2}_{\SigFun}} % interprétation des fonctions dans une structure
+\newcommand{\toMRelP}[2]{\toMP{#1}{#2}_{\SigRel}} % interprétation des relations dans une structure
+\newcommand{\Enviro}{\mathcal E} % ensemble des environnements
+\DeclareMathOperator{\Val}{Val} % valeur de vérité d'une formule dans un modèle
+\newcommand{\ValP}[1]{\Val_{#1}}
+\newcommand{\toMIP}[3]{\toMP{#1}{#2}_{#3}} % interprétation d'un terme dans une structure
+\newcommand{\satMP}[2]{#1,#2\satisf} % satisfaction dans un modèle et un environnement
+\newcommand{\nsatMP}[2]{#1,#2\not\satisf} % non satisfaction dans un modèle et un environnement
+
+% Variables
+
+\newcommand{\env}{\rho} % environnement d'interprétation dans une structure
+\newcommand{\envE}{\env'} % deuxième variable pour env
+\newcommand{\varMP}[1]{\mathfrak{#1}} % variable quelconque pour un modèle
+\newcommand{\varMM}{\varMP{M}} % variable M pour un modèle
+\newcommand{\varMN}{\varMP{N}} % variable N pour un modèle
+\newcommand{\carMM}{\carM{\varMM}} % ensemble "carrier" de la structure M
+\newcommand{\carMN}{\carM{\varMN}} % ensemble "carrier" de la structure N
+\newcommand{\toM}[1]{\toMP{#1}{\varMM}} % interprétation des symboles dans la structure M
+\newcommand{\toN}[1]{\toMP{#1}{\varMN}} % interprétation des symboles dans la structure N
+\newcommand{\toMFunM}[1]{\toMFunP{#1}{\varMM}} % interprétation des fonctions dans une structure M
+\newcommand{\toMRelM}[1]{\toMRelP{#1}{\varMM}} % interprétation des relations dans une structure M
+\newcommand{\ValE}{\Val_{\env}} % valuation dans un environnement rho
+\newcommand{\ValEE}{\Val_{\envE}}
+\newcommand{\toMMI}[1]{\toMIP{#1}{\varMM}{\env}} % interprétation d'un terme dans la structure M et l'environnement rho
+\newcommand{\satMI}{\satMP{\varMM}{\env}} % satisfaction dans le modèle M et l'environnement rho
+\newcommand{\satMM}{\varMM\satisf} % satisfaction dans le modèle M
+\newcommand{\satMN}{\varMN\satisf} % satisfaction dans le modèle N
+\newcommand{\varMoM}{F} % variable pour un morphisme de structure
+\newcommand{\varMoMB}{G} % autre variable pour un morphisme de structure
+\newcommand{\varGrp}{G} % variable de groupe G
+\newcommand{\varAA}{A} % variable d'anneau A
+
+% Monoïde
+
+\newcommand{\varMMo}{M} % variable pour un monoide M
+\newcommand{\varMNo}{N} % variable pour le monoide N
+\newcommand{\neuMP}[1]{e_{#1}} % neutre pour un monoide
+\newcommand{\neuMM}{e_{\varMMo}} % neutre pour le monoide M
+\newcommand{\neuMN}{e_{\varMNo}} % neutre pour le monoide N
+\newcommand{\opM}{\mathbin{\cdot}} % opération pour le monoide M
+\newcommand{\opN}{\mathbin{\diamond}} % opération pour le monoide N
+
+%----- REGLES D'INFERENCE -----%
+
+%----- Règles générales -----%
+
+\DeclareMathOperator{\ruleR}{r} % règle r quelconque
+\DeclareMathOperator{\refl}{refl} % réflexivité
+\DeclareMathOperator{\trans}{trans} % transitivité
+\DeclareMathOperator{\Requiv}{equiv} % relation d'équivalence
+\DeclareMathOperator{\Rax}{ax} % règle axiome
+\DeclareMathOperator{\Rcut}{cut} % règle coupure
+\DeclareMathOperator{\Rg}{g} % règle gauche
+\DeclareMathOperator{\Rd}{d} % règle droite
+\DeclareMathOperator{\RComp}{comp} % compacité
+\DeclareMathOperator{\RAff}{aff} % affaiblissement
+\DeclareMathOperator{\RRaa}{raa} % raisonnement par l'absurde
+
+%----- Règles du calcul des séquents -----%
+
+\DeclareMathOperator{\rml}{l} % classe des règles gauches
+\DeclareMathOperator{\rmr}{r} % classe des règles droites
+\DeclareMathOperator{\Rle}{le} % règle d'échange gauche
+\DeclareMathOperator{\Rre}{re} % règle d'échange droite
+\DeclareMathOperator{\Rlc}{lc} % règle de contraction gauche
+\DeclareMathOperator{\Rrc}{rc} % règle de contraction droite
+\DeclareMathOperator{\Rlw}{lw} % règle d'affaiblissement gauche
+\DeclareMathOperator{\Rrw}{rw} % règle d'affaiblissement droite
+\newcommand{\Rtop}{\top} % règle top
+\newcommand{\Rbot}{\bot} % règle bot
+\newcommand{\Rlbot}{\rml\mathord{\Rbot}} % règle bot gauche
+\newcommand{\Rrtop}{\rmr\mathord{\Rtop}} % règle top droite
+\newcommand{\Rlnot}{\rml\mathord{\lnot}} % règle non gauche
+\newcommand{\Rrnot}{\rmr\mathord{\lnot}} % règle non droite
+\newcommand{\Rlor}{\rml\mathord{\lor}} % règle ou gauche
+\newcommand{\Rror}{\rmr\mathord{\lor}} % règle ou droite
+\newcommand{\RrorG}{\Rror_{1}} % règle ou droite 1
+\newcommand{\RrorD}{\Rror_{2}} % règle ou droite 2
+\newcommand{\Rrori}{\Rror_{i}} % règle ou droite i
+\newcommand{\Rland}{\rml\mathord{\land}} % règle et gauche
+\newcommand{\RlandG}{\Rland_{1}} % règle et gauche 1
+\newcommand{\RlandD}{\Rland_{2}} % règle et gauche 2
+\newcommand{\Rlandi}{\Rland_{i}} % règle et gauche i
+\newcommand{\Rrand}{\rmr\mathord{\land}} % règle et droite
+\newcommand{\Rlto}{\rml\mathord{\to}} % règle implique gauche
+\newcommand{\Rrto}{\rmr\mathord{\to}} % règle implique droite
+\newcommand{\RrtoG}{\Rrto_{1}} % règle implique droite 1
+\newcommand{\RrtoD}{\Rrto_{2}} % règle implique droite 2
+\newcommand{\Rlfora}{\rml\mathord{\forall}} % règle pour tout gauche
+\newcommand{\Rrfora}{\rmr\mathord{\forall}} % règle pour tout droite
+\newcommand{\Rlex}{\rml\mathord{\exists}} % règle existe gauche
+\newcommand{\Rrex}{\rmr\mathord{\exists}} % règle existe droite
+\newcommand{\Rlsq}{\rml\mathord{\modSq}} % règle carré gauche
+\newcommand{\Rrsq}{\rmr\mathord{\modSq}} % règle carré droite
+\newcommand{\Rldia}{\rml\mathord{\modDia}} % règle losange gauche
+\newcommand{\Rrdia}{\rmr\mathord{\modDia}} % règle losange droite
+\newcommand{\Rleq}{\rml{\mathord{=}}} % règle égal gauche
+\newcommand{\Rreq}{\rmr\mathord{=}} % règle égal droite
+\newcommand{\Rlwi}{\rml\mathord{\with}} % règle with gauche
+\newcommand{\RlwiG}{\Rlwi_{1}} % règle with gauche 1
+\newcommand{\RlwiD}{\Rlwi_{2}} % règle with gauche 2
+\newcommand{\Rrwi}{\rmr\mathord{\with}} % règle with droite
+\newcommand{\Rlpar}{\rml\mathord{\parr}} % règle par gauche
+\newcommand{\Rrpar}{\rmr\mathord{\parr}} % règle par droite
+\newcommand{\Rlloli}{\rml\mathord{\multimap}} % règle loli gauche
+\newcommand{\Rrloli}{\rmr\mathord{\multimap}} % règle loli droite
+
+%----- Règles de la déduction naturelle -----%
+
+\newcommand{\RtopI}{\top_{\mathrm{i}}} % règle top intro
+\newcommand{\RbotC}{\bot_{\mathrm{c}}} % règle top classique
+\newcommand{\RbotE}{\bot_{\mathrm{e}}} % règle top elim
+\newcommand{\RnotI}{\mathord{\lnot}_{\mathrm{i}}} % règle non intro
+\newcommand{\RnotIP}[1]{\mathord{\lnot}_{\mathrm{i},#1}} % règle non intro à paramètre
+\newcommand{\RnotIA}{\RnotIP{\varTokA}} % règle non intro alpha
+\newcommand{\RnotIB}{\RnotIP{\varTokB}} % règle non intro beta
+\newcommand{\RnotE}{\mathord{\lnot}_{\mathrm{e}}} % règle non elim
+\newcommand{\RorI}{\mathord{\lor}_{\mathrm{i}}} % règle ou intro
+\newcommand{\RorIG}{\RorI^{1}} % règle ou intro 1
+\newcommand{\RorID}{\RorI^{2}} % règle ou intro 2
+\newcommand{\RorIi}{\RorI^{i}} % règle ou intro i
+\newcommand{\RorE}{\mathord{\lor}_{\mathrm{e}}} % règle ou elim
+\newcommand{\RorEP}[1]{\mathord{\lor}_{\mathrm{e},#1}} % règle ou elim à paramètre
+\newcommand{\RorEA}{\RorEP{\varTokA}} % règle ou elim alpha
+\newcommand{\RorEB}{\RorEP{\varTokB}} % règle ou elim beta
+\newcommand{\RandI}{\mathord{\land}_{\mathrm{i}}} % règle et intro
+\newcommand{\RandE}{\mathord{\land}_{\mathrm{e}}} % règle et elim
+\newcommand{\RandEG}{\RandE^{1}} % règle et elim 1
+\newcommand{\RandED}{\RandE^{2}} % règle et elim 2
+\newcommand{\RandEi}{\RandE^{i}} % règle et elim i
+\newcommand{\RtoI}{\mathord{\to}_{\mathrm{i}}} % règle implique intro
+\newcommand{\RtoIP}[1]{\mathord{\to}_{\mathrm{i},#1}} % règle implique intro à paramètre
+\newcommand{\RtoIA}{\RtoIP{\varTokA}} % règle implique intro alpha
+\newcommand{\RtoIB}{\RtoIP{\varTokB}} % règle implique intro beta
+\newcommand{\RtoE}{\mathord{\to}_{\mathrm{e}}} % règle implique elim
+\newcommand{\RforaI}{\mathord{\forall}_{\mathrm{i}}} % règle pour tout intro
+\newcommand{\RforaE}{\mathord{\forall}_{\mathrm{e}}} % règle pour tout elim
+\newcommand{\RexI}{\mathord{\exists}_{\mathrm{i}}} % règle existe intro
+\newcommand{\RexE}{\mathord{\exists}_{\mathrm{e}}} % règle existe elim
+\newcommand{\RexEP}[1]{\mathord{\exists}_{\mathrm{e},#1}} % règle existe elim à paramètre
+\newcommand{\RexEA}{\RexEP{\varTokA}} % règle existe elim alpha
+\newcommand{\RexEB}{\RexEP{\varTokB}} % règle existe elim beta
+\newcommand{\ReqI}{\mathord{=}_{\mathrm{i}}} % règle egal intro
+\newcommand{\ReqE}{\mathord{=}_{\mathrm{e}}} % règle egal elim
+\newcommand{\iffS}{\mathrel{\leftrightarrow}} % ssi dans sa version syntaxique
+\newcommand{\RiffI}{\mathord{\iffS}_{\mathrm{i}}} % règle ssi intro
+\newcommand{\RiffE}{\mathord{\iffS}_{\mathrm{e}}} % règle ssi elim
+\newcommand{\RiffEG}{\RiffE^{1}} % règle ssi elim 1
+\newcommand{\RiffED}{\RiffE^{2}} % règle ssi elim 2
+
+% Marques
+
+\newcommand{\varTokA}{\alpha} % marque alpha
+\newcommand{\varTokB}{\beta} % marque beta
+\newcommand{\varTokC}{\gamma} % marque gamma
+\newcommand{\varTokD}{\delta} % marque delta
+
+%----- Axiomes et règles supplémentaires -----%
+
+\DeclareMathOperator{\EDN}{EDN} % élimination de la double négation
+\DeclareMathOperator{\TE}{TE} % tiers exclu
+
+% Noms d'axiomes
+
+\DeclareMathOperator{\assoc}{assoc}
+\DeclareMathOperator{\neut}{neutre}
+\DeclareMathOperator{\inv}{inv}
+\DeclareMathOperator{\comm}{comm}
+\DeclareMathOperator{\distrL}{distribL}
+\DeclareMathOperator{\distrR}{distribR}
+
+%----- REECRITURE ABSTRAITE -----%
+
+%----- Opérateurs de clôture -----%
+
+\newcommand{\tClot}[1]{#1^{\mathord{+}}} % clôture transitive
+\newcommand{\rtClot}[1]{#1^{\mathord{\star}}} % clôture réflexive et transitive
+\newcommand{\rClot}[1]{#1^{\mathord{=}}} % clôture réflexive
+\newcommand{\rtsClot}[1]{#1^{\mathord{\sim}}} % clôture d'équivalence
+\newcommand{\rtsClotB}[1]{\sim_{\mathord{#1}}} % clôture d'équivalence, notation laternative
+\newcommand{\sClot}[1]{#1^{\mathrm{sym}}} % clôture symétrique
+\newcommand{\sClotMin}[1]{#1^{\mathrm{sym}}_{\land}} % clôture symétrique "maximale"
+\newcommand{\sClotMax}[1]{#1^{\mathrm{sym}}_{\lor}} % clôture symétrique "minimale"
+
+%----- Système de réécriture abstrait -----%
+
+\DeclareMathOperator{\ARS}{ARS} % classe des ARS
+\DeclareMathOperator{\NF}{NF} % ensemble des formules normales
+\newcommand{\WN}{\mathcal{WN}} % ensemble des termes faiblement normalisant
+\newcommand{\SN}{\mathcal{SN}} % ensemble des termes fortement normalisant
+\DeclareMathOperator{\PrCrt}{PC} % ensemble des paires critiques dans un ARS
+
+%----- Relations dans un ARS -----%
+
+\newcommand{\varTo}{\mathrel{\to}} % relation dans un ARS
+\newcommand{\varToTr}{\mathrel{\leftarrow}} % relation transposée
+\newcommand{\varToTTr}{\rtClot{\varToTr}} % relation transposée itérée
+\newcommand{\toMax}[1]{#1^{\mathord{!}}} % réduction maximale vers une NF pour une relation qualconque
+\newcommand{\varToMax}{\toMax{\varTo}} % réduction maximale vers une NF
+\newcommand{\nvarTo}{\mathrel{\nrightarrow}} % négation de la réduction
+\newcommand{\varToT}{\tClot{\varTo}} % relation ->+ dans un ARS
+\newcommand{\varToR}{\rClot{\varTo}} % relation ->= dans un ARS
+\newcommand{\varToRt}{\rtClot{\varTo}} % relation ->* dans un ARS
+\newcommand{\varToRst}{\rtsClotB{\varTo}} % relation ~_->
+\newcommand{\varToS}{\mathrel{\leftrightarrow}} % relation <->
+\newcommand{\toCompt}[1]{#1^{\mathrm{comp}}} % clôture compatible
+\newcommand{\varToC}{\mathrel{\rhd}} % relation compatible
+\newcommand{\varToCRt}{\rtClot{\varToC}} % version * de la compatible
+%\newcommand{\varToCS}{\mathrel{\lhd\rhd}} % version symétrique de la compatible
+\newcommand{\varToCRst}{\mathrel{=_{\mathord{\varToC}}}} % version rel d'équiv de la compatible
+\newcommand{\varToCTr}{\mathrel{\lhd}} % transposée de la clôture compatible
+\newcommand{\varToCTTr}{\rtClot{\varToCTr}} % clôture rt de la transposée de la clôture compatible
+
+%----- Théories équationnelles -----%
+
+\newcommand{\varEq}{\mathscr{E}} % théorie équationnelle E
+\newcommand{\varPbU}{\mathcal{P}} % variable pour un pb d'unification
+
+%==================================%
+%---- NOTATIONS CONTEXTUELLES -----%
+%==================================%
+
+%----- LISTES -----%
+
+\DeclareMathOperator{\List}{List} % ensemble des listes sur un ensemble
+\DeclareMathOperator{\cons}{cons} % ajouter un élément en tête d'une liste
+\newcommand{\consP}[1]{\cons_{#1}} % cons avec paramètre
+\newcommand{\Cons}{\mathbin{::}} % version opérateur de la fonction cons
+\newcommand{\append}{\mathbin{\mathord{+}\!\mathord{+}}} % concaténation de listes
+\DeclareMathOperator{\nil}{nil} % liste vide
+\newcommand{\Nil}{[\;]} % version opérateur de la constante nil
+\newcommand{\varlist}{\ell} % variable pour désigner une liste
+\newcommand{\ListLen}[1]{\left\vert#1\right\vert} % longueur d'une liste
+\newcommand{\prefOrd}{\preccurlyeq} % ordre préfixe sur les listes
+
+%----- ARBRES -----%
+
+\DeclareMathOperator{\BinTree}{BinTree} % ensemble des arbres binaires
+\DeclareMathOperator{\node}{node} % noeud d'un arbre
+\newcommand{\WfTree}{\Tree_{\mathrm{wf}}}
+\DeclareMathOperator{\Tree}{Tree} % ensemble des arbres .-branchants
+%\DeclareMathOperator{\PreTree}{PreTree} % ensemble des pré-arbres
+\newcommand{\varTree}{T} % variable pour désigner un arbre
+\newcommand{\varPath}{\alpha} % variable pou désigner un chemin infini
+\newcommand{\inTreeP}[1]{\in_{#1}} % appartenance jusqu'à n dans T
+\newcommand{\inTreeInf}{\inTreeP{\infty}} % appartenance d'un chemin infini à T
+
+%----- THEORIE DES ENSEMBLES -----%
+
+\newcommand{\unZF}{\mathcal{U}} % univers ensembliste usuel
+
+%----- Axiomes et théories -----%
+
+\DeclareMathOperator{\ZFC}{ZFC} % théorie des ensembles ZFC
+\DeclareMathOperator{\ZF}{ZF} % théorie des ensembles ZF
+\DeclareMathOperator{\Zermelo}{Z} % théorie des ensembles de Zermelo
+\DeclareMathOperator{\AxC}{AC} % axiome du choix
+\newcommand{\varCh}{C} % variable d'ensemble de choix
+\DeclareMathOperator{\AxF}{AF} % axiome de fondation
+\DeclareMathOperator{\AxInf}{AInf} % axiome de l'infini
+\DeclareMathOperator{\AxExt}{AExt} % axiome d'extensionalité
+\DeclareMathOperator{\AxUn}{AUnion} % axiome de l'union
+\DeclareMathOperator{\AxPair}{APair} % axiome de la paire
+\DeclareMathOperator{\AxPow}{APart} % axiome de l'ensemble des parties
+\DeclareMathOperator{\AxRepl}{ARempl} % schéma d'axiomes de remplacement
+\DeclareMathOperator{\AxCompr}{ACompr} % schéma d'axiomes de compréhension
+
+% Enoncés indépendants
+
+\DeclareMathOperator{\HC}{HC} % hypothèse du continu
+\DeclareMathOperator{\HCG}{HCG} % hypothèse du continu généralisée
+\newcommand{\VeqL}{\bV = \bL} % axiome V = L
+
+
+%----- Classes -----%
+
+\newcommand{\varCC}{\mathcal{C}} % variable pour une classe C
+\newcommand{\varCM}{\mathcal{M}} % variable pour une classe M
+\newcommand{\varCR}{\mathcal{R}} % classe R
+\newcommand{\varCol}{\phi} % fonction d'effondrement de Mostovski
+\newcommand{\varFunCl}{\theta} % variable de fonction entre classes
+
+%----- Ordinaux -----%
+
+\DeclareMathOperator{\trcl}{trcl} % clôture transitive d'un ensemble
+\DeclareMathOperator{\type}{type} % type d'un bon ordre
+\DeclareMathOperator{\cof}{cof} % cofinalité d'un ordinal
+\DeclareMathOperator{\Clos}{Clos} % ensemble des points de clôture
+\DeclareMathOperator{\Club}{Club} % ensemble des clubs d'un ordinal
+\DeclareMathOperator{\Lim}{Lim} % classe des ordinaux limites, ensemble des limites d'un ordinal
+\DeclareMathOperator{\rk}{rk} % rang
+\DeclareMathOperator{\ind}{ind} % être inductif vis-à-vis d'une relation
+\DeclareMathOperator{\isN}{estZero} % prédicat d'être zéro
+\DeclareMathOperator{\isS}{estSucc} % prédicat d'être un ordinal successeur
+\DeclareMathOperator{\isL}{estLimite} % prédicat d'être un ordinal limite
+\newcommand{\takeDom}[1]{\varOa_{#1}} % domaine ordinal associé à une fonction récursive transfinie
+\DeclareMathOperator{\HartT}{Hart} % Hartogs
+\newcommand{\Hart}[1]{\HartT(#1)} % ordinal de Hartogs d'un ensemble
+
+% Variables
+
+\newcommand{\varOa}{\alpha} % variable d'ordinal alpha
+\newcommand{\varOb}{\beta} % variable d'ordinal beta
+\newcommand{\varOc}{\gamma} % variable d'ordinal gamma
+\newcommand{\varOd}{\delta} % variable d'ordinal delta
+\newcommand{\varOe}{\varepsilon} % variable d'ordinal epsilon
+\newcommand{\varOl}{\lambda} % variable d'ordinal lambda
+\newcommand{\varOx}{\xi} % variable d'ordinal xi
+\newcommand{\varOz}{\zeta} % variable d'ordinal zeta
+\newcommand{\varOn}{\eta} % variable d'ordinal eta
+\newcommand{\Ow}{\omega} % ordinal omega
+\newcommand{\Oe}{\varOe_0} % ordinal epsilon0
+
+%----- Cardinaux -----%
+
+\newcommand{\Ccont}{\mathfrak{c}} % cardinal du continu
+\newcommand{\subpo}{\preceq} % subpotence
+\newcommand{\subpoS}{\prec} % subpotence stricte
+\newcommand{\Cal}{\aleph} % hiérarchie cardinale aleph
+\newcommand{\Cbe}{\beth} % hiérarchie cardinale beth
+\newcommand{\SsC}[1]{#1^{+}} % cardinal successeur
+
+% Variables
+
+\newcommand{\varCk}{\kappa} % variable de cardinal kappa
+\newcommand{\varCCl}{\lambda} % variable de cardinal lambda
+\newcommand{\varCm}{\mu} % variable de cardinal mu
+
+%----- Combinatoire -----%
+
+\newcommand{\Eij}[2]{E_{#1}^{#2}} % ensemble des éléments de cofinalité fixée
+\newcommand{\varClub}{C} % variable pour un club C
+\newcommand{\varSt}{S} % variable pour un ensemble stationnaire S
+\newcommand{\varStT}{T} % variable pour un ensemble stationnaire T
+\newcommand{\UlM}[2]{X_{#1}^{#2}} % matrices d'Ulam
+\newcommand{\UlMa}[1]{\UlM{\varOa}{#1}} % matrice d'Ulam en alpha
+\newcommand{\UlMB}[2]{\varSt_{#1}^{#2}} % matrice d'Ulam relativement à un ensemble stationnaire
+
+%----- Modèles de ZFC -----%
+
+\newcommand{\bVa}{\bV_{\varOa}} % ensemble V_alpha
+\newcommand{\bLa}{\bL_{\varOa}} % ensemble L_alpha
+\newcommand{\absol}[1]{\preccurlyeq_{#1}} % relation d'absoluité
+\newcommand{\absolF}{\absol{\varFF}} % absoluité sur une formule phi
+\newcommand{\varCW}{\mathcal{W}} % variable de classe W, pour le thm de réflexion
+\newcommand{\sCh}{\varepsilon} % symbole de choix global
+
+%----- Hiérarchies -----%
+
+% Hiérarchie de Lévy
+
+\newcommand{\HierLevS}[1]{\Sigma_{#1}^{\ZFC}} % hiérarchie de Lévy, Sigma_n
+\newcommand{\HierLevP}[1]{\Pi_{#1}^{\ZFC}} % hiérarchie de Lévy, Pi_n
+\newcommand{\HierLevD}[1]{\Delta_{#1}^{\ZFC}} % hiérarchie de Lévy, Delta_n
+\newcommand{\DeltaZL}{\HierLevD{0}} % hiérarchie de Lévy, Delta_0
+
+% Hiérarchie de Borel
+
+\newcommand{\bSigma}{\bm{\Sigma}}%{\Sigma} % Sigma gras
+\newcommand{\bPi}{\bm{\Pi}}%{\Pi} % Pi gras
+\newcommand{\bDelta}{\bm{\Delta}}%{\Delta} % Delta gras
+\newcommand{\HierBorS}[1]{\bSigma^0_{#1}} % hiérarchie de Borel, Sigma_n
+\newcommand{\HierBorP}[1]{\bPi^0_{#1}} % hiérarchie de Borel, Pi_n
+\newcommand{\HierBorD}[1]{\bDelta^0_{#1}} % hiérarchie de Borel, Delta_n
+\newcommand{\Gdel}{G_{\delta}} % G_delta
+\newcommand{\Fsig}{F_{\sigma}} % F_sigma
+
+%----- Théorie descriptive des ensembles -----%
+
+\newcommand{\Borel}{\mathcal{B}} % ensemble des boréliens d'un ensemble topologique
+\newcommand{\front}{\mathbin{\partial}} % frontière d'un ensemble
+\newcommand{\Cont}{\mathcal C^0} % classe des fonctions continues
+\newcommand{\varCan}{\alpha} % variable pour un élément du Cantor
+\newcommand{\varPaf}{P} % variable pour une partie parfaite
+
+%----- THEORIE DES ORDRES -----%
+
+\newcommand{\downcl}[1]{#1\mathbin{\downarrow}} % ensemble des éléments au-dessus
+\newcommand{\upcl}[1]{#1\mathbin{\uparrow}} % ensemble des éléments en-dessous
+
+%----- Treillis, algèbre de Heyting, algèbre de Boole -----%
+
+\newcommand{\opMt}{\bigwedge} % meet d'arité quelconque dans un treillis
+\newcommand{\opJn}{\bigvee} % join d'arité qualconque dans un treillis
+\newcommand{\opmt}{\wedge} % meet dans un treillis
+\newcommand{\opjn}{\vee} % join dans un treillis
+\newcommand{\opT}{\top} % top dans un treillis
+\newcommand{\opB}{\bot} % bot dans un treillis
+\newcommand{\opng}{\lnot} % complément dans un treillis
+\newcommand{\opimp}{\to} % pseudo-complément relatif dans une algèbre de Heyting
+\newcommand{\opXOR}{\oplus} % ou exclusif dans une algèbre de Boole
+\DeclareMathOperator{\At}{At} % ensemble des atomes d'une algèbre de Boole
+
+% Structures
+
+\newcommand{\varBB}{\mathcal{B}} % variable pour une algèbre de Boole B
+\newcommand{\varBH}{\mathcal{H}} % variable pour une algèbre de Heyting H
+
+% Exemples
+
+\newcommand{\LinTar}{\mathcal{L}} % algèbre de Lindenbaum
+\newcommand{\LinTarInt}{\LinTar_{\mathrm{i}}} % algèbre de Lindenbaum intuitionniste
+\DeclareMathOperator{\LTL}{LTL} % Linear Time Logic
+\DeclareMathOperator{\LML}{LML} % Linear Modal Logic
+\newcommand{\vara}{\mathds{1}} % symbole 1
+\newcommand{\varstr}{\alpha} % variable de suite infinie
+\newcommand{\semFOL}[1]{\llbracket#1\rrbracket}
+
+%----- Filtres et idéaux ------%
+
+\DeclareMathOperator{\Spec}{Spec} % spectre
+\newcommand{\ideal}{\mathfrak{I}} % ensemble des idéaux
+\newcommand{\filclose}[1]{\overline{#1}^{\varFil}} % filtre engendré par un ensemble
+\newcommand{\FilPrinc}[1]{\varFil_{#1}} % filtre principal
+\newcommand{\Frechet}{\varFil_{\mathrm{Frechet}}} % filtre de Fréchet
+
+% Variables
+
+\newcommand{\varFil}{\mathcal{F}} % variable de filtre F
+\newcommand{\varFilB}{\mathcal{H}} % variable de filtre H
+\newcommand{\varFilBB}{\mathcal{G}} % variable de filtre G
+\newcommand{\varUlF}{\mathcal{U}} % variable d'ultrafiltre U
+\newcommand{\varId}{\mathcal{I}} % variable d'idéal I
+\newcommand{\varIdB}{\mathcal{J}} % varible d'idéal J
+\newcommand{\varXX}{\mathcal{X}} % ensemble des filtres pour la preuve du lemme de l'ultrafiltre
+
+% Morphismes
+
+\newcommand{\pulba}[1]{#1^*} % tiré en arrière d'une fonction
+\newcommand{\upstrPP}[2]{#1^{\uparrow #2}} % décalage d'indice avec paramètre
+\newcommand{\upstrP}[1]{\upstrPP{#1}{1}} % décalage d'indice de 1
+\newcommand{\upstr}{\upstrP{\varstr}} % décalage d'indice de 1 sur varstr
+
+%----- TOPOLOGIE -----%
+
+%----- Topologie générale -----%
+
+\newcommand{\topo}{\Omega} % nom d'une topologie
+\newcommand{\topoP}[1]{\topo_{#1}} % nom d'une topologie sur un ensemble
+\DeclareMathOperator{\Cylind}{Cylind} % cylindre d'une partie dans un produit
+\newcommand{\cylin}[1]{\llbracket #1\rrbracket} % cylindre en une partie
+\newcommand{\vois}{\mathcal{V}} % ensemble des voisinages
+\newcommand{\voisP}[1]{\vois_{#1}} % ensemble des voisinages d'un points
+\newcommand{\varBase}{\mathcal B} % variable pour une base d'une topologie
+\newcommand{\varRecouv}{\mathcal R} % variable pour un recouvrement
+\newcommand{\inter}[1]{\overset{\circ}{#1}} % intérieur d'une partie
+\DeclareMathOperator{\Adh}{Adh} % ensemble des valeurs d'adhérences
+\newcommand{\adher}[1]{\overline{#1}^{\mathrm c}} % adhérence d'une partie
+\newcommand{\varARec}{\mathcal S} % variable pour une famille ayant l'intersection finie
+\newcommand{\Comp}[1]{\mathrm{K}#1} % ensemble des compacts d'une topologie
+\newcommand{\varCK}{K} % variable pour un compact
+\newcommand{\CompA}[1]{\tilde{#1}} % compactifié d'Alexandrov
+\newcommand{\fillim}{\lim^{\varFil}} % limite au sens d'un filtre
+
+% Variables
+
+\newcommand{\varOp}{U} % variable pour un ouvert
+\newcommand{\varOpB}{O} % variable alternative pour un ouvert
+\newcommand{\varCl}{C} % variable pour un fermé
+\newcommand{\varVV}{V} % variable pour un voisinage
+\newcommand{\varVW}{W} % variable alternative pour un voisinage
+
+%----- Topologie métrique -----%
+
+
+\newcommand{\boule}[2]{B_{#2}(#1)} % boule dans un espace métrique
+\newcommand{\clB}{\overline{B}} % boule fermée
+\newcommand{\bouleF}[2]{\clB_{#2}(#1)} % boule fermée dans un espace métrique
+\newcommand{\varextr}{\varphi} % variable pour une extractrice
+\newcommand{\LebNb}{\rho} % nombre de Lebesgue
+\newcommand{\compl}[1]{\hat{#1}} % complété d'un espace
+
+% Variables
+
+\newcommand{\vardis}{d} % variable pour une distance
+\newcommand{\discdis}{d_{\mathrm{discrete}}} % distance discrète
+\newcommand{\compld}{\compl{\vardis}} % distance sur un complété
+\newcommand{\vareps}{\varepsilon} % variable epsilon
+\newcommand{\vardel}{\delta} % variable delta
+
+%----- Dualité de Stone -----%
+
+\DeclareMathOperator{\ext}{ext} % extension d'un élément dans le spectre
+\newcommand{\isoSt}{\varphi} % isomorphisme de Stone
+
+%----- THEORIE DES LANGAGES -----%
+
+%----- Langages formels -----%
+
+\newcommand{\ABA}{\Sigma} % alphabet A
+\newcommand{\ABB}{\Gamma} % alphabet B
+\newcommand{\ABD}{\Delta} % alphabet Delta
+\newcommand{\ABT}{\Theta} % alphabet Theta
+\newcommand{\Ewd}{\varepsilon} % mot vide
+\newcommand{\wdPt}{\mathbin{\star}} % ajout d'une lettre en queue du mot
+\newcommand{\varOpe}{\mathbin{\diamond}} % variable pour une opération
+\DeclareMathOperator{\stab}{stable} % stabilité d'un langage
+\newcommand{\lQuot}[2]{#1^{-1}#2} % quotient gauche
+\newcommand{\wdl}[1]{\left|#1\right|} % longueur d'un mot
+
+% Variables
+
+\newcommand{\toStA}{\toSt{\ABA}} % ensemble des mots sur l'alphabet A
+\newcommand{\toStB}{\toSt{\ABB}} % ensemble des mots sur l'alphabet B
+\newcommand{\toStAP}[1]{\toSt{(\ABA_{#1})}} % ensemble des mots sur A_qqch
+\newcommand{\toStBP}[1]{\toSt{(\ABB_{#1})}} % ensemble des mots sur B_qqch
+\newcommand{\toStAB}{\toSt{(\ABA\cup\ABB)}} % ensemble des mots sur l'alphabet A U B
+\newcommand{\varwd}{u} % variable pour un mot u
+\newcommand{\varwv}{v} % variable pour un mot v
+\newcommand{\varww}{w} % variable pour un mot w
+\newcommand{\varwx}{x} % variable pour un mot x
+\newcommand{\varwy}{y} % variable pour un mot y
+\newcommand{\varwz}{z} % variable pour un mot z
+\newcommand{\varla}{\alpha} % variable pour une lettre a
+\newcommand{\varlb}{\beta} % variable pour une lettre b
+\newcommand{\varlc}{\gamma} % variable pour une lettre c
+\newcommand{\varld}{\delta} % variable pour une lettre d
+\newcommand{\wul}{\wdl{\varwd}} % longueur du mot u
+\newcommand{\wvl}{\wdl{\varwv}} % longueur du mot v
+\newcommand{\varLL}{\mathcal L} % variable pour un langage L
+\newcommand{\varLLB}{\mathcal L'} % variable pour un langage L'
+\newcommand{\luLq}{\lQuot{\varwd}{\varLL}} % quotient gauche de u sur L
+\newcommand{\luLP}[1]{\lQuot{#1}{\varLL}} % quotient gauche sur L
+
+% Exemples
+
+\DeclareMathOperator{\palindrome}{palindrome} % langage des palindromes
+\newcommand{\mirL}[1]{\overline{#1}} % miroire d'un langage
+
+%----- Automates -----%
+
+\DeclareMathOperator{\Regex}{Regex} % ensemble des expressions régulières
+\DeclareMathOperator{\Ratio}{Ratio} % ensemble des langages rationnels
+\DeclareMathOperator{\Reco}{Reco} % ensemble des langages reconnaissables
+\DeclareMathOperator{\auto}{Auto} % ensemble des automates
+\newcommand{\autoP}[1]{\auto(#1)} % ensemble des automates
+\newcommand{\trAP}[1]{\delta_{#1}} % fonction de transition pour un automate
+\newcommand{\trA}{\trAP{}} % fonction de transition
+\newcommand{\trASP}[1]{\trAP{#1}^{\star}} % fonction de transition étendue pour un automate
+\newcommand{\trAS}{\trASP{}} % fonction de transition étendue
+\newcommand{\varQP}[1]{Q_{#1}} % variable pour un ensemble d'états
+\newcommand{\varQQ}{\varQP{}} % ensemble des états
+\newcommand{\varqP}[1]{q_{#1}} % variable pour un état
+\newcommand{\varq}{\varqP{}} % variable pour un état quelconque
+\newcommand{\varqZ}{\varqP{0}} % variable pour un état initial
+\newcommand{\varAFP}[1]{F_{#1}} % variable pour l'ensemble des états terminaux à paramètre
+\newcommand{\varAF}{\varAFP{}} % variable pour un ensemble d'états terminaux
+\newcommand{\AuUn}[2]{#1\mathbin{\sqcup}#2} % automate union
+\newcommand{\nEwd}{\not\Ewd} % suppression des epsilon-transitions
+
+% Variables
+
+\newcommand{\varAuA}{\mathcal{A}} % variable pour un automate A
+\newcommand{\varAuP}[1]{\varAuA_{#1}} % variable pour un automate avec un nom
+\newcommand{\varAuB}{\mathcal{A}'} % variable pour un automate A'
+\newcommand{\trAA}{\trAP{\varAuA}} % fonction de transition pour l'automate A
+\newcommand{\trAB}{\trAP{\varAuB}} % fonction de transition pour l'automate A'
+\newcommand{\trAAS}{\trASP{\varAuA}} % fonction de transition étendue pour A
+\newcommand{\trABS}{\trASP{\varAuB}} % fonction de transition étendue pour A'
+\newcommand{\varQA}{\varQP{\varAuA}} % variable pour l'ensemble d'états d'un automate A
+\newcommand{\varQB}{\varQP{\varAuB}} % ensemble des états d'un automate A'
+\newcommand{\varQZ}{\varQP{0}} % ensemble des états initiaux
+\newcommand{\varqAZ}{\varqP{\varAuA,0}} % variable pour l'état initial de A
+\newcommand{\varAAF}{\varAFP{\varAuA}} % variable pour l'ensemble des états terminaux de A
+\newcommand{\varABF}{\varAFP{\varAuB}} % variable pour l'ensemble des états terminaux de A'
+\newcommand{\UnAuB}{\AuUn{\varAuA}{\varAuB}} % automate A union A'
+
+%----- Grammaires hors contexte -----%
+
+\DeclareMathOperator{\alg}{alg} % classe des langages algébriques
+\DeclareMathOperator{\Gram}{Gram} % classe des grammaires
+\newcommand{\StGrA}{S} % symbole de départ S
+\newcommand{\StGrP}[1]{\StGrA_{0,#1}} % non terminal de départ dans une grammaire
+\newcommand{\StGr}{\StGrA_{0}} % non terminal de départ dans une grammaire
+\newcommand{\varGG}{G} % variable pour une grammaire G
+\newcommand{\nTA}{A} % non terminal A
+\newcommand{\nTB}{B} % non terminal B
+\newcommand{\nTC}{C} % non terminal C
+\newcommand{\nTE}{E} % non terminal E
+\DeclareMathOperator{\bis}{bis} % variable bis pour simuler les symboles de fond de pile
+
+% Algorithme d'Earley
+
+\newcommand{\EaIt}[4]{(#1\to #2\bullet #3,#4)} % item d'Earley
+\newcommand{\EaItSt}{\EaIt{\nTA}{\varwv}{\varww}{i}} % item d'Earley standard
+
+% Exemples
+
+\DeclareMathOperator{\MultExp}{MultiplicativeExpr} % expression multiplicative
+\DeclareMathOperator{\Not}{Not}
+\DeclareMathOperator{\Dem}{Dem}
+\DeclareMathOperator{\Imp}{Imp}
+\DeclareMathOperator{\Disj}{Disj}
+\DeclareMathOperator{\Conj}{Conj}
+\DeclareMathOperator{\Subst}{Subst}
+
+%----- CALCULABILITE -----%
+
+%----- Arithmétique -----%
+
+\DeclareMathOperator{\pair}{pair} % prédicat sur un entier pour qu'il soit pair
+\DeclareMathOperator{\double}{double} % fonction doublant un entier
+\DeclareMathOperator{\demi}{demi} % fonction divisant un entier par deux
+\DeclareMathOperator{\Ss}{S} % fonction successeur
+\newcommand{\encode}[1]{\underline{#1}} % encodage des entiers standards
+
+\newcommand{\ProofPA}{\ProofP{\ArithPeano}} % ensemble des preuves dans l'arithmétique
+\DeclareMathOperator{\PTO}{PTO} % ordinal de preuve d'une théorie
+
+% Hiérarchie arithmétique
+
+\newcommand{\HierArithS}[1]{\Sigma^0_{#1}} % hiérarchie arithmétique, classe Sigma_n
+\newcommand{\HierArithP}[1]{\Pi^0_{#1}} % hiérarchie arithmétique, classe Pi_n
+\newcommand{\HierArithD}[1]{\Delta^0_{#1}} % hiérarchie arithmétique, classe Delta_n
+\newcommand{\ISigma}{\mathrm{I}{\HierArithS 1}} % schéma d'induction restreint aux énoncés Sigma_1
+\newcommand{\ArithISigma}{\ArithPeano_{\HierArithS 1}} % arithmétique de Peano avec induction Sigma_1
+
+%----- Fonctions récursives -----%
+
+\DeclareMathOperator{\RecP}{RP} % fonctions récursives primitives
+\DeclareMathOperator{\Rec}{Rec} % fonctions récursives
+\DeclareMathOperator{\RPG}{RPG} % fonctions récursives primitives généralisées
+\DeclareMathOperator{\RecG}{RecG} % fonctions récursives généralisées
+\DeclareMathOperator{\TM}{TM} % machines de Turing
+\DeclareMathOperator{\Calc}{Calc} % fonctions calculables
+\DeclareMathOperator{\rec}{rec} % récurrence
+\DeclareMathOperator{\ifrm}{if} % if
+\DeclareMathOperator{\thenrm}{then} % then
+\DeclareMathOperator{\elserm}{else} % else
+\newcommand{\diagRR}{\mathrel{\triangle}} % relation diagonale
+\newcommand{\muC}{\mathbin{\mu}} % fonction de minimisation pour la calculabilité
+\newcommand{\muB}{\mathbin{\mu_{\mathrm{B}}}} % fonction de minimisation bornée
+\newcommand{\codRPG}[2]{\godcod{#1}^{#2}} % codage RPG canonique
+
+% Machines de Turing
+
+\newcommand{\blS}{\square} % symbole blanc
+\newcommand{\lTr}{\lhd} % transition vers la gauche
+\newcommand{\rTr}{\rhd} % transition vers la droite
+\newcommand{\toInf}{\blS^{\infty}} % ajout du mot blanc infiniment
+\newcommand{\opTM}{\mathbin{\cdot}} % action d'une TM sur une config
+\DeclareMathOperator{\Config}{Config} % ensemble des configurations sur une TM
+\newcommand{\KlT}{{\normalfont\texttt{T}}} % prédicat T de Kleene
+\newcommand{\KlU}{{\normalfont\texttt{U}}} % prédicat U de Kleene
+\DeclareMathOperator{\rmCode}{code} % fonction de codage
+\newcommand{\separS}{\mathbin{\#}} % symbole de séparation pour les codes
+
+% Variables
+
+\newcommand{\varTMM}{\mathcal{M}} % variable pour une machine de Turing M
+\newcommand{\TComp}{\mathrm{C}} % ruban de comptage C
+\newcommand{\TCC}{\mathrm{CC}} % ruban de copie CC
+\newcommand{\TMem}{\mathrm{Mem}} % ruban de mémoire Mem
+\newcommand{\TAR}{\mathrm{AR}} % ruban d'appel récursif AR
+\newcommand{\UnTM}{\mathcal{U}} % machine de Turing universelle U
+\newcommand{\UnTMP}[1]{\UnTM_{#1}} % machine universelle U à paramètre
+
+%----- Elements de calculabilité -----%
+
+\DeclareMathOperator{\Enum}{\Phi} % Enumération des fonctions calculables
+\newcommand{\manyOne}{\leq_{\mathrm{m}}} % réduction many-one
+\newcommand{\manyOneS}{<_{\mathrm{m}}} % réduction many-one stricte
+\newcommand{\oneOne}{\leq_{1}} % réduction one-one
+\newcommand{\manyEq}{\equiv_{\mathrm{m}}} % équivalence many-one
+\newcommand{\ManyDegrees}{\mathscr{D}_{\mathrm{m}}} % degrés many-one
+\newcommand{\TuringDeg}{\mathscr{D}} % degrés Turing
+\newcommand{\TuringRed}{\leq_{\mathrm{T}}} % réduction Turing
+\newcommand{\TuringRedS}{<_{\mathrm{T}}} % réduction Turing stricte
+\newcommand{\TuringEq}{\equiv_{\mathrm{T}}} % Turing-équivalence
+\newcommand{\Smn}[2]{\mathrm{s}_{#1}^{#2}} % fonction Smn
+\newcommand{\SmnB}[2]{\sigma_{#1}^{#2}} % fonction Smn bis
+\newcommand{\EnumP}[2]{\Enum_{#1}^{#2}} % Enumération
+\newcommand{\EnumE}{\EnumP{e}{}} % Enumération en e
+\newcommand{\EnumEK}{\EnumP{e}{k}} % Enumération en e à k argument
+\newcommand{\EnumEX}{\EnumP{e}{\varPt}} % Enumération en e à oracle pour A
+\newcommand{\EnumB}{\Psi} % Enumeration bis
+\newcommand{\EnumBP}[2]{\EnumB_{#1}^{#2}} % Enumération à paramètre bis
+\newcommand{\TiP}[2]{#1[#2]} % calcul en un temps
+\newcommand{\Tit}[1]{\TiP{#1}{t}} % calcul en un temps t
+\newcommand{\KH}{K} % problème de l'arrêt
+\DeclareMathOperator{\HALT}{HALT} % problème de l'arrêt
+\newcommand{\KHP}[1]{\KH^{#1}} % problème de l'arrêt relativisé
+\newcommand{\domCal}{W} % domaine de définition d'une fonction calculable
+\newcommand{\domCP}[1]{\domCal_{#1}} % domaine de définition à paramètre
+\DeclareMathOperator{\PPoly}{P} % classe des problèmes polynomiaux
+\DeclareMathOperator{\NPoly}{NP} % classe des problèmes polynomiaux non déterministes
+
+% Variables
+
+\newcommand{\degD}{\mathfrak{d}} % variable pour un degré
+
+%----- Théorèmes d'incomplétude -----%
+
+\newcommand{\godcod}[1]{\ulcorner#1\urcorner} % codage de Gödel
+\newcommand{\DemBisT}[1]{\Dem'_{#1}} % prédicat de démonstration alternatif de Rosser
+\newcommand{\godB}{\beta} % fonction beta de Gödel
+\newcommand{\TarV}{\mathrm{V}} % prédicat de vérité de Tarski
+\newcommand{\godG}{G} % formule G de Gödel
+\DeclareMathOperator{\toTrad}{Trad} % traduction
+\newcommand{\tradFP}{\Psi} % prédicat Psi pour une traduction
+
+%----- THEORIE DE LA DEMONSTRATION -----%
+
+%----- Formalismes de preuves -----%
+
+\DeclareMathOperator{\LK}{LK} % calcul des séquents classique
+\DeclareMathOperator{\LJ}{LJ} % calcul des séquents intuitionniste
+\DeclareMathOperator{\LS}{LS} % calcul des séquents générique
+\DeclareMathOperator{\LL}{LL} % logique linéaire
+\DeclareMathOperator{\NK}{NK} % déduction naturelle classique
+\DeclareMathOperator{\NJ}{NJ} % déduction naturelle intuitionniste
+
+%----- Logique intuitionniste -----%
+
+\newcommand{\RaaP}[1]{\RRaa_{#1}} % règle double negation shift à paramètre
+\newcommand{\RaaA}{\RaaP{\varTokA}} % dans le cas de la marque alpha
+\newcommand{\tradGG}[1]{#1^{\mathrm{N}}} % traduction de Gödel-Gentzen
+
+\newcommand{\LCutP}[1]{\reecr{\mathrm{L}^{\mathord{#1}}}} % coupure logique à paramètre
+\newcommand{\LCut}{\LCutP{}} % coupure logique
+\newcommand{\CCutP}[2]{\reecr{\mathrm{C}^{\mathord{#1}}_{\mathord{#2}}}} % coupure commutative à paramètres
+\newcommand{\CCut}{\CCutP{}{}} % coupure commutative
+\newcommand{\BCutP}[1]{\reecr{\bot^{\mathord{#1}}}} % coupure bot à paramètre
+\newcommand{\BCut}{\BCutP{}} % coupure bot
+
+%----- Logique modale -----%
+
+\newcommand{\modDia}{\mathbin{\diamond}} % modalité carreau
+\newcommand{\modSq}{\mathbin{\square}} % modalité carré
+\DeclareMathOperator{\AxN}{N} % axiome N
+\DeclareMathOperator{\AxK}{K} % axiome K
+\DeclareMathOperator{\AxT}{T} % axiom T
+\newcommand{\modNext}{\mathbin{\bigcirc}} % modalité "prochain"
+\newcommand{\modU}{\mathbin{\textbf{U}}} % modalité "jusqu'à"
+\newcommand{\modR}{\mathbin{\textbf{R}}} % modalité R
+\newcommand{\LogM}{\mathrm{S}4} % logique modale S4
+
+%----- Calcul des séquents -----%
+
+\newcommand{\indIff}{\xLeftrightarrow{\textit{ind.hyp.}}} % hypothèse d'induction
+\newcommand{\interIff}{\xLeftrightarrow{\text{?}}} % <=> hypothétique
+
+% Typologie des règles
+
+\newcommand{\rOne}{\raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {1}}}} % cas 1 dans la typologie des règles
+\newcommand{\rTwo}{\raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {2}}}} % cas 2 dans la typologie des règles
+\newcommand{\rTwoB}{\raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {2'}}}} % cas 2' dans la typologie des règles
+\newcommand{\reecr}[1]{\mathrel{\overset{#1}{\scalebox{1.5}{$\rightsquigarrow$}}}} % règle de réécriture d'arbres
+\newcommand{\tradNJ}[1]{\llbracket #1 \rrbracket} % traduction des séquents de LJ dans les arbres de NJ
+\newcommand{\Sigl}{\Sigma^{\mathrm{l}}} % typologie, Sigmal
+\newcommand{\Sigr}{\Sigma^{\mathrm{r}}} % typologie Sigmar
+\newcommand{\GFl}{\Phi^{\mathrm{l}}} % typologie, Phil
+\newcommand{\GFr}{\Phi^{\mathrm{r}}} % typologie, Phir
+
+% Réécriture de preuves
+
+\newcommand{\lQuant}{\rml{\mathord{\quantif}}} % quantification gauche
+\newcommand{\rQuant}{\rmr{\mathord{\quantif}}} % quantification droite
+\newcommand{\Rexch}{\mathrm{exch}} % échange
+\DeclareMathOperator{\logR}{log} % réduction logique
+\newcommand{\logNot}{\logR\mathord{\lnot}} % réduction logique non
+\newcommand{\logOr}{\logR\mathord{\lor}} % réduction logique ou
+\newcommand{\logWi}{\logR\mathord{\with}} % réduction logique with
+\newcommand{\logAnd}{\logR\mathord{\land}} % réduction logique et
+\newcommand{\logPar}{\logR\mathord{\parr}} % réduction logique par
+\newcommand{\logImp}{\logR\mathord{\to}} % réduction logique implique
+\newcommand{\logLoli}{\logR\mathord{\multimap}} % réduction logique loli
+\newcommand{\logFora}{\logR\mathord{\forall}} % réduction logique pour tout
+\newcommand{\logEx}{\logR\mathord{\exists}} % réduction logique existe
+\newcommand{\logSq}{\logR\mathord{\modSq}} % réduction logique carré
+\newcommand{\logDia}{\logR\mathord{\modDia}} % réduction logique carreau
+\newcommand{\logEq}{\logR\mathord{=}} % réduction logique égal
+
+%----- Sémantique de Kripke -----%
+
+\newcommand{\strucS}{\mathcal{S}} % ensemble de structures S
+\newcommand{\varMK}{\mathcal{K}} % modèle de Kripke K
+\newcommand{\toK}[2]{\toMP{#1}{\varMK_{#2}}} % interprétation dans un modèle K
+\newcommand{\toKw}[1]{\toK{#1}{w}} % interprétation dans w
+\newcommand{\varOW}{\mathcal{W}} % ensemble ordonné W
+\newcommand{\forc}{\Vdash} % relation de forcing
+\newcommand{\nforc}{\nVdash} % négation du forcing
+
+%----- Extension par définition -----%
+
+\newcommand{\symbRF}{\symbR_{\varFF}} % symbole de relation R lié à phi
+\newcommand{\symbFF}{\symbF_{\varFF}} % symbole de fonction f lié à phi
+\newcommand{\minRF}[1]{{#1}^{-\symbRF}} % suppression du R lié à phi
+\newcommand{\minRFP}{\minRF{\varFP}} % suppression de R dans psi
+\newcommand{\minFF}[1]{{#1}^{-\symbFF}} % suppression du f lié à phi
+\newcommand{\minFFP}{\minFF{\varFP}} % suppression de f dans psi
+\newcommand{\memMinT}[1]{\mathcal V_{#1}} % ensemble des associations à garder en mémoire
+
+%----- LAMBDA-CALCUL -----%
+
+%----- Lambda-calcul non typé -----%
+
+\newcommand{\lamSet}{\Lambda} % ensemble des lambda-termes
+\newcommand{\lamVar}{\Var_{\lambda}} % ensemble des lambda-variables
+
+% Réductions
+
+\newcommand{\bred}{\mathrel{\rhd_{\beta}}} % relation de beta-réduction
+\newcommand{\bered}{\mathrel{\rhd_{\beta\eta}}} % relation d'eta-beta-réduction
+\newcommand{\Sred}{\mathrel{\rtClot{\rhd_{\beta\mathrm{s}}}}} % relation de réduction suivant une stratégie s
+\newcommand{\Lred}{\mathrel{\rhd_{\beta\mathrm{l}}}} % relation de réduction à gauche
+\newcommand{\GaEq}{=_{\alpha}} % alpha_équivalence
+\newcommand{\Beq}{=_{\beta}} % beta-égalité
+\newcommand{\BEeq}{=_{\beta\eta}} % beta-eta-égalité
+\newcommand{\redPar}{\mathrel{\rhd_{\mathord{\beta}\mathord{||}}}} % réduction parallèle
+\newcommand{\Hred}{\mathrel{\rhd_{\beta\mathrm{h}}}} % réduction de tête
+\newcommand{\Ired}{\mathrel{\rhd_{\beta\mathrm{i}}}} % réduction interne
+\newcommand{\WHred}{\mathrel{\rhd_{\mathrm{wh}}}} % réduction faible de tête
+\newcommand{\IredPar}{\mathrel{\rhd_{\beta\mathrm{i}{\mathord{||}}}}} % réduction parallèle interne
+\newcommand{\HredPar}{\rhd_{\beta\mathrm{h}\mathord{||}}} % réduction parallèle de tête
+\newcommand{\lift}[3]{\mathop{\uparrow_{#2}^{#3}}#1} % relèvement d'un terme
+\newcommand{\eqZ}{\mathrm{eq}_0} % égalité à 0
+\newcommand{\hnf}{\lamSet_{\mathrm{hnf}}} % ensemble des formes normales de tête
+
+% Termes
+
+\newcommand{\Ltom}{\omega} % lambda-terme pour construire Omega
+\newcommand{\LtOm}{\Omega} % lambda-terme Omega
+\newcommand{\Lty}{\mathrm{y}} % lambda-terme pour construire Y
+\newcommand{\LtY}{\mathrm{Y}} % lambda-terme Y
+\newcommand{\Ltt}{\theta} % lambda-terme pour construire Theta
+\newcommand{\LtT}{\Theta} % lambda-terme Theta
+\newcommand{\LtU}{\mathrm{U}} % lambda-terme simulant une machine universelle
+\newcommand{\LtF}[1]{\mathrm{F}_{#1}} % lambda-terme de pt fixe
+\newcommand{\LtFt}{\LtF{t}} % lambda-terme de pt fixe en t
+\newcommand{\Ltd}{\delta} % lambda-terme diagonal pour le pt fixe
+
+%----- Lambda-calcul typé -----%
+
+% Types
+
+\DeclareMathOperator{\tyT}{Types} % ensemble des types
+\newcommand{\TyB}{\kappa} % ensemble des types de base
+\newcommand{\varTypBa}{\iota} % variable pour un type de base
+\newcommand{\tySTLC}{\tyT_{\mathrm{STLC}}} % ensemble des types de STLC
+\newcommand{\tyST}{\tyT_{\mathrm{T}}} % ensemble des types de système T
+\newcommand{\intT}{{\normalfont\texttt{int}}} % type des entiers
+\newcommand{\unitT}{{\normalfont\texttt{Unit}}} % type Unit
+\newcommand{\emptyT}{{\normalfont\texttt{Empty}}} % type Empty
+\newcommand{\OptionT}{{\normalfont\texttt{Option}}} % type Option
+
+% Variables de types
+
+\newcommand{\varTypA}{T} % variable pour un type A
+\newcommand{\varTypB}{U} % variable pour un type B
+\newcommand{\varTypC}{V} % variable pour un type C
+
+% Termes
+
+\newcommand{\STLCSet}{\Lambda_{\mathrm{STLC}}} % ensemble des termes de STLC
+\newcommand{\STSet}{\Lambda_{\mathrm{T}}} % ensemble des termes de système T
+\newcommand{\deltaSTLC}[5]{\delta\;#1\;\left\{\coprojP{1} #2\mapsto #3
+  \;\middle\vert\; \coprojP{2} #4\mapsto #5\right\}} % eliminateur du type somme
+\newcommand{\dBSTLC}[1]{\delta_{\bot}\;#1\;\{\}} % éliminateur du type Empty
+
+% Règles de typage
+
+\newcommand{\tyR}{\mathrel{\vdash}} % relation de typage
+\newcommand{\RVar}{\mathrm{var}} % règle de typage de variable
+\newcommand{\RApp}{\mathrm{app}} % règle de typage d'application
+\newcommand{\RAbs}{\mathrm{abs}} % règle de typage d'abstraction
+\newcommand{\RUn}{\unitT} % règle de typage du type Unit
+\newcommand{\REm}{\emptyT} % règle de typage du type Empty
+\newcommand{\RPair}{\mathrm{pair}} % règle de typage des paires
+\newcommand{\RProj}[1]{\mathrm{proj}_{#1}} % règle de typage des projections
+\newcommand{\RProji}{\RProj{i}} % règle de typage de la projection i
+\newcommand{\RInj}[1]{\mathrm{coproj}_{#1}} % règle de typage des coprojections
+\newcommand{\RInji}{\RInj{i}} % règle de typage de la coprojection i
+\newcommand{\RCopair}{\mathrm{copair}} % règle de typage du copairing
+\newcommand{\RAbsFOL}{\mathrm{abs}_{\mathrm{FOL}}} % règle de typage de la généralisation (abstraction du premier ordre)
+\newcommand{\RAppFOL}{\mathrm{app}_{\mathrm{FOL}}} % règle de typage de l'instanciation (application du premier ordre)
+\newcommand{\RPairFOL}{\mathrm{pair}_{\mathrm{FOL}}} % règle de typage de l'existencielle (paire du premier ordre)
+\newcommand{\RMatch}{\mathrm{match}} % règle de typage du pattern matching (élimination de l'existentielle)
+\newcommand{\RRefl}{\refl} % règle de typage de la réflexivité
+\newcommand{\RTransp}{\transp} % règle de typage du transport
+\newcommand{\RZero}{\intT_{\mathord{0}}} % règle de typage de 0 : N
+\newcommand{\RSucc}{\intT_{\mathord{\Ss}}} % règle de typage de S t : N
+\newcommand{\Rrec}{\rec} % règle de typage de la récurrence
+\newcommand{\RnatIZ}{\bN_{\mathrm i}^0} % introduction de 0
+\newcommand{\RnatIS}{\bN_{\mathrm i}^{\Ss}} % introduction de S
+\newcommand{\RnatE}{\bN_{\mathrm e}} % élimination des entiers
+
+% Saturation
+
+\newcommand{\STLCred}{\rhd} % réduction des termes de STLC
+\newcommand{\STred}{\rhd_{\mathrm{T}}} % réduction dans système T
+\newcommand{\satur}{\mathcal{SAT}} % ensemble des parties saturées
+\newcommand{\Elim}{\mathrm{Elim}} % ensemble des contextes d'élimination
+\newcommand{\ElimSN}{\Elim_{\SN}} % ensemble des contextes d'élimination fortement normalisant
+\newcommand{\satSN}{\satur_{\SN}} % ensemble des ensembles saturés pour la preuve de SN
+\newcommand{\semT}[1]{\llbracket#1\rrbracket} % sémantique d'un type
+\newcommand{\satTO}{\to} % flèche dans SAT
+\newcommand{\satAND}{\times} % meet dans SAT
+\newcommand{\satOR}{+} % join dans SAT
+
+% Variable d'ensembles saturés
+
+\newcommand{\varSATA}{A} % variable pour un ensemble saturé A
+\newcommand{\varSATB}{B} % variable pour un ensemble saturé B
+\newcommand{\varSATC}{C} % variable pour un ensemble saturé C
+
+%----- Lambda-calcul de la logique du premier ordre -----%
+
+\newcommand{\tyFOL}{\tyT_{\mathrm{FOL}}} % ensemble des types du premier ordre
+\newcommand{\FOLSet}{\Lambda_{\mathrm{FOL}}} % ensemble des termes du lcFOL
+\newcommand{\blam}{\bm{\lambda}} % abstraction du premier ordre
+\newcommand{\letin}[4]{{\normalfont\texttt{let}}\;\langle #1,#2\rangle = #3\;{\normalfont\texttt{in}}\;#4} % constructeur let / in
+\DeclareMathOperator{\transp}{transport} % constructeur transport le long d'une égalité
+\newcommand{\FOLred}{\rhd_{\mathrm{FOL}}} % réduction FOL
+\newcommand{\vdFOL}{\vdash_{\mathrm{FOL}}} % typage FOL
+
+% Variables
+
+\newcommand{\bvarx}{\bm{x}} % variable du premier ordre x
+\newcommand{\bvary}{\bm{y}} % variable du premier ordre y
+\newcommand{\btermt}{\bm{t}} % terme du premier ordre t
+\newcommand{\btermu}{\bm{u}} % terme du premier ordre u
+
+%----- Réalisabilité -----%
+
+\newcommand{\real}{\Vdash} % relation de réalisabilité
+\newcommand{\toTyST}{\mathbb{T}} % type de système T associé à une formule
+
 
 %----- PROBLEMES ALGORITHMIQUES -----%
 
@@ -49,605 +1317,8 @@
 
 %----- FONCTIONS -----%
 
-\DeclareMathOperator{\id}{id} % fonction identité
-\newcommand{\idP}[1]{\id_{#1}} % fonction identité pour un ensemble donné
-\DeclareMathOperator{\im}{Im} % ensemble image d'une fonction
-\DeclareMathOperator{\dom}{Dom} % domaine d'une fonction
-\DeclareMathOperator{\fix}{fix} % ensemble des points fixes d'une fonction
-\DeclareMathOperator{\prefix}{prefix} % ensemble des pré-points fixes d'une fonction
-\DeclareMathOperator{\postfix}{postfix} % ensemble des post-points fixes d'une fonction
-\newcommand{\restrict}[1]{\left.#1\right\vert} % restriction d'une fonction
-\newcommand{\makeFun}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
-\newcommand{\makeFunPartial}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xrightharpoonup{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
-\newcommand{\makeFunBis}[7]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \end{array}}
-\newcommand{\makeFunTer}[9]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \longrightarrow & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7 \\ & & #8 & \longmapsto & #9\end{array}}
-\newcommand{\makeFunIso}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \overset{\cong}{\longrightarrow} & \displaystyle #3 \\ & & #4 & \longmapsto & #5\end{array}}
-\newcommand{\makeFunName}[3]{#1 : \displaystyle #2 \longrightarrow #3}
-\newcommand{\makeFunNamePartial}[3]{#1 : \displaystyle #2 \xrightharpoonup{\quad} #3}
-\newcommand{\makeFunBisPartial}[7]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xrightharpoonup{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \\ & & #6 & \longmapsto & #7\end{array}}
-\newcommand{\makeFunNameIso}[3]{#1 : \displaystyle #2 \overset{\cong}{\longrightarrow} #3}
-\DeclareMathOperator{\Supp}{Supp}
 \newcommand{\Set}[1]{\left\{#1\right\}}
 \newcommand{\suchthat}{\;\middle\vert\;}
-\newcommand{\indic}{\mathds{1}} % fonction indicatrice
-\newcommand{\indicP}[1]{\indic_{#1}} % fonction indcatrice de quelque chose
-\newcommand{\funGraph}[1]{\Gamma_{#1}}
-\newcommand{\proj}{\pi}
-\newcommand{\projP}[2]{\mathop{\proj_{#1}^{#2}}}
-\newcommand{\coprojP}[1]{\mathop{\kappa_{#1}}}
-\newcommand{\proji}{\projP{i}{}}
-\newcommand{\projj}{\projP{j}{}}
-\newcommand{\projiI}{\projP{i}{I}}
-\DeclareMathOperator{\argth}{argth}
-\DeclareMathOperator{\inj}{Inj}
-\DeclareMathOperator{\surj}{Surj}
-\DeclareMathOperator{\bij}{Bij}
-
-%----- PROPOSITIONS ET TERMES -----%
-
-\DeclareMathOperator{\Prop}{Prop} % ensemble des propositions
-\DeclareMathOperator{\Var}{Var} % ensemble des variables
-\DeclareMathOperator{\VL}{VL} % ensemble des variables libres
-\DeclareMathOperator{\VLie}{Vliees} % ensemble des variables liées
-\DeclareMathOperator{\Term}{Term} % ensemble des termes
-\newcommand{\TermCl}{\Term_{\mathrm{cl}}}
-\DeclareMathOperator{\Formula}{Form} % ensemble des formules
-\DeclareMathOperator{\Ctx}{Ctx} % ensemble des contextes logiques
-\newcommand{\Formqf}{\Formula_{\mathrm{qf}}} % ensembles des formules sans quantificateurs
-\newcommand{\FormMod}{\Formula_{\mathrm{mod}}} % ensemble des formules de la logique modale
-\DeclareMathOperator{\Atom}{Atom} % ensemble des atomes
-\newcommand{\vclose}[1]{\Th_{\vD}(#1)} % clôture par conséquence sémantique d'un ensemble de formules
-\newcommand{\vTclos}{\vclose{\varT}} % clôture par conséquence syntaxique de T
-\newcommand{\vdclose}[1]{\Th(#1)} % clôture par conséquence syntaxique d'un ensemble de formules
-\newcommand{\vdTclos}{\vdclose{\varT}}
-\newcommand{\hclose}[1]{\overline{#1}^{\mathrm H}} % clôture par ajout des témoins de Henkin d'une théorie
-
-\newcommand{\varFF}{\varphi} % variable de formule phi
-\newcommand{\varFP}{\psi} % variable de formule psi
-\newcommand{\varFC}{\chi} % variable de formule chi
-\newcommand{\varFX}{\xi} % variable de formule xi
-\newcommand{\varFT}{\theta} % variable de formule theta
-\newcommand{\varFA}{\alpha} % variable de formule alpha
-\newcommand{\varFD}{\delta} % variable de formule delta
-\newcommand{\varCG}{\Gamma} % variable de contexte Gamma
-\newcommand{\varCD}{\Delta} % variable de contexte Delta
-\newcommand{\varCT}{\Theta} % variable de contexte Theta
-\newcommand{\varCX}{\Xi} % variable de contexte Xi
-
-%----- SATISFACTION -----%
-
-\newcommand{\satisf}{\models}
-\newcommand{\vD}{\vDash}
-\newcommand{\nvD}{\nvDash}
-
-%----- OPERATEURS DE CLOTURE -----%
-
-\newcommand{\tClot}[1]{#1^{\mathord{+}}}
-\newcommand{\rtClot}[1]{#1^{\mathord{\star}}}
-\newcommand{\rClot}[1]{#1^{\mathord{=}}}
-\newcommand{\rtsClot}[1]{#1^{\mathord{\sim}}}
-\newcommand{\rtsClotB}[1]{\sim_{\mathord{#1}}}
-\newcommand{\sClot}[1]{#1^{\mathrm{sym}}}
-\newcommand{\sClotMin}[1]{#1^{\mathrm{sym}}_{\land}}
-\newcommand{\sClotMax}[1]{#1^{\mathrm{sym}}_{\lor}}
-
-%----- ENSEMBLES CLASSIQUES -----%
-
-\newcommand{\bN}{\mathbb N} % ensemble des entiers naturels
-\newcommand{\bZ}{\mathbb Z} % ensemble des entiers relatifs
-\newcommand{\bQ}{\mathbb Q} % ensemble des nombres rationnels
-\newcommand{\bR}{\mathbb R} % ensemble des nombres réels
-\newcommand{\bC}{\mathbb C} % ensemble des nombres complexes
-\newcommand{\bU}{\mathbb U} % cercle unité
-\newcommand{\bT}{\mathbb T} % tore
-\newcommand{\bV}{\mathbb V} % hiérarchie cumulative de Von Neumann
-\newcommand{\bL}{\mathbb L} % classe des constructibles de Gödel
-\newcommand{\bH}{\mathbb H} % classe des ensembles héréditaires
-\newcommand{\vide}{\varnothing} % ensemble vide
-\newcommand{\intervP}[2]{\{#1,\ldots,#2\}} % ensemble de type { x1, ..., xn }
-\newcommand{\intervInt}[1]{\intervP{0}{#1 - 1}} % ensemble de type { 0 ,..., n - 1}
-\newcommand{\intervIntB}[1]{\intervP{1}{#1}} % ensemble de type {1,...,n}
-\newcommand{\intB}{\{0,1\}}
-\newcommand{\intOO}[2]{\mathord{]\,#1,#2\,[}}
-\newcommand{\intOF}[2]{\mathord{]\,#1,#2\,]}}
-\newcommand{\intFO}[2]{\mathord{[\,#1,#2\,[}}
-\newcommand{\intFF}[2]{\mathord{[\,#1,#2\,]}}
-\newcommand{\vareps}{\varepsilon}
-\newcommand{\vardel}{\delta}
-\newcommand{\diffsym}{\mathbin{\triangle}}
-
-%----- OPERATIONS ENSEMBLISTES -----%
-
-\newcommand{\compr}[2]{\left\{ #1 \;\middle\vert\; #2 \right\}} % écriture d'un ensemble en compréhension
-\newcommand{\comprML}[2]{\left\{ #1 \right\vert \\ \left. #2 \right\}} % écriture d'un ensemble en compréhension sur plusieurs lignes
-\newcommand{\restr}[1]{\mathbin{\upharpoonright}_{#1}} % restriction d'une fonction à un domaine donné
-\newcommand{\diagcap}{\bigtriangleup} % intersection diagonale
-\newcommand{\quot}[2]{\mathord{#1}\mathbin{/}\mathord{#2}}
-\newcommand{\clas}[1]{\overline{#1}}
-
-%----- THÉORIE DES MODÈLES -----%
-
-\DeclareMathOperator{\Const}{Const} % ensemble des constantes
-\newcommand{\Cc}{\mathrm{c}} % symbole de constante
-\newcommand{\Ff}{\mathrm{f}} % symbole de fonction
-%\DeclareMathOperator{\Fun}{Fun} % ensemble des symboles de fonctions
-%\DeclareMathOperator{\Rel}{Rel} % ensemble des symboles de relation
-%\DeclareMathOperator{\ar}{ar} % arité d'un symbole
-\DeclareMathOperator{\Struct}{Struct} % classe des structures
-\DeclareMathOperator{\Model}{Mod}
-\newcommand{\varMP}[1]{\mathfrak{#1}} % variable quelconque pour un modèle
-\newcommand{\varMM}{\varMP{M}} % variable M pour un modèle
-\newcommand{\varMN}{\varMP{N}} % variable N pour un modèle
-\newcommand{\carM}[1]{\left\vert #1\right\vert} % ensemble "carrier" d'une structure
-\newcommand{\carMM}{\carM{\varMM}} % ensemble "carrier" de la structure M
-\newcommand{\carMN}{\carM{\varMN}} % ensemble "carrier" de la structure N
-\newcommand{\toMP}[2]{#1^{#2}} % interprétation des symboles dans une structure
-\newcommand{\toM}[1]{\toMP{#1}{\varMM}} % interprétation des symboles dans la structure M
-\newcommand{\toN}[1]{\toMP{#1}{\varMN}} % interprétation des symboles dans la structure N
-\newcommand{\toMFunP}[2]{\toMP{#1}{#2}_{\SigFun}} % interprétation des fonctions dans une structure
-\newcommand{\toMFunM}[1]{\toMFunP{#1}{\varMM}} % interprétation des fonctions dans une structure M
-\newcommand{\toMRelP}[2]{\toMP{#1}{#2}_{\SigRel}} % interprétation des relations dans une structure
-\newcommand{\toMRelM}[1]{\toMRelP{#1}{\varMM}} % interprétation des relations dans une structure M
-\newcommand{\Enviro}{\mathcal E} % ensemble des environnements
-\newcommand{\env}{\rho} % environnement d'interprétation dans une structure
-\newcommand{\envE}{\env'} % deuxième variable pour env
-\DeclareMathOperator{\Val}{Val} % valeur de vérité d'une formule dans un modèle
-\newcommand{\ValP}[1]{\Val_{#1}}
-\newcommand{\ValE}{\Val_{\env}} % valuation dans un environnement rho
-\newcommand{\ValEE}{\Val_{\envE}}
-\newcommand{\toMIP}[3]{\toMP{#1}{#2}_{#3}} % interprétation d'un terme dans une structure
-\newcommand{\toMMI}[1]{\toMIP{#1}{\varMM}{\env}} % interprétation d'un terme dans la structure M et l'environnement rho
-\newcommand{\satMP}[2]{#1,#2\satisf} % satisfaction dans un modèle et un environnement
-\newcommand{\nsatMP}[2]{#1,#2\not\satisf} % non satisfaction dans un modèle et un environnement
-\newcommand{\satMI}{\satMP{\varMM}{\env}} % satisfaction dans le modèle M et l'environnement rho
-\newcommand{\satMM}{\varMM\satisf} % satisfaction dans le modèle M
-\newcommand{\satMN}{\varMN\satisf} % satisfaction dans le modèle N
-\newcommand{\varMoM}{F} % morphisme de structure
-\newcommand{\varMoMB}{G} % autre variable pour un morphisme de structure
-
-%----- EGALITES -----%
-
-\newcommand{\defeq}{\triangleq} % égalité définitionnelle
-\newcommand{\inddefeq}{\Coloneq} % définition inductive, ::=
-
-%----- FILTRES -----%
-
-\DeclareMathOperator{\Spec}{Spec} % spectre
-\newcommand{\filclose}[1]{\overline{#1}^{\varFil}} % filtre engendré par un ensemble
-
-%----- CONSTRUCTION DE R -----%
-
-\newcommand{\Dedekind}{\mathfrak{D}} % ensemble des coupures de Dedking
-\newcommand{\subfil}{\subseteq_{\mathrm{fil}}} % partie filtrante
-\newcommand{\ideal}{\mathfrak{I}} % ensemble des idéaux
-
-%----- THÉORIE DES ENSEMBLES -----%
-
-\newcommand{\unZF}{\mathcal{U}} % univers ensembliste usuel
-\DeclareMathOperator{\ZFC}{ZFC} % théorie des ensembles ZFC
-\DeclareMathOperator{\ZF}{ZF} % théorie des ensembles ZF
-\DeclareMathOperator{\Zermelo}{Z} % théorie des ensembles de Zermelo
-\DeclareMathOperator{\AxC}{AC} % axiome du choix
-\DeclareMathOperator{\AxF}{AF} % axiome de fondation
-\DeclareMathOperator{\AxInf}{AInf} % axiome de l'infini
-\DeclareMathOperator{\AxExt}{AExt} % axiome d'extensionalité
-\DeclareMathOperator{\AxUn}{AUnion} % axiome de l'union
-\DeclareMathOperator{\AxPair}{APair} % axiome de la paire
-\DeclareMathOperator{\AxPow}{APart} % axiome de l'ensemble des parties
-\DeclareMathOperator{\AxRepl}{ARempl} % schéma d'axiomes de remplacement
-\DeclareMathOperator{\AxCompr}{ACompr} % schéma d'axiomes de compréhension
-\DeclareMathOperator{\HC}{HC} % hypothèse du continu
-\DeclareMathOperator{\HCG}{HCG} % hypothèse du continu généralisée
-\DeclareMathOperator{\Funct}{Funct} % ensemble des fonctions entre deux ensembles
-\DeclareMathOperator{\Tot}{Tot} % Prédicat de totalité
-\newcommand{\FunTot}{\Funct_{\Tot}}
-\DeclareMathOperator{\Hom}{Hom} % ensemble des homomorphismes entre deux structures
-\DeclareMathOperator{\trans}{trans} % transitivité
-\DeclareMathOperator{\trcl}{trcl} % clôture transitive d'un ensemble
-\DeclareMathOperator{\type}{type} % type d'un bon ordre
-\DeclareMathOperator{\cof}{cof} % cofinalité d'un ordinal
-\DeclareMathOperator{\Club}{Club} % ensemble des clubs d'un ordinal
-\DeclareMathOperator{\Lim}{Lim} % classe des ordinaux limites, ensemble des limites d'un ordinal
-\DeclareMathOperator{\rk}{rk} % rang
-\newcommand{\VeqL}{\bV = \bL} % axiome V = L
-\newcommand{\varCC}{\mathcal{C}} % variable pour une classe C
-\newcommand{\varCM}{\mathcal{M}} % variable pour une classe M
-\newcommand{\varCol}{\phi} % fonction d'effondrement de Mostovski
-
-%----- ORDINAUX -----%
-
-\DeclareMathOperator{\Card}{Card} % classe des cardinaux, fonction cardinal
-\DeclareMathOperator{\Ord}{Ord} % classe des ordinaux
-\DeclareMathOperator{\Clos}{Clos} % ensemble des points de clôture
-\newcommand{\varOa}{\alpha} % variable d'ordinal alpha
-\newcommand{\varOb}{\beta} % variable d'ordinal beta
-\newcommand{\varOc}{\gamma} % variable d'ordinal gamma
-\newcommand{\varOd}{\delta} % variable d'ordinal delta
-\newcommand{\varOe}{\varepsilon} % variable d'ordinal epsilon
-\newcommand{\varOl}{\lambda} % variable d'ordinal lambda
-\newcommand{\varOx}{\xi} % variable d'ordinal xi
-\newcommand{\varOz}{\zeta} % variable d'ordinal zeta
-\newcommand{\varOn}{\eta} % variable d'ordinal eta
-\newcommand{\Ow}{\omega} % ordinal omega
-\newcommand{\Oe}{\varOe_0} % ordinal epsilon0
-\newcommand{\varCk}{\kappa} % variable de cardinal kappa
-\newcommand{\varCCl}{\lambda} % variable de cardinal lambda
-\newcommand{\varCm}{\mu} % variable de cardinal mu
-\newcommand{\Ccont}{\mathfrak{c}} % cardinal du continu
-\DeclareMathOperator{\ind}{ind} % être inductif vis-à-vis d'une relation
-\newcommand{\subpo}{\preceq} % subpotence
-\newcommand{\subpoS}{\prec} % subpotence stricte
-\newcommand{\Cal}{\aleph} % hiérarchie cardinale aleph
-\newcommand{\Cbe}{\beth} % hiérarchie cardinale beth
-\newcommand{\SsC}[1]{#1^{+}} % cardinal successeur
-
-%----- LISTES -----%
-
-\DeclareMathOperator{\List}{List} % ensemble des listes sur un ensemble
-\DeclareMathOperator{\cons}{cons} % ajouter un élément en tête d'une liste
-\newcommand{\consP}[1]{\cons_{#1}}
-\newcommand{\Cons}{\mathbin{::}} % version opérateur de la fonction cons
-\DeclareMathOperator{\nil}{nil} % liste vide
-\newcommand{\Nil}{[\;]} % version opérateur de la constante nil
-\newcommand{\varlist}{\ell} % variable pour désigner une liste
-\newcommand{\ListLen}[1]{\left\vert#1\right\vert} % longueur d'une liste
-\newcommand{\prefOrd}{\preccurlyeq}
-
-%----- ARBRES -----%
-
-\DeclareMathOperator{\BinTree}{BinTree} % ensemble des arbres binaires
-\DeclareMathOperator{\node}{node} % noeud d'un arbre
-\newcommand{\WfTree}{\Tree_{\mathrm{wf}}}
-\DeclareMathOperator{\Tree}{Tree} % ensemble des arbres .-branchants
-%\DeclareMathOperator{\PreTree}{PreTree} % ensemble des pré-arbres
-\newcommand{\varTree}{T} % variable pour désigner un arbre
-\newcommand{\varPath}{\alpha} % variable pou désigner un chemin infini
-\newcommand{\inTreeP}[1]{\in_{#1}} % appartenance jusqu'à n dans T
-\newcommand{\inTreeInf}{\inTreeP{\infty}} % appartenance d'un chemin infini à T
-
-%----- THÉORIE DE LA DÉMONSTRATION -----%
-
-\DeclareMathOperator{\EDN}{EDN} % élimination de la double négation
-\DeclareMathOperator{\TE}{TE} % tiers exclu
-\DeclareMathOperator{\LK}{LK} % calcul des séquents classique
-\DeclareMathOperator{\LJ}{LJ} % calcul des séquents intuitionniste
-\DeclareMathOperator{\LS}{LS} % calcul des séquents générique
-\DeclareMathOperator{\LL}{LL} % logique linéaire
-\DeclareMathOperator{\NK}{NK} % déduction naturelle classique
-\DeclareMathOperator{\NJ}{NJ} % déduction naturelle intuitionniste
-\DeclareMathOperator{\hypo}{hypotheses}
-\newcommand{\concl}{\mathrel{\rhd}}
-\newcommand{\vd}{\vdash} % relation de prouvabilité
-\newcommand{\vdP}{\vd} % relation de prouvabilité pour les sytèmes des ch2 et 3
-\newcommand{\dvvd}{\mathrel{\mathord{\dashv}\mathord{\vdash}}} % équivalence prouvable
-\newcommand{\nvdP}{\nvdash}
-\newcommand{\vdLK}{\vdash_{\LK}} % relation de prouvabilité pour LK
-\newcommand{\dvvdLK}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LK}}}
-\newcommand{\vdLJ}{\vdash_{\LJ}} % relation de prouvabilité pour LJ
-\newcommand{\dvvdLJ}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LJ}}}
-\newcommand{\nvdLJ}{\nvdash_{\LJ}}
-\newcommand{\vdLS}{\vdash_{\LS}} % relation de prouvabilité pour LS
-\newcommand{\dvvdLS}{\mathrel{\mathord{\dashv}\mathord{\vdash}_{\LS}}}
-\newcommand{\vdNK}{\vdash_{\NK}} % relation de prouvabilité pour NK
-\newcommand{\vdNJ}{\vdash_{\NJ}} % relation de prouvabilité pour NJ
-\newcommand{\vdLL}{\vdash_{\LL}} % relation de prouvabilité pour LL
-\newcommand{\rOne}{\raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {1}}}}
-\newcommand{\rTwo}{\raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {2}}}}
-\newcommand{\rTwoB}{\raisebox{.5pt}{\textcircled{\raisebox{-.9pt} {2'}}}}
-\newcommand{\reecr}[1]{\mathrel{\overset{#1}{\scalebox{1.5}{$\rightsquigarrow$}}}}
-\newcommand{\quantif}{{\normalfont\texttt{Q}}}
-\newcommand{\ProofLK}{\ProofP{\LK}}
-\newcommand{\ProofLS}{\ProofP{\LS}}
-\newcommand{\ProofLJ}{\ProofP{\LJ}}
-\newcommand{\ProofNK}{\ProofP{\NK}}
-\newcommand{\ProofNJ}{\ProofP{\NJ}}
-\newcommand{\tradNJ}[1]{\llbracket #1 \rrbracket}
-\newcommand{\LKPA}{\LK_{\ArithPeano}}
-\newcommand{\vdPA}{\vdash_{\ArithPeano}}
-\newcommand{\ProofPA}{\ProofP{\ArithPeano}}
-\DeclareMathOperator{\HA}{HA} % arithmétique de Heyting
-
-
-%----- REGLES D'INFERENCE -----%
-
-\DeclareMathOperator{\rml}{l}
-\DeclareMathOperator{\rmr}{r}
-\DeclareMathOperator{\Rax}{ax}
-\DeclareMathOperator{\Rcut}{cut}
-\DeclareMathOperator{\Rle}{le}
-\DeclareMathOperator{\Rre}{re}
-\DeclareMathOperator{\Rlc}{lc}
-\DeclareMathOperator{\Rrc}{rc}
-\DeclareMathOperator{\Rlw}{lw}
-\DeclareMathOperator{\Rrw}{rw}
-\newcommand{\Rtop}{\top}
-\newcommand{\Rrtop}{\mathrm{r}\mathord{\Rtop}}
-\newcommand{\Rbot}{\bot}
-\newcommand{\Rlbot}{\mathrm{l}\mathord{\Rbot}}
-\newcommand{\Rlnot}{\mathrm{l}\mathord{\lnot}}
-\newcommand{\Rrnot}{\mathrm{r}\mathord{\lnot}}
-\newcommand{\Rlor}{\mathrm{l}\mathord{\lor}}
-\newcommand{\Rror}{\mathrm{r}\mathord{\lor}}
-\newcommand{\RrorG}{\Rror_{1}}
-\newcommand{\RrorD}{\Rror_{2}}
-\newcommand{\Rrori}{\Rror_{i}}
-\newcommand{\Rland}{\mathrm{l}\mathord{\land}}
-\newcommand{\RlandG}{\Rland_{1}}
-\newcommand{\RlandD}{\Rland_{2}}
-\newcommand{\Rlandi}{\Rland_{i}}
-\newcommand{\Rrand}{\mathrm{r}\mathord{\land}}
-\newcommand{\Rlto}{\mathrm{l}\mathord{\to}}
-\newcommand{\Rrto}{\mathrm{r}\mathord{\to}}
-\newcommand{\RrtoG}{\Rrto_{1}}
-\newcommand{\RrtoD}{\Rrto_{2}}
-\newcommand{\Rlfora}{\mathrm{l}\mathord{\forall}}
-\newcommand{\Rrfora}{\mathrm{r}\mathord{\forall}}
-\newcommand{\Rlex}{\mathrm{l}\mathord{\exists}}
-\newcommand{\Rrex}{\mathrm{r}\mathord{\exists}}
-\newcommand{\Rlsq}{\mathrm{l}\mathord{\modSq}}
-\newcommand{\Rrsq}{\mathrm{r}\mathord{\modSq}}
-\newcommand{\Rldia}{\mathrm{l}\mathord{\modDia}}
-\newcommand{\Rrdia}{\mathrm{r}\mathord{\modDia}}
-\newcommand{\Rleq}{\mathrm{l}{\mathord{=}}}
-\newcommand{\Rreq}{\mathrm{r}\mathord{=}}
-\newcommand{\Rlwi}{\mathrm{l}\mathord{\with}}
-\newcommand{\RlwiG}{\Rlwi_{1}}
-\newcommand{\RlwiD}{\Rlwi_{2}}
-\newcommand{\Rrwi}{\mathrm{r}\mathord{\with}}
-\newcommand{\Rlpar}{\mathrm{l}\mathord{\parr}}
-\newcommand{\Rrpar}{\mathrm{r}\mathord{\parr}}
-\newcommand{\Rlloli}{\mathrm{l}\mathord{\multimap}}
-\newcommand{\Rrloli}{\mathrm{r}\mathord{\multimap}}
-\newcommand{\RtopI}{\top}
-\newcommand{\RbotC}{\bot_{\mathrm{c}}}
-\newcommand{\RbotE}{\bot_{\mathrm{e}}}
-\newcommand{\Rg}{\mathrm{g}}
-\newcommand{\Rd}{\mathrm{d}}
-\newcommand{\RnotI}{\mathord{\lnot}_{\mathrm{i}}}
-\newcommand{\RnotIP}[1]{\mathord{\lnot}_{\mathrm{i},#1}}
-\newcommand{\RnotIA}{\RnotIP{\varTokA}}
-\newcommand{\RnotIB}{\RnotIP{\varTokB}}
-\newcommand{\RnotE}{\mathord{\lnot}_{\mathrm{e}}}
-\newcommand{\RorI}{\mathord{\lor}_{\mathrm{i}}}
-\newcommand{\RorIG}{\RorI^{1}}
-\newcommand{\RorID}{\RorI^{2}}
-\newcommand{\RorIi}{\RorI^{i}}
-\newcommand{\RorE}{\mathord{\lor}_{\mathrm{e}}}
-\newcommand{\RorEP}[1]{\mathord{\lor}_{\mathrm{e},#1}}
-\newcommand{\RorEA}{\RorEP{\varTokA}}
-\newcommand{\RorEB}{\RorEP{\varTokB}}
-\newcommand{\RandI}{\mathord{\land}_{\mathrm{i}}}
-\newcommand{\RandE}{\mathord{\land}_{\mathrm{e}}}
-\newcommand{\RandEG}{\RandE^{1}}
-\newcommand{\RandED}{\RandE^{2}}
-\newcommand{\RandEi}{\RandE^{i}}
-\newcommand{\RtoI}{\mathord{\to}_{\mathrm{i}}}
-\newcommand{\RtoIP}[1]{\mathord{\to}_{\mathrm{i},#1}}
-\newcommand{\RtoIA}{\RtoIP{\varTokA}}
-\newcommand{\RtoIB}{\RtoIP{\varTokB}}
-\newcommand{\RtoE}{\mathord{\to}_{\mathrm{e}}}
-\newcommand{\RforaI}{\mathord{\forall}_{\mathrm{i}}}
-\newcommand{\RforaE}{\mathord{\forall}_{\mathrm{e}}}
-\newcommand{\RexI}{\mathord{\exists}_{\mathrm{i}}}
-\newcommand{\RexE}{\mathord{\exists}_{\mathrm{e}}}
-\newcommand{\RexEP}[1]{\mathord{\exists}_{\mathrm{e},#1}}
-\newcommand{\RexEA}{\RexEP{\varTokA}}
-\newcommand{\RexEB}{\RexEP{\varTokB}}
-\newcommand{\ReqI}{\mathord{=}_{\mathrm{i}}}
-\newcommand{\ReqE}{\mathord{=}_{\mathrm{e}}}
-\newcommand{\iffS}{\mathrel{\leftrightarrow}} % ssi dans sa version syntaxique
-\newcommand{\RiffI}{\mathord{\iffS}_{\mathrm{i}}}
-\newcommand{\RiffE}{\mathord{\iffS}_{\mathrm{e}}}
-\newcommand{\RiffEG}{\RiffE^{1}}
-\newcommand{\RiffED}{\RiffE^{2}}
-\DeclareMathOperator{\RLEM}{LEM}
-
-\newcommand{\varTokA}{\alpha}
-\newcommand{\varTokB}{\beta}
-\newcommand{\varTokC}{\gamma}
-\newcommand{\varTokD}{\delta}
-
-%----- REALISABILITE -----%
-
-\newcommand{\real}{\Vdash}
-
-%----- ARS -----%
-
-\newcommand{\WN}{\mathcal{WN}}
-\newcommand{\SN}{\mathcal{SN}}
-
-%----- ORDRES -----%
-
-\renewcommand{\leq}{\leqslant}
-\renewcommand{\geq}{\geqslant}
-
-%----- LAMBDA CALCUL -----%
-
-\newcommand{\satur}{\mathcal{SAT}}
-\newcommand{\lamSet}{\Lambda}
-\newcommand{\lamVar}{\Var_{\lambda}}
-\newcommand{\bred}{\mathrel{\rhd_{\beta}}}
-\newcommand{\bered}{\mathrel{\rhd_{\beta\eta}}}
-\newcommand{\Sred}{\mathrel{\rtClot{\rhd_{\beta\mathrm{s}}}}}
-\newcommand{\Lred}{\mathrel{\rhd_{\beta\mathrm{l}}}}
-\newcommand{\Beq}{=_{\beta}}
-\newcommand{\BEeq}{=_{\beta\eta}}
-\newcommand{\redPar}{\mathrel{\rhd_{\mathord{\beta}\mathord{||}}}}
-\newcommand{\Hred}{\mathrel{\rhd_{\beta\mathrm{h}}}}
-\newcommand{\Ired}{\mathrel{\rhd_{\beta\mathrm{i}}}}
-\newcommand{\WHred}{\mathrel{\rhd_{\mathrm{wh}}}}
-\newcommand{\IredPar}{\mathrel{\rhd_{\beta\mathrm{i}{\mathord{||}}}}}
-\newcommand{\HredPar}{\rhd_{\beta\mathrm{h}\mathord{||}}}
-\newcommand{\lift}[3]{\mathop{\uparrow_{#2}^{#3}}#1}
-\newcommand{\eqZ}{\mathrm{eq}_0}
-\DeclareMathOperator{\HALT}{HALT}
-\newcommand{\hnf}{\lamSet_{\mathrm{hnf}}}
-\newcommand{\Elim}{\mathrm{Elim}}
-\newcommand{\ElimSN}{\Elim_{\SN}}
-\newcommand{\satSN}{\satur_{\SN}}
-
-%----- TYPES -----%
-
-\newcommand{\intT}{{\normalfont\texttt{int}}}
-\DeclareMathOperator{\tyT}{Types}
-\newcommand{\TyB}{\kappa} % ensemble des types de base
-\newcommand{\vdNJto}{\vdash_{\NJ_\to}}
-\newcommand{\STLCSet}{\Lambda_{\mathrm{STLC}}}
-\newcommand{\tySTLC}{\tyT_{\mathrm{STLC}}}
-\newcommand{\unitT}{{\normalfont\texttt{Unit}}}
-\newcommand{\emptyT}{{\normalfont\texttt{Empty}}}
-\newcommand{\deltaSTLC}[5]{\delta\;#1\;\left\{\coprojP{1} #2\mapsto #3
-  \;\middle\vert\; \coprojP{2} #4\mapsto #5\right\}}
-\newcommand{\dBSTLC}[1]{\delta_{\bot}\;#1\;\{\}}
-\newcommand{\STLCred}{\rhd}
-\newcommand{\FOLSet}{\Lambda_{\mathrm{FOL}}}
-\newcommand{\tyFOL}{\tyT_{\mathrm{FOL}}}
-\newcommand{\blam}{\bm{\lambda}}
-\newcommand{\bvarx}{\bm{x}}
-\newcommand{\bvary}{\bm{y}}
-\newcommand{\btermt}{\bm{t}}
-\newcommand{\btermu}{\bm{u}}
-\newcommand{\letin}[4]{{\normalfont\texttt{let}}\;\langle #1,#2\rangle = #3\;{\normalfont\texttt{in}}\;#4}
-\DeclareMathOperator{\refl}{refl}
-\DeclareMathOperator{\transp}{transport}
-\newcommand{\FOLred}{\rhd_{\mathrm{FOL}}}
-\newcommand{\vdFOL}{\vdash_{\mathrm{FOL}}}
-\newcommand{\OptionT}{{\normalfont\texttt{Option}}}
-\newcommand{\semT}[1]{\llbracket#1\rrbracket}
-\newcommand{\satTO}{\to}
-\newcommand{\satAND}{\times}
-\newcommand{\satOR}{+}
-
-%----- SYSTEM T -----%
-
-\newcommand{\tyST}{\tyT_{\mathrm{T}}}
-\newcommand{\STSet}{\Lambda_{\mathrm{T}}}
-\newcommand{\STred}{\rhd_{\mathrm{T}}}
-\newcommand{\toTyST}{\mathbb{T}}
-
-%----- LANGAGES RATIONNELS -----%
-
-\DeclareMathOperator{\Regex}{Regex} % ensemble des expressions régulières
-\DeclareMathOperator{\Ratio}{Ratio} % ensemble des langages rationnels
-\DeclareMathOperator{\Reco}{Reco} % ensemble des langages reconnaissables
-\DeclareMathOperator{\tr}{tr} % trace
-
-%----- ARITHMETIQUE -----%
-
-\DeclareMathOperator{\pair}{pair} % prédicat sur un entier pour qu'il soit pair
-\DeclareMathOperator{\double}{double} % fonction doublant un entier
-\DeclareMathOperator{\Ss}{S}
-\newcommand{\append}{\mathbin{\mathord{+}\!\mathord{+}}} % concaténation de listes
-
-%----- CALCULABILITÉ -----%
-
-\DeclareMathOperator{\Coher}{Coh} % cohérence d'une théorie
-\newcommand{\convcal}{\mathbin{\downarrow}} % calcul convergent
-\newcommand{\conveq}{\mathrel{\mathord{\convcal}\mathord{=}}} % convergence + égalité
-\newcommand{\convneq}{\mathrel{\mathord{\convcal}\mathord{\neq}}} % convergence + non égalité
-\newcommand{\divcal}{\mathbin{\uparrow}} % calcul divergent
-\newcommand{\calEq}{\approx} % égalité de fonctions partielles
-\newcommand{\raffin}{\precsim} % inclusion des graphes de fonctions partielles
-\newcommand{\ceil}[1]{\lceil#1\rceil}
-\newcommand{\btwo}{\bm{2}} % ensemble des booléens
-\newcommand{\godcod}[1]{\ulcorner#1\urcorner} % codage de Gödel
-\DeclareMathOperator{\MultExp}{MultiplicativeExpr} % expression multiplicative
-\DeclareMathOperator{\RecP}{RP} % fonctions récursives primitives
-\DeclareMathOperator{\Rec}{Rec} % fonctions récursives
-\DeclareMathOperator{\RPG}{RPG} % fonctions récursives primitives généralisées
-\DeclareMathOperator{\RecG}{RecG} % fonctions récursives généralisées
-\DeclareMathOperator{\sucs}{succ} % fonction successeur
-\DeclareMathOperator{\rec}{rec} % récurrence
-\DeclareMathOperator{\ifrm}{if} % si
-\DeclareMathOperator{\thenrm}{then} % then
-\DeclareMathOperator{\elserm}{else}
-\DeclareMathOperator{\km}{k} % k
-\DeclareMathOperator{\TM}{TM} % machines de Turing
-\DeclareMathOperator{\Calc}{Calc} % fonctions calculables
-\DeclareMathOperator{\Enum}{\Phi} % Enumération des fonctions calculables
-\newcommand{\manyOne}{\leq_{\mathrm{m}}}
-\newcommand{\manyOneS}{<_{\mathrm{m}}}
-\newcommand{\oneOne}{\leq_{1}}
-\newcommand{\manyEq}{\equiv_{\mathrm{m}}}
-\newcommand{\ManyDegrees}{\mathscr{D}_{\mathrm{m}}}
-\newcommand{\degD}{\mathfrak{d}}
-\newcommand{\TuringDeg}{\mathscr{D}}
-\newcommand{\TuringRed}{\leq_{\mathrm{T}}}
-\newcommand{\TuringRedS}{<_{\mathrm{T}}}
-\newcommand{\TuringEq}{\equiv_{\mathrm{T}}}
-
-%----- ARITHMETIQUE INCOMPLETUDE -----%
-
-\newcommand{\HierArithS}[1]{\Sigma^0_{#1}}
-\newcommand{\HierArithP}[1]{\Pi^0_{#1}}
-\newcommand{\HierArithD}[1]{\Delta^0_{#1}}
-\newcommand{\ISigma}{\mathrm{I}{\HierArithS 1}}
-\newcommand{\ArithISigma}{\ArithPeano_{\HierArithS 1}}
-\newcommand{\encode}[1]{\underline{#1}}
-\DeclareMathOperator{\Subst}{Subst}
-\DeclareMathOperator{\Not}{Not}
-\DeclareMathOperator{\Dem}{Dem}
-\DeclareMathOperator{\Imp}{Imp}
-\DeclareMathOperator{\Disj}{Disj}
-\DeclareMathOperator{\Conj}{Conj}
-\newcommand{\DemBisT}[1]{\Dem'_{#1}}
-\DeclareMathOperator{\Proof}{PT}
-\newcommand{\ProofP}[1]{\Proof_{#1}}
-\newcommand{\varPT}{\pi} % variable pour un arbre de preuve
-\DeclareMathOperator{\PTO}{PTO}
-
-%----- SIGNATURES DU PREMIER ORDRE -----%
-
-\newcommand{\SigFun}{\mathscr F}
-\newcommand{\SigRel}{\mathscr R}
-\newcommand{\aritFun}{\arite_{\SigFun}}
-\newcommand{\aritRel}{\arite_{\SigRel}}
-\newcommand{\Sign}{\Sigma}
-\newcommand{\SignP}[1]{\Sign_{#1}}
-\newcommand{\SignArith}{\SignP{\Arith}}
-\newcommand{\SignAb}{\SignP{\Ab}}
-\newcommand{\SignGrp}{\SignP{\Grp}}
-\newcommand{\SignRing}{\SignP{\Ring}}
-
-%----- THEORIES AXIOMATIQUES -----%
-
-\newcommand{\varT}{\mathscr T} % variable T pour une théorie
-\newcommand{\varTB}{\mathscr T'} % variable T' pour une autre théorie
-\DeclareMathOperator{\Theory}{Theorie} % ensemble des théories sur une signature
-\DeclareMathOperator{\Th}{Th} % ensemble des théorèmes d'une théorie
-\newcommand{\DemT}[1]{\Dem_{#1}} % être le code d'une preuve d'un énoncé dans une théorie
-\newcommand{\ThT}[1]{\Th_{#1}} % être démontrable dans une théorie
-\newcommand{\ArithRobin}{\mathrm{Q}} % théorie de l'arithmétique de Robinson
-\newcommand{\ArithPeano}{\mathrm{PA}} % théorie de l'arithmétique de Peano
-\newcommand{\TAb}{\varT_{\Ab}} % théorie des groupes abéliens
-\newcommand{\TGrp}{\varT_{\Grp}} % théorie des groupes
-\newcommand{\TRing}{\varT_{\Ring}} % théorie des anneaux
-
-%----- TOPOLOGIE -----%
-
-\DeclareMathOperator{\Cylind}{Cylind} % cylindre d'une partie dans un produit
-\DeclareMathOperator{\ext}{ext} % extension d'un élément dans le spectre
-\DeclareMathOperator{\Adh}{Adh} % ensemble des valeurs d'adhérences
-\newcommand{\inter}[1]{\overset{\circ}{#1}} % intérieur d'une partie
-\newcommand{\adher}[1]{\overline{#1}^{\mathrm c}} % adhérence d'une partie
-\newcommand{\cylin}[1]{\llbracket #1\rrbracket} % cylindre en une partie
-\newcommand{\clB}{\overline{B}} % boule fermée
-\newcommand{\fillim}{\lim^{\varFil}} % limite au sens d'un filtre
-\newcommand{\topo}{\Omega}
-\newcommand{\topoP}[1]{\topo_{#1}}
-\newcommand{\varOp}{U}
-\newcommand{\varOpB}{O}
-\newcommand{\varCl}{C}
-\newcommand{\varVV}{V}
-\newcommand{\varVW}{W}
-\newcommand{\vois}{\mathcal{V}} % ensemble des voisinages d'un point
-\newcommand{\voisP}[1]{\vois_{#1}}
-\newcommand{\varBase}{\mathcal B}
-\newcommand{\varFam}{\mathcal A}
-\newcommand{\varRecouv}{\mathcal R}
-\newcommand{\varARec}{\mathcal S}
-\newcommand{\Comp}[1]{\mathrm{K}#1}
-\newcommand{\varCK}{K}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%
 %----- LaTeX HACKS -----%
@@ -713,499 +1384,3 @@
 	\makebox[\textwidth]{\parbox{1.3\textwidth}{\BODY}}
 }
 \NewEnviron{centerwideequation}{\[\makebox[\displaywidth]{$\displaystyle\BODY$}\]}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%----- NOTATIONS DANS LES CHAPITRES -----%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%----- ENSEMBLES INDUCTIFS -----%
-
-\newcommand{\varPt}{A}
-\newcommand{\varPtB}{B}
-\newcommand{\varPtC}{C}
-\newcommand{\arite}{\alpha}
-\newcommand{\ruleR}{\mathrm{r}}
-\newcommand{\reflR}{\refl}
-\newcommand{\transR}{\mathrm{trans}}
-\newcommand{\foraList}{\forall_{\List}}
-\DeclareMathOperator{\mapList}{map}
-\DeclareMathOperator{\filterList}{filter}
-\DeclareMathOperator{\Stream}{Stream}
-\DeclareMathOperator{\fromF}{from}
-\newcommand{\cosatisf}{\satisf^{\mathrm{co}}}
-\DeclareMathOperator{\ABR}{ABR}
-\DeclareMathOperator{\isABR}{isABR}
-\DeclareMathOperator{\lookup}{lookup}
-\DeclareMathOperator{\add}{add}
-\DeclareMathOperator{\remove}{remove}
-\DeclareMathOperator{\sort}{sort}
-
-%----- LOGIQUE PROPOSITIONNELLE -----%
-
-\newcommand{\PropSet}{\mathcal P}
-\newcommand{\vdAbs}{\vdP^{\maltese}}
-\DeclareMathOperator{\Symbol}{Symbol}
-\newcommand{\Sheffer}{\mathbin{\vert}}
-
-%----- CALCUL DES PREDICATS -----%
-
-\newcommand{\Arith}{\mathrm{Arith}}
-\newcommand{\Grp}{\mathrm{Grp}}
-\newcommand{\Ab}{\mathrm{Ab}}
-\newcommand{\Ring}{\mathrm{Ring}}
-\newcommand{\subSimul}{\sigma}
-\newcommand{\FormSet}{\mathcal F}
-\DeclareMathOperator{\assoc}{assoc}
-\DeclareMathOperator{\neut}{neutre}
-\DeclareMathOperator{\inv}{inv}
-\DeclareMathOperator{\comm}{comm}
-\DeclareMathOperator{\distrL}{distribL}
-\DeclareMathOperator{\distrR}{distribR}
-\newcommand{\symbR}{\mathrm{R}}
-\newcommand{\symbRF}{\symbR_{\varFF}}
-\newcommand{\symbF}{\mathrm{f}}
-\newcommand{\symbFF}{\symbF_{\varFF}}
-\newcommand{\minRF}[1]{{#1}^{-\symbRF}}
-\newcommand{\minRFP}{\minRF{\varFP}}
-\newcommand{\minFF}[1]{{#1}^{-\symbFF}}
-\newcommand{\minFFP}{\minFF{\varFP}}
-\newcommand{\quant}{\mathrm{Q}}
-\newcommand{\memMinT}[1]{\mathcal V_{#1}}
-\DeclareMathOperator{\Ineq}{Ineq}
-\newcommand{\IneqP}[1]{\Ineq_{#1}}
-\DeclareMathOperator{\poset}{poset}
-\DeclareMathOperator{\toset}{toset}
-\newcommand{\FormPren}{\Formula_{\mathrm{pren}}}
-\newcommand{\Requiv}{\mathrm{equiv}}
-\newcommand{\nbr}{\mathrm{nbr}}
-\newcommand{\cl}{\mathrm{cl}}
-
-%----- ENSEMBLES ORDONNES -----%
-
-\newcommand{\downcl}[1]{#1\mathbin{\downarrow}}
-\newcommand{\LinTar}{\mathcal{L}}
-\newcommand{\opMt}{\bigwedge}
-\newcommand{\opJn}{\bigvee}
-\newcommand{\opmt}{\wedge}
-\newcommand{\opjn}{\vee}
-\newcommand{\opT}{\top}
-\newcommand{\opB}{\bot}
-\newcommand{\opng}{\lnot}
-\newcommand{\opimp}{\to}
-\newcommand{\varBB}{\mathcal{B}}
-\newcommand{\varBH}{\mathcal{H}}
-\newcommand{\opXOR}{\oplus}
-\newcommand{\LinTarInt}{\LinTar_{\mathrm{i}}}
-\newcommand{\varFil}{\mathcal{F}}
-\newcommand{\varFilB}{\mathcal{H}}
-\newcommand{\varFilBB}{\mathcal{G}}
-\newcommand{\varUlF}{\mathcal{U}}
-\newcommand{\varId}{\mathcal{I}}
-\newcommand{\varIdB}{\mathcal{J}}
-\newcommand{\FilPrinc}[1]{\varFil_{#1}}
-\newcommand{\Frechet}{\varFil_{\mathrm{Frechet}}}
-\newcommand{\varXX}{\mathcal{X}}
-\newcommand{\pulba}[1]{#1^*}
-\newcommand{\kron}[2]{\delta_{#1,#2}}
-\DeclareMathOperator{\At}{At}
-\DeclareMathOperator{\LTL}{LTL}
-\DeclareMathOperator{\LML}{LML}
-\newcommand{\modNext}{\mathbin{\bigcirc}}
-\newcommand{\relev}[1]{\hat{#1}}
-\newcommand{\relevB}[1]{\widehat{#1}}
-\newcommand{\infWdP}[1]{{#1}^{\omega}}
-\newcommand{\infWd}{\infWdP{\intB}}
-\newcommand{\vara}{\mathds{1}}
-\newcommand{\varstr}{\alpha}
-\newcommand{\upstrPP}[2]{#1^{\uparrow #2}}
-\newcommand{\upstrP}[1]{\upstrPP{#1}{1}}
-\newcommand{\upstr}{\upstrP{\varstr}}
-\newcommand{\modU}{\mathbin{\textbf{U}}}
-\newcommand{\modR}{\mathbin{\textbf{R}}}
-\newcommand{\modDia}{\mathbin{\diamond}}
-\newcommand{\modSq}{\mathbin{\square}}
-\newcommand{\semFOL}[1]{\llbracket#1\rrbracket}
-
-%----- TOPOLOGIE -----%
-
-\newcommand{\isoSt}{\varphi}
-\newcommand{\vardis}{d}
-\newcommand{\boule}[2]{B_{#2}(#1)}
-\newcommand{\bouleF}[2]{\clB_{#2}(#1)}
-\newcommand{\discdis}{d_{\mathrm{discrete}}}
-\newcommand{\varextr}{\varphi}
-\newcommand{\LebNb}{\rho}
-\newcommand{\compl}[1]{\hat{#1}}
-\newcommand{\compld}{\compl{\vardis}}
-
-%----- AXIOMES ZFC -----%
-
-\newcommand{\varRR}{\mathrel{\mathcal{R}}}
-\newcommand{\Lcl}[2]{\mathord{#1}^{-1}[#2]}
-\newcommand{\LclR}[1]{\Lcl{\varRR}{#1}}
-\newcommand{\varCh}{C}
-\newcommand{\varGrP}[1]{\Gamma_{#1}}
-\newcommand{\varGr}{\varGr{}}
-\DeclareMathOperator{\App}{App}
-\newcommand{\varFunCl}{\theta}
-\newcommand{\varMon}{M}
-\newcommand{\varGrp}{G}
-\newcommand{\varAA}{A}
-
-%----- ORDINAUX -----%
-
-\DeclareMathOperator{\isN}{estZero}
-\DeclareMathOperator{\isS}{estSucc}
-\DeclareMathOperator{\isL}{estLimite}
-\newcommand{\takeDom}[1]{\varOa_{#1}}
-\newcommand{\tofin}{\to_{\mathrm{fin}}}
-\DeclareMathOperator{\HartT}{Hart}
-\newcommand{\Hart}[1]{\HartT(#1)}
-\newcommand{\upcl}[1]{#1\mathbin{\uparrow}}
-\newcommand{\Eij}[2]{E_{#1}^{#2}}
-
-%----- COMBINATOIRE ORDINALE -----%
-
-\newcommand{\varClub}{C} % variable pour un club C
-\newcommand{\varSt}{S} % variable pour un ensemble stationnaire S
-\newcommand{\varStT}{T} % variable pour un ensemble stationnaire T
-\newcommand{\UlM}[2]{X_{#1}^{#2}} % matrices d'Ulam
-\newcommand{\UlMa}[1]{\UlM{\varOa}{#1}}
-\newcommand{\UlMB}[2]{\varSt_{#1}^{#2}}
-\newcommand{\famY}{\mathcal{B}}
-
-%----- MODELES DE ZFC -----%
-
-\newcommand{\bVa}{\bV_{\varOa}} % ensemble V_alpha
-\newcommand{\bLa}{\bL_{\varOa}} % ensemble L_alpha
-\newcommand{\absol}[1]{\preccurlyeq_{#1}} % relation d'absoluité
-\newcommand{\absolF}{\absol{\varFF}}
-\newcommand{\HierLevS}[1]{\Sigma_{#1}^{\ZFC}} % Hiérarchie de Lévy, Sigma_n
-\newcommand{\HierLevP}[1]{\Pi_{#1}^{\ZFC}} % Hiérarchie de Lévy, Pi_n
-\newcommand{\HierLevD}[1]{\Delta_{#1}^{\ZFC}} % Hiérarchie de Lévy, Delta_n
-\newcommand{\DeltaZL}{\HierLevD{0}} % Hiérarchie de Lévy, Delta_0
-\newcommand{\varCW}{\mathcal{W}} % variable de classe W, pour le thm de réflexion
-\newcommand{\sCh}{\varepsilon} % symbole de choix global
-
-
-%----- THEORIE DESCRIPTIVE DES ENSEMBLES -----%
-
-\newcommand{\Borel}{\mathcal{B}} % ensemble des boérliens d'un ensemble topologique
-\newcommand{\HierBorS}[1]{\bSigma^0_{#1}}
-\newcommand{\HierBorP}[1]{\bPi^0_{#1}}
-\newcommand{\HierBorD}[1]{\bDelta^0_{#1}}
-\newcommand{\Gdel}{G_{\delta}}
-\newcommand{\Fsig}{F_{\sigma}}
-\newcommand{\front}{\mathbin{\partial}} % frontière d'un ensemble
-\newcommand{\CompA}[1]{\tilde{#1}} % compactifié d'Alexandrov
-\newcommand{\Cont}{\mathcal C^0} % classe des fonctions continues
-\newcommand{\varCan}{\alpha} % variable pour un élément du Cantor
-\newcommand{\varPaf}{P} % variable pour une partie parfaite
-
-% hiérarchie de Borel
-\newcommand{\bSigma}{\bm{\Sigma}}%{\Sigma}
-\newcommand{\bPi}{\bm{\Pi}}%{\Pi}
-\newcommand{\bDelta}{\bm{\Delta}}%{\Delta}
-
-%----- LANGAGES REGULIERS -----%
-
-\newcommand{\toSt}[1]{#1^{\star}} % ensemble des mots sur un ensemble
-\newcommand{\toStA}{\toSt{\ABA}} % ensemble des mots sur l'alphabet A
-\newcommand{\toStB}{\toSt{\ABB}}
-\newcommand{\toStAB}{\toSt{(\ABA\cup\ABB)}} % ensemble des mots sur l'alphabet A U B
-\newcommand{\wdPt}{\mathbin{\star}} % ajout d'une lettre en queue du mot
-\newcommand{\varwd}{u} % variable pour un mot u
-\newcommand{\varwv}{v} % variable pour un mot v
-\newcommand{\varww}{w} % variable pour un mot w
-\newcommand{\varwx}{x} % variable pour un mot x
-\newcommand{\varwy}{y} % variable pour un mot y
-\newcommand{\varwz}{z} % variable pour un mot z
-\newcommand{\varla}{\alpha} % variable pour une lettre a
-\newcommand{\varlb}{\beta} % variable pour une lettre b
-\newcommand{\varlc}{\gamma} % variable pour une lettre c
-\newcommand{\varld}{\delta} % variable pour une lettre d
-\newcommand{\Ewd}{\varepsilon} % mot vide
-\newcommand{\ABA}{\Sigma} % alphabet A
-\newcommand{\ABB}{\Gamma} % alphabet B
-\newcommand{\ABD}{\Delta} % alphabet Delta
-\newcommand{\ABT}{\Theta} % alphabet Theta
-\newcommand{\wdl}[1]{\left|#1\right|} % longueur d'un mot
-\newcommand{\wul}{\wdl{\varwd}} % longueur du mot u
-\newcommand{\wvl}{\wdl{\varwv}} % longueur du mot v
-\newcommand{\varLL}{\mathcal L} % variable pour un langage L
-\newcommand{\varLLB}{\mathcal L'} % variable pour un langage L'
-\newcommand{\varOpe}{\mathbin{\diamond}} % variable pour une opération
-\newcommand{\mirL}[1]{\overline{#1}} % miroire d'un langage
-\DeclareMathOperator{\stab}{stable} % stabilité d'un langage
-\newcommand{\varCR}{\mathcal{R}} % classe R
-\newcommand{\lQuot}[2]{#1^{-1}#2} % quotient gauche
-\newcommand{\luLq}{\lQuot{\varwd}{\varLL}}
-\newcommand{\luLP}[1]{\lQuot{#1}{\varLL}}
-
-% monoides
-
-\newcommand{\varMMo}{M} % variable pour un monoide M
-\newcommand{\varMNo}{N} % variable pour le monoide N
-\newcommand{\neuMP}[1]{e_{#1}} % neutre pour un monoide
-\newcommand{\neuMM}{e_{\varMMo}} % neutre pour le monoide M
-\newcommand{\neuMN}{e_{\varMNo}} % neutre pour le monoide N
-\newcommand{\opM}{\mathbin{\cdot}} % opération pour le monoide M
-\newcommand{\opN}{\mathbin{\diamond}} % opération pour le monoide N
-
-% automates
-
-\newcommand{\varAuA}{\mathcal{A}} % variable pour un automate A
-\newcommand{\varAuP}[1]{\varAuA_{#1}} % variable pour un automate avec un nom
-\newcommand{\varAuB}{\mathcal{A}'} % variable pour un automate A'
-\newcommand{\trAP}[1]{\delta_{#1}} % fonction de transition pour un automate
-\newcommand{\trA}{\trAP{}}
-\newcommand{\trAA}{\trAP{\varAuA}}
-\newcommand{\trAB}{\trAP{\varAuB}}
-\newcommand{\trASP}[1]{\trAP{#1}^{\star}} % fonction de transition étendue
-\newcommand{\trAS}{\trASP{}}
-\newcommand{\trAAS}{\trASP{\varAuA}} % fonction de transition étendue pour A
-\newcommand{\trABS}{\trASP{\varAuB}} % fonction de transition étendue pour A'
-\newcommand{\varQP}[1]{Q_{#1}} % variable pour un ensemble d'états
-\newcommand{\varQQ}{\varQP{}}
-\newcommand{\varQA}{\varQP{\varAuA}} % variable pour l'ensemble d'états d'un automate A
-\newcommand{\varQB}{\varQP{\varAuB}}
-\newcommand{\varQZ}{\varQP{0}}
-\newcommand{\varqP}[1]{q_{#1}} % variable pour un état
-\newcommand{\varq}{\varqP{}} % variable pour un état quelconque
-\newcommand{\varqAZ}{\varqP{\varAuA,0}} % variable pour l'état initial de A
-\newcommand{\varqZ}{\varqP{0}} % variable pour un état initial
-\newcommand{\varAFP}[1]{F_{#1}}
-\newcommand{\varAF}{\varAFP{}} % variable pour un ensemble d'états terminaux
-\newcommand{\varAAF}{\varAFP{\varAuA}}
-\newcommand{\varABF}{\varAFP{\varAuB}}
-\DeclareMathOperator{\auto}{Auto} % ensemble des automates
-\newcommand{\autoP}[1]{\auto(#1)}
-\newcommand{\AuUn}[2]{#1\mathbin{\sqcup}#2}
-\newcommand{\UnAuB}{\AuUn{\varAuA}{\varAuB}}
-\newcommand{\nEwd}{\not\Ewd}
-
-%----- LANGAGES ALGEBRIQUES -----%
-
-\newcommand{\StGrA}{S}
-\newcommand{\StGrP}[1]{\StGrA_{0,#1}} % non terminal de départ dans une grammaire
-\newcommand{\StGr}{\StGrA_{0}} % non terminal de départ dans une grammaire
-\newcommand{\varGG}{G} % variable pour une grammaire G
-\newcommand{\nTA}{A} % non terminal A
-\newcommand{\nTB}{B} % non terminal B
-\newcommand{\nTC}{C} % non terminal C
-\newcommand{\nTE}{E} % non terminal E
-\DeclareMathOperator{\alg}{alg}
-\DeclareMathOperator{\Gram}{Gram}
-\DeclareMathOperator{\palindrome}{palindrome}
-\DeclareMathOperator{\derTr}{DerivTree}
-\newcommand{\varSup}{\mathfrak{S}}
-\DeclareMathOperator{\bis}{bis}
-
-% bijections de Cantor
-
-\newcommand{\BijC}{\alpha} % bijection de Cantor
-\newcommand{\BijCP}[1]{\BijC_{#1}}
-\newcommand{\BijCB}{\BijCP{2}} % bijection de Cantor à deux arguments
-\newcommand{\BijCn}{\BijCP{n}} % bijection de Cantor à n arguments
-\newcommand{\BijCs}{\BijCP{\star}} % bijection de Cantor pour les listes
-
-
-%----- FONCTIONS RECURSIVES -----%
-
-\DeclareMathOperator{\csK}{k} % fonction constante
-\newcommand{\csKP}[2]{\csK_{#1}^{#2}}
-\newcommand{\csKZ}[1]{\csKP{0}{#1}}
-\newcommand{\csKE}{\csK_{\Ewd}}
-\DeclareMathOperator{\demi}{demi}
-\newcommand{\diagRR}{\mathrel{\triangle}} % relation diagonale
-\newcommand{\muC}{\mathbin{\mu}} % fonction de minimisation pour la calculabilité
-\newcommand{\muB}{\mathbin{\mu_{\mathrm{B}}}} % fonction de minimisation bornée
-\newcommand{\toStAP}[1]{\toSt{(\ABA_{#1})}}
-\newcommand{\toStBP}[1]{\toSt{(\ABB_{#1})}}
-\newcommand{\codRPG}[2]{\godcod{#1}^{#2}}
-
-\newcommand{\EaIt}[4]{(#1\to #2\bullet #3,#4)} % item d'Earley
-\newcommand{\EaItSt}{\EaIt{\nTA}{\varwv}{\varww}{i}}
-
-\newcommand{\varTMM}{\mathcal{M}} % variable pour une machine de Turing M
-\newcommand{\blS}{\square} % symbole blanc
-\newcommand{\lTr}{\lhd} % transition vers la gauche
-\newcommand{\rTr}{\rhd} % transition vers la droite
-\newcommand{\toInf}{\blS^{\infty}} % ajout du mot blanc infiniment
-\newcommand{\opTM}{\mathbin{\cdot}} % action d'une TM sur une config
-\DeclareMathOperator{\Config}{Config} % ensemble des configurations sur une TM
-\newcommand{\KlT}{{\normalfont\texttt{T}}} % prédicat T de Kleene
-\newcommand{\KlU}{{\normalfont\texttt{U}}} % prédicat U de Kleene
-\newcommand{\TComp}{\mathrm{C}} % ruban de comptage C
-\newcommand{\TCC}{\mathrm{CC}} % ruban de copie CC
-\newcommand{\TMem}{\mathrm{Mem}} % ruban de mémoire Mem
-\newcommand{\TAR}{\mathrm{AR}} % ruban d'appel récursif AR
-\DeclareMathOperator{\rmCode}{code}
-\newcommand{\separS}{\mathbin{\#}} % symbole de séparation pour les codes
-\newcommand{\UnTM}{\mathcal{U}} % machine de Turing universelle U
-\newcommand{\UnTMP}[1]{\UnTM_{#1}}
-
-%----- CALCULABILITE -----%
-
-\newcommand{\Smn}[2]{\mathrm{s}_{#1}^{#2}}
-\newcommand{\SmnB}[2]{\sigma_{#1}^{#2}}
-\newcommand{\EnumP}[2]{\Enum_{#1}^{#2}}
-\newcommand{\EnumE}{\EnumP{e}{}}
-\newcommand{\EnumEK}{\EnumP{e}{k}}
-\newcommand{\EnumEX}{\EnumP{e}{X}}
-\newcommand{\EnumB}{\Psi}
-\newcommand{\EnumBP}[2]{\EnumB_{#1}^{#2}}
-\newcommand{\TiP}[2]{#1[#2]} % calcul en un temps
-\newcommand{\Tit}[1]{\TiP{#1}{t}} % calcul en un temps t
-\newcommand{\KH}{K} % problème de l'arrêt
-\newcommand{\KHP}[1]{\KH^{#1}} % problème de l'arrêt relativisé
-\newcommand{\domCal}{W} % domaine de définition d'une fonction calculable
-\newcommand{\domCP}[1]{\domCal_{#1}}
-\DeclareMathOperator{\PPoly}{P}
-\DeclareMathOperator{\NPoly}{NP}
-
-%----- ARITHMATIQUE -----%
-
-\newcommand{\godB}{\beta} % fonction beta de Gödel
-\newcommand{\TarV}{\mathrm{V}} % prédicat de vérité de Tarski
-\newcommand{\godG}{G} % formule G de Gödel
-\newcommand{\tradFP}{\Psi} % prédicat Psi pour une traduction
-\DeclareMathOperator{\toTrad}{Trad} % traduction
-
-%----- CALCUL DES SEQUENTS -----%
-
-\DeclareMathOperator{\RComp}{comp}
-\DeclareMathOperator{\RAff}{aff}
-\DeclareMathOperator{\RRaa}{raa}
-\newcommand{\indIff}{\xLeftrightarrow{\textit{ind.hyp.}}}
-\newcommand{\interIff}{\xLeftrightarrow{\text{?}}}
-\newcommand{\Sigl}{\Sigma^{\mathrm{l}}}
-\newcommand{\Sigr}{\Sigma^{\mathrm{r}}}
-\newcommand{\GFl}{\Phi^{\mathrm{l}}}
-\newcommand{\GFr}{\Phi^{\mathrm{r}}}
-\newcommand{\lQuant}{\mathrm{l}{\mathord{\quantif}}}
-\newcommand{\rQuant}{\mathrm{r}{\mathord{\quantif}}}
-\newcommand{\Rexch}{\mathrm{exch}}
-\DeclareMathOperator{\logR}{log}
-\newcommand{\logNot}{\logR\mathord{\lnot}}
-\newcommand{\logOr}{\logR\mathord{\lor}}
-\newcommand{\logWi}{\logR\mathord{\with}}
-\newcommand{\logAnd}{\logR\mathord{\land}}
-\newcommand{\logPar}{\logR\mathord{\parr}}
-\newcommand{\logImp}{\logR\mathord{\to}}
-\newcommand{\logLoli}{\logR\mathord{\multimap}}
-\newcommand{\logFora}{\logR\mathord{\forall}}
-\newcommand{\logEx}{\logR\mathord{\exists}}
-\newcommand{\logSq}{\logR\mathord{\modSq}}
-\newcommand{\logDia}{\logR\mathord{\modDia}}
-\newcommand{\logEq}{\logR\mathord{=}}
-\DeclareMathOperator{\AxN}{N}
-\DeclareMathOperator{\AxK}{K}
-\DeclareMathOperator{\AxT}{T}
-\newcommand{\strucS}{\mathcal{S}} % ensemble de structures S
-\newcommand{\varMK}{\mathcal{K}} % modèle de Kripke K
-\newcommand{\toK}[2]{\toMP{#1}{\varMK_{#2}}}
-\newcommand{\toKw}[1]{\toK{#1}{w}}
-\newcommand{\varOW}{\mathcal{W}} % ensemble ordonné W
-\newcommand{\forc}{\Vdash} % relation de forcing
-\newcommand{\nforc}{\nVdash}
-\newcommand{\LogM}{\mathrm{S}4} % logique modale S4
-
-%----- REECRITURE -----%
-
-\DeclareMathOperator{\ARS}{ARS}
-\newcommand{\varTo}{\mathrel{\to}} % relation dans un ARS
-\newcommand{\varToTr}{\mathrel{\leftarrow}} % relation transposée
-\newcommand{\varToTTr}{\rtClot{\varToTr}}
-\newcommand{\toMax}[1]{#1^{\mathord{!}}}
-\newcommand{\varToMax}{\toMax{\varTo}} % réduction maximale vers une NF
-\newcommand{\nvarTo}{\mathrel{\nrightarrow}}
-\newcommand{\varToT}{\tClot{\varTo}} % relation ->+ dans un ARS
-\newcommand{\varToR}{\rClot{\varTo}} % relation ->= dans un ARS
-\newcommand{\varToRt}{\rtClot{\varTo}} % relation ->* dans un ARS
-\newcommand{\varToRst}{\rtsClotB{\varTo}} % relation ~_->
-\newcommand{\varToS}{\mathrel{\leftrightarrow}} % relation <->
-\DeclareMathOperator{\NF}{NF}
-\newcommand{\toCompt}[1]{#1^{\mathrm{comp}}} % clôture compatible
-\newcommand{\varToC}{\mathrel{\rhd}} % relation compatible
-\newcommand{\varToCRt}{\rtClot{\varToC}} % version * de la compatible
-%\newcommand{\varToCS}{\mathrel{\lhd\rhd}} % version symétrique de la compatible
-\newcommand{\varToCRst}{\mathrel{=_{\mathord{\varToC}}}} % version rel d'équiv de la compatible
-\newcommand{\varToCTr}{\mathrel{\lhd}}
-\newcommand{\varToCTTr}{\rtClot{\varToCTr}}
-\newcommand{\varEq}{\mathscr{E}} % théorie équationnelle E
-\DeclareMathOperator{\PrCrt}{PC} % ensemble des paires critiques
-\newcommand{\varPbU}{\mathcal{P}} % variable pour un pb d'unification
-
-%----- DEDUCTION NATURELLE -----%
-
-\newcommand{\ligneNJP}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\noLine\UnaryInf$\fCenter #1$\noLine}
-\newcommand{\ligneNJV}{\ligneNJP{\varPT}}
-\newcommand{\ligneNJPB}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\dashedLine\BinaryInf$\fCenter #1$\noLine}
-\newcommand{\ligneNJPT}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\dashedLine\TrinaryInf$\fCenter #1$\noLine}
-\newcommand{\ligneNJVT}{\ligneNJPT{\varPT}}
-\newcommand{\axNJP}[1]{\def\fCenter{\mbox{\Large$\vdots$}}\Axiom$\fCenter #1$\noLine}
-\newcommand{\axNJV}{\axNJP{\varPT}}
-\newcommand{\RaaP}[1]{\RRaa_{#1}}
-\newcommand{\RaaA}{\RaaP{\varTokA}}
-\newcommand{\tradGG}[1]{#1^{\mathrm{N}}}
-
-\newcommand{\LCutP}[1]{\reecr{\mathrm{L}^{\mathord{#1}}}}
-\newcommand{\LCut}{\LCutP{}}
-\newcommand{\CCutP}[2]{\reecr{\mathrm{C}^{\mathord{#1}}_{\mathord{#2}}}}
-\newcommand{\CCut}{\CCutP{}{}}
-\newcommand{\BCutP}[1]{\reecr{\bot^{\mathord{#1}}}}
-\newcommand{\BCut}{\BCutP{}}
-
-%----- LAMBDA CALCUL NON TYPE -----%
-
-\newcommand{\GaEq}{=_{\alpha}} % alpha_équivalence
-
-\newcommand{\Ltom}{\omega} % lambda-terme pour construire Omega
-\newcommand{\LtOm}{\Omega} % lambda-terme Omega
-\newcommand{\Lty}{\mathrm{y}}
-\newcommand{\LtY}{\mathrm{Y}}
-\newcommand{\Ltt}{\theta}
-\newcommand{\LtT}{\Theta}
-\newcommand{\LtU}{\mathrm{U}} % lambda-terme simulant une machine universelle
-\newcommand{\LtF}[1]{\mathrm{F}_{#1}} % lambda-terme de pt fixe
-\newcommand{\LtFt}{\LtF{t}}
-\newcommand{\Ltd}{\delta} % lambda-terme diagonal pour le pt fixe
-
-%----- LAMBDA CALCUL SIMPLEMENT TYPE -----%
-
-\newcommand{\varTypA}{T} % variable pour un type A
-\newcommand{\varTypB}{U} % variable pour un type B
-\newcommand{\varTypC}{V} % variable pour un type C
-\newcommand{\varTypBa}{\iota} % variable pour un type de base
-\newcommand{\tyR}{\mathrel{\vdash}} % relation de typage
-\newcommand{\RVar}{\mathrm{var}} % règle de typage de variable
-\newcommand{\RApp}{\mathrm{app}} % règle de typage d'application
-\newcommand{\RAbs}{\mathrm{abs}} % règle de typage d'abstraction
-\newcommand{\RUn}{\unitT}
-\newcommand{\REm}{\emptyT}
-\newcommand{\RPair}{\mathrm{pair}}
-\newcommand{\RProj}[1]{\mathrm{proj}_{#1}}
-\newcommand{\RProji}{\RProj{i}}
-\newcommand{\RInj}[1]{\mathrm{coproj}_{#1}}
-\newcommand{\RInji}{\RInj{i}}
-\newcommand{\RCopair}{\mathrm{copair}}
-\newcommand{\RAbsFOL}{\mathrm{abs}_{\mathrm{FOL}}}
-\newcommand{\RAppFOL}{\mathrm{app}_{\mathrm{FOL}}}
-\newcommand{\RPairFOL}{\mathrm{pair}_{\mathrm{FOL}}}
-\newcommand{\RMatch}{\mathrm{match}}
-\newcommand{\RRefl}{\refl}
-\newcommand{\RTransp}{\transp}
-\newcommand{\RZero}{\intT_{\mathord{0}}}
-\newcommand{\RSucc}{\intT_{\mathord{\Ss}}}
-\newcommand{\Rrec}{\rec}
-
-\newcommand{\varSATA}{A}
-\newcommand{\varSATB}{B}
-\newcommand{\varSATC}{C}
-
-%----- COHERENCE DE L'ARITHMETIQUE -----%
-
-\newcommand{\RnatIZ}{\bN_{\mathrm i}^0}
-\newcommand{\RnatIS}{\bN_{\mathrm i}^{\Ss}}
-\newcommand{\RnatE}{\bN_{\mathrm e}}
