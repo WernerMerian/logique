@@ -147,7 +147,7 @@ On donne aussi quelques opérations élémentaires sur les relations.
   On appelle composition de deux relations $\varRR,\varRR'$ sur $A$ la
   relation
   \[a\mathrel{(\mathord{\varRR}\circ\mathord{\varRR'})}c \defeq
-  \exists b \in A, a \varRR b \land b \varRR c\]
+  \exists b \in A, a \varRR b \land b \varRR' c\]
   On définit l'itérée d'une relation $\varRR$ par
   \[\begin{cases}
   \varRR^0 \defeq \compr{(a,a)}{a \in A}\\
@@ -561,9 +561,9 @@ assez naturel pour montrer des résultats de normalisation (forte comme faible).
 
 \begin{proposition}\label{prop.normalisation.wfFun}
   Soit $(A,\varTo)$ un $\ARS$. Soit $(X,\varRR)$ un ensemble muni d'une relation
-  bien fondée et $\makeFunName{f}{A}{X}$ une fonction. Si pour tous
-  $a,b \in A$ tels que $a\varTo b$, $f(a)\varRR f(b)$, alors $\varTo$ est
-  fortement normalisante. Si pour tout $a \in \NF\setminus A$ il existe
+  bien fondée (strictement) et $\makeFunName{f}{A}{X}$ une fonction. Si pour
+  tous $a,b \in A$ tels que $a\varTo b$, $f(a)\varRR f(b)$, alors $\varTo$ est
+  fortement normalisante. Si pour tout $a \in A\setminus \NF$ il existe
   $b \in A$ tel que $a\varTo b$ et $f(a)\varRR f(b)$ alors $\varTo$ est
   faiblement normalisante.
 \end{proposition}
@@ -858,14 +858,13 @@ normalisante~: en associant à chaque mot $\varwd$ la paire ordonnée
 lexicographiquement $(\wul_{\varlb},\wul_{\varla})$, chaque règle fait
 décroître strictement la paire.
 
-Cependant, la confluence locale n'est ici pas assurée. Les paires
-critiques $(\varla\varla,\varla\varla)$ et $(\varlb\varlb,\varlb\varlb)$
-se résolvent de façon évidente, mais la troisième paire critique,
-$\varlb\varla\varlb\varla\varlb$, donne deux mots incompatibles avec
-$\varla\varlb\varla\varla\varlb$ (qui peut se réduire uniquement en
-$\varla\varlb\varlb$) et $\varlb\varla\varla\varlb\varla$ (qui peut se
-réduire uniquement en $\varlb\varlb\varla$). Les deux dernières paires
-aussi sont impossible à résoudre en l'état.
+Dans le cas présent, la confluence locale est assurée. Cependant, on pourrait
+considérer le cas où la règle ne contient pas $\varlb\varlb\varTo \Ewd$. Dans
+un tel cas, la paire critique $\varlb\varla\varlb\varla\varlb$ donne deux mots
+incompatibles avec $\varla\varlb\varla\varla\varlb$ et
+$\varlb\varla\varla\varlb\varla$, puis $\varla\varlb\varlb$ et
+$\varlb\varlb\varla$. La confluence locale dépend ainsi du fait d'avoir
+suffisamment de règles.
 
 On introduit donc un algorithme permettant, pour une présentation de monoïde,
 de réécrire la relation $\varTo$ de sorte à obtenir une présentation
