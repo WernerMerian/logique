@@ -1,2 +1,1199 @@
 \chapter{Modèles de la logique du premier ordre}
 \label{chp.elem}
+
+\minitoc
+
+\lettrine{P}{our} commencer à aborder la théorie des modèles, on se propose de
+voir quelques outils incontournables de l'étude des modèles de la logique du
+premier ordre. Cette étude sera motivée par la caractérisation des classes
+élémentaires, c'est-à-dire des classes de structures qu'on peut décrire par
+une théorie du premier ordre.
+
+Pour établir cette caractérisation, on introduit d'abord la notion d'équivalence
+élémentaire. A FAIRE
+
+\section{Structures élémentairement équivalentes}
+
+\subsection{Premières définitions}
+
+Notre point de départ étant la notion de classe élémentaire, donnons-en une
+définition.
+
+\begin{definition}[Classe élémentaire]
+  Soit $\varCC$ une classe de structures sur une signature $\Sign$. On dit
+  que $\varCC$ est une classe élémentaire s'il existe une théorie
+  $\varT\in\Theory(\Sign)$ telle que
+  \[\varMM\in\varCC \iff \varMM\satisf\varT\]
+\end{definition}
+
+La premier propriété naturelle à considérer, à l'intérieur d'une classe
+élémentaire, est celle d'équivalence élémentaire. Celle-ci, déjà mentionnée au
+moment d'énoncer le \cref{thm.LS}, décrit le fait que deux structures vérifient
+les mêmes propositions. Cette notion est plus lâche que la relation
+d'isomorphisme, car (d'après le même théorème) on peut avoir des structures de
+cardinal différent qui sont néanmoins élémentairement équivalentes.
+
+\begin{definition}[\'Equivalence élémentaire]
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structures. On
+  définit le fait que $\varMM$ et $\varMN$ sont élémentairement équivalentes,
+  ce qu'on note $\varMM\equiv\varMN$, par
+  \[\varMM\equiv\varMN \defeq \forall \varFF\in\Prop(\Sign),
+  \varMM\satisf\varFF\iff\varMN\satisf\varFF\]
+\end{definition}
+
+\begin{remark}
+  Si on considère une classe élémentaire $\varCC$, que $\varMM \in \varCC$ et
+  que $\varMM\eltEq\varMN$, alors il est clair que $\varMN\in\varCC$.
+\end{remark}
+
+\begin{corollary}
+  Si $\varMM\iso\varMN$, alors $\varMM\eltEq\varMN$.
+\end{corollary}
+
+\begin{proof}
+  C'est une reformulation de la \cref{prop.isoEquivElt}.
+\end{proof}
+
+Le résultat suivant est relativement direct, mais essentiel pour comprendre
+comment exploiter et prouver des équivalences élémentaires.
+
+\begin{definition}[Théorie associée à un modèle]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit la
+  théorie
+  \[\Th(\varMM) \defeq \compr{\varFF \in \Prop(\Sign)}{\varMM\satisf\varFF}\]
+\end{definition}
+
+\begin{lemma}\label{lem.equivelt.th}
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structure. On a
+  l'équivalence
+  \[\varMM\eltEq\varMN \iff \varMN\satisf \Th(\varMM)\]
+\end{lemma}
+
+\begin{proof}
+  Si $\varMM$ et $\varMN$ sont élémentairement équivalentes, alors tout énoncé
+  vérifié par $\varMM$ l'est aussi par $\varMN$, d'où
+  $\varMN\satisf\Th(\varMM)$. Réciproquement, si $\varMN\satisf\Th(\varMM)$ et
+  $\varFF\in\Prop(\Sign)$, alors deux cas sont possibles~:
+  \begin{itemize}
+  \item si $\varMM\satisf\varFF$, alors $\varMN\satisf\varFF$ par équivalence
+    élémentaire~;
+  \item si $\varMM\nsatisf\varFF$, alors $\varMM\satisf\lnot\varFF$ donc
+    $\varMN\satisf\varFF$ par équivalence élémentaire, donc
+    $\varMN\nsatisf\varFF$.
+  \end{itemize}
+  Par contraposée du second cas, on en déduit que
+  $\varMM\satisf\varFF\iff\varMN\satisf\varFF$.
+\end{proof}
+
+Ainsi, la propriété \og être élémentairement équivalent à la structure
+$\varMM$\fg peut se définir comme la satisfaction d'une théorie. Ce fait,
+relativement simple à montrer, a pourtant de nombreuses conséquences qui seront
+explorées dans le prochain chapitre.
+
+Un cas particulier d'équivalence élémentaire est donné lorsqu'une structure peut
+être vue comme une partie d'une autre qui préserve tous les énonés. On parle
+alors de plongement élémentaire (on en profite pour rappeler la définition de
+plongement).
+
+\begin{definition}[Plongement, plongement élémentaire]
+  Soient $\varMM,\varMN$ deux structures sur la même signature. On appelle
+  plongement un morphisme $\makeFunName{\varMoM}{\varMM}{\varMN}$ tel que
+  pour tout symbole de relation $\symbR$, on a
+  \[\forall(m_1,\ldots,m_n)\in\carMM^n,
+  \toM{\symbR}(m_1,\ldots,m_n) \iff
+  \toN{\symbR}(\varMoM(m_1),\ldots,\varMoM(m_n))\]
+  Un plongement $\varMoM$ est dit élémentaire lorsque, de plus, on a
+  \[\forall \varFF\in\Formula_n(\Sign),\forall \vec m\in\varMM^n,
+  (\varMM,\vec m\satisf \varFF) \iff
+  (\varMN,\varMoM(\vec m)\satisf\varFF)\]
+  Si le plongement est l'inclusion canonique
+  \[\makeFun{\iota}{\varMM}{\varMN}{x}{x}\]
+  alors on dit que $\varMM$ est un sous-modèle (ou sous-structure) élémentaire
+  de $\varMN$, ce que l'on note $\varMM\subModElt\varMN$.
+\end{definition}
+
+\begin{remark}
+  Quitte à identifier une structure avec son image par un plongement
+  élémentaire, on peut considérer que tout plongement élémentaire est donné par
+  une sous-structure élémentaire.
+\end{remark}
+
+\begin{remark}
+  La notation de sous-structure élémentaire ressemble à celle d'absoluité pour
+  une formule (\latinexpr{c.f.} \cref{def.absoluite}). On peut considérer
+  l'absoluité comme le fait qu'on a une sous-structure qui préserve une
+  certaine classe de formules (voire une seule formule) au lieu de préserver
+  toutes les formules.
+\end{remark}
+
+\subsection{Formuler des équivalences élémentaires}
+
+Maintenant que la notion d'équivalence élémentaire a été introduite, on
+s'intéresse à la possibilité de prouver que des structures sont élémentairement
+équivalentes.
+
+Le premier outil, central en théorie des modèles, se concentre sur le cas où
+une structure est une sous-structure d'une autre.
+
+\begin{definition}[Sous-structure]
+  Soient $\varMM,\varMN$ deux structures sur la même signature $\Sign$. On dit
+  que $\varMM$ est une sous-structure de $\varMN$, ce qu'on note
+  $\varMM\subseteq\varMN$, lorsque
+  \begin{itemize}
+  \item $\carMM\subseteq\carMN$
+  \item pour tout symbole de fonction $\symbF$ d'arité $n$ et
+    $\vec m \in \carMM^n$, $\toM{\symbF}(\vec m) = \toN{\symbF}(\vec m)$
+  \item pour tout symbole de relation $\symbR$ d'arité $n$ et
+    $\vec m \in \carMM^n$, $\toM{\symbR}(\vec m) \iff \toN{\symbR}(\vec m)$.
+  \end{itemize}
+  On dit aussi, dans un tel cas, que $\varMN$ est une extension de
+  $\varMM$.
+\end{definition}
+
+\begin{remark}
+  Une structure $\varMM$ est une sous-structure d'une structure $\varMN$
+  exactement lorsque l'inclusion canonique est un plongement.
+\end{remark}
+
+On peut se demander quand une sous-structure est élémentaire, \latinexpr{i.e.}
+quand un plongement est en fait un plongement élémentaire. Un premier résultat
+important est le suivant.
+
+\begin{proposition}
+  Soient $\varMM\subseteq\varMN$ deux $\Sign$-structures. Alors pour toute
+  formule sans quantificateurs $\varFF\in\Formqf(\Sign)$ à $n$ variables libres
+  $\vec x$, on a l'équivalence
+  \[\forall \vec m \in \carMM^n, (\varMM,\vec m\satisf\varFF)\iff
+  (\varMN,\vec m\satisf\varFF)\]
+\end{proposition}
+
+\begin{proof}
+  La preuve se fait par induction. On sait que pour tout terme $t$, les deux
+  éléments $\toM{t}(\vec m)$ et $\toN{t}(\vec m)$ sont égaux (par définition
+  du fait d'être une sous-structure). De même, on sait que la propriété
+  est vérifiée pour les propositions atomiques par définition du fait d'être une
+  sous-structure. Il reste donc à vérifier les cas des connecteurs logiques,
+  qui sont automatiques en dépliant les définitions.
+\end{proof}
+
+Pour passer du cas sans quantificateur au cas général, on remarque qu'il suffit
+d'utiliser la mise sous forme prénexe (\cref{exo.prenexe}) pour en déduire le
+cas général. On cherche donc simplement une condition pour qu'une sous-structure
+conserve la vérité des quantifications. Cette condition s'exprime par le
+critère de Tarski-Vaught.
+
+\begin{theorem}[Critère de Tarski-Vaught \cite{Tarski1956-1958}]
+  Soient $\varMM\subseteq\varMN$ deux $\Sign$-structures. On suppose que pour
+  toute formule $\varFF\in\Formula(\Sign)$ à $n+1$ variables libres, on a
+  \[\forall \vec b \in \carMM^n,
+  (\varMN,\vec b \satisf \exists x,\varFF(x,\vec y))\implies
+  \exists a \in \carMM, (\varMN,(a,\vec b)\satisf \varFF(x,\vec y))\]
+  alors $\varMM$ est une sous-structure élémentaire de $\varMN$.
+\end{theorem}
+
+\begin{proof}
+  D'après ce qui a été dit plus tôt, on considère des formules sous forme
+  prénexe et on raisonne par induction sur le nombre de quantificateurs~: on
+  sait que toute formule sans quantificateur a la même valeur de vérité dans
+  $\varMM$ et dans $\varMN$. Soit maintenant $\varFF(x,\vec y)$ une formule à
+  paramètres et $\vec b$ un ensemble de paramètres dans $\carMM$. Montrons que
+  $\exists x,\varFF(\vec y)$ est vraie dans $\varMM$ si et seulement si elle est
+  vraie dans $\varMN$, avec les paramètres $\vec b$ déjà introduits~:
+  \begin{itemize}
+  \item[\fbox{$\Rightarrow$}] Supposons que $\exists x, \varFF(x,\vec y)$ est
+    vraie dans $\varMM$, alors par définition on trouve $a \in\carMM$ tel
+    que $\varMM,(a,\vec b)\satisf\varFF(x,\vec y)$, donc par hypothèse
+    d'induction $\varMN,(a,\vec b)\satisf\varFF(x,\vec y)$, donc
+    $\varMN,\vec b\satisf\exists x,\varFF(x,\vec y)$.
+  \item[\fbox{$\Leftarrow$}] Supposons que $\exists x,\varFF(x,\vec y)$ est
+    vraie dans $\varMN$, alors par hypothèse on trouve $a\in\carMM$ tel
+    que $\varMN,(a,\vec b)\satisf\varFF(x,\vec y)$, mais alors par hypothèse
+    d'induction $\varMM,(a,\vec b)\satisf\varFF(x,\vec y)$, donc
+    $\varMM,\vec b\satisf\exists x,\varFF(x,\vec y)$.
+  \end{itemize}
+  Cela traite le cas d'une quantification existentielle.
+
+  Dans le cas d'une quantification universelle, remarquons qu'on peut se
+  ramener à une quantification existentielle par une loi de De Morgan. Ainsi,
+  la formule $\forall x, \varFF$ peut se réécrire $\lnot(\exists x,\lnot\varFF)$
+  et, quitte à réécrire $\varFF$ sous forme prénexe, on peut appliquer le même
+  raisonnement pour montrer que
+  \[\varMM,\vec b\satisf \exists x,\lnot\varFF\iff
+  \varMN,\vec b\satisf\exists x,\lnot\varFF\]
+  d'où (par passage à la négation dans l'équivalence) le résultat attendu.
+\end{proof}
+
+\begin{remark}
+  La réciproque est vraie, mais celle-ci est directe.
+\end{remark}
+
+On a ainsi une façon de prouver qu'une sous-structure est élémentaire, et par
+extension qu'un plongement l'est (il suffit d'adapter le résultat à l'image
+du plongement).
+
+Introduisons maintenant une méthode permettant plus généralement de montrer que
+deux structures sont élémentairement équivalentes (sans pour autant avoir un
+plongement élémentaire de l'une dans l'autre), appelée la méthode du
+va-et-vient. Pour cela, on introduit d'abord la notion d'isomorphisme partiel.
+
+\begin{definition}[Isomorphisme partiel]
+  Soient $\varMM,\varMN$ deux $\Sign$-structures. On appelle isomorphisme
+  partiel de $\varMM$ vers $\varMN$ la donnée d'un triplet
+  $(\varMM_0,\varMN_0,\varMoM)$ où $\varMM_0\subseteq\varMM$,
+  $\varMN_0\subseteq\varMN$ et $\makeFunNameIso{\varMoM}{\varMM_0}{\varMN_0}$
+  est un isomorphisme de structures. \'Etant donnés deux isomorphismes
+  partiels $(\varMM_0,\varMN_0,\varMoM)$ et $(\varMM_1,\varMN_1,\varMoMB)$,
+  on dit que le second est une extension du premier lorsque
+  \begin{itemize}
+  \item $\varMM_0\subseteq\varMM_1$~;
+  \item $\varMN_0\subseteq\varMN_1$~;
+  \item $\varMoM$ et $\varMoMB$ coïncident en tant qu'isomorphismes entre
+    $\varMM_0$ et $\varMN_0$.
+  \end{itemize}
+  On note $\varMoM\subseteq\varMoMB$ lorsque $\varMoMB$ est une extension
+  de $\varMoM$ (et on confond un isomorphisme partiel avec le morphisme qui le
+  porte).
+\end{definition}
+
+Un isomorphisme partiel permet donc de relier étroitement des parties de deux
+structures. L'intérêt que nous portons aux isomorphismes partiels est dû au fait
+qu'on peut ensuite en construire des familles, nous donnant la méthode du
+va-et-vient.
+
+\begin{theorem}[Va-et-vient]
+  Soient $\varMM,\varMN$ deux $\Sign$-structures. Soit $\isoFam$ une famille
+  non vide d'isomorphismes partiels entre $\varMM$ et $\varMN$ vérifiant les
+  deux conditions suivantes~:
+  \begin{itemize}
+  \item pour tout isomorphisme partiel $\varMoM \in\isoFam$ et
+    tout élément $m\in\varMM$, il existe $\varMoMB\supseteq\varMoM$ tel que
+    $m\in\dom(\varMoMB)$~;
+  \item pour tout isomorphisme partiel $\varMoM\in\isoFam$ et
+    tout élément $n\in\varMM$, il existe $\varMoMB\supseteq\varMoM$ tel que
+    $n\in\im(\varMoMB)$.
+  \end{itemize}
+  Si une telle famille existe, alors $\varMM\eltEq\varMN$.
+\end{theorem}
+
+\begin{remark}
+  On appelle va-et-vient une telle famille d'isomorphismes partiels, et les
+  deux conditions énoncées plus tôt sont appelées respectivement \og va\fg et
+  \og vient\fg, puisqu'elles permettent respectivement de \og faire aller\fg
+  un élément de $\varMM$ dans $\varMN$, et \og faire venir\fg un élément de
+  $\varMN$ dans $\varMM$.
+\end{remark}
+
+\begin{proof}
+  Soit $\isoFam$ un va-et-vient entre $\varMM$ et $\varMN$. On donne d'abord
+  deux conditions, pour une formule $\varFF$ fixée~:
+  \begin{enumerate}[label=(\roman*)]
+  \item pour toute donnée de paramètres $\vec a$ dans $\varMM$ et tout
+    isomorphisme partiel $\varMoM\in\isoFam$ tel que
+    $\compr{a}{a\in\vec a}\subseteq\dom(\varMoM)$,
+    $\varMM,\vec a\satisf\varFF \iff \varMN,\varMoM(\vec a)\satisf\varFF$.
+  \item pour toute donnée de paramètres $\vec b$ dans $\varMN$ et tout
+    isomorphisme partiel $\varMoM\in\isoFam$ tel que
+    $\compr{b}{b\in\vec b}\subseteq\im(\varMoM)$,
+    $\varMN,\vec b\satisf\varFF \iff \varMM,\varMoM^{-1}(\vec b)\satisf\varFF$.
+  \end{enumerate}
+  La seconde condition se prouve de la même façon que la première, en
+  échangeant le rôle du \og va\fg et du \og vient\fg. Prouvons donc la première
+  condition par induction sur $\varFF$~:
+  \begin{itemize}
+  \item Dans le cas où $\varFF(\vec x)$ est une formule sans quantificateur,
+    le résultat est direct.
+  \item Dans le cas de $\exists x, \varFF(x,\vec y)$, soit $\vec a$ la donnée
+    de paramètres dans $\varMM$ et $\varMoM\in\isoFam$ dont le domaine
+    contient $\vec a$. Supposons que $\varMM,\vec a \satisf\exists x,\varFF$.
+    Alors on trouve $m \in\carMM$ tel que $\varMM,(m,\vec a)\satisf\varFF$.
+    D'après le \og va\fg, on peut alors trouver un isomorphisme partiel
+    $\varMoMB\in\isoFam$ qui étend $\varMoM$, et par hypothèse d'induction
+    on en déduit que $\varMN,(\varMoMB(m),\varMoM(\vec a))\satisf\varFF$,
+    d'où $\varMN,\varMoM(\vec a)\satisf\exists x,\varFF$. Réciproquement,
+    si $\varMN,\vec a\satisf\exists x,\varFF$, alors on applique le \og vient\fg
+    au témoin dans $\varMN$ pour obtenir une extension, et on applique
+    l'hypotèse d'induction pour en déduire le résultat.
+  \item Dans le cas de $\forall x, \varFF(x,\vec y)$, on remarque que cela
+    revient à ne pas satisfaire $\exists x,\lnot\varFF(x,\vec y)$, ce qui
+    revient au cas précédent.
+  \end{itemize}
+  On en déduit que les deux conditions sont vérifiées par induction sur le
+  nombre de quantificateurs d'une formule sous forme prénexe.
+  Ainsi, dans le cas où $\varFF\in\Prop(\Sign)$, on en déduit que
+  \[\varMM\satisf\varFF\iff\varMN\satisf\varFF\qedhere\]
+\end{proof}
+
+Cet outil nous permet donc d'établir des équivalences élémentaires entre
+modèles. On peut considérer cette méthode comme une version plus locale du
+critère de Tarski-Vaught. Au lieu de considérer une structure qui peut se
+décrire globalement comme une partie d'une autre, on raisonne ici sur deux
+structure qui peuvent se simuler l'une l'autre d'une façon locale (on peut
+rapprocher ce phénomène du théorème de compacité, qui permet de faire des
+vérifications locales pour construire des modèles).
+
+Enfin, dans le cas de structures dénombrable, un va-et-vient donne un résultat
+encore plus fort.
+
+\begin{lemma}
+  Soient $\varMM,\varMN$ deux $\Sign$-structures dénombrables. S'il existe
+  un va-et-vient $\isoFam$ entre elles, alors $\varMM\iso\varMN$.
+\end{lemma}
+
+\begin{proof}
+  Comme les deux structures sont dénombrables, on trouve une énumération de
+  chacune d'elles~:
+  \[\varMM = \compr{a_n}{n\in\bN} \qquad
+  \varMN = \compr{b_n}{n\in\bN}\]
+  On construit alors une suite d'isomorphismes partiels $\varMoM_n$ de la
+  façon suivante~:
+  \begin{itemize}
+  \item $\varMoM_0\in\isoFam$ est quelconque~;
+  \item pour tout $n$, $\varMoM_{2n+1}\in\isoFam$ est une extension de
+    $\varMoM_{2n}$ par la propriété \og vient\fg dont l'image contient $b_n$~;
+  \item pour tout $n$, $\varMoM_{2n+2}\in\isoFam$ est une extension de
+    $\varMoM_{2n+1}$ par la propriété \og va\fg dont le domaine contient $a_n$.
+  \end{itemize}
+  On obtient alors une suite d'isomorphismes partiels dont l'union est encore
+  un isomorphisme partiel. Cet isomorphisme partiel, cependant, contient
+  chaque $a_n$ dans son domaine et chaque $b_n$ dans son image~: c'est donc
+  un isomorphisme.
+\end{proof}
+
+\begin{remark}
+  On pourrait s'attendre à ce que ce résultat se généralise au-delà du cas
+  dénombrable, mais il faut garder en tête que l'isomorphisme final, union d'une
+  chaîne d'éléments de $\isoFam$, n'est pas pour autant un élément de $\isoFam$.
+  Si par exemple $\isoFam$ ne contient que des isomorphismes partiels dont le
+  domaine et l'image sont finis, l'union ne sera pas un élément de $\isoFam$.
+\end{remark}
+
+\begin{exercise}\label{exo.baf.embed}
+  Montrer que si $\varMM,\varMN$ admettent un système de va-et-vient et que
+  $\varMM$ est dénombrable, alors il existe un plongement élémentaire de
+  $\varMM$ dans $\varMN$.
+\end{exercise}
+
+\subsection{Théories complètes}
+
+On a déjà introduit et vu quelques propriétés sur les théories complètes lors
+du \cref{chp.logpred}. Cependant, armés de la notion d'équivalence élémentaire,
+on peut prendre un point de vue plus profond sur cette notion. Le premier
+résultat qu'on peut remarquer assez directement est le suivant.
+
+\begin{proposition}
+  Soit $\varT$ une théorie. $\varT$ est complète si et seulement si elle a
+  au moins un modèle $\varMM$ et pour tout modèle $\varMN$ de $\varT$,
+  $\varMM\eltEq\varMN$.
+\end{proposition}
+
+\begin{proof}
+  Supposons que $\varT$ est complète. Alors, par construction d'un modèle
+  syntaxique, elle a au moins un modèle $\varMM$. De plus, on sait que
+  $\varT = \Th(\varMM)$, et $\varMM\eltEq\varMN$ si et seulement si
+  $\varMN\satisf\Th(\varMM)$. On en déduit que tout modèle de $\varT$ est
+  élémentairement équivalent à $\varMM$.
+
+  Réciproquement, supposons que $\varMM\satisf\varT$ et que pour tout
+  $\varMN\satisf\varT$, $\varMM\eltEq\varMN$. Soit $\varFF$ une proposition,
+  par complétude on sait que $\varT\vdP\varFF$ si et seulement si tout
+  modèle de $\varT$ vérifie $\varFF$. Or, soit $\varMM\satisf\varFF$, soit
+  $\varMM\satisf\lnot\varFF$, donc par équivalence élémentaire soit tout
+  modèle de $\varT$ satisfait $\varFF$, soit tout modèle de $\varT$ satisfait
+  $\lnot\varFF$. De plus, comme $\varT$ a un modèle, $\varT$ est cohérente.
+  On en déduit que $\varT$ est complète.
+\end{proof}
+
+Une façon de montrer qu'une théorie est complète est alors d'en trouver un
+modèle qui \og représente suffisamment bien\fg tous les autres modèles,
+c'est-à-dire un modèle tel que tous les autres modèles lui sont élémentairement
+équivalents.
+
+\begin{example}
+  On considère la signature contenant simplement un symbole de relation binaire
+  $<$. On définit la théorie des ordres linéaires denses sans extrémités,
+  noté $\DLO$, par les axiomes suivants~:
+
+  \vspace{5pt}
+  \begin{itemize}
+    \begin{minipage}{0.45\textwidth}
+    \item $\forall x\,y\,z,x<y\land y<z\to x<z$
+    \item $\forall x,x\nless x$
+    \item $\forall x\,y, x < y \lor x > y \lor x = y$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $\forall x\,y,x\neq y \to \exists z, x < z \land z < y$
+    \item $\forall x \exists y, x < y$
+    \item $\forall x \exists y, y < x$
+    \end{minipage}
+  \end{itemize}
+  Cette théorie est complète. Pour le voir, on va construire un va-et-vient
+  entre deux modèles quelconques.
+
+  Soient $\varMM,\varMN$ deux modèles de $\DLO$. On pose le va-et-vient
+  suivant~:
+  \[\isoFam\defeq
+  \compr{\makeFunNameIso{\varMoM}{\varMM_0}{\varMN_0}}{\varMM_0\text{ et }
+    \varMN_0\text{ sont des ensembles finis}}\]
+  Soit $\varMoM \in \isoFam$ dont le domaine (fini) est $\{a_1,\ldots,a_k\}$ et
+  l'image (finie) est $\{b_1,\ldots,b_k\}$, les deux énumérations étant
+  strictement croissantes. On vérifie les deux conditions de va-et-vient~:
+  \begin{itemize}
+  \item si $a\in \varMM$, alors soit $a \in \dom(\varMoM)$ (auquel cas il n'y
+    a rien à faire), soit l'un des trois cas suivants se présente~:
+    \begin{itemize}
+    \item $a < a_1$, dans ce cas on peut trouver $b < b_1$ car $\varMN$ n'est
+      pas minoré, ajouter l'association $a\mapsto b$ à $\varMoM$ donne une
+      extension dont le domaine contient $a$.
+    \item $a_i < a < a_{i+1}$ pour un certain $i$, dans ce cas on peut trouver
+      $b_i < b < b_{i+1}$ par densité dans $\varMN$, et l'association
+      $a\mapsto b$ donne l'extension attendue.
+    \item $a_k < a$, dans ce cas on trouve $b > b_k$ car $\varMN$ n'est pas
+      majoré.
+    \end{itemize}
+    Dans tous les cas, on construit bien un élément de $\isoFam$ qui étend
+    $\varMoM$ et contient $a$ dans son domaine.
+  \item si $b \in \varMN$, on peut faire le même raisonnement avec les mêmes
+    cas pour trouver une extension de $\varMoM$ dans $\isoFam$ qui contient
+    $b$ dans son image.
+  \end{itemize}
+  Ainsi, pour tous deux modèles $\varMM,\varMN$, on a $\varMM\eltEq\varMN$.
+
+  On peut vérifier, de plus, que $\bQ\satisf\DLO$, ce qui implique que
+  $\DLO$ est complète.
+\end{example}
+
+Notre démonstration permet bien de montrer que $\DLO$ est complète, mais on peut
+remarquer une conséquence plus forte~: pour tout modèle $\varMM\satisf\DLO$,
+il existe un plongement élémentaire $\bQ\to\varMM$ (par l'\cref{exo.baf.embed}).
+Dans le cas où $\varMM$ est dénombrbale, on sait même que $\bQ\iso\varMM$. Cela
+donne une propriété plus forte qu'une simple équivalence élémentaire, qu'on
+appelle la catégoricité.
+
+\begin{definition}[Catégoricité]
+  Soit $\varT$ une théorie sur une signature $\Sign$. $\varT$ est dite
+  catégorique si pour tous deux modèles $\varMM,\varMN\satisf\varT$, on a
+  $\varMM\iso\varMN$. $\varT$ est dite $\varCk$-catégorique pour un cardinal
+  $\varCk$ si pour tous deux modèles $\varMM,\varMN\satisf\varT$ de cardinal
+  $\varCk$, on a $\varMM\iso\varMN$.
+\end{definition}
+
+\begin{remark}
+  Dans le cas de la logique du premier ordre, d'après le \cref{thm.LS}, aucune
+  théorie admettant des modèles infinis n'est catégorique, c'est pourquoi on
+  s'intéresse principalement à la notion de $\varCk$-catégoricité. Néanmoins,
+  pour des logiques d'ordre supérieures (\latinexpr{e.g.} l'arithmétique du
+  second ordre), une théorie peut être catégorique.
+\end{remark}
+
+\begin{proposition}[Test de Łos-Vaught \cite{Los1954,Vaught1954}]
+  Soit $\varT$ une théorie cohérente sur une signature $\Sign$. Si $\varT$ est
+  $\varCk$-catégorique pour $\varCk$ un cardinal infini supérieur à
+  $\Card(\Sign)$, et $\varT$ n'admet pas de modèle fini, alors
+  $\varT$ est complète.
+\end{proposition}
+
+\begin{proof}
+  On veut montrer que deux modèles sont élémentairement équivalents. Soient
+  $\varMM,\varMN$ deux modèles de $\varT$. Par le \cref{thm.LS}, on peut
+  trouver $\varMM_0\eltEq\varMM$ et $\varMN_0\eltEq\varMN$ de cardinal
+  $\varCk$, mais alors $\varMM_0\iso\varMN_0$ donc (par transitivité de
+  l'équivalence élémentaire) $\varMM\eltEq\varMN$.
+\end{proof}
+
+\paragraph{Conclusion partielle}
+On sait que les classes élémentaires sont stables par équivalence élémenatire,
+et une classe correspond aux modèles d'une théorie complète si et seulement si
+la classe est non vide et tous ses éléments sont élémentairement équivalents.
+Un critère suffisant (mais non nécessaire) est la $\varCk$-catégoricité, et un
+exemple de classe associée à une telle théorie est celle des ensembles
+totalement ordonnés denses sans extrémités.
+
+\section{Ultraproduits}
+
+Les classes élémentaires sont stables par équivalence élémentaire, et le cas
+des théories complètes s'y limite. Cependant, pour une théorie qui n'est pas
+complète, on peut trouver des modèles non équivalents. L'objet que nous
+étudions dans cette section permet de \og mélanger\fg des modèles qui, eux,
+ne sont pas forcément équivalents. Cependant, pour mieux motiver la construction
+des ultraproduits, nous allons faire un détour par un concept majeur dans
+l'histoire de l'analyse~: celle d'infinitésimal. Notre premier objectif va être
+de construire un modèle dit \og non standard\fg de l'analyse.
+
+\subsection{Analyse non standard}
+
+L'analyse commence lorsque l'on passe de l'étude d'objets discrets à celle
+d'objets continus, et en particulier à l'étude de $\bR$. Si l'on a construit
+$\bR$ comme un surcorps de $\bQ$ complet pour l'ordre (c'est-à-dire possédant
+les bornes inférieure et supérieure de parties bornées), cette complétude n'est
+pas une propriété du premier ordre. En terme de théorie du premier ordre,
+l'ensemble des réels peut être vu en premier lieu comme un corps.
+
+\begin{definition}[Théorie des corps]
+  On définit la théorie des corps $\Field$ par
+  \begin{align*}
+    \Rax_{\Field,0\neq 1} &\defeq \ogM 0 \neq 1\fgM\\
+    \Rax_{\Field,\inv} &\defeq \ogM\forall x, x \neq 0 \to
+    \exists y, x\times y = 1 \land y \times x = 1\fgM\\
+    \Field&\defeq \Ring\cup\{\Rax_{\Field,0\neq 1},\Rax_{\Field,\inv}\}
+  \end{align*}
+  De plus, $\bQ\satisf\Field$ et $\bR\satisf\Field$.
+\end{definition}
+
+Pour tout anneau $\varAA$, on peut définir la caractéristique de $\varAA$
+comme le plus petit entier $n > 0$ tel que
+$\underbrace{1+\cdots+1}_{n\text{ fois}} = 0$ ou $0$ s'il n'existe pas de tel
+$n$~: c'est le cas de $\bQ$ et $\bR$. Remarquons que pour les corps, une
+caractéristique non nulle est toujours un nombre premier.
+
+\begin{definition}[Théorie des corps de caractéristique donnée]
+  Soit $p$ un nombre premier. On définit l'axiome
+  \[\Rax_{\carac p} \defeq \ogM\underbrace{1+\cdots+1}_{n\text{ fois}} = 0\fgM\]
+  et les théories
+  \[\Field_p \defeq \Field\cup\{\Rax_{\carac p}\}\qquad
+  \Field_0 \defeq \Field\cup
+  \compr{\lnot\Rax_{\carac p}}{p \in \bN,p\text{ premier}}\]
+  On a $\bQ\satisf\Field_0$ et $\bR\satisf\Field_0$.
+\end{definition}
+
+On a ainsi une première approximation de ce à quoi ressemble la théorie
+$\Th(\bR)$. Pour avoir une meilleure approximation, on introduit aussi la
+structure ordonnée de $\bR$. Avec la notion d'ordre on peut énoncer que tout
+nombre positif est un carré, et on peut aussi énoncer le théorème des
+valeurs intermédiaires pour les polynômes de degré impair. Tous ces axiomes
+forment la théorie des corps réels clos.
+
+\begin{definition}[Théorie des corps réels clos]
+  La théorie des corps réels clos, sur la signature $\SignRing\cup\{<^2\}$,
+  est donnée par les axiomes suivants~:
+  \begin{itemize}
+  \item Les axiomes que $<$ est un ordre compatible~:
+    \begin{align*}
+      \Rax_{\RCF,\irrefl} &\defeq \ogM \forall x, x\nless x\fgM\\
+      \Rax_{\RCF,\trans} &\defeq
+      \ogM \forall x\,y\,z, x < y \land y < z \to x < y\fgM\\
+      \Rax_{\RCF,\tot} &\defeq
+      \ogM\forall x\,y, x < y \lor y < x \lor x = y \fgM\\
+      \Rax_{\RCF,\mathord{\compat}\mathord{+}} &\defeq
+      \ogM \forall x\,y\,z, x < y \to x + z < y + z\fgM\\
+      \Rax_{\RCF,\mathord{\compat}\mathord{\times}} &\defeq
+      \ogM \forall x\,y, 0 < x \land 0 < y \to 0 < x\times y\fgM
+    \end{align*}
+  \item L'axiome disant que tout nombre positif est un carré~:
+    \[\Rax_{\RCF,\squar} \defeq
+    \ogM \forall x, 0 < x \to \exists y, x = y\times y\fgM\]
+  \item Pour chaque entier $n$, l'axiome disant que tout polynôme de degré
+    $2n+1$ a une racine~:
+    \[\Rax_{\RCF,\raci,n}\defeq
+    \ogM \forall a_0\cdots a_{2n+1}, a_{2n+1}\neq 0 \to
+    \exists x, \sum_{i = 0}^{2n+1} a_i\times x^i = 0\fgM\]
+  \end{itemize}
+  La théorie des corps réels clos est
+  \begin{multline*}
+    \RCF\defeq\Field_0\cup
+    \\\{\Rax_{\RCF,\irrefl},\Rax_{\RCF,\trans},\Rax_{\RCF,\tot},
+    \Rax_{\RCF,\mathord{\compat}\mathord{+}},\Rax_{\RCF,\mathord{\compat}\mathord{\times}},
+    \Rax_{\RCF,\squar}\} \cup
+    \\\bigcup_{n \in \bN}\Rax_{\RCF,\raci,n}
+  \end{multline*}
+  On a $\bR\satisf\RCF$.
+\end{definition}
+
+Cette théorie est complète (nous le montrerons dans le
+CHAPITRE ELIMINATION DES QUANTIFICATEURS), c'est donc la meilleure approximation
+qu'on peut espérer.
+
+On se fixe donc, comme critère raisonnable d'un modèle de l'analyse, la théorie
+$\RCF$. On souhaite maintenant construire un \og surensemble\fg de $\bR$, qui
+va encore vérifier ces propriétés (pour pouvoir y faire de l'analyse comme
+attendu). L'intérêt de ce surensemble va être d'ajouter un infinitésimal.
+Par-là, on entend un nombre $\vareps$ tel que $\vareps > 0$ mais, à la fois,
+$\vareps < x$ pour tout $x > 0$ rationnel (et donc pour tout $x$ réel).
+L'intérêt d'avoir un tel nombre est qu'alors, on peut effectuer des calculs
+tels que
+\[\frac{(x+\vareps)^2 - x^2}{\vareps} =
+\frac{x^2 + 2x \vareps + \vareps^2 - x^2}{\vareps}
+= 2x\vareps + \vareps \approx 2x\]
+Ainsi, en analyse non standard, il devient possible de se passer des notions
+de dérivabilité pour effectuer des calculs de dérivée~: on utilise simplement
+des infinitésimaux comme des nombres parmi d'autres. De plus, comme $\vareps$
+est non nul et plus petit que tout réel, son inverse existe et est plus
+grand que tout réel, ce qui nous donne aussi une notion d'infini. On a ainsi
+$\infty = \dfrac{1}{\vareps}$, mais aussi $\infty^2 > \infty$, \latinexpr{etc.}
+
+On se propose donc de construire un modèle de $\RCF$ dans lequel ces nombres
+supplémentaires apparaissent.
+
+\subsection{Produit réduit et logique régulière}
+
+Pour construire un tel modèle, on s'intéresse d'abord aux suites de nombres
+réels. En effet, en prenant par exemple la suite $(1/n)_{n\in \bN^*}$, on obtient
+une suite située entre la suite constante nulle et toute suite constante valant
+un réel positif. De plus, l'espace des suites de réels a naturellement une
+structure d'anneau. Cette structure, cependant, n'est pas celle d'un corps.
+En effet, en considérant le produit terme à terme, une suite non identiquement
+nulle peut avoir des coordonnées nulles, qui sont donc non inversibles.
+Un autre problème est l'apparition de trop nombreuses suites qu'on souhaiterait
+être égales. Par exemple, la suite $(0,1,1,1,1,\ldots)$ n'est pas égale à la
+suite constante $1$, mais elle se comporte presque de la même façon.
+
+On souhaite donc construire une relation d'équivalence pour identifier les
+suites se comportant globalement de la même façon. Pour rendre formelle cette
+idée, considérons d'abord trois suites~:
+\[
+u_n \defeq \dfrac{1}{n+1} \qquad
+v_n \defeq \dfrac{1}{n+2} \qquad
+w_n \defeq \begin{cases}
+  0 \text{ si } n < 5\\
+  \dfrac{1}{n+1}\text{ sinon}
+\end{cases}
+\]
+On veut identifier dans une suite son comportement à l'infini, ce qui signifie
+qu'on souhaite identifier en particulier $u_n$ et $w_n$~: elles coïncident hors
+d'un ensemble fini d'indices. On pourrait alors décider de considérer la
+relation d'équivalence de suites, utilisée en analyse, et identifier aussi
+$u_n$ et $v_n$. Ce n'est pas ce qu'on va faire ici, pour être aussi précis que
+possible sur le comportement asymptotique des suites qu'on manipule.
+
+Moralement, notre relation d'équivalence correspond donc à dire que s'il existe
+un intervalle d'entiers $I = \intOO{n}{\infty}$ tel que $u_n = v_n$ sur $I$,
+alors $(u_n) \sim (v_n)$. Cet énoncé peut être reformulé à l'aide de filtres,
+donnant lieu à la notion de produit réduit.
+
+\begin{definition}[\'Equivalence modulo filtre, produit réduit]
+  Soit $I$ un ensemble, $(X_i)_{i\in I}$ une famille d'ensembles et $\varFil$
+  un filtre sur $I$ (c'est-à-dire sur l'algèbre de Boole $\powerset(I)$). On
+  définit l'équivalence modulo $\varFil$ par
+  \[(x_i) \sim_{\varFil} (y_i) \defeq \compr{i \in I}{x_i = y_i} \in \varFil\]
+
+  On définit le produit réduit de $(X_i)_{i \in I}$ par $\varFil$ par
+  \[\prod_{i \in I}^{\varFil} X_i \defeq \quot{\prod_{i \in I} X_i}{\sim_{\varFil}}\]
+\end{definition}
+
+\begin{proof}
+  Vérifions que $\sim_{\varFil}$ est bien une relation d'équivalence~:
+  \begin{itemize}
+  \item puisque $I \in \varFil$, on en déduit que $\compr{i \in I}{x_i=x_i}$
+    est un élément de $\varFil$ pour toute famille $(x_i)$.
+  \item la symétrie est évidente puisque
+    $\compr{i\in I}{x_i=y_i}=\compr{i\in I}{y_i=x_i}$.
+  \item si $(x_i)\sim_\varFil (y_i)\sim_\varFil (z_i)$, alors on pose
+    $J \defeq \compr{i \in I}{x_i = y_i}$ et
+    $K \defeq \compr{i \in I}{y_i = z_i}$. Comme $J \in \varFil$ et
+    $K\in\varFil$, on sait que $J \cap K \in \varFil$, et on sait que
+    \[\compr{i \in I}{x_i = z_i}\supseteq J \cap K\]
+    donc par clôture par le haut de $\varFil$,
+    $\compr{i \in I}{x_i = z_i} \in \varFil$, donc $(x_i)\sim_\varFil (z_i)$.
+    \qedhere
+  \end{itemize}
+\end{proof}
+
+Le candidat que nous avons pour faire de l'analyse non standard est alors
+$\displaystyle\prod_{i \in \bN}^{\Frechet} \bR$.
+
+Ce produit réduit, introduit pour l'instant simplement pour des familles
+d'ensembles, peut en fait se transporter aux familles de structure~: les
+fonctions et relations passent au quotient.
+
+\begin{definition}[Produit réduit de structures]
+  Soit $\Sign$ une signature, $(\varMM_i)_{i \in I}$ une famille de
+  $\Sign$-structures et $\varFil$ un filtre sur $I$. On définit le produit
+  réduit $\displaystyle\prod_{i \in I}^{\varFil} \varMM_i$ par~:
+  \begin{itemize}
+  \item $\displaystyle\carM{\prod_{i \in I}^{\varFil}\varMM_i} \defeq
+    \prod_{i in I}^{\varFil}\carMM_i$
+  \item pour tout symbole de relation $\symbF$ d'arité $n$,
+    \[
+    \makeFun
+        {\toMP{\symbF}{\prod_{\varFil}\varMM_i}}
+        {\left(\prod_{i \in I}^{\varFil}\varMM_i\right)^n}
+        {\prod_{i \in I}^{\varFil}\varMM_i}
+        {(\clas{(x_{i,1})},\ldots,\clas{(x_{i,n})})}
+        {\clas{(\toMP{\symbF}{\varMM_i}(x_{i,1},\ldots,x_{i,n}))}}
+        \]
+  \item pour tout symbole de relation $\symbR$ d'arité $n$,
+    \[\toMP{\symbR}{\prod_{\varFil}\varMM_i}
+    (\clas{(x_{i,1})},\ldots,\clas{(x_{i,n})}) \defeq
+    \compr{i \in I}{\toMP{\symbR}{\varMM_i}(x_{i,1},\ldots,x_{i,n})}\in\varFil\]
+  \end{itemize}
+\end{definition}
+
+\begin{exercise}
+  Vérifier que l'interprétation des symboles de fonction et de relation ne
+  dépend pas des représentants choisis.
+\end{exercise}
+
+On a ainsi automatiquement une structure pour notre candidat, donnée par les
+opérations point à point et la comparaison point à point. Grâce à ces
+définitions, on peut considérer
+\[\vareps\defeq \clas{(1/n+1)_{n \in \bN}}\]
+qui vérifie $\vareps > 0$ et $\vareps < x$ pour tout réel $x$. On souhaite
+maintenant montrer que ce candidat est un modèle de la théorie des corps réels
+clos. Malheureusement, les choses ne vont pas se passer aussi bien.
+
+Le résultat qu'on souhaiterait est le suivant~: si tous les $\varMM_i$ sont des
+modèles d'une théorie $\varT$, alors le produit réduit pour tout filtre est
+aussi un modèle de cette théorie. Puisque le produit réduit se concentre sur une
+vérité \og suffisamment grande\fg, on s'attend à un résultat de la forme
+\begin{quotation}
+  \noindent
+  Pout toute formule $\varFF$ et tous paramètres $\overrightarrow{\clas{x_i}}$,
+  on a
+  \[\prod_{\varFil} \varMM_i,\overrightarrow{\clas{x_i}}\satisf \varFF \iff
+  \compr{i \in I}{\varMM_i,\overrightarrow{x_i} \satisf \varFF} \in \varFil\]
+\end{quotation}
+Un début encourageant est une version faible de ce résultat, dans le cas d'une
+sous-logique de la logique du premier ordre.
+
+\begin{definition}[Logique régulière]
+  La logique régulière sur une signature $\Sign$ est donnée par les formules
+  construites sur la grammaire
+  \[\varFF,\varFP\inddefeq
+  a\mid \top\mid\varFF\land\varFP\mid\exists x, \varFF\]
+  où $a \in \Atom(\Sign)$ et $x \in \Var$, et avec les règles syntaxiques et
+  l'interprétation sémantique réduites à ces seuls constructeurs.
+
+  On note $\FormReg(\Sign)$ l'ensemble des formules de logique régulière sur
+  $\Sign$.
+\end{definition}
+
+\begin{proposition}\label{prop.Los.faible}
+  Soit $\Sign$ une signature, $I$ un ensemble, $(\varMM_i)_{i \in I}$ une famille
+  de $\Sign$-structures indicée sur $I$, $\varFil$ un filtre sur $I$,
+  $\varFF\in\FormReg(\Sign)$ et $\overrightarrow{\clas{x_i}}$ la donnée de
+  paramètres dans $\prod_{\varFil}\varMM_i$. Alors
+  \[\prod_{\varFil} \varMM_i,\overrightarrow{\clas{x_i}}\satisf \varFF \iff
+  \compr{i \in I}{\varMM_i,\overrightarrow{x_i} \satisf \varFF} \in \varFil\]
+\end{proposition}
+
+\begin{proof}
+  On raisonne par induction sur les formules, en négligeant les paramètres pour
+  alléger la lecture~:
+  \begin{itemize}
+  \item Le cas des propositions atomiques est vrai par la définition même de
+    l'interprétation des symboles de relation (et de l'égalité) dans un
+    produit réduit.
+  \item Le cas de $\top$ est automatique.
+  \item Dans le cas de $\varFF\land\varFP$, supposons que
+    $\prod_{\varFil}\varMM_i\satisf \varFF\land \varFP$, alors par définition
+    puis hypothèse d'induction, les deux ensembles
+    \[J \defeq\compr{i \in I}{\varMM_i\satisf\varFF}\qquad
+    K\defeq\compr{i \in I}{\varMM_i\satisf\varFP}\]
+    sont dans $\varFil$. Par compatibilité vers le bas, on en déduit que
+    $J\cap K \in \varFil$, ce qui correspond exactement à
+    $\compr{i \in I}{\varMM_i\satisf\varFF\land\varFP}$. Réciproquement, si
+    $J\cap K \in \varFil$, alors $J\in \varFil$ et $K\in\varFil$ par clôture par
+    le haut, donc par hypothèse d'induction
+    $\prod_{\varFil}\varMM_i\satisf\varFF\land\varFP$.
+  \item Dans le cas de $\exists x, \varFF$, si
+    $\prod_{\varFil}\varMM_i\satisf\exists x, \varFF$ alors on trouve
+    $\clas{(x_i)}$ tel que $\varMM_i\satisf\varFF(\clas{(x_i)})$, donc par
+    hypothèse d'induction
+    \[\compr{i \in I}{\varMM_i\satisf\varFF(x_i)} \in \varFil\]
+    d'où $\compr{i \in I}{\varMM_i\satisf \exists x,\varFF(x)}\in\varFil$.
+    Réciproquement, supposons qu'on a l'appartenance
+    $\compr{i \in I}{\varMM_i\satisf\exists x,\varFF(x)}\in\varFil$.
+    On trouve donc $J \in \varFil$ et une famille $(x_i)$ sur $J$ telle que
+    $\varMM_i\satisf\varFF(x_i)$ pour $i \in J$. Quitte à compléter cette
+    famille par des éléments quelconque des $\varMM_i$ pour $i\notin J$, on
+    trouve alors $(x_i)_{i \in I}$ tel que
+    \[\compr{i \in I}{\varMM_i\satisf\varFF(x_i)}\supseteq J\]
+    donc cet ensemble est dans $\varFil$ (par clôture par le haut), donc
+    $\prod_{\varFil}\varMM_i\satisf\exists x, \varFF$.\qedhere
+  \end{itemize}
+\end{proof}
+
+\begin{remark}
+  On a ici eu besoin d'avoir uniquement des structures non vides. On a pris
+  cette convention depuis le \cref{chp.logpred}, mais il est ici possible de
+  faire fonctionner la construction dans le cas de structures vides. On
+  prend alors comme éléments non plus des familles sur $I$ mais sur
+  n'importe quel $J \in \varFil$, et on définit l'équivalence
+  \[(x_i)_{i \in J} \sim_\varFil (y_i)_{i \in K} \defeq
+  \compr{i \in J \cap K}{x_i = y_i} \in \varFil\]
+  Tout ce qui a été dit jusqu'ici fonctionne encore, mais on peut désormais
+  considérer des produits réduits contenant un nombre fini de structures
+  vides sans changer le résultat final. Dans la démonstration précédente,
+  cela nous évite aussi une utilisation de l'axiome du choix pour compléter
+  notre famille sur $J$ en une famille sur $I$, mais l'axiome du choix reste
+  nécessaire lorsqu'on construit la famille sur $J$.
+\end{remark}
+
+Pour déduire de cette proposition le cas de n'importe quelle formule, il nous
+faudrait pouvoir passer à la négation~: avec les lois de De Morgan, on peut
+réécrire $\lor$ et $\to$ à partir de $\land$ et $\lnot$, et $\forall$ à partir
+de $\exists$ et $\lnot$. Malheureusement, c'est ce passage à la négation qui
+n'est pas possible à faire dans le cas d'un filtre quelconque. Une autre façon
+de le voir est de considérer le cas de la disjonction.
+
+\begin{example}
+  Considérons une signature avec deux constantes propositionnelles $\symbR$ et
+  $\symbR'$.
+  On définit la famille $(\varMM_i)_{i \in \bN}$ en interprétant $\symbR$ par la
+  proposition vraie pour les $i$ pairs, et $\symbR$ par la proposition vraie
+  pour les $i$ impairs. On a alors
+  \[\prod_{\varFil}\varMM_i\satisf \symbR\lor\symbR'\]
+  mais $\compr{i \in I}{\varMM_i\satisf\symbR} = 2\bN$ et
+  $\compr{i \in I}{\varMM_i\satisf\symbR'} = 2\bN + 1$. Si on prend le filtre
+  de Fréchet pour notre produit réduit, aucun des deux ensembles n'est dans le
+  filtre. Ainsi, on satisfait $\symbR\lor\symbR'$ mais aucun des deux
+  individuellement.
+\end{example}
+
+\subsection{Ultraproduit}
+
+On décide donc désormais de considérer des produits réduits avec des
+ultrafiltres, qui permettent de simuler la négation~: si un ensemble d'indices
+n'est pas dans le filtre, alors son complémentaire l'est.
+
+\begin{definition}[Ultraproduit, ultrapuissance]
+  Soit $\Sign$ une signature, $I$ un ensemble, $(\varMM_i)_{i \in I}$ une
+  famille de $\Sign$-structures et $\varUlF$ un ultrafiltre sur $I$. On
+  appelle ultraproduit de $(\varMM_i)$ par $\varUlF$ le produit réduit associé.
+  Si $(\varMM_i)$ est une famille constante, on appelle ultrapuissance
+  l'ultraproduit associé.
+\end{definition}
+
+\begin{remark}
+  Si on considère un ultrafiltre principal $\FilPrinc{j}$, alors on a un
+  isomorphisme $\displaystyle\prod_{\FilPrinc{j}} \varMM_i \iso \varMM_j$. Les
+  ultraproduits d'intérêt sont donc sur des ultrafiltres libres.
+\end{remark}
+
+On peut alors énoncer le théorème central sur les ultraproduits~: le théorème
+de Łos.
+
+\begin{theorem}[Łos \cite{Los1955}]\label{thm.Los}
+  Soit $\Sign$ une signature, $I$ un ensemble, $(\varMM_i)_{i \in I}$ une famille
+  de $\Sign$-structures indicée sur $I$, $\varUlF$ un ultrafiltre sur $I$,
+  $\varFF\in\Formula(\Sign)$ et $\overrightarrow{\clas{x_i}}$ la donnée de
+  paramètres dans $\prod_{\varUlF}\varMM_i$. Alors
+  \[\prod_{i \in I}^{\varUlF} \varMM_i,\overrightarrow{\clas{x_i}}\satisf
+  \varFF \iff
+  \compr{i \in I}{\varMM_i,\overrightarrow{x_i} \satisf \varFF} \in \varUlF\]
+\end{theorem}
+
+\begin{proof}
+  On sait par la \cref{prop.Los.faible} que le théorème est vrai pour la
+  logique régulière. On montre donc simplement le cas de la négation~:
+  \begin{align*}
+    \prod_{\varUlF}\varMM_i\satisf\lnot\varFF &\iff
+    \prod_{\varUlF}\varMM_i\nsatisf\varFF &\text{par définition}\\
+    &\iff \compr{i \in I}{\varMM_i\satisf\varFF} \notin \varUlF
+    &\text{par hypothèse d'induction}\\
+    &\iff \compr{i \in I}{\varMM_i\nsatisf\varFF} \in \varUlF
+    &\text{par propriété des ultraproduits}\\
+    &\iff \compr{i \in I}{\varMM_i\satisf\lnot\varFF}\in \varUlF
+    &\text{par définition}
+  \end{align*}
+  En utilisant les lois de De Morgan, on en déduit le résultat.
+\end{proof}
+
+\begin{corollary}
+  Soit $\varT$ une théorie sur une signature $\Sign$. Si $(\varMM_i)_{i \in I}$
+  est une famille de modèles de $\varT$ et $\varUlF$ est un ultrafiltre sur
+  $I$, alors $\prod_{\varUlF}\varMM_i$ est aussi un modèle de $\varT$.
+\end{corollary}
+
+On peut finalement définir un modèle de l'analyse non standard, en prenant une
+ultrapuissance dénombrable de $\bR$.
+
+\begin{definition}[Hyperréels]
+  On définit l'ensemble des hyperréels en considérant un ultrafiltre
+  $\varUlF$ libre sur $\bN$ et par
+  \[\bRR \defeq \prod_{n \in \bN}^{\varUlF} \bR\]
+  D'après ce qui a été dit précédemment, $\bRR\satisf \RCF$.
+\end{definition}
+
+\begin{remark}
+  La définition de $\bRR$ n'est pas suffisamment précise puisqu'elle dépend du
+  choix de $\varUlF$. Cependant, on ne fait en pratique que des manipulations
+  qui s'appliquent indépendamment du choix de $\varUlF$, d'où cet abus de
+  définition.
+\end{remark}
+
+Plus généralement, on peut effectuer une ultrapuissance de n'importe quelle
+structure, et obtenir un plongement élémentaire.
+
+\begin{corollary}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure, alors pour
+  tout ensemble $I$ et ultrafiltre $\varUlF$ sur $I$, la fonction
+  \[\makeFun{\iota}{\varMM}{\prod_{i \in I}^{\varUlF}}{x}{\clas{(x)_{i \in I}}}\]
+  est un plongement élémentaire.
+\end{corollary}
+
+Maintenant que nous avons construit les ultraproduits et montré leur bon
+comportement, on peut s'en servir pour donner une nouvelle preuve du théorème
+de compacité.
+
+\begin{theorem}[Compacité]
+  Soit $\varT$ une $\Sign$-théorie finiment cohérente, c'est-à-dire une théorie
+  dont toute partie finie admet un modèle, alors $\varT$ est cohérente.
+\end{theorem}
+
+\begin{proof}
+  On considère l'ensemble d'indices
+  \[I \defeq \powerfin(\varT)\]
+  Pour faciliter la lecture, on va noter $i \in I$ les parties finies vues comme
+  des indices, et $\vec{\varFF_i}$ l'élément $i$ vu comme un ensemble fini de
+  propositions.
+  Pour chaque $i \in I$, par cohérence finie, on trouve un modèle $\varMM_i$ tel
+  que $\varMM_i\satisf\vec{\varFF_i}$. Pour chaque $i \in I$, on pose de plus
+  \[J_i \defeq \compr{j \in I}{\varMM_j\satisf\vec{\varFF_i}}\qquad
+  J \defeq \compr{J_i}{i \in I}\]
+  Montrons que $J$ a la propriété d'intersection finie~: soient
+  $i_1,\ldots,i_k \in I$, alors l'ensemble de formules
+  $\vec{\varFF_{i_1}}\cup\cdots\cup\vec{\varFF_{i_k}}$ est un ensemble fini de
+  formules qu'on va noter $i$, et on a donc
+  \[\varMM_i\in \bigcap_{p = 1}^k J_{i_p}\]
+  donc une intersection finie d'éléments de $J$ est non vide.
+
+  On trouve alors, en appliquant le lemme de l'ultrafiltre au filtre engendré
+  par $J$, un ultrafiltre $\varUlF\supseteq J$ sur $I$. On définit maintenant la
+  structure
+  \[\varMM \defeq \prod_{i \in I}^{\varUlF} \varMM_i\]
+  On montre finalement que $\varMM\satisf\varT$. Soit $\varFF \in \varT$,
+  d'après le \cref{thm.Los} il nous suffit de vérifier que
+  $\compr{i \in I}{\varMM_i\satisf \varFF}\in \varUlF$, mais ce dernier
+  ensemble correspond exactemnet à $J_{\{\varFF\}}$, qui est par construction
+  un élément de $\varUlF$. On en déduit donc que $\varMM\satisf\varFF$, puis
+  que $\varMM\satisf\varT$.
+\end{proof}
+
+Avec ces outils, on peut maintenant caractériser les classes élémentaires~:
+on a vu que celles-ci sont stables par équivalence élémentaire et ultraproduit,
+mais ces deux conditions caractérisent en fait les classes élémentaires.
+
+\begin{theorem}[Caractérisation des classes élémentaires
+    \cite{FrayneMorelScott1962}]
+  Soit $\varCC$ une classe de structures sur une signature $\Sign$. Alors les
+  deux conditions suivantes sont équivalentes~:
+  \begin{itemize}
+  \item il existe une théorie $\varT\in\Theory(\Sign)$ telle que
+    \[\forall \varMM\in\Struct(\Sign), \varMM\in\varCC\iff\varMM\satisf\varT\]
+  \item la classe $\varCC$ est stable par équivalence élémentaire et par
+    ultraproduit.
+  \end{itemize}
+\end{theorem}
+
+\begin{proof}
+  On a déjà vérifie le sens direct. Soit maintenant $\varCC$ une classe
+  stable par équivalence élémentaire et ultraproduit. On pose
+  \[\varT \defeq
+  \compr{\varFF\in\Prop(\Sign)}{\forall \varMM\in\varCC,\varMM\satisf\varFF}\]
+  On sait donc que pour tout $\varMM\in\varCC$, $\varMM\satisf \varT$.
+  
+  Montrons que tout modèle de $\varT$ est dans $\varCC$. Soit donc un modèle
+  $\varMM\satisf\varT$. On pose maintenant
+  \[I \defeq \compr{F \subfin \Prop(\Sign)}{\varMM\satisf F}\]
+  Là encore, on va noter $i \in I$ un élément pris comme indice, et
+  $\vec{\varFF_i}$ l'élément $i$ pris comme ensemble de propositions.
+  Pour tout $i$, on peut trouver une structure $\varMN_i\in\varCC$ telle que
+  $\varMN_i\satisf\vec{\varFF_i}$, car sinon on trouverait $\vec{\varFF_i}$
+  tel que tous les éléments de $\varCC$ ne le vérifient pas, donc (quitte à
+  prendre l'intersection finie de ces formules) on a une formule
+  $\varFF$ telle que $\lnot\varFF\in\varT$, donc telle que
+  $\varMM\nsatisf\varFF$. On pose, comme la dernière fois,
+  \[J_i \defeq \compr{j \in I}{\varMN_j\satisf\vec{\varFF_i}}\qquad
+  J \defeq \compr{J_i}{i \in I}\]
+  et on vérifie que $J$ vérifie la propriété d'intersection finie (comme
+  pour le théorème de compacité, cette propriété est directe parce qu'on
+  travaille avec des ensembles finis). On trouve donc un ultrafiltre $\varUlF$
+  contenant $J$, et on pose
+  \[\varMN\defeq \prod_{i \in I}^{\varUlF} \varMN_i\]
+  Par le même argument que précédemment, on montre que $\varMN\satisf I$,
+  c'est-à-dire (en se restreignant aux ensembles d'une proposition) que
+  $\varMN\satisf\Th(\varMM)$. Or, d'après le \cref{lem.equivelt.th}, cela
+  signifie que $\varMN\eltEq\varMM$, et $\varCC$ est stable par équivalence
+  élémentaire~: on en déduit donc que $\varMM\in\varCC$.
+
+  Ainsi $\varCC$ est exactement la classe des modèles de $\varT$.
+\end{proof}
+
+On donne aussi, pour la culture, un résultat permettant de renforcer notre
+théorème. Celui-ci étant très avancé, nous n'en donnons pas la preuve.
+
+\begin{theorem}[Isomorphisme de Keisler-Shelah
+    \cite{Keisler1961,Keisler1964,Shelah1971}]
+  Soient $\varMM,\varMN$ deux structures sur une signature $\Sign$. Alors
+  $\varMM$ et $\varMN$ sont élémentairement équivalentes si et seulement s'il
+  existe un ensemble $I$ et un ultrafiltre $\varUlF$ sur $I$ tels que
+  \[\prod_{i \in I}^{\varUlF}\varMM \iso \prod_{i \in I}^{\varUlF}\varMN\]
+\end{theorem}
+
+\begin{corollary}
+  Une classe $\varCC$ de $\Sign$-structures est élémentaire si et seulement si
+  elle est stable par isomorphisme, ultraproduit et ultraracine.
+\end{corollary}
+
+Enfin, une notion plus fine de classes élémentaires est celle de classe
+élémentaire de base.
+
+\begin{definition}[Classe élémentaire de base]
+  Une classe $\varCC$ de $\Sign$-structures est dite élémentaire de base s'il
+  existe une théorie finie $\varT$ telle que
+  \[\forall \varMM\in\Struct(\Sign), \varMM\in\varCC \iff \varMM\satisf\varT\]
+\end{definition}
+
+\begin{remark}
+  De façon équivalente, quitte à prendre la conjonction des propositions dans
+  une théorie finie, cela revient à dire que l'appartenance à la classe $\varCC$
+  est définissable par la satisfaction d'une seule formule.
+\end{remark}
+
+\begin{proposition}
+  Une classe élémentaire $\varCC$ de $\Sign$-structures est élémentaire de base
+  si et seulement si la classe des $\Sign$-structures non dans $\varCC$ est
+  elle aussi une classe élémentaire.
+\end{proposition}
+
+\begin{proof}
+  En effet, si $\varCC$ est élémentaire de base, alors on trouver $\varFF$
+  telle qu'une structure appartient à $\varCC$ si et seulement si elle
+  satisfait $\varFF$. Alors, elle n'appartient pas à $\varCC$, si et seulement
+  si elle ne satisfait pas $\varFF$, \latinexpr{i.e.} si et seulement si elle
+  satisfait $\lnot\varFF$~: le complémentaire de $\varCC$ est une classe
+  élémentaire.
+
+  On montre le sens réciproque par contraposée. Supposons que $\varCC$
+  est élémentaire mais pas de base, alors on trouve $\varT$ une théorie
+  infinie caractérisant l'appartenance à $\varCC$. Puisque $\varCC$ n'est
+  pas de base, cela signifie que chaque partie finie de $\varT$ admet un
+  modèle qui n'est pas dans $\varCC$~: par compacité, si le complémentaire de
+  $\varCC$ était élémentaire, alors on trouverait un modèle de $\varT$ qui
+  n'est pas dans $\varCC$. On en déduit donc que si $\varCC$ n'est pas de base,
+  alors le complémentaire de $\varCC$ n'est pas élémentaire.
+\end{proof}
+
+\subsection{Cardinal d'un ultraproduit}
+
+Finalement, on étudie la cardinalité d'un ultraproduit dans le cas où l'ensemble
+d'indices est dénombrables. On peut d'abord majorer cette cardinalité assez
+facilement.
+
+\begin{lemma}\label{lem.card.ultra.maj}
+  Soit $I$ un ensemble dénombrable, $\varUlF$ un ultrafiltre sur $I$, et
+  $(X_i)_{i \in I}$ une famille d'ensembles telle que
+  \[\forall i \in I, \Card(X_i) \leq 2^{\Cal_0}\]
+  alors
+  $\displaystyle\Card\left(\prod_{i \in I}^{\varUlF} X_i\right)\leq 2^{\Cal_0}$.
+\end{lemma}
+
+\begin{proof}
+  Comme l'ultraproduit est un quotient sur un produit, on peut majorer le
+  cardinal de l'ultraproduit par le cardinal du produit des $X_i$, dont on sait
+  que chacun est de cardinal inférieur à $2^{\Cal_0}$, donc le produt est de
+  cardinal au plus $(2^{\Cal_0})^{\Cal_0} = 2^{\Cal_0}$.
+\end{proof}
+
+Pour minorer le cardinal d'un ultraproduit, il nous faut être légèrement plus
+astucieux. En effet, un ultraproduit peut identifier de très nombreux
+éléments. Prenons par exemple une ultrapuissance $\bN$ comme ensemble d'indices
+et un ulrafiltre $\varUlF$ libre contenant $2\bN$. On considère la famille
+d'ensembles $(X_i)$ où $X_{2n} \defeq \{0\}$ et $X_{2n+1} \defeq \intervInt{n}$.
+Si le produit des $X_i$ a le cardinal $2^{\Cal_0}$, son ultraproduit par $\varUlF$
+identifie n'importe quels deux éléments (car les seuls éléments importants sont
+ceux d'indices pairs, et seul $0$ peut être un élément d'indice pair). Ainsi,
+on donne un critère permettant d'assurer que la cardinalité ne s'écrase pas.
+
+\begin{definition}[Suite $\varUlF$-majorée]
+  Soit $(n_i)_{i \in I}$ une suite d'entiers sur un ensemble $I$, et $\varUlF$
+  un ultrafiltre sur $I$. On dit que cette suite est $\varUlF$-majorée s'il
+  existe un entier $N$ tel que
+  \[\compr{i \in I}{n_i < N} \in \varUlF\]
+\end{definition}
+
+Une suite $\varUlF$-majorée est donc une suite bornée si l'on néglige les
+parties hors de $\varUlF$. Dans l'exemple précédent, la suite des cardinaux des
+$X_i$ est $\varUlF$-majorée même si elle n'est pas majorée. Dans le cas où la
+suite des cardinaux n'est pas $\varUlF$-majorée, on est assurés que
+l'ultraproduit contient suffisamment d'éléments.
+
+\begin{proposition}
+  Soit $I$ un ensemble, $\varUlF$ un ultrafiltre sur $I$, et $(X_i)_{i \in I}$
+  une famille d'ensembles telle que la famille $(\Card(X_i))_{i \in I}$ n'est pas
+  $\varUlF$-majorée. On a alors l'inégalité
+  $\displaystyle\Card\left(\prod_{i \in I}^{\varUlF}X_i\right) \geq 2^{\Cal_0}$.
+\end{proposition}
+
+\begin{proof}
+  On pose d'abord, pour $i \in I$, $n(i)$ le plus grand entier $n$ tel que
+  $2^n \leq \Card(X_i)$. Comme $(\Card(X_i))_{i \in I}$ n'est pas
+  $\varUlF$-majorée, $(n(i))_{i \in I}$ ne l'est pas non plus.
+
+  Pour tout $i \in I$, on choisit
+  $\left(x_{\varwd}^{(i)}\right)_{\varwd\in \intB^{n(i)}}$ un
+  tuple\footnote{On reprend ici le formalisme des mots binaires, déjà utilisé
+  dans la fin du \cref{chp.desc} et détaillé dans le \cref{chp.auto}.}
+  d'éléments distincts de $X_i$. On définit maintenant la fonction suivante~:
+  \[\makeFun{f}{2^\bN}{\prod_{i \in I}^{\varUlF}X_i}
+            {\varCan}{\clas{i \mapsto x_{\varCan\restr{n(i)}}^{(i)}}}\]
+
+  $f$ est injective. En effet, si $\varCan\neq\varCan'$, alors soit $N$
+  un indice tel que $\varCan_N \neq \varCan_N'$. Comme $n(i)$ n'est pas
+  $\varUlF$-majorée, on sait que
+  \[\compr{i \in I}{n(i) > N} \in \varUlF\]
+  (car son complémentaire n'est pas dans $\varUlF$). Or, pour tout $i$ tel que
+  $n(i) > N$, on sait que
+  $x_{\varCan\restr{n(i)}}^{(i)}\neq x_{\varCan'\restr{n(i)}}^{(i)}$
+  (puisque les éléments $x^{(i)}$ sont tous distincts). On en déduit que
+  \[\compr{i \in I}{f(\varCan)\neq f(\varCan')}\in\varUlF\]
+  donc $f$ est injective.
+
+  On déduit l'inégalité de cardinal de cette injection depuis l'espace de
+  Cantor (de cardinal $2^{\Cal_0}$).
+\end{proof}
+
+Si l'on a déjà vu que les ultraproduits pouvaient être finis, ces propositions
+laissent à penser que les ultraproduits non triviaux restent de cardinal
+$2^{\Cal_0}$. On va prouver que c'est effectivement le cas.
+
+\begin{proposition}
+  Soit $I$ un ensemble dénombrable, $\varUlF$ un ultrafiltre sur $I$ et
+  $(X_i)_{i \in I}$ une famille d'ensembles tous de cardinal inférieur à
+  $2^{\Cal_0}$. Alors le cardinal de $\prod_{i \in I}^{\varUlF} X_i$ est soit fini,
+  soit $2^{\Cal_0}$.
+\end{proposition}
+
+\begin{proof}
+  On raisonne suivant si la famille $(\Card(X_i))_{i \in I}$ est
+  $\varUlF$-majorée. Si elle ne l'est pas, on a déjà vu que le cardinal de
+  l'ultraproduit est supérieur à $2^{\Cal_0}$, et qu'il vaut au plus $2^{\Cal_0}$
+  par le \cref{lem.card.ultra.maj}.
+
+  Supposons maintenant que $(\Card(X_i))_{i \in I}$ est $\varUlF$-majorée. Soit
+  $N$ le plus petit $N$ tel que
+  \[\compr{i \in I}{\Card(X_i) \leq N} \in \varUlF\]
+  Posons $J$ cet ensemble. On peut vérifier que l'ultraproduit des
+  $(X_j)_{j \in J}$ par l'ultrafiltre
+  \[\varUlF_J \defeq \compr{K \cap J}{K \in \varUlF}\]
+  est isomorphe à l'ultraproduit des $(X_i)_{i \in I}$ par $\varUlF$. On raisonne
+  maintenant par récurrence sur $N$ pour montrer que l'ultraproduit d'ensembles
+  tous de cardinal inférieur à $N$ est de cardinal au plus $N$~:
+  \begin{itemize}
+  \item Les cas $0$ et $1$ ne posent aucun souci.
+  \item Supposons l'énoncé vrai, et soit un ultraproduit d'ensembles de cardinal
+    inférieur à $N+1$. En notant de nouveau $(X_i)$ ces ensembles, on
+    les réécrit en $X_i = Y_i \sqcup\{y_i\}$ avec $Y_i$ de cardinal au plus
+    $N$ (quitte à supposer tous les $X_i$ non vides).
+    Soit alors un élément $\clas{(x_i)}$ dans l'ultraproduit, deux cas sont
+    possibles~:
+    \begin{itemize}
+    \item si $\compr{i \in I}{x_i = y_i}\in\varUlF$, alors l'élément vaut
+      exactement $\clas{(y_i)}$.
+    \item si $\compr{i \in I}{x_i = y_i}\notin\varUlF$, alors
+      $\compr{i \in I}{x_i \neq y_i}\in\varUlF$, donc l'élément est égal à un
+      élément de l'ultraproduit des $Y_i$, et ces éléments sont (par hypothèse
+      de récurrence) en nombre au plus $N$.
+    \end{itemize}
+    L'élément est donc égal à un élément parmi $N$, ou à un autre, donc il
+    y a une bijection entre cet ultraproduit et un entier inférieur à $N+1$.
+  \end{itemize}
+  Par récurrence, on en déduit que tout ultraproduit d'ensembles de cardinal
+  inférieur à $N$ est de cardinal inférieur à $N$. On en déduit le résultat.
+\end{proof}
+
+\begin{corollary}
+  Si $X$ est un ensemble tel que $\Cal_0 \leq \Card(X)\leq2^{\Cal_0}$, et
+  $\varUlF$ est un ultrafiltre sur un ensemble $I$, alors
+  $\displaystyle\Card\left(\prod_{i \in I}^{\varUlF} X\right) = 2^{\Cal_0}$.
+\end{corollary}
