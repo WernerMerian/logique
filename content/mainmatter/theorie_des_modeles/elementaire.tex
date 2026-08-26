@@ -675,30 +675,38 @@ alors $(u_n) \sim (v_n)$. Cet énoncé peut être reformulé à l'aide de filtre
 donnant lieu à la notion de produit réduit.
 
 \begin{definition}[\'Equivalence modulo filtre, produit réduit]
-  Soit $I$ un ensemble, $(X_i)_{i\in I}$ une famille d'ensembles et $\varFil$
-  un filtre sur $I$ (c'est-à-dire sur l'algèbre de Boole $\powerset(I)$). On
-  définit l'équivalence modulo $\varFil$ par
-  \[(x_i) \sim_{\varFil} (y_i) \defeq \compr{i \in I}{x_i = y_i} \in \varFil\]
+  Soit $\indSet$ un ensemble, $(X_i)_{i\in I}$ une famille d'ensembles et
+  $\varFil$ un filtre sur $\indSet$ (c'est-à-dire sur l'algèbre de Boole
+  $\powerset(\indSet)$). On définit l'équivalence modulo $\varFil$ par
+  \[(x_i) \sim_{\varFil} (y_i) \defeq
+  \compr{i \in \indSet}{x_i = y_i} \in \varFil\]
 
   On définit le produit réduit de $(X_i)_{i \in I}$ par $\varFil$ par
-  \[\prod_{i \in I}^{\varFil} X_i \defeq \quot{\prod_{i \in I} X_i}{\sim_{\varFil}}\]
+  \[\prod_{i \in \indSet}^{\varFil} X_i \defeq
+  \quot{\prod_{i \in \indSet} X_i}{\sim_{\varFil}}\]
+  On note aussi le produit réduit
+  $\displaystyle\prod^{\varFil} X_i$ ou $\displaystyle\prod_{\varFil} X_i$
+  s'il n'y a pas d'ambiguïté sur l'ensemble $\indSet$, ou encore
+  $\displaystyle\left.\prod_{i \in \indSet} X_i\;\middle/\; \varFil\right.$.
 \end{definition}
 
 \begin{proof}
   Vérifions que $\sim_{\varFil}$ est bien une relation d'équivalence~:
   \begin{itemize}
-  \item puisque $I \in \varFil$, on en déduit que $\compr{i \in I}{x_i=x_i}$
-    est un élément de $\varFil$ pour toute famille $(x_i)$.
+  \item puisque $\indSet \in \varFil$, on en déduit que
+    $\compr{i \in \indSet}{x_i=x_i}$ est un élément de $\varFil$ pour toute
+    famille $(x_i)$.
   \item la symétrie est évidente puisque
-    $\compr{i\in I}{x_i=y_i}=\compr{i\in I}{y_i=x_i}$.
+    $\compr{i\in \indSet}{x_i=y_i} = \compr{i\in \indSet}{y_i=x_i}$.
   \item si $(x_i)\sim_\varFil (y_i)\sim_\varFil (z_i)$, alors on pose
-    $J \defeq \compr{i \in I}{x_i = y_i}$ et
-    $K \defeq \compr{i \in I}{y_i = z_i}$. Comme $J \in \varFil$ et
-    $K\in\varFil$, on sait que $J \cap K \in \varFil$, et on sait que
-    \[\compr{i \in I}{x_i = z_i}\supseteq J \cap K\]
+    $\indSetB \defeq \compr{i \in \indSet}{x_i = y_i}$ et
+    $\indSetBB \defeq \compr{i \in \indSet}{y_i = z_i}$. Comme
+    $\indSetB \in \varFil$ et $\indSetBB\in\varFil$, on sait que
+    $\indSetB \cap \indSetBB \in \varFil$, et on sait que
+    \[\compr{i \in \indSet}{x_i = z_i}\supseteq \indSetB \cap \indSetBB\]
     donc par clôture par le haut de $\varFil$,
-    $\compr{i \in I}{x_i = z_i} \in \varFil$, donc $(x_i)\sim_\varFil (z_i)$.
-    \qedhere
+    $\compr{i \in \indSet}{x_i = z_i} \in \varFil$, donc
+    $(x_i)\sim_\varFil (z_i)$. \qedhere
   \end{itemize}
 \end{proof}
 
@@ -710,25 +718,28 @@ d'ensembles, peut en fait se transporter aux familles de structure~: les
 fonctions et relations passent au quotient.
 
 \begin{definition}[Produit réduit de structures]
-  Soit $\Sign$ une signature, $(\varMM_i)_{i \in I}$ une famille de
-  $\Sign$-structures et $\varFil$ un filtre sur $I$. On définit le produit
-  réduit $\displaystyle\prod_{i \in I}^{\varFil} \varMM_i$ par~:
+  Soit $\Sign$ une signature, $(\varMM_i)_{i \in \indSet}$ une famille de
+  $\Sign$-structures et $\varFil$ un filtre sur $\indSet$. On définit le
+  produit réduit
+  $\displaystyle\prod_{i \in \indSet}^{\varFil} \varMM_i$ par~:
   \begin{itemize}
-  \item $\displaystyle\carM{\prod_{i \in I}^{\varFil}\varMM_i} \defeq
-    \prod_{i in I}^{\varFil}\carMM_i$
+  \item $\displaystyle\carM{\prod_{i \in \indSet}^{\varFil}\varMM_i} \defeq
+    \prod_{i \in \indSet}^{\varFil}\carM{\varMM_i}$
   \item pour tout symbole de relation $\symbF$ d'arité $n$,
     \[
     \makeFun
-        {\toMP{\symbF}{\prod_{\varFil}\varMM_i}}
-        {\left(\prod_{i \in I}^{\varFil}\varMM_i\right)^n}
-        {\prod_{i \in I}^{\varFil}\varMM_i}
-        {(\clas{(x_{i,1})},\ldots,\clas{(x_{i,n})})}
-        {\clas{(\toMP{\symbF}{\varMM_i}(x_{i,1},\ldots,x_{i,n}))}}
-        \]
+        {\toMP{\symbF}{\prod^{\varFil}\varMM_i}}
+        {\carM{\prod_{i \in \indSet}^{\varFil}\varMM_i}^n}
+        {\carM{\prod_{i \in \indSet}^{\varFil}\varMM_i}}
+        {(\clas{(x_{1}^{(i)})},\ldots,\clas{(x_{n}^{(i)})})}
+        {\clas{(\toMP{\symbF}{\varMM_i}(x_{1}^{(i)},\ldots,x_{n}^{(i)}))}}
+    \]
   \item pour tout symbole de relation $\symbR$ d'arité $n$,
-    \[\toMP{\symbR}{\prod_{\varFil}\varMM_i}
-    (\clas{(x_{i,1})},\ldots,\clas{(x_{i,n})}) \defeq
-    \compr{i \in I}{\toMP{\symbR}{\varMM_i}(x_{i,1},\ldots,x_{i,n})}\in\varFil\]
+    \[\toMP{\symbR}{\prod^{\varFil}\varMM_i}
+    (\clas{(x_{1}^{(i)})},\ldots,\clas{(x_{n}^{(i)})}) \defeq
+    \compr{i \in \indSet}{\toMP{\symbR}{\varMM_i}(x_{1}^{(i)},\ldots,x_{n}^{(i)})}
+    \in\varFil
+    \]
   \end{itemize}
 \end{definition}
 
@@ -753,8 +764,9 @@ vérité \og suffisamment grande\fg, on s'attend à un résultat de la forme
   \noindent
   Pout toute formule $\varFF$ et tous paramètres $\overrightarrow{\clas{x_i}}$,
   on a
-  \[\prod_{\varFil} \varMM_i,\overrightarrow{\clas{x_i}}\satisf \varFF \iff
-  \compr{i \in I}{\varMM_i,\overrightarrow{x_i} \satisf \varFF} \in \varFil\]
+  \[\prod^{\varFil} \varMM_i,\overrightarrow{\clas{x_i}}\satisf \varFF \iff
+  \compr{i \in \indSet}{\varMM_i,\overrightarrow{x_i} \satisf \varFF}
+  \in \varFil\]
 \end{quotation}
 Un début encourageant est une version faible de ce résultat, dans le cas d'une
 sous-logique de la logique du premier ordre.
@@ -772,12 +784,13 @@ sous-logique de la logique du premier ordre.
 \end{definition}
 
 \begin{proposition}\label{prop.Los.faible}
-  Soit $\Sign$ une signature, $I$ un ensemble, $(\varMM_i)_{i \in I}$ une famille
-  de $\Sign$-structures indicée sur $I$, $\varFil$ un filtre sur $I$,
-  $\varFF\in\FormReg(\Sign)$ et $\overrightarrow{\clas{x_i}}$ la donnée de
-  paramètres dans $\prod_{\varFil}\varMM_i$. Alors
-  \[\prod_{\varFil} \varMM_i,\overrightarrow{\clas{x_i}}\satisf \varFF \iff
-  \compr{i \in I}{\varMM_i,\overrightarrow{x_i} \satisf \varFF} \in \varFil\]
+  Soit $\Sign$ une signature, $\indSet$ un ensemble, $(\varMM_i)_{i \in \indSet}$
+  une famille de $\Sign$-structures indicée sur $\indSet$, $\varFil$ un filtre
+  sur $\indSet$, $\varFF\in\FormReg(\Sign)$ et $\overrightarrow{\clas{x_i}}$ la
+  donnée de paramètres dans $\prod^{\varFil}\varMM_i$. Alors
+  \[\prod^{\varFil} \varMM_i,\overrightarrow{\clas{x_i}}\satisf \varFF \iff
+  \compr{i \in \indSet}{\varMM_i,\overrightarrow{x_i} \satisf \varFF}
+  \in \varFil\]
 \end{proposition}
 
 \begin{proof}
@@ -789,31 +802,31 @@ sous-logique de la logique du premier ordre.
     produit réduit.
   \item Le cas de $\top$ est automatique.
   \item Dans le cas de $\varFF\land\varFP$, supposons que
-    $\prod_{\varFil}\varMM_i\satisf \varFF\land \varFP$, alors par définition
+    $\prod^{\varFil}\varMM_i\satisf \varFF\land \varFP$, alors par définition
     puis hypothèse d'induction, les deux ensembles
-    \[J \defeq\compr{i \in I}{\varMM_i\satisf\varFF}\qquad
-    K\defeq\compr{i \in I}{\varMM_i\satisf\varFP}\]
+    \[\indSetB \defeq\compr{i \in \indSet}{\varMM_i\satisf\varFF}\qquad
+    \indSetBB\defeq\compr{i \in \indSet}{\varMM_i\satisf\varFP}\]
     sont dans $\varFil$. Par compatibilité vers le bas, on en déduit que
-    $J\cap K \in \varFil$, ce qui correspond exactement à
-    $\compr{i \in I}{\varMM_i\satisf\varFF\land\varFP}$. Réciproquement, si
-    $J\cap K \in \varFil$, alors $J\in \varFil$ et $K\in\varFil$ par clôture par
-    le haut, donc par hypothèse d'induction
-    $\prod_{\varFil}\varMM_i\satisf\varFF\land\varFP$.
+    $\indSetB\cap \indSetBB \in \varFil$, ce qui correspond exactement à
+    $\compr{i \in \indSet}{\varMM_i\satisf\varFF\land\varFP}$. Réciproquement,
+    si $\indSetB\cap \indSetBB \in \varFil$, alors $\indSetB\in \varFil$ et
+    $\indSetBB\in\varFil$ par clôture par le haut, donc par hypothèse
+    d'induction $\prod^{\varFil}\varMM_i\satisf\varFF\land\varFP$.
   \item Dans le cas de $\exists x, \varFF$, si
-    $\prod_{\varFil}\varMM_i\satisf\exists x, \varFF$ alors on trouve
+    $\prod^{\varFil}\varMM_i\satisf\exists x, \varFF$ alors on trouve
     $\clas{(x_i)}$ tel que $\varMM_i\satisf\varFF(\clas{(x_i)})$, donc par
     hypothèse d'induction
-    \[\compr{i \in I}{\varMM_i\satisf\varFF(x_i)} \in \varFil\]
-    d'où $\compr{i \in I}{\varMM_i\satisf \exists x,\varFF(x)}\in\varFil$.
+    \[\compr{i \in \indSet}{\varMM_i\satisf\varFF(x_i)} \in \varFil\]
+    d'où $\compr{i \in \indSet}{\varMM_i\satisf \exists x,\varFF(x)}\in\varFil$.
     Réciproquement, supposons qu'on a l'appartenance
-    $\compr{i \in I}{\varMM_i\satisf\exists x,\varFF(x)}\in\varFil$.
-    On trouve donc $J \in \varFil$ et une famille $(x_i)$ sur $J$ telle que
-    $\varMM_i\satisf\varFF(x_i)$ pour $i \in J$. Quitte à compléter cette
-    famille par des éléments quelconque des $\varMM_i$ pour $i\notin J$, on
-    trouve alors $(x_i)_{i \in I}$ tel que
-    \[\compr{i \in I}{\varMM_i\satisf\varFF(x_i)}\supseteq J\]
+    $\compr{i \in \indSet}{\varMM_i\satisf\exists x,\varFF(x)}\in\varFil$.
+    On trouve donc $\indSetB \in \varFil$ et une famille $(x_i)$ sur $\indSetB$
+    telle que $\varMM_i\satisf\varFF(x_i)$ pour $i \in \indSetB$. Quitte à
+    compléter cette famille par des éléments quelconque des $\varMM_i$ pour
+    $i\notin \indSetB$, on trouve alors $(x_i)_{i \in \indSet}$ tel que
+    \[\compr{i \in \indSet}{\varMM_i\satisf\varFF(x_i)}\supseteq \indSetB\]
     donc cet ensemble est dans $\varFil$ (par clôture par le haut), donc
-    $\prod_{\varFil}\varMM_i\satisf\exists x, \varFF$.\qedhere
+    $\prod^{\varFil}\varMM_i\satisf\exists x, \varFF$.\qedhere
   \end{itemize}
 \end{proof}
 
@@ -821,37 +834,37 @@ sous-logique de la logique du premier ordre.
   On a ici eu besoin d'avoir uniquement des structures non vides. On a pris
   cette convention depuis le \cref{chp.logpred}, mais il est ici possible de
   faire fonctionner la construction dans le cas de structures vides. On
-  prend alors comme éléments non plus des familles sur $I$ mais sur
-  n'importe quel $J \in \varFil$, et on définit l'équivalence
-  \[(x_i)_{i \in J} \sim_\varFil (y_i)_{i \in K} \defeq
-  \compr{i \in J \cap K}{x_i = y_i} \in \varFil\]
+  prend alors comme éléments non plus des familles sur $\indSet$ mais sur
+  n'importe quel $\indSet \in \varFil$, et on définit l'équivalence
+  \[(x_i)_{i \in \indSetB} \sim_\varFil (y_i)_{i \in \indSetBB} \defeq
+  \compr{i \in \indSetB \cap \indSetBB}{x_i = y_i} \in \varFil\]
   Tout ce qui a été dit jusqu'ici fonctionne encore, mais on peut désormais
   considérer des produits réduits contenant un nombre fini de structures
   vides sans changer le résultat final. Dans la démonstration précédente,
   cela nous évite aussi une utilisation de l'axiome du choix pour compléter
-  notre famille sur $J$ en une famille sur $I$, mais l'axiome du choix reste
-  nécessaire lorsqu'on construit la famille sur $J$.
+  notre famille sur $\indSetB$ en une famille sur $\indSet$, mais l'axiome du
+  choix reste nécessaire lorsqu'on construit la famille sur $\indSetB$.
 \end{remark}
 
 Pour déduire de cette proposition le cas de n'importe quelle formule, il nous
 faudrait pouvoir passer à la négation~: avec les lois de De Morgan, on peut
 réécrire $\lor$ et $\to$ à partir de $\land$ et $\lnot$, et $\forall$ à partir
-de $\exists$ et $\lnot$. Malheureusement, c'est ce passage à la négation qui
-n'est pas possible à faire dans le cas d'un filtre quelconque. Une autre façon
-de le voir est de considérer le cas de la disjonction.
+de $\exists$ et $\lnot$. Malheureusement, dès le passage à la disjonction, la
+propriété échoue, comme le montre l'exemple suivant.
 
 \begin{example}
   Considérons une signature avec deux constantes propositionnelles $\symbR$ et
   $\symbR'$.
   On définit la famille $(\varMM_i)_{i \in \bN}$ en interprétant $\symbR$ par la
-  proposition vraie pour les $i$ pairs, et $\symbR$ par la proposition vraie
+  proposition vraie pour les $i$ pairs, et $\symbR'$ par la proposition vraie
   pour les $i$ impairs. On a alors
-  \[\prod_{\varFil}\varMM_i\satisf \symbR\lor\symbR'\]
-  mais $\compr{i \in I}{\varMM_i\satisf\symbR} = 2\bN$ et
-  $\compr{i \in I}{\varMM_i\satisf\symbR'} = 2\bN + 1$. Si on prend le filtre
+  \[\prod^{\varFil}\varMM_i\satisf \symbR\lor\symbR'\]
+  mais $\compr{i \in \bN}{\varMM_i\satisf\symbR} = 2\bN$ et
+  $\compr{i \in \bN}{\varMM_i\satisf\symbR'} = 2\bN + 1$. Si on prend le filtre
   de Fréchet pour notre produit réduit, aucun des deux ensembles n'est dans le
-  filtre. Ainsi, on satisfait $\symbR\lor\symbR'$ mais aucun des deux
-  individuellement.
+  filtre. Ainsi, on satisfait $\symbR\lor\symbR'$ pour chaque $\varMM_i$
+  mais aucun des deux individuellement, et donc le produit réduit ne satisfait
+  pas $\symbR\lor\symbR'$.
 \end{example}
 
 \subsection{Ultraproduit}
@@ -861,52 +874,64 @@ ultrafiltres, qui permettent de simuler la négation~: si un ensemble d'indices
 n'est pas dans le filtre, alors son complémentaire l'est.
 
 \begin{definition}[Ultraproduit, ultrapuissance]
-  Soit $\Sign$ une signature, $I$ un ensemble, $(\varMM_i)_{i \in I}$ une
-  famille de $\Sign$-structures et $\varUlF$ un ultrafiltre sur $I$. On
-  appelle ultraproduit de $(\varMM_i)$ par $\varUlF$ le produit réduit associé.
-  Si $(\varMM_i)$ est une famille constante, on appelle ultrapuissance
-  l'ultraproduit associé.
+  Soit $\Sign$ une signature, $\indSet$ un ensemble, $(\varMM_i)_{i \in \indSet}$
+  une famille de $\Sign$-structures et $\varUlF$ un ultrafiltre sur $\indSet$.
+  On appelle ultraproduit de $(\varMM_i)$ par $\varUlF$ le produit réduit
+  associé. Si $(\varMM)_{i \in \indSet}$ est une famille constante, on appelle
+  ultrapuissance l'ultraproduit associé, qu'on note aussi $\varMM^{\varUlF}$.
 \end{definition}
 
 \begin{remark}
   Si on considère un ultrafiltre principal $\FilPrinc{j}$, alors on a un
-  isomorphisme $\displaystyle\prod_{\FilPrinc{j}} \varMM_i \iso \varMM_j$. Les
+  isomorphisme $\displaystyle\prod^{\FilPrinc{j}} \varMM_i \iso \varMM_j$. Les
   ultraproduits d'intérêt sont donc sur des ultrafiltres libres.
 \end{remark}
 
-On peut alors énoncer le théorème central sur les ultraproduits~: le théorème
-de Łos.
+\noindent
+On peut alors énoncer le théorème fondamental sur les ultraproduits~: le
+théorème de Łos.
 
 \begin{theorem}[Łos \cite{Los1955}]\label{thm.Los}
-  Soit $\Sign$ une signature, $I$ un ensemble, $(\varMM_i)_{i \in I}$ une famille
-  de $\Sign$-structures indicée sur $I$, $\varUlF$ un ultrafiltre sur $I$,
-  $\varFF\in\Formula(\Sign)$ et $\overrightarrow{\clas{x_i}}$ la donnée de
-  paramètres dans $\prod_{\varUlF}\varMM_i$. Alors
-  \[\prod_{i \in I}^{\varUlF} \varMM_i,\overrightarrow{\clas{x_i}}\satisf
+  Soit $\Sign$ une signature, $\indSet$ un ensemble, $(\varMM_i)_{i \in \indSet}$
+  une famille de $\Sign$-structures indicée sur $\indSet$, $\varUlF$ un
+  ultrafiltre sur $\indSet$, $\varFF\in\Formula(\Sign)$ et
+  $\overrightarrow{\clas{x_i}}$ la donnée de paramètres dans
+  $\prod^{\varUlF}\varMM_i$. Alors
+  \[\prod_{i \in \indSet}^{\varUlF} \varMM_i,\overrightarrow{\clas{x_i}}\satisf
   \varFF \iff
-  \compr{i \in I}{\varMM_i,\overrightarrow{x_i} \satisf \varFF} \in \varUlF\]
+  \compr{i \in \indSet}{\varMM_i,\overrightarrow{x_i} \satisf \varFF}
+  \in \varUlF\]
 \end{theorem}
 
 \begin{proof}
   On sait par la \cref{prop.Los.faible} que le théorème est vrai pour la
   logique régulière. On montre donc simplement le cas de la négation~:
   \begin{align*}
-    \prod_{\varUlF}\varMM_i\satisf\lnot\varFF &\iff
-    \prod_{\varUlF}\varMM_i\nsatisf\varFF &\text{par définition}\\
-    &\iff \compr{i \in I}{\varMM_i\satisf\varFF} \notin \varUlF
+    \prod^{\varUlF}\varMM_i\satisf\lnot\varFF &\iff
+    \prod^{\varUlF}\varMM_i\nsatisf\varFF &\text{par définition}\\
+    &\iff \compr{i \in \indSet}{\varMM_i\satisf\varFF} \notin \varUlF
     &\text{par hypothèse d'induction}\\
-    &\iff \compr{i \in I}{\varMM_i\nsatisf\varFF} \in \varUlF
+    &\iff \compr{i \in \indSet}{\varMM_i\nsatisf\varFF} \in \varUlF
     &\text{par propriété des ultraproduits}\\
-    &\iff \compr{i \in I}{\varMM_i\satisf\lnot\varFF}\in \varUlF
+    &\iff \compr{i \in \indSet}{\varMM_i\satisf\lnot\varFF}\in \varUlF
     &\text{par définition}
   \end{align*}
   En utilisant les lois de De Morgan, on en déduit le résultat.
 \end{proof}
 
 \begin{corollary}
-  Soit $\varT$ une théorie sur une signature $\Sign$. Si $(\varMM_i)_{i \in I}$
-  est une famille de modèles de $\varT$ et $\varUlF$ est un ultrafiltre sur
-  $I$, alors $\prod_{\varUlF}\varMM_i$ est aussi un modèle de $\varT$.
+  Soit $\varT$ une théorie sur une signature $\Sign$. Si
+  $(\varMM_i)_{i \in \indSet}$ est une famille de modèles de $\varT$ et $\varUlF$
+  est un ultrafiltre sur $\indSet$, alors $\prod^{\varUlF}\varMM_i$ est aussi un
+  modèle de $\varT$.
+\end{corollary}
+
+\begin{corollary}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure, alors pour
+  tout ensemble $\indSet$ et ultrafiltre $\varUlF$ sur $\indSet$, la fonction
+  \[\makeFun{\iota}{\varMM}{\prod_{i \in _indSet}^{\varUlF}}
+            {x}{\clas{(x)_{i \in \indSet}}}\]
+  est un plongement élémentaire.
 \end{corollary}
 
 On peut finalement définir un modèle de l'analyse non standard, en prenant une
@@ -926,16 +951,6 @@ ultrapuissance dénombrable de $\bR$.
   définition.
 \end{remark}
 
-Plus généralement, on peut effectuer une ultrapuissance de n'importe quelle
-structure, et obtenir un plongement élémentaire.
-
-\begin{corollary}
-  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure, alors pour
-  tout ensemble $I$ et ultrafiltre $\varUlF$ sur $I$, la fonction
-  \[\makeFun{\iota}{\varMM}{\prod_{i \in I}^{\varUlF}}{x}{\clas{(x)_{i \in I}}}\]
-  est un plongement élémentaire.
-\end{corollary}
-
 Maintenant que nous avons construit les ultraproduits et montré leur bon
 comportement, on peut s'en servir pour donner une nouvelle preuve du théorème
 de compacité.
@@ -947,31 +962,32 @@ de compacité.
 
 \begin{proof}
   On considère l'ensemble d'indices
-  \[I \defeq \powerfin(\varT)\]
-  Pour faciliter la lecture, on va noter $i \in I$ les parties finies vues comme
-  des indices, et $\vec{\varFF_i}$ l'élément $i$ vu comme un ensemble fini de
-  propositions.
-  Pour chaque $i \in I$, par cohérence finie, on trouve un modèle $\varMM_i$ tel
-  que $\varMM_i\satisf\vec{\varFF_i}$. Pour chaque $i \in I$, on pose de plus
-  \[J_i \defeq \compr{j \in I}{\varMM_j\satisf\vec{\varFF_i}}\qquad
-  J \defeq \compr{J_i}{i \in I}\]
-  Montrons que $J$ a la propriété d'intersection finie~: soient
-  $i_1,\ldots,i_k \in I$, alors l'ensemble de formules
+  \[\indSet \defeq \powerfin(\varT)\]
+  Pour faciliter la lecture, on va noter $i \in \indSet$ les parties finies vues
+  comme des indices, et $\vec{\varFF_i}$ l'élément $i$ vu comme un ensemble fini
+  de propositions.
+  Pour chaque $i \in \indSet$, par cohérence finie, on trouve un modèle
+  $\varMM_i$ tel que $\varMM_i\satisf\vec{\varFF_i}$. Pour chaque
+  $i \in \indSet$, on pose de plus
+  \[\indSetB_i \defeq \compr{j \in \indSet}{\varMM_j\satisf\vec{\varFF_i}}\qquad
+  \indSetB \defeq \compr{\indSetB_i}{i \in \indSet}\]
+  Montrons que $\indSetB$ a la propriété d'intersection finie~: soient
+  $i_1,\ldots,i_k \in \indSet$, alors l'ensemble de formules
   $\vec{\varFF_{i_1}}\cup\cdots\cup\vec{\varFF_{i_k}}$ est un ensemble fini de
   formules qu'on va noter $i$, et on a donc
-  \[\varMM_i\in \bigcap_{p = 1}^k J_{i_p}\]
-  donc une intersection finie d'éléments de $J$ est non vide.
+  \[\varMM_i\in \bigcap_{p = 1}^k \indSetB_{i_p}\]
+  donc une intersection finie d'éléments de $\indSetB$ est non vide.
 
   On trouve alors, en appliquant le lemme de l'ultrafiltre au filtre engendré
-  par $J$, un ultrafiltre $\varUlF\supseteq J$ sur $I$. On définit maintenant la
-  structure
-  \[\varMM \defeq \prod_{i \in I}^{\varUlF} \varMM_i\]
+  par $\indSetB$, un ultrafiltre $\varUlF\supseteq \indSetB$ sur $\indSet$. On
+  définit maintenant la structure
+  \[\varMM \defeq \prod_{i \in \indSet}^{\varUlF} \varMM_i\]
   On montre finalement que $\varMM\satisf\varT$. Soit $\varFF \in \varT$,
   d'après le \cref{thm.Los} il nous suffit de vérifier que
-  $\compr{i \in I}{\varMM_i\satisf \varFF}\in \varUlF$, mais ce dernier
-  ensemble correspond exactemnet à $J_{\{\varFF\}}$, qui est par construction
-  un élément de $\varUlF$. On en déduit donc que $\varMM\satisf\varFF$, puis
-  que $\varMM\satisf\varT$.
+  $\compr{i \in \indSet}{\varMM_i\satisf \varFF}\in \varUlF$, mais ce dernier
+  ensemble correspond exactement à $\indSetB_{\{\varFF\}}$, qui est par
+  construction un élément de $\varUlF$. On en déduit donc que
+  $\varMM\satisf\varFF$, puis que $\varMM\satisf\varT$.
 \end{proof}
 
 Avec ces outils, on peut maintenant caractériser les classes élémentaires~:
@@ -998,9 +1014,9 @@ mais ces deux conditions caractérisent en fait les classes élémentaires.
   On sait donc que pour tout $\varMM\in\varCC$, $\varMM\satisf \varT$.
   
   Montrons que tout modèle de $\varT$ est dans $\varCC$. Soit donc un modèle
-  $\varMM\satisf\varT$. On pose maintenant
-  \[I \defeq \compr{F \subfin \Prop(\Sign)}{\varMM\satisf F}\]
-  Là encore, on va noter $i \in I$ un élément pris comme indice, et
+  $\varMM\satisf\varT$. On pose
+  \[\indSet \defeq \compr{F \subfin \Prop(\Sign)}{\varMM\satisf F}\]
+  Là encore, on va noter $i \in \indSet$ un élément pris comme indice, et
   $\vec{\varFF_i}$ l'élément $i$ pris comme ensemble de propositions.
   Pour tout $i$, on peut trouver une structure $\varMN_i\in\varCC$ telle que
   $\varMN_i\satisf\vec{\varFF_i}$, car sinon on trouverait $\vec{\varFF_i}$
@@ -1008,14 +1024,14 @@ mais ces deux conditions caractérisent en fait les classes élémentaires.
   prendre l'intersection finie de ces formules) on a une formule
   $\varFF$ telle que $\lnot\varFF\in\varT$, donc telle que
   $\varMM\nsatisf\varFF$. On pose, comme la dernière fois,
-  \[J_i \defeq \compr{j \in I}{\varMN_j\satisf\vec{\varFF_i}}\qquad
-  J \defeq \compr{J_i}{i \in I}\]
-  et on vérifie que $J$ vérifie la propriété d'intersection finie (comme
+  \[\indSetB_i \defeq \compr{j \in \indSet}{\varMN_j\satisf\vec{\varFF_i}}\qquad
+  \indSetB \defeq \compr{\indSetB_i}{i \in \indSet}\]
+  et on vérifie que $\indSetB$ vérifie la propriété d'intersection finie (comme
   pour le théorème de compacité, cette propriété est directe parce qu'on
   travaille avec des ensembles finis). On trouve donc un ultrafiltre $\varUlF$
-  contenant $J$, et on pose
-  \[\varMN\defeq \prod_{i \in I}^{\varUlF} \varMN_i\]
-  Par le même argument que précédemment, on montre que $\varMN\satisf I$,
+  contenant $\indSetB$, et on pose
+  \[\varMN\defeq \prod_{i \in \indSet}^{\varUlF} \varMN_i\]
+  Par le même argument que précédemment, on montre que $\varMN\satisf \indSet$,
   c'est-à-dire (en se restreignant aux ensembles d'une proposition) que
   $\varMN\satisf\Th(\varMM)$. Or, d'après le \cref{lem.equivelt.th}, cela
   signifie que $\varMN\eltEq\varMM$, et $\varCC$ est stable par équivalence
@@ -1031,8 +1047,9 @@ théorème. Celui-ci étant très avancé, nous n'en donnons pas la preuve.
     \cite{Keisler1961,Keisler1964,Shelah1971}]
   Soient $\varMM,\varMN$ deux structures sur une signature $\Sign$. Alors
   $\varMM$ et $\varMN$ sont élémentairement équivalentes si et seulement s'il
-  existe un ensemble $I$ et un ultrafiltre $\varUlF$ sur $I$ tels que
-  \[\prod_{i \in I}^{\varUlF}\varMM \iso \prod_{i \in I}^{\varUlF}\varMN\]
+  existe un ensemble $\indSet$ et un ultrafiltre $\varUlF$ sur $\indSet$ tels
+  que
+  \[\varMM^{\varUlF} \iso \varMN^{\varUlF}\]
 \end{theorem}
 
 \begin{corollary}
@@ -1040,7 +1057,8 @@ théorème. Celui-ci étant très avancé, nous n'en donnons pas la preuve.
   elle est stable par isomorphisme, ultraproduit et ultraracine.
 \end{corollary}
 
-Enfin, une notion plus fine de classes élémentaires est celle de classe
+\noindent
+Enfin, une notion plus fine de classe élémentaire est celle de classe
 élémentaire de base.
 
 \begin{definition}[Classe élémentaire de base]
@@ -1086,11 +1104,11 @@ d'indices est dénombrables. On peut d'abord majorer cette cardinalité assez
 facilement.
 
 \begin{lemma}\label{lem.card.ultra.maj}
-  Soit $I$ un ensemble dénombrable, $\varUlF$ un ultrafiltre sur $I$, et
-  $(X_i)_{i \in I}$ une famille d'ensembles telle que
-  \[\forall i \in I, \Card(X_i) \leq 2^{\Cal_0}\]
+  Soit $\indSet$ un ensemble dénombrable, $\varUlF$ un ultrafiltre sur
+  $\indSet$, et $(X_i)_{i \in \indSet}$ une famille d'ensembles telle que
+  \[\forall i \in \indSet, \Card(X_i) \leq 2^{\Cal_0}\]
   alors
-  $\displaystyle\Card\left(\prod_{i \in I}^{\varUlF} X_i\right)\leq 2^{\Cal_0}$.
+  $\displaystyle\Card\left(\prod_{i \in \indSet}^{\varUlF} X_i\right)\leq 2^{\Cal_0}$.
 \end{lemma}
 
 \begin{proof}
@@ -1111,10 +1129,10 @@ ceux d'indices pairs, et seul $0$ peut être un élément d'indice pair). Ainsi,
 on donne un critère permettant d'assurer que la cardinalité ne s'écrase pas.
 
 \begin{definition}[Suite $\varUlF$-majorée]
-  Soit $(n_i)_{i \in I}$ une suite d'entiers sur un ensemble $I$, et $\varUlF$
-  un ultrafiltre sur $I$. On dit que cette suite est $\varUlF$-majorée s'il
-  existe un entier $N$ tel que
-  \[\compr{i \in I}{n_i < N} \in \varUlF\]
+  Soit $(n_i)_{i \in \indSet}$ une famille d'entiers sur un ensemble $\indSet$, et
+  $\varUlF$ un ultrafiltre sur $\indSet$. On dit que cette famille est
+  $\varUlF$-majorée s'il existe un entier $N$ tel que
+  \[\compr{i \in \indSet}{n_i < N} \in \varUlF\]
 \end{definition}
 
 Une suite $\varUlF$-majorée est donc une suite bornée si l'on néglige les
@@ -1124,38 +1142,42 @@ suite des cardinaux n'est pas $\varUlF$-majorée, on est assurés que
 l'ultraproduit contient suffisamment d'éléments.
 
 \begin{proposition}
-  Soit $I$ un ensemble, $\varUlF$ un ultrafiltre sur $I$, et $(X_i)_{i \in I}$
-  une famille d'ensembles telle que la famille $(\Card(X_i))_{i \in I}$ n'est pas
-  $\varUlF$-majorée. On a alors l'inégalité
-  $\displaystyle\Card\left(\prod_{i \in I}^{\varUlF}X_i\right) \geq 2^{\Cal_0}$.
+  Soit $\indSet$ un ensemble, $\varUlF$ un ultrafiltre sur $\indSet$, et
+  $(X_i)_{i \in \indSet}$ une famille d'ensembles telle que la famille
+  $(\Card(X_i))_{i \in \indSet}$ n'est pas $\varUlF$-majorée. On a alors
+  l'inégalité
+  $\displaystyle\Card\left(\prod_{i \in \indSet}^{\varUlF}X_i\right) \geq 2^{\Cal_0}$.
 \end{proposition}
 
 \begin{proof}
-  On pose d'abord, pour $i \in I$, $n(i)$ le plus grand entier $n$ tel que
-  $2^n \leq \Card(X_i)$. Comme $(\Card(X_i))_{i \in I}$ n'est pas
-  $\varUlF$-majorée, $(n(i))_{i \in I}$ ne l'est pas non plus.
+  On pose d'abord, pour tout $i \in \indSet$, $n(i)$ le plus grand entier $n$
+  tel que $2^n \leq \Card(X_i)$. Comme $(\Card(X_i))_{i \in \indSet}$ n'est pas
+  $\varUlF$-majorée, $(n(i))_{i \in \indSet}$ ne l'est pas non plus.
 
-  Pour tout $i \in I$, on choisit
+  Pour tout $i \in \indSet$, on choisit
   $\left(x_{\varwd}^{(i)}\right)_{\varwd\in \intB^{n(i)}}$ un
   tuple\footnote{On reprend ici le formalisme des mots binaires, déjà utilisé
   dans la fin du \cref{chp.desc} et détaillé dans le \cref{chp.auto}.}
   d'éléments distincts de $X_i$. On définit maintenant la fonction suivante~:
-  \[\makeFun{f}{2^\bN}{\prod_{i \in I}^{\varUlF}X_i}
+  \[\makeFun{f}{2^\bN}{\prod_{i \in \indSet}^{\varUlF}X_i}
             {\varCan}{\clas{i \mapsto x_{\varCan\restr{n(i)}}^{(i)}}}\]
 
   $f$ est injective. En effet, si $\varCan\neq\varCan'$, alors soit $N$
   un indice tel que $\varCan_N \neq \varCan_N'$. Comme $n(i)$ n'est pas
   $\varUlF$-majorée, on sait que
-  \[\compr{i \in I}{n(i) > N} \in \varUlF\]
+  \[\compr{i \in \indSet}{n(i) > N} \in \varUlF\]
   (car son complémentaire n'est pas dans $\varUlF$). Or, pour tout $i$ tel que
   $n(i) > N$, on sait que
   $x_{\varCan\restr{n(i)}}^{(i)}\neq x_{\varCan'\restr{n(i)}}^{(i)}$
   (puisque les éléments $x^{(i)}$ sont tous distincts). On en déduit que
-  \[\compr{i \in I}{f(\varCan)\neq f(\varCan')}\in\varUlF\]
-  donc $f$ est injective.
+  \[
+  \compr{i \in \indSet}
+        {x^{(i)}_{\varCan\restr{n(i)}}\neq x^{(i)}_{\varCan'\restr{n(i)}}}
+  \in\varUlF\]
+  donc $f(\varCan)\neq f(\varCan')$, donc $f$ est injective.
 
   On déduit l'inégalité de cardinal de cette injection depuis l'espace de
-  Cantor (de cardinal $2^{\Cal_0}$).
+  Cantor (qui est de cardinal $2^{\Cal_0}$).
 \end{proof}
 
 Si l'on a déjà vu que les ultraproduits pouvaient être finis, ces propositions
@@ -1163,27 +1185,28 @@ laissent à penser que les ultraproduits non triviaux restent de cardinal
 $2^{\Cal_0}$. On va prouver que c'est effectivement le cas.
 
 \begin{proposition}
-  Soit $I$ un ensemble dénombrable, $\varUlF$ un ultrafiltre sur $I$ et
-  $(X_i)_{i \in I}$ une famille d'ensembles tous de cardinal inférieur à
-  $2^{\Cal_0}$. Alors le cardinal de $\prod_{i \in I}^{\varUlF} X_i$ est soit fini,
-  soit $2^{\Cal_0}$.
+  Soit $\indSet$ un ensemble dénombrable, $\varUlF$ un ultrafiltre sur
+  $\indSet$ et $(X_i)_{i \in \indSet}$ une famille d'ensembles tous de cardinal
+  inférieur à $2^{\Cal_0}$. Alors le cardinal de
+  $\displaystyle\prod_{i \in \indSet}^{\varUlF} X_i$ est soit fini, soit $2^{\Cal_0}$.
 \end{proposition}
 
 \begin{proof}
-  On raisonne suivant si la famille $(\Card(X_i))_{i \in I}$ est
+  On raisonne suivant si la famille $(\Card(X_i))_{i \in \indSet}$ est
   $\varUlF$-majorée. Si elle ne l'est pas, on a déjà vu que le cardinal de
   l'ultraproduit est supérieur à $2^{\Cal_0}$, et qu'il vaut au plus $2^{\Cal_0}$
   par le \cref{lem.card.ultra.maj}.
 
-  Supposons maintenant que $(\Card(X_i))_{i \in I}$ est $\varUlF$-majorée. Soit
-  $N$ le plus petit $N$ tel que
-  \[\compr{i \in I}{\Card(X_i) \leq N} \in \varUlF\]
-  Posons $J$ cet ensemble. On peut vérifier que l'ultraproduit des
-  $(X_j)_{j \in J}$ par l'ultrafiltre
-  \[\varUlF_J \defeq \compr{K \cap J}{K \in \varUlF}\]
-  est isomorphe à l'ultraproduit des $(X_i)_{i \in I}$ par $\varUlF$. On raisonne
-  maintenant par récurrence sur $N$ pour montrer que l'ultraproduit d'ensembles
-  tous de cardinal inférieur à $N$ est de cardinal au plus $N$~:
+  Supposons maintenant que $(\Card(X_i))_{i \in \indSet}$ est $\varUlF$-majorée.
+  Soit $N$ le plus petit $N$ tel que
+  \[\compr{i \in \indSet}{\Card(X_i) \leq N} \in \varUlF\]
+  Posons $\indSetB$ cet ensemble. On peut vérifier que l'ultraproduit des
+  $(X_j)_{j \in \indSetB}$ par l'ultrafiltre
+  \[\varUlF_{\indSetB} \defeq
+  \compr{\indSetBB \cap \indSetB}{\indSetBB \in \varUlF}\]
+  est isomorphe à l'ultraproduit des $(X_i)_{i \in \indSet}$ par $\varUlF$. On
+  raisonne maintenant par récurrence sur $N$ pour montrer que l'ultraproduit
+  d'ensembles tous de cardinal inférieur à $N$ est de cardinal au plus $N$~:
   \begin{itemize}
   \item Les cas $0$ et $1$ ne posent aucun souci.
   \item Supposons l'énoncé vrai, et soit un ultraproduit d'ensembles de cardinal
@@ -1193,12 +1216,12 @@ $2^{\Cal_0}$. On va prouver que c'est effectivement le cas.
     Soit alors un élément $\clas{(x_i)}$ dans l'ultraproduit, deux cas sont
     possibles~:
     \begin{itemize}
-    \item si $\compr{i \in I}{x_i = y_i}\in\varUlF$, alors l'élément vaut
+    \item si $\compr{i \in \indSet}{x_i = y_i}\in\varUlF$, alors l'élément vaut
       exactement $\clas{(y_i)}$.
-    \item si $\compr{i \in I}{x_i = y_i}\notin\varUlF$, alors
-      $\compr{i \in I}{x_i \neq y_i}\in\varUlF$, donc l'élément est égal à un
-      élément de l'ultraproduit des $Y_i$, et ces éléments sont (par hypothèse
-      de récurrence) en nombre au plus $N$.
+    \item si $\compr{i \in \indSet}{x_i = y_i}\notin\varUlF$, alors
+      $\compr{i \in \indSet}{x_i \neq y_i}\in\varUlF$, donc l'élément est égal à
+      un élément de l'ultraproduit des $Y_i$, et ces éléments sont (par
+      hypothèse de récurrence) en nombre au plus $N$.
     \end{itemize}
     L'élément est donc égal à un élément parmi $N$, ou à un autre, donc il
     y a une bijection entre cet ultraproduit et un entier inférieur à $N+1$.
@@ -1209,6 +1232,6 @@ $2^{\Cal_0}$. On va prouver que c'est effectivement le cas.
 
 \begin{corollary}
   Si $X$ est un ensemble tel que $\Cal_0 \leq \Card(X)\leq2^{\Cal_0}$, et
-  $\varUlF$ est un ultrafiltre sur un ensemble $I$ dénombrable, alors
-  $\displaystyle\Card\left(\prod_{i \in I}^{\varUlF} X\right) = 2^{\Cal_0}$.
+  $\varUlF$ est un ultrafiltre sur un ensemble $\indSet$ dénombrable, alors
+  $\displaystyle\Card\left(X^{\varUlF}\right) = 2^{\Cal_0}$.
 \end{corollary}
