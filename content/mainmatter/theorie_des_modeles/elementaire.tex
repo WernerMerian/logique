@@ -246,6 +246,39 @@ On a ainsi une façon de prouver qu'une sous-structure est élémentaire, et par
 extension qu'un plongement l'est (il suffit d'adapter le résultat à l'image
 du plongement).
 
+En utilisant ce critère, on peut démontrer d'une nouvelle façon la version
+descendant du théorème de Löwenheim-Skolem.
+
+\begin{theorem}[Löwenheim-Skolem descendant]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Si $\Card(\varMM)\geq \max(\Cal_0,\Card(\Sign))$
+  alors il existe une sous-structure élémentaire $\varMN\subModElt\varMM$
+  contenant $\varPt$ et telle que
+  $\Card(\varMN) = \max(\Card(\varPt),\Cal_0,\Card(\Sign))$.
+\end{theorem}
+
+\begin{proof}
+  Quitte à rajouter des éléments, considérons qu'on a linégalité
+  $\Card(\varPt)\geq \max(\Cal_0,\Card(\Sign))$. On considère tout d'abord
+  $\varMA_0$ la plus petite sous-$\Sign$-structure de $\varMM$ contenant
+  $\varPt$ (cette structure peut se construire en partant de $\varPt$ et en
+  itérant les applications d'inteprétation de symboles de fonction). On
+  construit maintenant une suite $\varMA_n$ de sous-$\Sign$-structures de
+  $\varMM$.
+
+  \'Etant donnée $\varMA_n$, pour chaque formule $\varFF(\vec x,y)$ et chaque
+  donnée de paramètres $\vec a \in \carM{\varMA_n}$, on ajoute un élément
+  $b\in\varMM$ à $\varMA_{n+1}$ si $\varMA_n,\vec a\satisf\exists x, \varFF$.
+  On construit $\varMA_{n+1}$ comme la plus petite sous-$\Sign$-structure de
+  $\varMM$ qui contient tous ces $b$ et $\varMA_n$.
+
+  Alors en posant $\varMN\defeq \bigcup_{n \in \bN} \varMA_n$, on obtient une
+  sous-$\Sign$-structure qui valide le critère de Tarski-Vaught, donc on sait
+  que $\varMN\subModElt\varMM$. De plus, la cardinalité ne change pas puisqu'on
+  ajoute toujours un nombre d'éléments à chaque étape valant au plus
+  $\max(\Cal_0,\Card(\Sign))$.
+\end{proof}
+
 Introduisons maintenant une méthode permettant plus généralement de montrer que
 deux structures sont élémentairement équivalentes (sans pour autant avoir un
 plongement élémentaire de l'une dans l'autre), appelée la méthode du
@@ -486,10 +519,13 @@ appelle la catégoricité.
 
 \begin{definition}[Catégoricité]
   Soit $\varT$ une théorie sur une signature $\Sign$. $\varT$ est dite
-  catégorique si pour tous deux modèles $\varMM,\varMN\satisf\varT$, on a
-  $\varMM\iso\varMN$. $\varT$ est dite $\varCk$-catégorique pour un cardinal
-  $\varCk$ si pour tous deux modèles $\varMM,\varMN\satisf\varT$ de cardinal
-  $\varCk$, on a $\varMM\iso\varMN$.
+  catégorique si elle possède un modèle et pour tous deux modèles
+  $\varMM,\varMN\satisf\varT$, on a $\varMM\iso\varMN$. $\varT$ est dite
+  $\varCk$-catégorique pour un cardinal $\varCk$ si elle a un modèle de cardinal
+  $\varCk$ et pour tous deux modèles $\varMM,\varMN\satisf\varT$ de cardinal
+  $\varCk$, on a $\varMM\iso\varMN$. Dans le cas particulier où l'on parle
+  de théorie $\Cal_0$-catégorique, cela signifie que $\varT$ a un modèle
+  au plus dénombrable et tout modèle au plus dénombrable lui est isomorphe.
 \end{definition}
 
 \begin{remark}
@@ -1235,3 +1271,13 @@ $2^{\Cal_0}$. On va prouver que c'est effectivement le cas.
   $\varUlF$ est un ultrafiltre sur un ensemble $\indSet$ dénombrable, alors
   $\displaystyle\Card\left(X^{\varUlF}\right) = 2^{\Cal_0}$.
 \end{corollary}
+
+\begin{exercise}
+  Vérifier que si $\indSet$ est un ensemble, $\varUlF$ est un ultrafiltre
+  sur $\indSet$ et $\indSetB \in \varUlF$, alors
+  \[\varUlF_{\indSetB} \defeq \compr{\indSetB\cap\indSetBB}{\indSetBB\in\varUlF}\]
+  est un ultrafiltre sur $\indSetB$. Montrer que si $(\varMM_i)_{i \in \indSet}$
+  est une famille de $\Sign$-structures sur $\indSet$, alors on a l'isomorphisme
+  \[\prod_{i \in \indSet}^{\varUlF}\varMM_i \iso
+  \prod_{j \in \indSetB}^{\varUlF_{\indSetB}} \varMM_j\]
+\end{exercise}

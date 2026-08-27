@@ -1,15 +1,487 @@
-\chapter{Structures et modèles}
+\chapter{Hors et dans les structures}
 \label{chp.struct.mod}
 
 \minitoc
 
-\lettrine{C}{e} chapitre contient les éléments de base de l'étude des structures
-et des modèles. Là où le chapitre précédent concentrait l'étude sur la
+\lettrine{C}{e} chapitre contient les éléments de base de l'étude des
+structures. Là où le chapitre précédent concentrait l'étude sur la
 satisfaction et la conservation d'énoncés du premier ordre, ce chapitre sera
 dédié à des notions liées directement aux structures d'étude.
 
-Nous abordons d'abord les outils incontournables pour construire des modèles~:
-l'amalgamation et les chaînes. Nous introduisons ensuite les parties
-définissables, et explorons divers résultats qui leur sont liés.
+Nous abordons d'abord les outils incontournables pour construire des
+structures~: l'amalgamation et les chaînes. Nous introduisons ensuite les
+parties définissables, et explorons divers résultats qui leur sont liés.
 
-\section{Oui}
+\section{Constructions de structure}
+
+Avant d'étudier des méthodes pour construire des structures, revenons sur une
+notion explorée dans la \cref{subsec.enrichissement}~: l'enrichissement de
+structure.
+
+\subsection{Enrichissement et diagrammes}
+
+Comme la notion d'enrichissement permet de manipuler plus finement des
+structures, on souhaite définir des façons efficaces d'enrichir des structures.
+Pour cela, on introduit la notion d'enrichissement par constantes.
+
+\begin{definition}[Enrichissement par constantes]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On appelle enrichissement par constantes de $\Sign$
+  sur $\varPt$ la signature
+  \[\SignP{\varPt}\defeq \Sign\cup\compr{\Cc_a^0}{a \in \varPt}\]
+\end{definition}
+
+On considère donc une nouvelle signature, dans laquelle on a ajouté une
+constante pour chaque élément de $\varPt$. Cette signature a un sens naturel
+dans la structure $\varMM$ à partir de laquelle on a construit l'enrichissement,
+ce qui donne un enrichissement de $\varMM$.
+
+\begin{definition}[Enrichissement par constantes d'une structure]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On appelle enrichissement par constante de $\varMM$
+  sur $\varPt$ la $\SignP{\varPt}$-structure $\varMM_{\varPt}$ obtenue en
+  associant $\Cc_a$ à $a\in\carMM$.
+\end{definition}
+
+Revenons maintenant à un énoncé du chapitre précédent~: le
+\cref{lem.equivelt.th}. D'après ce lemme, si on a une structure $\varMM$ et
+qu'on veut construire $\varMN$ tel que $\varMM\eltEq\varMN$, il nous suffit de
+construire un modèle de $\Th(\varMM)$. Maintenant, grâce à la notion
+d'enrichissement par constantes, on peut effectuer cela en rajoutant des
+interprétations aux éléments de $\varPt$, ce qui nous permet alors de construire
+une théorie caractérisant les extensions élémentaires de $\varMM$~: on appelle
+cette théorie le diagramme élémentaire de $\varMM$.
+
+\begin{definition}[Diagramme, diagramme élémentaire]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On appelle
+  diagramme de $\varMM$ la théorie
+  \[\Diag(\varMM) \defeq
+  \compr{\varFF\in\Propqf(\SignP{\carMM})}{\varMM_{\carMM}\satisf\varFF}\]
+  et le diagramme élémentaire de $\varMM$ la théorie
+  \[\DiagEl(\varMM)\defeq
+  \compr{\varFF\in\Prop(\SignP{\carMM})}{\varMM_{\carMM}\satisf\varFF}\]
+\end{definition}
+
+\begin{remark}
+  Le diagramme élémentaire de $\varMM$ peut directement se définir comme
+  étant $\Th(\varMM_{\carMM})$.
+\end{remark}
+
+\begin{proposition}
+  En reprenant les notations précédentes, on a une correspondance entre
+  les modèles de $\Diag(\varMM)$ et les $\Sign$-structures $\varMN$ munies d'un
+  plongement $\makeFunName{\varMoM}{\varMM}{\varMN}$. On a aussi une
+  correspondance entre les modèles de $\DiagEl(\varMM)$ est le
+  $\Sign$-structures $\varMN$ munies d'un plongement élémentaire
+  $\makeFunName{\varMoM}{\varMM}{\varMN}$.
+\end{proposition}
+
+\begin{proof}
+  En effet, si on a $\varMN$ une $\Sign$-structure et $\varMoM$ un plongement
+  de $\varMM$ dans $\varMN$, alors on peut construire $\varMN_{\carMM}$ une
+  $\SignP{\carMM}$-structure en associant à chaque $\Cc_m$ l'élément
+  $f(m)$. On prouve que $\carMN_{\carMM}$ satisfait $\Diag(\varMM)$ en vérifiant
+  par induction que pour chaque proposition $\varFF$ sans quantificateur vraie
+  dans $\varMM_{\carMM}$, $\carMN_{\carMM}\satisf\varFF$. Dans le cas des
+  symboles de relation, cela est vrai par hypothèse sur le fait que
+  $\varMoM$ est un plongement, et les autres cas passent automatiquement à
+  l'induction. Réciproquement, si $\varMN$ est un modèle de $\Diag(\varMM)$,
+  alors on peut construire le plongement
+  \[\makeFun{\varMoM}{\varMM}{\varMN}{m}{\toMP{\Cc_m}{\varMN}}\]
+  Pour vérifier que ce morphisme est bien un plongement, on procède par
+  contraposée~: si $\varMM,\vec m\nsatisf\symbR(\vec x)$, alors
+  $\varMM,\vec m\satisf\lnot\symbR(\vec x)$ donc
+  $\varMN,f(\vec m)\satisf\lnot\symbR(\vec x)$, \latinexpr{i.e.}
+  $\varMN,f(\vec m)\nsatisf\symbR(\vec x)$.
+
+  On raisonne de la même façon dans le cas du diagramme élémentaire, mais
+  la situation est plus directe.
+\end{proof}
+
+\begin{remark}
+  On traite souvent de façon interchangeable deux structures $\varMM,\varMN$
+  munies d'un plongement $\makeFunName{\varMoM}{\varMM}{\varMN}$ et une
+  extension $\varMM\subseteq\varMN$. De même, on identifie généralement
+  une extension élémentaire $\varMM\subModElt\varMN$ et un plongement
+  élémentaire $\makeFunName{\varMoM}{\varMM}{\varMN}$. La proposition
+  précédente peut donc se lire comme le fait que les modèles de $\Diag(\varMM)$
+  correspondent aux extensions de $\varMM$, et les modèles de $\DiagEl(\varMM)$
+  correspondent aux extensions élémentaires de $\varMM$.
+\end{remark}
+
+Cette méthode ressemble fortement à la preuve du théorème de Löwenheim-Skolem
+ascendant, dans laquelle on a introduit une famille de taille $\varCk$ de
+constantes, pour construire une extension élémentaire suffisamment grande.
+La différence est que dans cette preuve, on considère d'un côté une structure
+$\varMM$, et de l'autre un ensemble $\varCk$ (un cardinal, pour être plus
+précis), et on cherche à construire une structure $\varMN$ conservant à la fois
+la structure $\varMM$ et la taille $\varCk$.
+
+Cette idée, et en particulier l'utilisation de la compacité pour construire
+un tel modèle, va être réutilisée ici pour construire de nouvelles structures.
+
+\subsection{Constructions par amalgamation et chaîne}
+
+Avec la méthode des diagrammes, on peut donc transformer un problème de
+construction d'extension (élémentaire) en un problème de satisfaction de
+théorie. La satisfaction de théorie, elle, bénéficie d'un outil central~: le
+théorème de compacité. On peut alors combiner les deux pour construire des
+extensions (élémentaires) d'une structure tout en ajoutant d'autres conditions.
+Cela mène au théorème de plongement élémentaire conjoint et d'amalgamation
+élémentaire.
+
+\begin{theorem}
+  Les trois propositions suivantes sont vraies~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Soient $\varMM_1,\varMM_2$ deux $\Sign$-structures telles que
+    $\varMM_1\eltEq\varMM_2$, alors il existe une structure $\varMN$ avec
+    deux plongements élémentaires
+    \[\makeFunName{\varMoM_1}{\varMM_1}{\varMN}\qquad
+    \makeFunName{\varMoM_2}{\varMM_2}{\varMN}\]
+  \item Soit $(\varMM_i)_{i \in \indSet}$ une famille de $\Sign$-structures toutes
+    élémentairement équivalentes deux à deux, alors il existe une structure
+    $\varMN$ et une famille de plongements élémentaires
+    \[\makeFunName{\varMoM_i}{\varMM_i}{\varMN}\]
+  \item Soient $\varMM_0,\varMM_1,\varMM_2$ trois $\Sign$-structures et deux
+    plongements élémentaires
+    \[\makeFunName{\varMoM_1}{\varMM_0}{\varMM_1}\qquad
+    \makeFunName{\varMoM_2}{\varMM_0}{\varMM_2}\]
+    alors il existe une $\Sign$-structure $\varMN$ et deux plongements
+    élémentaires
+    \[\makeFunName{\varMoMB_1}{\varMM_1}{\varMN}\qquad
+    \makeFunName{\varMoMB_2}{\varMM_2}{\varMN}\]
+    tels que $\varMoMB_1\circ\varMoM_1 = \varMoMB_2\circ\varMoM_2$,
+    c'est-à-dire tel que le diagramme suivant commute~:
+    \begin{center}
+      \begin{tikzcd}
+        \varMM_0 \ar[r,"\varMoM_1"]\ar[d,"\varMoM_2"] &
+        \varMM_1\ar[d,"\varMoMB_1"]\\
+        \varMM_2\ar[r,"\varMoMB_2"] & \varMN
+      \end{tikzcd}
+    \end{center}
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  On prouve chaque proposition~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Pour simplifier la lecture, on considère que
+    $\carM{\varMM_1}\cap\carM{\varMM_2}=\vide$ (quitte à dupliquer une des deux
+    structures). On définit alors la signature
+    \[\Sign' \defeq \SignP{\carM{\varMM_1}}\cup\SignP{\carM{\varMM_2}}\]
+    D'après ce qui a été dit plus tôt, l'existence de la structure $\varMN$
+    recherchée revient exactement à la cohérence de la théorie
+    \[\varT \defeq \DiagEl(\varMM_1)\cup\DiagEl(\varMM_2)\]
+    et, par compacité, on peut se limiter à un ensemble fini quelconque de
+    propositions. Quitte à prendre une conjonction, il nous suffit de vérifier
+    que pour toute $\Sign$-formule $\varFF(\vec x)$ et donnée de paramètres
+    $\vec b$ dans $\varMM_2$, il existe un modèle de
+    $\DiagEl(\varMM_1)\cup\{\varFF(\vec{\Cc_b})\}$. Mais alors, comme
+    $\varMM_1\eltEq\varMM_2$, on sait que
+    $\varMM_1\satisf\exists \vec b, \varFF(\vec b)$, donc on peut
+    interpréter $\varMM_1$ en une $\Sign'$-structure par $\Cc_b \mapsto b$
+    (et les autres constantes $\Cc$ sont interprétées de façon quelconque)
+    pour obtenir un modèle de $\DiagEl(\varMM_1)\cup\{\varFF(\vec{\Cc_b})\}$.
+    Ainsi, par compacité, on trouve un modèle $\varMN$ tel que décrit
+    précédemment.
+  \item On procède de la même façon, en prenant
+    \[\Sign'\defeq \bigcup_{i \in \indSet}\SignP{\carM{\varMM_i}}\qquad
+    \varT\defeq \bigcup_{i \in \indSet}\DiagEl(\varMM_i)\]
+    Par compacité, on peut se limiter à des fragments finis, mais alors il
+    n'y a qu'un nombre fini de $i \in \indSet$ apparaissant dans les
+    formules. On peut donc raisonner par induction sur le nombre de
+    $i$ apparaissant~: le cas où les ensembles sont vides est automatique,
+    et l'hérédité revient au cas précédemment traité.
+  \item D'après nos hypothèses, on peut considérer
+    \[\varMM_1' \defeq \varMM_{1,\carM{\varMM_0}} \qquad
+    \varMM_2' \defeq \varMM_{2,\carM{\varMM_0}}\]
+    Comme $\varMoM_1$ et $\varMoM_2$ sont des plongements élémentaires, on peut
+    vérifier que $\varMM_1'\eltEq\varMM_2'$, donc on peut appliquer la première
+    proposition démontrée pour trouver $\varMN$ et $\varMoMB_1,\varMoMB_2$,
+    qui sont respectivement une $\SignP{\carM{\varMM_0}}$-structure et des
+    plongements élémentaires de $\SignP{\carM{\varMM_0}}$-structures. On
+    en déduit qu'en particulier, pour tout $m \in \carM{\varMM_0}$~:
+    \begin{align*}
+      \varMoMB_1(\varMoM_1(m))
+      &= \varMoMB_1\left(\toMP{\Cc_{m}}{\varMM_1'}\right)\\
+      &= \toMP{\Cc_{m}}{\varMN}\\
+      &= \varMoMB_2\left(\toMP{\Cc_{m}}{\varMM_2'}\right)\\
+      \varMoMB_1(\varMoM_1(m)) &= \varMoMB_2(\varMoM_2(m))
+    \end{align*}
+    donc $\varMN$ se réduit en une $\Sign$-structure vérifiant ce qui est
+    attendu.\qedhere
+  \end{enumerate}
+\end{proof}
+
+\begin{remark}
+  L'étudiant catégoricien reconnaîtra probablement une situation proche
+  respectivement des coproduits et des sommes amalgamées (ou \og poussé en
+  avant\fg). Cependant, il faut prendre garde au fait qu'ici, aucune
+  universalité n'est établie. Il existe bien une façon de compléter le
+  diagramme en un diagramme commutatif, mais cela ne dit rien vis à vis
+  d'autres complétions possibles du diagramme commutatif.
+\end{remark}
+
+On donne une autre application possible, qui est celle d'étendre des plongements
+élémentaires partiels (chose que l'on va donc définir).
+
+\begin{definition}[Plongement élémentaire partiel]
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structure. Un
+  plongement élémentaire partiel est la donnée d'un sous-ensemble
+  $\varPt\subseteq\varMM$ et d'une fonction
+  $\makeFunName{\varMoM}{\varPt}{\varMN}$
+  telle que pour toute formule $\varFF\in\Formula(\Sign)$ et donnée de
+  paramètres $\vec a$ dans $\varPt$, on a l'équivalence
+  \[\varMM,\vec a\satisf\varFF \iff \varMN,\varMoM(\vec a)\satisf\varFF\]
+\end{definition}
+
+\begin{remark}
+  Lorsqu'il existe un plongement élémentaire partiel, $\varMM$ et $\varMN$ sont
+  en particulier élémentairement équivalente. En effet, quitte à ne considérer
+  que les propositions et à ignorer les paramètres dans $\varPt$, on établit
+  aussi que $\varMM\satisf\varFF\iff\varMN\satisf\varFF$.
+\end{remark}
+
+\begin{remark}
+  Si $(\varPt,\varMoM)$ est un plongement élémentaire partiel entre
+  $\varMM$ et $\varMN$, alors $\varMoM$ induit un isomorphisme partiel entre
+  $\varMA$ (la sous-structure de $\varMM$ engendrée par $\varPt$) et
+  $\varMoM(\varMA)$.
+\end{remark}
+
+\begin{lemma}\label{lem.extend.part.elt.embed}
+  Soient $\varMM,\varMN$ deux structures sur une signature $\Sign$, et
+  $(\varPt,\varMoM)$ un plongement élémentaire partiel entre les deux
+  structures. Alors il existe une extension $\varMN'$ de $\varMN$
+  et un plongement élémentaire $\makeFunName{\varMoM'}{\varMM}{\varMN'}$ tel que
+  $\varMoM'\restr{\varPt} = \varMoM$.
+\end{lemma}
+
+\begin{proof}
+  On enrichit d'abord $\varMM$ et $\varMN$ en deux $\SignP{\varPt}$-structures,
+  respectivement $\relev{\varMM}$ et $\relev{\varMN}$. Le premier enrichissement
+  est canonique, et le second se fait par l'association
+  $\Cc_{a} \mapsto\varMoM(a)$.
+
+  Le fait que $(\varPt,\varMoM)$ est un plongement élémentaire partiel
+  signifie en particulier que $\relev{\varMM}\eltEq\relev{\varMN}$ (en tant
+  que $\SignP{\varPt}$-structures). D'après le théorème précédent, il existe
+  donc une extension élémentaire commune aux deux structures.
+  On trouve donc $\varMN'$ muni d'un plongement élémentaire
+  $\makeFunName{\varMoM'}{\relev{\varMM}}{\varMN'}$ et d'un plongement
+  élémentaire $\makeFunName{\varMoMB}{\relev{\varMN}}{\varMN'}$. Ainsi, quitte
+  à remplacer $\varMoMB(\carMN)$ par $\carMN$, on obtient $\varMN'$ tel que
+  $\varMN\subModElt\varMN'$ et un plongement élémentaire qui se restreint
+  en $\varMoM$ sur $\varPt$.
+\end{proof}
+
+Le second outil que nous abordons pour étendre des structures et en construire
+de nouvelles est celui des chaînes.
+
+\begin{definition}[Chaîne de structures, chaîne élémentaire]
+  Soit $\Sign$ une signature. Pour un ensemble totalement ordonné $(\indSet,<)$,
+  on appelle chaîne de $\Sign$-structures une famille $(\varMM_i)_{i \in \indSet}$
+  telle que
+  \[\forall i,j \in \indSet, i < j \implies \varMM_i \subseteq\varMM_j\]
+  On dit qu'une chaîne est élémentaire si la condition précédente est renforcée
+  en
+  \[\forall i,j \in \indSet, i < j \implies \varMM_i\subModElt\varMM_j\]
+\end{definition}
+
+L'intérêt d'une telle famille de structures est, assez naturellement, d'en
+prendre l'union.
+
+\begin{definition}[Union d'une chaîne de structures]
+  Soit $\Sign$ une signature et $(\varMM_i)_{i \in \indSet}$ une chaîne
+  de structure sur $(\indSet,<)$. On appelle union de cette chaîne la
+  structure $\varMM$ définie par~:
+  \begin{itemize}
+  \item $\displaystyle\carMM \defeq \bigcup_{i \in \indSet}\varMM_i$
+  \item pour tout symbole de fonction $\symbF$ d'arité $n$,
+    $\displaystyle\toM{\symbF}\defeq
+    \bigcup_{i \in \indSet}\toMP{\symbF}{\varMM_i}$
+  \item pour tout symbole de relation $\symbR$ d'arité $n$,
+    $\displaystyle\toM{\symbR}\defeq
+    \bigcup_{i \in \indSet}\toMP{\symbR}{\varMM_i}$
+  \end{itemize}
+  on a alors naturellement, pour tout $i \in \indSet$,
+  $\varMM_i\subseteq\varMM$. On note aussi $\bigcup_{i \in \indSet}\varMM_i$
+  l'union de cette chaîne.
+\end{definition}
+
+\begin{remark}
+  On peut souhaiter un point de vue plus structurel, dans lequel l'inclusion
+  ne joue pas de rôle prépondérant. L'information essentielle est jouée par un
+  plongement quelconque, et on pourrait donc souhaiter qu'une chaîne soit la
+  donnée pour chaque $i < j$ d'un plongement élémentaire
+  $\makeFunName{\varMoM_{i < j}}{\varMM_i}{\varMM_j}$
+  vérifiant que $\varMoM_{j < k}\circ\varMoM_{i < j} = \varMoM_{i < k}$
+  (ce que l'on pourrait considérer comme un certain foncteur de
+  $(\indSet,\leq)$ vers la catégorie des structures munies des plongements).
+
+  Dans un tel cadre, la construction est plus technique mais existe aussi~: on
+  appelle une telle union une limite inductive, et on peut la construire en
+  considérant des couples $(i,m)$ avec $m \in \carM{\varMM_i}$, puis en
+  quotientant par la relation
+  \[(i,m)\sim (j,m') \defeq
+  \varMoM_{i < j}(m) = m' \lor \varMoM_{j < i}(m') = m\]
+  Tout se passe encore de la même façon que précédemment~: cette limite
+  inductive est naturellement munie d'une famille de plongements
+  $\makeFunName{\varMoM_i}{\varMM_i}{\varMM}$ (qui est même universelle).
+\end{remark}
+
+\begin{remark}
+  On peut caractériser assez simplement la sémantique dans l'union d'une
+  chaîne~:
+  \begin{itemize}
+  \item $\displaystyle\bigcup_{i \in \indSet}\varMM_i,\vec a\satisf\varFF$ est
+    vérifié exactement quand il existe $i\in\indSet$ tel que
+    $\vec a \subseteq \varMM_i$ et $\varMM_i,\vec a \satisf\varFF$, ou de
+    façon équivalence lorsque pour tout $i \in \indSet$ tel que
+    $\vec a\subseteq\varMM_i$, $\varMM_i,\vec a \satisf\varFF$
+  \item le calcul de $\toMP{\symbF}{\bigcup_{i \in \indSet}\varMM_i}(\vec a)$ se
+    fait en considérant un (de façon équivalente, tous les) $i \in \indSet$
+    tel que $\vec a \subseteq \varMM_i$, et est alors
+    $\toMP{\symbF}{\varMM_i}(\vec a)$.
+  \end{itemize}
+  Le fait d'avoir des extensions de structures assure qu'on a bien une
+  équivalence entre \og pour tout $i \in \indSet$ \fg et \og il existe
+  $i \in \indSet$\fg dans les formulations données plus tôt.
+\end{remark}
+
+\begin{lemma}[Lemme de la chaîne élémentaire de Tarski \cite{Tarski1955}]
+  Si $(\varMM_i)_{i \in \indSet}$ est une chaîne élémentaire, alors
+  \[\forall i \in \indSet, \varMM_i\subModElt\bigcup_{i \in I}\varMM_i\]
+\end{lemma}
+
+\begin{proof}
+  Notons $\varMM\defeq \bigcup_{i \in \indSet}\varMM_i$.
+  On prouve par induction sur les formules $\varFF$ que pour tout
+  $i \in \indSet$ et toute donnée de paramètres $\vec m$ dans $\varMM_i$,
+  $\varMM_i,\vec m\satisf\varFF\iff\varMM,\vec m\satisf\varFF$~:
+  \begin{itemize}
+  \item Si $\varFF$ est atomique, alors le résultat est donné directement par
+    le fait que $\varMM_i\subseteq\varMM$ (ou, pour une limite inductive, par
+    le fait qu'on a un plongement).
+  \item Si $\varFF$ est $\top$ ou $\bot$, le résultat est automatique.
+  \item Si $\varFF = \lnot\varFP$, comme
+    $\varMM_i,\vec m\satisf\varFP\iff\varMM,\vec m\satisf\varFP$, le résultat
+    est encore vrai en passant à la négation.
+  \item Les cas $\varFP\oplus\varFC$ où
+    $\oplus\in\{\mathord{\lor},\mathord{\land},\mathord{\to}\}$ sont
+    vrais en dépliant les définitions.
+  \item Supposons que $\varFF = \exists x, \varFP$, et montrons le résultat
+    par double implication~:
+    \begin{itemize}
+    \item[\fbox{$\Rightarrow$}] Supposons que
+      $\varMM_i,\vec m\satisf\exists x, \varFP$. Alors on trouve
+      $a\in\carM{\varMM_i}$ tel que $\varMM_i,(a,\vec m)\satisf\varFP$,
+      donc par hypothèse d'induction $\varMM,(a,\vec m)\satisf\varFP$, donc
+      $\varMM,\vec m\satisf\exists x, \varFP$.
+    \item[\fbox{$\Leftarrow$}] Supposons que
+      $\varMM,\vec m\satisf\exists x, \varFP$. Alors on trouve
+      $j\in\indSet$ et $a \in \varMM_j$ tel que
+      $\varMM,(a,\vec m)\satisf\varFP$. Comme $\indSet$ est totalement ordonné,
+      on sait que $i$ et $j$ sont comparaibles. Quitte à prendre pour $j$ le
+      plus grand des deux, on peut alors considérer que $\vec m \in\varMM_j$,
+      et donc (par hypothèse d'induction) que
+      $\varMM_j,(a,\vec m)\satisf\varFP$. On en déduit donc que
+      $\varMM_j,\vec m\satisf\exists x, \varFP$, puis par inclusion élémentaire
+      que $\varMM_i,\vec m\satisf\exists x, \varFP$.
+    \end{itemize}
+  \item Si $\varFF = \forall x, \varFP$, alors on peut se ramener aux cas
+    précédents par les lois de De Morgan.
+  \end{itemize}
+  En particulier, si $\varFF$ est une proposition et $i\in\indSet$, on en
+  déduit que
+  \[\varMM_i\subModElt\varMM\qedhere\]
+\end{proof}
+
+En utilisant les chaînes élémentaires, on peut maintenant donner une version
+plus forte du \cref{lem.extend.part.elt.embed} dans le cas d'un plongement
+d'un modèle dans lui-même.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $(\varPt,\varMoM)$ un plongement élémentaire partiel de $\varMM$ dans
+  elle-même. Alors il existe une extension élémentaire $\varMN$ de $\varMM$
+  et $\makeFunNameIso{\relev{\varMoM}}{\varMN}{\varMN}$ étendant $\varMoM$.
+\end{proposition}
+
+\begin{proof}
+  On construit une suite de structures à partir de $\varMM$.
+
+  
+  \begin{minipage}{0.3\textwidth}
+    \begin{tikzpicture}
+      \node (M0l) at (0,0) {$\varPt$};
+      \node (M0r) at (2.3,0) {$\varMM_0$};
+      \node (M1l) at (0,-2) {$\varMM_1$};
+      \node (M1r) at (2.3,-2) {$\im(\varMoM_0)$};
+      \node (M2l) at (0,-4) {$\im(\varMoMB_1)$};
+      \node (M2r) at (2.3,-4) {$\varMM_2$};
+      \node (M2lp) at (0,-4)[below] {$\vdots$};
+      \node (M2rp) at (2.3,-4)[below] {$\vdots$};
+      \path (M0l) --node[midway] {$\subseteq$} (M0r);
+      \draw[->,>=latex]
+      (M0l) --node[midway,left,dashed] {$\iota\circ\varMoM$} (M1l);
+      \path (M1r) --node[midway] {$\supseteq$} (M1l);
+      \draw[->,>=latex]
+      (M1r) --node[midway,right,dashed] {$\iota\circ\varMoM_0^{-1}$} (M2r);
+      \path (M2l) --node[midway] {$\subseteq$} (M2r);
+      \draw[->,>=latex]
+      (M1r) -- node[midway, right] {$\varMoM_0^{-1}$} (M0r);
+      \draw[->,>=latex]
+      (M2l) -- node[midway, left] {$\varMoMB_1^{-1}$} (M1l);
+      \draw[->,>=latex,dashed]
+      (M0r) -- node[midway,above left] {$\varMoM_0$} (M1l);
+      \draw[->,>=latex,dashed]
+      (M1l) -- node[midway,above right] {$\varMoMB_1$} (M2r);
+    \end{tikzpicture}
+  \end{minipage}
+  \begin{minipage}{0.65\textwidth}
+    On pose $\varMM_0 \defeq \varMM$.
+    On sait d'après le \cref{lem.extend.part.elt.embed} qu'il existe une
+    extension $\varMM_1$ et un plongement élémentaire
+    $\makeFunName{\varMoM_0}{\varMM_0}{\varMM_1}$ qui se restreint en
+    $\varMoM$ sur $\varPt$. On considère alors $\im(\varMoM_0)$, sur
+    laquelle $\varMoM_0$ est bijective~: on a donc
+    $\makeFunName{\varMoM_0^{-1}}{\im(\varMoM_0)}{\varMM_0}$, soit
+    $\makeFunName{\iota\circ\varMoM_0^{-1}}{\im(\varMoM_0)}{\varMM_1}$ qui peut
+    s'étendre par le \cref{lem.extend.part.elt.embed} en un plongement
+    élémentaire $\makeFunName{\varMoMB_1}{\varMM_1}{\varMM_2}$ avec
+    $\varMM_2$ une nouvelle structure. On remarque que
+    $\varMoMB_1$ est l'inverse de $\varMoM_0$ quand on se restreint à
+    l'image de $\varMoM_0$. On peut ainsi construire une suite de structures
+    $\varMM_n$, une suite de plongements élémentaires $\varMoM_{2n}$ et une
+    suite de plongements élémentaires $\varMoMB_{2n+1}$, de telle sorte que
+    $\varMoM_{2n}\circ\varMoMB_{2n-1} = \id$ et
+    $\varMoMB_{2n+1}\circ\varMoM_{2n}=\id$.
+  \end{minipage}
+
+  \vspace{5pt}
+  Ainsi, en prenant l'union de cette chaîne sur $\bN$, on obtient une
+  structure et deux morphismes
+  \[\varMN\defeq\bigcup_{n \in \bN}\varMM_n\qquad
+  \relev{\varMoM}\defeq \bigcup_{n \in \bN}\varMoM_{2n}\qquad
+  \relev{\varMoMB}\defeq\bigcup_{n \in \bN}\varMoMB_{2n+1}\]
+  donnant $\makeFunNameIso{\relev{\varMoM}}{\varMN}{\varMN}$ et
+  $\relev{\varMoM}\restr{\varPt} = \varMoM$.
+\end{proof}
+
+\begin{corollary}
+  Soit $\Sign$ une signature, et $\varMM$ une $\Sign$-structure. Pour tous
+  $m,n \in \carMM$, si
+  \[\forall \varFF(x)\in\Formula_1(\Sign), \varMM,m\satisf\varFF \iff
+  \varMM,n\satisf\varFF\]
+  alors il existe une extension élémentaire $\varMN$ de $\varMM$  et un
+  automorphisme $\makeFunNameIso{\varMoM}{\varMN}{\varMN}$ tel que
+  $\varMoM(m) = n$.
+\end{corollary}
+
+\begin{proof}
+  $(\{m\},m\mapsto n)$ est un plongement élémentaire partiel de $\varMM$
+  dans elle-même.
+\end{proof}
+
+\section{Parties définissables}
