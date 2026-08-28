@@ -360,9 +360,9 @@ prendre l'union.
   $i \in \indSet$ et toute donnée de paramètres $\vec m$ dans $\varMM_i$,
   $\varMM_i,\vec m\satisf\varFF\iff\varMM,\vec m\satisf\varFF$~:
   \begin{itemize}
-  \item Si $\varFF$ est atomique, alors le résultat est donné directement par
-    le fait que $\varMM_i\subseteq\varMM$ (ou, pour une limite inductive, par
-    le fait qu'on a un plongement).
+  \item Si $\varFF$ est atomique, alors le résultat est dû au fait que
+    $\varMM_i\subseteq\varMM$ (ou, pour une limite inductive, au fait qu'on a un
+    plongement).
   \item Si $\varFF$ est $\top$ ou $\bot$, le résultat est automatique.
   \item Si $\varFF = \lnot\varFP$, comme
     $\varMM_i,\vec m\satisf\varFP\iff\varMM,\vec m\satisf\varFP$, le résultat
@@ -411,17 +411,17 @@ d'un modèle dans lui-même.
 \begin{proof}
   On construit une suite de structures à partir de $\varMM$.
 
-  
+  \vspace{5pt}
   \begin{minipage}{0.3\textwidth}
     \begin{tikzpicture}
       \node (M0l) at (0,0) {$\varPt$};
-      \node (M0r) at (2.3,0) {$\varMM_0$};
+      \node (M0r) at (2,0) {$\varMM_0$};
       \node (M1l) at (0,-2) {$\varMM_1$};
-      \node (M1r) at (2.3,-2) {$\im(\varMoM_0)$};
+      \node (M1r) at (2,-2) {$\im(\varMoM_0)$};
       \node (M2l) at (0,-4) {$\im(\varMoMB_1)$};
-      \node (M2r) at (2.3,-4) {$\varMM_2$};
+      \node (M2r) at (2,-4) {$\varMM_2$};
       \node (M2lp) at (0,-4)[below] {$\vdots$};
-      \node (M2rp) at (2.3,-4)[below] {$\vdots$};
+      \node (M2rp) at (2,-4)[below] {$\vdots$};
       \path (M0l) --node[midway] {$\subseteq$} (M0r);
       \draw[->,>=latex]
       (M0l) --node[midway,left,dashed] {$\iota\circ\varMoM$} (M1l);
@@ -484,4 +484,334 @@ d'un modèle dans lui-même.
   dans elle-même.
 \end{proof}
 
+\subsection{Fonctions de Skolemisation}
+
+Dans l'\cref{exo.skolemisation}, on a vu qu'il était possible de supprimer
+des quantifications existentielles quitte à ajouter des symboles de fonction.
+Ce procédé s'appelle la skolemisation. Nous étudions ici une façon d'approcher
+cette technique, similairement aux diagrammes.
+
+\begin{definition}[Extension de Skolem]
+  Soit $\Sign$ une signature. On appelle extension de Skolem la signature
+  \[\SignSko \defeq
+  \Sign \cup
+  \compr{\symbF_{\varFF}^{n}}{\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)}\]
+\end{definition}
+
+L'extension de Skolem est donc un enrichissement de $\Sign$, dans lequel on
+ajoute pour chaque formule $\exists y,\varFF(\vec x,y)$ un symbole de fonction
+$\symbF_{\varFF}$ d'arité $n$, dont le rôle est de donner un témoin à cette
+formule existentielle (puisque le témoin dépend de $\vec x$, on a une fonction
+de $\vec x$).
+On définit aussi la théorie de Skolem, donnant un sens à tous ces
+nouveaux symboles.
+
+\begin{definition}[Théorie de Skolem]
+  Soit $\Sign$ une signature. On appelle théorie de Skolem sur $\Sign$ la
+  théorie sur $\SignSko$
+  \[\varT_{0,\sko} \defeq
+  \compr{\ogM \forall \vec x,
+    (\exists y, \varFF(\vec x,y))\to \varFF(\vec x,\symbF_{\varFF}(\vec x))\fgM}
+        {\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)}
+  \]
+  Pour une théorie $\varT\in\Theory(\Sign)$ fixée, on note alors la
+  skolemisation de $\varT$ par
+  \[\varT_{\sko} \defeq \varT\cup\varT_{0,\sko}\]
+\end{definition}
+
+On peut aussi définir une notion d'extension de Skolem pour les structure.
+
+\begin{definition}[Extension de Skolem d'une structure]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On appelle
+  extension de Skolem de $\varMM$ une $\Sign$-structure $\varMM_{\sko}$ qui
+  est une extension de $\varMM$ et un modèle de $\varT_{0,\sko}$.
+  Alternativement, on peut considérer une telle structure comme un modèle de
+  \[\Diag_{\sko}(\varMM)\defeq (\Diag(\varMM))_{\sko}\]
+\end{definition}
+
+La proposition peut être vue comme une reformulation (et une légère
+généralisation) de l'\cref{exo.skolemisation}.
+
+\begin{proposition}
+  Soit $\Sign$ une signature. Les trois propositions suivantes sont vraies~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Si $\varT\in\Theory(\Sign)$ est cohérente, alors $\varT_{\sko}$ est
+    aussi cohérente.
+  \item Toute $\Sign$-structure $\varMM$ a une extension de skolem
+    $\varMM_{\sko}$.
+  \item Soient $\varMM,\varMN$ deux $\Sign$-structures et
+    $\varMM_{\sko},\varMN_{\sko}$ une extension de Skolem respectivement de
+    $\varMM$ et de $\varMN$. Si $\varMM_{\sko}\subseteq\varMN_{\sko}$, alors
+    $\varMM\subModElt\varMN$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  Les deux premières propositions sont équivalentes, on se contente donc de
+  montrer la seconde.
+
+  Soit $\varFF(\vec x,y)$ une formule, construisons une interprétation de
+  $\symbF_{\varFF}$. Pour cela, pour toute donnée de paramètres
+  $\vec m\in\carMM^n$ tels que $\varMM,\vec m\satisf\exists y,\varFF$, on
+  trouve un élément $m'_{\vec m}$ tel que
+  $\varMM,(\vec m,m'_{\vec m})\satisf\varFF$~: la fonction
+  \[\makeFunBis{g_{\varFF}}
+               {\carMM^n}{\carMM}
+               {\vec m}
+               {m'_{\vec m} \text{ si } \varMM,\vec m\satisf\exists y,\varFF}
+               {\vec m}
+               {m_0\text { sinon}}\]
+  où $m_0\in\carMM$ est quelconque. Ainsi, par construction, en posant
+  $\varMM_{\sko}$ associant à $\symbF_{\varFF}$ la fonction $g_{\varFF}$, on
+  peut vérifier que pour $\varMM_{\sko},\vec m\satisf\exists y,\varFF$, on a
+  bien $\varMM_{\sko},\vec m\satisf\varFF(\vec x,\symbF_{\varFF}(\vec x))$.
+
+  Pour la dernière proposition, il nous suffit d'utiliser le critère de
+  Tarski-Vaught (\cref{thm.tarski.vaught})~: si l'on a une formule
+  $\varFF(\vec x,y)$, des paramètres $\vec m$ dans $\varMM$, et que
+  $\varMN,\vec m\satisf\exists y,\varFF$ alors en particulier
+  $\varMN_{\sko},\vec m\satisf \varFF(\vec x,\symbF_{\varFF}(\vec x))$.
+  Comme l'interprétation de $\symbF_{\varFF}$ ne change pas en l'interprétant
+  dans $\varMM$ (les paramètres $\vec m$ étant dans $\varMM$), on trouve bien
+  un élément $a \in \carMM$ tel que $\varMM,(\vec m,a)\satisf\varFF$.
+\end{proof}
+
+La notion de skolemisation nous permet de donner un premier exemple de partie
+définissable assez naturel~: lorsqu'on considère une formule $\varFF(\vec x,y)$
+et des paramètres $\vec m$ dans une structure $\varMM$, savoir que
+$\varMM,\vec m \satisf\exists y, \varFF$ nous permet de dire que l'ensemble
+\[\compr{n \in \carMM}{\varMM,(\vec m,n)\satisf\varFF(\vec x,y)}\]
+est non vide. En élargissant la situation, il nous dit que l'ensemble
+\[\compr{(\vec m,n)\in\carMM^{n+1}}{\varMM,(\vec m,n)\satisf\varFF(\vec x,y)}\]
+est une partie non vide. Remarquons aussi que si
+$\varMM\satisf\forall \vec x,\exists y,\varFF$, alors une fonction de Skolem
+pour $\varFF$ est exactement un sous-graphe du graphe précédent qui est
+fonctionnel. Ainsi, les candidats d'existence d'une formule sont des parties
+de $\carMM^n$ qu'on peut définir à l'aide d'une formule. \'Etudions maintenant
+la notion générale de parties ainsi définissable.
+
 \section{Parties définissables}
+
+\subsection{Premières définitions}
+
+Avec ce qui a été dit précédemment, la définition de partie définissable est
+assez naturelle.
+
+\begin{definition}[Partie définissable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On dit qu'une partie
+  $\varPtB\subseteq\carMM^n$ est $\varPt$-définissable s'il existe une
+  $\varPt$-formule $\varFF\in\Formula_n(\SignP{\varPt})$ telle que
+  \[\forall \vec m \in \carMM^n, \vec m\in\varPtB \iff
+  \varMM_{\varPt},\vec m\satisf\varFF\]
+  De façon équivalente, s'il existe des éléments $\vec a \in \varPt^m$ et une
+  formule $\varFF\in\Formula_{n+m}(\Sign)$ tels que
+  \[\forall \vec m \in \carMM^n, \varMM,\vec m \in \varPtB \iff
+  \varMM,(\vec m,\vec a)\satisf\varFF\]
+  Dire en général qu'une partie $\varPt$ est définissable dans $\varMM$ peut,
+  suivant les auteurs et les contextes, désigner une partie $\vide$-définissable
+  ou une partie $\carMM$-définissable.
+\end{definition}
+
+\begin{remark}
+  Dans la \cref{def.definissable.L}, la notion de partie définissable
+  utilisée était celle de partie $\carMM$-définissable. Plus précisément,
+  pour un ensemble $X$ fixé, l'ensemble $\powerdef(X)$ est l'ensemble des
+  parties $X$-définissables à une variable libre.
+\end{remark}
+
+\begin{notation}
+  Si $\varPtB$ est une partie $\varPt$-définissable dans la structure $\varMM$
+  par la formule $\varFF$, on pourra aussi noter $\varPtB = \varFF(\varPt)$.
+\end{notation}
+
+Avant d'étudier les parties définissables à proprement parler, on propose une
+autre formulation des parties définissables. Si celles-ci sont très naturelles
+à considérer d'un point de vue logique par l'existence de formules, on peut
+aussi chercher un point de vue plus algébrique. D'un tel point de vue,
+l'objectif est de donner des opérations simples engendrant l'ensemble des
+parties définissables. Remarquons d'abord qu'il nous suffit de définir une
+notion de partie $\vide$-définissble~: à partir d'elle, on peut définir une
+partie $\varPt$-définissable comme étant une partie $\vide$-définissable de
+$\varMM_{\varPt}$. On propose en tant que caractérisation cette autre
+définition possible, plus algébrique.
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit
+  \[\powerdef^n(\varMM) \subseteq\carMM^n \qquad
+  \powerdef(\varMM)\defeq \bigcup_{n \in \bN} \powerdef^n(\varMM)\]
+  comme la plus petite famille de parties de $\carMM^n$ telle que~:
+  \begin{itemize}
+  \item pour toute fonction
+    $\makeFunName{\varRen}{\intervIntB{n}}{\intervIntB{m}}$ et toute partie
+    $\varPt\in\powerdef^{n}(\varMM)$, la partie
+    \[\alpha\mathbin{\bullet}\varPt \defeq
+    \compr{(x_1,\ldots,x_m)}{(x_{\varRen(1)},\ldots,x_{\varRen(n)})\in\varPt}\]
+    est dans $\powerdef^{m}(\varMM)$.
+  \item pour tout symbole de fonction $\symbF$, le graphe
+    \[\funGraph{\toM{\symbF}} \defeq
+    \compr{(\vec x,y)\in\carMM^{n+1}}{\toM{\symbF}(\vec x) = y}\]
+    est dans $\powerdef^{n+1}(\varMM)$.
+  \item pour tout symbole de fonction $\symbR$, le graphe de la relation
+    $\toM{\symbR}$ est dans $\powerdef^n(\varMM)$.
+  \item si $\varPt\in\powerdef^{n+1}(\varMM)$ et $i \in \intervIntB{n}$, alors
+    \[\projP{}{i}(\varPt) \defeq
+    \compr{(x_1,\ldots,x_{i-1},x_{i+1},\ldots,x_{n+1})}
+          {(x_1,\ldots,x_{n+1})\in\varPt}
+    \]
+    est dans $\powerdef^{n}(\varMM)$.
+  \item chaque $\powerdef^{n}(\varMM)$ est une sous-algèbre de Boole de
+    $\powerset(\carMM^n)$.
+  \end{itemize}
+  Les parties $\vide$-définissables de $\carMM^n$ sont exactement les éléments
+  de $\powerdef^{n}(\varMM)$.
+\end{proposition}
+
+\begin{proof}
+  Montrons que les ensembles définissables par des formules et les
+  $\powerdef^n(\varMM)$ sont égaux par double inclusion~:
+  \begin{itemize}
+  \item[\fbox{$\subseteq$}] Montrons que les ensembles définissables par
+    des formules dont les variables libres sont dans $\{x_1,\ldots,x_n\}$ sont
+    dans $\powerdef^n(\varMM)$. On raisonne par induction sur les formules~:
+    \begin{itemize}
+    \item d'abord, en considérant un terme sur les variables libres
+      $\{x_1,\ldots,x_n\}$ comme une fonction à $n$ entrées, le graphe de cette
+      fonction est bien dans $\powerdef^n(\varMM)$~:
+      \begin{itemize}
+      \item si le terme est une variable, alors sa fonction est
+        $(x_1,\ldots,x_n)\mapsto x_i$. Soit la fonction de
+        renommage $\makeFunName{\varRen}{\intervIntB{2}}{\intervIntB{n+1}}$
+        définie par $1\mapsto i$ et $2\mapsto n+1$, alors
+        \[\varRen\mathbin{\bullet}\ogM=\fgM =
+        \compr{(x_1,\ldots,x_{n+1})}{x_i = x_{n+1}}\]
+        qui correspond bien à ce qui est attendu.
+      \item si le terme est de la forme $\symbF(t_1,\ldots,t_p)$, en prenant
+        $\varPt_1,\ldots,\varPt_n$ les graphes des termes $t_1,\ldots,t_n$, on
+        définit alors
+        $\makeFunName{\varRen_i}{\intervIntB{n+1}}{\intervIntB{n+p+1}}$
+        par $k \mapsto k$ pour $k \leq n$, et $n+1\mapsto n+i$. Ainsi,
+        \[\varRen_i\mathbin{\bullet}\funGraph{\toM{t_i}} =
+        \compr{(x_1,\ldots,x_{n+p+1})}{x_{n+i} = \toM{t_i}(x_1,\ldots,x_n)}\]
+        et, en notant
+        $\makeFunName{\varRen'}{\intervIntB{p+1}}{\intervIntB{n+p+1}}$
+        la fonction $k \mapsto n + k$, on obtient finalement l'ensemble
+        \[\varRen'\mathbin{\bullet}\funGraph{\toM{\symbF}} =
+        \compr{(x_1,\ldots,x_{n+p+1})}
+              {x_{n+p+1} = \toM{\symbF}(x_n+1,\ldots,x_{n+p})}\]
+        L'intersection de tous ces ensembles correspond au tuple
+        $(x_1,\ldots,x_{n+p+1})$ tel que $x_{n+i}$ est l'image des
+        $n$ premiers $x_k$ par $\toM{t_i}$, et $x_{n+p+1}$ est alors
+        l'image des $n$ premiers $x_k$ par $\toM{(\symbF(t_1,\ldots,t_p))}$.
+        On projette finalement cet ensemble sur les coordonnées entre
+        $n+1$ et $n+p$ (inclus) et on obtient alors que le graphe de
+        $\toM{(\symbF(t_1,\ldots,t_p))}$ est dans $\powerdef^{n+1}(\varMM)$.
+      \end{itemize}
+    \item On sait donc que les termes ont des graphes dans
+      $\powerdef^{n+1}(\varMM)$. En réutilisant la même construction, on
+      peut composer les graphes des différents $\toM{t_i}$ et de $\toM{\symbR}$
+      pour en déduire que le graphe induit par $\symbR(t_1,\ldots,t_n)$ est
+      dans $\powerdef^{n}(\varMM)$.
+    \item Les connecteurs logiques correspondent exactement aux opérations
+      d'une algèbre de Boole (en incluant $\top$ et $\bot$), le résultat est
+      donc direct par le dernier point.
+    \item Pour une quantification universelle, on se ramène directement
+      à des négations et une quantification existentielle.
+    \item Si l'interprétation de $\varFF(\vec x,y)$ est dans
+      $\powerdef^{n+1}(\varMM)$, alors l'interprétation de la formule
+      $\exists y,\varFF(\vec x,y)$ est exactement
+      $\projP{}{n+1}(\varPt)$ avec $\varPt$ l'interprétation de $\varFF$.
+    \end{itemize}
+  \item[\fbox{$\supseteq$}] Dans le sens contraire, on raisonne sur la
+    structure inductive de la famille $\powerdef^{n}(\varMM)$~:
+    \begin{itemize}
+    \item Si $\makeFunName{\varRen}{\intervIntB{n}}{\intervIntB{m}}$ est
+      une fonction de renommage, et $\varPt = \varFF(\vide)$, alors on
+      remarque que
+      \[\varRen\mathbin{\bullet}\varPt =
+      \compr{\vec m \in \carMM^{m}}
+            {\varMM,\vec m \satisf \varFF[x_{\varRen(i)}/x_i]}\]
+      d'où le résultat.
+    \item La formule $x_{n+1} = \symbF(x_1,\ldots,x_n)$ donne le graphe de
+      $\toM{\symbF}$.
+    \item La formule $\symbR(x_1,\ldots,x_n)$ donne le graphe de
+      $\toM{\symbR}$.
+    \item Si $\varPt$ peut s'écrire comme $\varFF(\vide)$ avec
+      $\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)$, alors
+      \[\projP{}{i}(\varPt) = (\exists y,\varFF)(\vide)\]
+    \item Les parties $\carMM^n$ sont définissables par $\top$, les parties
+      $\vide$ sont définissables par $\bot$, l'union et l'intersection peuvent
+      être définies respectivement par $\lor$ et $\land$.
+    \end{itemize}
+  \end{itemize}
+  On a donc l'équivalence entre les deux notions.
+\end{proof}
+
+\begin{exercise}
+  Pour une partie $\varPt\subseteq X^n$ et $\varPerm\in\Permut{n}$, on
+  définit
+  \[\swap_{\varPerm}(\varPt) \defeq
+  \compr{(x_1,\ldots,x_n)\in X^n}{(x_{\varPerm(1)},\ldots,x_{\varPerm(n)})\in \varPt}
+  \]
+  A FAIRE
+\end{exercise}
+
+\begin{notation}
+  On écrira $\powerdef_{\varPt}^{n}(\varMM)$ les parties de $\carMM^n$ qui sont
+  $\varPt$-définissables, et $\vide$-définissables dans le cas où on ne met pas
+  d'indice (comme précédemment).
+\end{notation}
+
+Maintenant qu'on peut parler de parties définissables, passons en revue quelques
+structures et des parties définissables~:
+
+\begin{example}
+  Dans n'importe quelle structure $\varMM$, les parties finies de $\varPt$
+  sont $\varPt$-définissables.
+\end{example}
+
+\begin{example}
+  Dans $\bZ$ avec sa structure additive (donc, comme modèle de la théorie des
+  groupes), on peut décomposer n'importe quel entier comme pair ou impair~:
+  \[\pair(x) \defeq \exists y, x = y + y\]
+  les deux parties $2\bZ$ et $2\bZ+1$ sont donc $\vide$-définissables.
+
+  N'importe quelle partie finie est $\{1\}$-définissable~: on peut écrire
+  tout entier comme $1+\cdots+1$ ou comme son opposé.
+\end{example}
+
+\begin{example}
+  Dans $\bR$ avec sa structure de corps, on peut écrire comme terme clos
+  n'importe quel entier, donc n'importe quel $\{n\}$ avec $n \in \bZ$ est
+  $\vide$-définissable. On peut aussi définir $\{1/n\}$ par le fait qu'il
+  est l'inverse de $n$. Quitte à additionner ensuite, chaque partie finie
+  de $\bQ$ est $\vide$-définissable. Les racines \ordinalnumeralfeminin{$n$}
+  sont aussi définissables par
+  \[y = \sqrt[n]{x} \defeq y \geq 0 \land y^n = x\]
+\end{example}
+
+\subsection{Manipulation des parties définissables}
+
+Une partie définissable est donnée par une formule qui la décrit. \`A ce titre,
+si on considère une partie définissable et une extension de notre structure,
+on peut obtenir une extension de notre partie définissable.
+
+\begin{definition}[Extension d'une partie définissable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varMN$ une extension élémentaire de $\varMM$. Alors pour une
+  partie $\vide$-définissable $\varPt\subseteq\carMM^n$ par une formule
+  $\varFF$, on pose
+  \[\varPt^{\varMN} \defeq
+  \compr{\vec m\in\carMN^n}{\varMN,\vec m\satisf\varFF}\]
+\end{definition}
+
+\begin{proof}
+  On définit $\varPt^{\varMN}$ sans appeler explicitement $\varFF$ car le choix
+  de $\varFF$ n'importe pas. En effet, supposons que $\varFF$ et $\varFP$
+  définissent la même partie $\varPt$. En particulier,
+  \[\varMM\satisf\forall \vec x, (\varFF \iffS\varFP)\]
+  ce que l'ont vérifie aussi dans $\varMN$ par extension élémentaire. On en
+  déduit alors que l'ensemble défini par $\varFF$ dans $\varMN$ et celui
+  défini par $\varFP$ dans $\varMN$ sont les mêmes, donc on n'a pas
+  d'ambiguïté.
+\end{proof}
