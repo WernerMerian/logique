@@ -24,6 +24,260 @@ suivie d'une quantification existentielle.
 On aborde ensuite l'une des propriétés incontournables de la théorie des
 modèles~: l'élimination des quantificateurs. On en présente l'intérêt et des
 critères permettant d'établir qu'une théorie $\varT$ donnée a l'élimination des
-quantificateurs, en travaillant sur des exemples dont $\RCF$.
+quantificateurs, en travaillant sur des exemples dont $\RCF$. Dans ces
+différentes méthodes, on présentera les notions de modèle algébriquement
+premier et de modèle-complétude.
 
 \section{Classifier les théories par leurs modèles}
+
+Pour classifier au mieux les théories suivant les propriétés sémantiques de
+leur classe de modèles, on commence par étudier en général les quantificateurs,
+qui sont un élément clé du passage d'un modèle à un autre. En effet, si l'on
+considère $\varMM\subseteq\varMN$, n'importe quelle formule sans quantificateur
+est conservée de $\varMM$ à $\varMN$ (ce que l'on peut reconnaître dans le fait
+que $\Diag(\varMM)$ correspond aux extensions de $\varMM$). C'est donc au niveau
+des quantificateurs que peuvent apparaître des phénomènes intéressants lorsqu'on
+passe d'un modèle à l'autre.
+
+\subsection{Rôle sémantique des quantificateurs}
+
+Concentrons-nous dans un premier temps purement sur les quantificateurs. Pour
+cela, on définit d'abord les formules avec une seule sorte de quantificateur.
+
+\begin{definition}[Formules existentielles, universelles]
+  Soit $\Sign$ une signature. On dit qu'une formule $\varFF$ est existentielle
+  (respectivement universelle) si elle est (équivalente à une formule) de la
+  forme $\exists \vec x, \varFP$ (respectivement $\forall \vec x, \varFP$)
+  avec $\varFP\in\Formqf(\Sign)$. On note $\Formula_{\exists}(\Sign)$
+  (respectivement $\Formula_{\forall}(\Sign)$) l'ensemble des formules
+  existentielle (respectivement universelles).
+\end{definition}
+
+Ces formules rappellent aussi la hiérarchie de Lévy (\cref{def.Levy})~: les
+formules existentielles de la théorie des ensembles sont les formules
+$\HierLevS{1}$ et les formules universelles sont les formules $\HierLevP{1}$.
+Comme dans ce cas, on a une propriété de passage de la vérité par extension
+(respectivement sous-structure).
+
+\begin{lemma}
+  Soit $\Sign$ une signature, $\varMM,\varMN$ deux modèles tels que
+  $\varMM\subseteq\varMN$ et $\vec m$ la donnée de paramètres dans $\varMM$. Les
+  deux propriétés sont vérifiées~:
+  \begin{enumerate}[label=(\roman*)]
+  \item pour toute formule existentielle $\varFF(\vec x)$, on a l'implication
+    \[\varMM,\vec m\satisf\varFF \implies \varMN,\vec m\satisf\varFF\]
+  \item pour toute formule universelle $\varFF(\vec x)$, on a l'implication
+    \[\varMN,\vec m\satisf\varFF \implies \varMM,\vec m\satisf\varFF\]
+  \end{enumerate}
+\end{lemma}
+
+\begin{proof}
+  Les deux propriétés sont duales et se prouvent de façon similaire, on se
+  contente donc de prouver la première.
+
+  On raisonne par induction sur le nombre de quantifications existentielles
+  dans $\varFF$. Si $\varFF$ est sans quantificateur, alors on a directement
+  une équivalence $\varMM,\vec m\satisf\varFF\iff\varMN,\vec m\satisf\varFF$.
+  Si $\varFF$ est de la forme $\exists y,\varFP(\vec x,y)$, alors supposons
+  que $\varMM,\vec m \satisf\varFF$. Par définition, on trouve $a\in\carMM$
+  tel que $\varMM,(\vec m,a)\satisf\varFP$ et, par hypothèse d'induction,
+  $\varMN,(\vec m,a)\satisf\varFP$. En conclusion, $\varMN,\vec m\satisf\varFF$.
+\end{proof}
+
+Bien sûr, toute formule n'est pas existentielle ou universelle. Une théorie, en
+général, ne l'est pas non plus. On définit donc une forme de trace d'une théorie
+sur les formules existentielles (respectivement universelles).
+
+\begin{definition}[Partie existentielle, universelle]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On définit
+  la partie existentielle et la partie universelle de $\varT$ par
+  \[\varT_{\exists} \defeq
+  \compr{\varFF\in\Prop_{\exists}(\Sign)}{\varT\vD\varFF}
+  \qquad
+  \varT_{\forall} \defeq
+  \compr{\varFF\in\Prop_{\forall}(\Sign)}{\varT\vD\varFF}\]
+  On définit aussi la parie existentielle (respectivement universelle) d'un
+  modèle $\varMM$ par
+  \[\Th_{\exists}(\varMM)\defeq(\Th(\varMM))_{\exists}\qquad
+  \Th_{\forall}(\varMM)\defeq(\Th(\varMM))_{\forall}\]
+\end{definition}
+
+\begin{remark}
+  On peut réécrire ces définitions directement en
+  $\Th(\varT)\cap\Prop_{\exists}(\Sign)$ (respectivement
+  $\Th(\varT)\cap\Prop_{\forall}(\Sign)$).
+\end{remark}
+
+On peut penser que le rôle des deux quantificateur est parfaitement dual,
+l'un étant la négation de l'autre. C'est principalement le cas, mais il y a une
+asymétrie dans le fait que les méthodes de constructions de structures
+permettent principalement de \og faire grossir\fg des structures~: de ce fait,
+construire une sous-structure est plus difficile que construire une extension.
+C'est pourquoi on peut caractériser la partie universelle plus facilement.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varT$ une théorie sur $\Sign$ et $\varMM$
+  une $\Sign$-structure.
+  $\varMM\models\varT_{\forall}$ si et seulement s'il existe un modèle
+  $\varMN\models\varT$ et un plongement $\varMM\subseteq\varMN$.
+\end{proposition}
+
+\begin{proof}
+  On procède par double inclusion~:
+  \begin{itemize}
+  \item[\fbox{$\Leftarrow$}] S'il existe une extension $\varMN$ de $\varMM$
+    vérifiant $\varT$ alors chaque énoncé universel de $\varT$ est
+    vrai dans $\varMN$, donc dans $\varMM$ par préservation par sous-structure.
+  \item[\fbox{$\Rightarrow$}] On cherche à construire un modèle de la théorie
+    \[\varT' \defeq \Diag(\varMM) \cup\varT\]
+    Par compacité et quitte à prendre une conjonction de formules dans
+    $\Diag(\varMM)$, on se limite à vérifier qu'il y a un modèle de
+    $\varT\cup\{\varFF(\vec{\Cc}_m)\}$ pour chaque formule $\varFF$ et
+    paramètres $\vec m$ tels que $\varMM,\vec m\satisf\varFF$. Par l'absurde,
+    supposons que $\varT\vD\lnot\varFF(\vec{\Cc}_m)$. On utilise alors le lemme
+    de généralisation des constantes (\cref{lem.var.const}) et le fait que
+    $\varT$ est une théorie sur $\Sign$ (ne faisant pas intervenir de $\Cc_m$
+    pour $m\in\carMM$) pour en déduire que
+    $\varT\vD\lnot\forall \vec x, \lnot\varFF(\vec x)$, ce qui contredit
+    le fait que $\varMM\models\varT_{\forall}$.\qedhere
+  \end{itemize}
+\end{proof}
+
+On peut aussi se concentrer sur les théories qui sont constituées uniquement de
+formules universelles, et les caractériser par cette proposition.
+
+\begin{definition}[Théorie universellement axiomatisable]
+  Soit $\Sign$ une signature. Une théorie $\varT\in\Theory(\Sign)$ est dite
+  universellement axiomatisable (ou, plus simplement, universelle), si
+  \[\varT\equiv\varT_{\forall}\]
+  $\varT$ est dite existentiellement axiomatisable (ou, plus simplement,
+  existentielle), si
+  \[\varT\equiv\varT_{\exists}\]
+\end{definition}
+
+\begin{corollary}
+  Une théorie $\varT$ est universelle si et seulement si pour toutes structures
+  $\varMM,\varMN$, si $\varMN\models\varT$ et $\varMM\subseteq\varMN$ alors
+  $\varMM\models\varT$.
+\end{corollary}
+
+\noindent
+Pour appréhender la partie existentielle, on préfère passer par la partie
+universelle.
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structures. On a
+  l'équivalence
+  \[\varMM\satisf\Th_{\forall}(\varMN)\iff \varMN\satisf\Th_{\exists}(\varMM)\]
+\end{proposition}
+
+\begin{proof}
+  Les deux sens se démontrent de façon duale, en passant par la négation~: on
+  montre donc un seul sens.
+  
+  Supposons que $\varMM\satisf\Th_{\forall}(\varMN)$ et soit
+  $\varFF\in\Th_{\exists}(\varMM)$. On trouve $\varFP$ tel que
+  $\varFF = \exists \vec{x},\varFP(\vec{x})$. Supposons que
+  $\varMN\nsatisf\varFF$, alors
+  $\varMN\satisf\forall\vec{x},\lnot\varFP(\vec{x})$. Comme $\varMM$
+  satisfait la partie universelle de $\varMN$, on en déduit que
+  $\varMM\satisf\forall \vec x,\lnot\varFP(\vec x)$, ce qui est absurde.
+\end{proof}
+
+\begin{remark}
+  On peut aussi caractériser $\varMM\satisf\Th_{\forall}(\varMN)$ par le fait
+  que $\Th_{\exists}(\varMM)\subseteq\Th_{\forall}(\exists)$ ou, dualement,
+  par le fait que $\Th_{\forall}(\varMM)\subseteq\Th_{\forall}(\varMN)$.
+\end{remark}
+
+\noindent
+Enfin, une autre caractérisation possible est la suivante.
+
+\begin{corollary}
+  Soit $\Sign$ une signature et $\varMM,\varMN$.
+  $\varMN\satisf\Th_{\exists}(\varMM)$ si et seulement s'il existe une extension
+  élémentaire $\varMN'$ de $\varMN$ et un plongement $\varMM\subseteq\varMN'$.
+\end{corollary}
+
+\begin{proof}
+  On utilise les résultats précédents~: la première proposition est équivalente
+  au fait que $\varMM\satisf\Th_{\forall}(\varMM)$, qui est équivalent (par
+  caractérisation du fait de satisfaire une partie universelle) au fait qu'il
+  existe un modèle $\varMN_0$ de $\Th(\varMN)$ et un plongement
+  $\varMM\subseteq\varMN_0$. Par plongement élémentaire conjoint
+  (\cref{thm.amalgamation}), comme $\varMN\eltEq\varMN_0$, on trouve $\varMN'$
+  tel que $\varMN\subModElt\varMN'$ et $\varMM\subseteq\varMN'$ (en composant le
+  plongement $\varMM\subseteq\varMN_0$ et le plongement élémentaire
+  $\varMN_0\subModElt\varMN'$).
+\end{proof}
+
+\noindent
+On peut alors trouver une caractérisation des parties existentielles.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varT$ une théorie sur $\Sign$ et $\varMM$ une
+  $\Sign$-structure. $\varMM\satisf\varT_{\exists}$ si et seulement s'il
+  existe un modèle $\varMN\models\varT$, une extension élémentaire
+  $\varMM'$ de $\varMM$ et un plongement $\varMN\subseteq\varMM'$.
+\end{proposition}
+
+\begin{proof}
+  Le sens \fbox{$\Leftarrow$} est automatique par préservation des formules
+  existentielles par extension, on se concentre donc sur l'autre sens.
+
+  On montre que $\varT\cup\Th_{\forall}(\varMM)$ est cohérent. Si cette théorie
+  n'est pas cohérente, alors par compacité on peut trouver une formule
+  $\forall \vec x, \varFF(\vec x)$ telle que
+  $\varT\vD\lnot(\forall \vec x,\varFF(\vec x)$, c'est-à-dire telle que
+  $\varT\vD\exists \vec x, \lnot\varFF(\vec x)$, ce qui contredit le fait
+  que $\varMM\satisf\varT_{\exists}$.
+
+  On trouve donc un modèle $\varMN\satisf\varT\cup\Th_{\forall}(\varMM)$, donc
+  $\varMN\satisf\varT$ et par les mêmes arguments que dans la preuve précédente
+  il existe une extension élémentaire $\varMM'$ de $\varMM$ et un plongement
+  $\varMN\subseteq\varMM$.
+\end{proof}
+
+\noindent
+On peut finalement caractériser les théories existentiellement axiomatisables.
+
+\begin{corollary}
+  Une théorie $\varT$ est existentielle si et seulement si pour toutes
+  structures $\varMM,\varMN$, si $\varMM\satisf\varT$ et $\varMM\subseteq\varMN$
+  alors $\varMN\satisf\varT$.
+\end{corollary}
+
+Ici, la notion de formule existentielle (respectivement universelle) est
+relativement stricte. On peut souhaiter l'affaiblir en travaillant modulo une
+théorie fixée.
+
+\begin{definition}[Formule existentielle / universelle modulo théorie]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit qu'une
+  formule $\varFF(\vec x)$ est existentielle (respectivement universelle)
+  modulo $\varT$ s'il existe une formule existentielle (respectivement
+  universelle) $\varFP(\vec x)$ telle que
+  \[\varT\vD \forall \vec x, \varFF(\vec x)\iffS \varFP(\vec x)\]
+\end{definition}
+
+La caractérisation des formules existentielles / universelles se fait par la
+préservation par extension / sous-structure. Dans le cas des formules modulo
+théorie, on peut les caractériser en se restreignant aux modèles de la théorie.
+
+\begin{theorem}
+  Soit $\Sign$ une signature, $\varT$ une théorie sur $\Sign$ et
+  $\varFF(\vec x)$ une formule. Les deux faits suivant sont vérifiés~:
+  \begin{enumerate}[label=(\roman*)]
+  \item $\varFF$ est existentielle modulo $\varT$ si et seulement si pour tous
+    deux modèles $\varMM,\varMN\satisf\varT$ tels que $\varMM\subseteq\varMN$ et
+    toute donnée de paramètres $\vec m$ dans $\varMM$, si
+    $\varMM,\vec m\satisf\varFF$ alors $\varMN,\vec m \satisf\varFF$.
+  \item $\varFF$ est universelle modulo $\varT$ si et seulement si pour tous
+    deux modèles $\varMM,\varMN\satisf\varT$ tels que $\varMM\subseteq\varMN$ et
+    toute donnée de paramtres $\vec m$ dans $\varMM$, si
+    $\varMN,\vec m\satisf\varFF$ alors $\varMM,\vec m\satisf\varFF$.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  A FAIRE
+\end{proof}
