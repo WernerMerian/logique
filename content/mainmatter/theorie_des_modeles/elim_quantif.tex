@@ -132,9 +132,9 @@ C'est pourquoi on peut caractériser la partie universelle plus facilement.
     \[\varT' \defeq \Diag(\varMM) \cup\varT\]
     Par compacité et quitte à prendre une conjonction de formules dans
     $\Diag(\varMM)$, on se limite à vérifier qu'il y a un modèle de
-    $\varT\cup\{\varFF(\vec{\Cc}_m)\}$ pour chaque formule $\varFF$ et
+    $\varT\cup\{\varFF(\vec{\Cc_m})\}$ pour chaque formule $\varFF$ et
     paramètres $\vec m$ tels que $\varMM,\vec m\satisf\varFF$. Par l'absurde,
-    supposons que $\varT\vD\lnot\varFF(\vec{\Cc}_m)$. On utilise alors le lemme
+    supposons que $\varT\vD\lnot\varFF(\vec{\Cc_m})$. On utilise alors le lemme
     de généralisation des constantes (\cref{lem.var.const}) et le fait que
     $\varT$ est une théorie sur $\Sign$ (ne faisant pas intervenir de $\Cc_m$
     pour $m\in\carMM$) pour en déduire que
@@ -267,17 +267,932 @@ théorie, on peut les caractériser en se restreignant aux modèles de la théor
   Soit $\Sign$ une signature, $\varT$ une théorie sur $\Sign$ et
   $\varFF(\vec x)$ une formule. Les deux faits suivant sont vérifiés~:
   \begin{enumerate}[label=(\roman*)]
-  \item $\varFF$ est existentielle modulo $\varT$ si et seulement si pour tous
+  \item\label{item.ext.exist}
+    $\varFF$ est existentielle modulo $\varT$ si et seulement si pour tous
     deux modèles $\varMM,\varMN\satisf\varT$ tels que $\varMM\subseteq\varMN$ et
     toute donnée de paramètres $\vec m$ dans $\varMM$, si
     $\varMM,\vec m\satisf\varFF$ alors $\varMN,\vec m \satisf\varFF$.
   \item $\varFF$ est universelle modulo $\varT$ si et seulement si pour tous
     deux modèles $\varMM,\varMN\satisf\varT$ tels que $\varMM\subseteq\varMN$ et
-    toute donnée de paramtres $\vec m$ dans $\varMM$, si
+    toute donnée de paramètres $\vec m$ dans $\varMM$, si
     $\varMN,\vec m\satisf\varFF$ alors $\varMM,\vec m\satisf\varFF$.
   \end{enumerate}
 \end{theorem}
 
 \begin{proof}
-  A FAIRE
+  On ne prouve que le cas universel~:
+  \begin{itemize}
+  \item[\fbox{$\Rightarrow$}] Supposons que $\varFF$ est universelle modulo
+    $\varT$. On trouve donc $\varFP$ universelle telle que $\varFF$ est
+    équivalente à $\varFP$ modulo $\varT$. Pour deux $\varMM\subseteq\varMN$
+    deux modèles de $\varT$, la satisfaction de $\varFF$ est donc équivalente à
+    celle de $\varFP$, et si $\varMN,\vec m\satisf\varFP$ alors
+    $\varMM,\vec m\satisf\varFP$ car $\varFP$ est universelle, d'où le
+    résultat.
+  \item[\fbox{$\Leftarrow$}] On suppose que $\varFF$ est préservée par
+    sous-structure au sein des modèles de $\varT$. Soit
+    \[\varT_0 \defeq
+    \compr{\varFP(\vec x)\in\Formula_{\exists}(\Sign)}
+          {\varT\vD\forall \vec x,\varFF(\vec x)\to\varFP(\vec x)}\]
+    On introduit de nouveaux symboles de constantes $\Cc_0,\ldots,\Cc_n$
+    (qu'on notera $\vec{\Cc}$)
+    et on prouve que $\varT\cup\varT_0(\vec{\Cc})\vD\varFF(\vec{\Cc})$. Pour
+    cela, on considère un modèle $\varMM\satisf\varT$ et des paramètres
+    $\vec m$ dans $\varMM$ tels que $\varMM,\vec m\satisf\varT_0(\vec{x})$
+    (cela revient à considérer que $\varMM\satisf\varT_0(\vec{\Cc})$ en
+    interprétant $\vec{\Cc}$ par $\vec m$), et on souhaite montrer que
+    $\varMM,\vec m\satisf\varFF$.
+
+    Pour cela, on commence par montrer que
+    \[\varT' \defeq \varT\cup\{\varFF(\vec{\Cc})\}\cup\Diag(\varMM_{\vec{m}})\]
+    est satisfiable, car un modèle de cette théorie est alors une extension
+    $\varMN$ de $\varMM$ telle que $\varMN,\vec m\satisf\varFF$ (car on prend
+    une extension de $\varMM_{\vec{m}}$, donc on stabilité $\vec m$). On montre
+    que $\varT'$ est satisfiable par l'absurde~: par compacité, on trouve
+    (quitte à prendre une conjonction)
+    $\varFP(\vec{\Cc},\vec{\Cc_m})\in\Diag(\varMM_{\vec{m}})$ telle que
+    $\varT\cup\varFF(\vec{\Cc})\vD
+    \lnot(\varFP(\vec{\Cc},\vec{\Cc_m}))$.
+    On remarque qu'alors, puisque $\vec{\Cc_m}$ n'est pas dans le langage de
+    $\varT\cup\varFF(\vec{\Cc})$, on peut généraliser ces constantes. De
+    même, on peut ensuite appliquer la règle $\RtoI$ et généraliser $\vec{\Cc}$
+    pour obtenir finalement
+    \[\varT\vD\forall \vec{x},
+    (\varFF(\vec x)\to(\forall y,\lnot\varFP(\vec x,\vec y)))\]
+    Puisque $\varFP$ est prise dans un diagramme, elle est sans quantificateur,
+    et $\forall \vec{y},\lnot\varFP(\vec x,\vec y)$ est une formule
+    universelle. On en déduit que $\forall\vec{y},\lnot\varFP\in\varT_0$,
+    d'où $\varMM,\vec m\satisf \forall \vec{y},\lnot\varFP(\vec x,\vec y)$, ce
+    qui contredit le fait que $\varFP(\vec{\Cc},\vec{\Cc_m})$ est dans le
+    diagramme.
+
+    On peut donc trouver $\varMN$ tel que $\varMM\subseteq\varMN$ et
+    $\varMN,\vec m\satisf\varFF$. Par hypothèse sur la préservation par
+    sous-structure, on en déduit que $\varMM,\vec m\satisf\varFF$. On en déduit
+    que $\varT\cup\varT_0(\vec{\Cc})\vD\varFF(\vec{\Cc})$. Par compacité,
+    on peut donc trouver une partie finie de $\varT_0(\vec{\Cc})$, c'est-à-dire
+    une seule formule (quitte à prendre des conjonctions, et on peut
+    vérifier que $\varT_0$ est stable par conjonction) $\varFP\in\varT_0$
+    telle que $\varT\vD\varFP(\vec{\Cc})\to\varFF(\vec{\Cc})$, puis par
+    généralisation $\varT\vD\forall \vec x,\varFP(\vec x)\to\varFF(\vec x)$.
+    Comme, de plus, $\varFP\in\varT_0$, on en déduit
+    \[\varT\vD\forall \vec x, \varFP(\vec x)\iffS\varFF(\vec x)\qedhere\]
+  \end{itemize}
 \end{proof}
+
+\begin{exercise}
+  Montrer le fait \ref{item.ext.exist} du théorème précédent.
+\end{exercise}
+
+\noindent
+On introduit finalement une notion de diagramme adaptée aux quantifications.
+
+\begin{definition}[Diagramme existentiel, universel]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit le
+  diagramme existentiel (respectivement universel) de $\varMM$ par
+  \[\Diag_{\exists}(\varMM)\defeq \Th_{\exists}(\varMM_{\carMM})\qquad
+  \Diag_{\forall}(\varMM)\defeq \Th_{\forall}(\varMM_{\carMM})\]
+\end{definition}
+
+\subsection{Théories \og pour tout il existe\fg}
+
+On va maintenant étudier une classe particulière de théories, qui sont
+légèrement plus complexes que des théories purement existentielles ou purement
+universelles. Si on considère une hiérarchie de formules, les théories que nous
+étudions ici sont celles appartenant à la classe $\HierArithP{2}$.
+
+\begin{definition}[Formule \og pour tout il existe\fg]
+  Soit $\Sign$ une signature. On dit qu'une formule $\varFF\in\Formula(\Sign)$
+  est une formule \og pour tout il existe\fg (ou une $\forall\exists$-formule)
+  s'il existe une formule sans quantificateur $\varFP\in\Formqf(\Sign)$ telle
+  que
+  \[\varFF\equiv \forall \vec{x},\exists \vec{y},\varFP(\vec{x},\vec{y})\]
+  On note $\Formula_{\forall\exists}(\Sign)$ l'ensemble des
+  $\forall\exists$-formules sur $\Sign$.
+  
+  On dit qu'une théorie $\varT\in\Theory(\Sign)$ est une théorie
+  \og pour tout il existe\fg axiomatisable (ou une $\forall\exists$-théorie)
+  si $\varT$ est équivalente à une théorie constituée uniquement de
+  $\forall\exists$-formules.
+\end{definition}
+
+\begin{definition}[Partie \og pour tout il existe\fg]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On appelle la
+  partie \og pour tout il existe\fg de $\varT$ la théorie
+  \[\varT_{\forall\exists} \defeq
+  \compr{\varFF\in\Formula_{\forall\exists}(\Sign)}{\varT\vD\varFF}\]
+  Pour une $\Sign$-structure $\varMM$, on appelle sa partie \og pour tout il
+  existe\fg la théorie
+  \[\Th_{\forall\exists}(\varMM)\defeq(\Th(\varMM))_{\forall\exists}\]
+\end{definition}
+
+Pour caractériser la satisfaction de $\forall\exists$-théories, on introduit une
+notion proche de celle de sous-structure élémentaire, mais limitée à une classe
+de formules.
+
+\begin{definition}[Structure existentiellement close]
+  Soit $\Sign$ une signature et $\varMM\subseteq\varMN$ deux $\Sign$-structures.
+  On dit que $\varMM$ est existentiellement close dans $\varMN$, ce que l'on
+  note $\varMM\subModEx\varMN$, lorsque pour toute formule existentielle
+  $\varFF(\vec x)$ et toute donnée de paramètres $\vec m$ dans $\varMM$, si
+  $\varMN,\vec m\satisf\varFF$ alors $\varMM,\vec m\satisf\varFF$.
+\end{definition}
+
+\begin{remark}
+  Pour une approche plus structurelle et moins intrinsèque (ne faisant pas jouer
+  un rôle distingué à l'inclusion), on peut définir une notion de plongement
+  existentiel comme un plongement $\makeFunName{\varMoM}{\varMM}{\varMN}$
+  tel que pour $\varFF(\vec x)$ existentielle et $\vec m$ dans $\varMM$,
+  si $\varMN,\varMoM(\vec m)\satisf\varFF$ alors $\varMM,\vec m\satisf\varFF$.
+\end{remark}
+
+\begin{remark}
+  On peut caractériser $\varMM\subModEx\varMN$ par la conjonction de
+  $\varMM\subseteq\varMN$ et $\varMN_{\carMM}\satisf\Diag_{\forall}(\varMM)$.
+  Cela se vérifie par l'équivalence
+  \[\varMN_{\carMM}\satisf\Th_{\forall}(\varMM_{\carMM})\iff
+  \varMM_{\carMM}\satisf\Th_{\exists}(\varMN_{\carMM})\]
+\end{remark}
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varT$ une théorie et $\varMM$ une
+  $\Sign$-structure. $\varMM\satisf\varT_{\forall\exists}$ si et seulement s'il
+  existe un modèle $\varMN\satisf\varT$ tel que $\varMM\subModEx\varMN$.
+\end{proposition}
+
+\begin{proof}
+  On procède par double implication~:
+  \begin{itemize}
+  \item[\fbox{$\Rightarrow$}] On montre que $\varT\cup\Diag_{\forall}(\varMM)$
+    est cohérent. Si cette théorie ne l'est pas, alors on trouve une formule
+    dans le diagramme universel de $\varMM$ incompatible avec $\varT$,
+    c'est-à-dire des constantes $\vec{\Cc}$ et une formule sans quantificateur
+    $\varFF$ telles que
+    \[\varT\vD\lnot\forall \vec x, \varFF(\vec x,\vec{\Cc})\]
+    d'où, en généralisant $\Cc$ et en appliquant les lois de De Morgan, le fait
+    que $\varT\vD\forall \vec y,\exists \vec x,\varFF$, ce qui contredit le
+    fait que $\varMM\satisf\varT_{\forall\exists}$. On trouve donc un modèle
+    $\varMN\satisf\varT$ et, puisqu'il satisfait aussi le diagramme universel
+    de $\varMM$, on a $\varMM\subModEx\varMN$.
+  \item[\fbox{$\Leftarrow$}] On suppose que $\varMM\subModEx\varMN$,
+    $\varMN\satisf\varT$ et
+    $\forall \vec x,\exists \vec y \varFF(\vec x,\vec y)\in\varT_{\forall\exists}$.
+    Alors pour tout $\vec m$ dans $\varMM$, on sait que
+    $\varMN,\vec m\satisf\exists \vec y \varFF$, donc
+    $\varMM,\vec m\satisf\exists \vec y \varFF$ par clôture existentielle,
+    c'est-à-dire $\varMM\satisf\forall\vec x,\exists \vec y,\varFF$.\qedhere
+  \end{itemize}
+\end{proof}
+
+On peut désormais caractériser les $\forall\exists$-théories par la notion
+sémantique de théorie inductive.
+
+\begin{definition}[Théorie inductive]
+  Soit $\Sign$ une signature. Une théorie $\varT$ sur $\Sign$ est dite inductive
+  si pour toute chaîne $(\varMM_i)_{i\in\indSet}$ une chaîne de modèles de
+  $\varT$ sur un ensemble totalement ordonné $(\indSet,<)$, l'union de la
+  chaîne $\displaystyle\bigcup_{i\in\indSet}\varMM_i$ est aussi un modèle de
+  $\varT$.
+\end{definition}
+
+\begin{theorem}
+  Une théorie $\varT$ est une $\forall\exists$-théorie si et seulement si elle
+  est inductive.
+\end{theorem}
+
+\begin{proof}
+  On pose $\varMM\defeq\displaystyle\bigcup_{i \in \indSet}\varMM_i$.
+  On procède par double implication~:
+  \begin{itemize}
+  \item[\fbox{$\Rightarrow$}]
+    Soit $\varFF = \forall \vec x,\exists \vec y,\varFP(\vec x,\vec y)$ une
+    formule avec $\varFP$ sans quantificateur. Si pour tout
+    $i\in\indSet, \varMM_i\satisf\varFF$, montrons que $\varMM\satisf\varFF$.
+    Soit $\vec m$ la donnée de paramètres dans $\varMM$. Par définition,
+    pour chaque $m_1,\ldots,m_n$ on trouve $i_1,\ldots,i_n$ tels que
+    $m_k\in\varMM_{i_k}$, mais comme $(\varMM_i)$ est une chaîne, on peut
+    trouver un $i$ maximal tel tous les $m_k$ appartiennent à $\varMM_i$.
+    On sait alors que
+    $\varMM_i,\vec m\satisf\exists \vec y,\varFP(\vec x,\vec y)$, donc
+    on trouve $\vec{m}'$ dans $\varMM_i$ tel que
+    $\varMM_i,(\vec m,\vec{m}')\satisf\varFP$, donc (car $\varFP$ est sans
+    quantificateur) $\varMM,(\vec m,\vec{m}')\satisf\varFP$, d'où le résultat.
+  \item[\fbox{$\Leftarrow$}]
+    On suppose $\varT$ inductive, montrons que $\varT_{\forall\exists}\vD\varT$.
+    Soit $\varMM_0\satisf\varT_{\forall\exists}$, d'après la proposition
+    précédente on trouve $\varMN_0\satisf\varT$ tel que
+    $\varMM_0\subModEx\varMN_0$. Or, cette satisfaction peut se traduire par
+    $(\varMN_0)_{\carM{\varMM_0}}\satisf(\DiagEl(\varMM_0))_{\forall}$,
+    donc on trouve $\varMM_1\satisf\DiagEl(\varMM_0)$ tel que
+    $\varMN_0\subseteq\varMM_1$. On sait que $\varMM_0\subModElt\varMM_1$,
+    donc que $\varMM_1\satisf\varT_{\forall\exists}$.
+
+    On itère cette construction pour obtenir une famille
+    $(\varMM_n)_{n \in \bN}$ et une famille $(\varMN_n)_{n\in\bN}$ avec
+    $\varMN_n\satisf\varT$, $\varMM_n\subModEx\varMN_n$,
+    $\varMN_n\subseteq\varMM_{n+1}$ et $\varMM_n\subModElt\varMM_{n+1}$. On pose
+    finalement
+    \[\varMM\defeq \bigcup_{n \in \bN}\varMM_n = \bigcup_{n \in \bN} \varMN_n\]
+    Comme $\varT$ est inductive, on en déduit que $\varMM\satisf\varT$. Or,
+    on sait aussi que $\varMM_0\subModElt\varMM$ (par le
+    \cref{lem.chaine.elem.tarski}) donc $\varMM_0\satisf\varT$. Par complétude,
+    on en déduit que $\varT_{\forall\exists}\vD\varT$.\qedhere
+  \end{itemize}
+\end{proof}
+
+\begin{exercise}
+  On définit de la façon attendue les $\exists\forall$-formules, les
+  $\exists\forall$-théories et les $\exists\forall$-parties de théories et
+  structures.
+
+  Soit $\Sign$ une signature, $\varMM,\varMN$ deux $\Sign$-structures.
+  Montrer que les énoncés suivants sont équivalents~:
+  \begin{enumerate}[label=(\roman*)]
+  \item $\varMM\satisf\Th_{\forall\exists}(\varMN)$
+  \item $\varMN\satisf\Th_{\exists\forall}(\varMM)$
+  \item $\Th_{\forall\exists}(\varMN)\subseteq\Th_{\forall\exists}(\varMM)$
+  \item $\Th_{\exists\forall}(\varMM)\subseteq\Th_{\exists\forall}(\varMN)$
+  \item il existe $\varMN'$ tel que $\varMM\subModElt\varMN'$ et
+    $\varMM\subModEx\varMN'$.
+  \end{enumerate}
+\end{exercise}
+
+\section{Simplification des quantificateurs}
+
+Le c\oe ur de cette section est l'élimination des quantificateurs, mais on se
+propose d'introduire cette notion de façon plus progressive. En effet, sur la
+base de ce qu'on a déjà vu jusqu'ici, on peut remarquer que la complexité
+sémantique d'une théorie relève principalement des alternances de
+quantificateurs dans les énoncés qu'elle contient. En particulier, une théorie
+sans quantificateur est particulièrement simple là où une
+$\forall\exists$-théorie se caractérise par une construction relativement
+complexe (les unions de chaînes). On s'intéresse donc maintenant aux théorie qui
+ont des propriétés simplifiant leur étude, en permettant de réduire la
+complexité des quantificateurs qui y interviennent.
+
+La propriété d'élimination des quantificateurs est la propriété la plus forte
+dans ce sens, mais il existe aussi une propriété intermédiaire se rapprochant
+plus des théories déjà étudiées.
+
+\subsection{Théorie modèle-complète et modèle compagnon}
+
+Introduisons donc la nouvelle classe de théorie que nous allons étudier~: les
+théories modèle-complétes. On en donne d'abord une définition sémantique,
+contrairement aux classes précédentes, car ladite définition est
+particulièrement simple.
+
+\begin{definition}[Théorie modèle-complète]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit que
+  $\varT$ est modèle-complète lorsque pour tous deux modèles
+  $\varMM,\varMN\satisf\varT$ tels que $\varMM\subseteq\varMN$, on a
+  $\varMM\subModElt\varMN$.
+\end{definition}
+
+\begin{remark}
+  On peut reformuler cet énoncé en disant que tout plongement entre deux modèles
+  de $\varT$ est élémentaire.
+\end{remark}
+
+\begin{remark}
+  Une théorie modèle-complète est inductive, donc
+  $\forall\exists$-axiomatisable.
+\end{remark}
+
+Cette propriété sémantique correspond en fait à une théorie dans laquelle les
+deux quantificateurs $\forall/\exists$ ont le même rôle, ce que l'on énonce de
+la façon suivante.
+
+\begin{theorem}
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. Les $5$ énoncés
+  suivants sont équivalents~:
+  \begin{enumerate}[label=(\roman*)]
+  \item\label{item.modcpl1} $\varT$ est modèle-complète.
+  \item\label{item.modcpl2} Si $\varMM,\varMN\satisf\varT$ et
+    $\varMM\subseteq\varMN$ alors $\varMM\subModEx\varMN$.
+  \item\label{item.modcpl3} Toute formule universelle est équivalente
+    modulo $\varT$ à une formule existentielle.
+  \item\label{item.modcpl4} Toute formule est équivalente modulo $\varT$ à
+    une formule existentielle.
+  \item\label{item.modcpl5} Toute formule est équivalente modulo $\varT$ à
+    une formule universelle.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  On démontre ces équivalences par un cycle d'implications~:
+  \begin{itemize}
+  \item \fbox{\ref{item.modcpl1}$\Rightarrow$\ref{item.modcpl2}}
+    Si $\varMM\subModElt\varMN$ alors $\varMM\subModEx\varMN$.
+  \item \fbox{\ref{item.modcpl2}$\Rightarrow$\ref{item.modcpl3}}
+    Soit $\varFF(\vec x)$ une formule universelle~: montrons que $\varFF$ est
+    stable par extension dans les modèles de $\varT$.
+    Soient $\varMM\satisf\varT$ un modèle et $\vec m$ des paramètres tels que
+    $\varMM,\vec m\satisf\varFF$. Soit de plus un modèle $\varMN\satisf\varT$
+    tel que $\varMM\subseteq\varMN$. Par hypothèse, on en déduit que
+    $\varMM\subModEx\varMN$, donc $\varMN\satisf\Diag_{\forall}(\varMM)$,
+    et $\varFF(\vec{\Cc_m})\in\Diag_{\forall}(\varMM)$, donc
+    $\varMN,\vec m\satisf\varFF$. On en déduit que $\varFF$ est existentielle
+    modulo $\varT$.
+  \item \fbox{\ref{item.modcpl3}$\Rightarrow$\ref{item.modcpl4}}
+    On raisonne par induction sur le nombre de quantificateurs d'une formule
+    $\varFF$ sous forme prénexe~:
+    \begin{itemize}
+    \item le résultat est direct si $\varFF$ est sans quantificateur.
+    \item si $\varFF = \forall x, \varFP$ alors on sait par hypothèse
+      d'induction que $\varFP$ est équivalente modulo $\varT$ à une formule
+      existentielle $\varFP'$, donc
+      \[\varT\vD\varFF \iffS \forall x, \varFP'\]
+      et par hypothèse toute formule universelle est équivalente modulo $\varT$
+      à une formule existentielle.
+    \item si $\varFF = \exists x, \varFP$, alors il nous suffit d'appliquer
+      l'hypothèse d'induction.
+    \end{itemize}
+  \item \fbox{\ref{item.modcpl4}$\Rightarrow$\ref{item.modcpl5}}
+    On travaille par négation~: soit $\varFF$ une formule, alors
+    $\varFF \equiv\lnot\lnot\varFF$, et par hypothèse $\lnot\varFF$ est
+    équivalente modulo $\varT$ à une formule existentielle $\varFP$. En
+    appliquant les lois de De Morgan à $\lnot\varFP$, on obtient alors une
+    formule universelle.
+  \item \fbox{\ref{item.modcpl5}$\Rightarrow$\ref{item.modcpl4}}
+    On applique l'exact même argument que pour l'autre sens.
+  \item \fbox{
+    \ref{item.modcpl4}$\land$\ref{item.modcpl5}$\Rightarrow$\ref{item.modcpl1}}
+    Soient $\varMM,\varMN\satisf\varT$ deux modèles tels que
+    $\varMM\subseteq\varMN$, $\vec m$ la donnée de paramètres dans
+    $\varMM$ et $\varFF(\vec x)$ une formule. Par hypothèse, on trouve une
+    formule existentielle $\varFF_{\exists}$ équivalente modulo $\varT$ à
+    $\varFF$ et une formule universelle $\varFF_{\forall}$ équivalente
+    modulo $\varT$ à $\varFF$. On a alors
+    \begin{align*}
+      \varMM,\vec m\satisf\varFF &\iff \varMM,\vec m\satisf\varFF_{\exists}
+      &\text{par équivalence modulo }\varT\\
+      &\implies \varMN,\vec m\satisf\varFF_{\exists}
+      &\text{par préservation des existentielle modulo }\varT\\
+      \varMM,\vec m\satisf\varFF
+      &\implies \varMN,\vec m\satisf\varFF &\text{par équivalence modulo }\varT
+    \end{align*}
+    et de même avec $\varFF_{\forall}$ pour passer de $\varMN$ à $\varMM$.
+    \qedhere
+  \end{itemize}
+\end{proof}
+
+Savoir qu'une théorie est modèle-complète est donc particulièrement fort~: les
+énoncés à l'intérieur se limitent à des énoncés avec une seule sorte de
+quantificateurs, qui sont beaucoup plus simples à étudier. Comme cette propriété
+est forte, on donne une notion permettant d'utiliser ce critère sur une théorie
+même lorsque celle-ci n'est pas directement modèle-complète, qui est la notion
+de modèle compagnon.
+
+\begin{definition}[Modèle compagnon]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit qu'une
+  théorie $\varT^*$ est modèle compagnon de $\varT$ si
+  \begin{itemize}
+  \item tout modèle de $\varT^*$ se plonge dans un modèle de $\varT$
+  \item tout modèle de $\varT$ se plonge dans un modèle de $\varT^*$
+  \item $\varT^*$ est modèle-complète.
+  \end{itemize}
+\end{definition}
+
+\begin{remark}
+  Les deux premières conditions reviennent à dire que
+  $\varT_\forall = \varT^*_\forall$.
+\end{remark}
+
+Un cas que l'on rencontrera plusieurs fois est celui où $\varT^*\vD\varT$, qui
+donne directement que tout modèle de $\varT^*$ se plonge dans un modèle de
+$\varT$. \'Etudions maintenant plusieurs exemples de modèles compagnons.
+
+\begin{example}
+  Prenons la théorie des ensembles totalement ordonnés, $\TOrd$. On peut lui
+  trouver le modèle compagnon $\DLO$~: dans un sens, il est clair que tout
+  modèle de $\DLO$ se plonge dans un modèle de $\TOrd$ (lui-même)~; dans
+  l'autre, pour un ensemble totalement ordonné $X$, on peut construire
+  l'ensemble $X\times\bQ$ ordonné lexicographiquement. En effet, tout élément
+  $(x,q)$ a un élément $(x,q')$ plus petit (avec $q' < q$) et un élément plus
+  grand (avec $q' > q$), et entre deux éléments $(x,q) < (x',q')$ on peut
+  prendre $(x,q'')$ avec $q'' > q$ si $x' > x$ ou bien $(x,q'')$ avec
+  $q < q'' < q'$ si $x' = x$.
+
+  Pour vérifier que $\DLO$ est modèle-complète, on remarque que pour
+  $\varMM\subseteq\varMN$, si on a une formule $\exists x,\varFF$ vraie
+  dans $\varMN$, on peut choisir un témoin dans $\varMM$ en prenant un élément
+  à la même position relative que le témoin dans $\varMN$. On vérifie donc le
+  critère de Tarski-Vaught, donc $\DLO$ est modèle-complète.
+\end{example}
+
+\begin{remark}
+  On pourrait se dire simplement que $\DLO$ est complète et que tous deux
+  modèles sont élémentairement équivalent, mais rappelons que cela ne suffit pas
+  à conclure que l'inclusion est élémentaire.
+\end{remark}
+
+\begin{example}
+  On considère maintenant la théorie des corps $\Field$. Son modèle compagnon
+  est la théorie $\ACF$ des corps algébriquement clos
+  (\foreignexpr{Algebraically Closed Fields} en anglais) définie par
+  \[\ACF \defeq \Field\cup\bigcup_{n \in \bN}
+  \compr{\forall a_0\cdots a_n, a_n\neq 0 \to \exists x,
+    \sum_{k = 0}^n a_k\times x^n = 0}{n \in \bN}\]
+  Comme $\Field\subseteq\ACF$, on vérifie juste que tout corps se plonge dans
+  un corps algébriquement clos~: c'est le théorème de Steinitz
+  \cite{Steinitz1910}, incontournable en théorie des corps. Comme nous ne
+  sommes pas ici dans un cours de théorie des corps, nous laissons au lecteur
+  le soin de démontrer ce résultat (remarquons néanmoins une utilisation
+  possible du lemme de Zorn). La modèle-complétude de $\ACF$ sera montrée plus
+  tard, car elle peut se déduire de l'élimination des quantificateurs.
+\end{example}
+
+\begin{theorem}
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. Si une théorie
+  $\varT^*$ est modèle compagnon de $\varT$, alors elle est unique~: pour toute
+  autre théorie $\varT^{**}$ qui est modèle compagnon de $\varT$, on a
+  $\varT^{**} \equiv \varT^*$.
+\end{theorem}
+
+\begin{proof}
+  Considérons un modèle $\varMM_0\satisf\varT^*$. On peut alors l'étendre
+  en un modèle $\varMM'_0\satisf\varT$, puis en un modèle
+  $\varMN_0\satisf\varT^{**}$, puis en un modèle $\varMN'_0\satisf\varT$, puis
+  en un modèle $\varMM_1\satisf\varT^*$. On procède ainsi pour obtenir deux
+  familles $(\varMM_n)_{n\in\bN},(\varMN_n)_{n\in\bN}$ telles que
+  \[\begin{cases}
+  \varMM_n\satisf \varT^*\\
+  \varMN_n\satisf \varT^{**}\\
+  \varMM_n\subseteq\varMN_n\\
+  \varMN_n\subseteq\varMM_{n+1}
+  \end{cases}\]
+  Ainsi, en posant l'union $\varMM$ de ces deux chaînes de modèles, on en
+  déduit (comme $\varT^*$ et $\varT^{**}$ sont inductives, car
+  modèles-complètes) que $\varMM\satisf\varT^*$ et $\varMM\satisf\varT^{**}$.
+  Comme les deux théories sont modèles-complètes, on sait aussi que
+  pour tout $n\in\bN$, $\varMM_n\subModElt \varMM$ et
+  $\varMN_n\subModElt\varMN$, donc $\varMM_0\satisf\varT^{**}$. L'argument
+  fonctionne évidemment pour prouver l'autre inclusion, donc
+  $\varT^{*}\equiv\varT^{**}$.
+\end{proof}
+
+\subsection{\'Elimination des quantificateurs}
+
+Finalement, on s'intéresse à une propriété encore plus forte que la
+modèle-complétude~: plutôt que de chercher à simplifier les quantificateurs en
+réduisant les alternances, on cherche des théories dans lesquelles on peut
+simplement supprimer les quantificateurs.
+
+\begin{definition}[\'Elimination des quantificateurs]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit que
+  $\varT$ a (on dit aussi \og admet\fg) l'élimination des quantificateurs, ce
+  que l'ont note $\QE$, lorsque toute formule $\varFF\in\Formula(\Sign)$
+  est équivalente modulo $\varT$ à une formule $\varFP\in\Formqf(\Sign)$
+  sans quantificateur.
+\end{definition}
+
+\begin{remark}
+  Dans une signature sans symbole de constante ou de constante propositionnelle,
+  les seules propositions sans quantificateur sont $\top$ et $\bot$. Cela
+  signifie que si une théorie $\varT$ sur une telle signature a $\QE$, alors
+  $\varT$ est complète. Dans tous les cas, si $\varT$ a $\QE$, alors elle est
+  modèle-complète.
+\end{remark}
+
+On peut donner un critère assez naturel, mais plus facile à vérifier, pour
+l'élimination des quantificateurs.
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$.
+  On appelle formule simplement existentielle une formule de la forme
+  $\exists x, \varFF$ avec $x$ une seule variable et $\varFF$ sans
+  quantificateur.
+  $\varT$ a $\QE$ si et seulement si toute formule simplement existentielle
+  est équivalente à une formule sans quantificateur.
+\end{proposition}
+
+\begin{proof}
+  Le sens direct est évident, $\QE$ fonctionnant en particulier sur les
+  formules simplement existentielles. Pour la réciproque, on raisonne par
+  récurrence sur le nombre de quantificateur d'une formule $\varFF$ sous forme
+  prénexe~:
+  \begin{itemize}
+  \item Si $\varFF$ est sans quantificateur, on a le résultat.
+  \item Si $\varFF = \exists x, \varFP$ alors $\varFP$ est équivalente à une
+    formule sans quantificateur par hypothèse de récurrence, donc $\varFF$ est
+    équivalente à une formule simplement existentielle, donc par hypothèse à
+    une formule sans quantificateur.
+  \item Si $\varFF = \forall x, \varFP$ alors $\varFP$ est équivalente à une
+    formule sans quantificateur, donc $\lnot\varFP$ est aussi équivalente à une
+    formule sans quantificateur, et par l'argument précédent
+    $\exists x, \lnot\varFP$ l'est aussi, donc $\lnot(\exists x, \lnot\varFP)$
+    est équivalente à une formule sans quantificateur.\qedhere
+  \end{itemize}
+\end{proof}
+
+Pour développer un critère plus sémantique permettant d'établir $\QE$, on
+commence par donner une caractérisation du fait d'être équivalent à une
+formule sans quantificateur.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varT$ une théorie sur $\Sign$ et
+  $\varFF(\vec x)$ une formule sur $\Sign$. $\varFF$ est équivalente à une
+  formule sans quantificateur si et seulement si pour tous deux modèles
+  $\varMM,\varMN\satisf\varT$ avec une sous-structure commune
+  $\varMA\subseteq\varMM,\varMN$ et toute donnée de paramètres $\vec a$ dans
+  $\varMA$, on a
+  \[\varMM,\vec a \satisf \varFF \iff \varMN,\vec a \satisf\varFF\]
+\end{proposition}
+
+\begin{proof}
+  Pour le sens direct, si $\varFF\equiv\varFP$ avec $\varFP$ sans
+  quantificateur, alors
+  \begin{align*}
+    \varMM,\vec a\satisf\varFF&\iff \varMM,\vec a \satisf\varFP\\
+    &\iff \varMA,\vec a\satisf\varFP\\
+    &\iff\varMN,\vec a \satisf\varFP\\
+    \varMM,\vec a \satisf\varFF & \iff \varMN,\vec a \satisf\varFF
+  \end{align*}
+
+  Dans le sens réciproque, on commence par introduire la théorie
+  \[\varT_{0}(\vec x) \defeq
+  \compr{\varFP(\vec x)\in\Formqf(\Sign)}{\varT\vD\forall \vec x,
+    \varFF(\vec x) \to \varFP(\vec x)}\]
+  On pose un vecteur de constantes $\vec{\Cc}$ et on montre qu'on a
+  $\varT\cup\varT_0(\Cc)\vD\varFF(\Cc)$. Par l'absurde, si ça n'est pas le cas,
+  alors on trouve un modèle de $\varT\cup\varT_0(\Cc)$ qui ne vérifie pas
+  $\varFF(\Cc)$ (car la première théorie est cohérente). Soit donc un modèle
+  $\varMM\satisf\varT$ et $\vec a$ des paramètres dans $\varMM$ tels que
+  $\varMM,\vec a\satisf\varT_0(\vec x)$ et $\varMM\satisf\not\varFF(\Cc)$. On
+  considère maintenant $\varMA$ la sous-structure de $\varMM$ engendrée par les
+  éléments $\vec{a}$.
+
+  Montrons que $\Diag(\varMA)\cup\varT\cup\{\varFF(\Cc)\}$ est satisfiable.
+  Par l'absurde, on sait par compacité qu'on peut trouver une formule
+  $\varFP\in\Diag(\varMA)$ telle que $\varT\vD\varFF(\Cc)\to\lnot\varFP$. Comme
+  $\varMA$ est engendrée par $\vec a$, on peut remplacer les paramètres de
+  $\varFP$ par $\Cc$, ce qui nous donne alors
+  \[\varT\vD\varFF(\Cc)\to\lnot\varFP(\Cc)\]
+  soit $\varT\vD\forall \vec x, \varFF(\vec x)\to\lnot\varFP(\vec x)$
+  par généralisation des constantes. On en déduit que
+  $\varFP\in\varT_{0}(\vec x)$, donc $\varMM,\vec a \satisf \lnot\varFP$.
+  Or, on sait que $\varMA,\vec a \satisf\varFP$ et $\varFP$ est sans
+  quantificateur, donc $\varMM,\vec a \satisf\varFP$.
+
+  On trouve donc un modèle $\varMN\satisf\varT$ tel que $\varMA\subseteq\varMN$
+  et $\varMN\satisf\varFF(\Cc)$. Par hypothèse, cela signifie que
+  $\varMM\satisf\varFF(\Cc)$, ce qui contredit l'hypothèse que
+  $\varMM\satisf\lnot\varFF(\Cc)$.
+
+  On en déduit finalement que $\varT\cup\varT_0(\Cc)\vD\varFF(\Cc)$, ce qui
+  (par compacité) signifie qu'on trouve une formule
+  $\varFP\in\Formqf(\Sign)$ telle que $\varT\vD\varFP(\Cc)\to\varFF(\Cc)$,
+  donc par généralisation des constantes et appartenance à $\varT_0$~:
+  \[\varT\vD\forall \vec x, \varFP(\vec x)\iffS\varFF(\vec x)\qedhere\]
+\end{proof}
+
+\begin{remark}
+  Dans le cas où $\varFF$ est une proposition, la caractérisation devient donc
+  que pour tous modèles $\varMM,\varMN\satisf\varT$ vérifiant les mêmes
+  propositions sans quantificateur,
+  $\varMM\satisf\varFF\iff\varMN\satisf\varFF$.
+\end{remark}
+
+On peut finalement donner un critère sémantique pour $\QE$. Pour cela, on
+définit d'abord l'équivalence élémntaire modulo un sous-ensemble, qui est une
+façon naturelle d'étendre l'équivalence élémentaire en présence d'un
+enrichissement par des constantes.
+
+\begin{definition}[\'Equivalence élémentaire modulo sous-ensemble]
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structures avec
+  une partie commune $\varPt\subseteq\varMM,\varMN$. On définit le fait que
+  $\varMM$ et $\varMN$ sont élémentairement équivalentes modulo $\varPt$ par
+  \[\varMM\eltEq_{\varPt}\varMN \defeq \varMM_{\varPt}\eltEq\varMN_{\varPt}\]
+\end{definition}
+
+\begin{theorem}[Critère sémantique pour l'élimination des quantificateurs]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. $\varT$ a
+  $\QE$ si et seulement si pour tous deux modèles $\varMM,\varMN\satisf\varT$
+  avec une sous-structure commune $\varMA\subseteq\varMM,\varMN$
+  (potentiellement vide), on a \[\varMM\eltEq_{\carM{\varMA}}\varMN\]
+  si et seulement si pour tous deux modèles $\varMM,\varMN\satisf\varT$ avec une
+  sous-structure commune $\varMA\subseteq\varMM,\varMN$, paramètres
+  $\vec a \in \varMA$ et formule simplement existentielle $\varFF$, on a
+  \[\varMM,\vec a \satisf\varFF\iff\varMN,\vec a \satisf\varFF\]
+\end{theorem}
+
+\begin{proof}
+  On prouve ces deux critères par un cycle d'implications. La première
+  implication est donnée par le fait que les formules sans quantificateurs sont
+  interprétées de la même façon dans des sous-structures et extensions. La
+  deuxième implication est simplement un cas particulier (on se restreint aux
+  formules simplement existentielles). Le fait que le dernier critère implique
+  $\QE$ se vérifie en utilisant le critère pour les formules simplement
+  existentielles~: par hypothèse et par la proposition précédente, on sait que
+  toute formule simplement existentielle est équivalente à une formule sans
+  quantificateur, ce qui suffit à prouver que $\varT$ a $\QE$.
+\end{proof}
+
+On donne ensuite une condition suffisante mais centrale pour établir qu'une
+théorie a $\QE$, utilisant les modèles algébriquement premiers.
+
+\begin{definition}[Modèles algébriquement premiers]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit que
+  $\varT$ a des modèles algébriquement premiers si pour tout modèle
+  $\varMA\satisf\varT_{\forall}$ il existe un modèle $\varMM\satisf\varT$ tel
+  que $\varMA\subseteq\varMM$ et tel que pour tout modèle $\varMN\satisf\varT$
+  et plongement $\makeFunName{\varMoM}{\varMA}{\varMN}$ il y a un plongement
+  $\makeFunName{\relev{\varMoM}}{\varMM}{\varMN}$ qui étend $\varMoM$,
+  c'est-à-dire faisant commuter le diagramme suivant~:
+  \begin{center}
+    \begin{tikzcd}
+      & &\varMM\ar[dd,dashed,"\relev{\varMoM}"]\\
+      \varMA\ar[urr,"\subseteq"]\ar[drr,"\varMoM"]\\
+      & & \varMN
+    \end{tikzcd}
+  \end{center}
+\end{definition}
+
+\begin{remark}
+  Si $\Sign$ n'a ni symbole de constante, ni symbole de constante
+  propositionnelle, alors on peut considérer $\varMA \defeq\vide$ pour en
+  déduire qu'il existe un modèle qui se plonge dans tout autre modèle.
+\end{remark}
+
+\begin{example}
+  On peut alors revenir sur l'exemple des corps algébriquement clos~: si on
+  considère un modèle $\varMA\satisf\ACF_{\forall}$, on remarque d'abord que
+  $\varMA$ est un anneau intègre, et on peut alors on peut prendre
+  $\varMM\defeq \overline{\mathrm{Frac}(\varMA)}^{\mathrm{alg}}$, la clôture
+  algébrique de son corps de fractions, pour avoir un corps algébriquement clos
+  contenant $\varMA$. Tout autre corps algébriquement clos $\varMN$ muni d'un
+  morphisme d'anneau injectif $\varMA\to\varMN$ peut alors s'étendre en
+  un morphisme $\varMM\to\varMN$.
+\end{example}
+
+\begin{notation}
+  Pour simplifier la lecture du prochain critère, on définit la notation
+  $\varMM\subModExS\varMN$ par le fait que pour toute formule simplement
+  existentielle $\varFF(\vec x)$ et paramètres $\vec m$ dans
+  $\varMM$, si $\varMN,\vec m \satisf\varFF(\vec x)$ alors
+  $\varMM,\vec m\satisf\varFF(\vec x)$.
+\end{notation}
+
+\begin{theorem}[Critère d'élimination des quantificateurs avec modèles
+    algébriquement premiers]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. Si $\varT$ a
+  des modèles algébriquement premiers et pour tous deux modèles
+  $\varMM,\varMN\satisf\varT$ tels que $\varMM\subseteq\varMN$,
+  $\varMM\subModExS\varMN$, alors $\varT$ a $\QE$.
+\end{theorem}
+
+\begin{proof}
+  On considère deux modèles $\varMM_0,\varMM_1\satisf\varT$ et une
+  sous-structure commune $\varMA\subseteq\varMM_0,\varMM_1$. Comme
+  $\varMA\subseteq\varMM_0$, on en déduit que $\varMA\satisf\varT_{\forall}$,
+  donc on trouve un modèle $\varMN\satisf\varT$ tel que $\varMA\subseteq\varMN$
+  et deux plongements $\makeFunName{\varMoM_0}{\varMN}{\varMM_0}$ et
+  $\makeFunName{\varMoM_1}{\varMN}{\varMM_1}$ tels que le diagramme
+  suivant commute~:
+  \begin{center}
+    \begin{tikzcd}
+      \varMM_0 & &
+      \varMN\ar[ll,"\varMoM_0"]\ar[rr,"\varMoM_1"] & &
+      \varMM_1 \\
+      \\
+      & & \varMA
+      \ar[uull,"\subseteq"]
+      \ar[uu,"\subseteq"]\ar[uurr,"\subseteq"]
+    \end{tikzcd}
+  \end{center}
+  Si $\varMM_0$ vérifie une formule simplement existentielle, alors $\varMN$
+  aussi d'après la seconde condition, donc (par stabilité par extension des
+  formules existentielles) $\varMM_1$ aussi.
+\end{proof}
+
+\'Etudions maintenant quelques exemples de théories admettant l'élimination des
+quantificateurs.
+
+\begin{example}
+  La théorie des structures infinies $\varT_{\infty}$, sur la signature vide, a
+  $\QE$. En effet, soient $\varMA\subseteq\varMM,\varMN\satisf\varT_{\infty}$,
+  soit $\exists y, \varFF(\vec x,y)$ une formule simplement existentielle et
+  soient $\vec a$ des paramètres dans $\varMA$~: si
+  $\varMM,\vec a\satisf\exists y,\varFF$ alors on trouve $b \in \carMM$ tel
+  que $\varMM,(\vec a,b)\satisf\varFF$. On a alors deux cas~:
+  \begin{itemize}
+  \item si $b \in \vec a$, alors $\varMN,(\vec a,b)\satisf\varFF$ et on a le
+    résultat~;
+  \item si $b\notin\vec a$, alors on choisit $c\in\carMN\setminus\vec a$ et on
+    considère l'isomorphisme partiel $\vec a \cup b \to \vec a \cup c$
+    qui envoie $b$ sur $c$~: comme $\varMM,(\vec a,b)\satisf\varFF$, on a
+    $\varMN,(\vec a,b)\satisf\varFF$.
+  \end{itemize}
+\end{example}
+
+\begin{example}
+  La théorie $\DLO$ a aussi $\QE$. Pour cela, en reprenant les notations
+  précédentes, si $\varMM,\vec a\satisf\exists y, \varFF(\vec x,y)$, on peut
+  localiser le témoin $b \in \carMM$ relativement à $\vec a$, et trouver un
+  point dans $\varMN$ à la même position relative, puis construire un
+  isomorphisme partiel qui conclut.
+\end{example}
+
+Un point intéressant sur le cas de $\DLO$ est la forme des ensembles qu'on peut
+y définir~: puisqu'on sait qu'on peut éliminer les quantificateurs, les seuls
+ensembles définissables sont des combinaisons booléennes de propositions
+atomiques. Une telle théorie est dite o-minimale.
+
+\begin{definition}[Théorie o-minimale]
+  Soit $\Sign$ une signature contenant un symbole de relation binaire $<$, et
+  $\varT$ une théorie sur $\Sign$ telle que $<$ est un ordre total. On dit que
+  $\varT$ est o-minimale si pour tout modèle $\varMM\satisf\varT$, toute partie
+  définissable $\varPt\in\powerdef^1_{\carMM}(\varMM)$ est une union finie
+  d'intervalles ouverts et de points.
+\end{definition}
+
+\begin{example}
+  Par l'élimination des quantificateurs pour $\DLO$, on en déduit que $\DLO$ est
+  une théorie o-minimale.
+\end{example}
+
+\noindent
+Voyons maintenant des exemples plus algébriques.
+
+\begin{example}
+  Soit $\varKK$ un corps, on définit la théorie $\EV_{\varKK}$ des
+  $\varKK$-espaces vectoriels par la signature
+  \[\Sign_{\EV_{\varKK}} \defeq \{ 0^0, +^{2}, (-\tok)^1\}\cup
+  \compr{(\lambda\mathbin{\cdot}\tok)^1}{\lambda\in\varKK}\]
+  et les axiomes des groupes abélien (en notation additive), ainsi que
+  \begin{align*}
+    \Rax_{\EV_{\varKK},\distrL,\lambda} &\defeq \ogM \forall u\;v,
+    \lambda\mathbin{\cdot}(u+v) = \lambda\mathbin{\cdot} u +
+    \lambda\mathbin{\cdot} v\fgM\\
+    \Rax_{\EV_{\varKK},\distrR,\lambda,\mu} &\defeq
+    \ogM\forall u, (\lambda + \mu)\mathbin{\cdot} u =
+    \lambda\mathbin{\cdot} u + \mu\mathbin{\cdot}\fgM\\
+    \Rax_{\EV_{\varKK},\comm,\lambda,\mu} & \defeq \ogM
+    \forall u, (\lambda \times \mu)\mathbin{\cdot} u =
+    \lambda\mathbin{\cdot}(\mu\mathbin{\cdot} u)\fgM\\
+    \Rax_{\EV_{\varKK},\id} &\defeq
+    \ogM \forall u, 1_{\varKK} \mathbin{\cdot} u = u\fgM
+  \end{align*}
+  ainsi, on a
+  \begin{multline*}
+    \EV_{\varKK} \defeq \Ab \cup
+    \compr{\Rax_{\EV_\varKK,\distrL,\lambda}}{\lambda\in\varKK}\cup
+    \compr{\Rax_{\EV_{\varKK},\distrR,\lambda,\mu}}{\lambda,\mu\in\varKK}\cup\\
+    \compr{\Rax_{\EV_{\varKK},\comm,\lambda,\mu}}{\lambda,\mu\in\varKK}\cup
+    \{\Rax_{\EV_{\varKK},\id}\}
+  \end{multline*}
+  On définit aussi $\EV_{\varKK,\infty}$ comme la théorie des $\varKK$-ev infinis.
+
+  La théorie $\EV_{\varKK,\infty}$ est complète et a $\QE$. En effet, pour le
+  second point, on remarque d'abord que si $\varMA$ est une sous-structure d'un
+  modèle $\varMM\satisf\EV_{\varKK,\infty}$, alors $\varMA$ est un sev de $\varMM$.
+  \`A ce titre, les formules sans quantificateurs à paramètres dans $\varMA$
+  sont simplement des combinaisons booléennes de sev de $\varMA$. Pour une
+  formule $\exists x, \varFF$ à paramètre dans une structure $\varMA$, commune
+  à $\varMM$ et $\varMN$, il nous suffit de distinguer si le témoin obtenu
+  dans $\varMM$ appartient à $\varMA$. S'il n'y appartient pas, alors n'importe
+  quel élément hors de $\varMA$ fait l'affaire~: il n'y a pas de moyen de
+  distinguer les éléments hors de $\varMA$ avec des paramètres dans $\varMA$.
+  Finalement, toute proposition sans quantificateur ne peut faire intervenir
+  que la constante $0$, et correspond donc (à réécriture par les axiomes des
+  ev près) à $0 = 0$ ou $0 \neq 0$.
+\end{example}
+
+\begin{remark}
+  La théorie des $\varKK$-espaces vectoriels infinis est $\varCk$-catégorique
+  pour $\varCk > \Card(\varKK)$. En effet, un isomorphisme de $\varKK$-ev existe
+  dès que la dimension des espaces est égale, et la dimension d'un espace de
+  cardinal supérieur au cardinal du corps de base est exactement son cardinal.
+  Comme on peut considérer $\varKK^{(\varCk)}$ comme un $\varKK$-ev, on a bien la
+  catégoricité.
+\end{remark}
+
+\begin{example}
+  Un autre exemple est celui de la théorie $\DAG$ des groupes abéliens
+  divisibles sans torsion. Un tel groupe correspond à un $\bQ$-ev~: c'est un
+  groupe $\varGA$ abélien tel que l'action de $\bZ$ dessus est fidèle,
+  c'est-à-dire tel que pour tout $n \in \bN^*$ et tout $x \in \varGA$,
+  $\underbrace{x + \cdots + n}_{n\text{ fois}} \neq 0$, et tel
+  que pour tout $n \in \bN^*$ et tout élément $x \in \varGA$, il existe $y$ tel
+  que $\underbrace{y + \cdots + y}_{n\text{ fois}} = x$.
+
+  Dans ce cas-là, si on considère $\varGrp\satisf\DAG_\forall$, alors
+  $\varGrp$ est un groupe abélien sans torsion. On peut construire
+  $\varGrp'$ son \og enveloppe divisible\fg en rajoutant tous les
+  $x/n$ formellement~: tout plongement de $\varGrp$ dans un autre groupe
+  abélien divisible sans torsion se prolonge en un plongement depuis
+  $\varGrp'$. On en déduit que $\DAG$ a des modèles algébriquement premiers.
+
+  Soient deux modèles $\varGrp,\varGrp'\satisf\DAG$ avec
+  $\varGrp\subseteq\varGrp'$, montrons que $\varGrp\subModExS\varGrp'$.
+  On considère une formule simplement existentielle
+  $\exists x, \varFF(x,\vec y)$ et des paramètres $\vec g \in \varGrp$ tels
+  qu'on vérifie $\varGrp',\vec g\satisf\exists x, \varFF$. On doit alors
+  analyser la forme de $\varFF$. Quitte à réduire la formule en forme normale
+  conjonctive, on peut considérer que $\varFF$ est de la forme
+  \[\varFF(x,\vec y) =
+  \bigvee_{i = 1}^{p}\bigwedge_{j = 1}^{q} \vareps_{i,j}(x, \vec y)\]
+  avec $\vareps_{i,j}$ qui est une négation ou non d'une équation
+  \[\vareps_{i,j} = (\lnot) \ogM \sum_{k} a_k y_k = x \fgM\]
+  (quitte à réécrire les équations). Comme on a une existentielle, on sait que
+  le témoin $x$ dans $\varGrp'$ vérifie l'une des clauses conjonctives,
+  c'est-à-dire que
+  \[\varGrp',(x,\vec g) \satisf\bigwedge_{j = 1}^q \vareps_{j}(x,\vec y)\]
+  si tous les $\vareps_i$ sont des négations d'équations, alors on trouve
+  dans $\varGrp$ un $x$ hors de ces équations. S'il y a une équation qui n'est
+  pas une négation, alors celle-ci fixe directement $x$, ce qui permet de
+  conclure.
+\end{example}
+
+Dans le cas de la théorie $\DAG$, on remarque un point important~: comme on ne
+peut établir que des équations, on est dans un cas encore plus limité qu'une
+théorie o-minimale. On ne peut définir que des parties finies ou cofinies,
+c'est-à-dire l'algèbre booléenne engendrée par les singletons. On appelle une
+telle théorie une théorie fortement minimale.
+
+\begin{definition}[Théorie fortement minimale]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit que
+  $\varT$ est fortement minimale si pour tout modèle $\varMM\satisf\varT$,
+  l'ensemble $\powerdef^{1}_{\carMM}(\varMM)$ est l'algèbre de Boole engendrée
+  par les singletons.
+\end{definition}
+
+\begin{example}
+  On montre que $\ACF$ a $\QE$. Pour cela, on sait déjà que $\ACF$ a des modèles
+  algébriquement premiers. On considère donc $\varKK\subseteq\varKL$ deux
+  modèles de $\ACF$, et on souhaite montrer que $\varKK\subModExS\varKL$. Soient
+  donc $\varFF(\vec x,y)$ et des paramètres $\vec a\in\varKK$ tels que
+  $\varKL,\vec a \satisf\exists \varFF(\vec x,y)$, montrons que
+  $\varKK,\vec a\satisf\exists \varFF(\vec x,y)$.
+
+  Comme dans le cas des groupes abéliens divisibles sans torsions, on sait
+  qu'on peut réduire l'hypothèse au cas où
+  \[\varKL,\vec a \satisf\exists x, \bigwedge_{i = 1}^k \vareps_i(\vec x,y)\]
+  avec $\vareps_i$ des équations ou des négations d'équations. On sépare les
+  deux groupes et on intègre les éléments de $\varKK$ au langage, nous donnant~:
+  \[\varKL\satisf\exists x,
+  \left(\bigwedge_{i = 1}^k P_i(x) = 0\right)\land
+  \left(\bigwedge_{i = 1}^{k'}Q_i(x) \neq 0\right)\]
+  où $P_i,Q_i \in \varKK[X]$. On raisonne alors par cas~:
+  \begin{itemize}
+  \item si on trouve $P_i$ non constant, alors on prend comme témoin dans
+    $\varKK$ une racine de $P_i$, qui existe car $\varKK$ est algébriquement
+    clos~;
+  \item si tous les $P_i$ sont constants ou que $k = 0$, alors la formule
+    revient à une intersection de négation d'égalités polynomiales. On a donc
+    un nombre fini de polynômes, tous ayant un nombre fini de racines~: on peut
+    donc toujours trouver un élément qui ne vérifie aucune de ces équations,
+    puisque $\varKK$ est infini.
+  \end{itemize}
+  Dans les deux cas, on peut trouver un $x\in\varKK$ qui vérifie la formule
+  simplement existentielle.
+\end{example}
+
+\begin{corollary}
+  La théorie $\ACF$ est fortement minimale.
+\end{corollary}
+
+\begin{remark}
+  On note $\ACF_p$ la théorie des corps algébriquement clos de caractéristique
+  $p$ ($p$ premier), c'est-à-dire en rajoutant
+  \[\underbrace{1+\cdots+1}_{p\text{ fois}} = 0\]
+  ou la négation de tous ces axiomes avec $p$ premier, en caractéristique $0$.
+  Chaque $\ACF_p$ est une théorie complète.
+
+  En effet, on remarque d'abord que $\ACF$ ayant $\QE$, chaque $\ACF_p$ l'a
+  aussi. De plus, pour un modèle $\varMM\satisf\ACF$, on considère le corps
+  $\mathbb{F}_p$ qui se plonge dans $\varMM$ (en prenant la convention que
+  $\mathbb{F}_0 \defeq \bQ$), d'où la complétude.
+
+  Tout modèle de $\ACF$ ayant une caractéristique, une théorie complète vérifie
+  au moins un énoncé de caractéristique~: les $\ACF_p$ sont toutes les
+  extensions complètes de $\ACF$.
+\end{remark}
+
+\noindent
+On donne un dernier exemple, se basant sur un théorème qu'on admet ici.
+
+\begin{theorem}[Tarski-Seidenberg
+    \cite{tarski1951decision,seidenberg1954decision}]
+  On appelle ensemble semi-algèbrique l'algèbre de Boole engendrée par les
+  ensembles de la forme
+  $\compr{x\in\bR}{P(x)=0}$, $\compr{x\in\bR}{P(x)>0}$,
+  $\compr{x\in\bR}{P(x)<0}$
+  pour $P\in\bR[X]$. Si $\varPt\subseteq\bR^{n+1}$ est semi-algébrique, alors
+  sa projection
+  \[\proj(\varPt) \defeq \compr{\vec x\in\bR^n}{(\vec x,y)\in\varPt}\]
+  est semi-algébrique.
+\end{theorem}
+
+\begin{example}
+  En se basant sur ce théorème, on peut déduire que n'importe quelle formule
+  simplement existentielle sur $\RCF$ (qui ne permet donc que d'écrire des
+  inégalités avec des polynômes, et d'en faire des combinaisons booléennes, puis
+  d'en faire une projection)
+  est équivalente à une formule sans quantificateur. Ainsi $\RCF$ a $\QE$, et
+  comme on remarque que les seuls termes clos possibles à écrire sont définis
+  par le fait que $1\neq 0$, toute proposition sans variable est soit vraie,
+  soit fausse. Ainsi, $\RCF$ est complète, justifiant le fait que $\RCF$ décrit
+  au mieux les manipulations du premier ordre qu'on peut donner à propos de
+  l'ensemble des réels.
+\end{example}
