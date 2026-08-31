@@ -24,9 +24,11 @@ suivie d'une quantification existentielle.
 On aborde ensuite l'une des propriétés incontournables de la théorie des
 modèles~: l'élimination des quantificateurs. On en présente l'intérêt et des
 critères permettant d'établir qu'une théorie $\varT$ donnée a l'élimination des
-quantificateurs, en travaillant sur des exemples dont $\RCF$. Dans ces
-différentes méthodes, on présentera les notions de modèle algébriquement
-premier et de modèle-complétude.
+quantificateurs, en travaillant sur des exemples dont $\RCF$, comme annoncé au
+\cref{chp.elem}. On donne en particulier un critère pour les théories admettant
+des modèles algébriquement premiers. Pour introduire plus progressivement
+l'élimination des quantificateurs, on présente avant cela les notions de
+modèle-complétude et de modèle compagnon.
 
 \section{Classifier les théories par leurs modèles}
 
@@ -401,7 +403,7 @@ de formules.
 \begin{remark}
   Pour une approche plus structurelle et moins intrinsèque (ne faisant pas jouer
   un rôle distingué à l'inclusion), on peut définir une notion de plongement
-  existentiel comme un plongement $\makeFunName{\varMoM}{\varMM}{\varMN}$
+  existentiel comme un plongement $\makeEmbedName{\varMoM}{\varMM}{\varMN}$
   tel que pour $\varFF(\vec x)$ existentielle et $\vec m$ dans $\varMM$,
   si $\varMN,\varMoM(\vec m)\satisf\varFF$ alors $\varMM,\vec m\satisf\varFF$.
 \end{remark}
@@ -896,13 +898,13 @@ théorie a $\QE$, utilisant les modèles algébriquement premiers.
   $\varT$ a des modèles algébriquement premiers si pour tout modèle
   $\varMA\satisf\varT_{\forall}$ il existe un modèle $\varMM\satisf\varT$ tel
   que $\varMA\subseteq\varMM$ et tel que pour tout modèle $\varMN\satisf\varT$
-  et plongement $\makeFunName{\varMoM}{\varMA}{\varMN}$ il y a un plongement
-  $\makeFunName{\relev{\varMoM}}{\varMM}{\varMN}$ qui étend $\varMoM$,
+  et plongement $\makeEmbedName{\varMoM}{\varMA}{\varMN}$ il y a un plongement
+  $\makeEmbedName{\relev{\varMoM}}{\varMM}{\varMN}$ qui étend $\varMoM$,
   c'est-à-dire faisant commuter le diagramme suivant~:
   \begin{center}
     \begin{tikzcd}
-      & &\varMM\ar[dd,dashed,"\relev{\varMoM}"]\\
-      \varMA\ar[urr,"\subseteq"]\ar[drr,"\varMoM"]\\
+      & &\varMM\ar[dd,hook,dashed,"\relev{\varMoM}"]\\
+      \varMA\ar[urr,hook,"\subseteq"]\ar[drr,"\varMoM"]\\
       & & \varMN
     \end{tikzcd}
   \end{center}
@@ -946,18 +948,18 @@ théorie a $\QE$, utilisant les modèles algébriquement premiers.
   sous-structure commune $\varMA\subseteq\varMM_0,\varMM_1$. Comme
   $\varMA\subseteq\varMM_0$, on en déduit que $\varMA\satisf\varT_{\forall}$,
   donc on trouve un modèle $\varMN\satisf\varT$ tel que $\varMA\subseteq\varMN$
-  et deux plongements $\makeFunName{\varMoM_0}{\varMN}{\varMM_0}$ et
-  $\makeFunName{\varMoM_1}{\varMN}{\varMM_1}$ tels que le diagramme
+  et deux plongements $\makeEmbedName{\varMoM_0}{\varMN}{\varMM_0}$ et
+  $\makeEmbedName{\varMoM_1}{\varMN}{\varMM_1}$ tels que le diagramme
   suivant commute~:
   \begin{center}
     \begin{tikzcd}
       \varMM_0 & &
-      \varMN\ar[ll,"\varMoM_0"]\ar[rr,"\varMoM_1"] & &
+      \varMN\ar[ll,hook,"\varMoM_0"]\ar[rr,hook,"\varMoM_1"] & &
       \varMM_1 \\
       \\
       & & \varMA
-      \ar[uull,"\subseteq"]
-      \ar[uu,"\subseteq"]\ar[uurr,"\subseteq"]
+      \ar[uull,hook,"\subseteq"]
+      \ar[uu,hook,"\subseteq"]\ar[uurr,hook,"\subseteq"]
     \end{tikzcd}
   \end{center}
   Si $\varMM_0$ vérifie une formule simplement existentielle, alors $\varMN$
@@ -1162,12 +1164,53 @@ telle théorie une théorie fortement minimale.
   En effet, on remarque d'abord que $\ACF$ ayant $\QE$, chaque $\ACF_p$ l'a
   aussi. De plus, pour un modèle $\varMM\satisf\ACF$, on considère le corps
   $\mathbb{F}_p$ qui se plonge dans $\varMM$ (en prenant la convention que
-  $\mathbb{F}_0 \defeq \bQ$), d'où la complétude.
+  $\mathbb{F}_0 \defeq \bQ$), ce qui suffit à conclure par modèle-complétude.
 
   Tout modèle de $\ACF$ ayant une caractéristique, une théorie complète vérifie
   au moins un énoncé de caractéristique~: les $\ACF_p$ sont toutes les
   extensions complètes de $\ACF$.
 \end{remark}
+
+\noindent
+Donnons deux conséquences mathématiques importantes du fait que $\ACF$ a $\QE$.
+
+\begin{corollary}[Nullstellensatz de Hilbert \cite{Hilbert1893} -
+    version faible]
+  Soit $\varKK$ un corps algébriquement clos et soient
+  $P_1,\ldots,P_m\in\varKK[X_1,\ldots,X_n]$ tels que
+  $\langle P_1,\ldots,P_m\rangle$, l'idéal engendré par les $P_i$, est un
+  idéal propre. Alors il existe $\vec a \in \varKK^n$ tel que
+  \[\forall i \in\intervIntB{m}, P_i(\vec a) = 0\]
+\end{corollary}
+
+\begin{proof}
+  On pose $\varId\defeq\langle P_1,\ldots,P_m\rangle$, dont on sait par
+  hypothèse qu'il est propre. Par le théorème de Krull, disant que tout idéal
+  propre est contenu dans un idéal maximal (on peut obtenir le résultat par
+  application du lemme de Zorn), on trouve $\varId'\supseteq\varId$ maximal.
+  Comme $\varId'$ est un idéal maximal,
+  $\quot{\varKK[X_1,\ldots,X_n]}{\varId'}$ est un corps, qu'on va noter
+  $\varKK_0$. Soit alors
+  \[\varKL\defeq \overline{\varKK_0}^{\mathrm{alg}}\]
+  On a donc $\varKK\subseteq\varKL$, et
+  $\varKL\satisf\exists \vec x,\bigwedge_{i = 1}^{m} P_i(\vec x) = 0$
+  en considérant pour témoins $(\clas{X_1},\ldots,\clas{X_n})$. Ainsi, puisque
+  $\ACF$ est modèle-complète, on en déduit que
+  \[\varKK\satisf\exists \vec x, \bigwedge_{i = 1}^{m} P_i(\vec x) = 0\qedhere\]
+\end{proof}
+
+\begin{definition}[Ensemble constructible]
+  Soit $\varKK$ un corps algébriquement clos. On appelle fermé de Zariski les
+  ensembles de la forme
+  \[\compr{\vec a \in \varKK^n}{\forall i \in \intervIntB{m},P_i(\vec a) = 0}\]
+  où $P_1,\ldots,P_m\in\varKK[X_1,\ldots,X_n]$. Une partie de $\varKK^n$ est
+  dite constructible si elle est combinaison linéaire de fermés de Zariski.
+\end{definition}
+
+\begin{corollary}[Théorème de Chevalley]
+  Soit $\varKK$ un corps algébriquement clos. La projection d'un ensemble
+  constructible est constructible.
+\end{corollary}
 
 \noindent
 On donne un dernier exemple, se basant sur un théorème qu'on admet ici.
@@ -1194,5 +1237,5 @@ On donne un dernier exemple, se basant sur un théorème qu'on admet ici.
   par le fait que $1\neq 0$, toute proposition sans variable est soit vraie,
   soit fausse. Ainsi, $\RCF$ est complète, justifiant le fait que $\RCF$ décrit
   au mieux les manipulations du premier ordre qu'on peut donner à propos de
-  l'ensemble des réels.
+  l'ensemble des réels. On remarque aussi que $\RCF$ est une théorie o-minimale.
 \end{example}
