@@ -670,7 +670,7 @@ Il nous reste finalement à donner le théorème d'omission des types.
   toute formule existentielle $\exists x, \varFF(x)$ vraie dans $\varMM$, on
   peut trouver un témoin dans $\varMM_0$ puisque la théorie du modèle est
   dans $\varOp_{\varFF}$. Par le critère de Tarski-Vaught, on en déduit donc que
-  $\varMM_0$ est un modèle de $\varT'$~: on a donc un modèles au plus
+  $\varMM_0$ est un modèle de $\varT'$~: on a donc un modèle au plus
   dénombrable de $\varT$ sur $\SignP{C}$, dont la théorie assure qu'aucun type
   d'aucun $X_n$ n'est réalisé. Son réduit à la signature $\Sign$ est donc un
   modèle souhaité.
@@ -686,8 +686,231 @@ Il nous reste finalement à donner le théorème d'omission des types.
 
 \subsection{Application du théorème d'omission des types}
 
-A FAIRE
+On va maintenant se servir des types, et en particulier du théorème d'omission
+des types, pour caractériser les théories $\Cal_0$-catégoriques. Pour cela, on
+commence par donner un fait assez naturel à propos des isomorphismes~: ils
+préservent la satisfaction sémantique non seulement des propositions, mais
+aussi des types.
 
-\section{Types algébriques, définissbles, indiscernables}
+\begin{claim}
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structure. Si
+  $\varMM\iso\varMN$ alors les types réalisés sont les mêmes dans $\varMM$ et
+  $\varMN$.
+\end{claim}
 
-A FAIRE
+Par ce fait, la force d'une théorie $\Cal_0$-catégorique parait déjà plus
+claire~: une telle théorie ne peut réaliser avec des modèles dénombrables
+qu'un certain ensemble de types donné. En utilisant, en plus, le théorème
+d'omission des types, on a alors un résultat particulièrement fort.
+
+\begin{proposition}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie
+  $\Cal_0$-catégorique sur $\Sign$. Alors tout $n$-type pour $n \in \bN$ est
+  isolé.
+\end{proposition}
+
+\begin{proof}
+  Si un type n'est pas isolé, alors il peut être omis par un modèle au plus
+  dénombrable~: comme deux modèles au plus dénombrables de $\varT$ sont
+  isomorphes, tout modèle dénombrable de $\varT$ ne réalise aucun type non
+  isolé. Pour autant, on peut réaliser tout type de $\varT$ par un modèle
+  dénombrable (car un type est finiment réalisé, et quitte à appliquer le
+  théorème de Löwenheim-Skolem descendant). Tout type est donc isolé.
+\end{proof}
+
+Or, pour tout $n\in \bN$, $\TypCpl(\varT)$ est un espace de Stone, en
+particulier un espace compact. Les seuls espaces compacts dont tous les points
+sont isolés sont les espaces finis, d'où
+
+\begin{corollary}
+  Soit $\Sign$ une signature au plus dénombrable.
+  Si $\varT$ est une théorie $\Cal_0$-catégorique sur $\Sign$, alors tous les
+  $\TypCpl(\varT)$ sont finis.
+\end{corollary}
+
+On souhaite maintenant montrer la réciproque~: une théorie dont tous les types
+sont isolés est une théorie $\Cal_0$-catégorique (toujours sur une signature
+au plus dénombrable). Pour cela, on utilise un va-et-vient.
+
+\begin{lemma}\label{lem.isolation.bandf}
+  Soit $\Sign$ une signature, et $\varMM,\varMN$ deux $\Sign$-structures
+  élémentairement équivalentes qui ne réalisent que des types isolés. Alors
+  la famille d'isomorphismes partiels élémentaires
+  \[\isoFam\defeq
+  \compr{\makeFunNameIso{\varMoM}{\varPt}{\varPtB}}
+        {\varPt\text{ est fini}}\]
+  est un va-et-vient.
+\end{lemma}
+
+\begin{proof}
+  La famille $\isoFam$ est non vide car elle contient l'isomorphisme partiel
+  vide, qui est élémentaire car $\varMM\eltEq\varMN$. On souhaite vérifier les
+  deux conditions de \og va\fg et de \og vient\fg. La vérification est identique
+  dans les deux cas, donc on se contente de vérifier la condition \og va\fg.
+  Soit donc $(\varPt,\varPtB,\varMoM)$ un isomorphisme partiel entre $\varMM$ et
+  $\varMN$ et $a \in \varPt$, trouvons une extension de $\varMoM$ à
+  $\varPt\cup\{a\}$. On énumère d'abord $\varPt$~:
+  \[\varPt \defeq \{a_1,\ldots,a_n\}\]
+  Comme tous les types sont isolés, on peut trouver une formule
+  $\varFF(x,\vec y)$ qui isole le type $\type(a,a_1,\ldots,a_n)$~: en
+  particulier, $\varMM,a_1,\ldots,a_n\satisf\exists x, \varFF(x,\vec y)$. Comme
+  $\varMoM$ est un isomorphisme partiel élémentaire, on en déduit
+  \[\varMN,(\varMoM(a_1),\ldots,\varMoM(a_n))\satisf
+  \exists x,\varFF(x,\vec y)\]
+  et en prenant un tel témoin $x$, on récupère alors une valeur $b$ telle que
+  $\varMoM\cup(a\mapsto b)$ est un isomorphisme partiel élémentaire qui étend
+  $\varMoM$ et est défini en $a$. En effet, comme $\varFF$ isole
+  $\type(a,a_1,\ldots,a_n)$, on sait que
+  $\type(a,a_1,\ldots,a_n) = \type(b,\varMoM(a_1),\ldots,\varMoM(a_n))$.
+\end{proof}
+
+\begin{corollary}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie complète
+  sur $\Sign$ dont tous les types sont isolés. Alors $\varT$ est
+  $\Cal_0$-catégorique.
+\end{corollary}
+
+\begin{proof}
+  Le lemme précédent montre qu'il existe un va-et-vient entre tous deux modèles
+  de $\varT$. Si $\varMM,\varMN\satisf\varT$ sont deux modèles dénombrables,
+  alors on déduit du va-et-vient un isomorphisme $\varMM\iso\varMN$.
+\end{proof}
+
+Ces résultats permettent naturellement d'avoir plusieurs carctérisations du fait
+d'être une théorie $\Cal_0$-catégorique.
+
+\begin{theorem}[Caractérisation des théorie $\Cal_0$-catégoriques]
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie sur
+  $\Sign$. Les énoncés suivants sont tous équivalents~:
+  \begin{enumerate}[label=(\roman*)]
+  \item $\varT$ est $\Cal_0$-catégorique~;
+  \item pour tout $n \in \bN$, tout $n$-type complet de $\varT$ est isolé~;
+  \item pour tout $n \in \bN$, tout $n$-type de $\varT$ est isolé~;
+  \item pour tout $n \in \bN$, $\TypCpl(\varT)$ est fini~;
+  \item pour tout $n \in \bN$, l'algèbre de Lindenbaum-Tarski des formules à
+    $n$ variables libres modulo $\varT$ est un ensemble fini.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  On a vu que $\varT$ est $\Cal_0$-catégorique si et seulement si ses types
+  sont isolés.
+
+  Si tout type est isolé, alors en particulier tout $n$-type complet est isolé.
+  Réciproquement, si tout $n$-type complet est isolé, alors tout $n$-type est
+  contenu dans un $n$-type complet (isolé), et est donc isolé.
+
+  Un ensemble compact est discret si et seulement s'il est fini. On en déduit
+  donc que tous les éléments de $\TypCpl(\varT)$ sont isolés si et seulement si
+  $\TypCpl(\varT)$ est fini.
+
+  Les types sont des ultrafiltres sur cette algèbre de Lindenbaum-Tarski, et
+  l'ensemble des ultrafiltres sur un ensemble $X$ est fini si et seulement si
+  $X$ est fini.
+\end{proof}
+
+Une conséquence intéressante de cette caractérisation est que tout modèle
+dénombrable d'une telle théorie $\Cal_0$-catégorique est homogène, au sens
+suivant.
+
+\begin{definition}[Structure homogène]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On dit que
+  $\varMM$ est homogène si pour toutes deux données de paramètres
+  $\vec{a},\vec{b}\in\carMM^n$, si $\type(\vec a) = \type(\vec b)$
+  alors il existe un automorphisme
+  $\makeFunNameIso{\varMoM}{\varMM}{\varMM}$ qui envoie $\vec a$ sur
+  $\vec b$.
+\end{definition}
+
+Pour démontrer que tout modèle dénombrable d'une théorie $\Cal_0$-catégorique
+est homogène, on prouve en fait un fait plus général dont les hypothèses sont
+automatiquement vérifiées dans le cas d'une théorie $\Cal_0$-catégorique.
+
+\begin{proposition}\label{prop.homogene.cat}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie
+  $\Cal_0$-catégorique. Alors tout modèle $\varMM\satisf\varT$ est
+  homogène.
+\end{proposition}
+
+\begin{lemma}
+  Soit $\varMM$ une $\Sign$-structure au plus dénombrable telle que pour tout
+  $n \in \bN$, tous les $n$-types réalisés par $\varMM$ sont isolés. Alors
+  $\varMM$ est homogène.
+\end{lemma}
+
+\begin{proof}
+  Pour les données de paramètres $\vec a,\vec b$ tels que
+  $\type(\vec a) = \type(\vec b)$, on applique simplement le
+  \cref{lem.isolation.bandf} en prenant la famille des isomorphismes partiels
+  élémentaires qui étendent l'isomorphisme partiel élémentaire
+  $(a_i \mapsto b_i)_i$.
+\end{proof}
+
+Les automorphismes permettent aussi de caractériser les théories
+$\Cal_0$-catégoriques en étudiant leurs orbites (notion que nous définissons
+ici).
+
+\begin{definition}[Orbite par un automorphisme]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On note
+  $\Aut(\varMM)$ l'ensemble des automorphismes de $\varMM$, c'est-à-dire
+  l'ensemble des $\makeFunNameIso{\varMoM}{\varMM}{\varMM}$. Pour toute suite
+  finie d'éléments $\vec{m}\in\carMM^n$, on définit
+  \[\Orbite_n(\vec m) \defeq \compr{\varMoM(\vec m)}{\varMoM\in\Aut(\varMM)}\]
+  puis l'ensemble des $n$-orbites par
+  \[\Orbite_n \defeq \compr{\Orbite_n(\vec m)}{\vec m \in \carMM^n}\]
+\end{definition}
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure au plus
+  dénombrable. $\Th(\varMM)$ est une théorie $\Cal_0$-catégorique si et
+  seulement si pour tout $n \in \bN$, $\Orbite_n(\varMM)$ est un ensemble fini.
+\end{proposition}
+
+\begin{proof}
+  Si $\Th(\varMM)$ est $\Cal_0$-catégorique, alors on sait qu'il y a pour
+  tout $n$ un nombre fini de $n$-types complets. De plus, on sait
+  (\cref{prop.homogene.cat}) que deux vecteurs d'éléments de même type dans une
+  telle structure peuvent être permutés par un automorphisme car $\varMM$ est
+  homogène~: on a donc une injection des $n$-orbites dans les $n$-types. Les
+  $n$-orbites sont donc finies.
+
+  Réciproquement, supposons que l'ensembles des $n$-orbites est fini pour tout
+  $n\in\bN$. Fixons $n \in \bN$ et montrons que $\TypCpl(\Th(\varMM))$ est
+  fini. Pour cela, on remarque que deux éléments dans la même orbite ont le
+  même type (car les automorphismes, car particulier d'isomorphismes, préservent
+  les types réalisés), donc l'ensemble des $n$-types réalisés dans $\varMM$ est
+  fini~: on a une surjection des types réalisés dans les orbites qui sont en
+  nombre fini.
+
+  L'ensemble des $n$-types réalisés dans $\varMM$, lui, est dense dans
+  l'ensemble des $n$-types de $\Th(\varMM)$~: $\TypCpl(\Th(\varMM))$ doit
+  être fini pour qu'un ensemble fini soit dense dedans. Par caractérisation des
+  théories $\Cal_0$-catégoriques, on en déduit que $\Th(\varMM)$ l'est.
+\end{proof}
+
+\section{Types définissables, algébriques, indiscernables}
+
+Les parties définissables ont déjà été abordées précédemment, et les types
+définissables en sont en quelque sorte un dual. Considérons une structure
+$\varMM$ et un élément $m\in\carMM$. Dire que $m$ est définissable (ou
+$\varPt$-définissable) signifie que $\{m\}$ l'est. En parallèle, $m$ induit
+lui-même un $1$-type complet~: un tel type est alors appelé un type
+définissable. Un type définissable se voit donc comme la spécification d'un
+point unique.
+
+\begin{definition}[Type définissable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On dit qu'un $n$-type $\varTypM\in\TypCpl(\varPt)$
+  sur $\varPt$ est définissable si dans toute extension élémentaire $\varMN$ de
+  $\varMM$, il n'existe qu'un seul réaliseur de $\varTypM$.
+\end{definition}
+
+Les types algébriques sont en quelque sorte un affaiblissement~: plutôt qu'un
+unique réaliseur, on considère qu'on n'a qu'un nombre fini de réaliseurs.
+
+\begin{definition}[Type algébrique]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On dit qu'un $n$-type $\varTypM\in\TypCpl(\varPt)$
+  sur $\varPt$ est algébrique si dans toute extension élémentaire $\varMN$ de
+  $\varMM$, il existe un nombre fini de réaliseurs de $\varTypM$.
+\end{definition}
