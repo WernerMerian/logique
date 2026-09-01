@@ -541,50 +541,48 @@ l'ensemble des théories qui complètent $\varT$.
 
 \begin{definition}
   Soit $\Sign$ une signature et $\varT$ une théorie complète sur $\Sign$. On
-  pose $C \defeq \compr{\Cc_n}{n \in \bN}$ un ensemble de constantes disjoint
-  de $\Sign$, et $\SignP{C}\defeq \Sign\cup C$. On définit l'espace de Stone
+  pose $C$ un ensemble dénombrable de constantes disjoint de $\Sign$, et
+  $\SignP{C}\defeq \Sign\cup C$. On définit l'espace de Stone
   \[\TypCplI(\varT) \defeq
   \compr{\varT'\in\Theory(\SignP{C})}
         {\varT'\supseteq\varT\land\varT'\text{ est complète}}\]
-  On définit aussi $\varRen_{\Cc}$ la famille de morphismes d'algèbres de Boole
-  \[\makeFun{\varRen_{\Cc}}{\Formula_n(\Sign)}{\Formula(\SignP{C})}
-            {\varFF(x_1,\ldots,x_n)}{\varFF(\Cc_1,\ldots,\Cc_n)}\]
+  Pour chaque tuple $\vec{\Cc}$ dans $C^n$, on définit aussi
+  $\varRen_{\Cc}$ le morphisme d'algèbres de Boole
+  \[\makeFun{\varRen_{\vec{\Cc}}}{\Formula_n(\Sign)}{\Formula(\SignP{C})}
+            {\varFF(\vec x)}{\varFF(\vec{\Cc})}\]
 \end{definition}
 
-Avec ces définitions, on vérifie d'abord que l'action de $\varRen_{\Cc}$ sur
+Avec ces définitions, on vérifie d'abord que l'action de $\varRen_{\vec{\Cc}}$ sur
 les types (définie comme la fonction continue induite par le morphisme
 d'algèbres de Boole) transporte un ouvert dense sur un ouvert dense.
 
 \begin{proposition}\label{prop.pullback.CplI}
-  Pour tout $n \in \bN$, si $\varOp$ est un ouvert dense dans $\TypCpl(\varT)$,
-  alors $\relev{\varRen}_{\Cc}^{-1}(\varOp)$ est un ouvert dense dans
-  $\TypCplI(\varT)$.
+  Pour tout $n \in \bN$ et $\vec{\Cc}\in C^n$, si $\varOp$ est un ouvert dense
+  dans $\TypCpl(\varT)$, alors $\relev{\varRen}_{\vec{\Cc}}^{-1}(\varOp)$ est un
+  ouvert dense dans $\TypCplI(\varT)$.
 \end{proposition}
 
 \begin{proof}
   Comme on sait que la fonction est induite par un morphisme d'algèbre de
-  Boole, $\relev{\varRen}_{\Cc}$ est continue, donc la pré-image d'un ouvert
+  Boole, $\relev{\varRen}_{\vec{\Cc}}$ est continue, donc la pré-image d'un ouvert
   est un ouvert.
-  Précisons à quoi ressemble $\relev{\varRen}_{\Cc}^{-1}(\varOp)$~: cet ensemble
-  est l'ensemble des théories $\varT'$ complétant $\varT$ sur $\SignP{C}$ telles
-  qu'en prenant les formules de $\varT'$ n'utilisant que les constantes
-  jusqu'à $\Cc_n$, et en les remplaçant par $x_i$, on obtient un élément de
-  $\varOp$.
 
   On souhaite maintenant montrer que cette pré-image est dense. Pour cela,
   prenons un ouvert-fermé de base $\langle\varFF\rangle$ non vide avec
-  $\varFF(\vec{\Cc})\in\Prop(\SignP{C})$. Quitte à considérer $\varFF$ sur
-  plus de variables libres qu'elle n'en as, on peut écrire
-  \[\varFF(\vec{\Cc}) = \varFF(\Cc_1,\ldots,\Cc_{n+p})\]
-  pour un certain $p \in \bN$. On sait que l'ouvert-fermé de base n'est pas
-  vide, ce qui signifie que $\varT\vD\exists \vec x, \varFF(\vec x)$
-  d'où, en regroupant uniquement les dernières variables,
+  $\varFF\in\Prop(\SignP{C})$. Quitte à considérer $\varFF'$ sur plus de
+  variables libres qu'elle n'en as, on peut écrire
+  \[\varFF = \varFF'(\Cc_1,\ldots,\Cc_{n+p})\]
+  pour un certain $p \in \bN$ et $\Cc_1,\ldots,\Cc_n = \vec{\Cc}$. On sait que
+  l'ouvert-fermé de base n'est pas vide, ce qui signifie que
+  $\varT\vD\exists \vec x, \varFF(\vec x)$ d'où, en regroupant uniquement les
+  dernières variables,
   \[\varT\vD\exists \vec x,\varFP(\vec x)\]
   avec $\vec x$ de taille $n$ et
-  $\varFP = \exists \vec y, \varFF(\vec x,\vec y)$.
-  Remarquons que l'image de $\langle \varFP\rangle$ par $\relev{\varRen}_{\Cc}$
-  est directement $\langle \varFP(\vec{\Cc})\rangle$, qui rencontre donc
-  $\varOp$ car $\varOp$ est un ouvert dense. On en déduit le résultat.
+  $\varFP = \exists \vec y, \varFF'(\vec x,\vec y)$.
+  Remarquons que l'image de $\langle \varFP\rangle$ par
+  $\relev{\varRen}_{\vec{\Cc}}$ est directement
+  $\langle \varFP(\vec{\Cc})\rangle$, qui rencontre donc $\varOp$ car $\varOp$
+  est un ouvert dense. On en déduit le résultat.
 \end{proof}
 
 On sait donc qu'on peut partir d'ouverts denses de $\TypCpl(\varT)$ pour en
@@ -628,9 +626,9 @@ on prouve le lemme suivant.
   \item soit $\varMM\satisf\exists x, \varFF(x)$~: soit alors un témoin
     $a$ de cette existence, et $\Cc$ une constante de $C$ qui n'apparait
     ni dans $\varFP$, ni dans $\varFF$. En modifiant l'assignation de $\Cc$
-    à $a$ dans $\varMM$ et en choisissant l'ouvert-fermé de base de
-    $\varOp_{\varFF}$ au point $\Cc$, on obtient un modèle de toute la théorie
-    souhaitée.\qedhere
+    à $a$ dans $\varMM$ et en choisissant l'ouvert-fermé de base
+    $\langle (\exists x,\varFF(x))\to\varFF(\Cc)\rangle$, on obtient un modèle
+    de toute la théorie souhaitée.\qedhere
   \end{itemize}
 \end{proof}
 
@@ -639,7 +637,7 @@ Il nous reste finalement à donner le théorème d'omission des types.
 
 \begin{theorem}[Omission des types]
   Soit $\Sign$ une signature au plus dénombrable, $\varT$ une théorie complète
-  sur $\Sign$ et $(\varPt_n)_{n\in\bN}$ une famille où chaque $\varPt_n$ est un
+  sur $\Sign$ et $(X_n)_{n\in\bN}$ une famille où chaque $X_n$ est un
   ensemble au plus dénombrable de $n$-types tous non isolés. Alors il existe un
   modèle (au plus dénombrable) $\varMM\satisf\varT$ qui omet tous les types de
   $\displaystyle\bigcup_{n \in \bN} X_n$.
@@ -650,28 +648,32 @@ Il nous reste finalement à donner le théorème d'omission des types.
   conséquence logique, on peut considérer $\varTypM$ comme un fermé de
   $\TypCpl(\varT)$. Si $\varTypM$ est non isolé, cela signifie que son
   intérieur est vide~: son complémentaire $\TypCpl(\varT)\setminus\varTypM$
-  est alors un ouvert dense. On peut ensuite prendre les ouverts denses
-  associés dans $\TypCplI(\varT)$ par la \cref{prop.pullback.CplI}, qu'on va
-  noter $Y_n$.
+  est alors un ouvert dense. Pour $\varTypM\in X_n$ et $\vec{\Cc}\in C^n$, on
+  définit $Y_{\varTypM,\vec{\Cc}}$ et $Y$ par
+  \[Y_{\varTypM,\vec{\Cc}} \defeq
+  \relev{\varRen}^{-1}_{\vec{\Cc}}(\TypCpl(\varT)\setminus \varTypM)\qquad
+  Y \defeq \bigcap_{n \in \bN}\bigcap_{\varTypM\in X_n}\bigcap_{\vec{\Cc}\in C^n}
+  Y_{\varTypM,\vec{\Cc}}\]
 
-  On voit déjà qu'un modèle dont la théorie est dans tous les $Y_n$ vérifie que
-  chaque $\Cc_n$ ne réalise aucun type dans le moindre $X_n$. On souhaite
-  finalement vérifier qu'on peut se contenter des $\Cc_n$ pour avoir un modèle,
-  ce pourquoi on a la \cref{prop.omission.densite}~: on considère donc la partie
-  \[\bigcap_{n \in \bN} Y_n \cap \bigcap_{\varFF\in\Formula_1(\SignP{C})}
-  \varOp_{\varFF}\]
+  On voit déjà qu'un modèle dont la théorie est dans $Y$ vérifie que chaque
+  $\Cc\in C$ ne réalise aucun type dans le moindre $X_n$. On souhaite
+  finalement vérifier qu'on peut se contenter des $\Cc\in C$ pour avoir un
+  modèle, ce pourquoi on a la \cref{prop.omission.densite}~: on considère donc
+  la partie
+  \[Y \cap \bigcap_{\varFF\in\Formula_1(\SignP{C})} \varOp_{\varFF}\]
   En utilisant le \cref{thm.baire}, comme on a une intersection dénombrable
   d'ouverts denses de $\TypCplI(\varT)$, on sait qu'il existe une théorie
   complète $\varT'$ étendant $\varT$ dans cette intersection. Soit $\varMM$ un
   modèle de cette théorie, et soit
-  \[\carM{\varMM_0}\defeq \compr{\toM{\Cc_n}}{n\in\bN}\]
+  \[\carM{\varMM_0}\defeq \compr{\toM{\Cc}}{\Cc \in C}\]
   On montre que $\varMM_0$ est un sous-modèle élémentaire de $\varMM$~: pour
   toute formule existentielle $\exists x, \varFF(x)$ vraie dans $\varMM$, on
   peut trouver un témoin dans $\varMM_0$ puisque la théorie du modèle est
   dans $\varOp_{\varFF}$. Par le critère de Tarski-Vaught, on en déduit donc que
-  $\varMM_0$ est un modèle au plus dénombrable de $\varT$ sur $\SignP{C}$, dont
-  la théorie assure qu'aucun type d'aucun $X_n$ n'est réalisé. Son réduit à la
-  signature $\Sign$ est donc un modèle souhaité.
+  $\varMM_0$ est un modèle de $\varT'$~: on a donc un modèles au plus
+  dénombrable de $\varT$ sur $\SignP{C}$, dont la théorie assure qu'aucun type
+  d'aucun $X_n$ n'est réalisé. Son réduit à la signature $\Sign$ est donc un
+  modèle souhaité.
 \end{proof}
 
 \begin{remark}
@@ -682,6 +684,10 @@ Il nous reste finalement à donner le théorème d'omission des types.
   élémentaire, et donc que l'intersection des $Y_n$ permet d'omettre les types.
 \end{remark}
 
-\section{Applications des types}
+\subsection{Application du théorème d'omission des types}
+
+A FAIRE
+
+\section{Types algébriques, définissbles, indiscernables}
 
 A FAIRE

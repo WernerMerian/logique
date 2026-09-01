@@ -541,7 +541,7 @@ On peut aussi définir une notion d'extension de Skolem pour les structure.
 La proposition peut être vue comme une reformulation (et une légère
 généralisation) de l'\cref{exo.skolemisation}.
 
-\begin{proposition}
+\begin{proposition}\label{prop.skolemisation}
   Soit $\Sign$ une signature. Les trois propositions suivantes sont vraies~:
   \begin{enumerate}[label=(\roman*)]
   \item Si $\varT\in\Theory(\Sign)$ est cohérente, alors $\varT_{\sko}$ est
@@ -583,6 +583,52 @@ généralisation) de l'\cref{exo.skolemisation}.
   Comme l'interprétation de $\symbF_{\varFF}$ ne change pas en l'interprétant
   dans $\varMM$ (les paramètres $\vec m$ étant dans $\varMM$), on trouve bien
   un élément $a \in \carMM$ tel que $\varMM,(\vec m,a)\satisf\varFF$.
+\end{proof}
+
+On peut remarquer une similitude importante entre les fonctions de Skolem et les
+témoins de Henkin~: ces derniers sont simplement une limitation des fonctions de
+Skolem au cas de fonctions d'arité nulle. On définit donc, comme le fait d'avoir
+les témoins de Henkin, le fait qu'une théorie a des fonctions de Skolem.
+
+\begin{definition}[Fonction de Skolem]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit que
+  $\varT$ a des fonctions de Skolem si pour toute formule
+  $\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)$, il existe un terme
+  $t(\vec x)$ tel que
+  \[\varT\vD\forall \vec x, (\exists y,\varFF(\vec x,y))\to
+  \varFF(\vec x,t(\vec x))\]
+\end{definition}
+
+On peut utiliser la même construction que pour les témoins de Henkin pour,
+à partir d'une théorie $\varT$ sur une signature $\Sign$, construire une
+théorie sur un enrichissement de $\Sign$ qui possède des fonctions de Skolem.
+
+\begin{definition}[Extension de Skolem d'une théorie]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On définit
+  la signature $\SkoCl{\Sign}$ et la théorie $\SkoCl{\varT}$ sur $\SkoCl{\Sign}$
+  comme l'union croissante des suites~:
+  \[
+  \begin{cases}
+    \Sign_0 \defeq \Sign\\
+    \Sign_{n+1} \defeq (\Sign_{n})_{\sko}
+  \end{cases}
+  \qquad
+  \begin{cases}
+    \varT_0 \defeq \varT\\
+    \varT_{n+1}  \defeq (\varT_n)_{\sko}
+  \end{cases}\]
+\end{definition}
+
+\begin{proposition}
+  Si $\varT$ est cohérente, alors $\SkoCl{\varT}$ est cohérente et a des
+  fonctions de Skolem.
+\end{proposition}
+
+\begin{proof}
+  On sait que chaque $\varT_n$ est cohérente puisque, si $\varT$ est cohérente,
+  alors $\varT_{\sko}$ aussi (par la \cref{prop.skolemisation}). Le symboles de
+  fonction $\symbF_{\varFF}$ donne une fonction de Skolem pour $\varFF$, donc
+  toute formule sur $\Sign_n$ a une fonction de Skolem dans $\varT_{n+1}$.
 \end{proof}
 
 La notion de skolemisation nous permet de donner un premier exemple de partie
@@ -936,3 +982,22 @@ n'est pas définissable.
   cet automorphisme n'est pas un $\{1\}$-automorphisme, et ne nous permet donc
   pas d'en déduire que $\bZ_+$ n'est pas par exemple $\{1\}$-définissable.
 \end{example}
+
+On définit pour finir la notion de clôture adaptée aux parties définissables.
+
+\begin{definition}[Clôture définissable d'une partie]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$ une partie de $\varMM$. On définit la clôture
+  définissable de $\varPt$ par
+  \[\dcl(\varPt) \defeq
+  \compr{m \in \carMM}{\{m\}\in\powerdef_{\varPt}^1(\varMM)}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\dcl$ est un opérateur de clôture~:
+  \begin{itemize}
+  \item si $\varPt\subseteq\varPtB$ alors $\dcl(\varPt)\subseteq\dcl(\varPtB)$~;
+  \item $\varPt\subseteq\dcl(\varPt)$~;
+  \item $\dcl(\dcl(\varPt)) = \dcl(\varPt)$.
+  \end{itemize}
+\end{exercise}
