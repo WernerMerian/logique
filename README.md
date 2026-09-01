@@ -34,33 +34,39 @@ II. Théorie des ensembles
 
 III. Théorie des modèles
 
-[A compléter]
+11. Etude des classes élémentaires
+
+12. Amalgamations et parties définissables
+
+13. Théories logiques et élimination des quantificateurs
+
+14. Types de la théorie des modèles
 
 IV. Calculabilité
 
-12. Langage régulier et automates finis
+15. Langage régulier et automates finis
 
-13. Langage algébrique et automates à pile
+16. Langage algébrique et automates à pile
 
-14. Modèles de calcul : fonctions récursives, machines de Turing
+17. Modèles de calcul : fonctions récursives, machines de Turing
 
-15. Enumérations et théorèmes de calculabilité
+18. Enumérations et théorèmes de calculabilité
 
-16. Arithmétique et incomplétude
+19. Arithmétique et incomplétude
 
 V. Théorie de la démonstration
 
-17. Calcul des séquents, complétude, logique intuitionniste
+20. Calcul des séquents, complétude, logique intuitionniste
 
-18. Théorie abstraite de la réécriture
+21. Théorie abstraite de la réécriture
 
-19. Déduction naturelle
+22. Déduction naturelle
 
-20. Lambda-calcul non typé
+23. Lambda-calcul non typé
 
-21. Lambda-calcul typé
+24. Lambda-calcul typé
 
-22. Cohérence de l'arithmétique
+25. Cohérence de l'arithmétique
 
 
 ## Protocole de compilation
