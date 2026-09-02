@@ -779,7 +779,8 @@ au plus dénombrable). Pour cela, on utilise un va-et-vient.
 Ces résultats permettent naturellement d'avoir plusieurs carctérisations du fait
 d'être une théorie $\Cal_0$-catégorique.
 
-\begin{theorem}[Caractérisation des théorie $\Cal_0$-catégoriques]
+\begin{theorem}[Engeler-Ryll-Nardzewski-Svenonius
+    \cite{Engeler1959,RyllNardzewski1959,Svenonius1959}]
   Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie sur
   $\Sign$. Les énoncés suivants sont tous équivalents~:
   \begin{enumerate}[label=(\roman*)]
@@ -888,7 +889,9 @@ ici).
   théories $\Cal_0$-catégoriques, on en déduit que $\Th(\varMM)$ l'est.
 \end{proof}
 
-\section{Types définissables, algébriques, indiscernables}
+\section{Reconnaître des éléments par des types}
+
+\subsection{Types définissables, algébriques}
 
 Les parties définissables ont déjà été abordées précédemment, et les types
 définissables en sont en quelque sorte un dual. Considérons une structure
@@ -913,4 +916,371 @@ unique réaliseur, on considère qu'on n'a qu'un nombre fini de réaliseurs.
   $\varPt\subseteq\carMM$. On dit qu'un $n$-type $\varTypM\in\TypCpl(\varPt)$
   sur $\varPt$ est algébrique si dans toute extension élémentaire $\varMN$ de
   $\varMM$, il existe un nombre fini de réaliseurs de $\varTypM$.
+  Un élément $m \in \carMM$ est dit algébrique sur $\varPt$ si $\type(m/\varPt)$
+  est un type algébrique.
 \end{definition}
+
+\begin{remark}
+  Dans le cas de la théorie $\ACF$, si on prend deux modèles
+  $\varMM\subModElt\varMN$ (ce qui donne donc une extension de corps), les
+  éléments algébriques de $\varMN$ sur $\carMM$ sont les éléments algébriques
+  au sens de la théorie des corps~: par élimination des quantificateurs, le
+  $\carMM$-type d'un élément est exactement l'ensemble des équations
+  polynômiales à coefficients dans $\carMM$ qu'il vérifie.
+\end{remark}
+
+\noindent
+Dans les deux cas, on peut en fait se limiter à des $1$-types.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Pour tout vecteur d'éléments $\vec m\in\carMM^n$,
+  le type $\type(\vec m/\varPt)$ est définissable si et seulement si pour chaque
+  $m \in \vec m$, $\type(m/\varPt)$ est définissable.
+\end{proposition}
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Pour tout vecteur d'éléments $\vec m\in\carMM^n$,
+  le type $\type(\vec m/\varPt)$ est algébrique si et seulement si pour chaque
+  $m \in \vec m$, $\type(m/\varPt)$ est algébrique.
+\end{proposition}
+
+\begin{proof}
+  Soient $\vec m = m_1,\ldots,m_n$ des paramètres dans $\varMM$ et
+  $\varMN$ une extension élémentaire de $\varMM$. On pose
+  \[\Orbite_{\varMN} \defeq
+  \compr{\vec n \in \carMN^n}{\type(\vec m/\varPt) = \type(\vec n/\varPt)}
+  \quad\Orbite_{\varMN}^i \defeq
+  \compr{n \in \carMN}{\type(m_i/\varPt) = \type(n/\varPt)}\]
+  Remarquons d'abord que si $\vec n \in \Orbite_{\varMN}$, alors pour tout
+  $i\in\intervIntB{n}$, $n_i \in \Orbite^i_{\varMN}$. On en déduit que le nombre
+  de réaliseurs de $\type(\vec m/\varPt)$ est inférieur au nombre de réaliseurs
+  de tous les $\type(m_i/\varPt)$.
+
+  Réciproquement, si $b_i \in \Orbite^i_{\varMN}$, alors on peut trouver une
+  extension élémentaire $\varMN'$ de $\varMN$ et des éléments
+  $b_1,\ldots,b_{i-1},b_{i+1},\ldots,b_n \in \carM{\varMN'}^{n-1}$
+  tels que $(b_1,\ldots,b_n)\in \Orbite_{\varMN'}$, donc le nombre d'éléments de
+  $\Orbite_{\varMN}$ est majoré par le nombre d'éléments de chaque
+  $\Orbite^i_{\varMN'}$.
+
+  Ainsi, $\Orbite_{\varMN}$ est fini pour tout $\varMN$ si et seulement si
+  chaque $\Orbite_{\varMN}^i$ est fini pour tout $\varMN$ et
+  $i\in\intervIntB{n}$, et de même si les ensembles ont cardinal $1$.
+\end{proof}
+
+On va prouver maintenant que tout type algébrique (et donc, tout type
+définissable) est isolé. Pour cela, on commence par une caractérisation en
+terme d'ensemble définissable des éléments algébriques.
+
+\begin{lemma}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Un élément $m\in\carMM$ est algébrique sur $\varPt$
+  si et seulement s'il existe un ensemble $\varPtB$ fini et
+  $\varPt$-définissable tel que $m\in\varPtB$.
+\end{lemma}
+
+\begin{proof}
+  Si $m\in\varPtB$ avec $\varPtB$ un ensemble fini et $\varPt$-définissable,
+  alors on peut trouver une $\varPt$-formule $\varFF(x)$ dans le $\varPt$-type
+  de $m$, et qui définit un ensemble fini~: supposons que $\varPtB$ est de
+  cardinal $n$ et $\varFP$ définit $\varPtB$, alors $m$ réalise aussi
+  \[\ogM\varFP(x) \land \text{ il y a } n\text{ éléments réalisant }\varFP\fgM\]
+  donc, dans toute extension élémentaire $\varMN$ de $\varMM$, $\varFF(\varPt)$
+  a toujours le même nombre d'éléments, et en particulier $\type(m/\varPt)$ n'a
+  qu'un nombre fini de réaliseurs.
+
+  On suppose maintenant $m$ algébrique. Rajoutons un ensemble dénombrable
+  $C$ de symboles de constantes à notre langage, et considérons
+  \[\varT \defeq \DiagEl(\varMM)\cup
+  \bigcup_{\Cc \in C}\compr{\varFF(\Cc)}{\varFF(x)\in\type(m/\varPt)}\cup
+  \compr{\ogM \Cc \neq \Cc'\fgM}{\Cc,\Cc'\in C, \Cc\neq \Cc'}\]
+  Un modèle de $\varT$ est donc une extension élémentaire dans laquelle
+  l'ensemble des éléments de même type que $m$ est infini~: c'est impossible.
+  On en déduit donc, par compacité, qu'il existe un ensemble fini $F\subfin C$
+  et une formule $\varFF\in\type(m/\varPt)$ tels que
+  \[\DiagEl(\varMM)\cup\compr{\varFF(\Cc)}{\Cc\in F}\cup
+  \compr{\ogM\Cc \neq \Cc'\fgM}{\Cc,\Cc'\in F,\Cc\neq \Cc'}\]
+  n'a pas de modèle. Or, comme $\varFF$ est réalisé par $m$, on sait que
+  l'ensemble défini par $\varFF$ n'est pas vide~: il suit que toute extension
+  élémentaire de $\varMM$ (donc, modèle de $\DiagEl(\varMM)$) ne peut avoir plus
+  de $\Card(F)$ éléments dans l'ensemble défini par $\varFF$. En conclusion, que
+  $m$ appartient à un ensemble fini $\varPt$-définissable.
+\end{proof}
+
+\begin{corollary}
+  L'élément $m$ est $\varPt$-algébrique si et seulement si l'ensemble des
+  réaliseurs de $\type(m/\varPt)$ est fini.
+\end{corollary}
+
+\begin{corollary}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Pour tout $n \in \bN$, si $n$-type sur $\varPt$ est
+  algébrique (respectivement, définissable), alors il est isolé.
+\end{corollary}
+
+Les éléments algébriques sont donc particulièrement stables~: si on considère
+$\varPt\subseteq\varMM\subModElt\varMN$, un élément algébrique sur $\varPt$
+l'est sur $\varMM$ comme sur $\varMN$, et le type associé a autant de réaliseur
+dans les deux (en particulier, même si on considère d'abord un élément comme
+étant algébrique dans $\varMN$, il le reste en regardant la sous-structure
+élémentaire $\varMM$).
+
+De la même manière qu'on a défini la clôture définissable dans le
+\cref{chp.struct.mod}, on définit aussi la clôture algébrique d'une partie.
+
+\begin{definition}[Clôture algébrique]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit
+  la clôture algébrique d'une partie $\varPt\subseteq\carMM$ par
+  \[\acl(\varPt) \defeq
+  \compr{m \in \carMM}{\type(m/\varPt)\text{ est algébrique}}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que la clôture algébrique est, elle aussi, un opérateur de clôture~:
+  \begin{itemize}
+  \item si $\varPt\subseteq\varPtB$ alors $\acl(\varPt)\subseteq\acl(\varPtB)$~;
+  \item $\varPt\subseteq\acl(\varPt)$~;
+  \item $\acl(\acl(\varPt)) = \acl(\varPt)$.
+  \end{itemize}
+  Montrer aussi que $\acl$ est à caractère fini~:
+  \[\acl(\varPt) = \bigcup_{\varPt_0\subseteq\varPt} \acl(\varPt_0)\]
+\end{exercise}
+
+\subsection{Indiscernabilité}
+
+D'après ce qui a été vu, les éléments algébriques peuvent être décrits \og par
+groupes finis\fg par une formule. Cette notion est une généralisation directe
+de la notion de nombre algébrique dans une extension de corps, et on peut donc
+souhaiter trouver une notion d'élément transcendant, qui sont en quelque sorte
+les éléments \og impossibles à décrire \fg. Dans ce contexte, la façon naturelle
+de décrire un élément est de considérer son type~: dans le cas algébrique, un
+élément est moralement \og finiment discernable\fg, et un élément définissable
+est un élément le plus discernable possible. Au contraire, des éléments
+indiscernables entre eux sont alors des éléments de même $n$-type pour tout
+$n\in\bN$. Cela mène à la notion de partie totalement indiscernable.
+
+\begin{definition}[Partie totalement indiscernable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$ une partie de $\varMM$. On dit qu'une
+  partie $\varPtB\subseteq\carMM$ est totalement indiscernable au-dessus de
+  $\varPt$ (ou sur $\varPt$) si pour tout $k \in \bN$ et tous deux vecteurs
+  $(m_1,\ldots,m_k)$ et $(n_1,\ldots,n_k)$ de $\carMM^k$ tels que $m_i\neq n_j$
+  pour tous $i,j\in\intervIntB{k}$, on a
+  \[\type(m_1,\ldots,m_k/\varPt) = \type(n_1,\ldots,n_k/\varPt)\]
+  Une partie totalement indiscernable est une partie totalement indiscernable
+  au-dessus de $\vide$.
+\end{definition}
+
+Par exemple, pour une extension $\varKK\subseteq\varKL$, un ensemble d'éléments
+transcendants sur $\varKK$ constitue une partie totalement indiscernable sur
+$\varKK$. Cependant, on se concentrera sur une notion légèrement plus faible,
+dans laquelle l'aspect indiscernable est lié à un ordre d'apparition des
+éléments~: on se donne un ordre $\indSet$, et on souhaite que les types
+considérés $\type(m_1,\ldots,m_k/\varPt)$ soient pris avec $m_1 < \cdots < m_k$.
+
+\begin{definition}[Famille indiscernable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure,
+  $\varPt\subseteq\carMM$ une partie de $\varMM$ et $(\indSet,<)$ un ensemble
+  totalement ordonné. On dit qu'une famille $(a_i)_{i \in \indSet}$ est
+  indiscernable au-dessus de $\varPt$ (ou sur $\varPt$) si pour toutes deux
+  suites finies croissantes $a_1 < \cdots < a_n$ et $b_1 < \cdots < b_n$, on a
+  \[\type(a_1,\ldots,a_n/\varPt) = \type(b_1,\ldots,b_n/\varPt)\]
+  Une famille indiscernable est une famille indiscernable au-dessus de $\vide$.
+\end{definition}
+
+\begin{remark}
+  Si deux éléments sont égaux dans une famille indiscernable alors tous les
+  éléments le sont. Si un élément est algébrique, alors une famille
+  indiscernable le contenant est finie ou constante égale à cet élément.
+  Ainsi, les familles indiscernables qui nous intéressent réellement sont les
+  famille indiscernables infinies d'éléments deux à deux distincts.
+\end{remark}
+
+Notre but est maintenant de montrer qu'il existe effectivement des familles
+indiscernables~: en fait, pour un type $\varTypM$ donné, on va pouvoir
+construire une extension élémentaire dans laquelle $\varTypM$ est réalisé par
+une famille indiscernable (sur un ensemble d'indices $\indSet$ arbitraire).
+
+Pour pouvoir prouver ce résultat, on a d'abord besoin d'un résultat combinatoire
+assez classique, dont on laisse une démonstration en exercice
+(\cref{exo.Ramsey}).
+
+\begin{theorem}[Ramsey \cite{Ramsey1930}]
+  Soit $X$ un ensemble infini, $n \geq 1$ un entier et $F$ un ensemble fini.
+  On note $\powerset_n(X)$ l'ensemble des parties finies de $X$ à $n$ éléments.
+  Pour toute fonction $\makeFunName{f}{\powerset_n(X)}{F}$, il existe un
+  élément $c \in F$ tel que $f^{-1}({c})$ est infini.
+\end{theorem}
+
+Ce résultat, très utile dans beaucoup de domaines, peut se voir comme une
+généralisation du principe des tiroirs infinis où l'on associe non pas des
+éléments à des éléments de $X$, mais à des groupements d'éléments de $X$.
+
+Une façon plus intuitive de voir ce résultat utilise la théorie des
+hypergraphes~: on considère que, sur l'ensemble $X$, on peut associer des
+couleurs à chaque groupement de $n$ élément, et on a un nombre fini de couleurs.
+Alors il existe une partie infinie de $X$ dont tous les groupements de $n$
+éléments sont associés à la même couleur. Pour $n = 2$, cela correspond au fait
+qu'on peut trouver dans chaque graphe infini soit une clique infinie soit une
+anticlique infinie (respectivement un sous-graphe complet infini ou un
+sous-graphe discret infini).
+
+On peut désormais utiliser ce résultat pour prouver un résultat plus général,
+qui va nous permettre de réaliser des types non algébriques par des familles
+aussi grandes qu'on le veut d'indiscernables.
+
+\begin{theorem}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure,
+  $\varPt\subseteq\carMM$ une partie de $\varMM$ et $(\indSet,<)$ un
+  ensemble totalement ordonné. Soit, de plus, une suite $(m_i)_{i \in \bN}$
+  d'éléments de $\varMM$ deux à deux distincts, et
+  $\FormSet\subseteq\Formula(\Sign)$ un ensemble de formules. On suppose que
+  pour toute formule $\varFF(x_1,\ldots,x_n)\in\FormSet$ et suite d'entiers
+  $i_1 < \cdots < i_n$,
+  \[\varMM,(m_{i_1},\ldots,m_{i_n})\satisf\varFF\]
+
+  Alors il existe une $\Sign$-structure $\varMN$ et une famille
+  $(a_i)_{i \in \indSet}$ telles que $\varMM\subModElt\varMN$,
+  $(a_i)$ est indiscernable sur $\varPt$ et pour toute formule
+  $\varFF(x_1,\ldots,x_n)\in\FormSet$ et des éléments croissants
+  $i_1 < \cdots < i_n$ de $\indSet$,
+  \[\varMN,(a_{i_1},\ldots,a_{i_n})\satisf\varFF\]
+\end{theorem}
+
+\begin{proof}
+  Assez naturellement, on va chercher à construire un modèle du diagramme
+  de $\varMM$ dans lequel on ajoute des constantes $\Cc_i$ pour chaque
+  $i\in \indSet$ (on notera $C \defeq \compr{\Cc_i}{i\in\indSet}$). On définit
+  d'abord différents ensembles de propositoins qu'on souhaite satisfaire dans le
+  modèle final, où on place des paramètres pour faciliter la lecture plus tard~:
+  \[\FormSet_1(X) \defeq
+  \compr{\ogM \Cc_i \neq \Cc_j \fgM}{i,j \in X, i\neq j} \qquad
+  \FormSet_2 \defeq
+  \compr{\varFF(\Cc_{i_1},\ldots,\Cc_{i_k})}{\begin{array}{l}
+      k \in \bN\\
+      i_1,\ldots,i_k\in \indSet\\
+      i_1 < \cdots i_k\\
+      \varFF(x_1,\ldots,x_k)\in\FormSet
+  \end{array}}\]
+  \[
+  \FormSet_3(X) \defeq
+  \compr{\varFF(c_{i_1},\ldots,\Cc_{i_k}) \iffS \varFF(\Cc_{j_1},\ldots,\Cc_{j_k})}
+        {\begin{array}{l}
+            k \in \bN\\
+            i_1,\ldots,i_k,j_1,\ldots,j_k \in \indSet\\
+            (i_1 < \cdots < i_k) \land (j_1 < \cdots < j_k)\\
+            \varFF(x_1,\ldots,x_k) \in X
+        \end{array}}\]
+  Et on pose, comme attendu, la théorie
+  \[\varT\defeq
+  \DiagEl(\varMM)\cup\FormSet_1(\indSet)\cup\FormSet_2\cup
+  \FormSet_3(\Formula_k(\SignP{\varPt}))\]
+  Si on trouve un modèle de $\varT$, le travail est terminé~: $\FormSet_3$
+  nous dit bien que tous les $\Cc_i$ forment une famille indiscernable,
+  $\FormSet_1$ qu'ils sont deux à deux distincts, et $\FormSet_2$ qu'ils
+  réalisent tous les formules de $\FormSet$.
+  Pour montrer qu'il existe un modèle de $\varT$, on procède par compacité.
+  Quitte à rajouter des formules, on considère un sous-ensemble
+  $F\subfin \indSet$ fini, un sous-ensemble fini
+  $\FormSet_0\subfin\Formula(\SignP(\varPt))$. Sans perte de généralité,
+  quitte à rajouter des variables aux éléments de $\FormSet_0$, on considère
+  que $\FormSet_0\subfin\Formula_k(\SignP(\varPt))$ pour un certain $k\in\bN$.
+  On souhaite donc construire un modèle de
+  \[\varT_0\defeq\DiagEl(\varMM)\cup\FormSet_1(F)\cup\FormSet_2\cup
+  \FormSet_3(\FormSet_0)\]
+  On peut désormais chercher à utiliser le théorème de Ramsey. Pour cela, on
+  définit la fonction
+  \[\makeFun{f}{\powerset_k(\bN)}{\intB^{\FormSet_0}}
+            {\{n_1 < \cdots < n_k\}}
+            {\varFF(x_1,\ldots,x_k)\mapsto
+              \begin{cases}
+                1 \textit{ si } \varMM,(m_{n_1},\ldots,m_{n_k})\satisf\varFF\\
+                0 \textit{ si } \varMM,(m_{n_1},\ldots,m_{n_k})\nsatisf\varFF\\
+              \end{cases}
+            }
+            \]
+  Comme on peut ordonner linéaire d'une seule façon une partie de $\bN$, cette
+  fonction est bien définie. De plus, en utilisant le théorème de Ramsey sur
+  cette fonction, on trouve un ensemble $X$ infini d'entiers tel que, pour
+  toute formule $\varFF\in\FormSet_0$ et deux tuples
+  $(n_1 < \cdots < n_k), (n'_1 < \cdots < n'_k)$ d'entiers, on a
+  \[\varMM,(m_{n_1},\ldots,m_{n_k})\satisf \varFF\iff
+  \varMM,(m_{n'_1},\ldots,m_{n'_k})\satisf\varFF\]
+  On peut donc interpréter notre théorie en prenant pour les différents
+  $\Cc_i$ des $b_{n}$ avec $n \in X$, en prenant une application strictement
+  croissante de $F$ dans $X$ (qui est infini, donc aucun souci ne se pose).
+\end{proof}
+
+\begin{corollary}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure,
+  $\varPt\subseteq\varMM$, $n \in \bN$ et $\varTypM\in\TypCpl(\varPt)$
+  un $n$-type complet non algébrique. Soit, de plus, $(\indSet,<)$ un ensemble
+  totalement ordonné. Alors il existe une structure $\varMN$ telle que
+  $\varMM\subModElt\varMN$ et une famille $(a_i)_{i \in \indSet}$ qui est
+  $\varPt$-indiscernable et telle que, pour tous $i_1 < \cdots < i_n$ dans
+  $\indSet$ et toute formule $\varFF\in\varTypM$,
+  \[\varMN,(a_{i_1},\ldots,a_{i_n})\satisf\varFF\]
+\end{corollary}
+
+\begin{proof}
+  Comme $\varTypM$ n'est pas algébrique, on sait qu'on peut trouver une
+  extension élémentaire de $\varMM$ qui contient une infinité de réaliseurs
+  de $\varTypM$. On considère $\FormSet \defeq \varTypM$ et on applique
+  le théorème précédent en prenant comme suite $(m_i)$ une suite de
+  réaliseurs de ce type.
+\end{proof}
+
+On peut se demander quelle utilisation faire de telles familles
+d'indiscernables. On va en donner une utilisation ici, se basant aussi sur les
+extensions de Skolem. Rappelons qu'il est possible d'étendre n'importe quelle
+théorie en une théorie qui a des fonctions de Skolem, et que de telles théories
+sont modèle-complètes~: n'importe quel modèle de cette théorie dont on prend
+une sous-structure est un modèle de la même théorie. On peut donc prendre un
+modèle, en considérer l'extension de Skolem, puis générer une famille
+indiscernable et en extraire un sous-modèle élémentaire. Dans ce processus, on
+obtient alors un sous-modèle dont on a pu saturer, en quelque sorte, la
+réalisation d'un type. On appelle de tels modèles des modèles
+d'Ehrenfeucht-Mostovski. On en donne pour finir une application.
+
+\begin{theorem}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie sur
+  $\Sign$. Si $\varT$ a un modèle infini, alors elle a un modèle dénombrable
+  $\varMM$ tel que $\Card(\Aut(\varMM)) = 2^{\Cal_0}$.
+\end{theorem}
+
+\begin{proof}
+  On considère un modèle infini de $\varT$, et on en prend son extension de
+  Skolem, qu'on va noter $\varMN$. D'après le théorème précédent, on peut
+  trouver une extension élémentaire $\varMN'$ de $\varMM$ avec une famille
+  $(a_i)_{i \in \bQ}$ qui est indiscernable. On considère alors la sous-structure
+  induite par la famille $(a_i)$~: c'est (par modèle-complétude) une
+  sous-structure élémentaire $\varMM$ de $\varMN'$. Remarquons que l'ajout
+  de fonctions de Skolem ne change pas la dénombrabilité de la signature~:
+  comme les $a_i$ sont en nombre dénombrable, la sous-structure engendrée
+  $\varMM$ est un modèle dénombrable de $\varT$.
+
+  De plus, toute permutation $\varPerm\in\Aut(\bQ)$ induit un isomorphisme
+  partiel élémentaire $a_i \mapsto a_{\varPerm(i)}$, et cet isomorphisme se
+  prolonge de façon unique à $\varMM$ (car engendrée par les $a_i$). On
+  vient donc de construire une injection de $\Aut(\bQ)$ dans $\Aut(\varMM)$.
+  Comme on sait qu'il y a au plus $2^{\Cal_0}$ automorphisme de $\varMM$ (car
+  $\varMM$ est dénombrable, donc $\Card(\Funct(\carMM,\carMM)) \leq 2^{\Cal_0}$),
+  il nous suffit pour conclure de montrer que $\Card(\Aut(\bQ)) \geq 2^{\Cal_0}$.
+
+  Soit $x$ un réel. On définit la fonction qui, à $r < x$ renvoie $r$, et à
+  $r > x$ renvoie $2r$. Une telle fonction est croissante et bijective~: c'est
+  donc un automorphisme de $\bQ$. On a donc une injection de $\bR$ dans
+  $\Aut(\bQ)$, d'où le résultat.
+\end{proof}
+
+\clearpage
+
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
+
+\begin{exercise}[Une preuve du théorème de Ramsey]\label{exo.Ramsey}
+  A FAIRE
+\end{exercise}
