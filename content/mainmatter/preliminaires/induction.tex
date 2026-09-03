@@ -9,7 +9,7 @@ récurrence. Nous allons cependant adopter un formalisme différent de celui
 utilisé pour faire une simple récurrence. Les objets principaux sur lesquels
 nous utiliserons l'induction sont les ensembles inductifs et les relations
 inductives, que nous présenterons. Ces deux objets sont associés à des
-formalismes différents~: le premier aux grammaire en forme de
+formalismes différents~: le premier aux grammaires en forme de
 Backus-Naur, et le deuxième aux points fixes et à la théorie des
 treillis. Comme la théorie des treillis sera étudiée plus tard dans cette partie
 préliminaire, nous ne traiterons qu'un cas restreint suffisant pour le travail
@@ -99,7 +99,7 @@ $(\{\nil\} \cup A,\arite)$ où $\arite$
 est défini par~:
 \[\makeFunBis{\arite}{C}{\bN}{\nil}{0}{a (\in A)}{1}\]
 Ainsi, plutôt que de considérer un constructeur à deux arguments ayant un
-argument extérieur à la signature, on définit formellement un famille de
+argument extérieur à la signature, on définit formellement une famille de
 constructeurs à un seul argument.
 
 Voyons maintenant comment associer à une signature un ensemble généré par les
@@ -124,7 +124,7 @@ pourquoi l'on va utiliser à la place $(c,x_1,\ldots,x_n)$.
     \arite(c) = p }$
   \end{itemize}
 
-  L'ensemble inductif engendré par $(C,\alpha)$ est alors l'ensemble
+  L'ensemble inductif engendré par $(C,\arite)$ est alors l'ensemble
   \[X \defeq \bigcup_{n\in \bN} X_n\]
 \end{definition}
 
@@ -145,7 +145,7 @@ avec les deux méthodes.
     $\vide \subseteq X_m$ pour tout $m \in\bN$.
   \item supposons que $X_n \subseteq X_m$ pour tout $m \geq n$. Alors
     \[X_{n+1} = \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in(X_n)^p,
-    \alpha(c) = p}\]
+    \arite(c) = p}\]
     mais par inclusion, comme $(x_1,\ldots,x_p)\in (X_n)^p$, on en déduit que
     $(x_1,\ldots,x_p)$ est aussi dans $(X_m)^p$, pour tout $m \geq n$. Ainsi
     $(c,x_1,\ldots,x_p) \in X_{m+1}$ pour tout $m \geq n$, donc
@@ -172,7 +172,7 @@ Le lemme suivant est un outil de base pour étudier des ensembles inductifs.
     $x\in \vide$~: par absurdité de la prémisse, la conclusion est vraie.
   \item si $n = m+1$, alors $x\in X_n$ signifie que
     \[x \in \compr{(c,x_1,\ldots,x_p)}{c\in C, (x_1,\ldots,x_p)\in(X_m)^p,
-    \alpha(c) = p}\]
+    \arite(c) = p}\]
     d'où le résultat par définition.\qedhere
   \end{itemize}
 \end{proof}
@@ -238,7 +238,7 @@ pour aller d'un coin à l'autre du carré sont égaux.
   Soit $(X_n)$ la suite d'ensembles construite précédemment pour définir $X$. On
   va prouver par récurrence sur $n$ la proposition suivante~:
   \begin{multline*}
-    \forall n\in \bN, \exists ! f_n : X_n \to Y, \forall c \in C,\\
+    \forall n\in \bN, \exists ! \makeFunName{f_n}{X_n}{Y}, \forall c \in C,\\
     \forall (x_1,\ldots,x_p)\in (X_n)^{\arite(c)}, f_n((c,x_1,\ldots,x_p))
     = f_c(f_n(x_1),\ldots,f_n(x_p))
   \end{multline*}
@@ -259,11 +259,11 @@ pour aller d'un coin à l'autre du carré sont égaux.
     $x = (c,x_1,\ldots,x_p)$. On a alors
     \begin{align*}
       f_{n+1}(x) &= f_{n+1}((c,x_1,\ldots,x_p)) & \text{par l'égalité sur }x\\
-      &= f_c(f_n(x_1),\ldots,f_n(x_n)) & \text{par définition }f_{n+1}\\
+      &= f_c(f_n(x_1),\ldots,f_n(x_p)) & \text{par définition }f_{n+1}\\
       &= g((c,x_1,\ldots,x_p))& \text{par hypothèse sur }g\\
       &= g(x) & \text{par l'égalité sur }x
     \end{align*}
-    Donc pour tout $x\in X_{n+1}$, $f_{n+1} = g(x)$, ce qui signifie que
+    Donc pour tout $x\in X_{n+1}$, $f_{n+1}(x) = g(x)$, ce qui signifie que
     $f_{n+1} = g$, d'où l'unicité de $f_{n+1}$.
   \end{itemize}
 
@@ -371,7 +371,7 @@ $\varPt\defeq \compr{x\in X}{\varFF(x)}$.
 \begin{proof}
   Pour prouver ce résultat, il suffit de montrer que pour tout $n\in\bN$,
   $X_n \subseteq \varPt$ pour $(X_n)$ la suite d'ensembles construisant $X$. En
-  effectuant une récurrences sur $n$ :
+  effectuant une récurrence sur $n$ :
   \begin{itemize}
   \item Si $n = 0$, alors $\vide \subseteq \varPt$.
   \item Supposons que $X_n \subseteq \varPt$ pour $n \in \bN$. Soit
@@ -1155,15 +1155,15 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   où $a \in A$. L'intérêt d'un tel arbre est de contenir des valeurs appartenant
   à $A$. On appelle n\oe ud un arbre $\varTree \in \BinTree(A)$ qui n'est pas
   $\nil$, ses composantes sont alors appelées respectivement étiquette, fils
-  gauche et fils droit. Pour un arbre $\varTree$, les n\oe ud de $\varTree$
-  désigne l'ensemble des sous-arbres de $\varTree$ qui ne sont pas $\nil$.
+  gauche et fils droit. Pour un arbre $\varTree$, les n\oe uds de $\varTree$
+  désignent l'ensemble des sous-arbres de $\varTree$ qui ne sont pas $\nil$.
 
   \begin{pbQuest}
   \item Construire inductivement un prédicat $\isABR \subseteq \BinTree(A)$
     exprimant la propriété suivante sur $\varTree$~:
     \begin{quotation}
-      Pour tout n\oe ud $\node(a,g,d)$ de $\varTree$, l'ensemble des étiquettes
-      apparaissant dans $g$ sont inférieures à $a$ et l'ensemble des étiquettes
+      Pour tout n\oe ud $\node(a,g,d)$ de $\varTree$, toutes les étiquettes
+      apparaissant dans $g$ sont inférieures à $a$, et toutes les étiquettes
       apparaissant dans $d$ sont supérieures à $a$.
     \end{quotation}
     On définit ainsi l'ensemble
@@ -1186,7 +1186,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
   On souhaite désormais implémenter des fonctions $\add$ et $\remove$ en tant
   que fonctions sur
   les $\ABR$. Pour cela, il est nécessaire de préserver la propriété (aussi
-  appelé un invariant) d'être un $\ABR$.
+  appelée un invariant) d'être un $\ABR$.
 
   \pbPart{Ajout d'une valeur}
 
