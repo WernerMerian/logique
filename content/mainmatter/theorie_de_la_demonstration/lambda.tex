@@ -130,7 +130,7 @@ besoin de la notion de substitution.
 En réalité, cette définition n'est pas bonne. Prenons par exemple le terme
 $t \defeq \lambda x.\lambda y.z$ et le terme $u \defeq x$. On a alors l'égalité
 \[t[u/z] = \lambda x.\lambda y.x\]
-qui correspond moralement à prendre un argument, puis retourner la fonction
+qui correspond moralement à prendre un argument, puis à retourner la fonction
 constante en cet argument. Pourtant, si on considère
 $t' \defeq \lambda a.\lambda y.z$, alors $t'[u/z]$ est un terme qui se
 comporte bien différemment, car la variable $x$ de $u$ n'est alors pas capturée.
@@ -141,8 +141,8 @@ donner deux résultats différents. Il nous faut donc d'abord gérer les variabl
 libres d'un terme.
 
 \begin{definition}[Variable libre]
-  Soit $t \in \lamSet_0$, on définit par induction sur $t$ les ensembles $\VLie$
-  de ses variables liées et $\VL(t)$ de ses variables libres~:
+  Soit $t \in \lamSet_0$~; on définit par induction sur $t$ les ensembles
+  $\VLie$ de ses variables liées et $\VL(t)$ de ses variables libres~:
   \begin{itemize}
   \item si $t = x$ alors $\VLie(x) \defeq \vide$ et $\VL(t) \defeq \{x\}$.
   \item si $t = \lambda x.t'$ alors $\VLie(t) \defeq \{x\} \cup \VLie(t')$ et
@@ -155,7 +155,7 @@ libres d'un terme.
 \end{definition}
 
 Avec la notion de variable libre, on peut procéder à une correction importante~:
-si $t,u \in \lamSet$, pour effectuer la substitution $t[u/x]$ et éviter toute
+si $t,u \in \lamSet_0$, pour effectuer la substitution $t[u/x]$ et éviter toute
 capture de variable, il nous suffit de demander que
 $\VLie(t)\cap\VL(u)=\vide$. Cette condition, comme on l'a vu précédemment,
 n'est pas pour autant toujours respectée, mais on remarque qu'il nous suffit
@@ -294,7 +294,7 @@ chaque fois une fonction tant que tous les arguments ne sont pas donnés. On
 appelle ce procédé la curryfication, et on peut le décrire par l'isomorphisme
 \[((X\times Y) \to Z)\cong X \to (Y \to Z)\]
 On comprend alors l'intérêt de la notation $t\;u\;v$ pour écrire $(t\;u)\;v$,
-puisqu'alors en voyant $t$ comme une fonction à deux argument curryfiée,
+puisqu'alors en voyant $t$ comme une fonction à deux arguments curryfiée,
 $t\;u\;v$ représente bien la fonction à laquelle on donne les deux arguments
 $u$ et $v$.
 
@@ -328,7 +328,7 @@ Pour la composition, il nous suffit de faire le calcul~:
 \end{align*}
 
 On veut maintenant montrer que $\id\circ f \Beq f$, mais la réduction de
-l'expression de gauche nous donne
+l'expression de gauche donne
 \[\lambda x.f\;x\]
 Cette fonction, représentant $x \mapsto f(x)$, semble parfaitement identique à
 $f$~: elle associe les mêmes valeurs aux mêmes arguments. Cette égalité n'est
@@ -402,7 +402,7 @@ des entiers n'est donc pas simplement une réécriture des variables en les
 variables.
 
 La façon de lire un terme dans cette syntaxe est d'imaginer que les termes sont
-interprété dans un contexte, qui associe un objet aux variables libres. On
+interprétés dans un contexte, qui associe un objet aux variables libres. On
 pourrait par exemple imaginer le terme $x\;y$ comme s'interprétant dans le
 contexte $x \mapsto a, y \mapsto b$. Si on oublie le nom des variables, mais
 qu'on garde en mémoire le contexte, on peut encore référer à l'objet $a$ ou à
@@ -412,7 +412,7 @@ que pour motiver la notation.
 
 Ainsi, le terme $0$ représente par exemple la première valeur du contexte, et
 le terme $1\;0$ représente l'application de la deuxième valeur du contexte à la
-première (on fais commencer la numérotation à $0$).
+première (on fait commencer la numérotation à $0$).
 
 Pour interpréter un terme $\lambda t$, on a alors besoin d'un contexte plus
 grand pour interpréter $t$. Imaginons une liste $\varlist$ interprétant le
@@ -473,7 +473,7 @@ $\VL$ non pas comme un ensemble, mais comme un nombre.
 \end{definition}
 
 La valeur de $\VL(t)$ peut s'interpréter par le fait que l'ensemble des
-variables à l'intérieur de $t$ sont strictement inférieures à $\VL(t)$ (modulo
+variables à l'intérieur de $t$ est strictement inférieur à $\VL(t)$ (modulo
 l'ajout des lieurs).
 
 On peut maintenant définir le relèvement d'un terme, qui correspond à une forme
@@ -491,7 +491,7 @@ d'affaiblissement sur les contextes.
   \end{itemize}
 \end{definition}
 
-Le relèvement $\lift t k n$ correspond à ajouter $n$ objets au contexte
+Le relèvement $\lift t k n$ correspond à l'ajout de $n$ objets au contexte
 d'interprétation, à partir de l'indice $k$ du contexte. Son intérêt se joue dans
 la définition de la substitution~: lorsqu'on définit $(\lambda\;t)[u/n]$, on
 souhaite que la substitution de $u$ à l'intérieur de $t$ ne capture pas la
@@ -533,7 +533,7 @@ $\lambda$-calcul, fondée sur l'idée qu'un entier $n$ est l'application d'une
 action $n$ fois.
 
 \begin{definition}[Entiers de Church]
-  Soit $n\in\bN$, on définit l'entier de Church $\encode n$ par
+  Soit $n\in\bN$~; on définit l'entier de Church $\encode n$ par
   \[\encode n \defeq \lambda f.\lambda x.f^n\;x\]
 \end{definition}
 
@@ -653,7 +653,7 @@ On peut aussi encoder les booléens.
     \encode{\top}\bred^2\encode{\top}$.
   \item
     $\eqZ\;\encode{n+1} \bred^2 (\lambda x.\encode{\bot})\;u$ où $u$ est un
-    terme qui n'importe pas, puisque ce terme se réduit dans tous les cas vers
+    terme sans importance, puisque ce terme se réduit dans tous les cas vers
     $\encode{\bot}$.
   \end{itemize}
 \end{proof}
@@ -664,7 +664,7 @@ On donne aussi la représentation du branchement conditionnel if/then/else.
 \begin{proposition}
   Soient $\makeFunName{f,g}{\bN^k}{\bN}$ des fonctions représentées
   respectivement par $t$ et $u$, et $X \subseteq \bN^k$ une partie
-  représentée par $v$. Alors la fonction telle que, si $\vec n \in X$, renvoie
+  représentée par $v$. Alors la fonction qui, si $\vec n \in X$, renvoie
   $f(\vec n)$, et sinon renvoie $g(\vec n)$, est représentée par
   \[\ifrm v \thenrm t \elserm u \defeq
   \lambda \vec n.v\;\vec n\;(t\;\vec n)\;(u\;\vec n)\]
@@ -696,10 +696,10 @@ $\Ss \defeq \lambda n.\lambda f.\lambda x.f\;(n\;f\;x)$.
 \end{exercise}
 
 La composition ayant déjà été écrite dans le cas de fonctions unaires, il est
-direct de généraliser la chose. On souhaite donc encoder la récursion primitive.
-Remarquons que, naturellement, un entier $n$ représente un itérateur. On peut
-donc simplement appliquer $n$ pour obtenir le résultat attendu, en faisant
-attention à garder à l'esprit les paramètres de la récursion primitive.
+direct de généraliser la construction. On souhaite donc encoder la récursion
+primitive. Remarquons que, naturellement, un entier $n$ représente un itérateur.
+On peut donc simplement appliquer $n$ pour obtenir le résultat attendu, en
+faisant attention à garder à l'esprit les paramètres de la récursion primitive.
 
 \begin{proposition}
   Si $\makeFunName{f}{\bN^{k+2}}{\bN}$ est représentée par $t$, que
@@ -754,7 +754,7 @@ fonctions récursives, demande de construire un itérateur potentiellement
 infini (c'est la cause du passage de fonction totale à fonction partielle).
 Un moyen simple de créer une telle fonction est d'utiliser un point fixe, de
 façon analogue au \cref{thm.Kleene.fix}. On peut alors définir $\muC(f)$
-comme un point fixe~: on construit une fonctions qui appelle toutes les
+comme un point fixe~: on construit une fonction qui appelle toutes les
 valeurs de $f$ successivement, et retourne l'indice de la première valeur
 d'annulation de $f$. Puisqu'en $\lambda$-calcul, tous les objets sont des
 fonctions, le théorème de point fixe peut se construire bien plus facilement
@@ -767,8 +767,8 @@ en donnant un terme construisant explicitement un point fixe.
   On définit le point fixe de Turing par~:
   \[\Ltt \defeq \lambda x\;y.y\;(x\;x\;y) \qquad
   \LtT \defeq \Ltt\;\Ltt\]
-  Pour chacun des deux termes, qu'on notera $T$, et pour tout $t \in \lamSet$,
-  on a l'égalité
+  Pour chacun des deux termes, que l'on notera $T$, et pour tout
+  $t \in \lamSet$, on a l'égalité
   \[T\;t \Beq t\;(T\;t)\]
 \end{definition}
 
@@ -791,9 +791,9 @@ l'argument diagonal~: la forme du point fixe construit dans le
 est nécessaire pour construire des abstractions. Dans le $\lambda$-calcul,
 le terme en devient donc d'autant plus simple.
 
-Le terme $\LtT$, lui, a l'avantage de donner un point fixe uniquement en
-réduisant, contrairement à $\LtY\;t$ qui n'est égal à $t\;(\LtY\;t)$ qu'en
-effectuant une antiréduction à la fin.
+Le terme $\LtT$, lui, a l'avantage de donner un point fixe uniquement par
+réduction. Au contraire, $\LtY\;t$ n'est égal à $t\;(\LtY\;t)$ qu'en effectuant
+une antiréduction à la fin.
 
 On peut maintenant représenter l'opérateur $\muC$.
 
@@ -861,7 +861,7 @@ Le sens réciproque de ce théorème de représentation est laissé en exercice.
 
 \subsection{Conséquence de la représentation}
 
-Puisque le $\lambda$-calcul est un formalisme équivalent aux autre formalismes
+Puisque le $\lambda$-calcul est un formalisme équivalent aux autres formalismes
 de calculabilité, on déduit les faits suivants~:
 
 \begin{proposition}
@@ -869,12 +869,12 @@ de calculabilité, on déduit les faits suivants~:
   $\LtU$ tels que
   \[\forall t \in \lamSet, \LtU\;\encode{\godcod t}
   \Beq \encode{\godcod{\NF(t)}}\]
-  où $n$ est la forme normale de $t$ si elle existe, et où le terme
-  $\LtU\;\encode{\godcod{t}}$ n'a pas de forme normale sinon.
+  et tel que $\LtU\;\encode{\godcod{t}}$ n'a pas de forme normale si $t$ n'en a
+  pas.
 \end{proposition}
 
 \begin{remark}
-  Si on parle de \og la\fg forme normale si elle existe, c'est parce qu'on
+  Si on parle de \og la\fg{} forme normale si elle existe, c'est parce qu'on
   prouvera que $\bred$ est confluente.
 \end{remark}
 
@@ -934,11 +934,11 @@ $\lambda$-termes.
     \encode \bot\text{ si } u \in X\\
     \encode \top\text{ si } u \in Y
   \end{cases}\]
-  $\varPt$ et $\varPtB$ sont dit récursivement inséparables sinon.
+  $\varPt$ et $\varPtB$ sont dits récursivement inséparables sinon.
 \end{definition}
 
 \noindent
-Un ensemble sémantique, mais dans le sens de $\bred$, sera dit saturé ici.
+Un ensemble sémantique, mais aux sens de $\bred$, sera dit saturé ici.
 
 \begin{definition}[Ensemble saturé]
   Une partie $\varPt\subseteq \lamSet$ est dite saturée si
@@ -970,7 +970,7 @@ Un ensemble sémantique, mais dans le sens de $\bred$, sera dit saturé ici.
 
 \begin{remark}
   La fonction construite est parfaitement analogue à la réduction construite
-  pour le théorème de Rice, suivi de la preuve de la non calculabilité du
+  pour le théorème de Rice, suivie de la preuve de la non calculabilité du
   problème de l'arrêt avec un point fixe.
 \end{remark}
 
@@ -985,7 +985,7 @@ On peut alors prouver les résultats pour la réduction $\bred$.
 On en déduit aussi le théorème de l'image.
 
 \begin{theorem}[Image]
-  Soit $\overline t \in \quot{\lamSet}{\Beq}$, $t$ définit une fonction
+  Soit $\overline t \in \quot{\lamSet}{\Beq}$~; $t$ définit une fonction
   \[\makeFun{f_{\overline t}}{\quot{\lamSet}{\Beq}}{\quot{\lamSet}{\Beq}}
             {\clas{u}}{\clas{t\;u}}\]
   qui est une fonction constante ou une fonction dont l'image est infinie.
@@ -1023,8 +1023,8 @@ certaines propriétés de cette réduction, en particulier~:
 \subsection{Propriété de Church-Rosser}
 
 Pour prouver la propriété de Church-Rosser, on utilise une méthode développée
-par William Walker \name{Tait} et Par \name{Martin}-\name{Löf} (de ce qui est
-dit dans \cite{Barendregt1984}), et  affinée dans \cite{TAKAHASHI1995120},
+par William Walker \name{Tait} et Per \name{Martin}-\name{Löf} (de ce qui est
+dit dans \cite{Barendregt1984}), et affinée dans \cite{TAKAHASHI1995120},
 impliquant la réduction parallèle.
 
 Pour prouver la confluence du $\lambda$-calcul, la difficulté principale est,
@@ -1136,9 +1136,9 @@ que $\mathord{\bred} \subseteq \mathord{\redPar} \subseteq
 Il nous reste maintenant à prouver que la réduction parallèle a la propriété du
 carreau. Pour cela, depuis un terme $t$ ayant des redexes $r_1,\ldots,r_p$,
 on pourrait considérer que, lorsque $t \redPar u$, on choisit des redexes
-$\{r_i\}_{i \in I}$, et lorsque $t \redPar v$, on choisit des redexes
-$\{r_i\}_{i \in J}$. Un réduit commun à $u$ et $v$ est alors la réduction
-effectuée en choisissant les redexes $\{r_i\}_{i \in I \cup J}$.
+$\{r_i\}_{i \in \indSet}$, et lorsque $t \redPar v$, on choisit des redexes
+$\{r_i\}_{i \in \indSetB}$. Un réduit commun à $u$ et $v$ est alors le terme obtenu
+par la réduction contractant les redexes $\{r_i\}_{i \in \indSet \cup \indSetB}$.
 
 Cette méthode fonctionne, mais n'est pas nécessaire pour le résultat, que l'on
 souhaite montrer~: il est possible de prendre comme réduit commun, peu importe
@@ -1192,8 +1192,8 @@ On définit pour cela le développement en un pas.
   On a vérifié les hypothèses du \cref{lem.carreau.confluence.clot} pour
   $\redPar$ et $\bred$, la propriété du carreau pour $\redPar$ étant obtenue
   en considérant, pour $t \redPar u,v$, par $u,v\redPar t^*$. Comme la
-  propriété de Church-Rosser et la confluence sont équivalents, on en déduit
-  que $\bred$ vérifie aussi la propriété de Church-Rosser, et en conséquent
+  propriété de Church-Rosser et la confluence sont équivalentes, on en déduit
+  que $\bred$ vérifie aussi la propriété de Church-Rosser et, en conséquent,
   on a l'unicité de la forme normale.
 \end{proof}
 
@@ -1210,7 +1210,7 @@ Puisque nous avons prouvé que $\bred$ a la propriété de Church-Rosser, la don
 importante d'un terme devient sa forme normale (si elle existe). On ne peut
 cependant pas essayer de réduire un terme en en prenant des réductions
 arbitraires~: si l'on considère par exemple $(\lambda x\,y.y)\;\LtOm$,
-une réduction retourne $\id$ mais l'autre réduction retourne le même terme.
+une réduction retourne $\id$ mais l'autre réduction ne fait rien.
 
 Il est donc nécessaire de trouver une stratégie efficace pour normaliser les
 termes.
@@ -1226,7 +1226,7 @@ termes.
 On cherche donc une stratégie normalisante. Pour obtenir une telle stratégie
 normalisante, on commence par étudier la forme des $\lambda$-termes.
 
-A cause de la forme de $\bred$, et des cas inductifs d'un terme, on sait qu'un
+\`A cause de la forme de $\bred$, et des cas inductifs d'un terme, on sait qu'un
 terme $t$ peut toujours se mettre sous la forme
 \[t = \lambda x_1\cdots x_n.u\;t_1\;t_2\;\cdots\;t_k\]
 où $u,t_1,\ldots,t_k$ sont des termes, et $x_1,\ldots,x_n$ sont des variables.
@@ -1236,9 +1236,9 @@ Deux choix sont alors possibles~:
 \item $u$ est une abstraction
 \end{itemize}
 dans le premier cas, on dit que $t$ est une forme normale de tête
-(\foreignexpr{head normal form}). Dans le
-second, on dit que $u\;t_1$ est une redex de tête.
-La redex de tête est, en quelque sorte, la redex essentielle du terme $t$.
+(\foreignexpr{head normal form}). Dans le second, on dit que $u\;t_1$ est une
+redex de tête. La redex de tête est, en quelque sorte, la redex essentielle du
+terme $t$.
 
 \begin{definition}[Forme normale de tête, réduction de tête]
   Le sous-ensemble $\hnf\subseteq \lamSet$ est défini inductivement par la
@@ -1282,7 +1282,7 @@ La redex de tête est, en quelque sorte, la redex essentielle du terme $t$.
   Montrer que $\Hred$ est une relation fonctionnelle.
 \end{exercise}
 
-On peut donc séparer les réductions depuis un terme en une réduction de tête,
+On peut donc séparer les réductions depuis un terme en une réduction de tête
 et d'autres potentielles réductions. On appelle ces réductions des réductions
 internes.
 
@@ -1393,7 +1393,7 @@ ici une réduction parallèle interne.
   Les trois premières propriétés se prouvent de façon parfaitement analogue à la
   \cref{proper.redPar}, on se contente donc de prouver la dernière propriété.
 
-  Soient $t,u,v \in \lamSet$ tels que $\IredPar t'\Hred v$. Remarquons d'abord
+  Soient $t,u,v \in \lamSet$ tels que $t \IredPar u \Hred v$. Remarquons d'abord
   que, si on peut décomposer $t$ en
   $t = \lambda x_1\;\cdots\;x_n.t'\;u_1\;\cdots\;u_k$, alors
   $u$ se décompose en
@@ -1442,7 +1442,7 @@ $\rtClot{\Hred}\IredPar$.
     \begin{itemize}
     \item supposons qu'il existe un $k_0$ (pris minimal) tel que $v_{k_0}$ est
       une abstraction. On sait alors que pour tout $k \geq k_0$, $v_k$ est
-      aussi une abstraction, et (puisque les réduction internes ne change pas
+      aussi une abstraction, et (puisque les réductions internes ne changent pas
       la forme du terme) $u_0$ est aussi une abstraction.
       Posons $v_{k_0} = \lambda x.v'$ et $u_0 = \lambda x.u'$. On cherche
       à prouver que $t \Hred^\star v_{k_0}\;t_1 \IredPar u$.
@@ -1450,7 +1450,7 @@ $\rtClot{\Hred}\IredPar$.
       On sait que $t_1 \redPar u_1$. De plus, par hypothèse,
       $v_{k_0} \redPar u'$, donc
       $(\lambda x.v_{k_0})\IredPar (\lambda x.u')\;u_1$.
-    \item s'il n'existe par de tel $k_0$, alors on en déduit que
+    \item s'il n'existe pas de tel $k_0$, alors on en déduit que
       $t_0\;t_1 \Hred v_1\;t_1\Hred\cdots \Hred v_k\;t_1$, et
       par hypothèse $t_1 \redPar u_1$ et $v_k = t'_0 \IredPar u_0$, donc
       $v_k\;t_1\IredPar u$.
@@ -1469,10 +1469,10 @@ $\rtClot{\Hred}\IredPar$.
     \Hred v_k[t_1/x]\]
     On s'intéresse maintenant à $v_k$. En effet, on peut le mettre sous la
     forme $\lambda \vec x.v'\;\vec{w}$ où $v'$ est le redex de tête ou une
-    variable de tête. Si $v'$ est une redex, toutes les réductions
+    variable de tête. Si $v'$ est un redex, toutes les réductions
     $t_1 \redPar u_1$ à l'intérieur de $\vec{w}$ peuvent s'effectuer en une
     réduction parallèle interne, donc il suffit de construire une suite dans
-    le cas de $v'[t_/x]$. On traite donc les cas d'une redex, d'une variable
+    le cas de $v'[t_1/x]$. On traite donc les cas d'une redex, d'une variable
     de tête $y \neq x$ et de la variable de tête $x$~:
     \begin{itemize}
     \item si $v' = x$, alors $v'[t_1/x] = t_1$. Par induction, on a
@@ -1481,7 +1481,7 @@ $\rtClot{\Hred}\IredPar$.
       construite et obtenir le résultat. Sinon, on concatène toute la
       suite jusqu'à l'apparition d'une abstraction, puis on effectue une
       seule réduction interne parallèle.
-    \item si $v' = x \neq y$, alors on effectue dans $\vec{w}$ des
+    \item si $v' = y \neq x$, alors on effectue dans $\vec{w}$ des
       réductions de tête jusqu'à n'avoir que des réductions internes,
       qu'on peut effectuer en un pas.
     \item si $v'$ est une redex, alors $v'[t_1/x] \IredPar v'[u_1/x]$.
@@ -1566,7 +1566,7 @@ Pour cela, on définit la notion de réduction marquée.
   \[t \bred^{0001} \lambda x\;y\;z.y\;((\lambda a.a\;x)\;z)\]
   De même, on peut vérifier que
   \[t \bred^{0002} \lambda x\;y\;z.(\lambda x.x)\;y\;(z\;x)\]
-  On en déduit que l'une des deux réductions est à la gauche de l'autre.
+  On en déduit que l'une des deux réductions est à gauche de l'autre.
 \end{example}
 
 Remarquons qu'une réduction de tête est une réduction la plus à gauche possible.

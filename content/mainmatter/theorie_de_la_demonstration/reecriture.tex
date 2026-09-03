@@ -4,17 +4,17 @@
 \minitoc
 
 \lettrine{L}{e} chapitre précédent utilisait par deux fois une relation
-$\reecr{}$ pour réécriture les arbres de preuve. Dans la suite de cette
+$\reecr{}$ pour réécrire les arbres de preuve. Dans la suite de cette
 partie, on aura souvent besoin de relations de réécriture (qu'on
 appellera aussi relations de réduction, suivant le contexte), et on se
 propose donc d'en étudier la théorie générale en amont. Ce chapitre est
 donc dédié à la théorie abstraite de la réécriture, portant sur les
-système abstraits de réécriture (\foreignexpr{Abstract Rewriting Systems},
+systèmes abstraits de réécriture (\foreignexpr{Abstract Rewriting Systems},
 abrégé en $\ARS$).
 
 Le principal objectif du chapitre est de donner les outils nécessaires
 pour étudier efficacement les systèmes de réécriture donnés dans les
-prochaines chapitres. La première partie du chapitre est consacrée
+prochains chapitres. La première partie du chapitre est consacrée
 à l'introduction du formalisme décrivant la confluence et la terminaison.
 Ces deux propriétés permettent de motiver l'introduction du problème
 du mot dans le cas plus restreint des monoïdes et groupes~: on introduit
@@ -50,14 +50,14 @@ Commençons par la définition la plus élémentaire, déjà évoquée avant.
 L'exemple sur lequel il est bon de fixer son intuition pour appréhender les
 $\ARS$ est celui d'un système de calcul (par exemple, on pourrait considérer
 des configurations de machines de Turing avec la relation d'action par une
-machine donnée). Dans un système de calcul, les
-éléments sont des programme, c'est-à-dire des suites de symboles, et la
-relation de réécriture permet de faire avancer l'exécution du programme.
-Ainsi, les $\ARS$ ont beau être un cadre très large, on va tout de suite
-introduire des propriétés précises qui sont d'intérêt ici, car nous voulons
-décrire des comportements précis parmi ces ensembles munis d'une relation.
-Les premières propriétés à introduire sont parfaitement classiques, et
-mènent avant tout à pouvoir construire une relation d'équivalence.
+machine donnée). Dans un système de calcul, les éléments sont des programmes,
+c'est-à-dire des suites de symboles, et la relation de réécriture permet de
+faire avancer l'exécution du programme. Ainsi, les $\ARS$ ont beau être un cadre
+très large, on va tout de suite introduire des propriétés précises qui sont
+d'intérêt ici, car nous voulons décrire des comportements précis parmi ces
+ensembles munis d'une relation. Les premières propriétés à introduire sont
+parfaitement classiques, et mènent avant tout à pouvoir construire une relation
+d'équivalence.
 
 \begin{definition}[Propriétés d'un ARS]
   Soit $(A,\varTo)$ un $\ARS$. On dira que $\varTo$ est
@@ -87,7 +87,7 @@ vue concurrents~:
   $p = q$ entre deux programmes s'exécutant l'un en l'autre.
 \end{itemize}
 
-Pour pouvoir rendre compte de ses deux points de vue, on conserve toujours la
+Pour pouvoir rendre compte de ces deux points de vue, on conserve toujours la
 relation $\varTo$ mais on introduit aussi les meilleures approximations de
 cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
 
@@ -113,11 +113,13 @@ cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
 \end{remark}
 
 \begin{example}
-  Prenons comme système, pour une machine de Turing (potentiellement non
-  déterministe) $\varTMM$ fixée, l'ensemble des configurations sur $\varTMM$.
+  Prenons, pour une machine de Turing (potentiellement non déterministe)
+  $\varTMM$ fixée, le système donné par l'ensemble des configurations sur
+  $\varTMM$.
+
   La relation $\varTo$ relie naturellement une configuration à une
   configuration qui la suit sous l'action de $\varTMM$. Remarquons que si
-  la configuration comporte un état d'arrêt, alors elle est en relation avec
+  la configuration comporte un état d'arrêt, alors elle n'est en relation avec
   aucune configuration. Analysons maintenant les différentes clôtures pour
   cette relation~:
   \begin{itemize}
@@ -125,7 +127,7 @@ cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
     configurations
     $C'$ atteignables en au plus un temps de calcul~;
   \item la clôture symétrique relie une configuration $C$ aux configurations
-    $C'$ qui diffèrent d'un temps de calcul (dans les deux sens)~;
+    $C'$ qui diffèrent d'une étape de calcul (dans les deux sens)~;
   \item la clôture transitive relie une configuration $C$ à toutes les
     configurations $C'$ qu'elle peut atteindre dans le futur~;
   \item la clôture réflexive et transitive relie une configuration $C$ à
@@ -133,8 +135,8 @@ cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
     large~;
   \item la clôture d'équivalence relie une configuration $C$ aux configurations
     $C'$ atteignables depuis $C$ en avançant d'une étape de calcul, puis en
-    \og remontant le temps\fg si nécessaire, et ainsi de suite un nombre fini de
-    fois.
+    \og remontant le temps\fg{} si nécessaire, et ainsi de suite un nombre fini
+    de fois.
   \end{itemize}
 \end{example}
 
@@ -279,7 +281,7 @@ efficaces pour prouver des propriétés sur ladite détermination dans le cas
 général.
 
 La suite de cette section est dédiée à la construction d'outils pour établir
-la propriété CR. Pour ce faire, le premier pas est de donnée une formulation
+la propriété CR. Pour ce faire, le premier pas est de donner une formulation
 alternative de la propriété CR, nommée confluence.
 
 \begin{definition}[Confluence]
@@ -332,7 +334,7 @@ alternative de la propriété CR, nommée confluence.
   notations précédentes) $b \varToRst c$ donc on trouve un $d$ correspondant.
 
   On souhaite donc montrer la réciproque. Tout d'abord, on peut exprimer la
-  relation $\varToRst$ comme étant $\rtClot{\varToS}$ (\latinexpr{c.f}
+  relation $\varToRst$ comme étant $\rtClot{\varToS}$ (\latinexpr{c.f.}
   l'\cref{exo.rstClot}). On suppose qu'on a la confluence et on souhaite
   montrer qu'on a la propriété CR. Soient $a,b \in A$ tels que $a\varToRst b$.
   On raisonne donc par induction sur le nombre de réécriture de $\varToS$
@@ -342,8 +344,8 @@ alternative de la propriété CR, nommée confluence.
   \item on suppose donc que $a \varToRst c \varTo b$ et on souhaite trouver
     $d$ tel que $a \varToRt d$ et $b \varToRt d$. Par hypothèse d'induction,
     on trouve donc $d_0$ tel que $a \varToRt d_0$ et $c \varToRt d_0$. On
-    sait donc que $c \varToRt d_0$ et $c\varToRt b$ (var $c \varTo b$), donc
-    par confluence on en déduit qu'il existe $d$ tel que $d_0 \varToRt d$
+    sait donc que $c \varToRt d_0$ et $c\varToRt b$ (var $c \varTo b$)~:
+    par confluence, on en déduit qu'il existe $d$ tel que $d_0 \varToRt d$
     et $b\varToRt d$, d'où (par transitivité) que $a\varToRt d$.
   \item on suppose enfin que $a \varToRst c \varToTr b$ et on souhaite
     trouver $d$ tel que $a\varToRt d$ et $b \varToRt d$. Par hypothèse
@@ -452,7 +454,7 @@ implique la confluence.
 \end{proof}
 
 On peut se demander alors si la confluence locale implique elle aussi la
-confluence, mais cela n'est pas le cas en considérant le contre-exemple en
+confluence~: ce n'est pas le cas, comme le montre le contre-exemple en
 \cref{fig.ctrex.confluence}. On verra cependant un cas où la confluence
 locale implique la confluence.
 
@@ -513,8 +515,8 @@ l'aulne des constructions précédentes.
 
 On a donc une méthode efficace pour prouver la confluence, qui nous donne
 une propriété forte impliquant que tout élément a une seule forme normale.
-Intéressons-nous maintenant à la question de s'il existe toujours une telle
-forme normale.
+Intéressons-nous maintenant à la question de savoir s'il existe toujours une
+telle forme normale.
 
 \subsection{Terminaison}
 
@@ -585,7 +587,7 @@ assez naturel pour montrer des résultats de normalisation (forte comme faible).
   $f(a) = x$. Si $a$ est une forme normale, alors $a$ est faiblement
   normalisant. Sinon, alors on sait qu'il existe $b$ tel que
   $f(a)\varRR f(b)$, donc par hypothèse d'induction $b$ a une
-  forma normale, et $a \varTo b \varToMax n$ avec $n$ une forme
+  forme normale, et $a \varTo b \varToMax n$ avec $n$ une forme
   normale pour $b$, donc $a\varToMax n$, d'où le résultat par
   induction bien fondée.
 \end{proof}
@@ -619,7 +621,7 @@ Cette méthode permet de prouver le lemme de Newman.
   d'abord que si $b = a$ ou $c = a$, alors on peut prendre $d \defeq c$
   (respectivement $d \defeq b$) pour avoir le résultat. On suppose donc sans
   perte de généralité que $b\varToTTr b_0 \varToTr a \varTo c_0 \varToRt c$.
-  On peut maintenant utiliser la confluence local en
+  On peut maintenant utiliser la confluence locale en
   $b_0\varToTr a \varTo c_0$ pour trouver $d_0$ tel que
   $b_0 \varToRt d_0 \varToTTr c_0$, mais alors on peut appliquer l'hypothèse
   d'induction à $b\varToTTr b_0 \varToRt d_0$ pour trouver $d_1$ puis
@@ -713,7 +715,7 @@ réécritures dans des sous-termes. Définissons tout cela formellement.
 
 Ainsi, les relations qui vont nous intéresser sont les relations compatibles,
 mais la donnée d'une relation compatible en elle-même signifie la donnée d'une
-infinité d'instances (pour peu que le monoïde est infini). On souhaite donc
+infinité d'instances (pour peu que le monoïde soit infini). On souhaite donc
 construire un cadre dans lequel on peut trouver des données finies résumant
 notre relation. Pour cela, on introduit la clôture compatible d'une relation.
 
@@ -728,13 +730,13 @@ notre relation. Pour cela, on introduit la clôture compatible d'une relation.
 Reprenons maintenant notre exemple précédent de $\reecr{}$ sur les formules.
 La donnée de la relation est uniquement celle de couples de la forme
 \[\compr{(\ogM t+0\fgM,\ogM t\fgM)}{t \in \Term(\SignP{\Arith})}\cup
-\compr{(\ogM t+\Ss u\fgM,\ogM\Ss(t+u)\fgM}{t,u \in \Term(\SignP{\Arith})}\]
+\compr{(\ogM t+\Ss u\fgM,\ogM\Ss(t+u)\fgM)}{t,u \in \Term(\SignP{\Arith})}\]
 mais, en considérant la relation compatible qu'elle engendre, on peut
 maintenant écrire par exemple
 \[\Ss(\Ss 0 + \Ss 0) = \Ss\Ss\Ss 0 \rtClot{\reecr{}}
 \Ss\Ss\Ss 0 = \Ss\Ss\Ss 0\]
 Nous repoussons à la fin du chapitre la discussion de systèmes de preuves
-dans lequel on autorise ce genre de réductions, mais il est clair ici que
+dans lesquels on autorise ce genre de réductions, mais il est clair ici que
 la seconde proposition est largement plus simple à prouver (elle se prouve
 par simple réflexivité de l'égalité).
 
@@ -770,11 +772,11 @@ On peut aussi restreindre ce problème à une sous-classe des monoïdes, qui
 est celle des groupes. On se réfère par exemple à \cite{algGrandCombat}
 pour un cours plus détaillé abordant cette notion.
 
-Le fait important étant que, même dans le cas où l'on considère simplement
+Le fait important est que, même dans le cas où l'on considère simplement
 les groupes, le problème du mot est indécidable. Ce théorème est donné
 avant tout pour la culture, nous n'en donnons pas la preuve ici.
 
-\begin{theorem}[Boone-Novikov \cite{novikov55, boone58}]
+\begin{theorem}[Boone-Novikov \cite{boone58, novikov55}]
   Il existe un groupe finiment présenté dont le problème du mot est
   indécidable.
 \end{theorem}
@@ -782,8 +784,8 @@ avant tout pour la culture, nous n'en donnons pas la preuve ici.
 \subsection{Complétion de Knuth-Bendix}
 
 Si le problème du mot en toute généralité est indécidable, même pour des
-classes restreintes, il reste décidable dans de nombreux cas, et il est
-alors intéressant d'étudier la relation de réécriture. Nous avons déjà vu
+classes restreintes, il reste néanmoins décidable dans de nombreux cas, et il
+est alors intéressant d'étudier la relation de réécriture. Nous avons déjà vu
 que, grâce au \cref{lem.newman}, la forte normalisation permet de se
 contenter de la confluence locale pour prouver la confluence. Supposons
 donc maintenant qu'on dispose d'un $\ARS$ $(\varMMo,\varTo)$ sur un monoïde,
@@ -819,7 +821,7 @@ l'autre réduction puisque les deux peuvent se faire en quelque sorte en
 parallèle, et le second en remarquant que $\varToRt$ contient la réflexivité,
 donc le résultat est déjà vérifié.
 
-Il ne reste donc qu'à vérifier les 5 autres cas, qu'on peut tous lister en
+Il ne reste donc qu'à vérifier les cinq autres cas, qu'on peut tous lister en
 considérant directement la forme des mots mis en cause dans la définition de
 $\varTo$. En effet, on a simplement cherché toutes les paires de mots
 $(\varwd_1,\varwd_2)$ telles qu'un suffixe de $\varwd_1$ est aussi un préfixe
@@ -867,7 +869,7 @@ $\varlb\varlb\varla$. La confluence locale dépend ainsi du fait d'avoir
 suffisamment de règles.
 
 On introduit donc un algorithme permettant, pour une présentation de monoïde,
-de réécrire la relation $\varTo$ de sorte à obtenir une présentation
+de modifier la relation $\varTo$ de sorte à obtenir une présentation
 confluente. Pour cela, on se donne d'abord un cadre légèrement plus général.
 
 \begin{definition}[Théorie équationnelle]
@@ -910,7 +912,7 @@ donner une première règle d'inférence~:
 \end{prooftree}
 Chaque règle qu'on définira doit vérifier l'invariant suivant~: la
 congruence engendrée par $\varEq \cup \mathord{\varTo}$ en prémisse et en
-conclusion de la règle doit être la même. Dans ce premier cas par
+conclusion de la règle doit être la même. Dans ce premier cas, par
 exemple, il est clair qu'orienter une règle ne change pas les égalités
 engendrées (puisqu'on considère la clôture symétrique). On assure aussi
 que pour toutes les règles qu'on introduit, la relation $\varTo$ est
@@ -951,7 +953,7 @@ autres règles disponibles.
   \hrule
 
   \vspace{0.2cm}
-  \caption{Règles de réductions des couples de réécriture}
+  \caption{Règles de réduction des couples de réécriture}
   \label{tbl.KnuthBendix.Regles}
 \end{table}
 
@@ -979,7 +981,7 @@ On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
 \end{theorem}
 
 \begin{proof}
-  A chaque étape, on sait que la relation $\varTo$ associée est
+  \`A chaque étape, on sait que la relation $\varTo$ associée est
   fortement normalisante. De plus, si l'algorithme termine, alors
   aucune paire critique ne peut être présente car, dans un tel cas,
   elle serait ajoutée à $\varEq$, et le membre de gauche du couple
@@ -989,10 +991,10 @@ On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
 \end{proof}
 
 \begin{remark}
-  Tout le travail effectué autour du problème du mot a été
-  ici traité dans le cas d'un monoïde $\varMMo$, mais on le
-  généralise assez naturellement à des définitions
-  d'ensembles inductifs (au sens du \cref{chp.induction})
+  Tout le travail effectué autour du problème du mot a ici été
+  traité dans le cas d'un monoïde $\varMMo$, mais on le
+  généralise assez naturellement à des définitions portant sur des
+  ensembles inductifs (au sens du \cref{chp.induction})
   ou des langages algébriques. Par exemple, la notion de
   clôture compatible doit se voir comme la possibilité
   d'appliquer la réécriture dans un sous-terme d'un
@@ -1057,11 +1059,9 @@ d'étudier des termes et de répondre à des questions telles
 que
 \begin{quotation}
   \noindent
-  \'Etant données des équations
-  $t_1 = u_1, \cdots, t_n = u_n$, est-il possible de
-  trouver une substitution $\subSimul$ sur les variables
-  libres des différents termes telle que les différentes
-  équations
+  \'Etant données des équations $t_1 = u_1, \cdots, t_n = u_n$, est-il possible
+  de trouver une substitution $\subSimul$ sur les variables libres des
+  différents termes telle que les différentes équations
   $\subSimul(t_1) = \subSimul(u_1), \cdots,
   \subSimul(t_n) = \subSimul(u_n)$
   sont effectivement vérifiées~?
@@ -1076,8 +1076,8 @@ substitution et son application à des termes dans le
 est une fonction partielle
 $\makeFunNamePartial{\subSimul}{\Var}{\Term(\Sign)}$
 et son application à un terme $t$ se construit inductivement
-en considérant que $\subSimul(x) \defeq x$ si $x\notin \dom(x)$,
-$\subSimul(x) \defeq \subSimul(x)$ si $x\in\dom(x)$ et
+en considérant que $\subSimul(x) \defeq x$ si $x\notin \dom(\subSimul)$,
+$\subSimul(x) \defeq \subSimul(x)$ si $x\in\dom(\subSimul)$ et
 $\subSimul(f(\vec x)) = f\left(\overrightarrow{\subSimul(x)}\right)$.
 Définissons maintenant la notion de problème d'unification.
 
@@ -1096,7 +1096,7 @@ Définissons maintenant la notion de problème d'unification.
   Prenons la signature de l'arithmétique pour construire nos
   termes. Un exemple de problème d'unification sur une telle
   signature peut être $\{ x + 2 \simeq 2 + x\}$, et une solution
-  évidente est $\subSimul(x) = 2$. Attention cependant~:
+  évidente consiste à prendre $\subSimul(x) = 2$. Attention cependant~:
   l'unification est ici syntaxique, ce qui signifie qu'il n'y a
   par exemple pas de solution à $x + 2 \simeq 4$, car toute
   substitution sur $x$ laissera inchangé le fait qu'un symbole
@@ -1136,7 +1136,7 @@ que nous avons cité aurait pu ne pas être unique si, plutôt qu'un
 type $\varTypA$ fixé, on avait donné un type $X \to X$ avec $X$
 une variable de type. Dans un tel cas, n'importe quelle
 substitution $X \mapsto a$ avec $a$ une valeur quelconque aurait
-pu être composée à une solution pour en donner une nouvelle.
+pu être composée avec une solution pour en donner une nouvelle.
 L'intérêt d'une solution principale est donc de donner une solution
 pertinente~: elle permet de conserver l'information importante de
 toutes les solutions à des problèmes d'unification.
@@ -1154,7 +1154,7 @@ plutôt intuitive~:
   et conserver la même substitution~;
 \item si $t = f(t_1,\ldots, t_k)$ et $u = f(u_1,\ldots,u_k)$ alors
   on remplace l'équation $t \simeq u$ par les équations
-  $t_1 \simeq u_1,\cdots t_k \simeq u_k$~;
+  $t_1 \simeq u_1,\cdots, t_k \simeq u_k$~;
 \item si $t = x$ où $x$ est une variable, alors on peut ajouter
   la substitution $\subSimul(x) = u$~;
 \item on fait de même si $u$ est une variable.
@@ -1188,7 +1188,7 @@ On donne le pseudo code en \cref{algo.unification}.
       \If{$t = f(\vec{t'})\land u = g(\vec{u'})\land f\neq g$}{
         \KwRet $\bot$\;
       }
-      \If{$t = f(t_1,\ldots,t_k) \land u = f(u_1,\ldots,u_n)$}{
+      \If{$t = f(t_1,\ldots,t_k) \land u = f(u_1,\ldots,u_k)$}{
         $\varPbU \leftarrow (\varPbU\setminus\{(t\simeq u)\})
         \cup \{(t_1\simeq u_1),\ldots,(t_k\simeq u_k)\}$\;
       }
@@ -1212,7 +1212,7 @@ Pour prouver la correction de l'algorithme, on considère à chaque
 étape de l'algorithme la paire $\langle \varPbU,\subSimul\rangle$.
 Notons $\varPbU_0$ le problème d'unification d'origine.
 On vérifie qu'à chaque opération, pour toute solution de $\varPbU$,
-composée par $\subSimul$, donne une solution à $\varPbU$~:
+la composée avec $\subSimul$ donne une solution à $\varPbU$~:
 \begin{itemize}
 \item dans le cas où il n'y a pas de solution, l'invariant est
   évidemment préservé~;
@@ -1231,7 +1231,7 @@ composée par $\subSimul$, donne une solution à $\varPbU$~:
   le résultat.
 \end{itemize}
 Ainsi, lorsque $\varPbU = \vide$, comme la fonction vide est
-une solution du problème, on en déduire que $\subSimul$ est une
+une solution du problème, on en déduit que $\subSimul$ est une
 solution de $\varPbU_0$, mais aussi que toute solution de
 $\varPbU_0$ se factorise par elle.
 
@@ -1253,7 +1253,7 @@ opération fait décroître ce tuple~:
   inférieure à celle de $t$ et de $u$ (qui, eux, sont supprimés de $\varPbU$),
   donc le tuple total est strictement plus petit.
 \end{itemize}
-L'exécution ne peut donc décroître qu'un nombre fini de fois, et se
+L'exécution ne peut donc décroître strictement qu'un nombre fini de fois, et se
 termine donc par bonne fondation.
 
 On dispose ainsi d'un moyen de résoudre un problème d'unification qu'on
@@ -1264,7 +1264,7 @@ peut exprimer sur des ensembles de termes pour une signature fixée.
 Cette dernière sous-section du chapitre s'intéresse à une autre forme
 de raisonnement équationnel. Dans ce cadre, on considère un système de
 démonstration~: le seul que nous avons pleinement étudié pour l'instant
-est le calcul des séquents. Ce qui suivra pourra s'appliquer aussi bien à
+est le calcul des séquents. Ce qui suit pourra s'appliquer aussi bien à
 $\LK$ qu'à $\LJ$ qu'à $\LS$ (dans une certaine mesure).
 
 Nous poursuivons ici deux buts~: présenter un formalisme de déduction
@@ -1284,8 +1284,8 @@ précédemment de la réécriture arithmétique
   \item $t + \Ss u \reecr{} \Ss(t + u)$
   \end{minipage}
 \end{itemize}
-Cette réécriture est fortement normalisante~: dans un cas, la taille du
-terme diminue strictement, dans l'autre le nombre de constructeurs $\Ss$
+Cette réécriture est fortement normalisante~: dans le premier cas, la taille du
+terme diminue strictement~; dans l'autre le nombre de constructeurs $\Ss$
 à l'intérieur d'autres expressions diminue strictement. Les paires
 critiques sont absentes car on réduit toujours à droite du signe $+$.
 Ainsi, le système est fortement normalisant et confluent, et on a donc
@@ -1352,7 +1352,7 @@ deux parties~:
 
 On peut remarquer que le relèvement de coupure ne pose pas de
 souci modulo réécriture, puisque les règles qu'on applique se
-font de façon indépendante. Les coupures logique, au contraire,
+font de façon indépendante. Les coupures logiques, au contraire,
 demandent de considérer précisément les règles logiques utilisées.
 Par exemple, supposons qu'on pose
 $\varFF \lor \varFP \reecr{} \varFF\land \varFP$. Avec une telle
@@ -1437,12 +1437,12 @@ coupures.
 \end{definition}
 
 \begin{remark}
-  Si $\reecr{}$ est définie sur les termes du langages
+  Si $\reecr{}$ est définie sur les termes du langage
   et appliquée par compatibilité sur les formules, alors
   elle est automatiquement non ambiguë et compatible,
   puisque pour $\varFF\reecr{} \varFP$, seuls changent
   les termes des formules et les
-  connecteurs / quantificateurs restent inchangée.
+  connecteurs / quantificateurs restent inchangés.
 \end{remark}
 
 \begin{theorem}\label{thm.cutElimModTh}
@@ -1454,7 +1454,7 @@ coupures.
 \begin{proof}
   On reprend simplement l'élimination des coupures dans
   le chapitre précédent. On peut toujours faire remonter
-  les coupures jusqu'à des coupures logique, et on sait
+  les coupures jusqu'à des coupures logiques, et on sait
   qu'une coupure logique peut être réduite par le fait
   que la réécriture est bonne. La terminaison de l'algorithme
   est inchangée.

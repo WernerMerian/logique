@@ -43,7 +43,7 @@ Rappelons la signature qu'on fixe ici (celle de l'arithmétique)~:
 \subsection{Axiomatiser l'arithmétique}
 
 Historiquement, l'idée d'axiomatiser l'arithmétique est venue d'un besoin de
-fonder sur des bases clairement établies le manipulation des entiers (objets
+fonder sur des bases clairement établies la manipulation des entiers (objets
 parmi les plus primitifs et essentiels des mathématiques). Ainsi, les axiomes
 de l'arithmétique servent en premier lieu à refléter le comportement du modèle
 $(\bN,0,n\mapsto n+1, +, \times, \leq)$~: il est donc naturel que cette
@@ -62,7 +62,7 @@ Pour axiomatiser le comportement de $\bN$, on peut donc donner la théorie
 mais cette théorie est inutilisable~: une théorie utilisable en pratique demande
 à ce qu'on puisse écrire effectivement des preuves dans cette théorie. Dans le
 cas présent, une preuve que $\Th(\bN)\vdP \varFF$ signifie que pour chaque
-règle axiome $\Th(\bN) \vdP \varFP$, il est nécessaire de prouver un énoncé
+règle d'axiome $\Th(\bN) \vdP \varFP$, il est nécessaire de prouver un énoncé
 de la forme $\bN \satisf \varFP$ (de plus, comme $\Th(\bN)$ est clos par
 conséquence logique, on peut aussi bien prouver tout énoncé uniquement avec la
 règle d'axiome). Le premier critère essentiel pour qu'une théorie soit
@@ -105,7 +105,7 @@ En fait, cet affaiblissement n'en est pas un, comme le montre l'astuce de Craig.
   On utilise simplement l'\cref{exo.enum.cr}. En effet, la famille de
   conjonctions est de longueur strictement croissante et la traduction canonique
   entre $\bN$ et $\toSt{\Sign}$ pour un alphabet $\Sign$ préserve la longueur~:
-  si $\varwd$ est de longueur supérieure à $\varwv$, alors son code
+  si $\varwd$ est de longueur supérieure à celle de $\varwv$, alors son code
   $\godcod{\varwd}$ est inférieur au code $\godcod{\varwv}$.
 
   Le fait que les deux familles sont logiquement équivalentes est dû au fait
@@ -132,8 +132,8 @@ pour des raisons pratiques apparaissant plus tard dans ce chapitre.
 
 Les éléments $0$ et $\Ss$ se définissent ensemble~: ils sont les constructeurs
 de l'ensemble inductif $\bN$ et permettent avant tout d'énoncer que tout élément
-est de la forme $0$ ou $\Ss n$ avec $n$ respectant récursivement cette
-spécification. Les points essentiels se résument en $3$ axiomes~:
+est de la forme $0$ ou $\Ss n$, où $n$ respecte récursivement cette
+spécification. Les points essentiels se résument en trois axiomes~:
 \begin{axiom}[Non ambigüité des constructeurs]
   Aucun élément n'est à la fois un successeur et $0$~:
   \[\forall n, 0 \neq \Ss n\]
@@ -206,7 +206,8 @@ est prouvable.
   de l'addition, et dans le cas où $m = \Ss p$, on utilise le deuxième axiome
   et l'hypothèse d'induction.
 
-  Ainsi, comme $n + m = m + n$, on peut directement en déduire le résultat.
+  Ainsi, comme, pour $m,n\in\bN$, $n + m = m + n$, on peut directement en
+  déduire le résultat.
 \end{proof}
 
 On remarque un fait essentiel ici~: la preuve n'utilise aucunement un argument
@@ -251,7 +252,7 @@ naturelle incluant la récurrence.
   $\ArithRobin$ et du schéma de récurrence pour toutes les formules $\varFF$.
 \end{definition}
 
-Dans cette théorie, il est possible de prouver de nombreuses propriété
+Dans cette théorie, il est possible de prouver de nombreuses propriétés
 arithmétiques usuelles~: l'associativité et la commutativité de $+$ et de
 $\times$, par exemple.
 
@@ -299,12 +300,12 @@ $\HierArithS 0$.
 
 \begin{remark}
   Comme pour la hiérarchie de Lévy, il est important que le terme
-  qui borne $x$ ne fasse pas apparaitre $x$, sans quoi il serait possible
+  qui borne $x$ ne fasse pas apparaître $x$, sans quoi il serait possible
   d'écrire par exemple $\forall x \leq x$, qui est une quantification non
   bornée.
 \end{remark}
 
-La valeur de vérité de ces formules dans $\bN$ est possible à déduire de façon
+La valeur de vérité de ces formules dans $\bN$ peut être déduite de façon
 algorithmique, puisque toute formule $\HierArithS 0$ quantifie sur un nombre
 fini de valeurs, qu'il est donc possible de tester. En fait, on a déjà vu grâce
 aux \cref{fct.RP.1}, \ref{prop.PRBool}, \ref{fct.RP2} et \ref{fct.RP3}
@@ -313,7 +314,7 @@ le résultat suivant~:
 \begin{proposition}
   Soit $\varFF(\vec x)\in \HierArithS 0$ une formule à $k$ variables libres,
   alors l'ensemble $\varPt_{\varFF}\subseteq \bN^k$ défini par
-  \[\vec x \in \varPt_{\varFF} \defeq \bN, \bN,\vec x \satisf \varFF\]
+  \[\vec x \in \varPt_{\varFF} \defeq \bN,\vec x \satisf \varFF\]
   est une relation $\RecP$.
 \end{proposition}
 
@@ -396,7 +397,7 @@ Précisons d'abord la notion de représentation.
 
 \begin{definition}[Représentation d'une fonction d'entiers]
   Soit $\makeFunName{f}{\bN^k}{\bN}$. On dit que $f$ est représentée par une
-  formule $\varFF(\vec x,y) \in \Formula$ à $k+1$ variable libres lorsque
+  formule $\varFF(\vec x,y) \in \Formula$ à $k+1$ variables libres lorsque
   \[\forall \vec n\in \bN^k, \forall m \in \bN,
   f(\vec n) = m \iff \bN\satisf \varFF(\encode{\vec n}, \encode m)\]
 \end{definition}
@@ -497,9 +498,10 @@ L'obstacle majeur à cette représentation est qu'un couple d'équations du type
   f(\vec n,0) &\defeq g(\vec n) \\
   f(\vec n, \Ss m) &\defeq h(\vec n,m,f(\vec n,m))
 \end{align*}
-doit s'utiliser un nombre arbitrairement de fois pour calculer la valeur de
-$f(\vec n,m)$ (par calculer, on entend la production d'une suite d'équations
-permettant d'établir $f(\vec n,m) = \encode k$ pour un certain entier $k$).
+doit être utilisé un nombre arbitrairement grand de fois pour calculer la valeur
+de $f(\vec n,m)$ (par \og calculer\fg{}, on entend la production d'une suite
+d'équations permettant d'établir $f(\vec n,m) = \encode k$ pour un certain
+entier $k$).
 
 Il existe une façon simple d'encoder ce calcul~: on peut considérer une liste
 des valeurs $f(\vec n,k)$ pour $k < m$. Ainsi, on peut caractériser la fonction
@@ -611,7 +613,7 @@ On en conclut le théorème suivant.
 
 On peut en tirer plusieurs faits~:
 \begin{itemize}
-\item le graphe de toute façon calculable totale est $\HierArithS 1$.
+\item le graphe de toute fonction calculable totale est $\HierArithS 1$.
 \item les problèmes c.e. sont tous $\HierArithS 1$ (puisqu'ils sont de la
   forme $\exists x, \varFF$ avec $\varFF$ un énoncé $\HierArithS 1$), donc
   les problèmes co-c.e. sont tous $\HierArithP 1$ et les problèmes
@@ -638,7 +640,7 @@ syntaxe.
 \subsection{Arithmétisation de la syntaxe}
 
 Pour étudier ce processus, on donne d'abord l'hypothèse permettant de fonder
-l'ensemble des résultats~: la $\Sigma$-complétude.
+l'ensemble de ces résultats~: la $\Sigma$-complétude.
 
 \begin{definition}[Sigma-complétude]
   Soit $\varT$ une théorie arithmétique. On dit qu'elle est
@@ -659,8 +661,8 @@ l'ensemble des résultats~: la $\Sigma$-complétude.
   On peut écrire $\varFF(\vec x) = \exists y, \varFP(\vec x,y)$ où
   $\varFP \in \HierArithS 0$. Alors, savoir que
   $\bN,\vec n \satisf \varFF(\vec x)$ signifie qu'on trouve un entier $m$ tel
-  que $\bN, \vec n,m\satisf \varFP(\vec x, y)$, ce qui suffit par
-  $\Sigma$-complétude à prouver que
+  que $\bN, \vec n,m\satisf \varFP(\vec x, y)$, ce qui suffit, par
+  $\Sigma$-complétude, à prouver que
   $\varT\vdP \varFP(\encode{\vec n},\encode m)$, ce qui donne le résultat
   par introduction de l'existentielle.
 \end{proof}
@@ -758,7 +760,7 @@ cette proposition est vraie ou fausse.
 
 Le problème était hautement difficile, car il fallait d'abord donner une notion
 consensuelle de méthode finitaire et de calcul. C'est en résolvant ce problème
-indépendamment qu'Alonzo \name{Church} et Alant \name{Turing} ont énoncé la
+indépendamment qu'Alonzo \name{Church} et Alan \name{Turing} ont énoncé la
 \cref{thesis.CT}, qui suffit à répondre négativement au problème.
 
 \'Evidemment, l'énoncé historique de ce théorème est très éloigné de celui que
@@ -793,7 +795,7 @@ ensembles c.e.) on peut donc construire un prédicat permettant de définir la
 prouvabilité.
 
 \begin{definition}
-  Soit $\varT$ une théorie arithmétique r.a. Par le lemme précédent, on pose
+  Soit $\varT$ une théorie arithmétique r.a. Par le lemme précédent, on trouve
   un énoncé $\HierArithS 1$, noté $\DemT{\varT}$, tel que
   \begin{multline*}
   \forall n,m \in \bN^2, (\bN,(n,m) \satisf \DemT{\varT}) \iff\\
@@ -820,10 +822,11 @@ vérifié que pour les entiers standards, et on peut imaginer l'existence
 d'entiers non standard témoignant par exemple de
 $\ThT{\varT}(\encode{\godcod{\varFF}})$.
 
-Il manque un élément pour pouvoir arriver aux théorèmes d'incomplétude~: un
-théorème de point fixe. Le premier théorème d'incomplétude consiste globalement
-à écrire un énoncé de la forme
+Il manque un élément pour aboutir aux théorèmes d'incomplétude~: un théorème de
+point fixe. Le premier théorème d'incomplétude consiste globalement à écrire un
+énoncé de la forme
 \begin{quotation}
+  \noindent
   Cet énoncé est faux.
 \end{quotation}
 
@@ -902,7 +905,7 @@ exprimer la calculabilité au sein de la théorie. On étudie ainsi des théorie
 qui peuvent exprimer des propriétés sur elles-mêmes.
 
 La possibilité de parler de soi-même est intuitivement ce qui mène aux
-arguments diagonaux, et cette situation nous invite donc à en utilsier un.
+arguments diagonaux, et cette situation nous invite donc à en utiliser un.
 En étudiant le procédé diagonal et la façon dont il construit un point fixe, on
 en déduit qu'il suffit ici de faire la même chose que pour d'autres arguments
 par contradiction~: on prend pour $\varFA$ la négation, ce qui mènerait donc à
@@ -914,12 +917,12 @@ $\Sigma$-complète).
 
 En réalité, notre théorème de point fixe nous dit seulement qu'on peut
 construire des points fixes pour des formules de l'arithmétique. Pour pouvoir
-faire la démonstration précédente, il nous faudrait donc pouvoir éxprimer par
+faire la démonstration précédente, il nous faudrait donc pouvoir exprimer par
 une formule un énoncé $\TarV$ tel que
 $\TarV(\encode{\godcod{\varFF}}) \iffS \varFF$.
 
-En allant dans l'autre sens, cela montre qu'on ne peut pas construire de
-tel énoncé.
+En allant dans l'autre sens, cela montre qu'on ne peut pas construire un tel
+énoncé.
 
 \begin{theorem}[Indéfinissabilité de la vérité \cite{Tarski1956-TARTCO}]
   \label{thm.ver.indef}
@@ -1107,7 +1110,7 @@ $\varT$ permet de comparer tout élément à un élément standard.
 \end{theorem}
 
 \begin{proof}
-  On doit donc prouver deux résultat~:
+  On doit donc prouver deux résultats~:
   \begin{itemize}
   \item supposons qu'il existe une démonstration de $\godG'$. On trouve donc
     un arbre de preuve $\varPT$ tel que
@@ -1184,7 +1187,7 @@ du langage pour rendre nos énoncés plus lisibles~: toute fonction $\RecP$
 (notamment) peut être représentée par une formule, et une formule peut être
 encodée par un nouveau symbole de fonction muni d'un axiome.
 
-Malheureusement, les choses ne sont pas aussi simple, car la représentation des
+Malheureusement, les choses ne sont pas aussi simples, car la représentation des
 fonctions que nous avons prouvée dans le \cref{thm.repr.Sigma1} nous dit
 seulement que la formule $\varFF_f$ représentant la fonction $\RecP$ $f$ est une
 représentation pour les entiers \emphexpr{standards}. En particulier, cette
@@ -1211,9 +1214,9 @@ fonctions $\RecP$~:
 \item La représentation de la fonction constante nulle est donnée par la
   formule $0 = y$, toujours fonctionnelle totale sans souci.
 \item Si $f_1,\ldots,f_k$ sont représentées par des relations fonctionnelles
-  totales et $g$ aussi, qu'on notera respectivement
-  $\varFF_1,\ldots,\varFF_k$ et $\varFP$, alors la représentation de
-  $g\circ(f_1,\ldots,f_k)$, donnée par la formule
+  totales et $g$ l'est aussi, en notant respectivement
+  $\varFF_1,\ldots,\varFF_k$ et $\varFP$ les formules associées, alors la
+  représentation de $g\circ(f_1,\ldots,f_k)$, donnée par la formule
   \[\exists y_1,\ldots,y_k,
   \left(\bigwedge_{i = 1}^k \varFF_i(\vec x, y_i)\right) \land
   \varFP(y_1,\ldots,y_k,z)\]
@@ -1320,7 +1323,7 @@ elle-même.
 Pour le second théorème d'incomplétude, le postulat de départ est le suivant~:
 dans une théorie suffisamment puissante pouvant prouver internement le bon
 comportement des fonctions calculables, il est possible de prouver
-internement interne que cet argument diagonal fonctionne. On assiste donc à une
+internement que cet argument diagonal fonctionne. On assiste donc à une
 internalisation de la théorie, dans la théorie elle-même.
 
 Pour exprimer les propriétés de cette internalisation, on introduit les
@@ -1356,10 +1359,10 @@ $\varT$, les trois conditions signifient respectivement~:
 \item si $\varT$ prouve $\varFF$, alors $\modSq\varFF$ est prouvable aussi dans
   $\varT$. La condition correspond au fait que $\ThT{\varT}$ capture tous
   les énoncés démontrables par $\varT$. Remarquons que $\ThT{\varT}$ peut aussi
-  bien être prouvable pour d'autres énoncés, vis à vis des conditions
+  bien être prouvable pour d'autres énoncés, vis-à-vis des conditions
   de Hilbert-Bernays.
 \item si $\varT$ prouve $\varFF \implies \varFP$, alors la prouvabilité de
-  $\varFF$ entraine celle de $\varFP$ (et ceci est prouvable dans $\varT$).
+  $\varFF$ entraîne celle de $\varFP$ (et ceci est prouvable dans $\varT$).
   Cette condition signifie que le \latinexpr{modus ponens} est un principe
   logique applicable au sein même de $\varT$~: la théorie est suffisamment
   forte pour l'internaliser.
@@ -1507,7 +1510,7 @@ considérant $\varFF \defeq \bot$.
 \subsection{Théories non arithmétiques}
 
 Les théorèmes tels qu'énoncés précédemment permettent de déduire que
-la théorie $\ArithPeano$ et d'autres théories arithmétiques, sont incomplètes
+la théorie $\ArithPeano$ et d'autres théories arithmétiques sont incomplètes
 et ne peuvent pas prouver leur propre cohérence. Pour une théorie non
 directement arithmétique, comme $\ZFC$, il est nécessaire d'introduire un moyen
 de transformer les énoncés arithmétiques en énoncés de $\ZFC$. Pour cela, on
@@ -1546,7 +1549,7 @@ emploie la notion de traduction.
   \item la traduction de $\forall x, \varFF$ est
     $\forall x, \tradFP(x) \to \toTrad(\varFF)$
   \item la traduction de $\exists x, \varFF$ est
-    $\exists x, \tradFP(x) \land \toTrad(\varphi)$
+    $\exists x, \tradFP(x) \land \toTrad(\varFF)$
   \end{itemize}
 \end{definition}
 
@@ -1624,9 +1627,9 @@ théories plus générales.
 
 \begin{theorem}[Indéfinissabilité de la vérité]\label{thm.Tarski.ZFC}
   Soit $\varT$ une théorie cohérente sur une signature $\Sign$ et $\toTrad$
-  une traduction de $\SignP{\Arith}$ vers $\Sign$ tel que pour toute
+  une traduction de $\SignP{\Arith}$ vers $\Sign$ telle que pour toute
   formule $\varFF\in\HierArithS{0}$ vraie dans $\bN$,
-  $\varT\vdP_{\toTrad}\varFF$, alors il n'existe aucune formule $\TarV(x)$ a une
+  $\varT\vdP_{\toTrad}\varFF$, alors il n'existe aucune formule $\TarV(x)$ à une
   variable libre telle que
   \[\forall \varFF \in \Formula(\Sign),
   \varT\vdP \varFF \iff \TarV(\toTrad(\encode{\godcod{\varFF}}))\]
@@ -1636,7 +1639,7 @@ théories plus générales.
   \'Ecrire une traduction $\toTrad$ du langage de l'arithmétique vers le
   langage de la théorie des ensembles. Montrer que
   \[\Zermelo - \AxInf \vdash_{\toTrad} \ArithPeano\]
-  En déduire que les 3 théorèmes précédents sont vérifiés pour
+  En déduire que les trois théorèmes précédents sont vérifiés pour
   $\ZF, \ZFC, \ZF - \AxF$ et toute autre théorie des ensembles contenant les
   axiomes d'extensionalité, de réunion, d'ensemble des parties et le schéma de
   compréhension.
@@ -1666,14 +1669,14 @@ en théorie des ensembles, et qu'on accepte les manipulations ensemblistes
 usuelles). On aurait alors bien une preuve que $\ZFC \vdP \Coher(\ZFC)$, puis
 par conséquence que $\ZFC \vdP \bot$. Cela signifie donc que ces théorèmes,
 en pratique, nous poussent effectivement à ne plus poursuivre de preuve de
-la cohérence de $\ZFC$, comme pouvaient le chercher les mathématiciens suivant
+la cohérence de $\ZFC$, comme pouvaient en chercher les mathématiciens suivant
 le programme de Hilbert.
 
 De plus, dans notre méta-théorie, nous avons bien un objet $\bN$, qui témoigne
 que la théorie $\ArithPeano$ est cohérente. Cela peut se justifier par le fait
 que $\ZFC \vdP \Coher(\ArithPeano)$. On peut donc trouver de nombreux modèles
 de $\ArithPeano$, et certains modèles vérifieront $\lnot\Coher(\ArithPeano)$
-d'après le théorème de complétude (sinon, si tous les modèles vérifiaient un
+d'après le théorème de complétude (car, si tous les modèles vérifiaient un
 énoncé, celui-ci serait prouvable). Ce fait, contre-intuitif à
 première vue, doit cependant être remis dans son contexte~: les énoncés tels que
 $\ThT{\ArithPeano}$, représentés en tant que prédicat $\HierArithS 1$, n'ont
@@ -1691,6 +1694,6 @@ de $\ZFC$ avec l'ajout dans la théorie d'un ensemble (un symbole de constante)
 $\varMM$ et de toutes les formules $\varFF^{\varMM}$ où $\varFF \in \ZFC$.
 Ainsi, ne pas pouvoir construire un modèle de $\ZFC$ dans $\ZFC$ signifie que
 l'ensemble $\Prop$ construit au sein de la théorie peut contenir strictement
-plus d'élément que l'ensemble des propositions telles qu'on l'entend dans la
-meta-théorie, exactement comme les entiers des théories arithmétique peuvent
+plus d'éléments que l'ensemble des propositions telles qu'on l'entend dans la
+meta-théorie, exactement comme les entiers des théories arithmétiques peuvent
 être non standards.
