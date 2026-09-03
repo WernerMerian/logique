@@ -23,8 +23,9 @@ Sans le dire, on a déjà vu précédemment la notion de type dans le
 \cref{chp.struct.mod} avec le \cref{cor.typ1}. Lorsqu'on énonce
 \[\forall \varFF(x)\in\Formula_1(\Sign), \varMM,m\satisf\varFF \iff
 \varMM,n\satisf\varFF\]
-on énonce en fait que $m$ et $n$ ont le même type. La façon simple d'appréhender
-un type est comme l'ensemble des formules vérifiées par des paramètres.
+on énonce en fait que $m$ et $n$ ont le même type. Une première façon,
+intuitive, d'appréhender un type se présente alors~: un type est l'ensemble des
+formules vérifiées par des paramètres.
 Cependant, on travaille \og dans l'autre sens\fg pour définir les types~: on
 donne une notion semblant plus générale, dont on vérifie ensuite qu'elle
 correspond à notre intuition d'un ensemble de formules associées à un paramètre.
@@ -776,8 +777,8 @@ au plus dénombrable). Pour cela, on utilise un va-et-vient.
   alors on déduit du va-et-vient un isomorphisme $\varMM\iso\varMN$.
 \end{proof}
 
-Ces résultats permettent naturellement d'avoir plusieurs carctérisations du fait
-d'être une théorie $\Cal_0$-catégorique.
+Ces résultats permettent naturellement d'avoir plusieurs caractérisations du
+fait d'être une théorie $\Cal_0$-catégorique.
 
 \begin{theorem}[Engeler-Ryll-Nardzewski-Svenonius
     \cite{Engeler1959,RyllNardzewski1959,Svenonius1959}]
@@ -1107,7 +1108,7 @@ Pour pouvoir prouver ce résultat, on a d'abord besoin d'un résultat combinatoi
 assez classique, dont on laisse une démonstration en exercice
 (\cref{exo.Ramsey}).
 
-\begin{theorem}[Ramsey \cite{Ramsey1930}]
+\begin{theorem}[Ramsey \cite{Ramsey1930}]\label{thm.ramsey.infini}
   Soit $X$ un ensemble infini, $n \geq 1$ un entier et $F$ un ensemble fini.
   On note $\powerset_n(X)$ l'ensemble des parties finies de $X$ à $n$ éléments.
   Pour toute fonction $\makeFunName{f}{\powerset_n(X)}{F}$, il existe un
@@ -1266,14 +1267,25 @@ d'Ehrenfeucht-Mostovski. On en donne pour finir une application.
   partiel élémentaire $a_i \mapsto a_{\varPerm(i)}$, et cet isomorphisme se
   prolonge de façon unique à $\varMM$ (car engendrée par les $a_i$). On
   vient donc de construire une injection de $\Aut(\bQ)$ dans $\Aut(\varMM)$.
-  Comme on sait qu'il y a au plus $2^{\Cal_0}$ automorphisme de $\varMM$ (car
-  $\varMM$ est dénombrable, donc $\Card(\Funct(\carMM,\carMM)) \leq 2^{\Cal_0}$),
-  il nous suffit pour conclure de montrer que $\Card(\Aut(\bQ)) \geq 2^{\Cal_0}$.
+  Comme on sait qu'il y a au plus $2^{\Cal_0}$ automorphismes de $\varMM$ (car
+  $\varMM$ est dénombrable, d'où l'inégalité
+  $\Card(\Funct(\carMM,\carMM)) \leq 2^{\Cal_0}$), il nous suffit pour conclure
+  de montrer que $\Card(\Aut(\bQ)) \geq 2^{\Cal_0}$.
 
-  Soit $x$ un réel. On définit la fonction qui, à $r < x$ renvoie $r$, et à
-  $r > x$ renvoie $2r$. Une telle fonction est croissante et bijective~: c'est
-  donc un automorphisme de $\bQ$. On a donc une injection de $\bR$ dans
-  $\Aut(\bQ)$, d'où le résultat.
+  Soit $\varCan \in 2^\bN$. On définit la fonction
+  $\makeFunName{f_{\varCan}}{\bQ}{\bQ}$ par les faits suivants~:
+  \begin{itemize}
+  \item $f_{\varCan}$ est impaire~;
+  \item $f_{\varCan}$ est affine par morceaux~;
+  \item pour tout $n \in \bN$, $f_{\varCan}$ est de pente $\varCan(n) + 1$ sur
+    l'intervalle $\intFF{n}{n+1}$.
+  \end{itemize}
+  L'association $\varCan \longmapsto f_{\varCan}$ est injective. En effet, on
+  peut récupérer $\varCan$ à partir de $f_{\varCan}$ simplement en remarquant
+  que $\varCan(n) = f_{\varCan}(n+1) - f_{\varCan}(n) - n$. Par construction,
+  $f_{\varCan}$ est strictement croissante, et on peut vérifier qu'elle est
+  aussi surjective. On a ainsi une injection de $2^{\bN}$ vers $\Aut(\bQ)$,
+  d'où le résultat.
 \end{proof}
 
 \clearpage
@@ -1283,5 +1295,59 @@ d'Ehrenfeucht-Mostovski. On en donne pour finir une application.
 \subsection{Exercices}
 
 \begin{exercise}[Une preuve du théorème de Ramsey]\label{exo.Ramsey}
-  A FAIRE
+  Pour prouver le théorème de Ramsey, on commence par le prouver dans le cas
+  fini. Et pour le prouver dans le cas fini, commençons par le cas où on étudie
+  $\powerset_2(X)$.
+  
+  Soit $X$ un ensemble~; une coloration sur $X$ est une fonction
+  $\makeFunName{c}{\powerset_2(X)}{\intervInt{n}}$ pour un certain $n \in \bN$.
+  Soient des entiers $n_1,\ldots,n_k \in \bN$~; on appelle
+  \og Propriété de Ramsey pour $n_1,\ldots,n_k$\fg{} le fait qu'il existe un
+  entier $M$ tel que tout ensemble $X$ avec $\Card(X) \geq M$ et coloration
+  $\makeFunName{c}{\powerset_2(X)}{\intervInt{k}}$, il existe
+  $i \in \intervInt{k}$ et une partie $\varPt\subseteq X$ tels que
+  $\Card(\varPt) = n_i$ et pour tous $v,v'\in \varPt$, $c(\{v,v'\}) = i$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer la propriété de Ramsey pour $3,3$.
+  \item Montrer par induction que la propriété de Ramsey est vraie pour tous
+    $n,n' \in \bN$.
+  \item Montrer que si la propriété de Ramsey est vraie pour
+    $n_1,\ldots,n_k$ alors il existe $n'$ tel que la propriété de Ramsey est
+    vraie pour $n_1,\ldots n_k,n'$.
+  \item En déduire que la propriété de Ramsey pour $n_1,\ldots,n_k$ est vraie,
+    pour tout $k \in \bN$ et $n_1,\ldots,n_k\in\bN^k$.
+  \end{enumerate}
+
+  On revient maintenant au cas fini général, pour lequel on a déjà le cas
+  $n = 2$. Soient $m,k \in \bN$ et $n_1,\ldots,n_k \in \bN^k$~; on appelle
+  \og Propriété de Ramsey d'arité $m$ pour $n_1,\ldots,n_k$\fg{} le fait qu'il
+  existe un entier $M$ tel que pour tout ensemble $X$ avec $\Card(X) \geq M$
+  et coloration $\makeFunName{c}{\powerset_m(X)}{\intervInt{k}}$, il existe
+  $i \in \intervInt{k}$ et une partie $\varPt\subseteq X$ tels que
+  $\Card(\varPt) = n_i$ et pour tous $v_1,\ldots,v_m \in \varPt$,
+  $c(\{v_1,\ldots,v_m\}) = i$.
+  \begin{enumerate}[resume]
+  \item Montrer par récurrence sur $m$ que pour tout entier $m\in \bN$, tout
+    entier $k \in \bN$ et tous entiers $n_1,\ldots,n_k \in \bN^k$,
+    la propriété de Ramsey d'arité $m$ pour $n_1,\ldots,n_k$ est vérifiée.
+  \item En déduire que pour tous $m,n,k\in \bN$ il existe un entier $M$ tel que
+    pour tout ensemble $X$ tel que $\Card(X) \geq M$ et coloration
+    $\makeFunName{c}{\powerset_m(X)}{\intervInt{k}}$, il existe
+    $i \in \intervInt{k}$ et une partie $\varPt\subseteq X$ tels que
+    $\Card(\varPt) = n$ et pour tous $v_1,\ldots,v_m \in \varPt$,
+    $c(\{v_1,\ldots,v_m\}) = i$.
+  \end{enumerate}
+
+  On peut désormais montrer la version infinie du théorème, par un argument de
+  compacité. Soit $m\in \bN$, on considère la signature $\SignP{m}$ ayant
+  un unique symbole de fonction $\symbF$ d'arité $m$.
+  \begin{enumerate}[resume]
+  \item Pour $n,k\in \bN$, définir une théorie $\varT_{n,m,k}$ sur $\SignP{m}$
+    dont les modèles sont des ensembles $X$ munis d'une coloration
+    $\makeFunName{c}{\powerset_m(X)}{\intervInt{k}}$ pour lesquels il existe
+    une partie $\varPt\subseteq X$ de cardinal au moins $n$ et associant la
+    même valeur à tous $m$ éléments de $\varPt$.
+  \item En utilisant le théorème de compacité, en déduire le
+    \cref{thm.ramsey.infini}.
+  \end{enumerate}
 \end{exercise}

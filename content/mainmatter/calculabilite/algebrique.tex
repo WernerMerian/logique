@@ -6,14 +6,14 @@
 \lettrine{D}{ans} le chapitre précédent, nous avons étudié les expressions
 rationnelles. Celles-ci sont particulièrement simples~: leur forme est limitée
 à l'étoile, l'union et la concaténation. On a vu par exemple que le langage
-$\{a^nb^n\}_{n\in\bN}$ n'est pas rationnel. Un tel langage paraît pourtant
+$\compr{a^nb^n}{n\in\bN}$ n'est pas rationnel. Un tel langage paraît pourtant
 intéressant, d'où la volonté de construire un formalisme plus riche que celui
 des expressions rationnelles.
 
-Les langages algébriques, encore appelés langages hors contextes, sont des
+Les langages algébriques, encore appelés langages hors contexte, sont des
 langages nés d'un tel formalisme. Ce chapitre est dédié à l'étude de ce
 formalisme, qui est celui des grammaires hors contexte. Nous verrons ces
-grammaires ainsi que les automates associés aux langages algébrique~: les
+grammaires ainsi que les automates associés aux langages algébriques~: les
 automates à pile. Contrairement aux automates finis, les automates à pile ont
 une forme de mémoire, grâce à une pile de symboles.
 
@@ -40,7 +40,7 @@ un sous-ensemble de $(\bN \cup \{(,),+,\times\})^\star$.
 
 \begin{remark}
   En réalité, on parle aussi de BNF dans le cas de la présentation qui sera
-  donnée dans la suite de ce chapitre des grammaires hors contextes. Dans ce
+  donnée dans la suite de ce chapitre des grammaires hors contexte. Dans ce
   livre, on considérera toutefois qu'une BNF sera une spécification moins
   formelle d'un ensemble inductif. On gardera l'expression \og grammaire hors
   contexte\fg{} dans le cas où l'on veut parler d'un ensemble de mots décrit par
@@ -199,7 +199,7 @@ langages qui sont naturellement associées à une grammaire.
 \end{definition}
 
 \begin{definition}[Langage hors contexte]
-  Soit $\ABA$ un alphabet. On appelle classe des langages algébrique (ou hors
+  Soit $\ABA$ un alphabet. On appelle classe des langages algébriques (ou hors
   contexte) la classe de langages sur $\ABA$ définie par
   \[\varCC_{\alg}\defeq \compr{\varLL_{\varGG}}{\varGG\in\Gram(\ABA)}\]
 \end{definition}
@@ -223,7 +223,7 @@ langages qui sont naturellement associées à une grammaire.
   est un langage algébrique. Est-il rationnel ?
 \end{exercise}
 
-Un point essentiel avec les grammaires hors contextes est que, comme la seule
+Un point essentiel avec les grammaires hors contexte est que, comme la seule
 donnée importante lors d'une dérivation est le symbole que l'on décide de
 dériver, il est possible de séparer des dérivations en coupant arbitrairement un
 mot. Cela nous mène au lemme suivant, qualifié de fondamental dans
@@ -532,7 +532,7 @@ la forme normale quadratique, à cause de la restriction d'avoir deux non
 terminaux à droite.
 
 \begin{definition}[Forme normale de Chomsky \cite{CHOMSKY1959137}]
-  Soientt un alphabet $\ABA$ et une grammaire $\varGG=(\ABB,\to,\StGr)$ sur
+  Soient un alphabet $\ABA$ et une grammaire $\varGG=(\ABB,\to,\StGr)$ sur
   $\ABA$.
   On dit que $\varGG$ est sous forme normale de Chomsky (ou forme normale
   quadratique) lorsque toutes ses règles sont de l'une des deux formes~:
@@ -935,7 +935,7 @@ remplacé par $T'$, cela se traduit par le lemme suivant~:
   dérivation $T$ est de la forme $c(T_1,\ldots,T_k)$ où $k \leq d$. Si un arbre
   de dérivation a une hauteur strictement inférieure à $\Card(\ABB)+2$, alors
   (par une induction structurelle) sa frontière sera de taille strictement
-  inférieure à $d^{\Card(\ABB)+2}$, donc par contrposée tout arbre de dérivation
+  inférieure à $d^{\Card(\ABB)+2}$, donc par contraposée tout arbre de dérivation
   engendrant un mot de taille supérieure à $N$ doit avoir une hauteur supérieure
   à $\Card(\ABB)+2$. On peut donc trouver une branche dans cet arbre de
   dérivation de longueur supérieure à $\Card(\ABB)+2$, dont on note
@@ -1096,7 +1096,7 @@ propriété universelle, analogue au \cref{thm.PU.ind}.
 \begin{proof}
   On applique simplement le \cref{thm.ind.rec.gen} à la famille de fonctions
   $(f_{\nTA,\varwd})$, et on applique la fonction ainsi construite~: pour
-  un mot $\varwd\in\varLL_{\varGG}$, il existe par non ambigüité un unique arbre
+  un mot $\varwd\in\varLL_{\varGG}$, il existe par non ambiguïté un unique arbre
   de dérivation $T\in\derTr(\StGr)$ tel que $\front(T) = \varwd$, et on
   associe alors $f(\varwd) = f_{\StGr}(T)$.
 \end{proof}
@@ -1463,7 +1463,7 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
 \end{definition}
 
 Nous concluons maintenant la sous-section en montrant l'équivalence entre les
-grammaires hors contextes et les automates à pile.
+grammaires hors contexte et les automates à pile.
 
 \begin{theorem}\label{thm.reco.alg}
   Soit $\ABA$ un alphabet. On a égalité entre la classe des langages
@@ -1474,12 +1474,12 @@ grammaires hors contextes et les automates à pile.
   Commençons par montrer qu'un langage algébrique est reconnaissable par un
   automate à pile pour le critère de pile vide et état final.
 
-  Soit une grammaire $\varGG=\{\ABB,\{\nTA_i\to\varww_i\}_{i \in I},\StGr\}$, on
-  construit l'automate $\varAuP{\varGG}$ suivant~:
+  Soit une grammaire $\varGG=\{\ABB,\{\nTA_i\to\varww_i\}_{i \in \indSet},\StGr\}$,
+  on construit l'automate $\varAuP{\varGG}$ suivant~:
   \begin{itemize}
     \begin{minipage}{0.65\textwidth}
     \item $\varQQ \defeq \{\varqZ\} \cup \{\varqP{f}\} \cup
-      \compr{\varqP{i,j}}{i \in I, \varww \in \intervIntB{\wdl{\varww_i}}}$
+      \compr{\varqP{i,j}}{i \in \indSet, j \in \intervIntB{\wdl{\varww_i}}}$
     \end{minipage}
     \begin{minipage}{0.2\textwidth}
     \item $\ABB_{\varAuP{\varGG}} \defeq \ABA \cup \ABB$
