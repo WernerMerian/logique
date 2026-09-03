@@ -53,7 +53,7 @@ Commençons donc par définir la notion d'énumération.
 
 \begin{remark}
   En utilisant le \cref{thm.norm.Kleene}, on vérifie qu'il existe bien de telles
-  énumération~: on choisit donc l'énumération $(\EnumP{}{k})_{k \in \bN}$ donnée
+  énumérations~: on choisit donc l'énumération $(\EnumP{}{k})_{k \in \bN}$ donnée
   par ce théorème.
 \end{remark}
 
@@ -178,14 +178,14 @@ sens suivant~:
       composition d'une machine universelle et de $f_k$ supposée calculable), on
       a alors
       \[\EnumP{e_{\UnTM}}{k+1}(e,\vec x) = \EnumP{f_k(e)}{k}(\vec x)\]
-      et $\Enum{e_{\UnTM}}{k+1}(e,\vec x) = \EnumBP{g_k(e_U)}{k+1}(e, \vec x)$
+      et $\EnumP{e_{\UnTM}}{k+1}(e,\vec x) = \EnumBP{g_k(e_U)}{k+1}(e, \vec x)$
       par hypothèse. On peut donc prendre l'indice
       $e'_{\UnTM} \defeq g_k(e_{\UnTM})$ pour en déduire le résultat. Remarquons
       que cet indice $e'_{\UnTM}$ est le même pour tout choix de $e$ et de
       $\vec x$, ce qui est le résultat souhaité.
     \item Soient $n,m \geq 1$, $i \in \bN$, $\vec x \in \bN^m$ et
       $\vec y \in \bN^n$, montrons qu'il existe une fonction $\SmnB{m}{n}$
-      vérifiant la propriété attendue. tout d'abord, on sait que
+      vérifiant la propriété attendue. Tout d'abord, on sait que
       \[\EnumBP{e}{n+m}(\vec x, \vec y)=\EnumP{f_{n+m}(e)}{n+m}(\vec x, \vec y)\]
       On pose maintenant
       $f:(e, \vec x, \vec y) \longmapsto \EnumP{f_{n+m}(e)}{n+m}(\vec x,\vec y)$
@@ -213,8 +213,8 @@ sens suivant~:
       &= \EnumP{e'}{k+1}(e,\vec x) &\text{par surjectivité}\\
       &= \EnumP{\Smn{1}{k}(e',e)}{k}(\vec x) &\text{par paramétrisation}
     \end{align*}
-    on peut donc $f_k$ comme la fonction $e \longmapsto \Smn{1}{k}(e',e)$ où
-    $e'$ est un code de la fonction
+    on peut donc définir $f_k$ comme la fonction
+    $e \longmapsto \Smn{1}{k}(e',e)$ où $e'$ est un code de la fonction
     $(e, \vec x) \longmapsto \EnumBP{e_{\UnTM}}{k+1}(e, \vec x)$ pour $\Enum$.
     \qedhere
   \end{itemize}
@@ -228,8 +228,9 @@ choisie permettra de manipuler les fonctions calculables comme on le souhaite.
 \subsection{Point fixe et arrêt}
 
 Notre objectif dans cette sous-section est d'exhiber une fonction non calculable
-de façon explicite. L'existence d'une surjection $\bN \to (\bN \partialto \bN)$
-suffit par des arguments de cardinalité à montrer que toute fonction n'est pas
+de façon explicite. L'existence d'une surjection
+$\bN \to \Calc(\bN \partialto \bN)$
+suffit, par des arguments de cardinalité, à montrer que toute fonction n'est pas
 calculable, mais nous en donnons un exemple explicite avec le problème de
 l'arrêt. Ce problème a une importance fondamentale en calculabilité, puisqu'il
 est à la fois le problème indécidable le plus élémentaire, mais aussi celui
@@ -252,7 +253,7 @@ $\compr{x_{i,j}}{i,j \in X}$ où
 L'argument diagonal, qui lui vaut son nom, est alors de considérer la diagonale
 de cette matrice, c'est-à-dire la famille $\compr{x_{i,i}}{i \in X}$ dont on
 sait, par surjectivité de $f$, qu'elle a un antécédent. En notant $e$
-l'antécédent, peut alors considérer $x_{e,e}$.
+l'antécédent, on peut alors considérer $x_{e,e}$.
 
 Cette construction peut s'effectuer en considérant n'importe quelle fonction
 $\makeFunName{b}{\btwo}{\btwo}$. Dans ce cas, en prenant la famille
@@ -290,7 +291,7 @@ représente une fonction diagonale analogue à la famille $\{x_{i,i}\}$. En
 considérant une fonction calculable totale $\makeFunName{\alpha}{\bN}{\bN}$, on
 peut donc considérer
 \[e \longmapsto \alpha(\Smn{1}{k}(e,e))\]
-pour espérer obtenir une point fixe de $\alpha$ (au sens d'une fonction qui
+pour espérer obtenir un point fixe de $\alpha$ (au sens d'une fonction qui
 a comme codes à la fois $e$ et $\alpha(e)$), c'est précisément le contenu du
 théorème du point fixe de Kleene.
 
@@ -298,7 +299,7 @@ théorème du point fixe de Kleene.
     - formulation de Rogers \cite{Rogers1987}]\label{thm.Kleene.fix}
   Soit $\makeFunName{\alpha}{\bN}{\bN}$ une fonction totale calculable.
   Alors il existe un code $e \in \bN$ tel que
-  \[\forall \vec x \in \bN^k, \EnumEK (\vec x)= \EnumP{f(e)}{k}(\vec x)\]
+  \[\forall \vec x \in \bN^k, \EnumEK (\vec x)= \EnumP{\alpha(e)}{k}(\vec x)\]
   calculable en un code de $\alpha$.
 \end{theorem}
 
@@ -411,7 +412,7 @@ dessine~: la fonction valant $1$ si $\EnumP{e}{1}(e)$ est définie et $0$ sinon.
   au prix de ne plus avoir l'existence d'ensembles tels que $\KH$.
 \end{remark}
 
-A partir de la non calculabilité de cet ensemble, il est possible de déduire
+\`A partir de la non calculabilité de cet ensemble, il est possible de déduire
 celle de plusieurs autres ensembles similaires, que nous laissons en exercice.
 
 \begin{exercise}
@@ -424,7 +425,7 @@ Relevons que notre exemple de fonction non calculable a une forme particulière~
 c'est une fonction apparaissant comme fonction caractéristique d'un ensemble.
 Si nous avons exposé le problème de l'arrêt par une fonction, il est clair
 (puisque les parties de $\bN$ sont isomorphes aux fonctions $\bN \to \btwo$)
-que le caractère non calculable du problème de l'arrêt se définit tout aussi
+que le caractère non calculable du problème de l'arrêt s'exprime tout aussi
 bien sur l'ensemble lui-même.
 
 L'idée d'étudier les parties de $\bN$ pour la calculabilité nous mène alors à
@@ -454,7 +455,7 @@ de $\bN$ comme des codes~: un problème est un ensemble d'objets (appelés
 propriété ou non.
 
 \begin{example}
-  Donnons plusieurs exemple de problèmes de décision~:
+  Donnons plusieurs exemples de problèmes de décision~:
   \begin{itemize}
   \item étant donné le code $e$ d'une fonction $f$, est-ce que $f$ est définie
     en $e$ ?
@@ -467,7 +468,7 @@ propriété ou non.
 \end{example}
 
 On peut se donner plusieurs conventions pour encoder facilement des ensembles
-dans $\bN$, et ainsi parler de problèmes de décisions sur ces ensembles sans
+dans $\bN$, et ainsi parler de problèmes de décision sur ces ensembles sans
 s'attarder sur la façon d'encoder les objets~:
 \begin{itemize}
 \item on a déjà vu qu'il était possible d'encoder n'importe quel ensemble de
@@ -485,7 +486,7 @@ s'attarder sur la façon d'encoder les objets~:
   \xrightarrow{\langle -,-\rangle} \bN\]
   Si $c_X$ et $c_Y$ sont surjectifs (resp. injectifs, resp. bijectifs) alors
   $c_{X\times Y}$ est aussi surjectif (resp. injectif, resp. bijectif).
-\item si $(X_i)_{i \in \bN}$ est une famille d'ensemble, où chaque ensemble est
+\item si $(X_i)_{i \in \bN}$ est une famille d'ensembles, où chaque ensemble est
   muni d'un code $\makeFunName{c_i}{X_i}{\bN}$, alors on définit le code
   \[c_{\sum_i X_i} : (i,x) \longmapsto \langle i,c_i(x)\rangle\]
 \end{itemize}
@@ -606,7 +607,7 @@ très forte.
   Soit $\varPt\subseteq \bN$ un problème de décision tel qu'il existe une
   fonction calculable totale $\makeFunName{f}{\bN}{\bN}$ telle que
   $\varPt = \im(f)$.
-  Montrer que si $f$ est croissante strictement, alors $\varPt$ est calculable.
+  Montrer que si $f$ est strictement croissante, alors $\varPt$ est calculable.
   En déduire que si $f$ est croissante au sens large et $\varPt$ est infini,
   alors $\varPt$ est calculable.
 \end{exercise}
@@ -631,7 +632,7 @@ sémantique.
 \end{definition}
 
 Un problème sémantique est donc un problème qui s'intéresse au comportement des
-programme~: deux programmes décrivant le même comportement (prenant les mêmes
+programmes~: deux programmes décrivant le même comportement (prenant les mêmes
 valeurs aux mêmes entrées) sont équivalents pour un problème sémantique.
 
 \begin{theorem}[Rice \cite{Rice1953}]
@@ -647,11 +648,11 @@ valeurs aux mêmes entrées) sont équivalents pour un problème sémantique.
   $g \notin \varPt$. On définit
   \[f : (n,x) \longmapsto
   \begin{cases}
-    g(x) \text{ si } n \in K\\
+    g(x) \text{ si } n \in \KH\\
     \bot \text{ sinon}
   \end{cases}\]
   Cette définition par cas en fonction de si $n \in \KH$ fonctionne ici car
-  $\KH$ est semi-décidable~: le fait que le case \og sinon\fg donne une valeur
+  $\KH$ est semi-décidable~: le fait que le cas \og sinon\fg donne une valeur
   indéfinie assure qu'il n'est pas nécessaire de reconnaître les instances
   négatives de $\KH$ (on aurait par exemple pu multiplier $g(x)$ par la fonction
   caractéristique de $\KH$). La fonction $f$ est donc encore calculable, soit
@@ -770,12 +771,12 @@ est un ensemble ordonné. On donne donc la définition de degré many-one associ
   On note $\ManyDegrees$ l'ensemble des degrés many-one.
 \end{definition}
 
-Nous ne nous attardons par sur la structure ordonnée de
+Nous ne nous attardons pas sur la structure ordonnée de
 $(\ManyDegrees,\manyOne)$ car nous verrons ensuite une autre réduction dont les
 degrés sont importants. Cependant, de nombreuses propriétés peuvent être
 énoncées à leur sujet.
 
-Puisque les réductions permettent d'ordonner les problèmes de décisions, on peut
+Puisque les réductions permettent d'ordonner les problèmes de décision, on peut
 relier des classes de problèmes et des notions de réduction. En particulier,
 on a défini les notions d'ensemble calculable et c.e., donc on peut se demander
 quel est leur lien avec les degrés many-one.
@@ -818,8 +819,8 @@ complétude.
 
   Pour une entrée $x \in \bN$, on sait alors que
   $x \in \varPt \iff f(x) \convcal$, ce qui peut donc se réécrire
-  $x \in \varPt \iff f(x) \in \KH$, c'est-à-dire $\varPt \manyOne K $.
-  En conclusion, $\KH$ est ce.e.-difficile.
+  $x \in \varPt \iff f(x) \in \KH$, c'est-à-dire $\varPt \manyOne \KH$.
+  En conclusion, $\KH$ est c.e.-difficile.
 \end{proof}
 
 La structure des problèmes c.e. revient donc à celle du problème de l'arrêt (ou
@@ -873,12 +874,12 @@ qui est une façon d'ordonner les problèmes par difficulté croissante.
   \item pour tout $n \in \bN$, la classe $\HierArithD n$ est définie par
     \[\HierArithD n \defeq \HierArithS n \cap \HierArithP n\]
   \item pour tout $n \in \bN$, la classe $\HierArithS{n+1}$ est définie par
-    l'ensemble des problèmes $\varPt$ tel qu'il existe
+    l'ensemble des problèmes $\varPt$ tels qu'il existe
     $\varPtB \in \HierArithP n$ tel que
     \[\forall\vec n \in \bN, \vec n \in \varPt \iff
     (\exists \vec m, (\vec n,\vec m) \in \varPtB)\]
   \item pour tout $n \in \bN$, la classe $\HierArithP{n+1}$ est définie par
-    l'ensemble des problèmes $\varPt$ tel qu'il existe
+    l'ensemble des problèmes $\varPt$ tels qu'il existe
     $\varPtB \in \HierArithS n$ tel que
     \[\forall \vec n \in \bN, \vec n \in \varPt \iff
     (\forall \vec m, (\vec n,\vec m) \in \varPtB)\]
@@ -935,7 +936,7 @@ utiliser une réduction différente de la réduction many-one.
 \subsection{Degrés Turing, saut Turing}
 
 La réduction many-one est, en un sens, une réduction trop restreinte~: plusieurs
-problèmes peuvent être vu comme assimilables et sont distincts pour cette
+problèmes peuvent être vus comme assimilables et sont distincts pour cette
 réduction. Par exemple, $\KH$ et $\complement \KH$ contiennent en essence la
 même information calculatoire (celle du problème de l'arrêt) mais ne sont pas
 many-one réductibles l'un à l'autre.
@@ -974,7 +975,7 @@ Pour formaliser cette idée, on introduit la notion d'oracle.
   de récurrence primitive et de composition.
 
   On définit l'ensemble des $f$-machines de Turing comme l'ensemble des
-  machines de Turing à $k+1$ rubans d'entrée telle que le calcul de la machine
+  machines de Turing à $k+1$ rubans d'entrée telles que le calcul de la machine
   se fait en écrivant dans le premier ruban d'entrée, à la case $i$, la valeur
   de $f(i)$.
 \end{definition}
@@ -982,7 +983,7 @@ Pour formaliser cette idée, on introduit la notion d'oracle.
 Un oracle pour une fonction calculable peut se voir comme une opération
 externe à la machine~: le programme exécute un calcul mais va utiliser un
 outil extérieur auquel il envoie une valeur d'entrée, récupère une valeur de
-sortie et continue son calcul avec cette valeur de calcul. Dans les deux
+sortie et continue son calcul avec cette valeur. Dans les deux
 définitions de calculabilité relative précédentes, on ajoute exactement un
 moyen au calcul d'accéder à chaque valeur $f(i)$ pour une fonction $f$
 arbitraire, ce qui permet de définir plus de fonctions quand $f$ n'est pas
@@ -999,9 +1000,9 @@ calculable.
   $f$-calculable.
 \end{exercise}
 
-Par exemple, en supposant donné un oracle pour $\KH$, il devient aisé de
-calculer $\complement \KH$~: il suffit d'appeler $\indicP{\KH}$ et d'inverser sa
-valeur.
+Par exemple, en supposant que l'on dispose d'un oracle pour $\KH$, il devient
+aisé de calculer $\complement \KH$~: il suffit d'appeler $\indicP{\KH}$ et
+d'inverser sa valeur.
 
 On peut prouver des résultats similaires aux résultats de calculabilité
 précédents~: il existe une machine universelle $f$-calculable pour les fonctions
@@ -1076,7 +1077,7 @@ la relativisation par une partie de $\bN$.
 
 \begin{remark}
   Il faut bien différencier le problème de l'arrêt $\KH$, qui est
-  $\KH$-calculable, du problème relativisé de l'arrêt en $\KH$, $\KHP{\KH}$, qui
+  $\KH$-calculable, du problème de l'arrêt relativisé en $\KH$, $\KHP{\KH}$, qui
   n'est pas $\KH$-calculable.
 
   On remarque aussi que $\KHP{\varPt}$ est toujours $\varPt$-r.e.
@@ -1160,7 +1161,7 @@ On peut donc résumer le saut Turing de la façon suivante~:
   pour chaque degré $\degD \in \ManyDegrees$, $\degD\manyOneS \degD'$.
 \end{exercise}
 
-Le passage d'un étage de la hiérarchie arithmétique au suivant pouvait se voir
+Le passage d'un étage de la hiérarchie arithmétique au suivant pouvait être vu
 comme un passage sur une itération infinie d'un algorithme de l'étage du
 dessous. Le saut Turing, quant à lui, permet de directement passer d'un problème
 au problème de l'arrêt qui lui est relatif~: ce passage correspond aussi à une
@@ -1198,7 +1199,7 @@ en particulier complet pour la réduction Turing).
   $f(x,y) \in \KHP{(n)}$. Si elle trouve $y$ tel que
   $f(x,y) \in \complement \KHP{(n)}$, elle s'arrête et accepte $x$.
 
-  $g$ est $\KHP{(n)}$ définissable car tester si
+  $g$ est $\KHP{(n)}$-définissable car tester si
   $f(x,y) \in \complement \KHP{(n)}$ peut se faire avec un test d'appartenance
   à $\KHP{(n)}$ (qui est son oracle), et le reste de l'algorithme est un
   parcours non borné des valeurs de $y$.
@@ -1209,7 +1210,7 @@ en particulier complet pour la réduction Turing).
 
   Ainsi, $x \in \varPt$ si et seulement s'il existe $y$ tel que
   $(x,y) \in \varPtB$, si et seulement s'il existe $y$ tel que
-  $f(n,m) \in \KHP{(n)}$, si et seulement si $g(x)$ termine sur sa propre
+  $f(x,y) \in \KHP{(n)}$, si et seulement si $g(x)$ termine sur sa propre
   entrée, ce qui signifie $g(x) \in \KHP{(n+1)}$. Ainsi
   $\varPt \TuringRed \KHP{(n+1)}$. Le cas de $\HierArithP{n+2}$ se traite de
   façon similaire.

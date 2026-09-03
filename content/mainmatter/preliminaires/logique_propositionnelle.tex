@@ -81,7 +81,7 @@ variables.
 Par exemple, $(x\lor \lnot y) \land z$ n'aura pas la même valeur de vérité
 suivant si $z$ est vrai ou faux.
 
-Pour manipuler les variables d'une propositions, il est important de définir
+Pour manipuler les variables d'une proposition, il est important de définir
 l'ensemble des variables impliquées dans la construction d'une proposition.
 
 \begin{definition}[Variables libres]
@@ -154,7 +154,7 @@ naturelles pour donner le sens voulu aux propositions.
 \end{notation}
 
 \begin{exercise}\label{exo.val.VL}
-  Soit $\varFF$ une proposition. Soient $\env$ et $\env'$ deux environnements
+  Soit $\varFF$ une proposition. Soient $\env$ et $\envE$ deux environnements
   tels
   que $\env\restr{\VL(\varFF)}=\envE\restr{\VL(\varFF)}$. Montrer que
   $\ValE(\varFF)=\ValEE(\varFF)$.
@@ -191,7 +191,7 @@ les tables de vérité.
   Une table de vérité pour une proposition $\varFF$ de variables libres
   $x_1,\ldots,x_n$ est un tableau contenant $2^n$ lignes et $n+1$ colonnes, où
   chaque ligne énumère un environnement différent, où la
-  \ordinalnumeralfeminin{$i$} colonne représente la valeur des environnement en
+  \ordinalnumeralfeminin{$i$} colonne représente la valeur des environnements en
   $x_i$ et où la dernière colonne représente la valuation de $\varFF$ pour
   l'environnement donné.
 \end{definition}
@@ -264,7 +264,7 @@ Un affaiblissement est la relation de conséquence logique.
 \end{definition}
 
 \begin{exercise}
-  Vérifier à l'aide de tables de vérités les équivalences suivantes (appelées
+  Vérifier à l'aide de tables de vérité les équivalences suivantes (appelées
   lois de De Morgan)~:
   \begin{align*}
     \lnot\lnot x &\equiv x\\
@@ -280,10 +280,10 @@ Maintenant que nous avons défini une notion satisfaisante de vérité pour une
 proposition, il convient de se demander quels outils permettent de l'établir.
 Pour l'instant, pour prouver qu'une proposition est une tautologie, la seule
 façon de procéder est d'en construire la table de vérité. C'est une façon
-largement inefficace, puisqu'elle prend une taille exponentielle en le nombre de
-variables libres d'une proposition, et la preuve qu'une proposition est une
-tautologie est assez vide de sens~: dans l'exercice précédent, il n'a été
-question que de calcul et pas de considérations logiques.
+largement inefficace, puisqu'elle a une taille exponentielle en fonction du
+nombre de variables libres d'une proposition, et la preuve qu'une proposition
+est une tautologie est assez vide de sens~: dans l'exercice précédent, il n'a
+été question que de calcul et pas de considérations logiques.
 
 \subsection{Théorème de compacité}
 
@@ -296,11 +296,11 @@ généraliser la relation de satisfaction $\vD$ au cas d'un ensemble infini de
 propositions.
 
 \begin{definition}[Environnement infini]
-  On définit l'ensemble $\Enviro$ des environnement potentiellement infinis
+  On définit l'ensemble $\Enviro$ des environnements potentiellement infinis
   comme l'ensemble des fonctions partielles $\Var \partialto \intB$. On
   définit la
   fonction $\makeFunName{\Val}{\Enviro\times \Prop}{\intB}$, pour tout
-  $\env\in\Enviro$, par :
+  $\env\in\Enviro$, par~:
   \[\Val_\env(\varFF) = \Val_{\env\restr{\VL(\varFF)}}(\varFF)\]
   où le deuxième $\Val$ correspond à la définition sur les environnements finis.
 
@@ -421,7 +421,7 @@ d'elles. Pour cela, on va montrer la première formulation~: un ensemble finimen
 satisfiable est satisfiable.
 
 Donnons d'abord l'idée de la preuve. On considère donc un ensemble
-$\PropSet$ finiment satisfiable, qu'on peut supposé énuméré par une famille
+$\PropSet$ finiment satisfiable, qu'on peut supposer énuméré par une famille
 $(\varFF_i)_{i \in \bN}$ car $\Prop$ est dénombrable et $\PropSet$ en est une
 partie (le seul cas intéressant étant celui où $\PropSet$ est infini). On
 souhaite construire une unique valuation $\env$ qui satisfait tous les
@@ -430,7 +430,7 @@ $\env_F \satisf \{\varFF_i\}_{i \in F}$. La valuation $\env$ va être construite
 pas à pas~: on commence par une valuation $\env_0 \defeq \vide$, puis on
 ajoute une valeur à $x_0$, donnant une valuation $\env_1$ définie sur $\{x_0\}$,
 puis $\env_2$ définie sur $\{x_0,x_1\}$ \latinexpr{etc.} et en vérifiant que
-$\env_{i+1}$ prolonge $\env_i$, c'est-à-dire que $\env_{i+1}\restr i = \env_i$.
+$\env_{n+1}$ prolonge $\env_n$, c'est-à-dire que $\env_{n+1}\restr n = \env_n$.
 En construisant la famille des $(\env_n)_{n \in \bN}$, on peut alors considérer
 $\env : n \mapsto \env_{n+1}(n)$ pour obtenir une valuation infinie totale.
 
@@ -470,7 +470,7 @@ $\env : n \mapsto \env_{n+1}(n)$ pour obtenir une valuation infinie totale.
     extension $\env$ de $\env_n$ satisfaisant $\{\varFF_1,\ldots,\varFF_k\}$.
     Par principe des tiroirs infinis, la valeur de $\env(x_n)$ pouvant être soit
     $1$, soit $0$, soit indéfinie, on sait que l'un des trois cas suivants
-    se présentent~:
+    se présente~:
     \begin{itemize}
     \item pour une infinité de $k$, il existe une extension $\env$ de $\env_n$
       telle que $\env(x_n) = 1$ et $\env\satisf \{\varFF_1,\ldots,\varFF_k\}$.
@@ -758,7 +758,7 @@ sur le résultat à prouver.
     Montrons que
     $\min_{\varFP \in (\varCG, \varCT)} \ValE(\varFP)
     \leq \max_{\varFP \in (\varCD,\varCX)} \ValE(\varFP)$.
-    On raisonne par disjonction de cas sur la valeur de $\ValE(P)$~:
+    On raisonne par disjonction de cas sur la valeur de $\ValE(\varFF)$~:
     \begin{itemize}
     \item si $\ValE(\varFF) = 0$, alors en injectant cette équation dans
       \ref{eq.cor2}, on obtient
@@ -766,7 +766,7 @@ sur le résultat à prouver.
       \max_{\varFP\in \varCX}\ValE(\varFP)\]
       d'où l'inégalité souhaitée (puisque rajouter des termes dans un minimum
       le fera décroître et rajouter des termes dans un maximum le fera croître).
-    \item si $\ValE(\varFF) = 1$, alors on injectant cette équation dans
+    \item si $\ValE(\varFF) = 1$, alors en injectant cette équation dans
       \ref{eq.cor1}, on obtient
       \[\min_{\varFP\in \varCG} \ValE(\varFP) \leq
       \max_{\varFP\in \varCD} \ValE(\varFP)\]
@@ -795,7 +795,7 @@ sur le résultat à prouver.
       \ref{eq.cor3}, on obtient
       \[\min_{\varFP \in \varCG} \ValE(\varFP) \leq
       \max_{\varFP \in \varCD} \ValE(\varFP)\]
-      d'où l'inégalité souhaité en rajoutant un élément dans le minimum.
+      d'où l'inégalité souhaitée en rajoutant un élément dans le minimum.
     \item si $\ValE(\varFF) = 1$, alors
       $\min_{\varFP \in (\varCG, \lnot \varFF)} \ValE(\varFP) = 0$ donc
       l'inégalité est vérifiée.
@@ -812,7 +812,7 @@ sur le résultat à prouver.
     \end{equation}
     et montrons que
     $\min_{\varFC \in (\varCG, \varFF \lor \varFP)} \ValE(\varFC) \leq
-    \max_{\varFP \in \varCD} \ValE(\varFC)$.
+    \max_{\varFC \in \varCD} \ValE(\varFC)$.
     On raisonne par disjonction de cas sur la valeur de $\ValE(\varFF)$~:
     \begin{itemize}
     \item si $\ValE(\varFF) = 1$, alors en injectant cette égalité dans
@@ -984,7 +984,7 @@ $\bigvee \varFP = \varFP$, que $\varFF\vdP \varFP \implies \varFF \vD \varFP$.
     analogue fonctionne pour $\Rrand$ et $\Rlto$), alors
     en considérant que la conclusion de la règle est
     $\varCG, \varFF \lor \varFP \vdAbs \varCD$, on suppose que
-    $\varCG, \varFF \vdAbs* \varCD$ et $\varCG, \varFP \vdAbs \varCD$.
+    $\varCG, \varFF \vdAbs \varCD$ et $\varCG, \varFP \vdAbs \varCD$.
     Or, comme $\varCG, \varFF\lor \varFP\nvdP \varCD$,
     on ne peut avoir à la fois
     $\varCG, \varFF \vdP \varCD$ et $\varCG, \varFP \vdP \varCD$. Sans perte de
@@ -1109,7 +1109,7 @@ encodable par exemple sur un ordinateur).
   pour tout $n$-uplet $(b_1,\ldots,b_n)$~:
   \[f(b_1,\ldots,b_n) = \ValP{(b_1,\ldots,b_n)}(\varFF_f)\]
   \begin{enumerate}[resume,label=(\roman*)]
-  \item Montrer que le système de connecteurs $\{\lnot,\lor\}$ (induit pas les
+  \item Montrer que le système de connecteurs $\{\lnot,\lor\}$ (induit par les
     connecteurs déjà introduits dans le chapitre) est un système complet de
     connecteurs.
   \end{enumerate}
@@ -1127,7 +1127,7 @@ encodable par exemple sur un ordinateur).
     $(\lnot b) \Sheffer (\lnot b') = b \land b'$
   \item En déduire que $\{\mathord{\Sheffer}\}$ est un système complet de
     connecteurs.
-  \item Ecrire une proposition (au sens usuel) dont la
+  \item \'Ecrire une proposition (au sens usuel) dont la
     valuation correspond à la barre de Sheffer.
   \end{enumerate}
 \end{exercise}
@@ -1243,8 +1243,8 @@ encodable par exemple sur un ordinateur).
     \exists \varlist', \varlist \prefOrd \varlist' \land
     \varlist' \satisf \varFF_1 \land \cdots \land \varFF_{\ListLen{\varlist}} }\]
   \begin{pbQuest}[resume]
-  \item Vérifier que $\varTree_{\PropSet}$ est un arbre. A quelle condition est-il
-    infini~?
+  \item Vérifier que $\varTree_{\PropSet}$ est un arbre. \`A quelle condition
+    est-il infini~?
   \item En utilisant le lemme faible de König, montrer
     que si $\PropSet$ est finiment satisfiable, alors il existe une valuation
     totale $\env$ telle que $\env \satisf \PropSet$.
@@ -1310,7 +1310,7 @@ encodable par exemple sur un ordinateur).
   \item Soit $\{x_1,\ldots,x_n\}$ un ensemble fini de variables. On pose une
     énumération de $\Enviro_{\{x_1,\ldots,x_n\}}$~:
     \[\Enviro_{\{x_1,\ldots,x_n\}} = \compr{\varCG_i}{i \in \intervIntB{2^n}}\]
-    Montrer que le séquent suvant est prouvable~:
+    Montrer que le séquent suivant est prouvable~:
     \[\vdP \bigwedge \varCG_1, \bigwedge\varCG_2,\ldots,\bigwedge\varCG_{2^n}\]
   \item En déduire le théorème de complétude.
   \end{pbQuest}
