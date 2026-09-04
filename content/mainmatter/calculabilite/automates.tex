@@ -6,7 +6,7 @@
 \lettrine{P}{our} aborder la calculabilité, plusieurs approches existent. L'une
 d'entre elles est de considérer directement les formalismes de fonctions
 calculables. Cette approche est raisonnable puisqu'elle permet d'aller à
-l'essentiel, mais cela donne une vision assez restrictive des modèles de calculs
+l'essentiel, mais cela donne une vision assez restrictive des modèles de calcul
 plus faibles existants, et qui sont souvent très utiles.
 
 C'est pourquoi nous faisons le choix dans cet ouvrage (où nous ne sommes limités
@@ -14,29 +14,30 @@ ni par le temps d'un cours ni par l'espace d'un livre imprimé) de traiter, avan
 les formalismes de fonctions calculables, les formalismes liés à la hiérarchie
 de Chomsky. Nous pensons en particulier que les automates permettent d'illuminer
 profondément le fonctionnement intuitif d'une machine de Turing, plus complexe
-mais basé sur des notions très proches.
+mais fondé sur des notions très proches.
 
-Ce chapitre couvre donc les bases de l'étude des langages rationnelss et des
+Ce chapitre couvre donc les bases de l'étude des langages rationnels et des
 automates finis. Cette classe de langages peut être décrite par de nombreux
 formalismes, mais nous nous contenterons des automates finis, des expressions
-rationnelless et des monoïdes.
+rationnelles et des monoïdes.
 
 Ce chapitre commence par la base de la théorie des langages~: les définitions
 de ce qu'est un alphabet, un mot, un langage\ldots Nous abordons ensuite la
 classe des langages rationnels en considérant les formalismes que sont les
-automates et les expressions rationnelles, dont on prouve leur équivalence.
+automates et les expressions rationnelles, dont on prouve l'équivalence.
 Nous étudions après cela les théorèmes de structure sur ces
-langages~: le lemme de l'étoile et le théorème de Myhill-Nérode, ainsi que ses
-conséquences. Nous traitons en dernier le cas de l'équivalence des langages
-rationnels avec les langages reconnus par des monoïdes, pour ainsi revenir sur
-un aspect plus algébrique, proche du début du chapitre.
+langages~: le lemme de l'étoile et le théorème de Myhill-Nérode, ainsi que les
+conséquences de ce dernier théorème. Nous traitons en dernier le cas de
+l'équivalence des langages rationnels avec les langages reconnus par des
+monoïdes, pour ainsi revenir sur un aspect plus algébrique, proche du début du
+chapitre.
 
 \section{Alphabet, mot, langage}
 
 Pour étudier de façon plus systématique les langages, nous étudions d'abord de
 l'algèbre avec la structure de monoïde, qui est intimement liée à celle
 d'ensemble de mots. Tout d'abord, nous donnons une description concrète de ce
-qu'est un mot et un langage, avant d'aborder l'aspect théoriques de l'étude des
+qu'est un mot et un langage, avant d'aborder l'aspect théorique de l'étude des
 monoïdes.
 
 \subsection{Premières définitions}
@@ -74,7 +75,7 @@ une suite finie de lettres.
   Pour tout mot $\varwd\in\toStA$, on note $\wul\in\bN$ l'entier $n$ tel que
   $\varwd\in \ABA^n$. On définit aussi, pour $\varwd\in\toStA$ et
   $\varla\in\ABA$, l'entier $\wul_\varla \in \bN$ comme le nombre d'occurrences
-  de $\varla$ dans $\wul$.
+  de $\varla$ dans $\varwd$.
 \end{notation}
 
 \begin{remark}
@@ -113,7 +114,7 @@ opération binaire sur les mots en une opération sur les langages.
 
 \begin{definition}[Extension sur les langages]
   Soit $\ABA$ un alphabet et $\varOpe$ une opération binaire sur $\toStA$. On
-  étend l'opération $\varOpe$ sur les langages sur $\ABA$ par, pour tous
+  étend l'opération $\varOpe$ sur les langages sur $\ABA$ en posant, pour tous
   langages $\varLL,\varLLB$~:
   \[\varLL\varOpe \varLLB \defeq
   \compr{\varwd\varOpe\varwv}{\varwd \in \varLL, \varwv \in \varLLB}\]
@@ -185,7 +186,7 @@ $\toStA$, qui nous permettra de donner plus d'exemples de langages.
   \[\varwd\wdPt\varwv \defeq
   (\varwd_0,\ldots,\varwd_{\wul-1},\varwv_0,\ldots,\varwd_{\wvl-1})\]
 
-  Pour tout $n\in \bN$, on notera $\varwd^n$ pour l'itération de l'opération
+  Pour tout $n\in \bN$, on notera $\varwd^n$ l'itération de l'opération
   $\wdPt$~:
   \[\begin{cases}
   \varwd^0 \defeq \Ewd \\
@@ -370,11 +371,11 @@ graphique~: un automate se visualise comme une machine effectuant des opération
 élémentaires sur des mots. Dans notre premier cas, l'opération est
 particulièrement simple puisque la machine se contente de lire le mot. Un
 automate fini est une machine lisant linéairement un mot (elle lit chaque lettre
-l'une après l'autre, sans pouvoir faire demi-tour). A chaque lettre lue,
+l'une après l'autre, sans pouvoir faire demi-tour). \`A chaque lettre lue,
 l'automate change (ou non) d'état, parmi un ensemble fini d'états~: le mot lu
 est accepté si la lecture aboutit à un certain état considéré comme acceptant.
 
-Le formalisme derrière cette définion est lourd, mais nécessaire, nous donnons
+Le formalisme derrière cette définition est lourd, mais nécessaire, nous donnons
 donc la définition formelle d'un automate.
 
 \begin{figure}[t]
@@ -417,9 +418,9 @@ donc la définition formelle d'un automate.
 \end{definition}
 
 Le processus de lecture décrit plus haut, en reprenant les notations
-introduites, consiste à prendre un mot $\varwd = \varwd_0\ldots \varwd_n$ et
-calculer $\trA(\trA(\cdots\trA(\varqZ,\varwd_0)\cdots),\varwd_n)$ puis vérifier
-que cette valeur appartient à $\varAF$.
+introduites, consiste à prendre un mot $\varwd = \varwd_0\ldots \varwd_n$, à
+calculer $\trA(\trA(\cdots\trA(\varqZ,\varwd_0)\cdots),\varwd_n)$, puis à
+vérifier que cette valeur appartient à $\varAF$.
 
 \begin{definition}[Fonction de transition étendue]
   Soit un automate fini déterministe $\varAuA$ sur un alphabet $\ABA$ et $\trA$
@@ -436,7 +437,7 @@ que cette valeur appartient à $\varAF$.
 
 \begin{definition}[Langage accepté par un automate]
   Soit $\varAuA$ un automate sur un alphabet $\ABA$. On dit que $\varAuA$
-  accepte (ou reconnait) le mot $\varwd \in \toStA$ si
+  accepte (ou reconnaît) le mot $\varwd \in \toStA$ si
   $\trAS(\varqZ,\varwd) \in \varAF$, ce qu'on note $\varAuA \satisf \varwd$. On
   définit le langage reconnu par $\varAuA$ par~:
   \[\varLL_\varAuA \defeq \compr{\varwd \in \toStA}{\varAuA\satisf\varwd}\]
@@ -445,7 +446,7 @@ que cette valeur appartient à $\varAF$.
 Maintenant que les définitions ont été introduites, donnons une intuition
 graphique de ce qu'il se passe (intuition largement indispensable pour
 comprendre les automates). Pour représenter un automate $\varAuA$, la convention
-est de dessiner un graphe donc les sommets sont les états (l'ensemble $\varQQ$),
+est de dessiner un graphe dont les sommets sont les états (l'ensemble $\varQQ$),
 et où $\trA$ est représentée par des arcs dirigés et étiquetés par $\ABA$. Par
 exemple, entre deux états $\varq$ et $\varq'$, s'il existe $\varla$ tel que
 $\trA(\varq,\varla) = \varq'$, alors on aura une flèche
@@ -523,7 +524,7 @@ On a ainsi construit une classe de langages~: la classe des langages
 reconnaissables.
 
 \begin{definition}[Langage reconnaissable]
-  Soit $\ABA$ un alphabet. On appelle classe des langages reconnaissbles sur
+  Soit $\ABA$ un alphabet. On appelle classe des langages reconnaissables sur
   $\ABA$ l'ensemble des langages reconnus par les automates sur $\ABA$~:
   \[\Reco(\ABA) \defeq \compr{\varLL_{\varAuA}}{\varAuA\in\auto(\ABA)}\]
 \end{definition}
@@ -615,8 +616,8 @@ opérations représentent les opérations par lesquelles est stable la classe de
 langages rationnels.
 
 On définit donc une fonction d'interprétation des expressions rationnelles. De
-plus, on ajoute $\Ewd$ dans nos expressoins rationnelles, par souci de
-lisbilité.
+plus, on ajoute $\Ewd$ dans nos expressions rationnelles, par souci de
+lisibilité.
 
 \begin{definition}[Interprétation d'une expression rationnelle]
   On définit la fonction $\makeFunName{\Val}{\Regex(\ABA)}{\Ratio(\ABA)}$ par
@@ -740,8 +741,8 @@ union, et les $\Ewd$-transitions.
 \end{definition}
 
 \begin{proposition}\label{prop.union.ratio}
-  Pour tous automates $\varAuA, \varAuB$ sur un alphabet $\ABA$ donné, on a
-  l'équation
+  Soient deux automates $\varAuA, \varAuB$ sur un alphabet $\ABA$ donné. On a
+  l'égalité
   \[\varLL_{\varAuA} \cup \varLL_{\varAuB} = \varLL_{\UnAuB}\]
 \end{proposition}
 
@@ -777,7 +778,7 @@ union, et les $\Ewd$-transitions.
   pour l'automate $\UnAuB$ à l'exception de l'ensemble des états terminaux,
   qui est donné par
   \[\varAFP{\varAuA\times\varAuB} \defeq \varAAF \times \varABF\]
-  Montrer que cet automate reconnait $\varLL_{\varAuA} \cap \varLL_{\varAuB}$, en
+  Montrer que cet automate reconnaît $\varLL_{\varAuA} \cap \varLL_{\varAuB}$, en
   déduire que les langages reconnaissables sont stables par intersection
   (binaire).
 
@@ -912,7 +913,7 @@ des parties.
 \end{definition}
 
 \begin{proposition}
-  Soit un automate non déterministe $\varAuA$ sur un alphabet $\ABA$, on a
+  Soit un automate non déterministe $\varAuA$ sur un alphabet $\ABA$. On a
   l'égalité
   \[\varLL_{\varAuA} = \varLL_{\powerset(\varAuA)}\]
 \end{proposition}
@@ -922,7 +923,7 @@ des parties.
   l'égalité suivante pour tout $P \subseteq \varQP{\varAuA}$~:
   \[\trASP{\powerset(\varAuA)}(P,\varwd) =
   \bigcup_{\varq \in P}\trAAS(q,\varwd)\]
-  (où le deuxième terme est une image direct).
+  (où le deuxième terme est une image directe).
   \begin{itemize}
   \item dans le cas où $\varwd = \Ewd$, le résultat est direct.
   \item supposons que l'hypothèse d'induction est valide pour $\varwd$ et
@@ -1156,7 +1157,7 @@ propriétés des automates.
 \subsection{Propriétés d'automates}
 
 Plusieurs propriétés d'intérêt existent, à propos des automates. Pour faciliter
-la génération d'une expression rationnelle à pratir d'un automate, nous allons
+la génération d'une expression rationnelle à partir d'un automate, nous allons
 présenter des propriétés basiques à leur propos. La première est celle
 d'avoir une table de transition totale plutôt que partielle.
 
@@ -1308,7 +1309,7 @@ automate, mais on remarque alors un problème~: si le langage contient $\Ewd$,
 alors il doit y avoir une transition de $\varqZ$ à $\varqP{f}$ étiquetée par
 $\Ewd$, ce qui ne peut pas s'éliminer en gardant $\varqZ$ et $\varqP{f}$
 distincts. On a donc besoin d'ajouter que le langage reconnu par $\varAuA$ ne
-contient par $\Ewd$, si l'on veut renforcer le résultat en donnant un automate
+contient pas $\Ewd$, si l'on veut renforcer le résultat en donnant un automate
 sans $\Ewd$-transitions normalisé.
 
 On montre maintenant que $\Reco(\ABA)\subseteq \Ratio(\ABA)$. Pour montrer cette
@@ -1320,9 +1321,9 @@ $\xrightarrow a \xrightarrow b$ correspond à une seule transition
 $\xrightarrow{ab}$. Cela nous donne alors une procédure pour regrouper des
 transitions, et ainsi éliminer des états (puisque l'état du milieu entre la
 transition $a$ et la transition $b$ peut alors être supprimé). On a ainsi un
-algorithme qui construit un expression rationnelle pour un automate. On remarque
-que les $\Ewd$-transitions sont parfaitement adaptées dans ce contexte, puisque
-$\Val(\Ewd e) = \Val(e)$, comme on l'attend d'une $\Ewd$-transition.
+algorithme qui construit une expression rationnelle pour un automate. On
+remarque que les $\Ewd$-transitions sont parfaitement adaptées dans ce contexte,
+puisque $\Val(\Ewd e) = \Val(e)$, comme on l'attend d'une $\Ewd$-transition.
 
 La procédure à suivre est donc la suivante~:
 \begin{itemize}
@@ -1333,10 +1334,10 @@ La procédure à suivre est donc la suivante~:
 \end{itemize}
 
 \begin{definition}[Automate fini généralisé]
-  Soit $\ABA$ un alphabet, on appelle un automate fini généralisé un
-  quadruplet $(\varQQ,\varQZ,\trA,\varAF)$ tel que~:
+  Soit $\ABA$ un alphabet, on appelle automate fini généralisé un quadruplet
+  $(\varQQ,\varQZ,\trA,\varAF)$ tel que~:
   \begin{itemize}
-  \item $varQQ$ est l'ensemble fini des états,
+  \item $\varQQ$ est l'ensemble fini des états,
   \item $\varQZ\subseteq\varQQ$ est l'ensemble des états initiaux,
   \item $\makeFunName{\trA}{\varQQ \times \Regex(\ABA)}{\powerset(\varQQ)}$
     est la fonction de transition généralisée,
@@ -1536,7 +1537,7 @@ On peut donc enfin construire une expression rationnelle à partir d'un automate
     \end{tikzpicture}
   \end{figure}
   
-  On en déduit donc que pour tout mot $\varwd \in \toStA$, on a l'équvalence
+  On en déduit donc que pour tout mot $\varwd \in \toStA$, on a l'équivalence
   suivante~:
   \[\varwd \in \varLL \iff \varwd \in \Val(e)\]
   Donc il existe $e$ tel que $\varLL = \Val(e)$.
@@ -1798,7 +1799,7 @@ associé.
 \end{remark}
 
 Cela nous donne un moyen de montrer à la fois qu'un langage est rationnel, et
-qu'un langage n'est pas rationnel~: en exibant une infinité de résiduels, on en
+qu'un langage n'est pas rationnel~: en exhibant une infinité de résiduels, on en
 déduit directement qu'un langage n'est pas rationnel, et ce critère est plus
 précis que le lemme de l'étoile puisqu'il est exact.
 
@@ -1820,7 +1821,7 @@ d'automates et d'automate quotient. Pour simplifier, on ne parlera que
 d'automates finis déterministes complets et accessibles.
 
 \begin{definition}[Morphisme d'automate]
-  Soit $\ABA$ et $\varAuA$, $\varAuB$ deux automates finis déterminstes sur
+  Soit $\ABA$ et $\varAuA$, $\varAuB$ deux automates finis déterministes sur
   $\ABA$. On appelle morphisme d'automate $\makeFunName{f}{\varAuA}{\varAuB}$
   une fonction $\makeFunName{f}{\varQA}{\varQB}$ telle que~:
   \begin{itemize}
@@ -2199,7 +2200,7 @@ on va utiliser la construction du monoïde des transitions.
 \end{exercise}
 
 Les éléments du monoïde sont les relations binaires. Cependant, les éléments
-d'importances sont plus précisément les relations telles que pour tout couple
+d'importance sont plus précisément les relations telles que pour tout couple
 $(\varq,\varq')$, on a un chemin de $\varq$ vers $\varq'$ dans $\varAuA$. On
 peut donc simplement prendre la relation
 $(\varq,\varq') \defeq \trA(\varq,\varla) = \varq'$ paramétrée par $\varla$ pour

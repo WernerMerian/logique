@@ -24,6 +24,10 @@
 \newcommand{\makeFunName}[3]{#1 : \displaystyle #2 \longrightarrow #3} % déclaration d'un nom de fonction f : X -> Y
 \newcommand{\makeFunNamePartial}[3]{#1 : \displaystyle #2 \xrightharpoonup{\quad} #3} % déclaration d'un nom de fonction partielle
 \newcommand{\makeFunNameIso}[3]{#1 : \displaystyle #2 \overset{\cong}{\longrightarrow} #3} % déclaration d'un nom d'isomorphisme
+\newcommand{\makeEmbed}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \xhookrightarrow{\quad} & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \end{array}} % définition d'un plongement
+\newcommand{\makeSubElt}[5]{\begin{array}{ccccc} #1 & : & \displaystyle #2 & \overset{\subModElt}{\xhookrightarrow{\quad}} & \displaystyle #3 \\ & & #4 & \longmapsto & #5 \end{array}} % définition d'un plongement élémentaire
+\newcommand{\makeEmbedName}[3]{#1 : \displaystyle #2 \xhookrightarrow{\quad} #3} % déclaration d'un nom de plongement
+\newcommand{\makeSubEltName}[3]{#1 : \displaystyle #2 \overset{\subModElt}{\xhookrightarrow{\quad}} #3} % déclaration de plongement élémentaire
 
 %----- Opérations sur les fonctions -----%
 
@@ -91,6 +95,7 @@
 \newcommand{\bZ}{\mathbb Z} % ensemble des entiers relatifs
 \newcommand{\bQ}{\mathbb Q} % ensemble des nombres rationnels
 \newcommand{\bR}{\mathbb R} % ensemble des nombres réels
+\newcommand{\bRR}{\mathord{^*}\mathbb R} % ensemble des hyperréels
 \newcommand{\bC}{\mathbb C} % ensemble des nombres complexes
 \newcommand{\bU}{\mathbb U} % cercle unité
 \newcommand{\bT}{\mathbb T} % tore
@@ -111,15 +116,12 @@
 \newcommand{\toSt}[1]{#1^{\star}} % ensemble des mots sur un ensemble
 \newcommand{\infWdP}[1]{{#1}^{\omega}} % ensemble des mots infinis sur un ensemble
 \newcommand{\infWd}{\infWdP{\intB}} % ensemble des mots infinis sur {0,1}
+\DeclareMathOperator{\Aut}{Aut} % ensemble des automorphismes
 
 % Classes usuelles
 
 \DeclareMathOperator{\Ord}{Ord} % classe des ordinaux
 \DeclareMathOperator{\Card}{Card} % classe des cardinaux, fonction cardinal
-\DeclareMathOperator{\Arith}{Arith} % classe des structure arithmétiques
-\DeclareMathOperator{\Grp}{Grp} % classe des groupes
-\DeclareMathOperator{\Ab}{Ab} % classe des groupes abéliens
-\DeclareMathOperator{\Ring}{Ring} % classe des anneaux
 
 %----- Opérations ensemblistes -----%
 
@@ -141,6 +143,13 @@
 
 \newcommand{\Dedekind}{\mathfrak{D}} % ensemble des coupures de Dedekind
 
+%----- Vecteurs -----%
+
+%\renewcommand{\vec}[1]{\overset{\scriptstyle\to}{#1}}
+%\renewcommand{\vec}[1]{\overrightarrow{#1}} % vecteur
+%\renewcommand{\vec}[1]{\bm{#1}} % vecteur
+\renewcommand{\vec}[1]{\overline{#1}} % vecteur
+
 %----- RELATIONS -----%
 
 %----- Relations d'ordre -----%
@@ -151,6 +160,9 @@
 \newcommand{\lexleq}{\leq_{\mathrm{lex}}} % ordre lexicographique large
 \newcommand{\leL}{<_{\mathbb L}} % ordre sur la classe L
 \newcommand{\ordbis}{\mathrel{\lhd}} % ordre utilisé pour la démonstration de Hessenberg, et globalement symbole de relation d'ordre au cas où
+\newcommand{\subModElt}{\preccurlyeq} % sous-structure élémentaire
+\newcommand{\subModEx}{\subModElt_{1}} % sous-structure existentiellement close
+\newcommand{\subModExS}{\subModElt_{s}} % sous-structure simplement existentiellement close
 
 \renewcommand{\leq}{\leqslant} % réécriture de <= (esthétique)
 \renewcommand{\geq}{\geqslant} % réécriture de >= (esthétique)
@@ -170,6 +182,8 @@
 
 \newcommand{\defeq}{\triangleq} % égalité définitionnelle
 \newcommand{\inddefeq}{\Coloneq} % définition inductive, ::=
+\newcommand{\iso}{\cong} % isomorphisme de structures
+\newcommand{\eltEq}{\equiv} % équivalence élémentaire
 
 %----- Relation -----%
 
@@ -184,7 +198,9 @@
 \newcommand{\varPt}{A} % partie A d'un ensemble
 \newcommand{\varPtB}{B} % partie B d'un ensemble
 \newcommand{\varPtC}{C} % partie C d'un ensemble
-
+\newcommand{\indSet}{I} % ensemble d'indices I
+\newcommand{\indSetB}{J} % ensemble d'indices J
+\newcommand{\indSetBB}{K} % ensemble d'indices K
 
 %====================================%
 %----- LOGIQUE DU PREMIER ORDRE -----%
@@ -217,7 +233,8 @@
 
 \newcommand{\Sign}{\Sigma} % signature Sigma
 \newcommand{\SignP}[1]{\Sign_{#1}} % signature Sigma avec une précision en indice
-\newcommand{\arite}{\alpha}
+\newcommand{\SignSko}{\SignP{\sko}} % extension par skolemisation
+\newcommand{\arite}{\alpha} % arite
 \newcommand{\SigFun}{\mathscr F} % ensemble des symboles de fonction
 \newcommand{\aritFun}{\arite_{\SigFun}} % fonction d'arité des symboles de fonction
 \newcommand{\Cc}{\mathrm{c}} % symbole de constante
@@ -234,8 +251,10 @@
 \newcommand{\quantif}{{\normalfont\texttt{Q}}} % quantificateur Q
 \DeclareMathOperator{\Formula}{Form} % ensemble des formules
 \newcommand{\Formqf}{\Formula_{\mathrm{qf}}} % ensembles des formules sans quantificateurs
+\newcommand{\Propqf}{\Prop_{\mathrm{qf}}} % ensemble des propositions sans quantificateurs
 \newcommand{\FormMod}{\Formula_{\mathrm{mod}}} % ensemble des formules de la logique modale
 \newcommand{\FormPren}{\Formula_{\mathrm{pren}}} % ensemble des formules sous forme prénexe
+\newcommand{\FormReg}{\Formula_{\mathrm{reg}}} % ensemble des formules de la logique régulière
 \DeclareMathOperator{\Prop}{Prop} % ensemble des propositions
 \DeclareMathOperator{\VL}{VL} % ensemble des variables libres
 \DeclareMathOperator{\Var}{Var} % ensemble des variables
@@ -323,6 +342,7 @@
 %----- Satisfaction -----%
 
 \newcommand{\satisf}{\models} % satisfaction d'une formule
+\newcommand{\nsatisf}{\not\models} % non satisfaction d'une formule
 \newcommand{\cosatisf}{\satisf^{\mathrm{co}}} % satisfaction pour les relation coinductives
 \newcommand{\vD}{\vDash} % relation de conséquence sémantique
 \newcommand{\nvD}{\nvDash} % négation de la conséquence sémantique
@@ -380,6 +400,8 @@
 \newcommand{\varMP}[1]{\mathfrak{#1}} % variable quelconque pour un modèle
 \newcommand{\varMM}{\varMP{M}} % variable M pour un modèle
 \newcommand{\varMN}{\varMP{N}} % variable N pour un modèle
+\newcommand{\varMA}{\varMP{A}} % variable A pour un modèle
+\newcommand{\varMB}{\varMP{B}} % variable B pour un modèle
 \newcommand{\carMM}{\carM{\varMM}} % ensemble "carrier" de la structure M
 \newcommand{\carMN}{\carM{\varMN}} % ensemble "carrier" de la structure N
 \newcommand{\toM}[1]{\toMP{#1}{\varMM}} % interprétation des symboles dans la structure M
@@ -392,10 +414,14 @@
 \newcommand{\satMI}{\satMP{\varMM}{\env}} % satisfaction dans le modèle M et l'environnement rho
 \newcommand{\satMM}{\varMM\satisf} % satisfaction dans le modèle M
 \newcommand{\satMN}{\varMN\satisf} % satisfaction dans le modèle N
-\newcommand{\varMoM}{F} % variable pour un morphisme de structure
-\newcommand{\varMoMB}{G} % autre variable pour un morphisme de structure
+\newcommand{\varMoM}{f} % variable pour un morphisme de structure
+\newcommand{\varMoMB}{g} % autre variable pour un morphisme de structure
 \newcommand{\varGrp}{G} % variable de groupe G
+\newcommand{\varGA}{A} % variable de groupe A
 \newcommand{\varAA}{A} % variable d'anneau A
+\newcommand{\varKK}{K} % variable de corps K
+\newcommand{\varKL}{L} % variable de corps L
+\newcommand{\varEvE}{V} % variable d'ev V
 
 % Monoïde
 
@@ -406,6 +432,8 @@
 \newcommand{\neuMN}{e_{\varMNo}} % neutre pour le monoide N
 \newcommand{\opM}{\mathbin{\cdot}} % opération pour le monoide M
 \newcommand{\opN}{\mathbin{\diamond}} % opération pour le monoide N
+
+\newcommand{\Orbite}{\mathcal{O}} % ensemble des orbites
 
 %----- REGLES D'INFERENCE -----%
 
@@ -535,6 +563,12 @@
 \DeclareMathOperator{\comm}{comm}
 \DeclareMathOperator{\distrL}{distribL}
 \DeclareMathOperator{\distrR}{distribR}
+\DeclareMathOperator{\carac}{carac}
+\DeclareMathOperator{\irrefl}{irrefl}
+\DeclareMathOperator{\tot}{tot}
+\DeclareMathOperator{\compat}{compat}
+\DeclareMathOperator{\squar}{square}
+\DeclareMathOperator{\raci}{root}
 
 %----- REECRITURE ABSTRAITE -----%
 
@@ -849,6 +883,61 @@
 
 \DeclareMathOperator{\ext}{ext} % extension d'un élément dans le spectre
 \newcommand{\isoSt}{\varphi} % isomorphisme de Stone
+
+%----- THEORIE DES MODELES -----%
+
+%----- Symboles de base -----%
+
+\newcommand{\isoFam}{\mathcal{I}} % famille d'isomorphismes
+
+%----- Théories usuelles -----%
+
+\DeclareMathOperator{\Arith}{Arith} % théorie des structure arithmétiques
+\DeclareMathOperator{\Grp}{Grp} % théorie des groupes
+\DeclareMathOperator{\Ab}{Ab} % théorie des groupes abéliens
+\DeclareMathOperator{\Ring}{Ring} % théorie des anneaux
+\DeclareMathOperator{\Field}{Field} % théorie des corps
+\DeclareMathOperator{\RCF}{RCF} % théorie des corps réels clos
+\DeclareMathOperator{\ACF}{ACF} % théorie des corps algébriquement clos
+\DeclareMathOperator{\DLO}{DLO} % théorie des ordres linéaires denses
+\DeclareMathOperator{\TOrd}{TOrd} % théorie des ordres totaux
+\DeclareMathOperator{\EV}{EV} % théorie des EV
+\DeclareMathOperator{\DAG}{DAG} % théorie des groupes abéliens divisibles sans torsion
+\DeclareMathOperator{\ODAG}{ODAG} % théorie des groupes abéliens divisibles sans torsion ordonnés
+
+%----- Diagrammes -----%
+
+\DeclareMathOperator{\Diag}{Diag} % diagramme d'un modèle
+\newcommand{\DiagEl}{\Diag_{\mathrm{el}}} % diagramme élémentaire d'un modèle
+
+%----- Skolemisation -----%
+
+\DeclareMathOperator{\sko}{sko} % skolemisation
+\newcommand{\SkoCl}[1]{\overline{#1}^{\sko}} % clôture par skolémisation
+
+%----- Parties définissables -----%
+
+\newcommand{\varRen}{\alpha} % variable pour un renommange, i.e. une fonction {1,...,n} -> {1,...,m}
+\newcommand{\actRen}{\mathbin{\bullet}} % action d'une fonction de renommage
+\newcommand{\varPerm}{\sigma} % variable pour une permutation
+\newcommand{\Permut}[1]{\mathfrak{S}_{#1}} % groupe des permutations d'ordre n
+\DeclareMathOperator{\swap}{swap} % fonction qui applique une permutation
+\DeclareMathOperator{\Ccopy}{copy}
+\DeclareMathOperator{\Cdelete}{delete}
+\DeclareMathOperator{\dcl}{dcl} % clôture définissable
+\DeclareMathOperator{\acl}{acl} % clôture algébrique
+
+%----- Elim quantif -----%
+
+\DeclareMathOperator{\QE}{QE} % élimination des quantificateurs
+
+%----- Types -----%
+
+\newcommand{\varTypM}{p} % variable de type p au sens des modèles
+\newcommand{\varTypMB}{q} % variable de type q au sens des modèles
+\newcommand{\TypCplP}[1]{S_{#1}} % ensemble des types complets
+\newcommand{\TypCpl}{\TypCplP{n}} % ensemble des n-types complets
+\newcommand{\TypCplI}{\TypCplP{\infty}} % ensemble des infini-types complets
 
 %----- THEORIE DES LANGAGES -----%
 

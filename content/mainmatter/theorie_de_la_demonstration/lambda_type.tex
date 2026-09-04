@@ -1,10 +1,10 @@
-\chapter{Lambda calcul typé}
+\chapter{Lambda-calcul typé}
 \label{chp.lambda_type}
 
 \minitoc
 
 \lettrine{L}{e} $\lambda$-calcul est un formalisme permettant de construire un
-langage de programmation Turing-complet. En tant que tel, le problème
+langage de programmation Turing-complet. En tant que tel, son problème
 indécidable par excellence est l'arrêt, ou dans le cas des $\lambda$-termes,
 la terminaison.
 
@@ -22,17 +22,17 @@ le type $A$ représente une spécification de programme.
 
 Par exemple, le type $\intT$ sert à décrire les termes $t$ dont la valeur est
 un entier. De même, le type $\intT \to \intT$ décrit les fonctions qui, à un
-terme de type $\intT$, renvoie un terme de type $\intT$, représentant
+terme de type $\intT$, renvoient un terme de type $\intT$, représentant
 moralement une fonction $\bN \to \bN$.
 
 Cette notion, \latinexpr{a priori} liée à l'informatique et à la programmation,
 a en fait un lien étroit avec la logique. Ce lien s'incarne dans la
 correspondance de
-Curry-Howard\footnote{Nommé en l'honneur d'Haskell \name{Curry} et de Willian
+Curry-Howard\footnote{Nommé en l'honneur d'Haskell \name{Curry} et de William
 Alvin \name{Howard}}, notion incontournable du pan informatique de la
 logique mathématique, et fondation de la théorie des types.
 
-On introduit dans ce chapitre un système de type avec un $\lambda$-calcul
+On introduit dans ce chapitre un système de types avec un $\lambda$-calcul
 enrichi, de sorte à décrire par la correspondance de Curry-Howard la logique
 minimale, puis propositionnelle, et finalement la logique du premier ordre.
 On donne ensuite la preuve de \cite{Tait1967} de la forte normalisation du
@@ -40,7 +40,7 @@ $\lambda$-calcul simplement typé, adaptée pour le système de types de la logi
 du premier ordre.
 On aborde aussi une implémentation algorithmique permettant de décider si un
 terme est typable.
-Finalement, on définit un système de type annexe~: le système T. Ce système,
+Finalement, on définit un système de types annexe~: le système T. Ce système,
 plus orienté vers la programmation, permet de décrire les fonctions
 prouvablement totales au premier ordre, ce qui sera la conclusion du prochain
 chapitre.
@@ -60,7 +60,7 @@ fois à un ensemble $X$ et à l'ensemble $X^X$.
 Une telle situation ne paraît pas immédiatement possible, puisque $X$ et $X^X$
 sont de cardinaux différents. En prenant le $\lambda$-calcul comme une théorie
 des fonctions, l'expression $f(f)$ semble donc être un \foreignexpr{bug} du
-formalisme. On propose donc de donner un système d'annotations de termes, de
+formalisme. On propose donc d'introduire un système d'annotations de termes, de
 sorte qu'un terme représentant une fonction $X \to Y$ s'applique à un terme
 représentant un élément de $X$.
 
@@ -181,8 +181,8 @@ Remarquons qu'un arbre de déduction naturelle peut aussi s'écrire avec des
 séquents, de façon similaire à la \cref{def.deduc.nat1}, pour obtenir exactement
 le même système de démonstration.
 
-En prenant des arbres de preuves par séquents, on peut alors mettre en parallèle
-les règles de déduction et les règles de typage~:
+En prenant des arbres de preuves utilisant des séquents, on peut alors mettre en
+parallèle les règles de déduction et les règles de typage~:
 \begin{center}
   \AxiomC{$\varCG\vdNJto \varFF \to \varFP$}
   \AxiomC{$\varCG\vdNJto \varFF$}
@@ -210,7 +210,7 @@ entre les types et les propositions. On en retire les expressions
   atomiques $\Atom$, on considère l'ensemble $\tyT$ des types construits sur
   l'ensemble de types de base $\Atom$. On a l'équivalence
   \[\varTypA_1,\ldots,\varTypA_n \vdNJto \varTypA \iff \exists t : \lamSet,
-  x_1 : \varTypA_1,\ldots,x_n : \varTypA_n \tyR t : \varTypB\]
+  x_1 : \varTypA_1,\ldots,x_n : \varTypA_n \tyR t : \varTypA\]
   et une bijection entre d'un côté ${\ProofNJ}_\to$ et de l'autre l'ensemble
   \[\compr{(\varTypA_1,\ldots,\varTypA_n,t,\varTypB)}
           {x_1 : \varTypA_1,\ldots,x_n : \varTypA_n\tyR t : \varTypB}\]
@@ -219,7 +219,7 @@ entre les types et les propositions. On en retire les expressions
 
 En particulier, si l'on voit un contexte $\varCG$ d'un côté comme
 une liste de propositions et de l'autre comme la liste des mêmes propositions,
-mais auxquelles on ajoute une variable $x_i$ pour chacun (on transforme
+mais auxquelles on ajoute une variable $x_i$ pour chacune (on transforme
 $\varTypA_1,\ldots,\varTypA_n$ en $x_1 : \varTypA_1,\ldots,x_n : \varTypA_n$),
 alors on a une correspondance entre les termes $t$ tels que
 $\varCG \vdash t : \varTypB$ et les preuves de $B$ dans ce contexte.
@@ -242,7 +242,7 @@ la réécriture
   \ligneNJV\UnaryInfC{$\varFP$}
   \DisplayProof
 \end{center}
-et de l'autre, on a la réécriture $(\lambda x.t)u\bred t[u/x]$. Dans le
+et, de l'autre, on a la réécriture $(\lambda x.t)u\bred t[u/x]$. Dans le
 $\lambda$-terme, la substitution de $x$ par $u$ remplace les références à
 $x$, supposé de type $\varFF$, pour y placer un terme $t$ lui aussi de type
 $\varFF$.
@@ -271,7 +271,7 @@ est la préservation du typage. Cette préservation repose sur le lemme suivant.
   \item si $t = t_0\;t_1$, alors l'hypothèse d'induction s'applique sans
     souci.
   \end{itemize}
-  Ainsi, par induction, on en déduit que $\varCG\tyR t[u/x] : \varCG$.
+  Ainsi, par induction, on en déduit que $\varCG\tyR t[u/x] : \varTypB$.
 \end{proof}
 
 \begin{exercise}[Préservation du typage]
@@ -299,15 +299,15 @@ une façon constructive de définir les preuves, inductivement sur $\varFF$~:
 \item il existe une preuve canonique de $\top$~;
 \item il n'existe aucune preuve de $\bot$~;
 \item une preuve de $\varFF \land \varFP$ est une paire $(p,q)$ où $p$ est une
-  preuve de $\varFF$, et $q$ est une preuve de $\varFP$~;
+  preuve de $\varFF$ et $q$ est une preuve de $\varFP$~;
 \item une preuve de $\varFF \lor \varFP$ est une paire $(i,p)$ où~:
   \begin{itemize}
   \item si $i = 0$ alors $p$ est une preuve de $\varFF$~;
   \item si $i = 1$ alors $p$ est une preuve de $\varFP$~;
   \end{itemize}
-\item une preuve de $\varFF \to \varFP$ est une fonction $f$, qui à une preuve
+\item une preuve de $\varFF \to \varFP$ est une fonction $f$ qui à une preuve
   $p$ de $\varFF$ associe une preuve $f(p)$ de $\varFP$~;
-\item une preuve de $\forall x, \varFF$ est une fonction $f$, qui à tout
+\item une preuve de $\forall x, \varFF$ est une fonction $f$ qui à tout
   élément $m$ du domaine d'interprétation associe une preuve $f(m)$ de
   $\varFF$ où $x$ est interprété par $m$~;
 \item une preuve de $\exists x, \varFF$ est une paire $(m,p)$ où
@@ -348,7 +348,7 @@ nouvelle réduction.
 \end{definition}
 
 \begin{remark}
-  La discussion sur l'$\alpha$-équivalence se pose à nouveau, et il faudrait
+  La question de l'$\alpha$-équivalence se pose à nouveau, et il faudrait
   définir la notion de substitution à $=_\alpha$ près. On occulte tout ce
   travail technique, qui s'adapte sans aucun problème au cas où on ajoute plus
   de constructeurs. De même, on peut travailler en indices de De Bruijn pour
@@ -521,7 +521,7 @@ On adapte finalement notre calcul au cas de la logique du premier ordre.
 \subsection{Système de preuve de la logique du premier ordre}
 
 La différence avec le fragment propositionnel est l'apparition de termes de
-preuve appelant des termes du premier ordre. Par exemple, si on considère
+preuve faisant appel à des termes du premier ordre. Par exemple, si on considère
 un terme $t$ dont le type est $\forall x, \varFF$, on souhaite pouvoir en
 déduire $\varFF[t/x]$ pour un certain terme du premier ordre $t$. On
 s'aperçoit ici d'une limitation assez mineure~: les variables et les termes
@@ -692,7 +692,7 @@ des types.
 \end{definition}
 
 On laisse en exercice les vérifications usuelles, qui s'adaptent facilement
-depuis le $\lambda$-calcul simplement typé.
+à partir du $\lambda$-calcul simplement typé.
 
 \begin{exercise}
   Prouver le lemme de substitution du premier ordre~: pour toute variable
@@ -737,7 +737,7 @@ qui correspond au type $\varTypA$ auquel on ajoute une valeur supplémentaire, �
 part, décrivant par exemple une exception à relever. On construit de cette
 façon un langage de programmation dans la \cref{sec.systemT} permettant
 d'encoder une large classe de fonctions calculables totales, en choisissant une
-variant du $\lambda$-calcul simplement typé.
+variante du $\lambda$-calcul simplement typé.
 
 Une autre extension importante du $\lambda$-calcul simplement typé est celle des
 types dépendants. Dans une théorie des types dépendants, on s'autorise à avoir
@@ -817,7 +817,7 @@ substitutions simultanées.
 \end{definition}
 
 Supposons maintenant qu'on trouve une bonne définition de l'interprétation
-$\semT{\varTypA}$ d'un type $\varTypA$. Si on suppose que
+$\semT{\varTypA}$ d'un type $\varTypA$. Si l'on suppose que
 $\subSimul(x_i) \in \semT{\varTypA_i}$ pour tout $i$, on veut montrer par
 induction que
 \[(x_i : \varTypA_i)_i\tyR t : \varTypB \implies \subSimul(t) \in
@@ -831,7 +831,7 @@ définir inductivement $\semT{\tok}$. Par exemple, l'interprétation
 $\semT{\varTypA \to \varTypB}$ se définit par
 \[\semT{\varTypA\to\varTypB}\defeq
 \compr{t \in \lamSet}{\forall u \in \semT{\varTypA},t\;u\in\semT{\varTypB}}\]
-Un type fonctionnel étant interprété par une fonction qui associe les éléments
+Un type fonctionnel est interprété par une fonction qui associe les éléments
 d'une interprétation à une autre.
 
 De cette façon, il devient évident que le cas inductif de l'application est
@@ -922,8 +922,8 @@ de tête et à des réductions internes.
       $t \STLCred t'$,
     \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t'}x{t_2}]$ où
       $t_1 \STLCred t'$,
-    \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t'}x{t_2}]$ où
-      $t_1 \STLCred t'$,
+    \item soit $u = E[\deltaSTLC{\coprojP{i}t}x{t_1}x{t'}]$ où
+      $t_2 \STLCred t'$,
     \item soit $E = E'[[\;]\;v]$ et
       $u = E'[\deltaSTLC{\coprojP{i}t}x{t_1\;v}x{t_2\;v}]$,
     \item soit $E = E'[\projP{j}{}[\;]]$ et
@@ -939,7 +939,7 @@ de tête et à des réductions internes.
 \end{theorem}
 
 \begin{proof}
-  Les trois cas se prouvent de façon analogue. A chaque fois, les cas
+  Les trois cas se prouvent de façon analogue. \`A chaque fois, les cas
   correspondent aux parties du terme initial d'où peuvent venir les redexes.
   Dans le dernier cas, les redexes peuvent se trouver à l'interface du contexte
   $E$ et du $\delta$ à cause des cas de coupures commutatives.
@@ -1055,7 +1055,7 @@ On définit alors notre ensemble de candidats par la notion d'ensemble saturé.
   Si $\varFam$ est un ensemble de parties saturées, alors l'intersection
   $\varSATA \defeq \bigcap \varFam$ est inclus dans $\SN$, contient chaque
   $E[x]$ car chaque $\varSATB \in \varFam$ contient ces éléments. Enfin, comme
-  chaque $\varSATB \in \varFam$ est clos par l'extension de tête faible telle
+  chaque $\varSATB \in \varFam$ est close par l'extension de tête faible telle
   que décrite dans la condition de saturation, on en déduit que $\varSATA$ est
   aussi clos pour cette extension. On peut montrer de même que $\bigcup \varFam$
   est saturé.
@@ -1103,7 +1103,7 @@ inductivement sur $\varTypA$.
       $\compr{t \in \STLCSet}{\forall u \in \varSATA, t\;u \in \varSATB}$\\\\
       $\varSATA \satAND \varSATB$ &$\defeq$&
       $\compr{t \in \STLCSet}{(\projP{1}{} t \in \varSATA)\land
-        (\projP{2}{} u\in \varSATB)}$ \\\\
+        (\projP{2}{} t\in \varSATB)}$ \\\\
       $\varSATA_1 \satOR \varSATA_2$ &$\defeq$&
       $\{ t \in \STLCSet \mid \forall \varSATB \in \satSN,
       \forall u,v \in \STLCSet,$\\
@@ -1221,7 +1221,7 @@ central~: le lemme d'adéquation.
   Par le lemme précédent, on sait que pour tout $\subSimul\satisf\varCG$,
   $\subSimul(t) \in \semT{\varTypA}$, et comme $\semT{\varTypA}\in\satSN$, on
   sait que $\subSimul(t) \in \SN$. De plus, en choisissant
-  $\subSimul : x \mapsto x$, comme $x$ est dans tout ensemble saturé, on a
+  $\subSimul : x \mapsto x$, comme $x$ appartient à tout ensemble saturé, on a
   $\subSimul\satisf \varCG$ et $\subSimul(t) = t$, d'où $t\in \SN$.
 \end{proof}
 
@@ -1256,7 +1256,7 @@ d'extension faible de tête suivants~:
 \item si $E[t[u/x][\btermt/\bvarx]]\in \varSATA$ et $u \in \SN$, alors
   $E[\letin\bvarx x{\langle \btermt, u\rangle} t] \in \varSATA$~;
 \item si $E[t] \in \varSATA$, alors
-  $E[\transp\;(\bvarx, \varphi \leftarrow \refl\;\btermt)\;t]\in \varSATA$.
+  $E[\transp\;(\bvarx, \varFF \leftarrow \refl\;\btermt)\;t]\in \varSATA$.
 \end{itemize}
 
 Pour un ensemble saturé $\varSATA$, on définit $\varSATA[\btermt/\bvarx]$ comme
@@ -1315,12 +1315,12 @@ fonctionner correctement~: il ne serait pas possible de deviner de façon
 calculable quel terme vérifie un énoncé.
 
 Dans la \cref{subsec.unification}, on a présenté un algorithme permettant,
-étant donné un ensemble d'équations syntaxique, de trouver une substitution la
+étant donné un ensemble d'équations syntaxiques, de trouver une substitution la
 plus générale possible qui satisfait ces équations. Cet algorithme peut
 s'utiliser ici pour construire des équations associées à chaque sous-terme d'un
 terme donné.
 
-\begin{definition}[Système d'équation de types pour un terme]
+\begin{definition}[Système d'équations de types pour un terme]
   Soit $t$ un $\lambda$-terme (de $\STLCSet$, de $\FOLSet$ ou même de
   $\lamSet$). On fixe une variable $X_u$ pour chaque sous-terme $u$ de $t$ et
   une variable $X_x$ pour chaque variable libre $x \in \VL(t)$.
@@ -1370,7 +1370,7 @@ Ce formalisme est bien plus expressif que celui des fonctions RP, car la
 récursion primitive peut s'appliquer à des fonctions, permettant par exemple de
 définir la fonction d'Ackermann.
 
-\subsection{Première définitions}
+\subsection{Premières définitions}
 
 On donne le système de types, l'ensemble de termes, la réduction et la relation
 de typage.
@@ -1530,7 +1530,7 @@ de typage.
 
 \subsection{Forte normalisation}
 
-Ce système de type est fortement normalisant, comme on peut s'y attendre par
+Ce système de types est fortement normalisant, comme on peut s'y attendre par
 la forme du système considéré.
 
 La preuve de forte normalisation du $\lambda$-calcul simplement typé s'adapte
@@ -1565,13 +1565,13 @@ construire une telle interprétation, en considérant un point fixe.
     \varSATB)\implies
     \rec u\;v\;t \in \varSATB\}
   \end{multline*}
-  la fonction $f$ est croissante.
+  Cette fonction est croissante.
 \end{proposition}
 
 \begin{proof}
   Supposons que $\varSATA \subseteq \varSATB$ et montrons que
   $f(\varSATA)\subseteq f(\varSATB)$.
-  Soient un ensemble saturé$\varSATC \in \satSN$, un terme $u \in \varSATC$
+  Soient un ensemble saturé $\varSATC \in \satSN$, un terme $u \in \varSATC$
   et un terme $v$ tel que
   $\forall w \in \varSATB, \forall a \in \varSATC, v\;w\;a \in \varSATC$,
   il nous suffit de montrer que pour tout $t \in f(\varSATA)$,
@@ -1579,7 +1579,7 @@ construire une telle interprétation, en considérant un point fixe.
   On utilise la définition du fait que $t \in f(\varSATA)$~: on sait que
   $u \in \varSATC$, et que
   $\forall w \in \varSATA, \forall a \in \varSATC, v\;w\;a \in \varSATC$ par
-  hypothèse sur $v$ et inclusion $\varSATA \subseteq \varSATA$, donc
+  hypothèse sur $v$ et inclusion $\varSATA \subseteq \varSATB$, donc
   $\rec u\;v\;t \in\varSATC$, donc $t \in f(\varSATB)$.
 \end{proof}
 
@@ -1601,7 +1601,7 @@ On a ainsi une interprétation de chaque type, donc on prouve sans problème
 l'adéquation. On en déduit la forte normalisation.
 
 \begin{theorem}[Forte normalisation de système T]
-  Pour tout contexte $\varCG$, type $\varTypA$ et terme $t$, si
+  Pour tout contexte $\varCG$, tout type $\varTypA$ et tout terme $t$, si
   $\varCG\tyR t : T$ alors $t \in \SN$.
 \end{theorem}
 

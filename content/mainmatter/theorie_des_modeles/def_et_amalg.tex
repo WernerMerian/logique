@@ -1,0 +1,1016 @@
+\chapter{Constructions de structures}
+\label{chp.struct.mod}
+
+\minitoc
+
+\lettrine{C}{e} chapitre contient les éléments de base de l'étude des
+structures. Là où le chapitre précédent concentrait l'étude sur la
+satisfaction et la conservation d'énoncés du premier ordre, ce chapitre sera
+dédié à des notions liées directement aux structures considérées.
+
+La première étape dans cette étude est l'introduction des diagrammes~: cela nous
+permet de passer de considérations structurelles à de simples preuves que des
+théories bien choisies sont cohérentes. On utilise ensuite ces diagrammes pour
+donner les constructions par amalgamation, puis par union de chaîne. La fin de
+la section est destinée à l'étude des enrichissements par skolemisation.
+
+La seconde section se concentre sur les parties définissables. On en donne la
+définition naturelle par les formules, et la définition alternative par des
+opérations algébriques sur les parties de modèles. Enfin, on donne des résultats
+élémentaires sur les parties définissables, dont une méthode élémentaire pour
+prouver qu'une partie n'est pas définissable.
+
+\section{Constructions de structure}
+
+Avant d'étudier des méthodes pour construire des structures, revenons sur une
+notion explorée dans la \cref{subsec.enrichissement}~: l'enrichissement de
+structure.
+
+\subsection{Enrichissement et diagrammes}
+
+Comme la notion d'enrichissement permet de manipuler plus finement des
+structures, on souhaite définir des façons efficaces d'enrichir des structures.
+Pour cela, on introduit la notion d'enrichissement par constantes.
+
+\begin{definition}[Enrichissement par constantes]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On appelle enrichissement par constantes de $\Sign$
+  sur $\varPt$ la signature
+  \[\SignP{\varPt}\defeq \Sign\cup\compr{\Cc_a^0}{a \in \varPt}\]
+\end{definition}
+
+On considère donc une nouvelle signature, dans laquelle on a ajouté une
+constante pour chaque élément de $\varPt$. Cette signature a un sens naturel
+dans la structure $\varMM$ à partir de laquelle on a construit l'enrichissement,
+ce qui donne un enrichissement de $\varMM$.
+
+\begin{definition}[Enrichissement par constantes d'une structure]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On appelle enrichissement par constantes de $\varMM$
+  sur $\varPt$ la $\SignP{\varPt}$-structure $\varMM_{\varPt}$ obtenue en
+  associant $\Cc_a$ à $a\in\carMM$.
+\end{definition}
+
+Revenons maintenant à un énoncé du chapitre précédent~: le
+\cref{lem.equivelt.th}. D'après ce lemme, si on a une structure $\varMM$ et
+qu'on veut construire $\varMN$ tel que $\varMM\eltEq\varMN$, il nous suffit de
+construire un modèle de $\Th(\varMM)$. Maintenant, grâce à la notion
+d'enrichissement par constantes, on peut effectuer cela en rajoutant des
+interprétations aux éléments de $\varPt$, ce qui nous permet alors de construire
+une théorie caractérisant les extensions élémentaires de $\varMM$~: on appelle
+cette théorie le diagramme élémentaire de $\varMM$.
+
+\begin{definition}[Diagramme, diagramme élémentaire]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On appelle
+  diagramme de $\varMM$ la théorie
+  \[\Diag(\varMM) \defeq
+  \compr{\varFF\in\Propqf(\SignP{\carMM})}{\varMM_{\carMM}\satisf\varFF}\]
+  et le diagramme élémentaire de $\varMM$ la théorie
+  \[\DiagEl(\varMM)\defeq
+  \compr{\varFF\in\Prop(\SignP{\carMM})}{\varMM_{\carMM}\satisf\varFF}\]
+\end{definition}
+
+\begin{remark}
+  Le diagramme élémentaire de $\varMM$ peut directement se définir comme
+  étant $\Th(\varMM_{\carMM})$.
+\end{remark}
+
+\begin{proposition}
+  En reprenant les notations précédentes, on a une correspondance entre
+  les modèles de $\Diag(\varMM)$ et les $\Sign$-structures $\varMN$ munies d'un
+  plongement $\makeEmbedName{\varMoM}{\varMM}{\varMN}$. On a aussi une
+  correspondance entre les modèles de $\DiagEl(\varMM)$ et les
+  $\Sign$-structures $\varMN$ munies d'un plongement élémentaire
+  $\makeSubEltName{\varMoM}{\varMM}{\varMN}$.
+\end{proposition}
+
+\begin{proof}
+  En effet, si on a $\varMN$ une $\Sign$-structure et $\varMoM$ un plongement
+  de $\varMM$ dans $\varMN$, alors on peut construire $\varMN_{\carMM}$ une
+  $\SignP{\carMM}$-structure en associant à chaque $\Cc_m$ l'élément
+  $f(m)$. On prouve que $\carMN_{\carMM}$ satisfait $\Diag(\varMM)$ en vérifiant
+  par induction que pour chaque proposition $\varFF$ sans quantificateur vraie
+  dans $\varMM_{\carMM}$, $\carMN_{\carMM}\satisf\varFF$. Dans le cas des
+  symboles de relation, cela est vrai par hypothèse sur le fait que
+  $\varMoM$ est un plongement, et les autres cas passent automatiquement à
+  l'induction. Réciproquement, si $\varMN$ est un modèle de $\Diag(\varMM)$,
+  alors on peut construire le plongement
+  \[\makeEmbed{\varMoM}{\varMM}{\varMN}{m}{\toMP{\Cc_m}{\varMN}}\]
+  Pour vérifier que ce morphisme est bien un plongement, on procède par
+  contraposée~: si $\varMM,\vec m\nsatisf\symbR(\vec x)$, alors
+  $\varMM,\vec m\satisf\lnot\symbR(\vec x)$ donc
+  $\varMN,f(\vec m)\satisf\lnot\symbR(\vec x)$, \latinexpr{i.e.}
+  $\varMN,f(\vec m)\nsatisf\symbR(\vec x)$.
+
+  On raisonne de la même façon dans le cas du diagramme élémentaire, mais
+  la situation est plus directe.
+\end{proof}
+
+\begin{remark}
+  On traite souvent de façon interchangeable deux structures $\varMM,\varMN$
+  munies d'un plongement $\makeEmbedName{\varMoM}{\varMM}{\varMN}$ et une
+  extension $\varMM\subseteq\varMN$. De même, on identifie généralement
+  une extension élémentaire $\varMM\subModElt\varMN$ et un plongement
+  élémentaire $\makeSubEltName{\varMoM}{\varMM}{\varMN}$. La proposition
+  précédente peut donc se lire comme le fait que les modèles de $\Diag(\varMM)$
+  correspondent aux extensions de $\varMM$, et les modèles de $\DiagEl(\varMM)$
+  correspondent aux extensions élémentaires de $\varMM$.
+\end{remark}
+
+Cette méthode ressemble fortement à la preuve du théorème de Löwenheim-Skolem
+ascendant, dans laquelle on a introduit une famille de taille $\varCk$ de
+constantes, pour construire une extension élémentaire suffisamment grande.
+La différence est que dans cette preuve, on considère d'un côté une structure
+$\varMM$, et de l'autre un ensemble $\varCk$ (un cardinal, pour être plus
+précis), et on cherche à construire une structure $\varMN$ conservant à la fois
+la structure $\varMM$ et la taille $\varCk$.
+
+Cette idée, et en particulier l'utilisation de la compacité pour construire
+un tel modèle, va être réutilisée ici pour construire de nouvelles structures.
+
+\subsection{Constructions par amalgamation et chaîne}
+
+Avec la méthode des diagrammes, on peut donc transformer un problème de
+construction d'extension (élémentaire) en un problème de satisfaction de
+théorie. La satisfaction de théorie, elle, bénéficie d'un outil central~: le
+théorème de compacité. On peut alors combiner les deux pour construire des
+extensions (élémentaires) d'une structure tout en ajoutant d'autres conditions.
+Cela mène au théorème de plongement élémentaire conjoint et d'amalgamation
+élémentaire.
+
+\begin{theorem}\label{thm.amalgamation}
+  Les trois propositions suivantes sont vraies~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Soient $\varMM_1,\varMM_2$ deux $\Sign$-structures telles que
+    $\varMM_1\eltEq\varMM_2$, alors il existe une structure $\varMN$ avec
+    deux plongements élémentaires
+    \[\makeSubEltName{\varMoM_1}{\varMM_1}{\varMN}\qquad
+    \makeSubEltName{\varMoM_2}{\varMM_2}{\varMN}\]
+  \item Soit $(\varMM_i)_{i \in \indSet}$ une famille de $\Sign$-structures toutes
+    élémentairement équivalentes deux à deux, alors il existe une structure
+    $\varMN$ et une famille de plongements élémentaires
+    \[\makeSubEltName{\varMoM_i}{\varMM_i}{\varMN}\]
+  \item Soient $\varMM_0,\varMM_1,\varMM_2$ trois $\Sign$-structures et deux
+    plongements élémentaires
+    \[\makeSubEltName{\varMoM_1}{\varMM_0}{\varMM_1}\qquad
+    \makeSubEltName{\varMoM_2}{\varMM_0}{\varMM_2}\]
+    alors il existe une $\Sign$-structure $\varMN$ et deux plongements
+    élémentaires
+    \[\makeSubEltName{\varMoMB_1}{\varMM_1}{\varMN}\qquad
+    \makeSubEltName{\varMoMB_2}{\varMM_2}{\varMN}\]
+    tels que $\varMoMB_1\circ\varMoM_1 = \varMoMB_2\circ\varMoM_2$,
+    c'est-à-dire tel que le diagramme suivant commute~:
+    \begin{center}
+      \begin{tikzcd}
+        \varMM_0 \ar[r,hook,"\varMoM_1"]\ar[d,hook,"\varMoM_2"] &
+        \varMM_1\ar[d,hook,"\varMoMB_1"]\\
+        \varMM_2\ar[r,hook,"\varMoMB_2"] & \varMN
+      \end{tikzcd}
+    \end{center}
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  On prouve chaque proposition~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Pour simplifier la lecture, on considère que
+    $\carM{\varMM_1}\cap\carM{\varMM_2}=\vide$ (quitte à dupliquer une des deux
+    structures). On définit alors la signature
+    \[\Sign' \defeq \SignP{\carM{\varMM_1}}\cup\SignP{\carM{\varMM_2}}\]
+    D'après ce qui a été dit plus tôt, l'existence de la structure $\varMN$
+    recherchée revient exactement à la cohérence de la théorie
+    \[\varT \defeq \DiagEl(\varMM_1)\cup\DiagEl(\varMM_2)\]
+    et, par compacité, on peut se limiter à un ensemble fini quelconque de
+    propositions. Quitte à prendre une conjonction, il nous suffit de vérifier
+    que pour toute $\Sign$-formule $\varFF(\vec x)$ et donnée de paramètres
+    $\vec b$ dans $\varMM_2$, il existe un modèle de
+    $\DiagEl(\varMM_1)\cup\{\varFF(\vec{\Cc_b})\}$. Mais alors, comme
+    $\varMM_1\eltEq\varMM_2$, on sait que
+    $\varMM_1\satisf\exists \vec b, \varFF(\vec b)$, donc on peut
+    interpréter $\varMM_1$ en une $\Sign'$-structure par $\Cc_b \mapsto b$
+    (et les autres constantes $\Cc$ sont interprétées de façon quelconque)
+    pour obtenir un modèle de $\DiagEl(\varMM_1)\cup\{\varFF(\vec{\Cc_b})\}$.
+    Ainsi, par compacité, on trouve un modèle $\varMN$ tel que décrit
+    précédemment.
+  \item On procède de la même façon, en prenant
+    \[\Sign'\defeq \bigcup_{i \in \indSet}\SignP{\carM{\varMM_i}}\qquad
+    \varT\defeq \bigcup_{i \in \indSet}\DiagEl(\varMM_i)\]
+    Par compacité, on peut se limiter à des fragments finis, mais alors il
+    n'y a qu'un nombre fini de $i \in \indSet$ apparaissant dans les
+    formules. On peut donc raisonner par induction sur le nombre de
+    $i$ apparaissant~: le cas où les ensembles sont vides est automatique,
+    et l'hérédité revient au cas précédemment traité.
+  \item D'après nos hypothèses, on peut considérer
+    \[\varMM_1' \defeq \varMM_{1,\carM{\varMM_0}} \qquad
+    \varMM_2' \defeq \varMM_{2,\carM{\varMM_0}}\]
+    Comme $\varMoM_1$ et $\varMoM_2$ sont des plongements élémentaires, on peut
+    vérifier que $\varMM_1'\eltEq\varMM_2'$, donc on peut appliquer la première
+    proposition démontrée pour trouver $\varMN$ et $\varMoMB_1,\varMoMB_2$,
+    qui sont respectivement une $\SignP{\carM{\varMM_0}}$-structure et des
+    plongements élémentaires de $\SignP{\carM{\varMM_0}}$-structures. On
+    en déduit qu'en particulier, pour tout $m \in \carM{\varMM_0}$~:
+    \begin{align*}
+      \varMoMB_1(\varMoM_1(m))
+      &= \varMoMB_1\left(\toMP{\Cc_{m}}{\varMM_1'}\right)\\
+      &= \toMP{\Cc_{m}}{\varMN}\\
+      &= \varMoMB_2\left(\toMP{\Cc_{m}}{\varMM_2'}\right)\\
+      \varMoMB_1(\varMoM_1(m)) &= \varMoMB_2(\varMoM_2(m))
+    \end{align*}
+    donc $\varMN$ se réduit en une $\Sign$-structure vérifiant ce qui est
+    attendu.\qedhere
+  \end{enumerate}
+\end{proof}
+
+\begin{remark}
+  L'étudiant catégoricien reconnaîtra probablement une situation proche
+  respectivement des coproduits et des sommes amalgamées (ou \og poussé en
+  avant\fg). Cependant, il faut prendre garde au fait qu'ici, aucune
+  universalité n'est établie. Il existe bien une façon de compléter le
+  diagramme en un diagramme commutatif, mais cela ne dit rien vis-à-vis
+  d'autres complétions possibles du diagramme commutatif.
+\end{remark}
+
+On donne une autre application possible~: étendre des plongements élémentaires
+partiels, notion que l'on va maintenant définir.
+
+\begin{definition}[Plongement élémentaire partiel]
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structures. Un
+  plongement élémentaire partiel est la donnée d'un sous-ensemble
+  $\varPt\subseteq\varMM$ et d'une fonction
+  $\makeFunName{\varMoM}{\varPt}{\varMN}$
+  telle que pour toute formule $\varFF\in\Formula(\Sign)$ et donnée de
+  paramètres $\vec a$ dans $\varPt$, on a l'équivalence
+  \[\varMM,\vec a\satisf\varFF \iff \varMN,\varMoM(\vec a)\satisf\varFF\]
+\end{definition}
+
+\begin{remark}
+  Lorsqu'il existe un plongement élémentaire partiel, $\varMM$ et $\varMN$ sont
+  en particulier élémentairement équivalentes. En effet, quitte à ne considérer
+  que les propositions et à ignorer les paramètres dans $\varPt$, on établit
+  aussi que $\varMM\satisf\varFF\iff\varMN\satisf\varFF$.
+\end{remark}
+
+\begin{remark}
+  Si $(\varPt,\varMoM)$ est un plongement élémentaire partiel entre
+  $\varMM$ et $\varMN$, alors $\varMoM$ induit un isomorphisme partiel
+  élémentaire entre $\varMA$ (la sous-structure de $\varMM$ engendrée par
+  $\varPt$) et $\varMoM(\varMA)$.
+\end{remark}
+
+\begin{lemma}\label{lem.extend.part.elt.embed}
+  Soient $\varMM,\varMN$ deux structures sur une signature $\Sign$, et
+  $(\varPt,\varMoM)$ un plongement élémentaire partiel entre les deux
+  structures. Alors il existe une extension élémentaire $\varMN'$ de $\varMN$
+  et un plongement élémentaire $\makeSubEltName{\varMoM'}{\varMM}{\varMN'}$ tels
+  que $\varMoM'\restr{\varPt} = \varMoM$.
+\end{lemma}
+
+\begin{proof}
+  On enrichit d'abord $\varMM$ et $\varMN$ en deux $\SignP{\varPt}$-structures,
+  respectivement $\relev{\varMM}$ et $\relev{\varMN}$. Le premier enrichissement
+  est canonique, et le second se fait par l'association
+  $\Cc_{a} \mapsto\varMoM(a)$.
+
+  Le fait que $(\varPt,\varMoM)$ est un plongement élémentaire partiel
+  signifie en particulier que $\relev{\varMM}\eltEq\relev{\varMN}$ (en tant
+  que $\SignP{\varPt}$-structures). D'après le théorème précédent, il existe
+  donc une extension élémentaire commune aux deux structures.
+  On trouve donc $\varMN'$ muni d'un plongement élémentaire
+  $\makeSubEltName{\varMoM'}{\relev{\varMM}}{\varMN'}$ et d'un plongement
+  élémentaire $\makeSubEltName{\varMoMB}{\relev{\varMN}}{\varMN'}$. Ainsi,
+  quitte à remplacer $\varMoMB(\carMN)$ par $\carMN$, on obtient $\varMN'$ tel
+  que $\varMN\subModElt\varMN'$ et un plongement élémentaire qui se restreint
+  en $\varMoM$ sur $\varPt$.
+\end{proof}
+
+Le second outil que nous abordons pour étendre des structures et en construire
+de nouvelles est celui des chaînes.
+
+\begin{definition}[Chaîne de structures, chaîne élémentaire]
+  Soit $\Sign$ une signature. Pour un ensemble totalement ordonné $(\indSet,<)$,
+  on appelle chaîne de $\Sign$-structures une famille $(\varMM_i)_{i \in \indSet}$
+  telle que
+  \[\forall i,j \in \indSet, i < j \implies \varMM_i \subseteq\varMM_j\]
+  On dit qu'une chaîne est élémentaire si la condition précédente est renforcée
+  en
+  \[\forall i,j \in \indSet, i < j \implies \varMM_i\subModElt\varMM_j\]
+\end{definition}
+
+L'intérêt d'une telle famille de structures est, assez naturellement, d'en
+prendre l'union.
+
+\begin{definition}[Union d'une chaîne de structures]
+  Soit $\Sign$ une signature et $(\varMM_i)_{i \in \indSet}$ une chaîne
+  de structures sur $(\indSet,<)$. On appelle union de cette chaîne la
+  structure $\varMM$ définie par~:
+  \begin{itemize}
+  \item $\displaystyle\carMM \defeq \bigcup_{i \in \indSet}\varMM_i$
+  \item pour tout symbole de fonction $\symbF$ d'arité $n$,
+    $\displaystyle\toM{\symbF}\defeq
+    \bigcup_{i \in \indSet}\toMP{\symbF}{\varMM_i}$
+  \item pour tout symbole de relation $\symbR$ d'arité $n$,
+    $\displaystyle\toM{\symbR}\defeq
+    \bigcup_{i \in \indSet}\toMP{\symbR}{\varMM_i}$
+  \end{itemize}
+  on a alors naturellement, pour tout $i \in \indSet$,
+  $\varMM_i\subseteq\varMM$. On note aussi $\bigcup_{i \in \indSet}\varMM_i$
+  l'union de cette chaîne.
+\end{definition}
+
+\begin{remark}
+  On peut souhaiter un point de vue plus structurel, dans lequel l'inclusion
+  ne joue pas de rôle prépondérant. L'information essentielle est donnée par un
+  plongement quelconque, et on pourrait donc souhaiter qu'une chaîne soit la
+  donnée pour chaque $i < j$ d'un plongement
+  $\makeEmbedName{\varMoM_{i < j}}{\varMM_i}{\varMM_j}$
+  vérifiant que $\varMoM_{j < k}\circ\varMoM_{i < j} = \varMoM_{i < k}$
+  (ce que l'on pourrait considérer comme un certain foncteur de
+  $(\indSet,\leq)$ vers la catégorie des structures munies des plongements).
+
+  Dans un tel cadre, la construction est plus technique mais existe aussi~: on
+  appelle une telle union une limite inductive, et on peut la construire en
+  considérant des couples $(i,m)$ avec $m \in \carM{\varMM_i}$, puis en
+  quotientant par la relation
+  \[(i,m)\sim (j,m') \defeq
+  \varMoM_{i < j}(m) = m' \lor \varMoM_{j < i}(m') = m\]
+  Tout se passe encore de la même façon que précédemment~: cette limite
+  inductive est naturellement munie d'une famille de plongements
+  $\makeEmbedName{\varMoM_i}{\varMM_i}{\varMM}$ (qui est même universelle).
+\end{remark}
+
+\begin{remark}
+  On peut caractériser assez simplement la sémantique dans l'union d'une
+  chaîne~:
+  \begin{itemize}
+  \item $\displaystyle\bigcup_{i \in \indSet}\varMM_i,\vec a\satisf\varFF$ est
+    vérifié exactement quand il existe $i\in\indSet$ tel que
+    $\vec a \subseteq \varMM_i$ et $\varMM_i,\vec a \satisf\varFF$, ou de
+    façon équivalente lorsque pour tout $i \in \indSet$ tel que
+    $\vec a\subseteq\varMM_i$, $\varMM_i,\vec a \satisf\varFF$
+  \item le calcul de $\toMP{\symbF}{\bigcup_{i \in \indSet}\varMM_i}(\vec a)$ se
+    fait en considérant un (de façon équivalente, tous les) $i \in \indSet$
+    tel que $\vec a \subseteq \varMM_i$, et est alors
+    $\toMP{\symbF}{\varMM_i}(\vec a)$.
+  \end{itemize}
+  Le fait d'avoir des extensions de structures assure qu'on a bien une
+  équivalence entre \og pour tout $i \in \indSet$ \fg et \og il existe
+  $i \in \indSet$\fg dans les formulations données plus tôt.
+\end{remark}
+
+\begin{lemma}[Lemme de la chaîne élémentaire de Tarski \cite{Tarski1955}]
+  \label{lem.chaine.elem.tarski}
+  Si $(\varMM_i)_{i \in \indSet}$ est une chaîne élémentaire, alors
+  \[\forall i \in \indSet, \varMM_i\subModElt\bigcup_{i \in I}\varMM_i\]
+\end{lemma}
+
+\begin{proof}
+  Notons $\varMM\defeq \bigcup_{i \in \indSet}\varMM_i$.
+  On prouve par induction sur les formules $\varFF$ que pour tout
+  $i \in \indSet$ et toute donnée de paramètres $\vec m$ dans $\varMM_i$,
+  $\varMM_i,\vec m\satisf\varFF\iff\varMM,\vec m\satisf\varFF$~:
+  \begin{itemize}
+  \item Si $\varFF$ est atomique, alors le résultat est dû au fait que
+    $\varMM_i\subseteq\varMM$ (ou, pour une limite inductive, au fait qu'on a un
+    plongement).
+  \item Si $\varFF$ est $\top$ ou $\bot$, le résultat est automatique.
+  \item Si $\varFF = \lnot\varFP$, comme
+    $\varMM_i,\vec m\satisf\varFP\iff\varMM,\vec m\satisf\varFP$, le résultat
+    est encore vrai en passant à la négation.
+  \item Les cas $\varFP\oplus\varFC$ où
+    $\oplus\in\{\mathord{\lor},\mathord{\land},\mathord{\to}\}$ sont
+    vrais en dépliant les définitions.
+  \item Supposons que $\varFF = \exists x, \varFP$, et montrons le résultat
+    par double implication~:
+    \begin{itemize}
+    \item[\fbox{$\Rightarrow$}] Supposons que
+      $\varMM_i,\vec m\satisf\exists x, \varFP$. Alors on trouve
+      $a\in\carM{\varMM_i}$ tel que $\varMM_i,(a,\vec m)\satisf\varFP$,
+      donc par hypothèse d'induction $\varMM,(a,\vec m)\satisf\varFP$, donc
+      $\varMM,\vec m\satisf\exists x, \varFP$.
+    \item[\fbox{$\Leftarrow$}] Supposons que
+      $\varMM,\vec m\satisf\exists x, \varFP$. Alors on trouve
+      $j\in\indSet$ et $a \in \varMM_j$ tel que
+      $\varMM,(a,\vec m)\satisf\varFP$. Comme $\indSet$ est totalement ordonné,
+      on sait que $i$ et $j$ sont comparables. Quitte à prendre pour $j$ le
+      plus grand des deux, on peut alors considérer que $\vec m \in\varMM_j$,
+      et donc (par hypothèse d'induction) que
+      $\varMM_j,(a,\vec m)\satisf\varFP$. On en déduit donc que
+      $\varMM_j,\vec m\satisf\exists x, \varFP$, puis par inclusion élémentaire
+      que $\varMM_i,\vec m\satisf\exists x, \varFP$.
+    \end{itemize}
+  \item Si $\varFF = \forall x, \varFP$, alors on peut se ramener aux cas
+    précédents par les lois de De Morgan.
+  \end{itemize}
+  En particulier, si $\varFF$ est une proposition et $i\in\indSet$, on en
+  déduit que
+  \[\varMM_i\subModElt\varMM\qedhere\]
+\end{proof}
+
+En utilisant les chaînes élémentaires, on peut maintenant donner une version
+plus forte du \cref{lem.extend.part.elt.embed} dans le cas d'un plongement
+d'un modèle dans lui-même.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $(\varPt,\varMoM)$ un plongement élémentaire partiel de $\varMM$ dans
+  elle-même. Alors il existe une extension élémentaire $\varMN$ de $\varMM$
+  et $\makeFunNameIso{\relev{\varMoM}}{\varMN}{\varMN}$ étendant $\varMoM$.
+\end{proposition}
+
+\begin{proof}
+  On construit une suite de structures à partir de $\varMM$.
+
+  \vspace{5pt}
+  \begin{minipage}{0.3\textwidth}
+    \begin{tikzpicture}
+      \node (M0l) at (0,0) {$\varPt$};
+      \node (M0r) at (2,0) {$\varMM_0$};
+      \node (M1l) at (0,-2) {$\varMM_1$};
+      \node (M1r) at (2,-2) {$\im(\varMoM_0)$};
+      \node (M2l) at (0,-4) {$\im(\varMoMB_1)$};
+      \node (M2r) at (2,-4) {$\varMM_2$};
+      \node (M2lp) at (0,-4)[below] {$\vdots$};
+      \node (M2rp) at (2,-4)[below] {$\vdots$};
+      \path (M0l) --node[midway] {$\subseteq$} (M0r);
+      \draw[->,>=latex]
+      (M0l) --node[midway,left,dashed] {$\iota\circ\varMoM$} (M1l);
+      \path (M1r) --node[midway] {$\supseteq$} (M1l);
+      \draw[->,>=latex]
+      (M1r) --node[midway,right,dashed] {$\iota\circ\varMoM_0^{-1}$} (M2r);
+      \path (M2l) --node[midway] {$\subseteq$} (M2r);
+      \draw[->,>=latex]
+      (M1r) -- node[midway, right] {$\varMoM_0^{-1}$} (M0r);
+      \draw[->,>=latex]
+      (M2l) -- node[midway, left] {$\varMoMB_1^{-1}$} (M1l);
+      \draw[->,>=latex,dashed]
+      (M0r) -- node[midway,above left] {$\varMoM_0$} (M1l);
+      \draw[->,>=latex,dashed]
+      (M1l) -- node[midway,above right] {$\varMoMB_1$} (M2r);
+    \end{tikzpicture}
+  \end{minipage}
+  \begin{minipage}{0.65\textwidth}
+    On pose $\varMM_0 \defeq \varMM$.
+    On sait d'après le \cref{lem.extend.part.elt.embed} qu'il existe une
+    extension $\varMM_1$ et un plongement élémentaire
+    $\makeSubEltName{\varMoM_0}{\varMM_0}{\varMM_1}$ qui se restreint en
+    $\varMoM$ sur $\varPt$. On considère alors $\im(\varMoM_0)$, sur
+    laquelle $\varMoM_0$ est bijective~: on a donc
+    $\makeFunName{\varMoM_0^{-1}}{\im(\varMoM_0)}{\varMM_0}$, soit
+    $\makeFunName{\iota\circ\varMoM_0^{-1}}{\im(\varMoM_0)}{\varMM_1}$ qui peut
+    s'étendre par le \cref{lem.extend.part.elt.embed} en un plongement
+    élémentaire $\makeSubEltName{\varMoMB_1}{\varMM_1}{\varMM_2}$ avec
+    $\varMM_2$ une nouvelle structure. On remarque que
+    $\varMoMB_1$ est l'inverse de $\varMoM_0$ quand on se restreint à
+    l'image de $\varMoM_0$. On peut ainsi construire une suite de structures
+    $\varMM_n$, une suite de plongements élémentaires $\varMoM_{2n}$ et une
+    suite de plongements élémentaires $\varMoMB_{2n+1}$, de telle sorte que
+    $\varMoM_{2n}\circ\varMoMB_{2n-1} = \id$ et
+    $\varMoMB_{2n+1}\circ\varMoM_{2n}=\id$.
+  \end{minipage}
+
+  \vspace{5pt}
+  Ainsi, en prenant l'union de cette chaîne sur $\bN$, on obtient une
+  structure et deux morphismes
+  \[\varMN\defeq\bigcup_{n \in \bN}\varMM_n\qquad
+  \relev{\varMoM}\defeq \bigcup_{n \in \bN}\varMoM_{2n}\qquad
+  \relev{\varMoMB}\defeq\bigcup_{n \in \bN}\varMoMB_{2n+1}\]
+  donnant $\makeFunNameIso{\relev{\varMoM}}{\varMN}{\varMN}$ et
+  $\relev{\varMoM}\restr{\varPt} = \varMoM$.
+\end{proof}
+
+\begin{corollary}\label{cor.typ1}
+  Soit $\Sign$ une signature, et $\varMM$ une $\Sign$-structure. Pour tous
+  $m,n \in \carMM$, si
+  \[\forall \varFF(x)\in\Formula_1(\Sign), \varMM,m\satisf\varFF \iff
+  \varMM,n\satisf\varFF\]
+  alors il existe une extension élémentaire $\varMN$ de $\varMM$  et un
+  automorphisme $\makeFunNameIso{\varMoM}{\varMN}{\varMN}$ tel que
+  $\varMoM(m) = n$.
+\end{corollary}
+
+\begin{proof}
+  $(\{m\},m\mapsto n)$ est un plongement élémentaire partiel de $\varMM$
+  dans elle-même.
+\end{proof}
+
+\subsection{Fonctions de Skolem}
+
+Dans l'\cref{exo.skolemisation}, on a vu qu'il était possible de supprimer
+des quantifications existentielles quitte à ajouter des symboles de fonction.
+Ce procédé s'appelle la skolemisation. Nous étudions ici une façon d'approcher
+cette technique, similairement aux diagrammes.
+
+\begin{definition}[Extension de Skolem]
+  Soit $\Sign$ une signature. On appelle extension de Skolem la signature
+  \[\SignSko \defeq
+  \Sign \cup
+  \compr{\symbF_{\varFF}^{n}}{\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)}\]
+\end{definition}
+
+L'extension de Skolem est donc un enrichissement de $\Sign$, dans lequel on
+ajoute pour chaque formule $\exists y,\varFF(\vec x,y)$ un symbole de fonction
+$\symbF_{\varFF}$ d'arité $n$, dont le rôle est de donner un témoin à cette
+formule existentielle (puisque le témoin dépend de $\vec x$, on a une fonction
+de $\vec x$).
+On définit aussi la théorie de Skolem, donnant un sens à tous ces
+nouveaux symboles.
+
+\begin{definition}[Théorie de Skolem]
+  Soit $\Sign$ une signature. On appelle théorie de Skolem sur $\Sign$ la
+  théorie sur $\SignSko$
+  \[\varT_{0,\sko} \defeq
+  \compr{\ogM \forall \vec x,
+    (\exists y, \varFF(\vec x,y))\to \varFF(\vec x,\symbF_{\varFF}(\vec x))\fgM}
+        {\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)}
+  \]
+  Pour une théorie $\varT\in\Theory(\Sign)$ fixée, on note alors la
+  skolemisation de $\varT$ par
+  \[\varT_{\sko} \defeq \varT\cup\varT_{0,\sko}\]
+\end{definition}
+
+On peut aussi définir une notion d'extension de Skolem pour les structures.
+
+\begin{definition}[Extension de Skolem d'une structure]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On appelle
+  extension de Skolem de $\varMM$ une $\Sign$-structure $\varMM_{\sko}$ qui
+  est une extension de $\varMM$ et un modèle de $\varT_{0,\sko}$.
+  Alternativement, on peut considérer une telle structure comme un modèle de
+  \[\Diag_{\sko}(\varMM)\defeq (\Diag(\varMM))_{\sko}\]
+\end{definition}
+
+La proposition peut être vue comme une reformulation (et une légère
+généralisation) de l'\cref{exo.skolemisation}.
+
+\begin{proposition}\label{prop.skolemisation}
+  Soit $\Sign$ une signature. Les trois propositions suivantes sont vraies~:
+  \begin{enumerate}[label=(\roman*)]
+  \item Si $\varT\in\Theory(\Sign)$ est cohérente, alors $\varT_{\sko}$ est
+    aussi cohérente.
+  \item Toute $\Sign$-structure $\varMM$ a une extension de skolem
+    $\varMM_{\sko}$.
+  \item Soient $\varMM,\varMN$ deux $\Sign$-structures et
+    $\varMM_{\sko},\varMN_{\sko}$ une extension de Skolem respectivement de
+    $\varMM$ et de $\varMN$. Si $\varMM_{\sko}\subseteq\varMN_{\sko}$, alors
+    $\varMM\subModElt\varMN$.
+  \end{enumerate}
+\end{proposition}
+
+\begin{proof}
+  Les deux premières propositions sont équivalentes, on se contente donc de
+  montrer la seconde.
+
+  Soit $\varFF(\vec x,y)$ une formule, construisons une interprétation de
+  $\symbF_{\varFF}$. Pour cela, pour toute donnée de paramètres
+  $\vec m\in\carMM^n$ tels que $\varMM,\vec m\satisf\exists y,\varFF$, on
+  trouve un élément $m'_{\vec m}$ tel que
+  $\varMM,(\vec m,m'_{\vec m})\satisf\varFF$~: la fonction
+  \[\makeFunBis{g_{\varFF}}
+               {\carMM^n}{\carMM}
+               {\vec m}
+               {m'_{\vec m} \text{ si } \varMM,\vec m\satisf\exists y,\varFF}
+               {\vec m}
+               {m_0\text { sinon}}\]
+  où $m_0\in\carMM$ est quelconque. Ainsi, par construction, en posant
+  $\varMM_{\sko}$ associant à $\symbF_{\varFF}$ la fonction $g_{\varFF}$, on
+  peut vérifier que pour $\varMM_{\sko},\vec m\satisf\exists y,\varFF$, on a
+  bien $\varMM_{\sko},\vec m\satisf\varFF(\vec x,\symbF_{\varFF}(\vec x))$.
+
+  Pour la dernière proposition, il nous suffit d'utiliser le critère de
+  Tarski-Vaught (\cref{thm.tarski.vaught})~: si l'on a une formule
+  $\varFF(\vec x,y)$, des paramètres $\vec m$ dans $\varMM$, et que
+  $\varMN,\vec m\satisf\exists y,\varFF$ alors en particulier
+  $\varMN_{\sko},\vec m\satisf \varFF(\vec x,\symbF_{\varFF}(\vec x))$.
+  Comme l'interprétation de $\symbF_{\varFF}$ ne change pas en l'interprétant
+  dans $\varMM$ (les paramètres $\vec m$ étant dans $\varMM$), on trouve bien
+  un élément $a \in \carMM$ tel que $\varMM,(\vec m,a)\satisf\varFF$.
+\end{proof}
+
+On peut remarquer une similitude importante entre les fonctions de Skolem et les
+témoins de Henkin~: ces derniers sont simplement une limitation des fonctions de
+Skolem au cas de fonctions d'arité nulle. On définit donc, comme le fait d'avoir
+les témoins de Henkin, le fait qu'une théorie a des fonctions de Skolem.
+
+\begin{definition}[Fonction de Skolem]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On dit que
+  $\varT$ a des fonctions de Skolem si pour toute formule
+  $\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)$, il existe un terme
+  $t(\vec x)$ tel que
+  \[\varT\vD\forall \vec x, (\exists y,\varFF(\vec x,y))\to
+  \varFF(\vec x,t(\vec x))\]
+\end{definition}
+
+On peut utiliser la même construction que pour les témoins de Henkin pour,
+à partir d'une théorie $\varT$ sur une signature $\Sign$, construire une
+théorie sur un enrichissement de $\Sign$ qui possède des fonctions de Skolem.
+
+\begin{definition}[Extension de Skolem d'une théorie]
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. On définit
+  la signature $\SkoCl{\Sign}$ et la théorie $\SkoCl{\varT}$ sur $\SkoCl{\Sign}$
+  comme l'union croissante des deux suites
+  \[
+  \begin{cases}
+    \Sign_0 \defeq \Sign\\
+    \Sign_{n+1} \defeq (\Sign_{n})_{\sko}
+  \end{cases}
+  \qquad
+  \begin{cases}
+    \varT_0 \defeq \varT\\
+    \varT_{n+1}  \defeq (\varT_n)_{\sko}
+  \end{cases}\]
+\end{definition}
+
+\begin{proposition}
+  Si $\varT$ est cohérente, alors $\SkoCl{\varT}$ est cohérente et a des
+  fonctions de Skolem.
+\end{proposition}
+
+\begin{proof}
+  On sait que chaque $\varT_n$ est cohérente puisque, si $\varT$ est cohérente,
+  alors $\varT_{\sko}$ aussi (par la \cref{prop.skolemisation}). Le symbole de
+  fonction $\symbF_{\varFF}$ donne une fonction de Skolem pour $\varFF$, donc
+  toute formule sur $\Sign_n$ a une fonction de Skolem dans $\varT_{n+1}$.
+\end{proof}
+
+La notion de skolemisation nous permet de donner un premier exemple de partie
+définissable assez naturel~: lorsqu'on considère une formule $\varFF(\vec x,y)$
+et des paramètres $\vec m$ dans une structure $\varMM$, savoir que
+$\varMM,\vec m \satisf\exists y, \varFF$ nous permet de dire que l'ensemble
+\[\compr{n \in \carMM}{\varMM,(\vec m,n)\satisf\varFF(\vec x,y)}\]
+est non vide. En élargissant la situation, il nous dit que l'ensemble
+\[\compr{(\vec m,n)\in\carMM^{n+1}}{\varMM,(\vec m,n)\satisf\varFF(\vec x,y)}\]
+est une partie non vide. Remarquons aussi que si
+$\varMM\satisf\forall \vec x,\exists y,\varFF$, alors une fonction de Skolem
+pour $\varFF$ est exactement un sous-graphe du graphe précédent qui est
+fonctionnel. Ainsi, les candidats d'existence d'une formule sont des parties
+de $\carMM^n$ qu'on peut définir à l'aide d'une formule. \'Etudions maintenant
+la notion générale de parties ainsi définissable.
+
+\section{Parties définissables}
+
+\subsection{Premières définitions}
+
+Avec ce qui a été dit précédemment, la définition de partie définissable est
+assez naturelle.
+
+\begin{definition}[Partie définissable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On dit qu'une partie
+  $\varPtB\subseteq\carMM^n$ est $\varPt$-définissable s'il existe une
+  $\varPt$-formule $\varFF\in\Formula_n(\SignP{\varPt})$ telle que
+  \[\forall \vec m \in \carMM^n, \vec m\in\varPtB \iff
+  \varMM_{\varPt},\vec m\satisf\varFF\]
+  De façon équivalente, s'il existe des éléments $\vec a \in \varPt^m$ et une
+  formule $\varFF\in\Formula_{n+m}(\Sign)$ tels que
+  \[\forall \vec m \in \carMM^n, \varMM,\vec m \in \varPtB \iff
+  \varMM,(\vec m,\vec a)\satisf\varFF\]
+  Dire en général qu'une partie $\varPt$ est définissable dans $\varMM$ peut,
+  suivant les auteurs et les contextes, désigner une partie $\vide$-définissable
+  ou une partie $\carMM$-définissable.
+\end{definition}
+
+\begin{remark}
+  Dans la \cref{def.definissable.L}, la notion de partie définissable
+  utilisée était celle de partie $\carMM$-définissable. Plus précisément,
+  pour un ensemble $X$ fixé, l'ensemble $\powerdef(X)$ est l'ensemble des
+  parties $X$-définissables à une variable libre.
+\end{remark}
+
+\begin{notation}
+  Si $\varPtB$ est une partie $\varPt$-définissable dans la structure $\varMM$
+  par la formule $\varFF$, on pourra aussi noter $\varPtB = \varFF(\varPt)$.
+\end{notation}
+
+Avant d'étudier les parties définissables à proprement parler, on propose une
+autre formulation des parties définissables. Si celles-ci sont très naturelles
+à considérer d'un point de vue logique par l'existence de formules, on peut
+aussi chercher un point de vue plus algébrique. D'un tel point de vue,
+l'objectif est de donner des opérations simples engendrant l'ensemble des
+parties définissables. Remarquons d'abord qu'il nous suffit de définir une
+notion de partie $\vide$-définissable~: à partir d'elle, on peut définir une
+partie $\varPt$-définissable comme étant une partie $\vide$-définissable de
+$\varMM_{\varPt}$. On propose en tant que caractérisation cette autre
+définition possible, plus algébrique.
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit
+  \[\powerdef^n(\varMM) \subseteq\carMM^n \qquad
+  \powerdef(\varMM)\defeq \bigcup_{n \in \bN} \powerdef^n(\varMM)\]
+  comme la plus petite famille de parties de $\carMM^n$ telle que~:
+  \begin{itemize}
+  \item pour toute fonction
+    $\makeFunName{\varRen}{\intervIntB{n}}{\intervIntB{m}}$ et toute partie
+    $\varPt\in\powerdef^{n}(\varMM)$, la partie
+    \[\alpha\actRen\varPt \defeq
+    \compr{(x_1,\ldots,x_m)}{(x_{\varRen(1)},\ldots,x_{\varRen(n)})\in\varPt}\]
+    est dans $\powerdef^{m}(\varMM)$.
+  \item pour tout symbole de fonction $\symbF$, le graphe
+    \[\funGraph{\toM{\symbF}} \defeq
+    \compr{(\vec x,y)\in\carMM^{n+1}}{\toM{\symbF}(\vec x) = y}\]
+    est dans $\powerdef^{n+1}(\varMM)$.
+  \item pour tout symbole de fonction $\symbR$, le graphe de la relation
+    $\toM{\symbR}$ est dans $\powerdef^n(\varMM)$.
+  \item si $\varPt\in\powerdef^{n+1}(\varMM)$ et $i \in \intervIntB{n}$, alors
+    \[\projP{}{i}(\varPt) \defeq
+    \compr{(x_1,\ldots,x_{i-1},x_{i+1},\ldots,x_{n+1})}
+          {(x_1,\ldots,x_{n+1})\in\varPt}
+    \]
+    est dans $\powerdef^{n}(\varMM)$.
+  \item chaque $\powerdef^{n}(\varMM)$ est une sous-algèbre de Boole de
+    $\powerset(\carMM^n)$.
+  \end{itemize}
+  Les parties $\vide$-définissables de $\carMM^n$ sont exactement les éléments
+  de $\powerdef^{n}(\varMM)$.
+\end{proposition}
+
+\begin{proof}
+  Montrons que les ensembles définissables sont exactement les éléments de
+  $\powerdef^n(\varMM)$ par double inclusion~:
+  \begin{itemize}
+  \item[\fbox{$\subseteq$}] Montrons que les ensembles définissables par
+    des formules dont les variables libres sont dans $\{x_1,\ldots,x_n\}$ sont
+    dans $\powerdef^n(\varMM)$. On raisonne par induction sur les formules~:
+    \begin{itemize}
+    \item d'abord, en considérant un terme sur les variables libres
+      $\{x_1,\ldots,x_n\}$ comme une fonction à $n$ entrées, le graphe de cette
+      fonction est bien dans $\powerdef^n(\varMM)$~:
+      \begin{itemize}
+      \item si le terme est une variable, alors sa fonction est
+        $(x_1,\ldots,x_n)\mapsto x_i$. Soit la fonction de
+        renommage $\makeFunName{\varRen}{\intervIntB{2}}{\intervIntB{n+1}}$
+        définie par $1\mapsto i$ et $2\mapsto n+1$, alors
+        \[\varRen\actRen\ogM=\fgM =
+        \compr{(x_1,\ldots,x_{n+1})}{x_i = x_{n+1}}\]
+        qui correspond bien à ce qui est attendu.
+      \item si le terme est de la forme $\symbF(t_1,\ldots,t_p)$, en notant
+        $\varPt_1,\ldots,\varPt_p$ les graphes des termes $t_1,\ldots,t_p$, on
+        définit alors
+        $\makeFunName{\varRen_i}{\intervIntB{n+1}}{\intervIntB{n+p+1}}$
+        par $k \mapsto k$ pour $k \leq n$, et $n+1\mapsto n+i$. Ainsi,
+        \[\varRen_i\actRen\funGraph{\toM{t_i}} =
+        \compr{(x_1,\ldots,x_{n+p+1})}{x_{n+i} = \toM{t_i}(x_1,\ldots,x_n)}\]
+        et, en notant
+        $\makeFunName{\varRen'}{\intervIntB{p+1}}{\intervIntB{n+p+1}}$
+        la fonction $k \mapsto n + k$, on obtient finalement l'ensemble
+        \[\varRen'\actRen\funGraph{\toM{\symbF}} =
+        \compr{(x_1,\ldots,x_{n+p+1})}
+              {x_{n+p+1} = \toM{\symbF}(x_{n+1},\ldots,x_{n+p})}\]
+        L'intersection de tous ces ensembles correspond au tuple
+        $(x_1,\ldots,x_{n+p+1})$ tel que $x_{n+i}$ est l'image des
+        $n$ premiers $x_k$ par $\toM{t_i}$, et $x_{n+p+1}$ est alors
+        l'image des $n$ premiers $x_k$ par $\toM{(\symbF(t_1,\ldots,t_p))}$.
+        On projette finalement cet ensemble sur les coordonnées entre
+        $n+1$ et $n+p$ (inclus) et on obtient alors que le graphe de
+        $\toM{(\symbF(t_1,\ldots,t_p))}$ est dans $\powerdef^{n+1}(\varMM)$.
+      \end{itemize}
+    \item On sait donc que les termes ont des graphes dans
+      $\powerdef^{n+1}(\varMM)$. En réutilisant la même construction, on
+      peut composer les graphes des différents $\toM{t_i}$ et de $\toM{\symbR}$
+      pour en déduire que le graphe induit par $\symbR(t_1,\ldots,t_n)$ est
+      dans $\powerdef^{n}(\varMM)$.
+    \item Les connecteurs logiques correspondent exactement aux opérations
+      d'une algèbre de Boole (en incluant $\top$ et $\bot$), le résultat est
+      donc direct par le dernier point.
+    \item Pour une quantification universelle, on se ramène directement
+      à des négations et une quantification existentielle.
+    \item Si l'interprétation de $\varFF(\vec x,y)$ est dans
+      $\powerdef^{n+1}(\varMM)$, alors l'interprétation de la formule
+      $\exists y,\varFF(\vec x,y)$ est exactement
+      $\projP{}{n+1}(\varPt)$ avec $\varPt$ l'interprétation de $\varFF$.
+    \end{itemize}
+  \item[\fbox{$\supseteq$}] Dans le sens contraire, on raisonne sur la
+    structure inductive de la famille $\powerdef^{n}(\varMM)$~:
+    \begin{itemize}
+    \item Si $\makeFunName{\varRen}{\intervIntB{n}}{\intervIntB{m}}$ est
+      une fonction de renommage, et $\varPt = \varFF(\vide)$, alors on
+      remarque que
+      \[\varRen\actRen\varPt =
+      \compr{\vec m \in \carMM^{m}}
+            {\varMM,\vec m \satisf \varFF[x_{\varRen(i)}/x_i]}\]
+      d'où le résultat.
+    \item La formule $x_{n+1} = \symbF(x_1,\ldots,x_n)$ donne le graphe de
+      $\toM{\symbF}$.
+    \item La formule $\symbR(x_1,\ldots,x_n)$ donne le graphe de
+      $\toM{\symbR}$.
+    \item Si $\varPt$ peut s'écrire comme $\varFF(\vide)$ avec
+      $\varFF(\vec x,y)\in\Formula_{n+1}(\Sign)$, alors
+      \[\projP{}{n+1}(\varPt) = (\exists y,\varFF)(\vide)\]
+    \item Les parties $\carMM^n$ sont définissables par $\top$, les parties
+      $\vide$ sont définissables par $\bot$, l'union et l'intersection peuvent
+      être définies respectivement par $\lor$ et $\land$.
+    \end{itemize}
+  \end{itemize}
+  On a donc l'équivalence entre les deux notions.
+\end{proof}
+
+\begin{exercise}
+  Pour une partie $\varPt\subseteq X^n$ et $\varPerm\in\Permut{n}$, on
+  définit
+  \[\swap_{\varPerm}(\varPt) \defeq
+  \compr{(x_1,\ldots,x_n)\in X^n}{(x_{\varPerm(1)},\ldots,x_{\varPerm(n)})\in \varPt}
+  \]
+  On définit aussi la cylindrification pour une partie $\varPt\subseteq X^n$
+  et $i\in\intervIntB{n+1}$~:
+  \[\cylin{\varPt}_i \defeq
+  \compr{(x_1,\ldots,x_{i-1},y,x_i,\ldots,x_n)}
+        {y \in X, (x_1,\ldots,x_n)\in \varPt}\]
+  Montrer qu'on peut remplacer la première opération de renommage pour les
+  parties définissables par le fait que la famille $\powerdef^{n}(\varMM)$
+  est stable par les opérations $\swap_{\varPerm}$ et $\cylin{\tok}_i$.
+\end{exercise}
+
+\begin{notation}
+  On écrira $\powerdef_{\varPt}^{n}(\varMM)$ les parties de $\carMM^n$ qui sont
+  $\varPt$-définissables, et $\vide$-définissables dans le cas où on ne met pas
+  d'indice (comme précédemment).
+\end{notation}
+
+Maintenant qu'on peut parler de parties définissables, passons en revue quelques
+structures et des parties définissables~:
+
+\begin{example}
+  Dans n'importe quelle structure $\varMM$, les parties finies de $\varPt$
+  sont $\varPt$-définissables.
+\end{example}
+
+\begin{example}
+  Dans $\bZ$ avec sa structure additive (donc, comme modèle de la théorie des
+  groupes), on peut décomposer n'importe quel entier comme étant un entier pair
+  ou un entier impair~:
+  \[\pair(x) \defeq \exists y, x = y + y\]
+  les deux parties $2\bZ$ et $2\bZ+1$ sont donc $\vide$-définissables.
+
+  N'importe quelle partie finie est $\{1\}$-définissable~: on peut écrire
+  tout entier comme $1+\cdots+1$ ou comme son opposé.
+\end{example}
+
+\begin{example}
+  Dans $\bR$ avec sa structure de corps, on peut écrire comme terme clos
+  n'importe quel entier, donc n'importe quel $\{n\}$ avec $n \in \bZ$ est
+  $\vide$-définissable. On peut aussi définir $\{1/n\}$ par le fait qu'il
+  est l'inverse de $n$. Quitte à additionner ensuite, chaque partie finie
+  de $\bQ$ est $\vide$-définissable. Les racines {$n$}\textsuperscript{èmes}
+  sont aussi définissables par
+  \[y = \sqrt[n]{x} \defeq y \geq 0 \land y^n = x\]
+\end{example}
+
+\subsection{Manipulation des parties définissables}
+
+Une partie définissable est donnée par une formule qui la décrit. \`A ce titre,
+si on considère une partie définissable et une extension de notre structure,
+on peut obtenir une extension de notre partie définissable.
+
+\begin{definition}[Extension d'une partie définissable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varMN$ une extension élémentaire de $\varMM$. Alors pour une
+  partie $\vide$-définissable $\varPt\subseteq\carMM^n$ par une formule
+  $\varFF$, on pose
+  \[\varPt^{\varMN} \defeq
+  \compr{\vec m\in\carMN^n}{\varMN,\vec m\satisf\varFF}\]
+  qui est un surensemble de $\varPt$.
+\end{definition}
+
+\begin{proof}
+  On définit $\varPt^{\varMN}$ sans appeler explicitement $\varFF$ car le choix
+  de $\varFF$ n'importe pas. En effet, supposons que $\varFF$ et $\varFP$
+  définissent la même partie $\varPt$. En particulier,
+  \[\varMM\satisf\forall \vec x, (\varFF \iffS\varFP)\]
+  ce que l'on vérifie aussi dans $\varMN$ par extension élémentaire. On en
+  déduit alors que l'ensemble défini par $\varFF$ dans $\varMN$ et celui
+  défini par $\varFP$ dans $\varMN$ sont les mêmes, donc on n'a pas
+  d'ambiguïté. Le fait que $\varPt\subseteq\varPt^{\varMN}$ se déduit du fait
+  que, comme $\varMM\subModElt\varMN$, tout élément dans $\varMM$ vérifie
+  $\varFF$ indépendamment interprétée dans $\varMM$ ou dans $\varMN$.
+\end{proof}
+
+\begin{remark}
+  Si on sait seulement que $\varMM\eltEq\varMN$, on peut encore définir
+  $\varPt^{\varMN}$, mais on n'a alors plus le fait que
+  $\varPt\subseteq\varPt^{\varMN}$. Prenons par exemple
+  $2\bZ\subseteq\bZ$~: on peut définir l'ensemble des entiers congrus à
+  $2$ modulo $4$ dans $2\bZ$ en utilisant le prédicat d'être impair~:
+  \[x \equiv_{4} 2 \defeq \lnot(\exists y, x = y + y)\]
+  La partie correspondante à cette partie définissable, dans $\bZ$, est alors
+  simplement $2\bZ+1$, qui n'a aucun élément commun avec la partie précédente.
+
+  Cependant, dans le cas d'une extension élémentaire $\varMM\subModElt\varMN$,
+  on sait toujours qu'on a une inclusion et même que pour
+  $\varPt\in\powerdef^n(\varMM)$, on a $\varPt = \varPt^{\varMN}\cap \carMM^n$.
+\end{remark}
+
+Cette notion d'extension permet aussi de caractériser les parties définissables
+infinies.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$ une partie $\carMM$-définissable. Alors $\varPt$ est
+  infinie si et seulement s'il existe une extension élémentaire $\varMN$ de
+  $\varMM$ telle que $\varPt\subsetneq\varPt^{\varMN}$.
+\end{proposition}
+
+\begin{proof}
+  Posons $\varFF$ la formule telle que $\varPt = \varFF(\carMM)$.
+  On procède par double implication~:
+  \begin{itemize}
+  \item[\fbox{$\Rightarrow$}] On considère l'enrichissement et la théorie
+    suivants~:
+    \[\Sign'\defeq \Sign\cup\{\Cc^0\}\qquad
+    \varT\defeq \DiagEl(\varMM)\cup\{\varFF(\Cc)\}\cup
+    \compr{\ogM\Cc \neq \Cc_a\fgM}{a \in \varPt}\]
+    Il nous suffit maintenant de montrer que $\varT$ a un modèle, ce qu'on peut
+    faire par compacité en considérant des parties finies de $\varT$. Alors,
+    avec un nombre fini de propositions de $\varT$, on peut directement
+    étendre $\varMM$ en un modèle en choisissant comme interprétation de $\Cc$
+    un élément $a \in \varPt$ différent de tous les $b$ tels que
+    $\ogM\Cc\neq\Cc_b\fgM$ est dans la partie finie. Dans le modèle
+    $\varMN$ trouvé par compacité, on sait alors que $\toN{\Cc}$ est un élément
+    de $\varPt^{\varMN}$ différent de chaque $a\in\varPt$.
+  \item[\fbox{$\Leftarrow$}] Si $\varPt$ est fini, alors on peut définir
+    $\varPt$ par la formule
+    \[\varFP(x) \defeq \bigvee_{a \in \varPt} x = a\]
+    qui, alors, reste la même dans n'importe quelle extension élémentaire de
+    $\varMM$.\qedhere
+  \end{itemize}
+\end{proof}
+
+Revenons maintenant aux exemples de parties définissables que nous avons
+présentés précédemment. Considérons dans $\bZ$ la partie $\bZ_+$ des entiers
+positifs. Cette partie est-elle $\vide$-définissable~? La question est non,
+ce que l'on peut motiver en disant que n'importe quelle formule dont la seule
+constante est $0$ ne peut pas privilégier un côté plutôt que l'autre du $0$.
+Par exemple, une quantification $\exists x$ peut aussi bien porter sur un
+entier positif que négatif. Ainsi, si on écrit une formule $\varFF$ qui
+définit $\bZ_+$, on peut aussi bien utiliser la même formule et inverser
+le signe de chaque paramètre intervenant dans $\varFF$ pour avoir la
+même formule définissant $\bZ_-$. Cette présentation intuitive peut en fait
+être rendue formelle, grâce à la notion d'automorphisme.
+
+\begin{definition}[Automorphisme relativement à une partie]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On appelle un $\varPt$-automorphisme de
+  $\varMM$ un isomorphisme $\makeFunNameIso{\varMoM}{\varMM}{\varMM}$
+  tel que
+  \[\forall a \in \varPt, \varMoM(a) = a\]
+\end{definition}
+
+\begin{remark}
+  On peut voir le groupe de Galois d'une extension de corps $K < L$ comme le
+  groupe des $K$-automorphismes de $L$, avec cette terminologie.
+\end{remark}
+
+Le lemme suivant donne un critère souvent efficace pour montrer qu'une partie
+n'est pas définissable.
+
+\begin{lemma}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM^n$. Pour toute partie $\varPt$-définissable $\varPtB$
+  et tout $\varPt$-automorphisme $\varMoM$, on a
+  \[\varMoM(\varPtB) = \varPtB\]
+\end{lemma}
+
+\begin{proof}
+  On remarque que pour toute formule $\varFF\in\Formula(\SignP{\varPt})$ et
+  toute donnée de paramètres $\vec m$ dans $\varMM$, on a
+  \[\varMM,\vec m \satisf\varFF \iff \varMM,\varMoM(\vec m)\satisf\varFF\]
+  en effectuant une induction sur $\varFF$. Remarquons que cette propriété
+  est vérifiée spécifiquement parce que les interprétations des $\Cc_a$
+  pour $a \in \varPt$ ne changent pas par $\varMoM$. On en déduit qu'appartenir
+  à $\varPtB$ est équivalent à appartenir à $\varMoM(\varPtB)$.
+\end{proof}
+
+\begin{example}
+  La partie $\bZ_+$ n'est pas $\vide$-définissable, puisqu'on peut construire
+  l'automorphisme $k \mapsto -k$ qui envoie $\bZ_+$ sur $\bZ_-$. Cependant,
+  cet automorphisme n'est pas un $\{1\}$-automorphisme, et ne nous permet donc
+  pas, par exemple, d'en déduire que $\bZ_+$ n'est pas $\{1\}$-définissable.
+\end{example}
+
+\noindent
+On définit pour finir la notion de clôture adaptée aux parties définissables.
+
+\begin{definition}[Clôture définissable d'une partie]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$ une partie de $\varMM$. On définit la clôture
+  définissable de $\varPt$ par
+  \[\dcl(\varPt) \defeq
+  \compr{m \in \carMM}{\{m\}\in\powerdef_{\varPt}^1(\varMM)}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que pour toute partie $\varPt$, on a l'égalité
+  \[\dcl(\varPt) = \bigcup_{\varPt_0\subseteq\varPt} \dcl(\varPt_0)\]
+\end{exercise}
+
+\begin{exercise}
+  Montrer que $\dcl$ est un opérateur de clôture, c'est-à-dire qu'il vérifie les
+  trois conditions suivantes~:
+  \begin{itemize}
+  \item si $\varPt\subseteq\varPtB$ alors $\dcl(\varPt)\subseteq\dcl(\varPtB)$~;
+  \item $\varPt\subseteq\dcl(\varPt)$~;
+  \item $\dcl(\dcl(\varPt)) = \dcl(\varPt)$.
+  \end{itemize}
+  \textit{Indication~: on pourra montrer pour le troisième point que pour tout
+    $b \in \dcl(\varPt)$, il existe un entier $n$, un ensemble
+    $\varPtB\subseteq\carMM^n$ qui est $\vide$-définissable et une application
+    $\makeFunName{f}{\varPtB}{\carMM}$ dont le graphe est $\vide$-définissable
+    et des éléments $\vec{a}\in\varPt^n$ tels que $b = f(\vec a)$.}
+\end{exercise}

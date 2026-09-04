@@ -5,7 +5,7 @@
 
 \lettrine{C}{e} dernier chapitre de théorie des ensembles aborde la théorie
 descriptive des ensembles. Nous n'en donnerons qu'une courte introduction, en
-présentant les propriétés essentielles des espace polonais ainsi qu'une étude
+présentant les propriétés essentielles des espaces polonais ainsi qu'une étude
 des espaces de Cantor et de Baire, espaces polonais incontournables.
 
 Tout d'abord, rappelons les définitions~: un espace complet est un espace
@@ -76,7 +76,7 @@ remarquable.
   on veut trouver une boule pour $\vardis$ de taille $\vareps$ autour de $x$.
   Quitte à prendre $\vareps$ plus petit, on sait que la fonction
   $x\mapsto \dfrac{x}{1 + x}$ est surjective sur $\intFF{0}{1}$ donc sur
-  $\intFF{0}{\vareps}$ (si $\vareps > 1$, alors trouver une boule inclue dans
+  $\intFF{0}{\vareps}$ (si $\vareps > 1$, alors trouver une boule incluse dans
   $\boule{x}{1}$ nous donne encore le résultat souhaité). On peut donc trouver
   $\rho$ tel que $\dfrac{\rho}{1 + \rho} = \vareps$. Par stricte croissance
   de $x\mapsto \dfrac{x}{1 + x}$, on sait aussi que pour tout
@@ -108,14 +108,14 @@ remarquable.
 
   Ainsi on peut considérer que pour chaque espace $X_i$, on possède une
   distance complète $\vardis_i$ bornée induisant la topologie de $X_i$. On
-  définit alors la $\vardis$ distance sur $\displaystyle\prod_{i\in\bN} X_i$ par
+  définit alors la distance $\vardis$ sur $\displaystyle\prod_{i\in\bN} X_i$ par
   \[\vardis((x_n),(y_n)) \defeq \sum_{n \in \bN} \frac{\vardis_n(x_n,y_n)}{2^n}\]
   Cette distance définit bien la topologie produit sur
   $\displaystyle\prod_{i\in\bN} X_n$.
 
   Soit une boule $\boule{(x_n)}{\vareps}$ pour notre distance $\vardis$, alors à
   partir d'un certain rang $n_0$~:
-  \[\forall m \geq n, \forall x,y \in X_m,
+  \[\forall m \geq n_0, \forall x,y \in X_m,
   \frac{\vardis_m(x,y)}{2} < \frac{\vareps}{2}\]
   On veut prouver qu'on peut trouver un ouvert contenant $(x_n)$ pour la
   topologie produit et contenu dans $\boule{(x_n)}{\vareps}$ (montrant ainsi
@@ -140,7 +140,8 @@ remarquable.
   Réciproquement, soit une famille finie $(\varOp_i)_{i \in F}$ où
   $F \subfin \bN$ et $\varOp_i$ est une boule ouverte de $X_i$, disons
   \[\varOp_i \defeq \boule{(x_i)}{\vareps_i}\]
-  et soient $(x_j)_{j \notin F}$ une famille d'éléments complétant $(x_i)_{i \in I}$
+  et soient $(x_j)_{j \notin F}$ une famille d'éléments complétant
+  $(x_i)_{i \in F}$
   en un élément de $\displaystyle\prod_{n \in \bN} X_n$. Montrons qu'on peut
   trouver une boule ouverte centrée en $(x_i)_{i \in \bN}$ incluse dans le
   cylindre engendré par $(\varOp_i)$. En prenant
@@ -149,7 +150,7 @@ remarquable.
   \[\varOp \defeq \boule{(x_i)}{\vareps}\]
   on sait que pour tout
   $\displaystyle (y_i)_{i \in \bN} \in \prod_{n \in \bN} X_n$,
-  si $(y_i) \in U$ alors
+  si $(y_i) \in \varOp$ alors
   \[\sum_{n \in \bN} \vardis_i(x_i,y_i) < \vareps\]
   donc, puisque $\vardis_i(x_i,y_i)$ est inférieur à $\vardis((x_n),(y_n))$, on
   sait que $\vardis_i(x_i,y_i) < \vareps_i$, donc $y_i \in \varOp_i$. Ainsi
@@ -203,7 +204,7 @@ remarquable.
   est dénombrable. Montrons maintenant que $D'$ est dense dans le produit
   dénombrable des $X_n$. Un ouvert de $\displaystyle\prod_{n \in \bN} X_n$
   correspond à un ensemble fini $F\subfin \bN$ et, pour chaque $n \in F$, un
-  ouvert $\varOp_n \subseteq X_n$. Par chaque $n$, comme $D_n$ est dense dans
+  ouvert $\varOp_n \subseteq X_n$. Pour chaque $n$, comme $D_n$ est dense dans
   $X_n$, on peut donc trouver $y_n \in D_n \cap \varOp_n$. Alors la suite
   \[u_n \defeq \begin{cases} y_n\text{ si } n \in F \\
     x_n \text{ sinon}\end{cases}\]
@@ -217,12 +218,12 @@ disjointe. Nous n'avons pas précisé ce qu'est l'union disjointe dans le cas de
 espaces topologiques, nous donnons donc la définition ici~:
 
 \begin{definition}[Union disjointe d'espaces topologiques]
-  Soit $(X_i,\topo_i)_{i\in I}$ une famille d'espaces topologiques. L'union
+  Soit $(X_i,\topo_i)_{i\in\indSet}$ une famille d'espaces topologiques. L'union
   disjointe de cette famille est l'espace donné par
-  \[\coprod_{i\in I} X_i \defeq \compr{(i,x)}{x \in X_i}\]
+  \[\coprod_{i\in \indSet} X_i \defeq \compr{(i,x)}{i\in\indSet, x \in X_i}\]
   et où la topologie est engendrée par la famille de parties
-  \[\topoP{\coprod_{i\in I} X_i}\defeq
-  \bigcup_{i \in I}\compr{\compr{(i,x)}{x\in U}}{U\in\topo_i}\]
+  \[\topoP{\coprod_{i\in \indSet} X_i}\defeq
+  \bigcup_{i \in \indSet}\compr{\compr{(i,x)}{x\in \varOp}}{\varOp\in\topo_i}\]
 \end{definition}
 
 Intuitivement, l'union disjointe des $(X_i)$ est l'espace global dans lequel
@@ -245,11 +246,12 @@ proximité entre eux.
   \end{cases}\]
   On veut montrer que les deux bases s'engendrent l'une l'autre~:
   \begin{itemize}
-  \item soit $i\in I, \varOp \in \topo_i$. Comme la topologie de $X_i$ est
-    engendrée par $\vardis_i$, on peut écrire
-    \[\varOp = \bigcup_{j \in J} \boule{x_j}{\vareps_j}\]
-    pour un certain ensemble d'indices $J$. Mais dans ce cas,
-    \[\bigcup_{j \in J}\boule{(i,x_j)}{\vareps_j} = \compr{(i,x)}{x \in \varOp}\]
+  \item soit $i\in \indSet, \varOp \in \topo_i$. Comme la topologie de $X_i$
+    est engendrée par $\vardis_i$, on peut écrire
+    \[\varOp = \bigcup_{j \in \indSetB} \boule{x_j}{\vareps_j}\]
+    pour un certain ensemble d'indices $\indSetB$. Mais dans ce cas,
+    \[\bigcup_{j \in \indSetB}\boule{(i,x_j)}{\vareps_j} =
+    \compr{(i,x)}{x \in \varOp}\]
   \item soit $x\in \coprod_i X_i$ et $\vareps > 0$. Si
     $\vareps \geq 1$, alors $\boule{x}{\vareps} = \coprod_i X_i$ qui est un
     ouvert par définition. Sinon, on peut écrire $x = (i,y)$, et dans ce cas
@@ -290,7 +292,7 @@ Enfin, on a stabilité par partie fermée.
   complètement métrisable passe directement à $\varCl$.
   
   Soit $D$ une partie dénombrable dense dans $X$, notons-la
-  $\{x_n\}_{n\in\bN}$. On construit alors un ensemble $D'\subseteq F$~: pour
+  $\{x_n\}_{n\in\bN}$. On construit alors un ensemble $D'\subseteq \varCl$~: pour
   chaque $i\in \bN$ et chaque $j\in \bN^*$, si
   $\boule{x_i}{\dfrac{1}{j}}\cap \varCl\neq\vide$ alors on ajoute à $D'$
   un élément $y_{n,j}$ de cet ensemble. Soit $y\in\varCl$ et $\vareps > 0$, on
@@ -307,7 +309,7 @@ Enfin, on a stabilité par partie fermée.
     &\leq \frac{1}{j} + \frac{1}{j}\\
     &\leq \vareps
   \end{align*}
-  $D'$ est donc dense dans $F$. $F$ est donc un espace polonais.
+  $D'$ est donc dense dans $\varCl$. $\varCl$ est donc un espace polonais.
 \end{proof}
 
 \noindent
@@ -324,7 +326,7 @@ exemples d'espaces polonais.
 \begin{example}
   Les espaces suivants sont des espaces polonais (avec leur topologie usuelle)~:
   \begin{itemize}
-  \item l'intervale $\intFF{0}{1}$, les hypercubes $\intFF{0}{1}^n$ pour tout
+  \item l'intervalle $\intFF{0}{1}$, les hypercubes $\intFF{0}{1}^n$ pour tout
     $n\in\bN$ et le cube de Hilbert $\intFF{0}{1}^{\bN}$.
   \item de même avec $\bR$ et $\bC$ à la place de $\intFF{0}{1}$.
   \item le cercle unité \[\bU \defeq \compr{z\in \bC}{|z| = 1}\]
@@ -345,7 +347,7 @@ exemples d'espaces polonais.
 Un outil important de théorie descriptive des ensembles est la hiérarchie de
 Borel. Elle permet de hiérarchiser les parties d'un espace topologique suivant
 la complexité à les construire. Plus précisément, cette hiérarchie s'applique
-aux boréliens, notion importante entre autre en théorie de la mesure. Nous
+aux boréliens, notion importante entre autres en théorie de la mesure. Nous
 rappelons la définition d'ensemble des boréliens, qui peut être vu comme la plus
 petite $\sigma$-algèbre contenant $\topo$.
 
@@ -484,11 +486,11 @@ condition n'est pas anodine.
 Une version équivalente de cette définition est que tout filtre de voisinage
 peut se définir par des compacts. Cette définition est largement plus
 manipulable, puisqu'elle permet de directement considérer des compacts aussi
-proches d'un points que l'on veut.
+proches d'un point que l'on veut.
 
 \begin{proposition}\label{prop.carac.compac.loc}
   Soit un espace $(X,\topo)$ séparé. Cet espace est localement compact si et
-  seulement si, pour tout $x$, il existe une famille $(\varCK_i)_{i \in I}$
+  seulement si, pour tout $x$, il existe une famille $(\varCK_i)_{i \in \indSet}$
   engendrant le filtre des voisinages de $x$.
 \end{proposition}
 
@@ -517,7 +519,7 @@ proches d'un points que l'on veut.
     $\varCK\cap \varOp$, on peut considérer que $\varVW_y$ est une partie de
     $\varCK \cap \varOp$. Comme $(\varVV_y)$ est un recouvrement de
     $\front(\varCK\cap \varOp)$, on peut par compacité en extraire un
-    recouvrement fini $(\varVV_y)_{y \in F}$.En prenant alors
+    recouvrement fini $(\varVV_y)_{y \in F}$. En prenant alors
     \[\varVW \defeq \bigcap_{y \in F} \varVW_y\]
     on a alors un voisinage de $x$ disjoint de tous les $\varVV_y$, supposés
     ouverts, donc l'adhérence de $\varVW$ est disjointe de
@@ -546,15 +548,15 @@ d'Alexandrov, comme son nom l'indique, est de produire un espace compact.
 \end{proposition}
 
 \begin{proof}
-  Soit $(\varOp_i)_{i\in I}$ un recouvrement ouvert de $\CompA X$, alors il
-  existe $i\in I$ tel que $\infty\in\varOp_i$. Par définition de $\CompA\topo$,
-  on trouve $\varCK$ compact tel que
+  Soit $(\varOp_i)_{i\in \indSet}$ un recouvrement ouvert de $\CompA X$, alors il
+  existe $i\in \indSet$ tel que $\infty\in\varOp_i$. Par définition de
+  $\CompA\topo$, on trouve $\varCK$ compact tel que
   $\varOp_i=(X\setminus\varCK)\cup\{\infty\}$.
-  On en déduit que $(\varOp_j)_{j\in I\setminus\{i\}}$ est un recouvrement de
+  On en déduit que $(\varOp_j)_{j\in \indSet\setminus\{i\}}$ est un recouvrement de
   $\varCK$, mais comme on a un recouvrement d'un compact, on peut en extraire un
-  recouvrement fini $(\varOp_j)_{j\in F}$ où $F\subfin I\setminus\{i\}$. Ainsi
-  $(\varOp_j)_{j\in F\cup \{i\}}$ est un recouvrement fini de $\CompA X$, donc
-  $(\CompA X,\CompA\topo)$ est compact.
+  recouvrement fini $(\varOp_j)_{j\in F}$ où $F\subfin \indSet\setminus\{i\}$.
+  Ainsi $(\varOp_j)_{j\in F\cup \{i\}}$ est un recouvrement fini de $\CompA X$,
+  donc $(\CompA X,\CompA\topo)$ est compact.
 \end{proof}
 
 Cette notion de compactification va nous servir pour considérer de nouveaux
@@ -640,7 +642,7 @@ On peut finalement énoncer nos derniers résultats de stabilité.
   Pour le sens réciproque, si $(X,\topo)$ est compact séparé à base dénombrable,
   on veut appliquer le \cref{desc.thm.urysohn}~: il nous suffit donc de vérifier
   que cet espace est régulier. Soit $\varCl\subseteq X$ fermé et
-  $x\in X \setminus \varCl$. Notons $\varOp \defeq X \setminus C$. Comme
+  $x\in X \setminus \varCl$. Notons $\varOp \defeq X \setminus \varCl$. Comme
   $(X,\topo)$ est séparé, on sait que pour tout $y \in \varCl$, il existe
   $(\varOp_y,\varOpB_y)$ deux ouverts tels que
   \[\begin{cases}
@@ -654,7 +656,7 @@ On peut finalement énoncer nos derniers résultats de stabilité.
   notons cet ensemble $\varOpB$. On voit alors que
   \[\varOp' \defeq \bigcap_{y\in F} \varOp_y\]
   est un ouvert comme intersection finie d'ouverts, et
-  $\varOp'\cap \varOpB = \vide$ et $x \in varOp'$ puisque chaque $\varOp_y$
+  $\varOp'\cap \varOpB = \vide$ et $x \in \varOp'$ puisque chaque $\varOp_y$
   contient $x$ par construction. On a donc trouvé les deux ouverts souhaités.
 
   Enfin, supposons que $(X,\topo)$ est un espace métrique compact à base
@@ -690,7 +692,8 @@ valeurs dans $\bC$.
 \end{exercise}
 
 Enfin, en réutilisant le résultat sur les $\Gdel$, on peut affaiblir les
-conditions de la \cref{desc.prop.second} à de la compacité locale.
+conditions de la \cref{desc.prop.second} pour avoir un espace localement
+compact plutôt que compact.
 
 \begin{proposition}
   Soit $(X,\topo)$ un espace localement compact à base dénombrable, c'est un
@@ -790,7 +793,7 @@ réfère au \cref{chp.auto} pour voir un traitement général des suites finies.
   \item pour tout $\varwd\in 2^{<\Ow}$, $X_{\varwd\wdPt 0} \subseteq X_\varwd$ et
     $X_{\varwd\wdPt 1} \subseteq X_\varwd$.
   \item pour tout $\varwd\in 2^{<\Ow}$,
-    $X_{\varwd\star 0}\cap X_{\varwd\star 1} = \vide$.
+    $X_{\varwd\wdPt 0}\cap X_{\varwd\wdPt 1} = \vide$.
   \item pour tout $\varwd \in 2^{<\omega}$ et $b \in \intB$,
     $\adher{X_{\varwd\wdPt b}}\subseteq X_\varwd$.
   \end{itemize}
@@ -826,7 +829,7 @@ réfère au \cref{chp.auto} pour voir un traitement général des suites finies.
   longueur, on a $X_\varwd \cap X_\varwv = \vide$. Pour cela, en considérant le
   plus grand préfixe commun entre $\varwd$ et $\varwv$, notons-le $p$, on sait
   (sans perte de généralité, quitte à inverser $\varwd$ et $\varwv$) que
-  $X_\varwd \subseteq X_{p\wdPt 0}$ et $X_\varwv \subseteq X_{p\star 1}$, donc
+  $X_\varwd \subseteq X_{p\wdPt 0}$ et $X_\varwv \subseteq X_{p\wdPt 1}$, donc
   $X_\varwd\cap X_\varwv =\vide$.
 
   On en déduit donc directement l'injectivité de $f$, puisque si
@@ -834,7 +837,7 @@ réfère au \cref{chp.auto} pour voir un traitement général des suites finies.
   partir d'un certain rang fini, permettant d'appliquer notre résultat
   précédent.
 
-  On en déduit aussi que pour tout $\varwd \in 2^{<\Ow}$.
+  On en déduit aussi que pour tout $\varwd \in 2^{<\Ow}$,
   \[f^{-1}(X_\varwd) = \ext(\varwd)\]
   En effet, on sait dans un sens que pour toute suite $\varCan$, l'adhérence de
   $X_{\varCan\restr n}$ est incluse dans $X_{\varCan \restr{n + 1}}$ et que
@@ -935,11 +938,12 @@ espaces parfaits.
 On peut maintenant construire le schéma de Cantor que l'on évoquait.
 
 \begin{proposition}
-  Soit $(X,\topo)$ un espace polonais parfait et $\vardis$ une distance sur
-  cet espace. Il existe une injection continue $2^{\bN} \to X$.
+  Soit $(X,\topo)$ un espace polonais parfait. Il existe une injection continue
+  $2^{\bN} \to X$.
 \end{proposition}
 
 \begin{proof}
+  On fixe $\vardis$ une distance sur $X$.
   On construit pour cela un schéma de Cantor de diamètre évanescent constitué
   d'ouverts de $X$~:
   \begin{itemize}
@@ -954,18 +958,18 @@ On peut maintenant construire le schéma de Cantor que l'on évoquait.
     \[X_{\varwd\wdPt 0} = X_\varwd\cap \varOp_x \cap \boule{x}{2^{-|\varwd|+1}}\qquad
     X_{\varwd\wdPt 1} = X_\varwd\cap \varOp_y \cap \boule{y}{2^{-|\varwd|+1}}\]
   \end{itemize}
-  Comme $X_\varwd$ a un diamètre inférieur à $2^{-|varwd|}$, on en déduit que le
+  Comme $X_\varwd$ a un diamètre inférieur à $2^{-wul}$, on en déduit que le
   diamètre du schéma de Cantor est bien évanescent. Il nous reste donc à
   vérifier l'assertion suivante~:
   \[\forall \varCan\in 2^\bN,\bigcap_{n \in \bN}X_{\varCan\restr n} \neq\vide\]
   On sait que chaque $X_\varwd$ est non vide, par construction, donc on peut
-  trouver une suite $(x_n)_{n\in\bN}$ telle que $x_i\in X_{\varCan\restr n}$~:
+  trouver une suite $(x_n)_{n\in\bN}$ telle que $x_n\in X_{\varCan\restr n}$~:
   celle-ci est de Cauchy. En effet, comme à partir du rang $n$ tous les points
   de $(x_n)$ appartiennent à $X_{\varCan\restr n}$, on en déduit que la distance
   entre deux éléments est inférieure à $2^{-n}$, nous donnant la propriété
   d'être de Cauchy puisque $2^{-n} \xrightarrow[n\to\infty]{} 0$. Comme $X$ est
   complet, on en déduit que $(x_n)$ converge et donc que
-  $\bigcap_{n\in\bN} X_{\varwd\restr n}\neq\vide$.
+  $\bigcap_{n\in\bN} X_{\varCan\restr n}\neq\vide$.
 
   Ainsi, grâce à la \cref{desc.prop.schem.C}, on en déduit l'existence
   d'une injection continue de $2^\bN$ dans $X$.
@@ -989,8 +993,8 @@ Cantor-Bendixson.
 
 \begin{theorem}[Cantor-Bendixson]
   Soit $(X,\topo)$ un espace polonais. Il existe alors un ouvert dénombrable
-  $\varOp\in \Ow$ et une partie parfaite $\varPaf\subseteq X$ tels que
-  $X = \varOp \cup \varPaf$.
+  $\varOp\in \topo$ et une partie parfaite disjointe $\varPaf\subseteq X$ tels
+  que $X = \varOp \cup \varPaf$.
 \end{theorem}
 
 \begin{proof}
@@ -998,27 +1002,27 @@ Cantor-Bendixson.
   de retirer les points isolés. Cependant, on peut imaginer que de nouveaux
   points deviennent isolés à cause de ce retrait, obligeant à itérer ce
   processus. Comme l'ensemble $\varOp$ souhaité se trouve être dénombrable, le
-  processus n'a à être itéré qu'un nombre dénombrable de fois pour converger,
-  ce qui signifie qu'un point qui ne sera jamais retiré est un point dont les
-  voisinages sont indénombrables.
+  processus n'a besoin d'être itéré qu'un nombre dénombrable de fois pour
+  converger, ce qui signifie qu'un point qui ne sera jamais retiré est un point
+  dont les voisinages sont indénombrables.
 
   Le point de départ de la preuve à proprement parler va à rebours de cette
   ébauche. On appelle un point de condensation de $X$ un point $x$ tel que
   tous les voisinages de $x$ sont indénombrables. On définit alors
   \[\varPaf \defeq \compr{x \in X}{x\text{ est un point de condensation}}\]
   On fixe désormais une base dénombrable de $\topo$, qu'on notera
-  $(varOp_i)_{i\in I}$. Pour tout $i\in I$, si $\varOp_i$ est dénombrable alors
-  tous ses éléments sont hors de $\varPaf$ (par définition d'être un point de
-  condensation). Réciproquement, si un point $x$ n'est pas de condensation,
-  alors on trouve un ouvert $\varOp$ dénombrable tel que $x\in \varOp$, mais
-  alors comme $(\varOp_i)$ est une base, on peut trouver un ouvert
-  $\varOp_i\subseteq \varOp$ tel que $x\in \varOp_i$, qui est nécessairement
-  dénombrable par inclusion~: $x$ appartient à un certain $\varOp_i$
-  dénombrable.
+  $(\varOp_i)_{i\in \indSet}$. Pour tout $i\in \indSet$, si $\varOp_i$ est
+  dénombrable alors tous ses éléments sont hors de $\varPaf$ (par définition
+  d'être un point de condensation). Réciproquement, si un point $x$ n'est pas de
+  condensation, alors on trouve un ouvert $\varOp$ dénombrable tel que
+  $x\in \varOp$, mais alors comme $(\varOp_i)$ est une base, on peut trouver un
+  ouvert $\varOp_i\subseteq \varOp$ tel que $x\in \varOp_i$, qui est
+  nécessairement dénombrable par inclusion~: $x$ appartient à un certain
+  $\varOp_i$ dénombrable.
 
   On en déduit donc que
   \[\varOp \defeq X\setminus \varPaf =
-  \bigcup\compr{\varOp_u}{i\in I, \Card(\varOp_u)\leq\Cal_0}\]
+  \bigcup\compr{\varOp_i}{i\in \indSet, \Card(\varOp_i)\leq\Cal_0}\]
   est dénombrable (comme union dénombrable d'ensembles dénombrable). Il nous
   reste donc à montrer que $\varPaf$ est parfait dans $X$. Soit $x\in \varPaf$
   et $\varOp$ un ouvert contenant $x$. Cet ouvert est indénombrable puisqu'il
@@ -1140,15 +1144,15 @@ $X_i\cup\cdots \cup X_n$~:
 
   On a donc construit une injection continue de l'espace de Cantor dans $X$.
   Comme à chaque étape, $X_\varwd$ est partitionné, on sait que l'injection est
-  de plus surjective~: si on considère $x \in X$, alors on peut trouver une
-  suite $\varCan$ telle que $f(\varCan) = x$. Si $x \in X_0$, alors on définit
-  $\varCan_0 = 0$, sinon on définit $\varCan_0 = 1$, et on procède ainsi par
-  induction sur $n$. Si la suite n'atteint pas $x$, cela signifie que $x$ est
-  dans un ensemble $X_\varwd$ (car il est au moins dans $X_\Ewd = X$) mais dans
-  aucun élément de la partition de $X_\varwd$ en $X_1,\ldots,X_n$, ce qui est
-  absurde. Il nous reste enfin à vérifier que l'image d'un ouvert de l'espace de
-  Cantor est ouvert. Cela se voit directement, puisque l'image de $\ext(\varwd)$
-  pour $\varwd\in 2^{<\omega}$ est choisie comme un ouvert-fermé.
+  de plus surjective~: pour tout $x \in X$, on peut trouver une suite $\varCan$
+  telle que $f(\varCan) = x$. Si $x \in X_0$, alors on définit $\varCan_0 = 0$,
+  sinon on définit $\varCan_0 = 1$, et on procède ainsi par induction sur $n$.
+  Si la suite n'atteint pas $x$, cela signifie que $x$ est dans un ensemble
+  $X_\varwd$ (car il est au moins dans $X_\Ewd = X$) mais dans aucun élément de la
+  partition de $X_\varwd$ en $X_1,\ldots,X_n$, ce qui est absurde. Il nous reste
+  enfin à vérifier que l'image d'un ouvert de l'espace de Cantor est ouvert.
+  Cela se voit directement, puisque l'image de $\ext(\varwd)$ pour
+  $\varwd\in 2^{<\omega}$ est choisie comme un ouvert-fermé.
 
   On en déduit que $X \cong 2^\bN$.
 \end{proof}
@@ -1176,19 +1180,19 @@ peut prouver qu'un espace à base dénombrable est un espace de Lindelöf.
 \begin{proof}
   On considère donc un espace topologique $(X,\topo)$ et une base dénombrable de
   cet espace $(\varOp_n)_{n \in \bN}$. Soit un recouvrement ouvert
-  $(\varOpB_i)_{i \in I}$ de $X$. Pour tout $x \in X$, on sait qu'on peut trouver
-  $i_x \in I$ tel que $x \in \varOpB_{i_x}$. Comme $(\varOp_n)$ est une base de
-  l'espace et que $\varOpB_i$ est un ouvert, on peut donc trouver
-  $J_x \subseteq \bN$ tel que
-  \[\varOpB_{i_x} = \bigcup_{n \in J_x} \varOp_n\]
+  $(\varOpB_i)_{i \in \indSet}$ de $X$. Pour tout $x \in X$, on sait qu'on peut
+  trouver $i_x \in \indSet$ tel que $x \in \varOpB_{i_x}$. Comme $(\varOp_n)$ est
+  une base de l'espace et que $\varOpB_i$ est un ouvert, on peut donc trouver
+  $\indSetB_x \subseteq \bN$ tel que
+  \[\varOpB_{i_x} = \bigcup_{n \in \indSetB_x} \varOp_n\]
   On considère maintenant
-  \[J \defeq \bigcup_{x \in X} J_x\]
-  On sait donc que l'union des $\varOp_j$ pour $j \in J$ vaut $X$, puisque ces
-  indices donnent un recouvrement de $X$. De plus, pour tout $\varOp_j$, il
-  existe un $\varOpB_i$ contenant $\varOp_j$ (par construction), donc on peut
-  considérer l'ensemble $\compr{\varOpB_{i_j}}{j \in J}$ des tels $\varOpB_i$.
-  Cet ensemble est dénombrable et recouvre $X$ puisqu'il contient l'union des
-  $\varOp_j$.
+  \[\indSetB \defeq \bigcup_{x \in X} \indSetB_x\]
+  On sait donc que l'union des $\varOp_j$ pour $j \in \indSetB$ vaut $X$,
+  puisque ces indices donnent un recouvrement de $X$. De plus, pour tout
+  $\varOp_j$, il existe un $\varOpB_i$ contenant $\varOp_j$ (par construction),
+  donc on peut considérer l'ensemble $\compr{\varOpB_{i_j}}{j \in \indSetB}$ des
+  tels $\varOpB_i$. Cet ensemble est dénombrable et recouvre $X$ puisqu'il
+  contient l'union des $\varOp_j$.
 \end{proof}
 
 Comme pour un espace compact dont une partie ouverte peut ne pas être ouverte,
@@ -1210,7 +1214,7 @@ que l'on prouve dans l'exercice suivant.
 \end{remark}
 
 \noindent
-Cela nous permet enfin de donner la caractériser de l'espace de Baire.
+Cela nous permet enfin de donner la caractérisation de l'espace de Baire.
 
 \begin{theorem}[Caractérisation de l'espace de Baire]
   Soit $(X,\topo)$ un espace polonais de dimension zéro et tel que tout compact
@@ -1220,7 +1224,7 @@ Cela nous permet enfin de donner la caractériser de l'espace de Baire.
 
 \begin{proof}
   On construit un schéma de Lusin dans $X$. On suppose construit notre schéma
-  jusqu'à une taille $n$ donné. Soit $\varwd \in \bN^{<\omega}$, on veut
+  jusqu'à une taille $n$ donnée. Soit $\varwd \in \bN^{<\omega}$, on veut
   définir une partition de $X_\varwd$ en ouverts-fermés de diamètre inférieur à
   la moitié de celui de $X_\varwd$ (on suppose que $X_\varwd$ est un ouvert-fermé
   de diamètre inférieur à $2^{-|\varwd|}$, et qu'il est non vide). En considérant
@@ -1259,7 +1263,7 @@ Cela nous permet enfin de donner la caractériser de l'espace de Baire.
   on sait que
   \[\varOpB' \defeq \varOpB \setminus \bigcup_{j < i} X_{\varwd\wdPt j}\]
   est un ouvert-fermé (non vide d'après le choix effectué). On définit alors
-  \[X_{s \star i} = \varOpB'\]
+  \[X_{s \wdPt i} = \varOpB'\]
 
   On a donc construit un schéma de Lusin vers notre espace $X$. Notre
   construction impose que ce schéma est surjectif, puisque tout élément est dans

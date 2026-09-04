@@ -1,0 +1,1353 @@
+\chapter{Types}
+\label{chp.types.mod}
+
+\minitoc
+
+\lettrine{L}{ors} du \cref{chp.topo}, nous avons étudié la dualité de Stone.
+Par cette dualité, on a vu que les structures logiques décrites par des algèbres
+de Boole sont étroitement liées à des espaces topologiques (les espaces de
+Stone~: espaces séparés compacts et admettant une base d'ouverts-fermés). Ce
+chapitre marque le retour de cette dualité, puisque nous allons étudier la
+structure des formules à $n$ variables libres.
+
+Ce chapitre est composé d'une première section dédiée à la compréhension des
+types, en introduisant les définitions et outils essentiels, puis en démontrant
+le théorème d'omission des types. La seconde section, elle, donne une
+utilisation des types pour les théories $\Cal_0$-catégoriques.
+
+\section{Types et topologie}
+
+\subsection{Définition des types}
+
+Sans le dire, on a déjà vu précédemment la notion de type dans le
+\cref{chp.struct.mod} avec le \cref{cor.typ1}. Lorsqu'on énonce
+\[\forall \varFF(x)\in\Formula_1(\Sign), \varMM,m\satisf\varFF \iff
+\varMM,n\satisf\varFF\]
+on énonce en fait que $m$ et $n$ ont le même type. Une première façon,
+intuitive, d'appréhender un type se présente alors~: un type est l'ensemble des
+formules vérifiées par des paramètres.
+Cependant, on travaille \og dans l'autre sens\fg pour définir les types~: on
+donne une notion semblant plus générale, dont on vérifie ensuite qu'elle
+correspond à notre intuition d'un ensemble de formules associées à un paramètre.
+Les ensembles qui vont nous intéresser sont des ensembles de formules qu'il est
+possible de réaliser.
+
+Rappelons qu'on considère l'ensemble $\Var$ comme énuméré par $\bN$,
+c'est-à-dire comme s'écrivant $\compr{x_n}{n \in \bN}$, et qu'on note
+$\Formula_n(\Sign)$ l'ensemble des formules sur la signature $\Sign$ dont les
+variables libres appartiennent à $\{x_0,\ldots,x_{n-1}\}$.
+
+\begin{definition}[Partie réalisée, finiment réalisable]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On dit qu'une
+  partie $\varPt\subseteq\Formula_n(\Sign)$ est réalisée dans $\varMM$ s'il
+  existe une donnée de paramètres $\vec m \in \carMM^n$ telle que
+  \[\forall \varFF \in \varPt, \varMM,\vec m \satisf\varFF\]
+  On dit que $\varPt$ est finiment réalisable dans $\varMM$ si toute partie
+  finie de $\varPt$ est réalisée dans $\varMM$.
+\end{definition}
+
+Un premier point à relever est que, si la seconde définition paraît plus faible,
+elle ne l'est pas tant que ça~: si l'on travaille au sein d'une classe de
+modèles, on peut toujours réaliser un ensemble finiment réalisable par
+compacité.
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. Si une partie
+  $\varPt(\vec x)\subseteq\Formula_n(\Sign)$ est finiment réalisable, alors il
+  existe une extension élémentaire $\varMN$ de $\varMM$ telle que $\varPt$ est
+  réalisée dans $\varMN$.
+\end{proposition}
+
+\begin{proof}
+  On enrichit $\Sign_{\carMM}$ avec un vecteur de constantes $\vec{\Cc}$, et on
+  vérifie que
+  \[\varT \defeq \DiagEl(\varMM)\cup\varPt(\vec{\Cc})\]
+  est satisfiable, car finiment satisfiable~: pour chaque partie finie de
+  $\varPt$, on peut trouver une réalisation dans $\varMM$ et donc un modèle
+  de $\DiagEl(\varMM)$ qui vérifie aussi ladite partie finie. Un modèle de
+  $\varT$ est par construction une extension élémentaire de $\varMM$ dans
+  laquelle $\varPt$ est réalisée.
+\end{proof}
+
+\begin{remark}
+  Là où la notion de partie réalisée dépend du modèle, la notion de partie
+  finiment réalisable est stable par équivalence élémentaire. En effet, dire
+  que $\varPt$ est finiment réalisable signifie que pour toute partie
+  finie $F\subfin\varPt$,
+  $\varMM\satisf\displaystyle\exists \vec x,\bigwedge_{\varFF \in F}\varFF(x)$.
+  Ainsi, si $\varMM\eltEq \varMN$ alors les parties finiment réalisables sont
+  les mêmes dans $\varMM$ et dans $\varMN$.
+\end{remark}
+
+Ces parties, finiment réalisables ou réalisées, sont la notion qu'on utilise
+pour définir des types. On travaillera ici dans des théories complètes pour
+assurer que les parties finiment réalisables sont les mêmes.
+
+\begin{definition}[Type, type complet]
+  Soit $\Sign$ une signature et $\varT$ une théorie complète sur $\Sign$. On
+  appelle $n$-type de $\varT$ une partie $\varPt\subseteq\Formula_n(\Sign)$
+  finiment réalisable dans un (de façon équivalente, dans tout) modèle
+  $\varMM\satisf\varT$. On appelle $n$-type complet de $\varT$ un $n$-type
+  $\varTypM$ de $\varT$ tel que pour toute formule $\varFF\in\Formula_n(\Sign)$,
+  $\varFF\in\varTypM$ ou $\lnot\varFF\in\varTypM$. On note $\TypCpl(\varT)$
+  l'ensemble des $n$-types complets de $\varT$.
+\end{definition}
+
+D'après la façon dont on a introduit les types, on s'attend naturellement à ce
+qu'un vecteur de paramètres dans un modèle donné définisse un type. On remarque
+même que ce type est complet.
+
+\begin{definition}[Type associé à un vecteur d'éléments]
+  Soit $\Sign$ une signature, $\varT$ une théorie complète sur $\Sign$ et
+  $\vec m \in \carMM^n$. On appelle le $n$-type complet associé à $\vec m$
+  le type
+  \[\type^{\varMM}_n(\vec m) \defeq
+  \compr{\varFF(\vec x)\in\Formula_n(\Sign)}{\varMM,\vec m \satisf\varFF}\]
+  qu'on note plus simplement $\type^{\varMM}(\vec m)$ voire $\type(\vec m)$.
+\end{definition}
+
+Les types complets ont un rôle plus important que les types en général. Ceci
+s'explique par plusieurs propriétés qu'ils ont~:
+\begin{itemize}
+\item un type complet $\varTypM$ est clos par conséquence~: si
+  $\varFF\in\varTypM$ et $(\varFF\to\varFP)\in\varTypM$ alors
+  $\varFP\in\varTypM$~;
+\item un type complet définit en fait un ultrafiltre sur l'algèbre de
+  Lindenbaum-Tarski de $\Formula_n(\Sign)$~: c'est un ensemble de formules clos
+  par intersection et conséquence, finiment réalisable donc ne contenant pas
+  $\bot$ et tel que toute formule ou son opposé y appartient.
+\end{itemize}
+Un $n$-type $\varTypM$ étend toujours $\varT$, en voyant les propositions sur
+$\Sign$ comme des formules à $n$ variables ne les utilisant pas. On peut
+donc voir $\TypCpl(\varT)$ comme l'ensemble des extensions de $\varT$ en un
+ultrafiltre dans l'algèbre de Lindenbaum-Tarski. En particulier, l'algèbre de
+Lindenbaum-Tarski étant une algèbre de Boole, on peut voir l'ensemble de ses
+ultrafiltres comme un espace topologique (un espace de Stone).
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varT$ une théorie complète sur $\Sign$ et
+  $n \in \bN$. L'ensemble $\TypCpl(\varT)$ est un espace de Stone en le
+  munissant de la base d'ouvert-fermés
+  \[\langle \varFF\rangle_{\TypCpl(\varT)} \defeq
+  \compr{\varTypM\in\TypCpl(\varT)}{\varFF \in \varTypM}\]
+  pour $\varFF\in\Formula_n(\Sign)$.
+\end{proposition}
+
+\begin{exercise}
+  Vérifier que cet espace est bien un espace de Stone.
+\end{exercise}
+
+\begin{remark}
+  Une autre façon de construire cet espace est de considérer un fermé $\varCl$
+  dans un espace de Stone $X$, et de remarquer que $X\cap\varCl$ est aussi un
+  espace de Stone (c'est un fermé dans un compact, donc un compact, la
+  séparation passe aux parties et la base d'ouverts-fermés peut se relativiser).
+  Appelons ici \og théorie\fg un ensemble de formules avec un nombre de
+  variables borné (donc une partie de $\Formula_n(\Sign)$ pour un certain $n$).
+  Une théorie $\varT$ est l'intersection de toutes les théories complètes
+  contenant chacun de ses éléments~: on peut donc considérer le sous-espace
+  \[
+  \compr{\varT'\in\Theory_n(\Sign)}{\varT\subseteq\varT'\land
+    \varT'\text{ est complète}}
+  \]
+  En prenant $\varT$ la théorie complète que l'on souhaite, on obtient donc
+  $\TypCpl(\varT)$ en tant qu'espace de Stone.
+  Dans une telle présentation, les types en général sont plus faciles à voir
+  en prenant leur clôture par conséquence, qui forme alors un fermé de
+  $\TypCpl(\varT)$ (de façon équivalente, la clôture par conséquence d'un type
+  est une $n$-théorie cohérente, c'est-à-dire un filtre propre sur les formules
+  à $n$ variables libres).
+\end{remark}
+
+On a utilisé dans le \cref{cor.typ1} l'argument que deux éléments de même
+type induisent un plongement élémentaire partiel. On peut utiliser cet argument
+pour caractériser l'égalité des types de deux vecteurs d'éléments.
+
+\begin{proposition}
+  Soit $\Sign$ une signature $\varMM_0,\varMM_1$ deux $\Sign$-structures et
+  $\vec a$ (respectivement $\vec b$) la donnée de paramètres dans $\varMM_0$
+  (respectivement dans $\varMM_1$). Alors $\type(\vec a) = \type(\vec b)$ si
+  et seulement s'il existe une structure $\varMN$ et deux plongements
+  élémentaires $\makeSubEltName{\varMoM_0}{\varMM_0}{\varMN}$ et
+  $\makeSubEltName{\varMoM_1}{\varMM_1}{\varMN}$ tels que
+  $\varMoM_0(a_i) = \varMoM_1(b_i)$ où $i \in\intervIntB{n}$ et $n$ est la
+  taille de $\vec a$ (respectivement $\vec b$).
+\end{proposition}
+
+\begin{proof}
+  Dans le sens réciproque, si on a deux tels plongements élémentaires, alors on
+  peut évaluer $\type(\vec a)$ et $\type(\vec b)$ en regardant
+  $\type(\varMoM_0(\vec a))$ et $\type(\varMoM_1(\vec b))$, qui sont égaux.
+
+  On suppose donc que $\type(\vec a) = \type(\vec b)$ et on veut construire une
+  extension élémentaire commune qui stabilise les deux vecteurs. Pour cela, on
+  utilise le \cref{lem.extend.part.elt.embed}~: on peut construire un
+  plongement élémentaire partiel en envoyant chaque $a_i$ sur $b_i$, ce
+  qui permet d'obtenir une extension élémentaire $\varMN$ de $\varMM_1$ et un
+  plongement élémentaire de $\varMM_0$ vers $\varMN$ qui envoie $a_i$ sur
+  $b_i$.
+\end{proof}
+
+On peut aussi utiliser les types pour donner un nouveau critère pour
+l'élimination des quantificateurs.
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varT$ une théorie sur $\Sign$. Si, pour tous
+  deux modèles $\varMM,\varMN\satisf\varT$, tout $n \in \bN$ et données de
+  paramètres $\vec a \in\carMM^n,\vec b \in \carMN^n$, les deux conditions
+  suivantes sont équivalentes~:
+  \begin{enumerate}[label=(\roman*)]
+  \item pour toute formule sans quantificateur $\varFF\in\Formqf(\Sign)$ à
+    $n$ variables libres,
+    \[\varMM,\vec a \satisf\varFF\iff\varMN,\vec b\satisf\varFF\]
+  \item $\type(\vec a) = \type(\vec b)$
+  \end{enumerate}
+  alors $\varT$ a $\QE$.
+\end{proposition}
+
+\begin{proof}
+  D'après la \cref{prop.carac.qf.sem}, dire que toute formule est équivalente
+  à une formule sans quantificateur modulo $\varT$ signifie que pour
+  $\varMA\subseteq\varMM,\varMN$ avec $\varMM,\varMN\satisf\varT$ et
+  $\vec a$ la donnée de paramètres dans $\varMA$, on a l'équivalence
+  \[\varMM,\vec a \satisf\varFF\iff\varMN,\vec a\satisf\varFF\]
+  Or, cette équivalence découle directement du fait que
+  $\type(\vec a) = \type(\vec b)$, qui par hypothèse est équivalent au fait
+  que pour toute formule $\varFF$ sans quantificateur,
+  \[\varMM,\vec a \satisf\varFF\iff\varMN,\vec a \satisf\varFF\]
+  ce qui est vrai.
+\end{proof}
+
+\begin{corollary}
+  Si $\varT$ est telle que tout isomorphisme partiel entre deux modèles
+  $\varMM,\varMN\satisf\varT$ est un plongement élémentaire partiel, alors
+  $\varT$ a $\QE$.
+\end{corollary}
+
+\begin{remark}
+  Ce dernier critère peut se restreindre au cas d'isomorphismes partiels
+  finis puisqu'on s'intéresse aux $n$-types pour $n\in\bN$. En utilisant cette
+  alternative, on peut en déduire immédiatement l'élimination des
+  quantificateurs pour $\DLO$, puisque deux modèles de $\DLO$ admettent comme
+  va-et-vient l'ensemble des isomorphismes partiels finis.
+\end{remark}
+
+On définit aussi l'action de fonctions de renommage sur l'espace des $n$-types.
+Pour cela, on reprend le point de vue topologique~: la dualité de Stone, comme
+son nom de \og dualité\fg l'indique, fait correspondre des morphismes dans un
+sens à des morphismes dans l'autre sens.
+
+\begin{claim}
+  Soient $\varBB,\varBB'$ deux algèbres de Boole et
+  $\makeFunName{f}{\varBB}{\varBB'}$ un morphisme d'algèbres de Boole.
+  La fonction
+  \[\makeFun{\relev{f}}{\Spec(\varBB')}{\Spec(\varBB)}
+            {\varUlF}{\compr{x \in \varBB}{f(x)\in\varUlF}}\]
+  est une fonction continue, et on a les identités
+  \[\relevB{g\circ f} =\relev{f}\circ\relev{g} \qquad
+  \relevB{\id_{\varBB}} = \id_{\Spec(\varBB)}\]
+  De même, une fonction continue entre $X,Y$ deux espaces de Stone induit un
+  morphisme d'algèbres de Boole des ouvert-fermés de $Y$ dans les ouvert-fermés
+  de $X$, vérifiant les mêmes identités.
+\end{claim}
+
+\begin{exercise}
+  Vérifier le fait précédent.
+\end{exercise}
+
+\begin{remark}
+  Le fait précédent correspond exactement à définir un foncteur contravariant
+  entre la catégorie des algèbres de Boole et celle des espaces de Stone, puis
+  à définir un foncteur contravariant entre la catégorie des espaces de Stone et
+  celle des algèbres de Boole. Le travail effectué dans le \cref{chp.topo}
+  permet de dire que les composées des deux foncteurs sont naturellement
+  isomorphes à l'identité.
+\end{remark}
+
+Par ce fait, on peut définir des fonctions continues simplement en considérant
+des transformations logiques. En particulier, les fonctions de renommage ont
+une action naturelle sur les formules qui en font des morphismes d'algèbres de
+Boole.
+
+\begin{definition}[Action d'une fonction de renommage sur une formule]
+  Soit $\Sign$ une signature, $n,m\in\bN$. Soit une fonction de renommage
+  $\makeFunName{\varRen}{\intervIntB{n}}{\intervIntB{m}}$, on définit l'action
+  de $\varRen$ par
+  \[\makeFun{\varRen\actRen\tok}{\Formula_n(\Sign)}{\Formula_m(\Sign)}
+            {\varFF(x_1,\ldots,x_n)}{\varFF(x_{\varRen(1)},\ldots,x_{\varRen(m)})}\]
+\end{definition}
+
+\begin{exercise}
+  Vérifier que pour toute fonction de renommage $\varRen$, la fonction
+  $\varRen\actRen\tok$ induit un morphisme d'algèbre de Boole sur les algèbres
+  de Lindenbaum-Tarski associées.
+\end{exercise}
+
+\begin{definition}[Action d'une fonction de renommage sur les types]
+  Soit $\Sign$ une signature, $n,m\in\bN$. Soit une fonction de renommage
+  $\makeFunName{\varRen}{\intervIntB{n}}{\intervIntB{m}}$, on définit l'action
+  de $\varRen$ sur les $m$-types complets comme étant la fonction continue
+  associée à l'action de $\varRen$ sur les formules.
+
+  Dans le cas où la fonction de renommage est l'inclusion
+  $\intervIntB{n}\subseteq\intervIntB{m}$ avec $n \leq m$, on notera
+  $\varTypM\restr{n}$ l'action sur $\varTypM$, qu'on appelle la restriction de
+  $\varTypM$ aux $n$ premières variables.
+\end{definition}
+
+\begin{remark}
+  En dépliant la définition, on peut définir $\varRen\actRen\varTypM$ par le
+  fait que, pour tout modèle $\varMM$ et paramètres $a_1,\ldots,a_m$, on a
+  \[\varFF \in \varRen\actRen\type(a_1,\ldots,a_m)\iff
+  \varMM,(a_{\varRen(1)},\ldots,a_{\varRen(n)}) \satisf \varFF\]
+  En particulier, la restriction $\varTypM\restr{n}$ correspond à prendre un
+  vecteur $a_1,\ldots,a_m$ et à regarder le type de $a_1,\ldots,a_n$, ses
+  $n$ premiers termes.
+\end{remark}
+
+On définit aussi la notion de type relativement à une partie $\varPt$. Relevons
+que, selon les auteurs, cette notion est la première que l'on définit, et la
+définition de type pour une théorie complète est moins mise en avant.
+
+\begin{definition}[Type relativement à une partie]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit les
+  types de $\varMM$ relativement à $\varPt$ comme étant les types de la théorie
+  $\Th(\varMM_{\varPt})$. L'ensemble des $n$-types complets relativement à
+  $\varPt$ est noté $\TypCpl(\varPt)$. \'Etant donnés $n$ paramètres $\vec m$
+  dans $\varMM$, on note $\type_{\varMM}(\vec m/\varPt)$ le $n$-type
+  des $\SignP{\varPt}$-formules à $n$ variables libres vérifiées par $\vec m$.
+\end{definition}
+
+Les propriétés précédemment énoncées sur les types se transmettent sans souci au
+cas des types relativement à une partie.
+Par exemple, pour dire que $\type(\vec m/\varPt) = \type(\vec n/\varPt)$, plutôt
+que d'avoir comme énoncé équivalent que la fonction $\vec m \mapsto \vec n$ est
+un plongement élémentaire partiel, on a comme énoncé équivalent que la fonction
+$\vec m \mapsto \vec n$ et $a\mapsto a$ pour $a \in\varPt$ en est un. De même,
+on peut caractériser l'égalité par le fait qu'il y a une extension élémentaire
+aux deux structures (celle dans laquelle est $\vec m$ et celle dans laquelle
+est $\vec n$) qui fait coïncider $\vec m$ et $\vec n$, et qui laisse
+inchangé chaque élément de $\varPt$.
+
+On a vu comment des fonctions booléennes pouvaient agir sur les types complets,
+par la dualité de Stone. Dans le cas des types relatifs, on peut faire agir des
+fonctions (plus précisément, des plongements élémentaires partiels) sur des
+types relatifs. Pour cela, on commence par faire agir ces fonctions sur les
+formules.
+
+\begin{definition}[Action d'un plongement élémentaire partiel sur une formule]
+  Soit $\Sign$ une signature, $\varMM,\varMN$ deux $\Sign$-structures,
+  $\varPt\subseteq\carMM$ et $(\varPt,\varMoM)$ un plongement élémentaire
+  partiel de $\varMM$ à $\varMN$. On définit, pour tout $n\in\bN$ et formule
+  $\varFF\in\Formula_n(\SignP{\varPt})$, la formule
+  $\varFF^{\varMoM}\in\Formula_n(\SignP{\varMoM(\varPt)})$ par la
+  procédure suivante~: soit $\varFP(\vec x,\vec y)$ et $\vec a$ les paramètres
+  dans $\varPt$ tels que $\varFF = \varFP(\vec x,\vec{\Cc_a})$, on définit
+  $\varFF^{\varMoM} \defeq \varFP(\vec x,\vec{\Cc_{\varMoM(a)}})$
+\end{definition}
+
+\begin{remark}
+  La définition de $\varFF^{\varMoM}$ ne fait intervenir que la partie de
+  $\varMoM$ impliquée dans les paramètres $\vec{\Cc_a}$. En particulier, si
+  $\varPt\subseteq\varPtB$ et $(\varPtB,\varMoMB)$ est un plongement élémentaire
+  partiel qui étend $\varPt$, alors tous les $\varFF^{\varMoM}$ sont égaux aux
+  $\varFF^{\varMoMB}$ pour $\varFF\in\Formula_n(\SignP{\varPt})$. On a même le
+  résultat encore plus fort que, pour des paramètres $\vec{b}$ dans
+  $\varPtB$ et une formule $\varFF\in\Formula_n(\SignP{\varPt})$, on a
+  l'équivalence
+  \[\varMM,\vec b \satisf\varFF \iff
+  \varMM,\varMoMB(\vec b)\satisf\varFF^{\varMoM}\]
+\end{remark}
+
+\begin{notation}
+  \'Etant donné un plongement élémentaire partiel $(\varPt,\varMoM)$ entre
+  une structure $\varMM$ et une structure $\varMN$, on définit son inverse
+  comme étant le couple $(\im(\varMoM),\varMoM^{-1})$ (qu'on désignera souvent
+  simplement par $\varMoM^{-1}$), qui est un plongement élémentaire partiel
+  lui aussi.
+\end{notation}
+
+\begin{definition}[Action d'un plongement élémentaire partiel sur un type]
+  Soit $\Sign$ une signature, $\varMM,\varMN$ deux $\Sign$-structures,
+  $\varPt\subseteq\carMM$ et $(\varPt,\varMoM)$ un plongement élémentaire
+  partiel de $\varMM$ à $\varMN$. On définit l'action de $\varMoM$ sur un
+  $n$-type complet $\varTypM\in\TypCpl(\varPt)$ par
+  \[\prescript{\varMoM}{}{\varTypM} \defeq
+  \compr{\varFF\in\Formula_{n}(\SignP{\varMoM(\varPt)})}
+        {\varFF^{\varMoM^{-1}}\in\varTypM}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que $\varTypM\mapsto \prescript{\varMoM}{}{\varTypM}$ est un
+  homéomorphisme de $\TypCpl(\varPt)$ dans $\TypCpl(\varMoM(\varPt))$.
+\end{exercise}
+
+\begin{exercise}
+  Montrer que, lorsque ces notations ont un sens,
+  $\prescript{\varMoMB\circ\varMoM}{}{\varTypM} =
+  \prescript{\varMoMB}{}{(\prescript{\varMoM}{}{\varTypM})}$.
+\end{exercise}
+
+\begin{remark}
+  Si $(\varPt,\varMoM)$ est un plongement élémentaire partiel et $m\in\varMM$,
+  alors on peut étendre $\varMoM$ à $\varPt\cup\{m\}$ dès lors qu'on trouve
+  $n$ tel que $\type(m/\varPt) = \type(n/\varMoM(\varPt))$.
+\end{remark}
+
+\subsection{Omission et types isolés}
+
+Dans le \cref{chp.desc}, on a vu la notion de point isolé. Dans le cas de
+l'espace des $n$-types, on peut se demander à quoi correspond cette idée de
+point isolé. Tout d'abord, prenons un exemple dégénéré~: on se place dans
+l'espace de Stone des théories complètes (donc, en quelque sorte, des $0$-types
+en considérant la théorie vide). Par l'élimination des quantificateurs pour
+$\ACF$, on peut délimiter la théorie $\ACF$ (qui est un fermé dans cet
+espace) comme contenant les seules extensions complètes $\ACF_p$ pour
+$p$ premier (et $p = 0$). En travaillant donc dans l'espace induit par la
+théorie $\ACF$, on obtient une famille infinie de points (qui sont ces
+théories complètes). On remarque cependant que $\ACF_0$ n'a pas le même rôle
+que les autres~: si on prend par exemple $\ACF_2$, alors on peut facilement
+trouver une formule qui n'est vérifiée que par $\ACF_2$, la formule étant
+\[1 + 1 = 0\]
+Chaque $\ACF_p$ pour $p$ non nul peut ainsi être caractérisé par une seule
+formule, au sein de la théorie $\ACF$. On dit alors que l'axiome de
+caractéristique $p$ isole $\ACF_p$. Au contraire, $\ACF_0$ n'est pas isolé~:
+tout ensemble fini de formules du type $1+\cdots+1\neq 0$ définit un ensemble
+de théories dont $\ACF_0$ fait partie mais aussi chaque $\ACF_p$ pour $p$
+suffisamment grand.
+
+On trouve là le c\oe ur du phénomène qu'on va étudier~: on va chercher à
+distinguer les types qui pourront, comme $\ACF_p$, être isolés par une seule
+formule, des types qui sont des sortes de points d'accumulation.
+
+\begin{definition}[Typé isolé]
+  Soit $\Sign$ une signature et $\varT$ une théorie complète sur $\Sign$. On
+  dit qu'un $n$-type $\varTypM$ est isolé par une formule
+  $\varFF\in\Formula_n(\Sign)$ si
+  \[\varT\vD \exists \vec x, \varFF\qquad
+  \forall \varFP\in\varTypM, \varT\vD\forall \vec x, \varFF\to\varFP\]
+  Un type $\varTypM$ est isolé lorsqu'il existe une formule $\varFF$ qui isole
+  $\varTypM$.
+\end{definition}
+
+\begin{remark}
+  La définition est bien la version logique d'un point isolé au sens
+  topologique~: pour montrer que $\{\varTypM\}$ est un ouvert, comme une
+  base d'ouverts-fermés est donnée par $\langle\varFF\rangle$, on cherche une
+  formule $\varFF$ qui est réalisée (car sinon, $\langle\varFF\rangle=\vide$)
+  et dont l'ouvert-fermé engendré contient exactement $\varTypM$, ce qui
+  signifie que tous les énoncés de $\varTypM$ sont conséquence modulo
+  $\varT$ de $\varFF$.
+\end{remark}
+
+\begin{remark}
+  Si un type $\varTypM$ est isolé, alors il est réalisé dans tout modèle de la
+  théorie.
+\end{remark}
+
+On peut faire une autre interprétation topologique à propos des types. On a vu
+qu'un type peut toujours être réalisé quitte à considérer une extension
+élémentaire, résultat reposant sur la compacité. Cet argument de compacité, pris
+dans l'espace des types plutôt que sur les structures, nous dit que tout ouvert
+(extension d'une proposition) rencontre un type réalisé~: on établit aussi la
+densité des types réalisés parmi les types complets.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varT$ une théorie complète sur $\Sign$,
+  $\varMM\satisf\varT$ un modèle et $n\in \bN$, alors l'ensemble
+  \[\compr{\type(\vec m)}{\vec m \in \carMM^n}\]
+  est dense dans $\TypCpl(\varT)$.
+\end{proposition}
+
+\begin{proof}
+  Si on considère un type complet $\varTypM$ et un ouvert contenant
+  $\varTypM$, qu'on considère sans perte de généralité être de la forme
+  $\langle\varFF(\vec x)\rangle$, alors on sait que
+  \[\varT\vD\exists \vec x, \varFF(\vec x)\]
+  donc on trouve dans $\varMM$ des paramètres $\vec m$ tels que
+  $\varMM,\vec m \satisf\varFF$. On en déduit que
+  $\type(\vec m)\in\langle\varFF\rangle$.
+\end{proof}
+
+On a donc une partie dense, mais qui ne contient pas forcément tous les types~:
+ces types sont alors appelés les types omis.
+
+\begin{definition}[Type omis dans une structure]
+  Soit $\Sign$ une signature, $\varT$ une théorie complète sur $\Sign$,
+  $\varMM\satisf\varT$ un modèle et $n\in\bN$. On dit que $\varMM$ omet un
+  $n$-type $\varTypM$ si $\varTypM$ n'est pas réalisé dans $\varMM$.
+\end{definition}
+
+Le fait d'omettre un type signifie donc qu'on considère un modèle ne présentant
+pas de témoin pour un type~: ledit type voit ses parties finies être réalisées
+localement mais pas uniformément. L'un des théorèmes centraux à propos des types
+porte justement sur la capacité à omettre des types. C'est ce théorème que nous
+cherchons maintenant à démontrer.
+
+La démonstration va reposer sur un argument lié à la densité, plus précisément
+à la théorie de Baire. Cette théorie, qui apparaît aussi en théorie descriptive
+des ensembles ou pour les modèles de forcing (ces deux notions étant hors du
+cadre de ce cours), donne comme théorème central la propriété dite de Baire pour
+certains espaces~: dans ces espaces, l'intersection dénombrable d'ouverts denses
+est elle-même dense. On montre ici une version spécialisée à notre besoin.
+
+\begin{theorem}[Baire \cite{Baire1899}]\label{thm.baire}
+  Soit $X$ un espace de Stone et $(\varOp_n)_{n \in \bN}$ une famille dénombrable
+  d'ouverts denses dans $X$. Alors $\displaystyle\bigcap_{n \in \bN}\varOp_n$ est
+  une partie dense dans $X$.
+\end{theorem}
+
+\begin{proof}
+  On pose $\displaystyle\varOp\defeq\bigcap_{n \in \bN}\varOp_n$.
+  On montre dans un premier temps que $\varOp$ est non vide. Pour cela, on
+  construit une famille d'ouverts-fermés $(\varOpB_n)_{n \in \bN}$ non vides telle
+  que $\displaystyle\varOpB_n\subseteq\bigcap_{k \leq n} \varOp_k$ et
+  $\varOpB_{n+1}\subseteq\varOpB_{n}$ pour tout $n\in\bN$. Comme $\varOp_n$ est
+  un ouvert, on peut l'écrire comme une union d'ouverts-fermés de base~: on
+  choisit $\varOpB_0$ un tel ouvert-fermé (l'inclusion est donc automatique).
+  Si $\varOpB_n$ est un ouvert-fermé inclus dans $\bigcap_{k \leq n}\varOp_k$,
+  alors pour tout élément $x \in \varOpB_n$ et tout voisinage $\varVV$ de
+  $x$, on sait que $\varVV\cap\varOp_{n+1}\neq\vide$. On prend alors comme
+  voisinage $\varOpB_n$, ce qui nous permet de déduire que
+  $\varOpB_n\cap\varOp_{n+1}\neq\vide$. Comme on a deux ouverts, leur
+  intersection est encore un ouvert~: on trouve un ouvert-fermé
+  $\varOpB_{n+1}$ contenu dans cette intersection (non vide), qui est donc
+  un ouvert-fermé contenu dans $\displaystyle\bigcap_{k \leq n} \varOp_{k}$.
+
+  On sait que $X$ est compact, et $(\varOpB_n)$ est une famille décroissante
+  de fermés d'intersections finies non vides~: on en déduit qu'il existe un
+  élément $x \in \displaystyle\bigcap_{n \in \bN}\varOpB_n$, or cette
+  intersection est contenu dans
+  $\displaystyle\bigcap_{n \in \bN}\varOp_n$, donc ce dernier ensemble est
+  non vide.
+
+  Finalement, étant donné un élément $x \in X$ et un ouvert-fermé $\varOpB$
+  contenant $x$, on peut remplacer $X$ par cet ouvert-fermé~: sur l'espace
+  induit, $(\varOp_n\cap\varOpB)_{n\in\bN}$ est encore une famille d'ouverts
+  denses, et cet ouvert-fermé est un espace de Stone (car c'est un compact). On
+  en déduit que
+  \[\varOpB\cap\bigcap_{n\in\bN}\varOp_n \neq \vide\qedhere\]
+\end{proof}
+
+Notre objectif va être, pour des ensembles de types $\varPt_n$, d'omettre
+chaque type de chaque $\varPt_n$. Pour pouvoir effectuer des manipulations
+simultanément sur des $n$-types pour tout $n\in\bN$, on travaille plutôt dans
+un enrichissement~: en ajoutant un ensemble dénombrable $C$ de constantes,
+on peut simuler $x_i$ par $\Cc_i$ et ainsi étudier, plutôt que des types,
+des $(\Sign\cup C)$-structures. On a alors un espace qui, en quelque sorte, est
+la limite inductive de la suite des $\TypCpl(\varT)$. De la même façon qu'on
+peut considérer un $n$-type complet comme une façon de \og compléter dans
+$\Formula_n(\Sign)$ la théorie $\varT$\fg, l'espace qu'on va considérer ici est
+l'ensemble des théories qui complètent $\varT$.
+
+\begin{definition}
+  Soit $\Sign$ une signature et $\varT$ une théorie complète sur $\Sign$. On
+  pose $C$ un ensemble dénombrable de constantes disjoint de $\Sign$, et
+  $\SignP{C}\defeq \Sign\cup C$. On définit l'espace de Stone
+  \[\TypCplI(\varT) \defeq
+  \compr{\varT'\in\Theory(\SignP{C})}
+        {\varT'\supseteq\varT\land\varT'\text{ est complète}}\]
+  Pour chaque tuple $\vec{\Cc}$ dans $C^n$, on définit aussi
+  $\varRen_{\Cc}$ le morphisme d'algèbres de Boole
+  \[\makeFun{\varRen_{\vec{\Cc}}}{\Formula_n(\Sign)}{\Formula(\SignP{C})}
+            {\varFF(\vec x)}{\varFF(\vec{\Cc})}\]
+\end{definition}
+
+Avec ces définitions, on vérifie d'abord que l'action de $\varRen_{\vec{\Cc}}$ sur
+les types (définie comme la fonction continue induite par le morphisme
+d'algèbres de Boole) transporte un ouvert dense sur un ouvert dense.
+
+\begin{proposition}\label{prop.pullback.CplI}
+  Pour tout $n \in \bN$ et $\vec{\Cc}\in C^n$, si $\varOp$ est un ouvert dense
+  dans $\TypCpl(\varT)$, alors $\relev{\varRen}_{\vec{\Cc}}^{-1}(\varOp)$ est un
+  ouvert dense dans $\TypCplI(\varT)$.
+\end{proposition}
+
+\begin{proof}
+  Comme on sait que la fonction est induite par un morphisme d'algèbre de
+  Boole, $\relev{\varRen}_{\vec{\Cc}}$ est continue, donc la pré-image d'un ouvert
+  est un ouvert.
+
+  On souhaite maintenant montrer que cette pré-image est dense. Pour cela,
+  prenons un ouvert-fermé de base $\langle\varFF\rangle$ non vide avec
+  $\varFF\in\Prop(\SignP{C})$. Quitte à considérer $\varFF'$ sur plus de
+  variables libres qu'elle n'en as, on peut écrire
+  \[\varFF = \varFF'(\Cc_1,\ldots,\Cc_{n+p})\]
+  pour un certain $p \in \bN$ et $\Cc_1,\ldots,\Cc_n = \vec{\Cc}$. On sait que
+  l'ouvert-fermé de base n'est pas vide, ce qui signifie que
+  $\varT\vD\exists \vec x, \varFF(\vec x)$ d'où, en regroupant uniquement les
+  dernières variables,
+  \[\varT\vD\exists \vec x,\varFP(\vec x)\]
+  avec $\vec x$ de taille $n$ et
+  $\varFP = \exists \vec y, \varFF'(\vec x,\vec y)$.
+  Remarquons que l'image de $\langle \varFP\rangle$ par
+  $\relev{\varRen}_{\vec{\Cc}}$ est directement
+  $\langle \varFP(\vec{\Cc})\rangle$, qui rencontre donc $\varOp$ car $\varOp$
+  est un ouvert dense. On en déduit le résultat.
+\end{proof}
+
+On sait donc qu'on peut partir d'ouverts denses de $\TypCpl(\varT)$ pour en
+tirer des ouverts denses dans $\TypCplI(\varT)$. Les ensembles de types qu'on
+souhaitera omettre joueront le rôle de ces ouverts denses, leur transport dans
+$\TypCplI(\varT)$ est assuré par le lemme précédent, et le fait d'en
+prendre une intersection dénombrable nécessite le théorème de Baire pour
+fonctionner correctement. En l'état, on pourrait déjà construire une bonne
+partie du raisonnement. Seulement, on souhaite aussi assurer que les
+interprétation des $\Cc_n$ suffisent à construire le modèle. Pour cette raison,
+on prouve le lemme suivant.
+
+\begin{proposition}\label{prop.omission.densite}
+  Soit $\Sign$ une signature, $n\in\bN$ et $\varFF(x)\in\Formula_1(\SignP{C})$
+  une formule unaire sur $\SignP{C}$. Alors l'ensemble
+  \[\varOp_\varFF \defeq
+  \compr{\varT'\in\TypCplI(\varT)}
+        {\exists \Cc \in C,\varT'\vD(\exists x, \varFF(x))\to \varFF(\Cc)}\]
+  est un ouvert dense de $\TypCplI(\varT)$.
+\end{proposition}
+
+\begin{proof}
+  D'abord, on peut vérifier que $\varOp_{\varFF}$ est un ouvert en remarquant
+  que c'est une union d'ouverts-fermés de base~:
+  \[\varOp_{\varFF} = \bigcup_{\Cc \in C}
+  \langle (\exists x, \varFF(x))\to\varFF(\Cc)\rangle\]
+  
+  On souhaite montrer que $\varOp_{\varFF}$ rencontre tout ouvert non vide. On
+  considère donc un ouvert-fermé de base $\langle \varFP\rangle$, et on montre
+  que l'intersection des deux est non vide. Cela signifie qu'il existe une
+  théorie complète qui étend $\varT$ et est compatible avec $\varFP$ et un
+  certain $\langle(\exists x,\varFF(x))\to\varFF(\Cc)\rangle$. Autrement
+  dit, on cherche un $\Cc$ tel que
+  $\varT\cup\{\varFP,(\exists x,\varFF(x))\to\varFF(\Cc)\}$ est satisfiable.
+
+  Commençons par prendre $\varMM$ un modèle de $\varT\cup\{\varFP\}$, qui
+  existe car $\langle\varFP\rangle$ est non vide. Deux cas se présentent alors~:
+  \begin{itemize}
+  \item soit $\varMM\satisf\lnot\exists x, \varFF(x)$, auquel cas on peut
+    choisir n'importe quel $\Cc$ pour avoir le modèle souhaité~;
+  \item soit $\varMM\satisf\exists x, \varFF(x)$~: soit alors un témoin
+    $a$ de cette existence, et $\Cc$ une constante de $C$ qui n'apparait
+    ni dans $\varFP$, ni dans $\varFF$. En modifiant l'assignation de $\Cc$
+    à $a$ dans $\varMM$ et en choisissant l'ouvert-fermé de base
+    $\langle (\exists x,\varFF(x))\to\varFF(\Cc)\rangle$, on obtient un modèle
+    de toute la théorie souhaitée.\qedhere
+  \end{itemize}
+\end{proof}
+
+\noindent
+Il nous reste finalement à donner le théorème d'omission des types.
+
+\begin{theorem}[Omission des types]
+  Soit $\Sign$ une signature au plus dénombrable, $\varT$ une théorie complète
+  sur $\Sign$ et $(X_n)_{n\in\bN}$ une famille où chaque $X_n$ est un
+  ensemble au plus dénombrable de $n$-types tous non isolés. Alors il existe un
+  modèle (au plus dénombrable) $\varMM\satisf\varT$ qui omet tous les types de
+  $\displaystyle\bigcup_{n \in \bN} X_n$.
+\end{theorem}
+
+\begin{proof}
+  Soit $\varTypM$ un $n$-type sur $\varT$. Quitte à prendre sa clôture par
+  conséquence logique, on peut considérer $\varTypM$ comme un fermé de
+  $\TypCpl(\varT)$. Si $\varTypM$ est non isolé, cela signifie que son
+  intérieur est vide~: son complémentaire $\TypCpl(\varT)\setminus\varTypM$
+  est alors un ouvert dense. Pour $\varTypM\in X_n$ et $\vec{\Cc}\in C^n$, on
+  définit $Y_{\varTypM,\vec{\Cc}}$ et $Y$ par
+  \[Y_{\varTypM,\vec{\Cc}} \defeq
+  \relev{\varRen}^{-1}_{\vec{\Cc}}(\TypCpl(\varT)\setminus \varTypM)\qquad
+  Y \defeq \bigcap_{n \in \bN}\bigcap_{\varTypM\in X_n}\bigcap_{\vec{\Cc}\in C^n}
+  Y_{\varTypM,\vec{\Cc}}\]
+
+  On voit déjà qu'un modèle dont la théorie est dans $Y$ vérifie que chaque
+  $\Cc\in C$ ne réalise aucun type dans le moindre $X_n$. On souhaite
+  finalement vérifier qu'on peut se contenter des $\Cc\in C$ pour avoir un
+  modèle, ce pourquoi on a la \cref{prop.omission.densite}~: on considère donc
+  la partie
+  \[Y \cap \bigcap_{\varFF\in\Formula_1(\SignP{C})} \varOp_{\varFF}\]
+  En utilisant le \cref{thm.baire}, comme on a une intersection dénombrable
+  d'ouverts denses de $\TypCplI(\varT)$, on sait qu'il existe une théorie
+  complète $\varT'$ étendant $\varT$ dans cette intersection. Soit $\varMM$ un
+  modèle de cette théorie, et soit
+  \[\carM{\varMM_0}\defeq \compr{\toM{\Cc}}{\Cc \in C}\]
+  On montre que $\varMM_0$ est un sous-modèle élémentaire de $\varMM$~: pour
+  toute formule existentielle $\exists x, \varFF(x)$ vraie dans $\varMM$, on
+  peut trouver un témoin dans $\varMM_0$ puisque la théorie du modèle est
+  dans $\varOp_{\varFF}$. Par le critère de Tarski-Vaught, on en déduit donc que
+  $\varMM_0$ est un modèle de $\varT'$~: on a donc un modèle au plus
+  dénombrable de $\varT$ sur $\SignP{C}$, dont la théorie assure qu'aucun type
+  d'aucun $X_n$ n'est réalisé. Son réduit à la signature $\Sign$ est donc un
+  modèle souhaité.
+\end{proof}
+
+\begin{remark}
+  La dénombrabilité de la signature $\Sign$ intervient uniquement dans
+  l'application du théorème de Baire à la famille des $\varOp_{\varFF}$, pour
+  s'assurer que cette famille est dénombrable. Cependant, cette étape est
+  cruciale car elle est celle qui permet à $\varMM_0$ d'être un sous-modèle
+  élémentaire, et donc que l'intersection des $Y_n$ permet d'omettre les types.
+\end{remark}
+
+\subsection{Application du théorème d'omission des types}
+
+On va maintenant se servir des types, et en particulier du théorème d'omission
+des types, pour caractériser les théories $\Cal_0$-catégoriques. Pour cela, on
+commence par donner un fait assez naturel à propos des isomorphismes~: ils
+préservent la satisfaction sémantique non seulement des propositions, mais
+aussi des types.
+
+\begin{claim}
+  Soit $\Sign$ une signature et $\varMM,\varMN$ deux $\Sign$-structures. Si
+  $\varMM\iso\varMN$ alors les types réalisés sont les mêmes dans $\varMM$ et
+  $\varMN$.
+\end{claim}
+
+Par ce fait, la force d'une théorie $\Cal_0$-catégorique paraît déjà plus
+claire~: une telle théorie ne peut réaliser avec des modèles dénombrables
+qu'un certain ensemble de types donné. En utilisant, en plus, le théorème
+d'omission des types, on a alors un résultat particulièrement fort.
+
+\begin{proposition}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie
+  $\Cal_0$-catégorique sur $\Sign$. Alors tout $n$-type pour $n \in \bN$ est
+  isolé.
+\end{proposition}
+
+\begin{proof}
+  Si un type n'est pas isolé, alors il peut être omis par un modèle au plus
+  dénombrable~: comme deux modèles au plus dénombrables de $\varT$ sont
+  isomorphes, tout modèle dénombrable de $\varT$ ne réalise aucun type non
+  isolé. Pour autant, on peut réaliser tout type de $\varT$ par un modèle
+  dénombrable (car un type est finiment réalisé, et quitte à appliquer le
+  théorème de Löwenheim-Skolem descendant). Tout type est donc isolé.
+\end{proof}
+
+Or, pour tout $n\in \bN$, $\TypCpl(\varT)$ est un espace de Stone, en
+particulier un espace compact. Les seuls espaces compacts dont tous les points
+sont isolés sont les espaces finis, d'où
+
+\begin{corollary}
+  Soit $\Sign$ une signature au plus dénombrable.
+  Si $\varT$ est une théorie $\Cal_0$-catégorique sur $\Sign$, alors tous les
+  $\TypCpl(\varT)$ sont finis.
+\end{corollary}
+
+On souhaite maintenant montrer la réciproque~: une théorie dont tous les types
+sont isolés est une théorie $\Cal_0$-catégorique (toujours sur une signature
+au plus dénombrable). Pour cela, on utilise un va-et-vient.
+
+\begin{lemma}\label{lem.isolation.bandf}
+  Soit $\Sign$ une signature, et $\varMM,\varMN$ deux $\Sign$-structures
+  élémentairement équivalentes qui ne réalisent que des types isolés. Alors
+  la famille d'isomorphismes partiels élémentaires
+  \[\isoFam\defeq
+  \compr{\makeFunNameIso{\varMoM}{\varPt}{\varPtB}}
+        {\varPt\text{ est fini}}\]
+  est un va-et-vient.
+\end{lemma}
+
+\begin{proof}
+  La famille $\isoFam$ est non vide car elle contient l'isomorphisme partiel
+  vide, qui est élémentaire car $\varMM\eltEq\varMN$. On souhaite vérifier les
+  deux conditions de \og va\fg et de \og vient\fg. La vérification est identique
+  dans les deux cas, donc on se contente de vérifier la condition \og va\fg.
+  Soit donc $(\varPt,\varPtB,\varMoM)$ un isomorphisme partiel entre $\varMM$ et
+  $\varMN$ et $a \in \varPt$, trouvons une extension de $\varMoM$ à
+  $\varPt\cup\{a\}$. On énumère d'abord $\varPt$~:
+  \[\varPt \defeq \{a_1,\ldots,a_n\}\]
+  Comme tous les types sont isolés, on peut trouver une formule
+  $\varFF(x,\vec y)$ qui isole le type $\type(a,a_1,\ldots,a_n)$~: en
+  particulier, $\varMM,a_1,\ldots,a_n\satisf\exists x, \varFF(x,\vec y)$. Comme
+  $\varMoM$ est un isomorphisme partiel élémentaire, on en déduit
+  \[\varMN,(\varMoM(a_1),\ldots,\varMoM(a_n))\satisf
+  \exists x,\varFF(x,\vec y)\]
+  et en prenant un tel témoin $x$, on récupère alors une valeur $b$ telle que
+  $\varMoM\cup(a\mapsto b)$ est un isomorphisme partiel élémentaire qui étend
+  $\varMoM$ et est défini en $a$. En effet, comme $\varFF$ isole
+  $\type(a,a_1,\ldots,a_n)$, on sait que
+  $\type(a,a_1,\ldots,a_n) = \type(b,\varMoM(a_1),\ldots,\varMoM(a_n))$.
+\end{proof}
+
+\begin{corollary}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie complète
+  sur $\Sign$ dont tous les types sont isolés. Alors $\varT$ est
+  $\Cal_0$-catégorique.
+\end{corollary}
+
+\begin{proof}
+  Le lemme précédent montre qu'il existe un va-et-vient entre tous deux modèles
+  de $\varT$. Si $\varMM,\varMN\satisf\varT$ sont deux modèles dénombrables,
+  alors on déduit du va-et-vient un isomorphisme $\varMM\iso\varMN$.
+\end{proof}
+
+Ces résultats permettent naturellement d'avoir plusieurs caractérisations du
+fait d'être une théorie $\Cal_0$-catégorique.
+
+\begin{theorem}[Engeler-Ryll-Nardzewski-Svenonius
+    \cite{Engeler1959,RyllNardzewski1959,Svenonius1959}]
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie sur
+  $\Sign$. Les énoncés suivants sont tous équivalents~:
+  \begin{enumerate}[label=(\roman*)]
+  \item $\varT$ est $\Cal_0$-catégorique~;
+  \item pour tout $n \in \bN$, tout $n$-type complet de $\varT$ est isolé~;
+  \item pour tout $n \in \bN$, tout $n$-type de $\varT$ est isolé~;
+  \item pour tout $n \in \bN$, $\TypCpl(\varT)$ est fini~;
+  \item pour tout $n \in \bN$, l'algèbre de Lindenbaum-Tarski des formules à
+    $n$ variables libres modulo $\varT$ est un ensemble fini.
+  \end{enumerate}
+\end{theorem}
+
+\begin{proof}
+  On a vu que $\varT$ est $\Cal_0$-catégorique si et seulement si ses types
+  sont isolés.
+
+  Si tout type est isolé, alors en particulier tout $n$-type complet est isolé.
+  Réciproquement, si tout $n$-type complet est isolé, alors tout $n$-type est
+  contenu dans un $n$-type complet (isolé), et est donc isolé.
+
+  Un ensemble compact est discret si et seulement s'il est fini. On en déduit
+  donc que tous les éléments de $\TypCpl(\varT)$ sont isolés si et seulement si
+  $\TypCpl(\varT)$ est fini.
+
+  Les types sont des ultrafiltres sur cette algèbre de Lindenbaum-Tarski, et
+  l'ensemble des ultrafiltres sur un ensemble $X$ est fini si et seulement si
+  $X$ est fini.
+\end{proof}
+
+Une conséquence intéressante de cette caractérisation est que tout modèle
+dénombrable d'une telle théorie $\Cal_0$-catégorique est homogène, au sens
+suivant.
+
+\begin{definition}[Structure homogène]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On dit que
+  $\varMM$ est homogène si pour toutes deux données de paramètres
+  $\vec{a},\vec{b}\in\carMM^n$, si $\type(\vec a) = \type(\vec b)$
+  alors il existe un automorphisme
+  $\makeFunNameIso{\varMoM}{\varMM}{\varMM}$ qui envoie $\vec a$ sur
+  $\vec b$.
+\end{definition}
+
+Pour démontrer que tout modèle dénombrable d'une théorie $\Cal_0$-catégorique
+est homogène, on prouve en fait un fait plus général dont les hypothèses sont
+automatiquement vérifiées dans le cas d'une théorie $\Cal_0$-catégorique.
+
+\begin{proposition}\label{prop.homogene.cat}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie
+  $\Cal_0$-catégorique. Alors tout modèle $\varMM\satisf\varT$ est
+  homogène.
+\end{proposition}
+
+\begin{lemma}
+  Soit $\varMM$ une $\Sign$-structure au plus dénombrable telle que pour tout
+  $n \in \bN$, tous les $n$-types réalisés par $\varMM$ sont isolés. Alors
+  $\varMM$ est homogène.
+\end{lemma}
+
+\begin{proof}
+  Pour les données de paramètres $\vec a,\vec b$ tels que
+  $\type(\vec a) = \type(\vec b)$, on applique simplement le
+  \cref{lem.isolation.bandf} en prenant la famille des isomorphismes partiels
+  élémentaires qui étendent l'isomorphisme partiel élémentaire
+  $(a_i \mapsto b_i)_i$.
+\end{proof}
+
+Les automorphismes permettent aussi de caractériser les théories
+$\Cal_0$-catégoriques en étudiant leurs orbites (notion que nous définissons
+ici).
+
+\begin{definition}[Orbite par un automorphisme]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On note
+  $\Aut(\varMM)$ l'ensemble des automorphismes de $\varMM$, c'est-à-dire
+  l'ensemble des $\makeFunNameIso{\varMoM}{\varMM}{\varMM}$. Pour toute suite
+  finie d'éléments $\vec{m}\in\carMM^n$, on définit
+  \[\Orbite_n(\vec m) \defeq \compr{\varMoM(\vec m)}{\varMoM\in\Aut(\varMM)}\]
+  puis l'ensemble des $n$-orbites par
+  \[\Orbite_n \defeq \compr{\Orbite_n(\vec m)}{\vec m \in \carMM^n}\]
+\end{definition}
+
+\begin{proposition}
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure au plus
+  dénombrable. $\Th(\varMM)$ est une théorie $\Cal_0$-catégorique si et
+  seulement si pour tout $n \in \bN$, $\Orbite_n(\varMM)$ est un ensemble fini.
+\end{proposition}
+
+\begin{proof}
+  Si $\Th(\varMM)$ est $\Cal_0$-catégorique, alors on sait qu'il y a pour
+  tout $n$ un nombre fini de $n$-types complets. De plus, on sait
+  (\cref{prop.homogene.cat}) que deux vecteurs d'éléments de même type dans une
+  telle structure peuvent être permutés par un automorphisme car $\varMM$ est
+  homogène~: on a donc une injection des $n$-orbites dans les $n$-types. Les
+  $n$-orbites sont donc finies.
+
+  Réciproquement, supposons que l'ensemble des $n$-orbites est fini pour tout
+  $n\in\bN$. Fixons $n \in \bN$ et montrons que $\TypCpl(\Th(\varMM))$ est
+  fini. Pour cela, on remarque que deux éléments dans la même orbite ont le
+  même type (car les automorphismes, cas particulier d'isomorphismes, préservent
+  les types réalisés), donc l'ensemble des $n$-types réalisés dans $\varMM$ est
+  fini~: on a une surjection des types réalisés dans les orbites qui sont en
+  nombre fini.
+
+  L'ensemble des $n$-types réalisés dans $\varMM$, lui, est dense dans
+  l'ensemble des $n$-types de $\Th(\varMM)$~: $\TypCpl(\Th(\varMM))$ doit
+  être fini pour qu'un ensemble fini soit dense dedans. Par caractérisation des
+  théories $\Cal_0$-catégoriques, on en déduit que $\Th(\varMM)$ l'est.
+\end{proof}
+
+\section{Reconnaître des éléments par des types}
+
+\subsection{Types définissables, algébriques}
+
+Les parties définissables ont déjà été abordées précédemment, et les types
+définissables en sont en quelque sorte un dual. Considérons une structure
+$\varMM$ et un élément $m\in\carMM$. Dire que $m$ est définissable (ou
+$\varPt$-définissable) signifie que $\{m\}$ l'est. En parallèle, $m$ induit
+lui-même un $1$-type complet~: un tel type est alors appelé un type
+définissable. Un type définissable se voit donc comme la spécification d'un
+point unique.
+
+\begin{definition}[Type définissable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On dit qu'un $n$-type $\varTypM\in\TypCpl(\varPt)$
+  sur $\varPt$ est définissable si dans toute extension élémentaire $\varMN$ de
+  $\varMM$, il n'existe qu'un seul réaliseur de $\varTypM$.
+\end{definition}
+
+Les types algébriques sont en quelque sorte un affaiblissement~: plutôt qu'un
+unique réaliseur, on considère qu'on n'a qu'un nombre fini de réaliseurs.
+
+\begin{definition}[Type algébrique]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. On dit qu'un $n$-type $\varTypM\in\TypCpl(\varPt)$
+  sur $\varPt$ est algébrique si dans toute extension élémentaire $\varMN$ de
+  $\varMM$, il existe un nombre fini de réaliseurs de $\varTypM$.
+  Un élément $m \in \carMM$ est dit algébrique sur $\varPt$ si $\type(m/\varPt)$
+  est un type algébrique.
+\end{definition}
+
+\begin{remark}
+  Dans le cas de la théorie $\ACF$, si on prend deux modèles
+  $\varMM\subModElt\varMN$ (ce qui donne donc une extension de corps), les
+  éléments algébriques de $\varMN$ sur $\carMM$ sont les éléments algébriques
+  au sens de la théorie des corps~: par élimination des quantificateurs, le
+  $\carMM$-type d'un élément est exactement l'ensemble des équations
+  polynomiales à coefficients dans $\carMM$ qu'il vérifie.
+\end{remark}
+
+\noindent
+Dans les deux cas, on peut en fait se limiter à des $1$-types.
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Pour tout vecteur d'éléments $\vec m\in\carMM^n$,
+  le type $\type(\vec m/\varPt)$ est définissable si et seulement si pour chaque
+  $m \in \vec m$, $\type(m/\varPt)$ est définissable.
+\end{proposition}
+
+\begin{proposition}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Pour tout vecteur d'éléments $\vec m\in\carMM^n$,
+  le type $\type(\vec m/\varPt)$ est algébrique si et seulement si pour chaque
+  $m \in \vec m$, $\type(m/\varPt)$ est algébrique.
+\end{proposition}
+
+\begin{proof}
+  Soient $\vec m = m_1,\ldots,m_n$ des paramètres dans $\varMM$ et
+  $\varMN$ une extension élémentaire de $\varMM$. On pose
+  \[\Orbite_{\varMN} \defeq
+  \compr{\vec n \in \carMN^n}{\type(\vec m/\varPt) = \type(\vec n/\varPt)}
+  \quad\Orbite_{\varMN}^i \defeq
+  \compr{n \in \carMN}{\type(m_i/\varPt) = \type(n/\varPt)}\]
+  Remarquons d'abord que si $\vec n \in \Orbite_{\varMN}$, alors pour tout
+  $i\in\intervIntB{n}$, $n_i \in \Orbite^i_{\varMN}$. On en déduit que le nombre
+  de réaliseurs de $\type(\vec m/\varPt)$ est inférieur au nombre de réaliseurs
+  de tous les $\type(m_i/\varPt)$.
+
+  Réciproquement, si $b_i \in \Orbite^i_{\varMN}$, alors on peut trouver une
+  extension élémentaire $\varMN'$ de $\varMN$ et des éléments
+  $b_1,\ldots,b_{i-1},b_{i+1},\ldots,b_n \in \carM{\varMN'}^{n-1}$
+  tels que $(b_1,\ldots,b_n)\in \Orbite_{\varMN'}$, donc le nombre d'éléments de
+  $\Orbite_{\varMN}$ est majoré par le nombre d'éléments de chaque
+  $\Orbite^i_{\varMN'}$.
+
+  Ainsi, $\Orbite_{\varMN}$ est fini pour tout $\varMN$ si et seulement si
+  chaque $\Orbite_{\varMN}^i$ est fini pour tout $\varMN$ et
+  $i\in\intervIntB{n}$, et de même si les ensembles ont cardinal $1$.
+\end{proof}
+
+On va prouver maintenant que tout type algébrique (et donc, tout type
+définissable) est isolé. Pour cela, on commence par une caractérisation en
+terme d'ensemble définissable des éléments algébriques.
+
+\begin{lemma}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Un élément $m\in\carMM$ est algébrique sur $\varPt$
+  si et seulement s'il existe un ensemble $\varPtB$ fini et
+  $\varPt$-définissable tel que $m\in\varPtB$.
+\end{lemma}
+
+\begin{proof}
+  Si $m\in\varPtB$ avec $\varPtB$ un ensemble fini et $\varPt$-définissable,
+  alors on peut trouver une $\varPt$-formule $\varFF(x)$ dans le $\varPt$-type
+  de $m$, et qui définit un ensemble fini~: supposons que $\varPtB$ est de
+  cardinal $n$ et $\varFP$ définit $\varPtB$, alors $m$ réalise aussi
+  \[\ogM\varFP(x) \land \text{ il y a } n\text{ éléments réalisant }\varFP\fgM\]
+  donc, dans toute extension élémentaire $\varMN$ de $\varMM$, $\varFF(\varPt)$
+  a toujours le même nombre d'éléments, et en particulier $\type(m/\varPt)$ n'a
+  qu'un nombre fini de réaliseurs.
+
+  On suppose maintenant $m$ algébrique. Rajoutons un ensemble dénombrable
+  $C$ de symboles de constantes à notre langage, et considérons
+  \[\varT \defeq \DiagEl(\varMM)\cup
+  \bigcup_{\Cc \in C}\compr{\varFF(\Cc)}{\varFF(x)\in\type(m/\varPt)}\cup
+  \compr{\ogM \Cc \neq \Cc'\fgM}{\Cc,\Cc'\in C, \Cc\neq \Cc'}\]
+  Un modèle de $\varT$ est donc une extension élémentaire dans laquelle
+  l'ensemble des éléments de même type que $m$ est infini~: c'est impossible.
+  On en déduit donc, par compacité, qu'il existe un ensemble fini $F\subfin C$
+  et une formule $\varFF\in\type(m/\varPt)$ tels que
+  \[\DiagEl(\varMM)\cup\compr{\varFF(\Cc)}{\Cc\in F}\cup
+  \compr{\ogM\Cc \neq \Cc'\fgM}{\Cc,\Cc'\in F,\Cc\neq \Cc'}\]
+  n'a pas de modèle. Or, comme $\varFF$ est réalisé par $m$, on sait que
+  l'ensemble défini par $\varFF$ n'est pas vide~: il suit que toute extension
+  élémentaire de $\varMM$ (donc, modèle de $\DiagEl(\varMM)$) ne peut avoir plus
+  de $\Card(F)$ éléments dans l'ensemble défini par $\varFF$. En conclusion, que
+  $m$ appartient à un ensemble fini $\varPt$-définissable.
+\end{proof}
+
+\begin{corollary}
+  L'élément $m$ est $\varPt$-algébrique si et seulement si l'ensemble des
+  réaliseurs de $\type(m/\varPt)$ est fini.
+\end{corollary}
+
+\begin{corollary}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$. Pour tout $n \in \bN$, si $n$-type sur $\varPt$ est
+  algébrique (respectivement, définissable), alors il est isolé.
+\end{corollary}
+
+Les éléments algébriques sont donc particulièrement stables~: si on considère
+$\varPt\subseteq\varMM\subModElt\varMN$, un élément algébrique sur $\varPt$
+l'est sur $\varMM$ comme sur $\varMN$, et le type associé a autant de réaliseur
+dans les deux (en particulier, même si on considère d'abord un élément comme
+étant algébrique dans $\varMN$, il le reste en regardant la sous-structure
+élémentaire $\varMM$).
+
+De la même manière qu'on a défini la clôture définissable dans le
+\cref{chp.struct.mod}, on définit aussi la clôture algébrique d'une partie.
+
+\begin{definition}[Clôture algébrique]
+  Soit $\Sign$ une signature et $\varMM$ une $\Sign$-structure. On définit
+  la clôture algébrique d'une partie $\varPt\subseteq\carMM$ par
+  \[\acl(\varPt) \defeq
+  \compr{m \in \carMM}{\type(m/\varPt)\text{ est algébrique}}\]
+\end{definition}
+
+\begin{exercise}
+  Montrer que la clôture algébrique est, elle aussi, un opérateur de clôture~:
+  \begin{itemize}
+  \item si $\varPt\subseteq\varPtB$ alors $\acl(\varPt)\subseteq\acl(\varPtB)$~;
+  \item $\varPt\subseteq\acl(\varPt)$~;
+  \item $\acl(\acl(\varPt)) = \acl(\varPt)$.
+  \end{itemize}
+  Montrer aussi que $\acl$ est à caractère fini~:
+  \[\acl(\varPt) = \bigcup_{\varPt_0\subseteq\varPt} \acl(\varPt_0)\]
+\end{exercise}
+
+\subsection{Indiscernabilité}
+
+D'après ce qui a été vu, les éléments algébriques peuvent être décrits \og par
+groupes finis\fg par une formule. Cette notion est une généralisation directe
+de la notion de nombre algébrique dans une extension de corps, et on peut donc
+souhaiter trouver une notion d'élément transcendant, qui sont en quelque sorte
+les éléments \og impossibles à décrire \fg. Dans ce contexte, la façon naturelle
+de décrire un élément est de considérer son type~: dans le cas algébrique, un
+élément est moralement \og finiment discernable\fg, et un élément définissable
+est un élément le plus discernable possible. Au contraire, des éléments
+indiscernables entre eux sont alors des éléments de même $n$-type pour tout
+$n\in\bN$. Cela mène à la notion de partie totalement indiscernable.
+
+\begin{definition}[Partie totalement indiscernable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure et
+  $\varPt\subseteq\carMM$ une partie de $\varMM$. On dit qu'une
+  partie $\varPtB\subseteq\carMM$ est totalement indiscernable au-dessus de
+  $\varPt$ (ou sur $\varPt$) si pour tout $k \in \bN$ et tous deux vecteurs
+  $(m_1,\ldots,m_k)$ et $(n_1,\ldots,n_k)$ de $\carMM^k$ tels que $m_i\neq n_j$
+  pour tous $i,j\in\intervIntB{k}$, on a
+  \[\type(m_1,\ldots,m_k/\varPt) = \type(n_1,\ldots,n_k/\varPt)\]
+  Une partie totalement indiscernable est une partie totalement indiscernable
+  au-dessus de $\vide$.
+\end{definition}
+
+Par exemple, pour une extension $\varKK\subseteq\varKL$, un ensemble d'éléments
+transcendants sur $\varKK$ constitue une partie totalement indiscernable sur
+$\varKK$. Cependant, on se concentrera sur une notion légèrement plus faible,
+dans laquelle l'aspect indiscernable est lié à un ordre d'apparition des
+éléments~: on se donne un ordre $\indSet$, et on souhaite que les types
+considérés $\type(m_1,\ldots,m_k/\varPt)$ soient pris avec $m_1 < \cdots < m_k$.
+
+\begin{definition}[Famille indiscernable]
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure,
+  $\varPt\subseteq\carMM$ une partie de $\varMM$ et $(\indSet,<)$ un ensemble
+  totalement ordonné. On dit qu'une famille $(a_i)_{i \in \indSet}$ est
+  indiscernable au-dessus de $\varPt$ (ou sur $\varPt$) si pour toutes deux
+  suites finies croissantes $a_1 < \cdots < a_n$ et $b_1 < \cdots < b_n$, on a
+  \[\type(a_1,\ldots,a_n/\varPt) = \type(b_1,\ldots,b_n/\varPt)\]
+  Une famille indiscernable est une famille indiscernable au-dessus de $\vide$.
+\end{definition}
+
+\begin{remark}
+  Si deux éléments sont égaux dans une famille indiscernable alors tous les
+  éléments le sont. Si un élément est algébrique, alors une famille
+  indiscernable le contenant est finie ou constante égale à cet élément.
+  Ainsi, les familles indiscernables qui nous intéressent réellement sont les
+  familles indiscernables infinies d'éléments deux à deux distincts.
+\end{remark}
+
+Notre but est maintenant de montrer qu'il existe effectivement des familles
+indiscernables~: en fait, pour un type $\varTypM$ donné, on va pouvoir
+construire une extension élémentaire dans laquelle $\varTypM$ est réalisé par
+une famille indiscernable (sur un ensemble d'indices $\indSet$ arbitraire).
+
+Pour pouvoir prouver ce résultat, on a d'abord besoin d'un résultat combinatoire
+assez classique, dont on laisse une démonstration en exercice
+(\cref{exo.Ramsey}).
+
+\begin{theorem}[Ramsey \cite{Ramsey1930}]\label{thm.ramsey.infini}
+  Soit $X$ un ensemble infini, $n \geq 1$ un entier et $F$ un ensemble fini.
+  On note $\powerset_n(X)$ l'ensemble des parties finies de $X$ à $n$ éléments.
+  Pour toute fonction $\makeFunName{f}{\powerset_n(X)}{F}$, il existe un
+  élément $c \in F$ tel que $f^{-1}({c})$ est infini.
+\end{theorem}
+
+Ce résultat, très utile dans beaucoup de domaines, peut se voir comme une
+généralisation du principe des tiroirs infinis où l'on associe non pas des
+éléments à des éléments de $X$, mais à des groupements d'éléments de $X$.
+
+Une façon plus intuitive de voir ce résultat utilise la théorie des
+hypergraphes~: on considère que, sur l'ensemble $X$, on peut associer des
+couleurs à chaque groupement de $n$ éléments, et on a un nombre fini de
+couleurs. Alors il existe une partie infinie de $X$ dont tous les groupements de
+$n$ éléments sont associés à la même couleur. Pour $n = 2$, cela correspond au
+fait qu'on peut trouver dans chaque graphe infini soit une clique infinie soit
+une anticlique infinie (respectivement un sous-graphe complet infini ou un
+sous-graphe discret infini).
+
+On peut désormais utiliser ce résultat pour prouver un résultat plus général,
+qui va nous permettre de réaliser des types non algébriques par des familles
+aussi grandes qu'on le veut d'indiscernables.
+
+\begin{theorem}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure,
+  $\varPt\subseteq\carMM$ une partie de $\varMM$ et $(\indSet,<)$ un
+  ensemble totalement ordonné. Soit, de plus, une suite $(m_i)_{i \in \bN}$
+  d'éléments de $\varMM$ deux à deux distincts, et
+  $\FormSet\subseteq\Formula(\Sign)$ un ensemble de formules. On suppose que
+  pour toute formule $\varFF(x_1,\ldots,x_n)\in\FormSet$ et suite d'entiers
+  $i_1 < \cdots < i_n$,
+  \[\varMM,(m_{i_1},\ldots,m_{i_n})\satisf\varFF\]
+
+  Alors il existe une $\Sign$-structure $\varMN$ et une famille
+  $(a_i)_{i \in \indSet}$ telles que $\varMM\subModElt\varMN$,
+  $(a_i)$ est indiscernable sur $\varPt$ et pour toute formule
+  $\varFF(x_1,\ldots,x_n)\in\FormSet$ et pour des éléments croissants
+  $i_1 < \cdots < i_n$ de $\indSet$,
+  \[\varMN,(a_{i_1},\ldots,a_{i_n})\satisf\varFF\]
+\end{theorem}
+
+\begin{proof}
+  Assez naturellement, on va chercher à construire un modèle du diagramme
+  de $\varMM$ dans lequel on ajoute des constantes $\Cc_i$ pour chaque
+  $i\in \indSet$ (on notera $C \defeq \compr{\Cc_i}{i\in\indSet}$). On définit
+  d'abord différents ensembles de propositions qu'on souhaite satisfaire dans le
+  modèle final, où on place des paramètres pour faciliter la lecture plus tard~:
+  \[\FormSet_1(X) \defeq
+  \compr{\ogM \Cc_i \neq \Cc_j \fgM}{i,j \in X, i\neq j} \qquad
+  \FormSet_2 \defeq
+  \compr{\varFF(\Cc_{i_1},\ldots,\Cc_{i_k})}{\begin{array}{l}
+      k \in \bN\\
+      i_1,\ldots,i_k\in \indSet\\
+      i_1 < \cdots < i_k\\
+      \varFF(x_1,\ldots,x_k)\in\FormSet
+  \end{array}}\]
+  \[
+  \FormSet_3(X) \defeq
+  \compr{\varFF(\Cc_{i_1},\ldots,\Cc_{i_k}) \iffS
+    \varFF(\Cc_{j_1},\ldots,\Cc_{j_k})}
+        {\begin{array}{l}
+            k \in \bN\\
+            i_1,\ldots,i_k,j_1,\ldots,j_k \in \indSet\\
+            (i_1 < \cdots < i_k) \land (j_1 < \cdots < j_k)\\
+            \varFF(x_1,\ldots,x_k) \in X
+        \end{array}}\]
+  Et on pose, comme attendu, la théorie
+  \[\varT\defeq
+  \DiagEl(\varMM)\cup\FormSet_1(\indSet)\cup\FormSet_2\cup
+  \FormSet_3(\Formula_k(\SignP{\varPt}))\]
+  Si on trouve un modèle de $\varT$, le travail est terminé~: $\FormSet_3$
+  nous dit bien que tous les $\Cc_i$ forment une famille indiscernable,
+  $\FormSet_1$ qu'ils sont deux à deux distincts, et $\FormSet_2$ qu'ils
+  réalisent tous les formules de $\FormSet$.
+  Pour montrer qu'il existe un modèle de $\varT$, on procède par compacité.
+  Quitte à rajouter des formules, on considère un sous-ensemble
+  $F\subfin \indSet$ fini, un sous-ensemble fini
+  $\FormSet_0\subfin\Formula(\SignP(\varPt))$. Sans perte de généralité,
+  quitte à rajouter des variables aux éléments de $\FormSet_0$, on considère
+  que $\FormSet_0\subfin\Formula_k(\SignP(\varPt))$ pour un certain $k\in\bN$.
+  On souhaite donc construire un modèle de
+  \[\varT_0\defeq\DiagEl(\varMM)\cup\FormSet_1(F)\cup\FormSet_2\cup
+  \FormSet_3(\FormSet_0)\]
+  On peut désormais chercher à utiliser le théorème de Ramsey. Pour cela, on
+  définit la fonction
+  \[\makeFun{f}{\powerset_k(\bN)}{\intB^{\FormSet_0}}
+            {\{n_1 < \cdots < n_k\}}
+            {\varFF(x_1,\ldots,x_k)\mapsto
+              \begin{cases}
+                1 \textit{ si } \varMM,(m_{n_1},\ldots,m_{n_k})\satisf\varFF\\
+                0 \textit{ si } \varMM,(m_{n_1},\ldots,m_{n_k})\nsatisf\varFF\\
+              \end{cases}
+            }
+            \]
+  Comme on peut ordonner linéaire d'une seule façon une partie de $\bN$, cette
+  fonction est bien définie. De plus, en utilisant le théorème de Ramsey sur
+  cette fonction, on trouve un ensemble $X$ infini d'entiers tel que, pour
+  toute formule $\varFF\in\FormSet_0$ et deux tuples
+  $(n_1 < \cdots < n_k), (n'_1 < \cdots < n'_k)$ d'entiers, on a
+  \[\varMM,(m_{n_1},\ldots,m_{n_k})\satisf \varFF\iff
+  \varMM,(m_{n'_1},\ldots,m_{n'_k})\satisf\varFF\]
+  On peut donc interpréter notre théorie en prenant pour les différents
+  $\Cc_i$ des $b_{n}$ avec $n \in X$, en prenant une application strictement
+  croissante de $F$ dans $X$ (qui est infini, donc aucun souci ne se pose).
+\end{proof}
+
+\begin{corollary}
+  Soit $\Sign$ une signature, $\varMM$ une $\Sign$-structure,
+  $\varPt\subseteq\varMM$, $n \in \bN$ et $\varTypM\in\TypCpl(\varPt)$
+  un $n$-type complet non algébrique. Soit, de plus, $(\indSet,<)$ un ensemble
+  totalement ordonné. Alors il existe une structure $\varMN$ telle que
+  $\varMM\subModElt\varMN$ et une famille $(a_i)_{i \in \indSet}$ qui est
+  $\varPt$-indiscernable et telle que, pour tous $i_1 < \cdots < i_n$ dans
+  $\indSet$ et toute formule $\varFF\in\varTypM$,
+  \[\varMN,(a_{i_1},\ldots,a_{i_n})\satisf\varFF\]
+\end{corollary}
+
+\begin{proof}
+  Comme $\varTypM$ n'est pas algébrique, on sait qu'on peut trouver une
+  extension élémentaire de $\varMM$ qui contient une infinité de réaliseurs
+  de $\varTypM$. On considère $\FormSet \defeq \varTypM$ et on applique
+  le théorème précédent en prenant comme suite $(m_i)$ une suite de
+  réaliseurs de ce type.
+\end{proof}
+
+On peut se demander quelle utilisation faire de telles familles
+d'indiscernables. On va en donner une utilisation ici, se basant aussi sur les
+extensions de Skolem. Rappelons qu'il est possible d'étendre n'importe quelle
+théorie en une théorie qui a des fonctions de Skolem, et que de telles théories
+sont modèle-complètes~: n'importe quel modèle de cette théorie dont on prend
+une sous-structure est un modèle de la même théorie. On peut donc prendre un
+modèle, en considérer l'extension de Skolem, puis générer une famille
+indiscernable et en extraire un sous-modèle élémentaire. Dans ce processus, on
+obtient alors un sous-modèle dont on a pu saturer, en quelque sorte, la
+réalisation d'un type. On appelle de tels modèles des modèles
+d'Ehrenfeucht-Mostovski. On en donne pour finir une application.
+
+\begin{theorem}
+  Soit $\Sign$ une signature au plus dénombrable et $\varT$ une théorie sur
+  $\Sign$. Si $\varT$ a un modèle infini, alors elle a un modèle dénombrable
+  $\varMM$ tel que $\Card(\Aut(\varMM)) = 2^{\Cal_0}$.
+\end{theorem}
+
+\begin{proof}
+  On considère un modèle infini de $\varT$, et on en prend son extension de
+  Skolem, qu'on va noter $\varMN$. D'après le théorème précédent, on peut
+  trouver une extension élémentaire $\varMN'$ de $\varMM$ avec une famille
+  $(a_i)_{i \in \bQ}$ qui est indiscernable. On considère alors la sous-structure
+  induite par la famille $(a_i)$~: c'est (par modèle-complétude) une
+  sous-structure élémentaire $\varMM$ de $\varMN'$. Remarquons que l'ajout
+  de fonctions de Skolem ne change pas la dénombrabilité de la signature~:
+  comme les $a_i$ sont en nombre dénombrable, la sous-structure engendrée
+  $\varMM$ est un modèle dénombrable de $\varT$.
+
+  De plus, toute permutation $\varPerm\in\Aut(\bQ)$ induit un isomorphisme
+  partiel élémentaire $a_i \mapsto a_{\varPerm(i)}$, et cet isomorphisme se
+  prolonge de façon unique à $\varMM$ (car engendrée par les $a_i$). On
+  vient donc de construire une injection de $\Aut(\bQ)$ dans $\Aut(\varMM)$.
+  Comme on sait qu'il y a au plus $2^{\Cal_0}$ automorphismes de $\varMM$ (car
+  $\varMM$ est dénombrable, d'où l'inégalité
+  $\Card(\Funct(\carMM,\carMM)) \leq 2^{\Cal_0}$), il nous suffit pour conclure
+  de montrer que $\Card(\Aut(\bQ)) \geq 2^{\Cal_0}$.
+
+  Soit $\varCan \in 2^\bN$. On définit la fonction
+  $\makeFunName{f_{\varCan}}{\bQ}{\bQ}$ par les faits suivants~:
+  \begin{itemize}
+  \item $f_{\varCan}$ est impaire~;
+  \item $f_{\varCan}$ est affine par morceaux~;
+  \item pour tout $n \in \bN$, $f_{\varCan}$ est de pente $\varCan(n) + 1$ sur
+    l'intervalle $\intFF{n}{n+1}$.
+  \end{itemize}
+  L'association $\varCan \longmapsto f_{\varCan}$ est injective. En effet, on
+  peut récupérer $\varCan$ à partir de $f_{\varCan}$ simplement en remarquant
+  que $\varCan(n) = f_{\varCan}(n+1) - f_{\varCan}(n) - n$. Par construction,
+  $f_{\varCan}$ est strictement croissante, et on peut vérifier qu'elle est
+  aussi surjective. On a ainsi une injection de $2^{\bN}$ vers $\Aut(\bQ)$,
+  d'où le résultat.
+\end{proof}
+
+\clearpage
+
+\section{Exercices et problèmes}
+
+\subsection{Exercices}
+
+\begin{exercise}[Une preuve du théorème de Ramsey]\label{exo.Ramsey}
+  Pour prouver le théorème de Ramsey, on commence par le prouver dans le cas
+  fini. Et pour le prouver dans le cas fini, commençons par le cas où on étudie
+  $\powerset_2(X)$.
+  
+  Soit $X$ un ensemble~; une coloration sur $X$ est une fonction
+  $\makeFunName{c}{\powerset_2(X)}{\intervInt{n}}$ pour un certain $n \in \bN$.
+  Soient des entiers $n_1,\ldots,n_k \in \bN$~; on appelle
+  \og Propriété de Ramsey pour $n_1,\ldots,n_k$\fg{} le fait qu'il existe un
+  entier $M$ tel que tout ensemble $X$ avec $\Card(X) \geq M$ et coloration
+  $\makeFunName{c}{\powerset_2(X)}{\intervInt{k}}$, il existe
+  $i \in \intervInt{k}$ et une partie $\varPt\subseteq X$ tels que
+  $\Card(\varPt) = n_i$ et pour tous $v,v'\in \varPt$, $c(\{v,v'\}) = i$.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer la propriété de Ramsey pour $3,3$.
+  \item Montrer par induction que la propriété de Ramsey est vraie pour tous
+    $n,n' \in \bN$.
+  \item Montrer que si la propriété de Ramsey est vraie pour
+    $n_1,\ldots,n_k$ alors il existe $n'$ tel que la propriété de Ramsey est
+    vraie pour $n_1,\ldots n_k,n'$.
+  \item En déduire que la propriété de Ramsey pour $n_1,\ldots,n_k$ est vraie,
+    pour tout $k \in \bN$ et $n_1,\ldots,n_k\in\bN^k$.
+  \end{enumerate}
+
+  On revient maintenant au cas fini général, pour lequel on a déjà le cas
+  $n = 2$. Soient $m,k \in \bN$ et $n_1,\ldots,n_k \in \bN^k$~; on appelle
+  \og Propriété de Ramsey d'arité $m$ pour $n_1,\ldots,n_k$\fg{} le fait qu'il
+  existe un entier $M$ tel que pour tout ensemble $X$ avec $\Card(X) \geq M$
+  et coloration $\makeFunName{c}{\powerset_m(X)}{\intervInt{k}}$, il existe
+  $i \in \intervInt{k}$ et une partie $\varPt\subseteq X$ tels que
+  $\Card(\varPt) = n_i$ et pour tous $v_1,\ldots,v_m \in \varPt$,
+  $c(\{v_1,\ldots,v_m\}) = i$.
+  \begin{enumerate}[resume]
+  \item Montrer par récurrence sur $m$ que pour tout entier $m\in \bN$, tout
+    entier $k \in \bN$ et tous entiers $n_1,\ldots,n_k \in \bN^k$,
+    la propriété de Ramsey d'arité $m$ pour $n_1,\ldots,n_k$ est vérifiée.
+  \item En déduire que pour tous $m,n,k\in \bN$ il existe un entier $M$ tel que
+    pour tout ensemble $X$ tel que $\Card(X) \geq M$ et coloration
+    $\makeFunName{c}{\powerset_m(X)}{\intervInt{k}}$, il existe
+    $i \in \intervInt{k}$ et une partie $\varPt\subseteq X$ tels que
+    $\Card(\varPt) = n$ et pour tous $v_1,\ldots,v_m \in \varPt$,
+    $c(\{v_1,\ldots,v_m\}) = i$.
+  \end{enumerate}
+
+  On peut désormais montrer la version infinie du théorème, par un argument de
+  compacité. Soit $m\in \bN$, on considère la signature $\SignP{m}$ ayant
+  un unique symbole de fonction $\symbF$ d'arité $m$.
+  \begin{enumerate}[resume]
+  \item Pour $n,k\in \bN$, définir une théorie $\varT_{n,m,k}$ sur $\SignP{m}$
+    dont les modèles sont des ensembles $X$ munis d'une coloration
+    $\makeFunName{c}{\powerset_m(X)}{\intervInt{k}}$ pour lesquels il existe
+    une partie $\varPt\subseteq X$ de cardinal au moins $n$ et associant la
+    même valeur à tous $m$ éléments de $\varPt$.
+  \item En utilisant le théorème de compacité, en déduire le
+    \cref{thm.ramsey.infini}.
+  \end{enumerate}
+\end{exercise}

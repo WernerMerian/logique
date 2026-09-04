@@ -6,14 +6,14 @@
 \lettrine{D}{ans} le chapitre précédent, nous avons étudié les expressions
 rationnelles. Celles-ci sont particulièrement simples~: leur forme est limitée
 à l'étoile, l'union et la concaténation. On a vu par exemple que le langage
-$\{a^nb^n\}_{n\in\bN}$ n'est pas rationnel. Un tel langage paraît pourtant
+$\compr{a^nb^n}{n\in\bN}$ n'est pas rationnel. Un tel langage paraît pourtant
 intéressant, d'où la volonté de construire un formalisme plus riche que celui
 des expressions rationnelles.
 
-Les langages algébriques, encore appelés langages hors contextes, sont des
+Les langages algébriques, encore appelés langages hors contexte, sont des
 langages nés d'un tel formalisme. Ce chapitre est dédié à l'étude de ce
 formalisme, qui est celui des grammaires hors contexte. Nous verrons ces
-grammaires ainsi que les automates associés aux langages algébrique~: les
+grammaires ainsi que les automates associés aux langages algébriques~: les
 automates à pile. Contrairement aux automates finis, les automates à pile ont
 une forme de mémoire, grâce à une pile de symboles.
 
@@ -40,7 +40,7 @@ un sous-ensemble de $(\bN \cup \{(,),+,\times\})^\star$.
 
 \begin{remark}
   En réalité, on parle aussi de BNF dans le cas de la présentation qui sera
-  donnée dans la suite de ce chapitre des grammaires hors contextes. Dans ce
+  donnée dans la suite de ce chapitre des grammaires hors contexte. Dans ce
   livre, on considérera toutefois qu'une BNF sera une spécification moins
   formelle d'un ensemble inductif. On gardera l'expression \og grammaire hors
   contexte\fg{} dans le cas où l'on veut parler d'un ensemble de mots décrit par
@@ -51,7 +51,7 @@ un sous-ensemble de $(\bN \cup \{(,),+,\times\})^\star$.
 
 Donnons directement la définition d'une grammaire hors contexte, qui est l'objet
 que nous manipulerons pour le reste de la \cref{sec.alg1}. Comme nous
-n'utiliserons par d'autres grammaires ici, on parlera directement de grammaire
+n'utiliserons pas d'autres grammaires ici, on parlera directement de grammaire
 pour signifier \og grammaire hors contexte\fg{}.
 
 \begin{definition}[Grammaire hors contexte]
@@ -73,7 +73,7 @@ pour signifier \og grammaire hors contexte\fg{}.
 \end{notation}
 
 Une grammaire hors contexte consiste donc en la donnée des symboles qui seront
-d'intérêt, d'un symboles de départ donné et de règles permettant de construire
+d'intérêt, d'un symbole de départ donné et de règles permettant de construire
 des mots en remplaçant des symboles non terminaux. On souhaite pouvoir, par
 exemple, faire la réécriture
 \[\nTE + 3 \to 2 + 3\]
@@ -199,7 +199,7 @@ langages qui sont naturellement associées à une grammaire.
 \end{definition}
 
 \begin{definition}[Langage hors contexte]
-  Soit $\ABA$ un alphabet. On appelle classe des langages algébrique (ou hors
+  Soit $\ABA$ un alphabet. On appelle classe des langages algébriques (ou hors
   contexte) la classe de langages sur $\ABA$ définie par
   \[\varCC_{\alg}\defeq \compr{\varLL_{\varGG}}{\varGG\in\Gram(\ABA)}\]
 \end{definition}
@@ -223,7 +223,7 @@ langages qui sont naturellement associées à une grammaire.
   est un langage algébrique. Est-il rationnel ?
 \end{exercise}
 
-Un point essentiel avec les grammaires hors contextes est que, comme la seule
+Un point essentiel avec les grammaires hors contexte est que, comme la seule
 donnée importante lors d'une dérivation est le symbole que l'on décide de
 dériver, il est possible de séparer des dérivations en coupant arbitrairement un
 mot. Cela nous mène au lemme suivant, qualifié de fondamental dans
@@ -303,8 +303,8 @@ produisant un mot.
 \end{definition}
 
 Comme avec les automates, il est possible de se ramener à une grammaire sous
-forme réduite sans changer le langage engendré.Cela justifie aussi notre
-présentation des grammaire dans laquelle l'alphabet $\ABB$ se déduit des
+forme réduite sans changer le langage engendré. Cela justifie aussi notre
+présentation des grammaires dans laquelle l'alphabet $\ABB$ se déduit des
 symboles utilisés dans les règles.
 
 \begin{proposition}\label{prop.alg.reduc}
@@ -467,10 +467,9 @@ la construction d'une grammaire sous forme propre.
     On distingue deux cas~:
     \begin{itemize}
     \item si $\varla \in \ABD$, alors
-      $\subSimul(\varww') = \subSimul(\varww) \cup\subSimul(\varww)\{\varla\}$,
-      et on en déduit donc que soit
-      $\varwd \in \subSimul(\varww)\setminus\{\Ewd\}$
-      (auquel cas la propriété est vérifiée par hypothèse de récurrence), soit
+      $\subSimul(\varww') = \subSimul(\varww)\{\varla\}$, et on en déduit donc
+      que soit $\varwd \in \subSimul(\varww)\setminus\{\Ewd\}$ (auquel cas la
+      propriété est vérifiée par hypothèse de récurrence), soit
       $\varwd=\varwd'\varla$ et $\varwd'\in\subSimul(\varww)\setminus\{\Ewd\}$,
       et la propriété est alors encore vérifiée.
     \item si $\varla \notin \ABD$, alors $\subSimul(\varww')=\subSimul(\varww)$,
@@ -511,7 +510,7 @@ la construction d'une grammaire sous forme propre.
   $\Ewd$.
 
   Il nous reste maintenant à supprimer les règles de la forme $\nTA \to \nTB$.
-  Pour cela, on supprime simplement les telles règles, et on ajoute toutes les
+  Pour cela, on supprime simplement ces telles règles, et on ajoute toutes les
   règles de la forme $\nTA \to \varww$ où $\nTA \rtClot{\to} \nTB$ et
   $\nTB \to \varww$. Le langage reconnu ne change donc pas.
 \end{proof}
@@ -533,7 +532,7 @@ la forme normale quadratique, à cause de la restriction d'avoir deux non
 terminaux à droite.
 
 \begin{definition}[Forme normale de Chomsky \cite{CHOMSKY1959137}]
-  Soientt un alphabet $\ABA$ et une grammaire $\varGG=(\ABB,\to,\StGr)$ sur
+  Soient un alphabet $\ABA$ et une grammaire $\varGG=(\ABB,\to,\StGr)$ sur
   $\ABA$.
   On dit que $\varGG$ est sous forme normale de Chomsky (ou forme normale
   quadratique) lorsque toutes ses règles sont de l'une des deux formes~:
@@ -580,7 +579,7 @@ terminaux à droite.
   Pour finir, il nous suffit pour chaque règle $\nTA \to' \nTA_1\cdots\nTA_k$ de
   rajouter des non terminaux $\nTA'_1,\cdots,\nTA'_{k-2}$ et les règles
   \[\nTA \to'' \nTA_1 \nTA'_1\quad \nTA'_1 \to'' \nTA_2 \nTA'_2 \quad\cdots
-  \quad \nTA'_{k-2} \to'' \nTA_{k-1}A_k\]
+  \quad \nTA'_{k-2} \to'' \nTA_{k-1}\nTA_k\]
   et de supprimer les règles de la forme $\nTA \to' \nTA_1\cdots \nTA_k$. On
   obtient ainsi une grammaire en forme normale de Chomsky.
 \end{proof}
@@ -746,7 +745,7 @@ produire en partant de $\nTA$ (les dérivations utilisées dans la grammaire son
 alors celles correspondant aux arbres de $\derTr(\StGr)$).
 
 On donne donc d'abord une structure généralisant celle d'ensemble inductif,
-pour avoir des famille d'ensembles mutuellement inductifs.
+pour avoir des familles d'ensembles mutuellement inductifs.
 
 \begin{definition}[Signature inductive généralisée]
   On appelle une signature inductive généralisée la donnée d'un ensemble
@@ -788,7 +787,7 @@ généralisent directement les \cref{thm.PU.ind} et \cref{thm.ind.induct}.
   \item pour toute famille d'ensembles $(Y_s)_{s\in\varSup}$ et toute famille
     $(f_c)_{c\in C}$ telle que
     \[\forall c \in C, \arite(c) = ((s_1\cdots s_k),s) \implies
-    \makeFunName{f_c}{\prod_{i = 1}^k Y_{s_k}}{Y_s}\]
+    \makeFunName{f_c}{\prod_{i = 1}^k Y_{s_k}}{Y_i}\]
     il existe une famille de fonctions $(f_s)_{s\in\varSup}$ telle que
     $\forall s \in \varSup, \makeFunName{f_s}{X_s}{Y_s}$ et
     \begin{multline*}
@@ -936,7 +935,7 @@ remplacé par $T'$, cela se traduit par le lemme suivant~:
   dérivation $T$ est de la forme $c(T_1,\ldots,T_k)$ où $k \leq d$. Si un arbre
   de dérivation a une hauteur strictement inférieure à $\Card(\ABB)+2$, alors
   (par une induction structurelle) sa frontière sera de taille strictement
-  inférieure à $d^{\Card(\ABB)+2}$, donc par contrposée tout arbre de dérivation
+  inférieure à $d^{\Card(\ABB)+2}$, donc par contraposée tout arbre de dérivation
   engendrant un mot de taille supérieure à $N$ doit avoir une hauteur supérieure
   à $\Card(\ABB)+2$. On peut donc trouver une branche dans cet arbre de
   dérivation de longueur supérieure à $\Card(\ABB)+2$, dont on note
@@ -1097,14 +1096,14 @@ propriété universelle, analogue au \cref{thm.PU.ind}.
 \begin{proof}
   On applique simplement le \cref{thm.ind.rec.gen} à la famille de fonctions
   $(f_{\nTA,\varwd})$, et on applique la fonction ainsi construite~: pour
-  un mot $\varwd\in\varLL_{\varGG}$, il existe par non ambigüité un unique arbre
+  un mot $\varwd\in\varLL_{\varGG}$, il existe par non ambiguïté un unique arbre
   de dérivation $T\in\derTr(\StGr)$ tel que $\front(T) = \varwd$, et on
   associe alors $f(\varwd) = f_{\StGr}(T)$.
 \end{proof}
 
 \begin{remark}
   On peut bien sûr construire des familles de fonctions non homogènes, dans
-  lesquels chaque non terminal donne une fonction vers un ensemble différent,
+  lesquelles chaque non terminal donne une fonction vers un ensemble différent,
   mais la propriété universelle serait encore plus lourde à écrire.
 \end{remark}
 
@@ -1227,7 +1226,7 @@ $k$-uplets d'entiers, et même les listes d'entiers.
 \end{remark}
 
 \begin{remark}
-  Dans notre description des propositions, nous avons un ensemble infini de
+  Dans notre description des formules, nous avons un ensemble infini de
   symboles avec $x \in \Var$. Pour correspondre à notre paradigme où les
   règles sont en nombre fini, il suffit de considérer $x$ comme un symbole non
   terminal et la règle
@@ -1241,13 +1240,13 @@ $k$-uplets d'entiers, et même les listes d'entiers.
 
 \section{Automates à pile}
 
-Dans cette section, nous présentons la notion d'automates à pile. Nous avons vu
+Dans cette section, nous présentons la notion d'automate à pile. Nous avons vu
 dans le chapitre précédent que les automates finis (déterministes ou non
 déterministes) reconnaissent exactement les langages réguliers. Les automates à
 pile, eux, reconnaissent exactement les langages algébriques.
 
-La première sous-section est dédiée aux définitions, et en particulier au cas de
-l'acceptation, car plusieurs possibilités existent pour définir l'acceptation
+La première sous-section est consacrée aux définitions, et en particulier au cas
+de l'acceptation, car plusieurs possibilités existent pour définir l'acceptation
 d'un mot par un automate à pile. Nous verrons dans la seconde sous-section les
 conséquences de ces automates, en particulier un théorème de clôture et le cas
 des automates à pile déterministes.
@@ -1327,7 +1326,7 @@ description totale du calcul lors de l'exécution d'un automate à pile.
   et $\varwd \in \toStB$.
 \end{definition}
 
-Comme dans le chapitre précédent, on définir une notion de trace, qui correspond
+Comme dans le chapitre précédent, on définit une notion de trace, qui correspond
 à un historique de l'exécution de l'automate.
 
 \begin{definition}[Trace de l'exécution d'un automate à pile]
@@ -1362,7 +1361,7 @@ Comme dans le chapitre précédent, on définir une notion de trace, qui corresp
 Remarquons que pour l'instant, si on a effectivement défini ce qu'est un calcul
 sur un automate à pile, par le biais des traces, il nous manque un critère
 permettant d'arrêter un calcul. Plus précisément, étant donnée une trace
-$(C_p)_{k = 0,\ldots,k}$, nous n'avons pas de condition sur la dernière
+$(C_p)_{p = 0,\ldots,k}$, nous n'avons pas de condition sur la dernière
 configuration $C_k$ pour déclarer que la trace représente effectivement un
 calcul qui se termine.
 
@@ -1464,23 +1463,23 @@ Pour vérifier cela, on commence par définir la notion de fond de pile testable
 \end{definition}
 
 Nous concluons maintenant la sous-section en montrant l'équivalence entre les
-grammaires hors contextes et les automates à pile.
+grammaires hors contexte et les automates à pile.
 
 \begin{theorem}\label{thm.reco.alg}
   Soit $\ABA$ un alphabet. On a égalité entre la classe des langages
-  algébriques et celle des langages reconnaissable par un automate à pile.
+  algébriques et celle des langages reconnaissables par un automate à pile.
 \end{theorem}
 
 \begin{proof}
   Commençons par montrer qu'un langage algébrique est reconnaissable par un
   automate à pile pour le critère de pile vide et état final.
 
-  Soit une grammaire $\varGG=\{\ABB,\{\nTA_i\to\varww_i\}_{i \in I},\StGr\}$, on
-  construit l'automate $\varAuP{\varGG}$ suivant~:
+  Soit une grammaire $\varGG=\{\ABB,\{\nTA_i\to\varww_i\}_{i \in \indSet},\StGr\}$,
+  on construit l'automate $\varAuP{\varGG}$ suivant~:
   \begin{itemize}
     \begin{minipage}{0.65\textwidth}
     \item $\varQQ \defeq \{\varqZ\} \cup \{\varqP{f}\} \cup
-      \compr{\varqP{i,j}}{i \in I, \varww \in \intervIntB{\wdl{\varww_i}}}$
+      \compr{\varqP{i,j}}{i \in \indSet, j \in \intervIntB{\wdl{\varww_i}}}$
     \end{minipage}
     \begin{minipage}{0.2\textwidth}
     \item $\ABB_{\varAuP{\varGG}} \defeq \ABA \cup \ABB$
@@ -1494,7 +1493,7 @@ grammaires hors contextes et les automates à pile.
       $\varqZ,\StGr\xrightarrow{\Ewd} \varqP{f},\Ewd$
     \item pour toute règle $\nTA_i \to \varww_i$, on ajoute les transitions
       (en considérant que $\varqP{i,0} = q_0$)
-      \[\forall j < \wdl{\varww_i}, \varqP{i,j}, (\varww{i})_{\wdl{\varww_i}- j}
+      \[\forall j < \wdl{\varww_i}, \varqP{i,j}, (\varww_{i})_{\wdl{\varww_i}- j}
       \xrightarrow{\Ewd} \varqP{i,j+1},\Ewd\]
       ainsi que $\varqP{i,\wdl{\varww_i}},\Ewd\xrightarrow{\Ewd} \varqZ,\nTA_i$
     \item pour toute lettre $\varla \in \ABA$, on ajoute la transition
@@ -1518,7 +1517,7 @@ grammaires hors contextes et les automates à pile.
   Suite à cette alternance, on obtient une pile constituée uniquement par
   $\StGr$ sur l'état $\varqZ$, permettant d'aller à l'état $\varqP{f}$. Pour une
   dérivation d'un mot $\varwd$ depuis $\StGr$, on remarque qu'il est possible
-  d'effectuer le parcourt de l'automate à l'envers~: si la première règle
+  d'effectuer le parcours de l'automate à l'envers~: si la première règle
   utilisée est $\StGr \to \varww$, alors on a un bloc de transitions de $\varqZ$
   à $\varqZ$ tel que la pile vaut d'abord $\varww$, puis finit par valoir
   $\StGr$. Ainsi, les dérivations correspondent à des traces valides, et
@@ -1531,7 +1530,7 @@ grammaires hors contextes et les automates à pile.
   transition n'empile qu'au plus deux symboles.
 
   Pour tous états $\varq,\varq'$ et symbole de pile $\varla$, on définit
-  $\varLL_{\varq,\varq',\varla}$ l'ensemble des mots $\varwd$ des tels qu'il existe
+  $\varLL_{\varq,\varq',\varla}$ l'ensemble des mots $\varwd$ tels qu'il existe
   un calcul valide pour $\varwd$ entre la configuration $(\varq,\varla)$ et la
   configuration $(\varq',\Ewd)$. On remarque que si
   $\varwd \in \varLL_{\varq,\varq',\varla}$, alors pour tout mot $\varww$, il existe
@@ -1570,7 +1569,7 @@ grammaires hors contextes et les automates à pile.
   \item $\ABB$ est pris comme l'ensemble des triplets $(\varq,\varq',\varla)$
   \item le non terminal de départ est $\StGr$ muni d'une transition vers chaque
     $\varLL_{\varqZ,\varq',\varla_0}$ pour $\varq' \in \varQQ$
-  \item les transitions sont celles indiquées par la seconde équations (on
+  \item les transitions sont celles indiquées par la seconde équation (on
     remplace simplement les unions par des $+$ et le $=$ par une flèche $\to$)
   \end{itemize}
   Ainsi, une dérivation correspond naturellement à un calcul, et un calcul
@@ -1599,8 +1598,7 @@ dépilement).
   \begin{itemize}
   \item soit il existe une unique transition
     $\varq,\varla\xrightarrow{\Ewd} \varq',\varlb$ et il n'y a aucune transition
-    $\varq,\varla\xrightarrow{\varlb} \varq',\varlc$ pour un
-    élément $\varlb \in \ABA$
+    $\varq,\varla\xrightarrow{\varlb} \varq',\varlc$ avec $\varlb \in \ABA$
   \item soit il n'existe aucune transition de la forme
     $\varq,\varla\xrightarrow{\Ewd} \varq',\varlb$ et pour chaque
     $\varla \in \ABA$, il existe au plus une transition de la forme
