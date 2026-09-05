@@ -1947,66 +1947,280 @@ Boole vers $\quot{\bZ}{2\bZ}$.
   \end{enumerate}
 \end{exercise}
 
+\begin{exercise}[Connexions de Galois]\label{exo.galois.con}
+  A FAIRE
+\end{exercise}
+
 \clearpage
 
 \subsection{Problèmes}
 
-%\begin{problem}[Une structure algébrique pour le calcul des prédicats]
-%  Nous avons vu qu'il est possible d'axiomatiser grâce à la théorie des ordres
-%  la structure de la logique propositionnelle (à équivalence logique près).
-%  L'objectif de cet exercice est d'étendre cette idée en donnant des structures
-%  qui se comportent comme l'ensemble des formules du calcul des prédicats, en
-%  ajoutant en particulier des propriétés que vérifient les quantificateurs et
-%  l'égalité.
-%  
-%  On se fixe dans cet exercise une signature $\Sign$. Pour tout
-%  $n \in \bN$, on dénote par $\Formula_n(\Sign)$ l'ensemble des formules
-%  de $\Sign$ dont les variables libres appartiennent à
-%  $\{x_0,\ldots,x_{n-1}\}$ (ainsi $\Prop(\Sign) = \Formula_0(\Sign)$).
-%
-%  On définit aussi $\LinTar_n(\Sign)$, l'algèbre de Lindenbaum-Tarski des
-%  formules à $n$ variables libres, comme le quotient de $\Formula_n(\Sign)$
-%  par la relation $\dvvd$.
-%  \begin{enumerate}[label=(\roman*)]
-%  \item Montrer que chaque $\LinTar_n(\Sign)$ est une algèbre de Boole.
-%  \item Soit $\makeFunName{\iota_n}{\Formula_n(\Sign)}{\Formula_{n+1}(\Sign)}$
-%    l'injection canonique des formules à $n$ variables libres dans les formules
-%    à $n+1$ variables libres. Justifier que $\iota_n$ est compatible avec
-%    $\dvvd$. On note alors aussi $\iota_n$ la fonction canoniquement
-%    associée $\LinTar_n(\Sign) \to \LinTar_{n+1}(\Sign)$~: montrer que
-%    cette fonction est un morphisme d'algèbre de Boole.
-%  \item De même, montrer que
-%    \[
-%    \makeFun{\mathord{\forall}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
-%            {\varFF}{\forall x_n,\varFF}
-%    \]
-%    induit une fonction croissante entre $\LinTar_{n+1}(\Sign)$ et
-%    $\LinTar_n(\Sign)$. Faire de même avec le quantificateur
-%    $\mathord{\exists}$.
-%  \item Montrer que pour tous $i,j < n$, la fonction
-%    \[
-%    \makeFunName{\kron{i}{j}}{\Formula_{n+1}(\Sign)}{\Formula_n(\Sign)}
-%    \]
-%    définie en substituant $x_i$ par $x_j$ et chaque $x_{k+1}$ par $x_k$ pour
-%    $k > i$ (pour assurer que les variables sont dans $\{x_0,\ldots,x_n\}$),
-%    induit un morphisme d'algèbre de Boole entre $\LinTar_{n+1}(\Sign)$ et
-%    $\LinTar_n(\Sign)$.
-%  \item Montrer l'équivalence suivante pour
-%    $\varFF \in \LinTar_n(\Sign)$ et
-%    $\varFP \in \LinTar_{n+1}(\Sign)$~:
-%    \[\varFF \vdP \forall \varFP \iff \iota_n(\varFF)\vdP \varFP\]
-%    ainsi que, pour $\varFF \in \LinTar_{n+1}(\Sign)$ et
-%    $\varFP \in \LinTar_n(\Sign)$~:
-%    \[\exists \varFF \vdP \varFP \iff \varFF\vdP \iota_n(\varFP)\]
-%    Ces équivalences caractérisent en un sens les quantificateurs $\forall$ et
-%    $\exists$.
-%  \item Montrer l'équivalence suivante, pour $\varFF \in \LinTar_n(\Sign)$
-%    et $\varFP \in \LinTar_{n+1}(\Sign)$~:
-%    \[\iota_n(\varFF) \land x_i = x_j \vdP \varFP \iff
-%    \varFF\vdP \kron{i}{j}(\varFP)\]
-%    Cet équivalence caractérise en un sens l'égalité.
-%  \end{enumerate}
-%\end{problem}
+\begin{problem}[Une structure algébrique pour le calcul des prédicats]
+  \label{pb.quasi.tripos}
+  Nous avons vu qu'il est possible d'axiomatiser grâce à la théorie des ordres
+  la structure de la logique propositionnelle (à équivalence logique près).
+  L'objectif de cet exercice est d'étendre cette idée en donnant des structures
+  qui se comportent comme l'ensemble des formules du calcul des prédicats, en
+  ajoutant en particulier des propriétés que vérifient les quantificateurs et
+  l'égalité. Dans tout ce problème, on considère une signature $\Sign$ fixée.
+
+  \pbPart{Les renommages}
+
+  L'ensemble de toutes les formules peut en fait être considéré comme une
+  suite d'extensions~:
+  \[\Prop(\Sign) \subseteq \Formula_1(\Sign)\subseteq\Formula_2(\Sign)\subseteq
+  \cdots\]
+  où, pour $\Var = \compr{x_n}{n \in \bN}$, on désigne par $\Formula_n(\Sign)$
+  l'ensemble
+  \[\Formula_n(\Sign) \defeq
+  \compr{\varFF\in\Formula(\Sign)}{\VL(\varFF)\subseteq\{x_0,\ldots,x_{n-1}\}}\]
+  \begin{pbQuest}
+  \item Montrer que pour tout $n \in \bN$, l'algèbre de Lindenbaum-Tarski
+    \[\LinTar_n(\Sign)\defeq \quot{\Formula_n(\Sign)}{\dvvd}\]
+    est une algèbre de Boole. Montrer que, dans le cas de l'algèbre de
+    Lindenbaum-Tarski intuitionniste, on a une algèbre de Heyting.
+  \item Montrer que l'inclusion $\LinTar_n(\Sign)\subseteq\LinTar_{n+1}(\Sign)$
+    est un morphisme d'algèbres de Boole.
+  \end{pbQuest}
+
+  Au sein d'un même ensemble $\LinTar_n(\Sign)$, les connecteurs logiques
+  agissent sans souci. Cependant, pour ce qui est de la gestion des variables,
+  on a besoin de donner une structure plus claire. Pour cela, on va introduire
+  la notion de renommage. Pour $n,m \in \bN$, on appelle $(n,m)$-renommage
+  une fonction
+  \[\makeFunName{\varRen}{\intervInt{n}}{\intervInt{m}}\]
+  L'intérêt de ces renommages est de définir une notion plus
+  élémentaire de substitution, n'agissant qu'entre des variables.
+  \begin{pbQuest}[resume]
+  \item Définir, pour un $(n,m)$-renommage $\varRen$ et une formule
+    $\varFF(x_0,\ldots,x_{n-1})\in\Formula_n(\Sign)$, l'action de $\varRen$
+    sur $\varFF$ donnée par
+    \[(\varRen\actRen\varFF)(x_0,\ldots,x_{m-1}) \defeq
+    \varFF(x_{\varRen(0)},\ldots,x_{\varRen(n-1)})\]
+  \item Montrer que pour tout $(n,m)$-renommage, l'action de $\varRen$ induit
+    un morphisme d'algèbres de Boole
+    \[\makeFun{\varRen\actRen\tok}{\LinTar_n(\Sign)}{\LinTar_m(\Sign)}
+              {\clas{\varFF}}{\clas{\varRen\actRen\varFF}}\]
+  \item Dans le cas du $(n,n+1)$-renommage donné par l'inclusion
+    $\Formula_n(\Sign)\subseteq\Formula_{n+1}(\Sign)$, quelle action
+    obtient-on~?
+  \end{pbQuest}
+
+  Remarquons qu'il est possible de construire ainsi des automorphismes
+  d'algèbres de Boole, en considérant l'action par une permutation
+  $\varPerm\in\Permut{n}$.
+  \begin{pbQuest}[resume]
+  \item Montrer que $\varPerm\actRen\tok$ est bien un automorphisme d'algèbres
+    de Boole sur $\LinTar_n(\Sign)$, pour tout $n \in \bN$.
+  \item Tout automorphisme de $\LinTar_n(\Sign)$ est-il de la forme
+    $\varPerm\actRen\tok$ pour une certaine permutation
+    $\varPerm\in\Permut{n}$~? \textit{Indication~: On pourra considérer le cas
+    de la signature constituée d'un symbole de constante $\Cc$.}
+  \end{pbQuest}
+
+  \pbPart{Les quantificateurs et l'égalité}
+
+  On cherche maintenant à définir les quantificateurs. Une première manière
+  d'appréhender les quantificateurs au sein des algèbres $\LinTar_n(\Sign)$
+  serait de considérer qu'ils constituent des fonctions
+  \[
+  \makeFun
+      {\mathord{\forall},\mathord{\exists}}
+      {\LinTar_{n+1}(\Sign)}{\LinTar_n(\Sign)}
+      {\clas{\varFF(x_0,\ldots,x_n)}}
+      {\clas{\quantif x_n,\varFF(x_0,\ldots,x_{n-1})}}
+      \]
+  mais on se propose de donner une construction plus fine, dans laquelle chaque
+  quantification $\quantif x_i$ donne lieu à une fonction de quantification.
+
+  Soit $n \in \bN$ et $i \in \intervInt{n}$. On définit la fonction de
+  renommage
+  \[
+  \makeFunBis{\delta_{i}}{\intervInt{n}}{\intervP{0}{n}}
+             {k}{k\text{ si } k \leq i}
+             {k}{k+1\text{ si } k > i}
+  \]
+  \begin{pbQuest}
+  \item Décrire, pour une formule $\varFF\in\Formula_{n}(\Sign)$, l'action
+    $\delta_{i}\actRen\varFF$. Dans le cas où $i = n$, que retrouve-t-on~?
+  \item Montrer que, pour tout entier $n \in \bN$ et entier $i\in\intervInt{n}$,
+    toute formule $\varFF\in\Formula_n(\Sign)$ et toute formule
+    $\varFP\in\Formula_{n+1}(\Sign)$, on a les deux équivalences
+    \[\delta_i\actRen\varFF\vdP\varFP \iff \varFF \vdP \forall x_i,\varFP
+    \qquad
+    \varFP\vdP\delta_i\actRen\varFF\iff \exists x_i,\varFP\vdP\varFF\]
+  \item Montrer que pour tout $n \in \bN$ et $i \in \intervInt{n}$, il existe
+    une unique fonction
+    $\makeFunName{(\forall x_i)}{\LinTar_{n+1}(\Sign)}{\LinTar_n(\Sign)}$
+    et une unique fonction
+    $\makeFunName{(\exists x_i)}{\LinTar_{n+1}(\Sign)}{\LinTar_n(\Sign)}$
+    vérifiant la construction précédente.
+  \end{pbQuest}
+
+  On peut faire de même pour l'égalité, pour laquelle on introduit la fonction
+  de renommage suivante, avec $n \in \bN$ et $i\in\intervInt{n}$~:
+  \[
+  \makeFunBis{\sigma_{i}}{\intervP{0}{n}}{\intervInt{n}}
+             {k}{k\text{ si } k < n}
+             {n}{i}
+  \]
+  \begin{pbQuest}[resume]
+  \item Montrer que, pour tout entier $n \in \bN$ et entier $i\in\intervInt{n}$,
+    toute formule $\varFF\in\Formula_{n}(\Sign)$ et toute formule
+    $\varFP\in\Formula_{n+1}(\Sign)$, on a l'équivalence
+    \[\varFF\vdP\sigma_{i}\actRen\varFP \iff \varFF\land(x_i = x_n)\vdP\varFP\]
+  \item Montrer que la fonction d'égalité est définie de façon unique de cette
+    façon.
+  \end{pbQuest}
+
+  On peut utiliser ces caractérisations algébriques pour déduire directement
+  certains résultats.
+  \begin{pbQuest}[resume]
+  \item En utilisant l'\cref{exo.galois.con} et les questions précédentes,
+    montrer qu'on a l'égalité suivante dans les algèbres de Lindenbaum-Tarski~:
+    \begin{align*}
+      \forall x, (\varFF(x)\land\varFP(x)) &\equiv
+      (\forall x, \varFF(x))\land(\forall x, \varFP(x))\quad\\ \\
+      \exists x, (\varFF(x)\lor\varFP(x)) &\equiv
+      (\exists x, \varFF(x))\lor(\exists x, \varFP(x))\\ \\
+      (\varFF(x) \land (x = y))\lor(\varFP(x) \land (x = y)) &\equiv
+      (\varFF(x)\lor \varFP(x))\land (x = y)
+    \end{align*}
+  \item Les fonctions définies par les quantificateurs et l'égalité sont-elles
+    des morphismes d'algèbres de Boole entre les algèbres de Lindenbaum-Tarski~?
+  \end{pbQuest}
+
+  \pbPart{Les conditions de cohérence}
+
+  On peut désormais construire une définition d'une structure algébrique qui
+  modélise la logique du premier ordre. On va appeler une telle structure
+  une \emphexpr{hyperdoctrine}. Pour l'instant, on connait les composantes de
+  ces structures~:
+  \begin{itemize}
+  \item pour tout $n \in \bN$, une algèbre de Boole $\varBB_n$~;
+  \item pour tout $(n,m)$-renommage $\varRen$, un morphisme d'algèbre de Boole
+    $\makeFunName{\relev{\varRen}}{\varBB_n}{\varBB_m}$ vérifiant les deux
+    conditions de fonctorialité
+    \[\relevB{\varRenB\circ\varRen} = \relev{\varRenB}\circ\relev{\varRen}
+    \qquad \relevB{\id_n} = \id_{\varBB_n}\]
+  \item chaque renommage $\delta_i$ a une connexion de Galois à gauche et à
+    droite, c'est-à-dire deux fonctions
+    $\makeFunName{E_i,F_i}{\varBB_{n+1}}{\varBB_n}$ telles que pour tous
+    $x \in \varBB_n$, $y \in \varBB_{n+1}$~:
+    \[\relevB{\delta_i}(x)\leq y \iff x \leq F_i(y)\qquad
+    y\leq \relevB{\delta_i}(x) \iff E_i(y) \leq x\]
+  \item chaque renommage $\sigma_i$ a une connexion de Galois à gauche,
+    c'est-à-dire une fonction $\makeFunName{I_i}{\varBB_n}{\varBB_{n+1}}$ telle
+    que pour tous $x \in \varBB_n$, $y \in \varBB_{n+1}$~:
+    \[y \leq \relevB{\sigma_i}(x) \iff I_i(y) \leq x\]
+  \end{itemize}
+  Une telle structure ne suffit pas, car il nous faut aussi des conditions
+  permettant d'avoir une cohérence entre l'action du renommage d'un côté et
+  la quantification de l'autre.
+  \begin{pbQuest}
+  \item Soient deux entiers $n,m\in\bN$, deux renommages
+    $\makeFunName{\varRen}{\intervP{0}{n}}{\intervP{0}{m}}$ et
+    $\makeFunName{\varRenB}{\intervInt{n}}{\intervInt{m}}$ faisant
+    commuter le diagramme
+    \begin{center}
+      \begin{tikzcd}
+        \intervInt{n} \ar[dd,"\delta_i"]\ar[rr,"\varRenB"] & &
+        \intervInt{m} \ar[dd,"\delta_j"] \\ \\
+        \intervP{0}{n}\ar[rr,"\varRen"] & &\intervP{0}{m}
+      \end{tikzcd}
+    \end{center}
+    c'est-à-dire tels que pour tout $k \in \intervInt{n}$ on a l'égalité
+    $\varRen(\delta_i(k)) = \delta_j(\varRenB(k))$.
+    Montrer que pour toute formule $\varFF\in\Formula_{n+1}(\Sign)$, on a les
+    deux égalités
+    \[\relevB{\varRenB}(\exists x_i, \varFF) \equiv
+    \exists x_j,(\relevB{\varRen}(\varFF))\qquad
+    \relevB{\varRenB}(\forall x_i, \varFF) \equiv
+    \forall x_j,(\relevB{\varRen}(\varFF))\]
+  \item Soient deux entiers $n,m\in\bN$, deux renommages
+    $\makeFunName{\varRen}{\intervP{0}{n}}{\intervP{0}{m}}$ et
+    $\makeFunName{\varRenB}{\intervInt{n}}{\intervInt{m}}$ faisant
+    commuter le diagramme
+    \begin{center}
+      \begin{tikzcd}
+        \intervP{0}{n} \ar[dd,"\sigma_i"]\ar[rr,"\varRen"] & &
+        \intervP{0}{m} \ar[dd,"\sigma_j"] \\ \\
+        \intervInt{n}\ar[rr,"\varRenB"] & &\intervInt{m}
+      \end{tikzcd}
+    \end{center}
+    c'est-à-dire tels que pour tout $k \in \intervP{0}{n}$ on a l'égalité
+    $\varRenB(\sigma_i(k)) = \sigma_j(\varRen(k))$.
+    Montrer que pour toute formule $\varFF\in\Formula_{n}(\Sign)$, on a
+    l'égalité
+    \[(\relevB{\varRenB}(\varFF))\land (x_j = x_m) \equiv
+    \relevB{\varRen}(\varFF\land (x_i = x_n))\]
+  \end{pbQuest}
+  On appelle ces égalités les conditions de Beck-Chevalley (respectivement pour
+  les quantificateurs et pour l'égalité).
+
+  Une autre condition, intervenant formellement dans les preuves et qui n'est
+  pas présente dans les conditions énoncées, est la condition dite de Frobenius.
+  \begin{pbQuest}[resume]
+  \item Montrer que pour tout entier $n \in \bN$ et tout $i\in\intervInt{n}$,
+    on a les deux égalités suivantes pour toute formule
+    $\varFF\in\Formula_n(\Sign)$ et formule $\varFP\in\Formula_{n+1}(\Sign)$~:
+    \[\exists x_i, (\delta_i(\varFF)\land \varFP) \equiv
+    \varFF\land (\exists x_i, \varFP)\qquad
+    \forall x_i, (\delta_i(\varFF) \lor \varFP) \equiv
+    \varFF\lor (\forall x_i, \varFP)\]
+  \end{pbQuest}
+  On donne enfin la substitutivité de l'égalité.
+  \begin{pbQuest}[resume]
+  \item Montrer que pour tout entier $n \in \bN$ et tout $i\in\intervInt{n}$,
+    pour toute formule $\varFF\in\Formula_{n}(\Sign)$, on a l'égalité
+    \[(x_i = x_n) \land (\relevB{\sigma_i}(\varFF)) \equiv
+    (x_i = x_n) \land \varFF\]
+  \item Montrer aussi que l'égalité vérifie la condition de Frobenius,
+    c'est-à-dire l'égalité
+    \[(\varFF\land \relevB{\sigma_i}(\varFP))\land (x_i = x_n)\equiv
+    (\varFF\land (x_i = x_n))\land \varFP\]
+  \end{pbQuest}
+
+  On peut ainsi définir une \emphexpr{hyperdoctrine} comme les données
+  précédemment énumérées et des propriétés suivantes~:
+  \begin{itemize}
+  \item Pour deux renommages $\varRen,\varRenB$ et entiers $i,j$ tels que les
+    expressions suivantes ont du sens, et tels que
+    $\varRen\circ \delta_i = \delta_j\circ \varRenB$, on a les deux égalités
+    \[\relevB{\varRenB}\circ E_i = E_j\circ\relevB{\varRen}\qquad
+    \relevB{\varRenB}\circ F_i = F_j\circ\relevB{\varRen}\]
+  \item Pour deux renommages $\varRen,\varRenB$ et entiers $i,j$ tels que les
+    expressions suivantes ont du sens, et tels que
+    $\varRenB\circ \sigma_i = \sigma_j\circ \varRen$, on a l'égalité
+    \[\relevB{\varRen}\circ I_i = I_j \circ\relevB{\varRenB}\]
+  \item Pour tout $n \in \bN$ et $i\in\intervInt{n}$, on a les égalités
+    \begin{align*}
+      E_i\circ ((x,y) \longmapsto \relevB{\delta_i}(x) \opmt y) &=
+      ((x,y) \longmapsto x \opmt E_i(y))\\ \\
+      F_i\circ ((x,y) \longmapsto \relevB{\delta_i}(x) \opjn y) &=
+      ((x,y) \longmapsto x \opjn F_i(y))
+    \end{align*}
+  \item Pour tout $n \in \bN$ et $i\in\intervInt{n}$, on a l'égalité
+    \[I_i\circ ((x,y)\longmapsto x\opmt \relevB{\sigma_i}(y)) =
+    ((x,y) \longmapsto I_i(x)\opmt y)\]
+  \end{itemize}
+  
+  On peut désormais montrer le théorème de correction de $\vdP$ vis-à-vis des
+  \emphexpr{hyperdoctrines}.
+  \begin{pbQuest}[resume]
+  \item Construire pour chaque $n\in\bN$ une fonction
+    \[\makeFunName{f_n}{\Formula_n}{\varBB_n}\]
+    associant à une formule à $n$ variables libres sur la signature vide, un
+    élément de $\varBB_n$, de telle sorte que $f_n$ se relève en un morphisme
+    d'algèbres de Boole $\makeFunName{\relev{f}_n}{\LinTar_n}{\varBB_n}$.
+  \item Montrer que pour tout séquent dérivable
+    $\varFF_1,\ldots,\varFF_k\vdP\varFP$ dans $\Formula_n$, on a l'inégalité
+    \[\opMt_{i = 1}^{k} f_n\left(\clas{\varFF_i}\right) \leq
+    f_n\left(\clas{\varFP}\right)\]
+  \end{pbQuest}
+\end{problem}
+
+\clearpage
 
 \begin{problem}[Logique temporelle linéaire \cite{LTL77}]
   Ce problème étudie une variante de logique appelée logique temporelle linéaire
