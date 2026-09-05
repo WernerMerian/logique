@@ -2758,6 +2758,8 @@ d'un représentant).
   Commençons par prouver des énoncés pour $\vdP$~:
   \begin{enumerate}[label=(\roman*)]
   \item \'Ecrire un arbre de dérivation pour chaque cas~:
+
+    \vspace{5pt}
     \begin{itemize}
       \begin{minipage}{0.5\textwidth}
       \item $(\exists x, \forall y, \varFF(x,y)) \vdP
@@ -2771,7 +2773,7 @@ d'un représentant).
       \lnot\lnot\varFP$
       \end{minipage}
     \end{itemize}
-  \item On considère la signature des groupes $\mathcal L_{\mathrm{Grp}}$
+  \item On considère la signature des groupes $\SignGrp$
     donnée au début du chapitre
     et la théorie $\Grp$ des groupes abéliens définie dans la
     \cref{subsec.theorie}.
@@ -2782,14 +2784,33 @@ d'un représentant).
         $\forall x,(\forall y,(xy = y)\land(yx = y)) \to x = e$
       \end{minipage}
       \begin{minipage}{0.3\textwidth}
-      \item $\forall x,y, (xy)^{-1} = y^{-1}x^{-1}$
+      \item $\forall x\,y, (xy)^{-1} = y^{-1}x^{-1}$
       \end{minipage}
     \end{itemize}
   \end{enumerate}
 \end{exercise}
 
 \begin{exercise}[Construire des modèles]
-    Pour les propositions suivantes, dire si les 
+  On se place dans les formules sur la signature des anneaux $\SignRing$.
+  Pour chaque proposition $\varFF$, donner une structure $\varMM$ telle que
+  $\varMM\satisf\varFF$ et une structure $\varMM$ telle que
+  $\varMM\nsatisf\varFF$~:
+
+  \vspace{5pt}
+  \begin{itemize}
+    \begin{minipage}{0.43\textwidth}
+    \item $\varFF_1 \defeq \exists x, \forall y, x + y = x + x$
+    \item $\varFF_2 \defeq \forall x\,y\,z, (x \times y)\times z = x + y + z$
+    \item $\varFF_3 \defeq \forall x, \exists y, x = y + y$
+    \end{minipage}
+    \begin{minipage}{0.5\textwidth}
+    \item 
+      $\varFF_4 \defeq \forall x, \exists y, (x = y + y) \lor (x = y + y + 1)$
+    \item $\varFF_5 \defeq (\forall x, x + x + x = 0)\land
+      (\exists x, x + x + 1 \neq 0)$
+    \item $\varFF_6 \defeq \forall x,\exists y\,z, x - y = z \times z$
+    \end{minipage}
+  \end{itemize}
 \end{exercise}
 
 \begin{exercise}[Le connecteur d'équivalence]\label{exo.equiv}
@@ -2858,10 +2879,10 @@ d'un représentant).
     \[\Sign \defeq \{<^2\}\]
     et les axiomes suivants~:
     \begin{align*}
-        \Rax_1 & \defeq \exists x,y, x < y\\
-        \Rax_2 & \defeq \forall x,y,z, (x < y) \land (y < z) \to (x < y)\\
+        \Rax_1 & \defeq \exists x\,y, x < y\\
+        \Rax_2 & \defeq \forall x\,y\,z, (x < y) \land (y < z) \to (x < y)\\
         \Rax_3 & \defeq \forall x, \lnot (x < x)\\
-        \Rax_4 & \defeq\forall x,y, ((x < y) \to
+        \Rax_4 & \defeq\forall x\,y, ((x < y) \to
         \exists z, (x < z) \land (z < y))
     \end{align*}
     Soit $\varT = \{ \Rax_1,\Rax_2,\Rax_3,\Rax_4\}$.
@@ -2941,8 +2962,8 @@ d'un représentant).
   \[\Sign \defeq \{\sim^2\}\]
   On définit aussi la théorie
   \[\varT_{\Requiv}\defeq \{\ogM\forall x, x \sim x\fgM,
-  \ogM\forall x, y, x \sim y \to y \sim x\fgM,
-  \ogM\forall x,y,z, x \sim y \to y \sim z \to x \sim z\fgM\}\]
+  \ogM\forall x\, y, x \sim y \to y \sim x\fgM,
+  \ogM\forall x\,y\,z, x \sim y \to y \sim z \to x \sim z\fgM\}\]
 
   \begin{enumerate}[label=(\roman*)]
   \item Donner un ensemble d'axiomes $\nbr_{\infty}$ tel que
@@ -2993,4 +3014,248 @@ d'un représentant).
 
 \subsection{Problèmes}
 
-A FAIRE
+\begin{problem}[La logique du second ordre]
+  On a vu jusqu'ici uniquement la logique du premier ordre. Dans cette logique,
+  on peut uniquement écrire des formules où les quantifications portent sur des
+  éléments de l'univers de discours. Par exemple, une formule d'arithmétique du
+  premier ordre pourra contenir des quantifications sur les nombres entiers.
+  L'objectif de ce problème est d'aborder une extension~: la logique du second
+  ordre. Dans cette extension, on peut être capable d'écrire par exemple la
+  proposition suivante~:
+  \[\forall \varFF, \varFF\lor\lnot\varFF\]
+  Pour ce faire, on propose d'abord une extension appelée la logique du premier
+  ordre multi-sortée.
+
+  \pbPart{Logique multi-sortée}
+
+  Pour motiver cette logique, prenons la théorie des espaces vectoriels~: sa
+  formulation naturelle demande un corps $\varKK$ et un groupe abélien $\varGrp$
+  muni d'une action de $\varKK$ sur $\varGrp$. On verra dans le
+  \cref{chp.elim.quantif} une théorie décrivant un tel groupe à $\varKK$
+  fixé. Mais il est plus naturel de parler de la paire $(\varKK,\varGrp)$, ce
+  qui n'est pas possible en l'état. C'est pourquoi on présente la notion de
+  sorte, qui permet de définir les formules multi-sortées et les modèles
+  multi-sortés.
+
+  On fixe un ensemble $\Sorts$ dont les éléments sont appelés les sortes, et
+  qui vont jouer moralement le rôle des ensembles sur lesquels on quantifie.
+  Une signature sur $\Sorts$ va être la donnée de
+  \begin{itemize}
+  \item un ensemble $\SigFun$ de symboles de fonction~;
+  \item un ensemble $\SigRel$ de symboles de relation~;
+  \item une fonction
+    $\makeFunName{\aritFun}{\SigFun}{\List(\Sorts)\times\Sorts}$~;
+  \item une fonction $\makeFunName{\aritRel}{\SigRel}{\List(\Sorts)}$~;
+  \end{itemize}
+  L'arité d'un symbole $\symbF$ est maintenant de la forme
+  $\varSs_1,\ldots,\varSs_n \to \varSsB$, donnant non seulement le nombre
+  d'arguments de $\symbF$ mais aussi l'ensemble auquel appartient chaque
+  argument (ainsi que celui auquel appartient l'élément de sortie).
+  \begin{pbQuest}
+  \item Dans le cas où $\Sorts$ est un singleton, qu'obtient-on~?
+  \end{pbQuest}
+
+  Plutôt que de simplement avoir des termes définis par induction, on a
+  désormais besoin d'une notion de termes \emphexpr{bien typés}, c'est-à-dire
+  que les applications de symboles de fonctions s'appliquent à des arguments
+  déclarés dans la bonne sorte. Pour cela, on commence par définir l'ensemble
+  des termes bruts par induction
+  \[t \inddefeq x \mid \symbF(t_1,\ldots,t_n)\]
+  pour $x\in\Var$ et $t_1,\ldots,t_n$ des termes bruts, $n$ le nombre
+  d'éléments dans la liste de $\aritFun(\symbF)$. On définit ensute une
+  relation de typage~: pour un ensemble $\varCG$ fini de paires
+  $(x_1,\varSs_i)$ où $x_i \in \Var$ et $\varSs_i \in \Sorts$ (on notera
+  $x_i : \varSs_i$), $t$ un terme brut et $\varSs$ une sorte, on définit
+  \[\varCG\tyR t : \varSs\]
+  signalant que $t$ est un terme bien construit associé à la sorte $\varSs$.
+  \begin{pbQuest}[resume]
+  \item Définir les règles construisant inductivement la relation
+    $\varCG\tyR t : \varSs$.
+  \item Pour un contexte de typage $\varCG$ tel que défini précédemment, définir
+    l'ensemble $\Atom_{\varCG}$ des propositions atomiques dont les variables
+    sont typées par $\varCG$.
+  \end{pbQuest}
+
+  On définit aussi la notion de formule bien typée dans un contexte $\varCG$,
+  qu'on note ici $\Formula_{\varCG}$. On notera aussi
+  $\varCG\tyR \varFF : \Formula$ pour désigner $\varFF\in\Formula_{\varCG}$. La
+  plupart des constructions sont identiques, à l'exception des quantifications~:
+  \begin{center}
+    \AxiomC{$\varCG, x : \varSs\tyR \varFF : \Formula$}
+    \UnaryInfC{$\varCG\tyR \forall x^{\varSs}, \varFF : \Formula$}
+    \DisplayProof
+    \qquad
+    \AxiomC{$\varCG, x : \varSs\tyR \varFF : \Formula$}
+    \UnaryInfC{$\varCG\tyR \exists x^{\varSs}, \varFF : \Formula$}
+    \DisplayProof
+  \end{center}
+  De même, on doit maintenant définir une relation $\vdP$ qui dépend du contexte
+  de typage des formules~: on note donc $\varCG\mid\varCX\vdP\varFF$ un
+  séquent où $\varCG$ est un contexte de typage, $\varCX$ est une liste de
+  formules $\varFP$ telles que $\varCG\tyR \varFP : \Formula$ et
+  $\varCG\tyR \varFF : \Formula$.
+  \begin{pbQuest}[resume]
+  \item Définir les règles construisant inductivement la relation
+    $\varCG\mid\varCX\vdP\varFF$. \textit{Indication : on fera attention
+    aux règles $\RexI$ et $\RforaE$ qui introduisent un nouveau terme.}
+  \end{pbQuest}
+
+  On peut aussi définir un modèle multi-sorté en introduisant pour chaque
+  sorte un ensemble~:
+  \begin{itemize}
+  \item pour chaque $\varSs\in\Sorts$, on a un ensemble $\carM{\varSs}$;
+  \item pour chaque symbole $\symbF$ d'arité
+    $\varSs_1,\ldots,\varSs_n \to \varSsB$, on a une fonction
+    \[\makeFunName{\carM{\symbF}}
+                  {\carM{\varSs_1}\times\cdots\times\carM{\varSs_n}}
+                  {\carM{\varSs}}
+    \]
+  \item pour chaque symbole $\symbR$ d'arité
+    $\varSs_1,\ldots,\varSs_n$, on a une relaiton
+    \[\carM{\symbR}\subseteq \carM{\varSs_1}\times\cdots\times\carM{\varSs_n}\]
+  \end{itemize}
+  \begin{pbQuest}[resume]
+  \item \'Enoncer et démontrer un théorème de correction pour le calcul des
+    prédicats du premier ordre multi-sorté vis-à-vis de cette notion de modèle
+    multi-sorté.
+  \item \'Enoncer et démontrer un théorème de complétude. On admettra que toute
+    théorie cohérente peut être étendue en une théorie complète.
+  \end{pbQuest}
+
+  Ainsi, la théorie du premier ordre multi-sortée est une extension pour
+  laquelle la plupart des méthodes déjà données se généralisent. Cette théorie
+  est plus verbeuse, mais elle peut être utile pour formaliser des systèmes
+  moins compacts que l'arithmétique ou qu'une structure fixée (par exemple,
+  pour les espaces vectoriels).
+
+  \pbPart{Le second ordre}
+
+  On introduit maintenant la logique du second ordre. De façon similaire à la
+  logique multi-sortée, nous avons deux sortes d'objets sur lesquels on va
+  quantifier~: ce qu'on appelle les \emphexpr{individus}, qui sont les objets
+  mathématiques du premier ordre, et les \emphexpr{prédicats}, qui sont les
+  formules elles-mêmes. On reprend la logique mono-sortée, mais on ajoute un
+  nouvel ensemble de variables $\Var_2$ dont on appelle les éléments
+  \og variables du second ordre\fg et qu'on note $X,Y,\ldots$ On considère que
+  chaque variable $X$ est d'une certaine arité, et on notera $X^n$ pour
+  représenter que $X$ est d'arité $n$.
+
+  Une formule atomique est désormais définie comme étant
+  \begin{itemize}
+  \item $\symbR(t_1,\ldots,t_n)$ où $t_1,\ldots,t_n$ sont des termes~;
+  \item $t = u$ où $t,u$ sont des termes~;
+  \item $X^n(t_1,\ldots,t_n)$ où $X$ est une variable du second ordre.
+  \end{itemize}
+
+  Les formules de la logique du second ordre sont définies inductivement par
+  \[\varFF,\varFP\inddefeq a \mid \top \mid \bot \mid \varFF\land\varFP\mid
+  \varFF\lor\varFP\mid\varFF\to\varFP\mid\forall x, \varFF\mid\exists x,\varFF
+  \mid \forall X^n, \varFF\mid \exists X^n, \varFF\]
+  où $a \in \Atom$ et $n \in \bN$. $X^n$ sera une variable représentant un
+  prédicat dépendant de $n$ variables $x_0,\ldots,x_{n-1}$.
+  \begin{pbQuest}[resume]
+  \item Définir par induction la substitution du second ordre
+    $\varFF[\varFP/X]$ pour $\varFP$ une formule dont les
+    variables libres sont parmi $x_0,\ldots,x_{n-1}$ et $X$ une variable du
+    second ordre d'arité $n$.
+  \end{pbQuest}
+
+  On définit la relation $\varCG\vdP^2 \varFF$ comme la relation de
+  prouvabilité, en ajoutant les règles suivantes~:
+  \begin{center}
+    \begin{tabular}{cc}
+      \AxiomC{$\varCG\vdP^2 \varFF$}
+      \RightLabel{$(\RforaI^2)^\ddagger$}
+      \UnaryInfC{$\varCG\vdP^2 \forall X^n$}
+      \DisplayProof
+      &
+      \AxiomC{$\varCG\vdP^2 \forall X^n, \varFF$}
+      \RightLabel{$\RforaE^2$}
+      \UnaryInfC{$\varCG\vdP^2\varFF[\varFP/X]$}
+      \DisplayProof
+      \\
+      \\
+      \AxiomC{$\varCG\vdP^2 \varFF[\varFP/X]$}
+      \RightLabel{$\RexI^2$}
+      \UnaryInfC{$\varCG\vdP^2\exists X^n, \varFF$}
+      \DisplayProof
+      &
+      \AxiomC{$\varCG\vdP^2 \exists X^n, \varFF$}
+      \AxiomC{$\varCG, \varFF\vdP^2 \varFP$}
+      \RightLabel{$(\RexE^2)^\ddagger$}
+      \BinaryInfC{$\varCG\vdP^2 \varFP$}
+      \DisplayProof
+    \end{tabular}
+  \end{center}
+  où les règles marquées par $\ddagger$ demandent que $X$ soit une variable du
+  second ordre n'apparaissant ni dans $\varCG$, ni dans $\varFP$.
+
+  On va montrer une propriété remarquable de la logique du second ordre~: elle
+  ne nécessite en fait qu'un très petit fragment pour avoir un système encodant
+  le système complet. On se concentre sur le fragment minimal, dans lequel les
+  formules sont données par
+  \[\varFF,\varFP \inddefeq a \mid \varFF \to \varFP\mid\forall x, \varFF\mid
+  \forall X^n, \varFF\]
+  et on va montrer qu'on peut reconstruire tous les autres constructeurs et
+  toutes les règles, à l'exception de la règle $\RbotC$. On va omettre dans la
+  suite l'arité des variables du second ordre.
+  \begin{pbQuest}[resume]
+  \item Montrer qu'en posant $\bot \defeq \forall X, X$, on a une proposition
+    vérifiant la règle suivante~:
+    \begin{prooftree}
+      \AxiomC{$\varCG\vdP^2 \bot$}
+      \RightLabel{$\RbotE$}
+      \UnaryInfC{$\varCG\vdP^2 \varFF$}
+    \end{prooftree}
+  \item Montrer qu'en posant $\top \defeq \forall X, X \to X$, on a une
+    formule vérifiant la règle $\RtopI$.
+  \item Montrer qu'en posant
+    $\varFF\land\varFP\defeq \forall X, (\varFF \to \varFP \to X) \to X$, on
+    a une formule vérifiant les règles $\RandI$ et $\RandE$.
+  \item Montrer qu'en posant
+    $\varFF\lor\varFP\defeq \forall X, (\varFF \to X)\to (\varFP\to X)\to X$,
+    on a une formule vérifiant les règles $\RandI$ et $\RandE$.
+  \item Montrer qu'en posant
+    $\exists x, \varFF \defeq \forall X, (\forall x, \varFF \to X) \to X$,
+    on a une formule vérifiant les règles $\RexI$ et $\RexE$.
+  \item Faire demême pour encoder le constructeur $\exists X, \varFF$.
+  \item Montrer qu'en posant
+    $\ogM t = u \fgM \defeq\forall X, X(t)\to X(u)$, on a une formule vérifiant
+    les règles $\ReqI$ et $\ReqE$.
+  \end{pbQuest}
+
+  On peut même donner grâce à ces encodages une description du principe de
+  récurrence~: on pose le prédicat
+  \[\bN(t) \defeq
+  \forall X^1, X(0) \to (\forall x, X(x) \to S(\Ss(x))) \to X(t)\]
+  \begin{pbQuest}[resume]
+  \item Montrer que la proposition $\forall x, \bN(x)$ est équivalente à la
+    validité de la règle
+    \begin{prooftree}
+      \AxiomC{$\varCG\vdP^2 \varFF(0)$}
+      \AxiomC{$\varCG,\varFF(x)\vdP^2\varFF(\Ss(x))$}
+      \RightLabel{$\rec^\dagger$}
+      \BinaryInfC{$\varCG\vdP^2 \forall x, \varFF(x)$}
+    \end{prooftree}
+  \end{pbQuest}
+
+  \pbPart{Structure du second ordre}
+
+  Pour définir une structure du second ordre, il nous suffit de considérer un
+  modèle pour le premier ordre, et de lui ajouter une interprétation pour le
+  second ordre. En fait, cette interprétation est déjà prête~: dans une
+  structure $\varMM$, on interprète une variable $X^n$ par un ensemble
+  quelconque $\varPt\subseteq\carMM^n$.
+  \begin{pbQuest}
+  \item \'Etant donné un environnement $\env$ du premier ordre, et un
+    environnement $\env'$ du second ordre, qui à une variable $X^n$ associe
+    une partie $\varPt\subseteq\carMM^n$, définir la relation de satisfaction
+    de la logique du second ordre
+    \[\varMM,\env,\env'\satisf\varFF\]
+    (où les variables libres du premier ordre de $\varFF$ sont contenues dans
+    $\env$ et celles du second ordre dans $\env'$).
+  \item Montrer un théorème de correction pour cette classe de modèles.
+  \item Montrer que cette logique ne vérifie pas le théorème de compacité.
+    \textit{Indication~: on pourra utiliser un exercice précédent.}
+  \end{pbQuest}
+\end{problem}

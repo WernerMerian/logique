@@ -996,7 +996,7 @@ peut soit prouver $\vdNJ \varFF$, soit prouver $\vdNJ \varFP$
 (\latinexpr{c.f.} \cref{prop.disjonction.NJ}).
 
 La question, maintenant, est de savoir s'il existe une structure similaire aux
-algèbre de Boole, mais dans laquelle la logique appliquée est la logique
+algèbres de Boole, mais dans laquelle la logique appliquée est la logique
 intuitionniste. C'est le cas des algèbres de Heyting, dont la définition repose
 avant tout sur celle de l'opération $\opimp$, d'où l'on dérive le sens de
 $\opng$ par $\opng x = x \opimp \opB$, comme nous l'avons déjà fait.
@@ -1051,7 +1051,8 @@ possibilité que nous introduisons la notion de treillis complet.
 
 \begin{definition}[Treillis complet]
   Un treillis complet est un ensemble ordonné $(X,\leq)$ tel que toute partie
-  $Y\subseteq X$ possède à la fois une borne supérieure et une borne inférieure.
+  $\varPt\subseteq X$ possède à la fois une borne supérieure et une borne
+  inférieure.
 \end{definition}
 
 Un treillis complet est, par définition, plus fort qu'un treillis. Dans la
@@ -1158,8 +1159,8 @@ Cette identité permet de récupérer directement la distributivité, et fonctio
 en fait aussi dans le cas d'une algèbre de Heyting non complète (sous
 réserve d'existence des bornes supérieures), ce qui fait qu'on peut affaiblir
 les définitions d'algèbre de Heyting en un simple treillis contenant un
-pseudo-complément relatif. On peut trouver des détails sur les liens entre ces
-propriétés dans \cite{lattice}.
+pseudo-complément relatif (\latinexpr{c.f.} \cref{exo.galois.con}). On peut
+trouver des détails sur les liens entre ces propriétés dans \cite{lattice}.
 
 \section{Filtres}
 
@@ -1947,8 +1948,62 @@ Boole vers $\quot{\bZ}{2\bZ}$.
   \end{enumerate}
 \end{exercise}
 
-\begin{exercise}[Connexions de Galois]\label{exo.galois.con}
-  A FAIRE
+\begin{exercise}[Connexion de Galois]\label{exo.galois.con}
+  Soient $(X,\leq)$ et $(Y,\leq)$ deux ensembles ordonnés et
+  $\makeFunName{f}{X}{Y}$ une fonction croissante. On appelle connexion
+  de Galois à droite de $f$ une fonction $\makeFunName{g}{X}{Y}$ vérifiant
+  \[\forall x \in X, \forall y \in Y, f(x) \leq y \iff x \leq g(y)\]
+  et connexion de Galois à gauche de $f$ une fonction $\makeFunName{g}{X}{Y}$
+  vérifiant
+  \[\forall x \in X, \forall y \in Y, y \leq f(x) \iff g(y) \leq f(x)\]
+  On note $f\dashv g$ pour dire \og $g$ est une connexion de Galois à droite de
+  $f$\fg{} et $g\dashv f$ pour dire \og $g$ est une connexion de Galois à gauche
+  de $f$\fg{}.
+  \begin{enumerate}[label=(\roman*)]
+  \item Montrer qu'une connexion de Galois est unique~: à $f$ fixée, si on a
+    $f\dashv g$ et $f\dashv h$ alors $g = h$ (de même avec des connexions de
+    Galois à gauche de $f$).
+  \item Montrer que si $g$ est une connexion de Galois à droite (respectivement
+    à gauche) de $f$, alors $g$ est une fonction croissante.
+  \end{enumerate}
+  Avec ces deux propriétés, on peut définir en général une connexion de Galois
+  comme étant deux fonctions $f\dashv g$, où $f$ peut être définie à partie de
+  $g$ et réciproquement.
+  \begin{enumerate}[resume]
+  \item Donner un exemple de fonction croissante qui n'admet pas de connexion
+    de Galois à gauche (respectivement à droite).
+  \end{enumerate}
+  On peut se demander, dans le cas des treillis, si les connexions de Galois
+  permettent de conserver leurs morphismes. On peut en fait donner un résultat
+  partiel.
+  \begin{enumerate}[resume]
+  \item Soit $f\dashv g$ une connexion de Galois. Soit $\varPt\subseteq X$ une
+    partie admettant une borne supérieure. Montrer que
+    \[f\left(\opJn \varPt\right) = \opJn \compr{f(a)}{a\in\varPt}\]
+    où la seconde borne supérieure existe. Montrer que pour $\varPt\subseteq Y$
+    une partie admettant une borne inférieure, on a
+    \[g\left(\opMt \varPt\right) = \opMt \compr{g(a)}{a\in\varPt}\]
+  \item En déduire que, dans la définition d'une algèbre de Heyting, on peut
+    limiter les conditions au fait d'être un treillis tel que toute paire
+    d'éléments admet un pseudo-complément relatif.
+  \end{enumerate}
+  Enfin, une connexion de Galois permet aussi de construire ce qu'on appelle
+  un opérateur de clôture.
+  \begin{enumerate}[resume]
+  \item Soit $f\dashv g$ une connexion de Galois. Montrer que $g\circ f$ est
+    un opérateur de clôture, c'est-à-dire que les conditions suivantes sont
+    vérifiées~:
+    \begin{itemize}
+    \item pour tout $x \in X$, $x \leq (g\circ f)(x)$~;
+    \item $g\circ f$ est une fonction croissante~;
+    \item pour tout $x \in X$, $(g\circ f)(x) = (g\circ f)\circ(g\circ f)(x)$.
+    \end{itemize}
+  \item Réciproquement, soit $(X,\leq)$ un ensemble ordonné et
+    $\makeFunName{c}{X}{X}$ un opérateur de clôture. On définit
+    \[Y \defeq \compr{x \in X}{c(x) \leq x}\]
+    Montrer qu'on a une connexion de Galois $c\dashv \iota$ où $\iota$ est
+    l'inclusion $Y\subseteq X$.
+  \end{enumerate}
 \end{exercise}
 
 \clearpage
