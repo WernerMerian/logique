@@ -1958,3 +1958,110 @@ forcing, introduite par Cohen dans son article
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Nier la fondation]
+  On a vu, grâce au modèle classe $\bV$, que l'axiome de fondation est
+  compatible avec $\ZFC$. On va ici montrer que la négation de $\AxF$ est elle
+  aussi compatible avec $\ZFC$, en construisant un modèle contenant des
+  atomes~: des ensembles $x$ tels que $x = \{x\}$.
+  On va construire ce modèle en construisant une nouvelle relation $\in'$. Pour
+  cela, on commence par fixer un ensemble d'atomes, judicieusement noté $\Atom$.
+
+  \pbPart{Construire un nouveau modèle}
+
+  Plutôt que des ensembles $x = \{y_1,\ldots,\}$, on veut désormais considérer
+  des \og ensembles étiquetés\fg{} qui sont de la forme
+  $x = (i, \{y_1,\ldots,\})$ où $i$ est un certain ensemble, apportant une
+  information supplémentaire aux éléments de $x$. De cette façon, on peut
+  distinguer par exemple $a \in \Atom$ considéré en tant qu'atome et
+  $a \in \Atom$ considéré en tant qu'ensemble. On définit l'opération d'ensemble
+  des parties étiquetées par
+  \[\powerset_{\Atom}(x) \defeq
+  \compr{(0,y)}{y \subseteq x}\cup \compr{(1,a)}{a \in \Atom}\]
+  et la famille d'ensembles
+  \[\bV_{\Atom,0} \defeq \vide \qquad
+  \bV_{\Atom,\varOa+1}\defeq \powerset_{\Atom}(\bV_{\Atom,\varOa})\]
+  puis $\displaystyle\bV_{\Atom} \defeq \bigcup_{\varOa\in\Ord}\bV_{\Atom,\varOa}$.
+  \begin{pbQuest}
+  \item Montrer que pour tous $\varOa,\varOb\in\Ord$ tels que
+    $\varOa \leq \varOb$, $\bV_{\Atom,\varOa}\subseteq\bV_{\Atom,\varOb}$.
+  \item La classe $\bV_{\Atom}$ est-elle transitive~?
+  \end{pbQuest}
+
+  On définit maintenant sur $\bV_{\Atom}$ la nouvelle relation $\in_{\Atom}$
+  suivante~:
+  \[x \in_{\Atom} y \defeq (\exists z\in\Atom, x = y = (1,z))\lor
+  (\exists y_0, y = (0,y_0) \land x \in y_0)\]
+  \begin{pbQuest}[resume]
+  \item Montrer que $(\bV_{\Atom},\in_{\Atom})$ est un modèle classe de $\ZF$, et
+    un modèle classe de $\ZFC$ si on suppose $\AxC$.
+  \item En déduire $\Coher(\ZF)\implies \Coher(\ZFC + \lnot\AxF)$.
+  \end{pbQuest}
+
+  \pbPart{\'Etendre l'indépendance}
+
+  On a vu ici que, si l'on suppose la cohérence de $\ZF$, alors on peut se
+  permettre d'ajouter des éléments $x$ tels que $x \in x$ en nombre aussi grand
+  que l'on veut. Cependant, ce cas est plutôt simple~: on ne peut pas construire
+  par exemple de suite $x_0 \in x_1 \in \cdots \in x_n \in \cdots$ avec tous les
+  $x_i$ deux à deux disjoints. On souhaite donc prouver la cohérence relative
+  d'un axiome plus fort, appelé axiome d'anti-fondation d'Aczel. Pour donner cet
+  axiome, on commence par introduire la notion de graphe.
+  \begin{quotation}
+    \noindent
+    Un graphe est un couple $(S,A)$ où $S$ est un ensemble et $A$ est une
+    relation binaire sur $S$.
+  \end{quotation}
+  \begin{pbQuest}
+  \item Construire un modèle classe $\bV_{(S,A)}$ et une relation $\in_{(S,A)}$
+    inspirée par la partie précédente, pour laquelle $(1,x)\in_{(S,A)} (1,y)$
+    signifie que $x,y \in S$ et $(x,y) \in A$.
+  \item En déduire que pour tout graphe $(S,A)$, l'axiome
+    \begin{quotation}
+      \noindent
+      Il existe un ensemble $X$ et un isomorphisme
+      $\makeFunNameIso{f}{(S,A)}{(X,\in)}$.
+    \end{quotation}
+  \end{pbQuest}
+
+  L'axiome d'anti-fondation est, en quelque sorte, la version globale de
+  l'axiome dont nous venons de prouver l'indépendance relative à $\ZFC$~:
+  \begin{quotation}
+    \noindent
+    Pour toute paire $(S,A)$ où $S$ est un ensemble et $A\subseteq S \times S$,
+    il existe un ensemble $X$ et un isomorphisme
+    $\makeFunNameIso{f}{(S,A)}{(X,\in)}$.
+  \end{quotation}
+
+  \begin{pbQuest}[resume]
+  \item Prouver que l'axiome d'anti-fondation est incompatible avec $\AxF$ et
+    qu'il implique le schéma d'axiomes précédents.
+  \end{pbQuest}
+
+  Une façon naïve de construire un modèle $\bV'$ vérifiant l'axiome
+  d'anti-fondation est de considérer l'ensemble des parties étiquetées par des
+  graphes~:
+  \[\powerset'(x) \defeq \compr{(0,y)}{y\subseteq x}\cup
+  \compr{((S,A),y)}
+        {\begin{array}{l} (S,A)\text{ un graphe} \\ y \in S \end{array}}\]
+  Remarquons que, comme $0 = \vide$ et $(S,A)$ est un couple, on a forcément
+  $0 \neq (S,A)$.
+  \begin{pbQuest}[resume]
+  \item Montrer que pour tout ensemble $x$, $\powerset'(x)$ n'est pas un
+    ensemble.
+  \end{pbQuest}
+  On peut néanmoins construire une opération légèrement plus faible, qui ne
+  considère que les graphes existant dans $x$~:
+  \[\powerset'(x) \defeq \compr{(0,y)}{y\subseteq x}\cup
+  \compr{((S,A),y)}
+        {\begin{array}{l}
+            S\subseteq x\\
+            A \subseteq S \times S \\
+            y \in S
+        \end{array}}
+  \]
+  \begin{pbQuest}[resume]
+  \item Construire un modèle classe vérifiant l'axiome d'anti-fondation. En
+    déduire que $\ZFC$ est compatible avec l'axiome d'anti-fondation.
+  \end{pbQuest}
+\end{problem}

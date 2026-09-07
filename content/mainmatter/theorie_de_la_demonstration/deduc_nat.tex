@@ -349,7 +349,7 @@ une preuve plus algorithmique de l'équivalence entre $\LJ$ et $\NJ$.
   définition exacte de la fonction.
 \end{definition}
 
-\begin{table}[t]
+\begin{table}[p]
   \centering
   \resizebox{\textwidth}{!}{
     \begin{tabular}{ccc|ccc}
@@ -1254,6 +1254,57 @@ les coupures.
   %\hrule
 \end{table}
 
+\begin{remark}
+  La plupart des coupures logiques (si ce n'est toutes) ressemblent à de pures
+  évidences. Une coupure pour $\to$ est par exemple le fait de prouver d'abord
+  $\varFF\to\varFP$ pour ensuite prouver $\varFF$ et en déduire $\varFP$. On
+  pourrait penser, sous cette forme, qu'une telle situation n'arrive pas en
+  pratique puisqu'il est plus direct de prouver $\varFP$ avec la version sans
+  coupure. Pourtant, c'est bien la version avec coupure qu'on utilise lorsqu'on
+  établit un théorème abstrait, souvent de la forme
+  $\forall x, \varFF \to \varFP$, pour en récupérer une instance précise
+  $\varFP[t/x]$.
+\end{remark}
+
+Cette réduction conserve les hypothèses et les conclusions, et permet donc de
+réécrire un arbre en un arbre prouvant le même séquent, et sans coupure. Il
+faut prouver que la réécriture termine, ce que nous verrons dans la
+dans le \cref{chp.lambda_type}.
+Pour l'instant, nous nous intéressons aux conséquences de cette élimination des
+coupures.
+
+\begin{theorem}[\'Elimination des coupures dans $\NJ$]
+  Pour tout arbre $\varPT\in\ProofNJ$, il existe un arbre $\varPT'$ tel que
+  $\varPT\rtClot{\reecr{}}\varPT'$ et $\varPT'$ est sans coupure.
+
+  Un séquent $\varCG\vdNJ\varFF$ est prouvable si et seulement s'il est
+  prouvable par un arbre de preuve sans coupure.
+\end{theorem}
+
+On a alors une notion d'arbre sous une forme d'intérêt, sans coupure. On peut
+vérifier que, comme pour le calcul des séquents, on a la propriété de la
+sous-formule.
+
+\begin{property}[Sous-formule]
+  Pour tout arbre $\varPT\in\ProofNJ$ sans coupure et pour $\varCG\vdNJ\varFF$
+  sa conclusion, chaque formule apparaissant dans $\varPT$ est une sous-formule
+  de $\varFF$ ou de l'une des formules de $\varCG$.
+\end{property}
+
+On peut aussi déduire directement le fait suivant~:
+
+\begin{proposition}
+  Tout arbre $\varPT\in\ProofNJ$ sans coupure tel que $\varPT\concl \vdNJ\varFF$
+  a comme dernière règle une règle d'introduction.
+\end{proposition}
+
+\begin{proof}
+  Si la dernière règle est une règle d'élimination, alors la propriété de la
+  sous-formule n'est pas respectée.
+\end{proof}
+
+D'où les propriétés déjà prouvées dans $\LJ$ de la disjonction et du témoin.
+
 \begin{table}[p]
   \centering
   \begin{tabular}{ccc}
@@ -1285,7 +1336,7 @@ les coupures.
       \RightLabel{$\RorEA$}
       \TrinaryInfC{$\varFX$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.3\textwidth}{!}{
       \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
@@ -1308,7 +1359,7 @@ les coupures.
       \RightLabel{$\RorEA$}
       \TrinaryInfC{$\varFP_i$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.4\textwidth}{!}{
       \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
@@ -1347,7 +1398,7 @@ les coupures.
       \RightLabel{$\RorEA$}
       \TrinaryInfC{$\varFC$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.3\textwidth}{!}{
       \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
@@ -1374,7 +1425,7 @@ les coupures.
       \RightLabel{$\RorEA$}
       \TrinaryInfC{$\varFP[t/x]$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.3\textwidth}{!}{
       \axNJV\UnaryInfC{$\varFF_1\lor\varFF_2$}
@@ -1407,7 +1458,7 @@ les coupures.
       \RightLabel{$\RorEA$}
       \TrinaryInfC{$\varFC$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.3\textwidth}{!}{
       \def\fCenter{\mbox{\Large$\vdots$}}
@@ -1431,7 +1482,7 @@ les coupures.
       \RightLabel{$\RexEA^\dagger$}
       \BinaryInfC{$\varFX$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.2\textwidth}{!}{
       \axNJV\UnaryInfC{$\exists x, \varFF$}
@@ -1454,7 +1505,7 @@ les coupures.
       \BinaryInfC{$\varFP_i$}
       \DisplayProof
     }
-    \\
+%    \\
     \\
     \resizebox{0.3\textwidth}{!}{
       \axNJV\UnaryInfC{$\exists x, \varFF$}
@@ -1483,7 +1534,7 @@ les coupures.
       \RightLabel{$\RexEA^\dagger$}
       \BinaryInfC{$\varFC$}
       \DisplayProof}
-    \\
+%    \\
     \\
     \resizebox{0.2\textwidth}{!}{
       \axNJV\UnaryInfC{$\exists x, \varFF$}
@@ -1506,7 +1557,7 @@ les coupures.
       \BinaryInfC{$\varFP[t/y]$}
       \DisplayProof
     }
-    \\
+%    \\
     \\
     \resizebox{0.25\textwidth}{!}{
       \axNJV\UnaryInfC{$\exists x, \varFF$}
@@ -1617,57 +1668,6 @@ les coupures.
   \caption{Réductions commutatives dans $\NJ$ - partie 2}
   \label{tbl.cut.com.NJ2}
 \end{table}
-
-\begin{remark}
-  La plupart des coupures logiques (si ce n'est toutes) ressemblent à de pures
-  évidences. Une coupure pour $\to$ est par exemple le fait de prouver d'abord
-  $\varFF\to\varFP$ pour ensuite prouver $\varFF$ et en déduire $\varFP$. On
-  pourrait penser, sous cette forme, qu'une telle situation n'arrive pas en
-  pratique puisqu'il est plus direct de prouver $\varFP$ avec la version sans
-  coupure. Pourtant, c'est bien la version avec coupure qu'on utilise lorsqu'on
-  établit un théorème abstrait, souvent de la forme
-  $\forall x, \varFF \to \varFP$, pour en récupérer une instance précise
-  $\varFP[t/x]$.
-\end{remark}
-
-Cette réduction conserve les hypothèses et les conclusions, et permet donc de
-réécrire un arbre en un arbre prouvant le même séquent, et sans coupure. Il
-faut prouver que la réécriture termine, ce que nous verrons dans la
-dans le \cref{chp.lambda_type}.
-Pour l'instant, nous nous intéressons aux conséquences de cette élimination des
-coupures.
-
-\begin{theorem}[\'Elimination des coupures dans $\NJ$]
-  Pour tout arbre $\varPT\in\ProofNJ$, il existe un arbre $\varPT'$ tel que
-  $\varPT\rtClot{\reecr{}}\varPT'$ et $\varPT'$ est sans coupure.
-
-  Un séquent $\varCG\vdNJ\varFF$ est prouvable si et seulement s'il est
-  prouvable par un arbre de preuve sans coupure.
-\end{theorem}
-
-On a alors une notion d'arbre sous une forme d'intérêt, sans coupure. On peut
-vérifier que, comme pour le calcul des séquents, on a la propriété de la
-sous-formule.
-
-\begin{property}[Sous-formule]
-  Pour tout arbre $\varPT\in\ProofNJ$ sans coupure et pour $\varCG\vdNJ\varFF$
-  sa conclusion, chaque formule apparaissant dans $\varPT$ est une sous-formule
-  de $\varFF$ ou de l'une des formules de $\varCG$.
-\end{property}
-
-On peut aussi déduire directement le fait suivant~:
-
-\begin{proposition}
-  Tout arbre $\varPT\in\ProofNJ$ sans coupure tel que $\varPT\concl \vdNJ\varFF$
-  a comme dernière règle une règle d'introduction.
-\end{proposition}
-
-\begin{proof}
-  Si la dernière règle est une règle d'élimination, alors la propriété de la
-  sous-formule n'est pas respectée.
-\end{proof}
-
-D'où les propriétés déjà prouvées dans $\LJ$ de la disjonction et du témoin.
 
 \begin{property}[Disjonction]\label{prop.disjonction.NJ}
   Pour toutes formules $\varFF,\varFP$, si $\vdNJ\varFF\lor\varFP$ alors

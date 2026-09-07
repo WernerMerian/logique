@@ -1122,6 +1122,222 @@ indépendants de $\varPtB$.
 
 \subsection{Exercices}
 
+\begin{exercise}[Le lemme du tournesol]
+  Soit $(\varPt_{\varOa})_{\varOa < \Ow_1}$ une famille d'ensembles finis. Montrer
+  qu'il existe une partie $W \subseteq \Ow_1$ de cardinal $\Cal_1$ et un
+  ensemble fini $F$ tels que
+  \[\forall i,j \in W, i \neq j \implies \varPt_i \cap \varPt_j = F\]
+\end{exercise}
+
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Souslin a un problème]
+  On va étudier un problème combinatoire important de la théorie des ensembles~:
+  le problème de Souslin. Pour le présenter au mieux, parlons d'abord d'un
+  théorème de Cantor~: pour tout ensemble totalement ordonné $(X,<)$ qui est non
+  borné et dense, il existe un isomorphisme $X \iso \bQ$. Si l'on considère
+  maintenant un ensemble totalement ordonné $(X,<)$ non borné, possédant pour
+  chaque partie bornée une borne supérieure et inférieure, et qui possède une
+  partie dense dénombrable, alors (on peut se référer à la construction de
+  $\bR$) on a un isomorphisme $X\iso \bR$. On a ainsi une caractérisation de la
+  structure ordonnée de $\bR$ (au second ordre, puisqu'on considère des bornes
+  supérieures).
+
+  Le problème de Souslin s'attarde sur une version affaiblie de ces conditions,
+  et en particulier de la condition d'avoir une partie dense dénombrable.
+
+  \pbPart{Condition de chaîne dénombrable}
+
+  La condition mentionnée plus tôt est nommée \og condition de chaîne
+  dénombrable\fg{}. Comme son nom l'indique (ou pas), elle porte sur les
+  antichaînes d'un ensemble ordonné. Pour un ensemble ordonné $(X,<)$, on dit
+  que $X$ a la condition de chaîne dénombrable si toute antichaîne forte de
+  $X$\footnote{Rappelons qu'une antichaîne forte est une partie
+  $\varPt\subseteq X$ telle que tous deux éléments sont incompatibles (vers le
+  bas~: ils n'ont pas de borne inférieure dans $X$).} est
+  dénombrable.
+
+  \begin{pbQuest}
+  \item Donner un exemple d'ensemble ordonné vérifiant la condition de chaîne
+    dénombrable, et un exemple d'ensemble ordonné ne la vérifiant pas.
+  \item On pose $X$ l'ensemble des intervalles ouverts non vide de $\bR$,
+    c'est-à-dire de la forme $\intOO{a}{b}$ où $a\in \bR\cup\{\mInf\}$,
+    $b \in \bR\cup\{\pInf\}$ et $a < b$. Montrer que $(X,\subseteq)$ est un
+    ensemble indénombrable vérifiant la condition de chaîne dénombrable.
+  \end{pbQuest}
+
+  Le problème de Souslin est donc le suivant~:
+  \begin{quotation}
+    \noindent
+    Soit $(X,<)$ un ensemble ordonné non borné, dense, tel que toute partie
+    bornée possède une borne supérieure et une borne inférieure, et tel que
+    toute famille d'intervalles ouverts non vides disjoints de $X$ est
+    dénombrable. Est-ce que $X\iso\bR$~?
+  \end{quotation}
+  On va montrer qu'un certain principe combinatoire suffit à prouver que tout
+  tel ensemble $X$ n'est pas isomorphe à $\bR$. On appelle dans la suite du
+  problème \og droite de Souslin\fg{} un ensemble ordonné $X$ tel que plus haut,
+  qui n'est pas isomorphe à $\bR$.
+
+  \pbPart{Arbre de Souslin}
+
+  Avant de montrer qu'il existe une droite de Souslin différente de $\bR$, on
+  reformule le problème sous une autre forme, utilisant des arbres. Il nous faut
+  donc introduire d'abord la notion d'arbre du point de vue de la théorie des
+  ensembles.
+
+  On a déjà pu présenter un arbre bien fondé comme un certain ensemble inductif
+  et un arbre potentiellement infini comme un ensemble de listes (ou de suites
+  finies). Ici, on veut s'autoriser des arbres dont les chemins ont une
+  longueur transfinie, ce pourquoi on prend un arbre comme un ensemble ordonné.
+
+  \begin{quotation}
+    \noindent
+    Un arbre est un ensemble ordonné $(\varTree,<)$ possédant un minimum et tel
+    que, pour tout $x \in \varTree$, l'ensemble $\compr{y \in \varTree}{y < x}$
+    (qu'on notera $\downcl{x}$) est bien ordonné par $<$.
+  \end{quotation}
+
+  \begin{pbQuest}
+  \item Montrer que l'ensemble $\Tree(n)$ défini dans l'\cref{exo.ind.arbres}
+    est un arbre au sens précédent.
+  \item Définir un arbre infini qui n'est pas un élément de $\Tree(n)$ pour un
+    certain $n \in \bN$.
+  \end{pbQuest}
+
+  Dans un arbre $\varTree$, pour tout $x \in \varTree$, on peut définir la
+  hauteur respectivement de $x$ et de $\varTree$~:
+  \[\height(x) \defeq \type(\downcl{x})\qquad
+  \height(\varTree) \defeq \sup_{x \in \varTree} \height(x)\]
+  \begin{pbQuest}[resume]
+  \item Définir un arbre de hauteur $\Ow_1$.
+  \item Dans un arbre $\varTree$ de hauteur $\Ow+1$, pour deux éléments
+    $x,y \in \varTree$, montrer qu'il peut ne pas exister de borne inférieure
+    $x\opmt y \in \varTree$.
+  \end{pbQuest}
+  On peut partitionner les éléments d'un arbre $\varTree$ par hauteur, donnant
+  lieu aux niveaux de $\varTree$~:
+  \[\level(\varTree,\varOa) \defeq \compr{x \in \varTree}{\height(x) = \varOa}\]
+  \begin{pbQuest}[resume]
+  \item Soit $\varOa$ un ordinal, $(N_{\varOb})_{\varOb<\varOa}$ une famille
+    d'ensembles et
+    \[\makeFunName{f_{\varOb}}
+                  {N_{\varOb}}
+                  {\powerset\left(\bigcup_{\varOc < \varOb} N_{\varOc}\right)}\]
+    une famille de fonctions pour $\varOb < \varOa$ telle que pour tous
+    $\varOc < \varOb < \varOb$, $x \in N_{\varOb}$ et
+    $y\in f_{\varOb}(x)\cap N_{\varOc}$, $f_{\varOb}(x)\cap N_{\varOc} = f_{\varOc}(x)$.
+    Pour tous $\varOc < \varOb < \varOa$, $x\in N_{\varOb}$, $y\in N_{\varOc}$,
+    on définit l'ordre $y < x \defeq y \in f_{\varOb}(x)$.
+    Montrer que l'ensemble
+    \[(\varTree,<) \defeq \left(\bigcup_{\varOb < \varOa} N_{\varOb}, <\right)\]
+    est un arbre, et que l'association
+    $\varTree \mapsto (\level(\varTree),\varOb))_{\varOb < \height(\varTree)}$
+    établit une bijection entre les deux classes.
+  \item Donner un exemple d'instance de $(f_{\varOb})$ pour laquelle au moins
+    une fonction $f_{\varOb}$ n'est pas injective. Montrer que si toutes les
+    fonctions $(f_{\varOb})$ sont injectives, alors l'arbre construit est un
+    inf demi-treillis.
+  \end{pbQuest}
+
+  On appelle branche dans un arbre $\varTree$ une chaîne de $\varTree$ maximale
+  pour l'inclusion.
+  \begin{pbQuest}[resume]
+  \item Construire une branche dans chacun des arbres définis précédemment.
+  \item Montrer que pour une branche $B \subseteq \varTree$, l'ensemble
+    \[\compr{\height(x)}{x \in B}\]
+    est un segment initial de $\height(\varTree)$. On appelle cet ordinal la
+    hauteur de $B$, qu'on note $\height(B)$.
+  \end{pbQuest}
+  On dit qu'une branche $B$ de $\varTree$ est cofinale si
+  $\height(B) = \height(\varTree)$.
+  \begin{pbQuest}[resume]
+  \item Montrer le lemme de König sur les arbres~: pour tout arbre
+    $(\varTree,<)$ de hauteur $\Ow$ et tel que $\level(\varTree,n) < \Ow$ pour
+    tout $n \in \Ow$, il existe une branche cofinale dans $\varTree$.
+  \end{pbQuest}
+  Pour le cas d'un arbre de Souslin, les conditions que l'on va chercher forcent
+  l'arbre à ne pas vérifier le lemme de König dans un sens fort~:
+  \begin{quotation}
+    \noindent
+    Un arbre de Souslin est un arbre $(\varTree,<)$ de hauteur $\Ow_1$ dans
+    lequel toute branche est dénombrable et toute antichaîne est dénombrable.
+  \end{quotation}
+  \begin{pbQuest}[resume]
+  \item Montrer que si $(X,<)$ est une droite de Souslin, alors l'ensemble des
+    intervalles ouverts non vides de $X$ est un arbre de Souslin.
+    \textit{Indication~: Une droite de Souslin étant non isomorphe à $\bR$, elle
+      n'a pas de partie dénombrable dense.}
+  \end{pbQuest}
+  On veut montrer la réciproque~: à partir d'un arbre de Souslin, il est
+  possible de construire une droite de Souslin. Pour cela, on veut d'abord
+  normaliser l'arbre qu'on va construire. On dit qu'un arbre $(\varTree,<)$ est
+  normal si les conditions suivantes sont réunies~:
+  \begin{itemize}
+  \item si $\varOa < \varOb < \height(\varTree)$ et
+    $x \in \level(\varTree,\varOa)$ alors il existe
+    $y \in \level(\varTree,\varOb)$ tel que $x < y$~;
+  \item pour tout $x \in \varTree$, l'ensemble
+    \[\Ss_{\varTree}(x) \defeq
+    \compr{y \in \varTree}{x < y \land \height(y) = \Ss(\height(x))}\]
+    est infini~;
+  \item pour tout $\varOa < \height(\varTree)$, la fonction
+    \[\makeFun{\downcl{\tok}}
+              {\level(\varTree,\varOa)}
+              {\bigcup_{\varOb < \varOa}\level(\varTree,\varOb)}
+              {x}{\downcl{x}}\]
+    est injective.
+  \end{itemize}
+  \begin{pbQuest}[resume]
+  \item Montrer que s'il existe un arbre de Souslin, alors il existe un arbre
+    de Souslin normal.
+  \end{pbQuest}
+  \'Etant donné un arbre de Souslin $(\varTree,<)$ normal, pour tout
+  $x \in \varTree$, on fixe un ordre total $<_x$ sur $\Ss_{\varTree}(x)$ de type
+  $\bQ$\footnote{Cet ordre existe~: $\Ss_{\varTree}(x)$ est infini et
+  au plus dénombrable car $(\varTree,<)$ est un arbre de Souslin normal.}. On
+  construit la droite de Souslin associée par l'ordre $<'$ sur $\varTree$
+  suivant~:
+  \begin{itemize}
+  \item si $x < y$ alors $x <' y$~;
+  \item si $x$ et $y$ sont incomparables, on pose $z \defeq x \opmt y$ leur
+    borne inférieure. On considère $x_0$ et $y_0$ respectivement l'élément
+    tel que $z < x_0 < x$ et $\height(x_0) = \height(z) + 1$, et l'élément tel
+    que $z < y_0 < y$ et $\height(y_0) = \height(z) + 1$. On définit
+    $x < y$ par le fait que $x_0 <_z y_0$.
+  \end{itemize}
+  \begin{pbQuest}[resume]
+  \item Montrer que pour $(\varTree,<)$ un arbre de Souslin normal,
+    $(\varTree,<')$ est une droite de Souslin.
+  \end{pbQuest}
+
+  \pbPart{Le principe du diamant}
+
+  On sait maintenant qu'un cas de droite de Souslin se ramène à un arbre de
+  Souslin, ce que l'on va maintenant construire en utilisant l'axiome
+  combinatoire appelé principe du diamant (en anglais \foreignexpr{diamond
+    principle}) et noté $\diamondsuit$~:
+  \begin{quotation}
+    \noindent
+    Il existe une famille $(\varPt_{\varOa})_{\varOa < \Ow_1}$ telle que pour tout
+    $\varOa < \Ow_1$, $\varPt_{\varOa}\subseteq \varOa$ et telle que pour toute
+    partie $\varPt\subseteq \Ow_1$, l'ensemble
+    $\compr{\varOa < \Ow_1}{\varPt\cap \varOa = \varPt_{\varOa}}$ est
+    stationnaire dans $\Ow_1$.
+  \end{quotation}
+  \begin{pbQuest}
+  \item Prouver que $\diamondsuit\implies\HC$.
+  \end{pbQuest}
+  On cherche à construire un arbre de Souslin sous l'hypothèse $\diamondsuit$.
+  On suppose donc vrai $\diamondsuit$ pour la suite du problème.
+  \begin{pbQuest}[resume]
+  \item Soit $\varTree$ un arbre tel que pour tout $x \in \varTree$, il existe
+    deux éléments $y,z \in \varTree$ incompatibles vers le haut tels que $x < y$
+    et $x < z$. Montrer que si toute antichaîne de $\varTree$ est au plus
+    dénombrable, alors toute chaîne de $\varTree$ est au plus dénombrable.
+  \item Construire un arbre de Souslin. \textit{Indication~: On peut construire
+    l'arbre niveau par niveau.}
+  \end{pbQuest}
+\end{problem}
