@@ -991,7 +991,7 @@ presque entièrement parfait, au sens où l'ensemble des points non parfaits d'u
 espace polonais est dénombrable. L'énoncé exact est celui du théorème de
 Cantor-Bendixson.
 
-\begin{theorem}[Cantor-Bendixson]
+\begin{theorem}[Cantor-Bendixson]\label{thm.cantor.bend}
   Soit $(X,\topo)$ un espace polonais. Il existe alors un ouvert dénombrable
   $\varOp\in \topo$ et une partie parfaite disjointe $\varPaf\subseteq X$ tels
   que $X = \varOp \cup \varPaf$.
@@ -1289,6 +1289,20 @@ Cela nous permet enfin de donner la caractérisation de l'espace de Baire.
 
 \subsection{Exercices}
 
+\begin{exercise}
+  Soit $X$ un espace compact et à base dénombrable. Montrer que l'espace
+  métrique
+  \[C(X) \defeq \compr{\makeFunName{f}{X}{\bR}}{f\text{ est continue}}\qquad
+  \vardis(f,g) \defeq \sup_{x \in X} \left\vert f(x) - g(x) \right\vert\]
+  est un espace polonais. Déduire que si $X$ est localement compact à base
+  dénombrable, alors $C(X)$ est aussi un espace polonais.
+  \textit{Indication~: On admet le théorème de Stone-Weierstrass, disant qu'une
+    sous-algèbre de $C(X)$ est dense si et seulement si elle contient pour
+    chaque $x \in X$ une fonction ne s'annulant pas en $x$, et pour tous
+    $x,y \in X$ il existe une fonction prenant des valeurs différentes en
+    $x$ et en $y$.}
+\end{exercise}
+
 \begin{exercise}[L'ensemble de Cantor]
   On définit l'ensemble de cantor $K \subseteq \intFF{0}{1}$ par la procédure
   suivante~:
@@ -1315,29 +1329,119 @@ Cela nous permet enfin de donner la caractérisation de l'espace de Baire.
   $X$.
 \end{exercise}
 
-\begin{exercise}[Image polonaise]
-  Soit $X$ un espace polonais et $Y$ un espace métrisable. Si
-  $\makeFunName{f}{X}{Y}$ est une fonction surjective, continue et ouverte,
-  alors $Y$ est un espace polonais.
+\begin{exercise}
+  Soit $(X,\topo)$ un espace polonais. Montrer qu'il existe un homéomorphisme
+  entre $X$ et un $\Gdel$ de l'espace de Cantor. \textit{Indication~: On pourra
+    considérer une base dénombrable $(\varOp_n){n\in\bN}$ de $X$ et associer à
+    un élément $x$ la suite $(\indicP{\varOp_n}(x))_{n\in\bN}$.}
 \end{exercise}
 
-\begin{exercise}[Dériver des espaces]
-  Soit $(X,\topo)$ un espace topologique. On appelle dérivée de $X$ l'ensemble
-  $\DerivS(X,\topo)$ des points d'accumulation de $X$, c'est-à-dire l'ensemble
-  $X \setminus Y$ où $Y$ est l'ensemble des points isolés. On définit les
-  dérivées successives $X^{\varOa}$, pour $\varOa \in \Ord$, par
-  \begin{itemize}
-  \item $X^0 \defeq X$~;
-  \item $X^{\alpha+1}\defeq \DerivS(X)$~;
-  \item pour $\varOl$ limite,
-    $\displaystyle X^{\varOl}\defeq \bigcap_{\varOb<\varOl}X^{\varOb}$.
-  \end{itemize}
-  Montrer que $\DerivS(X,\topo)$ est un fermé de $(X,\topo)$. Dans le cas d'un
-  espace polonais, montrer qu'il existe $\varOa < \Ow_1$ tel que pour tout
-  $\varOb > \varOa$, $X^{\varOa} = X^{\varOb}$. Donner un exemple d'espace non
-  polonais dans lequel $X^{\varOa} \neq X^{\varOb}$ pour tout $\varOa < \Ow_1$.
+\begin{exercise}[Image polonaise]
+  Soit $X$ un espace polonais et $Y$ un espace métrisable. Montrer que si
+  $\makeFunName{f}{X}{Y}$ est une fonction surjective, continue et ouverte,
+  alors $Y$ est un espace polonais.
 \end{exercise}
 
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Rang de Cantor-Bendixson]
+  Le théorème de Cantor-Bendixson nous dit qu'un ensemble polonais est l'union
+  disjointe d'un ensemble parfait et d'une partie dénombrable isolée. On a
+  proposé, dans la preuve de ce théorème, de supprimer les points isolés les uns
+  après les autres jusqu'à obtenir un ensemble parfait~: on va étudier plus
+  finement ce procédé dans ce problème.
+
+  \pbPart{Dériver des espaces}
+
+  Soit $(X,\topo)$ un espace topologique. On définit l'espace $\DerivS(X,\topo)$
+  (ou juste $\DerivS(X)$) comme étant l'ensemble des points d'accumulation de
+  $(X,\topo)$.
+  \begin{pbQuest}
+  \item Montrer que $\DerivS(X)$ est un fermé de $X$.
+  \item Pour une famille d'espaces topologiques $(X_i)_{i \in \indSet}$, montrer
+    que
+    $\displaystyle\DerivS\left(\coprod_{i \in I} X_i\right) =
+    \coprod_{i \in I}\DerivS(X_i)$.
+  \item Si $X$ est localement compact, séparé mais non compact, montrer que
+    le compactifié d'Alexandrov de l'espace dérivé de $X$ est l'espace dérivé du
+    compactifié d'Alexandrox de $X$~: $\DerivS(\CompA{X})=\CompAB{\DerivS(X)}$.
+  \end{pbQuest}
+
+  Pour tout espace $X$ et ordinal $\varOa$, on définit la dérivée itérée de $X$,
+  notée $X^{\varOa}$, par induction sur $\varOa$~:
+  \[\begin{cases}
+  X^0 \defeq X \\
+  X^{\varOa+1} \defeq \DerivS(X^{\varOa})\\
+  \displaystyle
+  \forall \varOl\in\Lim, X^{\varOl} \defeq \bigcap_{\varOb < \varOl} X^{\varOb}
+  \end{cases}\]
+  \begin{pbQuest}[resume]
+  \item Montrer que pour tout espace polonais $(X,\topo)$, il existe un ordinal
+    dénombrable $\varOa < \Ow_1$ tel que pour tout $\varOb > \varOa$,
+    $X^{\varOa} = X^{\varOb}$. Montrer qu'alors $X^{\varOa}$ est parfait.
+  \item En déduire le \cref{thm.cantor.bend}.
+  \end{pbQuest}
+
+  On appelle rang de Cantor-Bendixson d'un espace $X$ le plus petit $\varOa$
+  tel que la famille $(X_{\varOb})_{\varOb \geq \varOa}$ est constante. On note ce
+  rang $\rangCB(X)$.
+  \begin{pbQuest}[resume]
+  \item Donner un exemple d'espace (non polonais) dont le rang de
+    Cantor-Bendixson n'est pas dénombrable.
+  \end{pbQuest}
+
+  \pbPart{Les compacts dénombrables de $\bR$}
+
+  On a vu que les espaces polonais ont un rang dénombrable. On cherche
+  maintenant à inverser le processus~: étant donné un ordinal dénombrable
+  $\varOa < \Ow_1$, peut-on construire un espace $X$ tel que
+  $\rangCB(X) = \varOa$~? On va d'abord chercher de tels ordinaux. Tout
+  d'abord, comme les espaces polonais sont union d'une partie dénombrable et
+  d'une partie parfaite (de cardinal $2^{\Cal_0}$), nos candidats d'espaces
+  d'un rang donné peuvent se limiter aux espaces dénombrables.
+  \begin{pbQuest}
+  \item Montrer que pour tout ordinal dénombrable $\varOa < \Ow_1$, l'espace
+    $\Ow^{\varOa} + 1$ est de rang $\varOa + 1$.
+  \item Montrer que si $X$ est dénombrable et compact, alors $\rangCB(X)$ est
+    un ordinal successeur.
+  \end{pbQuest}
+  Concentrons-nous sur les compacts dénombrables. Dans ce cadre, on peut se
+  restreindre encore plus en n'étudiant que les compacts dénombrables de $\bR$.
+  \begin{pbQuest}[resume]
+  \item Montrer que tout espace compact dénombrable est homéomorphe à un compact
+    de $\bR$. \textit{Indication~: Pour $X$ l'espace considéré, on peut étudier
+      l'espace de Banach $C(X)$.}
+  \end{pbQuest}
+  On en arrive donc à classifier les compacts dénombrables de $\bR$. En gardant
+  en tête le fait qu'une telle partie $X$ a comme rang un ordinal successeur, on
+  peut considérer la dernière dérivée de $X$ qui est non vide, qu'on appelle
+  résidu de $X$~:
+  \begin{quotation}
+    \noindent
+    Si $X \subseteq \bR$ est un compact dénombrable de rang $\varOa + 1$, alors
+    on appelle résidu l'ensemble $X^{\varOa}$.
+  \end{quotation}
+  \begin{pbQuest}[resume]
+  \item Montrer que le résidu d'un compact dénombrable est un ensemble fini.
+  \item Montrer que si $X$ est un compact dénombrable de $\bR$ de rang $1$ et de
+    résidu $1$, alors $X \iso \Ow + 1$.
+  \item Soit $\varOa$ un ordinal dénombrable fixé. Montrer que si tout compact
+    dénombrable de $\bR$ de rang $\varOa$ et de résidu $1$ est homéomorphe à
+    $\Ow^{\varOa} + 1$, alors tout compact dénombrable de $\bR$ de rang $\varOa$
+    et de résidu $n\in\bN$ est homéomorphe à $\Ow^{\varOa}\times n + 1$.
+  \item Soit $\varOb$ un ordinal dénombrable fixé. Montrer que si, pour tout
+    $\varOb < \varOa$ et $n < \Ow$, les compacts dénombrables de $\bR$ de rang
+    $\varOb$ et de résidu $n$ sont homéomorphes à $\Ow^{\varOb} \times n + 1$,
+    alors tout compact dénombrable de $\bR$ de rang $\varOa$ et de résidu $1$
+    est homéomorphe à $\Ow^{\varOa} + 1$.
+  \item En déduire que pour tout compact dénombrable $X$ de $\bR$, en notant
+    $\varOa$ son rang et $n$ son résidu, on a
+    $X \iso \Ow^{\varOa} \times n + 1$.
+  \item Pour conclure, montrer que pour tout $\varOa < \Ow_1$ il existe une
+    partie $X\subseteq \bR$ telle que $\rangCB(X) = \varOa$.
+  \item Donner le cardinal des parties compactes dénombrables de $\bR$ à
+    homéomorphisme près.
+  \end{pbQuest}
+\end{problem}

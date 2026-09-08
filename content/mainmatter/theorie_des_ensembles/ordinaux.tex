@@ -2375,6 +2375,145 @@ avec $f$.
   la compacité de $\displaystyle\prod_{i \in \indSet} Y_i$.
 \end{exercise}
 
+\begin{exercise}[Conséquence de l'hypothèse du continu]
+  On suppose $\HC$, c'est-à-dire que $\Card(2^{\Cal_0}) = \Cal_1$. Montrer que
+  $\Card({\Cal_0}^{\Cal_1}) = \Cal_1$. Montrer que pour tout $n \in \bN$,
+  $\Card({\Cal_0}^{\Cal_n}) = \Cal_n$. \textit{Indication~: On peut montrer
+  d'abord que toute fonction $\makeFunName{f}{\Cal_0}{\Cal_n}$ est bornée.}
+\end{exercise}
+
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Des opérations naturelles sur les ordinaux]
+  On s'intéresse à une notion d'addition et de produit permettant aux opérations
+  d'avoir des propriétés plus naturelles que les opérations ordinales qu'on a pu
+  voire jusqu'ici.
+
+  \pbPart{Addition et multiplication de Hessenberg}
+
+  Soient $\varOa,\varOb \in \Ord$. Considérons leur décomposition de Cantor~:
+  \[\varOa = \Ow^{\varOc_1}\times n_1 + \cdots + \Ow^{\varOc_k} \times n_k\qquad
+  \varOb = \Ow^{\varOc_1}\times m_1 + \cdots + \Ow^{\varOc_k} \times m_k\]
+  où on rajoute des $n_i$ (respectivement des $m_i$) nuls pour que la
+  décomposition des deux ordinaux utilise le même nombre d'indices et les
+  mêmes ordinaux $(\varOc_i)$.
+  On définit l'addition de Hessenberg $\varOa\HessP\varOb$ et la multiplication
+  de Hessenberg $\varOa\HessM\varOb$ par
+  \[\varOa\HessP\varOb \defeq \sum_{i = 1}^{k} \Ow^{\varOc_i}\times(n_i+m_i)\qquad
+  \varOa\HessM\varOb \defeq \HessPB_{i,j = 1}^k
+  \Ow^{\varOc_i \HessP\varOc_{j}} (n_i \times m_{j})\]
+  \begin{pbQuest}
+  \item On pose $\varOa \defeq \Ow^{\Ow^\Ow + 1} + \Ow^{\Ow} \times 3 + 2$ et
+    $\varOb \defeq \Ow^3 \times 5 + 1$, calculer $\varOa\HessP\varOb$ et
+    $\varOa\HessM\varOb$.
+  \item Montrer que $\HessP$ et $\HessM$ sont des opérations commutatives et
+    associatives.
+  \item Montrer que $\HessM$ distribue sur $\HessP$, que $0$ est neutre pour
+    $\HessP$ et que $1$ est neutre pour $\HessM$. En déduire que
+    $(\Ord,0,\HessP,1,\HessM)$ est un demi-anneau (classe).
+  \item Montrer que pour tous $\varOa,\varOb \in \Ord$,
+    $\varOa + \varOb \leq \varOa \HessP \varOb$ et
+    $\varOa\times\varOb\leq\varOa\HessM\varOb$.
+  \end{pbQuest}
+
+  \pbPart{Les nombres surréels}
+
+  En considérant $\Ord$ comme un demi-anneau, on voit un analogue à l'ensemble
+  $\bN$. Plutôt que d'avoir une demi-droite discrète allant jusqu'à l'infini,
+  $\Ord$ peut se voir comme une demi-droite discrète allant jusqu'au transfini.
+  Comme on a pu construire un corps complet contenant $\bN$ par différentes
+  constructions, on propose ici d'étendre $\Ord$ en un corps (classe) similaire
+  au corps des réels, et appelé le corps des surréels.
+
+  La construction de $\bR$ déjà présentée se base sur les coupures de Dedekind,
+  mais dans une version légèrement altérée~: dans la version historique, les
+  coupures sont des couples $(L,R)$ où $L,R\subseteq\bQ$, $L$ est clos vers le
+  bas et $R$ est clos vert le haut\footnote{$L$ est utilisé pour
+  \foreignexpr{left} et $R$ pour \foreignexpr{right}.}, et certaines propriétés
+  supplémentaires sont demandées. De cette façon, un réel est donnée par
+  l'ensemble des rationnels en-dessous de lui, et des rationnels au-dessus de
+  lui. Comme (presque) tout rationnel est dans la partie gauche ou dans la
+  partie droite, on peut supprimer l'un des deux côté d'une coupure sans perdre
+  d'information.
+
+  Dans notre nouvelle construction, on va construire les réels itérativement.
+  Pour ce faire, on part de l'élément $0$, et on construit de proche en proche
+  les éléments $1,-1$, puis $2,-2$ \latinexpr{etc.}, mais aussi
+  $\frac{1}{2}$ comme le point à droite de $0$ et à gauche de $1$. La définition
+  formelle demande de construire, par récursion transfinie, à la fois les
+  ensembles $\surR_{\varOa}$ de nombres construits à chaque étape, et l'ordre
+  $\leq_{\varOa}$ sur $\surR_{\varOa}$~:
+  \begin{align*}
+  \surR_0 &\defeq \vide\\
+  \surR_{\varOa+1} &\defeq \surR_{\varOa}\cup
+  \compr{(L,R) \in \powerset(\surR_{\varOa})\times\powerset(\surR_{\varOa})}
+        {\begin{array}{l}
+            \forall x \in L, \forall y \in X_{\varOa}, y \leq_{\varOa} x
+            \implies y \in L\\
+            \forall x \in R, \forall y \in X_{\varOa}, x \leq_{\varOa} y
+            \implies y \in R\\
+            L\cap R = \vide\\
+            \forall x \in \surR_{\varOa}, x \in L \lor x \in R
+        \end{array}}\\
+  \surR_{\varOl} \defeq& \bigcup_{\varOb < \varOl} \surR_{\varOb}
+  \end{align*}
+  \begin{align*}
+  x \leq_0 x &\defeq \bot\\
+  x \leq_{\varOa+1} y &\defeq x \leq_{\varOa} y\\
+  x \leq_{\varOa+1} (L,R) &\defeq x \in L\\
+  (L,R) \leq_{\varOa+1} x &\defeq x \in R\\
+  (L_0,R_0) \leq_{\varOa+1} (L_1,R_1) &\defeq L_0\subseteq L_1\\
+  \forall \varOl\in\Lim, x <_{\varOl} y &\defeq
+  \exists \varOb < \varOl, x <_{\varOb} y
+  \end{align*}
+  \begin{pbQuest}
+  \item Donner explicitement les ensembles $\surR_1,\surR_2,\surR_3$.
+  \item Montrer que pour tous $\varOa,\varOb \in \Ord$, si
+    $\varOa \leq \varOb$ alors $\surR_{\varOa}\subseteq \surR_{\varOb}$ et
+    $\mathord{\leq_{\varOa}}\subseteq \mathord{\leq_{\varOb}}$.
+  \item Montrer que pour tout $\varOa$, $(\surR_{\varOa},\leq_{\varOa})$ est un
+    ensemble totalement ordonné.
+  \item Montrer que dans le cas où $\varOl$ est un ordinal limite,
+    $(\surR_{\varOl},\leq_{\varOl})$ est un ensemble totalement ordonné dense sans
+    extrémités (\latinexpr{i.e.} non borné).
+  \end{pbQuest}
+  On définit finalement la classe totalement ordonnée dense sans extrémités des
+  surréels par
+  \[\surR \defeq \bigcup_{\varOa \in \Ord} \surR_{\varOa}\qquad
+  \mathord{\leq_{\surR}}\defeq \bigcup_{\varOa\in\Ord} \mathord{\leq_{\varOa}}\]
+  On définit aussi un plongement $\makeFunName{\iota}{\Ord}{\surR}$ par
+  récursion transfinie~:
+  \[\iota(\varOa) \defeq (\surR_{\varOa},\vide)\]
+  \begin{pbQuest}
+  \item Montrer que $\iota$ est une injection strictement croissante.
+  \item Donner une description de l'ensemble ordonné $(\surR_{\Ow},\leq_{\Ow})$,
+    de l'ensemble ordonné $(\surR_{\Ow+1},\leq_{\Ow+1})$.
+  \end{pbQuest}
+  On notera généralement $\Ord\subseteq\surR$ par abus de notations.
+
+  \pbPart{Les opérations d'un corps}
+
+  A CORRIGER
+  
+  Soient $\varOa,\varOb$ deux ordinaux. On définit la fonction
+  $\makeFunName{+_{\varOa,\varOb}}{\surR_{\varOa}\times\surR_{\varOb}}
+  {\surR}$
+  par induction transfinie sur les deux arguments~:
+  \begin{multline*}
+  (L_0,R_0) + (L_1,R_1) \defeq
+  (\compr{x + (L_1,R_1)}{x \in L_0}\cup\compr{(L_0,R_0)+y}{y \in L_1},\\
+  \compr{x + (L_1,R_1)}{x \in R_0}\cup\compr{(L_0,R_0)+y}{y \in R_1})
+  \end{multline*}
+  \begin{pbQuest}
+  \item Calculer $2+3$.
+  \item Montrer que l'addition est commutative, associative, et que $0$ en est
+    l'élément neutre.
+  \end{pbQuest}
+  On définit aussi l'opposé d'un nombre surréel par
+  \[-(L_0,R_0) \defeq (\compr{-x}{x \in L_0},\compr{-x}{x \in R_0})\]
+  \begin{pbQuest}[resume]
+  \item Montrer que $x + (-x) = 0$ pour tout surréel $x$.
+  \end{pbQuest}
+\end{problem}
