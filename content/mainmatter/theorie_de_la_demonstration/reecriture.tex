@@ -31,7 +31,7 @@ théorie, celle-ci contient l'étude de deux problèmes relativement indépendan
   particulier au sein du calcul des séquents.
 \end{itemize}
 
-On pourra se référer à \cite{TermRewrAllThat} pour une étude plus
+On pourra se référer à \cite{BaaderNipkow1998} pour une étude plus
 approfondie des systèmes de réécriture.
 
 \section{Systèmes abstraits de réécriture}
@@ -53,6 +53,7 @@ Commençons par la définition la plus élémentaire, déjà évoquée avant.
   On appelle système de réécriture abstrait (abrégé $\ARS$) une paire
   $(A,\varTo)$ où $\mathord{\varTo}\subseteq A^2$ est une relation
   binaire.
+  \index[notion]{Système!de Réécriture abstrait}
 \end{definition}
 
 L'exemple sur lequel il est bon de fixer son intuition pour appréhender les
@@ -113,6 +114,14 @@ cette relation pour avoir une relation symétrique, transitive, réflexive\ldots
   On appelle ces relations les clôtures (respectivement réflexive, symétrique,
   transitive, réflexive et transitive, et réflexive symétrique et transitive)
   de $\varTo$.
+  \index[notion]{Clôture!Réflexive}
+  \index[notion]{Clôture!Symétrique}
+  \index[notion]{Clôture!Transitive}
+  \index[notation]{Clôture!$\varToR$}
+  \index[notation]{Clôture!$\varToS$}
+  \index[notation]{Clôture!$\varToT$}
+  \index[notation]{Clôture!$\varToRt$}
+  \index[notation]{Clôture!$\varToRst$}
 \end{definition}
 
 \begin{remark}
@@ -196,6 +205,7 @@ suivante.
   Soit $(A,\varTo)$ un $\ARS$. On dit qu'il a la propriété de Church-Rosser 
   (abrégée CR) si, pour tous $a,b \in A$ tels que $a \varToRst b$, il existe
   $c \in A$ tel que $a \varToRt c$ et $b\varToRt c$.
+  \index[notion]{Propriété!de Church-Rosser}
 \end{definition}
 
 \begin{figure}[t!]
@@ -250,6 +260,7 @@ correspondant à ce qu'on imagine être un résultat~: celle de forme normale.
   s'il n'existe pas de $b \in A$ tel que $a \varTo b$. On note $\NF(A,\varTo)$
   (ou simplement $\NF$ quand le contexte est clair) l'ensemble des formes
   normales dans $(A,\varTo)$.
+  \index[notion]{Forme normale}
 \end{definition}
 
 L'intérêt de la propriété de Church-Rosser est qu'elle implique la propriété
@@ -260,6 +271,7 @@ suivante.
   unique (\foreignexpr{Uniqueness of Normal Form} en anglais, abrégé en UNF)
   si pour toutes deux formes normales $a,b \in \NF(A,\varTo)$, si
   $a \varToRst b$ alors $a = b$.
+  \index[notion]{Propriété! de la Forme normale unique}
 \end{definition}
 
 \begin{proposition}
@@ -299,6 +311,7 @@ alternative de la propriété CR, nommée confluence.
   on peut exprimer ça par l'inclusion
   $\mathord{\varToTTr}\circ\mathord{\varToRt}\subseteq
   \mathord{\varToRt}\circ\mathord{\varToTTr}$.
+  \index[notion]{Propriété!Confluence}
 \end{definition}
 
 \begin{proposition}\label{prop.CR.confl}
@@ -378,6 +391,8 @@ de la confluence.
   l'anglais \foreignexpr{diamond property}) si pour tous
   $b \varToTr a \varTo c$ il existe $d \in A$ tel que
   $b \varTo d \varToTr c$.
+  \index[notion]{Propriété!Confluence!Locale}
+  \index[notion]{Propriété!du Carreau}
 \end{definition}
 
 \begin{remark}
@@ -547,6 +562,9 @@ normale, d'une part, et la notion de normalisation forte.
   \end{prooftree}
   On dit que l'$\ARS$ est faiblement normalisant quand $\WN = A$ et fortement
   normalisant quand $\SN = A$.
+  \index[notion]{Normalisation}
+  \index[notation]{$\SN$}
+  \index[notation]{$\WN$}
 \end{definition}
 
 La faible normalisation est probablement la définition la plus intuitive des
@@ -616,9 +634,10 @@ fortement normalisant, il nous suffit de montrer que pour tout $a \in A$, si
 pour tout $b$ tel que $a \varTo b$, on a $P(b)$, alors on a $\varFF(a)$.
 Cette méthode permet de prouver le lemme de Newman.
 
-\begin{lemma}[Newman \cite{Newman42}]\label{lem.newman}
+\begin{lemma}[Newman \cite{Newman1942}]\label{lem.newman}
   Soit $(A,\varTo)$ un $\ARS$. S'il est fortement normalisant et localement
   confluent, alors il est confluent.
+  \index[notion]{Lemme!de Newman}
 \end{lemma}
 
 \begin{proof}
@@ -733,6 +752,7 @@ notre relation. Pour cela, on introduit la clôture compatible d'une relation.
   et compatible. Dans le cas d'un $\ARS$ $(\varMMo,\varTo)$, on notera
   $\varToC$ la clôture compatible de $\varTo$, ainsi que
   $\varToCRst$ la plus petite congruence contenant $\varTo$.
+  \index[notation]{$\varToCRst$}
 \end{definition}
 
 Reprenons maintenant notre exemple précédent de $\reecr{}$ sur les formules.
@@ -762,6 +782,7 @@ construire ce qu'on appelle une présentation de monoïde.
   présenté s'il existe une présentation dont $\ABA$ et
   $\varTo$ sont des ensembles finis, et finiment engendré s'il
   existe une présentation dont $\ABA$ est un ensemble fini.
+  \index[notion]{Présentation!de Monoïde}
 \end{definition}
 
 On peut maintenant énoncer le problème du mot, qui s'applique à des
@@ -774,19 +795,21 @@ présentations de monoïdes.
   présentation est la question de savoir si l'ensemble
   \[\compr{(\godcod a,\godcod b)}{a,b \in \toStA\land a\varToCRst b}\]
   est décidable.
+  \index[notion]{Problème!de Décision!du Mot}
 \end{definition}
 
 On peut aussi restreindre ce problème à une sous-classe des monoïdes, qui
-est celle des groupes. On se réfère par exemple à \cite{algGrandCombat}
+est celle des groupes. On se réfère par exemple à \cite{Berhuy2025}
 pour un cours plus détaillé abordant cette notion.
 
 Le fait important est que, même dans le cas où l'on considère simplement
 les groupes, le problème du mot est indécidable. Ce théorème est donné
 avant tout pour la culture, nous n'en donnons pas la preuve ici.
 
-\begin{theorem}[Boone-Novikov \cite{boone58, novikov55}]
+\begin{theorem}[Boone-Novikov \cite{Boone1959, Novikov1955}]
   Il existe un groupe finiment présenté dont le problème du mot est
   indécidable.
+  \index[notion]{Théorème!de Boone-Novikov}
 \end{theorem}
 
 \subsection{Complétion de Knuth-Bendix}
@@ -856,6 +879,7 @@ C'est cette idée que formalise la notion de paire critique.
   $\varww_0$ tel que $\varww_1\varToCRt \varww_0\varToCTTr \varww_2$.
   On note $\PrCrt(\ABA,\varTo)$ l'ensemble des paires critiques de
   $(\ABA,\varTo)$ (on laissera le paramètre $(\ABA,\varTo)$ sous-entendu).
+  \index[notion]{Paire critique}
 \end{definition}
 
 \begin{remark}
@@ -889,6 +913,7 @@ confluente. Pour cela, on se donne d'abord un cadre légèrement plus général.
   la congruence induite par $\varEq$ (en associant à une paire
   $\{\varww_1,\varww_2\}$ les deux couples $(\varww_1,\varww_2)$ et
   $(\varww_2,\varww_2)$) met en relation $\varwd$ et $\varwv$.
+  \index[notion]{Théorie!\'Equationnelle}
 \end{definition}
 
 L'algorithme que nous présentons, appelé algorithme de complétion de
@@ -898,7 +923,7 @@ demande d'abord un ordre sur les termes qu'on étudie (on peut voir cet
 ordre comme les hypothèses de la \cref{prop.normalisation.wfFun}, en
 tirant en arrière la bonne fondation de la relation de l'ensemble
 d'arrivée). Pour présenter au mieux l'algorithme, on introduit un
-formalisme inspiré de \cite{equationalInference}. Dans ce
+formalisme inspiré de \cite{BachmairDershowitz1994}. Dans ce
 formalisme, on considère des couples $\langle \varEq,\varTo\rangle$
 avec une théorie équationnelle et une relation de réécriture.
 L'objectif est alors, étant donnée une théorie équationnelle
@@ -982,10 +1007,11 @@ avoir des formes normales, et la règle de suppression permet (dans le
 cas de deux termes déjà rejoints) d'éliminer une équation triviale.
 On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
 
-\begin{theorem}[Complétion de Knuth-Bendix \cite{Knuth1983}]
+\begin{theorem}[Complétion de Knuth-Bendix \cite{KnuthBendix1970}]
   Soit $\varEq$ une théorie équationnelle, alors si l'algorithme de
   la \cref{algo.KnuthBendix} termine positivement, le résultat est
   une relation de réécriture fortement normalisante et confluente.
+  \index[notion]{Complétion!de Knuth-Bendix}
 \end{theorem}
 
 \begin{proof}
@@ -1047,6 +1073,7 @@ On peut ainsi écrire l'algorithme de la \cref{algo.KnuthBendix}.
   \KwRet $\varTo$\;
   \caption{Algorithme de complétion de Knuth-Bendix}
   \label{algo.KnuthBendix}
+  \index[notion]{Algorithme!de Knuth-Bendix}
 \end{algorithm}
 
 \section{Théories équationnelles}
@@ -1098,6 +1125,7 @@ Définissons maintenant la notion de problème d'unification.
   substitution $\subSimul$ telle que pour tout
   $(t\simeq u) \in \varPbU$, on a l'égalité
   $\subSimul(t) = \subSimul(u)$.
+  \index[notion]{Problème!d'Unification}
 \end{definition}
 
 \begin{example}
@@ -1204,6 +1232,7 @@ On donne le pseudo code en \cref{algo.unification}.
   }
   \caption{Algorithme d'unification de Robinson}
   \label{algo.unification}
+  \index[notion]{Algorithme!d'Unification de Robinson}
 \end{algorithm}
 
 \begin{remark}
@@ -1328,6 +1357,7 @@ alors on peut passer d'un arbre de preuve à un autre.
       \varFP_1',\ldots,\varFP_p'$}
   \end{prooftree}
   où les prémisses sont les mêmes dans la seconde règle.
+  \index[notion]{Démonstration!Modulo réécriture}
 \end{definition}
 
 On peut ainsi, en reprenant la réécriture précédente, construire
@@ -1397,6 +1427,7 @@ se simuler par un arbre de preuve.
   Une réécriture $\reecr{}$ est dite simulable si pour toute
   réécriture $\varFF\reecr{} \varFP$, on peut prouver que
   $\varFF\dvvd \varFP$ (sans réécriture ici).
+  \index[notion]{Réécriture!Simulée}
 \end{definition}
 
 Dans un tel cas, on peut modifier une coupure logique en
@@ -1442,6 +1473,7 @@ coupures.
   $\rmr c/\rml c'$ existe, alors $c = c'$, c'est-à-dire
   que le couple correspond à la règle gauche et droite
   d'un constructeur fixé.
+  \index[notion]{Réécriture!non ambiguë}
 \end{definition}
 
 \begin{remark}
@@ -1489,6 +1521,7 @@ exactement l'ensemble des formules qu'on peut prouver en plus.
   la théorie associée par
   \[\varT_{\reecr{}} \defeq
   \compr{\varFF\iffS\varFP}{\varFF\reecr{}\varFP}\]
+  \index[notion]{Théorie!Associée à une réécriture}
 \end{definition}
 
 \begin{exercise}

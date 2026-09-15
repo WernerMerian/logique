@@ -49,7 +49,7 @@ centrale pour plusieurs raisons~:
 \end{itemize}
 
 Nous allons d'abord voir la notion de fonction $\RecP$ la plus classique (on
-peut retrouver les mêmes définitions par exemple dans \cite{cori1993logique}),
+peut retrouver les mêmes définitions par exemple dans \cite{Cori2020}),
 puis nous introduirons une version généralisée de cette classe de fonctions.
 L'intérêt premier de cette version généralisée est de faciliter le travail
 d'encodage dans les futurs chapitres, et de mettre en valeur la classe des
@@ -58,7 +58,7 @@ calcul intermédiaire entre les langages algébriques et les langages récursifs
 (que nous verrons ensuite).
 
 Historiquement, la notion de fonction primitive récursive est apparue avant
-celle des fonctions calculables, notamment dans \cite{skolem1923begrundung} qui
+celle des fonctions calculables, notamment dans \cite{Skolem1923} qui
 a mis en avant l'importance et la polyvalence des définitions par récurrence.
 \`A l'époque, de telles fonctions étaient simplement appelées \og fonctions
 définies par récurrence\fg car, du fait de l'absence de la notion de fonction
@@ -67,14 +67,14 @@ d'être introduit. Notons malgré tout que durant une assez longue période, les
 fonctions que l'on appelle maintenant récursives primitives étaient appelées
 récursives, et les fonctions que l'on appelle maintenant récursives étaient
 appelées récursives générales, comme introduites dans
-\cite{godel1934undecidable}.
+\cite{Goedel1934}.
 
 \subsection{Définitions et premières fonctions}
 
 \noindent
 Commençons par donner la définition de la classe $\RecP$.
 
-\begin{definition}[Fonctions primitives récursives \cite{skolem1923begrundung}]
+\begin{definition}[Fonctions primitives récursives \cite{Skolem1923}]
   On définit la classe
   $\RecP\subseteq \bigcup_{n \in \bN}\Funct(\bN^n,\bN)$
   comme la plus petite classe telle que~:
@@ -98,6 +98,8 @@ Commençons par donner la définition de la classe $\RecP$.
                  {g(x_1,\ldots,x_k,y,\rec(f,g)(x_1,\ldots,x_k,y))}\]
     est elle aussi $\RecP$. On appelle cette opération la récursion primitive.
   \end{itemize}
+  \index[notion]{Fonction!Primitive récursive}
+  \index[notation]{$\rec(f,g)$}
 \end{definition}
 
 \begin{notation}
@@ -288,6 +290,7 @@ relations.
   fonction caractéristique
   $\makeFunName{\indicP{\mathord{\varRR}}}{\bN^n}{\btwo}$ est une fonction
   $\RecP$.
+  \index[notion]{Relation!Récursive primitive}
 \end{definition}
 
 \begin{remark}
@@ -458,6 +461,10 @@ de minimisation qui nous sera utile.
             {(\vec n,m)}{\min\compr{x < m}{(\vec n,x)\in\mathord{\varRR}}}\]
   où la fonction vaut $0$ lorsque l'ensemble sur lequel est pris le minimum est
   vide.
+  \index[notion]{Minimisation}
+  \index[notion]{Minimisation!Bornée}
+  \index[notation]{$\muC$}
+  \index[notation]{$\muB$}
 \end{definition}
 
 \begin{remark}
@@ -561,9 +568,9 @@ ensembles que $\bN$. Comme on peut voir $\bN$ comme le monoïde libre à un
 remplaçant $\bN$ par $\toStA$ pour un ensemble fini $\ABA$.
 
 Les définitions et propositions données dans cette sous-section sont l'\oe uvre
-des auteurs de ce livre, d'où l'absence de références bibliographiques (on
+de l'auteur de ce livre, d'où l'absence de références bibliographiques (on
 peut néanmoins relever l'article
-\cite{buchholtz2024primitiverecursivedependenttype} dont le contenu recoupe
+\cite{BuchholtzSchippvonBranitz2024} dont le contenu recoupe
 ce qui est développé ici, dans une forme plus interne et orientée vers la
 théorie des types).
 L'intérêt de ces constructions est avant tout de faciliter des notions de
@@ -635,6 +642,7 @@ ces résultats donneront en corollaire beaucoup de résultats techniques.
                    (\vec\varwd,\varwv))}\]
     est une fonction $\RPG$.
   \end{itemize}
+  \index[notion]{Fonction!Récursive primitive!Généralisée}
 \end{definition}
 
 \begin{remark}
@@ -684,6 +692,8 @@ $\makeFunName{\relev{f}}{\bN^n}{\bN}$ est $\RecP$.
   \end{cases}\]
   et telle que pour tout $n \in \bN, \codRPG{n}{\{*\}} = n$. On notera aussi
   cette fonction $f_\ABA$.
+  \index[notion]{Codage!de Gödel}
+  \index[notation]{$\codRPG{\varwd}{\ABA}$}
 \end{definition}
 
 \begin{proof}
@@ -932,6 +942,7 @@ Donnons d'abord le formalisme adapté pour présenter l'algorithme.
   inférieurs à $\wul$.
   On note $\EaItSt$ pour représenter l'item $\nTA \to \varwv\varww , i,j$ où
   $j = \wvl$.
+  \index[notion]{Item d'Earley}
 \end{definition}
 
 L'idée derrière un item d'Earley est d'analyser les occurrences d'une règle
@@ -1008,8 +1019,9 @@ $\Card(\mathord{\to}), \max(\compr{\varwd}{\exists \nTA, \nTA\to \varwd})$.
     }
   }
   \KwRet $\Ewd$\;
-  \caption{Algorithme d'Earley}
+  \caption{Algorithme d'Earley \cite{Earley1970}}
   \label{fig.Earley}
+  \index[notion]{Algorithme!d'Earley}
 \end{algorithm}
 
 \begin{proposition}
@@ -1055,6 +1067,7 @@ Cette proposition permet de donner du sens à la définition suivante.
   dite $\RPG$ s'il existe une fonction $\RPG$
   $\makeFunName{\relev{f}}{\toStA}{\toStB}$ qui coïncide avec $f$
   sur $\varLL$.
+  \index[notion]{Fonction!Récursive Primitive Généralisée!de Langage}
 \end{definition}
 
 \begin{remark}
@@ -1213,6 +1226,8 @@ d'abord des notations pour manipuler ces fonctions.
                          \forall z < y, f(\vec \varwd,z)\convneq \Ewd
                    \end{array}}}\]
   est aussi une fonction récursive généralisée.
+  \index[notion]{Fonction!Récursive}
+  \index[notion]{Fonction!Récursive!Généralisée}
 \end{definition}
 
 \begin{exercise}
@@ -1479,7 +1494,7 @@ grâce aux machines de Turing.
   \label{fig.exec.TM}
 \end{figure}
 
-Les machines de Turing, introduites dans \cite{turing1936a}, sont un formalisme
+Les machines de Turing, introduites dans \cite{Turing1936a}, sont un formalisme
 très proche de celui des automates. La différence principale est qu'au lieu
 de lire linéairement un mot, comme dans le cas d'un automate fini ou d'un
 automate à pile, une machine de Turing va agir sur un ruban de données. Cette
@@ -1506,7 +1521,7 @@ nous montrons que les fonctions calculables au sens des machines de Turing sont
 Donnons d'abord une définition simple de machine de Turing, permettant de plus
 rapidement travailler avec.
 
-\begin{definition}[Machine de Turing \cite{turing1936a,Post1947-POSRUO}]
+\begin{definition}[Machine de Turing \cite{Turing1936a,Post1947}]
   Soit $\ABA$ un alphabet. Une machine de Turing $\varTMM$ sur $\ABA$ est la
   donnée de~:
   \begin{itemize}
@@ -1522,8 +1537,9 @@ rapidement travailler avec.
 
   On note $\TM(\ABA)$ (pour \foreignexpr{Turing machine}) l'ensemble des
   machines de Turing sur $\ABA$.
+  \index[notion]{Machine de Turing}
+  \index[notation]{$\TM(\ABA)$}
 \end{definition}
-
 
 Décrivons le fonctionnement d'une machine de Turing à partir de ses
 composantes (on en trouve une représentation en \cref{fig.exec.TM})~:
@@ -1558,6 +1574,7 @@ machine, de son ruban et l'emplacement de sa tête de lecture.
   \item $u$ est un mot de la forme $\varwv\toInf$ avec $\varwv \in\toStB$
   \end{itemize}
   On note $\Config(\varTMM)$ l'ensemble des configurations de $\varTMM$.
+  \index[notion]{Configuration!d'une Machine de Turing}
 \end{definition}
 
 \begin{notation}
@@ -1586,6 +1603,7 @@ fonction de transition.
                       \trA(\varq,\varla) \conveq (\varq',\varlc,\rTr)}
                     \]
   où la fonction n'est pas définie sinon.
+  \index[notion]{Action!d'une Machine de Turing}
 \end{definition}
 
 Cette action sur les configurations représente ce qu'il se déroule lors de
@@ -1608,6 +1626,7 @@ la suite des configurations parcourues.
 
   Pour tout mot $\varwd \in \toStA$, on appelle trace de l'exécution de
   $\varTMM$ la trace de l'exécution de $\varTMM$ sur $\varqZ\varwd\toInf$.
+  \index[notion]{Trace!d'une Machine de Turing}
 \end{definition}
 
 L'exécution d'une machine sur un mot $\varwd$ peut ainsi mener à plusieurs cas~:
@@ -1638,6 +1657,8 @@ calculable.
   
   On définit la classe des fonctions calculables sur $\ABA$ comme
   \[\Calc(\ABA)\defeq \compr{f_{\varTMM}}{\varTMM \in \TM(\ABA)}\]
+  \index[notion]{Fonction!Calculable}
+  \index[notation]{$\Calc(\ABA)$}
 \end{definition}
 
 \subsection{Machines de Turing équivalentes}
@@ -1729,6 +1750,7 @@ introduire une nouvelle définition.
   \end{itemize}
   On note $\TM_k(\ABA)$ l'ensemble des machines de Turing à $k$ rubans sur
   $\ABA$.
+  \index[notion]{Machine de Turing!à plusieurs Rubans}
 \end{definition}
 
 On peut facilement définir l'action d'une machine à $k$ rubans sur une
@@ -1813,6 +1835,7 @@ laquelle les rubans sont divisés en trois sortes~:
                          {\varQQ\times\ABB^{k+p}\times(\ABA\sqcup\{\bot\})
                            \times\{\lTr,\rTr\}^{k+p}}\]
   \end{itemize}
+  \index[notion]{Machine de Turing!à Rubans de plusieurs sortes}
 \end{definition}
 
 L'action d'une telle machine sur $k+p+1$ rubans est celle naturelle, dans
@@ -2065,6 +2088,8 @@ entier.
   $N-1$ l'état d'arrêt, est encodée par le nombre
   \[\godcod{\varTMM} \defeq \langle N,p,
   f_{\varLL_{\rmCode}}(\godcod \trA)\rangle\]
+  \index[notion]{Codage!d'une Machine de Turing}
+  \index[notation]{$\godcod{\varTMM}$}
 \end{definition}
 
 Le point central de ce codage est le suivant~: toutes les fonctions simulant
@@ -2095,6 +2120,9 @@ sortie au bout de $t$ étapes de calcul.
   \item $\KlU(\godcod{\varTMM},\vec{\varwd},k)$ est le contenu du ruban de
     sortie de $\varTMM$ au bout de $k$ étapes de calcul.
   \end{itemize}
+  \index[notion]{Forme normale!de Kleene}
+  \index[notation]{$\KlT$}
+  \index[notation]{$\KlU$}
 \end{theorem}
 
 \begin{proof}
@@ -2182,6 +2210,8 @@ théorème à cause de son importance.
   \[\forall \varTMM \in \TM(\ABA_1,\ldots,\ABA_n,\ABB),
   \forall \vec{\varwd} \in \prod_{i = 1}^n \toStAP{i},
   f_{\varTMM}(\vec{\varwd}) = f_{\UnTM}(\godcod{\varTMM}, \vec{\varwd})\]
+  \index[notion]{Machine de Turing!Universelle}
+  \index[notation]{$\UnTM$}
 \end{theorem}
 
 \begin{proof}
@@ -2201,11 +2231,12 @@ est cruciale dans l'appréciation de la calculabilité et dans sa pratique.
   méthodes \emphexpr{finitaire}, et généralement toute fonction intuitivement
   calculable, peut s'exprimer sous la forme d'une machine de Turing (de façon
   équivalente, sous la forme d'une fonction récursive).
+  \index[notion]{Thèse!de Church-Turing}
 \end{thesis}
 
 Historiquement, cette thèse a d'abord été formulée par Church à propos d'un
 autre formalisme équivalent~: le $\lambda$-calcul (que nous étudierons en
-détails dans le \cref{chp.lambda}). Church \cite{Church1936AnUP}
+détails dans le \cref{chp.lambda}). Church \cite{Church1936}
 propose déjà cette thèse en tant que postulat empiriquement vérifié~: comme
 un postulat physique (\latinexpr{e.g.} les principes de la thermodynamique)
 ce fait est avancé sans une preuve formelle, mais avec une forte conviction de
@@ -2214,7 +2245,7 @@ Ainsi, pour Church, il n'y avait aucune procédure finitaire dont il ne pouvait
 trouver qu'elle était équivalente à un programme au sens de son
 $\lambda$-calcul.
 
-Au contraire, Turing \cite{turing1936a} donne un réel argument pour soutenir
+Au contraire, Turing \cite{Turing1936a} donne un réel argument pour soutenir
 cette thèse. Comme indiqué précédemment, cet argument est d'ordre philosophique,
 mais il ne peut en être autrement~: il n'existe aucune description mathématique
 fiable pour définir la notion de \og fonction intuitivement calculable\fg et la

@@ -7,12 +7,13 @@
 calcul~: les fonctions récursives et les machines de Turing. Le formalisme des
 fonctions récursives a été introduit par Kleene dans \cite{Kleene1936} sur la
 base des fonctions récursives primitives mises en avant par Skolem
-\cite{skolem1923begrundung}. Cependant, Kleene utilisait aussi de son propre
+\cite{Skolem1923}. Cependant, Kleene utilisait aussi de son propre
 aveu des intuitions issues d'un autre formalisme, celui de son professeur~:
 Alonzo Church.
 
 Le formalisme du $\lambda$-calcul a en effet été introduit par Church dans
-\cite{Church1932}, en tant que formalisme équationnel et logique~: les termes
+\cite{Church1932,Church1933}, en tant que formalisme équationnel et logique~:
+les termes
 construits par les abstractions et les applications permettent de construire des
 objets dans une certaine théorie logique (contrairement à la vision plus
 moderne dans laquelle on considère un simple ensemble de $\lambda$-termes avec
@@ -30,7 +31,7 @@ systèmes de types.
 
 Dans ce chapitre, nous nous concentrons sur l'aspect non typé du formalisme.
 Les ressources ne manquent pas sur le sujet, et vont plus loin que ce chapitre
-introductif~: nous conseillons \cite{Barendregt1984,krivine1993lambda,selinger},
+introductif~: nous conseillons \cite{Barendregt1984,Krivine1990,Selinger2018},
 qui abordent aussi la version typée du calcul.
 
 Nous abordons d'abord la définition des $\lambda$-termes, de la
@@ -89,6 +90,10 @@ l'évaluation d'une expression, encore appelée $\lambda$-terme.
   Un terme de la forme $x \in \lamVar$ est appelé une variable, un terme de la
   forme $\lambda x.t$ est appelé une abstraction, et un terme de la forme
   $t\;u$ est appelé une application.
+  \index[notion]{$\lambda$-terme}
+  \index[notation]{$\lambda x.t$}
+  \index[notation]{$\lamVar$}
+  \index[notation]{$\lamSet$}
 \end{definition}
 
 \begin{remark}
@@ -125,6 +130,8 @@ besoin de la notion de substitution.
     $t[u/x] \defeq \lambda y.t'[u/x]$.
   \item si $t = t'\;t''$, alors $t[u/x] \defeq (t'[u/x])\;(t''[u/x])$.
   \end{itemize}
+  \index[notion]{Substitution!de $\lambda$-termes}
+  \index[notation]{Substitution!$t[u/x]$}
 \end{definition}
 
 En réalité, cette définition n'est pas bonne. Prenons par exemple le terme
@@ -152,6 +159,9 @@ libres d'un terme.
   \end{itemize}
 
   Si $\VL(t) = \vide$, alors on dit que $t$ est un terme clos.
+  \index[notion]{Variable libre!dans un $\lambda$-terme}
+  \index[notation]{$\VL$}
+  \index[notation]{$\VLie$}
 \end{definition}
 
 Avec la notion de variable libre, on peut procéder à une correction importante~:
@@ -168,11 +178,14 @@ de considérer égaux les termes $\lambda x.t$ et $\lambda y.t[y/x]$.
   congruence sur $\lamSet_0$ contenant les paires
   \[\lambda x.t \GaEq \lambda y.t[y/x]\]
   où $y \notin \VL(t)$.
+  \index[notion]{\'Equivalence!$\alpha$}
 \end{definition}
 
 \begin{definition}[$\lambda$-terme - version 2]
   L'ensemble $\lamSet$ est défini comme le quotient par l'$\alpha$-équivalence~:
   \[\lamSet \defeq \quot{\lamSet_0}{\GaEq}\]
+  \index[notion]{$\lambda$-terme}
+  \index[notation]{$\lamSet$}
 \end{definition}
 
 \begin{remark}
@@ -207,6 +220,8 @@ On peut maintenant définir la substitution sans capture de variable.
     $t[u/x] \defeq \lambda y.t'[u/x]$.
   \item si $t = t'\;t''$, alors $t[u/x] \defeq (t'[u/x])\;(t''[u/x])$.
   \end{itemize}
+  \index[notion]{Substitution!de $\lambda$-termes}
+  \index[notation]{Substitution!$t[u/x]$}
 \end{definition}
 
 \begin{proposition}
@@ -235,6 +250,8 @@ $\lambda$-termes.
   \[(\lambda x.t)u\bred t[u/x]\]
   On appelle redex (\foreignexpr{reducible expression}) les sous-termes d'un
   terme $t$ de la forme $(\lambda x.u)v$.
+  \index[notion]{Réduction!$\beta$}
+  \index[notation]{$\bred$}
 \end{definition}
 
 \begin{remark}
@@ -267,6 +284,8 @@ notion d'égalité de programmes.
 \begin{definition}[$\beta$-équivalence]
   On définit la relation $\Beq$ comme la plus petite congruence contenant
   $\bred$.
+  \index[notion]{\'Equivalence!$\beta$}
+  \index[notation]{$\Beq$}
 \end{definition}
 
 \begin{exercise}\label{exo.subst.subst}
@@ -297,6 +316,7 @@ On comprend alors l'intérêt de la notation $t\;u\;v$ pour écrire $(t\;u)\;v$,
 puisqu'alors en voyant $t$ comme une fonction à deux arguments curryfiée,
 $t\;u\;v$ représente bien la fonction à laquelle on donne les deux arguments
 $u$ et $v$.
+\index[notion]{Curryfication}
 
 \subsection{La relation êta}
 
@@ -342,6 +362,7 @@ Church-Rosser), mais elle peut s'axiomatiser.
     \AxiomC{$\forall u \in \lamSet, t\;u \cong t'\;u$}
     \UnaryInfC{$t \cong t'$}
   \end{prooftree}
+  \index[notion]{\'Egalité!Extensionnelle}
 \end{definition}
 
 On peut alors vérifier que $\id\circ f \cong f$. Cependant, la relation $\cong$
@@ -356,6 +377,9 @@ la règle $\eta$.
   \[(\lambda x.t)u \bered t[u/x] \qquad\qquad
   \lambda x.t\;x \bered t \quad x\notin \VL(t)\]
   On définit $\BEeq$ comme la plus petite congruence contenant ces paires.
+  \index[notion]{Réduction!$\beta\eta$}
+  \index[notation]{$\bered$}
+  \index[notation]{$\BEeq$}
 \end{definition}
 
 \begin{exercise}
@@ -388,7 +412,7 @@ et les objets en les notant de la même façon qu'ailleurs. Hors de cette
 sous-section, toutes les définitions sont à considérer comme celles précédemment
 données.
 
-\begin{definition}[$\lambda$-termes \cite{de_bruijn_1972}]
+\begin{definition}[$\lambda$-termes \cite{DeBruijn1972}]
   On définit par induction l'ensemble $\lamSet$ des $\lambda$-termes par
   la BNF suivante~:
   \[t,u\inddefeq n\mid \lambda t\mid t\;u\]
@@ -535,6 +559,7 @@ action $n$ fois.
 \begin{definition}[Entiers de Church]
   Soit $n\in\bN$~; on définit l'entier de Church $\encode n$ par
   \[\encode n \defeq \lambda f.\lambda x.f^n\;x\]
+  \index[notion]{Entier!de Church}
 \end{definition}
 
 \begin{remark}
@@ -572,6 +597,7 @@ représentation (au sens fort) des fonctions partielles.
   $f(\vec n) \convcal$ alors $t\;\encode{\vec n}$ se réduit en
   $\encode{f(\vec n)}$ et si $f(\vec n)\divcal$ alors
   $t\;\encode{\vec n}$ ne se réduit en aucune forme normale.
+  \index[notion]{Fonction!Représentée!par un $\lambda$-terme}
 \end{definition}
 
 \begin{exercise}
@@ -771,6 +797,9 @@ en donnant un terme construisant explicitement un point fixe.
   Pour chacun des deux termes, que l'on notera $T$, et pour tout
   $t \in \lamSet$, on a l'égalité
   \[T\;t \Beq t\;(T\;t)\]
+  \index[notion]{Combinateur de point fixe}
+  \index[notation]{$\LtY$}
+  \index[notation]{$\LtT$}
 \end{definition}
 
 \begin{proof}
@@ -936,6 +965,7 @@ $\lambda$-termes.
     \encode \top\text{ si } u \in Y
   \end{cases}\]
   $\varPt$ et $\varPtB$ sont dits récursivement inséparables sinon.
+  \index[notion]{Ensemble!Récursivement séparables}
 \end{definition}
 
 \noindent
@@ -945,6 +975,7 @@ Un ensemble sémantique, mais aux sens de $\bred$, sera dit saturé ici.
   Une partie $\varPt\subseteq \lamSet$ est dite saturée si
   \[\forall t,u \in \lamSet,
   t \Beq u \implies t \in \varPt \implies u \in \varPt\]
+  \index[notion]{Ensemble!Saturé}
 \end{definition}
 
 \begin{theorem}
@@ -990,6 +1021,7 @@ On en déduit aussi le théorème de l'image.
   \[\makeFun{f_{\overline t}}{\quot{\lamSet}{\Beq}}{\quot{\lamSet}{\Beq}}
             {\clas{u}}{\clas{t\;u}}\]
   qui est une fonction constante ou une fonction dont l'image est infinie.
+  \index[notion]{Théorème!de l'Image}
 \end{theorem}
 
 \begin{proof}
@@ -1025,7 +1057,7 @@ certaines propriétés de cette réduction, en particulier~:
 
 Pour prouver la propriété de Church-Rosser, on utilise une méthode développée
 par William Walker \name{Tait} et Per \name{Martin}-\name{Löf} (de ce qui est
-dit dans \cite{Barendregt1984}), et affinée dans \cite{TAKAHASHI1995120},
+dit dans \cite{Barendregt1984}), et affinée dans \cite{Takahashi1995},
 impliquant la réduction parallèle.
 
 Pour prouver la confluence du $\lambda$-calcul, la difficulté principale est,
@@ -1066,6 +1098,8 @@ On définit donc la réduction parallèle.
       \DisplayProof
     \end{tabular}
   \end{center}
+  \index[notion]{Réduction!Parallèle}
+  \index[notation]{$\redPar$}
 \end{definition}
 
 L'objectif est donc d'utiliser le \cref{lem.carreau.confluence.clot} en montrant
@@ -1155,6 +1189,8 @@ On définit pour cela le développement en un pas.
     $t^* \defeq u^*\;v^*$.
   \item si $t = (\lambda x.u)\;v$, alors $t^* \defeq u^*[v^*/x]$.
   \end{itemize}
+  \index[notion]{Développement!en un Pas}
+  \index[notation]{$t^*$}
 \end{definition}
 
 \begin{proposition}
@@ -1222,6 +1258,7 @@ termes.
 
   On dit qu'une telle stratégie est normalisante si, pour tout $t$ tel que
   $t\toMax{\bred} u$, on a $t\toMax{\varRR} u$.
+  \index[notion]{Stratégie!de Normalisation}
 \end{definition}
 
 On cherche donc une stratégie normalisante. Pour obtenir une telle stratégie
@@ -1272,6 +1309,9 @@ terme $t$.
       }
     \end{tabular}
   \end{center}
+  \index[notion]{Forme normale!de Tête}
+  \index[notion]{Réduction!de Tête}
+  \index[notation]{$\Hred$}
 \end{definition}
 
 \begin{exercise}
@@ -1309,6 +1349,8 @@ internes.
       \DisplayProof
     \end{tabular}
   \end{center}
+  \index[notion]{Réduction!Interne}
+  \index[notation]{$\Ired$}
 \end{definition}
 
 \begin{proposition}
@@ -1377,6 +1419,8 @@ ici une réduction parallèle interne.
       \DisplayProof
     \end{tabular}
   \end{center}
+  \index[notion]{Réduction!Interne!Parallèle}
+  \index[notation]{$\IredPar$}
 \end{definition}
 
 \begin{property}
@@ -1497,6 +1541,7 @@ On peut alors en déduire le théorème de standardisation faible.
 \begin{theorem}[Standardisation faible]
   Pour tous $t,v \in \lamSet$, si $t \rtClot{\bred} v$ alors il existe $u$ tel
   que $t\rtClot{\Hred} u \rtClot{\Ired} v$.
+  \index[notion]{Théorème!de Standardisation!Faible}
 \end{theorem}
 
 \begin{proof}
@@ -1555,6 +1600,7 @@ Pour cela, on définit la notion de réduction marquée.
   On dit qu'une réduction $t\bred^{\varwd} a$ est à gauche d'une réduction
   $s\bred^{\varwv} b$ si $\varwd$ est plus petit que $\varwv$ pour l'ordre
   lexicographique.
+  \index[notion]{Réduction!Marquée}
 \end{definition}
 
 \begin{example}
@@ -1581,10 +1627,12 @@ précis dans le cas des réductions internes.
   vers $u$, que l'on note $t\Sred u$, la donnée d'une suite de réductions
   $t = v_0\bred^{\varwd_0} v_1 \bred^{\varwd_1}\cdots \bred^{\varwd_{k-1}}v_k$
   telle que $\varwd_i \leq \varwd_{i+1}$ pour l'ordre lexicographique.
+  \index[notion]{Réduction!Standard}
 \end{definition}
 
 \begin{theorem}[Standardisation]
   Pour tous termes $t,u\in\lamSet$, si $t \rtClot{\bred} u$ alors $t\Sred u$.
+  \index[notion]{Théorème!de Standardisation}
 \end{theorem}
 
 \begin{proof}
@@ -1643,6 +1691,8 @@ la stratégie.
       \DisplayProof
     \end{tabular}
   \end{center}
+  \index[notion]{Réduction!Gauche}
+  \index[notation]{$\Lred$}
 \end{definition}
 
 \begin{corollary}

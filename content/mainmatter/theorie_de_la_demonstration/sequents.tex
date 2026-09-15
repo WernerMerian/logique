@@ -146,10 +146,10 @@ Avec ces conditions, toutes largement raisonnables pour considérer une notion d
 prouvabilité entre une théorie et une formule, on peut déjà remarquer deux
 éléments~:
 \begin{itemize}
-\item avec $\RRaa$, prouver que $\mathord{\vD}\subseteq \mathord{\vdP}$ ne demande
-  que de prouver que pour toute théorie $\varT$, si $\varT\nvdP$ alors
-  il existe un modèle de $\varT$. Cela revient au \cref{lem.vDashvdashabs} que nous
-  avons vu avant.
+\item avec $\RRaa$, prouver que $\mathord{\vD}\subseteq \mathord{\vdP}$ ne
+  demande que de prouver que pour toute théorie $\varT$, si $\varT\nvdP$ alors
+  il existe un modèle de $\varT$. Cela revient au \cref{lem.vDashvdashabs} que
+  nous avons vu avant.
 \item sans reconstruire l'algèbre de Lindenbaum-Tarski pour la relation
   syntaxique, le fait d'avoir $\RAff$ et $\RComp$ nous permet d'utiliser le
   lemme de Zorn pour étendre toute théorie en une théorie cohérente maximale
@@ -475,6 +475,7 @@ Avec tous ces éléments, il est maintenant possible de généraliser l'énoncé
   Soit une relation $\vdP$ vérifiant les règles données dans la
   \cref{tab.completude.gen}. On a alors l'inclusion
   $\mathord{\vD} \subseteq \mathord{\vdP}$.
+  \index[notion]{Complétude!Calcul des prédicats!Généralisée}
 \end{theorem}
 
 \begin{remark}
@@ -735,7 +736,7 @@ On peut maintenant définir notre premier calcul des séquents, $\LK$.
   \label{tbl.LK}
 \end{table}
 
-\begin{definition}[Calcul des séquents $\LK$ \cite{Gentzen1935}]
+\begin{definition}[Calcul des séquents $\LK$ \cite{Gentzen1934I}]
   Soit $\Sign$ une signature du premier ordre. On définit inductivement
   l'ensemble $\ProofLK(\Sign)$ par les règles de la \cref{tbl.LK}, où les
   règles $\Rlex^\dagger$ et $\Rrfora^\dagger$ demandent que $x$ soit libre
@@ -746,6 +747,9 @@ On peut maintenant définir notre premier calcul des séquents, $\LK$.
   pour $\LK$ par
   \[\varCG\vdLK \varCD \defeq \exists \varPT \in \ProofLK(\Sign),
   \varPT\concl \varCG\vdLK\varCD\]
+  \index[notion]{Calcul des séquents!$\LK$}
+  \index[notation]{Prouvabilité!VdLK@$\vdLK$}
+  \index[notation]{$\ProofLK$}
 \end{definition}
 
 \begin{remark}
@@ -830,7 +834,7 @@ supprimer les deux occurrences de $\varFF$ et concaténer les contextes, pour
 avoir $\varCG,\varCT\vdLK\varCD,\varCX$.
 
 La propriété centrale du calcul des séquents, qui a motivé l'étude de ce système
-et qui date d'aussi loin que son introduction dans \cite{Gentzen1935}, est
+et qui date d'aussi loin que son introduction dans \cite{Gentzen1934I}, est
 l'élimination des coupures~: on peut en fait prouver que la relation $\vdLK$
 prouve les mêmes formules si on supprime la règle $\Rcut$. Autrement dit,
 $\Rcut$ est une règle admissible pour $\LK - \Rcut$. On va prouver ce théorème,
@@ -844,6 +848,7 @@ On se donne donc pour l'instant l'élimination des coupures en tant qu'axiome.
   Pour tout arbre de preuve $\varPT$ de conclusion $\varCG\vdLK \varFF$, il
   existe un arbre de preuve $\varPT'$ de même conclusion mais ne contenant
   aucune occurrence de la règle $\Rcut$.
+  \index[notion]{\'Elimination!des Coupures}
 \end{axiom}
 
 La première conséquence est l'une des plus importantes pour justifier le bon
@@ -852,6 +857,7 @@ fonctionnement d'un système syntaxique~: la cohérence de $\LK$.
 \begin{theorem}[Cohérence de $\LK$]
   Il est impossible de prouver le séquent $\vdLK$, ou de façon équivalente de
   prouver $\top\vdLK\bot$.
+  \index[notion]{Cohérence!de $\LK$}
 \end{theorem}
 
 \begin{proof}
@@ -897,6 +903,7 @@ l'arbre.
   \item si $t,u$ sont des termes, $x$ une variable et $\varFF$ une formule,
     alors $\varFF[t/x]$ est une sous-formule de $\varFF[u/x]$.
   \end{itemize}
+  \index[notion]{Sous-formule}
 \end{definition}
 
 On peut ainsi énoncer la propriété de la sous-formule, dont la preuve est une
@@ -907,6 +914,7 @@ simple vérification des règles.
   Soit $\varFF_1,\ldots,\varFF_n \vdLK \varFP_1,\ldots,\varFP_k$ le séquent
   conclusion de $\varPT$. Tout séquent apparaissant dans $\varPT$ n'est
   constitué que de sous-formules des $\varFF_i$ et $\varFP_i$.
+  \index[notion]{Propriété!de la Sous-formule}
 \end{property}
 
 \begin{remark}
@@ -1357,6 +1365,7 @@ de relation compatible.
       \DisplayProof
       }
   \end{center}
+  \index[notion]{Relation!Compatible}
 \end{definition}
 
 Une relation compatible est donc une relation telle que, par exemple, si
@@ -1377,6 +1386,7 @@ réduction dans des sous-arbres des arbres de preuve.
   On définit la relation $\reecr{\quantif\downarrow}$ comme la plus petite
   relation compatible contenant la relation de réécriture
   $\reecr{\quantif\downarrow_0}$.
+  \index[notion]{Réduction!des Commutations quantitatives}
 \end{definition}
 
 Notre relation $\reecr{\quantif\downarrow}$ nous permet donc de faire descendre
@@ -1417,6 +1427,7 @@ On définit donc une mesure sur les arbres.
   $\lQuant/\rQuant$ qui sont dans les sous-arbres des prémisses de $\ruleR$.
   On définit $w(\varPT)$, le poids de l'arbre $\varPT$, comme la somme des
   poids des règles qui composent $\varPT$.
+  \index[notion]{Poids d'une règle}
 \end{definition}
 
 \begin{proposition}\label{prop.weight.midsequent}
@@ -1445,6 +1456,7 @@ On peut donc montrer le théorème du séquent du milieu.
   existe un entier $n$ tel que les $n$ règles les plus basses de $\varPT'$ sont
   des règles quantitatives, et toutes les autres règles sont des règles
   connectives, d'affaiblissement ou égalitaires.
+  \index[notion]{Théorème!du Séquent du milieu}
 \end{theorem}
 
 \begin{proof}
@@ -1504,11 +1516,12 @@ pas utiliser de données connectives pour s'effectuer~: elle doit donc
 introduire directement les témoins à l'aide des règles $\Rlex/\Rrex$. Cela
 entraîne directement le théorème d'Herbrand.
 
-\begin{theorem}[Herbrand \cite{herbrand30}]\label{thm.Herbrand}
+\begin{theorem}[Herbrand \cite{Herbrand1930}]\label{thm.Herbrand}
   Soit $\exists x, \varFF$ une formule. Cette formule est prouvable
   si et seulement s'il existe des termes $t_1,\ldots,t_n$ tels que
   le séquent \[\vdLK\varFF[t_1/x],\ldots,\varFF[t_n/x]\] est
   prouvable.
+  \index[notion]{Théorème!de Herbrand}
 \end{theorem}
 
 \begin{proof}
@@ -2488,6 +2501,8 @@ connecteurs sont logiquement équivalents.
   $\ddagger$ au fait que toutes les formules de $\varCG$ sont de la forme
   $\modSq\varFP$ et toutes les formules de $\varCD$ sont de la forme
   $\modDia\varFP$.
+  \index[notion]{Calcul des séquents!$\LS$}
+  \index[notation]{Prouvabilité!$\vdLS$}
 \end{definition}
 
 On a ainsi défini une nouvelle syntaxe. La première chose à faire, pour pouvoir
@@ -3727,12 +3742,13 @@ l'élimination des coupures logiques et du lemme précédent.
   \mathord{\reecr{\nwarrow}}\cup\mathord{\reecr{\nearrow}}\]
 \end{definition}
 
-\begin{theorem}[Hauptsatz - \'Elimination des coupures \cite{Gentzen1935}]
+\begin{theorem}[Hauptsatz - \'Elimination des coupures \cite{Gentzen1934I}]
   \label{thm.cut.elim}
   Pour tout arbre $\varPT \in \ProofLS$ de conclusion $\varCG\vdLS\varCD$, il
   existe un arbre $\varPT' \in \ProofLS$ tel que
   $\varPT \rtClot{\reecr{}}\varPT'$ et $\varPT'$ ne contient aucune occurrence
   de la règle de coupure.
+  \index[notion]{\'Elimination!des Coupures}
 \end{theorem}
 
 \begin{proof}
@@ -3849,7 +3865,7 @@ signifiant \og $\varFF$ est prouvable\fg évoque effectivement la nécessité de
 $\varFF$, comme le traduit la logique modale par la modalité $\modSq$.
 
 Une introduction dédiée à la logique modale peut se trouver par exemple dans
-\cite{Mod01}.
+\cite{BlackburnDeRijkeVenema2001}.
 
 \paragraph{La logique linéaire}
 On peut aussi considérer des logiques sous-structurelles. En analysant les
@@ -3861,6 +3877,7 @@ multiplie l'un des arbres, le relèvement des affaiblissements supprime un arbre
 et le relèvement des contractions multiplie les arbres. Enfin au sein des règles
 logiques, les règles additives suppriment un arbre, contrairement aux règles
 multiplicatives qui gardent le même nombre d'occurrence des arbres.
+\index[notion]{Logique!Linéaire}
 
 Cette idée de multiplier ou non les arbres de preuves mène à la linéarité~: le
 phénomène durant lequel chaque information est utilisée une et une seule fois
@@ -3894,7 +3911,7 @@ $\mathbin{!}\varFF/\mathbin{?}\varFF$ selon le côté du symbole $\vdLL$ où ell
 se trouvent.
 
 On peut trouver des introductions à la logique linéaire dans
-\cite{alma991002216619806616,girard_1989,GIRARD19871}.
+\cite{Girard2006,GirardLafontTaylor1989,Girard1987,Girard1995}.
 
 \paragraph{La logique intuitionniste}
 La logique intuitionniste, déjà présentée succinctement dans la
@@ -3922,13 +3939,15 @@ commençons par définir le calcul des séquents intuitionniste.
 
 \subsection{Calcul des séquents LJ}
 
-\begin{definition}[Calcul des séquents $\LJ$ \cite{Gentzen1935}]
+\begin{definition}[Calcul des séquents $\LJ$ \cite{Gentzen1934I}]
   On définit l'ensemble $\ProofLJ(\Sign)$ des arbres de preuve pour le calcul
   des séquents $\LJ$ sur une signature $\Sign$ par les règles de la
   \cref{tbl.LJ}. La notation $[\varFF]$ signifie que la liste contient la
   formule $\varFF$ ou est vide. Comme pour les autres calculs des séquents,
   les règles marquées d'un $\dagger$ demandent que la variable $x$ soit libre
   dans les autres formules du séquent.
+  \index[notion]{Calcul des séquents!$\LJ$}
+  \index[notation]{Prouvabilité!$\vdLJ$}
 \end{definition}
 
 \begin{table}[t!]
@@ -4135,6 +4154,7 @@ disjonction.
 \begin{property}[Disjonction]
   Le calcul $\LJ$ a la propriété de la disjonction, ce qui signifie que si
   $\vdLJ\varFF \lor \varFP$, alors $\vdLJ\varFF$ ou $\vdLJ\varFP$.
+  \index[notion]{Propriété!de la Disjonction}
 \end{property}
 
 \begin{proof}
@@ -4153,6 +4173,7 @@ quantification existentielle.
   Le calcul $\LJ$ a la propriété du témoin, ce qui signifie que si
   $\vdLJ\exists x,\varFF$, alors il existe un terme $t$ tel que
   $\vdLS\varFF[t/x]$.
+  \index[notion]{Propriété!du Témoin}
 \end{property}
 
 \begin{proof}
@@ -4244,6 +4265,7 @@ cadre de Kripke.
   Un cadre de Kripke est une paire $(\varOW,\varRR)$ où $\varRR$ est une
   relation binaire sur $\varOW$. On appelle monde un élément $w \in \varOW$.
   On dira que $w'$ est un futur de $w$ si $w\varRR w'$.
+  \index[notion]{Cadre!de Kripke}
 \end{definition}
 
 L'intérêt d'un cadre de Kripke est de fixer la relation de dépendance des
@@ -4261,6 +4283,7 @@ La relation $\varRR$ sera, elle, représentée par un morphisme de structures.
   $w\varRR w', w'\varRR w''$ et $w\varRR w''$ alors
   $f_{w',w''}\circ f_{w,w'} = f_{w,w''}$ et si $w\varRR w$ alors
   $f_{w,w} = \id_{\varMM_w}$.
+  \index[notion]{Structure!de Kripke}
 \end{definition}
 
 \begin{notation}
@@ -4295,6 +4318,8 @@ monde futur.
   \mid\varFF\land\varFP\mid\varFF\to\varFP\mid\forall x,\varFF\mid
   \exists x, \varFF\mid \modSq\varFF\mid\modDia\varFF\]
   où $a \in \Atom(\Sign)$ et $x \in \Var$.
+  \index[notion]{Logique!Modale}
+  \index[notation]{$\modDia$}
 \end{definition}
 
 \begin{definition}[Satisfaction dans une structure de Kripke]
@@ -4337,6 +4362,7 @@ monde futur.
 
   On définit le fait que $\varMK$ satisfait $\varFF$ par
   \[\varMK\satisf \varFF \defeq \forall w \in \varOW, w\forc \varFF\]
+  \index[notation]{$\forc$}
 \end{definition}
 
 Cette notion de satisfaction de formule est plus fine, puisqu'elle permet de
@@ -4355,6 +4381,8 @@ va donc en donner un pendant sémantique.
   De plus,
   $\varMK \satisf \modSq(\varFF \to \varFP) \to
   \modSq \varFF \to \modSq\varFP$.
+  \index[notion]{Axiome!$\AxN$}
+  \index[notion]{Axiome!$\AxK$}
 \end{proposition}
 
 \begin{proof}
@@ -4662,6 +4690,7 @@ Kripke pour la logique intuitionniste.
   On définit la satisfaction d'une formule $\varFF$ par un modèle $\varMK$
   par
   \[\varMK \satisf \varFF \defeq \forall w \in \varOW, w\forc \varFF\]
+  \index[notion]{Sémantique!Intuitionniste}
 \end{definition}
 
 \begin{remark}
@@ -4697,11 +4726,12 @@ Plutôt que de démontrer à nouveau un théorème de complétude, on va utilise
 traduction de la logique intuitionniste dans la logique modale $\LogM$.
 
 \begin{theorem}[Plongement de Gödel-McKinsey-Tarski
-    \cite{Godel1932-GDEZIA,McKinsey1948-MCKSTA}]
+    \cite{Goedel1932,McKinseyTarski1948}]
   Soit $\Sign$ une signature du premier ordre.
   Pour tous $\varCG\in\Ctx(\Sign), \varFF\in\Formula(\Sign)$,
   on a l'équivalence
   \[\varCG\vdLJ\varFF \iff \varCG_{\modSq}\vdLS\varFF_{\modSq}\]
+  \index[notion]{Plongement!de Gödel-McKinsey-Tarski}
 \end{theorem}
 
 \begin{proof}

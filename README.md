@@ -1,16 +1,16 @@
 # Cours de logique
 
-Auteurs : Titouan Leclercq et Werner Mérian
+Auteur : Titouan Leclercq
 
 ## Présentation du projet
 
-Nous cherchons dans ce projet à construire un cours de logique à la fois complet et accessible, se basant sur les cours que nous avons pu avoir lors de notre scolarité à l'École Normale Supérieure de Lyon et au Master de Logique Mathématiques et des Fondements de l'Informatique (LMFI).
+Ce projet cherche à construire un cours de logique à la fois complet et accessible, se basant sur les cours que l'auteur a eu lors de sa scolarité à l'École Normale Supérieure de Lyon et au Master de Logique Mathématiques et des Fondements de l'Informatique (LMFI).
 
 L'ordre des chapitres est le suivant :
 
 I. Bases de la logique
 
-1. Ensemble inductif, preuves par induction
+1. Ensembles inductifs, preuves par induction
 
 2. Logique propositionnelle
 
@@ -88,6 +88,6 @@ Super-nickel ! Le pdf compilé apparaît dans le repertoire courant sous le nom 
 
 ## License
 
-Ce travail ©2024 réalisé Titouan Leclercq et Werner Mérian est sous licence [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
+Ce travail ©2024 réalisé Titouan Leclercq est sous licence [Creative Commons Attribution-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-sa/4.0/)
 
 ![](https://licensebuttons.net/l/by-sa/4.0/88x31.png)
