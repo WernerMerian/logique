@@ -4824,3 +4824,109 @@ traduction de la logique intuitionniste dans la logique modale $\LogM$.
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Une sémantique de Kripke classique]
+  Nous avons prouvé la complétude de la sémantique de Kripke pour les modèles
+  intuitionnistes, mais souhaitons étudier une nouvelle sémantique de Kripke,
+  permettant de retrouver de la logique classique. Pour tout le reste du
+  problème, on fixe une signature $\Sign$ quelconque.
+
+  \pbPart{Densité}
+
+  Soit $(\varOW,\leq)$ un cadre de Kripke et $\varMK$ un modèle de Kripke sur ce
+  cadre. On dit qu'une proposition $\varFF$ est dense lorsque
+  \[\forall w \in \varOW, \exists w' \geq w, w' \forc \varFF\]
+  \begin{pbQuest}
+  \item Montrer que pour toute proposition $\varFF$, la proposition
+    $\lnot\lnot\varFF$ est dense.
+  \end{pbQuest}
+  On construit une nouvelle relation $w,\env\forcW \varFF$ pour un modèle de
+  Kripke $\varMK$ dans laquelle on remplace les clauses suivantes~:
+  \begin{itemize}
+  \item $w,\env\forcW\symbR(t_1,\ldots,t_n) \defeq \forall w' \geq w,
+    \exists w'' \geq w', (\varMK_{w,w''}\circ \env)(t_1,\ldots,t_n) \in
+    \toMP{\symbR}{\varMK_{w''}}$
+  \item $w,\env\forcW \varFF \lor \varFP \defeq\forall w' \geq w,\exists
+    w''\geq w', (w'',\env\forcW \varFF) \lor (w'',\env\forcW\varFP)$
+  \item $w,\env\forcW\exists x, \varFF \defeq \forall w' \geq w,\exists
+    w''\geq w', \exists k \in\varMK_{w''}, w'',\env[x\mapsto k]\forcW\varFF$
+  \end{itemize}
+  \begin{pbQuest}[resume]
+  \item Montrer que si $w \leq w'$ alors pour toute proposition $\varFF$,
+    si $w\forcW\varFF$ alors $w'\forcW\varFF$.
+  \item Montrer que pour tout monde $w\in\varOW$ et toute proposition $\varFF$,
+    $w\forcW \varFF\lor\lnot\varFF$.
+  \item Montrer la correction du calcul des séquents $\LK$ dans ces modèles~:
+    pour tout séquent $\varCG\vdLK\varCD$ dérivable, tout modèle de Kripke
+    $\varMK$ sur un cadre $(\varOW,\leq)$ et tout $w\in\varOW$, on a
+    \[w\forcW\bigwedge\varCG \implies w\forcW\bigvee\varCD\]
+  \item A-t-on, pour tout monde $w$ et toute proposition $\varFF$,
+    $w\forcW\varFF$ ou $w\nforcW\varFF$~?
+  \end{pbQuest}
+
+  \pbPart{Topologie de Grothendieck}
+  
+  On a ainsi construit une nouvelle sémantique permettant de retrouver des
+  modèles de la logique classique. On aborde un point de vue plus général, dans
+  lequel on paramétrise la relation $\forc$ par une relation de recouvrement.
+
+  Dans notre définition de $\forcW$, le sens à donner au fait de satisfaire
+  un énoncé dans un monde n'était plus \og dans le monde $w$ et les futurs,
+  $\varFF$ est vraie\fg mais \og peu importe le futur $w'$ qu'on choisit depuis
+  $w$, on pourra toujours arriver à un futur où $\varFF$ est vraie\fg. Dans le
+  point de vue plus général qu'on adopte maintenant, on souhaite dire que
+  \og $\varFF$ est vraie sur suffisamment de futurs de $w$ pour la considérer
+  vraie\fg.
+
+  On appelle \og notion de recouvrement\fg une relation, ou topologie de
+  Grothendieck, sur un ensemble pré-ordonné $(\varOW,\leq)$, une relation
+  \[\recouv\subseteq
+  \compr{(\varPt,w)\in\powerset(\varOW)\times\varOW}
+        {\forall w' \in \varPt,w\leq w'}\]
+  vérifiant les axiomes suivants~:
+  \begin{itemize}
+  \item Réflexivité~: $\{w\}\recouv w$ pour tout $w\in\varOW$~;
+  \item Transitivité~: si $\varRecouv\recouv w$ et pour tout $w' \in\varRecouv$,
+    $\varRecouv_{w'}\recouv w'$, alors
+    $\displaystyle\bigcup_{w' \in \varRecouv} \varRecouv_{w'}\recouv w$~;
+  \item Stabilité~: si $\varRecouv\recouv w$ et $w' \geq w$ alors il existe
+    $\varRecouv'\recouv w'$ tel que, pour tout $v'\in \varRecouv'$, il existe
+    $v \in \varRecouv$ tel que $v' \geq v$.
+  \end{itemize}
+
+  \begin{pbQuest}
+  \item Montrer que la relation définie uniquement par $\{w\}\recouv w$ est
+    bien une notion de recouvrement.
+  \item Montrer que la relation définie par
+    \[\varRecouv\recouv w \defeq \forall w' \geq w, \exists w'' \geq w',
+    w'' \in \varRecouv\]
+    est bien une notion de recouvrement.
+  \item Soit $(X,\topo)$ un espace topologique. On définit l'ensemble ordonné
+    $(\varOW,\leq)\defeq (\topo,\subseteq)$ et la relation
+    \[\varRecouv \recouv \varOp \defeq \bigcup \varRecouv \supseteq \varOp \]
+    Vérifier que $\recouv$ est bien une notion de recouvrement.
+  \end{pbQuest}
+  On définit maintenant la relation de satisfaction pour un modèle de Kripke
+  $\varMK$ sur un cadre $(\varOW,\leq)$ et avec une notion de recouvrement
+  $\recouv$ de la même manière que $\forcW$ et $\forc$, mais en modifiant les
+  clauses suivantes~:
+  \begin{itemize}
+  \item $w,\env\forcP{\recouv}\symbR(t_1,\ldots,t_n) \defeq
+    \exists \varRecouv\recouv w, \forall w' \in \varRecouv,
+    (\varMK_{w,w'}\circ \env)(t_1,\ldots,t_n) \in\toMP{\symbR}{\varMK_{w'}}$
+  \item $w,\env\forcP{\recouv} \varFF \lor \varFP \defeq
+    \exists \varRecouv\recouv w, \forall w' \in \varRecouv,
+    (w',\env\forcP{\recouv} \varFF) \lor (w',\env\forcP{\recouv}\varFP)$
+  \item $w,\env\forcP{\recouv}\exists x, \varFF \defeq
+    \exists \varRecouv\recouv w, \forall w' \in \varRecouv,
+    \exists k \in \varMK_{w'}, w',\env[x\mapsto k]\forcP{\recouv}\varFF$
+  \end{itemize}
+  \begin{pbQuest}[resume]
+  \item Montrer que pour tous $w\leq w'$, si $w\forcP{\recouv}\varFF$ alors
+    $w'\forcP{\recouv}\varFF$.
+  \item Montrer que pour tout séquent intuitionniste $\varCG\vdLJ\varFF$ et
+    tout modèle de Kripke $\varMK$, si
+    $w\forcP{\recouv}\bigwedge\varCG$ alors $w\forcP{\recouv}\varFF$.
+  \item A-t-on $w\forcP{\recouv}\varFF\lor\lnot\varFF$ en général~?
+  \end{pbQuest}
+\end{problem}
