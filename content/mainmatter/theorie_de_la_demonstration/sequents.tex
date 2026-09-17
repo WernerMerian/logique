@@ -4296,7 +4296,7 @@ La relation $\varRR$ sera, elle, représentée par un morphisme de structures.
   Le lecteur ayant un bagage en théorie des catégories peut faire un parallèle
   avec la notion de foncteur. Dans le cas où $(\varOW,\varRR)$ est un pré-ordre,
   une $\Sign$-structure de Kripke sur $(\varOW,\varRR)$ est exactement un
-  foncteur de ce pré-ordre vu comme une catégorie, dans la catégorie des
+  foncteur de ce pré-ordre (vu comme une catégorie) dans la catégorie des
   $\Sign$-structures.
 \end{remark}
 
@@ -4352,10 +4352,10 @@ monde futur.
     w,\env[x \mapsto k]\forc \varFP$
   \item si $\varFF = \modSq \varFP$, alors
     $w,\env\forc\varFF \defeq \forall w' \in \varOW, w\varRR w' \implies
-    w',\varMK_{w,w'}(\env)\forc\varFP$
+    w',(\varMK_{w,w'}\circ \env)\forc\varFP$
   \item si $\varFF = \modDia \varFP$, alors
     $w,\env\forc\varFF \defeq \exists w' \in \varOW, w\varRR w' \land
-    (w',\varMK_{w,w'}\env\forc\varFP)$
+    (w',(\varMK_{w,w'}\circ \env)\forc\varFP)$
   \end{itemize}
   Dans le cas où $\varFF$ est une formule close, on note $w\forc\varFF$
   directement.
@@ -4415,7 +4415,7 @@ axiomes.
 \begin{proof}
   Pour un monde $w \in \varOW$, si $w\varRR w$ et $w\forc\modSq\varFF$, alors
   $w\forc\varFF$ par définition de la sémantique de $\modSq$. Ainsi, si
-  $\varRR$ est transitive, pour tout $w \in \varOW$ et formule $\varFF$,
+  $\varRR$ est réflexive, pour tout $w \in \varOW$ et formule $\varFF$,
   $w\forc\modSq\varFF\to\varFF$.
 
   Supposons $\varRR$ transitive, et soit $w \in \varOW$. Si
@@ -4518,8 +4518,7 @@ un pré-ordre, est prouvable dans $\LogM$.
   \end{itemize}
   On va noter $\satur$ l'ensemble des théories saturées sur $\Sign^+$.
   Remarquons que $\varT \vdLS\varFF \iff \varFF \in \varT$, étant donné
-  que $\varT$ est complète (et contient donc soit une formule, soit sa
-  négation).
+  que $\varT$ est maximale pour l'inclusion.
 
   On définit la relation de monde futur par
   \[\varT \leq \varT' \defeq
@@ -4538,12 +4537,12 @@ un pré-ordre, est prouvable dans $\LogM$.
   classe de ce même terme. On vérifie que cette fonction est bien définie~:
 
   Si $t = u$ dans $\varT$, on veut vérifier que $t = u$ dans $\varT'$.
-  On peut prouver que $\vdLS x = y \to \modSq (x = y)$ comme suit~:
+  Pour cela, on démontre le séquent $\vdLS x = y \to \modSq(x = y)$ comme suit~:
   \begin{quotation}
     \noindent
-    puisque $\varFF\vdLS\varFF$, alors
-    $\modSq (x = y) \vdLS \modSq (x = y)$, donc
-    $x = y,\modSq(x = x) \vdLS\modSq(x=y)$, d'où
+    Puisque $\varFF\vdLS\varFF$, alors
+    $\modSq (x = y) \vdLS \modSq (x = y)$, donc en appliquant $\Rleq$ au
+    séquent, $x = y,\modSq(x = x) \vdLS\modSq(x=y)$, d'où
     $\modSq(x=x)\vdLS x = y \to \modSq(x=y)$, et puisque
     $\vdLS x = x$, par nécessitation puis coupure,
     $\vdLS x = y \to \modSq(x=y)$.
@@ -4821,6 +4820,58 @@ traduction de la logique intuitionniste dans la logique modale $\LogM$.
 
 \subsection{Exercices}
 
+\begin{exercise}[Classique et pas intuitionniste]
+  Montrer chaque proposition dans $\LK$ et montrer qu'elle n'est pas prouvable
+  dans $\LJ$ de deux façons différente~: en exhibant un contre-modèle de
+  Kripke et en analysant une preuve sans coupure dans $\LJ$.
+
+  \vspace{5pt}
+  \begin{itemize}
+    \begin{minipage}{0.45\textwidth}
+    \item $\lnot(\varFF \land \varFP) \to \lnot\varFF\lor\lnot\varFP$
+    \item $\lnot(\forall x, \varFF) \to \exists x, \lnot\varFF$
+    \end{minipage}
+    \begin{minipage}{0.45\textwidth}
+    \item $(\varFF \to \varFP) \lor (\varFP\to\varFF)$
+    \item $\exists x, \varFF(x) \to (\forall y, \varFF(y))$
+    \end{minipage}
+  \end{itemize}
+\end{exercise}
+
+\begin{exercise}[Sans coupure]
+  On va pratiquer l'élimination des coupures.
+  \begin{enumerate}[label=(\roman*)]
+    \item Dériver les séquents suivants~:
+
+    \vspace{5pt}
+    \begin{itemize}
+      \begin{minipage}{0.42\textwidth}
+      \item $\forall x,\forall y, \varFF(x,y)\vdLK
+        \exists x, \forall y, \varFF(x,y)$
+      \item $(\exists x,\varFF(x))\land \varFP\vdLK
+        \exists x, (\varFF(x)\land\varFP)$
+      \item $\varFF\lor(\varFP\land\varFC)\vdLJ\varFF\lor\varFP$
+      \end{minipage}
+      \begin{minipage}{0.4\textwidth}
+      \item $\exists x,\forall y,\varFF(x,y)\vdLK
+        \forall y,\exists x,\varFF(x,y)$
+      \item $\varFF\land (\forall y,\varFP(y))\vdLK
+        \forall y, \varFF\land \varFP(y)$
+      \item $\varFF\lor\varFP\vdLJ \varFF\lor\varFP\lor\varFC$
+      \end{minipage}
+    \end{itemize}
+  \item Réutiliser les questions précédentes pour prouver les séquents suivants
+    avec une preuve sans coupure~:
+    \begin{itemize}
+    \item $\forall x,\forall y, \varFF(x,y)\vdLK
+      \forall y, \exists x, \varFF(x,y)$
+    \item $(\exists x, \varFF(x))\land (\forall y,\varFP(y))\vdLK
+      \exists x, \forall y, \varFF(x)\land \varFP(y)$
+    \item $\varFF\lor(\varFP\land\varFC)\vdLJ\varFF\lor\varFP\lor\varFC$
+    \end{itemize}
+  \end{enumerate}
+\end{exercise}
+
 \clearpage
 
 \subsection{Problèmes}
@@ -4885,7 +4936,8 @@ traduction de la logique intuitionniste dans la logique modale $\LogM$.
         {\forall w' \in \varPt,w\leq w'}\]
   vérifiant les axiomes suivants~:
   \begin{itemize}
-  \item Réflexivité~: $\{w\}\recouv w$ pour tout $w\in\varOW$~;
+  \item Réflexivité~: $\compr{w'\in\varOW}{w' \geq w}\recouv w$ pour tout
+    $w\in\varOW$~;
   \item Transitivité~: si $\varRecouv\recouv w$ et pour tout $w' \in\varRecouv$,
     $\varRecouv_{w'}\recouv w'$, alors
     $\displaystyle\bigcup_{w' \in \varRecouv} \varRecouv_{w'}\recouv w$~;
@@ -4895,14 +4947,15 @@ traduction de la logique intuitionniste dans la logique modale $\LogM$.
   \end{itemize}
 
   \begin{pbQuest}
-  \item Montrer que la relation définie uniquement par $\{w\}\recouv w$ est
-    bien une notion de recouvrement.
+  \item Montrer que la relation définie uniquement par
+    $\compr{w'\in\varOW}{w'\geq w}\recouv w$ est bien une notion de
+    recouvrement.
   \item Montrer que la relation définie par
     \[\varRecouv\recouv w \defeq \forall w' \geq w, \exists w'' \geq w',
     w'' \in \varRecouv\]
     est bien une notion de recouvrement.
   \item Soit $(X,\topo)$ un espace topologique. On définit l'ensemble ordonné
-    $(\varOW,\leq)\defeq (\topo,\subseteq)$ et la relation
+    $(\varOW,\leq)\defeq (\topo,\supseteq)$ et la relation
     \[\varRecouv \recouv \varOp \defeq \bigcup \varRecouv \supseteq \varOp \]
     Vérifier que $\recouv$ est bien une notion de recouvrement.
   \end{pbQuest}

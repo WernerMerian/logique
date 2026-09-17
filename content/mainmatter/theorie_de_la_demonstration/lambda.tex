@@ -1713,6 +1713,88 @@ la stratégie.
 
 \subsection{Exercices}
 
+\begin{exercise}[Appliquer des nombres]
+  Calculer la forme normale de $\encode{n}\;\encode{m}$. En déduire une écriture
+  de l'exponentiation d'entiers, et montrer qu'elle est correcte.
+\end{exercise}
+
+\begin{exercise}[Graphe de réduction]
+  On appelle graphe de réduction d'un $\lambda$-terme $t$ la partie de
+  $\lamSet$ contenant $t$, les termes vers lesquels se réduit $t$ et vue comme
+  un graphe avec la relation binaire $\bred$. Pour chacun des graphes suivants,
+  construire un terme $t$ dont le graphe de réduction de $t$ est le graphe
+  attendu~:
+  \begin{center}
+    \begin{minipage}{0.35\textwidth}
+      \begin{tikzpicture}
+        \node (A) at (0,0) {$\bullet$};
+        \node (B) at (2,0) {$\bullet$};
+        \node (C) at (4,0) {$\bullet$};
+        \path[->,>=latex] (A) edge[loop left] ();
+        \draw[->,>=latex] (A) -- (B);
+        \draw[->,>=latex] (B) -- (C);
+      \end{tikzpicture}
+    \end{minipage}
+    \begin{minipage}{0.2\textwidth}
+      \begin{tikzpicture}
+        \node (A) at (0,0) {$\bullet$};
+        \node (B) at (2,0) {$\bullet$};
+        \path[->,>=latex] (A) edge[bend left] (B);
+        \path[->,>=latex] (B) edge[bend left] (A);
+      \end{tikzpicture}
+    \end{minipage}
+    \begin{minipage}{0.3\textwidth}
+      \begin{tikzpicture}
+        \node (A) at (0,0) {$\bullet$};
+        \node (B) at (1.5,0.85) {$\bullet$};
+        \node (C) at (1.5,-0.85) {$\bullet$};
+        \path[->,>=latex] (A) edge[bend left] (B);
+        \path[->,>=latex] (B) edge[bend left] (C);
+        \path[->,>=latex] (C) edge[bend left] (A);
+      \end{tikzpicture}
+    \end{minipage}
+  \end{center}
+  Est-il possible de trouver un terme $t$ dont le graphe de réduction est
+  $\bullet\leftarrow\bullet\rightarrow\bullet$~?
+\end{exercise}
+
+\begin{exercise}[\'Enigme interminable]
+  Trouver un terme $t$ tel que $t$ est (faiblement) normalisant,
+  $t\;(\lambda x.x)$ n'est pas normalisant, $t\;(\lambda x.x)\;(\lambda x.x)$
+  est (faiblement) normalisant et
+  $t\;(\lambda x.x)\;(\lambda x.x)\;(\lambda x.x)$ n'est pas normalisant.
+\end{exercise}
+
+\begin{exercise}[Le terme de Maurey]
+  Donner explicitement le terme construit dans le cours pour encoder la
+  soustraction. Donner un ordre de grandeur du nombre de réductions effectuées
+  lors du calcul de $n - m$. Donner aussi le terme encodant l'opération de
+  comparaison $n \leq m$, et donner un ordre de grandeur du nombre de réductions
+  effectuées lors d'un tel calcul.
+
+  On introduit maintenant le terme de Maurey, défini par~:
+  \[M \defeq \lambda p\;q.\lambda x\;y\;z.
+  (p\;(\lambda g\;f.f\;g)(\lambda d.x\;z))\;
+  (q\;(\lambda g\;f.f\;g)(\lambda d.y\;z))\]
+  Calculer la forme normale de $M\;\encode{2}\;\encode{3}$. Montrer que le
+  terme de Maurey se réduit en ce qui est attendu, et que la longueur de la
+  réduction de $M\;\encode{n}\;\encode{m}$ est de l'ordre de $\min(n,m)$.
+\end{exercise}
+
+\begin{exercise}[Les entiers de Scott]
+  On définit un nouvel encodage d'entiers par
+  \[Z \defeq \lambda z\;s.z\qquad S \defeq \lambda n.\lambda z\;s.s\;n\]
+  Construire un terme $\rec'$ qui implémente la récursion pour les termes de
+  la forme $S^n Z$. Montrer qu'avec cet encodage des entiers, on peut calculer
+  la fonction prédécesseur en temps constant~; cela est-il possible avec les
+  entiers de Church~?
+\end{exercise}
+
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Théories et théorème de Böhm]
+  Dans ce problème, on s'intéresse aux théories équationnelles provenant du
+  $\lambda$-calcul.
+\end{problem}
