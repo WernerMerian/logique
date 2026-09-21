@@ -1613,6 +1613,95 @@ Grâce à cette construction, on en déduit le théorème annoncé au début.
 
 \subsection{Exercices}
 
+\begin{exercise}[De nouveaux énoncés de l'arithmétique]
+  On fixe une énumération $\Enum$ des fonctions calculables, encodable dans
+  l'arithmétique.
+  On considère les deux énoncés suivants, sur la signature de l'arithmétique~:
+  \[\CTZ \defeq \ogM (\forall x, \exists y, \varFF(x,y)) \to \exists e,
+  \forall x, \varFF(x,\EnumP{e}{}(x))\fgM\]
+  \[
+  \MarP \defeq \ogM(\forall x, \varFF(x) \lor \lnot\varFF(x)) \to
+  \lnot\lnot(\exists x, \varFF(x)) \to \exists x, \varFF(x)\fgM\]
+  Montrer que $\CTZ$ et $\MarP$ sont réalisés dans la réalisabilité de Kleene.
+  Sont-ils réalisés dans la réalisabilité modifiée~? Sont-ils démontrables dans
+  $\HA$~?
+\end{exercise}
+
 \clearpage
 
 \subsection{Problèmes}
+
+\begin{problem}[Réalisabilité interne à l'arithmétique]
+  Ce problème vise à montrer que les fonctions réalisées dans la réalisabilité
+  modifiée sont en fait toutes prouvablement totales dans l'arithmétique de
+  Heyting, permettant ainsi d'avoir l'équivalence entre les fonctions typables
+  dans système T et les fonctions prouvablement totales dans $\HA$.
+
+  \pbPart{Prédicats de réalisabilité}
+
+  On cherche, pour une formule $\varFF(\vec x)$ de l'arithmétique, à construire
+  un prédicat $y \real\varFF(\vec x)$ exprimant que $y$ est un réaliseur de
+  $\varFF(\vec x)$. On se fixe une énumération $\Enum$ des termes de système T
+  et un codage de Gödel $\godcod{t}$ des termes $t$ de système T, de telle sorte
+  que $\EnumP{\godcod{t}}{}(\godcod{u}) = \godcod{t\;u}$ à réduction près.
+  \begin{pbQuest}
+  \item Définir un prédicat $\varTypA(n)$ exprimant que $n$ est le code
+    d'un terme de type $\varTypA$. \textit{On peut se limiter à une explication
+      haut niveau de la construction.}
+  \end{pbQuest}
+
+  Pour chaque formule $\varFF(\vec x)$ de l'arithmétique, on définit un nouveau
+  prédicat $y \real\varFF(\vec x)$ par induction~:
+  \begin{itemize}
+  \item $y \real \ogM x_0 = x_1 \fgM \defeq \varTypBa(y)\land \ogM x_0=x_1 \fgM$
+  \item $y \real \top \defeq \unitT(y)$
+  \item $y \real \bot \defeq \emptyT(y)$
+  \item $y \real \ogM\varFF(\vec x) \lor \varFP(\vec x)\fgM \defeq
+    \exists z,
+    \begin{cases}
+      \toTyST_{\varFF}(z)\land y = \godcod{\coprojP{1}{} z}\land
+      z\real\varFF(\vec x)\\
+      \text{ou}\\
+      \toTyST_{\varFP}(z) \land y = \godcod{\coprojP{2}{} z}\land
+      z\real\varFP(\vec x)
+    \end{cases}$
+  \item $y \real \ogM\varFF(\vec x) \land \varFP(\vec x)\fgM \defeq$\\
+    $(\toTyST_{\varFF}(\godcod{\projP{1}{}(y)})\land
+    \godcod{\projP{1}{}(y)}\real\varFF(\vec x))
+    \land
+    (\toTyST_{\varFP}(\godcod{\projP{2}{}(y)})\land
+    \godcod{\projP{2}{}(y)}\real\varFP(\vec x))$
+  \item $y \real \ogM \varFF(\vec x) \to \varFP(\vec x)\fgM \defeq$\\
+      $\forall z, (\toTyST_{\varFF}(z) \land z\real \varFF(\vec x)) \implies
+      \EnumP{y}{}(z)\convcal \land \toTyST_{\varFP}(\EnumP{y}{}(z))\land
+      \EnumP{y}{}(z)\real \varFP(\vec x)$
+  \item $y \real \ogM \forall n, \varFF(\vec x,n) \fgM \defeq
+    \forall n, \toTyST_{\varFF}(\EnumP{y}{}(n))\land
+    \EnumP{y}{}(n)\convcal\land \EnumP{y}{}(n)\real\varFF(\vec x, n)$
+  \item $y \real \ogM \exists n, \varFF(\vec x,n) \fgM \defeq
+    \toTyST_{\varFF}(\godcod{\projP{2}{}(y)}) \land
+    \godcod{\projP{2}{}(y)}\real\varFF(\vec x,\godcod{\projP{1}{}(y)})$
+  \end{itemize}
+  \begin{pbQuest}[resume]
+  \item Montrer que si $\varCG\vdLJ\varFF$, alors il existe un terme
+    $t\in\STSet$ tel que
+    \[\HA\vdLJ \forall \vec x, (\vec x \real \varCG)
+    \to (\EnumP{t}{}(\vec x)\real \varFF)\]
+  \item Montrer que si $\HA\vdLJ \varFF(\vec x)$ alors
+    \[\HA\vdLJ \exists n, n \real \varFF(\vec x)\]
+  \end{pbQuest}
+
+  \pbPart{\`A l'intérieur de l'arithmétique}
+
+  \begin{pbQuest}
+  \item Montrer qu'un terme $t\in\STSet$ est typable dans système T si et
+    seulement si
+    \[\HA\vdLJ \forall \vec x,\exists n,\TiP{\EnumP{t}{}(\vec x)}{n}\convcal\]
+  \item Montrer qu'on a, de plus,
+    \[\HA\vdLJ\exists x, x\real \CTZ\]
+  \item Si $\HA\vdLJ\exists n, n\real \varFF$, a-t-on
+    alors $\HA\vdLJ\varFF$~?
+  \item Si $t\real \varFF$ pour la réalisabilité modifiée, a-t-on
+    $\HA\vdLJ\godcod{t}\real \varFF$~?
+  \end{pbQuest}
+\end{problem}
