@@ -1272,6 +1272,7 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 
 \clearpage
 
+
 \begin{problem}[La coinduction]
   L'objectif de ce problème est d'étudier la coinduction. L'induction, présentée
   dans ce chapitre, permet de construire le \og plus petit ensemble défini par
@@ -1280,28 +1281,26 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
 
   \pbPart{Construction coinductive}
 
-  \noindent
-  On considère une signature $(C,\arite)$ telle que donnée pour un ensemble
-  inductif. L'objectif de cette première partie est de construire un ensemble
-  similaire à l'ensemble inductif construit par cette signature, mais où les
-  objet peuvent être potentiellement infinis. Par exemple, on souhaite que la
-  signature
-  \[\varlist \inddefeq \Nil \mid a \Cons \varlist\]
-  contienne des listes infinies telles que $1\Cons 1 \Cons 1 \Cons\cdots$.
-  Pour cela, on va considérer une construction générale appelée la complétion
-  idéale.
+  Pour commencer, construisons effectivement des ensembles qui sont \og les plus
+  grands possible\fg pour une signature. On se fixe une signature $(C,\arite)$
+  de la même façon que pour un ensemble inductif~: l'objectif va être de
+  construire des objets potentiellement infinis sur cette signature. Par
+  exemple, pour la signature des listes
+  \[\varlist \inddefeq \Nil\mid a\Cons \varlist\]
+  on souhaite que l'ensemble engendré contienne la liste infinie
+  $1\Cons 1 \Cons 1 \Cons \cdots$. Pour ce faire, on introduit la construction
+  générale appelée la complétion idéale.
 
-  \noindent
-  Tout d'abord, on considère $X_\bot$, qui va être l'ensemble construit par
+  On considère d'abord l'ensemble $X_{\bot}$, qui est l'ensemble construit sur
   la signature inductive $(C\cup\{\bot\},\arite')$ où
-  $\arite'\restr{C} = \arite$ et $\arite'(\bot) = 0$. Ainsi, pour une
-  BNF
+  $\arite'\restr{C} = \arite$ et $\arite'(\bot) = 0$. Ainsi, pour une BNF
   \[a \inddefeq e_1\mid \cdots\mid e_n\]
   on associe la nouvelle BNF
   \[a \inddefeq e_1\mid \cdots\mid e_n\mid \bot\]
-
-  \noindent
-  On définit la relation $\mathord{<}$ sur $X_\bot$ par
+  L'élément $\bot$ va jouer le rôle de \og trou\fg~: un élément sur cette
+  signature est un élément partiel dans lequel une partie de l'élément peut être
+  indéterminée. On définit la relation $<$ sur $X_\bot$ de \og meilleure
+  approximation\fg par
   \begin{center}
     \bottomAlignProof
     \AxiomC{}
@@ -1319,28 +1318,33 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     \BinaryInfC{$x < z$}
     \DisplayProof
   \end{center}
-  où la seconde règle s'applique à chaque constructeur $c \in C$.
+  où la seconde règle s'applique à chaque constructeur $c \in C$. La relation
+  $x < x'$ signifie donc que $x'$ est mieux défini que $x$, au sens où $x'$ est
+  une version de $x$ dont des trous $\bot$ on été remplis par de vrais termes.
 
   \begin{pbQuest}
-  \item Montrer que $\mathord{<}$ est une relation d'ordre stricte,
-    c'est-à-dire qu'elle
-    est une relation irréflexive et transitive.
+  \item Montrer que $<$ est une relatio d'ordre stricte, c'est-à-dire une
+    relation irréflexive et transitive.
   \item Cette relation est-elle totale~? \textit{Indication~: on pourra
     considérer le cas de la signature des listes.}
+  \item On dit que deux éléments $x,y$ sont compatibles s'il existe $z$ tel que
+    $x < z$ et $y < z$. Montrer que $\bot$ est compatible avec tout élément de
+    $X_\bot$.
+  \item Montrer que deux éléments $c(x_1,\ldots,x_n)$ et $d(y_1,\ldots,y_k)$
+    sont compatibles si et seulement si $c = d$, $n = k$ et $x_i = y_i$ sont
+    compatibles pour tout $i=1,\ldots,n$.
+  \item Un élément $x\in X_\bot$ est dit total si $x \in X$, où $X$ est
+    l'ensemble construit sur la signature sans $\bot$. Montrer qu'un
+    élément total $x$ est maximal pour $<$, c'est-à-dire que pour tout
+    $y\in X_\bot$, $x \nless y$.
   \end{pbQuest}
 
-  \noindent
-  Un élément $x \in X_\bot$ est dit total si, en notant $X$ l'ensemble
-  construit
-  sur la signature $(C,\arite)$, $x \in X$.
-  
-  \begin{pbQuest}[resume]
-  \item Montrer que pour tout $x \in X_\bot$, $x$ est total si et seulement
-    s'il
-    n'existe pas $y \in X_\bot$ tel que $x < y$.
-  \end{pbQuest}
-
-  \noindent
+  Les termes totaux nous donnent une première idée de termes bien définis~: ils
+  sont des termes sans trous, et se caractérisent au niveau de l'ordre par leur
+  maximalité. Cependant, ces éléments sont moralement finis. Par exemple, sur la
+  signature des listes, un élément total est une liste comme on en a l'habitude.
+  Pour pouvoir raisonner sur des éléments infinis, on va considérer des
+  ensembles d'approximations, qui sont être appelés des idéaux.
   Une partie $Y \subseteq X_\bot$ est appelée un idéal de $X_\bot$ si
   \begin{itemize}
   \item $Y$ est close par le bas~: si $x,y \in X_\bot$, $x < y$ et $y \in Y$
@@ -1370,30 +1374,230 @@ $a,b\in A$, en prenant les conventions de l'exercice \ref{exo.pair_list}.
     forme $\iota(x)$ pour $x \in X_\bot$.
   \end{pbQuest}
 
-  \noindent
   On définit désormais
   \[X_\infty \defeq \compr{I \in \ideal(X)}{\forall J \in \ideal(X),
   I \subseteq J \implies I = J}\]
-  comme étant l'ensemble coinductif défini par la signature $(C,\arite)$.
+  comme étant l'ensemble coinductif défini par la signature $(C,\arite)$. Cet
+  ensemble est appelé la complétion idéale de $(X,<)$.
+
+  \pbPart{Constructeur et destructeur}
+
+  Soit $c\in C$ d'arité $k$ et des idéaux $I_1,\ldots,I_k \in \ideal(X_\bot)$.
+  On pose
+  \[c(I_1,\ldots,I_k) \defeq
+  \compr{z\in X_\bot}{\exists (x_1,\ldots,x_k) \in I_1\times\cdots \times I_k,
+    z < c(x_1,\ldots,x_k)}\]
+
+  \begin{pbQuest}
+  \item Montrer que $c(I_1,\ldots,I_k)$ est un idéal et que pour tous
+    $x_1,\ldots,x_k\in X_\bot$, on a l'équivalente
+    \[c(x_1,\ldots,x_k)\in c(I_1,\ldots,I_k) \iff
+    \forall i \in \intervIntB{k},x_i\in I_i\]
+  \item Montrer que si $I_1,\ldots,I_k\in X_\infty$, alors
+    $c(I_1,\ldots,I_k)\in X_\infty$. \textit{Indication~: si $J$ est un idéal
+    contenant $c(I_1,\ldots,I_k)$, montrer que tout élément de $J$ est soit
+    $\bot$, soit de la forme $c(x_1,\ldots,x_k)$, puis que
+    \[J_i \defeq \compr{y_i}{\exists y_1,\ldots,y_{i-1},y_{i+1},\ldots,y_k,
+      c(y_1,\ldots,y_{i-1},y_i,y_{i+1},\ldots,y_k)\in J}\]
+    est un idéal contenant $I_i$.}
+  \item Soit $I\in X_{\infty}$. Montrer que $I$ contient un élément différent de
+    $\bot$, et que tous les éléments de $I$ différents de $\bot$ sont de la
+    forme $c(x_1,\ldots,x_k)$ pour un même constructeur $c\in C$ dont on notera
+    $k$ l'arité. Soit, pour $i\in\intervIntB{k}$, l'ensemble
+    \[I_i \defeq \{\bot\}\cup
+    \compr{x_i\in X_\bot}
+          {\exists x_1,\ldots,x_{i-1},x_{i+1},\ldots,x_k, c(x_1,\ldots,x_k)\in I}
+    \]
+    Montrer tous les $I_i$ sont des idéaux, que $I = c(I_1,\ldots,I_k)$ puis
+    que les $I_i$ sont des idéaux maximaux. \textit{Indication~: Si
+      $I_i\subseteq J_i$ pour un certain idéal $J_i$, considérer l'idéal
+      $c(I_1,\ldots,I_{i-1},J_i,I_{i+1},\ldots,I_k)$.}
+  \item Montrer que le constructeur $c$ et les idéaux $I_1,\ldots,I_k$ de la
+    question précédente sont uniques.
+  \end{pbQuest}
+
+  Pour un ensemble $Y$ quelconque, on note
+  \[\sum_{c \in C} Y^{\arite(c)} \defeq
+  \compr{(c,\vec y)}{\vec y \in X^{\arite(c)}}\]
+  ou, plus simplement, $\sum_{(C,\arite)} Y$. \'Etant donnée une fonction
+  $\makeFunName{f}{Y}{Z}$, on note
+  \[\makeFun{\sum_{(C,\arite)} f}{\sum_{(C,\arite)} Y}{\sum_{(C,\arite)} Z}
+            {(c,\vec y)}{(c,f(\vec y))}\]
+  D'après les question précédentes, on peut construire deux fonctions entre
+  $X_\infty$ et $\sum_{(C,\arite)} X_\infty$~:
+  \[\makeFun{\kappa_\infty}{\sum_{(C,\arite)} X_\infty}{X_\infty}
+            {(c,I_1,\ldots,I_k)}{c(I_1,\ldots,I_k)} \qquad
+  \makeFunName{\delta_\infty}{X_\infty}{\sum_{(C,\arite)} X_\infty}\]
+  où la seconde fonction, $\delta_\infty$ envoie un idéal maximal $I$ sur
+  l'unique $(c,I_1,\ldots,I_k)$ tel que $I = c(I_1,\ldots,I_k)$.
+  \begin{pbQuest}[resume]
+  \item Montrer que $\kappa_\infty$ et $\delta_\infty$ sont des bijections
+    réciproques.
+  \item Montrer que la fonction $\makeFunName{\iota}{X_\bot}{\ideal(X_\bot)}$,
+    restreinte en une fonction $X \longrightarrow X_\infty$, est une injection
+    vérifiant
+    \[\forall x_1,\ldots,x_k \in X,
+    \iota(c(x_1,\ldots,x_k)) = c(\iota(x_1),\ldots,\iota(x_k))\]
+  \end{pbQuest}
+  
+  Ainsi $X_\infty$ est une extension de $X$, contenant la même structure
+  inductive vis-à-vis des constructeurs $c\in C$, mais possédant plus
+  d'éléments. Si tout élément est de la forme $c(x_1,\ldots,x_k)$, on peut
+  maintenant avoir des éléments $x$ tels que par exemple $x = c(x)$.
+
+  \pbPart{Algèbres et co-algèbres}
+
+  En utilisant la construction ensembliste $\sum_{(C,\arite)} Y$, on peut
+  désormais reformuler le principe de récursion pour les ensembles inductifs. De
+  cette façon, en prenant un point de vue plus abstrait sur la récursion, on
+  peut dans un deuxième temps adapter la construction pour rendre compte d'un
+  phénomène de co-récursion pour les ensembles construits par co-induction.
+  Montrons d'abord cet équivalent du \cref{thm.PU.ind}.
+
+  \begin{pbQuest}
+  \item Soit $X$ un ensemble et $(C,\arite)$ une signature. Construire une
+    bijection entre l'ensemble des fonctions
+    $\sum_{c \in C} X^{\arite(c)} \longrightarrow X$
+    et des familles $\{f_c\}_{c \in C}$ telles que
+    $\makeFunName{f_c}{X^{\arite(c)}}{X}$.
+  \end{pbQuest}
+  On appelle $(C,\arite)$-algèbre un ensemble $Y$ muni d'une fonction
+  $\makeFunName{f}{\sum_{c\in C} Y^{\arite(c)}}{Y}$.
+  Si $(Y,f)$ et $(Z,g)$ sont deux
+  $(C,\arite)$-algèbres, on appelle morphisme de $(C,\arite)$-algèbres une
+  fonction $\makeFunName{h}{Y}{Z}$ vérifiant
+  \[\forall (c, x_1,\ldots,x_k) \in \sum_{c \in C} Y^{\arite(c)},
+  h(f(c, x_1,\ldots,x_k)) = g(c,h(x_1),\ldots,h(x_k))\]
+  ce que l'on peut représenter par le diagramme commutatif
+  \begin{center}
+    \begin{tikzcd}
+      \sum_{c \in C} Y^{\arite(c)} \ar[r,"\sum h"]\ar[d,"f"] &
+      \sum_{c \in C} Z^{\arite(c)} \ar[d,"g"] \\
+      Y \ar[r,"h"] & Z
+    \end{tikzcd}
+  \end{center}
+  Une $(C,\arite)$-algèbre $(Y,f)$ est dite initiale si pour toute autre
+  $(C,\arite)$-algèbre $(Z,g)$ il existe un unique morphisme de
+  $(C,\arite)$-algèbre de $(Y,f)$ vers $(Z,g)$.
+
+  \begin{pbQuest}[resume]
+  \item On considère $X$ l'ensemble inductif associé à $(C,\arite)$ et
+    \[\makeFun{\kappa}{\sum_{c\in C}X^{\arite(c)}}{X}
+              {(c,x_1,\ldots,x_n)}{c(x_1,\ldots,x_n)}\]
+    Montrer que $(X,\kappa)$ est une $(C,\arite)$-algèbre initiale.
+  \item Montrer que si $(Y,f)$ et $(Z,g)$ sont deux $(C,\arite)$-algèbres
+    initiales, alors il existe un unique morphisme de $(Y,f)$ vers $(Z,g)$, et
+    ce morphisme est une bijection dont la réciproque est elle aussi un
+    morphisme.
+  \item Montrer que $\makeFunName{\iota}{X}{X_\infty}$ est l'unique morphisme
+    de $(X,\kappa)$ vers $(X_\infty,\kappa_\infty)$.
+  \end{pbQuest}
+  L'induction permet donc de construire des algèbres initiales, c'est en ce
+  sens qu'on peut considérer un ensemble inductif comme \og le plus petit
+  possible\fg~: toute autre structure se comportant bien vis à vis de la
+  signature donnée contient, en un sens, l'ensemble inductif. La coinduction
+  peut se voir comme une notion duale, c'est-à-dire une notion dans laquelle
+  on inverse le sens de lecture. Ainsi, \og le plus grand possible\fg signifie
+  que toute autre structure est contenue dans l'ensemble co-inductif, qui est
+  alors un objet dit terminal. De même, plutôt que de considérer des algèbres,
+  on va considérer des co-algèbres.
+  
+  On introduit donc la notion de $(C,\arite)$-co-algèbre. Une co-algèbre est
+  un ensemble $Y$ muni d'une fonction
+  $\makeFunName{f}{Y}{\sum_{c \in C}Y^{\arite(c)}}$. Les morphismes entre
+  $(Y,f)$ et $(Z,g)$ sont désormais les fonctions $\makeFunName{h}{Y}{Z}$
+  qui font commuter le diagramme suivant~:
+  \begin{center}
+    \begin{tikzcd}
+      Y \ar[r,"h"]\ar[d,"f"] &
+      Z \ar[d,"g"] \\
+      \sum_{c\in C} Y^{\arite} \ar[r,"\sum h"] & \sum_{c\in C} Z^{\arite}
+    \end{tikzcd}
+  \end{center}
+  Une co-algèbre terminale est une co-algèbre $(Y,f)$ telle que pour toute
+  co-algèbre $(Z,g)$ il existe un unique morphisme $\makeFunName{h}{Z}{Y}$.
+
+  Intuitivement, une co-algèbre $(Y,f)$ est un système dont on peut observer les
+  états~: l'égalité $f(y) = (c,y_1,\ldots,y_k)$ nous dit qu'on observe le
+  constructeur $c$ et les états suivants $y_1,\ldots,y_k$. L'objectif est de
+  montrer que, de la même façon que $(X,\kappa)$ est une $(C,\arite)$-algèbre
+  initiale, $(X_\infty,\delta_\infty)$ est une $(C,\arite)$-co-algèbre terminale.
+
+  Depuis une co-algèbre $(Y,f)$, on cherche donc à associer chaque élément
+  $y\in Y$ à un élément de $X_\infty$, grâce à l'information de $f(y)$.
+  L'objectif est alors d'associer à $y$ un ensemble d'approximations de la façon
+  suivante~: si $f(y) = (c,y_1,\ldots,y_k)$ alors on associe à $y$ l'ensemble
+  contenant les $c(y'_1,\ldots,y'_k)$ où $y'_1,\ldots,y'_k$ sont eux-mêmes des
+  appxorimations de $y_1,\ldots,y_k$. Ce processus semble circulaire, ce
+  pourquoi on utilise à la place une définition récursive pour faire une
+  famille de fonctions $\makeFunName{h_n}{Y}{X_\bot}$ en prenant, pour
+  $f(y) = (c,y_1,\ldots,y_k)$~:
+  \[\begin{cases}
+  h_0(y) \defeq \bot\\
+  h_{n+1}(y) \defeq c(h_n(y_1),\ldots,h_n(y_k))
+  \end{cases}\]
   
   \begin{pbQuest}[resume]
-  \item Construire une injection $X \to X_\infty$.
+  \item Montrer que pour tout $n\in\bN$ et tout $y\in Y$,
+    $h_n(y) \leq h_{n+1}(y)$. En déduire que
+    \[h(y) \defeq \compr{x\in X_\bot}{\exists n\in \bN, x \leq h_n(y)}\]
+    est un idéal.
+  \item Montrer, par induction sur $X_\bot$, que pour tout $x\in X_\bot$ et tout
+    $y\in Y$, si $x$ est compatible avec $h_n(y)$ pour tout $n\in \bN$, alors
+    il existe $n \in \bN$ tel que $x \leq h_n(y)$. En déduire que $h(y)$ est un
+    idéal maximal, \latinexpr{i.e.} que $h(y) \in X_\infty$.
+  \item Pour tout $y \in Y$ tel que $f(y) = (c,y_1,\ldots,y_n)$, montrer que
+    $h(y) = c(h(y_1),\ldots,h(y_n))$, c'est-à-dire que
+    $\makeFunName{h}{Y}{X_\infty}$ est un morphisme de $(C,\arite)$-co-algèbres.
+    \textit{Indication~: On peut utiliser la maximalité pour se limite à une
+      seule inclusion.}
+  \item Soit $\makeFunName{h'}{Y}{X_\infty}$ un autre morphisme de
+    $(C,\arite)$-co-algèbre. Montrer par récurrence que pour tout $n$,
+    $h_n(y) \in h'(y)$. En déduire que $h= h'$.
+  \item Montrer que si $(X',\delta')$ est une $(C,\arite)$-co-algèbre temrinale,
+    alors $X'$ et $X_\infty$ sont isomorphes, c'est-à-dire qu'il existe une
+    bijection entre $X_\infty$ et $X'$ qui est un morphisme et dont la
+    réciproque est un morphisme.
+  \item En déduire le théorème de co-récursion~:
+    \begin{quotation}
+      \noindent
+      Soit $Y$ un ensemble et, pour tout $y\in Y$, la donnée d'un constructeur
+      $c_y\in C$ et d'un tuple $(y_1,\ldots,y_{k_y})\in Y^{\arite(c_y)}$. Alors il
+      existe une unique fonction $\makeFunName{h}{Y}{X_\infty}$ telle que
+      \[\forall y \in Y, h(y) = c_y (h(y_1),\ldots,h(y_{k_y}))\]
+    \end{quotation}
   \end{pbQuest}
 
-  \pbPart{L'exemple des flux}
+  \pbPart{Principe de coinduction}
 
-  \noindent
-  Soit $A$ un ensemble. On considère la signature $(A,\arite)$ où
-  $\arite(a) = 1$ pour tout $a \in A$. On appelle ensemble des flux
-  (\foreignexpr{stream} en anglais) sur $A$ l'ensemble coinductif $\Stream(A)$
-  associé à cette signature.
-  
+  On a vu comment définir une fonction vers un ensemble co-inductif, mais on
+  souhaite aussi pouvoir prouver des énoncés sur des ensembles co-inductifs.
+  Pour cela, il nous faut la notion de bisimulation~: comme il n'y a pas
+  forcément de cas de base pour un ensemble co-inductif (on peut par exemple
+  considérer des listes infinies $s$ dont le seul constructeur est
+  $\cons(a,s)$), on considère des relations quelconques qui sont closes par les
+  constructeurs.
+
+  Une bisimulation est une relation
+  $\mathord{\varRR}\subseteq X_\infty\times X_\infty$ telle que pour tous
+  $x,y\in X_\infty$ tels que $x\varRR y$, si $x = c(x_1,\ldots,x_k)$ et
+  $y = d(y_1,\ldots,y_p)$, alors $c = d$ et pour tout $i\in\intervIntB{k}$,
+  $x_i\varRR y_i$.
+
   \begin{pbQuest}
-  \item Donner un élément $1^\infty \in \Stream(\bN)$ représentant la liste
-    infinie $1 \Cons 1 \Cons \cdots$.
-  \item Quel est l'ensemble inductif associé à cette signature~?
+  \item Soit $\varRR$ une bisimulation. Montrer par induction sur $X_\bot$ que
+    pour tous $I,J\in X_\infty$ et $z \in X_\bot$, si $I\varRR J$ et $z\in I$
+    alors $z \in J$. En déduire le principe de co-inudction~:
+    \[\forall x,y\in X_\infty, x \varRR y \implies x = y \]
+  \item Montrer que l'égalité sur $X_\infty$ est une bisimulation. En dédure que
+    l'égalité est la plus grande bisimulation.
   \end{pbQuest}
+\end{problem}
 
+
+\clearpage
+
+\begin{problem}[La coinduction]
   \pbPart{Algèbres et co-algèbres}
   
   \noindent
